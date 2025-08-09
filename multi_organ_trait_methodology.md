@@ -519,7 +519,7 @@ imputed_SLA <- mice(eive_data,
 
 ### 5.3 Trait Imputation Using medfate Methodology
 
-For traits with limited direct measurements, we implement the medfate approach (De Cáceres et al., 2021) which uses hierarchical proxy estimation based on ecological theory.
+For traits with limited direct measurements, we implement the medfate approach (De Cáceres et al., 2021) which uses hierarchical proxy estimation based on ecological theory. **For complete trait estimation methods including family-level defaults and all imputation equations, see [medfate_trait_estimation_methods.md](medfate_trait_estimation_methods.md).**
 
 #### Wood Density Estimation (6.6% → 100% coverage)
 
@@ -579,7 +579,29 @@ P50 = ifelse(angiosperm,
              -4.0 - 3.0 * wood_density)  # MPa
 ```
 
-### 5.4 Handling Missing Data with MAGs
+### 5.4 Generalizability of medfate Estimation Methods
+
+**Critical consideration for EIVE application: Not all medfate methods are equally applicable to Central European species.** We have analyzed the source and generalizability of each estimation method. **For detailed analysis, see [medfate_estimates_generalizability.md](medfate_estimates_generalizability.md).**
+
+#### Universal Methods (High Confidence for EIVE)
+- **Wood density → hydraulic relationships** (Christoffersen et al., 2016): Based on tropical research but represents universal physical principles
+- **Photosynthesis parameters** (Walker et al., 2014): Global meta-analysis of 1,050 species
+- **Vulnerability curves by growth form** (Maherali et al., 2004): Global patterns across 167 species
+- **Stem hydraulic scaling** (Savage et al., 2010; Olson et al., 2014): Universal allometric laws
+
+#### Mediterranean-Calibrated Methods (Require Regional Adjustment)
+- **Maximum transpiration coefficients** (Granier et al., 1999): Calibrated on Mediterranean oak forests
+- **Leaf phenology parameters** (Delpierre et al., 2009): French deciduous forests, not Central European
+- **Default pressure-volume curves**: Explicitly use Mediterranean climate defaults
+- **Water use efficiency defaults**: Environment-dependent, likely Mediterranean-biased
+
+#### Implementation Strategy for EIVE
+1. **Prioritize universal physical relationships** (wood-water, photosynthesis biochemistry)
+2. **Re-calibrate regional parameters** using Central European studies where available
+3. **Validate family defaults** against TRY data weighted by geographic representation
+4. **Adjust critical parameters** for temperate humid conditions (phenology, WUE, turgor loss)
+
+### 5.5 Handling Missing Data with MAGs
 
 The theoretical framework from Section 4 becomes essential when dealing with unmeasured traits:
 
@@ -676,6 +698,7 @@ The analysis requires the following R packages:
 - `gratia` for GAM visualization and diagnostics
 - `mice` for multiple imputation of missing traits
 - `ordinal` for cumulative link models (if using ordinal data)
+- `medfate` for trait imputation methods and family-level defaults (De Cáceres et al., 2024)
 
 ### 5.4 Complete Example: DAG to MAG Transformation
 
@@ -1284,6 +1307,8 @@ Chave, J., Coomes, D., Jansen, S., Lewis, S. L., Swenson, N. G., & Zanne, A. E. 
 Christoffersen, B. O., Gloor, M., Fauset, S., Fyllas, N. M., Galbraith, D. R., Baker, T. R., ... & Meir, P. (2016). Linking hydraulic traits to tropical forest function in a size-structured and trait-driven model (TFS v.1-Hydro). Geoscientific Model Development, 9(11), 4227-4255.
 
 De Cáceres, M., Mencuccini, M., Martin-StPaul, N., Limousin, J. M., Coll, L., Poyatos, R., ... & Martínez-Vilalta, J. (2021). Unravelling the effect of species mixing on water use and drought stress in Mediterranean forests: A modelling approach. Agricultural and Forest Meteorology, 296, 108233.
+
+De Cáceres, M., Casals, P., Gabriel, E., Castro, X., & Martínez-Vilalta, J. (2024). medfate: Mediterranean Forest Simulation. R package version 4.1.0. https://emf-creaf.github.io/medfate/
 
 Dengler, J., Jansen, F., Chusova, O., et al. (2023). Ecological Indicator Values for Europe (EIVE) 1.0. Vegetation Classification and Survey, 4, 7-29.
 
