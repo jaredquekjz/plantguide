@@ -151,10 +151,11 @@ for (file_path in sources) {
     norm_species <- normalize_name(species_names)
     norm_acc <- normalize_name(acc_names)
     
-    # Find matches
+    # Find matches - ONLY keep rows with actual trait data (non-empty TraitID)
+    has_trait <- !is.na(dt$TraitID) & dt$TraitID != ""
     match_species <- norm_species %in% taxa_set
     match_acc <- norm_acc %in% taxa_set
-    keep <- match_species | match_acc
+    keep <- has_trait & (match_species | match_acc)
     
     n_matches <- sum(keep)
     
@@ -174,7 +175,7 @@ for (file_path in sources) {
       file_matches <- file_matches + n_matches
       
       if (n_matches >= 10) {
-        cat(sprintf('    -> Found %d matches in chunk %d!\n', n_matches, chunk_num))
+        cat(sprintf('    -> Found %d trait records for EIVE taxa in chunk %d!\n', n_matches, chunk_num))
       }
     }
     
@@ -195,9 +196,10 @@ cat('\n======================================================================\n'
 cat('EXTRACTION COMPLETE!\n')
 cat('======================================================================\n')
 cat(sprintf('Total rows processed: %s\n', format(total_rows, big.mark = ',')))
-cat(sprintf('Total matches found: %s\n', format(total_matches, big.mark = ',')))
-cat(sprintf('Match rate: %.4f%%\n', 100 * total_matches / max(total_rows, 1)))
+cat(sprintf('Trait records extracted: %s (only rows with TraitID)\n', format(total_matches, big.mark = ',')))
+cat(sprintf('Extraction rate: %.4f%%\n', 100 * total_matches / max(total_rows, 1)))
 cat(sprintf('Output file: %s\n', out_path))
+cat('\nNote: Ancillary data rows (metadata without TraitID) were excluded.\n')
 
 if (total_matches == 0) {
   cat('\nWARNING: No matches found!\n')
