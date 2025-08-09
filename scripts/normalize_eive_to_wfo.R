@@ -33,8 +33,8 @@ normalize_name <- function(x) {
   trimws(x)
 }
 
-eive_csv <- trimws(gsub('[\r\n`]+','', get_arg('--eive_csv', 'data/EIVE_Paper_1.0_SM_08_csv/mainTable.csv')))
-out_csv  <- trimws(gsub('[\r\n`]+','', get_arg('--out', 'data/EIVE_TaxonConcept_WFO.csv')))
+eive_csv <- trimws(gsub('[\r\n`]+','', get_arg('--eive_csv', 'data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv')))
+out_csv  <- trimws(gsub('[\r\n`]+','', get_arg('--out', 'data/EIVE/EIVE_TaxonConcept_WFO.csv')))
 wfo_csv  <- trimws(gsub('[\r\n`]+','', get_arg('--wfo_csv', '')))
 wfo_file <- trimws(gsub('[\r\n`]+','', get_arg('--wfo_file', '')))
 fuzzy    <- get_int_arg('--fuzzy', 1L)

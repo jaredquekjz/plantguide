@@ -1,7 +1,6 @@
 #!/usr/bin/env Rscript
 suppressPackageStartupMessages({
   library(data.table)
-  suppressWarnings(try(library(rtry), silent = TRUE))
 })
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -13,164 +12,193 @@ get_arg <- function(key, default = NULL) {
   sub(paste0('^', key, '='), '', hit[1])
 }
 
-eive_csv <- get_arg('--eive_csv', 'data/EIVE_Paper_1.0_SM_08_csv/mainTable.csv')
-sources  <- get_arg('--sources', '')
-out_path <- get_arg('--out', 'data/traits_for_eive_taxa_rtry.tsv')
-chunk_sz <- as.integer(get_arg('--chunk_lines', '200000'))
-no_filter <- tolower(get_arg('--no_filter', 'false')) %in% c('1','true','yes')
-eive_wfo_csv <- get_arg('--eive_wfo_csv', '')
+wfo_csv <- get_arg('--wfo_csv', 'data/EIVE/EIVE_TaxonConcept_WFO.csv')
+sources_pattern <- get_arg('--pattern', 'data/TRY/*_extract/*.txt')
+out_path <- get_arg('--out', 'data/output/traits_for_eive_taxa_rtry.tsv')
+chunk_sz <- as.integer(get_arg('--chunk_lines', '50000'))  # Smaller for safety
 
-# Sanitize key paths in case of wrapped shell input
-eive_csv <- trimws(gsub('[\r\n]+', '', eive_csv))
-out_path <- trimws(gsub('[\r\n]+', '', out_path))
-
-if (nzchar(sources)) {
-  sources <- strsplit(sources, ',')[[1]]
-  # Trim spaces and strip accidental newlines/carriage returns from wrapped shells
-  sources <- trimws(gsub('[\r\n]+', '', sources))
-  sources <- sources[nzchar(sources)]
-}
+# Find source files
+sources <- Sys.glob(sources_pattern)
 if (length(sources) == 0) {
-  stop('Provide --sources=comma,separated,paths to TRY extract .txt files')
+  stop(sprintf('No files found matching pattern: %s', sources_pattern))
 }
 
-# Fail fast if any source path is missing
-missing <- sources[!file.exists(sources)]
-if (length(missing)) {
-  stop(sprintf('Missing source file(s): %s', paste(missing, collapse = ', ')))
+cat('======================================================================\n')
+cat('TRY Data Extraction with WFO Normalized Names\n')
+cat('======================================================================\n\n')
+
+# Load WFO normalized names
+if (!file.exists(wfo_csv)) {
+  stop(sprintf('WFO file not found: %s', wfo_csv))
 }
 
-dir.create(dirname(out_path), showWarnings = FALSE, recursive = TRUE)
+cat(sprintf('Loading WFO normalized names from: %s\n', wfo_csv))
+wfo_map <- fread(wfo_csv, encoding = 'UTF-8')
+cat(sprintf('  Loaded %d EIVE taxa with WFO mappings\n', nrow(wfo_map)))
 
+# Normalize function - simpler version
 normalize_name <- function(x) {
-  x <- ifelse(is.na(x), '', trimws(x))
-  # Remove hybrid cross sign (×) when used as botanical hybrid marker
-  # - Leading marker: "×Aegilotriticum" -> "Aegilotriticum"
-  # - Between tokens: "Abelia × grandiflora" -> "Abelia grandiflora"
-  # Avoid using \s in regex; use POSIX classes to prevent unrecognized escapes.
-  x <- gsub('^×[[:space:]]*', '', x, perl = TRUE)       # leading ×
-  x <- gsub('[[:space:]]*×[[:space:]]*', ' ', x, perl = TRUE)    # interior ×
-  # Also drop standalone ASCII 'x' token used as hybrid marker between tokens: "Abelia x grandiflora"
-  x <- gsub('(^|[[:space:]])x([[:space:]]+)', ' ', x, perl = TRUE)
-  # strip accents and transliterate
-  x <- iconv(x, to = 'ASCII//TRANSLIT')
-  # normalize whitespace
-  x <- tolower(gsub('[\r\n]+', ' ', x))
-  x <- gsub('[[:space:]]+', ' ', x)
+  x <- tolower(trimws(as.character(x)))
+  x <- gsub('[^a-z0-9 ]', ' ', x)  # Remove all special chars
+  x <- gsub('\\s+', ' ', x)        # Collapse spaces
   trimws(x)
 }
 
-# Load EIVE taxa and normalize (raw TaxonConcepts)
-eive <- fread(eive_csv, select = 'TaxonConcept', encoding = 'UTF-8')
-taxa_norm <- unique(normalize_name(eive$TaxonConcept))
-taxa_norm <- taxa_norm[nzchar(taxa_norm)]
+# Create lookup sets
+eive_norm <- unique(normalize_name(wfo_map$TaxonConcept))
+wfo_norm <- normalize_name(wfo_map$wfo_accepted_name)
+wfo_norm <- wfo_norm[!is.na(wfo_norm) & nzchar(wfo_norm)]
+wfo_norm <- unique(wfo_norm)
 
-# Optionally, load WFO-normalized mapping and include accepted WFO names
-taxa_wfo <- character(0)
-if (nzchar(eive_wfo_csv)) {
-  eive_wfo_csv <- trimws(gsub('[\r\n]+', '', eive_wfo_csv))
-  if (file.exists(eive_wfo_csv)) {
-    map <- fread(eive_wfo_csv, encoding = 'UTF-8')
-    # Try a few likely column names for accepted WFO scientific name
-    cand <- intersect(c('wfo_accepted_name','WFO.accepted','accepted_name','AcceptedName','acceptedName','WFO.best','best_match'), names(map))
-    if (length(cand) > 0) {
-      taxa_wfo <- unique(normalize_name(map[[cand[1]]]))
-      taxa_wfo <- taxa_wfo[nzchar(taxa_wfo)]
-      message(sprintf('Loaded %d WFO-accepted names from %s (column: %s)', length(taxa_wfo), eive_wfo_csv, cand[1]))
-    } else {
-      message(sprintf('No accepted-name column found in %s; using raw TaxonConcepts only', eive_wfo_csv))
-    }
-  } else {
-    message(sprintf('eive_wfo_csv not found: %s; using raw TaxonConcepts only', eive_wfo_csv))
-  }
-}
+all_taxa <- unique(c(eive_norm, wfo_norm))
+taxa_set <- all_taxa[nzchar(all_taxa)]
 
-# Final taxa set: union of raw EIVE and WFO-accepted names (both normalized)
-taxa_set <- unique(c(taxa_norm, taxa_wfo))
+cat(sprintf('\nTarget taxa: %d unique normalized names\n', length(taxa_set)))
+cat(sprintf('Processing %d files...\n', length(sources)))
 
+# Initialize
+dir.create(dirname(out_path), showWarnings = FALSE, recursive = TRUE)
 write_header <- TRUE
-total_kept <- 0L
-kept_by_src <- integer(0)
+total_matches <- 0L
+total_rows <- 0L
 
-process_source <- function(path, out_path) {
-  # Read header with fread to avoid encoding issues
-  hdr <- tryCatch(
-    fread(path, sep = '\t', nThread = getDTthreads(), nrows = 0, header = TRUE, fill = TRUE, encoding = 'Latin-1'),
-    error = function(e) NULL
-  )
-  if (is.null(hdr)) stop(sprintf('Failed to read header from %s', path))
-  header <- names(hdr)
+for (file_path in sources) {
+  cat(sprintf('\n--- Processing %s ---\n', basename(file_path)))
   
-  # Remove any trailing empty columns (from trailing tabs)
-  repeat {
-    if (length(header) == 0) break
-    last <- header[length(header)]
-    if (!nzchar(last) || grepl('^V[0-9]+$', last)) {
-      header <- header[-length(header)]
-    } else break
+  # Get file info
+  file_mb <- file.info(file_path)$size / (1024^2)
+  cat(sprintf('  File size: %.1f MB\n', file_mb))
+  
+  # Read header line manually (safer than fread for problematic files)
+  con <- file(file_path, 'r', encoding = 'latin1')
+  header_line <- readLines(con, n = 1, warn = FALSE)
+  close(con)
+  
+  # Parse header
+  header <- strsplit(header_line, '\t', fixed = TRUE)[[1]]
+  header <- trimws(header)
+  
+  # Find species columns
+  idx_species <- which(header == 'SpeciesName')
+  idx_acc <- which(header == 'AccSpeciesName')
+  
+  if (length(idx_species) == 0 && length(idx_acc) == 0) {
+    cat('  ERROR: No species columns found!\n')
+    next
   }
-
-  idx_species <- match('SpeciesName', header)
-  idx_acc     <- match('AccSpeciesName', header)
-  if (is.na(idx_species) && is.na(idx_acc)) stop(sprintf('No SpeciesName/AccSpeciesName in %s', path))
-
-  src_label <- basename(dirname(path))
-  if (src_label == '' || src_label == '.') src_label <- basename(path)
-
-  # Stream in chunks using fread skip/nrows; assign header as col.names
-  offset <- 0L
-  kept_count <- 0L
+  
+  cat(sprintf('  Found columns: SpeciesName=%s, AccSpeciesName=%s\n',
+              ifelse(length(idx_species) > 0, idx_species[1], 'NA'),
+              ifelse(length(idx_acc) > 0, idx_acc[1], 'NA')))
+  
+  # Process file in chunks using readLines (more robust than fread)
+  con <- file(file_path, 'r', encoding = 'latin1')
+  readLines(con, n = 1, warn = FALSE)  # Skip header
+  
+  chunk_num <- 0L
+  file_matches <- 0L
+  file_rows <- 0L
+  
   repeat {
-    dt <- tryCatch(
-      fread(
-        path, sep = '\t', header = FALSE, nrows = chunk_sz,
-        skip = 1L + offset, fill = TRUE, quote = '"',
-        col.names = header, na.strings = c('', 'NA'),
-        encoding = 'Latin-1'
-      ),
-      error = function(e) NULL
-    )
-    if (is.null(dt) || nrow(dt) == 0L) break
-
-    # Drop any unnamed columns created by trailing tabs
-    if ('' %in% names(dt)) {
-      dt[, (names(dt)[names(dt) == '']) := NULL]
+    # Read chunk
+    lines <- readLines(con, n = chunk_sz, warn = FALSE)
+    if (length(lines) == 0) break
+    
+    chunk_num <- chunk_num + 1
+    if (chunk_num %% 20 == 0) {
+      cat(sprintf('  Chunk %d: %d rows processed, %d matches found...\n', 
+                  chunk_num, file_rows, file_matches))
     }
-
-    # Normalize names and filter
-    sn <- if (!is.na(idx_species)) normalize_name(dt[[idx_species]]) else rep('', nrow(dt))
-    an <- if (!is.na(idx_acc))     normalize_name(dt[[idx_acc]])     else rep('', nrow(dt))
-    keep <- if (no_filter) rep(TRUE, nrow(dt)) else ((sn %in% taxa_set) | (an %in% taxa_set))
-    if (any(keep)) {
+    
+    # Parse lines into data.table
+    # Split each line and create a matrix, then convert to data.table
+    split_lines <- strsplit(lines, '\t', fixed = TRUE)
+    
+    # Filter out malformed lines
+    expected_cols <- length(header)
+    valid_lines <- sapply(split_lines, length) == expected_cols
+    
+    if (!any(valid_lines)) {
+      file_rows <- file_rows + length(lines)
+      next
+    }
+    
+    # Create data.table from valid lines
+    mat <- do.call(rbind, split_lines[valid_lines])
+    dt <- as.data.table(mat)
+    
+    # Set column names
+    if (ncol(dt) == length(header)) {
+      setnames(dt, header)
+    } else {
+      cat(sprintf('  WARNING: Column mismatch in chunk %d\n', chunk_num))
+      file_rows <- file_rows + length(lines)
+      next
+    }
+    
+    # Get species names
+    species_names <- character(0)
+    acc_names <- character(0)
+    
+    if (length(idx_species) > 0 && 'SpeciesName' %in% names(dt)) {
+      species_names <- dt$SpeciesName
+    }
+    if (length(idx_acc) > 0 && 'AccSpeciesName' %in% names(dt)) {
+      acc_names <- dt$AccSpeciesName
+    }
+    
+    # Normalize and check for matches
+    norm_species <- normalize_name(species_names)
+    norm_acc <- normalize_name(acc_names)
+    
+    # Find matches
+    match_species <- norm_species %in% taxa_set
+    match_acc <- norm_acc %in% taxa_set
+    keep <- match_species | match_acc
+    
+    n_matches <- sum(keep)
+    
+    if (n_matches > 0) {
       sub <- dt[keep]
-      sub[, Source := src_label]
-      total_kept <<- total_kept + nrow(sub)
-      kept_count <- kept_count + nrow(sub)
+      sub[, Source := basename(dirname(file_path))]
+      
+      # Write to output
       if (write_header) {
-        fwrite(sub[0], file = out_path, sep = '\t', quote = TRUE, col.names = TRUE)
-        write_header <<- FALSE
+        fwrite(sub, file = out_path, sep = '\t', quote = TRUE)
+        write_header <- FALSE
+      } else {
+        fwrite(sub, file = out_path, sep = '\t', append = TRUE, 
+               quote = TRUE, col.names = FALSE)
       }
-      fwrite(sub, file = out_path, sep = '\t', append = TRUE, quote = TRUE, col.names = FALSE)
+      
+      file_matches <- file_matches + n_matches
+      
+      if (n_matches >= 10) {
+        cat(sprintf('    -> Found %d matches in chunk %d!\n', n_matches, chunk_num))
+      }
     }
-    offset <- offset + nrow(dt)
+    
+    file_rows <- file_rows + nrow(dt)
   }
-  # Record per-source tally and print summary
-  kept_by_src[src_label] <<- kept_count
-  message(sprintf('Finished %s: kept %d rows', src_label, kept_count))
+  
+  close(con)
+  
+  cat(sprintf('  COMPLETE: %d rows, %d matches (%.3f%%)\n', 
+              file_rows, file_matches, 
+              100 * file_matches / max(file_rows, 1)))
+  
+  total_matches <- total_matches + file_matches
+  total_rows <- total_rows + file_rows
 }
 
-for (p in sources) {
-  message(sprintf('Processing %s ...', p))
-  process_source(p, out_path)
-}
+cat('\n======================================================================\n')
+cat('EXTRACTION COMPLETE!\n')
+cat('======================================================================\n')
+cat(sprintf('Total rows processed: %s\n', format(total_rows, big.mark = ',')))
+cat(sprintf('Total matches found: %s\n', format(total_matches, big.mark = ',')))
+cat(sprintf('Match rate: %.4f%%\n', 100 * total_matches / max(total_rows, 1)))
+cat(sprintf('Output file: %s\n', out_path))
 
-if (total_kept == 0L) {
-  message('Done. No matching rows; no file written.')
-} else {
-  message(sprintf('Done. Wrote: %s', out_path))
-  message(sprintf('Total rows kept: %d', total_kept))
-  if (length(kept_by_src)) {
-    bysrc <- paste(sprintf('%s=%d', names(kept_by_src), unlist(kept_by_src)), collapse = ', ')
-    message(sprintf('Rows by source: %s', bysrc))
-  }
+if (total_matches == 0) {
+  cat('\nWARNING: No matches found!\n')
 }
