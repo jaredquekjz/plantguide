@@ -2,12 +2,12 @@
 ## Extending Environmental Indicator Values and CSR Strategies Worldwide Through Integrated Trait Analysis
 
 ### Abstract
-We present a methodological framework for predicting plant environmental preferences using multi-organ traits (leaves, wood, roots) that addresses critical statistical challenges in trait-environment modeling. Building on Shipley et al. (2017), we integrate Mixed Acyclic Graphs (MAGs) to handle unmeasured physiological variables, copula functions for non-normal trait distributions, district decomposition for organ-specific optimization, and nonlinear transformations for root traits following Kong et al. (2019). While this framework can theoretically predict environmental preferences for any species with measured traits, **validation beyond the 14,000 European species remains a fundamental challenge**. The sophisticated statistical machinery (MAGs, copulas, m-separation tests) optimizes model building on European data where Ellenberg/EIVE values exist, but extending predictions globally relies on occurrence-based environmental extraction—essentially circular validation. We propose a three-tier validation strategy, but acknowledge that generating "thousands of scientifically supported planting guides" requires either: (1) accepting occurrence-based validation as sufficient, or (2) massive field campaigns to measure trait-environment relationships worldwide. This paper presents the statistical framework and openly addresses the validation gap that must be resolved for global application.
+We present a methodological framework for predicting plant environmental preferences using multi-organ traits (leaves, wood, roots) that addresses critical statistical challenges in trait-environment modeling. Building on Shipley et al. (2017), we integrate Mixed Acyclic Graphs (MAGs) to handle unmeasured physiological variables, copula functions for non-normal trait distributions, district decomposition for organ-specific optimization, and nonlinear transformations for root traits following Kong et al. (2019). Our training dataset leverages the Ecological Indicator Values for Europe (EIVE) 1.0 (Dengler et al., 2023), which provides continuous-scale environmental positions for 14,835 taxa—a 15-fold expansion from Shipley's original ~1,000 species using ordinal Ellenberg values. While this framework can theoretically predict environmental preferences for any species with measured traits, **validation beyond these European species remains a fundamental challenge**. The sophisticated statistical machinery (MAGs, copulas, m-separation tests) optimizes model building on European data where EIVE values exist, but extending predictions globally relies on occurrence-based environmental extraction—essentially circular validation. We propose a three-tier validation strategy, but acknowledge that generating "thousands of scientifically supported planting guides" requires either: (1) accepting occurrence-based validation as sufficient, or (2) massive field campaigns to measure trait-environment relationships worldwide. This paper presents the statistical framework and openly addresses the validation gap that must be resolved for global application.
 
 ## 1. Introduction
 
 ### 1.1 The Problem
-Current methods using only leaf traits achieve predictions within 1-2 ranks but fail in three ways:
+Current methods (Shipley et al., 2017) using leaf traits achieve predictions within 1-2 ranks but is incomplete in three ways:
 1. **Environmental extremes**: Cannot predict drought or nutrient-poor conditions
 2. **Plant types**: Treat all species identically despite fundamental differences
 3. **Organ coordination**: Ignore how roots and wood modify leaf responses
@@ -20,10 +20,20 @@ We combine four statistical innovations:
 4. **Multigroup analysis**: Separate models for woody vs non-woody species
 
 ### 1.3 From European Reference to Global Prediction
-Current limitation: EIVE and Ellenberg values only exist for ~14,000 European species.
+
+**Data Foundation Evolution**:
+- **Original Ellenberg (1974)**: ~2,000 Central European species, ordinal ranks 1-9
+- **Shipley et al. (2017)**: ~922-988 species with complete trait data from TRY
+- **EIVE 1.0 (Dengler et al., 2023)**: 14,835 taxa, continuous scale 0-10, entire Europe
+- **Key advantages of EIVE**:
+  - Based on 31 source EIV systems (vs single Ellenberg system)
+  - Continuous values (e.g., 3.31-9.43) preserve information lost in ordinal ranks
+  - Includes niche width estimates (uncertainty quantification)
+  - Covers entire Europe, not just Central Europe
+  - Outperforms Ellenberg and other systems in validation tests (Aicher et al., in review)
 
 Our solution: Train models on European species → Predict for species globally:
-- **Training**: European species with known EIVE + measured traits
+- **Training**: 14,835 European taxa with EIVE values + measured traits
 - **Prediction**: Any species with measured traits → Predicted EIVE values
 - **Application**: Match ANY species to ANY location based on climate
 - **Impact**: Scientifically-designed plantings worldwide, not just Europe
@@ -44,7 +54,7 @@ They used **Cumulative Link Models (CLM)** for ordinal Ellenberg ranks (1-9), ac
 - Light predictions problematic (86% of training data at ranks 6-9 = biased)
 - Tested globally (Morocco, North America) but limited by European indicator values
 
-### 2.2 Our Major Improvements
+### 2.2 Our Modifications
 
 | Aspect | Shipley et al. (2017) | Our Approach | Why Better |
 |--------|------------------------|--------------|------------|
@@ -54,7 +64,7 @@ They used **Cumulative Link Models (CLM)** for ordinal Ellenberg ranks (1-9), ac
 | **Plant types** | Single model for all | Separate woody/non-woody | Respects fundamental differences |
 | **Organ coordination** | Ignored | MAGs with latent variables | Models physiological constraints |
 | **Distributions** | Forced normality | Copulas preserve true shapes | Biological realism |
-| **Scope** | European indicator values | Global predictions | Universal application |
+| **Scope** | European indicator values | Global predictions (theoretical) | Universal application |
 
 ### 2.3 Critical Discovery: Woody vs Non-woody Root Economics
 Shipley's CLM handles ordinal outcomes but assumes linear trait-trait relationships. Kong et al. (2019) revealed fundamental differences:
@@ -844,7 +854,7 @@ Stress_Tolerance → Ψ50    # Indicator 3
 ### 7.6 Real-World Validation: From Traits to Ecosystem Services
 
 **Santos et al. (2021) Agroforestry Proof-of-Concept**:
-A Brazilian experiment (co-authored by Shipley) PROVES trait-based design works:
+A Brazilian experiment (co-authored by Shipley) proves trait-based design works:
 
 **The Design Principle**:
 ```r
@@ -1034,7 +1044,9 @@ Chave, J., Coomes, D., Jansen, S., Lewis, S. L., Swenson, N. G., & Zanne, A. E. 
 
 Kong, D., Wang, J., Wu, H., Valverde-Barrantes, O. J., Wang, R., Zeng, H., Kardol, P., Zhang, H., & Feng, Y. (2019). Nonlinearity of root trait relationships and the root economics spectrum. Nature Communications, 10(1), 2203.
 
-Dengler, J., Jansen, F., Chusova, O., et al. (2023). Ecological Indicator Values for Europe (EIVE) 1.0. Vegetation Classification and Survey, 4, 7-29.
+Aicher, S., Dengler, J., et al. (in review). Mean ecological indicator values: use EIVE, but no cover-weighting. Vegetation Classification and Survey. [Demonstrates EIVE outperforms all other European indicator value systems]
+
+Dengler, J., Jansen, F., Chusova, O., et al. (2023). Ecological Indicator Values for Europe (EIVE) 1.0. Vegetation Classification and Survey, 4, 7-29. https://doi.org/10.3897/VCS.98324 [Primary training dataset: 14,835 taxa with continuous environmental values covering entire Europe]
 
 Douma, J. C., & Shipley, B. (2021). A multigroup extension to piecewise path analysis. Ecosphere, 12(5), e03502.
 
