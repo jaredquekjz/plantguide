@@ -1,0 +1,642 @@
+Process a PDF
+POST api.mathpix.com/v3/pdf
+
+This endpoint executes asynchronously, and processing large PDFs can take minutes for all pages to complete. Use the streaming option if your application benefits from instant partial results. The maximum PDF file size supported is 1 GB.
+Mathpix supports processing for PDFs, Ebooks, and documents.
+
+Supported inputs:
+
+PDF file
+EPUB file
+DOCX file
+PPTX file
+AZW, AZW3, or KFX file (Kindle formats)
+MOBI file
+DJVU file
+DOC file
+WPD file (WordPerfect Document)
+ODT file (OpenDocument Text)
+Note: No additional input is necessary to convert an ebook or document file
+Supported outputs:
+
+MMD file (Mathpix Markdown spec)
+MD file (Markdown spec)
+DOCX file (compatible with MS Office, Google Docs, Libre Office)
+LaTeX zip file (includes images)
+HTML (rendered Mathpix Markdown content)
+PDF with HTML (PDF file with HTML rendering)
+PDF with LaTeX (equations are selectable)
+PPTX file (compatible with Microsoft PowerPoint 2007+)
+The PDF processing feature is designed to work with both single-column and two-column scientific documents. The current PDF processing was designed to work with PDF documents like those found on ArXiv.
+Request parameters for uploading PDFs
+Send a PDF URL for processing:
+
+#!/usr/bin/env python
+import requests
+import json
+
+r = requests.post("https://api.mathpix.com/v3/pdf",
+    json={
+        "url": "https://cdn.mathpix.com/examples/cs229-notes1.pdf",
+        "conversion_formats": {
+            "docx": True,
+            "tex.zip": True
+        }
+    },
+    headers={
+        "app_id": "APP_ID",
+        "app_key": "APP_KEY",
+        "Content-type": "application/json"
+    }
+)
+print(json.dumps(r.json(), indent=4, sort_keys=True))
+You can either send a file URL, or you can upload a file.
+
+Parameter	Type	Description
+url (optional)	string	HTTP URL where the file can be downloaded from
+streaming (optional)	bool	Whether streaming should be enabled for this request, see stream pdf pages. Default is false
+metadata (optional)	object	Key value object
+alphabets_allowed (optional)	object	See AlphabetsAllowed section, use this to specify which alphabets you don't want in the output
+rm_spaces (optional)	bool	Determines whether extra white space is removed from equations in latex_styled and text formats. Default is true.
+rm_fonts (optional)	bool	Determines whether font commands such as \mathbf and \mathrm are removed from equations in latex_styled and text formats. Default is false.
+idiomatic_eqn_arrays (optional)	bool	Specifies whether to use aligned, gathered, or cases instead of an array environment for a list of equations. Default is false.
+include_equation_tags (optional)	bool	Specifies whether to include equation number tags inside equations LaTeX in the form of \tag{eq_number}, where eq_number is an equation number (e.g. 1.12). When set to true, it sets "idiomatic_eqn_arrays": true, because equation numbering works better in those environments compared to the array environment.
+include_smiles (optional)	bool	Enable experimental chemistry diagram OCR, via RDKIT normalized SMILES with isomericSmiles=False, included in text output format, via MMD SMILES syntax <smiles>...</smiles>. Default is true.
+include_chemistry_as_image (optional)	bool	Returns an image crop containing the SMILES in the alt-text for chemical diagrams. For example: ![<smiles>CCC</smiles>](https://cdn.mathpix.com/cropped/image_id.jpg). Default is false.
+include_diagram_text (optional)	bool	Enables text extraction from diagrams, false by default. The extracted text will be part of lines.json data, and not part of the lines.mmd.json or final mmd. The parent_id of these text lines will correspond to the id of one of the diagrams in the lines.json data.
+numbers_default_to_math (optional)	bool	Specifies whether numbers are always math, e.g., Answer: \( 17 \) instead of Answer: 17. Default is false.
+math_inline_delimiters (optional)	[string, string]	Specifies begin inline math and end inline math delimiters for text outputs. Default is ["\\(", "\\)"].
+math_display_delimiters (optional)	[string, string]	Specifies begin display math and end display math delimiters for text outputs. Default is ["\\[", "\\]"].
+page_ranges	string	Specifies a page range as a comma-separated string. Examples include 2,4-6 which selects pages [2,4,5,6] and 2 - -2 which selects all pages starting with the second page and ending with the next-to-last page (specified by -2)
+enable_spell_check (deprecated)	bool	Deprecated, has no effect on the output.
+auto_number_sections	bool	Specifies whether sections and subsections in the output are automatically numbered. Defaults to false note.
+remove_section_numbering	bool	Specifies whether to remove existing numbering for sections and subsections. Defaults to false note.
+preserve_section_numbering	bool	Specifies whether to keep existing section numbering as is. Defaults to true note.
+enable_tables_fallback	bool	Enables advanced table processing algorithm that supports very large and complex tables. Defaults to false
+fullwidth_punctuation (optional)	bool	Controls if punctuation will be fullwidth Unicode (default for east Asian languages like Chines), of halfwidth Unicode (default for Latin scripts, Cyrillic scripts etc.). Default value is null, which means fullwidth vs halfwidth will be decided based on image content. Punctuation inside math will always stay halfwidth.
+conversion_formats	object	Specifies formats that the v3/pdf output(Mathpix Markdown) should automatically be converted into, on completion. See Conversion Formats.
+
+ Note: Only one of auto_number_sections, remove_section_numbering, or preserve_section_numbering can be true at a time. The default behavior is to preserve section numbering (preserve_section_numbering set to true).
+Send a PDF file for processing:
+
+import requests
+import json
+
+options = {
+    "conversion_formats": {"docx": True, "tex.zip": True},
+    "math_inline_delimiters": ["$", "$"],
+    "rm_spaces": True
+}
+r = requests.post("https://api.mathpix.com/v3/pdf",
+    headers={
+        "app_id": "APP_ID",
+        "app_key": "APP_KEY"
+    },
+    data={
+        "options_json": json.dumps(options)
+    },
+    files={
+        "file": open("css299-notes.pdf","rb")
+    }
+)
+print(r.text.encode("utf8"))
+To send a PDF file simply include the file in the form-data request body.
+
+When sending a PDF file, note that additional parameters are sent via the options_json parameter as stringified JSON.
+Response body
+Reponse to PDF / PDF URL upload
+
+{
+  "pdf_id": "5049b56d6cf916e713be03206f306f1a"
+}
+Field	Type	Description
+pdf_id	string	Tracking ID to get status and result when completed
+error (optional)	string	US locale error message
+error_info (optional)	object	Error info object
+Stream PDF pages
+# Content of pdf_stream_test.py
+import httpx
+import asyncio
+import json
+import traceback
+
+BASE_URL = "https://api.mathpix.com/v3/pdf"
+# Replace these with your actual endpoint and app key
+APP_KEY = "YOUR-APP-KEY"
+# Replace with your PDF URL
+pdf_url = "https://cdn.mathpix.com/examples/cs229-notes1.pdf"
+
+
+async def upload_pdf_url(pdf_url):
+    """
+    Submits a PDF URL for processing and retrieves the `pdf_id`.
+    """
+    headers = {"app_key": APP_KEY, "Content-Type": "application/json"}
+    payload = {"url": pdf_url, "streaming": True}
+    async with httpx.AsyncClient() as client:
+        response = await client.post(BASE_URL, headers=headers, json=payload)
+        if response.status_code == 200:
+            data = response.json()
+            print(f"Upload successful: {data}")
+            return data.get("pdf_id")
+        else:
+            print(f"Failed to upload PDF: {response.status_code}, {response.text}")
+            return None
+
+async def stream_pdf(pdf_id):
+    """
+    Streams the processed PDF data using the `pdf_id`.
+    """
+    url = f"{BASE_URL}/{pdf_id}/stream"
+    headers = {"app_key": APP_KEY}
+    async with httpx.AsyncClient() as client:
+        try:
+            async with client.stream("GET", url, headers=headers) as response:
+                if response.status_code == 200:
+                    print("Connected to the stream!")
+                    async for line in response.aiter_lines():
+                        if line.strip():  # Ignore empty lines
+                            try:
+                                data = json.loads(line)
+                                # print(data['text'])
+                                last_idx = min(len(data['text']), 10)
+                                if last_idx == 10:
+                                    data['text'] = data['text'][:10] + "..."
+                                print(data)
+                            except json.JSONDecodeError:
+                                print(f"Failed to decode line: {line}")
+                else:
+                    print(f"Failed to connect: {response.status_code}")
+        except Exception as e:
+            print(f"Error: {e}")
+            print(traceback.format_exc())
+
+async def main():
+    pdf_id = await upload_pdf_url(pdf_url)
+    if pdf_id:
+        await stream_pdf(pdf_id)
+
+# Run the asyncio function
+asyncio.run(main())
+The outputs will look like this:
+
+{"version": "RSK-M134p10", "text": "\\title{\nCS...", "page_idx": 1, "pdf_selected_len": 28, "pdf_id": "2024_12_15_dfc981061e9740db9fd6g"}
+{"version": "RSK-M134p10", "text": "\n\nGiven da...", "page_idx": 2, "pdf_selected_len": 28, "pdf_id": "2024_12_15_dfc981061e9740db9fd6g"}
+{"version": "RSK-M134p10", "text": "\n\n\\section...", "page_idx": 3, "pdf_selected_len": 28, "pdf_id": "2024_12_15_dfc981061e9740db9fd6g"}
+{"version": "RSK-M134p10", "text": "\n\nNow, giv...", "page_idx": 4, "pdf_selected_len": 28, "pdf_id": "2024_12_15_dfc981061e9740db9fd6g"}
+{"version": "RSK-M134p10", "text": "\nfor linea...", "page_idx": 6, "pdf_selected_len": 28, "pdf_id": "2024_12_15_dfc981061e9740db9fd6g"}
+Certain apps benefit from a lower time to first data. Such apps are recommended to use:
+
+GET api.mathpix.com/v3/pdf/{pdf_id}/stream
+
+which uses server side events (SSE) to improve user experience for real time use cases.
+
+To use this endpoint, you must first set streaming to true in your POST request to api.mathpix.com/v3/pdf, see request parameters. Only then will you be able to make the corresponding GET request to stream the page results.
+
+The streaming endpoint enables clients to stream JSON messages with the following fields:
+
+Field	Type	Description
+text	string	Mathpix Markdown output
+page_idx	number	page index from selected page range, starting at 1 and going all the way to pdf_selected_len
+pdf_selected_len	number	total number of pages inside selected page range
+The stream provides one JSON object at a time per page. Note that the pages are not guaranteed to be in order, although they generally will be in order.
+
+Processing status
+Response after a few seconds:
+
+{
+  "status": "split",
+  "num_pages": 9,
+  "percent_done": 11.11111111111111,
+  "num_pages_completed": 1
+}
+Response after a few more seconds:
+
+{
+  "status": "completed",
+  "num_pages": 9,
+  "percent_done": 100,
+  "num_pages_completed": 9
+}
+To check the processing status of a PDF, use the pdf_id returned from the initial request and append it to /v3/pdf in a GET request.
+
+GET https://api.mathpix.com/v3/pdf/{pdf_id}
+
+Field	Type	Description
+status	string	Processing status, will be received upon successful request, loaded if PDF was down-loaded onto our servers, split when PDF pages are split and sent for processing, completed when PDF is done processing, or error if a problem occurs during processing
+num_pages (optional)	integer	Total number of pages in PDF document
+num_pages_completed (optional)	integer	Current number of pages in PDF document that have been OCR-ed
+percent_done (optional)	number	Percentage of pages in PDF that have been OCR-ed
+Get conversion status
+Response after a few seconds:
+
+{
+  "status": "completed",
+  "conversion_status": {
+    "docx": {
+        "status": "processing"
+    },
+    "tex.zip": {
+        "status": "processing"
+    }
+}
+Response after a few more seconds:
+
+{
+  "status": "completed",
+  "conversion_status": {
+    "docx": {
+        "status": "completed"
+    },
+    "tex.zip": {
+        "status": "completed"
+    }
+}
+To get the status of your conversions, use the following endpoint:
+
+GET https://api.mathpix.com/v3/converter/{pdf_id}
+
+The response object is described here:
+
+Field	Type	Description
+status	string	completed for an existing mmd document
+conversion_status (optional)	object	{[format]: {status: "processing" | "completed" | "error", error_info?: {id, error}}}
+Conversion results
+Save results to local mmd file, md file, docx file, HTML, and LaTeX zip, pptx file
+
+import requests
+
+pdf_id = "PDF_ID"
+headers = {
+  "app_key": "APP_KEY",
+  "app_id": "APP_ID"
+}
+
+# get mmd response
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".mmd"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".mmd", "w") as f:
+    f.write(response.text)
+
+# get docx response
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".docx"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".docx", "wb") as f:
+    f.write(response.content)
+
+# get LaTeX zip file
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".tex"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".tex.zip", "wb") as f:
+    f.write(response.content)
+
+# get HTML file
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".html"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".html", "wb") as f:
+    f.write(response.content)
+
+# get lines data
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".lines.json"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".lines.json", "wb") as f:
+    f.write(response.content)
+
+# get lines mmd json
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".lines.mmd.json"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".lines.mmd.json", "wb") as f:
+    f.write(response.content)
+
+# get pptx response
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".pptx"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".pptx", "wb") as f:
+    f.write(response.content)
+Once a PDF has been fully OCR-ed, resulting in status=completed, you can get the mmd result and line-by-line data by adding .mmd or .lines.json to the status GET request. Conversion formats such as docx and tex.zip will not be available until the format status is completed.
+
+The possible values of the extension are described here.
+
+Extension	Description
+mmd	Returns Mathpix Markdown text file
+md	Returns plain Markdown text file
+docx	Returns a docx file
+tex.zip	Returns a LaTeX zip file
+latex.pdf	Returns a PDF file with LaTeX rendering
+pdf	Returns a PDF file with HTML rendering
+html	Returns a HTML file with the rendered Mathpix Markdown content
+lines.json	Returns line by line data
+lines.mmd.json	Returns line by line mmd data, deprecated please use lines.json which contains all this information and more.
+pptx	Returns a pptx file
+Note that the tex.zip extension downloads a zip file containing the main .tex file and any images that appear in the document.
+
+PDF lines data
+To get line by line data with geometric information about PDF content:
+
+import requests
+
+pdf_id = "PDF_ID"
+headers = {
+  "app_key": "APP_KEY",
+  "app_id": "APP_ID"
+}
+
+# get json lines data
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".lines.json"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".lines.json", "w") as f:
+    f.write(response.text)
+Response:
+
+{
+  "pages": [
+    {
+      "image_id": "2025_04_16_0add99e0b17361a86393g-01",
+      "page": 1,
+      "lines": [
+        {
+          "cnt": [[755,656],[755,585],[1370,585],[1370,656]],
+          "region": {
+            "top_left_x": 754,
+            "top_left_y": 585,
+            "width": 617,
+            "height": 71
+          },
+          "line": 1,
+          "column": 0,
+          "font_size": 56,
+          "is_printed": true,
+          "is_handwritten": false,
+          "id": "2d11b98adea840d998bc2ac078479dfd",
+          "type": "title",
+          "conversion_output": false,
+          "children_ids": [
+            "c85dad31ba3d4064bff33b8d026b020e"
+          ],
+          "text": "",
+          "text_display": ""
+        },
+        {
+          "cnt": [[752,655],[752,592],[1362,592],[1362,655]],
+          "region": {
+            "top_left_x": 752,
+            "top_left_y": 592,
+            "width": 611,
+            "height": 63
+          },
+          "line": 2,
+          "column": 0,
+          "font_size": 56,
+          "is_printed": true,
+          "is_handwritten": false,
+          "id": "c85dad31ba3d4064bff33b8d026b020e",
+          "type": "text",
+          "conversion_output": true,
+          "parent_id": "2d11b98adea840d998bc2ac078479dfd",
+          "text": "CS229 Lecture Notes",
+          "text_display": "\\title{\nCS229 Lecture Notes\n}",
+          "confidence": 1,
+          "confidence_rate": 1
+        },
+        {
+          "cnt": [[786,890],[786,725],[1328,725],[1328,890]],
+          "region": {
+            "top_left_x": 786,
+            "top_left_y": 725,
+            "width": 543,
+            "height": 166
+          },
+          "line": 3,
+          "column": 0,
+          "font_size": 44,
+          "is_printed": true,
+          "is_handwritten": false,
+          "id": "219813849c8a47b080b00c81b899f7d1",
+          "type": "authors",
+          "conversion_output": false,
+          "children_ids": [
+            "e354b20aec6d450482776283b939b79c",
+            "02f43a91aff54759aa337c075ae43808"
+          ],
+          "text": "",
+          "text_display": ""
+        },
+        {
+          "cnt": [[935,785],[935,733],[1184,733],[1184,785]],
+          "region": {
+            "top_left_x": 935,
+            "top_left_y": 733,
+            "width": 250,
+            "height": 52
+          },
+          "line": 4,
+          "column": 0,
+          "font_size": 44,
+          "is_printed": true,
+          "is_handwritten": false,
+          "id": "e354b20aec6d450482776283b939b79c",
+          "type": "text",
+          "conversion_output": true,
+          "parent_id": "219813849c8a47b080b00c81b899f7d1",
+          "text": "Andrew Ng",
+          "text_display": "\n\n\\author{\nAndrew Ng",
+          "confidence": 0.9951171875,
+          "confidence_rate": 0.999650434513919
+        },
+        {
+          "cnt": [[790,886],[790,827],[1324,827],[1324,886]],
+          "region": {
+            "top_left_x": 790,
+            "top_left_y": 826,
+            "width": 535,
+            "height": 61
+          },
+          "line": 5,
+          "column": 0,
+          "font_size": 44,
+          "is_printed": true,
+          "is_handwritten": false,
+          "id": "02f43a91aff54759aa337c075ae43808",
+          "type": "text",
+          "conversion_output": true,
+          "parent_id": "219813849c8a47b080b00c81b899f7d1",
+          "text": "(updates by Tengyu Ma)",
+          "text_display": " \\\\ (updates by Tengyu Ma)\n}",
+          "confidence": 1,
+          "confidence_rate": 1
+        }
+      ]
+    }
+  ]
+}
+Mathpix provides detailed line by line data for PDFs. This can be useful for building novel user experiences on top of original PDFs.
+
+Response data object
+Field	Type	Description
+pages	PdfPageData	List of PdfPageData objects
+PdfPageData object
+Field	Type	Description
+image-id	string	PDF ID, plus hyphen, plus page number, starting at page 1
+page	integer	Page number
+lines	PdfLineData	List of LineData objects
+page_height	integer	Page height (in pixel coordinates)
+page_width	integer	Page width (in pixel coordinates)
+PdfLineData object
+Field	Type	Description
+id	string	Unique line identifier
+parent_id (optional)	string	Unique line identifier of the parent.
+children_ids (optional)	[string]	List of children unique identifiers.
+type	string	See line types and subtypes for details.
+subtype (optional)	string	See line types and subtypes for details.
+line	integer	Line number
+text	string	Searchable text, empty string for page elements that do not necessarily have associated text (for example individual equations inside block of math equations).
+text_display	string	Mathpix Markdown content with additional contextual elements such as article, section and inline image URLs. Can be empty for page elements which are not going to be rendered (for example page number, auxiliary text in the page header, etc.).
+conversion_output	boolean	When true, text_display from the line is included into final MMD output, otherwise it is not included.
+is_printed	boolean	True if line contains printed text, false otherwise.
+is_handwritten	boolean	True if line contains handwritten text, false otherwise.
+region	object	Specify the image area with the pixel coordinates top_left_x, top_left_y, width, and height
+cnt	[[x,y]]	Specifies the image area as list of (x,y) pixel coordinate pairs. This captures handwritten content much better than a region object
+confidence	number in [0,1]	Estimated probability 100% correct (product of per token OCR confidence).
+confidence_rate	number in [0,1]	Estimated confidence of output quality (geometric mean of per token OCR confidence).
+PDF MMD lines data
+To get line by line data containing geometric and contextual information from a PDF:
+
+import requests
+
+pdf_id = "PDF_ID"
+headers = {
+  "app_key": "APP_KEY",
+  "app_id": "APP_ID"
+}
+
+# get json lines data
+url = "https://api.mathpix.com/v3/pdf/" + pdf_id + ".lines.mmd.json"
+response = requests.get(url, headers=headers)
+with open(pdf_id + ".lines.mmd.json", "w") as f:
+    f.write(response.text)
+Response:
+
+{
+  "pages": [
+    {
+      "image_id": "2022_04_27_5bd0e5ee1dbf53cc68c1g-1",
+      "page": 1,
+      "page_height": 1651,
+      "page_width": 1275,
+      "lines": [
+        {
+          "cnt": [
+            [448, 395],
+            [448, 351],
+            [818, 351],
+            [818, 395]
+          ],
+          "region": {
+            "top_left_x": 448,
+            "top_left_y": 351,
+            "height": 45,
+            "width": 371
+          },
+          "is_printed": true,
+          "is_handwritten": false,
+          "text": "\\title{\nCS229 Lecture Notes\n}",
+          "line": 1
+        },
+        {
+          "cnt": [
+            [554, 469],
+            [554, 434],
+            [712, 434],
+            [712, 469]
+          ],
+          "region": {
+            "top_left_x": 554,
+            "top_left_y": 434,
+            "height": 36,
+            "width": 159
+          },
+          "is_printed": true,
+          "is_handwritten": false,
+          "text": "\n\n\\author{\nAndrew Ng",
+          "line": 2
+        },
+        {
+          "cnt": [
+            [476, 537],
+            [476, 492],
+            [795, 492],
+            [795, 537]
+          ],
+          "region": {
+            "top_left_x": 476,
+            "top_left_y": 492,
+            "height": 46,
+            "width": 320
+          },
+          "is_printed": true,
+          "is_handwritten": false,
+          "text": " \\\\ (updates by Tengyu Ma)\n}",
+          "line": 3
+        }
+      ]
+    }
+  ]
+}
+Response data object (MMD Lines)
+Field	Type	Description
+pages	PdfMMDPageData	List of PdfMMDPageData objects
+PdfMMDPageData object
+Field	Type	Description
+image-id	string	PDF ID, plus hyphen, plus page number, starting at page 1
+page	integer	Page number
+lines	PdfMMDLineData	List of PageMMDLineData objects
+page_height	integer	Page height (in pixel coordinates)
+page_width	integer	Page width (in pixel coordinates)
+PdfMMDLineData object
+Field	Type	Description
+line	integer	Line number
+text	string	Mathpix Markdown content with additional contextual elements such as article, section and inline image URLs
+is_printed	boolean	True if line contains printed text, false otherwise.
+is_handwritten	boolean	True if line contains handwritten text, false otherwise.
+region	object	Specify the image area with the pixel coordinates top_left_x, top_left_y, width, and height
+cnt	[[x,y]]	Specifies the image area as list of (x,y) pixel coordinate pairs. This captures handwritten content much better than a region object
+confidence	number in [0,1]	Estimated probability 100% correct (product of per token OCR confidence).
+confidence_rate	number in [0,1]	Estimated confidence of output quality (geometric mean of per token OCR confidence).
+Deleting PDF results
+To delete a PDF’s output data, use the DELETE method on the same URL used for retrieving the PDF status or document (e.g., /v3/pdf/{ID}).
+
+When a PDF is deleted:
+
+All output files are permanently removed from our servers, including:
+The MMD file
+All associated images
+The JSON Lines (structured data)
+Any other output formats that may have been requested
+These files become inaccessible and links to them will break.
+The original input PDF file is also deleted from our servers.
+This deletion is permanent and cannot be undone.
+ If you need to keep any of these files, make sure to download and store them locally before deleting the PDF. This is especially important if you are using the API with improve_mathpix=false, as we do not retain user output in this case.
+When a PDF is deleted, we retain minimal metadata for internal tracking and usage analytics. This includes:
+
+PDF status (always shown as complete after deletion; if a PDF has not finished processing, attempting to delete it will return a 404 error)
+input_file name (e.g., example.pdf)
+num_pages, num_pages_completed
+Timestamps: created_at, deleted_at
+version of the processing engine
+This metadata is kept for auditing, billing, and API usage tracking purposes. No output content is stored.
+
+ If privacy or anonymity is a concern, you can rename the file before upload to avoid storing sensitive or identifiable filenames (e.g., document.pdf instead of client_name_q1_summary.pdf).
+Convert Documents
+POST api.mathpix.com/v3/converter
+
+If you want to convert an MMD document to other formats, you can do a POST to the /v3/converter endpoint with the mmd text and desired formats.
+
+The available conversion formats are:
+
+md
+docx
+tex.zip
+html
+pdf
+latex.pdf
+pptx

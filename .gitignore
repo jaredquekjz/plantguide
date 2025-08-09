@@ -1,0 +1,12 @@
+# Artifacts and run outputs
+artifacts/
+
+# Ignore entire data folder
+data/
+
+# Python cache and OS noise
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+
