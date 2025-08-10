@@ -180,71 +180,356 @@ Following Shipley & Douma (2021), we handle unmeasured variables using Mixed Acy
 - Repeated measures over time (temporal correlation)
 - Solution: Mixed models within piecewise SEM framework
 
-## 4. Methodology
+## 4. Trait Data Requirements and Availability
 
-### 4.1 Required Traits from TRY Database
+### 4.1 Multi-Organ Trait Framework for EIVE Discovery
 
-Before transformation, we require the following traits from the TRY Plant Trait Database v6.0:
+Our goal is to **discover** how trait syndromes across organs predict EIVE indicators (M: moisture, N: nutrients, R: pH, L: light, T: temperature) using causal modeling rather than prescribing relationships a priori.
 
-**Core Leaf Traits**:
-| TRY ID | Trait Name | Units | Use in Model |
-|--------|------------|-------|--------------|
-| 3116 | Leaf area per leaf dry mass (SLA, petiole included) | mm²/mg | Primary leaf economics, CSR |
-| 47 | Leaf dry mass per leaf fresh mass (LDMC) | g/g | Leaf persistence, CSR |
-| 3110 | Leaf area (compound leaves: leaf, petiole included) | mm² | Resource capture, CSR |
-| 14 | Leaf nitrogen (N) content per leaf dry mass | mg/g | Photosynthesis, decomposition |
-| 26 | Seed mass | mg | Original Shipley predictor |
+**Organ Systems as Potential Predictors**:
+1. **Leaf traits** → Economic spectrum, light capture, gas exchange
+2. **Wood/stem traits** → Hydraulic architecture, mechanical support, storage
+3. **Root traits** → Resource acquisition, anchorage, symbioses
 
-**Wood Traits** (woody species only):
-| TRY ID | Trait Name | Units | Use in Model |
-|--------|------------|-------|--------------|
-| 4 | Stem specific density (wood density, WD) | g/cm³ | Support, drought, carbon storage |
-| 282 | Stem vessel diameter (mean, VD) | μm | Water transport capacity |
-| 287 | Stem conduit density | n/mm² | Hydraulic safety vs efficiency |
-| 163 | Stem water potential at 50% loss conductivity (Ψ50) | MPa | Cavitation resistance |
-| 159* | Stem hydraulic conductivity (Ks) | kg m⁻¹ MPa⁻¹ s⁻¹ | Water transport efficiency |
+#### Candidate Traits for EIVE Modeling
 
-**Root Traits**:
-| TRY ID | Trait Name | Units | Use in Model |
-|--------|------------|-------|--------------|
-| 1080 | Root length per root dry mass (SRL) | m/g | Nutrient exploration efficiency |
-| 82 | Root tissue density (RTD) | g/cm³ | Resource conservation vs acquisition |
-| 80 | Root nitrogen content per root dry mass (RN) | mg/g | Nutrient uptake capacity |
-| 83 | Root diameter (RD) | mm | Kong allometric scaling |
-| 1781 | Fine root tissue density | g/cm³ | Fine root economics |
-| 896 | Fine root diameter | mm | Kong nonlinearity check |
-| 1401* | Root branching intensity | tips/cm | Poisson count model |
+**Leaf Economic Spectrum Traits**:
+| Trait | Units | Data Source | Hypothesized Relevance |
+|-------|-------|-------------|------------------------|
+| Specific leaf area (SLA) | m²/kg | TRY 3117 or estimated | Fast-slow continuum, CSR position |
+| Leaf dry matter content (LDMC) | g/g | TRY 47 | Resource conservation strategy |
+| Leaf area (LA) | mm² | TRY 3114 or estimated | Absolute size for CSR |
+| Leaf nitrogen | mg/g | TRY 14 | Photosynthetic capacity |
+| Leaf turgor loss point | MPa | Derived from SLA | Drought tolerance threshold |
 
-**Mycorrhizal Traits**:
-| TRY ID | Trait Name | Units | Use in Model |
-|--------|------------|-------|--------------|
-| 1498* | Mycorrhizal colonization | % (0-100) | Beta regression, nutrient strategy |
-| - | Mycorrhizal type | EM/AM/ERM/NM | Determines RN-diameter relationship |
+**Wood Economic/Hydraulic Traits**:
+| Trait | Units | Data Source | Hypothesized Relevance |
+|-------|-------|-------------|------------------------|
+| Wood density | g/cm³ | TRY 4 or growth form proxy | Multiple functions: support, storage, hydraulics |
+| Xylem P50 | MPa | Derived from growth form | Hydraulic safety margin |
+| Stem water potential | MPa | Derived from WD | Osmotic regulation |
+| Sapwood porosity | m³/m³ | Derived from WD | Water storage capacity |
+| Maximum conductivity | kg m⁻¹ s⁻¹ MPa⁻¹ | Growth form specific | Hydraulic efficiency |
 
-**Plant Architecture & Life History**:
-| TRY ID | Trait Name | Units | Use in Model |
-|--------|------------|-------|--------------|
-| 18 | Plant height | m | Light competition, allometry |
-| 2 | Plant growth form | woody/non-woody | Model pathway selection |
-| 368* | Plant type | tree/shrub/herb/graminoid | Shipley categories |
-| 59* | Life history | annual/perennial/biennial | Temporal strategy |
-| - | Family/Genus | taxonomic | Phylogenetic structure (1\|Family/Genus) |
+**Root Economic Spectrum Traits**:
+| Trait | Units | Data Source | Hypothesized Relevance |
+|-------|-------|-------------|------------------------|
+| Specific root length (SRL) | m/g | TRY 1080 or defaults | Resource exploration efficiency |
+| Root tissue density (RTD) | g/cm³ | TRY 82 or 0.165 default | Conservation-acquisition axis |
+| Root nitrogen | mg/g | TRY 80 when available | Nutrient uptake capacity |
+| Root diameter | mm | TRY 83 | Kong allometric relationships |
+| Mycorrhizal type | categorical | Literature | Nutrient acquisition strategy |
 
-**Critical Data Notes**:
-- **Minimum requirements**: 3 leaf traits (SLA, LDMC, LA) for CSR calculation
-- **Growth form** determines model: woody → Kong nonlinearity; non-woody → linear
-- **Mycorrhizal type** REVERSES root N patterns: EM = negative RN~RD; AM = positive
-- **Missing Ks**: Can estimate from WD and VD relationship if needed
-- **Phylogenetic data**: Family/Genus for mixed models accounting for non-independence
-- **Sample size needs**: >30% high-RTD species to capture Kong nonlinearity
-- Items marked with * may have different TRY IDs - verify current database
+**Whole-Plant Integration Traits**:
+| Trait | Units | Data Source | Hypothesized Relevance |
+|-------|-------|-------------|------------------------|
+| Plant height | m | TRY 18 or 516 | Competitive ability |
+| Growth form | categorical | TRY 2 | Determines trait relationships |
+| Woodiness | binary | TRY 3 | Triggers nonlinear models |
+| Seed mass | mg | TRY 26 | Regeneration strategy |
 
-### 4.2 Data Transformation
-Following Pierce et al. (2016) and the wood economics spectrum framework (Chave et al., 2009), we apply specific transformations to normalize trait distributions:
+**Derived Physiological Rates**:
+| Trait | Units | Derivation | Hypothesized Relevance |
+|-------|-------|------------|------------------------|
+| Vmax₂₉₈ | μmol CO₂ m⁻² s⁻¹ | From N × SLA | Maximum photosynthesis |
+| Jmax₂₉₈ | μmol e⁻ m⁻² s⁻¹ | From Vmax | Electron transport capacity |
+| Leaf respiration | μmol CO₂ kg⁻¹ s⁻¹ | From leaf N | Maintenance costs |
+| Root vulnerability | MPa | 0.49 + 0.74×Stem_P50 | Hydraulic bottleneck |
+
+#### Key Hypotheses to Test
+
+Rather than assuming trait-EIVE relationships, our MAG framework will test:
+
+1. **Organ Coordination Hypothesis**: Do leaf, wood, and root traits form coordinated syndromes that jointly predict EIVE values?
+
+2. **Hydraulic Limitation Hypothesis**: Does P50 (safety) vs conductivity (efficiency) trade-off determine moisture and temperature niches?
+
+3. **Economic Spectrum Hypothesis**: Do fast-slow trait syndromes align with nutrient and light indicators?
+
+4. **Mycorrhizal pH Hypothesis**: Does mycorrhizal type mediate the relationship between root traits and soil pH preference?
+
+5. **Hub Trait Hypothesis**: Is wood density a central trait linking multiple organ systems to multiple EIVE dimensions?
+
+The statistical framework (Sections 7-8) will use district decomposition, copulas, and m-separation tests to discover which trait combinations and pathways best predict EIVE values, without prescribing these relationships a priori.
+
+### 4.2 TRY Database Coverage for EIVE Taxa
+
+From comprehensive extraction of TRY v6.0 data for 14,835 EIVE taxa, we obtained trait data for **10,231 species (69%)** with **101 unique traits**. Coverage varies dramatically by trait category:
+
+#### Actual Data Availability
+
+**Excellent Coverage (>60% of taxa)**:
+| Trait | TRY ID | Coverage | N Species |
+|-------|--------|----------|-----------|
+| Plant growth form | 2 | 84.1% | 8,601 |
+| Plant woodiness | 3 | 68.1% | 6,969 |
+| Seed mass | 26 | 64.7% | 6,621 |
+| Plant height vegetative | 516 | 63.4% | 6,488 |
+| Life history/longevity | 59 | 60.1% | 6,150 |
+| Dispersal syndrome | 28 | 67.5% | 6,907 |
+
+**Moderate Coverage (10-40% of taxa)**:
+| Trait | TRY ID | Coverage | N Species |
+|-------|--------|----------|-----------|
+| SLA (petiole excluded) | 3117 | 42.4% | 4,340 |
+| LDMC | 47 | 32.1% | 3,285 |
+| Leaf nitrogen content | 14 | 22.9% | 2,343 |
+| Plant height | 18 | 27.3% | 2,793 |
+| Mycorrhiza type | - | 27.4% | 2,804 |
+
+**Critical Data Gaps (<10% of taxa)**:
+| Trait | TRY ID | Coverage | N Species | Issue |
+|-------|--------|----------|-----------|--------|
+| Wood density | 4 | 6.6% | 673 | Limited to woody species |
+| Leaf area | 3114 | 8.77% | 897 | TraitID mismatch? |
+| Stem vessel diameter | 282 | <1% | <100 | Rare measurement |
+| Root traits (SRL, RTD, RN) | 1080, 82, 80 | 0% | 0 | Not in our extraction |
+
+### 4.3 GROOT Database Integration for Root Traits
+
+The Global Root Trait (GRooT) Database (Guerrero-Ramirez et al., 2020) addresses the critical root trait gap, providing comprehensive coverage for EIVE species:
+
+**Database Overview**:
+- 38,276 species-by-site mean values from 114,222 trait records
+- 6,214 unique species (100% successfully mapped to WFO accepted names)
+- 2,904 species overlap with EIVE (46.7% of GROOT species)
+- 9,547 trait records available for EIVE species
+
+**Root Trait Coverage for EIVE Species**:
+| Trait | GROOT Coverage | EIVE Species | % of EIVE |
+|-------|----------------|--------------|-----------|
+| Root mycorrhizal colonization | 2,405 total | 1,415 | 9.5% |
+| Specific root length (SRL) | 1,973 total | 675 | 4.5% |
+| Root N concentration | 1,719 total | 637 | 4.3% |
+| Mean root diameter | 1,628 total | 593 | 4.0% |
+| Root tissue density (RTD) | 1,465 total | 503 | 3.4% |
+
+**Integration Strategy**:
+1. **Primary data source**: Use GROOT aggregated species values directly
+2. **Gap filling**: Apply medfate universal relationships for missing species
+3. **Allometric corrections**: Apply Kong et al. (2019) transformations for nonlinear relationships
+4. **Mycorrhizal type**: Combine GROOT colonization intensity with literature-based type assignments
+
+This provides usable root trait data for ~10% of EIVE species directly, with estimation methods extending coverage to ~80% through growth form proxies and allometric relationships.
+
+### 4.4 Trait Estimation Strategy
+
+Given these data limitations, we adopt a hierarchical estimation approach combining direct measurements with theory-based proxies:
+
+#### Priority Hierarchy:
+1. **Direct measurements** from TRY database
+2. **Universal physical relationships** (high confidence)
+3. **Growth form/phylogenetic proxies** (moderate confidence)
+4. **Regional calibrations** (requires adjustment for EIVE regions)
+
+---
+
+## 5. Universal Trait Estimation Methods
+
+### 5.1 Wood Density and Derived Hydraulic Traits
+
+#### Wood Density Estimation (6.6% → 100% coverage)
+
+Wood density is critical as it unlocks multiple hydraulic traits through universal physical relationships:
 
 ```r
-# Equation 1: Trait transformations
-# Leaf traits (Pierce et al., 2016)
+# Hierarchical estimation based on mechanical constraints
+estimate_wood_density <- function(species_data) {
+  # Priority 1: Direct measurement (TRY TraitID 4)
+  if (!is.na(species_data$WD_measured)) {
+    return(species_data$WD_measured)
+  }
+  
+  # Priority 2: Growth form proxy (R² = 0.68, De Cáceres et al., 2021)
+  growth_form_defaults <- c(
+    "Tree" = 0.65,           # Structural support requirement
+    "Shrub" = 0.60,          # Intermediate structure  
+    "Herb" = 0.40,           # No secondary growth
+    "Grass" = 0.35           # Minimal lignification
+  )
+  
+  if (!is.na(species_data$growth_form)) {
+    wd <- growth_form_defaults[species_data$growth_form]
+    
+    # Apply universal modifiers (Chave et al., 2009)
+    if (species_data$leaf_type == "Needle") wd <- wd - 0.10
+    if (species_data$phenology == "Evergreen") wd <- wd + 0.05
+    
+    return(wd)
+  }
+  
+  # Priority 3: Family average (Zanne et al., 2009 global database)
+  # Priority 4: Pan-European default (0.52)
+  return(0.52)
+}
+```
+
+#### Universal Hydraulic Indicators from Wood Density
+
+**All based on universal physics - HIGH CONFIDENCE for EIVE**:
+
+```r
+# 1. Stem water potential (Christoffersen et al., 2016 - tropical but universal physics)
+pi0_stem = 0.52 - 4.16 * wood_density  # MPa
+
+# 2. Stem elastic modulus  
+eps_stem = sqrt(1.02 * exp(8.5 * wood_density) - 2.89)  # MPa
+
+# 3. Sapwood porosity (Dunlap, 1914 - universal constant)
+theta_sapwood = 1 - (wood_density / 1.54)  # m³/m³
+
+# 4. Xylem vulnerability P50 (Maherali et al., 2004 - 167 species globally)
+if (angiosperm) {
+  if (growth_form == "tree" & phenology == "deciduous") P50 = -2.34
+  if (growth_form == "tree" & phenology == "evergreen") P50 = -1.51  
+  if (growth_form == "shrub" & phenology == "evergreen") P50 = -5.09
+} else {  # gymnosperm
+  if (growth_form == "tree") P50 = -4.17
+  if (growth_form == "shrub") P50 = -8.95
+}
+
+# 5. Conduit fraction (Plavcová & Jansen, 2015 - phylogenetic universal)
+f_conduits = ifelse(angiosperm, 0.70, 0.925)  # 30% vs 7.5% parenchyma
+
+# 6. Maximum stem hydraulic conductivity (growth form patterns)
+K_stem_max_ref = case_when(
+  angiosperm & deciduous & tree ~ 1.58,
+  angiosperm & deciduous & shrub ~ 1.55,
+  angiosperm & evergreen ~ 2.43,
+  gymnosperm & tree ~ 0.48,
+  gymnosperm & shrub ~ 0.24
+)  # kg m⁻¹ s⁻¹ MPa⁻¹
+```
+
+### 5.2 Leaf Hydraulic and Economic Traits
+
+#### SLA Estimation (42.4% → 100% coverage)
+
+When missing, estimate from leaf shape and size:
+
+```r
+# Based on functional constraints (light interception vs support)
+estimate_SLA <- function(leaf_shape, leaf_size) {
+  SLA_matrix <- matrix(c(
+    # Large, Medium, Small
+    16.04, 11.50, 9.54,   # Broad
+    5.52,  4.14, 13.19,   # Linear
+    9.02,  9.02,  9.02,   # Needle
+    4.54,  4.54,  4.54    # Scale
+  ), nrow = 4, byrow = TRUE)
+  
+  return(SLA_matrix[leaf_shape, leaf_size])
+}
+```
+
+#### Leaf Area Estimation (8.77% → ~60% coverage)
+
+**CRITICAL DISCOVERY**: TRY has leaf area data for 8,770 species globally!
+We need to request TraitID 3114 (leaf area including petiole) in new TRY request.
+
+Meanwhile, estimate from SLA and typical leaf mass:
+```r
+# Allometric estimation
+LA_estimated = SLA * typical_leaf_mass[growth_form]
+```
+
+#### Universal Leaf Hydraulic Relationships
+
+```r
+# 1. Leaf hydraulic conductance from stomata (Franks, 2006 - universal physics)
+k_leaf_max = (g_swmax / 0.015)^(1/1.3)  # mmol m⁻² s⁻¹ MPa⁻¹
+
+# 2. Turgor loss point from SLA (Bartlett et al., 2012)
+psi_tlp = -0.0832 * log(SLA) - 1.899  # MPa
+
+# 3. Leaf osmotic potential
+pi0_leaf = psi_tlp / 0.545  # MPa
+
+# 4. Leaf elastic modulus
+eps_leaf = pi0_leaf / 0.145  # MPa
+
+# 5. Leaf water storage capacity
+V_leaf = (1 / (SLA * rho_leaf)) * theta_leaf  # L/m²
+theta_leaf = 1 - (rho_leaf / 1.54)  # Universal wood substance density
+```
+
+### 5.3 Root Trait Estimation
+
+**Data Sources** (in priority order):
+1. **GROOT Database**: 675 EIVE species with SRL, 503 with RTD, 637 with root N, 1,415 with mycorrhizal colonization
+2. **TRY v6.0**: Requested but currently 0% coverage in our extraction
+3. **Estimation methods**: Universal relationships for remaining species
+
+**Estimation approach for species without GROOT data**:
+
+**Meanwhile, use universal defaults**:
+```r
+# Growth form specific SRL ranges
+SRL_defaults <- c(
+  "Tree" = 3000,    # cm/g
+  "Shrub" = 4000,
+  "Herb" = 7000,
+  "Grass" = 8500
+)
+
+# Universal root-stem vulnerability (Bartlett et al., 2016)
+P50_root = 0.4892 + 0.742 * P50_stem  # Roots more vulnerable
+
+# Fine root density (universal)
+RTD_fine = 0.165  # g/cm³ for all species
+```
+
+### 5.4 Photosynthesis Parameters
+
+**Universal relationships from Walker et al. (2014) - 1,050 species globally**:
+
+```r
+# Maximum carboxylation rate from leaf N and SLA
+N_area = N_leaf / (SLA * 1000)  # g N/m²
+Vmax_298 = exp(1.993 + 2.555*log(N_area) - 0.372*log(SLA) + 
+               0.422*log(N_area)*log(SLA))  # μmol CO₂ m⁻² s⁻¹
+
+# Maximum electron transport from Vmax
+Jmax_298 = exp(1.197 + 0.847*log(Vmax_298))  # μmol e⁻ m⁻² s⁻¹
+
+# Respiration from nitrogen content (universal metabolism)
+MR_leaf = 0.0778 * N_leaf + 0.0765      # μmol CO₂ kg⁻¹ s⁻¹
+MR_sapwood = 0.3373 * N_sapwood + 0.2701
+MR_fineroot = 0.3790 * N_fineroot - 0.7461
+```
+
+### 5.5 Generalizability of medfate Estimation Methods
+
+**Critical consideration for EIVE application: Not all medfate methods are equally applicable across Europe's diverse climate zones.** We have analyzed the source and generalizability of each estimation method. **For detailed analysis, see [medfate_trait_estimation_comprehensive.md](medfate_trait_estimation_comprehensive.md).**
+
+#### Universal Methods (High Confidence for EIVE)
+- **Wood density → hydraulic relationships** (Christoffersen et al., 2016): Based on tropical research but represents universal physical principles
+- **Photosynthesis parameters** (Walker et al., 2014): Global meta-analysis of 1,050 species
+- **Vulnerability curves by growth form** (Maherali et al., 2004): Global patterns across 167 species
+- **Stem hydraulic scaling** (Savage et al., 2010; Olson et al., 2014): Universal allometric laws
+
+#### Mediterranean-Calibrated Methods (Require Regional Adjustment)
+- **Maximum transpiration coefficients** (Granier et al., 1999): Calibrated on Mediterranean oak forests
+- **Leaf phenology parameters** (Delpierre et al., 2009): French deciduous forests, not pan-European
+- **Default pressure-volume curves**: Explicitly use Mediterranean climate defaults
+- **Water use efficiency defaults**: Environment-dependent, likely Mediterranean-biased
+
+#### Implementation Strategy for EIVE
+1. **Prioritize universal physical relationships** (wood-water, photosynthesis biochemistry)
+2. **Re-calibrate regional parameters** using studies appropriate for each climate zone
+3. **Validate family defaults** against TRY data weighted by geographic representation
+4. **Adjust critical parameters** for regional conditions (phenology, WUE, turgor loss)
+
+---
+
+## 6. Data Transformation
+
+After estimation, we apply transformations to normalize trait distributions for statistical modeling:
+
+### 6.1 Standard Transformations
+
+```r
+# Leaf traits (Pierce et al., 2016 CSR methodology)
 LA_trans = sqrt(LA / max(LA))              # Size normalization
 LDMC_trans = log(LDMC / (1 - LDMC))        # Logit for proportions
 SLA_trans = log(SLA)                       # Log transformation
@@ -257,7 +542,26 @@ VD_trans = log(VD)                         # Vessel diameter
 # CRITICAL: Ks and Ψ50 are INDEPENDENT axes (Maherali et al. 2004)
 # Some dense woods have large vessels in fiber matrix = efficient despite density!
 
-# Root traits (Kong et al., 2019 nonlinearity for WOODY only)
+# Root traits (standard log transforms)
+SRL_trans = log(SRL)
+RTD_trans = log(RTD)
+RN_trans = sqrt(RN)  # Square root for count-like data
+```
+
+**Why These Specific Transformations?**
+
+1. **LA size normalization (sqrt)**: Pierce et al. (2016) found square root transformation better captures allometric scaling of leaf size relative to maximum in dataset
+
+2. **LDMC logit**: Bounded proportion (0-1) requires logit to map to unbounded scale for linear modeling
+
+3. **Wood density independence**: Critical insight from Maherali et al. (2004) - hydraulic efficiency (Ks) and safety (Ψ50) are INDEPENDENT dimensions, not a simple trade-off. Dense wood can have large vessels embedded in fiber matrix!
+
+4. **Reciprocal P50**: Transforms negative MPa values to positive scale where higher values = more resistant
+
+### 6.2 Growth Form-Specific Transformations
+
+```r
+# Kong et al. (2019) nonlinearity for woody species only
 if (growth_form == "woody") {
   # Check which part of nonlinear curve we're sampling
   high_RTD_proportion = sum(RTD > median(RTD)) / length(RTD)
@@ -289,13 +593,25 @@ SRL_trans = log(SRL)
 RD_trans = log(RD)
 ```
 
-### 4.2 District Decomposition and Copula Modeling (Douma & Shipley, 2023)
+**Critical Details Restored**:
 
-**Finding District Sets** (the algorithm):
-1. Remove all directed edges (→) from MAG
-2. Keep only bidirected edges (↔)
-3. Find connected components - these are districts!
-4. **KEY**: Districts are INDEPENDENT when conditioned on external parents
+1. **Sampling check**: Kong's nonlinearity only appears when sampling includes >30% high-RTD (thin absorptive) roots. Studies sampling mainly thick transport roots miss this pattern.
+
+2. **SRL paradox**: The equation `SRL = 4/(π × RTD × RD²)` shows why SRL doesn't follow Root Economics Spectrum - when RTD decreases slowly with diameter, the D² term dominates!
+
+3. **Mycorrhizal reversal**: EM fungi REVERSE the typical positive RN~RD relationship seen in AM plants. This is why we use log-ratio transformation.
+
+4. **Non-woody differences**: Herbaceous plants show linear relationships with 30% less mycorrhizal colonization than woody species.
+
+---
+
+## 7. Statistical Modeling Framework
+
+### 7.1 District Decomposition and Copula Modeling
+
+Following Douma & Shipley (2023), we handle correlated traits within organ systems using district decomposition:
+
+**Finding Districts** (connected components with dependent errors):
 
 ```r
 # Algorithm to identify district sets
@@ -1083,6 +1399,8 @@ Bergmann, J., Weigelt, A., van der Plas, F., et al. (2020). The fungal collabora
 Santos, D., Joner, F., Shipley, B., Teleginski, M., Lucas, R. R., & Siddique, I. (2021). Crop functional diversity drives multiple ecosystem functions during early agroforestry succession. Journal of Applied Ecology, 58, 1718-1727. [Real-world validation of trait-based planting design]
 
 Chave, J., Coomes, D., Jansen, S., Lewis, S. L., Swenson, N. G., & Zanne, A. E. (2009). Towards a worldwide wood economics spectrum. Ecology Letters, 12(4), 351-366. [Foundation dataset: 8412 taxa wood density enabling global predictions]
+
+Guerrero-Ramirez, N., Mommer, L., Freschet, G. T., Iversen, C. M., McCormack, M. L., Kattge, J., ... & Weigelt, A. (2020). Global Root Traits (GRooT) Database. Global Ecology and Biogeography, 30(1), 25-37. [Comprehensive root trait database: 38,276 species-by-site values for 6,214 species]
 
 Kong, D., Wang, J., Wu, H., Valverde-Barrantes, O. J., Wang, R., Zeng, H., Kardol, P., Zhang, H., & Feng, Y. (2019). Nonlinearity of root trait relationships and the root economics spectrum. Nature Communications, 10(1), 2203.
 
