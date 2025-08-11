@@ -42,11 +42,33 @@ The medfate package (Mediterranean Forest Simulation) provides trait estimation 
 
 ### Wood Density Estimation Hierarchy
 
+**UPDATED IMPLEMENTATION (January 2025)**: Applied to 7,511 EIVE species with optimal hierarchy based on empirical accuracy.
+
+#### Optimal Hierarchy (Implemented)
+1. **Measured values** (Priority 1): Direct measurements from TRY (TraitID 4)
+2. **Family-level means** (Priority 2): Empirical averages from medfate database  
+3. **Growth form defaults** (Priority 3): Functional approximations
+4. **Global default** (Priority 4): 0.652 g/cm³
+
+#### Implementation Results for EIVE
+- **Measured**: 526 species (7.0%) - Mean: 0.432 ± 0.221 g/cm³
+- **Family**: 5,631 species (75.0%) - Mean: 0.500 ± 0.090 g/cm³
+- **Growth form**: 1,051 species (14.0%) - Mean: 0.393 ± 0.043 g/cm³
+- **Default**: 303 species (4.0%) - Constant: 0.652 g/cm³
+- **Overall**: Mean: 0.486 g/cm³, Median: 0.482 g/cm³, Range: 0.000-1.030 g/cm³
+
 #### 1. Direct Measurements (Priority 1)
 Use measured wood density from TRY database (TraitID 4) when available.
-- **EIVE Coverage**: 673 species (6.6%)
+- **EIVE Coverage**: 526 species (7.0%)
+- **Data quality**: High variance (SD = 0.221) reflects natural variation
 
-#### 2. Growth Form Based Estimation (Priority 2)
+#### 2. Family-Level Means (Priority 2)
+**Source**: medfate:::trait_family_means (210 families with empirical data)
+**Generalizability**: HIGH - Based on phylogenetic conservation of wood density
+- **EIVE Coverage**: 5,631 species (75.0%) matched to family values
+- **Accuracy**: More precise than growth form due to empirical basis
+
+#### 3. Growth Form Based Estimation (Priority 3)
 **Generalizability**: HIGH - Based on universal mechanical constraints
 
 ```r
@@ -79,19 +101,16 @@ wood_density_defaults <- list(
 - RMSE = 0.089 g/cm³
 - Bias < 0.02 g/cm³
 
-#### 3. Functional Type Refinement
-**Leaf type modifier** (Chave et al. 2009):
-- Broad-leaved: baseline
-- Needle-leaved: -0.10 g/cm³
-- Scale-leaved: -0.05 g/cm³
+**EIVE Implementation**: Growth form extracted from TRY categorical traits (Cat_42: 86.4% coverage, Cat_38: 70.9% coverage)
+- Herbs: 755 species assigned (mean 0.40 g/cm³)
+- Grasses: 266 species assigned (mean 0.35 g/cm³)
+- Shrubs: 25 species assigned (mean 0.60 g/cm³)
+- Trees: 5 species assigned (mean 0.65 g/cm³)
 
-**Phenology modifier** (Zanne et al. 2014):
-- Evergreen: +0.05 g/cm³
-- Deciduous: baseline
-
-#### 4. Family Averages
-From taxonomic family using internal dataset (see [Complete Family Table](#complete-family-level-defaults))
-If family not in table: **Default = 0.652 g/cm³**
+#### 4. Global Default
+**Value**: 0.652 g/cm³ (from medfate)
+**Usage**: When family not in database and growth form unavailable
+**EIVE Coverage**: 303 species (4.0%) - primarily rare families like Cymodoceaceae, Cytinaceae
 
 ### Derived Hydraulic Parameters from Wood Density
 

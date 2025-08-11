@@ -126,6 +126,11 @@ Just tell me "think harder" when you need me to channel more mana! I'll go "Ooh,
 - When discussing EIVE applicability, remember this pan-European scope
 - Regional adjustments should consider the diversity of European ecosystems
 
+## Methodology Documentation
+- **Keep /home/olier/ellenberg/multi_organ_trait_methodology.md updated** when methods change
+- Document major changes to taxonomic harmonization, data extraction, or analysis approaches
+- Include specific success rates and statistics (e.g., "93.3% exact match rate" for EIVE-WFO mapping)
+
 ## Environment Setup for This Project
 Master Jared has a conda environment called "plants" with data science packages installed.
 To use it:
