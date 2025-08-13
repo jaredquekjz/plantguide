@@ -5,11 +5,12 @@ This folder contains scripts for extracting EIVE species trait data from TRY dat
 ## Scripts:
 
 ### 1. `normalize_eive_to_wfo_EXACT.R` ⭐ **USE THIS**
-- **EXACT MATCH ONLY** - Maps EIVE (Euro+Med PlantBase) names to WFO
+- EXACT MATCH ONLY — Maps EIVE (Euro+Med PlantBase) names to WFO
 - No fuzzy matching to avoid duplicate/ambiguous mappings
-- Achieves 93.3% exact match rate (13,847 of 14,835 taxa)
-- Input: `data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv`
-- Output: `data/EIVE/EIVE_TaxonConcept_WFO.csv`
+- Achieves ~93% exact match rate on EIVE v1.0 SM 08
+- Input (EIVE): `data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv`
+- WFO backbone: `data/classification.csv` (default baked-in)
+- Output: `data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`
 - Note: `normalize_eive_to_wfo_FUZZY_BACKUP.R` is deprecated (creates duplicates)
 
 ### 2. `extract_eive_species_ids_EXACT.R` ⭐ **USE THIS**

@@ -1,0 +1,18 @@
+---
+title: "piecewiseSEM: Piecewise Structural Equation Modeling in R"
+author: "Jonathan S. Lefcheck"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{piecewiseSEM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Structural equation modeling (SEM) is among the fastest growing statistical techniques in ecology and evolution, and provides a new way to explore and quantify ecological systems. SEM unites multiple variables in a single causal network, thereby allowing simultaneous tests of multiple hypotheses. The idea of causality is central to SEM as the technique implicitly assumes that the relationships among variables represent causal links. Because variables can be both predictors and responses, SEM is also a useful tool for quantifying both direct and indirect (cascading) effects.
+
+I have written an e-book to accompany this and other software packages (i.e., *lavaan*) to conduct SEM. The most up-to-date examples and explanations can be found in this book. To access the book, visit: [An Introduction to Structural Equation Modeling in R](https://jslefche.github.io/sem_book/)
+
+And do not hesitate to reach out with questions or concerns!

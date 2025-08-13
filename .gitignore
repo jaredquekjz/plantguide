@@ -4,6 +4,7 @@ artifacts/
 # Ignore entire data folder
 data/
 
+
 # Python cache and OS noise
 __pycache__/
 *.pyc
@@ -11,3 +12,6 @@ __pycache__/
 .ipynb_checkpoints/
 
 GRooT-Data/
+
+# Archive folder
+archive/

@@ -1,0 +1,40 @@
+%~~%                    Correlated error operator
+AIC.psem                Generic function for SEM AIC(c) score
+AIC_psem                Information criterion values for SEM
+LLchisq                 Generalized chi-squared for piecewise SEM
+anova.psem              ANOVA and chi-squared difference test for model
+                        comparison
+as.psem                 Convert list to psem object
+basisSet                Derivation of the basis set
+cbind_fill              Bind data.frames of differing dimensions
+cerror                  Correlated errors
+coefs                   Extract path coefficients
+dSep                    Tests of directed separation
+evaluateClasses         Evaluate model classes and stop if unsupported
+                        model class
+fisherC                 Summarize tests of directed separation using
+                        Fisher's C statistic
+getDAG                  Generate adjacency matrix from list of
+                        structural equations
+getSortedPsem           Get a sorted psem object in DAG order
+import                  Functions to import from dependencies
+keeley                  Data set from Grace & Keeley (2006)
+meadows                 Data set from Grace & Jutila (1999)
+multigroup              Multigroup Analysis for Piecewise SEM
+partialResid            Computing partial effects
+piecewiseSEM-package    The 'piecewiseSEM' package
+plot.psem               Plotting of Piecewise Structural Equation
+                        Models
+print.anova.psem        Print anova
+print.basisSet          Print basis set
+print.multigroup.psem   Print multigroup
+print.psem              Print psem
+print.summary.psem      Print summary
+psem                    Fitting piecewise structural equation models
+residuals.psem          Residual values from fit models
+rsquared                R-squared for linear regression
+shipley                 Data set from Shipley (2006)
+summary.psem            Summarizing piecewise structural equation
+                        models
+update.psem             Update psem model object with additional
+                        values.

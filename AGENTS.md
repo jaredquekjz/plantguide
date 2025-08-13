@@ -83,17 +83,44 @@ The sacred scroll for how Codex (your boyish, friendly MANA) speaks and casts fo
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `scripts/`: command-line tools (train/predict, cutpoint calibration, TRY merges, PDF→text).
+- `src/Stage_1_Data_Extraction/`: main data-extraction CLIs (TRY/EIVE matching, PDF→text, EIVE requests). Use `src` for pipeline tools.
+- `scripts/`: legacy utilities (deprecated). Prefer `src/` and migrate remaining tools.
 - `data/`: inputs and intermediates (EIVE CSV/XLSX, WFO, TRY extracts, small test CSVs).
 - `artifacts/`: run outputs (timestamped `run_*/` with `model_*.joblib`, `features_*.json`, `metrics_*.json`, optional `ood_*.json`; plus `thresholds_*.json`, predictions).
 - `docs/`, `Papers/`: reference materials and extracted text.
 - `config.yml`: central configuration for columns, model, CV, thresholds.
 
 ## Build, Test, and Development Commands
-- Train one axis: `python scripts/train_axis.py --config config.yml --axis M`
-- Calibrate thresholds: `python scripts/calibrate_thresholds.py --config config.yml --axis M --out_dir artifacts`
-- Predict non‑EU set: `python scripts/predict.py --config config.yml --axis M --model artifacts/run_*/model_M.joblib --thresholds artifacts/thresholds_M.json --output_csv artifacts/predictions_M.csv`
-- Merge TRY traits: `python scripts/merge_traits_for_taxa.py --sources data/*_extract/*.txt --eive_csv data/EIVE_Paper_1.0_SM_08_csv/mainTable.csv --out data/traits_for_eive_taxa.tsv`
+## Project: EIVE-from-TRY (Context for New Agents)
+- Goal: Predict Ecological Indicator Values for Europe (EIVE; 0–10 scale for L, T, M, R, N) from six curated TRY traits (Leaf area, Nmass, LMA, Plant height, Diaspore mass, SSD combined), then extend to SEM; later explore MAG/m-sep and copula-based dependent errors.
+- Current key artifacts:
+  - `data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv` (converted from EIVE Excel)
+  - `data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv` (EIVE normalized to WFO; defaults baked-in)
+  - `artifacts/traits_matched.{csv,rds}` (TRY curated species matched to EIVE; six traits + metadata)
+  - `artifacts/trait_coverage.md` (coverage of six traits across matched species)
+  - `docs/methodology_eive_prediction.md` (living methodology document)
+- Empirical snapshot (from traits_matched.csv):
+  - Matched species: 5,750
+  - Complete-case (six traits using SSD combined): 1,068
+    - SSD provenance: 382 observed; 676 imputed (combined=imputed)
+  - Observed-only SSD complete-case: 389
+- Conventions:
+  - Use SSD combined by default; add `ssd_imputed_used` flag; run observed-only sensitivity.
+  - Optionally weight by per-trait record counts (“(n.o.)” columns) and report sensitivity.
+
+## Build, Test, and Development Commands
+- Convert EIVE Excel → CSV (uses pandas/openpyxl):
+  - `python src/Stage_1_Data_Extraction/convert_excel_to_csv.py --input_xlsx data/EIVE_Paper_1.0_SM_08.xlsx --sheet mainTable --output_csv data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv`
+- Normalize EIVE names to WFO (EXACT; default WFO at `data/classification.csv`):
+  - `Rscript src/Stage_1_Data_Extraction/normalize_eive_to_wfo_EXACT.R --eive_csv=data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv --out=data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`
+- Match TRY curated species to EIVE and export six-trait tables:
+  - `Rscript src/Stage_1_Data_Extraction/match_trycurated_species_to_eive_wfo.R --try_xlsx=data/Tryenhanced/Dataset/Species_mean_traits.xlsx --eive_csv=data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv --traits_out_csv=artifacts/traits_matched.csv --traits_out_rds=artifacts/traits_matched.rds`
+- Analyze trait coverage (writes Markdown table):
+  - `Rscript src/Stage_1_Data_Extraction/analyze_trycurated_trait_coverage.R --traits_rds=artifacts/traits_matched.rds --out_md=artifacts/trait_coverage.md`
+- PDF→text extraction (fitz/PyMuPDF):
+  - `python src/Stage_1_Data_Extraction/pdf_to_text_fitz.py --input_dir data/PDFs --out_dir artifacts/pdf_txt`
+- General PDF→text batch:
+  - `python src/Stage_1_Data_Extraction/convert_pdfs_to_txt.py --root Papers`
+- Convert PDF directly to MultiMarkdown (Mathpix API; requires `MATHPIX_APP_KEY` in `.env`):
+  - `python src/Stage_1_Data_Extraction/convert_to_mmd.py /path/to/input.pdf /path/to/output.mmd`
 Each command prints paths and writes under `artifacts/` unless overridden.
-
-
