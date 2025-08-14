@@ -87,6 +87,26 @@ Divination: proposal reviewed; weaving precise next runs; next: execution.
 - Outputs: `artifacts/stage4_sem_{lavaan,piecewise}_run7/...` parallel to prior runs.
 - Comparison: lavaan vs Run 4 (fit indices); piecewise vs Run 6 (CV metrics).
 
+## Action 5 — Phylogenetic Non-independence (Cross‑cutting sensitivity)
+- Goal: Ensure results are not artifacts of shared ancestry by accounting for phylogenetic covariance among species.
+- Default control (already used): Include a random intercept by `Family` in piecewise submodels when feasible: `y ~ ... + (1|Family)`.
+- Stronger phylo check (recommended sensitivity after Run 6): Fit full‑data GLS per submodel with a phylogenetic correlation structure and recompute full‑model AIC/BIC and key coefficients. Keep CV selection based on non‑phylo models to avoid fold‑level tree management; report phylo GLS as a robustness check.
+- When to run: After selecting the best piecewise structure in Run 6, run a “Run 6P” phylogenetic sensitivity on the chosen forms per target.
+- Provide a Newick tree: save to `data/phylogeny/eive_try_tree.nwk` (UTF‑8). Tip labels must match `wfo_accepted_name` (Genus species), without authors.
+  - Quick build from present species via V.PhyloMaker2 (offline mega‑tree):
+    - R snippet:
+      - `sp <- unique(readr::read_csv("artifacts/model_data_complete_case_with_myco.csv", show_col_types=FALSE)$wfo_accepted_name)`
+      - `sp_df <- tidyr::separate(tibble::tibble(species=sp), species, into=c("genus","species"), remove=FALSE, fill="right")`
+      - `data("GBOTB.extended", package="V.PhyloMaker2")`
+      - `phy_out <- V.PhyloMaker2::phylo.maker(sp_df[,c("genus","species")], GBOTB.extended, scenarios="S3")`
+      - `ape::write.tree(phy_out$scenario.3, file="data/phylogeny/eive_try_tree.nwk")`
+  - Validate coverage: ensure ≥90% of modeled species are present as tips; list dropouts and consider synonym fixes.
+- Planned flags (to be added):
+  - `--phylogeny_newick=data/phylogeny/eive_try_tree.nwk`
+  - `--phylo_correlation={brownian|pagel}` (default: brownian)
+  - Output: append `_full_model_ic_phylo.csv` and `_phylo_coefs.csv` alongside standard outputs.
+- Adoption rule: If key signs/magnitudes and IC remain stable under phylo GLS, retain prior model choices; if not, favor the phylo‑consistent formulation.
+
 ## Documentation and Deliverables
 - For each run, write a summary in `results/` following the exact template of `results/stage_sem_run3_summary.md`:
   - Scope, Methodology (explicit model equations/paths), Repro Commands, Final Results (key metrics), and Comparison to the prior relevant run.
