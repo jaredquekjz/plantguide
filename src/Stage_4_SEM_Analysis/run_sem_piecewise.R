@@ -60,6 +60,7 @@ weights_mode  <- opts[["weights"]] %||% "none"  # none|min|log1p_min
 cluster_var   <- opts[["cluster"]] %||% "Family"
 group_var     <- opts[["group_var"]] %||% ""      # optional: enable multigroup d-sep if provided
 nonlinear_opt <- tolower(opts[["nonlinear"]] %||% "false") %in% c("1","true","yes","y")
+deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_piecewise"
 # psem configuration (affects full-data d-sep only; not CV predictions)
 psem_drop_logSSD_y    <- tolower(opts[["psem_drop_logssd_y"]]    %||% "true") %in% c("1","true","yes","y")
@@ -216,20 +217,54 @@ for (r in seq_len(repeats_opt)) {
     }
 
     # Fit component model
-    if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
+    # Nonlinear option: for targets M/N/R and mgcv available, fit GAM with s(logH) instead of SIZE
+    used_gam <- FALSE
+    edf_s <- NA_real_
+    aic_tr <- NA_real_
+    model_form <- "linear_size"
+    if (nonlinear_opt && have_mgcv && (target_letter %in% c("M","N","R"))) {
+      # Build GAM formula: y ~ LES + s(logH) + logSM + logSSD
+      # Deconstruct SIZE: include logSM linearly; keep LES and logSSD
+      f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD, data = tr, method = "REML")
+      used_gam <- TRUE
+      model_form <- "semi_nonlinear_slogH"
+      # edf of logH smooth
+      gs <- try(summary(f_gam), silent = TRUE)
+      if (!inherits(gs, "try-error") && length(gs$s.table) >= 1) {
+        # s.table has columns: edf, Ref.df, F, p-value; take first row edf
+        edf_s <- suppressWarnings(as.numeric(gs$s.table[1, 1]))
+      }
+      aic_tr <- tryCatch(AIC(f_gam), error = function(e) NA_real_)
+      eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
+    } else if (deconstruct_size) {
+      # Linear deconstructed: y ~ LES + logH + logSM + logSSD
+      model_form <- "linear_deconstructed"
+      if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
+        f <- stats::as.formula(sprintf("y ~ LES + logH + logSM + logSSD + (1|%s)", cluster_var))
+        m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
+        if (inherits(m, "try-error")) m <- stats::lm(y ~ LES + logH + logSM + logSSD, data = tr, weights = w)
+        aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
+        eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
+      } else {
+        m <- stats::lm(y ~ LES + logH + logSM + logSSD, data = tr, weights = w)
+        aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
+        eta <- as.numeric(stats::predict(m, newdata = te))
+      }
+    } else if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
       # Mixed model with random intercept
       f <- stats::as.formula(sprintf("y ~ LES + SIZE + logSSD + (1|%s)", cluster_var))
       m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
       if (inherits(m, "try-error")) m <- stats::lm(y ~ LES + SIZE + logSSD, data = tr, weights = w)
+      aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
     } else {
       m <- stats::lm(y ~ LES + SIZE + logSSD, data = tr, weights = w)
+      aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(m, newdata = te))
     }
 
-    # Optional mild nonlinearity on LES (if requested)
-    if (nonlinear_opt) {
-      # Fit a simple quadratic adjustment on residuals from training
+    # Optional mild nonlinearity on LES (legacy). Skip when GAM is used.
+    if (nonlinear_opt && !used_gam) {
       res_tr <- tr$y - as.numeric(stats::predict(m, newdata = tr))
       adj <- try(stats::lm(res_tr ~ poly(LES, 2, raw = TRUE), data = tr), silent = TRUE)
       if (!inherits(adj, "try-error")) {
@@ -245,7 +280,7 @@ for (r in seq_len(repeats_opt)) {
     RMSE <- sqrt(mean(err^2))
     MAE <- mean(abs(err))
 
-    metrics <- rbind(metrics, data.frame(rep=r, fold=k, R2=R2, RMSE=RMSE, MAE=MAE))
+    metrics <- rbind(metrics, data.frame(rep=r, fold=k, R2=R2, RMSE=RMSE, MAE=MAE, used_gam=used_gam, edf_s_logH=edf_s, AIC_train=aic_tr, model_form=model_form))
     preds <- rbind(preds, data.frame(target=target_name, rep=r, fold=k, id=te$id, y_true=ytrue, y_pred=yhat, method="piecewise", stringsAsFactors = FALSE))
   }
 }
@@ -262,9 +297,9 @@ metrics_json <- paste0(base, "_metrics.json")
 
 if (have_readr) readr::write_csv(preds, preds_path) else utils::write.csv(preds, preds_path, row.names = FALSE)
 
-metrics_out <- list(
-  target = target_name,
-  n = nrow(work),
+  metrics_out <- list(
+    target = target_name,
+    n = nrow(work),
   repeats = repeats_opt,
   folds = folds_opt,
   stratify = stratify_opt,
@@ -276,8 +311,8 @@ metrics_out <- list(
   group_var = if (nzchar(group_var)) group_var else NULL,
   transform = "identity",
   offsets = as.list(offsets),
-  metrics = list(per_fold = metrics, aggregate = agg)
-)
+    metrics = list(per_fold = metrics, aggregate = agg)
+  )
 if (have_jsonlite) {
   json <- jsonlite::toJSON(metrics_out, pretty = TRUE, dataframe = "rows", na = "null")
   cat(json, file = metrics_json)

@@ -217,27 +217,74 @@ Next Steps (To Implement)
 - Build `src/Stage_2_Modeling/train_baseline_lm.R`: fit/cross-validate multiple regressions per EIVE target; write metrics and diagnostics under `artifacts/run_*`.
 - Build `src/Stage_2_Modeling/sem_piecewise.R` and/or `sem_lavaan.R`: fit DAG-based SEMs; export path coefficients and fit indices.
 
-Stage 2 — SEM (Piecewise) Update (2025-08-13)
+Run numbering and structure
+- All Stage 2 SEM notes are now organized strictly as: Run 1 → Results → Run 2 → Results. Historical/development notes were moved under each run for clarity.
+
+Stage 2 — Run 1 (DAG d-sep + lavaan)
+- Purpose: establish the baseline directed topology and latent measurement, then evaluate model fit and key independencies before any group-specific tweaks or form changes.
+- Piecewise DAG (d-sep):
+  - Topology: y ~ LES + SIZE [+ logSSD per target if indicated]; LES ~ SIZE + logSSD; SIZE ~ logSSD.
+  - Commands (per target X ∈ {L,T,M,R,N}):
+    `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|M|R|N} --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise --psem_drop_logssd_y=true --psem_include_size_eq=true`
+  - Outputs: `artifacts/stage4_sem_piecewise/sem_piecewise_{X}_{piecewise_coefs.csv,dsep_fit.csv,preds.csv,metrics.json,multigroup_dsep.csv}`
+  - d‑sep summary (full-data Fisher’s C): from `artifacts/stage4_sem_summary/piecewise_dsep_summary.csv`
+    - L: C≈0.95, df=2, p≈0.622 (fits)
+    - T: C≈1.305, df=2, p≈0.521 (fits)
+    - R: C≈4.614, df=2, p≈0.100 (borderline)
+    - M, N: saturated (df=0; no testable independencies)
+- lavaan latent SEM (global fit):
+  - Measurement: LES =~ negLMA + Nmass + logLA; SIZE =~ logH + logSM; residual covariances minimal (logH ~~ logSM; Nmass ~~ logLA); LES ~~ SIZE allowed.
+  - Structural: L/T mediated via LES and SIZE; M/N include direct SSD→y; R without SSD→y in baseline (checked post hoc below).
+  - Command: `Rscript src/Stage_4_SEM_Analysis/run_sem_lavaan.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|M|R|N} --transform=logit --seed=123 --repeats=1 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_lavaan --allow_les_size_cov=true --resid_cov='logH ~~ logSM; Nmass ~~ logLA'`
+  - Fit summary (from `artifacts/stage4_sem_summary/lavaan_fit_summary.csv`): baseline absolute fit below conventional thresholds (e.g., L CFI≈0.716, RMSEA≈0.174; T CFI≈0.709, RMSEA≈0.164; R CFI≈0.775, RMSEA≈0.140), motivating residual structure or selected direct SSD paths.
+- Run 1 — predictive CV snapshot (from `artifacts/stage4_sem_summary/sem_metrics_summary.csv`):
+  - Piecewise: L R²≈0.231; T≈0.218; M≈0.345; R≈0.143; N≈0.364 (5×5 CV; seed=123).
+  - lavaan composite proxy CV: consistent but lower R² for most targets; details in the same CSV.
+
+Stage 2 — Run 2 (Piecewise + lavaan refinement; 2025‑08‑13 to 2025‑08‑14)
+- Outputs by convention: piecewise under `artifacts/stage4_sem_piecewise_run2/`, lavaan under `artifacts/stage4_sem_lavaan_run2/`, and aggregated summaries under `artifacts/stage4_sem_summary_run2/`.
+
+Note on directed paths (banner)
+- Group-specific SSD paths are unchanged from Run 1: woody‑only SSD→{L,T,R} and global SSD→{M,N}. Run 2 focuses on predictive form tuning (M/N deconstructed SIZE), re‑running CV, and reporting multigroup fits; no new directed edges were added.
+
+Run 1 vs Run 2 — Compact Summary
+- Comparison table (CSV): `artifacts/stage4_sem_summary_run2/run1_vs_run2_comparison.csv`
+- Headline deltas:
+  - d‑sep (Overall p): L improved (≈0.62 → ≈0.72); R improved (≈0.10 → ≈0.53); T remained acceptable but lower (≈0.52 → ≈0.24); M/N saturated in both runs (df=0).
+  - Predictive CV (piecewise): M and N improved with deconstructed SIZE (R² M ≈0.345 → ≈0.398; N ≈0.364 → ≈0.409; RMSE decreased accordingly); L/T/R essentially unchanged.
+  - lavaan absolute fit (overall): mixed; T improved (CFI ≈0.71 → ≈0.74; RMSEA ≈0.16 → ≈0.14), several others flat to slightly worse (e.g., L CFI ≈0.72 → ≈0.65; N CFI ≈0.81 → ≈0.72). Group‑wise fit indices are listed in `artifacts/stage4_sem_lavaan_run2/sem_lavaan_{X}_fit_indices_by_group.csv`.
+
+Run 2 — Methods
 - Composite axes (training-only PCA):
   - LES ≈ from (−LMA, +Nmass, +logLA)
   - SIZE ≈ from (+logH, +logSM)
-- CV component model (unchanged):
-  - y ~ LES + SIZE + logSSD (5×5 repeated CV; transforms trained on folds; no leakage)
+- CV component model (Run 2 defaults):
+  - L/T/R: y ~ LES + SIZE + logSSD (5×5 repeated CV; transforms trained on folds; no leakage)
+  - M/N: y ~ LES + logH + logSM + logSSD (deconstructed SIZE; adopted after form comparison)
 - psem structure for d-sep (full-data only; to create testable independence):
   - Drop the direct logSSD → y edge in the psem while keeping it in CV
   - Add SIZE submodel: SIZE ~ logSSD (+ optional (1|Family))
   - Keep LES submodel: LES ~ SIZE + logSSD (+ optional (1|Family))
   - Tested independence claim: y ⟂ logSSD | {LES, SIZE}
 - Commands:
-  - Rerun per target: `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|M|R|N} --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise --psem_drop_logssd_y=true --psem_include_size_eq=true`
-  - Summarize: `Rscript src/Stage_4_SEM_Analysis/summarize_piecewise_dsep.R --in_dir=artifacts/stage4_sem_piecewise --out_csv=artifacts/stage4_sem_summary/piecewise_dsep_summary.csv`
+  - L/T/R (baseline form): `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|R} --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise_run2 --psem_drop_logssd_y=true --psem_include_size_eq=true`
+  - M/N (deconstructed form): `... --target={M|N} ... --deconstruct_size=true --psem_drop_logssd_y=false --out_dir=artifacts/stage4_sem_piecewise_run2`
+  - Summarize: `Rscript src/Stage_4_SEM_Analysis/summarize_piecewise_dsep.R --in_dir=artifacts/stage4_sem_piecewise_run2 --out_csv=artifacts/stage4_sem_summary_run2/piecewise_dsep_summary_run2.csv`
 - Outputs:
-  - Per-target: `artifacts/stage4_sem_piecewise/sem_piecewise_{X}_{piecewise_coefs.csv,dsep_fit.csv}`
-  - Summary: `artifacts/stage4_sem_summary/piecewise_dsep_summary.csv`
-- Results (Fisher’s C):
-  - Mediated SSD→y (baseline psem): L fits (C≈0.95, df=2, p≈0.62); T fits (C≈1.31, df=2, p≈0.52); R borderline (C≈4.61, df=2, p≈0.10); M and N rejected (large C, p<0.001).
-  - With direct SSD→y for M/N and SIZE~SSD: M, N become saturated (df=0; no testable independencies); L, T remain good fits under mediation; R remains borderline under mediation.
-- Interpretation: SSD has a likely direct pathway to Moisture and Nutrients beyond mediation via LES/SIZE. For L/T, mediation suffices. For R, consider either a small direct SSD→R or refined measurement/residual structure.
+  - Per-target: `artifacts/stage4_sem_piecewise_run2/sem_piecewise_{X}_{piecewise_coefs.csv,dsep_fit.csv,preds.csv,metrics.json,multigroup_dsep.csv}`
+  - Summary: `artifacts/stage4_sem_summary_run2/piecewise_dsep_summary_run2.csv`
+
+Run 2 — Results
+- d‑sep (multigroup Overall p; from `sem_piecewise_{X}_multigroup_dsep.csv`):
+  - L: p ≈ 0.721; T: p ≈ 0.238; R: p ≈ 0.528; M/N: saturated (df=0).
+  - Interpretation: L/R causal fit improved; T acceptable; M/N require direct SSD→y (saturated), consistent with theory.
+- lavaan (absolute fit; overall):
+  - Mixed shifts vs Run 1: T improves (CFI ~0.74; RMSEA ~0.14), others mostly flat to slightly worse overall; group‑wise indices are in `artifacts/stage4_sem_lavaan_run2/sem_lavaan_{X}_fit_indices_by_group.csv`.
+- Predictive CV (piecewise; from `sem_metrics_summary_main.csv`):
+  - M and N improve with deconstructed SIZE (M R² ~0.398; N R² ~0.409); L/T/R essentially unchanged.
+
+Bottom line (Run 2 vs Run 1)
+- Overall: Run 2 improves causal fit (higher d‑sep p for L and R; T still acceptable) and predictive performance where targeted (M and N R² gains with lower RMSE), while keeping L/T/R predictive metrics stable. lavaan absolute fit remains below conventional thresholds; T improves, others are flat to slightly worse, consistent with residual‑structure (MAG) work remaining. Next steps: test minimal MAG residuals (LES ~~ SIZE; logH ~~ logSM; Nmass ~~ logLA) and evaluate mycorrhiza moderation where coverage allows.
 
 Stage 2 — SEM (lavaan) Refinement (theory from d-sep)
 - Measurement (unchanged):
@@ -253,13 +300,77 @@ Stage 2 — SEM (lavaan) Refinement (theory from d-sep)
   - Residuals: logH ~~ logSM; Nmass ~~ logLA
 - Estimation: lavaan with MLR, std.lv=TRUE, missing='fiml'; optionally cluster='Family' and group='Woodiness'.
 - Repro command:
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_lavaan.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|M|R|N} --transform=logit --seed=123 --repeats=1 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_lavaan --add_direct_ssd_targets=M,N,R --allow_les_size_cov=true --resid_cov='logH ~~ logSM; Nmass ~~ logLA'`
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_lavaan.R --input_csv=artifacts/model_data_complete_case.csv --target={L|T|M|R|N} --transform=logit --seed=123 --repeats=1 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_lavaan_run2 --add_direct_ssd_targets=M,N,R --allow_les_size_cov=true --resid_cov='logH ~~ logSM; Nmass ~~ logLA'`
 
 Notes
 - Enabling SSD→R led to coherent negative SSD→R paths and slight fit improvements (see results/stage2_sem_summary.md and artifacts/stage4_sem_summary/lavaan_fit_summary.csv).
 - Expected effect: improves absolute fit where d-sep indicated missing SSD paths (especially M/N) and captures shared measurement noise with minimal, theory-backed residual covariances.
 
-Stage 2 — Multigroup DAG → MAG Sequence (2025-08-13)
+Run 2 — lavaan by Woodiness (key fit indices)
+- Source: `artifacts/stage4_sem_lavaan_run2/sem_lavaan_{X}_fit_indices_by_group.csv`
+- Values rounded to 3 decimals.
+
+| Target | Group       | CFI  | RMSEA | SRMR |
+|--------|-------------|------|-------|------|
+| L      | woody       | 0.763| 0.205 | 0.106|
+| L      | non-woody   | 0.733| 0.185 | 0.087|
+| T      | woody       | 0.748| 0.201 | 0.106|
+| T      | non-woody   | 0.829| 0.137 | 0.069|
+| M      | woody       | 0.765| 0.221 | 0.104|
+| M      | non-woody   | 0.794| 0.160 | 0.073|
+| M      | semi-woody  | 0.704| 0.424 | 0.182|
+| R      | woody       | 0.674| 0.226 | 0.104|
+| R      | non-woody   | 0.800| 0.153 | 0.071|
+| R      | semi-woody  | 0.681| 0.429 | 0.182|
+| N      | woody       | 0.748| 0.228 | 0.098|
+| N      | non-woody   | 0.832| 0.168 | 0.072|
+| N      | semi-woody  | 0.712| 0.432 | 0.161|
+
+Interpretation: SSD effects are stronger in woody plants (higher misfit relieved by adding SSD→y), while non-woody groups show relatively better absolute fit. Global thresholds (CFI/TLI > 0.90; RMSEA < 0.08) are not met yet; MAG residuals and/or mycorrhiza moderation are next steps.
+
+Stage 2 — Run 3 (Mycorrhiza multigroup; 2025‑08‑14)
+- Data: `artifacts/model_data_complete_case_with_myco.csv` (n≈1,068 complete‑case; 832 with `Myco_Group_Final`).
+- Goal: include `Myco_Group_Final` as the grouping variable for SEM inference while preserving Run 2 model forms; export all artifacts under `*_run3/`.
+- lavaan (grouped by Myco):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_lavaan.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --target={L|T|M|R|N} --transform=logit --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --group=Myco_Group_Final --out_dir=artifacts/stage4_sem_lavaan_run3 --add_direct_ssd_targets=M,N,R --allow_les_size_cov=true --resid_cov='logH ~~ logSM; Nmass ~~ logLA'`
+- piecewise (multigroup d‑sep metadata only):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --target={L|T|M|R|N} --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --cluster=Family --group_var=Myco_Group_Final --out_dir=artifacts/stage4_sem_piecewise_run3`
+- CV performance (mean±SD; piecewise vs lavaan composite):
+  - L: 0.232±0.044 vs 0.114±0.038 R²; RMSE 1.339 vs 1.438
+  - T: 0.227±0.043 vs 0.106±0.046; RMSE 1.151 vs 1.238
+  - M: 0.349±0.047 vs 0.047±0.033; RMSE 1.213 vs 1.470
+  - R: 0.145±0.041 vs 0.023±0.024; RMSE 1.438 vs 1.538
+  - N: 0.371±0.055 vs 0.301±0.055; RMSE 1.487 vs 1.568
+- Artifacts: `artifacts/stage4_sem_lavaan_run3/`, `artifacts/stage4_sem_piecewise_run3/`.
+
+Run 3 Mycorrhiza Outcomes (moderation check)
+- Power test (SSD:Myco) using linear models on LES, SIZE, logSSD + interactions (per Douma & Shipley 2021):
+  - R: interaction supported (LR p≈0.005; AIC improved). Per‑group SSD significant in Pure_NM and Low_Confidence.
+  - N: interaction not supported (LR p≈0.788). Keep pooled SSD→N.
+  - L/T: interactions not supported. No myco‑specific paths.
+- Piecewise multigroup d‑sep for R with myco‑specific SSD→R (Pure_NM, Low_Confidence): Overall Fisher’s C p≈0.899 (df=8); selected groups saturated.
+- lavaan grouped (R) on Myco (n≥30) with the same targeted SSD→R confirms paths but absolute fit remains modest per group (strict latent constraints). We prioritize d‑sep for causal adequacy; lavaan absolute fit will be revisited with MAG residuals if needed.
+
+Run 2 Piecewise Form Decision (2025-08-14)
+- Compared three forms for M/N/R via 5×5 CV and training AIC:
+  - Linear (baseline): y ~ LES + SIZE + logSSD
+  - Deconstructed: y ~ LES + logH + logSM + logSSD
+  - Semi‑nonlinear: y ~ LES + s(logH,k=5) + logSM + logSSD
+- Decision:
+  - M: adopt deconstructed (R²≈0.398 vs 0.345 baseline; RMSE 1.171 vs 1.221)
+  - N: adopt deconstructed (R²≈0.409 vs 0.364; RMSE 1.440 vs 1.493)
+  - R: keep baseline (≈ tie; simpler form)
+
+Run 2 — Piecewise Chosen Forms and CV Metrics
+- Source: `artifacts/stage4_sem_summary_run2/sem_metrics_summary_main.csv` (5×5 CV, seed=123)
+- Chosen forms and metrics:
+  - L (linear_size): R²≈0.231, RMSE≈1.341, MAE≈1.007
+  - T (linear_size): R²≈0.218, RMSE≈1.166, MAE≈0.870
+  - M (linear_deconstructed): R²≈0.398, RMSE≈1.171, MAE≈0.902
+  - R (linear_size): R²≈0.143, RMSE≈1.438, MAE≈1.086
+  - N (linear_deconstructed): R²≈0.409, RMSE≈1.440, MAE≈1.153
+
+Next Steps — Multigroup DAG → MAG Sequence
 - Rationale and order of spells
   - First exhaust multigroup DAG (d-sep) to detect missing directed links or group-specific slopes with minimal added flexibility.
   - Upgrade to MAG (m-sep and/or residual covariances) only if misfit persists and appears residual-covariance-shaped rather than directional.
@@ -267,14 +378,14 @@ Stage 2 — Multigroup DAG → MAG Sequence (2025-08-13)
 - Multigroup DAG d-sep (Ecosphere 2021)
   - Topology: keep the same DAG for all groups initially (y ~ LES + SIZE [+ logSSD per target]; LES ~ SIZE + logSSD; SIZE ~ logSSD).
   - Test: compute per-group Fisher’s C on the same union basis set and sum C and df across groups for a global test.
-  - Command (per target X ∈ {L,T,M,R,N}):
+  - Command (per target X ∈ {L,T,M,R,N}; Run 2 directories shown):
     ```
     Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R \
       --input_csv=artifacts/model_data_complete_case.csv \
       --target={L|T|M|R|N} \
       --seed=123 --repeats=5 --folds=5 --stratify=true \
       --standardize=true --winsorize=false --weights=none \
-      --out_dir=artifacts/stage4_sem_piecewise \
+      --out_dir=artifacts/stage4_sem_piecewise_run2 \
       --psem_drop_logssd_y=true --psem_include_size_eq=true \
       --group_var=Woodiness
     ```
@@ -295,7 +406,8 @@ Repro Parameters and Hygiene
 - Determinism: always print effective flags in metrics JSON and d-sep CSV.
 - Assumptions: UTF-8; CSV comma; no network; R packages `piecewiseSEM`, `lme4` required for d-sep.
 
-Multigroup Results and Minimal Tweaks (2025-08-13)
+Run 1 — Multigroup Results and Minimal Tweaks (2025-08-13)
+Note: These tweaks (woody‑only SSD→{L,T,R}; global SSD→{M,N}) were introduced in Run 1 and carried forward unchanged into Run 2. The improved Overall Fisher’s C p‑values in Run 2 match these Run 1 post‑tweak values.
 - Group: `Woodiness` (woody, non-woody, semi-woody).
 - Equality tests (claim: `y ⟂ logSSD | {LES, SIZE}`): compared pooled vs by-group slopes for logSSD with AIC.
 - Findings and adopted tweaks:
@@ -303,7 +415,7 @@ Multigroup Results and Minimal Tweaks (2025-08-13)
   - T: woody significant (p≈0.0035); added `SSD → T` for woody only. Overall Fisher’s C improved from p≈0.069 to p≈0.238 (woody saturated).
   - R: woody group misfit (p≈0.008); added `SSD → R` for woody only; Overall Fisher’s C improved from p≈0.047 to p≈0.528 (woody saturated).
   - M, N: forcing mediation-only was rejected; enabled direct `SSD → M` and `SSD → N` globally; psem becomes saturated (df=0), consistent with required direct effects.
-- Predictive CV remained stable (e.g., L≈0.235, T≈0.222, M≈0.341, R≈0.139, N≈0.371 R² with 5× folds, seed=123), as expected for causal-fit-focused adjustments.
+- Predictive CV remained stable for L/T/R; M and N improved with the deconstructed SIZE form (M R²≈0.398, N R²≈0.409; 5×5 CV, seed=123; see `artifacts/stage4_sem_summary_run2/sem_metrics_summary_main.csv`).
 - Repro (examples):
   - `... --group_var=Woodiness --psem_drop_logssd_y=true --group_ssd_to_y_for=woody` (L/T/R runs)
   - `... --group_var=Woodiness --psem_drop_logssd_y=false` (M/N runs)
@@ -332,6 +444,10 @@ Decision: Move to MAG?
   - Residual structure likely remains (shared measurement error or omitted common causes among indicators/traits), which d-sep does not model but MAG can via bidirected edges (dependent errors).
   - MAG/m-sep allows testing models with dependent errors without inflating directed topology; we can keep the minimal directed tweaks found via d-sep and add only a few theory-backed residual links.
 - Planned minimal MAG edges (first pass): `LES ~~ SIZE`, `logH ~~ logSM`, `Nmass ~~ logLA` (already mirrored in lavaan). Consider group-invariant residuals initially; add group differences only if indicated.
+- Future plans:
+  - Mycorrhiza grouping: where coverage allows, test AM vs EM groups (or add mycorrhiza fixed-effect interactions) with CV stratified by mycorrhiza; keep unknown pooled. Target ≥100 spp/group for stable d-sep.
+  - MAG residuals: add LES ~~ logSSD to capture leaf–wood coordination predicted by whole‑plant economics; reassess absolute fit.
+  - Nonlinearity tuning: revisit s(logH) with k grid and select=TRUE; only adopt if CV improves consistently.
 - Verification path:
   1) Build MAG basis (CauseAndCorrelation::basiSet.mag) and test m-sep; confirm improved global fit vs DAG.
   2) Partition into district sets (CauseAndCorrelation::districtSet/Graph); fit with appropriate families; copulas for dependent errors if needed (Douma & Shipley 2022).
@@ -339,9 +455,8 @@ Decision: Move to MAG?
 - Hygiene:
   - Keep number of bidirected edges minimal; prefer measurement-motivated pairs.
   - Maintain train/test hygiene for predictive components; m-sep testing uses full data.
-Artifacts for review
+Artifacts for review (Run 1)
 - By-group fit CSV per target: `artifacts/stage4_sem_lavaan/sem_lavaan_{L,T,M,N,R}_fit_indices_by_group.csv`
-- Aggregated by-group summary: `artifacts/stage4_sem_lavaan/lavaan_group_fit_summary.csv`
 
 Compact table (key indices)
 
