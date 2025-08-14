@@ -62,6 +62,9 @@ group_var     <- opts[["group_var"]] %||% ""      # optional: enable multigroup 
 nonlinear_opt <- tolower(opts[["nonlinear"]] %||% "false") %in% c("1","true","yes","y")
 deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_piecewise"
+# Interaction terms (comma-separated), e.g., "LES:logSSD"; supports LES:logSSD specifically for Run 5
+add_interactions <- opts[["add_interaction"]] %||% ""
+want_les_x_ssd <- grepl("(^|[, ])LES:logSSD([, ]|$)", add_interactions)
 # psem configuration (affects full-data d-sep only; not CV predictions)
 psem_drop_logSSD_y    <- tolower(opts[["psem_drop_logssd_y"]]    %||% "true") %in% c("1","true","yes","y")
 psem_include_size_eq  <- tolower(opts[["psem_include_size_eq"]]  %||% "true") %in% c("1","true","yes","y")
@@ -223,9 +226,14 @@ for (r in seq_len(repeats_opt)) {
     aic_tr <- NA_real_
     model_form <- "linear_size"
     if (nonlinear_opt && have_mgcv && (target_letter %in% c("M","N","R"))) {
-      # Build GAM formula: y ~ LES + s(logH) + logSM + logSSD
+      # Build GAM formula: y ~ LES + s(logH) + logSM + logSSD [+ LES:logSSD]
       # Deconstruct SIZE: include logSM linearly; keep LES and logSSD
-      f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD, data = tr, method = "REML")
+      if (want_les_x_ssd) {
+        f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD + LES:logSSD, data = tr, method = "REML")
+        model_form <- paste0(model_form, "+LES:logSSD")
+      } else {
+        f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD, data = tr, method = "REML")
+      }
       used_gam <- TRUE
       model_form <- "semi_nonlinear_slogH"
       # edf of logH smooth
@@ -237,28 +245,39 @@ for (r in seq_len(repeats_opt)) {
       aic_tr <- tryCatch(AIC(f_gam), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
     } else if (deconstruct_size) {
-      # Linear deconstructed: y ~ LES + logH + logSM + logSSD
+      # Linear deconstructed: y ~ LES + logH + logSM + logSSD [+ LES:logSSD]
       model_form <- "linear_deconstructed"
       if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
-        f <- stats::as.formula(sprintf("y ~ LES + logH + logSM + logSSD + (1|%s)", cluster_var))
+        rhs <- "y ~ LES + logH + logSM + logSSD"
+        if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+        f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
         m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
-        if (inherits(m, "try-error")) m <- stats::lm(y ~ LES + logH + logSM + logSSD, data = tr, weights = w)
+        if (inherits(m, "try-error")) {
+          f2 <- stats::as.formula(rhs)
+          m <- stats::lm(f2, data = tr, weights = w)
+        }
         aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
         eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
       } else {
-        m <- stats::lm(y ~ LES + logH + logSM + logSSD, data = tr, weights = w)
+        rhs <- "y ~ LES + logH + logSM + logSSD"
+        if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+        m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
         aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
         eta <- as.numeric(stats::predict(m, newdata = te))
       }
     } else if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
-      # Mixed model with random intercept
-      f <- stats::as.formula(sprintf("y ~ LES + SIZE + logSSD + (1|%s)", cluster_var))
+      # Mixed model with random intercept: y ~ LES + SIZE + logSSD [+ LES:logSSD]
+      rhs <- "y ~ LES + SIZE + logSSD"
+      if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+      f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
       m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
-      if (inherits(m, "try-error")) m <- stats::lm(y ~ LES + SIZE + logSSD, data = tr, weights = w)
+      if (inherits(m, "try-error")) m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
       aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
     } else {
-      m <- stats::lm(y ~ LES + SIZE + logSSD, data = tr, weights = w)
+      rhs <- "y ~ LES + SIZE + logSSD"
+      if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+      m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
       aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(m, newdata = te))
     }
@@ -318,7 +337,7 @@ if (have_jsonlite) {
   cat(json, file = metrics_json)
 }
 
-# Optional: psem on full data
+# Optional: psem on full data + full-model IC (Douma & Shipley 2020)
 if (have_piecewise && have_lme4) {
   tr <- work
   # Prepare composites on full data (for structural paths and d-sep)
@@ -332,11 +351,12 @@ if (have_piecewise && have_lme4) {
   add_logssd <- !psem_drop_logSSD_y
   # For targets M and N, keep direct SSD -> y regardless of default flag if user didn't override explicitly
   if (target_letter %in% c("M","N") && is.null(opts[["psem_drop_logssd_y"]])) add_logssd <- TRUE
-  # Build fixed-effects part
+  # Build fixed-effects part for y-equation
   rhs_fixed <- "y ~ LES + SIZE"
   if (add_logssd) rhs_fixed <- paste(rhs_fixed, "+ logSSD")
-  # Optional interaction only for M: SIZE:logSSD
+  # Optional interactions
   if (target_letter == "M") rhs_fixed <- paste(rhs_fixed, "+ SIZE:logSSD")
+  if (want_les_x_ssd) rhs_fixed <- paste(rhs_fixed, "+ LES:logSSD")
   # Final formulas
   rhs_lm  <- stats::as.formula(rhs_fixed)
   rhs_lme <- stats::as.formula(sprintf("%s + (1|%s)", rhs_fixed, cluster_var))
@@ -368,6 +388,26 @@ if (have_piecewise && have_lme4) {
         fit_path <- paste0(base, "_dsep_fit.csv")
         if (have_readr) readr::write_csv(fit_df, fit_path) else utils::write.csv(fit_df, fit_path, row.names = FALSE)
       }
+
+      # Full-model information criteria: sum AIC/BIC across submodels (Douma & Shipley 2020)
+      aic_list <- c(tryCatch(stats::AIC(m1), error = function(e) NA_real_),
+                    tryCatch(stats::AIC(m2), error = function(e) NA_real_))
+      bic_list <- c(tryCatch(stats::BIC(m1), error = function(e) NA_real_),
+                    tryCatch(stats::BIC(m2), error = function(e) NA_real_))
+      if (exists("m3")) {
+        aic_list <- c(aic_list, tryCatch(stats::AIC(m3), error = function(e) NA_real_))
+        bic_list <- c(bic_list, tryCatch(stats::BIC(m3), error = function(e) NA_real_))
+      }
+      fm_ic <- data.frame(
+        submodel = c("y|parents", "LES|parents", if (exists("m3")) "SIZE|parents" else NULL),
+        AIC = aic_list,
+        BIC = bic_list,
+        stringsAsFactors = FALSE
+      )
+      fm_ic$AIC_sum <- sum(fm_ic$AIC, na.rm = TRUE)
+      fm_ic$BIC_sum <- sum(fm_ic$BIC, na.rm = TRUE)
+      ic_path <- paste0(base, "_full_model_ic.csv")
+      if (have_readr) readr::write_csv(fm_ic, ic_path) else utils::write.csv(fm_ic, ic_path, row.names = FALSE)
     }
   }
 
