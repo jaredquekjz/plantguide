@@ -59,6 +59,8 @@ allow_les_size_cov     <- tolower(opts[["allow_les_size_cov"]]     %||% "true") 
 resid_cov_raw          <- opts[["resid_cov"]] %||% "logH ~~ logSM; Nmass ~~ logLA"
 resid_cov_terms        <- trimws(unlist(strsplit(resid_cov_raw, ";")))
 group_ssd_to_y_for     <- opts[["group_ssd_to_y_for"]] %||% ""  # comma-separated list of group labels where SSD->y is included
+deconstruct_size       <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
+coadapt_les            <- tolower(opts[["coadapt_les"]] %||% "false") %in% c("1","true","yes","y")  # if true, replace 'LES ~ SIZE + logSSD' with 'LES ~~ SIZE' and 'LES ~~ logSSD'
 
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
@@ -312,18 +314,41 @@ if (have_lavaan) {
   # Measurement + structural model; Y refers to y (transformed). Use simple names.
   # Helper to build model string with or without direct SSD -> y
   build_model <- function(include_ssd_y) {
-    y_rhs <- "b1*LES + b2*SIZE"
-    if (include_ssd_y) y_rhs <- paste(y_rhs, "+ b3*logSSD")
-    lines <- c(
-      "LES  =~ negLMA + Nmass + logLA",
-      "SIZE =~ logH + logSM",
-      sprintf("y ~ %s", y_rhs),
-      "LES ~ c1*SIZE + c2*logSSD"
-    )
-    if (allow_les_size_cov) lines <- c(lines, "LES ~~ SIZE")
     rc <- resid_cov_terms[resid_cov_terms != ""]
-    if (length(rc)) lines <- c(lines, rc)
-    paste(lines, collapse = "\n")
+    if (!deconstruct_size) {
+      # Original latent SIZE
+      y_rhs <- "b1*LES + b2*SIZE"
+      if (include_ssd_y) y_rhs <- paste(y_rhs, "+ b3*logSSD")
+      lines <- c(
+        "LES  =~ negLMA + Nmass + logLA",
+        "SIZE =~ logH + logSM",
+        sprintf("y ~ %s", y_rhs)
+      )
+      if (coadapt_les) {
+        # Replace directed influences with co-adaptation (residual covariances)
+        # Always include LES ~~ SIZE when co-adapting
+        lines <- c(lines, "LES ~~ SIZE", "LES ~~ logSSD")
+      } else {
+        # Keep directed influences on LES from SIZE and logSSD
+        lines <- c(lines, "LES ~ c1*SIZE + c2*logSSD")
+        if (allow_les_size_cov) lines <- c(lines, "LES ~~ SIZE")
+      }
+      if (length(rc)) lines <- c(lines, rc)
+      return(paste(lines, collapse = "\n"))
+    } else {
+      # Deconstruct SIZE: use logH and logSM directly in y; regress LES on logH + logSM + logSSD
+      y_rhs <- "b1*LES + b2*logH + b3*logSM"
+      if (include_ssd_y) y_rhs <- paste(y_rhs, "+ b4*logSSD")
+      lines <- c(
+        "LES  =~ negLMA + Nmass + logLA",
+        sprintf("y ~ %s", y_rhs),
+        "LES ~ c1*logH + c2*logSM + c3*logSSD"
+      )
+      # Keep residual covariance between logH and logSM if requested
+      if (allow_les_size_cov) lines <- c(lines, "logH ~~ logSM")
+      if (length(rc)) lines <- c(lines, rc)
+      return(paste(lines, collapse = "\n"))
+    }
   }
 
   # Determine if we should do group-specific inclusion of SSD -> y
@@ -356,8 +381,8 @@ if (have_lavaan) {
     # Single (possibly multi-group) fit with global add_ssd toggle
     add_ssd <- target_letter %in% unlist(strsplit(add_direct_ssd_targets, ","))
     model <- build_model(add_ssd)
-    cat(sprintf("[lavaan] target=%s add_ssd=%s allow_les_size_cov=%s resid_cov_terms=%s\n",
-                target_letter, add_ssd, allow_les_size_cov, paste(resid_cov_terms[resid_cov_terms != ""], collapse=' | ')))
+    cat(sprintf("[lavaan] target=%s add_ssd=%s deconstruct_size=%s coadapt_les=%s allow_les_size_cov=%s resid_cov_terms=%s\n",
+                target_letter, add_ssd, deconstruct_size, coadapt_les, allow_les_size_cov, paste(resid_cov_terms[resid_cov_terms != ""], collapse=' | ')))
     lavaan_args <- list(model = model, data = dat_lav, estimator = "MLR", missing = "fiml", std.lv = TRUE)
     if (group_var %in% names(dat_lav) && length(unique(na.omit(dat_lav[[group_var]]))) > 1) {
       lavaan_args$group <- group_var
