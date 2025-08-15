@@ -73,6 +73,11 @@ Notes and checks
   - `sem_piecewise_L_preds.csv` ~404 KB, 5,326 rows; T ~404 KB, 5,336; M ~404 KB, 5,326; R ~400 KB, 5,246; N ~400 KB, 5,236.
 
 Bottom line and adoption
-- Keep LES×logSSD for N. For L/T/M/R, changes are safe but marginal; default to parsimony unless downstream CV priorities justify the tiny gains.
+- Keep LES×logSSD for N. Optional for T: Pagel’s λ phylo‑GLS provides moderate support (ΔAIC_sum ≈ −7.15; LES:logSSD p≈0.0025) alongside small CV gains — adopt if you value the added nuance; otherwise default to parsimony. For L/M/R, interaction is not supported phylogenetically (ns) and CV gains are tiny, so prefer omitting it.
+
+Phylogenetic robustness (Action 5)
+- Brownian GLS (Run 6P) and Pagel’s λ GLS (this sensitivity) agree on direction/stability of core effects (LES, SIZE/logH/logSM, logSSD) across targets.
+- Pagel’s λ comparison (Run 5 vs Run 3; AIC_sum, lower is better): L +1.92; T −7.15; M +1.89; R +1.58; N −7.87.
+- LES×logSSD significance (Pagel GLS, Run 5): L p≈0.77; T p≈0.0025; M p≈0.74; R p≈0.52; N p≈0.0017.
 
 "Key logic: added the term \"LES:logSSD\" to the target equations (e.g., \"y ~ LES + SIZE + logSSD + LES:logSSD\" or \"y ~ LES + logH + logSM + logSSD + LES:logSSD\"). Full‑model IC computed by summing AIC/BIC of submodels \"y|parents\", \"LES|parents\", and optionally \"SIZE|parents\" as per Douma & Shipley (2020)."

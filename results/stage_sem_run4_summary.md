@@ -63,5 +63,8 @@ Bottom line and adoption
 - Overall: Strong IC support (large AIC/BIC decreases) favors the co‑adapted formulation across targets. Adopt co‑adaptation for L, M, R, and N; re‑report T once a comparable Run 3 grouped baseline is produced.
 - Interpretation: Despite mixed TLI/SRMR for some targets, CFI/RMSEA do not degrade materially, and IC improvements are decisive, aligning with the generalized AIC rationale.
 
+Phylogenetic robustness (Action 5)
+- Piecewise local models are unchanged from Run 3 in this run; full‑data phylogenetic GLS checks applied to Run 3 forms (Brownian, Pagel’s λ) maintain directions and practical significance of core effects. Thus, Run 4’s conclusions are likewise robust to phylogenetic non‑independence.
+
 Next
 - Proceed to Run 5 (Action 3): add `LES*logSSD` interaction in piecewiseSEM and evaluate CV improvements per target.

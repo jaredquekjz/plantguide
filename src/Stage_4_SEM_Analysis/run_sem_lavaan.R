@@ -51,6 +51,8 @@ standardize   <- tolower(opts[["standardize"]] %||% "true") %in% c("1","true","y
 weights_mode  <- opts[["weights"]] %||% "none"  # none|min|log1p_min
 cluster_var   <- opts[["cluster"]] %||% "Family"  # used only for metadata/future; not needed for CV regression here
 group_var     <- opts[["group"]]   %||% "Woodiness"  # used in lavaan full-fit if present
+if (!nzchar(cluster_var) || tolower(cluster_var) %in% c("__none__","none","na")) cluster_var <- NA_character_
+if (!nzchar(group_var)   || tolower(group_var)   %in% c("__none__","none","na")) group_var   <- NA_character_
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_lavaan"
 
 # lavaan model tuning (full-data fit only)
@@ -61,6 +63,12 @@ resid_cov_terms        <- trimws(unlist(strsplit(resid_cov_raw, ";")))
 group_ssd_to_y_for     <- opts[["group_ssd_to_y_for"]] %||% ""  # comma-separated list of group labels where SSD->y is included
 deconstruct_size       <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
 coadapt_les            <- tolower(opts[["coadapt_les"]] %||% "false") %in% c("1","true","yes","y")  # if true, replace 'LES ~ SIZE + logSSD' with 'LES ~~ SIZE' and 'LES ~~ logSSD'
+# Run 7 — refined LES measurement and logLA as predictor
+les_core               <- tolower(opts[["les_core"]] %||% "false") %in% c("1","true","yes","y")
+les_core_inds_raw      <- opts[["les_core_indicators"]] %||% "negLMA,Nmass"
+les_core_inds          <- trimws(unlist(strsplit(les_core_inds_raw, ",")))
+logLA_as_predictor     <- tolower(opts[["logLA_as_predictor"]] %||% "false") %in% c("1","true","yes","y")
+min_group_n            <- suppressWarnings(as.integer(opts[["min_group_n"]] %||% "0")); if (is.na(min_group_n)) min_group_n <- 0
 
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
@@ -140,14 +148,19 @@ from_logit <- function(eta) {
 # Composite builder using training-only PCA
 build_composites <- function(train, test) {
   # Inputs must contain: LMA, Nmass, logLA, logH, logSM
-  # LES: PC1 of [-LMA, Nmass, logLA] oriented to positive Nmass loading
-  M_LES_tr <- scale(cbind(negLMA = -train$LMA, Nmass = train$Nmass, logLA = train$logLA), center = TRUE, scale = TRUE)
+  # LES: PC1 of either [-LMA, Nmass, logLA] or Run 7 core [-LMA, Nmass]
+  if (les_core) {
+    M_LES_tr <- scale(cbind(negLMA = -train$LMA, Nmass = train$Nmass), center = TRUE, scale = TRUE)
+    M_LES_te <- scale(cbind(negLMA = -test$LMA,  Nmass = test$Nmass),  center = attr(M_LES_tr, "scaled:center"), scale = attr(M_LES_tr, "scaled:scale"))
+  } else {
+    M_LES_tr <- scale(cbind(negLMA = -train$LMA, Nmass = train$Nmass, logLA = train$logLA), center = TRUE, scale = TRUE)
+    M_LES_te <- scale(cbind(negLMA = -test$LMA,  Nmass = test$Nmass,  logLA = test$logLA),  center = attr(M_LES_tr, "scaled:center"), scale = attr(M_LES_tr, "scaled:scale"))
+  }
   p_les <- stats::prcomp(M_LES_tr, center = FALSE, scale. = FALSE)
   rot_les <- p_les$rotation[,1]
   # orient to positive Nmass loading
   if (rot_les["Nmass"] < 0) rot_les <- -rot_les
   scores_LES_tr <- as.numeric(M_LES_tr %*% rot_les)
-  M_LES_te <- scale(cbind(negLMA = -test$LMA, Nmass = test$Nmass, logLA = test$logLA), center = attr(M_LES_tr, "scaled:center"), scale = attr(M_LES_tr, "scaled:scale"))
   scores_LES_te <- as.numeric(M_LES_te %*% rot_les)
 
   # SIZE: PC1 of [logH, logSM] oriented to positive logH loading
@@ -170,10 +183,13 @@ build_composites <- function(train, test) {
 set.seed(seed_opt)
 
 # Prepare working frame with derived columns
-work <- df[, c(id_col, target_name, feature_cols, cluster_var, group_var), drop = FALSE]
+base_cols <- c(id_col, target_name, feature_cols)
+if (!is.na(cluster_var) && (cluster_var %in% names(df))) base_cols <- c(base_cols, cluster_var)
+if (!is.na(group_var)   && (group_var   %in% names(df))) base_cols <- c(base_cols, group_var)
+work <- df[, base_cols, drop = FALSE]
 names(work)[names(work) == id_col] <- "id"
-if (!(cluster_var %in% names(work))) work[[cluster_var]] <- NA
-if (!(group_var %in% names(work)))   work[[group_var]]   <- NA
+if (!is.na(cluster_var) && !(cluster_var %in% names(work))) work[[cluster_var]] <- NA
+if (!is.na(group_var)   && !(group_var   %in% names(work))) work[[group_var]]   <- NA
 
 # Apply log transforms using global offsets; winsorize and standardize within folds
 work$logLA <- log10(work[["Leaf area (mm2)"]] + offsets[["Leaf area (mm2)"]])
@@ -249,9 +265,14 @@ for (r in seq_len(repeats_opt)) {
     }
 
     # Train regression on composites + logSSD
-    dtr <- data.frame(y = tr$y, LES = tr$LES, SIZE = tr$SIZE, logSSD = tr$logSSD, stringsAsFactors = FALSE)
-    dte <- data.frame(y = te$y, LES = te$LES, SIZE = te$SIZE, logSSD = te$logSSD, stringsAsFactors = FALSE)
-    m <- if (!is.null(w)) stats::lm(y ~ LES + SIZE + logSSD, data = dtr, weights = w) else stats::lm(y ~ LES + SIZE + logSSD, data = dtr)
+    dtr <- data.frame(y = tr$y, LES = tr$LES, SIZE = tr$SIZE, logSSD = tr$logSSD, logLA = tr$logLA, stringsAsFactors = FALSE)
+    dte <- data.frame(y = te$y, LES = te$LES, SIZE = te$SIZE, logSSD = te$logSSD, logLA = te$logLA, stringsAsFactors = FALSE)
+    if (logLA_as_predictor) {
+      form <- y ~ LES + SIZE + logSSD + logLA
+    } else {
+      form <- y ~ LES + SIZE + logSSD
+    }
+    m <- if (!is.null(w)) stats::lm(form, data = dtr, weights = w) else stats::lm(form, data = dtr)
 
     eta <- as.numeric(stats::predict(m, newdata = dte))
     yhat <- if (transform_y == "logit") from_logit(eta) else eta
@@ -308,7 +329,22 @@ if (have_jsonlite) {
 
 # Full-data lavaan fit for inference (optional)
 if (have_lavaan) {
-  dat_lav <- work[, c("y","logLA","LMA","Nmass","logH","logSM","logSSD", group_var, cluster_var), drop = FALSE]
+  safe_fit_measures <- function(fit, measures) {
+    vals <- list(); keys <- character(0)
+    for (m in measures) {
+      v <- try(lavaan::fitMeasures(fit, m), silent = TRUE)
+      if (!inherits(v, "try-error") && is.finite(as.numeric(v[1]))) {
+        keys <- c(keys, m)
+        vals[[length(vals)+1]] <- as.numeric(v[1])
+      }
+    }
+    if (!length(keys)) return(NULL)
+    data.frame(measure = keys, value = unlist(vals), stringsAsFactors = FALSE)
+  }
+  lav_cols <- c("y","logLA","LMA","Nmass","logH","logSM","logSSD")
+  if (!is.na(group_var)   && (group_var   %in% names(work))) lav_cols <- c(lav_cols, group_var)
+  if (!is.na(cluster_var) && (cluster_var %in% names(work))) lav_cols <- c(lav_cols, cluster_var)
+  dat_lav <- work[, lav_cols, drop = FALSE]
   # Create negLMA observed variable to fix sign of loading in measurement model
   dat_lav$negLMA <- -dat_lav$LMA
   # Measurement + structural model; Y refers to y (transformed). Use simple names.
@@ -319,8 +355,9 @@ if (have_lavaan) {
       # Original latent SIZE
       y_rhs <- "b1*LES + b2*SIZE"
       if (include_ssd_y) y_rhs <- paste(y_rhs, "+ b3*logSSD")
+      if (logLA_as_predictor) y_rhs <- paste(y_rhs, "+ b4*logLA")
       lines <- c(
-        "LES  =~ negLMA + Nmass + logLA",
+        if (les_core) "LES =~ negLMA + Nmass" else "LES =~ negLMA + Nmass + logLA",
         "SIZE =~ logH + logSM",
         sprintf("y ~ %s", y_rhs)
       )
@@ -339,8 +376,9 @@ if (have_lavaan) {
       # Deconstruct SIZE: use logH and logSM directly in y; regress LES on logH + logSM + logSSD
       y_rhs <- "b1*LES + b2*logH + b3*logSM"
       if (include_ssd_y) y_rhs <- paste(y_rhs, "+ b4*logSSD")
+      if (logLA_as_predictor) y_rhs <- paste(y_rhs, "+ b5*logLA")
       lines <- c(
-        "LES  =~ negLMA + Nmass + logLA",
+        if (les_core) "LES =~ negLMA + Nmass" else "LES =~ negLMA + Nmass + logLA",
         sprintf("y ~ %s", y_rhs),
         "LES ~ c1*logH + c2*logSM + c3*logSSD"
       )
@@ -352,7 +390,7 @@ if (have_lavaan) {
   }
 
   # Determine if we should do group-specific inclusion of SSD -> y
-  do_group_specific <- nzchar(group_ssd_to_y_for) && (group_var %in% names(dat_lav)) && length(unique(na.omit(dat_lav[[group_var]]))) > 1
+  do_group_specific <- nzchar(group_ssd_to_y_for) && !is.na(group_var) && (group_var %in% names(dat_lav)) && length(unique(na.omit(dat_lav[[group_var]]))) > 1
   if (do_group_specific) {
     # Fit per group with group-specific include_ssd_y, then write by-group fit indices
     glist <- unique(as.character(na.omit(dat_lav[[group_var]])))
@@ -360,9 +398,11 @@ if (have_lavaan) {
     rows <- list()
     for (g in glist) {
       sub <- dat_lav[which(as.character(dat_lav[[group_var]]) == g), , drop = FALSE]
+      if (nrow(sub) < max(10L, min_group_n)) next
       include_ssd <- (target_letter %in% unlist(strsplit(add_direct_ssd_targets, ","))) || (tolower(g) %in% include_groups)
       model_g <- build_model(include_ssd)
-      fit_g <- lavaan::sem(model_g, data = sub, estimator = "MLR", missing = "fiml", std.lv = TRUE)
+      fit_g <- try(lavaan::sem(model_g, data = sub, estimator = "MLR", missing = "fiml", std.lv = TRUE), silent = TRUE)
+      if (inherits(fit_g, "try-error")) next
       fm <- try(lavaan::fitMeasures(fit_g, c("chisq","df","pvalue","cfi","tli","rmsea","srmr","bic","aic")), silent = TRUE)
       if (!inherits(fm, "try-error")) {
         fm_list <- as.list(fm)
@@ -384,23 +424,33 @@ if (have_lavaan) {
     cat(sprintf("[lavaan] target=%s add_ssd=%s deconstruct_size=%s coadapt_les=%s allow_les_size_cov=%s resid_cov_terms=%s\n",
                 target_letter, add_ssd, deconstruct_size, coadapt_les, allow_les_size_cov, paste(resid_cov_terms[resid_cov_terms != ""], collapse=' | ')))
     lavaan_args <- list(model = model, data = dat_lav, estimator = "MLR", missing = "fiml", std.lv = TRUE)
-    if (group_var %in% names(dat_lav) && length(unique(na.omit(dat_lav[[group_var]]))) > 1) {
+    if (!is.na(group_var) && (group_var %in% names(dat_lav)) && length(unique(na.omit(dat_lav[[group_var]]))) > 1) {
       lavaan_args$group <- group_var
     }
-    if (cluster_var %in% names(dat_lav) && length(unique(na.omit(dat_lav[[cluster_var]]))) > 1) {
+    if (!is.na(cluster_var) && (cluster_var %in% names(dat_lav)) && length(unique(na.omit(dat_lav[[cluster_var]]))) > 1) {
       lavaan_args$cluster <- cluster_var
     }
-    fit <- do.call(lavaan::sem, lavaan_args)
-    std <- try(lavaan::standardizedSolution(fit), silent = TRUE)
-    if (!inherits(std, "try-error")) {
-      coefs_path <- paste0(base, "_path_coefficients.csv")
-      if (have_readr) readr::write_csv(std, coefs_path) else utils::write.csv(std, coefs_path, row.names = FALSE)
-    }
-    fitmeas <- try(lavaan::fitMeasures(fit, c("chisq","df","pvalue","cfi","tli","rmsea","srmr","bic","aic")), silent = TRUE)
-    if (!inherits(fitmeas, "try-error")) {
-      fit_df <- data.frame(measure = names(fitmeas), value = as.numeric(fitmeas), stringsAsFactors = FALSE)
-      fit_path <- paste0(base, "_fit_indices.csv")
-      if (have_readr) readr::write_csv(fit_df, fit_path) else utils::write.csv(fit_df, fit_path, row.names = FALSE)
+    fit <- try(do.call(lavaan::sem, lavaan_args), silent = TRUE)
+    if (!inherits(fit, "try-error")) {
+      std <- try(lavaan::standardizedSolution(fit), silent = TRUE)
+      if (!inherits(std, "try-error")) {
+        coefs_path <- paste0(base, "_path_coefficients.csv")
+        if (have_readr) readr::write_csv(std, coefs_path) else utils::write.csv(std, coefs_path, row.names = FALSE)
+      }
+      desired <- c(
+        "chisq","df","pvalue","cfi","tli","rmsea","srmr","bic","aic",
+        "chisq.scaled","df.scaled","pvalue.scaled","cfi.scaled","tli.scaled",
+        "rmsea.robust","rmsea.scaled","srmr_mplus"
+      )
+      fit_df <- safe_fit_measures(fit, desired)
+      if (!is.null(fit_df)) {
+        fit_path <- paste0(base, "_fit_indices.csv")
+        if (have_readr) readr::write_csv(fit_df, fit_path) else utils::write.csv(fit_df, fit_path, row.names = FALSE)
+      } else {
+        cat("[lavaan] fitMeasures unavailable; wrote coefficients only.\n")
+      }
+    } else {
+      cat("[lavaan] fit failed; skipping full-data coefficients and fit indices.\n")
     }
   }
 }

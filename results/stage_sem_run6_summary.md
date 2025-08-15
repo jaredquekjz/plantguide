@@ -18,14 +18,21 @@ Methodology (piecewise; CV + full‑model IC)
   - N: same as M plus retained interaction per Run 5: `--add_interaction=LES:logSSD`.
 - Full‑model IC: computed on full data using linear submodels (`lm/lmer`) for `y|parents`, `LES|parents`, `SIZE|parents` (consistent with Douma & Shipley’s full‑model AIC definition); nonlinearity is assessed via CV performance.
 
-Repro Commands (Run 6)
-- L/T (linear):
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv artifacts/model_data_complete_case_with_myco.csv --group_var Myco_Group_Final --target={L|T} --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise_run6`
-- R (spline on logH):
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv artifacts/model_data_complete_case_with_myco.csv --group_var Myco_Group_Final --target=R --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --nonlinear=true --out_dir=artifacts/stage4_sem_piecewise_run6`
-- M/N (deconstructed SIZE; spline on logH; N keeps interaction):
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv artifacts/model_data_complete_case_with_myco.csv --group_var Myco_Group_Final --target=M --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --nonlinear=true --out_dir=artifacts/stage4_sem_piecewise_run6`
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv artifacts/model_data_complete_case_with_myco.csv --group_var Myco_Group_Final --target=N --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --nonlinear=true --add_interaction=LES:logSSD --out_dir=artifacts/stage4_sem_piecewise_run6`
+Repro Commands (Run 6 — full, per target)
+- Common flags used across targets:
+  - `--input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final`
+  - `--repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none`
+  - `--out_dir=artifacts/stage4_sem_piecewise_run6`
+- L (linear baseline):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=L --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise_run6`
+- T (linear baseline):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=T --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --out_dir=artifacts/stage4_sem_piecewise_run6`
+- R (semi‑nonlinear height spline):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=R --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --nonlinear=true --out_dir=artifacts/stage4_sem_piecewise_run6`
+- M (deconstructed SIZE; height spline):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=M --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --nonlinear=true --out_dir=artifacts/stage4_sem_piecewise_run6`
+- N (deconstructed SIZE; height spline; keep LES:logSSD):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=N --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --nonlinear=true --add_interaction=LES:logSSD --out_dir=artifacts/stage4_sem_piecewise_run6`
 
 Final Results (Run 6; CV mean ± SD)
 - L: R² 0.2366±0.075; RMSE 1.3325±0.087; MAE 1.0017±0.059 (n=1065)
@@ -65,3 +72,25 @@ Bottom line and adoption
 - Do not adopt the spline nonlinearity for M/R/N; keep linear models from Run 5 (with LES:logSSD retained only for N). L/T remain linear as before.
 
 "Key logic: CV degradation with s(logH) indicates the added flexibility does not generalize (e.g., overfits to height). We therefore keep target equations like \"y ~ LES + SIZE + logSSD\" (L/T/R) and \"y ~ LES + logH + logSM + logSSD\" (M/N, with \"+ LES:logSSD\" only for N). Full‑model IC reported remains computed from linear submodels per Douma & Shipley (2020)."
+
+Phylo Sensitivity (Run 6P — full, per target)
+- Prerequisites: Newick at `data/phylogeny/eive_try_tree.nwk` (built via V.PhyloMaker2), and R packages `ape` and `nlme` installed. This step runs full‑data phylogenetic GLS to report full‑model AIC/BIC and y‑equation coefficients; CV remains non‑phylo.
+- Common flags used across targets:
+  - `--input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final`
+  - `--repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none`
+  - `--phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian`
+  - `--out_dir=artifacts/stage4_sem_piecewise_run6P`
+- L (phylo GLS, Brownian motion):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=L --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_piecewise_run6P`
+- T (phylo GLS, Brownian motion):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=T --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_piecewise_run6P`
+- R (phylo GLS, Brownian motion):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=R --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_piecewise_run6P`
+- M (phylo GLS; deconstructed SIZE):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=M --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_piecewise_run6P`
+- N (phylo GLS; deconstructed SIZE; keep LES:logSSD):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --group_var=Myco_Group_Final --target=N --repeats=5 --folds=10 --stratify=true --standardize=true --winsorize=false --weights=none --deconstruct_size=true --add_interaction=LES:logSSD --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_piecewise_run6P`
+
+Outputs (Run 6P per target)
+- `sem_piecewise_{L,T,M,R,N}_full_model_ic_phylo.csv` (per‑submodel AIC/BIC + sums)
+- `sem_piecewise_{L,T,M,R,N}_phylo_coefs_y.csv` (y‑equation GLS coefficients table)

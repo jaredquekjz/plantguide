@@ -64,6 +64,12 @@ group_var     <- opts[["group_var"]] %||% ""      # optional: enable multigroup 
 nonlinear_opt <- tolower(opts[["nonlinear"]] %||% "false") %in% c("1","true","yes","y")
 deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_piecewise"
+# Run 7 — refined LES and added predictors
+les_components_raw <- opts[["les_components"]] %||% "negLMA,Nmass,logLA"
+les_components <- trimws(unlist(strsplit(les_components_raw, ",")))
+add_predictor_raw <- opts[["add_predictor"]] %||% ""
+add_predictors <- trimws(unlist(strsplit(add_predictor_raw, ",")))
+want_logLA_pred <- any(tolower(add_predictors) == "logla")
 # Phylogeny options (full-data GLS sensitivity)
 phylo_newick <- opts[["phylogeny_newick"]] %||% ""
 phylo_corr   <- tolower(opts[["phylo_correlation"]] %||% "brownian")  # brownian|pagel
@@ -136,67 +142,7 @@ make_folds <- function(y, K, stratify) {
   }
 }
 
-# Optional: phylogenetic GLS sensitivity (full-data; no CV)
-if (nzchar(phylo_newick) && file.exists(phylo_newick) && have_ape && have_nlme) {
-  tr <- work
-  # Prepare composites on full data
-  comps <- build_composites(train = tr, test = tr)
-  tr$LES  <- comps$LES_train
-  tr$SIZE <- comps$SIZE_train
-  # Keep only rows with species id and set rownames to id for matching tips
-  tr <- tr[!is.na(tr$id) & nzchar(as.character(tr$id)), , drop = FALSE]
-  rownames(tr) <- as.character(tr$id)
-  phy <- try(ape::read.tree(phylo_newick), silent = TRUE)
-  if (!inherits(phy, "try-error")) {
-    common <- intersect(phy$tip.label, rownames(tr))
-    if (length(common) >= 10) {
-      phy2 <- ape::keep.tip(phy, common)
-      tr2  <- tr[common, , drop = FALSE]
-      # Choose correlation structure
-      corStruct <- NULL
-      if (phylo_corr %in% c("brownian","bm")) {
-        corStruct <- ape::corBrownian(phy = phy2)
-      } else if (phylo_corr %in% c("pagel","lambda")) {
-        cs <- try(ape::corPagel(value = 0.5, phy = phy2, fixed = FALSE), silent = TRUE)
-        if (!inherits(cs, "try-error")) corStruct <- cs
-      }
-      if (!is.null(corStruct)) {
-        add_logssd <- !psem_drop_logSSD_y
-        if (target_letter %in% c("M","N") && is.null(opts[["psem_drop_logssd_y"]])) add_logssd <- TRUE
-        rhs_fixed <- "y ~ LES + SIZE"
-        if (add_logssd) rhs_fixed <- paste(rhs_fixed, "+ logSSD")
-        if (target_letter == "M") rhs_fixed <- paste(rhs_fixed, "+ SIZE:logSSD")
-        if (want_les_x_ssd) rhs_fixed <- paste(rhs_fixed, "+ LES:logSSD")
-        rhs_lm <- stats::as.formula(rhs_fixed)
-        # Fit GLS models (ML)
-        m1g <- try(nlme::gls(rhs_lm, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
-        m2g <- try(nlme::gls(LES ~ SIZE + logSSD, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
-        m3g <- NULL
-        if (psem_include_size_eq) m3g <- try(nlme::gls(SIZE ~ logSSD, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
-        aics <- c(tryCatch(stats::AIC(m1g), error = function(e) NA_real_),
-                  tryCatch(stats::AIC(m2g), error = function(e) NA_real_),
-                  if (!is.null(m3g)) tryCatch(stats::AIC(m3g), error = function(e) NA_real_) else NULL)
-        bics <- c(tryCatch(stats::BIC(m1g), error = function(e) NA_real_),
-                  tryCatch(stats::BIC(m2g), error = function(e) NA_real_),
-                  if (!is.null(m3g)) tryCatch(stats::BIC(m3g), error = function(e) NA_real_) else NULL)
-        subm <- c("y|parents","LES|parents", if (!is.null(m3g)) "SIZE|parents" else NULL)
-        fm_phy <- data.frame(submodel = subm, AIC = aics, BIC = bics, stringsAsFactors = FALSE)
-        fm_phy$AIC_sum <- sum(fm_phy$AIC, na.rm = TRUE)
-        fm_phy$BIC_sum <- sum(fm_phy$BIC, na.rm = TRUE)
-        icp <- paste0(base, "_full_model_ic_phylo.csv")
-        if (have_readr) readr::write_csv(fm_phy, icp) else utils::write.csv(fm_phy, icp, row.names = FALSE)
-        co <- try(summary(m1g), silent = TRUE)
-        if (!inherits(co, "try-error")) {
-          coefs <- as.data.frame(co$tTable)
-          coefs$term <- rownames(coefs)
-          coefs_path <- paste0(base, "_phylo_coefs_y.csv")
-          if (have_readr) readr::write_csv(coefs, coefs_path) else utils::write.csv(coefs, coefs_path, row.names = FALSE)
-        }
-      }
-    }
-  }
-}
-
+# NOTE: Phylogenetic GLS sensitivity block moved below after data prep so 'work' exists.
 set.seed(seed_opt)
 
 base_cols <- c(id_col, target_name, feature_cols, cluster_var)
@@ -219,12 +165,23 @@ metrics <- data.frame(rep=integer(), fold=integer(), R2=double(), RMSE=double(),
 preds <- data.frame(stringsAsFactors = FALSE)
 
 build_composites <- function(train, test) {
-  M_LES_tr <- scale(cbind(negLMA = -train$LMA, Nmass = train$Nmass, logLA = train$logLA), center = TRUE, scale = TRUE)
+  # Dynamically build LES from requested components (e.g., negLMA,Nmass[,logLA])
+  make_mat <- function(df) {
+    cols <- list()
+    for (nm in les_components) {
+      key <- tolower(nm)
+      if (key == "neglma") cols[["negLMA"]] <- -df$LMA else if (key == "nmass") cols[["Nmass"]] <- df$Nmass else if (key == "logla") cols[["logLA"]] <- df$logLA
+    }
+    as.data.frame(cols, check.names = FALSE)
+  }
+  Mtr_raw <- make_mat(train)
+  Mte_raw <- make_mat(test)
+  M_LES_tr <- scale(as.matrix(Mtr_raw), center = TRUE, scale = TRUE)
   p_les <- stats::prcomp(M_LES_tr, center = FALSE, scale. = FALSE)
   rot_les <- p_les$rotation[,1]
   if (rot_les["Nmass"] < 0) rot_les <- -rot_les
   scores_LES_tr <- as.numeric(M_LES_tr %*% rot_les)
-  M_LES_te <- scale(cbind(negLMA = -test$LMA, Nmass = test$Nmass, logLA = test$logLA), center = attr(M_LES_tr, "scaled:center"), scale = attr(M_LES_tr, "scaled:scale"))
+  M_LES_te <- scale(as.matrix(Mte_raw), center = attr(M_LES_tr, "scaled:center"), scale = attr(M_LES_tr, "scaled:scale"))
   scores_LES_te <- as.numeric(M_LES_te %*% rot_les)
 
   M_SIZE_tr <- scale(cbind(logH = train$logH, logSM = train$logSM), center = TRUE, scale = TRUE)
@@ -315,6 +272,7 @@ for (r in seq_len(repeats_opt)) {
       model_form <- "linear_deconstructed"
       if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
         rhs <- "y ~ LES + logH + logSM + logSSD"
+        if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
         f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
         m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
@@ -326,6 +284,7 @@ for (r in seq_len(repeats_opt)) {
         eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
       } else {
         rhs <- "y ~ LES + logH + logSM + logSSD"
+        if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
         m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
         aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
@@ -334,6 +293,7 @@ for (r in seq_len(repeats_opt)) {
     } else if (have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1) {
       # Mixed model with random intercept: y ~ LES + SIZE + logSSD [+ LES:logSSD]
       rhs <- "y ~ LES + SIZE + logSSD"
+      if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
       f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
       m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
@@ -342,6 +302,7 @@ for (r in seq_len(repeats_opt)) {
       eta <- as.numeric(stats::predict(m, newdata = te, allow.new.levels = TRUE))
     } else {
       rhs <- "y ~ LES + SIZE + logSSD"
+      if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
       m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
       aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
@@ -403,6 +364,69 @@ if (have_jsonlite) {
   cat(json, file = metrics_json)
 }
 
+# Optional: phylogenetic GLS sensitivity (full-data; no CV)
+if (nzchar(phylo_newick) && file.exists(phylo_newick) && have_ape && have_nlme) {
+  tr <- work
+  # Prepare composites on full data
+  comps <- build_composites(train = tr, test = tr)
+  tr$LES  <- comps$LES_train
+  tr$SIZE <- comps$SIZE_train
+  # Keep only rows with species id and set rownames to id for matching tips
+  tr <- tr[!is.na(tr$id) & nzchar(as.character(tr$id)), , drop = FALSE]
+  # Match Newick tip labels that commonly use underscores instead of spaces
+  rownames(tr) <- gsub(" ", "_", as.character(tr$id), fixed = TRUE)
+  phy <- try(ape::read.tree(phylo_newick), silent = TRUE)
+  if (!inherits(phy, "try-error")) {
+    common <- intersect(phy$tip.label, rownames(tr))
+    if (length(common) >= 10) {
+      phy2 <- ape::keep.tip(phy, common)
+      tr2  <- tr[common, , drop = FALSE]
+      # Choose correlation structure
+      corStruct <- NULL
+      if (phylo_corr %in% c("brownian","bm")) {
+        corStruct <- ape::corBrownian(phy = phy2)
+      } else if (phylo_corr %in% c("pagel","lambda")) {
+        cs <- try(ape::corPagel(value = 0.5, phy = phy2, fixed = FALSE), silent = TRUE)
+        if (!inherits(cs, "try-error")) corStruct <- cs
+      }
+      if (!is.null(corStruct)) {
+        add_logssd <- !psem_drop_logSSD_y
+        if (target_letter %in% c("M","N") && is.null(opts[["psem_drop_logssd_y"]])) add_logssd <- TRUE
+        rhs_fixed <- if (deconstruct_size) "y ~ LES + logH + logSM" else "y ~ LES + SIZE"
+        if (add_logssd) rhs_fixed <- paste(rhs_fixed, "+ logSSD")
+        if (want_logLA_pred) rhs_fixed <- paste(rhs_fixed, "+ logLA")
+        if (!deconstruct_size && target_letter == "M") rhs_fixed <- paste(rhs_fixed, "+ SIZE:logSSD")
+        if (want_les_x_ssd) rhs_fixed <- paste(rhs_fixed, "+ LES:logSSD")
+        rhs_lm <- stats::as.formula(rhs_fixed)
+        # Fit GLS models (ML)
+        m1g <- try(nlme::gls(rhs_lm, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
+        m2g <- try(nlme::gls(LES ~ SIZE + logSSD, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
+        m3g <- NULL
+        if (psem_include_size_eq) m3g <- try(nlme::gls(SIZE ~ logSSD, data = tr2, method = "ML", correlation = corStruct, na.action = stats::na.omit, control = nlme::glsControl(msMaxIter = 200)), silent = TRUE)
+        aics <- c(tryCatch(stats::AIC(m1g), error = function(e) NA_real_),
+                  tryCatch(stats::AIC(m2g), error = function(e) NA_real_),
+                  if (!is.null(m3g)) tryCatch(stats::AIC(m3g), error = function(e) NA_real_) else NULL)
+        bics <- c(tryCatch(stats::BIC(m1g), error = function(e) NA_real_),
+                  tryCatch(stats::BIC(m2g), error = function(e) NA_real_),
+                  if (!is.null(m3g)) tryCatch(stats::BIC(m3g), error = function(e) NA_real_) else NULL)
+        subm <- c("y|parents","LES|parents", if (!is.null(m3g)) "SIZE|parents" else NULL)
+        fm_phy <- data.frame(submodel = subm, AIC = aics, BIC = bics, stringsAsFactors = FALSE)
+        fm_phy$AIC_sum <- sum(fm_phy$AIC, na.rm = TRUE)
+        fm_phy$BIC_sum <- sum(fm_phy$BIC, na.rm = TRUE)
+        icp <- paste0(base, "_full_model_ic_phylo.csv")
+        if (have_readr) readr::write_csv(fm_phy, icp) else utils::write.csv(fm_phy, icp, row.names = FALSE)
+        co <- try(summary(m1g), silent = TRUE)
+        if (!inherits(co, "try-error")) {
+          coefs <- as.data.frame(co$tTable)
+          coefs$term <- rownames(coefs)
+          coefs_path <- paste0(base, "_phylo_coefs_y.csv")
+          if (have_readr) readr::write_csv(coefs, coefs_path) else utils::write.csv(coefs, coefs_path, row.names = FALSE)
+        }
+      }
+    }
+  }
+}
+
 # Optional: psem on full data + full-model IC (Douma & Shipley 2020)
 if (have_piecewise && have_lme4) {
   tr <- work
@@ -418,10 +442,16 @@ if (have_piecewise && have_lme4) {
   # For targets M and N, keep direct SSD -> y regardless of default flag if user didn't override explicitly
   if (target_letter %in% c("M","N") && is.null(opts[["psem_drop_logssd_y"]])) add_logssd <- TRUE
   # Build fixed-effects part for y-equation
-  rhs_fixed <- "y ~ LES + SIZE"
-  if (add_logssd) rhs_fixed <- paste(rhs_fixed, "+ logSSD")
+  # Honor deconstructed SIZE choice for full-data PSEM so coefficients align with CV forms
+  if (deconstruct_size) {
+    rhs_fixed <- "y ~ LES + logH + logSM"
+  } else {
+    rhs_fixed <- "y ~ LES + SIZE"
+  }
+  if (want_logLA_pred) rhs_fixed <- paste(rhs_fixed, "+ logLA")
+  if (add_logssd)      rhs_fixed <- paste(rhs_fixed, "+ logSSD")
   # Optional interactions
-  if (target_letter == "M") rhs_fixed <- paste(rhs_fixed, "+ SIZE:logSSD")
+  # Do not auto-include SIZE:logSSD for Moisture; keep only explicit LES:logSSD when requested
   if (want_les_x_ssd) rhs_fixed <- paste(rhs_fixed, "+ LES:logSSD")
   # Final formulas
   rhs_lm  <- stats::as.formula(rhs_fixed)

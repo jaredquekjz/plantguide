@@ -91,3 +91,6 @@ Outcomes — Mycorrhiza Moderation (post‑power test)
   - Overall Fisher’s C p≈0.899 (df=8) in `sem_piecewise_R_multigroup_dsep.csv`; selected groups saturated (df=0). This mirrors the Woodiness success: targeted direct SSD→R dispels misfit.
 - lavaan by‑group (R) on filtered Myco (n≥30) with myco‑specific SSD→R:
   - Wrote `artifacts/stage4_sem_lavaan_run3/sem_lavaan_R_fit_indices_by_group.csv` (absolute fit remains modest for most groups; expected given strict measurement constraints). Use d‑sep improvement as primary causal evidence.
+
+Phylogenetic robustness (Action 5)
+- Random intercepts for `Family` were used when feasible in CV; full‑data phylogenetic GLS checks (Brownian, Pagel’s λ) maintain the signs and practical significance of core effects (LES, SIZE/logH/logSM, logSSD). This supports Run 3 model forms as non‑artifactual with respect to shared ancestry.
