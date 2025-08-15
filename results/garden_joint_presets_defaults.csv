@@ -1,0 +1,6 @@
+label,requirement,joint_min_prob
+SunnyNeutral,"L=high,M=med,R=med",0.6
+ShadeWetAcidic,"L=low,M=high,R=low",0.6
+PartialSunAverage,"L=med,M=med,R=med",0.6
+WarmNeutralFertile,"T=high,R=med,N=high",0.6
+DryPoorSun,"L=high,M=low,N=low",0.6
