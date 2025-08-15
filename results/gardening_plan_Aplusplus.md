@@ -82,3 +82,62 @@ Rscript src/Stage_5_MAG/calc_gardening_requirements.R \
 - Bin edges and borderline width are tunable knobs; start with 3.5/6.5 and ±0.5, adjust by validation.
 - Axis R² bands can be refreshed when Stage 4 is re‑run.
 - This policy is transparent, easy to communicate, and aligned with EIVE semantics, while remaining conservative near thresholds.
+
+---
+
+## Joint Probability with Copulas (Run 8)
+
+Why — Gardening decisions are multi‑constraint (e.g., sun + moisture + pH). After accounting for predictors, some axes still move together (residual dependence). Copulas model that co‑movement so we can estimate the probability that multiple axis bins hold at once.
+
+Intuition
+- Keep the same per‑axis means (0–10 predictions) — we don’t change single‑axis point estimates.
+- Model the “glue” between axes: residual correlations for {L↔M} and {T↔R} from `results/mag_copulas.json` (Gaussian copulas; adequacy checked in `results/stage_sem_run8_copula_diagnostics.md`).
+- Simulate the 5D outcome using per‑axis uncertainty (Run 7 CV RMSE) + those correlations, and estimate P(requirement) for garden‑friendly combos.
+
+How to use
+1) Batch joint probabilities for common scenarios (presets):
+   - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
+       --predictions_csv results/mag_predictions_no_eive.csv \
+       --copulas_json results/mag_copulas.json \
+       --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+       --presets_csv results/garden_joint_presets_defaults.csv \
+       --nsim 20000 \
+       --summary_csv results/garden_joint_summary.csv`
+   - Output: `results/garden_joint_summary.csv` with columns `species,label,requirement,joint_prob,threshold,pass`.
+
+2) Enforce a single joint requirement inside the recommender (gate):
+   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
+       --predictions_csv results/mag_predictions_no_eive.csv \
+       --output_csv results/garden_requirements_no_eive.csv \
+       --bins 0:3.5,3.5:6.5,6.5:10 \
+       --borderline_width 0.5 \
+       --abstain_strict false \
+       --joint_requirement L=high,M=med,R=med \
+       --joint_min_prob 0.6 \
+       --copulas_json results/mag_copulas.json \
+       --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+       --nsim_joint 20000`
+   - New columns: `joint_requirement`, `joint_prob`, `joint_ok`; adds `joint_prob_below_threshold` to `global_notes` when failing the gate.
+
+3) Annotate recommendations with the best‑passing scenario (from presets):
+   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
+       --predictions_csv results/mag_predictions_no_eive.csv \
+       --output_csv results/garden_requirements_no_eive.csv \
+       --bins 0:3.5,3.5:6.5,6.5:10 \
+       --joint_presets_csv results/garden_joint_presets_defaults.csv \
+       --copulas_json results/mag_copulas.json \
+       --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+       --nsim_joint 20000`
+   - New columns: `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
+
+Included default scenarios (illustrative)
+- SunnyNeutral — `L=high,M=med,R=med` (threshold 0.6)
+- ShadeWetAcidic — `L=low,M=high,R=low` (0.6)
+- PartialSunAverage — `L=med,M=med,R=med` (0.6)
+- WarmNeutralFertile — `T=high,R=med,N=high` (0.6)
+- DryPoorSun — `L=high,M=low,N=low` (0.6)
+
+Assumptions & notes
+- Residual scales per axis from Run 7 CV RMSE; correlations from `results/mag_copulas.json` (Gaussian copulas; adequacy confirmed).
+- Bins default to `[0,3.5), [3.5,6.5), [6.5,10]`; thresholds are adjustable per scenario.
+- Joint modeling improves multi‑axis suitability decisions; it does not change single‑axis point predictions.
