@@ -172,7 +172,7 @@ main <- function() {
     as_tibble(out)
   }) %>% bind_rows()
 
-  result <- bind_cols(df, preds) %>% select(-row_id)
+  result <- bind_cols(df, preds)
 
   # Write output
   readr::write_csv(result, opt$output_csv)
@@ -181,8 +181,4 @@ main <- function() {
 
 `%||%` <- function(a, b) if (is.null(a)) b else a
 
-tryCatch(main(), error = function(e) {
-  message(sprintf("Error: %s", e$message))
-  quit(status = 1)
-})
-
+main()

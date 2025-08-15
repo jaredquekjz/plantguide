@@ -15,6 +15,10 @@ Usage
     --equations_json results/mag_equations.json \
     --composites_json results/composite_recipe.json
 
+Makefile targets
+- `make mag_dryrun`: runs a quick example using `examples/mag_dryrun_input.csv`.
+- `make mag_predict MAG_INPUT=path/to/input.csv MAG_OUTPUT=path/to/output.csv`
+
 Notes
 - Logs use natural log: log(x + offset). Offsets come from `composite_recipe.json`.
 - Composites use provided standardization (mean/sd) before applying loadings.
