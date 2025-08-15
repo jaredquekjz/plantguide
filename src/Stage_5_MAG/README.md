@@ -1,30 +1,21 @@
-# Stage 5: Validation
+Stage 5 — MAG Application Scripts
 
-This folder will contain scripts for model validation and prediction accuracy assessment.
+Purpose
+- Apply the finalized MAG equations to new trait inputs.
+- Enforce input schema and missing-data policy from `results/composite_recipe.json`.
 
-## Planned Components:
+Scripts
+- `apply_mag.R`: CLI to read an input CSV, compute composites and log transforms, apply MAG equations from JSON, and write predictions.
 
-### 1. Cross-Validation
-- k-fold CV for prediction accuracy
-- Leave-one-family-out validation
-- Geographic cross-validation
+Usage
+- Example:
+  Rscript src/Stage_5_MAG/apply_mag.R \
+    --input_csv data/new_traits.csv \
+    --output_csv results/mag_predictions.csv \
+    --equations_json results/mag_equations.json \
+    --composites_json results/composite_recipe.json
 
-### 2. External Validation
-- Test on non-EIVE European species
-- Compare with expert knowledge
-- Validate against field measurements
-
-### 3. Prediction Outputs
-- Generate EIVE predictions for all species
-- Uncertainty quantification
-- Create planting guide recommendations
-
-## Success Metrics:
-- R² for continuous EIVE values
-- Classification accuracy for categorical indicators
-- Coverage of prediction intervals
-
-## Deliverables:
-- Predicted EIVE values for species without expert scores
-- Confidence intervals for predictions
-- Model performance statistics
+Notes
+- Logs use natural log: log(x + offset). Offsets come from `composite_recipe.json`.
+- Composites use provided standardization (mean/sd) before applying loadings.
+- Missing policy: rows missing any required predictor for a target yield `NA` for that target.
