@@ -145,7 +145,7 @@ lavaan fit (co‑adapted; LES_core + logLA)
 Phylogenetic checks
 - Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
-Adopted SEM mean structure (Maximal Ancestral Graph, MAG) (Shipley & Douma, 2021)
+Adopted SEM mean structure (Directed Acyclic Graph, DAG)
 - L/T/R: y ~ LES + SIZE + logSSD + logLA
 - M: y ~ LES + logH + logSM + logSSD + logLA
 - N: y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
