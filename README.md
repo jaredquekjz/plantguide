@@ -5,11 +5,11 @@ Purpose — turn six widely available plant traits into actionable, confidence�
 Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
 - Generate predictions from traits (MAG equations):
-  - `Rscript src/Stage_5_MAG/apply_mean_structure.R --input_csv data/new_traits.csv --output_csv results/mag_predictions_no_eive.csv --equations_json results/mag_equations.json --composites_json results/composite_recipe.json`
+  - `Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R --input_csv data/new_traits.csv --output_csv results/mag_predictions_no_eive.csv --equations_json results/MAG_Run8/mag_equations.json --composites_json results/MAG_Run8/composite_recipe.json`
 - Turn predictions into gardening requirements (with joint options):
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`
   - Or score multiple preset scenarios and annotate the best‑passing:
-    - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`
+    - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`
 
 ---
 
@@ -166,19 +166,25 @@ Artifacts (SEM)
 
 Core setup
 - Mean equations: use the adopted MAG forms (above) for single‑axis predictions; copulas model residual dependence only.
-- Detection: auto‑detect residual “districts” with BH‑FDR at `fdr_q=0.05` and a minimum absolute correlation `rho_min=0.15`.
+- Detection: start from BH‑FDR (q=0.05) and |ρ|≥0.15, then manually refine using mixed‑effects, rank‑based m‑sep (Family random intercept; Kendall with rank‑PIT) to keep only practically meaningful spouses.
 - Families: Gaussian copulas only for this run; selection by AIC.
 - Estimation: rank‑PIT pseudo‑observations; Gaussian MLE via z‑correlation (Douma & Shipley, 2022).
 
-Detected districts
-- T ↔ R: Gaussian, ρ=+0.328, n=1049, AIC=−117.58.
-- L ↔ M: Gaussian, ρ=−0.279, n=1063, AIC=−84.11.
+Final spouse set (Run 8)
+- L ↔ M: Gaussian, ρ≈−0.279, n=1063, AIC≈−84.11
+- T ↔ R: Gaussian, ρ≈+0.328, n=1049, AIC≈−117.58
+- T ↔ M: Gaussian, ρ≈−0.389, n=1064, AIC≈−172.57
+- M ↔ R: Gaussian, ρ≈−0.269, n=1049, AIC≈−76.76
+- M ↔ N: Gaussian, ρ≈+0.183, n=1046, AIC≈−33.65
 
 Mini‑figure — copula fits (Run 8)
 ```
-Pair   n     family    rho    loglik     AIC
-T–R  1049   gaussian  0.328    59.79  −117.58
-L–M  1063   gaussian −0.279    43.05   −84.11
+Pair   n     family    rho     loglik     AIC
+L–M  1063   gaussian −0.279     43.05    −84.11
+T–R  1049   gaussian  0.328     59.79   −117.58
+T–M  1064   gaussian −0.389     87.28   −172.57
+M–R  1049   gaussian −0.269     39.38    −76.76
+M–N  1046   gaussian  0.183     17.82    −33.65
 ```
 
 Diagnostics (Gaussian adequacy)
@@ -194,17 +200,25 @@ L–M  1045 −0.279   −0.196    −0.180     0.0057  0.0034  0.0010  0.0032  
 ```
 
 Repro commands
-- Optional m‑sep residual independence test (DAG → MAG step):
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv --recipe_json results/composite_recipe.json --spouses_csv results/stage_sem_run8_copula_fits.csv --out_summary results/msep_test_summary.csv --out_claims results/msep_claims.csv`
-- Export MAG + run copulas:
-  - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --version Run8`.
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --auto_detect_districts true --rho_min 0.15 --fdr_q 0.05 --copulas gaussian --select_by AIC`.
+- Export MAG + run copulas (final spouse set):
+  - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`.
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
+      --district L,M --district T,R --district T,M --district M,R --district M,N`.
+- Copula‑aware m‑sep (mixed, rank‑based):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
+      --out_summary results/msep_test_summary_run8_mixedcop.csv --out_claims results/msep_claims_run8_mixedcop.csv`
 
 Artifacts (Run 8)
-- `results/mag_equations.json` — 1.6 KB (version Run 8).
-- `results/mag_copulas.json` — 1.9 KB (districts and parameters).
-- `results/stage_sem_run8_residual_corr.csv` — 10 rows.
-- `results/stage_sem_run8_copula_fits.csv` — 2 rows.
+- `results/MAG_Run8/mag_equations.json` — version Run 8.
+- `results/MAG_Run8/mag_copulas.json` — 5 districts (final spouse set).
+- `results/MAG_Run8/stage_sem_run8_residual_corr.csv` — 10 rows.
+- `results/MAG_Run8/stage_sem_run8_copula_fits.csv` — 5 rows.
+
+What the m‑sep test achieved 
+- We stress‑tested the “no‑extra‑links” assumption after the mean equations by checking whether non‑spouse pairs of axes behave independently once traits are accounted for.
+- Using rank‑based correlations and a random‑effects structure (to avoid false alarms from clustered species), we found a handful of strong, real leftover links — those became copulas (the spouses).
+- The remaining links are tiny in size; we leave them out on purpose. This keeps the joint predictions simple and focused on the dependencies that actually move the needle.
 
 ---
 
@@ -224,26 +238,55 @@ Joint suitability (optional)
 - Supports:
   - Single requirement gate: enforce `joint_min_prob`.
   - Batch presets: score common scenarios and annotate each species with best‑passing scenario.
+  - Confidence‑oriented presets: when pH (R) predictions are the weakest axis, prefer R‑excluded presets for higher confidence (see `results/garden_presets_no_R.csv`).
 
 Defaults and presets
 - Bin edges: `[0,3.5), [3.5,6.5), [6.5,10]`; borderline width: `±0.5`.
 - Joint threshold (presets): `0.6` (tunable) in `results/garden_joint_presets_defaults.csv`.
-- Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/mag_copulas.json`.
+- Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/MAG_Run8/mag_copulas.json`.
+ - Preset sets:
+   - Defaults (with R): `results/garden_joint_presets_defaults.csv` (e.g., SunnyNeutral, WarmNeutralFertile).
+   - R‑excluded (more confident): `results/garden_presets_no_R.csv` (e.g., RichSoilSpecialist, LushShadePlant). Latest comparison in `results/summaries/PR_SUMMARY_Run8_Joint_Gardening.md`.
 
 Repro commands (joint usage)
 - Batch presets summary:
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
+  - (R‑excluded presets) `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/garden_presets_no_R.csv --nsim 20000 --summary_csv results/garden_joint_summary_no_R.csv`.
 - Recommender with single gate or best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
   - or with presets: add `--joint_presets_csv results/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
 
 Outputs (Stage 5–6)
 - `results/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.
-- `results/garden_joint_summary.csv` — species × scenario joint probabilities (if presets used).
+- `results/garden_joint_summary.csv` — species × scenario joint probabilities (defaults).
+- `results/garden_joint_summary_no_R.csv` — species × scenario joint probabilities (R‑excluded presets).
 
 Artifacts (Gardening)
 - `results/garden_joint_presets_defaults.csv` — default scenarios (e.g., SunnyNeutral, WarmNeutralFertile) with threshold 0.6.
 - `results/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
+ - `results/garden_presets_no_R.csv` — R‑excluded, confidence‑oriented presets (e.g., RichSoilSpecialist) with threshold 0.6.
+
+### How Gardeners Use This Guide
+1) Pick your site recipe (constraints):
+   - Easy path: choose a preset scenario that matches your bed (e.g., RichSoilSpecialist = M=high & N=high). If soil pH is unknown or variable, prefer the R‑excluded presets in `results/garden_presets_no_R.csv`.
+   - Custom path: set a single joint gate such as `--joint_requirement M=high,N=high --joint_min_prob 0.6` when running the recommender.
+2) Read the per‑axis cards first (from `results/garden_requirements_no_eive.csv`):
+   - Each axis shows: predicted value (0–10), bin (low/med/high), a `borderline` flag near cutoffs, and a qualitative confidence tag. Treat M/N as strongest, L/T as medium, R as weakest.
+3) Use joint probability to decide multi‑constraint fit:
+   - Presets: check `results/garden_joint_summary_no_R.csv` (or `..._summary.csv` for with‑R) and filter rows where `pass=TRUE` at your threshold (default 0.6). Higher `joint_prob` = better fit to that site recipe.
+   - Recommender gate: if you supplied a single `--joint_requirement`, use the `joint_prob` and `joint_ok` columns directly in `garden_requirements_no_eive.csv`.
+4) Pick winners and adjust if needed:
+   - Start with species that pass your recipe. If too few pass, lower the threshold (e.g., 0.5) or drop a weaker axis (often R). Avoid requiring “all five” — that AND condition is usually too strict.
+
+### What The Outputs Contain
+- `results/garden_requirements_no_eive.csv` (per species):
+  - Predictions: `L_pred,T_pred,M_pred,R_pred,N_pred` (0–10).
+  - Per‑axis guidance: `{Axis}_bin`, `{Axis}_borderline`, `{Axis}_confidence`, `{Axis}_recommendation`.
+  - Optional joint fields: `joint_requirement`, `joint_prob`, `joint_ok` (when a single gate is provided).
+  - Preset annotation (when `--joint_presets_csv` is used): `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
+- `results/garden_joint_summary_no_R.csv` (R‑excluded presets) and `results/garden_joint_summary.csv` (with‑R presets):
+  - Columns: `species,label,requirement,joint_prob,threshold,pass`.
+  - Example (your latest run): RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
 
 ---
 
@@ -268,7 +311,115 @@ Key paths for replication (selected)
 
 ---
 
-## Future Development
+
+## Future Developments
+
+## Light — Multi‑Regression vs SEM
+- Baseline multiple regression (MR) shows Light (L) performing better than T and R (CV R²: L ≈ 0.15 > T ≈ 0.10 > R ≈ 0.04), but L still remains modest overall.
+- In the final SEM (piecewise), L’s out‑of‑fold R² remains modest and does not improve as strongly as M/N. This reflects:
+  - Structural parsimony: SEM imposes LES/SIZE/SSD structure and mediations that reduce degrees of freedom versus MR’s direct mapping.
+  - Trait specificity: the six‑trait set captures broad spectra (LES, SIZE, SSD) but lacks light‑specific axes (e.g., thickness, N per area, phenology/syndromes) that better separate shade vs open habitats.
+  - Linear/interaction checks: tested splines and LES×SSD showed no reliable CV gains for L, so the final forms remain linear and parsimonious.
+  - Context noise: L is sensitive to canopy context and micro‑site variation that the current six traits do not fully encode.
+- Takeaway: the MR→SEM “discrepancy” is expected from SEM’s constraints and missing light‑focused features rather than a modeling error. Targeted, high‑coverage additions are the likely lever to improve L.
+
+## Future Additions To Improve L (beyond the six)
+Prioritized candidates from the TRY top‑coverage set, excluding the six already used (LMA, Nmass, LeafArea, PlantHeight, Seed/Diaspore mass, SSD):
+- Leaf N per area (TraitID 50): complements Nmass with thickness/area context; proxy for photosynthetic capacity.
+- Leaf thickness (46): mechanistic link to irradiance and shade tolerance; complements LMA.
+- Plant growth form (42): high‑coverage segmentation of open vs forested light environments.
+- Plant woodiness (38): high‑signal grouping; moderates light environments and allometry.
+- Leaf phenology type (37): evergreen vs deciduous relates to canopy persistence and seasonal light.
+- Photosynthesis pathway (22): C3/C4/CAM differences align with high‑light/open habitats.
+- Leaf type (43): needle vs broadleaf aligns with shade/light strategies.
+- Mycorrhiza type (7): indirect proxy for forest/understory light contexts.
+- Secondary (use judiciously; watch collinearity): Stem diameter (21), LDMC (47), Leaf shape/length/width (154/144/145), Leaf dry mass (55), Leaf P (15), Leaf C (13).
+
+Notes: We intentionally exclude SLA and LeafArea variants — near‑duplicates of LMA/LeafArea with likely limited incremental value and higher collinearity under SEM. Categorical additions will need factor encoding in the pipeline.
+
+### Candidate Additions for L (table)
+
+| Priority | TraitID | Trait                                                         | AccSpecNum | Rationale                                   |
+|---------:|--------:|---------------------------------------------------------------|-----------:|----------------------------------------------|
+|        1 |      50 | Leaf nitrogen (N) content per leaf area                      |      10067 | Photosynthetic capacity; complements Nmass   |
+|        2 |      46 | Leaf thickness                                               |       7773 | Shade tolerance/irradiance; complements LMA  |
+|        3 |      42 | Plant growth form                                            |     233812 | Segments open vs forested light contexts     |
+|        4 |      38 | Plant woodiness                                              |      77763 | High‑signal grouping; moderates allometry    |
+|        5 |      37 | Leaf phenology type                                          |      29770 | Evergreen/deciduous → canopy persistence     |
+|        6 |      22 | Photosynthesis pathway                                       |      37649 | C3/C4/CAM; aligns with open, high‑light      |
+|        7 |      43 | Leaf type                                                    |      61206 | Needle vs broadleaf; shade/light strategies  |
+|        8 |       7 | Mycorrhiza type                                              |       8028 | Forest affinity proxy (understory light)     |
+|        9 |      21 | Stem diameter                                                |       8426 | Architecture proxy (with SSD already used)   |
+|       10 |      47 | Leaf dry matter content (LDMC)                               |       9688 | Leaf economics; complements LMA              |
+|       11 |     343 | Plant life form (Raunkiaer)                                  |      16558 | Syndrome: form/phenology                     |
+|       12 |     154 | Leaf shape                                                   |      15527 | Leaf geometry/type                           |
+|       13 |     144 | Leaf length                                                  |      11500 | Leaf geometry/type                           |
+|       14 |     145 | Leaf width                                                   |      10859 | Leaf geometry/type                           |
+|       15 |      55 | Leaf dry mass (single leaf)                                  |       8696 | Structure/mass proxy                         |
+|       16 |      15 | Leaf phosphorus (P) content per leaf dry mass                |       8671 | Leaf economics (P limitation context)        |
+|       17 |      13 | Leaf carbon (C) content per leaf dry mass                    |       7509 | Structure proxy; limited direct link to L    |
+
+Primary are 1–8; 9–17 are secondary and should be added cautiously to avoid collinearity.
+
+---
+
+## Temperature (T) — Gaps and Remedies
+- Why T underperforms with the six traits:
+  - Weak trait–temperature determinism: the core six (LMA, Nmass, LeafArea, Height, Seed mass, SSD) are broad spectra signals, not temperature‑specific.
+  - Missing cold/heat tolerance cues: freezing resistance/avoidance, overwintering strategies, and growing‑season timing are not captured explicitly.
+  - Spatial/scale mismatch: realized temperature niche is governed by geography (latitude, elevation, continentality) more than by morphology alone.
+- Helpful additions from TRY (high coverage where possible):
+  - Species tolerance to frost (TraitID 31): direct cold‑tolerance indicator (appears in the top‑coverage list).
+  - Leaf phenology type (37) and plant growth form (42): seasonal/light–temperature coupling; already listed for L but beneficial for T segmentation.
+  - Photosynthesis pathway (22): CAM/C4 often tied to warm, open, seasonal climates.
+- Add exogenous climate covariates (recommended):
+  - CHELSA/WorldClim bioclims: BIO1 (mean annual temp), BIO5/6 (max warmest, min coldest month), BIO7 (annual range), BIO10/11 (mean warm/cold quarter), isothermality.
+  - Elevation and continentality indices. Derive species‑level summaries from GBIF occurrences (median, IQR). Use as exogenous predictors or to stratify model fits.
+
+### Candidate Additions for T (table)
+
+| Priority | TraitID | Trait                                            | AccSpecNum | Rationale                                   |
+|---------:|--------:|--------------------------------------------------|-----------:|----------------------------------------------|
+|        1 |      31 | Species tolerance to frost                      |      27829 | Direct cold‑tolerance signal for T gradient  |
+|        2 |      22 | Photosynthesis pathway                          |      37649 | Warm/open‑habitat associations (C3/C4/CAM)   |
+|        3 |      37 | Leaf phenology type                             |      29770 | Seasonality link; growing‑season timing      |
+|        4 |      42 | Plant growth form                               |     233812 | Segments canopy/thermal contexts             |
+|        5 |      38 | Plant woodiness                                 |      77763 | Broad thermal niche grouping                 |
+|        6 |     343 | Plant life form (Raunkiaer)                     |      16558 | Syndrome: overwintering strategy             |
+
+## Reaction / Soil pH (R) — Gaps and Remedies
+- Why R underperforms with the six traits:
+  - Missing edaphic signals: morphology alone has weak direct linkage to soil pH; R is driven by soil chemistry (base saturation, CaCO₃, CEC) and root nutrient uptake strategies.
+  - Root/leaf chemistry absent: the six traits omit root economics (SRL, RTD, diameter) and base‑cation content (leaf Ca, Mg) that track acid vs base‑rich soils.
+  - Habitat heterogeneity: micro‑edaphic variation and mycorrhizal associations are not encoded explicitly.
+- Helpful additions from TRY (where coverage allows):
+  - Mycorrhiza type (TraitID 7): EcM/ErM/AM distributions often align with soil acidity/base status in biomes.
+  - Root traits: specific root length (SRL), root tissue density (RTD), root diameter, fine‑root N/P — moderate coverage but mechanistically linked to edaphic strategies.
+  - Leaf chemistry: Ca, Mg, ash content (lower coverage), C/N ratio (TraitID 146) as a coarse nutrient/strategy proxy.
+- Add exogenous soil covariates (recommended):
+  - SoilGrids/WISE layers: pH (H₂O/CaCl₂), base saturation, cation exchange capacity (CEC), CaCO₃, soil organic carbon, texture (sand/clay).
+  - Join via occurrences to compute species‑level exposure summaries; include as exogenous predictors or grouping variables in SEM.
+
+### Candidate Additions for R (table)
+
+| Priority | TraitID | Trait                                                                 | AccSpecNum | Rationale                                              |
+|---------:|--------:|-----------------------------------------------------------------------|-----------:|---------------------------------------------------------|
+|        1 |       7 | Mycorrhiza type                                                       |       8028 | EcM/ErM/AM patterns track soil acidity/base status       |
+|        2 |     252 | Leaf calcium (Ca) content per leaf dry mass                           |       2540 | Base‑rich soil indicator (Ca)                            |
+|        3 |     257 | Leaf magnesium (Mg) content per leaf dry mass                         |       2410 | Base‑rich soil indicator (Mg)                            |
+|        4 |      65 | Root type, root architecture                                          |       5626 | Edaphic adaptation proxy                                 |
+|        5 |       6 | Root rooting depth                                                    |       4032 | Access to deeper, buffered horizons                      |
+|        6 |     614 | Fine root length per fine root dry mass (specific fine root length)  |       1308 | Root foraging strategy (SRL)                              |
+|        7 |     896 | Fine root diameter                                                    |       1147 | Root uptake/soil interface proxy                          |
+|        8 |    1781 | Fine root tissue density (fine root dry mass per fine root volume)    |        881 | Root economics; substrate association                     |
+|        9 |     146 | Leaf carbon/nitrogen (C/N) ratio                                      |       5843 | Coarse nutrient/strategy proxy (pH‑related vegetation)    |
+|       10 |      80 | Root nitrogen (N) content per root dry mass                           |        815 | Nutrient uptake strategy; indirectly pH‑linked            |
+
+Implementation note: when adding categorical traits (e.g., growth form, woodiness, phenology, mycorrhiza), encode as factors with clear reference levels; for climate/soil covariates, compute occurrence‑weighted summaries with robust statistics (median/IQR) and document spatial filters (native range vs introduced).
+
+
+## Traits → Strategies and Services
+
 - Traits → Strategies (CSR): build on Pierce et al. (2016, Functional Ecology) to compute global CSR strategy positions from core leaf economics and size traits, enabling strategy‑aware guidance (e.g., stress‑tolerators vs ruderals) alongside EIVE‑based requirements.
 - Traits → Ecosystem Services: extend mapping from traits to ecosystem service indicators using syntheses such as Brown & Anand (“Plant functional traits as measures of ecosystem service provision”), linking predicted trait profiles to services like carbon storage, soil stabilization, pollinator support, and microclimate regulation.
 - Data integration: incorporate GBIF occurrences to enrich geographic context and climate envelopes, and GloBI interaction records to surface biotic associations (pollinators, dispersers, mutualists). This will make recommendations more complete and locally useful for gardeners.
@@ -293,3 +444,5 @@ References
 - Shipley, B., Belluau, M., Kühn, I., Soudzilovskaia, N. A., Bahn, M., Peñuelas, J., Kattge, J., Sack, L., Cavender‑Bares, J., Ozinga, W. A., Blonder, B., van Bodegom, P. M., Manning, P., Hickler, T., Sosinski, E., Pillar, V. D., Onipchenko, V., & Poschlod, P. (2017). Predicting habitat affinities of plant species using commonly measured functional traits. Journal of Vegetation Science, 28(5), 1082–1095. https://doi.org/10.1111/jvs.12554
  - Pierce, S., Negreiros, D., Cerabolini, B. E. L., Kattge, J., Díaz, S., Kleyer, M., Shipley, B., Wright, S. J., Soudzilovskaia, N. A., Onipchenko, V. G., van Bodegom, P. M., Frenette‑Dussault, C., Weiher, E., Pinho, B. X., Cornelissen, J. H. C., Grime, J. P., Thompson, K., Hunt, R., Wilson, P. J., … Tampucci, D. (2017). A global method for calculating plant CSR ecological strategies applied across biomes world‑wide. Functional Ecology, 31(2), 444–457. https://doi.org/10.1111/1365-2435.12722
  - Brown, L. M., & Anand, M. (2022). Plant functional traits as measures of ecosystem service provision. People and Nature, 4(3), 589–611. https://doi.org/10.1002/pan3.10318
+
+---

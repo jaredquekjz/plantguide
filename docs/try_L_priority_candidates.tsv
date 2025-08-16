@@ -1,0 +1,18 @@
+Rank	TraitID	Trait	AccSpecNum	Reason
+1	50	Leaf nitrogen (N) content per leaf area	10067	Leaf nitrogen
+2	46	Leaf thickness	7773	Leaf thickness
+3	42	Plant growth form	233812	Syndrome: form/phenology
+4	38	Plant woodiness	77763	Syndrome: form/phenology
+5	37	Leaf phenology type	29770	Syndrome: form/phenology
+6	22	Photosynthesis pathway	37649	Photosynthesis pathway
+7	43	Leaf type	61206	Leaf geometry/type
+8	7	Mycorrhiza type	8028	Forest affinity proxy
+9	21	Stem diameter	8426	Architecture/woodiness proxy
+10	47	Leaf dry mass per leaf fresh mass (leaf dry matter content, LDMC)	9688	Leaf economics: LDMC
+11	343	Plant life form (Raunkiaer life form)	16558	Syndrome: form/phenology
+12	154	Leaf shape	15527	Leaf geometry/type
+13	144	Leaf length	11500	Leaf geometry/type
+14	145	Leaf width	10859	Leaf geometry/type
+15	55	Leaf dry mass (single leaf)	8696	Leaf mass (structure)
+16	15	Leaf phosphorus (P) content per leaf dry mass	8671	Leaf mass (structure)
+17	13	Leaf carbon (C) content per leaf dry mass	7509	Leaf mass (structure)
