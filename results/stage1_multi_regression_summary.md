@@ -20,6 +20,8 @@ SSD provenance within complete-case
 - Imputed (via LDMC; used from “combined”): 679
 
 ## Modeling Setup
+- Script: `src/Stage_3_Multi_Regression/run_multi_regression.R`
+- Input: `artifacts/model_data_complete_case.csv`
 - Targets: `EIVEres-{L,T,M,R,N}` (one at a time)
 - Predictors (six): Leaf area, Nmass, LMA, Plant height, Diaspore mass, SSD used
 - Transforms: log10 for Leaf area, Plant height, Diaspore mass, SSD used (with small offset); z-scored predictors

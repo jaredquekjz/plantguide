@@ -1,0 +1,20 @@
+data_TRY_15160          Sample TRY data (Request 15160)
+data_TRY_15161          Sample TRY data (Request 15161)
+data_coordinates        Sample coordinates data
+data_locations          Sample locations data
+rtry_bind_col           Bind data by columns
+rtry_bind_row           Bind data by rows
+rtry_exclude            Exclude (remove) data
+rtry_explore            Explore data
+rtry_export             Export preprocessed data
+rtry_geocoding          Perform geocoding
+rtry_import             Import data
+rtry_join_left          Left join for two data frames
+rtry_join_outer         Outer join for two data frames
+rtry_remove_col         Remove columns
+rtry_remove_dup         Remove duplicates in data
+rtry_revgeocoding       Perform reverse geocoding
+rtry_select_anc         Select ancillary data in wide table format
+rtry_select_col         Select columns
+rtry_select_row         Select rows
+rtry_trans_wider        Transform data from long to wide table
