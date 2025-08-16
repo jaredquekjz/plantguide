@@ -194,6 +194,8 @@ L–M  1045 −0.279   −0.196    −0.180     0.0057  0.0034  0.0010  0.0032  
 ```
 
 Repro commands
+- Optional m‑sep residual independence test (DAG → MAG step):
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv --recipe_json results/composite_recipe.json --spouses_csv results/stage_sem_run8_copula_fits.csv --out_summary results/msep_test_summary.csv --out_claims results/msep_claims.csv`
 - Export MAG + run copulas:
   - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --version Run8`.
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --auto_detect_districts true --rho_min 0.15 --fdr_q 0.05 --copulas gaussian --select_by AIC`.
