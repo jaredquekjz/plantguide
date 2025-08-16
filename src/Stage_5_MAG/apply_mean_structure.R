@@ -1,4 +1,8 @@
 #!/usr/bin/env Rscript
+# Applies DAG mean-structure equations to new trait inputs.
+# Not a MAG (Mixed Acyclic Graph) or m-sep implementation; residual
+# dependence across axes (bidirected edges) is handled downstream via
+# copulas. Inputs: mag_equations.json (mean equations), composite_recipe.json.
 suppressPackageStartupMessages({
   library(jsonlite)
   library(readr)

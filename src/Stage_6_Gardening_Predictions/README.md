@@ -21,7 +21,7 @@ Quick Start (from artifacts)
        --drop_if_has_eive true`
 
 2) Run Stage 5 MAG prediction on those rows:
-   - `Rscript src/Stage_5_MAG/apply_mag.R \
+   - `Rscript src/Stage_5_MAG/apply_mean_structure.R \
        --input_csv results/mag_input_no_eive.csv \
        --output_csv results/mag_predictions_no_eive.csv \
        --equations_json results/mag_equations.json \

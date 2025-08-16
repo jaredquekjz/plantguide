@@ -1,11 +1,11 @@
 # From Plant Traits to Gardening Requirements
 
-Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Maximal Ancestral Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
+Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Mixed Acyclic Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
 
 Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
 - Generate predictions from traits (MAG equations):
-  - `Rscript src/Stage_5_MAG/apply_mag.R --input_csv data/new_traits.csv --output_csv results/mag_predictions_no_eive.csv --equations_json results/mag_equations.json --composites_json results/composite_recipe.json`
+  - `Rscript src/Stage_5_MAG/apply_mean_structure.R --input_csv data/new_traits.csv --output_csv results/mag_predictions_no_eive.csv --equations_json results/mag_equations.json --composites_json results/composite_recipe.json`
 - Turn predictions into gardening requirements (with joint options):
   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`
   - Or score multiple preset scenarios and annotate the best‑passing:
@@ -162,7 +162,7 @@ Artifacts (SEM)
 
 ---
 
-## Maximal Ancestral Graph (MAG) + Copulas — Residual Dependence for Joint Decisions
+## Mixed Acyclic Graph (MAG) + Copulas — Residual Dependence for Joint Decisions
 
 Core setup
 - Mean equations: use the adopted MAG forms (above) for single‑axis predictions; copulas model residual dependence only.
