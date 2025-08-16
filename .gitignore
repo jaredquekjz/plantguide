@@ -1,6 +1,7 @@
 # Track only src/, results/, and README; ignore everything else
 /*
 !/.gitignore
+!/LICENSE
 !/README.md
 !/src/
 !/results/
