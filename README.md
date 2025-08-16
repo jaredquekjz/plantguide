@@ -1,6 +1,6 @@
 # From Plant Traits to Gardening Requirements
 
-Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → MAG + Copulas (Run 8) → Gardening plan implementation.
+Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Maximal Ancestral Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
 
 Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
@@ -145,7 +145,7 @@ lavaan fit (co‑adapted; LES_core + logLA)
 Phylogenetic checks
 - Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
-Adopted SEM mean structure (MAG) (Shipley & Douma, 2021)
+Adopted SEM mean structure (Maximal Ancestral Graph, MAG) (Shipley & Douma, 2021)
 - L/T/R: y ~ LES + SIZE + logSSD + logLA
 - M: y ~ LES + logH + logSM + logSSD + logLA
 - N: y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
@@ -162,7 +162,7 @@ Artifacts (SEM)
 
 ---
 
-## MAG + Copulas — Residual Dependence for Joint Decisions
+## Maximal Ancestral Graph (MAG) + Copulas — Residual Dependence for Joint Decisions
 
 Core setup
 - Mean equations: use the adopted MAG forms (above) for single‑axis predictions; copulas model residual dependence only.
