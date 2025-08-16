@@ -1,6 +1,6 @@
-# Unified Methodology and Results — From Plant Traits to Gardening Requirements (Run 8)
+# From Plant Traits to Gardening Requirements
 
-Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. The pipeline proceeds: Data methodology → Multiple regression (Stage 1) → SEM (Stage 2) → MAG + Copulas (Stage 4, Run 8) → Gardening plan implementation (Stage 5–6).
+Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression (Stage 1) → SEM (Stage 2) → MAG + Copulas (Stage 4, Run 8) → Gardening plan implementation (Stage 5–6).
 
 ---
 
@@ -8,7 +8,7 @@ Purpose — turn six widely available plant traits into actionable, confidence�
 
 Sources and matching
 - Traits: TRY curated species‑level means (six numeric traits): Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) (Díaz et al., Scientific Data).
-- Indicators: EIVE 1.0 niche positions (0–10) for five axes — Light (L), Temperature (T), Moisture (M), Reaction/pH (R), Nutrients (N) (Dengler et al., 2023; Dengler et al., 2024 IAVS).
+- Indicators: Ecological Indicator Values for Europe (EIVE) 1.0 — continuous 0–10 indicator values for five environmental gradients: Light (L), Temperature (T), Moisture (M), Reaction/soil pH (R), and Nutrients (N). EIVE quantifies each species’ realized niche position in European vegetation, harmonizing and extending the classic Ellenberg system to a continuous European scale. Higher values indicate preference toward the higher end of each gradient (e.g., high‑light, warmer, wetter, more alkaline, more fertile sites) (Dengler et al., 2023; Dengler et al., 2024 IAVS).
 - Name alignment: WFO‑accepted names via `data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`; unified normalization (hybrid sign ×/" x ", diacritics, whitespace/case).
 
 Datasets (assembled)
@@ -69,10 +69,10 @@ Comparison to 2017 (Shipley et al., 2017)
 
 Hit‑rate vs 2017 (ordinal Ellenberg)
 ```
-Axis   Ours  ±1   2017  ±1     Ours  ±2   2017  ±2
-L      60%        70–90%        87%        ≥90%
-M      58%        70–90%        86%        ≥90%
-N      47%        70–90%        82%        ≥90%
+Axis  ours±1  2017±1   ours±2  2017±2
+L        60%    70–90%     87%     ≥90%
+M        58%    70–90%     86%     ≥90%
+N        47%    70–90%     82%     ≥90%
 
 Notes: 2017 modeled L/M/N only; T and R not available. Our targets are continuous EIVE (0–10), so ±1/±2 are stricter than ordinal ranks.
 ```
@@ -113,12 +113,12 @@ Run highlights
 
 Mini‑figure — piecewise full‑model IC (Run 7 vs Run 6)
 ```
-Axis  AIC_sum7   ΔAIC    BIC_sum7   ΔBIC
-L     8931.12   +1.06     9005.68   +6.03
-T     8641.42   +1.57     8716.01   +6.54
-M     8673.07  −92.38     8757.57  −82.41
-R     9071.31   −0.75     9145.65   +4.21
-N     9037.49  −81.29     9126.65  −67.33
+Axis  AIC_sum7   ΔAIC   BIC_sum7   ΔBIC
+L       8931.12  +1.06    9005.68  +6.03
+T       8641.42  +1.57    8716.01  +6.54
+M       8673.07 −92.38    8757.57 −82.41
+R       9071.31  −0.75    9145.65  +4.21
+N       9037.49 −81.29    9126.65 −67.33
 
 Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
 ```
@@ -167,9 +167,9 @@ Detected districts
 
 Mini‑figure — copula fits (Run 8)
 ```
-A  B    n    family    rho     loglik     AIC
-T  R  1049   gaussian  0.328     59.79  -117.58
-L  M  1063   gaussian -0.279     43.05   -84.11
+Pair   n     family    rho    loglik     AIC
+T–R  1049   gaussian  0.328    59.79  −117.58
+L–M  1063   gaussian −0.279    43.05   −84.11
 ```
 
 Diagnostics (Gaussian adequacy)
@@ -179,9 +179,9 @@ Diagnostics (Gaussian adequacy)
 
 Mini‑figure — adequacy checks
 ```
-Pair  n    rho    tau_emp  tau_gauss   hi_emp  hi_mc   lo_emp  lo_mc  CV_logc/obs
-T:R  1045  0.328   0.237     0.213     0.0172  0.0227  0.0287  0.0225    0.0569
-L:M  1045 -0.279  -0.196    -0.180     0.0057  0.0034  0.0010  0.0032    0.0387
+Pair  n     rho   tau_emp  tau_gauss   hi_emp  hi_mc   lo_emp  lo_mc   CV_logc/obs
+T–R  1045  0.328    0.237     0.213     0.0172  0.0227  0.0287  0.0225     0.0569
+L–M  1045 −0.279   −0.196    −0.180     0.0057  0.0034  0.0010  0.0032     0.0387
 ```
 
 Repro commands
