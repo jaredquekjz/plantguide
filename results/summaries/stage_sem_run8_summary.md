@@ -1,13 +1,13 @@
-# Stage 4 — Run 8 Summary: MAG + Copulas
+# Stage 4 — Run 8 Summary: MAG (Mixed Acyclic Graph) + Copulas
 
-Purpose — keep the finalized MAG mean structure and model residual dependencies between responses via copulas (per Douma & Shipley, 2022).
+Purpose — keep the finalized SEM mean structure as a DAG and model residual dependencies between responses via copulas, yielding a mixed (directed + bidirected) acyclic graph over the observed variables (per Douma & Shipley, 2021/2022).
 
-## Mean Structure (unchanged)
+## Mean Structure (DAG; unchanged)
 - L/T/R: L,T,R ~ LES + SIZE + logSSD + logLA
 - M: M ~ LES + logH + logSM + logSSD + logLA
 - N: N ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
 
-## District Detection
+## District Detection (bidirected residuals)
 Auto-detect: True with thresholds rho_min=0.15, fdr_q=0.05
 Selected districts:
 - {T:R} — gaussian (rho=0.328, n=1049)
@@ -23,6 +23,8 @@ Selected districts:
 - Residual correlations (BH-FDR): see `results/stage_sem_run8_residual_corr.csv`.
 - Pseudo-observations: rank PIT; Gaussian copula MLE via z-correlation.
 - Stability: marginals unchanged; copula metadata documents residual dependence only.
+
+Note on terminology — MAG here follows Douma & Shipley as a Mixed Acyclic Graph (directed + bidirected edges tested via m-separation). This run adopts a MAG-inspired approach by adding bidirected residual links via copulas to a vetted DAG mean structure; it does not perform a full m-sep topology test.
 
 ## Repro Commands
 ```bash
