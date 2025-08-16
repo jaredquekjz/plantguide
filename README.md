@@ -1,6 +1,6 @@
 # From Plant Traits to Gardening Requirements
 
-Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression (Stage 1) → SEM (Stage 2) → MAG + Copulas (Stage 4, Run 8) → Gardening plan implementation (Stage 5–6).
+Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → MAG + Copulas (Run 8) → Gardening plan implementation.
 
 Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
@@ -13,7 +13,7 @@ Quick Start — Non‑EIVE Species
 
 ---
 
-## 1) Data Methodology
+## Data Methodology
 
 Sources and matching
 - Traits: TRY curated species‑level means (six numeric traits): Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) (Díaz et al., Scientific Data).
@@ -41,7 +41,7 @@ Anchoring to prior work
 
 ---
 
-## 2) Multiple Regression (Stage 1) — Predictive Baseline
+## Multiple Regression — Predictive Baseline
 
 Setup
 - Script: `src/Stage_3_Multi_Regression/run_multi_regression.R`; input: complete‑case (1,069 spp.).
@@ -96,7 +96,7 @@ Artifacts and reproducibility
 ---
 
 
-## 3) SEM (Stage 2) — Structure, Fit, and Final Forms
+## Structural Equation Modeling (SEM) — Structure, Fit, and Final Forms
 
 Core constructs and forms
 - Latent/composite axes: LES_core (−LMA, +Nmass) and SIZE (+logH, +logSM). CV uses training‑only composites.
@@ -162,7 +162,7 @@ Artifacts (SEM)
 
 ---
 
-## 4) MAG + Copulas (Stage 4, Run 8) — Residual Dependence for Joint Decisions
+## MAG + Copulas — Residual Dependence for Joint Decisions
 
 Core setup
 - Mean equations: use the adopted MAG forms (above) for single‑axis predictions; copulas model residual dependence only.
@@ -206,7 +206,7 @@ Artifacts (Run 8)
 
 ---
 
-## 5) Gardening Plan Implementation (Stage 5–6) — Simple, Confidence‑Aware Recommendations
+## Gardening Plan — Simple, Confidence‑Aware Recommendations
 
 Axis bins and labels (defaults)
 - Bins per axis: Low [0, 3.5), Med [3.5, 6.5), High [6.5, 10]
@@ -270,6 +270,11 @@ Key paths for replication (selected)
 - Traits → Strategies (CSR): build on Pierce et al. (2016, Functional Ecology) to compute global CSR strategy positions from core leaf economics and size traits, enabling strategy‑aware guidance (e.g., stress‑tolerators vs ruderals) alongside EIVE‑based requirements.
 - Traits → Ecosystem Services: extend mapping from traits to ecosystem service indicators using syntheses such as Brown & Anand (“Plant functional traits as measures of ecosystem service provision”), linking predicted trait profiles to services like carbon storage, soil stabilization, pollinator support, and microclimate regulation.
 - Data integration: incorporate GBIF occurrences to enrich geographic context and climate envelopes, and GloBI interaction records to surface biotic associations (pollinators, dispersers, mutualists). This will make recommendations more complete and locally useful for gardeners.
+
+---
+
+## License
+- Licensed under the GNU Affero General Public License, version 3 or later (AGPL‑3.0‑or‑later). Network use of a modified version must make corresponding source available to users. See `LICENSE` for full terms.
 
 ---
 
