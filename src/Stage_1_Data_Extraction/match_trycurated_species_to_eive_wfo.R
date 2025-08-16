@@ -79,11 +79,18 @@ if (!(species_col %in% names(try_df))) {
   cat(sprintf("[warn] Using fallback species column: '%s'\n", species_col))
 }
 
+# Use the same normalization as in normalize_eive_to_wfo_EXACT.R to ensure
+# consistent matching across stages (handles hybrid signs, transliteration, etc.)
 norm_name <- function(x) {
-  x <- as.character(x)
-  x <- gsub("\\s+", " ", x)
-  x <- trimws(x)
-  tolower(x)
+  x <- ifelse(is.na(x), '', trimws(as.character(x)))
+  # Remove botanical hybrid sign (×) and ASCII 'x' marker between tokens
+  x <- gsub('^×[[:space:]]*', '', x, perl = TRUE)
+  x <- gsub('[[:space:]]*×[[:space:]]*', ' ', x, perl = TRUE)
+  x <- gsub('(^|[[:space:]])x([[:space:]]+)', ' ', x, perl = TRUE)
+  x <- iconv(x, to = 'ASCII//TRANSLIT')
+  x <- tolower(gsub('[\r\n]+', ' ', x))
+  x <- gsub('[[:space:]]+', ' ', x)
+  trimws(x)
 }
 
 try_species <- norm_name(try_df[[species_col]])

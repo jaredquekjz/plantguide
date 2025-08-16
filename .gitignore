@@ -1,17 +1,12 @@
-# Artifacts and run outputs
-artifacts/
+# Track only src/, results/, and README; ignore everything else
+/*
+!/.gitignore
+!/README.md
+!/src/
+!/results/
 
-# Ignore entire data folder
-data/
-
-
-# Python cache and OS noise
+# Within tracked folders, keep common noise ignored
 __pycache__/
 *.pyc
 .DS_Store
 .ipynb_checkpoints/
-
-GRooT-Data/
-
-# Archive folder
-archive/

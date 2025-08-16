@@ -2,8 +2,8 @@
   "version": {
     "sem_stage": "Stage 2",
     "run": "Run 7 (rerun aligned)",
-    "date": "2025-08-15",
-    "git_commit": "e389f43"
+    "date": "2025-08-16",
+    "git_commit": "af1e3a8"
   },
   "data": {
     "source_csv": "artifacts/model_data_complete_case_with_myco.csv",

@@ -1,8 +1,8 @@
 {
   "version": {
     "run": "Run 8",
-    "date": "2025-08-15",
-    "git_commit": "e389f43"
+    "date": "2025-08-16",
+    "git_commit": "af1e3a8"
   },
   "selection": {
     "criterion": "AIC",

@@ -67,11 +67,18 @@ ensure_dir <- function(path) {
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 }
 
+# Use the same normalization as in normalize_eive_to_wfo_EXACT.R to ensure
+# consistent matching across stages (handles hybrid signs, transliteration, etc.)
 norm_name <- function(x) {
-  x <- as.character(x)
-  x <- gsub("\\s+", " ", x)
-  x <- trimws(x)
-  tolower(x)
+  x <- ifelse(is.na(x), '', trimws(as.character(x)))
+  # Remove botanical hybrid sign (×) and ASCII 'x' marker between tokens
+  x <- gsub('^×[[:space:]]*', '', x, perl = TRUE)
+  x <- gsub('[[:space:]]*×[[:space:]]*', ' ', x, perl = TRUE)
+  x <- gsub('(^|[[:space:]])x([[:space:]]+)', ' ', x, perl = TRUE)
+  x <- iconv(x, to = 'ASCII//TRANSLIT')
+  x <- tolower(gsub('[\r\n]+', ' ', x))
+  x <- gsub('[[:space:]]+', ' ', x)
+  trimws(x)
 }
 
 # Validate inputs early
@@ -262,4 +269,3 @@ cat(sprintf("  - %s\n", out_complete))
 if (!is.null(model_cc_obs)) cat(sprintf("  - %s\n", out_complete_o))
 
 invisible(NULL)
-

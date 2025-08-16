@@ -70,6 +70,12 @@ les_core_inds          <- trimws(unlist(strsplit(les_core_inds_raw, ",")))
 logLA_as_predictor     <- tolower(opts[["logLA_as_predictor"]] %||% "false") %in% c("1","true","yes","y")
 min_group_n            <- suppressWarnings(as.integer(opts[["min_group_n"]] %||% "0")); if (is.na(min_group_n)) min_group_n <- 0
 
+# Bootstrap options (full-data lavaan inference only)
+do_bootstrap_lav       <- tolower(opts[["bootstrap"]] %||% "false") %in% c("1","true","yes","y")
+n_boot_lav             <- suppressWarnings(as.integer(opts[["n_boot"]] %||% "200")); if (is.na(n_boot_lav)) n_boot_lav <- 200
+boot_ci_type           <- tolower(opts[["bootstrap_ci_type"]] %||% "perc")  # perc|bca|norm
+if (boot_ci_type %in% c("bca.simple","bca")) boot_ci_type <- "bca.simple"
+
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
 
@@ -424,6 +430,12 @@ if (have_lavaan) {
     cat(sprintf("[lavaan] target=%s add_ssd=%s deconstruct_size=%s coadapt_les=%s allow_les_size_cov=%s resid_cov_terms=%s\n",
                 target_letter, add_ssd, deconstruct_size, coadapt_les, allow_les_size_cov, paste(resid_cov_terms[resid_cov_terms != ""], collapse=' | ')))
     lavaan_args <- list(model = model, data = dat_lav, estimator = "MLR", missing = "fiml", std.lv = TRUE)
+    # Enable bootstrap-based SEs and CIs if requested
+    if (do_bootstrap_lav) {
+      lavaan_args$se <- "bootstrap"
+      lavaan_args$bootstrap <- n_boot_lav
+      lavaan_args$bootstrap.ci.type <- boot_ci_type
+    }
     if (!is.na(group_var) && (group_var %in% names(dat_lav)) && length(unique(na.omit(dat_lav[[group_var]]))) > 1) {
       lavaan_args$group <- group_var
     }
@@ -432,7 +444,8 @@ if (have_lavaan) {
     }
     fit <- try(do.call(lavaan::sem, lavaan_args), silent = TRUE)
     if (!inherits(fit, "try-error")) {
-      std <- try(lavaan::standardizedSolution(fit), silent = TRUE)
+      # Include confidence intervals when available (analytic or bootstrap)
+      std <- try(lavaan::standardizedSolution(fit, ci = TRUE), silent = TRUE)
       if (!inherits(std, "try-error")) {
         coefs_path <- paste0(base, "_path_coefficients.csv")
         if (have_readr) readr::write_csv(std, coefs_path) else utils::write.csv(std, coefs_path, row.names = FALSE)

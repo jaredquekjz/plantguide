@@ -64,6 +64,8 @@ group_var     <- opts[["group_var"]] %||% ""      # optional: enable multigroup 
 nonlinear_opt <- tolower(opts[["nonlinear"]] %||% "false") %in% c("1","true","yes","y")
 deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_piecewise"
+# Safety flag: force plain lm fits (disable lme4) to avoid native-code issues in restricted sandboxes
+force_lm      <- tolower(opts[["force_lm"]] %||% "false") %in% c("1","true","yes","y")
 # Run 7 — refined LES and added predictors
 les_components_raw <- opts[["les_components"]] %||% "negLMA,Nmass,logLA"
 les_components <- trimws(unlist(strsplit(les_components_raw, ",")))
@@ -81,6 +83,11 @@ psem_drop_logSSD_y    <- tolower(opts[["psem_drop_logssd_y"]]    %||% "true") %i
 psem_include_size_eq  <- tolower(opts[["psem_include_size_eq"]]  %||% "true") %in% c("1","true","yes","y")
 group_ssd_to_y_for    <- opts[["group_ssd_to_y_for"]] %||% ""  # comma-separated group labels to force logSSD -> y in multigroup d-sep
 
+# Bootstrap options (full-data coefficient stability; not used in CV)
+do_bootstrap_pw       <- tolower(opts[["bootstrap"]] %||% "false") %in% c("1","true","yes","y")
+n_boot_pw             <- suppressWarnings(as.integer(opts[["n_boot"]] %||% "200")); if (is.na(n_boot_pw)) n_boot_pw <- 200
+boot_cluster_pw       <- tolower(opts[["bootstrap_cluster"]] %||% "true") %in% c("1","true","yes","y")
+
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
 
@@ -90,6 +97,11 @@ if (!file.exists(in_csv)) fail(sprintf("Input CSV not found: '%s'", in_csv))
 
 # Load data
 df <- if (have_readr) readr::read_csv(in_csv, show_col_types = FALSE, progress = FALSE) else utils::read.csv(in_csv, check.names = FALSE)
+
+# If requested, force-disable lme4 usage everywhere
+if (force_lm) {
+  have_lme4 <- FALSE
+}
 
 # Validate columns
 target_name <- paste0("EIVEres-", target_letter)
@@ -249,13 +261,25 @@ for (r in seq_len(repeats_opt)) {
     aic_tr <- NA_real_
     model_form <- "linear_size"
     if (nonlinear_opt && have_mgcv && (target_letter %in% c("M","N","R"))) {
-      # Build GAM formula: y ~ LES + s(logH) + logSM + logSSD [+ LES:logSSD]
-      # Deconstruct SIZE: include logSM linearly; keep LES and logSSD
-      if (want_les_x_ssd) {
-        f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD + LES:logSSD, data = tr, method = "REML")
-        model_form <- paste0(model_form, "+LES:logSSD")
-      } else {
-        f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD, data = tr, method = "REML")
+      # Nonlinear GAM: use target-specific handling of SIZE
+      # - M/N: deconstruct SIZE -> s(logH) + logSM
+      # - R: retain SIZE (do not deconstruct) and add s(logH)
+      if (target_letter %in% c("M","N")) {
+        # y ~ LES + s(logH) + logSM + logSSD [+ LES:logSSD]
+        if (want_les_x_ssd) {
+          f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD + LES:logSSD, data = tr, method = "REML")
+          model_form <- paste0(model_form, "+LES:logSSD")
+        } else {
+          f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + logSM + logSSD, data = tr, method = "REML")
+        }
+      } else { # target_letter == "R"
+        # y ~ LES + s(logH) + SIZE + logSSD [+ LES:logSSD]
+        if (want_les_x_ssd) {
+          f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + SIZE + logSSD + LES:logSSD, data = tr, method = "REML")
+          model_form <- paste0(model_form, "+LES:logSSD")
+        } else {
+          f_gam <- mgcv::gam(y ~ LES + s(logH, k = 5) + SIZE + logSSD, data = tr, method = "REML")
+        }
       }
       used_gam <- TRUE
       model_form <- "semi_nonlinear_slogH"
@@ -428,7 +452,8 @@ if (nzchar(phylo_newick) && file.exists(phylo_newick) && have_ape && have_nlme) 
 }
 
 # Optional: psem on full data + full-model IC (Douma & Shipley 2020)
-if (have_piecewise && have_lme4) {
+# Allow running with OLS-only when lme4 is unavailable or force_lm=true
+if (have_piecewise) {
   tr <- work
   # Prepare composites on full data (for structural paths and d-sep)
   comps <- build_composites(train = tr, test = tr)
@@ -457,19 +482,26 @@ if (have_piecewise && have_lme4) {
   rhs_lm  <- stats::as.formula(rhs_fixed)
   rhs_lme <- stats::as.formula(sprintf("%s + (1|%s)", rhs_fixed, cluster_var))
 
-  m1 <- try(lme4::lmer(rhs_lme, data = tr), silent = TRUE)
-  if (inherits(m1, "try-error")) m1 <- stats::lm(rhs_lm, data = tr)
+  can_mixed <- have_lme4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1
 
-  m2 <- try(lme4::lmer(stats::as.formula(sprintf("LES ~ SIZE + logSSD + (1|%s)", cluster_var)), data = tr), silent = TRUE)
-  if (inherits(m2, "try-error")) m2 <- stats::lm(LES ~ SIZE + logSSD, data = tr)
-
-  if (psem_include_size_eq) {
-    m3 <- try(lme4::lmer(stats::as.formula(sprintf("SIZE ~ logSSD + (1|%s)", cluster_var)), data = tr), silent = TRUE)
-    if (inherits(m3, "try-error")) m3 <- stats::lm(SIZE ~ logSSD, data = tr)
-    P <- try(piecewiseSEM::psem(m1, m2, m3), silent = TRUE)
+  if (can_mixed) {
+    m1 <- try(lme4::lmer(rhs_lme, data = tr), silent = TRUE)
+    if (inherits(m1, "try-error")) m1 <- stats::lm(rhs_lm, data = tr)
+    m2 <- try(lme4::lmer(stats::as.formula(sprintf("LES ~ SIZE + logSSD + (1|%s)", cluster_var)), data = tr), silent = TRUE)
+    if (inherits(m2, "try-error")) m2 <- stats::lm(LES ~ SIZE + logSSD, data = tr)
+    if (psem_include_size_eq) {
+      m3 <- try(lme4::lmer(stats::as.formula(sprintf("SIZE ~ logSSD + (1|%s)", cluster_var)), data = tr), silent = TRUE)
+      if (inherits(m3, "try-error")) m3 <- stats::lm(SIZE ~ logSSD, data = tr)
+    }
   } else {
-    P <- try(piecewiseSEM::psem(m1, m2), silent = TRUE)
+    m1 <- stats::lm(rhs_lm, data = tr)
+    m2 <- stats::lm(LES ~ SIZE + logSSD, data = tr)
+    if (psem_include_size_eq) {
+      m3 <- stats::lm(SIZE ~ logSSD, data = tr)
+    }
   }
+
+  P <- try(if (exists("m3")) piecewiseSEM::psem(m1, m2, m3) else piecewiseSEM::psem(m1, m2), silent = TRUE)
   if (!inherits(P, "try-error")) {
     summ <- try(summary(P), silent = TRUE)
     if (!inherits(summ, "try-error")) {
@@ -507,6 +539,99 @@ if (have_piecewise && have_lme4) {
     }
   }
 
+  # Optional: nonparametric bootstrap for coefficient stability (OLS; full data)
+  if (do_bootstrap_pw) {
+    # Ensure composites exist in 'tr' from earlier block
+    if (!("LES" %in% names(tr) && "SIZE" %in% names(tr))) {
+      comps <- build_composites(train = tr, test = tr)
+      tr$LES  <- comps$LES_train
+      tr$SIZE <- comps$SIZE_train
+    }
+    # Determine terms in the selected y-equation
+    lm_full <- try(stats::lm(rhs_lm, data = tr), silent = TRUE)
+    coef_names <- NULL
+    if (!inherits(lm_full, "try-error")) {
+      coef_names <- setdiff(names(coef(lm_full)), "(Intercept)")
+    } else {
+      # Fallback: parse from formula
+      rhs_txt <- gsub("^y ~ ", "", deparse(rhs_lm))
+      coef_names <- trimws(unlist(strsplit(rhs_txt, "+", fixed = TRUE)))
+    }
+    coef_names <- unique(coef_names)
+    # Helper: cluster-aware resample
+    boot_once <- function() {
+      df_b <- NULL
+      if (boot_cluster_pw && (cluster_var %in% names(tr))) {
+        cl <- as.character(tr[[cluster_var]])
+        cl <- cl[!is.na(cl) & nzchar(cl)]
+        uniq <- unique(cl)
+        if (length(uniq) >= 2) {
+          take <- sample(uniq, size = length(uniq), replace = TRUE)
+          idx <- which(as.character(tr[[cluster_var]]) %in% take)
+          df_b <- tr[idx, , drop = FALSE]
+        }
+      }
+      if (is.null(df_b)) {
+        idx <- sample(seq_len(nrow(tr)), size = nrow(tr), replace = TRUE)
+        df_b <- tr[idx, , drop = FALSE]
+      }
+      df_b
+    }
+    # Collect bootstrap coefficients
+    B <- as.integer(n_boot_pw)
+    mat <- matrix(NA_real_, nrow = B, ncol = length(coef_names))
+    colnames(mat) <- coef_names
+    kept <- 0L
+    for (b in seq_len(B)) {
+      df_b <- boot_once()
+      fit_b <- try(stats::lm(rhs_lm, data = df_b), silent = TRUE)
+      if (!inherits(fit_b, "try-error")) {
+        cb <- coef(fit_b)
+        for (nm in coef_names) {
+          if (nm %in% names(cb)) mat[b, nm] <- as.numeric(cb[[nm]])
+        }
+        kept <- kept + 1L
+      }
+    }
+    # Summarize percentiles
+    summ_rows <- list()
+    full_est <- tryCatch(as.numeric(coef(lm_full)[coef_names]), error = function(e) rep(NA_real_, length(coef_names)))
+    names(full_est) <- coef_names
+    for (nm in coef_names) {
+      v <- mat[, nm]
+      v <- v[is.finite(v)]
+      if (length(v) >= max(10, floor(0.2 * B))) {
+        qs <- stats::quantile(v, probs = c(0.025, 0.975), na.rm = TRUE, names = FALSE, type = 7)
+        summ_rows[[length(summ_rows)+1]] <- data.frame(
+          term = nm,
+          estimate_full = if (nm %in% names(full_est)) full_est[[nm]] else NA_real_,
+          boot_mean = mean(v, na.rm = TRUE),
+          boot_se = stats::sd(v, na.rm = TRUE),
+          ci_lower = qs[1],
+          ci_upper = qs[2],
+          n_boot = B,
+          cluster_bootstrap = boot_cluster_pw,
+          stringsAsFactors = FALSE
+        )
+      } else {
+        summ_rows[[length(summ_rows)+1]] <- data.frame(
+          term = nm,
+          estimate_full = if (nm %in% names(full_est)) full_est[[nm]] else NA_real_,
+          boot_mean = NA_real_,
+          boot_se = NA_real_,
+          ci_lower = NA_real_,
+          ci_upper = NA_real_,
+          n_boot = B,
+          cluster_bootstrap = boot_cluster_pw,
+          stringsAsFactors = FALSE
+        )
+      }
+    }
+    boot_out <- do.call(rbind, summ_rows)
+    boot_path <- paste0(base, "_boot_coefs.csv")
+    if (have_readr) readr::write_csv(boot_out, boot_path) else utils::write.csv(boot_out, boot_path, row.names = FALSE)
+  }
+
   # Optional: multigroup d-sep aggregation (Douma & Shipley 2021)
   if (nzchar(group_var) && (group_var %in% names(work))) {
     # Helper to compute Fisher's C for a subset
@@ -522,17 +647,24 @@ if (have_piecewise && have_lme4) {
       if (target_letter == "M") rhs_fixed_g <- paste(rhs_fixed_g, "+ SIZE:logSSD")
       rhs_lm_g  <- stats::as.formula(rhs_fixed_g)
       rhs_lme_g <- stats::as.formula(sprintf("%s + (1|%s)", rhs_fixed_g, cluster_var))
-      m1_g <- try(lme4::lmer(rhs_lme_g, data = df_sub), silent = TRUE)
-      if (inherits(m1_g, "try-error")) m1_g <- stats::lm(rhs_lm_g, data = df_sub)
-      m2_g <- try(lme4::lmer(stats::as.formula(sprintf("LES ~ SIZE + logSSD + (1|%s)", cluster_var)), data = df_sub), silent = TRUE)
-      if (inherits(m2_g, "try-error")) m2_g <- stats::lm(LES ~ SIZE + logSSD, data = df_sub)
-      if (psem_include_size_eq) {
-        m3_g <- try(lme4::lmer(stats::as.formula(sprintf("SIZE ~ logSSD + (1|%s)", cluster_var)), data = df_sub), silent = TRUE)
-        if (inherits(m3_g, "try-error")) m3_g <- stats::lm(SIZE ~ logSSD, data = df_sub)
-        Pg <- try(piecewiseSEM::psem(m1_g, m2_g, m3_g), silent = TRUE)
+      can_mixed_g <- have_lme4 && (cluster_var %in% names(df_sub)) && length(unique(na.omit(df_sub[[cluster_var]]))) > 1
+      if (can_mixed_g) {
+        m1_g <- try(lme4::lmer(rhs_lme_g, data = df_sub), silent = TRUE)
+        if (inherits(m1_g, "try-error")) m1_g <- stats::lm(rhs_lm_g, data = df_sub)
+        m2_g <- try(lme4::lmer(stats::as.formula(sprintf("LES ~ SIZE + logSSD + (1|%s)", cluster_var)), data = df_sub), silent = TRUE)
+        if (inherits(m2_g, "try-error")) m2_g <- stats::lm(LES ~ SIZE + logSSD, data = df_sub)
+        if (psem_include_size_eq) {
+          m3_g <- try(lme4::lmer(stats::as.formula(sprintf("SIZE ~ logSSD + (1|%s)", cluster_var)), data = df_sub), silent = TRUE)
+          if (inherits(m3_g, "try-error")) m3_g <- stats::lm(SIZE ~ logSSD, data = df_sub)
+        }
       } else {
-        Pg <- try(piecewiseSEM::psem(m1_g, m2_g), silent = TRUE)
+        m1_g <- stats::lm(rhs_lm_g, data = df_sub)
+        m2_g <- stats::lm(LES ~ SIZE + logSSD, data = df_sub)
+        if (psem_include_size_eq) {
+          m3_g <- stats::lm(SIZE ~ logSSD, data = df_sub)
+        }
       }
+      Pg <- try(if (exists("m3_g")) piecewiseSEM::psem(m1_g, m2_g, m3_g) else piecewiseSEM::psem(m1_g, m2_g), silent = TRUE)
       if (inherits(Pg, "try-error")) return(NULL)
       fitg <- try(piecewiseSEM::fisherC(Pg), silent = TRUE)
       if (inherits(fitg, "try-error")) return(NULL)
