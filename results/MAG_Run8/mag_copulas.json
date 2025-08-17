@@ -1,8 +1,8 @@
 {
   "version": {
-    "run": "Run 8",
+    "run": "Run8_next",
     "date": "2025-08-16",
-    "git_commit": "af1e3a8"
+    "git_commit": "13e7702"
   },
   "selection": {
     "criterion": "AIC",
@@ -97,6 +97,17 @@
   "districts": [
     {
       "members": [
+        "L",
+        "M"
+      ],
+      "family": "gaussian",
+      "params": {
+        "rho": -0.2789
+      },
+      "n": 1063
+    },
+    {
+      "members": [
         "T",
         "R"
       ],
@@ -108,14 +119,36 @@
     },
     {
       "members": [
-        "L",
+        "T",
         "M"
       ],
       "family": "gaussian",
       "params": {
-        "rho": -0.2789
+        "rho": -0.389
       },
-      "n": 1063
+      "n": 1064
+    },
+    {
+      "members": [
+        "M",
+        "R"
+      ],
+      "family": "gaussian",
+      "params": {
+        "rho": -0.2689
+      },
+      "n": 1049
+    },
+    {
+      "members": [
+        "M",
+        "N"
+      ],
+      "family": "gaussian",
+      "params": {
+        "rho": 0.183
+      },
+      "n": 1046
     }
   ]
 }
