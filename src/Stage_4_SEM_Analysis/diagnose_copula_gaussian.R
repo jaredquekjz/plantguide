@@ -24,7 +24,7 @@ for (i in seq(1, length(args), by = 2)) {
 }
 
 in_csv   <- opts[["input_csv"]]   %||% "artifacts/model_data_complete_case_with_myco.csv"
-cop_json <- opts[["copulas_json"]] %||% "results/mag_copulas.json"
+cop_json <- opts[["copulas_json"]] %||% "results/MAG_Run8/mag_copulas.json"
 out_md   <- opts[["out_md"]]       %||% "results/stage_sem_run8_copula_diagnostics.md"
 mc_n     <- suppressWarnings(as.integer(opts[["nsim"]] %||% "100000")); if (is.na(mc_n) || mc_n < 10000) mc_n <- 100000
 
@@ -187,7 +187,7 @@ tab <- do.call(rbind, rows)
 
 lines <- c(
   "# Run 8 — Gaussian Copula Adequacy (Quick Check)",
-  "", "Pairs checked: from results/mag_copulas.json", "",
+  "", "Pairs checked: from results/MAG_Run8/mag_copulas.json", "",
   "| Pair | n | rho | tau_emp | tau_gauss | hi_emp | hi_mc | lo_emp | lo_mc | CV logc/obs |",
   "|------|---:|----:|--------:|----------:|-------:|------:|-------:|------:|------------:|"
 )

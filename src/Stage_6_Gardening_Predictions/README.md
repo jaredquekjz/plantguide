@@ -95,7 +95,7 @@ How Joint Predictions Work (intuitive)
 - Even after conditioning on traits, some axes still move together (e.g., Temperature with pH, Light with Moisture). Copulas model that leftover co-movement.
 - We then simulate the 5D outcome using:
   - Per-axis uncertainty (scale) ≈ CV RMSE from Stage 4 Run 7.
-  - Pairwise residual correlations from `results/mag_copulas.json` (Run 8), finalized spouses {L↔M, T↔R, T↔M, M↔R, M↔N}.
+  - Pairwise residual correlations from `results/MAG_Run8/mag_copulas.json` (Run 8), finalized spouses {L↔M, T↔R, T↔M, M↔R, M↔N}.
 - Finally, we estimate the probability that your requested bins all hold at once — e.g., “Full Sun + Average Moisture + Neutral Soil”. That’s your joint suitability.
 
 Output Schema
