@@ -6,7 +6,7 @@ Scope: Run 3 reproduces Run 2 models and parameters, adding only mycorrhiza grou
 
 Data
 - Input: `artifacts/model_data_complete_case_with_myco.csv` (complete-case six traits; n=1,068; 832 species annotated with `Myco_Group_Final`).
-- Targets: `EIVEres-{L,T,M,R,N}` (0–10).
+- Targets: `EIVEres-{L,T,M,R,N}` (0–10).azq
 
 Pre-step: refresh myco grouping and with_myco datasets
 - Rebuild classification and WFO match (keeps taxonomy in sync), then re-assemble with myco columns into modeling CSVs:
