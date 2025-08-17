@@ -436,6 +436,7 @@ Key paths for replication (selected)
 
 ## Bottom Line
 - We map six core plant traits to five EIVE indicators with modest to strong predictive skill (best for N; moderate for L/T/M; weak for R). SEM clarifies causal structure (LES, SIZE, SSD) and yields robust, linear final forms. Copulas capture modest residual co‑movement (T↔R positive; L↔M negative), enabling realistic multi‑axis decisions. The final gardening layer converts predictions into clear, confidence‑aware recommendations, with optional joint‑probability gating for multi‑constraint scenarios.
+- Reminder — diagnostic first: this initial build deliberately measures the limits of the six curated traits and pinpoints what’s missing; see Future Developments for the evidence‑based additions prioritized next.
 
 ---
 
