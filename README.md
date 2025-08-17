@@ -340,7 +340,7 @@ Repro commands
 - Copula‑aware m‑sep (mixed, rank‑based):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
       --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
-      --out_summary results/msep_test_summary_run8_mixedcop.csv --out_claims results/msep_claims_run8_mixedcop.csv`
+      --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv`
 
 Artifacts (Run 8)
 - `results/MAG_Run8/mag_equations.json` — version Run 8.

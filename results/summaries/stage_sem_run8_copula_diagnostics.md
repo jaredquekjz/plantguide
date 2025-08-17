@@ -1,6 +1,6 @@
 # Run 8 — Gaussian Copula Adequacy (Quick Check)
 
-Pairs checked: from results/mag_copulas.json
+Pairs checked: from results/MAG_Run8/mag_copulas.json
 
 | Pair | n | rho | tau_emp | tau_gauss | hi_emp | hi_mc | lo_emp | lo_mc | CV logc/obs |
 |------|---:|----:|--------:|----------:|-------:|------:|-------:|------:|------------:|

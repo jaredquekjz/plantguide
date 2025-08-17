@@ -8,32 +8,38 @@ Purpose — keep the finalized SEM mean structure as a DAG and model residual de
 - N: N ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
 
 ## District Detection (bidirected residuals)
-Auto-detect: True with thresholds rho_min=0.15, fdr_q=0.05
-Selected districts:
-- {T:R} — gaussian (rho=0.328, n=1049)
-- {L:M} — gaussian (rho=-0.279, n=1063)
+Auto-detect seed: rho_min=0.15, fdr_q=0.05 → manual refinement to align with SEMwise/mixed‑effects m‑sep.
+Final spouse set (Run 8 MAG):
+- {L:M} — gaussian (rho≈-0.279, n=1063)
+- {T:R} — gaussian (rho≈+0.328, n=1049)
+- {T:M} — gaussian (rho≈-0.389, n=1064)
+- {M:R} — gaussian (rho≈-0.269, n=1049)
+- {M:N} — gaussian (rho≈+0.183, n=1046)
 
 ## Copula Fits (per district)
 | A | B | n | family | rho | loglik | AIC |
 |---|---:|---:|---|---:|---:|---:|
-| T | R | 1049 | gaussian | 0.328 | 59.79 | -117.58 |
 | L | M | 1063 | gaussian | -0.279 | 43.05 | -84.11 |
+| T | R | 1049 | gaussian | 0.328 | 59.79 | -117.58 |
+| T | M | 1064 | gaussian | -0.389 | 87.28 | -172.57 |
+| M | R | 1049 | gaussian | -0.269 | 39.38 | -76.76 |
+| M | N | 1046 | gaussian | 0.183 | 17.82 | -33.65 |
 
 ## m‑sep Residual Independence Test (DAG → MAG)
-Mini‑figure — m‑sep omnibus (independence claims only)
+Mixed, copula‑aware omnibus (independence claims only)
 ```
-k  C       df    p_value       AIC_msep
-8  442.21  16    <1e-15        458.21
+k  C        df   p_value   AIC_msep   method   rank_pit   cluster
+5  155.97   10     <1e-6     165.97   kendall  TRUE       Family
 ```
 
 Interpretation
-- Using the DAG mean structure, we tested independence of response‑pair residuals for all pairs not selected as bidirected “spouses” by the copula step (i.e., all pairs except L–M and T–R). Fisher’s C strongly rejects the set of independence claims, indicating additional residual associations beyond the two districts or that hierarchical structure (e.g., random intercepts) needs to be modeled in the claim tests. Since the copula stage parameterizes only robust districts, we proceed with L–M and T–R while noting this limitation.
+- After adding spouses for the strongest mixed‑effects residual associations (L–M, T–R, T–M, M–R, M–N), the omnibus still rejects due to very small but detectable dependencies among the remaining pairs (|τ|≈0.07–0.13). For joint predictions, we retain only practically meaningful districts and proceed with the five copulas above.
 
 Notes
-- Test details in `results/msep_claims.csv` (pair‑wise ρ and p). Implementation uses OLS residuals; a mixed‑effects variant (e.g., `(1|Family)`) will reduce confounding by taxonomic clustering and may relax rejections.
+- Test details in `results/MAG_Run8/msep_claims_run8_mixedcop.csv` (τ and p/q per pair). Implementation uses random‑intercept residuals `(1|Family)` when available and rank‑PIT to align with copula scale.
 
 ## Diagnostics
-- Residual correlations (BH-FDR): see `results/stage_sem_run8_residual_corr.csv`.
+- Residual correlations (BH-FDR): see `results/MAG_Run8/stage_sem_run8_residual_corr.csv`.
 - Pseudo-observations: rank PIT; Gaussian copula MLE via z-correlation.
 - Stability: marginals unchanged; copula metadata documents residual dependence only.
 
@@ -41,12 +47,16 @@ Note on terminology — MAG here follows Douma & Shipley as a Mixed Acyclic Grap
 
 ## Repro Commands
 ```bash
-Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --version Run8
-Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --auto_detect_districts true --rho_min 0.15 --fdr_q 0.05 --copulas gaussian --select_by AIC
+Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8
+Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
+  --district L,M --district T,R --district T,M --district M,R --district M,N
+Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
+  --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv
 ```
 
 ## Artifacts
-- mag_equations.json — 1614 bytes (version Run 8)
-- mag_copulas.json — 1942 bytes
-- stage_sem_run8_residual_corr.csv — rows 10
-- stage_sem_run8_copula_fits.csv — rows 2
+- MAG_Run8/mag_equations.json — version Run 8
+- MAG_Run8/mag_copulas.json — updated spouse set (5 districts)
+- MAG_Run8/stage_sem_run8_residual_corr.csv — rows 10
+- MAG_Run8/stage_sem_run8_copula_fits.csv — rows 5

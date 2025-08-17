@@ -186,14 +186,14 @@ L:M  1045 -0.279  -0.196    -0.180     0.0057  0.0034  0.0010  0.0032    0.0387
 
 Repro commands
 - Export MAG + run copulas:
-  - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --version Run8`.
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results --auto_detect_districts true --rho_min 0.15 --fdr_q 0.05 --copulas gaussian --select_by AIC`.
+  - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`.
+  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --auto_detect_districts true --rho_min 0.15 --fdr_q 0.05 --copulas gaussian --select_by AIC`.
 
 Artifacts (Run 8)
-- `results/mag_equations.json` — 1.6 KB (version Run 8).
-- `results/mag_copulas.json` — 1.9 KB (districts and parameters).
-- `results/stage_sem_run8_residual_corr.csv` — 10 rows.
-- `results/stage_sem_run8_copula_fits.csv` — 2 rows.
+- `results/MAG_Run8/mag_equations.json` — 1.6 KB (version Run 8).
+- `results/MAG_Run8/mag_copulas.json` — 1.9 KB (districts and parameters).
+- `results/MAG_Run8/stage_sem_run8_residual_corr.csv` — 10 rows.
+- `results/MAG_Run8/stage_sem_run8_copula_fits.csv` — 2 rows.
 
 ---
 
@@ -217,13 +217,13 @@ Joint suitability (optional)
 Defaults and presets
 - Bin edges: `[0,3.5), [3.5,6.5), [6.5,10]`; borderline width: `±0.5`.
 - Joint threshold (presets): `0.6` (tunable) in `results/garden_joint_presets_defaults.csv`.
-- Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/mag_copulas.json`.
+- Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/MAG_Run8/mag_copulas.json`.
 
 Repro commands (joint usage)
 - Batch presets summary:
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
 - Recommender with single gate or best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
   - or with presets: add `--joint_presets_csv results/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
 
 Outputs (Stage 5–6)
