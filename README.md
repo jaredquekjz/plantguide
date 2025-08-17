@@ -11,13 +11,13 @@
 </p>
 
 <p>
-  This predictive model is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Mixed Acyclic Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
+  This predictive model is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. 
 </p>
 
 ### Pipeline at a Glance
 
 ```mermaid
-flowchart LR
+flowchart TD
   A[Data Methodology\nTRY 6 curated traits + EIVE] --> B[Multiple Regression\nbaseline]
   B --> C[SEM\nLES/SIZE/SSD structure]
   C --> D[MAG + Copulas\nresidual dependence]
@@ -35,6 +35,26 @@ flowchart LR
 |  SM    | Diaspore/Seed mass      |
 |  SSD   | Wood density            |
 
+
+### Final SEM Equations (Adopted)
+
+Composites
+- LES_core: negative LMA, positive Nmass (trained as a composite; scaled within train folds)
+- SIZE: +logH + logSM (used for L/T only; M/N use logH and logSM directly)
+
+Equations (piecewise SEM; linear forms)
+```
+L ~ LES_core + SIZE + logLA
+T ~ LES_core + SIZE + logLA
+M ~ LES_core + logH + logSM + logSSD + logLA
+R ~ LES_core + SIZE + logLA
+N ~ LES_core + logH + logSM + logSSD + logLA + LES_core:logSSD
+```
+
+Notes
+- Transforms: log10 for LA, H, SM, SSD; predictors standardized in training folds.
+- Interaction: LES_core:logSSD kept for N only (optional for T; not adopted).
+- Coefficients and composite recipe: see `results/MAG_Run8/mag_equations.json` and `results/MAG_Run8/composite_recipe.json`.
 
 > [!NOTE]
 > Planned expansions include root traits (SRL, diameter, RTD, N), light‑specific leaf traits (thickness, N per area), categorical syndromes (woodiness, growth form, phenology, mycorrhiza), and climate/soil covariates — see [Future Developments](#future-developments).
