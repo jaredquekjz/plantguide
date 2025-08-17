@@ -18,10 +18,10 @@
 
 ```mermaid
 flowchart TD
-  A[Data Methodology\nTRY 6 curated traits + EIVE] --> B[Multiple Regression\nbaseline]
-  B --> C[SEM\nLES/SIZE/SSD structure]
-  C --> D[MAG + Copulas\nresidual dependence]
-  D --> E[Gardening Plan\nrequirements + uncertainty]
+  A[Data Methodology<br/>TRY 6 curated traits + EIVE] --> B[Multiple Regression<br/>baseline]
+  B --> C[SEM<br/>LES/SIZE/SSD structure]
+  C --> D[MAG + Copulas<br/>residual dependence]
+  D --> E[Gardening Plan<br/>requirements + uncertainty]
 ```
 
 ### Core Traits (Initial Model)
