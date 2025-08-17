@@ -1,6 +1,6 @@
 # Stage 4: MAG Analysis for Missing Data
 
-This folder will contain scripts implementing Maximal Ancestral Graphs (MAGs) to handle unmeasured confounders.
+This folder will contain scripts implementing Mixed Acyclic Graphs (MAGs) to handle unmeasured confounders (Douma & Shipley, 2021/2022).
 
 ## Planned Components:
 
@@ -20,7 +20,7 @@ This folder will contain scripts implementing Maximal Ancestral Graphs (MAGs) to
 - Gaussian copulas for symmetric dependence
 
 ## Key Insight:
-MAGs allow testing organ coordination WITHOUT measuring physiological traits like water potential!
+MAGs (directed + bidirected edges; acyclic) allow testing causal topology with latent confounding represented via bidirected edges and m‑separation claims, without explicitly measuring all latent variables.
 
 ## Required Packages:
 - `CauseAndCorrelation` (Shipley & Douma 2021)

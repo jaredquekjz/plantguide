@@ -26,15 +26,15 @@ for (i in seq(1, length(args), by = 2)) {
 
 pred_csv <- opts[["predictions_csv"]]
 if (is.null(pred_csv)) stop("Missing --predictions_csv <path>")
-cop_json <- opts[["copulas_json"]] %||% "results/mag_copulas.json"
+cop_json <- opts[["copulas_json"]] %||% "results/MAG_Run8/mag_copulas.json"
 metrics_dir <- opts[["metrics_dir"]] %||% "artifacts/stage4_sem_piecewise_run7"
 bins_spec <- opts[["bins"]] %||% "0:3.5,3.5:6.5,6.5:10"
 req_spec  <- opts[["joint_requirement"]]
 presets_csv <- opts[["presets_csv"]] %||% ""
 default_threshold <- suppressWarnings(as.numeric(opts[["default_threshold"]] %||% "0.6")); if (!is.finite(default_threshold)) default_threshold <- 0.6
 nsim <- suppressWarnings(as.integer(opts[["nsim"]] %||% "10000")); if (is.na(nsim) || nsim < 1000) nsim <- 10000
-out_csv <- opts[["output_csv"]] %||% "results/garden_joint_suitability.csv"
-summary_csv <- opts[["summary_csv"]] %||% "results/garden_joint_summary.csv"
+out_csv <- opts[["output_csv"]] %||% "results/gardening/garden_joint_suitability.csv"
+summary_csv <- opts[["summary_csv"]] %||% "results/gardening/garden_joint_summary.csv"
 
 ensure_dir <- function(path) dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_csv)

@@ -21,29 +21,29 @@ Quick Start (from artifacts)
        --drop_if_has_eive true`
 
 2) Run Stage 5 MAG prediction on those rows:
-   - `Rscript src/Stage_5_MAG/apply_mean_structure.R \
+   - `Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
        --input_csv results/mag_input_no_eive.csv \
        --output_csv results/mag_predictions_no_eive.csv \
-       --equations_json results/mag_equations.json \
-       --composites_json results/composite_recipe.json`
+       --equations_json results/MAG_Run8/mag_equations.json \
+       --composites_json results/MAG_Run8/composite_recipe.json`
 
 3) Convert predictions into gardening recommendations:
    - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
        --predictions_csv results/mag_predictions_no_eive.csv \
-       --output_csv results/garden_requirements_no_eive.csv \
+       --output_csv results/gardening/garden_requirements_no_eive.csv \
        --bins 0:3.5,3.5:6.5,6.5:10 \
        --borderline_width 0.5 \
        --abstain_strict false`
 
 4) Optional — Joint suitability with copulas (Run 8):
-   - Estimate P(requirement) per species using pairwise Gaussian copulas from `results/mag_copulas.json` and residual scales from Run 7 metrics:
+   - Estimate P(requirement) per species using pairwise Gaussian copulas from `results/MAG_Run8/mag_copulas.json` and residual scales from Run 7 metrics:
    - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
        --predictions_csv results/mag_predictions_no_eive.csv \
-       --copulas_json results/mag_copulas.json \
+       --copulas_json results/MAG_Run8/mag_copulas.json \
        --metrics_dir artifacts/stage4_sem_piecewise_run7 \
        --joint_requirement L=high,M=med,R=med \
        --nsim 20000 \
-       --output_csv results/garden_joint_suitability.csv`
+       --output_csv results/gardening/garden_joint_suitability.csv`
     - Output: per species, `joint_requirement`, `joint_prob`.
 
 5) Optional — Enforce a joint requirement directly in the recommender:
@@ -51,34 +51,34 @@ Quick Start (from artifacts)
    - Example:
    - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
         --predictions_csv results/mag_predictions_no_eive.csv \
-        --output_csv results/garden_requirements_no_eive.csv \
+          --output_csv results/gardening/garden_requirements_no_eive.csv \
         --bins 0:3.5,3.5:6.5,6.5:10 \
         --borderline_width 0.5 \
         --abstain_strict false \
         --joint_requirement L=high,M=med,R=med \
         --joint_min_prob 0.6 \
-        --copulas_json results/mag_copulas.json \
+        --copulas_json results/MAG_Run8/mag_copulas.json \
         --metrics_dir artifacts/stage4_sem_piecewise_run7 \
         --nsim_joint 20000`
    - Tip: You can keep both outputs — per-axis recommendations plus a joint suitability gate for multi-constraint garden scenarios.
 
 6) Optional — Batch scenarios (presets) and “best scenario” annotation:
-   - Prepare presets with columns `label, requirement, joint_min_prob` (or use the included defaults in `results/garden_joint_presets_defaults.csv`).
+   - Prepare presets with columns `label, requirement, joint_min_prob` (or use the included defaults in `results/gardening/garden_joint_presets_defaults.csv`).
    - Batch score joint probabilities:
      - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
          --predictions_csv results/mag_predictions_no_eive.csv \
-         --copulas_json results/mag_copulas.json \
+         --copulas_json results/MAG_Run8/mag_copulas.json \
          --metrics_dir artifacts/stage4_sem_piecewise_run7 \
-         --presets_csv results/garden_joint_presets_defaults.csv \
+         --presets_csv results/gardening/garden_joint_presets_defaults.csv \
          --nsim 20000 \
-         --summary_csv results/garden_joint_summary.csv`
+         --summary_csv results/gardening/garden_joint_summary.csv`
    - Annotate recommender with the best scenario per species:
      - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
          --predictions_csv results/mag_predictions_no_eive.csv \
-         --output_csv results/garden_requirements_no_eive.csv \
+         --output_csv results/gardening/garden_requirements_no_eive.csv \
          --bins 0:3.5,3.5:6.5,6.5:10 \
-         --joint_presets_csv results/garden_joint_presets_defaults.csv \
-         --copulas_json results/mag_copulas.json \
+         --joint_presets_csv results/gardening/garden_joint_presets_defaults.csv \
+         --copulas_json results/MAG_Run8/mag_copulas.json \
          --metrics_dir artifacts/stage4_sem_piecewise_run7 \
          --nsim_joint 20000`
    - Output columns: `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
@@ -95,7 +95,7 @@ How Joint Predictions Work (intuitive)
 - Even after conditioning on traits, some axes still move together (e.g., Temperature with pH, Light with Moisture). Copulas model that leftover co-movement.
 - We then simulate the 5D outcome using:
   - Per-axis uncertainty (scale) ≈ CV RMSE from Stage 4 Run 7.
-  - Pairwise residual correlations from `results/mag_copulas.json` (Run 8), currently {L↔M} and {T↔R}.
+  - Pairwise residual correlations from `results/mag_copulas.json` (Run 8), finalized spouses {L↔M, T↔R, T↔M, M↔R, M↔N}.
 - Finally, we estimate the probability that your requested bins all hold at once — e.g., “Full Sun + Average Moisture + Neutral Soil”. That’s your joint suitability.
 
 Output Schema
@@ -110,9 +110,9 @@ Validation (optional)
 - If you have label classes for non-EIVE species (e.g., from horticultural guides), save as `data/garden_labels.csv` with columns `species, L, T, M, R, N` (values in {low, med, high}). Then run:
   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
        --predictions_csv results/mag_predictions_no_eive.csv \
-       --output_csv results/garden_requirements_no_eive.csv \
+       --output_csv results/gardening/garden_requirements_no_eive.csv \
        --validate_with_labels data/garden_labels.csv`
-  - Produces: `results/garden_validation_report.md`.
+  - Produces: `results/gardening/garden_validation_report.md`.
 
 Notes
 - Keep predictions scoped to species without EIVE. When EIVE is present, use it directly instead of predicting.
@@ -138,4 +138,4 @@ Validation Plan (Proposed)
 - Implementation (planned):
   - Add a Stage 6 validation script to automate EIVE‑grounded validation, e.g., `src/Stage_6_Gardening_Predictions/validate_with_eive.R`:
     - Reads an artifact with traits + EIVE, filters to complete‑case‑with‑EIVE, runs Stage 5 MAG on that subset, computes numeric and class metrics, and writes `results/stage6_eive_validation.md`.
-  - Optional horticultural validation hook (class labels) for the no‑EIVE subset, writing `results/garden_validation_report.md`.
+  - Optional horticultural validation hook (class labels) for the no‑EIVE subset, writing `results/gardening/garden_validation_report.md`.

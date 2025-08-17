@@ -216,23 +216,23 @@ Joint suitability (optional)
 
 Defaults and presets
 - Bin edges: `[0,3.5), [3.5,6.5), [6.5,10]`; borderline width: `±0.5`.
-- Joint threshold (presets): `0.6` (tunable) in `results/garden_joint_presets_defaults.csv`.
+- Joint threshold (presets): `0.6` (tunable) in `results/gardening/garden_joint_presets_defaults.csv`.
 - Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/MAG_Run8/mag_copulas.json`.
 
 Repro commands (joint usage)
 - Batch presets summary:
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`.
 - Recommender with single gate or best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
-  - or with presets: add `--joint_presets_csv results/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
+  - or with presets: add `--joint_presets_csv results/gardening/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
 
 Outputs (Stage 5–6)
-- `results/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.
-- `results/garden_joint_summary.csv` — species × scenario joint probabilities (if presets used).
+- `results/gardening/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.
+- `results/gardening/garden_joint_summary.csv` — species × scenario joint probabilities (if presets used).
 
 Artifacts (Gardening)
-- `results/garden_joint_presets_defaults.csv` — default scenarios (e.g., SunnyNeutral, WarmNeutralFertile) with threshold 0.6.
-- `results/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
+- `results/gardening/garden_joint_presets_defaults.csv` — default scenarios (e.g., SunnyNeutral, WarmNeutralFertile) with threshold 0.6.
+- `results/gardening/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
 
 ---
 

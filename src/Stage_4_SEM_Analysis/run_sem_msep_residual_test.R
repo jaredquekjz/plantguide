@@ -18,7 +18,13 @@ parse_args <- function(args) {
     spouses = NULL,                # comma-separated like "L-M,T-R"
     spouses_csv = NULL,            # optional: results/stage_sem_run8_copula_fits.csv
     out_summary = "results/msep_test_summary.csv",
-    out_claims = "results/msep_claims.csv"
+    out_claims = "results/msep_claims.csv",
+    # New options to align with SEMwise flow
+    cluster_var = "",             # e.g., Family; if present and lme4 available, fit random intercepts
+    force_lm = "false",           # if true, never try lme4
+    corr_method = "pearson",       # pearson|spearman|kendall (used in cor.test)
+    rank_pit = "false",           # if true, map residuals to (rank-0.5)/n; if corr_method=pearson, test on normal scores
+    fdr_q = "0.05"                # BH-FDR level (used for reporting only)
   )
   if (length(args) %% 2 != 0) stop("Invalid arguments. Use --key value pairs")
   for (i in seq(1, length(args), by = 2)) {
@@ -84,6 +90,15 @@ parse_spouses <- function(opt) {
 main <- function() {
   opt <- parse_args(args)
 
+  # Parse booleans/numerics
+  tf <- function(x) tolower(x %||% "false") %in% c("1","true","yes","y")
+  rank_pit <- tf(opt$rank_pit)
+  force_lm <- tf(opt$force_lm)
+  corr_method <- tolower(opt$corr_method %||% "pearson")
+  if (!corr_method %in% c("pearson","spearman","kendall")) stop("--corr_method must be pearson|spearman|kendall")
+  fdr_q <- suppressWarnings(as.numeric(opt$fdr_q %||% "0.05")); if (!is.finite(fdr_q)) fdr_q <- 0.05
+  cluster_var <- opt$cluster_var %||% ""
+
   # Read data and recipe
   df <- suppressMessages(readr::read_csv(opt$input_csv, show_col_types = FALSE))
   recipe <- jsonlite::fromJSON(opt$recipe_json, simplifyVector = TRUE)
@@ -91,12 +106,23 @@ main <- function() {
   std <- recipe$standardization
   comps <- recipe$composites
 
+  # Ensure short names exist for composites
+  if (!"LMA" %in% names(df) && "LMA (g/m2)" %in% names(df)) df$LMA <- df[["LMA (g/m2)"]]
+  if (!"Nmass" %in% names(df) && "Nmass (mg/g)" %in% names(df)) df$Nmass <- df[["Nmass (mg/g)"]]
+
   df <- df %>% dplyr::mutate(
     logLA = log_transform(.data[["Leaf area (mm2)"]] %||% .data[["LeafArea"]], offs[["Leaf area (mm2)"]] %||% 0),
     logH  = log_transform(.data[["Plant height (m)"]] %||% .data[["PlantHeight"]], offs[["Plant height (m)"]] %||% 0),
     logSM = log_transform(.data[["Diaspore mass (mg)"]] %||% .data[["DiasporeMass"]], offs[["Diaspore mass (mg)"]] %||% 0),
     logSSD= log_transform(.data[["SSD used (mg/mm3)"]] %||% .data[["SSD"]], offs[["SSD used (mg/mm3)"]] %||% 0)
   )
+
+  # Targets: map EIVEres-* to short L/T/M/R/N if needed
+  if (!"L" %in% names(df) && "EIVEres-L" %in% names(df)) df$L <- df[["EIVEres-L"]]
+  if (!"T" %in% names(df) && "EIVEres-T" %in% names(df)) df$T <- df[["EIVEres-T"]]
+  if (!"M" %in% names(df) && "EIVEres-M" %in% names(df)) df$M <- df[["EIVEres-M"]]
+  if (!"R" %in% names(df) && "EIVEres-R" %in% names(df)) df$R <- df[["EIVEres-R"]]
+  if (!"N" %in% names(df) && "EIVEres-N" %in% names(df)) df$N <- df[["EIVEres-N"]]
 
   if (!is.null(comps$LES_core)) {
     df$LES_core <- compute_composite(
@@ -113,6 +139,11 @@ main <- function() {
 
   df$LES <- df$LES_core
 
+  # Restrict to rows complete for all variables used in any target
+  needed <- c("LES","SIZE","logSSD","logLA","logH","logSM","L","T","M","R","N")
+  have <- intersect(needed, names(df))
+  df <- df[stats::complete.cases(df[, have, drop = FALSE]), , drop = FALSE]
+
   # Adopted DAG mean forms (Run 7):
   form_L <- as.formula("L ~ LES + SIZE + logSSD + logLA")
   form_T <- as.formula("T ~ LES + SIZE + logSSD + logLA")
@@ -120,7 +151,28 @@ main <- function() {
   form_M <- as.formula("M ~ LES + logH + logSM + logSSD + logLA")
   form_N <- as.formula("N ~ LES + logH + logSM + logSSD + logLA + LES:logSSD")
 
-  fit_or_na <- function(f, data) tryCatch(lm(f, data = data), error = function(e) NULL)
+  # Mixed-effects support (random intercept) if requested and available
+  have_lme4 <- FALSE
+  if (!force_lm) {
+    have_lme4 <- requireNamespace("lme4", quietly = TRUE)
+  }
+
+  fit_or_na <- function(f, data) {
+    # Try mixed model if cluster_var is usable; else OLS
+    if (nzchar(cluster_var) && (cluster_var %in% names(data)) && have_lme4) {
+      cl <- data[[cluster_var]]
+      if (length(unique(na.omit(cl))) > 1) {
+        rhs <- paste(deparse(f), collapse = "")
+        fr  <- tryCatch(as.formula(paste(rhs, "+ (1|", cluster_var, ")")), error = function(e) NULL)
+        if (!is.null(fr)) {
+          m <- tryCatch(lme4::lmer(fr, data = data, REML = FALSE), error = function(e) NULL)
+          if (!is.null(m)) return(m)
+        }
+      }
+    }
+    tryCatch(lm(f, data = data), error = function(e) NULL)
+  }
+
   mods <- list(
     L = fit_or_na(form_L, df),
     T = fit_or_na(form_T, df),
@@ -130,7 +182,10 @@ main <- function() {
   )
   if (any(purrr::map_lgl(mods, is.null))) stop("One or more mean-structure fits failed; check input columns")
 
-  resids <- purrr::map(mods, residuals) %>% as.data.frame(stringsAsFactors = FALSE)
+  resids <- purrr::map(mods, function(m) {
+    # lmer/lm both support residuals(); use conditional residuals for lmer
+    as.numeric(residuals(m))
+  }) %>% as.data.frame(stringsAsFactors = FALSE)
   names(resids) <- names(mods)
 
   spouses <- parse_spouses(opt)
@@ -148,17 +203,48 @@ main <- function() {
   claims <- all_pairs %>% dplyr::mutate(
     expected = ifelse(Pair %in% spouses, "dependent", "independent"),
     p_value = NA_real_,
-    estimate = NA_real_
+    estimate = NA_real_,
+    n = NA_integer_
   )
+
+  # Optional: rank-PIT transform each axis residual to pseudo-observations
+  U <- NULL
+  if (rank_pit) {
+    U <- as.data.frame(lapply(resids, function(x) {
+      r <- rank(x, ties.method = "average")
+      (r - 0.5) / length(r)
+    }))
+    names(U) <- names(resids)
+  }
 
   for (i in seq_len(nrow(claims))) {
     a <- claims$A[i]; b <- claims$B[i]
     x <- resids[[a]]; y <- resids[[b]]
-    ct <- tryCatch(cor.test(x, y, method = "pearson"), error = function(e) NULL)
+    if (rank_pit) {
+      xu <- U[[a]]; yu <- U[[b]]
+      if (corr_method == "pearson") {
+        # Normal scores for Pearson after PIT
+        xs <- stats::qnorm(pmin(pmax(xu, .Machine$double.eps), 1 - .Machine$double.eps))
+        ys <- stats::qnorm(pmin(pmax(yu, .Machine$double.eps), 1 - .Machine$double.eps))
+        ct <- tryCatch(cor.test(xs, ys, method = "pearson"), error = function(e) NULL)
+      } else {
+        ct <- tryCatch(cor.test(xu, yu, method = corr_method), error = function(e) NULL)
+      }
+    } else {
+      ct <- tryCatch(cor.test(x, y, method = corr_method), error = function(e) NULL)
+    }
     if (!is.null(ct)) {
       claims$p_value[i] <- ct$p.value
       claims$estimate[i] <- unname(ct$estimate)
+      claims$n[i] <- length(na.omit(x))
     }
+  }
+
+  # Add BH-FDR q-values for reporting
+  claims$q_value <- NA_real_
+  ok <- which(!is.na(claims$p_value) & claims$p_value > 0)
+  if (length(ok) > 0) {
+    claims$q_value[ok] <- p.adjust(claims$p_value[ok], method = "BH")
   }
 
   indep <- claims %>% dplyr::filter(expected == "independent" & !is.na(p_value) & p_value > 0)
@@ -176,11 +262,15 @@ main <- function() {
     C = C,
     df = dfC,
     p_value = pC,
-    AIC_msep = AIC_msep
+    AIC_msep = AIC_msep,
+    method = corr_method,
+    rank_pit = rank_pit,
+    cluster_var = if (nzchar(cluster_var)) cluster_var else NA_character_,
+    fdr_q = fdr_q
   ) %>% readr::write_csv(opt$out_summary)
 
-  message(sprintf("m-sep test complete: k=%d, C=%.2f (df=%d), p=%.3f, AIC_msep=%.2f", k, C, dfC, pC, AIC_msep))
+  message(sprintf("m-sep test complete: k=%d, C=%.2f (df=%d), p=%.3f, AIC_msep=%.2f [method=%s, rank_pit=%s, cluster=%s]",
+                  k, C, dfC, pC, AIC_msep, corr_method, as.character(rank_pit), if (nzchar(cluster_var)) cluster_var else "none"))
 }
 
 main()
-

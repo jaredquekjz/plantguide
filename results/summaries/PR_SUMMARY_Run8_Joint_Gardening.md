@@ -16,8 +16,8 @@ Key Changes
   - src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R — Monte Carlo joint probability; single `--joint_requirement` or batch `--presets_csv`.
   - src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R — adds `joint_requirement`/`joint_prob`/`joint_ok` and best‑scenario fields via `--joint_presets_csv`.
   - src/Stage_6_Gardening_Predictions/README.md — updated to reflect final spouse set.
-  - results/garden_joint_presets_defaults.csv — 5 illustrative scenarios with default threshold 0.6.
-  - results/garden_presets_no_R.csv — 5 new, more robust scenarios excluding the 'R' axis.
+- results/gardening/garden_joint_presets_defaults.csv — 5 illustrative scenarios with default threshold 0.6.
+- results/gardening/garden_presets_no_R.csv — 5 new, more robust scenarios excluding the 'R' axis.
 
 Repro Commands
 - Export equations (Run 8 versioning):
@@ -32,19 +32,19 @@ Repro Commands
 - Gaussian adequacy check (optional):
   - `Rscript src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R --input_csv artifacts/model_data_complete_case_with_myco.csv --copulas_json results/MAG_Run8/mag_copulas.json --out_md results/stage_sem_run8_copula_diagnostics.md --nsim 200000`
 - Joint suitability (original batch presets):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`
 - Joint suitability (new R-excluded presets for more confident predictions):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/garden_presets_no_R.csv --nsim 20000 --summary_csv results/garden_joint_summary_no_R.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`
 - Recommender with best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_presets_csv results/garden_presets_defaults.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_presets_csv results/gardening/garden_presets_defaults.csv`
 
 Outputs
 - results/MAG_Run8/mag_copulas.json — 5 residual districts and parameters (final spouse set)
 - results/stage_sem_run8_copula_diagnostics.md — adequacy summary
 - results/MAG_Run8/msep_test_summary_run8_mixedcop.csv, results/MAG_Run8/msep_claims_run8_mixedcop.csv — mixed, rank‑based omnibus and per‑pair claims
-- results/garden_joint_summary.csv — species × scenarios joint probabilities
-- results/garden_joint_summary_no_R.csv — species × scenarios joint probabilities for new R-excluded presets.
-- results/garden_requirements_no_eive.csv — includes best‑scenario fields
+- results/gardening/garden_joint_summary.csv — species × scenarios joint probabilities
+- results/gardening/garden_joint_summary_no_R.csv — species × scenarios joint probabilities for new R-excluded presets.
+- results/gardening/garden_requirements_no_eive.csv — includes best‑scenario fields
 
 Key Finding: R-excluded Scenarios Yield More Confident Predictions
 - Analysis revealed that the weak predictive power for the 'R' (soil pH) axis was suppressing joint probabilities due to high uncertainty (the "Tyranny of AND").
@@ -85,14 +85,14 @@ Winners at threshold 0.6 (No‑R presets)
 
 ## How Gardeners Use This Guide
 1) Choose your site recipe:
-   - Presets: pick a label that matches your bed (e.g., RichSoilSpecialist → M=high & N=high). If pH is unknown or noisy, prefer R‑excluded presets in `results/garden_presets_no_R.csv`.
+   - Presets: pick a label that matches your bed (e.g., RichSoilSpecialist → M=high & N=high). If pH is unknown or noisy, prefer R‑excluded presets in `results/gardening/garden_presets_no_R.csv`.
    - Single gate: run the recommender with `--joint_requirement` (e.g., `M=high,N=high`) and a threshold (default 0.6) to tag each species with `joint_prob` and `joint_ok`.
-2) Read the per‑axis cards (from `results/garden_requirements_no_eive.csv`): predicted 0–10, bin, `borderline`, and a qualitative confidence tag per axis. Treat M/N as strongest; T and L as moderate; R as weakest.
+2) Read the per‑axis cards (from `results/gardening/garden_requirements_no_eive.csv`): predicted 0–10, bin, `borderline`, and a qualitative confidence tag per axis. Treat M/N as strongest; T and L as moderate; R as weakest.
 3) Decide using joint probability:
-   - Presets summary (`results/garden_joint_summary_no_R.csv` or `..._summary.csv`): filter `pass=TRUE` for your chosen threshold. Higher `joint_prob` means a better fit to that combined recipe.
+   - Presets summary (`results/gardening/garden_joint_summary_no_R.csv` or `..._summary.csv`): filter `pass=TRUE` for your chosen threshold. Higher `joint_prob` means a better fit to that combined recipe.
    - Recommender output: rely on `joint_prob`/`joint_ok` if you provided a single gate.
 4) Adjust if needed: If no species pass, lower the threshold (e.g., 0.5) or relax the recipe (drop R first). Avoid strict “all five must hold” — the AND condition is usually too restrictive.
 
 ## What The Outputs Contain
-- `results/garden_requirements_no_eive.csv` (per species): predictions (`L_pred..N_pred`), `{Axis}_bin`, `{Axis}_borderline`, `{Axis}_confidence`, `{Axis}_recommendation`; optional `joint_requirement/joint_prob/joint_ok`; and, when presets are supplied, `best_scenario_label/best_scenario_prob/best_scenario_ok`.
-- `results/garden_joint_summary_no_R.csv` and `results/garden_joint_summary.csv` (species × scenario): `species,label,requirement,joint_prob,threshold,pass`.
+- `results/gardening/garden_requirements_no_eive.csv` (per species): predictions (`L_pred..N_pred`), `{Axis}_bin`, `{Axis}_borderline`, `{Axis}_confidence`, `{Axis}_recommendation`; optional `joint_requirement/joint_prob/joint_ok`; and, when presets are supplied, `best_scenario_label/best_scenario_prob/best_scenario_ok`.
+- `results/gardening/garden_joint_summary_no_R.csv` and `results/gardening/garden_joint_summary.csv` (species × scenario): `species,label,requirement,joint_prob,threshold,pass`.

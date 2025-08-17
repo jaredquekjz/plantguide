@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 parse_args <- function(args) {
   opt <- list(
     predictions_csv = NULL,
-    output_csv = "results/garden_requirements_no_eive.csv",
+    output_csv = "results/gardening/garden_requirements_no_eive.csv",
     bins = "0:3.5,3.5:6.5,6.5:10",
     borderline_width = 0.5,
     r2_L = NA_real_, r2_T = NA_real_, r2_M = NA_real_, r2_R = NA_real_, r2_N = NA_real_,
@@ -19,7 +19,7 @@ parse_args <- function(args) {
     # Joint suitability (optional)
     joint_requirement = NULL,            # e.g., "L=high,M=med,R=med"
     joint_min_prob = 0.6,               # threshold for OK
-    copulas_json = "results/mag_copulas.json",
+    copulas_json = "results/MAG_Run8/mag_copulas.json",
     metrics_dir = "artifacts/stage4_sem_piecewise_run7",
     nsim_joint = 20000,
     # Batch presets (optional)
