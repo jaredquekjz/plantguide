@@ -14,9 +14,6 @@
   This predictive model is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. 
 </p>
 
-> [!IMPORTANT]
-> Orientation — diagnostic first: The six professionally cleaned traits provide a strong, common baseline. Runs 1–7 are designed to isolate whether residual error comes from data gaps, biological theory, or model structure. The outcome is twofold: (1) a usable predictor now (strongest for M and N; modest for L and T; weaker for R), and (2) a targeted, evidence‑based list of additional traits to add next (see <a href="#future-developments">Future Developments</a>).
-
 ### Pipeline at a Glance
 
 ```mermaid
