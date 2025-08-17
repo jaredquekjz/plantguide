@@ -143,6 +143,17 @@ Bottom line
 - LES measurement (Action 6): test `LES_core =~ negLMA + Nmass` with `logLA` moved to structural side; compare fit and interpretability.
 - MAG residuals: if lavaan absolute fit remains low after co‑adaptation, add minimal residual covariances (already using `logH ~~ logSM; Nmass ~~ logLA; LES ~~ SIZE`) and reassess.
 
+Interpretation — Low_Confidence aligns with Pure_NM
+- Empirical: Across both the power test and multigroup d‑sep, `SSD → R` is significant in `Pure_NM` and `Low_Confidence`, but not in other mycorrhiza groups. Direction is consistent and targeted paths remove misfit (overall Fisher’s C improves to p≈0.899 with selected groups saturated).
+- Warranted reading: The Low_Confidence bucket is unlikely to be pure noise. Two plausible, non‑exclusive explanations fit the data:
+  - Hard‑to‑study enrichment: data‑sparse species are disproportionately non‑mycorrhizal (weedy, aquatic, or disturbance‑tolerant), so they pattern like `Pure_NM`.
+  - Facultative behavior: some species switch mycorrhizal status with context; under resource‑rich or variable conditions they behave effectively NM, producing the same SSD→R signal.
+- Implication: Treat the Low_Confidence result as supportive corroboration of an NM‑linked mechanism for `R`. It strengthens (not weakens) the inference because two independently defined groups converge on the same direct SSD effect.
+- Quick checks (next runs):
+  - Sensitivity: re‑fit d‑sep for `R` excluding Low_Confidence vs pooling it with `Pure_NM`; compare SSD→R estimates and Fisher’s C.
+  - Composition: profile Low_Confidence species (habit, habitat, life span) and compare to `Pure_NM` to test the “hard‑to‑study” enrichment.
+  - Facultative hint: scan Low_Confidence for mixed mycorrhiza annotations across sources/records; elevated mixing would support facultative behavior.
+
 Outcomes — Mycorrhiza Moderation (post‑power test)
 - Power test (LM, focus on SSD:Myco): `src/Stage_4_SEM_Analysis/myco_power_test.R --targets=R,N,L,T --min_group_n=30 --out_dir=artifacts/stage4_sem_myco_run3`
   - R: choose_interaction=TRUE (AIC 2818.94→2811.95; LR p≈0.005); per‑group SSD significant in `Pure_NM` (p≈0.033) and `Low_Confidence` (p≈0.013) — consistent after regrouping.

@@ -7,12 +7,15 @@
   <img src="https://img.shields.io/badge/R-4.4-276DC3?logo=r&logoColor=fff" alt="R 4.4">
 </p>
 <p>
-  <strong>Purpose:</strong> Build an initial model that maps TRY curated species‑level means (six numeric traits: Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) — Díaz et al., 2022) to EIVE (Ecological Indicator Values for Europe) indicators (0–10), and then convert those predictions into simple, expert‑aligned gardening recommendations with quantified uncertainty. These six traits are high‑quality and widely available, but on their own they are not sufficient to adequately predict all five EIVE axes. Accordingly, we plan to expand the model in upcoming iterations with additional traits and data as outlined in <a href="#future-developments">Future Developments</a>.
+  <strong>Purpose:</strong> Build an initial model that maps TRY curated species‑level means (six numeric traits: Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) — Díaz et al., 2022) to EIVE (Ecological Indicator Values for Europe) indicators (0–10), and then convert those predictions into simple, expert‑aligned gardening recommendations with quantified uncertainty. These six traits are high‑quality and widely available, but on their own they are not sufficient to adequately predict all five EIVE axes. This first build is explicitly exploratory and diagnostic: we systematically measure what the six traits can and cannot explain, so we can identify the missing ingredients with evidence rather than guesswork. Accordingly, we plan to expand the model in upcoming iterations with additional traits and data as outlined in <a href="#future-developments">Future Developments</a>.
 </p>
 
 <p>
   This predictive model is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. 
 </p>
+
+> [!IMPORTANT]
+> Orientation — diagnostic first: The six professionally cleaned traits provide a strong, common baseline. Runs 1–7 are designed to isolate whether residual error comes from data gaps, biological theory, or model structure. The outcome is twofold: (1) a usable predictor now (strongest for M and N; modest for L and T; weaker for R), and (2) a targeted, evidence‑based list of additional traits to add next (see <a href="#future-developments">Future Developments</a>).
 
 ### Pipeline at a Glance
 
@@ -409,7 +412,7 @@ Artifacts (Gardening)
   - Preset annotation (when `--joint_presets_csv` is used): `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
 - `results/garden_joint_summary_no_R.csv` (R‑excluded presets) and `results/garden_joint_summary.csv` (with‑R presets):
   - Columns: `species,label,requirement,joint_prob,threshold,pass`.
-- Example (your latest run): RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
+- Example: RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
 
 <p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
@@ -549,6 +552,7 @@ Notes: Root trait relationships frequently show nonlinearity due to anatomical a
 - Traits → Strategies (CSR): build on Pierce et al. (2016, Functional Ecology) to compute global CSR strategy positions from core leaf economics and size traits, enabling strategy‑aware guidance (e.g., stress‑tolerators vs ruderals) alongside EIVE‑based requirements.
 - Traits → Ecosystem Services: extend mapping from traits to ecosystem service indicators using syntheses such as Brown & Anand (“Plant functional traits as measures of ecosystem service provision”), linking predicted trait profiles to services like carbon storage, soil stabilization, pollinator support, and microclimate regulation.
 - Data integration: incorporate GBIF occurrences to enrich geographic context and climate envelopes, and GloBI interaction records to surface biotic associations (pollinators, dispersers, mutualists). This will make recommendations more complete and locally useful for gardeners.
+- Guild Builder module: develop an interactive “Guild Builder” that uses trait‑based predictions of gardening requirements (via EIVE) and ecosystem services to help users discover combinations of common, locally available plants that match their specific site conditions and goals.
 
 ---
 
