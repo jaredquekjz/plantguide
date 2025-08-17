@@ -1,22 +1,119 @@
 # From Plant Traits to Gardening Requirements
 
-Purpose — turn six widely available plant traits into actionable, confidence‑aware gardening requirements by first predicting EIVE (Ecological Indicator Values for Europe) indicators (0–10) and then translating those predictions into simple, expert‑aligned recommendations. This is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Mixed Acyclic Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
+<p align="left">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--or--later-blue.svg" alt="License: AGPL-3.0-or-later"></a>
+  <img src="https://img.shields.io/badge/status-alpha-orange.svg" alt="Status: alpha">
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=fff" alt="Python 3.x">
+  <img src="https://img.shields.io/badge/R-4.4-276DC3?logo=r&logoColor=fff" alt="R 4.4">
+</p>
+<p>
+  <strong>Purpose:</strong> Build an initial model that maps TRY curated species‑level means (six numeric traits: Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) — Díaz et al., 2022) to EIVE (Ecological Indicator Values for Europe) indicators (0–10), and then convert those predictions into simple, expert‑aligned gardening recommendations with quantified uncertainty. These six traits are high‑quality and widely available, but on their own they are not sufficient to adequately predict all five EIVE axes. Accordingly, we plan to expand the model in upcoming iterations with additional traits and data as outlined in <a href="#future-developments">Future Developments</a>.
+</p>
 
-Quick Start — Non‑EIVE Species
+<p>
+  This predictive model is especially useful for species with measured traits but no EIVE entry: the model predicts EIVE from traits and outputs clear recommendations with uncertainty. The pipeline proceeds: Data methodology → Multiple regression → Structural Equation Modeling (SEM) → Mixed Acyclic Graph (MAG) + Copulas (Run 8) → Gardening plan implementation.
+</p>
+
+### Pipeline at a Glance
+
+```mermaid
+flowchart LR
+  A[Data Methodology\nTRY 6 curated traits + EIVE] --> B[Multiple Regression\nbaseline]
+  B --> C[SEM\nLES/SIZE/SSD structure]
+  C --> D[MAG + Copulas\nresidual dependence]
+  D --> E[Gardening Plan\nrequirements + uncertainty]
+```
+
+### Core Traits (Initial Model)
+
+| Abbrev | Trait                   |
+|:------:|-------------------------|
+|  LA    | Leaf area               |
+| Nmass  | Leaf nitrogen per mass  |
+|  LMA   | Leaf mass per area      |
+|   H    | Plant height            |
+|  SM    | Diaspore/Seed mass      |
+|  SSD   | Wood density            |
+
+
+> [!NOTE]
+> Planned expansions include root traits (SRL, diameter, RTD, N), light‑specific leaf traits (thickness, N per area), categorical syndromes (woodiness, growth form, phenology, mycorrhiza), and climate/soil covariates — see [Future Developments](#future-developments).
+
+## Table of Contents
+- [Quick Start — Non‑EIVE Species](#quick-start--non-eive-species)
+- [Data Methodology](#data-methodology)
+- [Multiple Regression — Predictive Baseline](#multiple-regression--predictive-baseline)
+- [Structural Equation Modeling (SEM) — Structure, Fit, and Final Forms](#structural-equation-modeling-sem--structure-fit-and-final-forms)
+- [Mixed Acyclic Graph (MAG) + Copulas — Residual Dependence for Joint Decisions](#mixed-acyclic-graph-mag--copulas--residual-dependence-for-joint-decisions)
+- [Gardening Plan — Simple, Confidence‑Aware Recommendations](#gardening-plan--simple-confidence-aware-recommendations)
+  - [How Gardening Requirements Are Derived](#how-gardening-requirements-are-derived)
+  - [What The Outputs Contain](#what-the-outputs-contain)
+- [Reproducibility — Effective Settings](#reproducibility--effective-settings)
+- [Bottom Line](#bottom-line)
+- [Future Developments](#future-developments)
+  - [Light — Multi‑Regression vs SEM](#light--multi-regression-vs-sem)
+  - [Future Additions To Improve L (beyond the six)](#future-additions-to-improve-l-beyond-the-six)
+  - [Candidate Additions for L (table)](#candidate-additions-for-l-table)
+  - [Temperature (T) — Gaps and Remedies](#temperature-t--gaps-and-remedies)
+  - [Candidate Additions for T (table)](#candidate-additions-for-t-table)
+  - [Reaction / Soil pH (R) — Gaps and Remedies](#reaction--soil-ph-r--gaps-and-remedies)
+  - [Candidate Additions for R (table)](#candidate-additions-for-r-table)
+  - [Root Traits — Future Additions](#root-traits--future-additions)
+  - [Candidate Additions for Root Traits (table)](#candidate-additions-for-root-traits-table)
+- [Traits → Strategies and Services](#traits--strategies-and-services)
+- [License](#license)
+- [References](#references)
+
+## Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
 - Generate predictions from traits (MAG equations):
-  - `Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R --input_csv data/new_traits.csv --output_csv results/mag_predictions_no_eive.csv --equations_json results/MAG_Run8/mag_equations.json --composites_json results/MAG_Run8/composite_recipe.json`
+
+```bash
+Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
+  --input_csv data/new_traits.csv \
+  --output_csv results/mag_predictions_no_eive.csv \
+  --equations_json results/MAG_Run8/mag_equations.json \
+  --composites_json results/MAG_Run8/composite_recipe.json
+```
+
 - Turn predictions into gardening requirements (with joint options):
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`
-  - Or score multiple preset scenarios and annotate the best‑passing:
-    - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`
+
+```bash
+Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
+  --predictions_csv results/mag_predictions_no_eive.csv \
+  --output_csv results/garden_requirements_no_eive.csv \
+  --bins 0:3.5,3.5:6.5,6.5:10 \
+  --borderline_width 0.5 \
+  --copulas_json results/MAG_Run8/mag_copulas.json \
+  --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+  --nsim_joint 20000 \
+  --joint_requirement L=high,M=med,R=med \
+  --joint_min_prob 0.6
+```
+
+<details>
+<summary>Advanced: score multiple preset scenarios and annotate the best‑passing</summary>
+
+```bash
+Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
+  --predictions_csv results/mag_predictions_no_eive.csv \
+  --copulas_json results/MAG_Run8/mag_copulas.json \
+  --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+  --presets_csv results/garden_joint_presets_defaults.csv \
+  --nsim 20000 \
+  --summary_csv results/garden_joint_summary.csv
+```
+
+</details>
+
+<p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
 ---
 
 ## Data Methodology
 
 Sources and matching
-- Traits: TRY curated species‑level means (six numeric traits): Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) (Díaz et al., Scientific Data).
+- Traits: TRY curated species‑level means (six numeric traits): Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) (Díaz et al., 2022).
 - Indicators: Ecological Indicator Values for Europe (EIVE) 1.0 — continuous 0–10 indicator values for five environmental gradients: Light (L), Temperature (T), Moisture (M), Reaction/soil pH (R), and Nutrients (N). EIVE quantifies each species’ realized niche position in European vegetation, harmonizing and extending the classic Ellenberg system to a continuous European scale. Higher values indicate preference toward the higher end of each gradient (e.g., high‑light, warmer, wetter, more alkaline, more fertile sites) (Dengler et al., 2023; Dengler et al., 2024 IAVS).
 - Name alignment: WFO‑accepted names via `data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`; unified normalization (hybrid sign ×/" x ", diacritics, whitespace/case).
 
@@ -37,7 +134,9 @@ Preprocessing (standard across stages unless noted)
 - Validation: repeated, stratified CV — 5×5 (Stage 1, early SEM) or 10×5 (later SEM); seed 42/123 as recorded per run; no winsorization; no replicate‑aware weights by default.
 
 Anchoring to prior work
-- Extends Shipley et al. (2017, JVS) from ordinal Ellenberg ranks (1–9) with four traits to continuous EIVE (0–10) with six traits and structured SEM; leverages global trait spectra (Díaz et al., Scientific Data) and wood economics (Chave et al., 2009) for SSD interpretation.
+- Extends Shipley et al. (2017, JVS) from ordinal Ellenberg ranks (1–9) with four traits to continuous EIVE (0–10) with six traits and structured SEM; leverages global trait spectra (Díaz et al., 2022) and wood economics (Chave et al., 2009) for SSD interpretation.
+
+<p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
 ---
 
@@ -45,7 +144,7 @@ Anchoring to prior work
 
 Setup
 - Script: `src/Stage_3_Multi_Regression/run_multi_regression.R`; input: complete‑case (1,069 spp.).
-- Predictors: LA, Nmass, LMA, H, SM, SSD used (Díaz et al., Scientific Data); transforms/log‑z as above (cf. Shipley et al., 2017); CV 5×5.
+- Predictors: LA, Nmass, LMA, H, SM, SSD used (Díaz et al., 2022); transforms/log‑z as above (cf. Shipley et al., 2017); CV 5×5.
 - Targets: EIVEres‑{L,T,M,R,N} (Dengler et al., 2023; IAVS 2024).
 
 Cross‑validated performance (mean ± SD)
@@ -92,6 +191,8 @@ Takeaway
 Artifacts and reproducibility
 - Artifacts: predictions, coefficients, VIFs, and metrics per target under `artifacts/stage3_multi_regression/eive_lm_{L,T,M,R,N}_*`.
 - Repro cmd: `Rscript src/Stage_3_Multi_Regression/run_multi_regression.R --input_csv artifacts/model_data_complete_case.csv --targets=all --seed=123 --repeats=5 --folds=5 --stratify=true --standardize=true --winsorize=false --weights=none --min_records_threshold=0`.
+
+<p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
 ---
 
@@ -220,6 +321,8 @@ What the m‑sep test achieved
 - Using rank‑based correlations and a random‑effects structure (to avoid false alarms from clustered species), we found a handful of strong, real leftover links — those became copulas (the spouses).
 - The remaining links are tiny in size; we leave them out on purpose. This keeps the joint predictions simple and focused on the dependencies that actually move the needle.
 
+<p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
+
 ---
 
 ## Gardening Plan — Simple, Confidence‑Aware Recommendations
@@ -266,7 +369,7 @@ Artifacts (Gardening)
 - `results/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
  - `results/garden_presets_no_R.csv` — R‑excluded, confidence‑oriented presets (e.g., RichSoilSpecialist) with threshold 0.6.
 
-### How Gardeners Use This Guide
+### How Gardening Requirements Are Derived
 1) Pick your site recipe (constraints):
    - Easy path: choose a preset scenario that matches your bed (e.g., RichSoilSpecialist = M=high & N=high). If soil pH is unknown or variable, prefer the R‑excluded presets in `results/garden_presets_no_R.csv`.
    - Custom path: set a single joint gate such as `--joint_requirement M=high,N=high --joint_min_prob 0.6` when running the recommender.
@@ -286,7 +389,9 @@ Artifacts (Gardening)
   - Preset annotation (when `--joint_presets_csv` is used): `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
 - `results/garden_joint_summary_no_R.csv` (R‑excluded presets) and `results/garden_joint_summary.csv` (with‑R presets):
   - Columns: `species,label,requirement,joint_prob,threshold,pass`.
-  - Example (your latest run): RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
+- Example (your latest run): RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
+
+<p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
 ---
 
@@ -324,18 +429,7 @@ Key paths for replication (selected)
 - Takeaway: the MR→SEM “discrepancy” is expected from SEM’s constraints and missing light‑focused features rather than a modeling error. Targeted, high‑coverage additions are the likely lever to improve L.
 
 ## Future Additions To Improve L (beyond the six)
-Prioritized candidates from the TRY top‑coverage set, excluding the six already used (LMA, Nmass, LeafArea, PlantHeight, Seed/Diaspore mass, SSD):
-- Leaf N per area (TraitID 50): complements Nmass with thickness/area context; proxy for photosynthetic capacity.
-- Leaf thickness (46): mechanistic link to irradiance and shade tolerance; complements LMA.
-- Plant growth form (42): high‑coverage segmentation of open vs forested light environments.
-- Plant woodiness (38): high‑signal grouping; moderates light environments and allometry.
-- Leaf phenology type (37): evergreen vs deciduous relates to canopy persistence and seasonal light.
-- Photosynthesis pathway (22): C3/C4/CAM differences align with high‑light/open habitats.
-- Leaf type (43): needle vs broadleaf aligns with shade/light strategies.
-- Mycorrhiza type (7): indirect proxy for forest/understory light contexts.
-- Secondary (use judiciously; watch collinearity): Stem diameter (21), LDMC (47), Leaf shape/length/width (154/144/145), Leaf dry mass (55), Leaf P (15), Leaf C (13).
-
-Notes: We intentionally exclude SLA and LeafArea variants — near‑duplicates of LMA/LeafArea with likely limited incremental value and higher collinearity under SEM. Categorical additions will need factor encoding in the pipeline.
+Overview: high‑coverage leaf, plant form, and mycorrhiza factors are prioritized; see the table for specific candidates and coverage. We intentionally exclude SLA/LeafArea variants (near‑duplicates of LMA/LeafArea with limited incremental value and higher collinearity). Categorical additions will need factor encoding in the pipeline.
 
 ### Candidate Additions for L (table)
 
@@ -368,10 +462,7 @@ Primary are 1–8; 9–17 are secondary and should be added cautiously to avoid 
   - Weak trait–temperature determinism: the core six (LMA, Nmass, LeafArea, Height, Seed mass, SSD) are broad spectra signals, not temperature‑specific.
   - Missing cold/heat tolerance cues: freezing resistance/avoidance, overwintering strategies, and growing‑season timing are not captured explicitly.
   - Spatial/scale mismatch: realized temperature niche is governed by geography (latitude, elevation, continentality) more than by morphology alone.
-- Helpful additions from TRY (high coverage where possible):
-  - Species tolerance to frost (TraitID 31): direct cold‑tolerance indicator (appears in the top‑coverage list).
-  - Leaf phenology type (37) and plant growth form (42): seasonal/light–temperature coupling; already listed for L but beneficial for T segmentation.
-  - Photosynthesis pathway (22): CAM/C4 often tied to warm, open, seasonal climates.
+- Helpful additions from TRY (high coverage where possible): see the candidate table for specific traits and coverage.
 - Add exogenous climate covariates (recommended):
   - CHELSA/WorldClim bioclims: BIO1 (mean annual temp), BIO5/6 (max warmest, min coldest month), BIO7 (annual range), BIO10/11 (mean warm/cold quarter), isothermality.
   - Elevation and continentality indices. Derive species‑level summaries from GBIF occurrences (median, IQR). Use as exogenous predictors or to stratify model fits.
@@ -392,10 +483,7 @@ Primary are 1–8; 9–17 are secondary and should be added cautiously to avoid 
   - Missing edaphic signals: morphology alone has weak direct linkage to soil pH; R is driven by soil chemistry (base saturation, CaCO₃, CEC) and root nutrient uptake strategies.
   - Root/leaf chemistry absent: the six traits omit root economics (SRL, RTD, diameter) and base‑cation content (leaf Ca, Mg) that track acid vs base‑rich soils.
   - Habitat heterogeneity: micro‑edaphic variation and mycorrhizal associations are not encoded explicitly.
-- Helpful additions from TRY (where coverage allows):
-  - Mycorrhiza type (TraitID 7): EcM/ErM/AM distributions often align with soil acidity/base status in biomes.
-  - Root traits: specific root length (SRL), root tissue density (RTD), root diameter, fine‑root N/P — moderate coverage but mechanistically linked to edaphic strategies.
-  - Leaf chemistry: Ca, Mg, ash content (lower coverage), C/N ratio (TraitID 146) as a coarse nutrient/strategy proxy.
+- Helpful additions from TRY (where coverage allows): see the candidate table for specific traits and coverage.
 - Add exogenous soil covariates (recommended):
   - SoilGrids/WISE layers: pH (H₂O/CaCl₂), base saturation, cation exchange capacity (CEC), CaCO₃, soil organic carbon, texture (sand/clay).
   - Join via occurrences to compute species‑level exposure summaries; include as exogenous predictors or grouping variables in SEM.
@@ -418,6 +506,24 @@ Primary are 1–8; 9–17 are secondary and should be added cautiously to avoid 
 Implementation note: when adding categorical traits (e.g., growth form, woodiness, phenology, mycorrhiza), encode as factors with clear reference levels; for climate/soil covariates, compute occurrence‑weighted summaries with robust statistics (median/IQR) and document spatial filters (native range vs introduced).
 
 
+## Root Traits — Future Additions
+
+### Candidate Additions for Root Traits (table)
+
+| Priority | TraitID | Trait                                                                 | AccSpecNum | Rationale                                         |
+|---------:|--------:|-----------------------------------------------------------------------|-----------:|----------------------------------------------------|
+|        1 |     614 | Fine root length per fine root dry mass (specific fine root length)  |       1308 | Foraging rate; core root economics axis (SRL)      |
+|        2 |     896 | Fine root diameter                                                    |       1147 | Uptake interface; complements SRL and RTD          |
+|        3 |    1781 | Fine root tissue density (fine root dry mass per fine root volume)    |        881 | Conservation axis; lifespan/protection proxy        |
+|        4 |      80 | Root nitrogen (N) content per root dry mass                           |        815 | Nutrient uptake potential (bulk roots)              |
+|        5 |     475 | Fine root nitrogen (N) content per fine root dry mass                 |        796 | Nutrient uptake potential (fine roots)              |
+|        6 |    2062 | Absorptive fine root length per absorptive fine root dry mass (aSRL)  |        734 | Absorptive SRL variant; mechanism focus             |
+|        7 |    1080 | Root length per root dry mass (specific root length, SRL)             |        720 | General SRL variant; cross‑dataset availability     |
+|        8 |    2038 | Absorptive fine root diameter                                         |        594 | Absorptive diameter variant; complements aSRL       |
+
+Notes: Root trait relationships frequently show nonlinearity due to anatomical allometry (Kong et al., 2019). When integrating these traits, prefer simple transforms vetted by cross‑validation and information criteria, and consider mycorrhiza‑aware grouping where supported. Keep linear defaults unless nonlinearity materially improves fit.
+
+
 ## Traits → Strategies and Services
 
 - Traits → Strategies (CSR): build on Pierce et al. (2016, Functional Ecology) to compute global CSR strategy positions from core leaf economics and size traits, enabling strategy‑aware guidance (e.g., stress‑tolerators vs ruderals) alongside EIVE‑based requirements.
@@ -431,11 +537,11 @@ Implementation note: when adding categorical traits (e.g., growth form, woodines
 
 ---
 
-References
+## References
 - Chave, J., Coomes, D., Jansen, S., Lewis, S. L., Swenson, N. G., & Zanne, A. E. (2009). Towards a worldwide wood economics spectrum. Ecology Letters, 12(4), 351–366. https://doi.org/10.1111/j.1461-0248.2009.01285.x
 - Dengler, J., Chusova, O., Jansen, F., Gillet, F., Berg, C., Karrer, G., Raus, T., Tyler, T., Aicher, S., Mankiewicz, A., Ostrowski, G., Widmer, S., & the EIVE Consortium (2023). Ecological Indicator Values for Europe (EIVE) 1.0. Vegetation Classification and Survey, 4, 7–29. https://doi.org/10.3897/VCS.98324
 - Dengler, J., et al. (2024). Ecological Indicator Values for Europe (EIVE): recent developments and performance tests. IAVS 2024 contribution.
-- Díaz, S., et al. The global spectrum of plant form and function: enhanced species‑level trait dataset. Scientific Data. [Data descriptor used for TRY‑curated traits]
+ - Díaz, S., et al. (2022). The global spectrum of plant form and function: enhanced species‑level trait dataset. Scientific Data. [Data descriptor used for TRY‑curated traits]
 - Douma, J. C., & Shipley, B. (2021). A multigroup extension to piecewise path analysis. Ecosphere, 12(5), e03502. https://doi.org/10.1002/ecs2.3502
 - Douma, J. C., & Shipley, B. (2021). Testing piecewise structural equation models in the presence of latent variables and including correlated errors. Structural Equation Modeling. https://doi.org/10.1080/10705511.2020.1871355
 - Douma, J. C., & Shipley, B. (2022). Testing model fit in path models with dependent errors given non‑normality, non‑linearity and hierarchical data. Structural Equation Modeling. https://doi.org/10.1080/10705511.2022.2112199
