@@ -104,7 +104,7 @@ Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
 ```bash
 Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
   --predictions_csv results/mag_predictions_no_eive.csv \
-  --output_csv results/garden_requirements_no_eive.csv \
+  --output_csv results/gardening/garden_requirements_no_eive.csv \
   --bins 0:3.5,3.5:6.5,6.5:10 \
   --borderline_width 0.5 \
   --copulas_json results/MAG_Run8/mag_copulas.json \
@@ -122,9 +122,9 @@ Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
   --predictions_csv results/mag_predictions_no_eive.csv \
   --copulas_json results/MAG_Run8/mag_copulas.json \
   --metrics_dir artifacts/stage4_sem_piecewise_run7 \
-  --presets_csv results/garden_joint_presets_defaults.csv \
+  --presets_csv results/gardening/garden_joint_presets_defaults.csv \
   --nsim 20000 \
-  --summary_csv results/garden_joint_summary.csv
+  --summary_csv results/gardening/garden_joint_summary.csv
 ```
 
 </details>
@@ -353,6 +353,14 @@ What the m‑sep test achieved
 - Using rank‑based correlations and a random‑effects structure (to avoid false alarms from clustered species), we found a handful of strong, real leftover links — those became copulas (the spouses).
 - The remaining links are tiny in size; we leave them out on purpose. This keeps the joint predictions simple and focused on the dependencies that actually move the needle.
 
+> [!NOTE]
+> Guardrail — Why no global m‑sep/LRT in Run 8
+> - Stage intent: diagnostic‑first and predictive. Quantify what six traits can explain, identify what is missing, and enable joint decisions via a small spouse set of residual copulas.
+> - Where we are: with only six predictors, absolute fit is expected to be imperfect; a global m‑sep/LRT would mostly report misfit without pointing to actionable fixes.
+> - Better tool now: targeted residual checks + copulas isolate the few meaningful leftover dependencies and directly improve joint predictions.
+> - When m‑sep/LRT shines: as the mean structure nears completion and absolute fit becomes the aim (after adding key exogenous predictors/groups), a full basis‑set m‑sep or saturated‑model LRT provides a coherent global fit check and helps choose among competing MAGs.
+> - Revisit when: (i) publication/review requires a global fit demonstration; (ii) major exogenous predictors or grouping changes (e.g., soil/climate, mycorrhiza) are added and end‑to‑end independences need re‑checking; (iii) districts become multivariate or tail behavior suggests non‑Gaussian copulas/vines; or (iv) residual checks surface non‑spouse links of practical size.
+
 <p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
 ---
@@ -373,53 +381,53 @@ Joint suitability (optional)
 - Supports:
   - Single requirement gate: enforce `joint_min_prob`.
   - Batch presets: score common scenarios and annotate each species with best‑passing scenario.
-  - Confidence‑oriented presets: when pH (R) predictions are the weakest axis, prefer R‑excluded presets for higher confidence (see `results/garden_presets_no_R.csv`).
+  - Confidence‑oriented presets: when pH (R) predictions are the weakest axis, prefer R‑excluded presets for higher confidence (see `results/gardening/garden_presets_no_R.csv`).
 
 Defaults and presets
 - Bin edges: `[0,3.5), [3.5,6.5), [6.5,10]`; borderline width: `±0.5`.
-- Joint threshold (presets): `0.6` (tunable) in `results/garden_joint_presets_defaults.csv`.
+- Joint threshold (presets): `0.6` (tunable) in `results/gardening/garden_joint_presets_defaults.csv`.
 - Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/MAG_Run8/mag_copulas.json`.
  - Preset sets:
-   - Defaults (with R): `results/garden_joint_presets_defaults.csv` (e.g., SunnyNeutral, WarmNeutralFertile).
-   - R‑excluded (more confident): `results/garden_presets_no_R.csv` (e.g., RichSoilSpecialist, LushShadePlant). Latest comparison in `results/summaries/PR_SUMMARY_Run8_Joint_Gardening.md`.
+   - Defaults (with R): `results/gardening/garden_joint_presets_defaults.csv` (e.g., SunnyNeutral, WarmNeutralFertile).
+   - R‑excluded (more confident): `results/gardening/garden_presets_no_R.csv` (e.g., RichSoilSpecialist, LushShadePlant). Latest comparison in `results/summaries/PR_SUMMARY_Run8_Joint_Gardening.md`.
 
 Repro commands (joint usage)
 - Batch presets summary:
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/garden_joint_summary.csv`.
-  - (R‑excluded presets) `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/garden_presets_no_R.csv --nsim 20000 --summary_csv results/garden_joint_summary_no_R.csv`.
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`.
+  - (R‑excluded presets) `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`.
 - Recommender with single gate or best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
-  - or with presets: add `--joint_presets_csv results/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
+  - or with presets: add `--joint_presets_csv results/gardening/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
 
 Outputs (Stage 5–6)
-- `results/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.
-- `results/garden_joint_summary.csv` — species × scenario joint probabilities (defaults).
-- `results/garden_joint_summary_no_R.csv` — species × scenario joint probabilities (R‑excluded presets).
+- `results/gardening/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.
+- `results/gardening/garden_joint_summary.csv` — species × scenario joint probabilities (defaults).
+- `results/gardening/garden_joint_summary_no_R.csv` — species × scenario joint probabilities (R‑excluded presets).
 
 Artifacts (Gardening)
-- `results/garden_joint_presets_defaults.csv` — default scenarios (e.g., SunnyNeutral, WarmNeutralFertile) with threshold 0.6.
-- `results/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
- - `results/garden_presets_no_R.csv` — R‑excluded, confidence‑oriented presets (e.g., RichSoilSpecialist) with threshold 0.6.
+- `results/gardening/garden_joint_presets_defaults.csv` — default scenarios (e.g., SunnyNeutral, WarmNeutralFertile) with threshold 0.6.
+- `results/gardening/garden_requirements_no_eive.csv` — recommendations incl. `joint_requirement/joint_prob/joint_ok` and best‑scenario fields when presets are used.
+ - `results/gardening/garden_presets_no_R.csv` — R‑excluded, confidence‑oriented presets (e.g., RichSoilSpecialist) with threshold 0.6.
 
 ### How Gardening Requirements Are Derived
 1) Pick your site recipe (constraints):
-   - Easy path: choose a preset scenario that matches your bed (e.g., RichSoilSpecialist = M=high & N=high). If soil pH is unknown or variable, prefer the R‑excluded presets in `results/garden_presets_no_R.csv`.
+   - Easy path: choose a preset scenario that matches your bed (e.g., RichSoilSpecialist = M=high & N=high). If soil pH is unknown or variable, prefer the R‑excluded presets in `results/gardening/garden_presets_no_R.csv`.
    - Custom path: set a single joint gate such as `--joint_requirement M=high,N=high --joint_min_prob 0.6` when running the recommender.
-2) Read the per‑axis cards first (from `results/garden_requirements_no_eive.csv`):
+2) Read the per‑axis cards first (from `results/gardening/garden_requirements_no_eive.csv`):
    - Each axis shows: predicted value (0–10), bin (low/med/high), a `borderline` flag near cutoffs, and a qualitative confidence tag. Treat M/N as strongest, L/T as medium, R as weakest.
 3) Use joint probability to decide multi‑constraint fit:
-   - Presets: check `results/garden_joint_summary_no_R.csv` (or `..._summary.csv` for with‑R) and filter rows where `pass=TRUE` at your threshold (default 0.6). Higher `joint_prob` = better fit to that site recipe.
+   - Presets: check `results/gardening/garden_joint_summary_no_R.csv` (or `..._summary.csv` for with‑R) and filter rows where `pass=TRUE` at your threshold (default 0.6). Higher `joint_prob` = better fit to that site recipe.
    - Recommender gate: if you supplied a single `--joint_requirement`, use the `joint_prob` and `joint_ok` columns directly in `garden_requirements_no_eive.csv`.
 4) Pick winners and adjust if needed:
    - Start with species that pass your recipe. If too few pass, lower the threshold (e.g., 0.5) or drop a weaker axis (often R). Avoid requiring “all five” — that AND condition is usually too strict.
 
 ### What The Outputs Contain
-- `results/garden_requirements_no_eive.csv` (per species):
+- `results/gardening/garden_requirements_no_eive.csv` (per species):
   - Predictions: `L_pred,T_pred,M_pred,R_pred,N_pred` (0–10).
   - Per‑axis guidance: `{Axis}_bin`, `{Axis}_borderline`, `{Axis}_confidence`, `{Axis}_recommendation`.
   - Optional joint fields: `joint_requirement`, `joint_prob`, `joint_ok` (when a single gate is provided).
   - Preset annotation (when `--joint_presets_csv` is used): `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
-- `results/garden_joint_summary_no_R.csv` (R‑excluded presets) and `results/garden_joint_summary.csv` (with‑R presets):
+- `results/gardening/garden_joint_summary_no_R.csv` (R‑excluded presets) and `results/gardening/garden_joint_summary.csv` (with‑R presets):
   - Columns: `species,label,requirement,joint_prob,threshold,pass`.
 - Example: RichSoilSpecialist (M=high,N=high) passes for Cryptomeria japonica (0.663), Pinus densiflora (0.659), Sequoia sempervirens (0.654), Pinus ponderosa (0.640), Tsuga canadensis (0.622).
 
