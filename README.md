@@ -283,6 +283,15 @@ Artifacts (SEM)
   - `artifacts/stage4_sem_summary_run4/sem_metrics_summary_main.csv` (plus lavaan fit deltas/IC).
   - `artifacts/stage4_sem_summary_run5/piecewise_interaction_vs_baseline.csv`, `.../full_model_ic_comparison.csv`.
   - `artifacts/stage4_sem_summary_run7/sem_metrics_summary_main.csv`.
+ - Run summaries (markdown):
+   - `results/summaries/stage2_sem_run1_summary.md`
+   - `results/summaries/stage_sem_run2_summary.md`
+   - `results/summaries/stage_sem_run3_summary.md`
+   - `results/summaries/stage_sem_run4_summary.md`
+   - `results/summaries/stage_sem_run5_summary.md`
+   - `results/summaries/stage_sem_run6_summary.md`
+   - `results/summaries/stage_sem_run6P_summary.md`
+   - `results/summaries/stage_sem_run7_summary.md`
 
 ---
 
@@ -426,7 +435,7 @@ Artifacts (Gardening)
 
 Key paths for replication (selected)
 - Stage 1 results: `results/summaries/stage1_multi_regression_summary.md`
-- SEM runs: `results/summaries/stage2_sem_run1_summary.md`, `results/summaries/stage_sem_run{2,4,6,7}_summary.md`
+- SEM runs: `results/summaries/stage2_sem_run1_summary.md`, `results/summaries/stage_sem_run2_summary.md`, `results/summaries/stage_sem_run3_summary.md`, `results/summaries/stage_sem_run4_summary.md`, `results/summaries/stage_sem_run5_summary.md`, `results/summaries/stage_sem_run6_summary.md`, `results/summaries/stage_sem_run6P_summary.md`, `results/summaries/stage_sem_run7_summary.md`
 - MAG + copulas: `results/summaries/stage_sem_run8_summary.md`, `results/summaries/stage_sem_run8_copula_diagnostics.md`
 - Gardening plan: `results/summaries/gardening_plan.md`, `results/summaries/PR_SUMMARY_Run8_Joint_Gardening.md`
 
