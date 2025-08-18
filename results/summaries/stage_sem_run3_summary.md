@@ -6,7 +6,7 @@ Scope: Run 3 reproduces Run 2 models and parameters, adding only mycorrhiza grou
 
 Data
 - Input: `artifacts/model_data_complete_case_with_myco.csv` (complete-case six traits; n=1,068; 832 species annotated with `Myco_Group_Final`).
-- Targets: `EIVEres-{L,T,M,R,N}` (0–10).azq
+- Targets: `EIVEres-{L,T,M,R,N}` (0–10).azq`
 
 Pre-step: refresh myco grouping and with_myco datasets
 - Rebuild classification and WFO match (keeps taxonomy in sync), then re-assemble with myco columns into modeling CSVs:
@@ -112,6 +112,19 @@ Final Results (Run 3; mean ± SD)
   - R: R² 0.0229±0.0236; RMSE 1.5380±0.0404; MAE 1.1615±0.0274 (n=1049)
   - N: R² 0.3013±0.0554; RMSE 1.5683±0.0566; MAE 1.2859±0.0406 (n=1047)
 - d-sep (R, myco-specific SSD→R): Intermediate Fisher’s C p≈0.089 (df≈12) prior to targeted path adjustments; Final overall Fisher’s C p≈0.899 (df≈8) with selected groups saturated (df=0). Per-group improvements remain: `Pure_NM` (p≈0.023) and `Low_Confidence` (p≈0.048).
+
+Mycorrhiza Split — p-values (before vs after)
+- Rationale: report heterogeneity ("before": pooled vs by‑group equality test for the logSSD→y path) and per‑group p‑values ("after": significance of logSSD→y within each mycorrhiza group). Source files: `artifacts/stage4_sem_piecewise_run3/sem_piecewise_{X}_claim_logSSD_{eqtest,pergroup_pvals}.csv`.
+
+| Target | p_overall | p_Facultative_AM_NM | p_Low_Confidence | p_Mixed_Uncertain | p_Pure_AM | p_Pure_EM | p_Pure_NM |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| L | 0.208 | 0.728 | 0.364 | 0.184 | 0.120 | 0.188 | 0.366 |
+| T | 0.114 | 0.522 | **0.0426** | 0.0726 | 0.473 | 0.190 | 0.834 |
+| M | **0.00221** | 0.0698 | 0.346 | 0.452 | 0.446 | **0.0493** | **9.14e-4** |
+| N | **4.13e-7** | **4.84e-4** | 0.0773 | 0.845 | 0.124 | **0.00690** | **1.15e-4** |
+| R | **0.0376** | 0.838 | **0.0123** | 0.414 | 0.592 | 0.210 | **0.0315** |
+
+- Notes: significant heterogeneity for M/N/R justifies myco-group splits in inference; `Low_Confidence` is retained in display but should be treated cautiously; woodiness results remain in Run 2. Values rounded for readability.
 
 Artifacts (Run 3)
 - lavaan: `artifacts/stage4_sem_lavaan_run3/sem_lavaan_{L,T,M,R,N}_{metrics.json,preds.csv,path_coefficients.csv}`

@@ -44,7 +44,22 @@ Formal SEM Fit (lavaan; fit by Woodiness group)
 - Observations:
   - Woody groups show modest CFI (≈0.67–0.76) and high RMSEA (≈0.20–0.23) across L/T/M/R/N.
   - Non-woody groups show higher CFI (≈0.79–0.83) and lower RMSEA (≈0.14–0.17), consistent with weaker SSD effects.
-  - This pattern supports WES: SSD’s direct influence is stronger in woody plants; however, absolute fit remains below conventional thresholds, suggesting residual misspecification not addressed here (MAG reserved for later).
+- This pattern supports WES: SSD’s direct influence is stronger in woody plants; however, absolute fit remains below conventional thresholds, suggesting residual misspecification not addressed here (MAG reserved for later).
+
+Woodiness Split — p-values (before vs after)
+- Rationale: report the heterogeneity test p-value ("before": pooled vs by‑group equality test for the logSSD→y path) and the per‑group p‑values ("after": significance of logSSD→y within each Woodiness group). Values come from the piecewise outputs noted below.
+- Compact view (p-values)
+
+| Target | p_overall (heterogeneity) | p_non-woody | p_woody | p_semi-woody |
+|---|---:|---:|---:|---:|
+| L | 0.107 | 0.677 | **0.0193** | 0.414 |
+| T | **0.00526** | 0.0787 | **0.00481** | 0.264 |
+| M | **2.98e-12** | **1.31e-07** | **9.65e-08** | 0.409 |
+| N | **1.05e-05** | **2.00e-04** | **5.51e-04** | 0.621 |
+| R | **0.0140** | **0.0337** | **0.0119** | 0.858 |
+
+- Notes: semi‑woody has n≈11 (unstable p‑values); M/N are from the deconstructed run2 outputs; source CSVs are the `*_claim_logSSD_eqtest.csv` and `*_claim_logSSD_pergroup_pvals.csv` in the corresponding run2 folders listed under Artifacts.
+- Takeaway: T/M/N/R show significant heterogeneity by Woodiness (justify splitting). Within groups, woody plants consistently show significant direct SSD effects; non‑woody effects are weaker/absent for L/T/R but present for M/N. Semi‑woody has n≈11, so p‑values are unstable and not used for decisions.
 
 Piecewise d-sep (Fisher’s C)
 - Per-target `*_dsep_fit.csv` were regenerated with `piecewiseSEM` + `lme4` (random intercepts) and written under each run2 folder.
