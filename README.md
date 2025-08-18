@@ -69,6 +69,7 @@ Notes
   - [How Gardening Requirements Are Derived](#how-gardening-requirements-are-derived)
   - [What The Outputs Contain](#what-the-outputs-contain)
 - [Reproducibility — Effective Settings](#reproducibility--effective-settings)
+- [Performance & Diagnostics](#performance--diagnostics)
 - [Bottom Line](#bottom-line)
 - [Future Developments](#future-developments)
   - [Light — Multi‑Regression vs SEM](#light--multi-regression-vs-sem)
@@ -243,11 +244,28 @@ Key run decisions and evidence
 Run highlights 
 - Run 1 baseline (CV; composites, seed=123, 5×5): piecewise outperformed lavaan proxies across axes — e.g., R² piecewise vs lavaan: L 0.224 vs 0.107; T 0.212 vs 0.103; M 0.342 vs 0.041; R 0.149 vs 0.024; N 0.371 vs 0.303. Piecewise d‑sep on full data supported mediation for L/T (C≈0.95–1.31, p≈0.62–0.52), was borderline for R (C≈4.61, p≈0.10), and saturated for M/N (df=0), indicating necessary direct SSD→{M,N}.
 - Run 2 (WES‑backed SSD→{M,N,R}; woodiness groups): piecewise CV R² changes vs Run 1 are modest and concentrated in M/N due to deconstructing SIZE (≈+0.05 each); L/T are essentially unchanged (≈0 to +0.01) and R is near‑identical. Grouped lavaan fits: woody CFI≈0.67–0.76, RMSEA≈0.20–0.23; non‑woody CFI≈0.79–0.83, RMSEA≈0.14–0.17 — absolute fit still below conventional thresholds. See `results/summaries/stage_sem_run2_summary.md` for before/after woodiness split p‑values (heterogeneity and per‑group).
+  - Interpretation (Run 2): Split justified for T/M/N/R; L not required. Woody is significant across L/T/M/N/R; non‑woody significant for M/N/R only; semi‑woody non‑significant (n≈11).
 - Run 3 (Mycorrhiza groups added): n=1,068 complete‑case; 832 labeled. CV forms matched Run 2 (M/N deconstructed; L/T/R linear). Targeted myco‑specific SSD→R for `Pure_NM` and `Low_Confidence` improved d‑sep (final overall Fisher’s C p≈0.899 with selected groups saturated), while CV metrics remained consistent with Run 2. See `results/summaries/stage_sem_run3_summary.md` for before/after mycorrhiza split p‑values.
+  - Interpretation (Run 3): Split justified for M/N/R; L/T not required. Signals concentrate in NM‑linked groups — Pure_NM significant for M/N/R; Pure_EM for M/N; Low_Confidence for T/R (treat cautiously).
 - Run 4 (Co‑adapted LES↔SIZE in lavaan; seed=42, 10×5 CV): multi‑group lavaan fit indices ranged roughly CFI 0.53–0.65; RMSEA 0.25–0.28; SRMR 0.16–0.22. Decisive information‑criterion gains vs Run 3: ΔAIC/BIC (Run 4 − Run 3) — L −468/−393; M −498/−422; R −443/−372; N −436/−361 — strongly favoring co‑adaptation.
 - Run 5 (LES×logSSD interaction in piecewise; seed=123, 10×5 CV): Added `LES:logSSD` to y‑equations. CV effects are small (tiny gains for T and N; neutral/slight negatives for L/M/R). Full‑model IC sums change little — modest improvement for N only (ΔAIC_sum ≈ −3; ΔBIC_sum ≈ +2). Adoption: keep for N; optional for T; omit for L/M/R.
 - Run 6 (Nonlinearity via s(logH) in piecewise; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
 - Run 6P (Phylogenetic GLS sensitivity): Brownian GLS on full data confirms coefficient sign stability (LES, SIZE/logH/logSM, logSSD) and supports the interaction policy (N yes; T optional). AIC_sum magnitudes differ from non‑phylo runs (different likelihood) — use for relative checks only.
+
+---
+
+## Performance & Diagnostics
+
+- Baseline (Multiple Regression): Cross‑validation reveals a wide range of predictive skill across the EIVE axes. The model is strongest for Nutrients (N) and weakest for soil pH (R), with modest performance for Light (L), Temperature (T), and Moisture (M).
+  - Performance (CV R² ± SD): L 0.15±0.05, T 0.10±0.04, M 0.13±0.05, R 0.04±0.03, N 0.36±0.04.
+  - Typical error (RMSE): ~1.26–1.52 EIVE units.
+
+- Final (Structural Equation Model): The adopted piecewise SEM — using composite predictors (LES, SIZE) and targeted direct SSD paths (plus a single retained interaction for N) — substantially improves out‑of‑fold predictive skill across all axes versus the baseline. Linear forms were preferred by both cross‑validation and information criteria.
+  - Performance (CV R²): L ≈ 0.24, T ≈ 0.23, M ≈ 0.42, R ≈ 0.16, N ≈ 0.42.
+  - Typical error (RMSE): reduced and narrowed to ~1.14–1.43 EIVE units.
+
+Notes
+- Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted piecewise SEM forms (Runs 2–7; deconstructed SIZE for M/N; linear SIZE for L/T/R; no splines; LES×SSD kept for N only). See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
 - Run 7 (LES_core + logLA predictor; seed=42, 10×5 CV): Rebuilt LES from {negLMA, Nmass} and added logLA to y. Piecewise CV improves for M/N (R²≈0.415/0.424), holds for L/T, and modestly improves R. Full‑model IC sums drop sharply for M (ΔAIC_sum ≈ −92; ΔBIC_sum ≈ −82) and N (ΔAIC_sum ≈ −81; ΔBIC_sum ≈ −67); neutral/slightly worse for L/T; mixed for R. Single‑group lavaan fit indices remain below thresholds; N improves slightly.
 
 Mini‑figure — piecewise full‑model IC (Run 7 vs Run 6)
