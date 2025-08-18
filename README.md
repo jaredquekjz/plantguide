@@ -252,16 +252,45 @@ Run highlights
 - Run 6 (Nonlinearity via s(logH) in piecewise; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
 - Run 6P (Phylogenetic GLS sensitivity): Brownian GLS on full data confirms coefficient sign stability (LES, SIZE/logH/logSM, logSSD) and supports the interaction policy (N yes; T optional). AIC_sum magnitudes differ from non‑phylo runs (different likelihood) — use for relative checks only.
 
+Generate before/after p‑values text (Markdown)
+- Script: `src/Stage_4_SEM_Analysis/generate_pval_bullets.R` prints the “Before/After” bullets (bold if p<0.05) and a concise interpretation. Copy‑paste into your run summaries.
+- Examples:
+  - Run 2 (Woodiness):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
+      --groups_type=woodiness \
+      --dir_LTR artifacts/stage4_sem_piecewise_run2 \
+      --dir_MN artifacts/stage4_sem_piecewise_run2_deconstructed
+    ```
+  - Run 3 (Mycorrhiza):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
+      --groups_type=myco \
+      --dir_all artifacts/stage4_sem_piecewise_run3
+    ```
+
 ---
 
 ## Performance & Diagnostics
 
 - Baseline (Multiple Regression): Cross‑validation reveals a wide range of predictive skill across the EIVE axes. The model is strongest for Nutrients (N) and weakest for soil pH (R), with modest performance for Light (L), Temperature (T), and Moisture (M).
   - Performance (CV R² ± SD): L 0.15±0.05, T 0.10±0.04, M 0.13±0.05, R 0.04±0.03, N 0.36±0.04.
+  - Axis bars (R² vs 0.50 → 10 chars):
+    - L 0.15±0.05 [###.......]
+    - T 0.10±0.04 [##........]
+    - M 0.13±0.05 [###.......]
+    - R 0.04±0.03 [#.........]
+    - N 0.36±0.04 [#######...]
   - Typical error (RMSE): ~1.26–1.52 EIVE units.
 
 - Final (Structural Equation Model): The adopted piecewise SEM — using composite predictors (LES, SIZE) and targeted direct SSD paths (plus a single retained interaction for N) — substantially improves out‑of‑fold predictive skill across all axes versus the baseline. Linear forms were preferred by both cross‑validation and information criteria.
   - Performance (CV R²): L ≈ 0.24, T ≈ 0.23, M ≈ 0.42, R ≈ 0.16, N ≈ 0.42.
+  - Axis bars (R² vs 0.50 → 10 chars):
+    - L 0.24 [#####.....]
+    - T 0.23 [#####.....]
+    - M 0.42 [########..]
+    - R 0.16 [###.......]
+    - N 0.42 [########..]
   - Typical error (RMSE): reduced and narrowed to ~1.14–1.43 EIVE units.
 
 Notes
