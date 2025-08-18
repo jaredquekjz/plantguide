@@ -22,6 +22,12 @@ parse_args <- function(args) {
     copulas_json = "results/MAG_Run8/mag_copulas.json",
     metrics_dir = "artifacts/stage4_sem_piecewise_run7",
     nsim_joint = 20000,
+    # Group-aware uncertainty (optional)
+    group_col = NULL,                   # name of grouping column (either in predictions or in reference csv)
+    group_ref_csv = "artifacts/model_data_complete_case_with_myco.csv",
+    group_ref_id_col = "wfo_accepted_name",
+    group_ref_group_col = NULL,
+    sigma_mode = NULL,                  # global|by_group (default: by_group when group_col present)
     # Batch presets (optional)
     joint_presets_csv = NULL            # CSV with columns: label, requirement, joint_min_prob
   )
@@ -225,40 +231,102 @@ main <- function() {
       if (!is.finite(rmse)) stop(sprintf("Could not read RMSE_mean from %s", p))
       rmse
     }
-    sigmas <- c(
-      L = read_sigma(opt$metrics_dir, "L"),
-      T = read_sigma(opt$metrics_dir, "T"),
-      M = read_sigma(opt$metrics_dir, "M"),
-      R = read_sigma(opt$metrics_dir, "R"),
-      N = read_sigma(opt$metrics_dir, "N")
-    )
-    # Build Corr from copulas JSON
+    sigmas_global <- c(L = read_sigma(opt$metrics_dir, "L"), T = read_sigma(opt$metrics_dir, "T"), M = read_sigma(opt$metrics_dir, "M"), R = read_sigma(opt$metrics_dir, "R"), N = read_sigma(opt$metrics_dir, "N"))
+    # Build Corr from copulas JSON (global + optional per-group)
     cop <- jsonlite::fromJSON(opt$copulas_json)
-    Corr <- diag(5); names <- axes
-    if (is.data.frame(cop$districts)) {
-      for (i in seq_len(nrow(cop$districts))) {
-        mem <- toupper(unlist(cop$districts$members[[i]])); rho <- as.numeric(cop$districts$params$rho[i])
-        a <- match(mem[1], names); b <- match(mem[2], names); Corr[a,b] <- Corr[b,a] <- rho
+    names <- axes
+    build_corr <- function(districts) {
+      C <- diag(5)
+      if (is.data.frame(districts)) {
+        for (i in seq_len(nrow(districts))) {
+          mem <- toupper(unlist(districts$members[[i]])); rho <- as.numeric(districts$params$rho[i])
+          a <- match(mem[1], names); b <- match(mem[2], names); C[a,b] <- C[b,a] <- rho
+        }
+      } else if (is.list(districts)) {
+        for (d in districts) { mem <- toupper(unlist(d$members)); rho <- as.numeric(d$params$rho); a <- match(mem[1], names); b <- match(mem[2], names); C[a,b] <- C[b,a] <- rho }
       }
-    } else if (is.list(cop$districts)) {
-      for (d in cop$districts) { mem <- toupper(unlist(d$members)); rho <- as.numeric(d$params$rho); a <- match(mem[1], names); b <- match(mem[2], names); Corr[a,b] <- Corr[b,a] <- rho }
+      C
     }
-    # Covariance and Cholesky
-    D <- diag(as.numeric(sigmas[names])); Sigma <- D %*% Corr %*% D; Rchol <- chol(Sigma)
+    Corr_global <- build_corr(cop$districts)
+    by_group_corr <- list()
+    if (!is.null(cop$by_group) && is.list(cop$by_group)) {
+      for (nm in names(cop$by_group)) {
+        if (is.null(cop$by_group[[nm]]$districts)) next
+        by_group_corr[[nm]] <- build_corr(cop$by_group[[nm]]$districts)
+      }
+    }
+    Corr_for_group <- function(glab) {
+      if (!is.null(by_group_corr) && length(by_group_corr) && !is.null(glab) && nzchar(glab) && (glab %in% names(by_group_corr))) return(by_group_corr[[glab]])
+      Corr_global
+    }
+    # Optional: per-group sigmas
+    sigma_mode <- tolower(ifelse(is.null(opt$sigma_mode) || !nzchar(opt$sigma_mode), ifelse(!is.null(opt$group_col) && nzchar(opt$group_col), "by_group", "global"), opt$sigma_mode))
+    group_vals <- NULL
+    sigmas_by_group <- NULL
+    group_col_use <- opt$group_col
+    if (sigma_mode == "by_group" && !is.null(group_col_use) && nzchar(group_col_use)) {
+      # Attach group column to 'base' if missing via reference join
+      if (!(group_col_use %in% names(base))) {
+        ref_path <- opt$group_ref_csv
+        gid <- opt$group_ref_id_col
+        gcol <- if (!is.null(opt$group_ref_group_col) && nzchar(opt$group_ref_group_col)) opt$group_ref_group_col else group_col_use
+        if (file.exists(ref_path) && (gid %in% names(preds)) && (gcol %in% names(readr::read_csv(ref_path, show_col_types = FALSE, n_max = 1)))) {
+          ref <- suppressMessages(readr::read_csv(ref_path, show_col_types = FALSE))
+          base <- base %>% left_join(ref %>% select(all_of(c(gid, gcol))), by = setNames(gid, id_col))
+          names(base)[names(base) == gcol] <- group_col_use
+        } else {
+          message("Group reference missing or columns not found; falling back to global sigmas")
+        }
+      }
+      if (group_col_use %in% names(base)) {
+        group_vals <- as.character(base[[group_col_use]])
+        # compute per-group RMSE by joining Run7 preds to reference
+        ref_path <- opt$group_ref_csv
+        gid <- opt$group_ref_id_col
+        gcol <- if (!is.null(opt$group_ref_group_col) && nzchar(opt$group_ref_group_col)) opt$group_ref_group_col else group_col_use
+        if (file.exists(ref_path)) {
+          ref <- suppressMessages(readr::read_csv(ref_path, show_col_types = FALSE))
+          per_axis <- list()
+          for (ax in axes) {
+            ppath <- file.path(opt$metrics_dir, sprintf("sem_piecewise_%s_preds.csv", ax))
+            if (!file.exists(ppath)) { per_axis[[ax]] <- NULL; next }
+            dfp <- suppressMessages(readr::read_csv(ppath, show_col_types = FALSE))
+            if (!("id" %in% names(dfp)) || !(gid %in% names(ref)) || !(gcol %in% names(ref))) { per_axis[[ax]] <- NULL; next }
+            tmp <- dfp %>% left_join(ref %>% select(all_of(c(gid, gcol))), by = setNames(gid, "id"))
+            if (!(gcol %in% names(tmp)) || !all(c("y_true","y_pred") %in% names(tmp))) { per_axis[[ax]] <- NULL; next }
+            tmp <- tmp %>% mutate(err = y_true - y_pred) %>% filter(is.finite(err), !is.na(.data[[gcol]]))
+            if (nrow(tmp) == 0) { per_axis[[ax]] <- NULL; next }
+            agg <- tmp %>% group_by(.data[[gcol]]) %>% summarize(RMSE = sqrt(mean(err^2)), .groups = "drop")
+            v <- agg$RMSE; names(v) <- as.character(agg[[gcol]]); per_axis[[ax]] <- v
+          }
+          sigmas_by_group <- per_axis
+        }
+      }
+    }
     # Prepare predictions matrix
     mu_mat <- as.matrix(base[, paste0(axes, "_pred")])
     # Precompute residual draws
     nsim <- as.integer(opt$nsim_joint); if (!is.finite(nsim) || nsim < 1000) nsim <- 10000
     Z <- matrix(stats::rnorm(nsim*5), ncol=5)
-    E <- Z %*% Rchol
+    # Helper: pick sigma vector for group
+    sigma_for_group <- function(glab) {
+      s <- sigmas_global
+      if (!is.null(sigmas_by_group) && length(sigmas_by_group)) {
+        for (ax in axes) {
+          vec <- sigmas_by_group[[ax]]
+          if (!is.null(vec) && !is.na(glab) && nzchar(glab) && (glab %in% names(vec))) s[[ax]] <- as.numeric(vec[[glab]])
+        }
+      }
+      s
+    }
     # Bounds
     lo <- rep(-Inf, 5); hi <- rep(Inf, 5)
     for (k in seq_along(axes)) {
       ax <- axes[k]
       if (!is.null(req[[ax]])) { b <- bins[[ req[[ax]] ]]; lo[k] <- b[1]; hi[k] <- b[2] }
     }
-    inside_rect <- function(mu) {
-      Y <- sweep(E, 2, mu, "+")
+    inside_rect_E <- function(Euse, mu) {
+      Y <- sweep(Euse, 2, mu, "+")
       ok <- rep(TRUE, nrow(Y))
       for (j in 1:5) {
         if (is.finite(lo[j])) ok <- ok & (Y[,j] >= lo[j])
@@ -266,7 +334,23 @@ main <- function() {
       }
       mean(ok)
     }
-    probs <- apply(mu_mat, 1, inside_rect)
+    # Compute by group (if available) else global
+    if (!is.null(group_vals)) {
+      probs <- numeric(nrow(mu_mat))
+      glabs <- unique(group_vals)
+      for (g in glabs) {
+        idx <- which(group_vals == g)
+        svec <- sigma_for_group(g)
+        Cg <- Corr_for_group(g)
+        Dg <- diag(as.numeric(svec[axes])); Sigmag <- Dg %*% Cg %*% Dg; Rg <- chol(Sigmag)
+        Eg <- Z %*% Rg
+        probs[idx] <- apply(mu_mat[idx, , drop = FALSE], 1, function(mu) inside_rect_E(Eg, mu))
+      }
+    } else {
+      D <- diag(as.numeric(sigmas_global[names])); Sigma <- D %*% Corr_global %*% D; Rchol <- chol(Sigma)
+      E <- Z %*% Rchol
+      probs <- apply(mu_mat, 1, function(mu) inside_rect_E(E, mu))
+    }
     recs$joint_requirement <- opt$joint_requirement
     recs$joint_prob <- probs
     recs$joint_ok <- recs$joint_prob >= as.numeric(opt$joint_min_prob)
@@ -297,32 +381,85 @@ main <- function() {
       ag <- jj$metrics$aggregate
       if (is.data.frame(ag)) as.numeric(ag$RMSE_mean[1]) else as.numeric(ag[[1]]$RMSE_mean)
     }
-    sigmas <- c(L=read_sigma(opt$metrics_dir, "L"), T=read_sigma(opt$metrics_dir, "T"), M=read_sigma(opt$metrics_dir, "M"), R=read_sigma(opt$metrics_dir, "R"), N=read_sigma(opt$metrics_dir, "N"))
+    sigmas_global <- c(L=read_sigma(opt$metrics_dir, "L"), T=read_sigma(opt$metrics_dir, "T"), M=read_sigma(opt$metrics_dir, "M"), R=read_sigma(opt$metrics_dir, "R"), N=read_sigma(opt$metrics_dir, "N"))
     cop <- jsonlite::fromJSON(opt$copulas_json)
     axes <- c("L","T","M","R","N")
-    Corr <- diag(5)
-    if (is.data.frame(cop$districts)) {
-      for (i in seq_len(nrow(cop$districts))) {
-        mem <- toupper(unlist(cop$districts$members[[i]])); rho <- as.numeric(cop$districts$params$rho[i])
-        a <- match(mem[1], axes); b <- match(mem[2], axes); Corr[a,b] <- Corr[b,a] <- rho
+    build_corr <- function(districts) {
+      C <- diag(5)
+      if (is.data.frame(districts)) {
+        for (i in seq_len(nrow(districts))) {
+          mem <- toupper(unlist(districts$members[[i]])); rho <- as.numeric(districts$params$rho[i])
+          a <- match(mem[1], axes); b <- match(mem[2], axes); C[a,b] <- C[b,a] <- rho
+        }
+      } else if (is.list(districts)) {
+        for (d in districts) { mem <- toupper(unlist(d$members)); rho <- as.numeric(d$params$rho); a <- match(mem[1], axes); b <- match(mem[2], axes); C[a,b] <- C[b,a] <- rho }
       }
-    } else if (is.list(cop$districts)) {
-      for (d in cop$districts) { mem <- toupper(unlist(d$members)); rho <- as.numeric(d$params$rho); a <- match(mem[1], axes); b <- match(mem[2], axes); Corr[a,b] <- Corr[b,a] <- rho }
+      C
     }
-    Sigma <- diag(as.numeric(sigmas)) %*% Corr %*% diag(as.numeric(sigmas))
-    Rchol <- chol(Sigma)
+    Corr_global <- build_corr(cop$districts)
+    by_group_corr <- list()
+    if (!is.null(cop$by_group) && is.list(cop$by_group)) {
+      for (nm in names(cop$by_group)) {
+        if (is.null(cop$by_group[[nm]]$districts)) next
+        by_group_corr[[nm]] <- build_corr(cop$by_group[[nm]]$districts)
+      }
+    }
+    Corr_for_group <- function(glab) {
+      if (!is.null(by_group_corr) && length(by_group_corr) && !is.null(glab) && nzchar(glab) && (glab %in% names(by_group_corr))) return(by_group_corr[[glab]])
+      Corr_global
+    }
+    # Optional per-group sigmas
+    sigma_mode <- tolower(ifelse(is.null(opt$sigma_mode) || !nzchar(opt$sigma_mode), ifelse(!is.null(opt$group_col) && nzchar(opt$group_col), "by_group", "global"), opt$sigma_mode))
+    group_vals <- NULL
+    sigmas_by_group <- NULL
+    group_col_use <- opt$group_col
+    if (sigma_mode == "by_group" && !is.null(group_col_use) && nzchar(group_col_use)) {
+      if (!(group_col_use %in% names(base))) {
+        ref_path <- opt$group_ref_csv
+        gid <- opt$group_ref_id_col
+        gcol <- if (!is.null(opt$group_ref_group_col) && nzchar(opt$group_ref_group_col)) opt$group_ref_group_col else group_col_use
+        if (file.exists(ref_path) && (gid %in% names(preds)) && (gcol %in% names(readr::read_csv(ref_path, show_col_types = FALSE, n_max = 1)))) {
+          ref <- suppressMessages(readr::read_csv(ref_path, show_col_types = FALSE))
+          base <- base %>% left_join(ref %>% select(all_of(c(gid, gcol))), by = setNames(gid, id_col))
+          names(base)[names(base) == gcol] <- group_col_use
+        }
+      }
+      if (group_col_use %in% names(base)) {
+        group_vals <- as.character(base[[group_col_use]])
+        ref <- suppressMessages(readr::read_csv(opt$group_ref_csv, show_col_types = FALSE))
+        per_axis <- list()
+        gid <- opt$group_ref_id_col
+        gcol <- if (!is.null(opt$group_ref_group_col) && nzchar(opt$group_ref_group_col)) opt$group_ref_group_col else group_col_use
+        for (ax in axes) {
+          ppath <- file.path(opt$metrics_dir, sprintf("sem_piecewise_%s_preds.csv", ax))
+          if (!file.exists(ppath)) { per_axis[[ax]] <- NULL; next }
+          dfp <- suppressMessages(readr::read_csv(ppath, show_col_types = FALSE))
+          tmp <- dfp %>% left_join(ref %>% select(all_of(c(gid, gcol))), by = setNames(gid, "id"))
+          if (!(gcol %in% names(tmp)) || !all(c("y_true","y_pred") %in% names(tmp))) { per_axis[[ax]] <- NULL; next }
+          tmp <- tmp %>% mutate(err = y_true - y_pred) %>% filter(is.finite(err), !is.na(.data[[gcol]]))
+          if (nrow(tmp) == 0) { per_axis[[ax]] <- NULL; next }
+          agg <- tmp %>% group_by(.data[[gcol]]) %>% summarize(RMSE = sqrt(mean(err^2)), .groups = "drop")
+          v <- agg$RMSE; names(v) <- as.character(agg[[gcol]]); per_axis[[ax]] <- v
+        }
+        sigmas_by_group <- per_axis
+      }
+    }
+
+    # Build default global Sigma (used when no groups)
+    Sigma_global <- diag(as.numeric(sigmas_global)) %*% Corr_global %*% diag(as.numeric(sigmas_global))
+    Rchol_global <- chol(Sigma_global)
     mu_mat <- as.matrix(base[, paste0(axes, "_pred")])
     nsim <- as.integer(opt$nsim_joint); if (!is.finite(nsim) || nsim < 1000) nsim <- 10000
     Z <- matrix(stats::rnorm(nsim*5), ncol=5)
-    E <- Z %*% Rchol
+    E_global <- Z %*% Rchol_global
     parse_req <- function(s) {
       bits <- strsplit(s, ",", fixed = TRUE)[[1]]
       out <- vector("list", length=0)
       for (b in bits) { kv <- strsplit(trimws(b), "=", fixed = TRUE)[[1]]; if (length(kv)!=2) next; out[[toupper(trimws(kv[1]))]] <- tolower(trimws(kv[2])) }
       out
     }
-    inside_rect <- function(mu, lo, hi) {
-      Y <- sweep(E, 2, mu, "+")
+    inside_rect_E <- function(Euse, mu, lo, hi) {
+      Y <- sweep(Euse, 2, mu, "+")
       ok <- rep(TRUE, nrow(Y))
       for (j in 1:5) { if (is.finite(lo[j])) ok <- ok & (Y[,j] >= lo[j]); if (is.finite(hi[j])) ok <- ok & (Y[,j] <= hi[j]) }
       mean(ok)
@@ -333,7 +470,27 @@ main <- function() {
       pr <- parse_req(reqs[i])
       lo <- rep(-Inf, 5); hi <- rep(Inf, 5)
       for (k in seq_along(axes)) { ax <- axes[k]; if (!is.null(pr[[ax]])) { b <- parse_bins(opt$bins)[[ pr[[ax]] ]]; lo[k] <- b[1]; hi[k] <- b[2] } }
-      probs_mat[,i] <- apply(mu_mat, 1, function(mu) inside_rect(mu, lo, hi))
+      # Compute probs per preset, by group if available
+      if (!is.null(group_vals)) {
+        pv <- numeric(nrow(mu_mat))
+        for (g in unique(group_vals)) {
+          idx <- which(group_vals == g)
+          # choose group sigma
+          svec <- sigmas_global
+          if (!is.null(sigmas_by_group) && length(sigmas_by_group)) {
+            for (ax in axes) {
+              vec <- sigmas_by_group[[ax]]
+              if (!is.null(vec) && (g %in% names(vec))) svec[[ax]] <- as.numeric(vec[[g]])
+            }
+          }
+          Cg <- Corr_for_group(g)
+          Dg <- diag(as.numeric(svec)); Sigmag <- Dg %*% Cg %*% Dg; Rg <- chol(Sigmag); Eg <- Z %*% Rg
+          pv[idx] <- apply(mu_mat[idx, , drop = FALSE], 1, function(mu) inside_rect_E(Eg, mu, lo, hi))
+        }
+        probs_mat[,i] <- pv
+      } else {
+        probs_mat[,i] <- apply(mu_mat, 1, function(mu) inside_rect_E(E_global, mu, lo, hi))
+      }
     }
     # Best scenario per species
     best_idx <- apply(probs_mat, 1, which.max)

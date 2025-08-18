@@ -61,6 +61,9 @@ fdr_q     <- suppressWarnings(as.numeric(opts[["fdr_q"]]   %||% "0.05")); if (is
 copulas   <- tolower(opts[["copulas"]] %||% "gaussian")
 select_by <- toupper(opts[["select_by"]] %||% "AIC")
 districts_cli <- opts$district
+group_col <- opts[["group_col"]] %||% ""   # optional: compute per-group correlations/copulas
+min_group_n <- suppressWarnings(as.integer(opts[["min_group_n"]] %||% "20")); if (is.na(min_group_n)) min_group_n <- 20
+shrink_k <- suppressWarnings(as.numeric(opts[["shrink_k"]] %||% "100")); if (!is.finite(shrink_k)) shrink_k <- 100
 
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
@@ -154,6 +157,19 @@ merge_resids <- function(fits) {
 }
 
 res_wide <- merge_resids(fits)
+
+# Attach group column if requested and available
+group_map <- NULL
+if (nzchar(group_col) && (group_col %in% names(df))) {
+  group_map <- df[, c("wfo_accepted_name", group_col), drop = FALSE]
+  names(group_map) <- c("id", "group")
+  # Keep the most frequent label per id if duplicates
+  group_tab <- aggregate(list(n = rep(1L, nrow(group_map))), by = list(id = group_map$id, group = group_map$group), FUN = length)
+  ord <- order(group_tab$id, -group_tab$n)
+  group_tab <- group_tab[ord, ]
+  group_tab <- group_tab[!duplicated(group_tab$id), c("id","group")]
+  res_wide <- merge(res_wide, group_tab, by = "id", all.x = TRUE, sort = FALSE)
+}
 
 # Residual correlation matrix and FDR screening
 letters <- names(fits)
@@ -251,12 +267,91 @@ for (edge in selected_edges) {
 
 fit_df <- do.call(rbind, fit_rows)
 
+# Optional: per-group residual correlations and copula fits for selected edges
+by_group <- NULL
+diag_rows <- list()
+if (!is.null(group_map)) {
+  levs <- unique(res_wide$group)
+  levs <- levs[!is.na(levs) & nzchar(as.character(levs))]
+  if (length(levs)) {
+    by_group <- list()
+    # helper to compute corr df within a group
+    corr_for_group <- function(df_sub) {
+      rows <- list()
+      for (pr in pairs) {
+        a <- pr[1]; b <- pr[2]
+        va <- df_sub[[paste0("resid_", a)]]
+        vb <- df_sub[[paste0("resid_", b)]]
+        ok <- is.finite(va) & is.finite(vb)
+        na <- sum(ok)
+        if (na >= 10) {
+          r <- suppressWarnings(stats::cor(va[ok], vb[ok], method = "pearson"))
+          ct <- try(stats::cor.test(va[ok], vb[ok], method = "pearson"), silent = TRUE)
+          p <- if (!inherits(ct, "try-error")) ct$p.value else NA_real_
+          rows[[length(rows)+1]] <- data.frame(A=a, B=b, n=na, rho=r, pval=p, stringsAsFactors = FALSE)
+        } else {
+          rows[[length(rows)+1]] <- data.frame(A=a, B=b, n=na, rho=NA_real_, pval=NA_real_, stringsAsFactors = FALSE)
+        }
+      }
+      out <- do.call(rbind, rows)
+      if (nrow(out)) out$qval <- stats::p.adjust(out$pval, method = "BH") else out$qval <- numeric(0)
+      out
+    }
+    # Global rho map for shrinkage
+    rho_global_map <- list()
+    if (exists("fit_df") && is.data.frame(fit_df) && nrow(fit_df)>0) {
+      for (i in seq_len(nrow(fit_df))) {
+        key <- paste0(fit_df$A[i], "|", fit_df$B[i])
+        rho_global_map[[key]] <- as.numeric(fit_df$rho[i])
+      }
+    }
+    key_of <- function(a,b) paste0(a, "|", b)
+
+    for (g in levs) {
+      sub <- res_wide[which(res_wide$group == g), , drop = FALSE]
+      if (nrow(sub) < min_group_n) next
+      corr_g <- corr_for_group(sub)
+      # Fit same selected edges within group
+      fit_rows_g <- list(); districts_out_g <- list()
+      for (edge in selected_edges) {
+        a <- edge[1]; b <- edge[2]
+        ua <- rank_pobs(sub[[paste0("resid_", a)]])
+        vb <- rank_pobs(sub[[paste0("resid_", b)]])
+        fitg <- gauss_copula_fit(ua, vb)
+        # Shrink rho toward global by weight w = n/(n+shrink_k)
+        rho_raw <- as.numeric(fitg$rho)
+        rho_glob <- rho_global_map[[ key_of(a,b) ]] %||% rho_raw
+        w <- if (is.finite(shrink_k) && shrink_k > 0) (fitg$n / (fitg$n + shrink_k)) else 1.0
+        if (!is.finite(w) || w < 0) w <- 0
+        if (w > 1) w <- 1
+        rho_use <- w * rho_raw + (1 - w) * rho_glob
+        fit_rows_g[[length(fit_rows_g)+1]] <- data.frame(A=a, B=b, n=fitg$n, family="gaussian", rho=rho_use, rho_raw=rho_raw, rho_global=rho_glob, weight=w, stringsAsFactors = FALSE)
+        districts_out_g[[length(districts_out_g)+1]] <- list(members = list(a, b), family = "gaussian", params = list(rho = unname(rho_use), rho_raw = unname(rho_raw), weight = unname(w)), n = unname(fitg$n))
+        # Diagnostics: Kendall tau, implied tau from rho_use, normal-score correlation
+        ok <- is.finite(ua) & is.finite(vb)
+        tu <- try(stats::cor(sub[[paste0("resid_", a)]][ok], sub[[paste0("resid_", b)]][ok], method = "kendall"), silent = TRUE)
+        tau_samp <- if (!inherits(tu, "try-error")) as.numeric(tu) else NA_real_
+        z1 <- stats::qnorm(pmin(pmax(ua[ok], 1e-6), 1-1e-6))
+        z2 <- stats::qnorm(pmin(pmax(vb[ok], 1e-6), 1-1e-6))
+        rho_z <- suppressWarnings(stats::cor(z1, z2, method = "pearson"))
+        tau_from_rho <- if (is.finite(rho_use)) (2/pi) * asin(rho_use) else NA_real_
+        diag_rows[[length(diag_rows)+1]] <- data.frame(group=as.character(g), A=a, B=b, n=fitg$n, rho_raw=rho_raw, rho_shrunk=rho_use, rho_global=rho_glob, weight=w, tau_sample=tau_samp, tau_from_rho=tau_from_rho, tau_delta=tau_samp - tau_from_rho, rho_z=rho_z, stringsAsFactors = FALSE)
+      }
+      by_group[[as.character(g)]] <- list(
+        residual_correlation = corr_g,
+        districts = districts_out_g
+      )
+    }
+  }
+}
+
 # Persist outputs
 cop_json <- list(
   version = list(run = version, date = format(Sys.time(), "%Y-%m-%d"), git_commit = tryCatch(system("git rev-parse --short HEAD", intern = TRUE)[1], error = function(e) NA_character_)),
   selection = list(criterion = select_by, auto_detect = auto_det, thresholds = list(rho_min = rho_min, fdr_q = fdr_q)),
   residual_correlation = corr_df,
-  districts = districts_out
+  districts = districts_out,
+  by_group = by_group
 )
 
 json_path <- file.path(out_dir, "mag_copulas.json")
@@ -272,5 +367,11 @@ if (have_readr) readr::write_csv(corr_df, diag_corr_path) else utils::write.csv(
 fit_path <- file.path(out_dir, "stage_sem_run8_copula_fits.csv")
 if (have_readr) readr::write_csv(fit_df, fit_path) else utils::write.csv(fit_df, fit_path, row.names = FALSE)
 
-cat(sprintf("Wrote %s, %s, %s\n", json_path, diag_corr_path, fit_path))
+# Group diagnostics (if any)
+if (length(diag_rows)) {
+  diag_df <- do.call(rbind, diag_rows)
+  diag_path <- file.path(out_dir, "stage_sem_run8_copula_group_diagnostics.csv")
+  if (have_readr) readr::write_csv(diag_df, diag_path) else utils::write.csv(diag_df, diag_path, row.names = FALSE)
+}
 
+cat(sprintf("Wrote %s, %s, %s\n", json_path, diag_corr_path, fit_path))

@@ -12,6 +12,7 @@ Scripts
 - `prepare_mag_input.R`: maps artifact columns to the MAG input schema and (by default) drops rows that already have EIVE values.
 - `calc_gardening_requirements.R`: converts MAG predictions to per-axis bins, borderline flags, confidence levels, and human-readable recommendations.
 - `joint_suitability_with_copulas.R`: computes joint probability that multiple axes fall into requested bins using Run 8 copulas (Gaussian), enabling multi-constraint recommendations.
+  - Optional: group-aware uncertainty — supply a grouping (e.g., `Myco_Group_Final`, `Woodiness`) and a reference CSV to compute per-group RMSE per axis from Run 7 preds and use those sigmas in the Monte Carlo. If `results/MAG_Run8/mag_copulas.json` includes `by_group` correlation matrices (produced by Stage 4 with `--group_col`), those per‑group copulas are used automatically; otherwise the global copulas are used.
 
 Quick Start (from artifacts)
 1) Prepare MAG input for species without EIVE:
@@ -75,12 +76,16 @@ Quick Start (from artifacts)
    - Annotate recommender with the best scenario per species:
      - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
          --predictions_csv results/mag_predictions_no_eive.csv \
-         --output_csv results/gardening/garden_requirements_no_eive.csv \
-         --bins 0:3.5,3.5:6.5,6.5:10 \
-         --joint_presets_csv results/gardening/garden_joint_presets_defaults.csv \
-         --copulas_json results/MAG_Run8/mag_copulas.json \
-         --metrics_dir artifacts/stage4_sem_piecewise_run7 \
-         --nsim_joint 20000`
+       --output_csv results/gardening/garden_requirements_no_eive.csv \
+       --bins 0:3.5,3.5:6.5,6.5:10 \
+       --joint_presets_csv results/gardening/garden_joint_presets_defaults.csv \
+       --copulas_json results/MAG_Run8/mag_copulas.json \
+       --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+        --nsim_joint 20000 \
+        --group_col Myco_Group_Final \
+        --group_ref_csv artifacts/model_data_complete_case_with_myco.csv \
+        --group_ref_id_col wfo_accepted_name \
+        --group_ref_group_col Myco_Group_Final`
    - Output columns: `best_scenario_label`, `best_scenario_prob`, `best_scenario_ok`.
 
 Included default presets (illustrative)
@@ -94,7 +99,7 @@ How Joint Predictions Work (intuitive)
 - First we predict each axis (L/T/M/R/N) separately — those are your “best guesses” on the 0–10 EIVE scale.
 - Even after conditioning on traits, some axes still move together (e.g., Temperature with pH, Light with Moisture). Copulas model that leftover co-movement.
 - We then simulate the 5D outcome using:
-  - Per-axis uncertainty (scale) ≈ CV RMSE from Stage 4 Run 7.
+  - Per-axis uncertainty (scale) ≈ CV RMSE from Stage 4 Run 7 (global) or per-group RMSE when a grouping is supplied.
   - Pairwise residual correlations from `results/MAG_Run8/mag_copulas.json` (Run 8), finalized spouses {L↔M, T↔R, T↔M, M↔R, M↔N}.
 - Finally, we estimate the probability that your requested bins all hold at once — e.g., “Full Sun + Average Moisture + Neutral Soil”. That’s your joint suitability.
 

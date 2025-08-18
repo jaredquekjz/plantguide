@@ -111,6 +111,15 @@ Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
   --joint_min_prob 0.6
 ```
 
+Optional — Group‑Aware Uncertainty and Copulas
+- Why: residual scales (σ) and axis co‑movement (ρ) differ by groups such as mycorrhiza or woodiness; using group‑specific σ and ρ improves joint‑probability calibration without changing the means.
+- How to score presets or a single gate with group‑aware σ + ρ:
+  - Ensure the copulas JSON contains per‑group matrices (run Stage 4 with `--group_col` once; see below).
+  - Add to either joint command above:
+    - `--group_col Myco_Group_Final --group_ref_csv artifacts/model_data_complete_case_with_myco.csv --group_ref_id_col wfo_accepted_name --group_ref_group_col Myco_Group_Final`
+    - or for woodiness: `--group_col Woodiness --group_ref_group_col Woodiness` (same reference CSV).
+- Notes: When `--group_col` is supplied, Stage 6 uses per‑group σ (from Run 7 CV preds) and per‑group ρ from `mag_copulas.json` if present; otherwise it falls back to the global matrices. 
+
 <details>
 <summary>Advanced: score multiple preset scenarios and annotate the best‑passing</summary>
 
@@ -334,6 +343,7 @@ Repro commands
   - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`.
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
       --district L,M --district T,R --district T,M --district M,R --district M,N`.
+  - Optional per‑group copulas: add `--group_col <GroupName>` (e.g., `Myco_Group_Final` or `Woodiness`) to also write `by_group` correlation matrices into `mag_copulas.json`. Stage 6 will use these automatically when `--group_col` is provided. You can also enable shrinkage toward global with `--shrink_k 100` (weight = n/(n+shrink_k)); a higher value shrinks more for small groups.
 - Copula‑aware m‑sep (mixed, rank‑based):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
       --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
@@ -379,6 +389,7 @@ Joint suitability (optional)
   - Single requirement gate: enforce `joint_min_prob`.
   - Batch presets: score common scenarios and annotate each species with best‑passing scenario.
   - Confidence‑oriented presets: when pH (R) predictions are the weakest axis, prefer R‑excluded presets for higher confidence (see `results/gardening/garden_presets_no_R.csv`).
+ - Label usage: Stage 6 joint scoring does not use observed EIVE labels — even for species in the SEM dataset — and instead treats EIVE as unknown, scoring around trait‑based MAG predictions. EIVE is used upstream to fit the mean structure (Run 7) and calibrate residual scales and copulas (Run 8).
 
 Defaults and presets
 - Bin edges: `[0,3.5), [3.5,6.5), [6.5,10]`; borderline width: `±0.5`.
@@ -395,6 +406,13 @@ Repro commands (joint usage)
 - Recommender with single gate or best scenario:
   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
   - or with presets: add `--joint_presets_csv results/gardening/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
+
+Group‑aware uncertainty (optional)
+- Why: per‑group residual scales differ (e.g., woody vs non‑woody; mycorrhiza types). Using group‑specific RMSE per axis improves joint‑probability calibration without changing the mean predictions.
+- How: add the following flags to either joint command above:
+  - `--group_col Myco_Group_Final --group_ref_csv artifacts/model_data_complete_case_with_myco.csv --group_ref_id_col wfo_accepted_name --group_ref_group_col Myco_Group_Final`
+  - or for woodiness: `--group_col Woodiness --group_ref_group_col Woodiness` (same reference CSV).
+- Behavior: when a group is supplied, Stage 6 computes σ per group and axis from Run 7 CV preds and uses them in the Monte Carlo. If your copulas JSON also contains `by_group` correlation matrices (produced by Stage 4 with `--group_col`), Stage 6 uses those per‑group copulas; otherwise it falls back to the global copulas. All paths fall back to global σ/ρ where group info is missing.
 
 Outputs (Stage 5–6)
 - `results/gardening/garden_requirements_no_eive.csv` — per species: per‑axis bin, borderline flag, confidence, recommendation text; joint fields when gating/presets are used.

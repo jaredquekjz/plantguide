@@ -5,6 +5,7 @@ Scope
 - Implement and document joint suitability for gardening (Stage 6): single requirement gate, batch presets, and best‑scenario annotation.
 - Analyze a new set of joint scenarios that exclude the weakly-predicted 'R' axis to generate more confident, actionable recommendations.
 - Update Run 8 summary and README sections accordingly.
+ - Label usage: Stage 6 joint scoring never peeks at observed EIVE — predictions are trait‑based (MAG means), and joint probabilities are simulated around those means using residual σ/ρ learned upstream.
 
 Key Changes
 - Stage 4:
@@ -24,7 +25,8 @@ Repro Commands
   - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`
 - Fit copulas (final spouse set):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
-      --district L,M --district T,R --district T,M --district M,R --district M,N`
+      --district L,M --district T,R --district T,M --district M,R --district M,N \
+      --group_col Myco_Group_Final --shrink_k 100`
 - Mixed, copula‑aware m‑sep (DAG → MAG check on non‑spouse pairs):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
       --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
@@ -45,6 +47,19 @@ Outputs
 - results/gardening/garden_joint_summary.csv — species × scenarios joint probabilities
 - results/gardening/garden_joint_summary_no_R.csv — species × scenarios joint probabilities for new R-excluded presets.
 - results/gardening/garden_requirements_no_eive.csv — includes best‑scenario fields
+
+New (optional): Group‑Aware Uncertainty in Stage 6
+- Rationale: per‑group RMSE differs materially by mycorrhiza and woodiness; using one global σ mis‑calibrates joint probabilities.
+- Implementation: Stage 6 now supports `--group_col` plus a reference mapping (`--group_ref_csv`, `--group_ref_id_col`, `--group_ref_group_col`). Per‑group RMSE per axis is computed from Run 7 CV preds and used in Monte Carlo. Falls back to global σ when a group is missing; copulas stay global.
+- Example flags:
+  - Mycorrhiza: `--group_col Myco_Group_Final --group_ref_csv artifacts/model_data_complete_case_with_myco.csv --group_ref_id_col wfo_accepted_name --group_ref_group_col Myco_Group_Final`.
+  - Woodiness: `--group_col Woodiness --group_ref_group_col Woodiness` (same reference CSV).
+- Summary sample (SunnyNeutral: L=high,M=med,R=med): see `results/MAG_Run8/stage6_group_uncertainty_summary.csv` (columns: group, mean/median/max joint_prob, n, variant {global, by_group}).
+
+New (optional): Per‑Group Copulas
+- Scope: Extend Run 8 copulas with `--group_col <GroupName>` (e.g., `Myco_Group_Final`/`Woodiness`) to write `by_group` correlation matrices alongside the global spouse set in `mag_copulas.json`.
+- Usage (Stage 6): When `--group_col` is supplied in Stage 6, the recommender/joint scorer selects per‑group correlation matrices from `mag_copulas.json` if present; otherwise falls back to global. Works together with per‑group σ.
+- Shrinkage (recommended for stability): Use `--shrink_k 100` in Stage 4 (weight = n/(n+shrink_k)) so small groups borrow strength from global ρ. Diagnostics are written to `results/MAG_Run8/stage_sem_run8_copula_group_diagnostics.csv` (per group & pair: n, rho_raw, rho_shrunk, weight, Kendall τ, implied τ from ρ, τ delta, and normal‑score correlation).
 
 Key Finding: R-excluded Scenarios Yield More Confident Predictions
 - Analysis revealed that the weak predictive power for the 'R' (soil pH) axis was suppressing joint probabilities due to high uncertainty (the "Tyranny of AND").
@@ -82,6 +97,57 @@ Without R (new, confidence‑oriented)
 
 Winners at threshold 0.6 (No‑R presets)
 - RichSoilSpecialist (5 species): Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis.
+
+Group‑Aware (Mycorrhiza) — Presets With vs Without R (Full dataset; σ+ρ per group; shrink_k=100)
+- Stage 4: per‑group copulas fitted with `--group_col Myco_Group_Final --shrink_k 100`.
+- Stage 6: joint probabilities scored with `--group_col Myco_Group_Final` (per‑group σ and ρ).
+
+With R (group‑aware)
+
+| Scenario           | Mean P | Median | Max   | Pass ≥0.6 |
+|--------------------|--------|--------|-------|-----------|
+| DryPoorSun         | 0.0026 | 0.0000 | 0.3099| 0         |
+| PartialSunAverage  | 0.0357 | 0.0149 | 0.2939| 0         |
+| ShadeWetAcidic     | 0.0001 | 0.0000 | 0.0042| 0         |
+| SunnyNeutral       | 0.0508 | 0.0129 | 0.4749| 0         |
+| WarmNeutralFertile | 0.0060 | 0.0001 | 0.2135| 0         |
+
+Without R (group‑aware)
+
+| Scenario              | Mean P | Median | Max   | Pass ≥0.6 |
+|-----------------------|--------|--------|-------|-----------|
+| CoolClimateSpecialist | 0.0381 | 0.0105 | 0.2989| 0         |
+| LushShadePlant        | 0.0127 | 0.0032 | 0.1215| 0         |
+| RichSoilSpecialist    | 0.2184 | 0.1468 | 0.8260| 74        |
+| SunVsWaterTradeoff    | 0.0098 | 0.0001 | 0.4796| 0         |
+| ThePioneer            | 0.0014 | 0.0000 | 0.1819| 0         |
+
+Notes
+- Numbers above aggregate across 1,069 species with mycorrhiza labels; thresholds use each preset’s column (0.6 default).
+- Effects are broadly consistent with earlier findings: R‑excluded presets are far more actionable; group‑aware σ+ρ further improves calibration and increases RichSoilSpecialist’s best probabilities (max ≈ 0.826).
+
+Group‑Aware (Mycorrhiza) — 23‑Species Subset (σ+ρ per group; shrink_k=100)
+- Subset: 23 species (seed=42) including the 5 earlier winners (Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis). See `results/MAG_Run8/sample23_species.txt`.
+
+With R (group‑aware, 23 spp)
+
+| Scenario           | Mean P | Median | Max   | Pass ≥0.6 |
+|--------------------|--------|--------|-------|-----------|
+| DryPoorSun         | 0.0002 | 0.0000 | 0.0026| 0         |
+| PartialSunAverage  | 0.0391 | 0.0109 | 0.2516| 0         |
+| ShadeWetAcidic     | 0.0000 | 0.0000 | 0.0003| 0         |
+| SunnyNeutral       | 0.0402 | 0.0160 | 0.1757| 0         |
+| WarmNeutralFertile | 0.0288 | 0.0001 | 0.1565| 0         |
+
+Without R (group‑aware, 23 spp)
+
+| Scenario              | Mean P | Median | Max   | Pass ≥0.6 |
+|-----------------------|--------|--------|-------|-----------|
+| CoolClimateSpecialist | 0.0479 | 0.0016 | 0.2333| 0         |
+| LushShadePlant        | 0.0150 | 0.0046 | 0.0733| 0         |
+| RichSoilSpecialist    | 0.3180 | 0.2873 | 0.8239| 6         |
+| SunVsWaterTradeoff    | 0.0063 | 0.0000 | 0.0458| 0         |
+| ThePioneer            | 0.0008 | 0.0000 | 0.0139| 0         |
 
 ## How Gardeners Use This Guide
 1) Choose your site recipe:
