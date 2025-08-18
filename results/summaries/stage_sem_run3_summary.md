@@ -116,13 +116,19 @@ Final Results (Run 3; mean ± SD)
 Mycorrhiza Split — p-values (before vs after)
 - Rationale: report heterogeneity ("before": pooled vs by‑group equality test for the logSSD→y path) and per‑group p‑values ("after": significance of logSSD→y within each mycorrhiza group). Source files: `artifacts/stage4_sem_piecewise_run3/sem_piecewise_{X}_claim_logSSD_{eqtest,pergroup_pvals}.csv`.
 
-| Target | p_overall | p_Facultative_AM_NM | p_Low_Confidence | p_Mixed_Uncertain | p_Pure_AM | p_Pure_EM | p_Pure_NM |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| L | 0.208 | 0.728 | 0.364 | 0.184 | 0.120 | 0.188 | 0.366 |
-| T | 0.114 | 0.522 | **0.0426** | 0.0726 | 0.473 | 0.190 | 0.834 |
-| M | **0.00221** | 0.0698 | 0.346 | 0.452 | 0.446 | **0.0493** | **9.14e-4** |
-| N | **4.13e-7** | **4.84e-4** | 0.0773 | 0.845 | 0.124 | **0.00690** | **1.15e-4** |
-| R | **0.0376** | 0.838 | **0.0123** | 0.414 | 0.592 | 0.210 | **0.0315** |
+Before (heterogeneity; equality-of-slope p_overall)
+- L: 0.208 (ns) — `artifacts/stage4_sem_piecewise_run3/sem_piecewise_L_claim_logSSD_eqtest.csv`
+- T: 0.114 (ns) — `artifacts/stage4_sem_piecewise_run3/sem_piecewise_T_claim_logSSD_eqtest.csv`
+- M: **0.00221** — `artifacts/stage4_sem_piecewise_run3/sem_piecewise_M_claim_logSSD_eqtest.csv`
+- N: **4.13e-7** — `artifacts/stage4_sem_piecewise_run3/sem_piecewise_N_claim_logSSD_eqtest.csv`
+- R: **0.0376** — `artifacts/stage4_sem_piecewise_run3/sem_piecewise_R_claim_logSSD_eqtest.csv`
+
+After (per‑group p_logSSD)
+- L: Facultative_AM_NM 0.728; Low_Confidence 0.364; Mixed_Uncertain 0.184; Pure_AM 0.120; Pure_EM 0.188; Pure_NM 0.366 — `.../run3/sem_piecewise_L_claim_logSSD_pergroup_pvals.csv`
+- T: Facultative_AM_NM 0.522; Low_Confidence **0.0426**; Mixed_Uncertain 0.0726; Pure_AM 0.473; Pure_EM 0.190; Pure_NM 0.834 — `.../run3/sem_piecewise_T_claim_logSSD_pergroup_pvals.csv`
+- M: Facultative_AM_NM 0.0698; Low_Confidence 0.346; Mixed_Uncertain 0.452; Pure_AM 0.446; Pure_EM **0.0493**; Pure_NM **9.14e-4** — `.../run3/sem_piecewise_M_claim_logSSD_pergroup_pvals.csv`
+- N: Facultative_AM_NM **4.84e-4**; Low_Confidence 0.0773; Mixed_Uncertain 0.845; Pure_AM 0.124; Pure_EM **0.00690**; Pure_NM **1.15e-4** — `.../run3/sem_piecewise_N_claim_logSSD_pergroup_pvals.csv`
+- R: Facultative_AM_NM 0.838; Low_Confidence **0.0123**; Mixed_Uncertain 0.414; Pure_AM 0.592; Pure_EM 0.210; Pure_NM **0.0315** — `.../run3/sem_piecewise_R_claim_logSSD_pergroup_pvals.csv`
 
 - Notes: significant heterogeneity for M/N/R justifies myco-group splits in inference; `Low_Confidence` is retained in display but should be treated cautiously; woodiness results remain in Run 2. Values rounded for readability.
 

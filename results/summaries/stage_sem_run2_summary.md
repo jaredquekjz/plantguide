@@ -48,15 +48,20 @@ Formal SEM Fit (lavaan; fit by Woodiness group)
 
 Woodiness Split — p-values (before vs after)
 - Rationale: report the heterogeneity test p-value ("before": pooled vs by‑group equality test for the logSSD→y path) and the per‑group p‑values ("after": significance of logSSD→y within each Woodiness group). Values come from the piecewise outputs noted below.
-- Compact view (p-values)
 
-| Target | p_overall (heterogeneity) | p_non-woody | p_woody | p_semi-woody |
-|---|---:|---:|---:|---:|
-| L | 0.107 | 0.677 | **0.0193** | 0.414 |
-| T | **0.00526** | 0.0787 | **0.00481** | 0.264 |
-| M | **2.98e-12** | **1.31e-07** | **9.65e-08** | 0.409 |
-| N | **1.05e-05** | **2.00e-04** | **5.51e-04** | 0.621 |
-| R | **0.0140** | **0.0337** | **0.0119** | 0.858 |
+Before (heterogeneity; equality-of-slope p_overall)
+- L: 0.107 (ns) — `artifacts/stage4_sem_piecewise_run2/sem_piecewise_L_claim_logSSD_eqtest.csv`
+- T: **0.00526** — `artifacts/stage4_sem_piecewise_run2/sem_piecewise_T_claim_logSSD_eqtest.csv`
+- M: **2.98e-12** — `artifacts/stage4_sem_piecewise_run2_deconstructed/sem_piecewise_M_claim_logSSD_eqtest.csv`
+- N: **1.05e-05** — `artifacts/stage4_sem_piecewise_run2_deconstructed/sem_piecewise_N_claim_logSSD_eqtest.csv`
+- R: **0.0140** — `artifacts/stage4_sem_piecewise_run2/sem_piecewise_R_claim_logSSD_eqtest.csv`
+
+After (per‑group p_logSSD)
+- L: non‑woody 0.677; woody **0.0193**; semi‑woody 0.414 — `.../run2/sem_piecewise_L_claim_logSSD_pergroup_pvals.csv`
+- T: non‑woody 0.0787; woody **0.00481**; semi‑woody 0.264 — `.../run2/sem_piecewise_T_claim_logSSD_pergroup_pvals.csv`
+- M: non‑woody **1.31e-07**; woody **9.65e-08**; semi‑woody 0.409 — `.../run2_deconstructed/sem_piecewise_M_claim_logSSD_pergroup_pvals.csv`
+- N: non‑woody **2.00e-04**; woody **5.51e-04**; semi‑woody 0.621 — `.../run2_deconstructed/sem_piecewise_N_claim_logSSD_pergroup_pvals.csv`
+- R: non‑woody **0.0337**; woody **0.0119**; semi‑woody 0.858 — `.../run2/sem_piecewise_R_claim_logSSD_pergroup_pvals.csv`
 
 - Notes: semi‑woody has n≈11 (unstable p‑values); M/N are from the deconstructed run2 outputs; source CSVs are the `*_claim_logSSD_eqtest.csv` and `*_claim_logSSD_pergroup_pvals.csv` in the corresponding run2 folders listed under Artifacts.
 - Takeaway: T/M/N/R show significant heterogeneity by Woodiness (justify splitting). Within groups, woody plants consistently show significant direct SSD effects; non‑woody effects are weaker/absent for L/T/R but present for M/N. Semi‑woody has n≈11, so p‑values are unstable and not used for decisions.
