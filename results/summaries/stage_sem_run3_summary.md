@@ -132,6 +132,8 @@ After (per‑group p_logSSD)
 
 - Notes: significant heterogeneity for M/N/R justifies myco-group splits in inference; `Low_Confidence` is retained in display but should be treated cautiously; woodiness results remain in Run 2. Values rounded for readability.
 
+- Interpretation: Split justified for M/N/R; L/T not required. Signals concentrate in NM‑linked groups — Pure_NM significant for M/N/R; Pure_EM for M/N; Low_Confidence for T/R (treat cautiously).
+
 Artifacts (Run 3)
 - lavaan: `artifacts/stage4_sem_lavaan_run3/sem_lavaan_{L,T,M,R,N}_{metrics.json,preds.csv,path_coefficients.csv}`
 - piecewise: `artifacts/stage4_sem_piecewise_run3/sem_piecewise_{L,T,M,R,N}_{metrics.json,preds.csv,[piecewise_coefs.csv,dsep_fit.csv,multigroup_dsep.csv]}`

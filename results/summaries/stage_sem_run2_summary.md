@@ -66,6 +66,8 @@ After (per‑group p_logSSD)
 - Notes: semi‑woody has n≈11 (unstable p‑values); M/N are from the deconstructed run2 outputs; source CSVs are the `*_claim_logSSD_eqtest.csv` and `*_claim_logSSD_pergroup_pvals.csv` in the corresponding run2 folders listed under Artifacts.
 - Takeaway: T/M/N/R show significant heterogeneity by Woodiness (justify splitting). Within groups, woody plants consistently show significant direct SSD effects; non‑woody effects are weaker/absent for L/T/R but present for M/N. Semi‑woody has n≈11, so p‑values are unstable and not used for decisions.
 
+- Interpretation: Split justified for T/M/N/R; L not required. Woody is significant across L/T/M/N/R; non‑woody significant for M/N/R only; semi‑woody non‑significant (n≈11).
+
 Piecewise d-sep (Fisher’s C)
 - Per-target `*_dsep_fit.csv` were regenerated with `piecewiseSEM` + `lme4` (random intercepts) and written under each run2 folder.
 - Qualitative: Allowing SSD→M/N and woody-only SSD→L/T/R reduces key independence violations, aligning with Run 1 observations.
