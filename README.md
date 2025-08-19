@@ -273,31 +273,19 @@ Generate before/after p‑values text (Markdown)
 
 ## Performance & Diagnostics
 
-- Baseline (Multiple Regression): Cross‑validation reveals a wide range of predictive skill across the EIVE axes. The model is strongest for Nutrients (N) and weakest for soil pH (R), with modest performance for Light (L), Temperature (T), and Moisture (M).
-  - Performance (CV R² ± SD): L 0.15±0.05, T 0.10±0.04, M 0.13±0.05, R 0.04±0.03, N 0.36±0.04.
-  - Axis bars (R² vs 0.50 → 10 chars):
-    - L 0.15±0.05 [###.......]
-    - T 0.10±0.04 [##........]
-    - M 0.13±0.05 [###.......]
-    - R 0.04±0.03 [#.........]
-    - N 0.36±0.04 [#######...]
-  - Typical error (RMSE): ~1.26–1.52 EIVE units.
+### Section 1 — Run 7 (Final SEM) Summary
 
-- Final (Structural Equation Model): The adopted piecewise SEM — using composite predictors (LES, SIZE) and targeted direct SSD paths (plus a single retained interaction for N) — substantially improves out‑of‑fold predictive skill across all axes versus the baseline. Linear forms were preferred by both cross‑validation and information criteria.
-  - Performance (CV R²): L ≈ 0.24, T ≈ 0.23, M ≈ 0.42, R ≈ 0.16, N ≈ 0.42.
-  - Axis bars (R² vs 0.50 → 10 chars):
-    - L 0.24 [#####.....]
-    - T 0.23 [#####.....]
-    - M 0.42 [########..]
-    - R 0.16 [###.......]
-    - N 0.42 [########..]
-  - Typical error (RMSE): reduced and narrowed to ~1.14–1.43 EIVE units.
+- Model form: Piecewise SEM with composite predictors (LES, SIZE), direct SSD paths, and a single retained interaction for N. Linear equations selected by CV and information criteria.
 
-Notes
-- Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted piecewise SEM forms (Runs 2–7; deconstructed SIZE for M/N; linear SIZE for L/T/R; no splines; LES×SSD kept for N only). See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
-- Run 7 (LES_core + logLA predictor; seed=42, 10×5 CV): Rebuilt LES from {negLMA, Nmass} and added logLA to y. Piecewise CV improves for M/N (R²≈0.415/0.424), holds for L/T, and modestly improves R. Full‑model IC sums drop sharply for M (ΔAIC_sum ≈ −92; ΔBIC_sum ≈ −82) and N (ΔAIC_sum ≈ −81; ΔBIC_sum ≈ −67); neutral/slightly worse for L/T; mixed for R. Single‑group lavaan fit indices remain below thresholds; N improves slightly.
+- Final piecewise CV (mean ± SD)
+  - L: R² 0.237±0.060; RMSE 1.333±0.064; MAE 1.001±0.039 (n=1065)
+  - T: R² 0.234±0.072; RMSE 1.145±0.079; MAE 0.862±0.050 (n=1067)
+  - R: R² 0.155±0.071; RMSE 1.428±0.076; MAE 1.077±0.048 (n=1049)
+  - M: R² 0.415±0.072; RMSE 1.150±0.079; MAE 0.889±0.050 (n=1065)
+  - N: R² 0.424±0.071; RMSE 1.423±0.090; MAE 1.143±0.072 (n=1047)
+  - Typical error (RMSE): narrowed to ~1.14–1.43 EIVE units.
 
-Mini‑figure — piecewise full‑model IC (Run 7 vs Run 6)
+- Mini‑figure — piecewise full‑model IC (Run 7 vs Run 6)
 ```
 Axis  AIC_sum7   ΔAIC   BIC_sum7   ΔBIC
 L       8931.12  +1.06    9005.68  +6.03
@@ -309,42 +297,117 @@ N       9037.49 −81.29    9126.65 −67.33
 Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
 ```
 
-Final piecewise CV (Run 7; mean ± SD)
-- L: R² 0.237±0.060; RMSE 1.333±0.064; MAE 1.001±0.039 (n=1065)
-- T: R² 0.234±0.072; RMSE 1.145±0.079; MAE 0.862±0.050 (n=1067)
-- R: R² 0.155±0.071; RMSE 1.428±0.076; MAE 1.077±0.048 (n=1049)
-- M: R² 0.415±0.072; RMSE 1.150±0.079; MAE 0.889±0.050 (n=1065)
-- N: R² 0.424±0.071; RMSE 1.423±0.090; MAE 1.143±0.072 (n=1047)
+- lavaan fit (co‑adapted; LES_core + logLA): Global absolute fit remains below conventional thresholds (single‑group CFI ≈0.49–0.59; RMSEA ≈0.30–0.32). We prioritize predictive CV + phylogenetic robustness for selection; lavaan paths align in sign/magnitude with piecewise.
 
-lavaan fit (co‑adapted; LES_core + logLA)
-- Global absolute fit remains below conventional thresholds (single‑group CFI ≈0.49–0.59; RMSEA ≈0.30–0.32). We prioritize predictive CV + phylogenetic robustness for selection; lavaan paths align in sign/magnitude with piecewise.
+- Phylogenetic checks: Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
-Phylogenetic checks
-- Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
+- Adopted SEM mean structure (Directed Acyclic Graph, DAG)
+  - L/T/R: y ~ LES + SIZE + logSSD + logLA
+  - M: y ~ LES + logH + logSM + logSSD + logLA
+  - N: y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
 
-Adopted SEM mean structure (Directed Acyclic Graph, DAG)
-- L/T/R: y ~ LES + SIZE + logSSD + logLA
-- M: y ~ LES + logH + logSM + logSSD + logLA
-- N: y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
+- Notes
+  - Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted piecewise SEM forms (Runs 2–7; deconstructed SIZE for M/N; linear SIZE for L/T/R; no splines; LES×SSD kept for N only). See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
+  - Run 7 (LES_core + logLA; seed=42, 10×5 CV): Rebuilt LES from {negLMA, Nmass} and added logLA to y. CV improves for M/N (R²≈0.415/0.424), holds for L/T, modestly improves R. IC sums drop sharply for M/N; neutral/slightly worse for L/T; mixed for R.
 
-Artifacts (SEM)
-- Piecewise (per run dirs): `artifacts/stage4_sem_piecewise_run{2,3,4,5,6,6P,7}/sem_piecewise_{L,T,M,R,N}_{metrics.json,preds.csv,piecewise_coefs.csv,dsep_fit.csv[,multigroup_dsep.csv][,full_model_ic.csv][,full_model_ic_phylo.csv]}`.
-- lavaan (per run dirs): `artifacts/stage4_sem_lavaan_run{2,4,7}/sem_lavaan_{L,T,M,R,N}_{metrics.json,preds.csv[,path_coefficients.csv][,fit_indices.csv][,fit_indices_by_group.csv]}`.
-- Summaries:
-  - `artifacts/stage4_sem_summary_run2/sem_metrics_summary_main.csv`, `.../piecewise_form_comparison.csv`.
-  - `artifacts/stage4_sem_summary_run3/sem_metrics_summary_main.csv`.
-  - `artifacts/stage4_sem_summary_run4/sem_metrics_summary_main.csv` (plus lavaan fit deltas/IC).
-  - `artifacts/stage4_sem_summary_run5/piecewise_interaction_vs_baseline.csv`, `.../full_model_ic_comparison.csv`.
-  - `artifacts/stage4_sem_summary_run7/sem_metrics_summary_main.csv`.
- - Run summaries (markdown):
-   - `results/summaries/stage2_sem_run1_summary.md`
-   - `results/summaries/stage_sem_run2_summary.md`
-   - `results/summaries/stage_sem_run3_summary.md`
-   - `results/summaries/stage_sem_run4_summary.md`
-   - `results/summaries/stage_sem_run5_summary.md`
-   - `results/summaries/stage_sem_run6_summary.md`
-   - `results/summaries/stage_sem_run6P_summary.md`
-   - `results/summaries/stage_sem_run7_summary.md`
+- Artifacts (SEM)
+  - Piecewise (per run dirs): `artifacts/stage4_sem_piecewise_run{2,3,4,5,6,6P,7}/sem_piecewise_{L,T,M,R,N}_{metrics.json,preds.csv,piecewise_coefs.csv,dsep_fit.csv[,multigroup_dsep.csv][,full_model_ic.csv][,full_model_ic_phylo.csv]}`.
+  - lavaan (per run dirs): `artifacts/stage4_sem_lavaan_run{2,4,7}/sem_lavaan_{L,T,M,R,N}_{metrics.json,preds.csv[,path_coefficients.csv][,fit_indices.csv][,fit_indices_by_group.csv]}`.
+  - Summaries:
+    - `artifacts/stage4_sem_summary_run2/sem_metrics_summary_main.csv`, `.../piecewise_form_comparison.csv`.
+    - `artifacts/stage4_sem_summary_run3/sem_metrics_summary_main.csv`.
+    - `artifacts/stage4_sem_summary_run4/sem_metrics_summary_main.csv` (plus lavaan fit deltas/IC).
+    - `artifacts/stage4_sem_summary_run5/piecewise_interaction_vs_baseline.csv`, `.../full_model_ic_comparison.csv`.
+    - `artifacts/stage4_sem_summary_run7/sem_metrics_summary_main.csv`.
+  - Run summaries (markdown):
+     - `results/summaries/stage2_sem_run1_summary.md`
+     - `results/summaries/stage_sem_run2_summary.md`
+     - `results/summaries/stage_sem_run3_summary.md`
+     - `results/summaries/stage_sem_run4_summary.md`
+     - `results/summaries/stage_sem_run5_summary.md`
+     - `results/summaries/stage_sem_run6_summary.md`
+     - `results/summaries/stage_sem_run6P_summary.md`
+     - `results/summaries/stage_sem_run7_summary.md`
+
+### Comparisons — Baseline and Black‑Box
+
+- Baseline (Multiple Regression): Cross‑validation shows wide variation across axes — strongest on N, weakest on R; L/T/M are modest.
+  - CV R² ± SD: L 0.15±0.05, T 0.10±0.04, M 0.13±0.05, R 0.04±0.03, N 0.36±0.04.
+  - Axis bars (R² vs 0.50 → 10 chars): L [###.......], T [##........], M [###.......], R [#.........], N [#######...]
+  - Typical error (RMSE): ~1.26–1.52 EIVE units.
+
+- Black‑Box benchmarks (same traits; 10×5 CV): Trees offer a non‑parametric ceiling check.
+  - L: Flexible trees gain ≈ +0.08 absolute R² over SEM (best: RF).
+  - T/M/R: SEM outperforms XGBoost and RF at this data scale; structure (LES/SIZE + SSD) beats generic ensembles.
+  - N: Near‑tie with a small SEM edge.
+  - Details below: full table, mini‑bars for all models, figures, and scripts.
+
+- Reliability & residual dependence
+  - Residuals: Copulas capture modest co‑movement (e.g., T–R ≈ +0.33; T–M ≈ −0.39) without changing means; useful for joint decisions.
+  - Confidence: Mirrors CV strength — M/N strongest, L/T moderate, R weakest; borderline handling reduces over‑confident edge calls.
+
+### Predictive Benchmark — SEM vs XGBoost/Random Forest (10×5 CV)
+
+We trained simple, high‑capacity baselines using the same six traits and CV protocol (repeated, stratified 10×5; seed=42) to establish a non‑parametric benchmark for out‑of‑fold R². Train‑fold transforms matched Stage 3 (log10 for LA/H/SM/SSD; optional z‑scaling).
+
+| Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | Best |
+|:----:|:------------:|:-----------------:|:-----------------------:|:----:|
+| L | 0.237±0.060 | 0.297±0.046 | 0.321±0.039 | RF |
+| T | 0.234±0.072 | 0.168±0.051 | 0.209±0.048 | SEM |
+| M | 0.415±0.072 | 0.217±0.047 | 0.249±0.054 | SEM |
+| R | 0.155±0.071 | 0.044±0.023 | 0.062±0.040 | SEM |
+| N | 0.424±0.071 | 0.404±0.047 | 0.412±0.044 | SEM ≈ RF ≈ XGB |
+
+Mini‑figure — Axis bars by model (R² vs 0.50 → 10 chars)
+```
+Regression (baseline)
+  L 0.15 [###.......]
+  T 0.10 [##........]
+  M 0.13 [###.......]
+  R 0.04 [#.........]
+  N 0.36 [#######...]
+
+SEM (Run 7)
+  L 0.237 [#####.....]
+  T 0.234 [#####.....]
+  M 0.415 [########..]
+  R 0.155 [###.......]
+  N 0.424 [########..]
+
+XGBoost (best‑of‑best)
+  L 0.297 [######....]
+  T 0.168 [###.......]
+  M 0.217 [####......]
+  R 0.044 [#.........]
+  N 0.404 [########..]
+
+Random Forest (ranger)
+  L 0.321 [######....]
+  T 0.209 [####......]
+  M 0.249 [#####.....]
+  R 0.062 [#.........]
+  N 0.412 [########..]
+```
+
+Comments
+- Light (L): Tree models discover useful non‑linearities/interactions beyond the linear SEM — RF is best (≈ +0.08 absolute R² vs SEM).
+- Nutrients (N): Black‑box models nearly match SEM (within ≈0.01–0.02 R²); SEM retains a small edge.
+- Temperature/Moisture/Reaction (T/M/R): SEM clearly outperforms both XGB and RF with only six traits, indicating that the structured mean equations (LES/SIZE, direct SSD paths, and a single retained interaction) capture the signal more effectively than generic ensembles at this data scale.
+- Takeaway: With six traits, SEM is already near the predictive ceiling on T/M/R and slightly ahead on N; L benefits most from flexible learners. This guides where additional predictors or richer measurement may pay off (especially for L and R).
+
+Artifacts (black‑box benchmarks)
+- XGBoost (best‑of‑best): `results/summaries/stage3rf_xgb_summary.md` and per‑run dirs under `artifacts/stage3rf_xgb_*`.
+- Random Forest (ranger): per‑axis outputs in `artifacts/stage3rf_ranger/` and grid in `artifacts/stage3rf_ranger_grid/`.
+- CSV summaries: `results/summaries/{xgb_vs_sem_summary.csv,ranger_vs_sem_summary.csv,model_benchmarks_summary.csv}`.
+
+Figure
+- `results/summaries/sem_vs_blackbox_r2.png` — grouped R² comparison (SEM, XGB, RF) across axes.
+- `results/summaries/sem_vs_blackbox_delta.png` — ΔR² vs SEM (XGB−SEM, RF−SEM) by axis.
+
+Recreate figures
+- `make benchmarks-plots` or run the plotting script directly:
+- `Rscript scripts/plot_benchmarks_R2.R --bench_csv results/summaries/model_benchmarks_summary.csv --out_png results/summaries/sem_vs_blackbox_r2.png --delta_png results/summaries/sem_vs_blackbox_delta.png`
+
 
 ---
 
