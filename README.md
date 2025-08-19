@@ -358,6 +358,17 @@ We trained simple, high‑capacity baselines using the same six traits and CV pr
 | R | 0.155±0.071 | 0.044±0.023 | 0.062±0.040 | SEM |
 | N | 0.424±0.071 | 0.404±0.047 | 0.412±0.044 | SEM ≈ RF ≈ XGB |
 
+Mini‑table — RMSE by model (CV mean ± SD)
+| Axis | SEM RMSE (±SD) | XGBoost RMSE (±SD) | Random Forest RMSE (±SD) | Best |
+|:----:|:--------------:|:------------------:|:-------------------------:|:----:|
+| L | 1.333±0.064 | 1.283±0.053 | 1.260±0.040 | RF |
+| T | 1.145±0.079 | 1.211±0.049 | 1.181±0.046 | SEM |
+| M | 1.150±0.079 | 1.329±0.034 | 1.301±0.050 | SEM |
+| R | 1.428±0.076 | 1.513±0.039 | 1.498±0.050 | SEM |
+| N | 1.423±0.090 | 1.450±0.075 | 1.440±0.056 | SEM |
+
+Note: RMSE values are computed from the same 10×5 CV folds as R². Source CSV: `artifacts/model_benchmarks_rmse_summary.csv`.
+
 Mini‑figure — Axis bars by model (R² vs 0.50 → 10 chars)
 ```
 Regression (baseline)
@@ -399,6 +410,7 @@ Artifacts (black‑box benchmarks)
 - XGBoost (best‑of‑best): `results/summaries/stage3rf_xgb_summary.md` and per‑run dirs under `artifacts/stage3rf_xgb_*`.
 - Random Forest (ranger): per‑axis outputs in `artifacts/stage3rf_ranger/` and grid in `artifacts/stage3rf_ranger_grid/`.
 - CSV summaries: `artifacts/{xgb_vs_sem_summary.csv,ranger_vs_sem_summary.csv,model_benchmarks_summary.csv}`.
+- RMSE summary (CSV): `artifacts/model_benchmarks_rmse_summary.csv`.
 
 Figure
 - `artifacts/sem_vs_blackbox_r2.png` — grouped R² comparison (SEM, XGB, RF) across axes.
