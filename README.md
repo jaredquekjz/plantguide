@@ -398,15 +398,15 @@ Comments
 Artifacts (black‑box benchmarks)
 - XGBoost (best‑of‑best): `results/summaries/stage3rf_xgb_summary.md` and per‑run dirs under `artifacts/stage3rf_xgb_*`.
 - Random Forest (ranger): per‑axis outputs in `artifacts/stage3rf_ranger/` and grid in `artifacts/stage3rf_ranger_grid/`.
-- CSV summaries: `results/summaries/{xgb_vs_sem_summary.csv,ranger_vs_sem_summary.csv,model_benchmarks_summary.csv}`.
+- CSV summaries: `artifacts/{xgb_vs_sem_summary.csv,ranger_vs_sem_summary.csv,model_benchmarks_summary.csv}`.
 
 Figure
-- `results/summaries/sem_vs_blackbox_r2.png` — grouped R² comparison (SEM, XGB, RF) across axes.
-- `results/summaries/sem_vs_blackbox_delta.png` — ΔR² vs SEM (XGB−SEM, RF−SEM) by axis.
+- `artifacts/sem_vs_blackbox_r2.png` — grouped R² comparison (SEM, XGB, RF) across axes.
+- `artifacts/sem_vs_blackbox_delta.png` — ΔR² vs SEM (XGB−SEM, RF−SEM) by axis.
 
 Recreate figures
 - `make benchmarks-plots` or run the plotting script directly:
-- `Rscript scripts/plot_benchmarks_R2.R --bench_csv results/summaries/model_benchmarks_summary.csv --out_png results/summaries/sem_vs_blackbox_r2.png --delta_png results/summaries/sem_vs_blackbox_delta.png`
+- `Rscript scripts/plot_benchmarks_R2.R --bench_csv artifacts/model_benchmarks_summary.csv --out_png artifacts/sem_vs_blackbox_r2.png --delta_png artifacts/sem_vs_blackbox_delta.png`
 
 
 ---
