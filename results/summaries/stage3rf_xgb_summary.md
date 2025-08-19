@@ -30,3 +30,8 @@ Validation: repeated, stratified 10×5 CV (seed=42); train‑fold log transforms
   - Nmass × Leaf area: ΔR²≈0.006; Seed mass × Nmass: ΔR²≈0.002
 
 - Read‑across: Trees capture pronounced curvature in LMA and SSD effects on Light, and a strong LMA×LA interaction — consistent with shade vs sun leaf strategy contrasts. Height×SSD is present but modest.
+
+### Tools (simple)
+- Python: pandas, numpy, scikit‑learn (LinearRegression, PolynomialFeatures).
+- Transforms: same train‑fold log10 offsets parsed from `{...}_metrics.json` (no new predictors).
+- Method: R² delta checks on out‑of‑fold predictions (no SHAP/PDP libs; quick diagnostics only).

@@ -25,3 +25,8 @@ Validation: repeated, stratified 10×5 CV (seed=42); train‑fold log transforms
   - Nmass × Leaf area: ΔR²≈0.005; Seed mass × Nmass: ΔR²≈0.003
 
 - Read‑across: Random Forest echoes XGB — strong curvature for SSD and LMA and a prominent LMA×LA interaction for Light; Height×SSD is secondary but present.
+
+### Tools (simple)
+- Python: pandas, numpy, scikit‑learn (LinearRegression, PolynomialFeatures).
+- Transforms: same train‑fold log10 offsets parsed from `{...}_metrics.json` (no new predictors).
+- Method: R² delta checks on out‑of‑fold predictions (no SHAP/PDP libs; quick diagnostics only).
