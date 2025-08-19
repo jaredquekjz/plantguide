@@ -5,9 +5,14 @@
 !/README.md
 !/src/
 !/results/
+!/scripts/
 
 # Within tracked folders, keep common noise ignored
 __pycache__/
 *.pyc
 .DS_Store
 .ipynb_checkpoints/
+
+# Results: keep only Markdown summaries under results/summaries/
+/results/summaries/*
+!/results/summaries/*.md
