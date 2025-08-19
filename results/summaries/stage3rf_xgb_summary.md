@@ -13,3 +13,20 @@ Validation: repeated, stratified 10×5 CV (seed=42); train‑fold log transforms
 - Default: `artifacts/stage3rf_xgboost/`
 - Grid: `artifacts/stage3rf_xgb_grid/*/eive_xgb_{L,T,M,R,N}_{metrics.json,preds.csv,feature_importance.csv}`
 - Tuned: `artifacts/stage3rf_xgb_tune/*/eive_xgb_{L,N}_{metrics.json,preds.csv,feature_importance.csv}`
+
+## Light (L) — Shape & Interaction Diagnostics (approx.)
+
+- Method: Used out‑of‑fold predictions from the best L run (`artifacts/stage3rf_xgb_tune/L_lr0.03_n600`) and merged with trait values. Assessed non‑linearity via R² gain from quadratic over linear (single‑feature), and pairwise interaction via R² gain from adding a product term to an additive model. Transforms match training (log10 for LA/H/SM/SSD using recorded offsets).
+- Sample size: n≈1,068 species (complete‑case).
+
+- Non‑linearity (R² gain, top 3)
+  - LMA (g/m2): ΔR²≈0.106 (linear 0.044 → quadratic 0.150)
+  - SSD used (mg/mm3): ΔR²≈0.092 (linear 0.012 → quadratic 0.104)
+  - Diaspore mass (mg): ΔR²≈0.013 (linear 0.121 → quadratic 0.133)
+
+- Interactions (R² gain from adding product term)
+  - LMA × Leaf area: ΔR²≈0.096 (additive 0.194 → +× 0.289)
+  - Height × SSD: ΔR²≈0.018 (additive 0.237 → +× 0.255)
+  - Nmass × Leaf area: ΔR²≈0.006; Seed mass × Nmass: ΔR²≈0.002
+
+- Read‑across: Trees capture pronounced curvature in LMA and SSD effects on Light, and a strong LMA×LA interaction — consistent with shade vs sun leaf strategy contrasts. Height×SSD is present but modest.
