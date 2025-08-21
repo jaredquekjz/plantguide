@@ -413,6 +413,11 @@ if (nonlinear_opt) {
   # Add smooth on logH if available
   if (grepl("logH", rhs_y, fixed = TRUE)) rhs_y <- sub("logH", "s(logH, k=5)", rhs_y, fixed = TRUE)
 }
+## Parity with piecewise psem: when not deconstructing SIZE and target is M,
+## include SIZE:logSSD interaction in the y-equation unless user overrides via add_interaction
+if (!deconstruct_size && target_letter == "M" && !grepl("SIZE:logSSD", rhs_y, fixed = TRUE)) {
+  rhs_y <- paste(rhs_y, "+ SIZE:logSSD")
+}
 
 # LES and SIZE equations
 rhs_les  <- "LES ~ SIZE + logSSD"
@@ -430,6 +435,12 @@ if (weights_mode != "none" && ("min_records_6traits" %in% names(df))) {
 }
 
 sem_list[[length(sem_list)+1]] <- gam_or_gamm(stats::as.formula("logSSD ~ 1"), data = tr, weights = w_full)
+## If using the deconstructed size form in the y-equation, then logH and logSM are
+## exogenous parents of y and must be explicitly modelled to satisfy pwSEM docs
+if (deconstruct_size) {
+  sem_list[[length(sem_list)+1]] <- gam_or_gamm(stats::as.formula("logH ~ 1"), data = tr, weights = w_full)
+  sem_list[[length(sem_list)+1]] <- gam_or_gamm(stats::as.formula("logSM ~ 1"), data = tr, weights = w_full)
+}
 if (!psem_include_size_eq) sem_list[[length(sem_list)+1]] <- gam_or_gamm(stats::as.formula("SIZE ~ 1"), data = tr, weights = w_full)
 if (want_logLA_pred) sem_list[[length(sem_list)+1]] <- gam_or_gamm(stats::as.formula("logLA ~ 1"), data = tr, weights = w_full)
 

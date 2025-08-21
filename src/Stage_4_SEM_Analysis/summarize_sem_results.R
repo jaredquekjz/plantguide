@@ -25,6 +25,7 @@ opts <- parse_args(args)
 
 lavaan_dir   <- opts[["lavaan_dir"]]   %||% "artifacts/stage4_sem_lavaan"
 piecewise_dir<- opts[["piecewise_dir"]]%||% "artifacts/stage4_sem_piecewise"
+pwsem_dir    <- opts[["pwsem_dir"]]    %||% "artifacts/stage4_sem_pwsem"
 out_csv      <- opts[["out_csv"]]      %||% "artifacts/stage4_sem_summary/sem_metrics_summary.csv"
 
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
@@ -58,6 +59,9 @@ for (f in list.files(lavaan_dir, pattern = "_metrics.json$", full.names = TRUE))
 for (f in list.files(piecewise_dir, pattern = "_metrics.json$", full.names = TRUE)) {
   g[[length(g)+1]] <- read_metrics(f, method = "piecewise")
 }
+for (f in list.files(pwsem_dir, pattern = "_metrics.json$", full.names = TRUE)) {
+  g[[length(g)+1]] <- read_metrics(f, method = "pwsem")
+}
 
 tab <- do.call(rbind, g)
 tab <- tab[order(tab$target, tab$method), , drop = FALSE]
@@ -65,4 +69,3 @@ tab <- tab[order(tab$target, tab$method), , drop = FALSE]
 if (have_readr) readr::write_csv(tab, out_csv) else utils::write.csv(tab, out_csv, row.names = FALSE)
 
 cat(sprintf("Wrote summary: %s (%d rows)\n", out_csv, nrow(tab)))
-
