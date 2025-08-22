@@ -19,3 +19,6 @@ __pycache__/
 # Allow pwSEM summaries in a dedicated subfolder to be tracked
 !/results/summaries/summarypwsem/
 !/results/summaries/summarypwsem/**/*.md
+# Allow piecewise summaries in their subfolder to be tracked
+!/results/summaries/summarypiecewise/
+!/results/summaries/summarypiecewise/**/*.md
