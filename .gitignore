@@ -16,3 +16,6 @@ __pycache__/
 # Results: keep only Markdown summaries under results/summaries/
 /results/summaries/*
 !/results/summaries/*.md
+# Allow pwSEM summaries in a dedicated subfolder to be tracked
+!/results/summaries/summarypwsem/
+!/results/summaries/summarypwsem/**/*.md

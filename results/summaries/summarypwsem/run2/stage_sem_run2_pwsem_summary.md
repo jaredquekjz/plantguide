@@ -22,7 +22,7 @@ This run mirrors Stage 2 Run 2 but swaps the d‑sep engine from piecewiseSEM to
 - M: R² 0.398 ± 0.061; RMSE 1.165 ± 0.068; MAE 0.902 ± 0.046 (n=1066)
 - N: R² 0.416 ± 0.041; RMSE 1.435 ± 0.056; MAE 1.151 ± 0.046 (n=1049)
 
-CV metrics match Run 2 piecewise by design (identical data/forms/composites).
+CV metrics match Run 2 piecewise by design (identical data, forms, composites).
 
 ## pwSEM d‑sep (Fisher’s C)
 - L: C≈0.060; df=2; p≈0.971 → fits; multigroup Overall C≈11.414, df=6, p≈0.076; woody p≈0.026; non‑woody p≈0.554; semi‑woody p≈0.228.
