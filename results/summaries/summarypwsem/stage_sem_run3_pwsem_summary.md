@@ -91,7 +91,7 @@ Comparison to piecewise (Run 3)
 Changes in this rerun
 - Added new artifacts under `artifacts/stage4_sem_pwsem_run3/` for all five targets.
 - Generated combined metrics at `artifacts/stage4_sem_summary_run3/sem_metrics_summary_main_with_pwsem.csv` (lavaan + pwSEM).
-- Created this new summary file: `results/summaries/summarypwsem/run3/stage_sem_run3_pwsem_summary.md`.
+- Created this new summary file: `results/summaries/summarypwsem/stage_sem_run3_pwsem_summary.md`.
 - No changes to the original piecewise summary: `results/summaries/summarypiecewise/stage_sem_run3_summary.md`.
 
 Phylogenetic sensitivity (GLS)
