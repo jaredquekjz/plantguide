@@ -39,22 +39,27 @@ flowchart TD
 ### Final SEM Equations (Adopted)
 
 Composites
-- LES_core: negative LMA, positive Nmass (trained as a composite; scaled within train folds)
-- SIZE: +logH + logSM (used for L/T only; M/N use logH and logSM directly)
+- LES_core (pure): negative LMA, positive Nmass (trained as a composite; scaled within train folds)
+- SIZE: +logH + logSM (used for L/T/R; M/N use logH and logSM directly)
 
-Equations (piecewise SEM; linear forms)
+Equations (pwSEM; Run 7 canonical)
 ```
-L ~ LES_core + SIZE + logLA
-T ~ LES_core + SIZE + logLA
+# Light (L): non‑linear GAM (rf_plus)
+L ~ s(LMA,k=5) + s(logSSD,k=5) + s(SIZE,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + logH:logSSD
+
+# Temperature (T) and Reaction (R): linear SIZE
+T ~ LES_core + SIZE + logSSD + logLA
+R ~ LES_core + SIZE + logSSD + logLA
+
+# Moisture (M) and Nutrients (N): deconstructed SIZE
 M ~ LES_core + logH + logSM + logSSD + logLA
-R ~ LES_core + SIZE + logLA
 N ~ LES_core + logH + logSM + logSSD + logLA + LES_core:logSSD
 ```
 
 Notes
-- Transforms: log10 for LA, H, SM, SSD; predictors standardized in training folds.
-- Interaction: LES_core:logSSD kept for N only (optional for T; not adopted).
-- Coefficients and composite recipe: see `results/MAG_Run8/mag_equations.json` and `results/MAG_Run8/composite_recipe.json`.
+- Transforms: log10 for LA, H, SM, SSD; predictors standardized within training folds.
+- Interaction: LES_core:logSSD kept for N only (optional for T; not adopted). L uses `LMA:logLA` and `logH:logSSD` within the non‑linear form.
+- Group moderation: SSD→{L,T,R} is strongest in woody groups; treat SSD paths as woody‑only in strict d‑sep, with global SSD→{M,N}.
 
 > [!NOTE]
 > Planned expansions include root traits (SRL, diameter, RTD, N), light‑specific leaf traits (thickness, N per area), categorical syndromes (woodiness, growth form, phenology, mycorrhiza), and climate/soil covariates — see [Future Developments](#future-developments).
@@ -230,27 +235,38 @@ Artifacts and reproducibility
 ## Structural Equation Modeling (SEM) — Structure, Fit, and Final Forms
 
 Core constructs and forms
+- Engine: Stage 2 d‑sep testing now uses pwSEM; prior piecewiseSEM results remain as legacy baselines for comparison.
 - Latent/composite axes: LES_core (−LMA, +Nmass) and SIZE (+logH, +logSM). CV uses training‑only composites.
-- Baseline y‑equations: L/T/R ~ LES + SIZE + logSSD + logLA; M/N ~ LES + logH + logSM + logSSD + logLA; LES:logSSD kept for N only (T optional, not default).
+- Canonical y‑equations (Run 7; pwSEM):
+  - Light (L; non‑linear GAM, rf_plus): `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(SIZE,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + logH:logSSD`.
+  - Temperature (T) and Reaction (R): `y ~ LES + SIZE + logSSD + logLA` (linear SIZE).
+  - Moisture (M) and Nutrients (N): `y ~ LES + logH + logSM + logSSD + logLA` (deconstructed SIZE); N adds `LES:logSSD`.
+  - Measurement: LES is “pure” (negLMA, Nmass). `logLA` enters as a direct predictor for all targets.
 
 Key run decisions and evidence
-- Direct SSD effects (Run 2): Adopt SSD→M and SSD→N in both frameworks; keep L/T mediated; enable SSD→R in lavaan only. Woodiness moderation supported (SSD stronger in woody groups via grouped fit ranges) (Chave et al., 2009).
-- Deconstructed SIZE for M/N (Run 2): Use logH and logSM directly in M/N y‑equations — improves piecewise CV into ~0.40–0.42 R² range.
+- Direct SSD effects (Run 2; pwSEM): Include SSD→M and SSD→N globally. For L/T/R, include SSD→y for woody only; optional add SSD→R for non‑woody if prioritizing coefficients/AIC, but strict d‑sep recommends woody‑only. Multigroup d‑sep and equality tests show heterogeneity with stronger SSD effects in woody groups (see Run 2 summary).
+- Deconstructed SIZE for M/N (Run 2): Use logH and logSM directly in M/N y‑equations — improves CV to R²≈0.398 (M) and 0.416 (N) under the same protocol; matches piecewise results while pwSEM d‑sep still rejects for M/N due to structural claims and supports group‑specific slopes.
 - Co‑adapted LES in lavaan (Run 4): Replace directed inputs into LES with covariances (LES↔SIZE, LES↔logSSD); large ΔAIC/ΔBIC improvements across L/M/R/N despite modest absolute fit indices (Shipley & Douma, 2020; Douma & Shipley, 2021).
 - Interaction policy (Run 5 + 6P): Keep LES:logSSD for N (tiny CV gain; IC modestly favorable; phylo‑supported). Optional for T. Omit for L/M/R (no CV benefit; IC penalties) (Shipley & Douma, 2020).
 - Nonlinearity (Run 6): Reject s(logH) splines for M/R/N — consistent CV degradation and no IC support. Retain linear forms (cf. Kong et al., 2019).
+- Non‑linear Light (Run 6→7; pwSEM): Adopt RF‑informed L equation with smooths in LMA/logSSD/SIZE/logLA plus `LMA:logLA` and `logH:logSSD`. Improves L CV to ≈0.289 (10×5 CV) and is carried forward as the canonical L form in Run 7.
 - Refined measurement (Run 7): Adopt LES_core (negLMA,Nmass) and add logLA as a direct predictor for all targets. Improves M/N CV and strongly lowers piecewise full‑model AIC/BIC for M/N; neutral to slightly worse for L/T; mixed for R. Overall adopted (Douma & Shipley, 2021).
 
 Run highlights 
-- Run 1 baseline (CV; composites, seed=123, 5×5): piecewise outperformed lavaan proxies across axes — e.g., R² piecewise vs lavaan: L 0.224 vs 0.107; T 0.212 vs 0.103; M 0.342 vs 0.041; R 0.149 vs 0.024; N 0.371 vs 0.303. Piecewise d‑sep on full data supported mediation for L/T (C≈0.95–1.31, p≈0.62–0.52), was borderline for R (C≈4.61, p≈0.10), and saturated for M/N (df=0), indicating necessary direct SSD→{M,N}.
-- Run 2 (WES‑backed SSD→{M,N,R}; woodiness groups): piecewise CV R² changes vs Run 1 are modest and concentrated in M/N due to deconstructing SIZE (≈+0.05 each); L/T are essentially unchanged (≈0 to +0.01) and R is near‑identical. Grouped lavaan fits: woody CFI≈0.67–0.76, RMSEA≈0.20–0.23; non‑woody CFI≈0.79–0.83, RMSEA≈0.14–0.17 — absolute fit still below conventional thresholds. See `results/summaries/stage_sem_run2_summary.md` for before/after woodiness split p‑values (heterogeneity and per‑group).
-  - Interpretation (Run 2): Split justified for T/M/N/R; L not required. Woody is significant across L/T/M/N/R; non‑woody significant for M/N/R only; semi‑woody non‑significant (n≈11).
-- Run 3 (Mycorrhiza groups added): n=1,068 complete‑case; 832 labeled. CV forms matched Run 2 (M/N deconstructed; L/T/R linear). Targeted myco‑specific SSD→R for `Pure_NM` and `Low_Confidence` improved d‑sep (final overall Fisher’s C p≈0.899 with selected groups saturated), while CV metrics remained consistent with Run 2. See `results/summaries/stage_sem_run3_summary.md` for before/after mycorrhiza split p‑values.
-  - Interpretation (Run 3): Split justified for M/N/R; L/T not required. Signals concentrate in NM‑linked groups — Pure_NM significant for M/N/R; Pure_EM for M/N; Low_Confidence for T/R (treat cautiously).
-- Run 4 (Co‑adapted LES↔SIZE in lavaan; seed=42, 10×5 CV): multi‑group lavaan fit indices ranged roughly CFI 0.53–0.65; RMSEA 0.25–0.28; SRMR 0.16–0.22. Decisive information‑criterion gains vs Run 3: ΔAIC/BIC (Run 4 − Run 3) — L −468/−393; M −498/−422; R −443/−372; N −436/−361 — strongly favoring co‑adaptation.
-- Run 5 (LES×logSSD interaction in piecewise; seed=123, 10×5 CV): Added `LES:logSSD` to y‑equations. CV effects are small (tiny gains for T and N; neutral/slight negatives for L/M/R). Full‑model IC sums change little — modest improvement for N only (ΔAIC_sum ≈ −3; ΔBIC_sum ≈ +2). Adoption: keep for N; optional for T; omit for L/M/R.
+- Run 1 baseline (CV; composites, seed=123, 5×5): piecewise outperformed lavaan proxies across axes — e.g., R² piecewise vs lavaan: L 0.224 vs 0.107; T 0.212 vs 0.103; M 0.342 vs 0.041; R 0.149 vs 0.024; N 0.371 vs 0.303. pwSEM d‑sep on full data agrees on mediation and improves p‑values via generalized covariance: L/T/R fit (C≈0.060/0.558/1.014; df=2; p≈0.971/0.756/0.602), while M/N are saturated (df=0). See `results/summaries/summarypwsem/stage_sem_run1_pwsem_summary.md`.
+- Run 2 (WES‑backed SSD→{M,N,R}; woodiness groups; pwSEM): CV R² changes vs Run 1 are modest and concentrated in M/N due to deconstructing SIZE (M≈0.398, N≈0.416); L/T are essentially unchanged and R is near‑identical. Grouped lavaan fits remain below conventional thresholds (woody CFI≈0.67–0.76, RMSEA≈0.20–0.23; non‑woody CFI≈0.79–0.83, RMSEA≈0.14–0.17). Multigroup pwSEM d‑sep shows woody‑specific misfit for L/T/R (overall p≈0.076/0.0288/0.174; woody groups p≈0.026/0.055/0.016; non‑woody fit). See `results/summaries/summarypwsem/stage_sem_run2_pwsem_summary.md` for heterogeneity and per‑group p‑values.
+  - Interpretation (Run 2; pwSEM): Split justified for L/T/M/N/R (woody vs others). Woody shows significant SSD effects across axes; non‑woody significant primarily for M/N (and small for R); semi‑woody remains non‑significant (n≈11). Final forms: SSD→{L,T,R} for woody only; SSD→{M,N} globally.
+ - Run 3 (Mycorrhiza groups added; pwSEM): CV forms matched Run 2 (M/N deconstructed; L/T/R linear). Under these forms the d‑sep basis set is empty (no overall C/df). Equality tests detect heterogeneity for M/N/R (p_overall≈0.002/4.1e−7/0.038) but not for L/T (ns). CV metrics remain consistent with Run 2. See `results/summaries/summarypwsem/stage_sem_run3_pwsem_summary.md` for per‑group p‑values and details.
+ - Interpretation (Run 3; pwSEM): Split justified for M/N/R; L/T not required. Signals concentrate in NM‑linked groups — Pure_NM significant for M/N/R; Pure_EM for M/N; Low_Confidence for T/R (treat cautiously).
+  - Per‑group signals (Run 3; pwSEM; p_logSSD<0.05): T—Low_Confidence 0.0426; M—Pure_EM 0.0493, Pure_NM 9.14e−4; N—Facultative_AM_NM 4.84e−4, Pure_EM 0.00690, Pure_NM 1.15e−4; R—Low_Confidence 0.0123, Pure_NM 0.0315; L—none.
+ - Run 4 (Co‑adapted LES↔SIZE in lavaan; reference; seed=42, 10×5 CV): multi‑group lavaan fit indices ranged roughly CFI 0.53–0.65; RMSEA 0.25–0.28; SRMR 0.16–0.22. Decisive information‑criterion gains vs Run 3: ΔAIC/BIC (Run 4 − Run 3) — L −468/−393; M −498/−422; R −443/−372; N −436/−361 — strongly favoring co‑adaptation. See canonical summary `results/summaries/summarypiecewise/stage_sem_run4_summary.md` (no pwSEM rerun for this stage).
+- Run 5 (LES×logSSD interaction; pwSEM mirror; seed=123, 10×5 CV): Added `LES:logSSD` to y‑equations. CV metrics match piecewise (as expected under identical data/composites/CV); basis sets are often empty, so inference relies on equality tests and full‑model AIC. Policy unchanged: tiny gains for T and N; neutral/slight negatives for L/M/R. Adoption: keep for N; optional for T; omit for L/M/R. See `results/summaries/summarypwsem/stage_sem_run5_pwsem_summary.md`.
+  - Heterogeneity (Run 5; pwSEM; p_overall): L 0.208; T 0.114; M 0.00221; R 0.0376; N 4.13e−7.
+  - Per‑group signals (Run 5; pwSEM; p_logSSD<0.05): T—Low_Confidence 0.0426; M—Pure_EM 0.0493, Pure_NM 9.14e−4; N—Facultative_AM_NM 4.84e−4, Pure_EM 0.00690, Pure_NM 1.15e−4; R—Low_Confidence 0.0123, Pure_NM 0.0315; L—none.
 - Run 6 (Nonlinearity via s(logH) in piecewise; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
 - Run 6P (Phylogenetic GLS sensitivity): Brownian GLS on full data confirms coefficient sign stability (LES, SIZE/logH/logSM, logSSD) and supports the interaction policy (N yes; T optional). AIC_sum magnitudes differ from non‑phylo runs (different likelihood) — use for relative checks only.
+ - Run 6 (L‑only GAM; pwSEM): Introduced RF‑informed non‑linear L with `s(LMA)`, `s(logSSD)`, `s(SIZE)`, `s(logLA)`, plus `LMA:logLA` and `logH:logSSD`; CV improved to R²≈0.279 (10×5; seed=123). Spec locked for Run 7.
+ - Run 7 (Final; pwSEM): Adopted pure LES (negLMA,Nmass) and the RF‑informed L. Canonical forms: L non‑linear (above); T/R linear (`y ~ LES + SIZE + logSSD + logLA`); M/N deconstructed (`y ~ LES + logH + logSM + logSSD + logLA`), with `LES:logSSD` in N only. CV (mean±SD): L 0.289±0.083; T 0.231±0.065; R 0.155±0.060; M 0.408±0.081; N 0.425±0.076. See `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`.
 
 Generate before/after p‑values text (Markdown)
 - Script: `src/Stage_4_SEM_Analysis/generate_pval_bullets.R` prints the “Before/After” bullets (bold if p<0.05) and a concise interpretation. Copy‑paste into your run summaries.
@@ -262,28 +278,50 @@ Generate before/after p‑values text (Markdown)
       --dir_LTR artifacts/stage4_sem_piecewise_run2 \
       --dir_MN artifacts/stage4_sem_piecewise_run2_deconstructed
     ```
+  - Run 2 (Woodiness; pwSEM):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
+      --groups_type=woodiness \
+      --dir_LTR artifacts/stage4_sem_pwsem_run2 \
+      --dir_MN artifacts/stage4_sem_pwsem_run2_deconstructed
+    ```
   - Run 3 (Mycorrhiza):
     ```bash
     Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
       --groups_type=myco \
       --dir_all artifacts/stage4_sem_piecewise_run3
     ```
+  - Run 3 (Mycorrhiza; pwSEM):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
+      --groups_type=myco \
+      --dir_all artifacts/stage4_sem_pwsem_run3
+    ```
+  - Run 5 (Mycorrhiza; pwSEM):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/generate_pval_bullets.R \
+      --groups_type=myco \
+      --dir_all artifacts/stage4_sem_pwsem_run5
+    ```
 
 ---
 
 ## Performance & Diagnostics
 
+- References: pwSEM summaries — Run 1: `results/summaries/summarypwsem/stage_sem_run1_pwsem_summary.md`; Run 2: `results/summaries/summarypwsem/stage_sem_run2_pwsem_summary.md`; Run 3: `results/summaries/summarypwsem/stage_sem_run3_pwsem_summary.md`; Run 4 (lavaan reference): `results/summaries/summarypwsem/stage_sem_run4_pwsem_summary.md`; Run 5: `results/summaries/summarypwsem/stage_sem_run5_pwsem_summary.md`.
+ - References: pwSEM summaries — Run 6: `results/summaries/summarypwsem/stage_sem_run6_pwsem_summary.md`; Run 7 (final canonical): `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`.
+
 ### Section 1 — Run 7 (Final SEM) Summary
 
-- Model form: Piecewise SEM with composite predictors (LES, SIZE), direct SSD paths, and a single retained interaction for N. Linear equations selected by CV and information criteria.
+- Model form: Canonical pwSEM with pure LES (negLMA,Nmass), SIZE (logH,logSM), `logLA` as a direct predictor for all targets; woody‑only SSD→{L,T,R} and global SSD→{M,N}; non‑linear Light (GAM rf_plus) and linear/deconstructed forms for the others; `LES:logSSD` retained for N only.
 
-- Final piecewise CV (mean ± SD)
-  - L: R² 0.237±0.060; RMSE 1.333±0.064; MAE 1.001±0.039 (n=1065)
-  - T: R² 0.234±0.072; RMSE 1.145±0.079; MAE 0.862±0.050 (n=1067)
-  - R: R² 0.155±0.071; RMSE 1.428±0.076; MAE 1.077±0.048 (n=1049)
-  - M: R² 0.415±0.072; RMSE 1.150±0.079; MAE 0.889±0.050 (n=1065)
-  - N: R² 0.424±0.071; RMSE 1.423±0.090; MAE 1.143±0.072 (n=1047)
-  - Typical error (RMSE): narrowed to ~1.14–1.43 EIVE units.
+- Final pwSEM CV (mean ± SD)
+  - L: R² 0.289±0.083; RMSE 1.286±0.096; MAE 0.969±0.071 (n=1065)
+  - T: R² 0.231±0.065; RMSE 1.147±0.067; MAE 0.862±0.043 (n=1067)
+  - R: R² 0.155±0.060; RMSE 1.428±0.066; MAE 1.076±0.051 (n=1049)
+  - M: R² 0.408±0.081; RMSE 1.155±0.083; MAE 0.895±0.055 (n=1065)
+  - N: R² 0.425±0.076; RMSE 1.420±0.092; MAE 1.142±0.078 (n=1047)
+  - Typical error (RMSE): ~1.15–1.43 EIVE units; L improves materially vs piecewise.
 
 - Mini‑figure — piecewise full‑model IC (Run 7 vs Run 6)
 ```
@@ -301,10 +339,10 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
 
 - Phylogenetic checks: Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
-- Adopted SEM mean structure (Directed Acyclic Graph, DAG)
-  - L/T/R: y ~ LES + SIZE + logSSD + logLA
-  - M: y ~ LES + logH + logSM + logSSD + logLA
-  - N: y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
+- Adopted SEM mean structure (Directed Acyclic Graph, DAG; Run 7 canonical)
+  - L: non‑linear GAM (rf_plus): `y ~ s(LMA) + s(logSSD) + s(SIZE) + s(logLA) + Nmass + LMA:logLA + t2(LMA,logSSD) + logH:logSSD`.
+  - T/R: linear SIZE (`y ~ LES + SIZE + logSSD + logLA`).
+  - M/N: deconstructed SIZE (`y ~ LES + logH + logSM + logSSD + logLA`); N adds `LES:logSSD`.
 
 - Notes
   - Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted piecewise SEM forms (Runs 2–7; deconstructed SIZE for M/N; linear SIZE for L/T/R; no splines; LES×SSD kept for N only). See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
@@ -352,20 +390,20 @@ We trained simple, high‑capacity baselines using the same six traits and CV pr
 
 | Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | Best |
 |:----:|:------------:|:-----------------:|:-----------------------:|:----:|
-| L | 0.237±0.060 | 0.297±0.046 | 0.321±0.039 | RF |
-| T | 0.234±0.072 | 0.168±0.051 | 0.209±0.048 | SEM |
-| M | 0.415±0.072 | 0.217±0.047 | 0.249±0.054 | SEM |
-| R | 0.155±0.071 | 0.044±0.023 | 0.062±0.040 | SEM |
-| N | 0.424±0.071 | 0.404±0.047 | 0.412±0.044 | SEM ≈ RF ≈ XGB |
+| L | 0.289±0.083 | 0.297±0.046 | 0.321±0.039 | RF |
+| T | 0.231±0.065 | 0.168±0.051 | 0.209±0.048 | SEM |
+| M | 0.408±0.081 | 0.217±0.047 | 0.249±0.054 | SEM |
+| R | 0.155±0.060 | 0.044±0.023 | 0.062±0.040 | SEM |
+| N | 0.425±0.076 | 0.404±0.047 | 0.412±0.044 | SEM |
 
 Mini‑table — RMSE by model (CV mean ± SD)
 | Axis | SEM RMSE (±SD) | XGBoost RMSE (±SD) | Random Forest RMSE (±SD) | Best |
 |:----:|:--------------:|:------------------:|:-------------------------:|:----:|
-| L | 1.333±0.064 | 1.283±0.053 | 1.260±0.040 | RF |
-| T | 1.145±0.079 | 1.211±0.049 | 1.181±0.046 | SEM |
-| M | 1.150±0.079 | 1.329±0.034 | 1.301±0.050 | SEM |
-| R | 1.428±0.076 | 1.513±0.039 | 1.498±0.050 | SEM |
-| N | 1.423±0.090 | 1.450±0.075 | 1.440±0.056 | SEM |
+| L | 1.286±0.096 | 1.283±0.053 | 1.260±0.040 | RF |
+| T | 1.147±0.067 | 1.211±0.049 | 1.181±0.046 | SEM |
+| M | 1.155±0.083 | 1.329±0.034 | 1.301±0.050 | SEM |
+| R | 1.428±0.066 | 1.513±0.039 | 1.498±0.050 | SEM |
+| N | 1.420±0.092 | 1.450±0.075 | 1.440±0.056 | SEM |
 
 Note: RMSE values are computed from the same 10×5 CV folds as R². Source CSV: `artifacts/model_benchmarks_rmse_summary.csv`.
 
@@ -378,12 +416,12 @@ Regression (baseline)
   R 0.04 [#.........]
   N 0.36 [#######...]
 
-SEM (Run 7)
-  L 0.237 [#####.....]
-  T 0.234 [#####.....]
-  M 0.415 [########..]
+SEM (Run 7; canonical pwSEM)
+  L 0.289 [######....]
+  T 0.231 [#####.....]
+  M 0.408 [########..]
   R 0.155 [###.......]
-  N 0.424 [########..]
+  N 0.425 [########..]
 
 XGBoost (best‑of‑best)
   L 0.297 [######....]
@@ -401,9 +439,9 @@ Random Forest (ranger)
 ```
 
 Comments
-- Light (L): Tree models discover useful non‑linearities/interactions beyond the linear SEM — RF is best (≈ +0.08 absolute R² vs SEM).
+- Light (L): Flexible trees still edge SEM — RF is best (≈ +0.03 absolute R² vs SEM; XGB ≈ +0.01). The canonical SEM narrows the gap via a non‑linear L.
 - Nutrients (N): Black‑box models nearly match SEM (within ≈0.01–0.02 R²); SEM retains a small edge.
-- Temperature/Moisture/Reaction (T/M/R): SEM clearly outperforms both XGB and RF with only six traits, indicating that the structured mean equations (LES/SIZE, direct SSD paths, and a single retained interaction) capture the signal more effectively than generic ensembles at this data scale.
+- Temperature/Moisture/Reaction (T/M/R): SEM clearly outperforms both XGB and RF with only six traits, indicating that the structured mean equations (LES/SIZE, direct SSD paths, and a single retained interaction where justified) capture the signal more effectively than generic ensembles at this data scale.
 - Takeaway: With six traits, SEM is already near the predictive ceiling on T/M/R and slightly ahead on N; L benefits most from flexible learners. This guides where additional predictors or richer measurement may pay off (especially for L and R).
 
 Artifacts (black‑box benchmarks)
@@ -426,69 +464,132 @@ Recreate figures
 ## Mixed Acyclic Graph (MAG) + Copulas — Residual Dependence for Joint Decisions
 
 Core setup
-- Mean equations: use the adopted MAG forms (above) for single‑axis predictions; copulas model residual dependence only.
-- Detection: start from BH‑FDR (q=0.05) and |ρ|≥0.15, then manually refine using mixed‑effects, rank‑based m‑sep (Family random intercept; Kendall with rank‑PIT) to keep only practically meaningful spouses.
-- Families: Gaussian copulas only for this run; selection by AIC.
+- Mean equations: use the adopted canonical Run 7 forms for single‑axis predictions (non‑linear L GAM; linear T/R; deconstructed M/N with LES:logSSD only in N). Copulas model residual dependence only — mean structure stays intact (MAG = directed + bidirected edges).
+- Detection: seed with BH‑FDR (q=0.05) and |ρ|≥0.15 on residuals, then refine using mixed‑effects, rank‑based m‑sep (Family random intercept; Kendall with rank‑PIT) to keep only practically meaningful spouses.
+- Families: Gaussian copulas for this run; selection by AIC.
 - Estimation: rank‑PIT pseudo‑observations; Gaussian MLE via z‑correlation (Douma & Shipley, 2022).
 
-Final spouse set (Run 8)
-- L ↔ M: Gaussian, ρ≈−0.279, n=1063, AIC≈−84.11
+Final spouse set (Run 8; GAM L residuals)
+- L ↔ M: Gaussian, ρ≈−0.186, n=1063, AIC≈−35.42
 - T ↔ R: Gaussian, ρ≈+0.328, n=1049, AIC≈−117.58
 - T ↔ M: Gaussian, ρ≈−0.389, n=1064, AIC≈−172.57
 - M ↔ R: Gaussian, ρ≈−0.269, n=1049, AIC≈−76.76
 - M ↔ N: Gaussian, ρ≈+0.183, n=1046, AIC≈−33.65
 
-Mini‑figure — copula fits (Run 8)
-```
-Pair   n     family    rho     loglik     AIC
-L–M  1063   gaussian −0.279     43.05    −84.11
-T–R  1049   gaussian  0.328     59.79   −117.58
-T–M  1064   gaussian −0.389     87.28   −172.57
-M–R  1049   gaussian −0.269     39.38    −76.76
-M–N  1046   gaussian  0.183     17.82    −33.65
-```
+Copula fits (per district)
+| A | B | n | family | rho | loglik | AIC |
+|---|---:|---:|---|---:|---:|---:|
+| L | M | 1063 | gaussian | -0.186 | 18.71 | -35.42 |
+| T | R | 1049 | gaussian | 0.328 | 59.79 | -117.58 |
+| T | M | 1064 | gaussian | -0.389 | 87.28 | -172.57 |
+| M | R | 1049 | gaussian | -0.269 | 39.38 | -76.76 |
+| M | N | 1046 | gaussian | 0.183 | 17.82 | -33.65 |
 
-Diagnostics (Gaussian adequacy)
-- Kendall’s tau: |τ_emp − τ_gauss| within ~0.02–0.03 for both pairs.
-- Tails: high/low co‑occurrence within ~20% relative of Monte Carlo expectations.
-- CV log‑copula per observation: positive for both districts.
+m‑sep Residual Independence Test (DAG → MAG)
+Mixed, copula‑aware omnibus (independence claims only)
+```
+k  C        df   p_value   AIC_msep   method   rank_pit   cluster
+5  107.84   10     <1e-6     117.84   kendall  TRUE       Family
+```
+Interpretation: After adding the five spouses (L–M, T–R, T–M, M–R, M–N), the omnibus still rejects due to very small but detectable dependencies among remaining pairs (|τ|≈0.07–0.13). For joint predictions, we retain only these practically meaningful districts.
 
-Mini‑figure — adequacy checks
-```
-Pair  n     rho   tau_emp  tau_gauss   hi_emp  hi_mc   lo_emp  lo_mc   CV_logc/obs
-T–R  1045  0.328    0.237     0.213     0.0172  0.0227  0.0287  0.0225     0.0569
-L–M  1045 −0.279   −0.196    −0.180     0.0057  0.0034  0.0010  0.0032     0.0387
-```
+Gaussian adequacy (quick checks)
+| Pair | n | rho | tau_emp | tau_gauss | hi_emp | hi_mc | lo_emp | lo_mc | CV logc/obs |
+|------|---:|----:|--------:|----------:|-------:|------:|-------:|------:|------------:|
+| L:M | 1045 | -0.186 | -0.139 | -0.119 | 0.0105 | 0.0052 | 0.0010 | 0.0052 | 0.0159 |
+| T:R | 1045 | 0.328 | 0.237 | 0.213 | 0.0172 | 0.0229 | 0.0287 | 0.0231 | 0.0570 |
+| T:M | 1045 | -0.389 | -0.289 | -0.254 | 0.0019 | 0.0018 | 0.0029 | 0.0018 | 0.0809 |
+| M:R | 1045 | -0.269 | -0.188 | -0.173 | 0.0038 | 0.0036 | 0.0029 | 0.0035 | 0.0373 |
+| M:N | 1045 | 0.183 | 0.124 | 0.117 | 0.0096 | 0.0165 | 0.0239 | 0.0165 | 0.0170 |
+- Heuristics: τ alignment within ≈0.05 and tails within ≈20% relative indicate the Gaussian copula is adequate. Positive CV log‑copula per observation implies generalization over independence.
 
 Repro commands
-- Export MAG + run copulas (final spouse set):
-  - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`.
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
-      --district L,M --district T,R --district T,M --district M,R --district M,N`.
-  - Optional per‑group copulas: add `--group_col <GroupName>` (e.g., `Myco_Group_Final` or `Woodiness`) to also write `by_group` correlation matrices into `mag_copulas.json`. Stage 6 will use these automatically when `--group_col` is provided. You can also enable shrinkage toward global with `--shrink_k 100` (weight = n/(n+shrink_k)); a higher value shrinks more for small groups.
-- Copula‑aware m‑sep (mixed, rank‑based):
-  - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
-      --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
-      --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv`
+```bash
+# Export MAG artifacts and L GAM (Run 8 versioning)
+Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R \
+  --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --out_dir results/MAG_Run8 --version Run8
+Rscript src/Stage_4_SEM_Analysis/fit_export_L_gam.R \
+  --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --out_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
+
+# Fit copulas (final spouse set; GAM L residuals)
+Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R \
+  --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --out_dir results/MAG_Run8 --version Run8 \
+  --district L,M --district T,R --district T,M --district M,R --district M,N \
+  --group_col Myco_Group_Final --shrink_k 100 \
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
+
+# Mixed, copula‑aware m‑sep (DAG → MAG check on non‑spouse pairs)
+Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R \
+  --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --recipe_json results/MAG_Run8/composite_recipe.json \
+  --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv \
+  --cluster_var Family --corr_method kendall --rank_pit true \
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds \
+  --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv \
+  --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv
+
+# Gaussian adequacy (optional)
+Rscript src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R \
+  --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --copulas_json results/MAG_Run8/mag_copulas.json \
+  --out_md results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md \
+  --nsim 200000 \
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
+
+# Stage 6 — Joint suitability (batch presets)
+Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
+  --predictions_csv results/mag_predictions_no_eive.csv \
+  --copulas_json results/MAG_Run8/mag_copulas.json \
+  --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
+  --presets_csv results/gardening/garden_joint_presets_defaults.csv \
+  --nsim 20000 \
+  --summary_csv results/gardening/garden_joint_summary.csv
+
+# Stage 6 — Joint suitability (R‑excluded, more confident scenarios)
+Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
+  --predictions_csv results/mag_predictions_no_eive.csv \
+  --copulas_json results/MAG_Run8/mag_copulas.json \
+  --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
+  --presets_csv results/gardening/garden_presets_no_R.csv \
+  --nsim 20000 \
+  --summary_csv results/gardening/garden_joint_summary_no_R.csv
+```
 
 Artifacts (Run 8)
-- `results/MAG_Run8/mag_equations.json` — version Run 8.
-- `results/MAG_Run8/mag_copulas.json` — 5 districts (final spouse set).
+- `results/MAG_Run8/mag_equations.json` — version Run 8 (pure LES; canonical forms).
+- `results/MAG_Run8/sem_pwsem_L_full_model.rds` — saved GAM for L (rf_plus + logH:logSSD).
+- `results/MAG_Run8/mag_copulas.json` — 5 districts (final spouse set; optional group matrices).
 - `results/MAG_Run8/stage_sem_run8_residual_corr.csv` — 10 rows.
 - `results/MAG_Run8/stage_sem_run8_copula_fits.csv` — 5 rows.
+- `results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md` — adequacy checks.
 
-What the m‑sep test achieved 
-- We stress‑tested the “no‑extra‑links” assumption after the mean equations by checking whether non‑spouse pairs of axes behave independently once traits are accounted for.
-- Using rank‑based correlations and a random‑effects structure (to avoid false alarms from clustered species), we found a handful of strong, real leftover links — those became copulas (the spouses).
-- The remaining links are tiny in size; we leave them out on purpose. This keeps the joint predictions simple and focused on the dependencies that actually move the needle.
+How the m‑sep test is used
+- We stress‑test the “no‑extra‑links” assumption after the mean equations by checking whether non‑spouse pairs of axes behave independently once traits are accounted for.
+- Using rank‑based correlations and a random‑effects structure (to avoid false alarms from clustered species), we identify a handful of strong, real leftover links — those become copulas (the spouses) to improve joint predictions.
+- The remaining links are tiny in size; we leave them out on purpose to keep the dependency model simple and focused on practically important links.
 
 > [!NOTE]
-> Guardrail — Why no global m‑sep/LRT in Run 8
-> - Stage intent: diagnostic‑first and predictive. Quantify what six traits can explain, identify what is missing, and enable joint decisions via a small spouse set of residual copulas.
-> - Where we are: with only six predictors, absolute fit is expected to be imperfect; a global m‑sep/LRT would mostly report misfit without pointing to actionable fixes.
-> - Better tool now: targeted residual checks + copulas isolate the few meaningful leftover dependencies and directly improve joint predictions.
-> - When m‑sep/LRT shines: as the mean structure nears completion and absolute fit becomes the aim (after adding key exogenous predictors/groups), a full basis‑set m‑sep or saturated‑model LRT provides a coherent global fit check and helps choose among competing MAGs.
-> - Revisit when: (i) publication/review requires a global fit demonstration; (ii) major exogenous predictors or grouping changes (e.g., soil/climate, mycorrhiza) are added and end‑to‑end independences need re‑checking; (iii) districts become multivariate or tail behavior suggests non‑Gaussian copulas/vines; or (iv) residual checks surface non‑spouse links of practical size.
+> Guardrail — Joint scoring never peeks at observed EIVEs. Predictions are trait‑based means (SEM), and joint probabilities are simulated around those means using residual σ/ρ learned upstream.
+> When to prefer global m‑sep/LRT: as the mean structure nears completion (e.g., with added exogenous predictors/groups) and absolute fit becomes the aim, a full basis‑set m‑sep or saturated‑model LRT provides a coherent global fit check to choose among competing MAGs.
+
+Scenario selection — practical tips for joint gardening
+- Default threshold: start with `--joint_requirement=0.6` (on the 0–10 scale) or use `results/gardening/garden_joint_presets_defaults.csv`.
+- Excluding `R` helps: `R` is the weakest axis and is negatively linked with `M` (M–R ≈ −0.27) and positively with `T` (T–R ≈ +0.33). For more confident decisions, use the R‑excluded presets `results/gardening/garden_presets_no_R.csv`.
+- Read the dependencies: negative T–M (≈ −0.39) and L–M (≈ −0.19) mean “high both” is intrinsically rare; don’t over‑penalize when pairing such axes.
+- Tighten vs loosen: raise the threshold to 0.7 for stricter acceptance (fewer “joint_ok”); drop to 0.5 when including `R` or when coverage matters more than precision.
+- Single‑threshold run example:
+  ```bash
+  Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
+    --predictions_csv results/mag_predictions_no_eive.csv \
+    --copulas_json results/MAG_Run8/mag_copulas.json \
+    --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
+    --joint_requirement 0.6 \
+    --nsim 20000 \
+    --summary_csv results/gardening/garden_joint_summary_single_gate.csv
+  ```
 
 <p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 

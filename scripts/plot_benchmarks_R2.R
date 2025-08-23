@@ -42,8 +42,8 @@ miss <- setdiff(need, names(bench))
 if (length(miss)) stop(sprintf("Missing columns in benchmarks CSV: %s", paste(miss, collapse=", "))) 
 
 # Hardcode SEM Run 7 means ± SD from README
-sem_means <- c(L=0.237, T=0.234, R=0.155, M=0.415, N=0.424)
-sem_sds   <- c(L=0.060, T=0.072, R=0.071, M=0.072, N=0.071)
+sem_means <- c(L=0.289, T=0.231, R=0.155, M=0.408, N=0.425)
+sem_sds   <- c(L=0.083, T=0.065, R=0.060, M=0.081, N=0.076)
 axes_all  <- c("L","T","M","R","N")
 
 sem_df <- data.frame(

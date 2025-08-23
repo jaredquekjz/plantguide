@@ -17,15 +17,28 @@ bold_if <- function(txt, p, alpha) {
   if (!is.na(p) && p < alpha) paste0("**", txt, "**") else txt
 }
 
+resolve_path <- function(dir, target, suffix) {
+  # Try common engine prefixes in order: piecewise, pwsem
+  cands <- c(
+    file.path(dir, sprintf("sem_piecewise_%s_%s", target, suffix)),
+    file.path(dir, sprintf("sem_pwsem_%s_%s", target, suffix))
+  )
+  for (p in cands) {
+    if (file.exists(p)) return(p)
+  }
+  stop(sprintf("Could not find file for target %s with suffix %s in %s. Tried: %s",
+               target, suffix, dir, paste(cands, collapse = ", ")))
+}
+
 read_eqtest <- function(dir, target) {
-  path <- file.path(dir, sprintf("sem_piecewise_%s_claim_logSSD_eqtest.csv", target))
+  path <- resolve_path(dir, target, "claim_logSSD_eqtest.csv")
   df <- suppressMessages(readr::read_csv(path, show_col_types = FALSE))
   p <- df$p_overall[1]
   as.numeric(p)
 }
 
 read_pergroup <- function(dir, target) {
-  path <- file.path(dir, sprintf("sem_piecewise_%s_claim_logSSD_pergroup_pvals.csv", target))
+  path <- resolve_path(dir, target, "claim_logSSD_pergroup_pvals.csv")
   df <- suppressMessages(readr::read_csv(path, show_col_types = FALSE))
   df %>% mutate(group = as.character(group), p_logSSD = as.numeric(p_logSSD))
 }
@@ -129,4 +142,3 @@ if (identical(environment(), globalenv())) {
     quit(status = 1)
   })
 }
-
