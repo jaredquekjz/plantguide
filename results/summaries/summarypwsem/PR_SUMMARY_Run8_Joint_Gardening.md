@@ -102,6 +102,18 @@ Without R (new, confidence‑oriented)
 Winners at threshold 0.6 (No‑R presets)
 - RichSoilSpecialist (5 species): Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis.
 
+Confidence Gains (Before → After, pwSEM L GAM)
+- SunnyNeutral: mean +0.1 pp; max +9.9 pp (L‑binding)
+- PartialSunAverage: mean −0.2 pp; max −0.6 pp (L‑binding)
+- WarmNeutralFertile: mean +0.0 pp; max −0.3 pp
+- DryPoorSun: mean +0.0 pp; max +0.4 pp (L‑binding)
+- ShadeWetAcidic: mean +0.1 pp; max +2.5 pp (L‑binding)
+- LushShadePlant (No‑R): mean −0.4 pp; max +6.0 pp (L‑binding)
+- SunVsWaterTradeoff (No‑R): mean +0.0 pp; max +1.3 pp (L‑binding)
+- CoolClimateSpecialist (No‑R): mean +0.0 pp; max +0.0 pp
+- ThePioneer (No‑R): mean +0.0 pp; max +0.0 pp
+- RichSoilSpecialist (No‑R): mean −0.1 pp; max −0.2 pp; winners ≥0.6 unchanged (5)
+
 Group‑Aware (Mycorrhiza) — Presets With vs Without R (Full dataset; σ+ρ per group; shrink_k=100)
 - Stage 4: per‑group copulas fitted with `--group_col Myco_Group_Final --shrink_k 100`.
 - Stage 6: joint probabilities scored with `--group_col Myco_Group_Final` (per‑group σ and ρ).
@@ -110,25 +122,25 @@ With R (group‑aware)
 
 | Scenario           | Mean P | Median | Max   | Pass ≥0.6 |
 |--------------------|--------|--------|-------|-----------|
-| DryPoorSun         | 0.0026 | 0.0000 | 0.3099| 0         |
-| PartialSunAverage  | 0.0357 | 0.0149 | 0.2939| 0         |
-| ShadeWetAcidic     | 0.0001 | 0.0000 | 0.0042| 0         |
-| SunnyNeutral       | 0.0508 | 0.0129 | 0.4749| 0         |
-| WarmNeutralFertile | 0.0060 | 0.0001 | 0.2135| 0         |
+| DryPoorSun         | 0.0%   | 0.0%   | 0.6%  | 0         |
+| PartialSunAverage  | 1.9%   | 0.4%   | 14.4% | 0         |
+| ShadeWetAcidic     | 0.1%   | 0.0%   | 3.1%  | 0         |
+| SunnyNeutral       | 2.2%   | 0.3%   | 29.4% | 0         |
+| WarmNeutralFertile | 3.9%   | 1.1%   | 15.3% | 0         |
 
 Without R (group‑aware)
 
 | Scenario              | Mean P | Median | Max   | Pass ≥0.6 |
 |-----------------------|--------|--------|-------|-----------|
-| CoolClimateSpecialist | 0.0381 | 0.0105 | 0.2989| 0         |
-| LushShadePlant        | 0.0127 | 0.0032 | 0.1215| 0         |
-| RichSoilSpecialist    | 0.2184 | 0.1468 | 0.8260| 74        |
-| SunVsWaterTradeoff    | 0.0098 | 0.0001 | 0.4796| 0         |
-| ThePioneer            | 0.0014 | 0.0000 | 0.1819| 0         |
+| CoolClimateSpecialist | 0.5%   | 0.0%   | 9.9%  | 0         |
+| LushShadePlant        | 1.3%   | 0.3%   | 11.7% | 0         |
+| RichSoilSpecialist    | 26.6%  | 13.0%  | 82.8% | 6         |
+| SunVsWaterTradeoff    | 0.2%   | 0.0%   | 2.9%  | 0         |
+| ThePioneer            | 0.2%   | 0.0%   | 2.2%  | 0         |
 
 Notes
-- Numbers above aggregate across 1,069 species with mycorrhiza labels; thresholds use each preset’s column (0.6 default).
-- Effects are broadly consistent with earlier findings: R‑excluded presets are far more actionable; group‑aware σ+ρ further improves calibration and increases RichSoilSpecialist’s best probabilities (max ≈ 0.826).
+- Numbers above aggregate across species with Myco labels; thresholds use each preset’s column (0.6 default).
+- Effects are consistent with earlier findings: R‑excluded presets are far more actionable; group‑aware σ+ρ further improves calibration and increases RichSoilSpecialist’s best probabilities (max ≈ 82.8%) and pass count (6).
 
 Group‑Aware (Mycorrhiza) — 23‑Species Subset (σ+ρ per group; shrink_k=100)
 - Subset: 23 species (seed=42) including the 5 earlier winners (Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis). See `results/MAG_Run8/sample23_species.txt`.
