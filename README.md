@@ -111,7 +111,7 @@ Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
   --bins 0:3.5,3.5:6.5,6.5:10 \
   --borderline_width 0.5 \
   --copulas_json results/MAG_Run8/mag_copulas.json \
-  --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+  --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
   --nsim_joint 20000 \
   --joint_requirement L=high,M=med,R=med \
   --joint_min_prob 0.6
@@ -133,7 +133,7 @@ Optional — Group‑Aware Uncertainty and Copulas
 Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
   --predictions_csv results/mag_predictions_no_eive.csv \
   --copulas_json results/MAG_Run8/mag_copulas.json \
-  --metrics_dir artifacts/stage4_sem_piecewise_run7 \
+  --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
   --presets_csv results/gardening/garden_joint_presets_defaults.csv \
   --nsim 20000 \
   --summary_csv results/gardening/garden_joint_summary.csv
@@ -345,10 +345,10 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
   - M/N: deconstructed SIZE (`y ~ LES + logH + logSM + logSSD + logLA`); N adds `LES:logSSD`.
 
 - Notes
-  - Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted piecewise SEM forms (Runs 2–7; deconstructed SIZE for M/N; linear SIZE for L/T/R; no splines; LES×SSD kept for N only). See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
-  - Run 7 (LES_core + logLA; seed=42, 10×5 CV): Rebuilt LES from {negLMA, Nmass} and added logLA to y. CV improves for M/N (R²≈0.415/0.424), holds for L/T, modestly improves R. IC sums drop sharply for M/N; neutral/slightly worse for L/T; mixed for R.
+  - Baseline metrics are from Stage 1 multiple regression (complete‑case, 5×5 CV). Final metrics reflect the adopted SEM forms (Run 7 canonical; pwSEM): non‑linear Light (rf_plus), linear T/R, and deconstructed M/N with LES:logSSD in N only. See run summaries in `results/summaries/` and per‑axis CSVs in `artifacts/stage4_*` for exact values.
 
 - Artifacts (SEM)
+  - pwSEM (Run 7 canonical): `artifacts/stage4_sem_pwsem_run7_pureles/sem_pwsem_{L,T,M,R,N}_{metrics.json,preds.csv}`.
   - Piecewise (per run dirs): `artifacts/stage4_sem_piecewise_run{2,3,4,5,6,6P,7}/sem_piecewise_{L,T,M,R,N}_{metrics.json,preds.csv,piecewise_coefs.csv,dsep_fit.csv[,multigroup_dsep.csv][,full_model_ic.csv][,full_model_ic_phylo.csv]}`.
   - lavaan (per run dirs): `artifacts/stage4_sem_lavaan_run{2,4,7}/sem_lavaan_{L,T,M,R,N}_{metrics.json,preds.csv[,path_coefficients.csv][,fit_indices.csv][,fit_indices_by_group.csv]}`.
   - Summaries:
@@ -375,8 +375,8 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
   - Typical error (RMSE): ~1.26–1.52 EIVE units.
 
 - Black‑Box benchmarks (same traits; 10×5 CV): Trees offer a non‑parametric ceiling check.
-  - L: Flexible trees gain ≈ +0.08 absolute R² over SEM (best: RF).
-  - T/M/R: SEM outperforms XGBoost and RF at this data scale; structure (LES/SIZE + SSD) beats generic ensembles.
+  - L: Flexible trees still edge SEM (RF ≈ +0.03; XGB ≈ +0.01 absolute R²). Canonical SEM narrows the gap via non‑linear L.
+  - T/M/R: SEM outperforms XGBoost and RF at this data scale; structured LES/SIZE + SSD (and deconstructed SIZE where needed) beats generic ensembles.
   - N: Near‑tie with a small SEM edge.
   - Details below: full table, mini‑bars for all models, figures, and scripts.
 
@@ -603,7 +603,7 @@ Axis bins and labels (defaults)
 
 Borderline handling and confidence
 - Borderline zone: ±0.5 around each bin edge (i.e., [3.0,4.0] and [6.0,7.0]); reduces overconfident edge calls.
-- Axis reliability: use Run 7 CV R² bands — L≈0.24, T≈0.23, R≈0.16, M≈0.42, N≈0.42 — to set per‑axis confidence (High where ≥0.35; Medium ≈0.20–0.35; Low <0.20).
+- Axis reliability: use Run 7 CV R² bands — L≈0.29, T≈0.23, R≈0.16, M≈0.41, N≈0.43 — to set per‑axis confidence (High where ≥0.35; Medium ≈0.20–0.35; Low <0.20).
 - Decision policy maps each prediction to a bin + confidence tag; optional strict abstain for Low/Very‑Low cases.
 
 Joint suitability (optional)
@@ -620,14 +620,14 @@ Defaults and presets
 - Simulation: `nsim_joint` ≈ 20,000 (tunable); residual correlations from `results/MAG_Run8/mag_copulas.json`.
  - Preset sets:
    - Defaults (with R): `results/gardening/garden_joint_presets_defaults.csv` (e.g., SunnyNeutral, WarmNeutralFertile).
-   - R‑excluded (more confident): `results/gardening/garden_presets_no_R.csv` (e.g., RichSoilSpecialist, LushShadePlant). Latest comparison in `results/summaries/PR_SUMMARY_Run8_Joint_Gardening.md`.
+   - R‑excluded (more confident): `results/gardening/garden_presets_no_R.csv` (e.g., RichSoilSpecialist, LushShadePlant). Latest comparison in `results/summaries/summarypwsem/PR_SUMMARY_Run8_Joint_Gardening.md`.
 
 Repro commands (joint usage)
 - Batch presets summary:
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`.
-  - (R‑excluded presets) `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`.
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`.
+  - (R‑excluded presets) `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`.
 - Recommender with single gate or best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --borderline_width 0.5 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --nsim_joint 20000 --joint_requirement L=high,M=med,R=med --joint_min_prob 0.6`.
   - or with presets: add `--joint_presets_csv results/gardening/garden_joint_presets_defaults.csv` to annotate best‑passing scenario fields.
 
 Group‑aware uncertainty (optional)
@@ -699,13 +699,13 @@ Key paths for replication (selected)
 ## Future Developments
 
 ## Light — Multi‑Regression vs SEM
-- Baseline multiple regression (MR) shows Light (L) performing better than T and R (CV R²: L ≈ 0.15 > T ≈ 0.10 > R ≈ 0.04), but L still remains modest overall.
-- In the final SEM (piecewise), L’s out‑of‑fold R² remains modest and does not improve as strongly as M/N. This reflects:
-  - Structural parsimony: SEM imposes LES/SIZE/SSD structure and mediations that reduce degrees of freedom versus MR’s direct mapping.
-  - Trait specificity: the six‑trait set captures broad spectra (LES, SIZE, SSD) but lacks light‑specific axes (e.g., thickness, N per area, phenology/syndromes) that better separate shade vs open habitats.
-  - Linear/interaction checks: tested splines and LES×SSD showed no reliable CV gains for L, so the final forms remain linear and parsimonious.
-  - Context noise: L is sensitive to canopy context and micro‑site variation that the current six traits do not fully encode.
-- Takeaway: the MR→SEM “discrepancy” is expected from SEM’s constraints and missing light‑focused features rather than a modeling error. Targeted, high‑coverage additions are the likely lever to improve L.
+- Baseline multiple regression (MR): Light (L) outperforms T and R under MR (CV R²: L ≈ 0.15 > T ≈ 0.10 > R ≈ 0.04) but remains modest overall.
+- Final SEM (Run 7; canonical pwSEM): L now uses a targeted non‑linear GAM (rf_plus: smooths in LMA/logSSD/SIZE/logLA with LMA:logLA and logH:logSSD), improving L’s CV to ≈ 0.289 (10×5). This narrows the gap to Random Forest (≈ 0.321) while retaining interpretability and a causal graph.
+  - Why this works: the non‑linearities focus where Stage 3 diagnostics showed curvature (LMA, logSSD) and interactions (LMA×logLA), while keeping T/M/R/N linear/deconstructed, which CV favored.
+  - What remains: a small black‑box edge on L persists; this likely reflects missing light‑specific traits and context cues rather than a modeling gap.
+- Constraints vs MR: SEM encodes LES/SIZE + SSD structure and mediation, which can reduce raw flexibility versus MR; the targeted L GAM recovers much of the flexible signal without breaking the DAG.
+- M/R/N non‑linearity: generic splines (e.g., s(logH)) degrade CV for M/R/N — those axes remain linear (or deconstructed for M/N).
+- Takeaway: With the non‑linear L adopted, SEM is close to the tree baselines on L and clearly ahead on T/M/R/N. Further L gains will come from adding light‑focused predictors and modest context signals (see below), not from broader splines.
 
 ## Future Additions To Improve L (beyond the six)
 Overview: high‑coverage leaf, plant form, and mycorrhiza factors are prioritized; see the table for specific candidates and coverage. We intentionally exclude SLA/LeafArea variants (near‑duplicates of LMA/LeafArea with limited incremental value and higher collinearity). Categorical additions will need factor encoding in the pipeline.
