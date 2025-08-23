@@ -242,6 +242,7 @@ Core constructs and forms
   - Temperature (T) and Reaction (R): `y ~ LES + SIZE + logSSD + logLA` (linear SIZE).
   - Moisture (M) and Nutrients (N): `y ~ LES + logH + logSM + logSSD + logLA` (deconstructed SIZE); N adds `LES:logSSD`.
   - Measurement: LES is “pure” (negLMA, Nmass). `logLA` enters as a direct predictor for all targets.
+  - Note (CV vs d‑sep): The equations above are the predictive CV forms. For d‑sep/inference, we enforce woody‑only SSD→{L,T,R} and global SSD→{M,N} when testing independence (full‑data pwSEM), consistent with Run 2 multigroup evidence.
 
 Key run decisions and evidence
 - Direct SSD effects (Run 2; pwSEM): Include SSD→M and SSD→N globally. For L/T/R, include SSD→y for woody only; optional add SSD→R for non‑woody if prioritizing coefficients/AIC, but strict d‑sep recommends woody‑only. Multigroup d‑sep and equality tests show heterogeneity with stronger SSD effects in woody groups (see Run 2 summary).
