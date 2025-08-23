@@ -88,6 +88,8 @@ want_lma_x_ssd <- grepl("(^|[, ])LMA:logSSD([, ]|$)", add_interactions, ignore.c
 want_lma_x_la_smooth <- grepl("t2\\(LMA, *logLA\\)|(^|[, ])LMA:logLA_smooth([, ]|$)", add_interactions, ignore.case = TRUE)
 ## Optional smooth interaction for logH × logSSD; trigger via 'ti(logH,logSSD)'
 want_h_x_ssd_ti <- grepl("ti\\(logH, *logSSD\\)", add_interactions, ignore.case = TRUE)
+## Optional smooth interaction for logLA × logH (L leaf size × height), trigger via 'ti(logLA,logH)'
+want_la_x_h_ti <- grepl("ti\\(logLA, *logH\\)", add_interactions, ignore.case = TRUE)
 
 # pwSEM options
 pw_perm       <- tolower(opts[["pw_permutations"]] %||% "false") %in% c("1","true","yes","y")
@@ -309,6 +311,7 @@ for (r in seq_len(repeats_opt)) {
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
         if (want_lma_x_ssd) rhs_txt <- paste(rhs_txt, "+ LMA:logSSD")
         if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, sprintf("+ ti(logH, logSSD, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, sprintf("+ ti(logLA, logH, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
         if (want_lma_x_la_smooth) rhs_txt <- paste(rhs_txt, sprintf("+ t2(LMA, logLA, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
         f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML")
         used_gam <- TRUE
@@ -325,6 +328,7 @@ for (r in seq_len(repeats_opt)) {
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
         if (want_lma_x_ssd) rhs_txt <- paste(rhs_txt, "+ LMA:logSSD")
         if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, "+ ti(logH, logSSD, k=c(5,5))")
+        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, "+ ti(logLA, logH, k=c(5,5))")
         if (want_lma_x_la_smooth) rhs_txt <- paste(rhs_txt, "+ t2(LMA, logLA, k=c(5,5))")
         f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML")
         used_gam <- TRUE
@@ -507,6 +511,7 @@ if (nonlinear_opt) {
       if (want_sm_x_n)  rhs_y <- paste(rhs_y, "+ logSM:Nmass")
       if (want_lma_x_ssd) rhs_y <- paste(rhs_y, "+ LMA:logSSD")
       if (want_h_x_ssd_ti) rhs_y <- paste(rhs_y, sprintf("+ t2(logH, logSSD, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+      if (want_la_x_h_ti)  rhs_y <- paste(rhs_y, sprintf("+ t2(logLA, logH, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
       if (want_lma_x_la_smooth) rhs_y <- paste(rhs_y, sprintf("+ t2(LMA, logLA, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
     } else if (nonlinear_variant == "rf_plus") {
       rhs_y <- sprintf("y ~ s(LMA, k=%d) + s(logSSD, k=%d) + s(SIZE, k=%d) + s(logLA, k=%d) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(%d,%d))",
@@ -516,6 +521,7 @@ if (nonlinear_opt) {
       if (want_sm_x_n)  rhs_y <- paste(rhs_y, "+ logSM:Nmass")
       if (want_lma_x_ssd) rhs_y <- paste(rhs_y, "+ LMA:logSSD")
       if (want_h_x_ssd_ti) rhs_y <- paste(rhs_y, sprintf("+ t2(logH, logSSD, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+      if (want_la_x_h_ti)  rhs_y <- paste(rhs_y, sprintf("+ t2(logLA, logH, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
       if (want_lma_x_la_smooth) rhs_y <- paste(rhs_y, sprintf("+ t2(LMA, logLA, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
     } else {
       rhs_y <- sprintf("y ~ s(LES, k=%d) + s(SIZE, k=%d) + s(logSSD, k=%d) + t2(LES, SIZE, k=c(4,4)) + t2(LES, logSSD, k=c(4,4))",
