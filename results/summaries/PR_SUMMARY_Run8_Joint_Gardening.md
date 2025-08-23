@@ -68,7 +68,7 @@ New (optional): Per‑Group Copulas
 Key Finding: R-excluded Scenarios Yield More Confident Predictions
 - Analysis revealed that the weak predictive power for the 'R' (soil pH) axis was suppressing joint probabilities due to high uncertainty (the "Tyranny of AND").
 - A new set of five scenarios was created that deliberately exclude 'R' to play to the model's strengths.
-- Result: This produced dramatically more confident and useful predictions. The average success probability for the best new scenario ("Rich Soil Specialist") is 28.2%, ≈6.9× higher than the best original scenario (4.1%).
+- Result: This produced dramatically more confident and useful predictions. The average success probability for the best new scenario ("Rich Soil Specialist") is 28.1%, ≈6.9× higher than the best original scenario (4.1%).
 - Actionable Insight: The new scenarios successfully identified several species that passed the 60% suitability threshold — e.g., *Cryptomeria japonica*, *Pinus densiflora*, *Pinus ponderosa*, *Sequoia sempervirens*, *Tsuga canadensis* — providing a clear, actionable list of "winners" that the original, more uncertain scenarios could not.
 
 Notes
@@ -83,20 +83,20 @@ With R (defaults)
 
 | Scenario              | Requirement             | Mean P(success) | Median | Max  | Pass ≥0.6 | Top species (max)              |
 |-----------------------|-------------------------|-----------------|--------|------|-----------|-------------------------------|
-| WarmNeutralFertile    | T=high,R=med,N=high     | 4.1%            | 1.5%   | 15.6%| 0         | Sequoia sempervirens (15.6%)   |
-| PartialSunAverage     | L=med,M=med,R=med       | 3.2%            | 1.6%   | 15.8%| 0         | Agropyron cristatum (15.8%)    |
-| SunnyNeutral          | L=high,M=med,R=med      | 2.9%            | 0.8%   | 18.8%| 0         | Agropyron cristatum (18.8%)    |
-| DryPoorSun            | L=high,M=low,N=low      | 0.1%            | 0.0%   | 1.1% | 0         | Agropyron cristatum (1.1%)     |
-| ShadeWetAcidic        | L=low,M=high,R=low      | 0.0%            | 0.0%   | 0.1% | 0         | Maackia amurensis (0.1%)       |
+| WarmNeutralFertile    | T=high,R=med,N=high     | 4.1%            | 1.5%   | 15.3%| 0         | Sequoia sempervirens (15.3%)   |
+| PartialSunAverage     | L=med,M=med,R=med       | 3.0%            | 1.1%   | 15.2%| 0         | Carex digitata (15.2%)         |
+| SunnyNeutral          | L=high,M=med,R=med      | 3.0%            | 1.0%   | 28.7%| 0         | Agropyron cristatum (28.7%)    |
+| DryPoorSun            | L=high,M=low,N=low      | 0.1%            | 0.0%   | 1.5% | 0         | Agropyron cristatum (1.5%)     |
+| ShadeWetAcidic        | L=low,M=high,R=low      | 0.1%            | 0.0%   | 2.6% | 0         | Sequoiadendron giganteum (2.6%)|
 
 Without R (new, confidence‑oriented)
 
 | Scenario              | Requirement         | Mean P(success) | Median | Max   | Pass ≥0.6 | Top species (max)              |
 |-----------------------|---------------------|-----------------|--------|-------|-----------|-------------------------------|
-| RichSoilSpecialist    | M=high,N=high       | 28.2%           | 16.4%  | 66.3% | 5         | Cryptomeria japonica (66.3%)   |
-| LushShadePlant        | L=low,M=high,N=high | 2.7%            | 2.4%   | 8.9%  | 0         | Maackia amurensis (8.9%)       |
+| RichSoilSpecialist    | M=high,N=high       | 28.1%           | 16.1%  | 66.1% | 5         | Cryptomeria japonica (66.1%)   |
+| LushShadePlant        | L=low,M=high,N=high | 2.3%            | 0.6%   | 14.9% | 0         | Ribes divaricatum (14.9%)      |
 | CoolClimateSpecialist | T=low,M=med,N=high  | 1.1%            | 0.0%   | 10.7% | 0         | Carex digitata (10.7%)         |
-| SunVsWaterTradeoff    | L=high,M=low        | 0.4%            | 0.0%   | 6.3%  | 0         | Agropyron cristatum (6.3%)     |
+| SunVsWaterTradeoff    | L=high,M=low        | 0.4%            | 0.0%   | 7.6%  | 0         | Agropyron cristatum (7.6%)     |
 | ThePioneer            | T=high,M=low        | 0.3%            | 0.0%   | 1.8%  | 0         | Quercus macrocarpa (1.8%)      |
 
 Winners at threshold 0.6 (No‑R presets)
