@@ -95,6 +95,9 @@ want_h_x_ssd_ti <- grepl("ti\\(logH, *logSSD\\)", add_interactions, ignore.case 
 want_lma_x_nmass_ti <- grepl("ti\\(LMA, *Nmass\\)", add_interactions, ignore.case = TRUE)
 ## Optional smooth interaction for logLA × logH (L leaf size × height), trigger via 'ti(logLA,logH)'
 want_la_x_h_ti <- grepl("ti\\(logLA, *logH\\)", add_interactions, ignore.case = TRUE)
+# Tier-2 gating options for L
+gate_height <- tolower(opts[["gate_height"]] %||% "false") %in% c("1","true","yes","y")
+gate_percentile <- suppressWarnings(as.numeric(opts[["gate_percentile"]] %||% "0.80")); if (!is.finite(gate_percentile)) gate_percentile <- 0.80
 
 # pwSEM options
 pw_perm       <- tolower(opts[["pw_permutations"]] %||% "false") %in% c("1","true","yes","y")
@@ -284,6 +287,14 @@ for (r in seq_len(repeats_opt)) {
     aic_tr <- NA_real_
     model_form <- "linear_size"
     if (nonlinear_opt && have_mgcv && target_letter == "L") {
+      # Compute gating indicator (train-only threshold) if requested
+      if (gate_height) {
+        qh <- min(max(gate_percentile, 0), 1)
+        h_star <- try(stats::quantile(tr$logH, probs = qh, na.rm = TRUE, type = 7), silent = TRUE)
+        if (inherits(h_star, "try-error") || !is.finite(h_star)) h_star <- stats::median(tr$logH, na.rm = TRUE)
+        tr$gate_highH <- as.numeric(tr$logH > h_star)
+        te$gate_highH <- as.numeric(te$logH > h_star)
+      }
       # GAM for Light (L)
       if (nonlinear_variant == "main") {
         # Variant A: smooth main effects only; keep logSSD linear, optional LES:logSSD
@@ -323,6 +334,7 @@ for (r in seq_len(repeats_opt)) {
         if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, sprintf("+ ti(logLA, logH, bs=c('ts','ts'), k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
         if (want_lma_x_nmass_ti) rhs_txt <- paste(rhs_txt, sprintf("+ ti(LMA, Nmass, bs=c('ts','ts'), k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
         if (want_lma_x_la_smooth) rhs_txt <- paste(rhs_txt, sprintf("+ t2(LMA, logLA, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+        if (gate_height) rhs_txt <- paste(rhs_txt, "+ s(logLA, by=gate_highH, bs='ts', k=4)")
         fam <- if (identical(likelihood_opt, "betar")) mgcv::betar(link = "logit") else gaussian()
         y_true_te <- te$y
         if (identical(likelihood_opt, "betar")) {
@@ -359,6 +371,7 @@ for (r in seq_len(repeats_opt)) {
         if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, "+ ti(logH, logSSD, bs=c('ts','ts'), k=c(5,5))")
         if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, "+ ti(logLA, logH, bs=c('ts','ts'), k=c(5,5))")
         if (want_lma_x_nmass_ti) rhs_txt <- paste(rhs_txt, "+ ti(LMA, Nmass, bs=c('ts','ts'), k=c(5,5))")
+        if (gate_height) rhs_txt <- paste(rhs_txt, "+ s(logLA, by=gate_highH, bs='ts', k=4)")
         fam <- if (identical(likelihood_opt, "betar")) mgcv::betar(link = "logit") else gaussian()
         y_true_te <- te$y
         if (identical(likelihood_opt, "betar")) {
