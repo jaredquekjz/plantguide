@@ -260,3 +260,11 @@ Compact table (key indices)
 - Global mismatch: lavaan evaluates the entire model-implied covariance structure (measurement + structural parts). Many small residual discrepancies (unmodeled residual covariances, measurement error patterns, nonlinearity) can still depress CFI/TLI and inflate RMSEA/SRMR even when d-sep passes.
 - Parameterization differences: our d-sep uses composite proxies (training-only PCA of observed traits) and OLS/MEs; lavaan uses latent variables with fixed loadings and minimal residual covariances. These different representations can fit independence relations yet still leave overall covariance misfit.
 - Sensitivity: χ²-based fit indices in lavaan are sensitive to large n and slight misspecifications. d-sep’s C aggregates p-values of targeted claims and is less affected by diffuse, low-level misfit elsewhere in the covariance matrix.
+
+## Phylogenetic Sensitivity (GLS)
+- Goal: quick full-data GLS with Brownian correlation on the species tree to check coefficient robustness under phylogenetic signal (no change to CV).
+- Command (pwSEM runner, phylo-only):
+  - `for T in L T M R N; do Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R --input_csv=artifacts/model_data_complete_case.csv --target=$T --repeats=1 --folds=2 --stratify=true --standardize=true --winsorize=false --weights=none --cluster=Family --psem_drop_logssd_y=false --phylogeny_newick=data/phylogeny/eive_try_tree.nwk --phylo_correlation=brownian --out_dir=artifacts/stage4_sem_pwsem_run1_phylo; done`
+- Outputs: `artifacts/stage4_sem_pwsem_run1_phylo/sem_pwsem_{L,T,M,R,N}_{full_model_ic_phylo.csv,phylo_coefs_y.csv}`
+- Full‑model AIC_sum (lower is better): L 11013.26; T 10940.17; M 10574.75; R 11157.74; N 11499.23.
+- Notes: LES/SIZE contributions remain directionally stable across targets; SSD effects vary by target and are strongest for N (negative). Use the per‑target `*_phylo_coefs_y.csv` for exact coefficients and p‑values.
