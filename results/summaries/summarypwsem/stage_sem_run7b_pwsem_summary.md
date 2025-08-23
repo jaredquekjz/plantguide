@@ -16,6 +16,7 @@ Data and settings
 - Targets: `EIVEres-{L,T,M,R,N}`; we modify L only here.
 - CV: 10‑fold × 5 repeats; stratified by deciles; standardized predictors; no winsorization; cluster random intercept by `Family` where available.
 - Composites: LES = PC1 on `{negLMA, Nmass}`; SIZE = PC1 on `{logH, logSM}` (training‑only); for L, a deconstructed option (`s(logH)` in place of `s(SIZE)`).
+ - Ceiling reference (EBM, Light only): R² 0.300±0.044; RMSE 1.278±0.042; MAE 0.971±0.033 (10×5 CV; `artifacts/stage3ebm/eive_ebm_L_metrics.json`).
 
 Experiments (all rf_plus)
 - A: L with ti(logLA,logH) + ti(logH,logSSD) (SIZE intact)
@@ -92,4 +93,5 @@ Notes
 - Shrinkage: new 2‑D surfaces use `bs='ts'` so unhelpful terms self‑shrink; `k` kept small (4–5) via defaults.
 - Scaling for Beta: L scaled to (0,1) inside folds; predictions converted back to 0–10 for metrics.
 - Other axes (T/M/R/N): unchanged from Run 7 canonical.
- - Paired fold deltas (vs 7b‑B; 50 folds): G1 ΔR² mean −0.0006 (approx. p≈0.50); S1 ΔR² mean ≈ 0.0000.
+- Paired fold deltas (vs 7b‑B; 50 folds): G1 ΔR² mean −0.0006 (approx. p≈0.50); S1 ΔR² mean ≈ 0.0000.
+ - Paired fold deltas (7b‑C vs 7b‑B; 50 folds): ΔR² mean +0.00013 (approx. p≈0.94) — Beta is neutral on mean R², slightly reduces CV SD.
