@@ -67,6 +67,9 @@ out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_pwsem"
 force_lm      <- tolower(opts[["force_lm"]] %||% "false") %in% c("1","true","yes","y")
 ## Global k for smooths (used in L GAM variants); default 5
 k_smooth_opt <- suppressWarnings(as.integer(opts[["k_smooth"]] %||% "5")); if (is.na(k_smooth_opt) || k_smooth_opt < 3) k_smooth_opt <- 5
+## L-only options
+deconstruct_size_L <- tolower(opts[["deconstruct_size_L"]] %||% "false") %in% c("1","true","yes","y")
+likelihood_opt <- tolower(opts[["likelihood"]] %||% "gaussian")  # gaussian|betar (L only)
 ## Optional toggles for non-L targets
 smooth_size_opt <- tolower(opts[["smooth_size"]] %||% "false") %in% c("1","true","yes","y")
 smooth_ssd_opt  <- tolower(opts[["smooth_ssd"]]  %||% "false") %in% c("1","true","yes","y")
@@ -88,6 +91,8 @@ want_lma_x_ssd <- grepl("(^|[, ])LMA:logSSD([, ]|$)", add_interactions, ignore.c
 want_lma_x_la_smooth <- grepl("t2\\(LMA, *logLA\\)|(^|[, ])LMA:logLA_smooth([, ]|$)", add_interactions, ignore.case = TRUE)
 ## Optional smooth interaction for logH × logSSD; trigger via 'ti(logH,logSSD)'
 want_h_x_ssd_ti <- grepl("ti\\(logH, *logSSD\\)", add_interactions, ignore.case = TRUE)
+## Optional smooth interaction for LMA × Nmass; trigger via 'ti(LMA,Nmass)'
+want_lma_x_nmass_ti <- grepl("ti\\(LMA, *Nmass\\)", add_interactions, ignore.case = TRUE)
 ## Optional smooth interaction for logLA × logH (L leaf size × height), trigger via 'ti(logLA,logH)'
 want_la_x_h_ti <- grepl("ti\\(logLA, *logH\\)", add_interactions, ignore.case = TRUE)
 
@@ -304,39 +309,78 @@ for (r in seq_len(repeats_opt)) {
         aic_tr <- tryCatch(AIC(f_gam), error = function(e) NA_real_)
         eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
       } else if (nonlinear_variant == "rf_informed") {
-        # Variant C: RF-informed — s(LMA) + s(logSSD) + SIZE + logLA + Nmass + LMA:logLA
-        rhs_txt <- sprintf("y ~ s(LMA, k = %d) + s(logSSD, k = %d) + SIZE + logLA + Nmass + LMA:logLA", k_smooth_opt, k_smooth_opt)
+        # Variant C: RF-informed — s(LMA) + s(logSSD) + SIZE/logH + logLA + Nmass + LMA:logLA
+        rhs_txt <- sprintf(
+          "y ~ s(LMA, k = %d) + s(logSSD, k = %d) + %s + logLA + Nmass + LMA:logLA",
+          k_smooth_opt, k_smooth_opt,
+          if (deconstruct_size_L) sprintf("s(logH, k = %d)", k_smooth_opt) else "SIZE"
+        )
         if (want_h_x_ssd) rhs_txt <- paste(rhs_txt, "+ logH:logSSD")
         if (want_n_x_la)  rhs_txt <- paste(rhs_txt, "+ Nmass:logLA")
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
         if (want_lma_x_ssd) rhs_txt <- paste(rhs_txt, "+ LMA:logSSD")
-        if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, sprintf("+ ti(logH, logSSD, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
-        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, sprintf("+ ti(logLA, logH, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+        if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, sprintf("+ ti(logH, logSSD, bs=c('ts','ts'), k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, sprintf("+ ti(logLA, logH, bs=c('ts','ts'), k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
+        if (want_lma_x_nmass_ti) rhs_txt <- paste(rhs_txt, sprintf("+ ti(LMA, Nmass, bs=c('ts','ts'), k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
         if (want_lma_x_la_smooth) rhs_txt <- paste(rhs_txt, sprintf("+ t2(LMA, logLA, k=c(%d,%d))", k_smooth_opt, k_smooth_opt))
-        f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML")
+        fam <- if (identical(likelihood_opt, "betar")) mgcv::betar(link = "logit") else gaussian()
+        y_true_te <- te$y
+        if (identical(likelihood_opt, "betar")) {
+          # Map y in [0,10] -> (0,1) and avoid exact 0/1
+          z_tr <- pmin(pmax(tr$y/10, 0), 1); z_te <- pmin(pmax(te$y/10, 0), 1)
+          eps <- 0.5/(nrow(tr)+1)
+          z_tr[z_tr <= 0] <- eps; z_tr[z_tr >= 1] <- 1-eps
+          z_te[z_te <= 0] <- eps; z_te[z_te >= 1] <- 1-eps
+          tr$y <- z_tr; te$y <- z_te
+        }
+        f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML", family = fam)
         used_gam <- TRUE
         model_form <- "gam_L_sLMA_sSSD_plus_SIZE+logLA+Nmass+LMA:logLA[+t2(LMA,logLA)]"
         gs <- try(summary(f_gam), silent = TRUE)
         if (!inherits(gs, "try-error") && length(gs$s.table) >= 1) edf_s <- suppressWarnings(as.numeric(gs$s.table[1, 1]))
         aic_tr <- tryCatch(AIC(f_gam), error = function(e) NA_real_)
-        eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
+        if (identical(likelihood_opt, "betar")) {
+          pr <- as.numeric(stats::predict(f_gam, newdata = te, type = "response"))
+          eta <- 10 * pr
+          te$y <- y_true_te
+        } else {
+          eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
+        }
       } else if (nonlinear_variant == "rf_plus") {
-        # Variant D: RF+ — add smooths for SIZE and logLA, plus non-linear interaction between LMA and logSSD
-        rhs_txt <- "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + s(SIZE, k = 5) + s(logLA, k = 5) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5))"
+        # Variant D: RF+ — add smooths for SIZE/logH and logLA, plus non-linear interaction between LMA and logSSD
+        rhs_txt <- sprintf(
+          "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + %s + s(logLA, k = 5) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5))",
+          if (deconstruct_size_L) sprintf("s(logH, k = %d)", k_smooth_opt) else "s(SIZE, k = 5)"
+        )
         if (want_h_x_ssd) rhs_txt <- paste(rhs_txt, "+ logH:logSSD")
         if (want_n_x_la)  rhs_txt <- paste(rhs_txt, "+ Nmass:logLA")
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
         if (want_lma_x_ssd) rhs_txt <- paste(rhs_txt, "+ LMA:logSSD")
-        if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, "+ ti(logH, logSSD, k=c(5,5))")
-        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, "+ ti(logLA, logH, k=c(5,5))")
-        if (want_lma_x_la_smooth) rhs_txt <- paste(rhs_txt, "+ t2(LMA, logLA, k=c(5,5))")
-        f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML")
+        if (want_h_x_ssd_ti) rhs_txt <- paste(rhs_txt, "+ ti(logH, logSSD, bs=c('ts','ts'), k=c(5,5))")
+        if (want_la_x_h_ti)  rhs_txt <- paste(rhs_txt, "+ ti(logLA, logH, bs=c('ts','ts'), k=c(5,5))")
+        if (want_lma_x_nmass_ti) rhs_txt <- paste(rhs_txt, "+ ti(LMA, Nmass, bs=c('ts','ts'), k=c(5,5))")
+        fam <- if (identical(likelihood_opt, "betar")) mgcv::betar(link = "logit") else gaussian()
+        y_true_te <- te$y
+        if (identical(likelihood_opt, "betar")) {
+          z_tr <- pmin(pmax(tr$y/10, 0), 1); z_te <- pmin(pmax(te$y/10, 0), 1)
+          eps <- 0.5/(nrow(tr)+1)
+          z_tr[z_tr <= 0] <- eps; z_tr[z_tr >= 1] <- 1-eps
+          z_te[z_te <= 0] <- eps; z_te[z_te >= 1] <- 1-eps
+          tr$y <- z_tr; te$y <- z_te
+        }
+        f_gam <- mgcv::gam(stats::as.formula(rhs_txt), data = tr, method = "REML", family = fam)
         used_gam <- TRUE
         model_form <- "gam_L_sLMA_sSSD_sSIZE_slogLA_plus_Nmass+LMA:logLA+ti(LMA,logSSD)[+ti(logH,logSSD)][+t2(LMA,logLA)]"
         gs <- try(summary(f_gam), silent = TRUE)
         if (!inherits(gs, "try-error") && length(gs$s.table) >= 1) edf_s <- suppressWarnings(as.numeric(gs$s.table[1, 1]))
         aic_tr <- tryCatch(AIC(f_gam), error = function(e) NA_real_)
-        eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
+        if (identical(likelihood_opt, "betar")) {
+          pr <- as.numeric(stats::predict(f_gam, newdata = te, type = "response"))
+          eta <- 10 * pr
+          te$y <- y_true_te
+        } else {
+          eta <- as.numeric(stats::predict(f_gam, newdata = te, type = "link"))
+        }
       } else {
         # Full variant: smooth main effects + interaction surfaces (t2 for gamm4 compatibility)
         f_gam <- mgcv::gam(stats::as.formula(sprintf(
