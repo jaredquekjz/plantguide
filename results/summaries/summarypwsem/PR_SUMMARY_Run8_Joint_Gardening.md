@@ -142,6 +142,9 @@ Notes
 - Numbers above aggregate across species with Myco labels; thresholds use each preset’s column (0.6 default).
 - Effects are consistent with earlier findings: R‑excluded presets are far more actionable; group‑aware σ+ρ further improves calibration and increases RichSoilSpecialist’s best probabilities (max ≈ 82.8%) and pass count (6).
 
+Winners at threshold 0.6 (No‑R, group‑aware Mycorrhiza)
+- RichSoilSpecialist (6 species): Pinus densiflora (82.8%), Pinus ponderosa (79.8%), Tsuga canadensis (78.0%), Picea glauca (69.3%), Cryptomeria japonica (66.9%), Sequoia sempervirens (65.7%).
+
 Group‑Aware (Mycorrhiza) — 23‑Species Subset (σ+ρ per group; shrink_k=100)
 - Subset: 23 species (seed=42) including the 5 earlier winners (Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis). See `results/MAG_Run8/sample23_species.txt`.
 
