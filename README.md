@@ -264,7 +264,7 @@ Run highlights
 - Run 5 (LES×logSSD interaction; pwSEM mirror; seed=123, 10×5 CV): Added `LES:logSSD` to y‑equations. CV metrics match piecewise (as expected under identical data/composites/CV); basis sets are often empty, so inference relies on equality tests and full‑model AIC. Policy unchanged: tiny gains for T and N; neutral/slight negatives for L/M/R. Adoption: keep for N; optional for T; omit for L/M/R. See `results/summaries/summarypwsem/stage_sem_run5_pwsem_summary.md`.
   - Heterogeneity (Run 5; pwSEM; p_overall): L 0.208; T 0.114; M 0.00221; R 0.0376; N 4.13e−7.
   - Per‑group signals (Run 5; pwSEM; p_logSSD<0.05): T—Low_Confidence 0.0426; M—Pure_EM 0.0493, Pure_NM 9.14e−4; N—Facultative_AM_NM 4.84e−4, Pure_EM 0.00690, Pure_NM 1.15e−4; R—Low_Confidence 0.0123, Pure_NM 0.0315; L—none.
-- Run 6 (Nonlinearity via s(logH) in piecewise; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
+- Run 6 (Nonlinearity via s(logH) in the legacy piecewise runs; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
 - Run 6P (Phylogenetic GLS sensitivity): Brownian GLS on full data confirms coefficient sign stability (LES, SIZE/logH/logSM, logSSD) and supports the interaction policy (N yes; T optional). AIC_sum magnitudes differ from non‑phylo runs (different likelihood) — use for relative checks only.
  - Run 6 (L‑only GAM; pwSEM): Introduced RF‑informed non‑linear L with `s(LMA)`, `s(logSSD)`, `s(SIZE)`, `s(logLA)`, plus `LMA:logLA` and `logH:logSSD`; CV improved to R²≈0.279 (10×5; seed=123). Spec locked for Run 7.
  - Run 7 (Final; pwSEM): Adopted pure LES (negLMA,Nmass) and the RF‑informed L. Canonical forms: L non‑linear (above); T/R linear (`y ~ LES + SIZE + logSSD + logLA`); M/N deconstructed (`y ~ LES + logH + logSM + logSSD + logLA`), with `LES:logSSD` in N only. CV (mean±SD): L 0.289±0.083; T 0.231±0.065; R 0.155±0.060; M 0.408±0.081; N 0.425±0.076. See `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`.
@@ -336,7 +336,7 @@ N       9037.49 −81.29    9126.65 −67.33
 Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
 ```
 
-- lavaan fit (co‑adapted; LES_core + logLA): Global absolute fit remains below conventional thresholds (single‑group CFI ≈0.49–0.59; RMSEA ≈0.30–0.32). We prioritize predictive CV + phylogenetic robustness for selection; lavaan paths align in sign/magnitude with piecewise.
+- lavaan fit (co‑adapted; LES_core + logLA): Global absolute fit remains below conventional thresholds (single‑group CFI ≈0.49–0.59; RMSEA ≈0.30–0.32). We prioritize predictive CV + phylogenetic robustness for selection; lavaan paths align in sign/magnitude with the legacy piecewise runs.
 
 - Phylogenetic checks: Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
