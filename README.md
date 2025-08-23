@@ -42,10 +42,10 @@ Composites
 - LES_core (pure): negative LMA, positive Nmass (trained as a composite; scaled within train folds)
 - SIZE: +logH + logSM (used for L/T/R; M/N use logH and logSM directly)
 
-Equations (pwSEM; Run 7 canonical)
+Equations (pwSEM; Run 7c adopted)
 ```
-# Light (L): non‑linear GAM (rf_plus)
-L ~ s(LMA,k=5) + s(logSSD,k=5) + s(SIZE,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + logH:logSSD
+# Light (L): non‑linear GAM (rf_plus; deconstructed SIZE)
+L ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5)) + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))
 
 # Temperature (T) and Reaction (R): linear SIZE
 T ~ LES_core + SIZE + logSSD + logLA
@@ -58,7 +58,7 @@ N ~ LES_core + logH + logSM + logSSD + logLA + LES_core:logSSD
 
 Notes
 - Transforms: log10 for LA, H, SM, SSD; predictors standardized within training folds.
-- Interaction: LES_core:logSSD kept for N only (optional for T; not adopted). L uses `LMA:logLA` and `logH:logSSD` within the non‑linear form.
+- Interaction: LES_core:logSSD kept for N only (optional for T; not adopted). L uses `LMA:logLA` and two 2‑D smooths `ti(logLA,logH)` and `ti(logH,logSSD)`; SIZE is deconstructed to `s(logH)` for L.
 - Group moderation: SSD→{L,T,R} is strongest in woody groups; treat SSD paths as woody‑only in strict d‑sep, with global SSD→{M,N}.
 
 > [!NOTE]
@@ -238,11 +238,11 @@ Core constructs and forms
 - Engine: Stage 2 d‑sep testing now uses pwSEM; prior piecewiseSEM results remain as legacy baselines for comparison.
 - Latent/composite axes: LES_core (−LMA, +Nmass) and SIZE (+logH, +logSM). CV uses training‑only composites.
 - Canonical y‑equations (Run 7; pwSEM):
-  - Light (L; non‑linear GAM, rf_plus): `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(SIZE,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + logH:logSSD`.
+  - Light (L; non‑linear GAM, rf_plus; Run 7c adopted): `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5)) + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))`.
   - Temperature (T) and Reaction (R): `y ~ LES + SIZE + logSSD + logLA` (linear SIZE).
   - Moisture (M) and Nutrients (N): `y ~ LES + logH + logSM + logSSD + logLA` (deconstructed SIZE); N adds `LES:logSSD`.
   - Measurement: LES is “pure” (negLMA, Nmass). `logLA` enters as a direct predictor for all targets.
-  - Note (CV vs d‑sep): The equations above are the predictive CV forms. For d‑sep/inference, we enforce woody‑only SSD→{L,T,R} and global SSD→{M,N} when testing independence (full‑data pwSEM), consistent with Run 2 multigroup evidence.
+  - Note (CV vs d‑sep): The equations above are the predictive CV forms. For d‑sep/inference, we enforce woody‑only SSD→{L,T,R} and global SSD→{M,N} when testing independence (full‑data pwSEM), consistent with Run 2 multigroup evidence. See Run 7c summary for L updates.
 
 Key run decisions and evidence
 - Direct SSD effects (Run 2; pwSEM): Include SSD→M and SSD→N globally. For L/T/R, include SSD→y for woody only; optional add SSD→R for non‑woody if prioritizing coefficients/AIC, but strict d‑sep recommends woody‑only. Multigroup d‑sep and equality tests show heterogeneity with stronger SSD effects in woody groups (see Run 2 summary).
@@ -317,7 +317,7 @@ Generate before/after p‑values text (Markdown)
 - Model form: Canonical pwSEM with pure LES (negLMA,Nmass), SIZE (logH,logSM), `logLA` as a direct predictor for all targets; woody‑only SSD→{L,T,R} and global SSD→{M,N}; non‑linear Light (GAM rf_plus) and linear/deconstructed forms for the others; `LES:logSSD` retained for N only.
 
 - Final pwSEM CV (mean ± SD)
-  - L: R² 0.289±0.083; RMSE 1.286±0.096; MAE 0.969±0.071 (n=1065)
+  - L: R² 0.300±0.077; RMSE 1.276±0.092; MAE 0.968±0.067 (n=1065)
   - T: R² 0.231±0.065; RMSE 1.147±0.067; MAE 0.862±0.043 (n=1067)
   - R: R² 0.155±0.060; RMSE 1.428±0.066; MAE 1.076±0.051 (n=1049)
   - M: R² 0.408±0.081; RMSE 1.155±0.083; MAE 0.895±0.055 (n=1065)
@@ -367,6 +367,8 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
      - `results/summaries/summarypiecewise/stage_sem_run6_summary.md`
      - `results/summaries/summarypiecewise/stage_sem_run6P_summary.md`
      - `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`
+     - `results/summaries/summarypwsem/stage_sem_run7b_pwsem_summary.md` (exploratory)
+     - `results/summaries/summarypwsem/stage_sem_run7c_pwsem_summary.md` (adopted L)
 
 ### Comparisons — Baseline and Black‑Box
 
@@ -454,6 +456,7 @@ Artifacts (black‑box benchmarks)
 Figure
 - `artifacts/sem_vs_blackbox_r2.png` — grouped R² comparison (SEM, XGB, RF) across axes.
 - `artifacts/sem_vs_blackbox_delta.png` — ΔR² vs SEM (XGB−SEM, RF−SEM) by axis.
+- `artifacts/sem_L_run7_vs_7c_r2.png` — Light (L) R²: Run 7 vs adopted Run 7c (mean ± SD).
 
 Recreate figures
 - `make benchmarks-plots` or run the plotting script directly:
