@@ -24,7 +24,8 @@ parse_args <- function(args) {
     force_lm = "false",           # if true, never try lme4
     corr_method = "pearson",       # pearson|spearman|kendall (used in cor.test)
     rank_pit = "false",           # if true, map residuals to (rank-0.5)/n; if corr_method=pearson, test on normal scores
-    fdr_q = "0.05"                # BH-FDR level (used for reporting only)
+    fdr_q = "0.05",               # BH-FDR level (used for reporting only)
+    gam_L_rds = ""                # optional: path to mgcv::gam RDS for L residualization
   )
   if (length(args) %% 2 != 0) stop("Invalid arguments. Use --key value pairs")
   for (i in seq(1, length(args), by = 2)) {
@@ -157,6 +158,19 @@ main <- function() {
     have_lme4 <- requireNamespace("lme4", quietly = TRUE)
   }
 
+  # Optional: load GAM model for L if provided
+  gam_L <- NULL
+  if (nzchar(opt$gam_L_rds)) {
+    if (!requireNamespace("mgcv", quietly = TRUE)) {
+      warning("mgcv not available; ignoring --gam_L_rds")
+    } else if (file.exists(opt$gam_L_rds)) {
+      gam_L <- tryCatch(readRDS(opt$gam_L_rds), error = function(e) NULL)
+      if (is.null(gam_L)) warning("Failed to read GAM RDS for L; falling back to linear model")
+    } else {
+      warning(sprintf("GAM RDS not found: %s; falling back to linear model", opt$gam_L_rds))
+    }
+  }
+
   fit_or_na <- function(f, data) {
     # Try mixed model if cluster_var is usable; else OLS
     if (nzchar(cluster_var) && (cluster_var %in% names(data)) && have_lme4) {
@@ -174,19 +188,28 @@ main <- function() {
   }
 
   mods <- list(
-    L = fit_or_na(form_L, df),
+    L = if (is.null(gam_L)) fit_or_na(form_L, df) else NULL,
     T = fit_or_na(form_T, df),
     R = fit_or_na(form_R, df),
     M = fit_or_na(form_M, df),
     N = fit_or_na(form_N, df)
   )
-  if (any(purrr::map_lgl(mods, is.null))) stop("One or more mean-structure fits failed; check input columns")
+  if (any(purrr::map_lgl(mods[names(mods)!="L"], is.null))) stop("One or more mean-structure fits failed; check input columns")
 
-  resids <- purrr::map(mods, function(m) {
-    # lmer/lm both support residuals(); use conditional residuals for lmer
-    as.numeric(residuals(m))
-  }) %>% as.data.frame(stringsAsFactors = FALSE)
-  names(resids) <- names(mods)
+  # Residuals per axis; if GAM for L provided, compute L residuals as y - predict(gam_L)
+  res_map <- list()
+  if (!is.null(gam_L)) {
+    muL <- tryCatch(as.numeric(stats::predict(gam_L, newdata = df, type = "link")), error = function(e) NULL)
+    if (is.null(muL) || length(muL) != nrow(df)) stop("Failed to predict with GAM for L")
+    res_map[["L"]] <- as.numeric(df$L) - muL
+  } else {
+    res_map[["L"]] <- as.numeric(residuals(mods$L))
+  }
+  res_map[["T"]] <- as.numeric(residuals(mods$T))
+  res_map[["R"]] <- as.numeric(residuals(mods$R))
+  res_map[["M"]] <- as.numeric(residuals(mods$M))
+  res_map[["N"]] <- as.numeric(residuals(mods$N))
+  resids <- as.data.frame(res_map, stringsAsFactors = FALSE)
 
   spouses <- parse_spouses(opt)
   norm_pair <- function(a,b) paste(sort(c(a,b)), collapse = "-")

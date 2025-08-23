@@ -12,7 +12,7 @@ Key Changes
   - src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R — supports manual districts; fits Gaussian copulas; writes results/MAG_Run8/mag_copulas.json.
   - src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R — enhanced with `--cluster_var`, `--corr_method`, `--rank_pit`, BH‑FDR reporting; computes Fisher’s C on mixed, rank‑based residual correlations excluding spouses.
   - src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R — adequacy (τ alignment, tails, 2‑fold CV log‑copula).
-  - results/summaries/stage_sem_run8_summary.md — updated with final 5 spouses and mixed m‑sep.
+  - results/summaries/summarypwsem/stage_sem_run8_summary.md — updated with final 5 spouses (GAM L residuals) and mixed m‑sep.
 - Stage 6:
   - src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R — Monte Carlo joint probability; single `--joint_requirement` or batch `--presets_csv`.
   - src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R — adds `joint_requirement`/`joint_prob`/`joint_ok` and best‑scenario fields via `--joint_presets_csv`.
@@ -21,28 +21,32 @@ Key Changes
 - results/gardening/garden_presets_no_R.csv — 5 new, more robust scenarios excluding the 'R' axis.
 
 Repro Commands
-- Export equations (Run 8 versioning):
+- Export equations and L GAM (Run 8 versioning):
   - `Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8`
-- Fit copulas (final spouse set):
+  - `Rscript src/Stage_4_SEM_Analysis/fit_export_L_gam.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_rds results/MAG_Run8/sem_pwsem_L_full_model.rds`
+- Fit copulas (final spouse set; GAM L residuals):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
       --district L,M --district T,R --district T,M --district M,R --district M,N \
-      --group_col Myco_Group_Final --shrink_k 100`
+      --group_col Myco_Group_Final --shrink_k 100 \
+      --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds`
 - Mixed, copula‑aware m‑sep (DAG → MAG check on non‑spouse pairs):
   - `Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --recipe_json results/MAG_Run8/composite_recipe.json \
       --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
+      --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds \
       --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv`
 - Gaussian adequacy check (optional):
-  - `Rscript src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R --input_csv artifacts/model_data_complete_case_with_myco.csv --copulas_json results/MAG_Run8/mag_copulas.json --out_md results/stage_sem_run8_copula_diagnostics.md --nsim 200000`
+  - `Rscript src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R --input_csv artifacts/model_data_complete_case_with_myco.csv --copulas_json results/MAG_Run8/mag_copulas.json --out_md results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md --nsim 200000 --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds`
 - Joint suitability (original batch presets):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`
 - Joint suitability (new R-excluded presets for more confident predictions):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`
 - Recommender with best scenario:
   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_presets_csv results/gardening/garden_presets_defaults.csv`
 
 Outputs
 - results/MAG_Run8/mag_copulas.json — 5 residual districts and parameters (final spouse set)
-- results/stage_sem_run8_copula_diagnostics.md — adequacy summary
+- results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md — adequacy summary
 - results/MAG_Run8/msep_test_summary_run8_mixedcop.csv, results/MAG_Run8/msep_claims_run8_mixedcop.csv — mixed, rank‑based omnibus and per‑pair claims
 - results/gardening/garden_joint_summary.csv — species × scenarios joint probabilities
 - results/gardening/garden_joint_summary_no_R.csv — species × scenarios joint probabilities for new R-excluded presets.

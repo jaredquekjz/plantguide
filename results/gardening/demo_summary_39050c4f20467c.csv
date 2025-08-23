@@ -1,0 +1,16 @@
+species,label,requirement,joint_prob,threshold,pass
+Acer saccharum,ThePioneer,"T=high,M=low",5e-5,0.6,FALSE
+Agropyron cristatum,ThePioneer,"T=high,M=low",6e-4,0.6,FALSE
+Agrostis hyemalis,ThePioneer,"T=high,M=low",0,0.6,FALSE
+Acer saccharum,RichSoilSpecialist,"M=high,N=high",0.0863,0.6,FALSE
+Agropyron cristatum,RichSoilSpecialist,"M=high,N=high",0.00755,0.6,FALSE
+Agrostis hyemalis,RichSoilSpecialist,"M=high,N=high",0,0.6,FALSE
+Acer saccharum,SunVsWaterTradeoff,"L=high,M=low",5e-5,0.6,FALSE
+Agropyron cristatum,SunVsWaterTradeoff,"L=high,M=low",0.02535,0.6,FALSE
+Agrostis hyemalis,SunVsWaterTradeoff,"L=high,M=low",0,0.6,FALSE
+Acer saccharum,LushShadePlant,"L=low,M=high,N=high",0.0461,0.6,FALSE
+Agropyron cristatum,LushShadePlant,"L=low,M=high,N=high",8.5e-4,0.6,FALSE
+Agrostis hyemalis,LushShadePlant,"L=low,M=high,N=high",0,0.6,FALSE
+Acer saccharum,CoolClimateSpecialist,"T=low,M=med,N=high",0,0.6,FALSE
+Agropyron cristatum,CoolClimateSpecialist,"T=low,M=med,N=high",0.02815,0.6,FALSE
+Agrostis hyemalis,CoolClimateSpecialist,"T=low,M=med,N=high",0,0.6,FALSE

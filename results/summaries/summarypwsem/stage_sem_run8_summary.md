@@ -1,16 +1,17 @@
-# Stage 4 — Run 8 Summary: MAG (Mixed Acyclic Graph) + Copulas
+# Stage 4 — Run 8 Summary: MAG (Mixed Acyclic Graph) + Copulas (Non‑linear L)
 
 Purpose — keep the finalized SEM mean structure as a DAG and model residual dependencies between responses via copulas, yielding a mixed (directed + bidirected) acyclic graph over the observed variables (per Douma & Shipley, 2021/2022).
 
-## Mean Structure (DAG; unchanged)
-- L/T/R: L,T,R ~ LES + SIZE + logSSD + logLA
+## Mean Structure (DAG; L non‑linear)
+- L: non‑linear GAM (pwSEM‑validated rf_plus + logH:logSSD); used for residualization and production predictions.
+- T/R: T,R ~ LES + SIZE + logSSD + logLA
 - M: M ~ LES + logH + logSM + logSSD + logLA
 - N: N ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
 
 ## District Detection (bidirected residuals)
 Auto-detect seed: rho_min=0.15, fdr_q=0.05 → manual refinement to align with SEMwise/mixed‑effects m‑sep.
-Final spouse set (Run 8 MAG):
-- {L:M} — gaussian (rho≈-0.279, n=1063)
+Final spouse set (Run 8 MAG; with GAM L residuals):
+- {L:M} — gaussian (rho≈-0.186, n=1063)
 - {T:R} — gaussian (rho≈+0.328, n=1049)
 - {T:M} — gaussian (rho≈-0.389, n=1064)
 - {M:R} — gaussian (rho≈-0.269, n=1049)
@@ -19,7 +20,7 @@ Final spouse set (Run 8 MAG):
 ## Copula Fits (per district)
 | A | B | n | family | rho | loglik | AIC |
 |---|---:|---:|---|---:|---:|---:|
-| L | M | 1063 | gaussian | -0.279 | 43.05 | -84.11 |
+| L | M | 1063 | gaussian | -0.186 | 18.71 | -35.42 |
 | T | R | 1049 | gaussian | 0.328 | 59.79 | -117.58 |
 | T | M | 1064 | gaussian | -0.389 | 87.28 | -172.57 |
 | M | R | 1049 | gaussian | -0.269 | 39.38 | -76.76 |
@@ -29,7 +30,7 @@ Final spouse set (Run 8 MAG):
 Mixed, copula‑aware omnibus (independence claims only)
 ```
 k  C        df   p_value   AIC_msep   method   rank_pit   cluster
-5  155.97   10     <1e-6     165.97   kendall  TRUE       Family
+5  107.84   10     <1e-6     117.84   kendall  TRUE       Family
 ```
 
 Interpretation
@@ -47,17 +48,22 @@ Note on terminology — MAG here follows Douma & Shipley as a Mixed Acyclic Grap
 
 ## Repro Commands
 ```bash
-Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8
-Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_dir results/MAG_Run8 --version Run8 \
-  --district L,M --district T,R --district T,M --district M,R --district M,N
+Rscript src/Stage_4_SEM_Analysis/export_mag_artifacts.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --out_dir=results/MAG_Run8 --version=Run8
+Rscript src/Stage_4_SEM_Analysis/fit_export_L_gam.R --input_csv artifacts/model_data_complete_case_with_myco.csv --out_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
+Rscript src/Stage_4_SEM_Analysis/run_sem_piecewise_copula.R --input_csv=artifacts/model_data_complete_case_with_myco.csv --out_dir=results/MAG_Run8 --version=Run8 \
+  --district=L,M --district=T,R --district=T,M --district=M,R --district=M,N \
+  --group_col=Myco_Group_Final --shrink_k=100 \
+  --gam_L_rds=results/MAG_Run8/sem_pwsem_L_full_model.rds
 Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifacts/model_data_complete_case_with_myco.csv \
+  --recipe_json results/MAG_Run8/composite_recipe.json \
   --spouses_csv results/MAG_Run8/stage_sem_run8_copula_fits.csv --cluster_var Family --corr_method kendall --rank_pit true \
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds \
   --out_summary results/MAG_Run8/msep_test_summary_run8_mixedcop.csv --out_claims results/MAG_Run8/msep_claims_run8_mixedcop.csv
 ```
 
 ## Artifacts
-- MAG_Run8/mag_equations.json — version Run 8
-- MAG_Run8/mag_copulas.json — updated spouse set (5 districts)
+- MAG_Run8/mag_equations.json — version Run 8 (pure LES)
+- MAG_Run8/sem_pwsem_L_full_model.rds — saved GAM for L (rf_plus + logH:logSSD)
+- MAG_Run8/mag_copulas.json — updated spouse set (5 districts; GAM L residuals)
 - MAG_Run8/stage_sem_run8_residual_corr.csv — rows 10
 - MAG_Run8/stage_sem_run8_copula_fits.csv — rows 5
-

@@ -11,6 +11,7 @@ suppressWarnings({
     have_readr    <- requireNamespace("readr",    quietly = TRUE)
     have_jsonlite <- requireNamespace("jsonlite", quietly = TRUE)
     have_stats    <- requireNamespace("stats",    quietly = TRUE)
+    have_mgcv     <- requireNamespace("mgcv",     quietly = TRUE)
   })
 })
 
@@ -64,6 +65,8 @@ districts_cli <- opts$district
 group_col <- opts[["group_col"]] %||% ""   # optional: compute per-group correlations/copulas
 min_group_n <- suppressWarnings(as.integer(opts[["min_group_n"]] %||% "20")); if (is.na(min_group_n)) min_group_n <- 20
 shrink_k <- suppressWarnings(as.numeric(opts[["shrink_k"]] %||% "100")); if (!is.finite(shrink_k)) shrink_k <- 100
+# Optional: use a non-linear GAM for L residualization (path to a saved mgcv::gam RDS)
+gam_L_rds <- opts[["gam_L_rds"]] %||% ""
 
 ensure_dir <- function(path) dir.create(path, recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_dir)
@@ -128,7 +131,21 @@ fit_target <- function(letter) {
   if (letter %in% c("L","T","R")) {
     req <- c("y","LES","SIZE","logSSD","logLA")
     dat <- dat[stats::complete.cases(dat[, req]), , drop = FALSE]
-    fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    if (letter == "L" && nzchar(gam_L_rds) && file.exists(gam_L_rds) && have_mgcv) {
+      # Use GAM model for L; compute residuals as y - predict(gam)
+      gm <- tryCatch(readRDS(gam_L_rds), error = function(e) NULL)
+      if (!is.null(gm)) {
+        mu <- tryCatch(as.numeric(stats::predict(gm, newdata = dat, type = "link")), error = function(e) NULL)
+        if (!is.null(mu) && length(mu) == nrow(dat)) {
+          resid <- dat$y - mu
+          return(list(model = gm, n = nrow(dat), resid = resid, id = dat$id, method = "gam"))
+        }
+      }
+      # Fallback to linear if GAM predict failed
+      fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    } else {
+      fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    }
   } else if (letter == "M") {
     req <- c("y","LES","logH","logSM","logSSD","logLA")
     dat <- dat[stats::complete.cases(dat[, req]), , drop = FALSE]
@@ -139,7 +156,7 @@ fit_target <- function(letter) {
     fm <- stats::lm(y ~ LES + logH + logSM + logSSD + logLA + LES:logSSD, data = dat)
   } else stop("Unknown target letter")
   resid <- stats::residuals(fm)
-  list(model = fm, n = nrow(dat), resid = resid, id = dat$id)
+  list(model = fm, n = nrow(dat), resid = resid, id = dat$id, method = "lm")
 }
 
 fits <- lapply(targets, fit_target)

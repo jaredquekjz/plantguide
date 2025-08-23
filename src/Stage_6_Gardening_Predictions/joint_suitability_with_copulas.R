@@ -107,7 +107,11 @@ req  <- if (!is.null(req_spec) && nzchar(req_spec)) parse_req(req_spec) else NUL
 
 read_sigma <- function(dir, letter) {
   p <- file.path(dir, sprintf("sem_piecewise_%s_metrics.json", letter))
-  if (!file.exists(p)) stop(sprintf("Metrics JSON not found: %s", p))
+  if (!file.exists(p)) {
+    # try pwSEM naming
+    p2 <- file.path(dir, sprintf("sem_pwsem_%s_metrics.json", letter))
+    if (file.exists(p2)) p <- p2 else stop(sprintf("Metrics JSON not found: %s or %s", p, p2))
+  }
   jj <- if (have_jsonlite) jsonlite::fromJSON(p) else dget(p)
   # aggregate is an array of length 1 with RMSE_mean
   ag <- jj$metrics$aggregate
@@ -178,7 +182,10 @@ if (ncol(mu_mat) != 5) stop("Predictions CSV must contain L_pred,T_pred,M_pred,R
 # Helper: build per-axis sigma vector (global)
 read_sigma <- function(dir, letter) {
   p <- file.path(dir, sprintf("sem_piecewise_%s_metrics.json", letter))
-  if (!file.exists(p)) stop(sprintf("Metrics JSON not found: %s", p))
+  if (!file.exists(p)) {
+    p2 <- file.path(dir, sprintf("sem_pwsem_%s_metrics.json", letter))
+    if (file.exists(p2)) p <- p2 else stop(sprintf("Metrics JSON not found: %s or %s", p, p2))
+  }
   jj <- if (have_jsonlite) jsonlite::fromJSON(p) else dget(p)
   ag <- jj$metrics$aggregate
   if (is.data.frame(ag)) {
@@ -223,7 +230,10 @@ if (sigma_mode == "by_group" && nzchar(group_ref_group_col)) {
     per_axis <- list()
     for (ax in axes) {
       ppath <- file.path(metrics_dir, sprintf("sem_piecewise_%s_preds.csv", ax))
-      if (!file.exists(ppath)) { per_axis[[ax]] <- NULL; next }
+      if (!file.exists(ppath)) {
+        p2 <- file.path(metrics_dir, sprintf("sem_pwsem_%s_preds.csv", ax))
+        if (file.exists(p2)) ppath <- p2 else { per_axis[[ax]] <- NULL; next }
+      }
       dfp <- tryCatch({ if (have_readr) readr::read_csv(ppath, show_col_types = FALSE) else utils::read.csv(ppath, check.names = FALSE) }, error = function(e) NULL)
       if (is.null(dfp) || !("id" %in% names(dfp))) { per_axis[[ax]] <- NULL; next }
       # join group from reference

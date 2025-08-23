@@ -1,2 +1,2 @@
 k_claims,C,df,p_value,AIC_msep,method,rank_pit,cluster_var,fdr_q
-5,155.97306168004667,10,0,165.97306168004667,kendall,TRUE,Family,0.05
+5,107.8404003777865,10,0,117.8404003777865,kendall,TRUE,Family,0.05

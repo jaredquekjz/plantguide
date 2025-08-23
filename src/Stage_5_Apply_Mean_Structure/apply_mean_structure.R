@@ -20,7 +20,8 @@ parse_args <- function(args) {
     input_csv = NULL,
     output_csv = NULL,
     equations_json = "results/mag_equations.json",
-    composites_json = "results/composite_recipe.json"
+    composites_json = "results/composite_recipe.json",
+    gam_L_rds = ""  # optional: path to mgcv::gam RDS for non-linear L predictions
   )
   if (length(args) %% 2 != 0) {
     stop("Invalid arguments. Use --input_csv <path> --output_csv <path> [--equations_json <path>] [--composites_json <path>]")
@@ -74,6 +75,19 @@ main <- function() {
 
   eq <- fromJSON(opt$equations_json, simplifyVector = TRUE)
   comp <- fromJSON(opt$composites_json, simplifyVector = TRUE)
+
+  # Optional: load GAM model for L if provided
+  gam_L <- NULL
+  if (nzchar(opt$gam_L_rds)) {
+    if (!requireNamespace("mgcv", quietly = TRUE)) {
+      warning("mgcv not available; ignoring --gam_L_rds")
+    } else if (file.exists(opt$gam_L_rds)) {
+      gam_L <- tryCatch(readRDS(opt$gam_L_rds), error = function(e) NULL)
+      if (is.null(gam_L)) warning("Failed to read GAM RDS for L; falling back to linear L from equations")
+    } else {
+      warning(sprintf("GAM RDS not found: %s; falling back to linear L", opt$gam_L_rds))
+    }
+  }
 
   schema <- comp$input_schema$columns
   offsets <- comp$log_offsets
@@ -162,6 +176,13 @@ main <- function() {
     row <- .x
     out <- list()
     for (t in targets) {
+      # If GAM for L is present, prefer it for L
+      if (t == "L" && !is.null(gam_L)) {
+        # mgcv::predict can handle a single-row data.frame
+        mu <- tryCatch(as.numeric(stats::predict(gam_L, newdata = row, type = "link")), error = function(e) NA_real_)
+        out[["L_pred"]] <- mu
+        next
+      }
       terms <- eqs[[t]]$terms
       needed <- setdiff(names(terms), "(Intercept)")
       # expand interactions

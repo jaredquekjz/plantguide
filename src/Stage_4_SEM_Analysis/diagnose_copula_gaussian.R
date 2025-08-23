@@ -10,6 +10,7 @@ suppressWarnings({
   suppressMessages({
     have_readr    <- requireNamespace("readr",    quietly = TRUE)
     have_jsonlite <- requireNamespace("jsonlite", quietly = TRUE)
+    have_mgcv     <- requireNamespace("mgcv",     quietly = TRUE)
   })
 })
 
@@ -27,6 +28,8 @@ in_csv   <- opts[["input_csv"]]   %||% "artifacts/model_data_complete_case_with_
 cop_json <- opts[["copulas_json"]] %||% "results/MAG_Run8/mag_copulas.json"
 out_md   <- opts[["out_md"]]       %||% "results/stage_sem_run8_copula_diagnostics.md"
 mc_n     <- suppressWarnings(as.integer(opts[["nsim"]] %||% "100000")); if (is.na(mc_n) || mc_n < 10000) mc_n <- 100000
+# Optional: GAM for L residualization
+gam_L_rds <- opts[["gam_L_rds"]] %||% ""
 
 ensure_dir <- function(path) dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
 ensure_dir(out_md)
@@ -82,10 +85,22 @@ work$SIZE <- as.numeric(M_SIZE %*% rot_size)
 fit_resid <- function(letter) {
   dat <- work
   if (letter %in% c("L","T","R")) {
-    ok <- stats::complete.cases(dat[, c("y"<-NULL,"LES","SIZE","logSSD","logLA","id")])
     dat$y <- dat[[paste0("y", letter)]]
     dat <- dat[stats::complete.cases(dat[, c("y","LES","SIZE","logSSD","logLA")]), , drop = FALSE]
-    fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    if (letter == "L" && nzchar(gam_L_rds) && file.exists(gam_L_rds) && have_mgcv) {
+      gm <- tryCatch(readRDS(gam_L_rds), error = function(e) NULL)
+      if (!is.null(gm)) {
+        mu <- tryCatch(as.numeric(stats::predict(gm, newdata = dat, type = "link")), error = function(e) NULL)
+        if (!is.null(mu) && length(mu) == nrow(dat)) {
+          res <- dat$y - mu
+          return(data.frame(id = dat$id, resid = res, stringsAsFactors = FALSE))
+        }
+      }
+      # fallback
+      fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    } else {
+      fm <- stats::lm(y ~ LES + SIZE + logSSD + logLA, data = dat)
+    }
   } else if (letter == "M") {
     dat$y <- dat$yM
     dat <- dat[stats::complete.cases(dat[, c("y","LES","logH","logSM","logSSD","logLA")]), , drop = FALSE]
