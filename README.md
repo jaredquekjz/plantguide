@@ -18,14 +18,14 @@
 
 ```mermaid
 flowchart TD
-  A[Data Methodology<br/>TRY 6 curated traits + EIVE] --> B[Multiple Regression<br/>baseline]
-  B --> BB[Stage 3 Benchmarks]
-  BB --> RF[Random Forest]
-  BB --> XGB[XGBoost]
-  BB --> EBM[EBM (Light axis)]
-  BB --> C[SEM<br/>LES/SIZE/SSD structure]
-  C --> D[MAG + Copulas<br/>residual dependence]
-  D --> E[Gardening Plan<br/>requirements + uncertainty]
+  A[Data: TRY traits + EIVE] --> B[Multiple Regression]
+  B --> C[Stage 3 Benchmarks]
+  C --> RF[Random Forest]
+  C --> XGB[XGBoost]
+  C --> EBM[EBM Light]
+  C --> D[SEM]
+  D --> E[MAG + Copulas]
+  E --> F[Gardening]
 ```
 
 ### Core Traits (Initial Model)
