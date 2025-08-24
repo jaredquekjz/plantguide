@@ -19,10 +19,13 @@
 ```mermaid
 flowchart TD
   A[Data: TRY traits + EIVE] --> B[Multiple Regression]
-  B --> C[Stage 3 Benchmarks]
-  C --> RF[Random Forest]
-  C --> XGB[XGBoost]
-  C --> EBM[EBM Light]
+  B --> C
+  subgraph C [Stage 3 Benchmarks]
+    direction TB
+    C1[Random Forest]
+    C2[XGBoost]
+    C3[EBM Light]
+  end
   C --> D[SEM]
   D --> E[MAG + Copulas]
   E --> F[Gardening]
