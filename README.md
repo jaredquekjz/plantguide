@@ -19,20 +19,10 @@
 ```mermaid
 flowchart TD
   A[Data Methodology<br/>TRY 6 curated traits + EIVE] --> B[Multiple Regression<br/>baseline]
-
-  %% Black-box benchmarks before SEM
-  B --> BB[Stage 3 — Benchmarks]
-  subgraph BBX[RF / XGBoost / EBM]
-    direction TB
-    RF[Random Forest (ranger)]
-    XGB[XGBoost (grid/tune)]
-    EBM[EBM (Light axis ceiling)]
-  end
-  BB --> RF
-  BB --> XGB
-  BB --> EBM
-
-  %% Proceed to SEM after benchmarking
+  B --> BB[Stage 3 Benchmarks]
+  BB --> RF[Random Forest]
+  BB --> XGB[XGBoost]
+  BB --> EBM[EBM (Light axis)]
   BB --> C[SEM<br/>LES/SIZE/SSD structure]
   C --> D[MAG + Copulas<br/>residual dependence]
   D --> E[Gardening Plan<br/>requirements + uncertainty]
