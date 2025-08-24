@@ -68,6 +68,14 @@ Notes
 - Interaction: LES_core:logSSD kept for N only (optional for T; not adopted). L uses `LMA:logLA` and two 2‑D smooths `ti(logLA,logH)` and `ti(logH,logSSD)`; SIZE is deconstructed to `s(logH)` for L.
 - Group moderation: SSD→{L,T,R} is strongest in woody groups; treat SSD paths as woody‑only in strict d‑sep, with global SSD→{M,N}.
 
+| Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | EBM R² (±SD) | Best |
+|:----:|:------------:|:-----------------:|:-----------------------:|:-------------:|:----:|
+| L | 0.300±0.077 | 0.297±0.046 | 0.321±0.039 | 0.300±0.044 | RF |
+| T | 0.231±0.065 | 0.168±0.051 | 0.209±0.048 | — | SEM |
+| M | 0.408±0.081 | 0.217±0.047 | 0.249±0.054 | — | SEM |
+| R | 0.155±0.060 | 0.044±0.023 | 0.062±0.040 | — | SEM |
+| N | 0.425±0.076 | 0.404±0.047 | 0.412±0.044 | — | SEM |
+
 > [!NOTE]
 > Planned expansions include root traits (SRL, diameter, RTD, N), light‑specific leaf traits (thickness, N per area), categorical syndromes (woodiness, growth form, phenology, mycorrhiza), and climate/soil covariates — see [Future Developments](#future-developments).
 
@@ -466,38 +474,43 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
   - Axis bars (R² vs 0.50 → 10 chars): L [###.......], T [##........], M [###.......], R [#.........], N [#######...]
   - Typical error (RMSE): ~1.26–1.52 EIVE units.
 
-- Black‑Box benchmarks (same traits; 10×5 CV): Trees offer a non‑parametric ceiling check.
+- Black‑Box benchmarks (same traits; 10×5 CV): Trees and boosting offer a flexible, non‑parametric ceiling check.
   - L: Flexible trees still edge SEM (RF ≈ +0.03; XGB ≈ +0.01 absolute R²). Canonical SEM narrows the gap via non‑linear L.
   - T/M/R: SEM outperforms XGBoost and RF at this data scale; structured LES/SIZE + SSD (and deconstructed SIZE where needed) beats generic ensembles.
   - N: Near‑tie with a small SEM edge.
+  - EBM (Light only): Matches SEM on L (R² ≈ 0.300; RMSE ≈ 1.28), providing an interpretable boosting ceiling while remaining below RF.
   - Details below: full table, mini‑bars for all models, figures, and scripts.
 
 - Reliability & residual dependence
   - Residuals: Copulas capture modest co‑movement (e.g., T–R ≈ +0.33; T–M ≈ −0.39) without changing means; useful for joint decisions.
   - Confidence: Mirrors CV strength — M/N strongest, L/T moderate, R weakest; borderline handling reduces over‑confident edge calls.
 
-### Predictive Benchmark — SEM vs XGBoost/Random Forest (10×5 CV)
+### Predictive Benchmark — SEM vs XGBoost/Random Forest/EBM (10×5 CV)
 
 We trained simple, high‑capacity baselines using the same six traits and CV protocol (repeated, stratified 10×5; seed=42) to establish a non‑parametric benchmark for out‑of‑fold R². Train‑fold transforms matched Stage 3 (log10 for LA/H/SM/SSD; optional z‑scaling).
 
-| Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | Best |
-|:----:|:------------:|:-----------------:|:-----------------------:|:----:|
-| L | 0.300±0.077 | 0.297±0.046 | 0.321±0.039 | RF |
-| T | 0.231±0.065 | 0.168±0.051 | 0.209±0.048 | SEM |
-| M | 0.408±0.081 | 0.217±0.047 | 0.249±0.054 | SEM |
-| R | 0.155±0.060 | 0.044±0.023 | 0.062±0.040 | SEM |
-| N | 0.425±0.076 | 0.404±0.047 | 0.412±0.044 | SEM |
+Caption: Out‑of‑fold R² and RMSE comparing SEM to XGBoost, Random Forest, and EBM (Light‑only) under identical 10×5 CV folds; higher R² and lower RMSE are better.
+
+| Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | EBM R² (±SD) | Best |
+|:----:|:------------:|:-----------------:|:-----------------------:|:-------------:|:----:|
+| L | 0.300±0.077 | 0.297±0.046 | 0.321±0.039 | 0.300±0.044 | RF |
+| T | 0.231±0.065 | 0.168±0.051 | 0.209±0.048 | — | SEM |
+| M | 0.408±0.081 | 0.217±0.047 | 0.249±0.054 | — | SEM |
+| R | 0.155±0.060 | 0.044±0.023 | 0.062±0.040 | — | SEM |
+| N | 0.425±0.076 | 0.404±0.047 | 0.412±0.044 | — | SEM |
 
 Mini‑table — RMSE by model (CV mean ± SD)
-| Axis | SEM RMSE (±SD) | XGBoost RMSE (±SD) | Random Forest RMSE (±SD) | Best |
-|:----:|:--------------:|:------------------:|:-------------------------:|:----:|
-| L | 1.276±0.092 | 1.283±0.053 | 1.260±0.040 | RF |
-| T | 1.147±0.067 | 1.211±0.049 | 1.181±0.046 | SEM |
-| M | 1.155±0.083 | 1.329±0.034 | 1.301±0.050 | SEM |
-| R | 1.428±0.066 | 1.513±0.039 | 1.498±0.050 | SEM |
-| N | 1.420±0.092 | 1.450±0.075 | 1.440±0.056 | SEM |
+| Axis | SEM RMSE (±SD) | XGBoost RMSE (±SD) | Random Forest RMSE (±SD) | EBM RMSE (±SD) | Best |
+|:----:|:--------------:|:------------------:|:-------------------------:|:---------------:|:----:|
+| L | 1.276±0.092 | 1.283±0.053 | 1.260±0.040 | 1.278±0.042 | RF |
+| T | 1.147±0.067 | 1.211±0.049 | 1.181±0.046 | — | SEM |
+| M | 1.155±0.083 | 1.329±0.034 | 1.301±0.050 | — | SEM |
+| R | 1.428±0.066 | 1.513±0.039 | 1.498±0.050 | — | SEM |
+| N | 1.420±0.092 | 1.450±0.075 | 1.440±0.056 | — | SEM |
 
-Note: RMSE values are computed from the same 10×5 CV folds as R². Source CSV: `artifacts/model_benchmarks_rmse_summary.csv`.
+Notes
+- RMSE values are computed from the same 10×5 CV folds as R². Source CSV: `artifacts/model_benchmarks_rmse_summary.csv`.
+- EBM (Explainable Boosting Machine) is reported for Light (L) only. Metrics from `artifacts/stage3ebm/eive_ebm_L_metrics.json` (10×5 CV; seed=42).
 
 Mini‑figure — Axis bars by model (R² vs 0.50 → 10 chars)
 ```
@@ -528,6 +541,9 @@ Random Forest (ranger)
   M 0.249 [#####.....]
   R 0.062 [#.........]
   N 0.412 [########..]
+
+EBM (Light only)
+  L 0.300 [######....]
 ```
 
 Comments
@@ -539,6 +555,7 @@ Comments
 Artifacts (black‑box benchmarks)
 - XGBoost (best‑of‑best): `results/summaries/stage3rf_xgb_summary.md` and per‑run dirs under `artifacts/stage3rf_xgb_*`.
 - Random Forest (ranger): per‑axis outputs in `artifacts/stage3rf_ranger/` and grid in `artifacts/stage3rf_ranger_grid/`.
+- Explainable Boosting Machine (EBM; Light only): metrics/preds/top pairs in `artifacts/stage3ebm/`.
 - CSV summaries: `artifacts/{xgb_vs_sem_summary.csv,ranger_vs_sem_summary.csv,model_benchmarks_summary.csv}`.
 - RMSE summary (CSV): `artifacts/model_benchmarks_rmse_summary.csv`.
 
