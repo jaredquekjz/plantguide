@@ -1,10 +1,12 @@
 #!/usr/bin/env Rscript
 
-# Fit and export the locked non-linear Light (L) GAM used in pwSEM Run 7
-# Spec (rf_plus + logH:logSSD):
-#   y ~ s(LMA, k=5) + s(logSSD, k=5) + s(SIZE, k=5) + s(logLA, k=5)
-#       + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5)) + logH:logSSD
-# Inputs are aligned with export_mag_artifacts.R (pure LES, SIZE) and Run 8.
+# Fit and export the locked non-linear Light (L) GAM (Run 7c canonical)
+# Spec (7c; deconstructed SIZE for L + two 2-D smooths):
+#   y ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass
+#       + LMA:logLA + t2(LMA,logSSD,k=c(5,5))
+#       + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5))
+#       + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))
+# Inputs aligned with export_mag_artifacts.R (pure LES, SIZE) and Run 8.
 
 suppressPackageStartupMessages({
   library(readr)
@@ -65,12 +67,16 @@ rot_size <- p_size$rotation[,1]; if (rot_size["logH"] < 0) rot_size <- -rot_size
 work$SIZE <- as.numeric(M_SIZE %*% rot_size)
 
 # Keep complete cases for variables used in the GAM
-req <- c("y","LMA","logSSD","SIZE","logLA","Nmass","logH")
+req <- c("y","LMA","logSSD","logH","logLA","Nmass")
 dat <- work[stats::complete.cases(work[, req]), , drop = FALSE]
 
-rhs_txt <- "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + s(SIZE, k = 5) + s(logLA, k = 5) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5)) + logH:logSSD"
+rhs_txt <- paste0(
+  "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + s(logH, k = 5) + s(logLA, k = 5) + ",
+  "Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5)) + ",
+  "ti(logLA, logH, bs=c('ts','ts'), k=c(5,5)) + ",
+  "ti(logH, logSSD, bs=c('ts','ts'), k=c(5,5))"
+)
 gm <- mgcv::gam(stats::as.formula(rhs_txt), data = dat, method = "REML")
 
 saveRDS(gm, out_rds)
 cat(sprintf("Wrote %s\n", out_rds))
-

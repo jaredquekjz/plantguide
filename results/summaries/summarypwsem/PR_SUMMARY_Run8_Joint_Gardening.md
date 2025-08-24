@@ -38,11 +38,11 @@ Repro Commands
 - Gaussian adequacy check (optional):
   - `Rscript src/Stage_4_SEM_Analysis/diagnose_copula_gaussian.R --input_csv artifacts/model_data_complete_case_with_myco.csv --copulas_json results/MAG_Run8/mag_copulas.json --out_md results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md --nsim 200000 --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds`
 - Joint suitability (original batch presets):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7c_pureles_merged --presets_csv results/gardening/garden_joint_presets_defaults.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary.csv`
 - Joint suitability (new R-excluded presets for more confident predictions):
-  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R --predictions_csv results/mag_predictions_no_eive.csv --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7c_pureles_merged --presets_csv results/gardening/garden_presets_no_R.csv --nsim 20000 --summary_csv results/gardening/garden_joint_summary_no_R.csv`
 - Recommender with best scenario:
-  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_piecewise_run7 --nsim_joint 20000 --joint_presets_csv results/gardening/garden_presets_defaults.csv`
+  - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R --predictions_csv results/mag_predictions_no_eive.csv --output_csv results/gardening/garden_requirements_no_eive.csv --bins 0:3.5,3.5:6.5,6.5:10 --copulas_json results/MAG_Run8/mag_copulas.json --metrics_dir artifacts/stage4_sem_pwsem_run7c_pureles_merged --nsim_joint 20000 --joint_presets_csv results/gardening/garden_joint_presets_defaults.csv`
 
 Outputs
 - results/MAG_Run8/mag_copulas.json — 5 residual districts and parameters (final spouse set)
@@ -81,38 +81,33 @@ Comparative Results — Presets With vs Without R (Run 8)
 
 With R (defaults)
 
-| Scenario              | Requirement             | Mean P(success) | Median | Max  | Pass ≥0.6 | Top species (max)              |
-|-----------------------|-------------------------|-----------------|--------|------|-----------|-------------------------------|
-| WarmNeutralFertile    | T=high,R=med,N=high     | 4.1%            | 1.5%   | 15.3%| 0         | Sequoia sempervirens (15.3%)   |
-| PartialSunAverage     | L=med,M=med,R=med       | 3.0%            | 1.1%   | 15.2%| 0         | Carex digitata (15.2%)         |
-| SunnyNeutral          | L=high,M=med,R=med      | 3.0%            | 1.0%   | 28.7%| 0         | Agropyron cristatum (28.7%)    |
-| DryPoorSun            | L=high,M=low,N=low      | 0.1%            | 0.0%   | 1.5% | 0         | Agropyron cristatum (1.5%)     |
-| ShadeWetAcidic        | L=low,M=high,R=low      | 0.1%            | 0.0%   | 2.6% | 0         | Sequoiadendron giganteum (2.6%)|
+| Scenario              | Requirement             | Mean P(success) | Median | Max   | Pass ≥0.6 | Top species (max)               |
+|-----------------------|-------------------------|-----------------|--------|-------|-----------|--------------------------------|
+| WarmNeutralFertile    | T=high,R=med,N=high     | 4.0%            | 1.5%   | 15.3% | 0         | Sequoia sempervirens (15.3%)    |
+| PartialSunAverage     | L=med,M=med,R=med       | 3.0%            | 1.0%   | 15.8% | 0         | Carex digitata (15.8%)          |
+| SunnyNeutral          | L=high,M=med,R=med      | 3.0%            | 1.0%   | 29.5% | 0         | Agropyron cristatum (29.5%)     |
+| DryPoorSun            | L=high,M=low,N=low      | 0.1%            | 0.0%   | 1.6%  | 0         | Agropyron cristatum (1.6%)      |
+| ShadeWetAcidic        | L=low,M=high,R=low      | 0.2%            | 0.0%   | 2.8%  | 0         | Sequoiadendron giganteum (2.8%) |
 
 Without R (new, confidence‑oriented)
 
-| Scenario              | Requirement         | Mean P(success) | Median | Max   | Pass ≥0.6 | Top species (max)              |
-|-----------------------|---------------------|-----------------|--------|-------|-----------|-------------------------------|
-| RichSoilSpecialist    | M=high,N=high       | 28.1%           | 16.1%  | 66.1% | 5         | Cryptomeria japonica (66.1%)   |
-| LushShadePlant        | L=low,M=high,N=high | 2.3%            | 0.6%   | 14.9% | 0         | Ribes divaricatum (14.9%)      |
-| CoolClimateSpecialist | T=low,M=med,N=high  | 1.1%            | 0.0%   | 10.7% | 0         | Carex digitata (10.7%)         |
-| SunVsWaterTradeoff    | L=high,M=low        | 0.4%            | 0.0%   | 7.6%  | 0         | Agropyron cristatum (7.6%)     |
-| ThePioneer            | T=high,M=low        | 0.3%            | 0.0%   | 1.8%  | 0         | Quercus macrocarpa (1.8%)      |
+| Scenario              | Requirement         | Mean P(success) | Median | Max   | Pass ≥0.6 | Top species (max)               |
+|-----------------------|---------------------|-----------------|--------|-------|-----------|---------------------------------|
+| RichSoilSpecialist    | M=high,N=high       | 28.1%           | 16.3%  | 66.6% | 5         | Cryptomeria japonica (66.6%)    |
+| LushShadePlant        | L=low,M=high,N=high | 2.2%            | 0.5%   | 14.3% | 0         | Ribes divaricatum (14.3%)       |
+| SunVsWaterTradeoff    | L=high,M=low        | 0.4%            | 0.0%   | 7.8%  | 0         | Agropyron cristatum (7.8%)      |
+| CoolClimateSpecialist | T=low,M=med,N=high  | 1.1%            | 0.0%   | 11.0% | 0         | Carex digitata (11.0%)          |
+| ThePioneer            | T=high,M=low        | 0.3%            | 0.0%   | 1.8%  | 0         | Quercus macrocarpa (1.8%)       |
 
 Winners at threshold 0.6 (No‑R presets)
 - RichSoilSpecialist (5 species): Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis.
 
-Confidence Gains (Before → After, pwSEM L GAM)
-- SunnyNeutral: mean +0.1 pp; max +9.9 pp (L‑binding)
-- PartialSunAverage: mean −0.2 pp; max −0.6 pp (L‑binding)
-- WarmNeutralFertile: mean +0.0 pp; max −0.3 pp
-- DryPoorSun: mean +0.0 pp; max +0.4 pp (L‑binding)
-- ShadeWetAcidic: mean +0.1 pp; max +2.5 pp (L‑binding)
-- LushShadePlant (No‑R): mean −0.4 pp; max +6.0 pp (L‑binding)
-- SunVsWaterTradeoff (No‑R): mean +0.0 pp; max +1.3 pp (L‑binding)
-- CoolClimateSpecialist (No‑R): mean +0.0 pp; max +0.0 pp
-- ThePioneer (No‑R): mean +0.0 pp; max +0.0 pp
-- RichSoilSpecialist (No‑R): mean −0.1 pp; max −0.2 pp; winners ≥0.6 unchanged (5)
+Confidence Gains (Before → After, pwSEM L 7c)
+- Overall: marginal changes in means (typically <±0.5 pp) and small shifts in maxima (≈±0.5–1.0 pp) across presets; winners unchanged in No‑R.
+- With R: SunnyNeutral max ↑ to ≈30.0% (from ≈29.4%); PartialSunAverage max ↑ to ≈15.0% (from ≈14.4%).
+- Without R: RichSoilSpecialist max ≈82.5% (≈−0.3 pp); pass count remains 6.
+
+Review note (Light L): Since Run 7c is not AIC‑favoured (phylo‑GLS) and the joint‑probability improvements are marginal, we flag the L mean structure for future review. If subsequent evidence does not show clear predictive/joint‑gardening gains, consider reverting to the simpler Run 6 canonical L.
 
 Group‑Aware (Mycorrhiza) — Presets With vs Without R (Full dataset; σ+ρ per group; shrink_k=100)
 - Stage 4: per‑group copulas fitted with `--group_col Myco_Group_Final --shrink_k 100`.
@@ -123,27 +118,27 @@ With R (group‑aware)
 | Scenario           | Mean P | Median | Max   | Pass ≥0.6 |
 |--------------------|--------|--------|-------|-----------|
 | DryPoorSun         | 0.0%   | 0.0%   | 0.6%  | 0         |
-| PartialSunAverage  | 1.9%   | 0.4%   | 14.4% | 0         |
-| ShadeWetAcidic     | 0.1%   | 0.0%   | 3.1%  | 0         |
-| SunnyNeutral       | 2.2%   | 0.3%   | 29.4% | 0         |
-| WarmNeutralFertile | 3.9%   | 1.1%   | 15.3% | 0         |
+| PartialSunAverage  | 2.0%   | 0.5%   | 15.0% | 0         |
+| ShadeWetAcidic     | 0.1%   | 0.0%   | 2.9%  | 0         |
+| SunnyNeutral       | 2.2%   | 0.3%   | 30.0% | 0         |
+| WarmNeutralFertile | 4.1%   | 1.1%   | 15.7% | 0         |
 
 Without R (group‑aware)
 
 | Scenario              | Mean P | Median | Max   | Pass ≥0.6 |
 |-----------------------|--------|--------|-------|-----------|
 | CoolClimateSpecialist | 0.5%   | 0.0%   | 9.9%  | 0         |
-| LushShadePlant        | 1.3%   | 0.3%   | 11.7% | 0         |
-| RichSoilSpecialist    | 26.6%  | 13.0%  | 82.8% | 6         |
-| SunVsWaterTradeoff    | 0.2%   | 0.0%   | 2.9%  | 0         |
-| ThePioneer            | 0.2%   | 0.0%   | 2.2%  | 0         |
+| LushShadePlant        | 1.3%   | 0.2%   | 12.1% | 0         |
+| RichSoilSpecialist    | 26.5%  | 12.6%  | 82.5% | 6         |
+| SunVsWaterTradeoff    | 0.2%   | 0.0%   | 3.0%  | 0         |
+| ThePioneer            | 0.2%   | 0.0%   | 2.1%  | 0         |
 
 Notes
 - Numbers above aggregate across species with Myco labels; thresholds use each preset’s column (0.6 default).
 - Effects are consistent with earlier findings: R‑excluded presets are far more actionable; group‑aware σ+ρ further improves calibration and increases RichSoilSpecialist’s best probabilities (max ≈ 82.8%) and pass count (6).
 
 Winners at threshold 0.6 (No‑R, group‑aware Mycorrhiza)
-- RichSoilSpecialist (6 species): Pinus densiflora (82.8%), Pinus ponderosa (79.8%), Tsuga canadensis (78.0%), Picea glauca (69.3%), Cryptomeria japonica (66.9%), Sequoia sempervirens (65.7%).
+- RichSoilSpecialist (6 species): Pinus densiflora (82.5%), Pinus ponderosa (79.8%), Tsuga canadensis (78.2%), Picea glauca (69.3%), Cryptomeria japonica (66.8%), Sequoia sempervirens (65.5%).
 
 Group‑Aware (Mycorrhiza) — 23‑Species Subset (σ+ρ per group; shrink_k=100)
 - Subset: 23 species (seed=42) including the 5 earlier winners (Cryptomeria japonica, Pinus densiflora, Sequoia sempervirens, Pinus ponderosa, Tsuga canadensis). See `results/MAG_Run8/sample23_species.txt`.
@@ -152,21 +147,21 @@ With R (group‑aware, 23 spp)
 
 | Scenario           | Mean P | Median | Max   | Pass ≥0.6 |
 |--------------------|--------|--------|-------|-----------|
-| DryPoorSun         | 0.0002 | 0.0000 | 0.0026| 0         |
-| PartialSunAverage  | 0.0391 | 0.0109 | 0.2516| 0         |
-| ShadeWetAcidic     | 0.0000 | 0.0000 | 0.0003| 0         |
-| SunnyNeutral       | 0.0402 | 0.0160 | 0.1757| 0         |
-| WarmNeutralFertile | 0.0288 | 0.0001 | 0.1565| 0         |
+| DryPoorSun         | 0.0002 | 0.0000 | 0.0042| 0         |
+| PartialSunAverage  | 0.0307 | 0.0071 | 0.1704| 0         |
+| ShadeWetAcidic     | 0.0008 | 0.0001 | 0.0055| 0         |
+| SunnyNeutral       | 0.0187 | 0.0020 | 0.2958| 0         |
+| WarmNeutralFertile | 0.0295 | 0.0002 | 0.1575| 0         |
 
 Without R (group‑aware, 23 spp)
 
 | Scenario              | Mean P | Median | Max   | Pass ≥0.6 |
 |-----------------------|--------|--------|-------|-----------|
-| CoolClimateSpecialist | 0.0479 | 0.0016 | 0.2333| 0         |
-| LushShadePlant        | 0.0150 | 0.0046 | 0.0733| 0         |
-| RichSoilSpecialist    | 0.3180 | 0.2873 | 0.8239| 6         |
-| SunVsWaterTradeoff    | 0.0063 | 0.0000 | 0.0458| 0         |
-| ThePioneer            | 0.0008 | 0.0000 | 0.0139| 0         |
+| CoolClimateSpecialist | 0.0346 | 0.0003 | 0.1875| 0         |
+| LushShadePlant        | 0.0756 | 0.0222 | 0.3395| 0         |
+| RichSoilSpecialist    | 0.3212 | 0.3033 | 0.8213| 6         |
+| SunVsWaterTradeoff    | 0.0031 | 0.0000 | 0.0598| 0         |
+| ThePioneer            | 0.0017 | 0.0001 | 0.0332| 0         |
 
 ## How Gardeners Use This Guide
 1) Choose your site recipe:

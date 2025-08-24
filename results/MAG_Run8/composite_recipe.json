@@ -3,7 +3,7 @@
     "sem_stage": "Stage 2",
     "run": "Run 7 (rerun aligned)",
     "date": "2025-08-23",
-    "git_commit": "b807468"
+    "git_commit": "2a3f895"
   },
   "input_schema": {
     "columns": [

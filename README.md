@@ -236,6 +236,7 @@ Artifacts and reproducibility
 
 Core constructs and forms
 - Engine: Stage 2 d‑sep testing now uses pwSEM; prior piecewiseSEM results remain as legacy baselines for comparison.
+  - Legacy runner archived: `src/Stage_4_SEM_Analysis/archive_piecewise/run_sem_piecewise.R`. The top‑level `run_sem_piecewise.R` now emits a deprecation notice; use `run_sem_pwsem.R` instead.
 - Latent/composite axes: LES_core (−LMA, +Nmass) and SIZE (+logH, +logSM). CV uses training‑only composites.
 - Canonical y‑equations (Run 7; pwSEM):
   - Light (L; non‑linear GAM, rf_plus; Run 7c adopted): `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5)) + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))`.
@@ -250,7 +251,7 @@ Key run decisions and evidence
 - Co‑adapted LES in lavaan (Run 4): Replace directed inputs into LES with covariances (LES↔SIZE, LES↔logSSD); large ΔAIC/ΔBIC improvements across L/M/R/N despite modest absolute fit indices (Shipley & Douma, 2020; Douma & Shipley, 2021).
 - Interaction policy (Run 5 + 6P): Keep LES:logSSD for N (tiny CV gain; IC modestly favorable; phylo‑supported). Optional for T. Omit for L/M/R (no CV benefit; IC penalties) (Shipley & Douma, 2020).
 - Nonlinearity (Run 6): Reject s(logH) splines for M/R/N — consistent CV degradation and no IC support. Retain linear forms (cf. Kong et al., 2019).
-- Non‑linear Light (Run 6→7; pwSEM): Adopt RF‑informed L equation with smooths in LMA/logSSD/SIZE/logLA plus `LMA:logLA` and `logH:logSSD`. Improves L CV to ≈0.289 (10×5 CV) and is carried forward as the canonical L form in Run 7.
+- Non‑linear Light (Run 6→7; pwSEM): Adopt RF‑informed L equation with smooths in LMA/logSSD/SIZE/logLA plus `LMA:logLA` and `logH:logSSD`. Improves L CV to ≈0.289 (10×5 CV). Later updated in Run 7c to include `s(logH)` and two 2‑D smooths (`ti(logLA,logH)`, `ti(logH,logSSD)`), reaching ≈0.300.
 - Refined measurement (Run 7): Adopt LES_core (negLMA,Nmass) and add logLA as a direct predictor for all targets. Improves M/N CV and strongly lowers piecewise full‑model AIC/BIC for M/N; neutral to slightly worse for L/T; mixed for R. Overall adopted (Douma & Shipley, 2021).
 
 Run highlights 
@@ -267,7 +268,88 @@ Run highlights
 - Run 6 (Nonlinearity via s(logH) in the legacy piecewise runs; seed=42, 10×5 CV): Introduced a spline on logH for M/R/N (with deconstructed SIZE for M/N). Strong CV degradation for M/R/N (e.g., M R² ↓ to ~0.13) confirms linear forms are superior. Full‑model IC sums also favor simpler models. Adoption: reject splines; keep linear equations.
 - Run 6P (Phylogenetic GLS sensitivity): Brownian GLS on full data confirms coefficient sign stability (LES, SIZE/logH/logSM, logSSD) and supports the interaction policy (N yes; T optional). AIC_sum magnitudes differ from non‑phylo runs (different likelihood) — use for relative checks only.
  - Run 6 (L‑only GAM; pwSEM): Introduced RF‑informed non‑linear L with `s(LMA)`, `s(logSSD)`, `s(SIZE)`, `s(logLA)`, plus `LMA:logLA` and `logH:logSSD`; CV improved to R²≈0.279 (10×5; seed=123). Spec locked for Run 7.
- - Run 7 (Final; pwSEM): Adopted pure LES (negLMA,Nmass) and the RF‑informed L. Canonical forms: L non‑linear (above); T/R linear (`y ~ LES + SIZE + logSSD + logLA`); M/N deconstructed (`y ~ LES + logH + logSM + logSSD + logLA`), with `LES:logSSD` in N only. CV (mean±SD): L 0.289±0.083; T 0.231±0.065; R 0.155±0.060; M 0.408±0.081; N 0.425±0.076. See `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`.
+ 
+### Model Selection Policy (Priority Order)
+- **Cross‑validated performance (CV):** Primary. Prefer forms that improve repeated, stratified k×r CV (e.g., 10×5) with identical folds for paired testing. Look for practical gains (e.g., ΔR² ≥ ~0.01 with p<0.05) and stable error improvements (RMSE/MAE) before adoption.
+- **Information criteria (IC):** Secondary. Use AIC/AICc on full‑data fits for models under the same likelihood/data (e.g., Brownian GLS). Lower is better; treat ΔAIC > 10 as decisive, 4–10 substantial, <2 negligible. Use BIC as a stronger parsimony check when relevant. For multi‑equation structures, report and compare summed IC.
+- **lavaan fit indices:** Tertiary. CFI/RMSEA/SRMR provide descriptive context but do not override CV or IC unless indicating clear misspecification.
+- **Tie‑breakers:** Favor simpler, interpretable forms; maintain coefficient sign stability and validated group policies; avoid interactions/smooths without predictive or IC support. Document exceptions.
+- **Documented exception (L, Run 7c):** Adopted for predictive value (CV R² ≈ 0.300 vs 0.279 in Run 6; paired‑fold p≈0.001–0.002) despite worse phylo‑GLS AIC (≈11109 vs ≈11018). Keep Run 6 as the IC‑favoured alternative for inference.
+
+#### Repro Checklist (Policy Tests)
+- **Paired‑fold CV (A vs B):**
+  - Use identical CV settings: `--seed`, `--repeats`, `--folds`, `--stratify`, `--standardize`, `--cluster`, `--group_var`, and the same `--input_csv`.
+  - Example (L; 10×5; seed=123) — Candidate A (7c form):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+      --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --target=L --seed=123 --repeats=5 --folds=10 --stratify=true --standardize=true \
+      --cluster=Family --group_var=Woodiness \
+      --les_components=negLMA,Nmass --add_predictor=logLA \
+      --nonlinear=true --nonlinear_variant=rf_plus \
+      --deconstruct_size_L=true \
+      --add_interaction 'ti(logLA,logH),ti(logH,logSSD)' \
+      --out_dir artifacts/cv_compare/L_candidateA_7c
+    ```
+  - Example (L; same folds) — Candidate B (simpler comparator; adjust flags to match the form you’re testing, keep CV flags identical):
+    ```bash
+    Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+      --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --target=L --seed=123 --repeats=5 --folds=10 --stratify=true --standardize=true \
+      --cluster=Family --group_var=Woodiness \
+      --les_components=negLMA,Nmass --add_predictor=logLA \
+      --nonlinear=true --nonlinear_variant=rf_plus \
+      --deconstruct_size_L=false \
+      --add_interaction '' \
+      --out_dir artifacts/cv_compare/L_candidateB_simple
+    ```
+  - Compare `sem_pwsem_L_metrics.json` from both `--out_dir`s. Quick paired tests in R (R² and RMSE):
+    ```r
+    library(jsonlite)
+    a <- fromJSON('artifacts/cv_compare/L_candidateA_7c/sem_pwsem_L_metrics.json')
+    b <- fromJSON('artifacts/cv_compare/L_candidateB_simple/sem_pwsem_L_metrics.json')
+    fa <- a$metrics$per_fold[, c('rep','fold','R2','RMSE')]
+    fb <- b$metrics$per_fold[, c('rep','fold','R2','RMSE')]
+    x <- merge(fa, fb, by=c('rep','fold'), suffixes=c('_A','_B'))
+    with(x, list(
+      dR2 = t.test(R2_A - R2_B),
+      dRMSE = t.test(RMSE_A - RMSE_B)
+    ))
+    ```
+- **Information criteria (AIC) under phylogenetic GLS:**
+  - Fit each candidate on full data with identical phylogeny settings:
+    ```bash
+    # Candidate A (7c)
+    Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+      --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --target=L --repeats=1 --folds=2 --stratify=true --standardize=true \
+      --cluster=Family --group_var=Woodiness \
+      --les_components=negLMA,Nmass --add_predictor=logLA \
+      --nonlinear=true --nonlinear_variant=rf_plus --deconstruct_size_L=true \
+      --add_interaction 'ti(logLA,logH),ti(logH,logSSD)' \
+      --phylogeny_newick data/phylogeny/eive_try_tree.nwk --phylo_correlation brownian \
+      --out_dir artifacts/phylo_ic/L_candidateA_7c
+    
+    # Candidate B (simple)
+    Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+      --input_csv artifacts/model_data_complete_case_with_myco.csv \
+      --target=L --repeats=1 --folds=2 --stratify=true --standardize=true \
+      --cluster=Family --group_var=Woodiness \
+      --les_components=negLMA,Nmass --add_predictor=logLA \
+      --nonlinear=true --nonlinear_variant=rf_plus --deconstruct_size_L=false \
+      --add_interaction '' \
+      --phylogeny_newick data/phylogeny/eive_try_tree.nwk --phylo_correlation brownian \
+      --out_dir artifacts/phylo_ic/L_candidateB_simple
+    ```
+  - Compare `sem_pwsem_L_full_model_ic_phylo.csv` (or similarly named IC export) from both `--out_dir`s:
+    ```r
+    icA <- read.csv('artifacts/phylo_ic/L_candidateA_7c/sem_pwsem_L_full_model_ic_phylo.csv')
+    icB <- read.csv('artifacts/phylo_ic/L_candidateB_simple/sem_pwsem_L_full_model_ic_phylo.csv')
+    aicA <- sum(icA$AIC); aicB <- sum(icB$AIC)
+    delta <- aicA - aicB
+    wA <- exp(-0.5*delta) / (1 + exp(-0.5*delta))
+    list(AIC_A=aicA, AIC_B=aicB, delta_A_minus_B=delta, weight_A=wA)
+    ```
 
 Generate before/after p‑values text (Markdown)
 - Script: `src/Stage_4_SEM_Analysis/generate_pval_bullets.R` prints the “Before/After” bullets (bold if p<0.05) and a concise interpretation. Copy‑paste into your run summaries.
@@ -310,9 +392,9 @@ Generate before/after p‑values text (Markdown)
 ## Performance & Diagnostics
 
 - References: pwSEM summaries — Run 1: `results/summaries/summarypwsem/stage_sem_run1_pwsem_summary.md`; Run 2: `results/summaries/summarypwsem/stage_sem_run2_pwsem_summary.md`; Run 3: `results/summaries/summarypwsem/stage_sem_run3_pwsem_summary.md`; Run 4 (lavaan reference): `results/summaries/summarypwsem/stage_sem_run4_pwsem_summary.md`; Run 5: `results/summaries/summarypwsem/stage_sem_run5_pwsem_summary.md`.
- - References: pwSEM summaries — Run 6: `results/summaries/summarypwsem/stage_sem_run6_pwsem_summary.md`; Run 7 (final canonical): `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`.
+- References: pwSEM summaries — Run 6: `results/summaries/summarypwsem/stage_sem_run6_pwsem_summary.md`; Run 7: `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`; Run 7c (adopted L): `results/summaries/summarypwsem/stage_sem_run7c_pwsem_summary.md`.
 
-### Section 1 — Run 7 (Final SEM) Summary
+### Section 1 — Final SEM Summary (Run 7 with L updated in 7c)
 
 - Model form: Canonical pwSEM with pure LES (negLMA,Nmass), SIZE (logH,logSM), `logLA` as a direct predictor for all targets; woody‑only SSD→{L,T,R} and global SSD→{M,N}; non‑linear Light (GAM rf_plus) and linear/deconstructed forms for the others; `LES:logSSD` retained for N only.
 
@@ -341,7 +423,7 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
 - Phylogenetic checks: Full‑data GLS (Brownian/Pagel) retain core directions and practical significance; conclusions above are robust to phylogenetic non‑independence.
 
 - Adopted SEM mean structure (Directed Acyclic Graph, DAG; Run 7 canonical)
-  - L: non‑linear GAM (rf_plus): `y ~ s(LMA) + s(logSSD) + s(SIZE) + s(logLA) + Nmass + LMA:logLA + t2(LMA,logSSD) + logH:logSSD`.
+- L (7c adopted): `y ~ s(LMA) + s(logSSD) + s(logH) + s(logLA) + Nmass + LMA:logLA + t2(LMA,logSSD) + ti(logLA,logH) + ti(logH,logSSD)`.
   - T/R: linear SIZE (`y ~ LES + SIZE + logSSD + logLA`).
   - M/N: deconstructed SIZE (`y ~ LES + logH + logSM + logSSD + logLA`); N adds `LES:logSSD`.
 
@@ -370,7 +452,7 @@ Notes: Δ is Run7−Run6; lower is better. Strong IC improvements for M and N.
      - `results/summaries/summarypwsem/stage_sem_run7b_pwsem_summary.md` (exploratory)
      - `results/summaries/summarypwsem/stage_sem_run7c_pwsem_summary.md` (adopted L)
 
-### Comparisons — Baseline and Black‑Box
+### Section 2: Comparisons — Baseline and Black‑Box
 
 - Baseline (Multiple Regression): Cross‑validation shows wide variation across axes — strongest on N, weakest on R; L/T/M are modest.
   - CV R² ± SD: L 0.15±0.05, T 0.10±0.04, M 0.13±0.05, R 0.04±0.03, N 0.36±0.04.
@@ -393,7 +475,7 @@ We trained simple, high‑capacity baselines using the same six traits and CV pr
 
 | Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | Best |
 |:----:|:------------:|:-----------------:|:-----------------------:|:----:|
-| L | 0.289±0.083 | 0.297±0.046 | 0.321±0.039 | RF |
+| L | 0.300±0.077 | 0.297±0.046 | 0.321±0.039 | RF |
 | T | 0.231±0.065 | 0.168±0.051 | 0.209±0.048 | SEM |
 | M | 0.408±0.081 | 0.217±0.047 | 0.249±0.054 | SEM |
 | R | 0.155±0.060 | 0.044±0.023 | 0.062±0.040 | SEM |
@@ -402,7 +484,7 @@ We trained simple, high‑capacity baselines using the same six traits and CV pr
 Mini‑table — RMSE by model (CV mean ± SD)
 | Axis | SEM RMSE (±SD) | XGBoost RMSE (±SD) | Random Forest RMSE (±SD) | Best |
 |:----:|:--------------:|:------------------:|:-------------------------:|:----:|
-| L | 1.286±0.096 | 1.283±0.053 | 1.260±0.040 | RF |
+| L | 1.276±0.092 | 1.283±0.053 | 1.260±0.040 | RF |
 | T | 1.147±0.067 | 1.211±0.049 | 1.181±0.046 | SEM |
 | M | 1.155±0.083 | 1.329±0.034 | 1.301±0.050 | SEM |
 | R | 1.428±0.066 | 1.513±0.039 | 1.498±0.050 | SEM |
@@ -419,8 +501,8 @@ Regression (baseline)
   R 0.04 [#.........]
   N 0.36 [#######...]
 
-SEM (Run 7; canonical pwSEM)
-  L 0.289 [######....]
+SEM (Run 7c; adopted pwSEM)
+  L 0.300 [######....]
   T 0.231 [#####.....]
   M 0.408 [########..]
   R 0.155 [###.......]
@@ -468,10 +550,18 @@ Recreate figures
 ## Mixed Acyclic Graph (MAG) + Copulas — Residual Dependence for Joint Decisions
 
 Core setup
-- Mean equations: use the adopted canonical Run 7 forms for single‑axis predictions (non‑linear L GAM; linear T/R; deconstructed M/N with LES:logSSD only in N). Copulas model residual dependence only — mean structure stays intact (MAG = directed + bidirected edges).
+- Mean equations: use the adopted canonical forms (L = Run 7c; non‑linear GAM with `s(logH)` + two `ti` surfaces; T/R linear; M/N deconstructed with LES:logSSD in N). Copulas model residual dependence only — mean structure stays intact (MAG = directed + bidirected edges).
 - Detection: seed with BH‑FDR (q=0.05) and |ρ|≥0.15 on residuals, then refine using mixed‑effects, rank‑based m‑sep (Family random intercept; Kendall with rank‑PIT) to keep only practically meaningful spouses.
 - Families: Gaussian copulas for this run; selection by AIC.
 - Estimation: rank‑PIT pseudo‑observations; Gaussian MLE via z‑correlation (Douma & Shipley, 2022).
+
+Group‑aware results (Run 8 + L 7c)
+- With R presets (Myco groups; σ+ρ by group): small probability changes vs prior L; maxima shift modestly (e.g., SunnyNeutral to ≈30.0%; PartialSunAverage to ≈15.0%); no passes at 0.6.
+- Without R presets (confidence‑oriented): RichSoilSpecialist remains best — mean ≈26.5%, max ≈82.5%, pass count = 6 (Pinus densiflora, P. ponderosa, Tsuga canadensis, Picea glauca, Cryptomeria japonica, Sequoia sempervirens).
+- Takeaway: Joint‑probability changes from adopting L 7c are marginal; No‑R scenarios remain far more actionable than R‑included ones.
+
+Review note (Light L)
+- AIC under phylo‑GLS favours the simpler Run 6 L; given the marginal joint‑probability changes under 7c, we will review in future iterations whether to revert to Run 6’s canonical L unless additional predictive/joint gains emerge.
 
 Final spouse set (Run 8; GAM L residuals)
 - L ↔ M: Gaussian, ρ≈−0.186, n=1063, AIC≈−35.42
@@ -564,7 +654,7 @@ Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
 
 Artifacts (Run 8)
 - `results/MAG_Run8/mag_equations.json` — version Run 8 (pure LES; canonical forms).
-- `results/MAG_Run8/sem_pwsem_L_full_model.rds` — saved GAM for L (rf_plus + logH:logSSD).
+- `results/MAG_Run8/sem_pwsem_L_full_model.rds` — saved GAM for L (Run 8 reference). For 7c surfaces, see `artifacts/stage4_sem_pwsem_run7c_surfaces/` and Run 7c summary.
 - `results/MAG_Run8/mag_copulas.json` — 5 districts (final spouse set; optional group matrices).
 - `results/MAG_Run8/stage_sem_run8_residual_corr.csv` — 10 rows.
 - `results/MAG_Run8/stage_sem_run8_copula_fits.csv` — 5 rows.
@@ -685,7 +775,7 @@ Artifacts (Gardening)
 
 Key paths for replication (selected)
 - Stage 1 results: `results/summaries/stage1_multi_regression_summary.md`
-- SEM runs: `results/summaries/summarypiecewise/stage2_sem_run1_summary.md`, `results/summaries/summarypiecewise/stage_sem_run2_summary.md`, `results/summaries/summarypiecewise/stage_sem_run3_summary.md`, `results/summaries/summarypiecewise/stage_sem_run4_summary.md`, `results/summaries/summarypiecewise/stage_sem_run5_summary.md`, `results/summaries/summarypiecewise/stage_sem_run6_summary.md`, `results/summaries/summarypiecewise/stage_sem_run6P_summary.md`, `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`
+- SEM runs: `results/summaries/summarypiecewise/stage2_sem_run1_summary.md`, `results/summaries/summarypiecewise/stage_sem_run2_summary.md`, `results/summaries/summarypiecewise/stage_sem_run3_summary.md`, `results/summaries/summarypiecewise/stage_sem_run4_summary.md`, `results/summaries/summarypiecewise/stage_sem_run5_summary.md`, `results/summaries/summarypiecewise/stage_sem_run6_summary.md`, `results/summaries/summarypiecewise/stage_sem_run6P_summary.md`, `results/summaries/summarypwsem/stage_sem_run7_pwsem_summary.md`, `results/summaries/summarypwsem/stage_sem_run7c_pwsem_summary.md`
 - MAG + copulas: `results/summaries/summarypwsem/stage_sem_run8_summary.md`, `results/summaries/summarypwsem/stage_sem_run8_copula_diagnostics.md`
 - Gardening plan: `results/summaries/summarypwsem/PR_SUMMARY_Run8_Joint_Gardening.md`
 
@@ -704,11 +794,18 @@ Key paths for replication (selected)
 
 ## Light — Multi‑Regression vs SEM
 - Baseline multiple regression (MR): Light (L) outperforms T and R under MR (CV R²: L ≈ 0.15 > T ≈ 0.10 > R ≈ 0.04) but remains modest overall.
-- Final SEM (Run 7; canonical pwSEM): L now uses a targeted non‑linear GAM (rf_plus: smooths in LMA/logSSD/SIZE/logLA with LMA:logLA and logH:logSSD), improving L’s CV to ≈ 0.289 (10×5). This narrows the gap to Random Forest (≈ 0.321) while retaining interpretability and a causal graph.
+- Final SEM (Run 7c; adopted): L uses a targeted non‑linear GAM with `s(logH)` and two 2‑D surfaces (`ti(logLA,logH)`, `ti(logH,logSSD)`), improving L’s CV to ≈ 0.300 (10×5). This narrows the gap to Random Forest (≈ 0.321) while retaining interpretability and a causal graph.
   - Why this works: the non‑linearities focus where Stage 3 diagnostics showed curvature (LMA, logSSD) and interactions (LMA×logLA), while keeping T/M/R/N linear/deconstructed, which CV favored.
   - What remains: a small black‑box edge on L persists; this likely reflects missing light‑specific traits and context cues rather than a modeling gap.
 - Constraints vs MR: SEM encodes LES/SIZE + SSD structure and mediation, which can reduce raw flexibility versus MR; the targeted L GAM recovers much of the flexible signal without breaking the DAG.
 - M/R/N non‑linearity: generic splines (e.g., s(logH)) degrade CV for M/R/N — those axes remain linear (or deconstructed for M/N).
+
+### L — Future Fine‑Tuning (post‑7c)
+- Limit scope: only attempt one idea at a time; keep complexity ≤ 1 extra surface (all new terms shrinkable). Expected gain if helpful: ≈ +0.005–0.015 R².
+- EBM‑guided LES pair: add `ti(LMA,Nmass)` (small k, `bs="ts"`, `select=TRUE`) only if `top_pairs.json` consistently ranks it across folds. Captures sun–shade payoffs within LES; sometimes adds a small lift.
+- Replace LMA×LA: try `ti(LMA,logLA)` (shrinkable) in place of linear `LMA:logLA`. We previously saw no gain with `t2(LMA,logLA)`, but after deconstructing SIZE and adding the two new surfaces, this can become marginally useful. Keep off by default; promote only with paired‑fold evidence.
+- Residual booster (strictly bounded): train a tiny EBM on SEM residuals using only the three theory‑approved pairs `{(logLA,logH), (logH,logSSD), (LMA,Nmass)}` with shallow trees. Score train‑fold residuals and add back to SEM predictions. This can yield ≈ +0.01–0.02 while staying theory‑constrained. If adopted, document it as a post‑mean correction, not a new causal path.
+- Avoid now: more gates, more likelihood tweaks, or higher k everywhere. Tier‑2 evidence indicates these do not pay off on mean CV for this dataset.
 - Takeaway: With the non‑linear L adopted, SEM is close to the tree baselines on L and clearly ahead on T/M/R/N. Further L gains will come from adding light‑focused predictors and modest context signals (see below), not from broader splines.
 
 ## Future Additions To Improve L (beyond the six)

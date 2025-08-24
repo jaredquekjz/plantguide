@@ -221,10 +221,13 @@ main <- function() {
     req <- parse_req(opt$joint_requirement)
     if (!length(req)) stop("No valid axis=level entries parsed from --joint_requirement")
 
-    # Read RMSE per axis (Run 7)
+    # Read RMSE per axis (Run 7/7c); support piecewise or pwsem metrics
     read_sigma <- function(dir, letter) {
       p <- file.path(dir, sprintf("sem_piecewise_%s_metrics.json", letter))
-      if (!file.exists(p)) stop(sprintf("Metrics JSON not found: %s", p))
+      if (!file.exists(p)) {
+        p2 <- file.path(dir, sprintf("sem_pwsem_%s_metrics.json", letter))
+        if (file.exists(p2)) p <- p2 else stop(sprintf("Metrics JSON not found: %s or %s", p, p2))
+      }
       jj <- jsonlite::fromJSON(p)
       ag <- jj$metrics$aggregate
       if (is.data.frame(ag)) rmse <- as.numeric(ag$RMSE_mean[1]) else rmse <- as.numeric(ag[[1]]$RMSE_mean)
@@ -377,6 +380,10 @@ main <- function() {
     # Build Corr and Sigma once
     read_sigma <- function(dir, letter) {
       p <- file.path(dir, sprintf("sem_piecewise_%s_metrics.json", letter))
+      if (!file.exists(p)) {
+        p2 <- file.path(dir, sprintf("sem_pwsem_%s_metrics.json", letter))
+        if (file.exists(p2)) p <- p2 else stop(sprintf("Metrics JSON not found: %s or %s", p, p2))
+      }
       jj <- jsonlite::fromJSON(p)
       ag <- jj$metrics$aggregate
       if (is.data.frame(ag)) as.numeric(ag$RMSE_mean[1]) else as.numeric(ag[[1]]$RMSE_mean)

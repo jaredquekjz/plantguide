@@ -8,6 +8,7 @@ Final L mean structure (adopted)
 - rf_plus with deconstructed L SIZE and two smooth interactions:
   - Mean equation: `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5)) + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))`
 - Inference policy: woody‑only SSD→L (keep global SSD paths for M/N; L/T/R woody‑only per prior runs).
+- Selection note: Not AIC‑favoured under full‑data phylogenetic GLS. Run 7c reports AIC_sum ≈ 11109.61 vs Run 6 AIC_sum ≈ 11018.07 (lower is better). We tentatively adopt 7c for its modest predictive CV gain (ΔR² ≈ +0.021; paired‑fold p≈0.001–0.002), while retaining Run 6 as the more parsimonious, IC‑favoured alternative for inference.
 
 Validation A — Paired‑fold significance (vs Run‑7 canonical)
 - Protocol: identical 10×5 CV folds; paired per‑fold comparison of R² and RMSE.
@@ -22,7 +23,7 @@ Validation B — d‑sep and group policy
 - Implementation: keep L SSD path active for woody in d‑sep (global for M/N). For non‑woody, the practical contribution to L is weak; omit in strict d‑sep when testing independence.
 
 Validation C — Robustness checks
-- Phylogenetic GLS (Brownian): full‑model IC AIC_sum ≈ 11109.61; BIC_sum ≈ 11168.93; y‑coefficients retain sign/magnitude (LES, logH, logLA negative; SIZE negative), consistent with Run 7.
+- Phylogenetic GLS (Brownian): full‑model IC AIC_sum ≈ 11109.61; BIC_sum ≈ 11168.93; y‑coefficients retain sign/magnitude (LES, logH, logLA negative; SIZE negative), consistent with Run 7. For model selection, this AIC is worse than Run 6 (≈11018), so 7c is adopted for predictive value rather than IC.
 - Group‑specific smooths (Woodiness/Mycorrhiza): no additional 2‑D smooths adopted; only consider if a future IC test shows compelling ΔIC and ≥+0.01 ΔR².
 
 Cross‑validated Performance (L; mean ± SD; 10×5)
@@ -67,4 +68,3 @@ Rscript src/Stage_4_SEM_Analysis/export_L_surfaces.R \
   --input_csv artifacts/model_data_complete_case_with_myco.csv \
   --out_dir artifacts/stage4_sem_pwsem_run7c_surfaces
 ```
-

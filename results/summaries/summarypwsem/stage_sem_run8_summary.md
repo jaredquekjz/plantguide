@@ -3,7 +3,8 @@
 Purpose — keep the finalized SEM mean structure as a DAG and model residual dependencies between responses via copulas, yielding a mixed (directed + bidirected) acyclic graph over the observed variables (per Douma & Shipley, 2021/2022).
 
 ## Mean Structure (DAG; L non‑linear)
-- L: non‑linear GAM (pwSEM‑validated rf_plus + logH:logSSD); used for residualization and production predictions.
+- L: non‑linear GAM (Run 7c canonical form; deconstructed SIZE + two 2‑D smooths):
+  `y ~ s(LMA,k=5) + s(logSSD,k=5) + s(logH,k=5) + s(logLA,k=5) + Nmass + LMA:logLA + t2(LMA,logSSD,k=c(5,5)) + ti(logLA,logH,bs=c('ts','ts'),k=c(5,5)) + ti(logH,logSSD,bs=c('ts','ts'),k=c(5,5))`. Used for residualization and production predictions.
 - T/R: T,R ~ LES + SIZE + logSSD + logLA
 - M: M ~ LES + logH + logSM + logSSD + logLA
 - N: N ~ LES + logH + logSM + logSSD + logLA + LES:logSSD
@@ -20,7 +21,7 @@ Final spouse set (Run 8 MAG; with GAM L residuals):
 ## Copula Fits (per district)
 | A | B | n | family | rho | loglik | AIC |
 |---|---:|---:|---|---:|---:|---:|
-| L | M | 1063 | gaussian | -0.186 | 18.71 | -35.42 |
+| L | M | 1063 | gaussian | -0.184 | 18.38 | -34.77 |
 | T | R | 1049 | gaussian | 0.328 | 59.79 | -117.58 |
 | T | M | 1064 | gaussian | -0.389 | 87.28 | -172.57 |
 | M | R | 1049 | gaussian | -0.269 | 39.38 | -76.76 |
@@ -29,8 +30,8 @@ Final spouse set (Run 8 MAG; with GAM L residuals):
 ## m‑sep Residual Independence Test (DAG → MAG)
 Mixed, copula‑aware omnibus (independence claims only)
 ```
-k  C        df   p_value   AIC_msep   method   rank_pit   cluster
-5  107.84   10     <1e-6     117.84   kendall  TRUE       Family
+k  C        df        p_value           AIC_msep   method   rank_pit   cluster
+5  81.41    10   2.66e-13 (approx)      91.41     kendall  TRUE       Family
 ```
 
 Interpretation
@@ -63,7 +64,7 @@ Rscript src/Stage_4_SEM_Analysis/run_sem_msep_residual_test.R --input_csv artifa
 
 ## Artifacts
 - MAG_Run8/mag_equations.json — version Run 8 (pure LES)
-- MAG_Run8/sem_pwsem_L_full_model.rds — saved GAM for L (rf_plus + logH:logSSD)
+- MAG_Run8/sem_pwsem_L_full_model.rds — saved GAM for L (Run 7c form: `s(logH)` + `ti(logLA,logH)` + `ti(logH,logSSD)`)
 - MAG_Run8/mag_copulas.json — updated spouse set (5 districts; GAM L residuals)
 - MAG_Run8/stage_sem_run8_residual_corr.csv — rows 10
 - MAG_Run8/stage_sem_run8_copula_fits.csv — rows 5
