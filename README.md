@@ -85,7 +85,7 @@ Legend
 - Directed `X --> Y`: direct effect (appears in the y‑equation).
 - Dotted `X -. cov .- Z`: exogenous covariance.
 - Edge label `woody only`: path included for woody groups in strict d‑sep; global for M/N.
-- Label `s(.)`: nonlinear smooth; nodes `t2(·,·)` and `ti(·,·)` denote bivariate smooth surfaces.
+- Label `s(.)`: nonlinear smooth; nodes like `t2_*` and `ti_*` denote bivariate smooth surfaces.
 
 Light (L; non‑linear GAM; SIZE deconstructed)
 ```mermaid
@@ -109,17 +109,17 @@ flowchart LR
   Nmass --> L
 
   %% Pairwise surfaces (bivariate smooths)
-  LMA_SSD([t2(LMA, logSSD)])
+  LMA_SSD([t2_LMA_logSSD])
   LMA --> LMA_SSD
   SSD --> LMA_SSD
   LMA_SSD --> L
 
-  LA_H([ti(logLA, logH)])
+  LA_H([ti_logLA_logH])
   LA --> LA_H
   H  --> LA_H
   LA_H --> L
 
-  H_SSD([ti(logH, logSSD)])
+  H_SSD([ti_logH_logSSD])
   H   --> H_SSD
   SSD --> H_SSD
   H_SSD --> L
@@ -130,7 +130,7 @@ Temperature (T; linear SIZE)
 flowchart LR
   subgraph Exogenous
     LES[LES_core]
-    SIZ[SIZE (logH + logSM)]
+    SIZ[SIZE = logH+logSM]
     LA[logLA]
     SSD[logSSD]
   end
@@ -173,7 +173,7 @@ Reaction (R; linear SIZE)
 flowchart LR
   subgraph Exogenous
     LES[LES_core]
-    SIZ[SIZE (logH + logSM)]
+    SIZ[SIZE = logH+logSM]
     LA[logLA]
     SSD[logSSD]
   end
@@ -209,7 +209,7 @@ flowchart LR
   SSD --> N
 
   %% Interaction as product node
-  LESxSSD([LES_core:logSSD])
+  LESxSSD([LES_core_x_logSSD])
   LES --> LESxSSD
   SSD --> LESxSSD
   LESxSSD --> N
@@ -231,7 +231,7 @@ flowchart LR
     SM[logSM]
     LA[logLA]
     SSD[logSSD]
-    SIZE[SIZE (logH + logSM)]
+    SIZE[SIZE = logH+logSM]
   end
 
   %% Outcomes
@@ -249,7 +249,7 @@ flowchart LR
   Nmass --> L
   H   -- "s(.)" --> L
   LA  -- "s(.)" --> L
-  SSD -- "s(.); woody only" --> L
+  SSD -- "s(.)" --> L
 
   %% T (linear SIZE)
   LES --> T
@@ -276,7 +276,7 @@ flowchart LR
   SM  --> N
   LA  --> N
   SSD --> N
-  LESxSSD([LES_core:logSSD])
+  LESxSSD([LES_core_x_logSSD])
   LES --> LESxSSD
   SSD --> LESxSSD
   LESxSSD --> N
