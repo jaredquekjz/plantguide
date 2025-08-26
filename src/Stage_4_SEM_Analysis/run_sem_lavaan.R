@@ -21,19 +21,66 @@ suppressWarnings({
 
 args <- commandArgs(trailingOnly = TRUE)
 
+# Robust CLI parser: accepts "--k=v" and "--k v" and boolean flags ("--flag")
 parse_args <- function(args) {
   out <- list()
-  for (a in args) {
-    if (!grepl("^--[A-Za-z0-9_]+=", a)) next
-    kv <- sub("^--", "", a)
-    k <- sub("=.*$", "", kv)
-    v <- sub("^[^=]*=", "", kv)
-    out[[k]] <- v
+  i <- 1
+  while (i <= length(args)) {
+    a <- args[[i]]
+    if (grepl("^--[A-Za-z0-9_]+=", a)) {
+      kv <- sub("^--", "", a)
+      k <- sub("=.*$", "", kv)
+      v <- sub("^[^=]*=", "", kv)
+      out[[k]] <- v
+      i <- i + 1
+    } else if (grepl("^--[A-Za-z0-9_]+$", a)) {
+      k <- sub("^--", "", a)
+      v <- if (i < length(args)) args[[i+1]] else ""
+      if (nzchar(v) && !startsWith(v, "--")) {
+        out[[k]] <- v
+        i <- i + 2
+      } else {
+        out[[k]] <- "true"
+        i <- i + 1
+      }
+    } else {
+      i <- i + 1
+    }
   }
   out
 }
 
 opts <- parse_args(args)
+
+if (!is.null(opts$help) && tolower(opts$help) %in% c("true","1","yes","y","help")) {
+  cat("\nStage 4 — lavaan SEM runner (CV via composites + full-data lavaan)\n")
+  cat("Usage:\n")
+  cat("  Rscript src/Stage_4_SEM_Analysis/run_sem_lavaan.R \\\n+    --input_csv artifacts/model_data_complete_case_with_myco.csv \\\n+    --target L --transform logit --repeats 5 --folds 10 --stratify true \\\n+    --standardize true --winsorize false --group Woodiness --cluster Family \\\n+    --deconstruct_size true --les_core true --logLA_as_predictor true \\\n+    --add_direct_ssd_targets M,N --allow_les_size_cov true \\\n+    --out_dir artifacts/stage4_sem_lavaan_run7\n\n")
+  cat("Flags (accept --k=v or --k v):\n")
+  cat("  --input_csv PATH           Input CSV with columns: wfo_accepted_name, EIVEres-{L,T,M,R,N},\n")
+  cat("                             Leaf area (mm2), Nmass (mg/g), LMA (g/m2), Plant height (m),\n")
+  cat("                             Diaspore mass (mg), SSD used (mg/mm3)\n")
+  cat("  --target L|T|M|R|N         Axis to model (default L)\n")
+  cat("  --transform logit|identity Response transform for CV proxies (default logit)\n")
+  cat("  --repeats INT --folds INT  Repeated stratified CV (defaults 5×5)\n")
+  cat("  --stratify true|false      Stratify CV by y deciles (default true)\n")
+  cat("  --standardize true|false   Z-score predictors within folds (default true)\n")
+  cat("  --winsorize true|false     Winsorize predictors in train (default false)\n")
+  cat("  --group NAME               Group variable for lavaan multi-group (e.g., Woodiness)\n")
+  cat("  --cluster NAME             Cluster variable for robust SEs (e.g., Family)\n")
+  cat("  --deconstruct_size true|false Use logH+logSM directly in y (M/N style)\n")
+  cat("  --coadapt_les true|false   Replace LES ~ SIZE+logSSD with LES ~~ SIZE and LES ~~ logSSD\n")
+  cat("  --les_core true|false      Use LES =~ negLMA + Nmass (Run 7 core)\n")
+  cat("  --les_core_indicators CSV  If overriding, CSV of indicators (default negLMA,Nmass)\n")
+  cat("  --logLA_as_predictor true|false  Include logLA -> y\n")
+  cat("  --add_direct_ssd_targets CSV     Targets with direct logSSD -> y (e.g., M,N)\n")
+  cat("  --allow_les_size_cov true|false  Keep LES ~~ SIZE residual covariance\n")
+  cat("  --resid_cov STR            Extra residual covs (e.g., 'logH ~~ logSM; Nmass ~~ logLA')\n")
+  cat("  --bootstrap true|false     lavaan bootstrap SEs (default false); --n_boot N; --bootstrap_ci_type perc|bca|norm\n")
+  cat("  --out_dir PATH             Output directory\n\n")
+  cat("Examples: see README Section ‘Structural Equation Modeling’.\n")
+  quit(status = 0)
+}
 
 `%||%` <- function(a,b) if (!is.null(a) && nzchar(a)) a else b
 

@@ -31,19 +31,66 @@ suppressWarnings({
 
 args <- commandArgs(trailingOnly = TRUE)
 
+# Robust CLI parser: accepts "--k=v" and "--k v" and boolean flags ("--flag")
 parse_args <- function(args) {
   out <- list()
-  for (a in args) {
-    if (!grepl("^--[A-Za-z0-9_]+=", a)) next
-    kv <- sub("^--", "", a)
-    k <- sub("=.*$", "", kv)
-    v <- sub("^[^=]*=", "", kv)
-    out[[k]] <- v
+  i <- 1
+  while (i <= length(args)) {
+    a <- args[[i]]
+    if (grepl("^--[A-Za-z0-9_]+=", a)) {
+      kv <- sub("^--", "", a)
+      k <- sub("=.*$", "", kv)
+      v <- sub("^[^=]*=", "", kv)
+      out[[k]] <- v
+      i <- i + 1
+    } else if (grepl("^--[A-Za-z0-9_]+$", a)) {
+      k <- sub("^--", "", a)
+      v <- if (i < length(args)) args[[i+1]] else ""
+      if (nzchar(v) && !startsWith(v, "--")) {
+        out[[k]] <- v
+        i <- i + 2
+      } else {
+        out[[k]] <- "true"
+        i <- i + 1
+      }
+    } else {
+      i <- i + 1
+    }
   }
   out
 }
 
 opts <- parse_args(args)
+
+if (!is.null(opts$help) && tolower(opts$help) %in% c("true","1","yes","y","help")) {
+  cat("\nStage 4 — pwSEM runner (with CV + full-data d-sep)\n")
+  cat("Usage:\n")
+  cat("  Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \\\n+    --input_csv artifacts/model_data_complete_case_with_myco.csv \\\n+    --target L --repeats 5 --folds 10 --stratify true --standardize true \\\n+    --cluster Family --group_var Woodiness \\\n+    --les_components negLMA,Nmass --add_predictor logLA \\\n+    --nonlinear true --nonlinear_variant rf_plus --deconstruct_size_L true \\\n+    --add_interaction 'ti(logLA,logH),ti(logH,logSSD)' \\\n+    --out_dir artifacts/stage4_sem_pwsem_run7_pureles\n\n")
+  cat("Flags (accept --k=v or --k v):\n")
+  cat("  --input_csv PATH           Input CSV with columns: wfo_accepted_name, EIVEres-{L,T,M,R,N},\n")
+  cat("                             Leaf area (mm2), Nmass (mg/g), LMA (g/m2), Plant height (m),\n")
+  cat("                             Diaspore mass (mg), SSD used (mg/mm3)\n")
+  cat("  --target L|T|M|R|N         Axis to model (default L)\n")
+  cat("  --repeats INT --folds INT  Repeated stratified CV (defaults 5×5)\n")
+  cat("  --stratify true|false      Stratify CV by y deciles (default true)\n")
+  cat("  --standardize true|false   Z-score predictors within folds (default true)\n")
+  cat("  --winsorize true|false     Winsorize predictors in train (default false)\n")
+  cat("  --cluster NAME             Random intercept by cluster (default Family)\n")
+  cat("  --group_var NAME           Optional group (e.g., Woodiness) for multigroup d-sep\n")
+  cat("  --weights none|min|log1p_min  Optional row weights via min_records_6traits\n")
+  cat("  --les_components CSV       LES PCA components (e.g., negLMA,Nmass)\n")
+  cat("  --add_predictor CSV        Extra predictors in y (e.g., logLA)\n")
+  cat("  --add_interaction CSV      Interactions (e.g., LES:logSSD, ti(logLA,logH))\n")
+  cat("  --nonlinear true|false     Enable GAM for L (default false)\n")
+  cat("  --nonlinear_variant NAME   main|decon_les|rf_informed|rf_plus (default full/compat)\n")
+  cat("  --deconstruct_size true|false   Use logH+logSM instead of SIZE in y (M/N)\n")
+  cat("  --deconstruct_size_L true|false Use s(logH) instead of SIZE for L\n")
+  cat("  --psem_drop_logssd_y true|false Drop direct logSSD -> y in pwSEM (default true; kept for M/N)\n")
+  cat("  --phylogeny_newick PATH    Optional .nwk for phylo-GLS sensitivity\n")
+  cat("  --out_dir PATH             Output directory\n\n")
+  cat("Examples: see README Section ‘Structural Equation Modeling’.\n")
+  quit(status = 0)
+}
 
 `%||%` <- function(a,b) if (!is.null(a) && nzchar(a)) a else b
 
