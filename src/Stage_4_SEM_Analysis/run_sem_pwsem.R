@@ -107,27 +107,27 @@ standardize   <- tolower(opts[["standardize"]] %||% "true") %in% c("1","true","y
 weights_mode  <- opts[["weights"]] %||% "none"  # none|min|log1p_min
 cluster_var   <- opts[["cluster"]] %||% "Family"
 group_var     <- opts[["group_var"]] %||% ""      # optional (not used directly in pwSEM)
-nonlinear_opt <- tolower(opts[["nonlinear"]] %||% "false") %in% c("1","true","yes","y")
-nonlinear_variant <- tolower(opts[["nonlinear_variant"]] %||% "full")
-deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
+nonlinear_opt <- tolower(opts[["nonlinear"]] %||% if (target_letter == "L") "true" else "false") %in% c("1","true","yes","y")
+nonlinear_variant <- tolower(opts[["nonlinear_variant"]] %||% if (target_letter == "L") "rf_plus" else "full")
+deconstruct_size <- tolower(opts[["deconstruct_size"]] %||% if (target_letter %in% c("M","N")) "true" else "false") %in% c("1","true","yes","y")
 out_dir       <- opts[["out_dir"]]  %||% "artifacts/stage4_sem_pwsem"
 force_lm      <- tolower(opts[["force_lm"]] %||% "false") %in% c("1","true","yes","y")
 ## Global k for smooths (used in L GAM variants); default 5
 k_smooth_opt <- suppressWarnings(as.integer(opts[["k_smooth"]] %||% "5")); if (is.na(k_smooth_opt) || k_smooth_opt < 3) k_smooth_opt <- 5
 ## L-only options
-deconstruct_size_L <- tolower(opts[["deconstruct_size_L"]] %||% "false") %in% c("1","true","yes","y")
+deconstruct_size_L <- tolower(opts[["deconstruct_size_L"]] %||% if (target_letter == "L") "true" else "false") %in% c("1","true","yes","y")
 likelihood_opt <- tolower(opts[["likelihood"]] %||% "gaussian")  # gaussian|betar (L only)
 ## Optional toggles for non-L targets
 smooth_size_opt <- tolower(opts[["smooth_size"]] %||% "false") %in% c("1","true","yes","y")
 smooth_ssd_opt  <- tolower(opts[["smooth_ssd"]]  %||% "false") %in% c("1","true","yes","y")
-les_components_raw <- opts[["les_components"]] %||% "negLMA,Nmass,logLA"
+les_components_raw <- opts[["les_components"]] %||% "negLMA,Nmass"
 les_components <- trimws(unlist(strsplit(les_components_raw, ",")))
-add_predictor_raw <- opts[["add_predictor"]] %||% ""
+add_predictor_raw <- opts[["add_predictor"]] %||% "logLA"
 add_predictors <- trimws(unlist(strsplit(add_predictor_raw, ",")))
 want_logLA_pred <- any(tolower(add_predictors) == "logla")
 phylo_newick <- opts[["phylogeny_newick"]] %||% ""  # not used here
 phylo_corr   <- tolower(opts[["phylo_correlation"]] %||% "brownian")
-add_interactions <- opts[["add_interaction"]] %||% ""
+add_interactions <- opts[["add_interaction"]] %||% (if (target_letter == "L") "ti(logLA,logH),ti(logH,logSSD)" else if (target_letter == "N") "LES:logSSD" else "")
 want_les_x_ssd <- grepl("(^|[, ])LES:logSSD([, ]|$)", add_interactions)
 want_h_x_ssd   <- grepl("(^|[, ])logH:logSSD([, ]|$)", add_interactions, ignore.case = TRUE)
 want_n_x_la    <- grepl("(^|[, ])Nmass:logLA([, ]|$)", add_interactions, ignore.case = TRUE)

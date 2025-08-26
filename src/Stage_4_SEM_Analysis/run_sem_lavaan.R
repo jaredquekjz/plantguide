@@ -108,13 +108,13 @@ allow_les_size_cov     <- tolower(opts[["allow_les_size_cov"]]     %||% "true") 
 resid_cov_raw          <- opts[["resid_cov"]] %||% "logH ~~ logSM; Nmass ~~ logLA"
 resid_cov_terms        <- trimws(unlist(strsplit(resid_cov_raw, ";")))
 group_ssd_to_y_for     <- opts[["group_ssd_to_y_for"]] %||% ""  # comma-separated list of group labels where SSD->y is included
-deconstruct_size       <- tolower(opts[["deconstruct_size"]] %||% "false") %in% c("1","true","yes","y")
+deconstruct_size       <- tolower(opts[["deconstruct_size"]] %||% if (target_letter %in% c("M","N")) "true" else "false") %in% c("1","true","yes","y")
 coadapt_les            <- tolower(opts[["coadapt_les"]] %||% "false") %in% c("1","true","yes","y")  # if true, replace 'LES ~ SIZE + logSSD' with 'LES ~~ SIZE' and 'LES ~~ logSSD'
 # Run 7 — refined LES measurement and logLA as predictor
-les_core               <- tolower(opts[["les_core"]] %||% "false") %in% c("1","true","yes","y")
+les_core               <- tolower(opts[["les_core"]] %||% "true") %in% c("1","true","yes","y")
 les_core_inds_raw      <- opts[["les_core_indicators"]] %||% "negLMA,Nmass"
 les_core_inds          <- trimws(unlist(strsplit(les_core_inds_raw, ",")))
-logLA_as_predictor     <- tolower(opts[["logLA_as_predictor"]] %||% "false") %in% c("1","true","yes","y")
+logLA_as_predictor     <- tolower(opts[["logLA_as_predictor"]] %||% "true") %in% c("1","true","yes","y")
 min_group_n            <- suppressWarnings(as.integer(opts[["min_group_n"]] %||% "0")); if (is.na(min_group_n)) min_group_n <- 0
 
 # Bootstrap options (full-data lavaan inference only)
