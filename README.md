@@ -79,6 +79,222 @@ Notes
 > [!NOTE]
 > Planned expansions include root traits (SRL, diameter, RTD, N), light‑specific leaf traits (thickness, N per area), categorical syndromes (woodiness, growth form, phenology, mycorrhiza), and climate/soil covariates — see [Future Developments](#future-developments).
 
+#### Path Diagrams (Mermaid; Shipley style)
+
+Legend
+- Directed `X --> Y`: direct effect (appears in the y‑equation).
+- Dotted `X -. cov .- Z`: exogenous covariance.
+- Edge label `woody only`: path included for woody groups in strict d‑sep; global for M/N.
+- Label `s(.)`: nonlinear smooth; nodes `t2(·,·)` and `ti(·,·)` denote bivariate smooth surfaces.
+
+Light (L; non‑linear GAM; SIZE deconstructed)
+```mermaid
+flowchart LR
+  subgraph Exogenous
+    LMA[LMA]
+    Nmass[Nmass]
+    H[logH]
+    LA[logLA]
+    SSD[logSSD]
+  end
+  L[L]
+
+  %% Nonlinear main effects
+  LMA -- "s(.)" --> L
+  SSD -- "s(.)" --> L
+  H   -- "s(.)" --> L
+  LA  -- "s(.)" --> L
+
+  %% Linear term
+  Nmass --> L
+
+  %% Pairwise surfaces (bivariate smooths)
+  LMA_SSD([t2(LMA, logSSD)])
+  LMA --> LMA_SSD
+  SSD --> LMA_SSD
+  LMA_SSD --> L
+
+  LA_H([ti(logLA, logH)])
+  LA --> LA_H
+  H  --> LA_H
+  LA_H --> L
+
+  H_SSD([ti(logH, logSSD)])
+  H   --> H_SSD
+  SSD --> H_SSD
+  H_SSD --> L
+```
+
+Temperature (T; linear SIZE)
+```mermaid
+flowchart LR
+  subgraph Exogenous
+    LES[LES_core]
+    SIZ[SIZE (logH + logSM)]
+    LA[logLA]
+    SSD[logSSD]
+  end
+  T[T]
+
+  LES --> T
+  SIZ --> T
+  LA  --> T
+  SSD -- "woody only" --> T
+
+  %% Exogenous covariances (Shipley style)
+  LES -. "cov" .- SIZ
+  LES -. "cov" .- SSD
+```
+
+Moisture (M; deconstructed SIZE)
+```mermaid
+flowchart LR
+  subgraph Exogenous
+    LES[LES_core]
+    H[logH]
+    SM[logSM]
+    LA[logLA]
+    SSD[logSSD]
+  end
+  M[M]
+
+  LES --> M
+  H   --> M
+  SM  --> M
+  LA  --> M
+  SSD --> M
+
+  %% Exogenous covariance relevant to inference runs
+  LES -. "cov" .- SSD
+```
+
+Reaction (R; linear SIZE)
+```mermaid
+flowchart LR
+  subgraph Exogenous
+    LES[LES_core]
+    SIZ[SIZE (logH + logSM)]
+    LA[logLA]
+    SSD[logSSD]
+  end
+  R[R]
+
+  LES --> R
+  SIZ --> R
+  LA  --> R
+  SSD -- "woody only" --> R
+
+  %% Exogenous covariances (Shipley style)
+  LES -. "cov" .- SIZ
+  LES -. "cov" .- SSD
+```
+
+Nutrients (N; deconstructed SIZE + interaction)
+```mermaid
+flowchart LR
+  subgraph Exogenous
+    LES[LES_core]
+    H[logH]
+    SM[logSM]
+    LA[logLA]
+    SSD[logSSD]
+  end
+  N[N]
+
+  %% Main effects
+  LES --> N
+  H   --> N
+  SM  --> N
+  LA  --> N
+  SSD --> N
+
+  %% Interaction as product node
+  LESxSSD([LES_core:logSSD])
+  LES --> LESxSSD
+  SSD --> LESxSSD
+  LESxSSD --> N
+
+  %% Optional covariance for inference
+  LES -. "cov" .- SSD
+```
+
+All Axes — Overview (with legend)
+```mermaid
+flowchart LR
+  %% Exogenous predictors and composites
+  subgraph Exogenous
+    direction TB
+    LMA[LMA]
+    Nmass[Nmass]
+    LES[LES_core]
+    H[logH]
+    SM[logSM]
+    LA[logLA]
+    SSD[logSSD]
+    SIZE[SIZE (logH + logSM)]
+  end
+
+  %% Outcomes
+  subgraph Outcomes
+    direction TB
+    L[L]
+    T[T]
+    M[M]
+    R[R]
+    N[N]
+  end
+
+  %% L (nonlinear GAM; deconstructed SIZE)
+  LMA -- "s(.)" --> L
+  Nmass --> L
+  H   -- "s(.)" --> L
+  LA  -- "s(.)" --> L
+  SSD -- "s(.); woody only" --> L
+
+  %% T (linear SIZE)
+  LES --> T
+  SIZE --> T
+  LA  --> T
+  SSD -- "woody only" --> T
+
+  %% R (linear SIZE)
+  LES --> R
+  SIZE --> R
+  LA  --> R
+  SSD -- "woody only" --> R
+
+  %% M (deconstructed SIZE)
+  LES --> M
+  H   --> M
+  SM  --> M
+  LA  --> M
+  SSD --> M
+
+  %% N (deconstructed SIZE + interaction)
+  LES --> N
+  H   --> N
+  SM  --> N
+  LA  --> N
+  SSD --> N
+  LESxSSD([LES_core:logSSD])
+  LES --> LESxSSD
+  SSD --> LESxSSD
+  LESxSSD --> N
+
+  %% Exogenous covariances (Shipley)
+  LES -. "cov" .- SIZE
+  LES -. "cov" .- SSD
+
+  %% Legend panel
+  subgraph Legend
+    direction TB
+    X[X] --> Y[Y]
+    U[U] -. "cov" .- V[V]
+    W[W] -- "woody only" --> Q[Q]
+    A[A] -- "s(.)" --> B[B]
+  end
+```
+
 ## Table of Contents
 - [Quick Start — Non‑EIVE Species](#quick-start--non-eive-species)
 - [Data Methodology](#data-methodology)
