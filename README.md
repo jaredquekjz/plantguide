@@ -123,6 +123,12 @@ flowchart LR
   H   --> H_SSD
   SSD --> H_SSD
   H_SSD --> L
+
+  %% Linear interaction
+  LMAxLA([LMA_x_logLA])
+  LMA --> LMAxLA
+  LA  --> LMAxLA
+  LMAxLA --> L
 ```
 
 Temperature (T; linear SIZE)
