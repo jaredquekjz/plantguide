@@ -251,6 +251,28 @@ flowchart LR
   LA  -- "s(.)" --> L
   SSD -- "s(.)" --> L
 
+  %% L pairwise surfaces (bivariate smooths)
+  LMA_SSD([t2_LMA_logSSD])
+  LMA --> LMA_SSD
+  SSD --> LMA_SSD
+  LMA_SSD --> L
+
+  LA_H([ti_logLA_logH])
+  LA --> LA_H
+  H  --> LA_H
+  LA_H --> L
+
+  H_SSD([ti_logH_logSSD])
+  H   --> H_SSD
+  SSD --> H_SSD
+  H_SSD --> L
+
+  %% L linear interaction
+  LMAxLA([LMA_x_logLA])
+  LMA --> LMAxLA
+  LA  --> LMAxLA
+  LMAxLA --> L
+
   %% T (linear SIZE)
   LES --> T
   SIZE --> T
