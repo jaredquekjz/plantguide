@@ -409,6 +409,14 @@ Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
 Sources and matching
 - Traits: TRY curated species‑level means (six numeric traits): Leaf area (LA), Nmass, LMA, Plant height (H), Diaspore/Seed mass (SM), Wood density (SSD) (Díaz et al., 2022).
 - Indicators: Ecological Indicator Values for Europe (EIVE) 1.0 — continuous 0–10 indicator values for five environmental gradients: Light (L), Temperature (T), Moisture (M), Reaction/soil pH (R), and Nutrients (N). EIVE quantifies each species’ realized niche position in European vegetation, harmonizing and extending the classic Ellenberg system to a continuous European scale. Higher values indicate preference toward the higher end of each gradient (e.g., high‑light, warmer, wetter, more alkaline, more fertile sites) (Dengler et al., 2023; Dengler et al., 2024 IAVS).
+
+EIVE methodology (summary; not performed by this project)
+- Source systems: EIVE 1.0 identifies and aggregates 31 regional Ellenberg‑type indicator systems covering L, T, M, R, N across Europe.
+- Harmonization: Taxonomy is standardized (Euro+Med) and indicator dimensions are aligned across systems.
+- Rescaling: Each source system is converted to a common continuous 0–10 interval per dimension (0 = European minimum, 10 = European maximum).
+- Combination: For each species and dimension, rescaled values are combined across systems to obtain European niche position and niche width.
+- External validation: The resulting values are externally validated (e.g., Temperature against median bioclimatic conditions from global occurrences), with strong correlations reported.
+- Usage here: We use the published EIVE columns directly (e.g., `EIVEres-L`, `EIVEres-T`, `EIVEres-M`, `EIVEres-R`, `EIVEres-N`) linked to WFO‑accepted names. We do not perform any conversion from ordinal Ellenberg ranks ourselves. See Dengler et al. (2023; VCS 10.3897/VCS.98324) and the 2024 IAVS update (local: `papers/IAVS_2024_Dengler_et_al_EIVE_v.06.pdf`).
 - Name alignment: WFO‑accepted names via `data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`; unified normalization (hybrid sign ×/" x ", diacritics, whitespace/case).
 
 Datasets (assembled)
