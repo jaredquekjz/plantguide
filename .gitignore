@@ -6,6 +6,17 @@
 !/src/
 !/results/
 !/scripts/
+!/artifacts/
+
+# Keep artifacts ignored by default; selectively unignore small repro files
+artifacts/**
+!artifacts/model_data_complete_case.csv
+!artifacts/model_data_complete_case_with_myco.csv
+!artifacts/traits_matched.csv
+!artifacts/stage4_sem_pwsem_run7_pureles/
+artifacts/stage4_sem_pwsem_run7_pureles/**
+!artifacts/stage4_sem_pwsem_run7_pureles/sem_pwsem_*_metrics.json
+!artifacts/stage4_sem_pwsem_run7_pureles/sem_pwsem_*_preds.csv
 
 # Within tracked folders, keep common noise ignored
 __pycache__/

@@ -47,7 +47,7 @@ flowchart TD
 
 Composites
 - LES_core (pure): negative LMA, positive Nmass (trained as a composite; scaled within train folds)
-- SIZE: +logH + logSM (used for L/T/R; M/N use logH and logSM directly)
+- SIZE: +logH + logSM (used for T/R; L deconstructs SIZE to s(logH) in the GAM; M/N use logH and logSM directly)
 
 Equations (pwSEM; Run 7c adopted)
 ```
@@ -67,6 +67,15 @@ Notes
 - Transforms: log10 for LA, H, SM, SSD; predictors standardized within training folds.
 - Interaction: LES_core:logSSD kept for N only (optional for T; not adopted). L uses `LMA:logLA` and two 2‑D smooths `ti(logLA,logH)` and `ti(logH,logSSD)`; SIZE is deconstructed to `s(logH)` for L.
 - Group moderation: SSD→{L,T,R} is strongest in woody groups; treat SSD paths as woody‑only in strict d‑sep, with global SSD→{M,N}.
+
+### Phylogenetic Neighbor Blending (Run 7/7c pwSEM folds)
+- Rationale: Use a weighted phylogenetic neighbor predictor (p_k) to borrow signal from closely related species, capturing unmeasured physiological/edaphic traits.
+- Method: For axis k and species j, p_k(j) = sum_i w_ij·E_k(i) / sum_i w_ij, where w_ij = 1/d_ij^x (x=2), donors restricted to training folds (no leakage).
+- Heavy CV (10×5, exact SEM folds) baseline (α=0) replicates SEM R² means:
+  - L 0.300, T 0.231, M 0.408, R 0.155, N 0.425.
+- Blended results (R² mean, recommended α=0.25 for all axes):
+  - L 0.3215, T 0.2494, M 0.4251, R 0.1616, N 0.4358.
+- Production use: keep SEM as the mean structure; blend post‑hoc with α=0.25 per axis. See Makefile `mag_predict_blended` and Stage 5 README for flags.
 
 | Axis | SEM R² (±SD) | XGBoost R² (±SD) | Random Forest R² (±SD) | EBM R² (±SD) | Best |
 |:----:|:------------:|:-----------------:|:-----------------------:|:-------------:|:----:|
@@ -351,14 +360,15 @@ flowchart LR
 
 ## Quick Start — Non‑EIVE Species
 - Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
-- Generate predictions from traits (MAG equations):
+- Generate predictions from traits (MAG equations; SEM L via Run 7c GAM if provided):
 
 ```bash
 Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
   --input_csv data/new_traits.csv \
   --output_csv results/mag_predictions_no_eive.csv \
   --equations_json results/MAG_Run8/mag_equations.json \
-  --composites_json results/MAG_Run8/composite_recipe.json
+  --composites_json results/MAG_Run8/composite_recipe.json \
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
 ```
 
 - Turn predictions into gardening requirements (with joint options):
@@ -399,6 +409,11 @@ Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
 ```
 
 </details>
+
+### Makefile — One‑liners
+- `make mag_predict MAG_INPUT=data/new_traits.csv MAG_OUTPUT=results/mag_predictions_no_eive.csv` — SEM/MAG predictions only.
+- `make mag_predict_blended MAG_INPUT=data/new_traits.csv MAG_OUTPUT=results/mag_predictions_blended.csv` — SEM/MAG + phylogenetic blending (α=0.25 per axis).
+  - Defaults: `EQ_JSON=results/MAG_Run8/mag_equations.json`, `RECIPE_JSON=results/MAG_Run8/composite_recipe.json`, `GAM_L_RDS=results/MAG_Run8/sem_pwsem_L_full_model.rds`, `PHYLO_NEWICK=data/phylogeny/eive_try_tree.nwk`, `REF_EIVE=artifacts/model_data_complete_case_with_myco.csv`, `ALPHA_PER_AXIS=L=0.25,T=0.25,M=0.25,R=0.25,N=0.25`, `X_EXP=2`.
 
 <p align="right"><a href="#from-plant-traits-to-gardening-requirements">Back to top ↑</a></p>
 
