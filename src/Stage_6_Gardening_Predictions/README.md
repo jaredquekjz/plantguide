@@ -21,16 +21,24 @@ Quick Start (from artifacts)
        --output_csv results/mag_input_no_eive.csv \
        --drop_if_has_eive true`
 
-2) Run Stage 5 MAG prediction on those rows:
+2) Run Stage 5 MAG prediction on those rows (blended default):
    - `Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
        --input_csv results/mag_input_no_eive.csv \
-       --output_csv results/mag_predictions_no_eive.csv \
+       --output_csv results/mag_predictions_blended.csv \
        --equations_json results/MAG_Run8/mag_equations.json \
-       --composites_json results/MAG_Run8/composite_recipe.json`
+       --composites_json results/MAG_Run8/composite_recipe.json \
+       --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds \
+       --blend_with_phylo true \
+       --alpha_per_axis L=0.25,T=0.25,M=0.25,R=0.25,N=0.25 \
+       --phylogeny_newick data/phylogeny/eive_try_tree.nwk \
+       --reference_eive_csv artifacts/model_data_complete_case_with_myco.csv \
+       --reference_species_col wfo_accepted_name \
+       --target_species_col species \
+       --x 2 --k_trunc 0`
 
-3) Convert predictions into gardening recommendations:
+3) Convert predictions into gardening recommendations (blended predictions):
    - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
-       --predictions_csv results/mag_predictions_no_eive.csv \
+       --predictions_csv results/mag_predictions_blended.csv \
        --output_csv results/gardening/garden_requirements_no_eive.csv \
        --bins 0:3.5,3.5:6.5,6.5:10 \
        --borderline_width 0.5 \
@@ -39,7 +47,7 @@ Quick Start (from artifacts)
 4) Optional — Joint suitability with copulas (Run 8):
    - Estimate P(requirement) per species using pairwise Gaussian copulas from `results/MAG_Run8/mag_copulas.json` and residual scales from Run 7 metrics:
    - `Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
-       --predictions_csv results/mag_predictions_no_eive.csv \
+       --predictions_csv results/mag_predictions_blended.csv \
        --copulas_json results/MAG_Run8/mag_copulas.json \
        --metrics_dir artifacts/stage4_sem_piecewise_run7 \
        --joint_requirement L=high,M=med,R=med \
@@ -75,7 +83,7 @@ Quick Start (from artifacts)
          --summary_csv results/gardening/garden_joint_summary.csv`
    - Annotate recommender with the best scenario per species:
      - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
-         --predictions_csv results/mag_predictions_no_eive.csv \
+         --predictions_csv results/mag_predictions_blended.csv \
        --output_csv results/gardening/garden_requirements_no_eive.csv \
        --bins 0:3.5,3.5:6.5,6.5:10 \
        --joint_presets_csv results/gardening/garden_joint_presets_defaults.csv \
@@ -114,7 +122,7 @@ Assumptions
 Validation (optional)
 - If you have label classes for non-EIVE species (e.g., from horticultural guides), save as `data/garden_labels.csv` with columns `species, L, T, M, R, N` (values in {low, med, high}). Then run:
   - `Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
-       --predictions_csv results/mag_predictions_no_eive.csv \
+       --predictions_csv results/mag_predictions_blended.csv \
        --output_csv results/gardening/garden_requirements_no_eive.csv \
        --validate_with_labels data/garden_labels.csv`
   - Produces: `results/gardening/garden_validation_report.md`.

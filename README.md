@@ -358,24 +358,31 @@ flowchart LR
 - [License](#license)
 - [References](#references)
 
-## Quick Start — Non‑EIVE Species
-- Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `Species`) if desired.
-- Generate predictions from traits (MAG equations; SEM L via Run 7c GAM if provided):
+## Quick Start — Non‑EIVE Species (Blended Default)
+- Prepare a CSV with columns: `LMA`, `Nmass`, `LeafArea`, `PlantHeight`, `DiasporeMass`, `SSD`. One row per species; include an identifier column (e.g., `species`) if desired.
+- Generate blended predictions from traits (SEM/MAG mean structure + phylogenetic neighbor, α=0.25 recommended; L via Run 7c GAM):
 
 ```bash
 Rscript src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
   --input_csv data/new_traits.csv \
-  --output_csv results/mag_predictions_no_eive.csv \
+  --output_csv results/mag_predictions_blended.csv \
   --equations_json results/MAG_Run8/mag_equations.json \
   --composites_json results/MAG_Run8/composite_recipe.json \
-  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds
+  --gam_L_rds results/MAG_Run8/sem_pwsem_L_full_model.rds \
+  --blend_with_phylo true \
+  --alpha_per_axis L=0.25,T=0.25,M=0.25,R=0.25,N=0.25 \
+  --phylogeny_newick data/phylogeny/eive_try_tree.nwk \
+  --reference_eive_csv artifacts/model_data_complete_case_with_myco.csv \
+  --reference_species_col wfo_accepted_name \
+  --target_species_col species \
+  --x 2 --k_trunc 0
 ```
 
 - Turn predictions into gardening requirements (with joint options):
 
 ```bash
 Rscript src/Stage_6_Gardening_Predictions/calc_gardening_requirements.R \
-  --predictions_csv results/mag_predictions_no_eive.csv \
+  --predictions_csv results/mag_predictions_blended.csv \
   --output_csv results/gardening/garden_requirements_no_eive.csv \
   --bins 0:3.5,3.5:6.5,6.5:10 \
   --borderline_width 0.5 \
@@ -400,7 +407,7 @@ Optional — Group‑Aware Uncertainty and Copulas
 
 ```bash
 Rscript src/Stage_6_Gardening_Predictions/joint_suitability_with_copulas.R \
-  --predictions_csv results/mag_predictions_no_eive.csv \
+  --predictions_csv results/mag_predictions_blended.csv \
   --copulas_json results/MAG_Run8/mag_copulas.json \
   --metrics_dir artifacts/stage4_sem_pwsem_run7_pureles \
   --presets_csv results/gardening/garden_joint_presets_defaults.csv \
