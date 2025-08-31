@@ -3,6 +3,7 @@
 !/.gitignore
 !/LICENSE
 !/README.md
+!/Makefile
 !/src/
 !/results/
 !/scripts/
