@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This analysis documents the complete implementation of hybrid trait-bioclim models for Temperature prediction, including climate integration, phylogenetic blending assessment, and proper AIC-based model selection. The final approach achieves **R² = 0.528** (488% improvement over trait-only baseline), demonstrating that climate variables provide transformative predictive power while phylogenetic information becomes redundant when climate data is available.
+This analysis documents the complete implementation of hybrid trait-bioclim models for Temperature prediction, including climate integration, phylogenetic blending assessment, and proper AIC-based model selection. Using rigorous 10×5 cross-validation matching the README's protocol, the climate-enhanced model achieves **R² = 0.505 ± 0.113**, more than doubling the performance of the SEM baseline (R² = 0.231 ± 0.065), while phylogenetic information becomes redundant when climate data is available.
 
 ## 1. Data Integration and Methodology
 
@@ -50,8 +50,8 @@ This analysis documents the complete implementation of hybrid trait-bioclim mode
 
 **Model comparison results**:
 
-| Model | AIC | R² | Parameters | Description |
-|-------|-----|-----|------------|-------------|
+| Model | AIC | In-sample R² | Parameters | Description |
+|-------|-----|--------------|------------|-------------|
 | **rf_top10** ✓ | 1521.4 | 0.528 | 11 | Top 10 RF features |
 | full | 1522.7 | 0.542 | 19 | All features + interactions |
 | climate_all | 1526.2 | 0.531 | 15 | All climate + traits |
@@ -64,9 +64,11 @@ y ~ tmax_mean + mat_mean + mat_q05 + mat_q95 + tmin_mean +
     precip_mean + drought_min + logH + wood_cold + SIZE
 ```
 
-**Performance**:
-- In-sample R²: 0.528 (Adj R² = 0.520)
-- Cross-validation: R² = 0.488 ± 0.087
+**Performance (Rigorous 10×5 CV)**:
+- **Cross-validation R²**: 0.505 ± 0.113 (range: 0.252 to 0.707)
+- **RMSE**: 0.937 ± 0.104
+- **MAE**: 0.707 ± 0.072
+- In-sample R²: 0.528 (for reference only)
 - Includes critical wood_cold interaction
 
 ### 2.3 Phylogenetic Blending Analysis
@@ -104,17 +106,17 @@ y ~ tmax_mean + mat_mean + mat_q05 + mat_q95 + tmin_mean +
 ## 4. Final Recommendations
 
 ### For Temperature Axis
-1. **Use rf_top10 model**: Optimal AIC with R² = 0.528
-2. **Include climate variables**: Essential for good performance
+1. **Use rf_top10 model**: Optimal AIC with CV R² = 0.505 ± 0.113
+2. **Include climate variables**: Essential for good performance (doubles SEM baseline)
 3. **Skip phylogenetic blending**: No benefit when climate available
 4. **Keep wood_cold interaction**: Biologically important
 
 ### For Other EIVE Axes
 Based on Temperature results, expected performance:
 
-| Axis | Current R² | With Climate | With Phylogeny | Strategy |
-|------|------------|--------------|----------------|----------|
-| T | 0.231 | **0.528** | No benefit | Climate only |
+| Axis | Current R² (CV) | With Climate (CV) | With Phylogeny | Strategy |
+|------|-----------------|-------------------|----------------|----------|
+| T | 0.231 ± 0.065 | **0.505 ± 0.113** | No benefit | Climate only |
 | M | 0.408 | ~0.50 | Minimal | Climate primary |
 | R | 0.155 | Unknown | Possible | Test all |
 | N | 0.425 | ~0.45 | Minimal | Marginal gains |
@@ -150,7 +152,8 @@ Based on Temperature results, expected performance:
 ## 6. Scientific Impact
 
 ### Advances in Ecological Prediction
-- **R² > 0.5 is exceptional** for ecological field data
+- **CV R² = 0.505 ± 0.113 is exceptional** for ecological field data
+- More than doubles the SEM baseline (0.231 ± 0.065) using same rigorous 10×5 CV
 - Demonstrates value of integrating occurrence-based climate data
 - Validates structured regression paradigm for complex ecological systems
 
@@ -161,23 +164,24 @@ Based on Temperature results, expected performance:
 4. **Context matters**: Phylogeny valuable only when direct measures unavailable
 
 ### Comparison with Published Benchmarks
-| Study Type | Typical R² | Our R² | Assessment |
-|------------|------------|--------|------------|
-| Species distribution models | 0.2-0.4 | 0.528 | Excellent |
-| Trait-environment relationships | 0.1-0.3 | 0.528 | Outstanding |
-| Functional ecology | 0.2-0.4 | 0.528 | Top-tier |
+| Study Type | Typical R² | Our CV R² | Assessment |
+|------------|------------|-----------|------------|
+| Species distribution models | 0.2-0.4 | 0.505 ± 0.113 | Excellent |
+| Trait-environment relationships | 0.1-0.3 | 0.505 ± 0.113 | Outstanding |
+| Functional ecology | 0.2-0.4 | 0.505 ± 0.113 | Top-tier |
+| SEM baseline (this study) | 0.231 ± 0.065 | 0.505 ± 0.113 | +118% improvement |
 
 ## 7. Conclusions
 
 This comprehensive analysis establishes that:
 
-1. **Climate integration is transformative**: Improving R² from 0.107 to 0.528 (488% gain)
-2. **Proper workflow matters**: Testing models before removing features improves performance
-3. **Phylogenetic blending becomes redundant**: When climate data is available
-4. **Simpler models often sufficient**: Complex interactions and transformations add little
+1. **Climate integration is transformative**: CV R² improves from 0.231 to 0.505 (+118% gain over SEM)
+2. **Rigorous validation confirms robustness**: 10×5 CV shows R² = 0.505 ± 0.113 with good stability
+3. **Proper workflow matters**: Testing models before removing features improves performance
+4. **Phylogenetic blending becomes redundant**: When climate data is available
 5. **Multicollinearity is acceptable**: For prediction tasks, correlated features help
 
-The final model achieves exceptional performance by ecological standards while maintaining interpretability. This approach provides a robust framework for predicting plant ecological indicator values that can be applied to gardening recommendations and ecological assessments.
+The final model achieves exceptional performance by ecological standards (CV R² > 0.5) while maintaining interpretability. The 10×5 cross-validation protocol matches the README's rigorous standard, ensuring fair comparison with existing benchmarks. This approach provides a robust framework for predicting plant ecological indicator values that can be applied to gardening recommendations and ecological assessments.
 
 ---
 *Generated: 2025-09-09*  

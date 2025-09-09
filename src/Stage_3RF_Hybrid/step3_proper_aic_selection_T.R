@@ -300,36 +300,99 @@ if (!is.null(vif_df) && any(vif_df$vif > 10)) {
 }
 
 # ============================================================================
-# STEP 3E: CROSS-VALIDATION OF BEST MODEL
+# STEP 3E: CROSS-VALIDATION OF BEST MODEL (10×5 REPEATED CV)
 # ============================================================================
 
 cat("\n==========================================\n")
-cat("Cross-Validation (10-fold)\n")
+cat("Cross-Validation (10×5 Repeated CV)\n")
 cat("==========================================\n\n")
 
-n <- nrow(model_data)
-folds <- sample(rep(1:10, length.out = n))
-cv_results <- numeric(10)
-
-for (fold in 1:10) {
-  train_idx <- which(folds != fold)
-  test_idx <- which(folds == fold)
+# Function to create stratified folds based on target quantiles
+make_stratified_folds <- function(y, k = 10) {
+  n <- length(y)
+  # Create quantile-based strata
+  strata <- cut(y, breaks = quantile(y, probs = seq(0, 1, length.out = k + 1)), 
+                include.lowest = TRUE, labels = FALSE)
+  folds <- integer(n)
   
-  # Refit model on training data
-  train_formula <- formula(best_model)
-  cv_model <- lm(train_formula, data = model_data[train_idx, ])
-  
-  # Predict on test data
-  pred <- predict(cv_model, newdata = model_data[test_idx, ])
-  actual <- model_data$y[test_idx]
-  
-  # Calculate fold R²
-  cv_results[fold] <- 1 - sum((actual - pred)^2) / sum((actual - mean(actual))^2)
+  # Assign observations to folds within each stratum
+  for (s in unique(strata[!is.na(strata)])) {
+    idx <- which(strata == s)
+    folds[idx] <- sample(rep(1:k, length.out = length(idx)))
+  }
+  return(folds)
 }
 
-cat(sprintf("CV R²: %.3f ± %.3f\n", mean(cv_results), sd(cv_results)))
-cat(sprintf("Min fold R²: %.3f\n", min(cv_results)))
-cat(sprintf("Max fold R²: %.3f\n", max(cv_results)))
+# Perform 10×5 repeated CV
+n_folds <- 10
+n_repeats <- 5
+cv_results <- data.frame(
+  repeat_num = integer(),
+  fold = integer(),
+  r2 = numeric(),
+  rmse = numeric(),
+  mae = numeric()
+)
+
+set.seed(CONFIG$seed)  # Ensure reproducibility
+
+for (rep in 1:n_repeats) {
+  # Create new stratified fold assignment for each repeat
+  folds <- make_stratified_folds(model_data$y, k = n_folds)
+  
+  for (fold in 1:n_folds) {
+    train_idx <- which(folds != fold)
+    test_idx <- which(folds == fold)
+    
+    # Refit model on training data
+    train_formula <- formula(best_model)
+    cv_model <- lm(train_formula, data = model_data[train_idx, ])
+    
+    # Predict on test data
+    pred <- predict(cv_model, newdata = model_data[test_idx, ])
+    actual <- model_data$y[test_idx]
+    
+    # Calculate metrics
+    r2 <- 1 - sum((actual - pred)^2) / sum((actual - mean(actual))^2)
+    rmse <- sqrt(mean((actual - pred)^2))
+    mae <- mean(abs(actual - pred))
+    
+    # Store results
+    cv_results <- rbind(cv_results, data.frame(
+      repeat_num = rep,
+      fold = fold,
+      r2 = r2,
+      rmse = rmse,
+      mae = mae
+    ))
+  }
+  
+  cat(sprintf("Repeat %d complete: mean R² = %.3f\n", rep, 
+              mean(cv_results$r2[cv_results$repeat_num == rep])))
+}
+
+# Calculate summary statistics
+cv_summary <- cv_results %>%
+  summarise(
+    r2_mean = mean(r2),
+    r2_sd = sd(r2),
+    r2_min = min(r2),
+    r2_max = max(r2),
+    rmse_mean = mean(rmse),
+    rmse_sd = sd(rmse),
+    mae_mean = mean(mae),
+    mae_sd = sd(mae)
+  )
+
+cat(sprintf("\n10×5 CV Results:\n"))
+cat(sprintf("R²: %.3f ± %.3f (range: %.3f to %.3f)\n", 
+            cv_summary$r2_mean, cv_summary$r2_sd, 
+            cv_summary$r2_min, cv_summary$r2_max))
+cat(sprintf("RMSE: %.3f ± %.3f\n", cv_summary$rmse_mean, cv_summary$rmse_sd))
+cat(sprintf("MAE: %.3f ± %.3f\n", cv_summary$mae_mean, cv_summary$mae_sd))
+
+# Save detailed CV results
+write_csv(cv_results, file.path(CONFIG$out_dir, "cv_results_10x5.csv"))
 
 # ============================================================================
 # SAVE RESULTS
@@ -351,8 +414,10 @@ summary_results <- list(
     r2 = aic_comparison$r2[1],
     adj_r2 = aic_comparison$adj_r2[1],
     n_params = aic_comparison$n_params[1],
-    cv_r2 = mean(cv_results),
-    cv_r2_sd = sd(cv_results)
+    cv_r2_mean = cv_summary$r2_mean,
+    cv_r2_sd = cv_summary$r2_sd,
+    cv_rmse_mean = cv_summary$rmse_mean,
+    cv_rmse_sd = cv_summary$rmse_sd
   ),
   vif_diagnostics = if(exists("vif_df")) vif_df else NULL,
   formula = as.character(formula(best_model))[3]
