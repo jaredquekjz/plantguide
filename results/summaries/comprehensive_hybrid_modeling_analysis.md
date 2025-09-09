@@ -8,9 +8,17 @@ This analysis documents the complete implementation of hybrid trait-bioclim mode
 
 ### Dataset Construction
 - **Trait species**: 1,068 from `artifacts/model_data_complete_case_with_myco.csv`
-- **GBIF occurrences**: 853 species with bioclim extractions
+- **GBIF occurrences**: 853 species with bioclim extractions (5.14M occurrence points)
 - **Quality filtering**: 559 species with ≥30 occurrences (robust climate statistics)
 - **Final dataset**: 559 species × 25 features (traits + climate + interactions)
+
+### Bioclim Data Processing
+- **Aggregation method**: Simple mean and standard deviation per species
+  - `bio1_mean = mean(all occurrences)` - Average temperature of realized niche
+  - `bio1_sd = sd(all occurrences)` - Temperature niche breadth
+- **No weighting**: All occurrences weighted equally (no spatial thinning)
+- **Derived metrics**: Quantiles approximated as mean ± 1.645×SD (assuming normality)
+- **Variables used**: 19 bioclim variables from WorldClim 2.1 at occurrence points
 
 ### Three-Component Framework
 1. **Traits** (TRY database): logH, logSM, logSSD, logLA, LMA, Nmass
