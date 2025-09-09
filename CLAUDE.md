@@ -24,9 +24,15 @@ make stage6_joint_default PRED_CSV=results/mag_predictions_blended.csv
 ```
 
 ### Model Training & Cross-Validation
+
+**Important**: All R scripts should use the local .Rlib directory. Set this before running:
+```bash
+export R_LIBS_USER=/home/olier/ellenberg/.Rlib
+```
+
 ```bash
 # Run SEM with pwSEM (Run 7c configuration for Light)
-Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
   --input_csv=artifacts/model_data_complete_case_with_myco.csv \
   --target=L --repeats=5 --folds=10 --stratify=true --standardize=true \
   --cluster=Family --group_var=Myco_Group_Final \
@@ -36,13 +42,20 @@ Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
   --out_dir=artifacts/stage4_sem_pwsem_run7c
 
 # Blend SEM predictions with phylogenetic neighbor predictor
-Rscript src/Stage_5_Apply_Mean_Structure/blend_with_pwsem_cv.R \
+R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_5_Apply_Mean_Structure/blend_with_pwsem_cv.R \
   --pwsem_dir artifacts/stage4_sem_pwsem_run7c \
   --input_csv artifacts/model_data_complete_case_with_myco.csv \
   --species_col wfo_accepted_name \
   --phylogeny_newick data/phylogeny/eive_try_tree.nwk \
   --x 2 --alpha_grid 0,0.25,0.5,0.75,1 \
   --output_csv artifacts/pwsem_blend_cv_results.csv
+
+# NEW: Hybrid trait-bioclim models (structured regression approach)
+# For Temperature axis
+R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_4_SEM_Analysis/hybrid_trait_bioclim_T_model.R
+
+# For all axes (when available)
+# R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_4_SEM_Analysis/hybrid_trait_bioclim_all.R
 ```
 
 ### Linting & Testing
