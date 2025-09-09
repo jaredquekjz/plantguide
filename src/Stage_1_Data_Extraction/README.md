@@ -1,6 +1,8 @@
 # Stage 1: Data Extraction
 
-This folder contains scripts for extracting EIVE species trait data from TRY database files.
+This folder contains scripts for extracting:
+1. EIVE species trait data from TRY database files
+2. GBIF occurrence data with bioclimatic variables from WorldClim
 
 ## Scripts:
 
@@ -51,7 +53,34 @@ This folder contains scripts for extracting EIVE species trait data from TRY dat
 ### Data Integration:
 - Use `Stage_2_Data_Processing/merge_groot_with_try_traits.R` to combine datasets
 
+## GBIF/Bioclim Extraction (NEW):
+
+### Scripts in `gbif_bioclim/`:
+
+1. **`setup_r_environment.R`** - Install required R packages
+2. **`copy_gbif_occurrences_parallel.sh`** - Copy GBIF data for target species
+3. **`predownload_reference_data.sh`** - Download WorldClim & Natural Earth data
+4. **`clean_gbif_extract_bioclim_noDups.R`** - Clean GBIF & extract bioclim (preserves duplicates)
+5. **`clean_gbif_extract_bioclim_noSea.R`** - Clean GBIF & extract bioclim (removes duplicates)
+
+### Quick Start:
+```bash
+cd gbif_bioclim/
+Rscript setup_r_environment.R
+bash copy_gbif_occurrences_parallel.sh
+bash predownload_reference_data.sh
+Rscript clean_gbif_extract_bioclim_noDups.R  # Recommended
+```
+
+### Results:
+- **GBIF**: 5.14M clean occurrences from 830 species (90.4% retention)
+- **Bioclim**: 19 variables extracted for 1.92M unique coordinates
+- **Output**: `data/bioclim_extractions_cleaned/`
+
+See `docs/GBIF_CLEANING_BIOCLIM_PIPELINE.md` for full documentation.
+
 ## Results (EXACT matching):
 - **TRY**: 8,760 unique AccSpeciesIDs (67.2% of WFO-mapped EIVE taxa)
 - **GROOT**: To be determined with EXACT matching
+- **GBIF**: 830 species with bioclim data (77.5% of 1,068 target species)
 - **Precision**: EXACT matching eliminates false positives from fuzzy name matching
