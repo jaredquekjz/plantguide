@@ -34,3 +34,6 @@ __pycache__/
 # Allow piecewise summaries in their subfolder to be tracked
 !/results/summaries/summarypiecewise/
 !/results/summaries/summarypiecewise/**/*.md
+# Allow hybrid axes summaries to be tracked
+!/results/summaries/hybrid_axes/
+!/results/summaries/hybrid_axes/**/*.md
