@@ -28,7 +28,8 @@ PRESETS_NOR    ?= results/gardening/garden_presets_no_R.csv
 SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 
 .PHONY: mag_predict mag_predict_blended stage6_requirements stage6_joint_default stage6_joint_noR copy_gbif extract_bioclim extract_bioclim_r clean_extract_bioclim clean_extract_bioclim_v2 clean_extract_bioclim_py clean_extract_bioclim_minimal setup_r_env predownload bioclim_first
- .PHONY: try_extract_traits
+.PHONY: try_extract_traits
+.PHONY: try_merge_enhanced_full try_merge_enhanced_subset
 
 # One-liner: SEM/MAG predictions only (no blending)
 mag_predict:
@@ -168,6 +169,27 @@ try_extract_traits:
 	@echo "Expected outputs in /home/olier/ellenberg/artifacts/stage1_data_extraction:"
 	@ls -lh /home/olier/ellenberg/artifacts/stage1_data_extraction/trait_{46_leaf_thickness,37_leaf_phenology_type,22_photosynthesis_pathway,31_species_tolerance_to_frost}.rds 2>/dev/null || true
 	@ls -lh /home/olier/ellenberg/artifacts/stage1_data_extraction/extracted_traits_summary.csv 2>/dev/null || true
+
+# Merge newly extracted TRY traits into model datasets (full and bioclim subset)
+try_merge_enhanced_full:
+	@echo "Merging enhanced TRY traits into full model dataset..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R \
+	    --existing_model=artifacts/model_data_complete_case_with_myco.csv \
+	    --out_full=artifacts/model_data_enhanced_traits_full.csv \
+	    --out_complete=artifacts/model_data_enhanced_traits_complete.csv
+	@echo "Outputs:"
+	@ls -lh artifacts/model_data_enhanced_traits_full.csv artifacts/model_data_enhanced_traits_complete.csv
+
+try_merge_enhanced_subset:
+	@echo "Merging enhanced TRY traits into bioclim subset (expanded600)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R \
+	    --existing_model=artifacts/model_data_bioclim_subset.csv \
+	    --out_full=artifacts/model_data_bioclim_subset_enhanced.csv \
+	    --out_complete=artifacts/model_data_bioclim_subset_enhanced_complete.csv
+	@echo "Outputs:"
+	@ls -lh artifacts/model_data_bioclim_subset_enhanced.csv artifacts/model_data_bioclim_subset_enhanced_complete.csv
 
 # ----------------------------------------------------------------------------
 # SoilGrids extraction and integration
