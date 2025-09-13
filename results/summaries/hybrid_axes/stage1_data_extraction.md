@@ -343,6 +343,47 @@ Notes:
   - Merge (canonical WFO alignment): `make soil_merge` → `scripts/merge_trait_bioclim_soil_wfo.R`
   - One‑shot pipeline: `make soil_pipeline`
 
+## Common Merge Methodology (TRY, GBIF/WorldClim, Soil)
+
+- Canonical join key
+  - Species‑level merges converge on the WFO accepted name: `wfo_accepted_name`.
+  - WFO backbone: `data/classification.csv`.
+
+- Name normalization (shared idea)
+  - Lowercase, trim, collapse spaces, ASCII transliteration, and removal of stray hybrid markers (`×`).
+  - Example (R):
+    - `normalize_name()` in `scripts/merge_trait_bioclim_soil_wfo.R`.
+
+- WFO resolution (how strings become accepted names)
+  - Build mapping: normalized `scientificName` → accepted WFO name using `taxonomicStatus`/`acceptedNameUsageID`.
+  - Prefer accepted names over synonyms (rank ordering); keep one best entry per normalized key.
+  - Outputs a stable accepted name column used downstream (`wfo_accepted_name`).
+
+- Join rules by data type
+  - TRY enhanced traits → traits base:
+    - Inputs: TRY RDS with `AccSpeciesName`; base trait CSV with `wfo_accepted_name`.
+    - Normalize both to `species_norm`, then LEFT‑join onto the base (keeps all trait species).
+    - Aggregation: numeric → median (+ mean/sd); categorical → majority value. Counts stored with `_n` suffix.
+    - Script: `src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`.
+  - Bioclim/Soil species summaries → traits base:
+    - Summaries carry `species` (from occurrences). Normalize and harmonize to WFO (`wfo_final`).
+    - INNER‑join by design (both sides must exist) to create strictly “available‑data” merged tables.
+    - Climate stats columns: `bio{1..19}_mean`, `bio{1..19}_sd`; Soil columns: `phh2o_*`, `soc_*`, `bdod_*`, etc.
+    - Script: `scripts/merge_trait_bioclim_soil_wfo.R`.
+
+- Aggregation and de‑duplication
+  - Occurrence‑level duplicates at identical coordinates are preserved in `all_occurrences_cleaned.csv` (provenance).
+  - Species summaries compute mean/sd per species; `n_occurrences` recorded; `has_sufficient_data` flagged.
+
+- Filtering & thresholds (for modeling subsets)
+  - Default: `min_occurrences = 3` (species‑level) applied to bioclim summaries to derive the expanded600 trait subset.
+  - Output: `artifacts/model_data_bioclim_subset.csv` (29 cols) and its enhanced counterpart (39 cols).
+
+- Reproducibility
+  - TRY: `make try_extract_traits`, `make try_merge_enhanced_full`, `make try_merge_enhanced_subset`.
+  - Bioclim: `make bioclim_first` (extract → clean → summarize → filter & merge).
+  - Soil: `make soil_pipeline` (extract → aggregate → WFO‑merge).
+
 ### Completion Manifest (Expanded 600)
 
 - Outputs and sizes
