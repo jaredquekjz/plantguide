@@ -308,6 +308,40 @@ Notes:
 - **Coordinate cleaning**: CoordinateCleaner with relaxed thresholds
 - **Parallel processing**: 8 cores for extraction
 
+## Canonical Pipelines & Scripts (Authoritative)
+
+- Species name standardization (WFO backbone)
+  - Canonical: `src/Stage_3RF_Hybrid/match_gbif_complete_to_traits_via_wfo.py`
+  - Output of record: `artifacts/gbif_complete_trait_matches_wfo.json`
+  - WFO backbone: `data/classification.csv`
+
+- TRY traits (enhanced) — extraction and merge
+  - Extract (canonical): `make try_extract_traits`
+    - Script: `src/Stage_1_Data_Extraction/extract_try_traits.R`
+    - Outputs: `artifacts/stage1_data_extraction/trait_{46|37|22|31}*.rds`, `extracted_traits_summary.csv`
+  - Merge into traits (canonical):
+    - Full: `make try_merge_enhanced_full`
+      - Script: `src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`
+      - Outputs: `artifacts/model_data_enhanced_traits_full.csv`, `..._complete.csv`
+    - Expanded600 subset: `make try_merge_enhanced_subset`
+      - Script: same as above
+      - Outputs: `artifacts/model_data_bioclim_subset_enhanced.csv`, `..._enhanced_complete.csv`
+
+- GBIF → WorldClim (bioclim) — extract, clean, summarize (duplicates preserved)
+  - Canonical one‑shot: `make bioclim_first`
+    - Script: `src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
+    - Outputs: `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`,
+      `.../summary_stats/species_bioclim_summary.csv`, `artifacts/model_data_bioclim_subset.csv`
+  - Non‑canonical/legacy alternatives (for reference only):
+    - Python: `scripts/extract_bioclim_pipeline.py`
+    - R (older variants): `scripts/extract_bioclim_pipeline.R`, `scripts/clean_gbif_extract_bioclim*.R`, `scripts/clean_gbif_extract_bioclim.py`
+
+- SoilGrids — extract, aggregate, WFO merge
+  - Extract: `make soil_extract` → `scripts/extract_soilgrids_efficient.R`
+  - Aggregate: `make soil_aggregate` → `scripts/aggregate_soilgrids_species.R`
+  - Merge (canonical WFO alignment): `make soil_merge` → `scripts/merge_trait_bioclim_soil_wfo.R`
+  - One‑shot pipeline: `make soil_pipeline`
+
 ### Completion Manifest (Expanded 600)
 
 - Outputs and sizes
