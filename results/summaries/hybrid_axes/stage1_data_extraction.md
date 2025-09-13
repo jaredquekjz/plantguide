@@ -224,6 +224,34 @@ The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside 
     - `artifacts/model_data_bioclim_subset_enhanced.csv` (654 × 39)
     - `artifacts/model_data_bioclim_subset_enhanced_complete.csv` (654 × 39)
 
+### Enhanced Traits Coverage — Expanded 600 (654 species)
+
+- Coverage (non-missing, usable values):
+  - Leaf thickness (mm): 349/654 (53.4%)
+  - Leaf phenology (evergreen/deciduous/…): 594/654 (90.8%)
+  - Photosynthesis pathway (C3/C4/CAM): 619/654 (94.6%)
+  - Frost tolerance score: 153/654 (23.4%)
+
+- Combined coverage (count of valid new traits per species):
+  - 0 traits: 22 species
+  - 1 trait: 23 species
+  - 2 traits: 244 species
+  - 3 traits: 256 species
+  - 4 traits: 109 species
+
+- Notes on merging and unmatched cases:
+  - Matching uses normalized WFO accepted names; merges are inner-on-species (left on traits table).
+  - Unmatched by trait (counts of species without a value):
+    - Leaf thickness: 305 species
+    - Leaf phenology: 60 species
+    - Photosynthesis pathway: 35 species
+    - Frost tolerance: 501 species
+  - A small subset (22 species) lacks all four new traits (example subset: Centaurea rhaetica; Cerastium fontanum subsp. vulgare; Coreopsis tinctoria; Crepis froelichiana; Dipsacus fullonum; Erigeron canadensis; Euphorbia variabilis; Helianthemum apenninum; Inula britannica; Inula montana).
+
+Interpretation:
+- Phenology and photosynthesis pathway are pervasive in the expanded 600 and are immediately useful for modeling.
+- Leaf thickness has moderate coverage (~53%). Frost tolerance is sparse (~23%) but still potentially informative; consider phylogenetic imputation for improved coverage.
+
 Notes:
 - Species name alignment in Step 6c uses normalized strings consistent with WFO‑accepted names set upstream during GBIF matching; no additional synonym expansion is required at this step.
 - An auxiliary preparer exists (`src/Stage_3RF_Hybrid/prepare_bioclim_subset_traits.R`) which can also filter traits by `n_occurrences ≥ 3` against a provided summary (output default: `artifacts/model_data_bioclim_subset_expanded600.csv`). The expanded600 runs documented here used the Stage‑1 output `artifacts/model_data_bioclim_subset.csv` per the Makefile defaults and summary files.
@@ -285,6 +313,7 @@ Notes:
 - Outputs and sizes
   - `artifacts/model_data_bioclim_subset.csv` — 186,002 bytes; 654 rows; 29 cols
   - `artifacts/model_data_bioclim_subset_enhanced.csv` — 215,150 bytes; 654 rows; 39 cols
+  - `artifacts/model_data_enhanced_traits_full.csv` — 350,731 bytes; 1,068 rows; 39 cols
   - `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv` — 536,834 bytes; 1,008 rows; 41 cols (654 with ≥3)
   - `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv` — 1,576,074,682 bytes; 5,239,194 data rows
 - Key warnings
