@@ -5,6 +5,38 @@ Stage 1 focuses on extracting and matching trait data with GBIF occurrence data 
 
 **Note**: Additional TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance) were extracted to `/home/olier/ellenberg/artifacts/stage1_data_extraction/` but are NOT yet integrated into the main modeling pipeline. The current models use only the 6 core traits.
 
+## Data Lineage (Expanded 600)
+
+```
+[TRY Traits]
+  artifacts/model_data_complete_case_with_myco.csv
+            │
+            │ (names normalized; WFO-aligned upstream)
+            ▼
+  (Stage 1, Step 6c) ───────────────┐
+                                    │  join + filter ≥3 occurrences
+                                    │
+[GBIF Occurrences + Matches]
+  artifacts/gbif_complete_trait_matches_wfo.json
+  /home/olier/plantsdatabase/data/Stage_4/gbif_occurrences_complete/*.gz
+            │
+            │ extract bioclim (WorldClim v2.1, 30s) for ALL coords
+            ▼
+  data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv
+            │
+            │ species summary (means/sd + n_occ)
+            ▼
+  data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv
+                                    │
+                                    └────────► artifacts/model_data_bioclim_subset.csv
+                                                   (654 species × 29 cols)
+
+Downstream (Stage 3 RF/Hybrid):
+  Consumes:
+    - traits: artifacts/model_data_bioclim_subset.csv
+    - bioclim: data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
+```
+
 ## Key Achievements
 - **1,051 of 1,068 trait species matched with GBIF (98.7%)**
 - **1,008 species successfully extracted with bioclim data (96% of matched)**
@@ -94,9 +126,9 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 
 ### Primary Output File
 **`/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`**
-- **Size**: 1.5 GB
+- **Size**: 1,576,074,682 bytes (1.47 GB)
 - **Format**: CSV with all occurrences (including duplicates at same location)
-- **Rows**: 5,239,194 occurrences
+- **Rows**: 5,239,194 data rows (excluding header)
 - **Species**: 1,008 species
 - **Variables**: coordinates, species name, 19 bioclim variables, metadata
 
@@ -126,6 +158,74 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 - **Species tracking**: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/diagnostics/species_tracking.csv`
 - **Individual species files**: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/species_data/`
 
+## Expanded 600: Final Traits+Bioclim Dataset + Merge Script (Ground Truth)
+
+This section records the exact dataset and merge step used for the expanded 600‑species runs. It aligns with the Makefile targets and the expanded600 hybrid summaries in this folder.
+
+### Final Dataset Used by Expanded 600 Runs
+
+- Trait subset (≥3 cleaned occurrences): `artifacts/model_data_bioclim_subset.csv`
+  - Size: 186,002 bytes (181.64 KB)
+  - Rows (species): 654
+  - Columns: 29 (EIVE targets + 6 core traits + metadata)
+  - Species column: `wfo_accepted_name` (WFO‑aligned)
+
+- Species‑level climate summary used by hybrid runs: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv`
+  - Size: 536,834 bytes (524.25 KB)
+  - Rows (species): 1,008 total; 654 with `n_occurrences ≥ 3`
+  - Columns: 41 (per‑species `n_occurrences`, `bio1…bio19` means and SDs, flags)
+  - Note: functionally identical to the Stage‑1 summary under `bioclim_first`; mirrored here for Stage‑3 consumption
+
+- Provenance record (occurrence‑level): `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`
+  - Size: 1,576,074,682 bytes (1.47 GB)
+  - Rows (occurrences): 5,239,194 (header excluded)
+  - Species: 1,008 with ≥1 climate‑valid record; 654 with ≥3 after cleaning
+
+Cross‑reference:
+- Summaries consuming this dataset: `results/summaries/hybrid_axes/expanded600/hybrid_summary_*_expanded600.md`
+- Makefile defaults pointing here: `Makefile.hybrid` (`TRAIT_CSV`, `BIOCLIM_SUMMARY`)
+
+### Merge Script Used (Stage 1)
+
+The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside the Stage‑1 pipeline (Step 6c) by merging the species‑level climate summary onto the trait table and filtering to species with ≥3 valid occurrences.
+
+- Script: `src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R` (Step 6c)
+- Effective inputs:
+  - Traits: `artifacts/model_data_complete_case_with_myco.csv`
+  - Bioclim summary: `data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv`
+  - Threshold: `min_occurrences = 3`
+- Output (ground truth consumed by Stage 3):
+  - `artifacts/model_data_bioclim_subset.csv` (654 × 29)
+
+Notes:
+- Species name alignment in Step 6c uses normalized strings consistent with WFO‑accepted names set upstream during GBIF matching; no additional synonym expansion is required at this step.
+- An auxiliary preparer exists (`src/Stage_3RF_Hybrid/prepare_bioclim_subset_traits.R`) which can also filter traits by `n_occurrences ≥ 3` against a provided summary (output default: `artifacts/model_data_bioclim_subset_expanded600.csv`). The expanded600 runs documented here used the Stage‑1 output `artifacts/model_data_bioclim_subset.csv` per the Makefile defaults and summary files.
+
+### Reproducible Commands
+
+- One‑shot Stage‑1 pipeline (copies GBIF if needed → extract bioclim → clean → summarize → merge+filter ≥3):
+  - `make bioclim_first`
+  - Key outputs echoed on completion:
+    - `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`
+    - `data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv`
+    - `artifacts/model_data_bioclim_subset.csv`
+
+- Hybrid runs (expanded600) consuming these exact artifacts (no phylo / with phylo):
+  - No p_k:
+    - `make -f Makefile.hybrid hybrid_cv AXIS={T|M|R|N|L} OUT=artifacts/stage3rf_hybrid_comprehensive_bioclim_subset TRAIT_CSV=artifacts/model_data_bioclim_subset.csv BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000`
+  - With p_k:
+    - `make -f Makefile.hybrid hybrid_pk AXIS={T|M|R|N|L} OUT=artifacts/stage3rf_hybrid_comprehensive_bioclim_subset_pk TRAIT_CSV=artifacts/model_data_bioclim_subset.csv BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000 X_EXP=2 K_TRUNC=0`
+
+### Effective Parameters and Assumptions
+
+- Encoding: UTF‑8 for all CSVs
+- Chunking: occurrence extraction operates on unique coordinates; duplicates preserved on merge‑back
+- Cleaning thresholds: capitals 20 km, institutions 2 km; tests = capitals, centroids, equal lat/lon, GBIF HQ, institutions
+- Filter: `min_occurrences = 3` applied at species level after cleaning
+- Bioclim: WorldClim v2.1, 30 arc‑seconds; variables `bio1…bio19`
+- Name alignment: WFO‑accepted names from upstream WFO matching (`wfo_accepted_name`); bioclim summary keys derived from `species_clean`
+- Soil: excluded from expanded600 dataset due to incomplete VRT coverage (see SoilGrids section below)
+
 ## Comparison with Previous Pipeline
 
 | Metric | Old Pipeline | New Pipeline | Improvement |
@@ -151,9 +251,19 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 - **Coordinate cleaning**: CoordinateCleaner with relaxed thresholds
 - **Parallel processing**: 8 cores for extraction
 
+### Completion Manifest (Expanded 600)
+
+- Outputs and sizes
+  - `artifacts/model_data_bioclim_subset.csv` — 186,002 bytes; 654 rows; 29 cols
+  - `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv` — 536,834 bytes; 1,008 rows; 41 cols (654 with ≥3)
+  - `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv` — 1,576,074,682 bytes; 5,239,194 data rows
+- Key warnings
+  - SoilGrids integration intentionally omitted for expanded600; VRT coverage incomplete at time of run
+- Repro flags
+  - `min_occurrences=3`, capitals_radius=20,000 m, institutions_radius=2,000 m, WorldClim v2.1 (30s), duplicates preserved
+
 ### Data Integrity
 - ✓ All duplicate occurrences at same location preserved
-- ✓ Average 1.87 occurrences per unique coordinate
 - ✓ 100% validation match between tracking and final data
 - ✓ Bioclim values verified against direct raster extraction
 
@@ -164,4 +274,49 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 4. Validate model performance with cross-validation
 
 ---
-*Last updated: 2025-09-12*
+*Last updated: 2025-09-13*
+
+## SoilGrids Extraction Status (2025-09-13)
+
+Summary
+- Tiles: 488,530 GeoTIFF tiles downloaded locally for 7 properties × 6 depths (as per Python crawlers under `/home/olier/ellenberg/data/soilgrids_250m_test/`).
+- VRTs (virtual mosaics): Only a few VRTs present in production folder at run time (phh2o_0-5cm.vrt, soc_0-5cm.vrt, bdod_0-5cm.vrt), so extraction filled only those layers.
+- Result of the first run (occurrence-level SoilGrids join):
+  - PHH2O: 4,626,363 valid (88.3%)
+  - SOC: 4,626,211 valid (88.3%)
+  - CLAY: 0 valid (0.0%)
+  - SAND: 0 valid (0.0%)
+  - CEC: 0 valid (0.0%)
+  - NITROGEN: 0 valid (0.0%)
+  - BDOD: 4,626,054 valid (88.3%)
+
+Root cause
+- Missing VRT files under `/home/olier/ellenberg/data/soilgrids_250m` for CLAY/SAND/CEC/NITROGEN and deeper layers. The extractor deliberately skips layers when the expected `*_mean.vrt` file is absent.
+
+Actions taken
+- Quarantined incomplete outputs to avoid downstream use:
+  - Moved occurrence+soil CSV, species soil summary, and merged trait+bioclim+soil to backups.
+- Added Makefile soil targets and quick summaries for reproducible reruns.
+- Added a local helper `scripts/build_soilgrids_vrts_local.sh` to mosaic tiles into VRTs if remote VRT download is unavailable.
+
+Remediation plan
+- Preferred: Download official VRT + OVR files from ISRIC (84 files = 42 VRT + 42 overviews) into `/home/olier/ellenberg/data/soilgrids_250m` using the prepared script:
+  - `/home/olier/ellenberg/data/soilgrids_250m_test/download_vrt_files.sh`
+  - Uses `aria2c` and the URL list in `download_vrt_files.txt`; writes to the production directory.
+- Alternative (fallback): Build VRTs locally from the downloaded tiles:
+  - `bash scripts/build_soilgrids_vrts_local.sh /home/olier/ellenberg/data/soilgrids_250m`
+
+Next run
+- After VRTs are in place, re-run the occurrence-level extraction with conservative tuning:
+  - `make soil_extract`
+- Then aggregate to species-level and WFO-merge:
+  - `make soil_aggregate`
+  - `make soil_merge`
+
+Artifacts (quarantined)
+- `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_soil.csv` (incomplete)
+- `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv` (incomplete)
+- `/home/olier/ellenberg/artifacts/model_data_trait_bioclim_soil_merged_wfo.csv` (incomplete)
+
+Note
+- Once all 42 VRTs exist, subsequent extractions will populate all seven properties across all six depths; the quick summary after `make soil_extract` will show non-zero valid counts for CLAY/SAND/CEC/NITROGEN as well.
