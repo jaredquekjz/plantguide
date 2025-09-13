@@ -28,12 +28,15 @@ Stage 1 focuses on extracting and matching trait data with GBIF occurrence data 
             ▼
   data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv
                                     │
-                                    └────────► artifacts/model_data_bioclim_subset.csv
-                                                   (654 species × 29 cols)
+                                    ├────────► artifacts/model_data_bioclim_subset.csv
+                                    │              (654 species × 29 cols)
+                                    │
+                                    └────────► artifacts/model_data_bioclim_subset_enhanced.csv
+                                                   (654 species × 39 cols; +4 new TRY traits + Narea)
 
 Downstream (Stage 3 RF/Hybrid):
   Consumes:
-    - traits: artifacts/model_data_bioclim_subset.csv
+    - traits: artifacts/model_data_bioclim_subset.csv (or artifacts/model_data_bioclim_subset_enhanced.csv)
     - bioclim: data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
 ```
 
@@ -197,6 +200,30 @@ The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside 
 - Output (ground truth consumed by Stage 3):
   - `artifacts/model_data_bioclim_subset.csv` (654 × 29)
 
+### Enhanced TRY Traits (New)
+
+- Extraction command:
+  - `make try_extract_traits`
+- Expected outputs (RDS) in `/home/olier/ellenberg/artifacts/stage1_data_extraction/`:
+  - `trait_46_leaf_thickness.rds`
+  - `trait_37_leaf_phenology_type.rds`
+  - `trait_22_photosynthesis_pathway.rds`
+  - `trait_31_species_tolerance_to_frost.rds`
+  - `extracted_traits_summary.csv`
+
+### Merge New TRY Traits into Datasets
+
+- Full (all 1,068 species):
+  - `make try_merge_enhanced_full`
+  - Outputs:
+    - `artifacts/model_data_enhanced_traits_full.csv` (1068 × 39)
+    - `artifacts/model_data_enhanced_traits_complete.csv` (1068 × 39)
+- Expanded600 subset (≥3 occurrences):
+  - `make try_merge_enhanced_subset`
+  - Outputs:
+    - `artifacts/model_data_bioclim_subset_enhanced.csv` (654 × 39)
+    - `artifacts/model_data_bioclim_subset_enhanced_complete.csv` (654 × 39)
+
 Notes:
 - Species name alignment in Step 6c uses normalized strings consistent with WFO‑accepted names set upstream during GBIF matching; no additional synonym expansion is required at this step.
 - An auxiliary preparer exists (`src/Stage_3RF_Hybrid/prepare_bioclim_subset_traits.R`) which can also filter traits by `n_occurrences ≥ 3` against a provided summary (output default: `artifacts/model_data_bioclim_subset_expanded600.csv`). The expanded600 runs documented here used the Stage‑1 output `artifacts/model_data_bioclim_subset.csv` per the Makefile defaults and summary files.
@@ -215,6 +242,8 @@ Notes:
     - `make -f Makefile.hybrid hybrid_cv AXIS={T|M|R|N|L} OUT=artifacts/stage3rf_hybrid_comprehensive_bioclim_subset TRAIT_CSV=artifacts/model_data_bioclim_subset.csv BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000`
   - With p_k:
     - `make -f Makefile.hybrid hybrid_pk AXIS={T|M|R|N|L} OUT=artifacts/stage3rf_hybrid_comprehensive_bioclim_subset_pk TRAIT_CSV=artifacts/model_data_bioclim_subset.csv BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000 X_EXP=2 K_TRUNC=0`
+
+- To run with enhanced traits, set `TRAIT_CSV=artifacts/model_data_bioclim_subset_enhanced.csv` in the above commands.
 
 ### Effective Parameters and Assumptions
 
@@ -255,6 +284,7 @@ Notes:
 
 - Outputs and sizes
   - `artifacts/model_data_bioclim_subset.csv` — 186,002 bytes; 654 rows; 29 cols
+  - `artifacts/model_data_bioclim_subset_enhanced.csv` — 215,150 bytes; 654 rows; 39 cols
   - `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv` — 536,834 bytes; 1,008 rows; 41 cols (654 with ≥3)
   - `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv` — 1,576,074,682 bytes; 5,239,194 data rows
 - Key warnings
