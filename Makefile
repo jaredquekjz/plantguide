@@ -28,6 +28,7 @@ PRESETS_NOR    ?= results/gardening/garden_presets_no_R.csv
 SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 
 .PHONY: mag_predict mag_predict_blended stage6_requirements stage6_joint_default stage6_joint_noR copy_gbif extract_bioclim extract_bioclim_r clean_extract_bioclim clean_extract_bioclim_v2 clean_extract_bioclim_py clean_extract_bioclim_minimal setup_r_env predownload bioclim_first
+ .PHONY: try_extract_traits
 
 # One-liner: SEM/MAG predictions only (no blending)
 mag_predict:
@@ -159,6 +160,14 @@ bioclim_first:
 	@echo "  - data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv"
 	@echo "  - data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv"
 	@echo "  - artifacts/model_data_bioclim_subset.csv (traits filtered to species with >=3 occurrences)"
+
+# Stage 1: Extract additional TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance)
+try_extract_traits:
+	@echo "Extracting additional TRY traits (leaf thickness, phenology, photosynthesis, frost tolerance)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript src/Stage_1_Data_Extraction/extract_try_traits.R
+	@echo "Expected outputs in /home/olier/ellenberg/artifacts/stage1_data_extraction:"
+	@ls -lh /home/olier/ellenberg/artifacts/stage1_data_extraction/trait_{46_leaf_thickness,37_leaf_phenology_type,22_photosynthesis_pathway,31_species_tolerance_to_frost}.rds 2>/dev/null || true
+	@ls -lh /home/olier/ellenberg/artifacts/stage1_data_extraction/extracted_traits_summary.csv 2>/dev/null || true
 
 # ----------------------------------------------------------------------------
 # SoilGrids extraction and integration

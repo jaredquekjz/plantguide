@@ -130,9 +130,21 @@ for (trait in target_traits) {
     # Remove duplicates
     combined_data <- unique(combined_data)
     
-    # Save combined file
+    # Save combined file (full name) and canonical simplified name when required
     output_file <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, "_combined.rds"))
     saveRDS(combined_data, file = output_file)
+
+    # Also save simplified canonical outputs for downstream modeling
+    # Expected (per user):
+    #   - trait_46_leaf_thickness.rds
+    #   - trait_37_leaf_phenology_type.rds
+    #   - trait_22_photosynthesis_pathway.rds
+    #   - trait_31_species_tolerance_to_frost.rds
+    if (trait$id %in% c(46, 37, 22, 31)) {
+      canonical_out <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, ".rds"))
+      saveRDS(combined_data, file = canonical_out)
+      message("  Canonical output saved to: ", canonical_out)
+    }
     
     # Report summary
     n_records <- nrow(combined_data)
