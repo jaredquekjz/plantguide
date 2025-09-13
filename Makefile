@@ -27,7 +27,7 @@ SUMMARY_CSV    ?= results/gardening/garden_joint_summary.csv
 PRESETS_NOR    ?= results/gardening/garden_presets_no_R.csv
 SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 
-.PHONY: mag_predict mag_predict_blended stage6_requirements stage6_joint_default stage6_joint_noR copy_gbif extract_bioclim extract_bioclim_r clean_extract_bioclim clean_extract_bioclim_v2 clean_extract_bioclim_py clean_extract_bioclim_minimal setup_r_env predownload
+.PHONY: mag_predict mag_predict_blended stage6_requirements stage6_joint_default stage6_joint_noR copy_gbif extract_bioclim extract_bioclim_r clean_extract_bioclim clean_extract_bioclim_v2 clean_extract_bioclim_py clean_extract_bioclim_minimal setup_r_env predownload bioclim_first
 
 # One-liner: SEM/MAG predictions only (no blending)
 mag_predict:
@@ -151,3 +151,71 @@ clean_extract_bioclim_minimal:
 	@echo "Running minimal cleaning pipeline (limited dependencies)..."
 	@$(R) scripts/clean_gbif_extract_bioclim_minimal.R
 
+# Stage 1: Bioclim-first extraction (duplicates preserved) + species summary + trait merge (>=3)
+bioclim_first:
+	@echo "Running Stage 1 bioclim-first pipeline (extract -> clean -> summarize -> merge/filter >=3)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R
+	@echo "Done. Key outputs:"
+	@echo "  - data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv"
+	@echo "  - data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv"
+	@echo "  - artifacts/model_data_bioclim_subset.csv (traits filtered to species with >=3 occurrences)"
+
+# ----------------------------------------------------------------------------
+# SoilGrids extraction and integration
+# ----------------------------------------------------------------------------
+
+.PHONY: soil_extract soil_aggregate soil_merge soil_pipeline
+
+# Paths (override on command line if needed)
+SOIL_OCC_FILE ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_soil.csv
+SOIL_SUMMARY  ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv
+BIOCLIM_SUMMARY ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv
+TRAIT_CSV ?= artifacts/model_data_bioclim_subset.csv
+WFO_BACKBONE ?= /home/olier/ellenberg/data/classification.csv
+MERGED_SOIL_OUT ?= artifacts/model_data_trait_bioclim_soil_merged_wfo.csv
+
+# Conservative GDAL tuning for VRT reading
+GDAL_CACHE ?= 1024
+VRT_THREADS ?= ALL_CPUS
+VRT_POOL ?= 450
+
+# Step 1: Extract SoilGrids for unique coords, merge back to all occurrences (duplicates preserved)
+soil_extract:
+	@echo "[Soil] Extracting SoilGrids for GBIF occurrences (conservative settings)..."
+	@GDAL_CACHEMAX=$(GDAL_CACHE) VRT_NUM_THREADS=$(VRT_THREADS) GDAL_MAX_DATASET_POOL_SIZE=$(VRT_POOL) \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript scripts/extract_soilgrids_efficient.R
+	@echo "[Soil] Output: $(SOIL_OCC_FILE)"
+
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(SOIL_OCC_FILE) --type occ_soil || true
+
+# Step 2: Aggregate to species-level means/sds/n_valid, flagging has_sufficient_data (>=3)
+soil_aggregate:
+	@echo "[Soil] Aggregating occurrence-level soil to species-level summary..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript scripts/aggregate_soilgrids_species.R \
+	    --input $(SOIL_OCC_FILE) \
+	    --species_col species_clean \
+	    --min_occ 3 \
+	    --output $(SOIL_SUMMARY)
+	@echo "[Soil] Output: $(SOIL_SUMMARY)"
+
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(SOIL_SUMMARY) --type soil_summary || true
+
+# Step 3: Merge traits + bioclim + soil using WFO normalization
+soil_merge:
+	@echo "[Soil] Merging trait + bioclim + soil with WFO alignment..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript scripts/merge_trait_bioclim_soil_wfo.R \
+	    --trait_csv $(TRAIT_CSV) \
+	    --bioclim_summary $(BIOCLIM_SUMMARY) \
+	    --soil_summary $(SOIL_SUMMARY) \
+	    --wfo_backbone $(WFO_BACKBONE) \
+	    --output $(MERGED_SOIL_OUT)
+	@echo "[Soil] Output: $(MERGED_SOIL_OUT)"
+
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(MERGED_SOIL_OUT) --type merged || true
+
+# One-shot pipeline: extract -> aggregate -> merge
+soil_pipeline: soil_extract soil_aggregate soil_merge
+	@echo "[Soil] Completed soil pipeline (extract -> aggregate -> merge)."

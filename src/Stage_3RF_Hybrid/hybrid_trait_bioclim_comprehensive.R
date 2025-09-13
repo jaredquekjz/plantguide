@@ -42,6 +42,14 @@ option_list <- list(
   make_option(c("--target"), type="character", default="T",
               help="Target EIVE axis to model [T, M, R, N, L] (default: T)",
               metavar="character"),
+  make_option(c("--trait_data_path"), type="character", 
+              default="artifacts/model_data_bioclim_subset.csv",
+              help="Path to trait CSV (default: artifacts/model_data_bioclim_subset.csv)",
+              metavar="path"),
+  make_option(c("--bioclim_summary"), type="character",
+              default="data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv",
+              help="Path to species-level bioclim summary CSV",
+              metavar="path"),
   make_option(c("--output_dir"), type="character", 
               default="artifacts/stage3rf_hybrid_comprehensive/",
               help="Output directory for results",
@@ -91,8 +99,8 @@ if (!opt$target %in% valid_targets) {
 # Configuration
 CONFIG <- list(
   # Data paths
-  trait_data_path = "artifacts/model_data_complete_case_with_myco.csv",
-  bioclim_summary = "data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv",
+  trait_data_path = opt$trait_data_path,
+  bioclim_summary = opt$bioclim_summary,
   output_dir = opt$output_dir,
   
   # Model parameters
