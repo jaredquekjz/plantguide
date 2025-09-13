@@ -1,9 +1,18 @@
 # Stage 1: Data Extraction Process
 
-## Overview
-Stage 1 focuses on extracting and matching trait data with GBIF occurrence data to maximize species coverage for hybrid trait-bioclim models.
+## Executive Summary
+- Species matching (WFO, canonical Python): 1,051/1,068 matched (98.7%); output `artifacts/gbif_complete_trait_matches_wfo.json`.
+- Bioclim-first pipeline (extract → clean → summarize): 5,239,194 cleaned occurrences; 1,008 species with bioclim; 654 species with ≥3 occurrences.
+- Final modeling datasets (expanded600):
+  - Core traits: `artifacts/model_data_bioclim_subset.csv` (654 × 29)
+  - Enhanced traits (NEW): `artifacts/model_data_bioclim_subset_enhanced.csv` (654 × 39; adds leaf thickness, phenology, photosynthesis, frost tolerance, plus Narea)
+- Enhanced trait coverage among 654 species:
+  - Phenology 90.8% (594), Photosynthesis 94.6% (619), Leaf thickness 53.4% (349), Frost tolerance 23.4% (153)
+- WFO normalization status: 0 missing/empty `wfo_accepted_name` in the expanded600 datasets.
+- Canonical commands: `make bioclim_first`, `make try_extract_traits`, `make try_merge_enhanced_subset`.
 
-**Note**: Additional TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance) were extracted to `/home/olier/ellenberg/artifacts/stage1_data_extraction/` but are NOT yet integrated into the main modeling pipeline. The current models use only the 6 core traits.
+## Overview
+Stage 1 focuses on extracting and matching trait data with GBIF occurrence data to maximize species coverage for hybrid trait-bioclim models. Enhanced TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance) are now extracted and merged into dedicated datasets for upcoming modeling.
 
 ## Data Lineage (Expanded 600)
 
