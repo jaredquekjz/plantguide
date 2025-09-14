@@ -81,9 +81,19 @@ option_list <- list(
   make_option(c("--rf_cv"), type="character", default="false",
               help="Compute Random Forest CV baseline using same folds (default: false)",
               metavar="true|false"),
+  # New flag name: offer_all_variables (supersedes offer_all_climate). Both accepted for compatibility.
+  make_option(c("--offer_all_variables"), type="character", default="false",
+              help="If true, offer all variables (climate + soil) to AIC; otherwise use cluster representatives (default: false)",
+              metavar="true|false"),
+  make_option(c("--offer_all_climate"), type="character", default="false",
+              help="[Deprecated alias] Same as --offer_all_variables",
+              metavar="true|false"),
   make_option(c("--bootstrap_reps"), type="integer", default=1000,
               help="Bootstrap replications for stability testing (default: 1000)",
-              metavar="integer")
+              metavar="integer"),
+  make_option(c("--rf_only"), type="character", default="false",
+              help="If true, run only RF feature importance + RF CV baseline, skipping AIC/GAM and bootstraps (default: false)",
+              metavar="true|false")
 )
 
 opt_parser <- OptionParser(option_list=option_list)
@@ -126,6 +136,10 @@ CONFIG <- list(
   rf_trees = 1000,
   rf_importance = "impurity",
   rf_cv = FALSE,
+  rf_only = tolower(opt$rf_only) %in% c("1","true","yes","y"),
+  # Unified flag: offer all variables (climate + soil). Accept both new and old names.
+  offer_all_variables = (tolower(ifelse(is.null(opt$offer_all_variables), "false", opt$offer_all_variables)) %in% c("1","true","yes","y")) ||
+                       (tolower(ifelse(is.null(opt$offer_all_climate),   "false", opt$offer_all_climate))   %in% c("1","true","yes","y")),
   
   # Output options
   save_intermediate = TRUE,
@@ -154,6 +168,23 @@ cat(sprintf("Loaded %d species with trait data\n", nrow(trait_data)))
 cat("Loading bioclim summary...\n")
 climate_summary <- read_csv(CONFIG$bioclim_summary, show_col_types = FALSE)
 
+# Harmonize optional Aridity Index (AI) fields if present in the summary.
+# Goal: expose a single, dimensionless `aridity_mean` (and optional `aridity_sd`).
+# We accept either already-scaled `ai_mean`/`ai_sd` or raw UInt16 fields
+# `ai_mean_raw`/`ai_sd_raw` that require division by 10000.
+if ("ai_mean" %in% names(climate_summary) && !("aridity_mean" %in% names(climate_summary))) {
+  climate_summary <- climate_summary %>% mutate(aridity_mean = ai_mean)
+}
+if ("ai_sd" %in% names(climate_summary) && !("aridity_sd" %in% names(climate_summary))) {
+  climate_summary <- climate_summary %>% mutate(aridity_sd = ai_sd)
+}
+if (("ai_mean_raw" %in% names(climate_summary)) && !("aridity_mean" %in% names(climate_summary))) {
+  climate_summary <- climate_summary %>% mutate(aridity_mean = ai_mean_raw / 10000)
+}
+if (("ai_sd_raw" %in% names(climate_summary)) && !("aridity_sd" %in% names(climate_summary))) {
+  climate_summary <- climate_summary %>% mutate(aridity_sd = ai_sd_raw / 10000)
+}
+
 # Filter for species with sufficient data
 climate_metrics <- climate_summary %>%
   filter(has_sufficient_data == TRUE) %>%
@@ -172,7 +203,12 @@ climate_metrics <- climate_summary %>%
     precip_mean = bio12_mean,
     precip_sd = bio12_sd,
     drought_min = bio14_mean,
-    precip_seasonality = bio15_mean
+    precip_seasonality = bio15_mean,
+    precip_driest_q = bio17_mean,
+    precip_warmest_q = bio18_mean,
+    precip_coldest_q = bio19_mean,
+    # Optional Aridity Index (dimensionless) if available in the summary
+    dplyr::any_of(c("aridity_mean", "aridity_sd"))
   ) %>%
   mutate(
     # Approximate quantiles
@@ -264,16 +300,33 @@ features <- merged_data %>%
     y,
     # Traits
     logLA, logH, logSM, logSSD, Nmass, LMA, LES_core, SIZE,
+    # Bill Shipley thickness proxies and related traits (if available)
+    dplyr::any_of(c("LDMC", "Leaf_thickness_mm", 
+                    "log_ldmc_minus_log_la", "log_ldmc_plus_log_la")),
     # Climate
     mat_mean, mat_sd, mat_q05, mat_q95, temp_seasonality, temp_range,
-    tmax_mean, tmin_mean, tmin_q05, precip_mean, precip_cv, drought_min,
+    tmax_mean, tmin_mean, tmin_q05,
+    # Moisture-oriented climate features (expanded)
+    precip_mean, precip_cv, precip_seasonality, drought_min, precip_driest_q,
+    # Optional additional quarters (available to AIC selection)
+    precip_warmest_q, precip_coldest_q,
+    # Optional AI
+    dplyr::any_of(c("aridity_mean", "aridity_sd")),
+    # Monthly AI dryness indicators (if present)
+    dplyr::any_of(c(
+      "ai_month_min", "ai_month_p10", "ai_roll3_min",
+      "ai_dry_frac_t020", "ai_dry_run_max_t020",
+      "ai_dry_frac_t050", "ai_dry_run_max_t050",
+      "ai_amp", "ai_cv_month"
+    )),
+    # SoilGrids species-level means if present (multi-depth; per-layer means only)
+    dplyr::matches("^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_.+_mean$"),
     # Interactions
     size_temp, height_temp, les_seasonality, wood_cold, lma_precip,
     wood_precip, size_precip, les_drought,
     # Light-oriented
     height_ssd, lma_la
-  ) %>%
-  filter(complete.cases(.))
+  )
 
 cat(sprintf("Final dataset: %d observations, %d features\n", 
             nrow(features), ncol(features) - 3))  # Exclude ID and target columns
@@ -290,6 +343,16 @@ compute_p_from_dist <- function(target_idx, donor_idx, Dmat, yvec, x_exp = 2, k_
   W <- matrix(0, nrow(D), ncol(D))
   mask <- is.finite(D) & D > 0
   W[mask] <- 1 / (D[mask]^x_exp)
+  # Exclude donors with missing/invalid targets by zeroing their weights
+  y_don <- yvec[donor_idx]
+  good_don <- is.finite(y_don)
+  if (!any(good_don)) return(rep(NA_real_, length(target_idx)))
+  # Zero-out weights for invalid donors and replace their y with 0 (so they contribute nothing)
+  if (!all(good_don)) {
+    W[, !good_don] <- 0
+  }
+  y_don_fill <- y_don
+  y_don_fill[!good_don] <- 0
   # Optional K truncation: keep only K strongest weights per row
   if (k_trunc > 0 && ncol(W) > k_trunc) {
     for (i in seq_len(nrow(W))) {
@@ -303,7 +366,7 @@ compute_p_from_dist <- function(target_idx, donor_idx, Dmat, yvec, x_exp = 2, k_
     }
   }
   # Weighted average
-  num <- W %*% matrix(yvec[donor_idx], ncol = 1)
+  num <- W %*% matrix(y_don_fill, ncol = 1)
   den <- rowSums(W)
   den[den <= 0 | !is.finite(den)] <- NA_real_
   out <- as.numeric(num) / den
@@ -351,17 +414,42 @@ cat("\n==========================================\n")
 cat("Black-Box Feature Discovery\n")
 cat("==========================================\n")
 
-# Prepare feature matrix
-feature_cols <- setdiff(names(features), 
-                       c("wfo_accepted_name", "species_normalized", "y"))
-X <- features[, feature_cols]
+# Prepare feature matrix (with coverage-based filtering to handle sparse soil/climate)
+feature_cols <- setdiff(names(features), c("wfo_accepted_name", "species_normalized", "y"))
+X0 <- features[, feature_cols]
 y <- features$y
+
+# Drop predictor columns with insufficient coverage to avoid empty samples in RF
+coverage_threshold <- 0.8
+col_cov <- colMeans(!is.na(X0))
+keep_cols_rf <- names(col_cov)[is.finite(col_cov) & col_cov >= coverage_threshold]
+if (length(keep_cols_rf) < 5) {
+  # Fallback: prioritize climate and core trait features if coverage is tight
+  core_traits <- c("logLA", "logH", "logSM", "logSSD", "Nmass", "LMA")
+  climate_pref_all <- c("mat_mean","mat_sd","mat_q05","mat_q95","temp_seasonality","temp_range",
+                        "tmax_mean","tmin_mean","tmin_q05","precip_mean","precip_cv",
+                        "precip_seasonality","drought_min","precip_driest_q","precip_warmest_q","precip_coldest_q",
+                        "aridity_mean")
+  pref <- intersect(c(core_traits, climate_pref_all), colnames(X0))
+  if (length(pref) >= 5) {
+    keep_cols_rf <- pref
+  } else {
+    keep_cols_rf <- intersect(colnames(X0), names(col_cov)[order(-col_cov)])[seq_len(min(10, ncol(X0)))]
+  }
+}
+X <- X0[, keep_cols_rf, drop = FALSE]
+row_good_rf <- complete.cases(X) & !is.na(y)
+X <- X[row_good_rf, , drop = FALSE]
+y_rf <- y[row_good_rf]
+if (nrow(X) < 20) {
+  stop("After coverage filtering, not enough complete cases for RF feature discovery. Consider lowering coverage_threshold or disabling soil candidates.")
+}
 
 # Random Forest for feature importance
 cat("\nRunning Random Forest...\n")
 rf_model <- ranger(
   x = X,
-  y = y,
+  y = y_rf,
   num.trees = CONFIG$rf_trees,
   importance = CONFIG$rf_importance,
   mtry = ceiling(sqrt(ncol(X))),
@@ -382,6 +470,88 @@ print(head(importance_df, 15))
 
 if (CONFIG$save_intermediate) {
   write_csv(importance_df, file.path(CONFIG$output_dir, "feature_importance.csv"))
+}
+
+# Optional short-circuit: RF-only exploratory run
+if (isTRUE(CONFIG$rf_only)) {
+  cat("\n==========================================\n")
+  cat("RF-only mode: CV baseline\n")
+  cat("==========================================\n")
+  # Build numeric feature matrix excluding IDs and y
+  num_mask <- sapply(features, is.numeric)
+  Xrf <- features[, num_mask, drop = FALSE]
+  Xrf$y <- NULL
+  yvec <- features$y
+  # Guard: drop rows with missing/invalid targets to enable stratified folds
+  keep_rows <- is.finite(yvec)
+  if (!all(keep_rows)) {
+    dropped <- sum(!keep_rows)
+    cat(sprintf("[rf_only] Dropping %d rows with NA/NaN target before CV.\n", dropped))
+  }
+  Xrf <- Xrf[keep_rows, , drop = FALSE]
+  yvec <- yvec[keep_rows]
+  if (length(yvec) < CONFIG$cv_folds) {
+    stop(sprintf(
+      "Not enough non-missing targets (%d) for %d-fold CV. Reduce cv_folds or impute targets.",
+      length(yvec), CONFIG$cv_folds
+    ))
+  }
+  # Prepare folds
+  make_folds <- function(y, K) {
+    n <- length(y)
+    # Use na.rm=TRUE for safety though y is already filtered finite
+    q <- quantile(y, probs = seq(0, 1, length.out = K + 1), na.rm = TRUE)
+    # Ensure breaks are strictly increasing to avoid "breaks are not unique" in degenerate cases
+    # Add an infinitesimal jitter if necessary
+    if (any(diff(q) == 0)) {
+      eps <- .Machine$double.eps
+      for (i in seq_along(q)[-1]) {
+        if (q[i] <= q[i - 1]) q[i] <- q[i - 1] + eps
+      }
+    }
+    strata <- cut(y, breaks = q, include.lowest = TRUE, labels = FALSE)
+    folds <- integer(n)
+    for (s in unique(strata)) {
+      idx <- which(strata == s)
+      folds[idx] <- sample(rep(1:K, length.out = length(idx)))
+    }
+    folds
+  }
+  rf_cv_results <- list()
+  set.seed(123)
+  for (rep in 1:CONFIG$cv_repeats) {
+    folds <- make_folds(yvec, CONFIG$cv_folds)
+    for (fold in 1:CONFIG$cv_folds) {
+      tr <- folds != fold; te <- !tr
+      Xtr <- Xrf[tr, , drop = FALSE]; ytr <- yvec[tr]
+      Xte <- Xrf[te, , drop = FALSE]; yte <- yvec[te]
+      keep <- names(Xtr)[apply(Xtr, 2, function(z) length(unique(z[is.finite(z)])) > 1)]
+      Xtr <- Xtr[, keep, drop = FALSE]
+      Xte <- Xte[, intersect(colnames(Xte), keep), drop = FALSE]
+      miss <- setdiff(colnames(Xtr), colnames(Xte))
+      if (length(miss)) for (mc in miss) Xte[[mc]] <- 0
+      Xte <- Xte[, colnames(Xtr), drop = FALSE]
+      fit <- ranger::ranger(x = Xtr, y = ytr, num.trees = CONFIG$rf_trees, mtry = ceiling(sqrt(ncol(Xtr))), seed = 1000 + rep)
+      pred <- as.numeric(stats::predict(fit, data = Xte)$predictions)
+      sse <- sum((yte - pred)^2); sst <- sum((yte - mean(yte))^2)
+      r2 <- if (sst > 0) 1 - sse/sst else NA_real_
+      rmse <- sqrt(mean((yte - pred)^2))
+      rf_cv_results[[length(rf_cv_results) + 1]] <- data.frame(r2 = r2, rmse = rmse)
+    }
+  }
+  rf_cv_df <- dplyr::bind_rows(rf_cv_results)
+  rf_cv_summary <- rf_cv_df %>% dplyr::summarise(r2_mean = mean(r2, na.rm = TRUE), r2_sd = sd(r2, na.rm = TRUE), rmse_mean = mean(rmse), rmse_sd = sd(rmse))
+  cat(sprintf("RF CV R² = %.3f ± %.3f; RMSE = %.3f ± %.3f\n", rf_cv_summary$r2_mean, rf_cv_summary$r2_sd, rf_cv_summary$rmse_mean, rf_cv_summary$rmse_sd))
+  # Write results JSON
+  results_summary <- list(
+    metadata = list(target = CONFIG$target, timestamp = Sys.time(), n_species = nrow(features), n_features_initial = ncol(X), n_features_final = NA, mode = "rf_only"),
+    performance = list(rf_r2 = rf_model$r.squared, rf_cv_r2 = rf_cv_summary$r2_mean, rf_cv_r2_sd = rf_cv_summary$r2_sd, rf_cv_rmse_mean = rf_cv_summary$rmse_mean, rf_cv_rmse_sd = rf_cv_summary$rmse_sd),
+    feature_importance = head(importance_df, 20),
+    config = CONFIG
+  )
+  write_json(results_summary, file.path(CONFIG$output_dir, sprintf("comprehensive_results_%s.json", CONFIG$target_axis)), pretty = TRUE, auto_unbox = TRUE)
+  cat(sprintf("RF-only results saved to: %s\n", CONFIG$output_dir))
+  quit(save = "no")
 }
 
 # ============================================================================
@@ -474,12 +644,26 @@ check_and_reduce_vif <- function(data, feature_list, max_vif = 5) {
 }
 
 # Separate climate variables for correlation clustering
-climate_vars <- c("mat_mean", "mat_sd", "mat_q05", "mat_q95", 
-                  "temp_seasonality", "temp_range", "tmax_mean", 
-                  "tmin_mean", "tmin_q05", "precip_mean", "precip_cv", "drought_min")
+climate_vars <- c(
+  # Temperature-related
+  "mat_mean", "mat_sd", "mat_q05", "mat_q95",
+  "temp_seasonality", "temp_range", "tmax_mean", "tmin_mean", "tmin_q05",
+  # Moisture-related (expanded)
+  "precip_mean", "precip_cv", "precip_seasonality", "drought_min",
+  # Quarter precipitation (stress-relevant)
+  "precip_driest_q", "precip_warmest_q", "precip_coldest_q",
+  # Aridity Index (dimensionless, AI = P/PET). Present only if provided in summary
+  "aridity_mean",
+  # Monthly AI dryness indicators
+  "ai_month_min", "ai_month_p10", "ai_roll3_min",
+  "ai_dry_frac_t020", "ai_dry_run_max_t020",
+  "ai_dry_frac_t050", "ai_dry_run_max_t050",
+  "ai_amp", "ai_cv_month"
+)
 
-# Check correlation among climate variables
-cor_matrix <- cor(X[, intersect(climate_vars, names(X))], use = "complete.obs")
+# Check correlation among climate variables (pairwise to allow partial coverage)
+clim_present <- intersect(climate_vars, colnames(features))
+cor_matrix <- cor(features[, clim_present, drop = FALSE], use = "pairwise.complete.obs")
 
 # Identify highly correlated pairs
 high_cor_pairs <- which(abs(cor_matrix) > CONFIG$cor_threshold & 
@@ -495,34 +679,74 @@ if (nrow(high_cor_pairs) > 0) {
   }
 }
 
-# Hierarchical clustering of climate variables
-hc <- hclust(as.dist(1 - abs(cor_matrix)))
-clusters <- cutree(hc, h = 1 - CONFIG$cor_threshold)
-
-cat(sprintf("\nFound %d correlation clusters among climate variables\n", 
-            max(clusters)))
-
-# Select representative from each cluster based on importance
 selected_climate <- c()
-for (cluster_id in unique(clusters)) {
-  cluster_vars <- names(clusters)[clusters == cluster_id]
-  
-  # Choose variable with highest importance
-  cluster_importance <- importance_df %>%
-    filter(feature %in% cluster_vars) %>%
-    slice_max(rf_importance, n = 1)
-  
-  if (nrow(cluster_importance) > 0) {
-    selected_climate <- c(selected_climate, cluster_importance$feature[1])
-    cat(sprintf("Cluster %d: selected %s from {%s}\n", 
-                cluster_id, cluster_importance$feature[1],
-                paste(cluster_vars, collapse = ", ")))
+if (isTRUE(CONFIG$offer_all_variables)) {
+  cat("Offering ALL climate variables to AIC (no cluster representatives)\n")
+  selected_climate <- intersect(colnames(cor_matrix), climate_vars)
+} else {
+  # Hierarchical clustering of climate variables
+  hc <- hclust(as.dist(1 - abs(cor_matrix)))
+  clusters <- cutree(hc, h = 1 - CONFIG$cor_threshold)
+
+  cat(sprintf("\nFound %d correlation clusters among climate variables\n", 
+              max(clusters)))
+
+  # Select representative from each cluster based on importance
+  for (cluster_id in unique(clusters)) {
+    cluster_vars <- names(clusters)[clusters == cluster_id]
+    
+    # Choose variable with highest importance
+    cluster_importance <- importance_df %>%
+      filter(feature %in% cluster_vars) %>%
+      slice_max(rf_importance, n = 1)
+    
+    if (nrow(cluster_importance) > 0) {
+      selected_climate <- c(selected_climate, cluster_importance$feature[1])
+      cat(sprintf("Cluster %d: selected %s from {%s}\n", 
+                  cluster_id, cluster_importance$feature[1],
+                  paste(cluster_vars, collapse = ", ")))
+    }
+  }
+}
+
+# Soil variables (if present): species-level soil means across depths/layers
+soil_vars <- grep("^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_.+_mean$", colnames(X), value = TRUE)
+selected_soil <- c()
+if (length(soil_vars) > 0) {
+  cat(sprintf("\nDetected %d soil mean layers; performing correlation clustering...\n", length(soil_vars)))
+  if (isTRUE(CONFIG$offer_all_variables) || length(soil_vars) == 1) {
+    # Reuse flag to allow all soil variables as well when offering all climate
+    selected_soil <- soil_vars
+    if (isTRUE(CONFIG$offer_all_variables)) cat("Offering ALL soil variables to AIC (no cluster representatives)\n")
+  } else {
+    # Compute correlation matrix safely (guard against singular cases)
+    if (length(soil_vars) >= 2) {
+      cor_soil <- suppressWarnings(cor(features[, soil_vars, drop = FALSE], use = "pairwise.complete.obs"))
+      cor_soil[is.na(cor_soil)] <- 0
+      hc_s <- hclust(as.dist(1 - abs(cor_soil)))
+      clusters_s <- cutree(hc_s, h = 1 - CONFIG$cor_threshold)
+      cat(sprintf("Found %d correlation clusters among soil variables\n", max(clusters_s)))
+      for (cid in unique(clusters_s)) {
+        sv <- names(clusters_s)[clusters_s == cid]
+        imp <- importance_df %>% filter(feature %in% sv) %>% slice_max(rf_importance, n = 1)
+        if (nrow(imp) > 0) {
+          selected_soil <- c(selected_soil, imp$feature[1])
+          cat(sprintf("Soil cluster %d: selected %s from {%s}\n", cid, imp$feature[1], paste(sv, collapse = ", ")))
+        }
+      }
+    } else {
+      selected_soil <- soil_vars
+    }
   }
 }
 
 # Combine selected features (no pre‑AIC VIF pruning)
 # Use component traits to avoid trivial aliasing; interactions optional
-trait_vars <- c("logLA", "logH", "logSM", "logSSD", "Nmass", "LMA")
+# Include Bill's LDMC×LA thickness proxies when present
+trait_vars <- c(
+  "logLA", "logH", "logSM", "logSSD", "Nmass", "LMA",
+  "log_ldmc_minus_log_la", "log_ldmc_plus_log_la", "LDMC", "Leaf_thickness_mm"
+)
 
 # Target-aware interaction set (inspired by README SEM forms and L diagnostics)
 if (toupper(CONFIG$target_axis) == "T") {
@@ -550,6 +774,24 @@ if (length(selected_features) > 10) cat("  ...\n")
 
 final_features <- selected_features
 
+# Coverage filter: retain only predictors with sufficient non-missing coverage
+cov_thresh <- 0.7
+present_feats <- intersect(final_features, colnames(features))
+if (length(present_feats) > 0) {
+  cov_vec <- vapply(present_feats, function(nm) mean(!is.na(features[[nm]])), numeric(1))
+  keep_by_cov <- names(cov_vec)[cov_vec >= cov_thresh]
+  # Keep p_phylo only if it has reasonable coverage; otherwise drop gracefully
+  if (isTRUE(CONFIG$add_phylo_predictor) && ("p_phylo" %in% present_feats)) {
+    p_cov <- mean(!is.na(features$p_phylo))
+    if (is.finite(p_cov) && p_cov >= 0.2) {
+      keep_by_cov <- union(keep_by_cov, "p_phylo")
+    } else {
+      message(sprintf("[warn] p_phylo coverage low (%.3f); excluding from AIC candidate set.", p_cov))
+    }
+  }
+  final_features <- intersect(final_features, keep_by_cov)
+}
+
 # ============================================================================
 # SECTION 6: MODEL DEVELOPMENT AND AIC SELECTION
 # ============================================================================
@@ -561,6 +803,28 @@ cat("==========================================\n")
 # Prepare modeling data (retain Family and species id for optional random intercept and phylo mapping)
 keep_cols <- unique(c("y", final_features, "Family", "wfo_accepted_name"))
 model_data <- features[, intersect(keep_cols, colnames(features))]
+# Retain rows complete for y and the selected final features; if too few remain, fallback by dropping soil features
+filter_complete <- function(df, feats) {
+  cols <- intersect(c("y", feats), colnames(df))
+  df[complete.cases(df[, cols, drop = FALSE]), , drop = FALSE]
+}
+if (length(final_features) < 1) {
+  stop("No features selected for modeling after preprocessing.")
+}
+model_data <- filter_complete(model_data, final_features)
+cat(sprintf("Rows after complete-case filter (y + final_features): %d\n", nrow(model_data)))
+if (nrow(model_data) < 50) {
+  soil_pat <- "^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_"
+  non_soil_feats <- setdiff(final_features, grep(soil_pat, final_features, value = TRUE))
+  if (length(non_soil_feats) >= 1) {
+    message(sprintf("[warn] Few complete rows (%d) with soil; retrying without soil features (%d -> %d)...", 
+                    nrow(model_data), length(final_features), length(non_soil_feats)))
+    final_features <- non_soil_feats
+    keep_cols <- unique(c("y", final_features, "Family", "wfo_accepted_name"))
+    model_data <- features[, intersect(keep_cols, colnames(features))]
+    model_data <- filter_complete(model_data, final_features)
+  }
+}
 if ("Family" %in% names(model_data)) model_data$Family <- as.factor(model_data$Family)
 
 # Model 1: Baseline (traits only)
@@ -569,7 +833,7 @@ formula1 <- as.formula(paste("y ~", paste(trait_only_features, collapse = " + ")
 model1_baseline <- lm(formula1, data = model_data)
 
 # Model 2: Traits + Climate (no interactions) [+ p_phylo]
-climate_features <- intersect(c(trait_vars, selected_climate, if (isTRUE(CONFIG$add_phylo_predictor)) "p_phylo" else NULL), final_features)
+climate_features <- intersect(c(trait_vars, selected_climate, selected_soil, if (isTRUE(CONFIG$add_phylo_predictor)) "p_phylo" else NULL), final_features)
 formula2 <- as.formula(paste("y ~", paste(climate_features, collapse = " + ")))
 model2_climate <- lm(formula2, data = model_data)
 
@@ -581,32 +845,35 @@ model3_full <- lm(formula3, data = model_data)
 {
   gam_terms <- c()
   ax <- toupper(CONFIG$target_axis)
-  if (ax == "L") {
-    # Light (L): canonical rf_plus GAM (traits-only), shrinkage for stability
-    # L ~ s(LMA) + s(logSSD) + s(logLA) + s(logH) + Nmass +
-    #      LMA:logLA + t2(LMA,logSSD) + ti(logLA,logH) + ti(logH,logSSD)
-    for (v in c("LMA", "logSSD", "logLA", "logH")) {
-      if (v %in% final_features) gam_terms <- c(gam_terms, sprintf("s(%s, bs='ts', k=5)", v))
-    }
-    # Add Nmass as a linear term if available
-    if ("Nmass" %in% final_features) gam_terms <- c(gam_terms, "Nmass")
-    # Linear interaction LMA:logLA (not a smooth) if both present
-    if (all(c("LMA", "logLA") %in% final_features)) gam_terms <- c(gam_terms, "LMA:logLA")
-    # Bivariate smooths with shrinkage bases
-    if (all(c("LMA", "logSSD") %in% final_features)) gam_terms <- c(gam_terms, "t2(LMA, logSSD, bs=c('ts','ts'), k=c(5,5))")
-    if (all(c("logLA", "logH") %in% final_features)) gam_terms <- c(gam_terms, "ti(logLA, logH, bs=c('ts','ts'), k=c(5,5))")
-    if (all(c("logH", "logSSD") %in% final_features)) gam_terms <- c(gam_terms, "ti(logH, logSSD, bs=c('ts','ts'), k=c(5,5))")
-    # Important: exclude climate and p_phylo from the GAM candidate for L
-  } else {
-    # General/T: allow smooths on size and a few climate surfaces; M uses moisture climates
-    for (var in c("logH", "logSM")) {
-      if (var %in% final_features) gam_terms <- c(gam_terms, sprintf("s(%s, k=5)", var))
-    }
-    climate_pref <- if (ax == "M") c("precip_mean", "drought_min", "precip_cv") else c("mat_mean", "temp_seasonality", "tmin_q05")
-    climate_smooth <- intersect(climate_pref, final_features)
-    for (var in climate_smooth) gam_terms <- c(gam_terms, sprintf("s(%s, k=5)", var))
-    if (all(c("logH", "mat_mean") %in% final_features)) gam_terms <- c(gam_terms, "ti(logH, mat_mean, k=c(5,5))")
+  # Traits: always include shrinkage smooths for key traits (including thickness proxies)
+  for (v in c("LMA", "logSSD", "logLA", "logH",
+              # Thickness proxies: add smooths if available
+              "log_ldmc_minus_log_la", "log_ldmc_plus_log_la",
+              # Direct traits if present
+              "LDMC", "Leaf_thickness_mm")) {
+    if (v %in% final_features) gam_terms <- c(gam_terms, sprintf("s(%s, bs='ts', k=5)", v))
   }
+  # Add Nmass as a linear term if available
+  if ("Nmass" %in% final_features) gam_terms <- c(gam_terms, "Nmass")
+  # Linear interaction LMA:logLA (not a smooth) if both present
+  if (all(c("LMA", "logLA") %in% final_features)) gam_terms <- c(gam_terms, "LMA:logLA")
+  # Bivariate smooths with shrinkage bases on traits
+  if (all(c("LMA", "logSSD") %in% final_features)) gam_terms <- c(gam_terms, "t2(LMA, logSSD, bs=c('ts','ts'), k=c(5,5))")
+  if (all(c("logLA", "logH") %in% final_features)) gam_terms <- c(gam_terms, "ti(logLA, logH, bs=c('ts','ts'), k=c(5,5))")
+  if (all(c("logH", "logSSD") %in% final_features)) gam_terms <- c(gam_terms, "ti(logH, logSSD, bs=c('ts','ts'), k=c(5,5))")
+
+  # Climate: include smooths for all axes; choose axis‑aware preferences and shrinkage
+  if (ax == "M") {
+    climate_pref <- c("precip_mean", "drought_min", "precip_cv", "precip_seasonality")
+  } else if (ax == "L") {
+    climate_pref <- c("mat_mean", "temp_seasonality", "tmin_q05", "precip_mean", "drought_min", "precip_cv")
+  } else {
+    climate_pref <- c("mat_mean", "temp_seasonality", "tmin_q05")
+  }
+  climate_smooth <- intersect(climate_pref, final_features)
+  for (var in climate_smooth) gam_terms <- c(gam_terms, sprintf("s(%s, bs='ts', k=5)", var))
+  # Example trait×climate tensor for size×temperature if available
+  if (all(c("logH", "mat_mean") %in% final_features)) gam_terms <- c(gam_terms, "ti(logH, mat_mean, bs=c('ts','ts'), k=c(5,5))")
   if (length(gam_terms) > 0) {
     # Optional Family random intercept for GAMs
     if (isTRUE(CONFIG$family_random_intercept) && ("Family" %in% names(model_data))) {
@@ -1139,7 +1406,7 @@ results_summary <- list(
   multicollinearity = list(
     pre_aic_pruning = FALSE,
     removed_features_pre_aic = character(0),
-    correlation_clusters = max(clusters),
+    correlation_clusters = if (exists("clusters")) max(clusters) else NA_integer_,
     selected_climate_vars = selected_climate,
     vif_winner = vif_best
   ),
