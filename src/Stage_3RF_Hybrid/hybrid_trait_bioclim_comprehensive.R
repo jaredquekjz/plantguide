@@ -214,7 +214,14 @@ climate_metrics <- climate_summary %>%
     precip_warmest_q = bio18_mean,
     precip_coldest_q = bio19_mean,
     # Optional Aridity Index (dimensionless) if available in the summary
-    dplyr::any_of(c("aridity_mean", "aridity_sd"))
+    dplyr::any_of(c("aridity_mean", "aridity_sd")),
+    # Monthly AI dryness indicators (if present)
+    dplyr::any_of(c(
+      "ai_month_min", "ai_month_p10", "ai_roll3_min",
+      "ai_dry_frac_t020", "ai_dry_run_max_t020",
+      "ai_dry_frac_t050", "ai_dry_run_max_t050",
+      "ai_amp", "ai_cv_month"
+    ))
   ) %>%
   mutate(
     # Approximate quantiles

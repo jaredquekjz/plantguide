@@ -306,7 +306,8 @@ hybrid_interpret_rf_M:
 XGB_GPU ?= false
 hybrid_interpret_xgb:
 	@echo "[interpret] XGB interpretability for AXIS=$(AXIS) ... (GPU=$(XGB_GPU))"
-	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS)
+	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS) TRAIT_CSV=$(TRAIT_CSV) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) X_EXP=$(X_EXP) K_TRUNC=$(K_TRUNC) FOLDS=$(FOLDS) INTERPRET_LABEL=$(INTERPRET_LABEL)
+	@if ! python3 -c "import xgboost" >/dev/null 2>&1; then echo "[warn] xgboost not installed; skipping XGB interpret for AXIS=$(AXIS)"; else \
 	python3 src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
 	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv \
 	  --axis=$(AXIS) \
@@ -316,8 +317,8 @@ hybrid_interpret_xgb:
 	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk/features.csv \
 	  --axis=$(AXIS) \
 	  --gpu=$(XGB_GPU) \
-	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk
-	@echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"
+	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk; \
+	 echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"; fi
 
 hybrid_interpret_xgb_T:
 	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_xgb AXIS=T
