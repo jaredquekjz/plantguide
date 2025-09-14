@@ -17,15 +17,15 @@ Method (RF‑only fast)
 - Targets: per‑axis EIVE residuals; missing targets dropped before fold creation (stratified quantiles made robust to ties).
 - p_k: weighted average of neighbor EIVE values with weights `1/d^x` (x=2), donors limited to train fold (LOO on train for train predictions). Donors with missing targets are excluded from the weighted average.
 
-Results (RF CV R² mean ± sd)
+Results (RF CV R² mean ± sd; monthly AI included)
 
 | Axis | RF‑only (no p_k) | RF‑only (+ p_k) | SEM baseline (pwSEM, traits‑only) |
 |------|-------------------|-----------------|------------------------------------|
-| T    | 0.533 ± 0.043    | 0.547 ± 0.040   | 0.216 ± 0.071                      |
-| M    | 0.224 ± 0.071    | 0.317 ± 0.069   | 0.357 ± 0.121                      |
-| L    | 0.348 ± 0.055    | 0.355 ± 0.050   | 0.283 ± 0.103                      |
-| N    | 0.426 ± 0.068    | 0.449 ± 0.068   | 0.444 ± 0.081                      |
-| R    | 0.115 ± 0.071    | 0.155 ± 0.068   | 0.165 ± 0.092                      |
+| T    | 0.524 ± 0.044    | 0.538 ± 0.042   | 0.216 ± 0.071                      |
+| M    | 0.227 ± 0.071    | 0.317 ± 0.066   | 0.357 ± 0.121                      |
+| L    | 0.355 ± 0.054    | 0.361 ± 0.052   | 0.283 ± 0.103                      |
+| N    | 0.432 ± 0.062    | 0.452 ± 0.061   | 0.444 ± 0.081                      |
+| R    | 0.125 ± 0.071    | 0.166 ± 0.065   | 0.165 ± 0.092                      |
 
 Observations
 - Temperature (T): +p_k gives a modest, consistent gain over no‑pk and far exceeds SEM baseline.
@@ -34,9 +34,19 @@ Observations
 - Nitrogen (N): +p_k is slightly above SEM baseline; consistent with prior runs where phylogeny helps N.
 - Reaction (R): +p_k improves RF‑only yet SEM baseline still leads; consistent with soil/pH factors being better modeled structurally.
 
+AI PDP slopes and interactions (RF; Non‑SoilGrid)
+- 1D PDP slopes (approx. over 5–95% range):
+  - M: ai_month_min ≈ +0.116, ai_roll3_min ≈ +0.166
+  - T: ai_month_min ≈ −0.018, ai_roll3_min ≈ −0.123
+  Interpretation: Moisture increases with less aridity (higher AI), whereas Temperature shows weak/negative relation, consistent with expectations.
+- 2D interaction H² (Friedman index; 0 additive → 1 strong):
+  - M: H²(LES_core × drought_min) ≈ 0.007; H²(SIZE × precip_mean) ≈ 0.002
+  - T: H²(LES_core × drought_min) ≈ 0.002; H²(SIZE × precip_mean) ≈ 0.001
+  Interpretation: These pairs are near‑additive under RF; we can extend to AI‑specific pairs (e.g., LES_core × ai_month_min) if desired.
+
 Files
 - This summary: `results/summaries/hybrid_axes/phylotraits/hybrid_summary_ALL_phylotraits_rfonly.md`
-- RF CV CSV (non‑soilgrid): `results/summaries/hybrid_axes/phylotraits/rf_cv_summary_phylotraits_nosoil_20250914_fixpk.csv`
+- RF CV CSV (Non‑SoilGrid; AI fix): `results/summaries/hybrid_axes/phylotraits/rf_cv_summary_phylotraits_nosoil_20250914_fixpk_ai.csv`
 - RF JSON sources: `artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed_cleanedAI_rfonly_fast_fixpk/{AXIS}/comprehensive_results_{AXIS}.json` and `_pk` variant.
 - SEM baseline: `results/summaries/hybrid_axes/phylotraits/bioclim_subset_baseline_phylotraits.md`
 
