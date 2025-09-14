@@ -93,7 +93,11 @@ option_list <- list(
               metavar="integer"),
   make_option(c("--rf_only"), type="character", default="false",
               help="If true, run only RF feature importance + RF CV baseline, skipping AIC/GAM and bootstraps (default: false)",
-              metavar="true|false")
+              metavar="true|false"),
+  make_option(c("--export_features"), type="character", default="false",
+              help="If true, export assembled features (including y) to CSV under output_dir", metavar="true|false"),
+  make_option(c("--features_out"), type="character", default=NULL,
+              help="Optional explicit path for exported features CSV (overrides default in output_dir)", metavar="path")
 )
 
 opt_parser <- OptionParser(option_list=option_list)
@@ -137,6 +141,8 @@ CONFIG <- list(
   rf_importance = "impurity",
   rf_cv = FALSE,
   rf_only = tolower(opt$rf_only) %in% c("1","true","yes","y"),
+  export_features = tolower(opt$export_features) %in% c("1","true","yes","y"),
+  features_out = opt$features_out,
   # Unified flag: offer all variables (climate + soil). Accept both new and old names.
   offer_all_variables = (tolower(ifelse(is.null(opt$offer_all_variables), "false", opt$offer_all_variables)) %in% c("1","true","yes","y")) ||
                        (tolower(ifelse(is.null(opt$offer_all_climate),   "false", opt$offer_all_climate))   %in% c("1","true","yes","y")),
@@ -330,6 +336,17 @@ features <- merged_data %>%
 
 cat(sprintf("Final dataset: %d observations, %d features\n", 
             nrow(features), ncol(features) - 3))  # Exclude ID and target columns
+
+# Optional: export assembled features for interpretability (PDP/ICE/SHAP) by other tools
+if (isTRUE(CONFIG$export_features)) {
+  out_path <- CONFIG$features_out
+  if (is.null(out_path) || !nzchar(out_path)) {
+    out_path <- file.path(CONFIG$output_dir, sprintf("features_%s.csv", CONFIG$target_axis))
+  }
+  if (!dir.exists(dirname(out_path))) dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
+  readr::write_csv(features, out_path)
+  cat(sprintf("Exported assembled features to: %s\n", out_path))
+}
 
 # ============================================================================
 # SECTION 3.1: PHYLOGENETIC PREDICTOR (GLOBAL; LOO; used only for AIC selection)

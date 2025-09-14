@@ -1,0 +1,326 @@
+R ?= Rscript
+
+# Scripts
+HYB_SCRIPT := src/Stage_3RF_Hybrid/hybrid_trait_bioclim_comprehensive.R
+GLS_SCRIPT := src/Stage_3RF_Hybrid/gls_phylo_sensitivity.R
+SEM_SCRIPT := src/Stage_3RF_Hybrid/hybrid_sem_bioclim_cv.R
+
+# Defaults (tweak via: make target VAR=VAL)
+AXIS      ?= T               # One of: T M R N L
+FOLDS     ?= 10
+REPEATS   ?= 5
+FOLD_INTERNAL ?= true        # Recompute SIZE/LES within CV folds
+FAMILY_RE     ?= true        # Family random intercept during CV
+ADD_PHYLO     ?= false       # Add fold-safe p_k as covariate
+RF_CV         ?= false       # Compute RF CV baseline alongside structured model
+BOOTSTRAP     ?= 1000        # Bootstrap replications for stability testing
+# RF-only exploratory mode (skip AIC/GAM + bootstraps)
+ONLY_RF       ?= false
+# New, clearer flag name; backward compat with OFFER_ALL_CLIMATE
+OFFER_ALL_VARIABLES ?= false # If true, offer all variables (climate + soil) to AIC (no cluster reps)
+OFFER_ALL_VARIABLES ?= $(OFFER_ALL_CLIMATE)
+TREE      ?= data/phylogeny/eive_try_tree.nwk
+X_EXP     ?= 2               # w_ij = 1/d_ij^X_EXP
+K_TRUNC   ?= 0               # 0 = all donors; else keep K nearest
+OUT       ?= artifacts/stage3rf_hybrid_comprehensive
+BASE_OUT  ?= artifacts/stage3rf_sem_bioclim_cv
+TRAIT_CSV ?= artifacts/model_data_bioclim_subset.csv
+BIOCLIM_SUMMARY ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
+
+# Optional: Paths for Aridity Index (AI) augmentation utility
+AI_RASTER ?= data/PET/Global-AI_ET0__annual_v3_1/ai_v31_yr.tif
+OCC_CSV ?= data/bioclim_extractions_cleaned/all_occurrences_cleaned_noDups.csv
+SPECIES_DIR ?= data/bioclim_extractions_cleaned/species_bioclim
+BIOCLIM_SUMMARY_OUT ?= $(BIOCLIM_SUMMARY:.csv=_with_ai.csv)
+
+# Monthly AI defaults
+AI_MONTH_DIR ?= data/PET/Global_AI__monthly_v3_1/Global_AI__monthly_v3_1
+AI_CHUNK_SIZE ?= 100000
+AI_WORKERS ?= 8
+BIOCLIM_SUMMARY_OUT_AIMONTH ?= $(BIOCLIM_SUMMARY:.csv=_with_aimonth.csv)
+
+.PHONY: help \
+  hybrid_cv hybrid_cv_phylo hybrid_T hybrid_M hybrid_L hybrid_T_phylo hybrid_M_phylo hybrid_L_phylo hybrid_all hybrid_all_phylo \
+  hybrid_pk hybrid_pk_T hybrid_pk_M hybrid_pk_L hybrid_pk_all \
+  hybrid_rf_cv hybrid_rf_cv_T hybrid_rf_cv_M hybrid_rf_cv_L hybrid_rf_cv_pk hybrid_rf_cv_T_phylo hybrid_rf_cv_M_phylo hybrid_rf_cv_L_phylo \
+  baseline_cv baseline_cv_L \
+  hybrid_export_features hybrid_interpret_rf hybrid_interpret_rf_T hybrid_interpret_rf_M \
+  hybrid_interpret_xgb hybrid_interpret_xgb_T hybrid_interpret_xgb_M \
+  gls_T gls_T_simplified \
+  bioclim_add_ai bioclim_add_ai_monthly \
+  ai_month_extract_shard ai_month_extract_tmux ai_month_aggregate
+
+help:
+	@echo "Hybrid Makefile (structured regression + optional phylo predictor)"
+	@echo "Usage examples:"
+	@echo "  make hybrid_cv AXIS=T"
+	@echo "  make hybrid_cv_phylo AXIS=M X_EXP=2 K_TRUNC=0"
+	@echo "  make hybrid_all"
+	@echo "  make baseline_cv AXIS=L  # traits-only SEM baseline CV"
+	@echo "  make gls_T"
+    @echo "Variables: AXIS={T|M|R|N|L}, FOLDS, REPEATS, FOLD_INTERNAL, FAMILY_RE, ADD_PHYLO, TREE, X_EXP, K_TRUNC, OUT"
+    @echo "Optional: RF_CV, BOOTSTRAP (default 1000), OFFER_ALL_VARIABLES=true|false"
+	@echo "Utilities:"
+	@echo "  make bioclim_add_ai AI_RASTER=$(AI_RASTER) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) BIOCLIM_SUMMARY_OUT=$(BIOCLIM_SUMMARY_OUT)"
+	@echo "  make bioclim_add_ai_monthly AI_MONTH_DIR=$(AI_MONTH_DIR) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) BIOCLIM_SUMMARY_OUT_AIMONTH=$(BIOCLIM_SUMMARY_OUT_AIMONTH)"
+	@echo "  make ai_month_extract_tmux AI_MONTH_DIR=$(AI_MONTH_DIR) SHARDS=8 CHUNK=80000"
+	@echo "  make ai_month_aggregate PARTS_DIR=/home/olier/ellenberg/data/bioclim_extractions_bioclim_first"
+
+# Generic hybrid CV run (AIC-first; SSE/SST CV R²; fold-internal composites)
+hybrid_cv:
+	$(R) $(HYB_SCRIPT) \
+	  --target=$(AXIS) \
+	  --trait_data_path $(TRAIT_CSV) \
+	  --bioclim_summary $(BIOCLIM_SUMMARY) \
+	  --cv_repeats=$(REPEATS) --cv_folds=$(FOLDS) \
+	  --fold_internal_composites=$(FOLD_INTERNAL) \
+	  --family_random_intercept=$(FAMILY_RE) \
+	  --add_phylo_predictor=$(ADD_PHYLO) \
+	  --phylogeny_newick $(TREE) \
+  --x_exp=$(X_EXP) --k_trunc=$(K_TRUNC) \
+  --rf_cv=$(RF_CV) \
+  --rf_only=$(ONLY_RF) \
+  --offer_all_variables=$(OFFER_ALL_VARIABLES) \
+  --bootstrap_reps=$(BOOTSTRAP) \
+  --output_dir $(OUT)
+
+# Traits-only SEM baseline CV (no bioclim augmentation)
+baseline_cv:
+	$(R) $(SEM_SCRIPT) \
+	  --target=$(AXIS) \
+	  --cv_repeats=$(REPEATS) --cv_folds=$(FOLDS) \
+	  --augment_bioclim=false \
+	  --output_dir $(BASE_OUT)
+
+# Convenience alias for L baseline
+baseline_cv_L:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) baseline_cv AXIS=L
+
+# Convenience: force phylo predictor ON
+hybrid_cv_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv ADD_PHYLO=true
+
+# Axis-specific shortcuts
+hybrid_T:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv AXIS=T
+
+hybrid_M:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv AXIS=M
+
+hybrid_L:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv AXIS=L
+
+hybrid_T_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv_phylo AXIS=T
+
+hybrid_M_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv_phylo AXIS=M
+
+hybrid_L_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv_phylo AXIS=L
+
+# RF CV baselines (same folds), no phylo covariate inside the model
+hybrid_rf_cv:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv ADD_PHYLO=false RF_CV=true
+
+hybrid_rf_cv_T:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv AXIS=T
+
+hybrid_rf_cv_M:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv AXIS=M
+
+hybrid_rf_cv_L:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv AXIS=L
+
+# p_k convenience aliases (Option A as covariate)
+hybrid_pk:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv ADD_PHYLO=true
+
+hybrid_pk_T:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk AXIS=T
+
+hybrid_pk_M:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk AXIS=M
+
+hybrid_pk_L:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk AXIS=L
+
+hybrid_pk_all:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk_T
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk_M
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_pk_L
+
+# RF CV + p_k together
+hybrid_rf_cv_pk:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_cv ADD_PHYLO=true RF_CV=true
+
+hybrid_rf_cv_T_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv_pk AXIS=T
+
+hybrid_rf_cv_M_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv_pk AXIS=M
+
+hybrid_rf_cv_L_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_rf_cv_pk AXIS=L
+
+# Batch: run T and M
+hybrid_all:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_T
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_M
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_L
+
+hybrid_all_phylo:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_T_phylo
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_M_phylo
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_L_phylo
+
+# Phylogenetic GLS sensitivity for Temperature (robustness check; not part of CV)
+gls_T:
+	@test -f "$(TREE)" || { echo "Missing TREE: $(TREE)"; exit 1; }
+	$(R) $(GLS_SCRIPT) \
+	  --target T \
+	  --phylogeny_newick $(TREE) \
+	  --output_dir artifacts/stage3rf_hybrid_climate_phylo
+
+# GLS with simplified T formula (avoids collinearity), as documented
+gls_T_simplified:
+	@test -f "$(TREE)" || { echo "Missing TREE: $(TREE)"; exit 1; }
+	$(R) $(GLS_SCRIPT) \
+	  --target T \
+	  --phylogeny_newick $(TREE) \
+	  --formula "y ~ tmax_mean + mat_mean + tmin_mean + precip_mean + drought_min + logH + wood_cold + SIZE" \
+	  --output_dir artifacts/stage3rf_hybrid_climate_phylo
+
+# Add Aridity Index (AI) per-species stats to the bioclim summary
+bioclim_add_ai:
+	@test -f "$(AI_RASTER)" || { echo "Missing AI raster: $(AI_RASTER)"; exit 1; }
+	@test -f "$(BIOCLIM_SUMMARY)" || { echo "Missing bioclim summary: $(BIOCLIM_SUMMARY)"; exit 1; }
+	$(R) src/Stage_1_Data_Extraction/gbif_bioclim/augment_bioclim_summary_with_ai.R \
+	  --ai_raster $(AI_RASTER) \
+	  --input_summary $(BIOCLIM_SUMMARY) \
+	  --output_summary $(BIOCLIM_SUMMARY_OUT) \
+	  --occurrences_csv $(OCC_CSV) \
+	  --species_dir $(SPECIES_DIR)
+
+# Add Monthly AI dryness features to the bioclim summary
+bioclim_add_ai_monthly:
+	@test -d "$(AI_MONTH_DIR)" || { echo "Missing monthly AI dir: $(AI_MONTH_DIR)"; exit 1; }
+	@test -f "$(BIOCLIM_SUMMARY)" || { echo "Missing bioclim summary: $(BIOCLIM_SUMMARY)"; exit 1; }
+	$(R) src/Stage_1_Data_Extraction/gbif_bioclim/augment_bioclim_summary_with_ai_monthly.R \
+	  --ai_month_dir $(AI_MONTH_DIR) \
+	  --input_summary $(BIOCLIM_SUMMARY) \
+	  --output_summary $(BIOCLIM_SUMMARY_OUT_AIMONTH) \
+	  --occurrences_csv /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	  --species_dir /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/species_data \
+	  --chunk_size $(AI_CHUNK_SIZE) \
+	  --workers $(AI_WORKERS)
+
+# Plain extraction of monthly AI to coord parts (shardable)
+SHARDS ?= 8
+SHARD_ID ?= 1
+AI_COORDS_PREFIX ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/ai_monthly_coords_part
+CHUNK ?= 80000
+
+ai_month_extract_shard:
+	@test -d "$(AI_MONTH_DIR)" || { echo "Missing monthly AI dir: $(AI_MONTH_DIR)"; exit 1; }
+	$(R) src/Stage_1_Data_Extraction/gbif_bioclim/extract_ai_monthly_coords.R \
+	  --ai_month_dir $(AI_MONTH_DIR) \
+	  --occurrences_csv /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	  --out_prefix $(AI_COORDS_PREFIX) \
+	  --chunk_size $(CHUNK) \
+	  --num_shards $(SHARDS) \
+	  --shard_id $(SHARD_ID)
+
+# Orchestrate shards in tmux
+ai_month_extract_tmux:
+	@SESSION=ai_month_extract_$$(date +%Y%m%d_%H%M%S); \
+	LOG_DIR=artifacts/hybrid_tmux_logs/$$SESSION; mkdir -p "$$LOG_DIR"; \
+	echo "[tmux] session=$$SESSION"; \
+	tmux new-session -d -s "$$SESSION" -n monitor; \
+	tmux send-keys -t "$$SESSION:monitor" "bash -lc 'while true; do clear; echo Session: $$SESSION; date; ls -1t $$LOG_DIR/*.log 2>/dev/null | head -n 10; echo; tail -n 60 $$LOG_DIR/*.log 2>/dev/null || true; sleep 5; done'" C-m; \
+	for i in $$(seq 1 $(SHARDS)); do \
+	  tmux new-window -t "$$SESSION" -n shard_$$i; \
+	  tmux send-keys -t "$$SESSION:shard_$$i" "bash -lc 'set -Eeuo pipefail; echo [\$$(date)] START shard $$i/$(SHARDS); make -f Makefile.hybrid ai_month_extract_shard SHARDS=$(SHARDS) SHARD_ID=$$i CHUNK=$(CHUNK) 2>&1 | tee \"$$LOG_DIR/shard_$$i.log\"'" C-m; \
+	done; \
+	echo "Attach with: tmux attach -t $$SESSION"; \
+	echo "Logs: $$LOG_DIR"
+
+# Aggregate coord parts into species-level features and join to summary
+PARTS_DIR ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first
+ai_month_aggregate:
+	$(R) src/Stage_1_Data_Extraction/gbif_bioclim/aggregate_ai_monthly_species.R \
+	  --parts_dir $(PARTS_DIR) \
+	  --input_summary $(BIOCLIM_SUMMARY) \
+	  --output_summary $(BIOCLIM_SUMMARY_OUT_AIMONTH)
+
+# ----------------------------------------------------------------------------
+# Interpretability: export hybrid features and analyze RF PDP/ICE/interactions
+# ----------------------------------------------------------------------------
+
+INTERPRET_LABEL ?= phylotraits_imputed_cleanedAI
+INTERPRET_OUT ?= artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)
+
+hybrid_export_features:
+	@echo "[interpret] Exporting hybrid features (no_pk and pk) for AXIS=$(AXIS) to $(INTERPRET_OUT) ..."
+	@mkdir -p $(INTERPRET_OUT)/$(AXIS)_nopk $(INTERPRET_OUT)/$(AXIS)_pk
+	$(R) $(HYB_SCRIPT) \
+	  --target=$(AXIS) \
+	  --trait_data_path $(TRAIT_CSV) \
+	  --bioclim_summary $(BIOCLIM_SUMMARY) \
+	  --fold_internal_composites=$(FOLD_INTERNAL) \
+	  --add_phylo_predictor=false \
+	  --rf_only=true --cv_repeats=0 --cv_folds=$(FOLDS) \
+	  --export_features=true --features_out $(INTERPRET_OUT)/$(AXIS)_nopk/features.csv \
+	  --output_dir $(INTERPRET_OUT)/noop
+	$(R) $(HYB_SCRIPT) \
+	  --target=$(AXIS) \
+	  --trait_data_path $(TRAIT_CSV) \
+	  --bioclim_summary $(BIOCLIM_SUMMARY) \
+	  --fold_internal_composites=$(FOLD_INTERNAL) \
+	  --add_phylo_predictor=true --x_exp=$(X_EXP) --k_trunc=$(K_TRUNC) \
+	  --rf_only=true --cv_repeats=0 --cv_folds=$(FOLDS) \
+	  --export_features=true --features_out $(INTERPRET_OUT)/$(AXIS)_pk/features.csv \
+	  --output_dir $(INTERPRET_OUT)/noop_pk
+	@echo "[interpret] Exported: $(INTERPRET_OUT)/$(AXIS)_nopk/features.csv and pk variant"
+
+hybrid_interpret_rf:
+	@echo "[interpret] RF interpretability for AXIS=$(AXIS) ..."
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS)
+	R_LIBS_USER="/home/olier/ellenberg/.Rlib" $(R) src/Stage_3RF_Hybrid/analyze_rf_hybrid_interpret.R \
+	  --features_csv=$(INTERPRET_OUT)/$(AXIS)_nopk/features.csv \
+	  --axis=$(AXIS) \
+	  --out_dir=$(INTERPRET_OUT)/$(AXIS)_nopk
+	R_LIBS_USER="/home/olier/ellenberg/.Rlib" $(R) src/Stage_3RF_Hybrid/analyze_rf_hybrid_interpret.R \
+	  --features_csv=$(INTERPRET_OUT)/$(AXIS)_pk/features.csv \
+	  --axis=$(AXIS) \
+	  --out_dir=$(INTERPRET_OUT)/$(AXIS)_pk
+	@echo "[interpret] RF interpretability written under $(INTERPRET_OUT)/$(AXIS)_{nopk,pk}"
+
+hybrid_interpret_rf_T:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_rf AXIS=T
+
+hybrid_interpret_rf_M:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_rf AXIS=M
+
+# XGB interpretability using exported features (per-axis), no external deps beyond xgboost and pandas
+XGB_GPU ?= false
+hybrid_interpret_xgb:
+	@echo "[interpret] XGB interpretability for AXIS=$(AXIS) ... (GPU=$(XGB_GPU))"
+	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS)
+	python3 src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv \
+	  --axis=$(AXIS) \
+	  --gpu=$(XGB_GPU) \
+	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk
+	python3 src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk/features.csv \
+	  --axis=$(AXIS) \
+	  --gpu=$(XGB_GPU) \
+	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk
+	@echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"
+
+hybrid_interpret_xgb_T:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_xgb AXIS=T
+
+hybrid_interpret_xgb_M:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_xgb AXIS=M
