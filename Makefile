@@ -1,4 +1,5 @@
 R ?= Rscript
+BHPMF_R ?= Rscript
 
 # Defaults for Stage 5
 EQ_JSON        ?= results/MAG_Run8/mag_equations.json
@@ -28,8 +29,14 @@ PRESETS_NOR    ?= results/gardening/garden_presets_no_R.csv
 SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 
 .PHONY: mag_predict mag_predict_blended stage6_requirements stage6_joint_default stage6_joint_noR copy_gbif extract_bioclim extract_bioclim_r clean_extract_bioclim clean_extract_bioclim_v2 clean_extract_bioclim_py clean_extract_bioclim_minimal setup_r_env predownload bioclim_first
+.PHONY: cleaned_summary_from_bioclim_first
 .PHONY: try_extract_traits
 .PHONY: try_merge_enhanced_full try_merge_enhanced_subset
+.PHONY: phylotraits_impute phylotraits_run
+.PHONY: phylotraits_impute_categorical phylotraits_impute_all phylotraits_run_cat
+.PHONY: install_bhpmf
+.PHONY: install_bhpmf_patched
+.PHONY: hybrid_tmux
 
 # One-liner: SEM/MAG predictions only (no blending)
 mag_predict:
@@ -108,7 +115,8 @@ clean_extract_bioclim:
 		echo "GBIF files already present in data/gbif_occurrences_model_species"; \
 	fi
 	@echo "Cleaning GBIF data and extracting bioclim values..."
-	@$(R) scripts/clean_gbif_extract_bioclim.R
+	@echo "[cleaned] Running canonical cleaned pipeline (unique-coordinate summary): noDups"; \
+	R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noDups.R
 
 # Clean GBIF data and extract bioclim (Improved v2 with parallel processing)
 clean_extract_bioclim_v2:
@@ -119,7 +127,8 @@ clean_extract_bioclim_v2:
 		echo "GBIF files already present in data/gbif_occurrences_model_species"; \
 	fi
 	@echo "Cleaning GBIF data and extracting bioclim values (v2)..."
-	@$(R) scripts/clean_gbif_extract_bioclim_v2.R
+	@echo "[DEPRECATED] v2 (noSea) is now an alias of noDups (unique-coordinate summary)."; \
+	R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noDups.R
 
 # Clean GBIF data and extract bioclim (Python version)
 clean_extract_bioclim_py:
@@ -162,6 +171,15 @@ bioclim_first:
 	@echo "  - data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv"
 	@echo "  - artifacts/model_data_bioclim_subset.csv (traits filtered to species with >=3 occurrences)"
 
+# Quick rebuild of CLEANED species summary from bioclim-first occurrences
+cleaned_summary_from_bioclim_first:
+	@echo "[cleaned] Rebuilding cleaned species summary from bioclim-first occurrences (unique-coordinate means/SDs)"
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_1_Data_Extraction/gbif_bioclim/make_cleaned_summary_from_bioclim_first.R \
+	    --occurrences_csv /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv \
+	    --output_summary /home/olier/ellenberg/data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv \
+	    --min_occ 3
+
 # Stage 1: Extract additional TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance)
 try_extract_traits:
 	@echo "Extracting additional TRY traits (leaf thickness, phenology, photosynthesis, frost tolerance)..."
@@ -198,6 +216,7 @@ try_merge_enhanced_subset:
 .PHONY: soil_extract soil_aggregate soil_merge soil_pipeline
 
 # Paths (override on command line if needed)
+SOIL_INPUT_CSV ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv
 SOIL_OCC_FILE ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_soil.csv
 SOIL_SUMMARY  ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv
 BIOCLIM_SUMMARY ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv
@@ -211,42 +230,231 @@ VRT_THREADS ?= ALL_CPUS
 VRT_POOL ?= 450
 
 # Step 1: Extract SoilGrids for unique coords, merge back to all occurrences (duplicates preserved)
-soil_extract:
-	@echo "[Soil] Extracting SoilGrids for GBIF occurrences (conservative settings)..."
-	@GDAL_CACHEMAX=$(GDAL_CACHE) VRT_NUM_THREADS=$(VRT_THREADS) GDAL_MAX_DATASET_POOL_SIZE=$(VRT_POOL) \
-	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
-	  Rscript scripts/extract_soilgrids_efficient.R
-	@echo "[Soil] Output: $(SOIL_OCC_FILE)"
+SOIL_ALL_PROPS := phh2o,soc,clay,sand,cec,nitrogen,bdod
+PROPERTIES ?=
 
-	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(SOIL_OCC_FILE) --type occ_soil || true
+soil_extract:
+	@echo "[Soil] Preflight: ensuring VRT-referenced tiles exist locally..."
+	@PROPS_TO_FETCH=$$( [ -n "$(PROPERTIES)" ] && echo "$(PROPERTIES)" || echo "$(SOIL_ALL_PROPS)" ); \
+	  bash scripts/preflight_fetch_soilgrids_tiles.sh --properties "$$PROPS_TO_FETCH"
+	@echo "[Soil] Extracting SoilGrids for GBIF occurrences (conservative settings)..."
+	@OUT=$$( if [ -n "$(PROPERTIES)" ]; then suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); echo "$(SOIL_INPUT_CSV)" | sed -E 's/\.csv$$/_with_'"$$suf"'\.csv/'; else echo "$(SOIL_OCC_FILE)"; fi ); \
+	  echo "[Soil] OUT=$$OUT"; \
+	  GDAL_CACHEMAX=$(GDAL_CACHE) VRT_NUM_THREADS=$(VRT_THREADS) GDAL_MAX_DATASET_POOL_SIZE=$(VRT_POOL) \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  bash -lc 'ARGS="--input $(SOIL_INPUT_CSV) --output '"$$OUT"'"; [ -n "$(PROPERTIES)" ] && ARGS="$$ARGS --properties $(PROPERTIES)"; \
+	    Rscript scripts/extract_soilgrids_efficient.R $$ARGS'; \
+	  echo "[Soil] Output: $$OUT"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input "$$OUT" --type occ_soil || true
 
 # Step 2: Aggregate to species-level means/sds/n_valid, flagging has_sufficient_data (>=3)
 soil_aggregate:
 	@echo "[Soil] Aggregating occurrence-level soil to species-level summary..."
-	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	@IN=$$( \
+	  if [ -n "$(PROPERTIES)" ]; then \
+	    suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); \
+	    echo "/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv" | sed -E 's/\.csv$$/_with_'"$$suf"'\.csv/'; \
+	  else \
+	    echo "$(SOIL_OCC_FILE)"; \
+	  fi ); \
+	  OUT=$$( \
+	  if [ -n "$(PROPERTIES)" ]; then \
+	    suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); \
+	    echo "/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_""$$suf""_summary.csv"; \
+	  else \
+	    echo "$(SOIL_SUMMARY)"; \
+	  fi ); \
+	  echo "[Soil] IN=$$IN"; echo "[Soil] OUT=$$OUT"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 	  Rscript scripts/aggregate_soilgrids_species.R \
-	    --input $(SOIL_OCC_FILE) \
+	    --input "$$IN" \
 	    --species_col species_clean \
 	    --min_occ 3 \
-	    --output $(SOIL_SUMMARY)
-	@echo "[Soil] Output: $(SOIL_SUMMARY)"
+	    --output "$$OUT"
+	@echo "[Soil] Output written."
 
-	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(SOIL_SUMMARY) --type soil_summary || true
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input "$$OUT" --type soil_summary || true
 
 # Step 3: Merge traits + bioclim + soil using WFO normalization
 soil_merge:
 	@echo "[Soil] Merging trait + bioclim + soil with WFO alignment..."
-	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	@SSUM=$$( if [ -n "$(PROPERTIES)" ]; then \
+	    suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); \
+	    echo "/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_""$$suf""_summary.csv"; \
+	  else \
+	    echo "$(SOIL_SUMMARY)"; \
+	  fi ); \
+	  OUT=$$( if [ -n "$(PROPERTIES)" ]; then \
+	    suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); \
+	    echo "artifacts/model_data_trait_bioclim_soil_merged_wfo_""$$suf"".csv"; \
+	  else \
+	    echo "$(MERGED_SOIL_OUT)"; \
+	  fi ); \
+	  echo "[Soil] SOIL_SUMMARY=$$SSUM"; echo "[Soil] OUT=$$OUT"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 	  Rscript scripts/merge_trait_bioclim_soil_wfo.R \
 	    --trait_csv $(TRAIT_CSV) \
 	    --bioclim_summary $(BIOCLIM_SUMMARY) \
-	    --soil_summary $(SOIL_SUMMARY) \
+	    --soil_summary "$$SSUM" \
 	    --wfo_backbone $(WFO_BACKBONE) \
-	    --output $(MERGED_SOIL_OUT)
-	@echo "[Soil] Output: $(MERGED_SOIL_OUT)"
-
-	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input $(MERGED_SOIL_OUT) --type merged || true
+	    --output "$$OUT"; \
+	  echo "[Soil] Output: $$OUT"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input "$$OUT" --type merged || true
 
 # One-shot pipeline: extract -> aggregate -> merge
 soil_pipeline: soil_extract soil_aggregate soil_merge
 	@echo "[Soil] Completed soil pipeline (extract -> aggregate -> merge)."
+
+# Optional preflight: ensure all VRT-referenced tiles exist locally
+.PHONY: soil_preflight
+SOIL_PROPS ?= nitrogen
+soil_preflight:
+	@echo "[Soil] Preflight: fetching any missing tiles for properties=$(SOIL_PROPS) ..."
+	@bash scripts/preflight_fetch_soilgrids_tiles.sh --properties $(SOIL_PROPS)
+	@echo "[Soil] Preflight complete. See artifacts/logs/preflight_fetch_*.log"
+
+# ----------------------------------------------------------------------------
+# Phylotraits: BHPMF imputation for enhanced traits + run hybrid
+# ----------------------------------------------------------------------------
+
+# Default paths
+IMPUTE_IN ?= artifacts/model_data_bioclim_subset_enhanced.csv
+IMPUTE_OUT ?= artifacts/model_data_bioclim_subset_enhanced_imputed.csv
+IMPUTE_DIAG ?= artifacts/phylotraits_impute
+IMPUTE_TMP ?= $(IMPUTE_DIAG)/tmp_bhpmf
+IMPUTE_TRAITS ?= Leaf_thickness_mm,Frost_tolerance_score,Leaf_N_per_area
+# Make used/prediction levels configurable (defaults preserve prior behavior)
+IMPUTE_USED_LEVELS ?= 2
+IMPUTE_PRED_LEVEL ?= 3
+
+phylotraits_impute:
+	@echo "[Phylotraits] Imputing enhanced traits with BHPMF..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  $(BHPMF_R) src/Stage_2_Data_Processing/phylo_impute_traits_bhpmf.R \
+	    --input_csv=$(IMPUTE_IN) \
+	    --out_csv=$(IMPUTE_OUT) \
+	    --diag_dir=$(IMPUTE_DIAG) \
+	    --tmp_dir=$(IMPUTE_TMP) \
+	    --traits_to_impute=$(IMPUTE_TRAITS) \
+	    --add_env_covars=$(IMPUTE_ADD_ENV) \
+	    --env_csv=$(IMPUTE_ENV_CSV) \
+	    --env_cols_regex=$(IMPUTE_ENV_REGEX) \
+	    --env_center_scale=$(IMPUTE_ENV_CENTER) \
+    --used_levels=$(IMPUTE_USED_LEVELS) --prediction_level=$(IMPUTE_PRED_LEVEL) \
+	    --num_samples=1000 --burn=100 --gaps=2 --num_latent=10 --tuning=false --verbose=false
+	@echo "[Phylotraits] Outputs:"
+	@ls -lh $(IMPUTE_OUT) $(IMPUTE_DIAG)/coverage_before_after.csv 2>/dev/null || true
+
+# Convenience: run hybrid using imputed traits table
+phylotraits_run:
+	@echo "[Phylotraits] Running hybrid CV with imputed trait table..."
+	@make -f Makefile.hybrid hybrid_cv AXIS=T OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@make -f Makefile.hybrid hybrid_cv AXIS=M OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@make -f Makefile.hybrid hybrid_cv AXIS=L OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@echo "[Phylotraits] Hybrid runs (T,M,L) completed with imputed table."
+
+# Categorical imputation (phylo-weighted kNN majority vote)
+IMPUTE_CAT_IN ?= $(IMPUTE_OUT)
+IMPUTE_CAT_OUT ?= artifacts/model_data_bioclim_subset_enhanced_imputed_cat.csv
+TRAITS_CAT ?= Leaf_phenology,Photosynthesis_pathway
+TREE ?= data/phylogeny/eive_try_tree.nwk
+
+
+phylotraits_impute_categorical:
+	@echo "[Phylotraits] Imputing categorical traits (phylo-weighted votes)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  $(R) src/Stage_2_Data_Processing/phylo_impute_traits_categorical.R \
+	    --input_csv=$(IMPUTE_CAT_IN) \
+	    --out_csv=$(IMPUTE_CAT_OUT) \
+	    --diag_dir=$(IMPUTE_DIAG) \
+	    --traits_cat=$(TRAITS_CAT) \
+	    --tree=$(TREE) \
+	    --x_exp=$(X_EXP) --k_trunc=$(K_TRUNC)
+	@echo "[Phylotraits] Outputs:"
+	@ls -lh $(IMPUTE_CAT_OUT) $(IMPUTE_DIAG)/categorical_coverage_before_after.csv 2>/dev/null || true
+
+# Convenience: numeric + categorical imputation in one go
+IMPUTE_ADD_ENV ?= false
+IMPUTE_ENV_CSV ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
+IMPUTE_ENV_REGEX ?= ^bio[0-9]{1,2}_mean$
+IMPUTE_ENV_CENTER ?= true
+
+phylotraits_impute_all: phylotraits_impute phylotraits_impute_categorical
+	@echo "[Phylotraits] Completed numeric + categorical imputation."
+
+# Hybrid runs with categorical-imputed table
+phylotraits_run_cat:
+	@echo "[Phylotraits] Running hybrid CV with categorical-imputed trait table..."
+	@make -f Makefile.hybrid hybrid_cv AXIS=T OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_CAT_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@make -f Makefile.hybrid hybrid_cv AXIS=M OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_CAT_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@make -f Makefile.hybrid hybrid_cv AXIS=L OUT=artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed TRAIT_CSV=$(IMPUTE_CAT_OUT) BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv RF_CV=true BOOTSTRAP=1000
+	@echo "[Phylotraits] Hybrid runs (T,M,L) completed with categorical-imputed table."
+
+# Install local BHPMF package into user library
+install_bhpmf:
+	@echo "[Setup] Installing local BHPMF package into /home/olier/ellenberg/.Rlib ..."
+	@mkdir -p /home/olier/ellenberg/.Rlib
+	@R CMD INSTALL -l "/home/olier/ellenberg/.Rlib" /home/olier/BHPMF
+	@echo "[Setup] Done. Test with: Rscript -e 'library(BHPMF); packageVersion(\"BHPMF\")'"
+
+install_bhpmf_patched:
+	@echo "[Setup] Patching BHPMF for R>=4.2 BLAS/LAPACK interface and installing..."
+	@set -e; \
+	PATCH_DIR=third_party/BHPMF_patched; \
+	rm -rf "$$PATCH_DIR"; mkdir -p "$$PATCH_DIR"; \
+	cp -r /home/olier/BHPMF/* "$$PATCH_DIR"/; \
+	# Patch latentNode.cpp (use F77_CALL and FCONE for char args) \
+	sed -i 's/#include <R_ext\/Utils.h>/#include <R_ext\/Utils.h>\n#include <R_ext\/RS.h>/' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/F77_NAME(dgemm)(/F77_CALL(dgemm)(/g' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/&num_latent_features_);/&num_latent_features_ FCONE FCONE);/' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/F77_NAME(dgemv)(/F77_CALL(dgemv)(/g' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/&inc_one);/&inc_one FCONE);/' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/F77_NAME(dpotrf)(/F77_CALL(dpotrf)(/g' "$$PATCH_DIR/src/latentNode.cpp"; \
+	sed -i 's/&info);/&info FCONE);/' "$$PATCH_DIR/src/latentNode.cpp"; \
+	# Patch utillity.cpp (use F77_CALL and FCONE for dtrmv) \
+	sed -i '1i #include <R_ext/RS.h>' "$$PATCH_DIR/src/utillity.cpp"; \
+	sed -i 's/F77_NAME(dtrmv)(\"U\", \"T\", \"N\"/F77_CALL(dtrmv)(\"U\", \"T\", \"N\"/g' "$$PATCH_DIR/src/utillity.cpp"; \
+	sed -i 's/F77_NAME(dtrmv)(\"L\", \"N\", \"N\"/F77_CALL(dtrmv)(\"L\", \"N\", \"N\"/g' "$$PATCH_DIR/src/utillity.cpp"; \
+	sed -i 's/des, &inc);/des, &inc FCONE FCONE FCONE);/' "$$PATCH_DIR/src/utillity.cpp"; \
+	R CMD INSTALL -l "/home/olier/ellenberg/.Rlib" "$$PATCH_DIR"; \
+	echo "[Setup] Done. Verify with: R_LIBS_USER=\"/home/olier/ellenberg/.Rlib\" Rscript -e 'library(BHPMF); packageVersion(\"BHPMF\")'"
+
+# ----------------------------------------------------------------------------
+# TMUX orchestration for hybrid runs (all axes; phylo and non-phylo)
+# ----------------------------------------------------------------------------
+
+# Defaults (match expanded600)
+TMUX_LABEL           ?= bioclim_subset
+TMUX_TRAIT_CSV       ?= artifacts/model_data_bioclim_subset.csv
+TMUX_BIOCLIM_SUMMARY ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
+TMUX_AXES            ?= T,M,L,N,R
+TMUX_SESSION         ?=
+TMUX_FOLDS           ?= 10
+TMUX_REPEATS         ?= 5
+TMUX_BOOTSTRAP       ?= 1000
+TMUX_X_EXP           ?= 2
+TMUX_K_TRUNC         ?= 0
+TMUX_TREE            ?=
+# New variable; keep backward compatibility by inheriting old name if set
+TMUX_OFFER_ALL_VARIABLES ?=
+TMUX_OFFER_ALL_VARIABLES ?= $(TMUX_OFFER_ALL_CLIMATE)
+TMUX_OFFER_ALL_VARIABLES_AXES ?=
+TMUX_RF_ONLY         ?=
+
+hybrid_tmux:
+	@echo "[tmux] Launching hybrid runs in tmux..."
+	@bash scripts/run_hybrid_axes_tmux.sh \
+	  --label $(TMUX_LABEL) \
+	  --trait_csv $(TMUX_TRAIT_CSV) \
+	  --bioclim_summary $(TMUX_BIOCLIM_SUMMARY) \
+	  --axes $(TMUX_AXES) \
+	  $(if $(TMUX_SESSION),--session $(TMUX_SESSION),) \
+	  --folds $(TMUX_FOLDS) \
+	  --repeats $(TMUX_REPEATS) \
+	  --bootstrap $(TMUX_BOOTSTRAP) \
+	  --x_exp $(TMUX_X_EXP) \
+	  --k_trunc $(TMUX_K_TRUNC) \
+  $(if $(TMUX_TREE),--tree $(TMUX_TREE),) \
+  $(if $(TMUX_OFFER_ALL_VARIABLES),--offer_all_variables $(TMUX_OFFER_ALL_VARIABLES),) \
+  $(if $(TMUX_OFFER_ALL_VARIABLES_AXES),--offer_all_variables_axes $(TMUX_OFFER_ALL_VARIABLES_AXES),) \
+  $(if $(TMUX_RF_ONLY),--rf_only $(TMUX_RF_ONLY),)
