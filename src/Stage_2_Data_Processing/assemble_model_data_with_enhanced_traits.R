@@ -45,6 +45,8 @@ trait_46_file <- opts[["trait_46"]] %||% "artifacts/stage1_data_extraction/trait
 trait_37_file <- opts[["trait_37"]] %||% "artifacts/stage1_data_extraction/trait_37_leaf_phenology_type_combined.rds"
 trait_22_file <- opts[["trait_22"]] %||% "artifacts/stage1_data_extraction/trait_22_photosynthesis_pathway_combined.rds"
 trait_31_file <- opts[["trait_31"]] %||% "artifacts/stage1_data_extraction/trait_31_species_tolerance_to_frost_combined.rds"
+# LDMC (Trait 47)
+trait_47_file <- opts[["trait_47"]] %||% "artifacts/stage1_data_extraction/trait_47_leaf_dry_matter_content_combined.rds"
 
 # === OUTPUT FILES ===
 out_enhanced_full <- opts[["out_full"]] %||% "artifacts/model_data_enhanced_traits_full.csv"
@@ -142,6 +144,14 @@ process_trait_data <- function(trait_file, trait_id, trait_name, is_categorical 
                                   value_sd = sd(value_numeric, na.rm = TRUE),
                                   n_records = .N),
                                 by = .(species_norm, AccSpeciesName)]
+    } else if (trait_id == 47) {
+      # LDMC - leaf dry mass per leaf fresh mass (dimensionless ratio)
+      species_agg <- trait_data[!is.na(StdValue),
+                                .(value = median(StdValue, na.rm = TRUE),
+                                  value_mean = mean(StdValue, na.rm = TRUE),
+                                  value_sd = sd(StdValue, na.rm = TRUE),
+                                  n_records = .N),
+                                by = .(species_norm, AccSpeciesName)]
     }
   }
   
@@ -151,7 +161,8 @@ process_trait_data <- function(trait_file, trait_id, trait_name, is_categorical 
                      "46" = "Leaf_thickness_mm",
                      "37" = "Leaf_phenology",
                      "22" = "Photosynthesis_pathway",
-                     "31" = "Frost_tolerance_score")
+                     "31" = "Frost_tolerance_score",
+                     "47" = "LDMC")
   
   setnames(species_agg, "value", col_name)
   
@@ -188,6 +199,7 @@ trait_46_agg <- process_trait_data(trait_46_file, 46, "Leaf thickness", is_categ
 trait_37_agg <- process_trait_data(trait_37_file, 37, "Leaf phenology", is_categorical = TRUE)
 trait_22_agg <- process_trait_data(trait_22_file, 22, "Photosynthesis pathway", is_categorical = TRUE)
 trait_31_agg <- process_trait_data(trait_31_file, 31, "Frost tolerance", is_categorical = FALSE)
+trait_47_agg <- process_trait_data(trait_47_file, 47, "LDMC", is_categorical = FALSE)
 
 # 3. Merge new traits with model data
 cat("\n--- Merging new traits ---\n")
@@ -224,6 +236,14 @@ if (!is.null(trait_31_agg)) {
               sum(!is.na(model_data$Frost_tolerance_score))))
 }
 
+if (!is.null(trait_47_agg)) {
+  model_data <- merge(model_data,
+                      trait_47_agg[, .(species_norm, LDMC, LDMC_n)],
+                      by = "species_norm", all.x = TRUE)
+  cat(sprintf("  Trait 47 (LDMC): %d matches\n", 
+              sum(!is.na(model_data$LDMC))))
+}
+
 # 4. Calculate derived trait (Leaf N per area from Nmass and LMA)
 if ("Nmass (mg/g)" %in% names(model_data) && "LMA (g/m2)" %in% names(model_data)) {
   # Leaf N per area = Nmass / LMA * 1000 (to get mg/m2)
@@ -232,11 +252,24 @@ if ("Nmass (mg/g)" %in% names(model_data) && "LMA (g/m2)" %in% names(model_data)
               sum(!is.na(model_data$Leaf_N_per_area))))
 }
 
-# 5. Remove temporary norm column and reorder
+# 5. Derived LDMC-based features for Light axis
+if ("LDMC" %in% names(model_data) && "Leaf area (mm2)" %in% names(model_data)) {
+  valid <- !is.na(model_data$LDMC) & (model_data$LDMC > 0) &
+           !is.na(model_data$`Leaf area (mm2)`) & (model_data$`Leaf area (mm2)` > 0)
+  model_data$log_ldmc_plus_log_la  <- NA_real_
+  model_data$log_ldmc_minus_log_la <- NA_real_
+  model_data$log_ldmc_plus_log_la[valid]  <- log(model_data$LDMC[valid]) + log(model_data$`Leaf area (mm2)`[valid])
+  model_data$log_ldmc_minus_log_la[valid] <- log(model_data$LDMC[valid]) - log(model_data$`Leaf area (mm2)`[valid])
+  cat(sprintf("\n  Computed LDMC-derived features for %d species\n", sum(valid)))
+}
+
+# 6. Remove temporary norm column and reorder
 model_data[, species_norm := NULL]
 
 # Put new trait columns after existing traits
 new_trait_cols <- c("Leaf_thickness_mm", "Leaf_thickness_mm_n",
+                   "LDMC", "LDMC_n",
+                   "log_ldmc_plus_log_la", "log_ldmc_minus_log_la",
                    "Leaf_phenology", "Leaf_phenology_n", 
                    "Photosynthesis_pathway", "Photosynthesis_pathway_n",
                    "Frost_tolerance_score", "Frost_tolerance_score_n",
@@ -260,13 +293,14 @@ trait_cols_6 <- c("Leaf area (mm2)", "Nmass (mg/g)", "LMA (g/m2)",
 have_all_6 <- Reduce(`&`, lapply(trait_cols_6, function(cn) !is.na(model_data[[cn]])))
 
 # Count how many new traits each species has (for reporting only)
-new_trait_value_cols <- c("Leaf_thickness_mm", "Leaf_phenology", 
+new_trait_value_cols <- c("Leaf_thickness_mm", "LDMC", "Leaf_phenology", 
                           "Photosynthesis_pathway", "Frost_tolerance_score")
 new_trait_value_cols <- new_trait_value_cols[new_trait_value_cols %in% names(model_data)]
 
 # Count valid new traits (excluding empty strings)
 model_data[, n_new_traits := 
   (!is.na(Leaf_thickness_mm)) + 
+  (!is.na(LDMC)) +
   (!is.na(Leaf_phenology) & Leaf_phenology != "") +
   (!is.na(Photosynthesis_pathway) & Photosynthesis_pathway != "") +
   (!is.na(Frost_tolerance_score))]

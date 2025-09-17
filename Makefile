@@ -38,6 +38,36 @@ SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 .PHONY: install_bhpmf_patched
 .PHONY: hybrid_tmux
 
+# ----------------------------------------------------------------------------
+# Stage 1 Discovery (RF + XGBoost, no_pk and pk) — one‑shot launcher
+# ----------------------------------------------------------------------------
+
+.PHONY: stage1_discovery stage1_discovery_5axes
+
+# Defaults for discovery runs
+DISC_LABEL ?= phylotraits_cleanedAI_discovery_gpu
+DISC_AXES  ?= T,M,L,N                  # set to T,M,L,N,R for all five
+DISC_FOLDS ?= 10
+DISC_X_EXP ?= 2
+DISC_KTRUNC ?= 0
+DISC_XGB_GPU ?= true
+
+stage1_discovery:
+	@echo "[discovery] Launching Stage 1 (RF + XGBoost, GPU=$(DISC_XGB_GPU)) for axes: $(DISC_AXES)"
+	@bash scripts/run_stage1_discovery_tmux.sh \
+	  --label $(DISC_LABEL) \
+	  --trait_csv $(TRAIT_CSV) \
+	  --bioclim_summary $(BIOCLIM_SUMMARY_OUT_AIMONTH) \
+	  --axes $(DISC_AXES) \
+	  --folds $(DISC_FOLDS) \
+	  --x_exp $(DISC_X_EXP) \
+	  --k_trunc $(DISC_KTRUNC) \
+	  --xgb_gpu $(DISC_XGB_GPU)
+
+# Convenience: five axes (T,M,L,N,R)
+stage1_discovery_5axes:
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) stage1_discovery DISC_AXES=T,M,L,N,R
+
 # One-liner: SEM/MAG predictions only (no blending)
 mag_predict:
 	$(R) src/Stage_5_Apply_Mean_Structure/apply_mean_structure.R \
@@ -213,7 +243,7 @@ try_merge_enhanced_subset:
 # SoilGrids extraction and integration
 # ----------------------------------------------------------------------------
 
-.PHONY: soil_extract soil_aggregate soil_merge soil_pipeline
+.PHONY: soil_extract soil_aggregate soil_merge soil_pipeline soil_extract_global soil_pipeline_global
 
 # Paths (override on command line if needed)
 SOIL_INPUT_CSV ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv
@@ -223,6 +253,12 @@ BIOCLIM_SUMMARY ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/
 TRAIT_CSV ?= artifacts/model_data_bioclim_subset.csv
 WFO_BACKBONE ?= /home/olier/ellenberg/data/classification.csv
 MERGED_SOIL_OUT ?= artifacts/model_data_trait_bioclim_soil_merged_wfo.csv
+
+# Global 250m extractor defaults
+SOIL_GLOBAL_INPUT_CSV ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv
+SOIL_GLOBAL_OCC_FILE ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_with_soilglobal.csv
+SOIL_GLOBAL_SUMMARY ?= /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global.csv
+MERGED_SOIL_OUT_GLOBAL ?= artifacts/model_data_trait_bioclim_soil_merged_wfo_global.csv
 
 # Conservative GDAL tuning for VRT reading
 GDAL_CACHE ?= 1024
@@ -245,6 +281,19 @@ soil_extract:
 	  bash -lc 'ARGS="--input $(SOIL_INPUT_CSV) --output '"$$OUT"'"; [ -n "$(PROPERTIES)" ] && ARGS="$$ARGS --properties $(PROPERTIES)"; \
 	    Rscript scripts/extract_soilgrids_efficient.R $$ARGS'; \
 	  echo "[Soil] Output: $$OUT"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input "$$OUT" --type occ_soil || true
+
+# Step 1 (alternative): Extract using local global 250m GeoTIFFs
+soil_extract_global:
+	@echo "[Soil-Global] Extracting SoilGrids (global 250m) for GBIF occurrences..."
+	@OUT=$$( if [ -n "$(PROPERTIES)" ]; then suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); echo "$(SOIL_GLOBAL_INPUT_CSV)" | sed -E 's/\.csv$$/_with_soilglobal_'"$$suf"'\.csv/'; else echo "$(SOIL_GLOBAL_OCC_FILE)"; fi ); \
+	  echo "[Soil-Global] OUT=$$OUT"; \
+	  ARGS="--input $(SOIL_GLOBAL_INPUT_CSV) --output $$OUT"; \
+	  [ -n "$(PROPERTIES)" ] && ARGS="$$ARGS --properties $(PROPERTIES)"; \
+	  [ -n "$(CHUNK)" ] && ARGS="$$ARGS --chunk $(CHUNK)"; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R $$ARGS; \
+	  echo "[Soil-Global] Output: $$OUT"; \
 	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript scripts/print_csv_summary.R --input "$$OUT" --type occ_soil || true
 
 # Step 2: Aggregate to species-level means/sds/n_valid, flagging has_sufficient_data (>=3)
@@ -304,6 +353,15 @@ soil_merge:
 # One-shot pipeline: extract -> aggregate -> merge
 soil_pipeline: soil_extract soil_aggregate soil_merge
 	@echo "[Soil] Completed soil pipeline (extract -> aggregate -> merge)."
+
+# One-shot pipeline using global GeoTIFFs
+soil_pipeline_global:
+	@echo "[Soil-Global] Pipeline start..."
+	@OUT=$$( if [ -n "$(PROPERTIES)" ]; then suf=$$(echo "$(PROPERTIES)" | tr ',' '_'); echo "$(SOIL_GLOBAL_INPUT_CSV)" | sed -E 's/\.csv$$/_with_soilglobal_'"$$suf"'\.csv/'; else echo "$(SOIL_GLOBAL_OCC_FILE)"; fi ); \
+	  make soil_extract_global PROPERTIES="$(PROPERTIES)" CHUNK="$(CHUNK)" SOIL_GLOBAL_INPUT_CSV="$(SOIL_GLOBAL_INPUT_CSV)" SOIL_GLOBAL_OCC_FILE="$$OUT"; \
+	  make soil_aggregate PROPERTIES= SOIL_OCC_FILE="$$OUT" SOIL_SUMMARY="$(SOIL_GLOBAL_SUMMARY)"; \
+	  make soil_merge PROPERTIES= SOIL_SUMMARY="$(SOIL_GLOBAL_SUMMARY)" MERGED_SOIL_OUT="$(MERGED_SOIL_OUT_GLOBAL)"; \
+	  echo "[Soil-Global] Pipeline complete."
 
 # Optional preflight: ensure all VRT-referenced tiles exist locally
 .PHONY: soil_preflight

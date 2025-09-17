@@ -142,6 +142,39 @@ want_h_x_ssd_ti <- grepl("ti\\(logH, *logSSD\\)", add_interactions, ignore.case 
 want_lma_x_nmass_ti <- grepl("ti\\(LMA, *Nmass\\)", add_interactions, ignore.case = TRUE)
 ## Optional smooth interaction for logLA × logH (L leaf size × height), trigger via 'ti(logLA,logH)'
 want_la_x_h_ti <- grepl("ti\\(logLA, *logH\\)", add_interactions, ignore.case = TRUE)
+extra_tokens <- function(txt) {
+  if (!nzchar(txt)) return(character(0))
+  toks <- unlist(strsplit(txt, "[^A-Za-z0-9_]+", perl = TRUE))
+  trimws(toks[nzchar(toks)])
+}
+needed_extra_cols <- unique(c(extra_tokens(add_predictor_raw), extra_tokens(add_interactions)))
+needed_extra_cols <- setdiff(needed_extra_cols,
+  c("", "logLA", "logH", "logSM", "logSSD", "LMA", "Nmass", "LES", "SIZE", "y", "ti", "s", "t2", "bs", "te"))
+if (target_letter == "T") {
+  needed_extra_cols <- unique(c(needed_extra_cols,
+    "mat_mean","mat_sd","mat_q05","mat_q95","temp_seasonality","temp_range",
+    "precip_mean","precip_cv","precip_seasonality","ai_amp","ai_cv_month","ai_month_min",
+    "size_temp","height_temp","lma_precip","size_precip"))
+}
+if (target_letter == "M") {
+  needed_extra_cols <- unique(c(needed_extra_cols,
+    "mat_mean","precip_mean","precip_seasonality","drought_min","precip_coldest_q",
+    "ai_roll3_min","ai_month_min","ai_amp","height_temp","lma_precip","les_drought"))
+}
+if (target_letter == "L") {
+  needed_extra_cols <- unique(c(needed_extra_cols,
+    "precip_mean","precip_cv","tmin_mean","tmin_q05","lma_precip","height_ssd",
+    "size_precip","les_seasonality"))
+}
+if (target_letter == "N") {
+  needed_extra_cols <- unique(c(needed_extra_cols,
+    "precip_mean","precip_cv","les_drought","les_seasonality","mat_q95","size_precip"))
+}
+if (target_letter == "R") {
+  needed_extra_cols <- unique(c(needed_extra_cols,
+    "mat_mean","temp_range","drought_min","precip_warmest_q","precip_driest_q",
+    "ph_rootzone_mean","hplus_rootzone_mean","phh2o_5_15cm_mean","phh2o_5_15cm_p90"))
+}
 # Tier-2 gating options for L
 gate_height <- tolower(opts[["gate_height"]] %||% "false") %in% c("1","true","yes","y")
 gate_percentile <- suppressWarnings(as.numeric(opts[["gate_percentile"]] %||% "0.80")); if (!is.finite(gate_percentile)) gate_percentile <- 0.80
@@ -172,6 +205,14 @@ if (!have_mgcv)  fail("mgcv is required by pwSEM. Install it first: install.pack
 
 # Load data
 df <- if (have_readr) readr::read_csv(in_csv, show_col_types = FALSE, progress = FALSE) else utils::read.csv(in_csv, check.names = FALSE)
+df <- as.data.frame(df)
+if (length(needed_extra_cols)) {
+  missing <- setdiff(needed_extra_cols, names(df))
+  if (length(missing)) {
+    message(sprintf("[warn] Predictors not found in input (ignored): %s", paste(missing, collapse=", ")))
+    needed_extra_cols <- setdiff(needed_extra_cols, missing)
+  }
+}
 
 # If requested, force-disable lme4 usage everywhere
 if (force_lm) {
@@ -231,7 +272,9 @@ make_folds <- function(y, K, stratify) {
 
 set.seed(seed_opt)
 
-base_cols <- c(id_col, target_name, feature_cols, cluster_var)
+base_cols <- c(id_col, target_name, feature_cols, cluster_var, needed_extra_cols)
+base_cols <- base_cols[nzchar(base_cols)]
+base_cols <- unique(base_cols)
 if (nzchar(group_var) && (group_var %in% names(df))) base_cols <- unique(c(base_cols, group_var))
 work <- df[, base_cols, drop = FALSE]
 names(work)[names(work) == id_col] <- "id"
@@ -308,10 +351,18 @@ for (r in seq_len(repeats_opt)) {
       }
     }
     if (standardize) {
-      for (v in c("logLA","logH","logSM","logSSD","LMA","Nmass")) {
+      base_vars <- c("logLA","logH","logSM","logSSD","LMA","Nmass")
+      for (v in base_vars) {
         zs <- zscore(tr[[v]])
         tr[[v]] <- zs$x
         te[[v]] <- (te[[v]] - zs$mean)/zs$sd
+      }
+      extra_vars <- setdiff(needed_extra_cols, base_vars)
+      for (v in extra_vars) {
+        if (!(v %in% names(tr))) next
+        zs <- zscore(tr[[v]])
+        tr[[v]] <- zs$x
+        if (v %in% names(te)) te[[v]] <- (te[[v]] - zs$mean)/zs$sd
       }
     }
 
@@ -601,6 +652,49 @@ if (target_letter %in% c("M","N") && is.null(opts[["psem_drop_logssd_y"]])) add_
 if (add_logssd) rhs_y <- paste(rhs_y, "+ logSSD")
 if (want_logLA_pred) rhs_y <- paste(rhs_y, "+ logLA")
 if (want_les_x_ssd)  rhs_y <- paste(rhs_y, "+ LES:logSSD")
+if (target_letter == "T") {
+  if ("mat_mean" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(mat_mean, k=5)")
+  if ("precip_seasonality" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(precip_seasonality, k=5)")
+  if ("precip_cv" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(precip_cv, k=5)")
+  if ("temp_seasonality" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(temp_seasonality, k=5)")
+  if ("ai_amp" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(ai_amp, k=4)")
+  if ("ai_cv_month" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(ai_cv_month, k=4)")
+  if (all(c("SIZE","mat_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(SIZE, mat_mean, k=c(4,4))")
+  if (all(c("SIZE","precip_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(SIZE, precip_mean, k=c(4,4))")
+  if (all(c("LES","temp_seasonality") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LES, temp_seasonality, k=c(4,4))")
+  if ("p_phylo_T" %in% names(df)) rhs_y <- paste(rhs_y, "+ p_phylo_T")
+}
+if (target_letter == "M") {
+  if ("precip_seasonality" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(precip_seasonality, k=5)")
+  if ("ai_roll3_min" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(ai_roll3_min, k=5)")
+  if (all(c("LES","ai_roll3_min") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LES, ai_roll3_min, k=c(4,4))")
+  if (all(c("LES","drought_min") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LES, drought_min, k=c(4,4))")
+  if (all(c("SIZE","precip_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(SIZE, precip_mean, k=c(4,4))")
+  if (all(c("LMA","precip_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LMA, precip_mean, k=c(4,4))")
+  if ("p_phylo_M" %in% names(df)) rhs_y <- paste(rhs_y, "+ p_phylo_M")
+}
+if (target_letter == "L") {
+  if ("precip_cv" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(precip_cv, k=5)")
+  if ("tmin_mean" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(tmin_mean, k=5)")
+  if (all(c("LMA","precip_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LMA, precip_mean, k=c(4,4))")
+  if ("p_phylo_L" %in% names(df)) rhs_y <- paste(rhs_y, "+ p_phylo_L")
+}
+if (target_letter == "N") {
+  if ("precip_cv" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(precip_cv, k=5)")
+  if ("mat_q95" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(mat_q95, k=5)")
+  if (all(c("LES","drought_min") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(LES, drought_min, k=c(4,4))")
+  if (all(c("SIZE","precip_mean") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(SIZE, precip_mean, k=c(4,4))")
+  if ("p_phylo_N" %in% names(df)) rhs_y <- paste(rhs_y, "+ p_phylo_N")
+}
+if (target_letter == "R") {
+  if ("phh2o_5_15cm_mean" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(phh2o_5_15cm_mean, k=5)")
+  if ("phh2o_5_15cm_p90" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(phh2o_5_15cm_p90, k=5)")
+  if ("ph_rootzone_mean" %in% names(df)) rhs_y <- paste(rhs_y, "+ s(ph_rootzone_mean, k=5)")
+  if (all(c("ph_rootzone_mean","drought_min") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(ph_rootzone_mean, drought_min, k=c(4,4))")
+  if (all(c("ph_rootzone_mean","precip_driest_q") %in% names(df))) rhs_y <- paste(rhs_y, "+ ti(ph_rootzone_mean, precip_driest_q, k=c(4,4))")
+  if ("p_phylo_R" %in% names(df)) rhs_y <- paste(rhs_y, "+ p_phylo_R")
+}
+message(sprintf("[debug] Y formula for axis %s: %s", target_letter, rhs_y))
 if (nonlinear_opt) {
   if (target_letter == "L") {
     if (nonlinear_variant == "main") {

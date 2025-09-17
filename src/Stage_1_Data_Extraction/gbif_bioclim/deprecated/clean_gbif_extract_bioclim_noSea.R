@@ -18,8 +18,8 @@ suppressPackageStartupMessages({
   library(parallel)
 })
 
-cli_h1("GBIF Cleaning Pipeline (No Sea Test)")
-cli_alert_info("This version skips the sea coordinate test to avoid hangs")
+cli_h1("[DEPRECATED] GBIF Cleaning Pipeline (No Sea Test)")
+cli_alert_info("Deprecated in favor of clean_gbif_extract_bioclim_noDups.R (unique-coordinate summary). This script is retained for historical reference only.")
 
 # Configuration with relaxed parameters
 config <- list(
@@ -330,10 +330,10 @@ cli_alert_info("Creating summary statistics...")
 species_summaries <- lapply(species_list, function(sp) {
   sp_data <- all_data[species_clean == sp]
   bio_cols <- paste0("bio", 1:19)
-  
+
   # Check which bio columns actually exist in the data
   existing_bio_cols <- bio_cols[bio_cols %in% names(sp_data)]
-  
+
   # Create summary for ALL species, not just those with min_occurrences
   summary_stats <- data.frame(
     species = sp,
@@ -341,14 +341,23 @@ species_summaries <- lapply(species_list, function(sp) {
     has_sufficient_data = nrow(sp_data) >= config$min_occurrences,
     stringsAsFactors = FALSE
   )
-  
+
+  # Collapse to unique coordinates for environmental summaries
+  if (nrow(sp_data) > 0) {
+    sp_unique <- unique(sp_data, by = c("decimalLongitude", "decimalLatitude"))
+    summary_stats$n_unique_coords <- nrow(sp_unique)
+  } else {
+    sp_unique <- sp_data
+    summary_stats$n_unique_coords <- 0
+  }
+
   # Only calculate bioclim stats if columns exist
-  if (length(existing_bio_cols) > 0 && nrow(sp_data) > 0) {
-    summary_stats$n_with_bioclim <- sum(complete.cases(sp_data[, ..existing_bio_cols]))
+  if (length(existing_bio_cols) > 0 && nrow(sp_unique) > 0) {
+    summary_stats$n_with_bioclim <- sum(complete.cases(sp_unique[, ..existing_bio_cols]))
     
     # Add mean values for each existing bioclim variable if there's data
     for (bio_var in existing_bio_cols) {
-      values <- sp_data[[bio_var]]
+      values <- sp_unique[[bio_var]]
       values <- values[!is.na(values)]
       if (length(values) > 0) {
         summary_stats[[paste0(bio_var, "_mean")]] <- mean(values)

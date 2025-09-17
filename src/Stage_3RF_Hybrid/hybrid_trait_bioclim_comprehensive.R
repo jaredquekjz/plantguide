@@ -221,7 +221,9 @@ climate_metrics <- climate_summary %>%
       "ai_dry_frac_t020", "ai_dry_run_max_t020",
       "ai_dry_frac_t050", "ai_dry_run_max_t050",
       "ai_amp", "ai_cv_month"
-    ))
+    )),
+    # SoilGrids (if merged into the climate summary): allow soil properties through (means/sd/quantiles)
+    dplyr::matches("^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_.+_(mean|sd|p10|p50|p90)$")
   ) %>%
   mutate(
     # Approximate quantiles
@@ -302,10 +304,92 @@ features <- merged_data %>%
     # Light-oriented (RF/GAM-inspired)
     height_ssd = logH * logSSD,
     lma_la = LMA * logLA,
-    
+
     # Target
     y = .data[[CONFIG$target]]
   ) %>%
+  # Root-zone pH summaries (SoilGrids phh2o), stratified by Woodiness
+  # Define simple woody vs non-woody grouping and compute weighted means across depths.
+  # If depth values are missing, weights are renormalized over available depths.
+  rowwise() %>%
+  mutate(
+    is_woody = as.numeric(tolower(Woodiness) %in% c("woody", "semi-woody")),
+    ph_rootzone_mean = {
+      vals <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      if (all(is.na(vals))) NA_real_ else {
+        w <- if (is_woody == 1) c(0.10,0.15,0.25,0.25,0.15,0.10) else c(0.50,0.30,0.20,0.00,0.00,0.00)
+        good <- is.finite(vals)
+        if (!any(good)) NA_real_ else sum(vals[good] * w[good]) / sum(w[good])
+      }
+    },
+    hplus_rootzone_mean = {
+      vals <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      if (all(is.na(vals))) NA_real_ else {
+        h <- 10^(-vals)
+        w <- if (is_woody == 1) c(0.10,0.15,0.25,0.25,0.15,0.10) else c(0.50,0.30,0.20,0.00,0.00,0.00)
+        good <- is.finite(h)
+        if (!any(good)) NA_real_ else sum(h[good] * w[good]) / sum(w[good])
+      }
+    },
+    # Calcareous flags and depth index (threshold ~7.2 pH)
+    ph_calcareous_any = {
+      vals <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      if (all(is.na(vals))) NA_real_ else as.numeric(any(vals >= 7.2, na.rm = TRUE))
+    },
+    ph_calcareous_shallow = {
+      v <- c_across(dplyr::any_of(c("phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean")))
+      if (all(is.na(v))) NA_real_ else as.numeric(any(v >= 7.2, na.rm = TRUE))
+    },
+    ph_calcareous_deep = {
+      v <- c_across(dplyr::any_of(c("phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean")))
+      if (all(is.na(v))) NA_real_ else as.numeric(any(v >= 7.2, na.rm = TRUE))
+    },
+    ph_alk_depth_min = {
+      vals <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      depths <- c(2.5, 10, 22.5, 45, 80, 150)
+      if (length(vals) != length(depths) || all(is.na(vals))) NA_real_ else {
+        idx <- which(vals >= 7.2)
+        if (!length(idx)) NA_real_ else min(depths[idx])
+      }
+    },
+    # pH depth-distribution summaries from per-depth means
+    ph_shallow_mean = {
+      v <- c_across(dplyr::any_of(c("phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean")))
+      if (all(is.na(v))) NA_real_ else mean(v, na.rm = TRUE)
+    },
+    ph_deep_mean = {
+      v <- c_across(dplyr::any_of(c("phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean")))
+      if (all(is.na(v))) NA_real_ else mean(v, na.rm = TRUE)
+    },
+    ph_depth_gradient = ifelse(is.na(ph_shallow_mean) | is.na(ph_deep_mean), NA_real_, ph_deep_mean - ph_shallow_mean),
+    ph_depth_range = {
+      v <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      if (all(is.na(v))) NA_real_ else (max(v, na.rm = TRUE) - min(v, na.rm = TRUE))
+    },
+    ph_depth_sd_means = {
+      v <- c_across(dplyr::any_of(c(
+        "phh2o_0_5cm_mean","phh2o_5_15cm_mean","phh2o_15_30cm_mean",
+        "phh2o_30_60cm_mean","phh2o_60_100cm_mean","phh2o_100_200cm_mean"
+      )))
+      if (all(is.na(v))) NA_real_ else stats::sd(v, na.rm = TRUE)
+    }
+  ) %>%
+  ungroup() %>%
   select(
     # Identification
     wfo_accepted_name, species_normalized, Family,
@@ -332,8 +416,11 @@ features <- merged_data %>%
       "ai_dry_frac_t050", "ai_dry_run_max_t050",
       "ai_amp", "ai_cv_month"
     )),
-    # SoilGrids species-level means if present (multi-depth; per-layer means only)
-    dplyr::matches("^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_.+_mean$"),
+    # SoilGrids species-level means/sds/quantiles if present (multi-depth)
+    dplyr::matches("^(phh2o|soc|clay|sand|cec|nitrogen|bdod)_.+_(mean|sd|p10|p50|p90)$"),
+    # Root-zone summaries (if computed)
+    dplyr::any_of(c("ph_rootzone_mean", "hplus_rootzone_mean", "is_woody",
+                    "ph_calcareous_any","ph_calcareous_shallow","ph_calcareous_deep","ph_alk_depth_min")),
     # Interactions
     size_temp, height_temp, les_seasonality, wood_cold, lma_precip,
     wood_precip, size_precip, les_drought,
@@ -344,16 +431,7 @@ features <- merged_data %>%
 cat(sprintf("Final dataset: %d observations, %d features\n", 
             nrow(features), ncol(features) - 3))  # Exclude ID and target columns
 
-# Optional: export assembled features for interpretability (PDP/ICE/SHAP) by other tools
-if (isTRUE(CONFIG$export_features)) {
-  out_path <- CONFIG$features_out
-  if (is.null(out_path) || !nzchar(out_path)) {
-    out_path <- file.path(CONFIG$output_dir, sprintf("features_%s.csv", CONFIG$target_axis))
-  }
-  if (!dir.exists(dirname(out_path))) dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
-  readr::write_csv(features, out_path)
-  cat(sprintf("Exported assembled features to: %s\n", out_path))
-}
+# (moved) Export of assembled features occurs AFTER optional p_phylo computation
 
 # ============================================================================
 # SECTION 3.1: PHYLOGENETIC PREDICTOR (GLOBAL; LOO; used only for AIC selection)
@@ -428,6 +506,18 @@ if (isTRUE(CONFIG$add_phylo_predictor)) {
   features$p_phylo <- p_glob
   cat(sprintf("Computed global LOO p_phylo for %d/%d species using tree '%s' (x=%s, k_trunc=%d)\n",
               sum(!is.na(p_glob)), nrow(features), basename(CONFIG$phylogeny_newick), as.character(CONFIG$x_exp), CONFIG$k_trunc))
+}
+
+# Optional: export assembled features for interpretability (PDP/ICE/SHAP) by other tools
+if (isTRUE(CONFIG$export_features)) {
+  out_path <- CONFIG$features_out
+  if (is.null(out_path) || !nzchar(out_path)) {
+    out_path <- file.path(CONFIG$output_dir, sprintf("features_%s.csv", CONFIG$target_axis))
+  }
+  if (!dir.exists(dirname(out_path))) dir.create(dirname(out_path), recursive = TRUE, showWarnings = FALSE)
+  # Export AFTER optional p_phylo computation so pk variant contains p_phylo when requested
+  readr::write_csv(features, out_path)
+  cat(sprintf("Exported assembled features to: %s\n", out_path))
 }
 
 # ============================================================================

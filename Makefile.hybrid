@@ -48,7 +48,8 @@ BIOCLIM_SUMMARY_OUT_AIMONTH ?= $(BIOCLIM_SUMMARY:.csv=_with_aimonth.csv)
   hybrid_interpret_xgb hybrid_interpret_xgb_T hybrid_interpret_xgb_M \
   gls_T gls_T_simplified \
   bioclim_add_ai bioclim_add_ai_monthly \
-  ai_month_extract_shard ai_month_extract_tmux ai_month_aggregate
+  ai_month_extract_shard ai_month_extract_tmux ai_month_aggregate \
+  canonical_xgb_all
 
 help:
 	@echo "Hybrid Makefile (structured regression + optional phylo predictor)"
@@ -57,6 +58,7 @@ help:
 	@echo "  make hybrid_cv_phylo AXIS=M X_EXP=2 K_TRUNC=0"
 	@echo "  make hybrid_all"
 	@echo "  make baseline_cv AXIS=L  # traits-only SEM baseline CV"
+	@echo "  make canonical_xgb_all   # GPU XGB repro (T/M/L/N non-soil + R soil/pH)"
 	@echo "  make gls_T"
     @echo "Variables: AXIS={T|M|R|N|L}, FOLDS, REPEATS, FOLD_INTERNAL, FAMILY_RE, ADD_PHYLO, TREE, X_EXP, K_TRUNC, OUT"
     @echo "Optional: RF_CV, BOOTSTRAP (default 1000), OFFER_ALL_VARIABLES=true|false"
@@ -253,6 +255,31 @@ ai_month_aggregate:
 	  --input_summary $(BIOCLIM_SUMMARY) \
 	  --output_summary $(BIOCLIM_SUMMARY_OUT_AIMONTH)
 
+# Canonical GPU XGB repro (non-soil axes T/M/L/N + soil/pH axis R)
+CANONICAL_TRAIT ?= artifacts/model_data_bioclim_subset_enhanced_imputed.csv
+CANONICAL_BIOC_NOSOIL ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv
+CANONICAL_BIOC_SOIL ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv
+canonical_xgb_all:
+	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
+	  --label phylotraits_cleanedAI_discovery_gpu_nosoil_20250917 \
+	  --trait_csv $(CANONICAL_TRAIT) \
+	  --bioclim_summary $(CANONICAL_BIOC_NOSOIL) \
+	  --axes T,M,L,N \
+	  --folds 10 --x_exp 2 --k_trunc 0 \
+	  --run_rf false --run_xgb true \
+	  --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 \
+	  --clean_out true
+	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
+	  --label phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917 \
+	  --trait_csv $(CANONICAL_TRAIT) \
+	  --bioclim_summary $(CANONICAL_BIOC_SOIL) \
+	  --axes R \
+	  --folds 10 --x_exp 2 --k_trunc 0 \
+	  --run_rf true --run_xgb true \
+	  --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 \
+	  --clean_out true
+	@echo "[ok] Canonical GPU XGB runs launched (tmux). Attach with: tmux ls"
+
 # ----------------------------------------------------------------------------
 # Interpretability: export hybrid features and analyze RF PDP/ICE/interactions
 # ----------------------------------------------------------------------------
@@ -285,7 +312,7 @@ hybrid_export_features:
 
 hybrid_interpret_rf:
 	@echo "[interpret] RF interpretability for AXIS=$(AXIS) ..."
-	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS)
+	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS) TRAIT_CSV=$(TRAIT_CSV) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) X_EXP=$(X_EXP) K_TRUNC=$(K_TRUNC) FOLDS=$(FOLDS) INTERPRET_LABEL=$(INTERPRET_LABEL)
 	R_LIBS_USER="/home/olier/ellenberg/.Rlib" $(R) src/Stage_3RF_Hybrid/analyze_rf_hybrid_interpret.R \
 	  --features_csv=$(INTERPRET_OUT)/$(AXIS)_nopk/features.csv \
 	  --axis=$(AXIS) \
@@ -304,21 +331,29 @@ hybrid_interpret_rf_M:
 
 # XGB interpretability using exported features (per-axis), no external deps beyond xgboost and pandas
 XGB_GPU ?= false
+PYTHON ?= python3
+XGB_ESTIMATORS ?= 600
+XGB_LR ?= 0.05
 hybrid_interpret_xgb:
 	@echo "[interpret] XGB interpretability for AXIS=$(AXIS) ... (GPU=$(XGB_GPU))"
 	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS) TRAIT_CSV=$(TRAIT_CSV) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) X_EXP=$(X_EXP) K_TRUNC=$(K_TRUNC) FOLDS=$(FOLDS) INTERPRET_LABEL=$(INTERPRET_LABEL)
-	@if ! python3 -c "import xgboost" >/dev/null 2>&1; then echo "[warn] xgboost not installed; skipping XGB interpret for AXIS=$(AXIS)"; else \
-	python3 src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
-	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv \
-	  --axis=$(AXIS) \
-	  --gpu=$(XGB_GPU) \
-	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk
-	python3 src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
-	  --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk/features.csv \
-	  --axis=$(AXIS) \
-	  --gpu=$(XGB_GPU) \
-	  --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk; \
-	 echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"; fi
+	@if $(PYTHON) -c "import xgboost" >/dev/null 2>&1; then \
+	  $(PYTHON) src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	    --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv \
+	    --axis=$(AXIS) \
+	    --gpu=$(XGB_GPU) \
+	    --n_estimators=$(XGB_ESTIMATORS) --learning_rate=$(XGB_LR) \
+	    --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk; \
+	  $(PYTHON) src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	    --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk/features.csv \
+	    --axis=$(AXIS) \
+	    --gpu=$(XGB_GPU) \
+	    --n_estimators=$(XGB_ESTIMATORS) --learning_rate=$(XGB_LR) \
+	    --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk; \
+	  echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"; \
+	else \
+	  echo "[warn] xgboost not installed; skipping XGB interpret for AXIS=$(AXIS)"; \
+	fi
 
 hybrid_interpret_xgb_T:
 	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_interpret_xgb AXIS=T

@@ -18,6 +18,9 @@ set -Eeuo pipefail
 #   --run_rf BOOL                Run RF interpretability (default: true)
 #   --run_xgb BOOL               Run XGB interpretability (default: true)
 #   --xgb_gpu BOOL               Use GPU for XGB if available (default: false)
+#   --xgb_estimators N           Number of trees for XGB (default: 600)
+#   --xgb_lr FLOAT               Learning rate for XGB (default: 0.05)
+#   --clean_out BOOL             If true, delete target OUT/<AXIS>_{nopk,pk} before launching
 
 if ! command -v tmux >/dev/null 2>&1; then
   echo "[error] tmux is required but not found" >&2
@@ -37,6 +40,9 @@ FOLDS=10
 RUN_RF=true
 RUN_XGB=true
 XGB_GPU=false
+XGB_ESTIMATORS=600
+XGB_LR=0.05
+CLEAN_OUT=false
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -51,6 +57,9 @@ while [[ $# -gt 0 ]]; do
     --run_rf) RUN_RF="$2"; shift 2;;
     --run_xgb) RUN_XGB="$2"; shift 2;;
     --xgb_gpu) XGB_GPU="$2"; shift 2;;
+    --xgb_estimators) XGB_ESTIMATORS="$2"; shift 2;;
+    --xgb_lr) XGB_LR="$2"; shift 2;;
+    --clean_out) CLEAN_OUT="$2"; shift 2;;
     -h|--help)
       sed -n '1,120p' "$0" | sed -n '1,80p'
       exit 0;;
@@ -102,6 +111,13 @@ for AX in "${AX_ARR[@]}"; do
   AX_TRIM=$(echo "$AX" | tr -d '[:space:]')
   [[ -n "$AX_TRIM" ]] || continue
 
+  # Optional cleaning to avoid artifact contamination between runs
+  if [[ "$CLEAN_OUT" =~ ^(1|true|yes|y)$ ]]; then
+    echo "[clean] Removing prior artifacts for AXIS=$AX_TRIM under $INTERP_DIR"
+    rm -rf "$INTERP_DIR/${AX_TRIM}_nopk" "$INTERP_DIR/${AX_TRIM}_pk" || true
+    mkdir -p "$INTERP_DIR/${AX_TRIM}_nopk" "$INTERP_DIR/${AX_TRIM}_pk"
+  fi
+
   # Export features once (both no_pk and pk)
   WIN_EXP="exp_${AX_TRIM}"
   LOG_EXP="$LOG_DIR/exp_${AX_TRIM}.log"
@@ -129,9 +145,16 @@ for AX in "${AX_ARR[@]}"; do
   if [[ "$RUN_XGB" =~ ^(1|true|yes|y)$ ]]; then
     WIN_XG="xgb_${AX_TRIM}"
     LOG_XG="$LOG_DIR/xgb_${AX_TRIM}.log"
+  if [[ -n "${PYTHON:-}" ]]; then
     CMD_XG=(make -f Makefile.hybrid hybrid_interpret_xgb AXIS="$AX_TRIM" \
-            INTERPRET_LABEL="$LABEL" XGB_GPU="$XGB_GPU")
-    tmux new-window -t "$SESSION" -n "$WIN_XG"
+            INTERPRET_LABEL="$LABEL" XGB_GPU="$XGB_GPU" PYTHON="$PYTHON" \
+            XGB_ESTIMATORS="$XGB_ESTIMATORS" XGB_LR="$XGB_LR")
+  else
+    CMD_XG=(make -f Makefile.hybrid hybrid_interpret_xgb AXIS="$AX_TRIM" \
+            INTERPRET_LABEL="$LABEL" XGB_GPU="$XGB_GPU" \
+            XGB_ESTIMATORS="$XGB_ESTIMATORS" XGB_LR="$XGB_LR")
+  fi
+  tmux new-window -t "$SESSION" -n "$WIN_XG"
     tmux send-keys -t "$SESSION:$WIN_XG" \
       "bash -lc 'set -Eeuo pipefail; echo [\$(date)] XGB AXIS=$AX_TRIM; ${CMD_XG[*]} 2>&1 | tee \"$LOG_XG\"'" C-m
   fi
@@ -140,4 +163,3 @@ done
 echo "[ok] Launched tmux session: $SESSION"
 echo "     Attach with: tmux attach -t $SESSION"
 echo "     Logs in:     $LOG_DIR"
-

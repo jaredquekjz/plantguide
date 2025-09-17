@@ -1,9 +1,53 @@
 #!/usr/bin/env Rscript
 # Efficient SoilGrids extraction - processes unique coordinates only
 # Then joins back to full occurrence dataset
+# Now supports selective property extraction via --properties flag
 
 library(terra)
 library(data.table)
+library(optparse)
+
+# Parse command-line arguments
+option_list <- list(
+  make_option(c("-p", "--properties"), type="character", default="all",
+              help="Comma-separated list of properties to extract (phh2o,soc,clay,sand,cec,nitrogen,bdod) or 'all' [default %default]"),
+  make_option(c("-i", "--input"), type="character", 
+              default="/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv",
+              help="Input CSV file with occurrences [default %default]"),
+  make_option(c("-o", "--output"), type="character", default=NULL,
+              help="Output CSV file (auto-generated if not specified)")
+)
+
+parser <- OptionParser(option_list=option_list,
+                       description="Extract SoilGrids data for occurrence points")
+args <- parse_args(parser)
+
+# Parse properties
+ALL_PROPERTIES <- c("phh2o", "soc", "clay", "sand", "cec", "nitrogen", "bdod")
+if (args$properties == "all") {
+  PROPERTIES <- ALL_PROPERTIES
+} else {
+  requested <- trimws(strsplit(args$properties, ",")[[1]])
+  invalid <- setdiff(requested, ALL_PROPERTIES)
+  if (length(invalid) > 0) {
+    stop(sprintf("Invalid properties: %s. Valid options: %s",
+                 paste(invalid, collapse=", "),
+                 paste(ALL_PROPERTIES, collapse=", ")))
+  }
+  PROPERTIES <- requested
+}
+
+# Set output filename
+if (is.null(args$output)) {
+  if (args$properties == "all") {
+    OUTPUT_FILE <- sub("\\.csv$", "_with_soil.csv", args$input)
+  } else {
+    props_suffix <- paste(PROPERTIES, collapse="_")
+    OUTPUT_FILE <- sub("\\.csv$", sprintf("_with_%s.csv", props_suffix), args$input)
+  }
+} else {
+  OUTPUT_FILE <- args$output
+}
 
 cat("========================================\n")
 cat("EFFICIENT SOILGRIDS EXTRACTION\n")
@@ -11,11 +55,14 @@ cat("========================================\n\n")
 
 # Configuration
 SOILGRIDS_DIR <- "/home/olier/ellenberg/data/soilgrids_250m"
-INPUT_FILE <- "/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv"
-OUTPUT_FILE <- "/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_soil.csv"
+INPUT_FILE <- args$input
 
-# Properties and depths
-PROPERTIES <- c("phh2o", "soc", "clay", "sand", "cec", "nitrogen", "bdod")
+# Report configuration
+cat(sprintf("Properties to extract: %s\n", paste(PROPERTIES, collapse=", ")))
+cat(sprintf("Input file: %s\n", INPUT_FILE))
+cat(sprintf("Output file: %s\n\n", OUTPUT_FILE))
+
+# Depths (always the same)
 DEPTHS <- c("0-5cm", "5-15cm", "15-30cm", "30-60cm", "60-100cm", "100-200cm")
 
 # Scaling factors
@@ -62,7 +109,8 @@ if (vrt_count > 0) {
 }
 
 # Step 4: Extract soil properties for unique coordinates
-cat("\nExtracting soil properties (42 layers)...\n")
+total_layers <- length(PROPERTIES) * length(DEPTHS)
+cat(sprintf("\nExtracting soil properties (%d layers)...\n", total_layers))
 cat("Processing time depends on unique coordinates, not total occurrences\n\n")
 
 # Initialize results

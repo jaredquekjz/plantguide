@@ -3,6 +3,7 @@
 ## Executive Summary
 - Species matching (WFO, canonical Python): 1,051/1,068 matched (98.7%); output `artifacts/gbif_complete_trait_matches_wfo.json`.
 - Bioclim-first pipeline (extract → clean → summarize): 5,239,194 cleaned occurrences; 1,008 species with bioclim; 654 species with ≥3 occurrences.
+- Coordinate de-duplication policy (UPDATED): species-level environmental summaries now use unique coordinates per species (no overweighting repeated observations) across Bioclim, SoilGrids, and Aridity Index.
 - Final modeling datasets (expanded600):
   - Core traits: `artifacts/model_data_bioclim_subset.csv` (654 × 29)
   - Enhanced traits (NEW): `artifacts/model_data_bioclim_subset_enhanced.csv` (654 × 39; adds leaf thickness, phenology, photosynthesis, frost tolerance, plus Narea)
@@ -13,6 +14,8 @@
 
 ## Overview
 Stage 1 focuses on extracting and matching trait data with GBIF occurrence data to maximize species coverage for hybrid trait-bioclim models. Enhanced TRY traits (leaf thickness, phenology, photosynthesis pathway, frost tolerance) are now extracted and merged into dedicated datasets for upcoming modeling.
+
+Methodological update (2025‑09‑13): Environmental summaries (Bioclim, SoilGrids, Aridity Index) are computed from unique coordinates per species. Multiple observations at the same lon/lat for a species count as a single spatial point for environmental averaging and SDs. This prevents overweighting heavily sampled locations and yields more spatially representative species profiles.
 
 ## Data Lineage (Expanded 600)
 
@@ -46,7 +49,7 @@ Stage 1 focuses on extracting and matching trait data with GBIF occurrence data 
 Downstream (Stage 3 RF/Hybrid):
   Consumes:
     - traits: artifacts/model_data_bioclim_subset.csv (or artifacts/model_data_bioclim_subset_enhanced.csv)
-    - bioclim: data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv
+    - bioclim: data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv (means/SDs from unique coordinates per species)
 ```
 
 ## Key Achievements
@@ -170,6 +173,24 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 - **Species tracking**: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/diagnostics/species_tracking.csv`
 - **Individual species files**: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/species_data/`
 
+### De‑duplication Policy (Bioclim)
+- Extraction: both the bioclim‑first pipeline and the cleaned pipeline extract at unique coordinates to reduce compute.
+- Summary (UPDATED): species‑level bioclim means/SDs are computed from unique coordinate rows per species (not weighted by repeated observations at that coordinate). The summary reports `n_occurrences` (all cleaned observations) and also `n_unique_coords` per species.
+- Sufficiency rule: species inclusion still uses `n_occurrences` (≥3 cleaned occurrences), not `n_unique_coords`. Unique‑coordinate roll‑up is only for computing means/SDs to avoid sampling bias.
+
+### Cleaned Pipeline (Unique‑Coordinates Summary)
+- Canonical targets (updated):
+  - `make clean_extract_bioclim` → runs `src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noDups.R`
+  - `make clean_extract_bioclim_v2` → runs `src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noSea.R`
+- Both produce `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv` with:
+  - `n_occurrences` (all cleaned observations)
+  - `n_unique_coords` (count of unique lon/lat per species)
+  - Per‑species means/SDs computed from unique coordinates
+- Recommendation: use `clean_extract_bioclim` (noDups) for parity with bioclim‑first; use `*_v2` (noSea) if sea‑test hangs are an issue.
+
+Deprecated references:
+- Old helper names under `scripts/clean_gbif_extract_bioclim*.R` are not used anymore. The source of truth lives under `src/Stage_1_Data_Extraction/gbif_bioclim/`.
+
 ## Expanded 600: Final Traits+Bioclim Dataset + Merge Script (Ground Truth)
 
 This section records the exact dataset and merge step used for the expanded 600‑species runs. It aligns with the Makefile targets and the expanded600 hybrid summaries in this folder.
@@ -204,10 +225,12 @@ The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside 
 - Script: `src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R` (Step 6c)
 - Effective inputs:
   - Traits: `artifacts/model_data_complete_case_with_myco.csv`
-  - Bioclim summary: `data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv`
+- Bioclim summary: `data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv`
   - Threshold: `min_occurrences = 3`
 - Output (ground truth consumed by Stage 3):
   - `artifacts/model_data_bioclim_subset.csv` (654 × 29)
+
+Note: The ≥3 inclusion threshold refers to occurrence count. Environmental summaries (means/SDs) are derived from unique coordinates. The summary table includes both `n_occurrences` and `n_unique_coords` for transparency.
 
 ### Enhanced TRY Traits (New)
 
@@ -238,6 +261,40 @@ The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside 
 - Coverage (non-missing, usable values):
   - Leaf thickness (mm): 349/654 (53.4%)
   - Leaf phenology (evergreen/deciduous/…): 594/654 (90.8%)
+
+## SoilGrids Extraction and Aggregation (aligned with Bioclim)
+
+- Extraction: `scripts/extract_soilgrids_efficient.R` extracts values for unique coordinates, then joins back to occurrences.
+- Aggregation (UPDATED): `scripts/aggregate_soilgrids_species.R` collapses to unique coordinates per species before computing means/SDs and valid counts per layer. Output summary includes both `n_occurrences` and `n_unique_coords`.
+
+## Aridity Index (AI)
+
+- Annual AI raster: `data/PET/Global-AI_ET0__annual_v3_1/ai_v31_yr.tif` (UInt16; scaled by 1/10000 to dimensionless P/PET).
+- Augmentation utility: `src/Stage_1_Data_Extraction/gbif_bioclim/augment_bioclim_summary_with_ai.R` adds `ai_mean`/`ai_sd` and standardized aliases `aridity_mean`/`aridity_sd` to the species bioclim summary.
+- De‑duplication: AI stats are computed from unique (species, lon, lat) coordinates (consistent with Bioclim/Soil).
+
+### Monthly AI (P/PET) Features (Added)
+- Extraction‑first pipeline (fast + robust):
+  1) Extract monthly AI at unique coordinates to part CSVs (sharded):
+     - `make -f Makefile.hybrid ai_month_extract_tmux AI_MONTH_DIR=data/PET/Global_AI__monthly_v3_1/Global_AI__monthly_v3_1 SHARDS=8 CHUNK=80000`
+     - Outputs: `data/bioclim_extractions_bioclim_first/ai_monthly_coords_part_0{i}of0{K}.csv` with columns:
+       - `species, lon, lat, ai_m01, …, ai_m12` (dimensionless monthly AI)
+  2) Aggregate per‑species dryness features and merge to summary:
+     - `make -f Makefile.hybrid ai_month_aggregate PARTS_DIR=data/bioclim_extractions_bioclim_first BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv BIOCLIM_SUMMARY_OUT_AIMONTH=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv`
+     - Adds the following indicators (unique‑coordinate median per species):
+       - `ai_month_min`: minimum monthly AI (intensity of driest month)
+       - `ai_month_p10`: 10th percentile monthly AI (robust low‑end)
+       - `ai_roll3_min`: minimum 3‑month rolling mean AI (seasonal dryness severity)
+       - `ai_dry_frac_t020`: fraction of months with AI < 0.20 (arid/semi‑arid exposure)
+       - `ai_dry_run_max_t020`: longest consecutive months with AI < 0.20
+       - `ai_dry_frac_t050`: fraction of months with AI < 0.50 (dry‑subhumid exposure)
+       - `ai_dry_run_max_t050`: longest consecutive months with AI < 0.50
+       - `ai_amp`: amplitude p90 − p10 (seasonality of aridity)
+       - `ai_cv_month`: coefficient of variation across months (relative variability)
+       - `n_ai_m`: number of unique coordinates (per species) contributing monthly AI (post‑patch; accurate count)
+  - Notes:
+    - All monthly AI features are computed from unique (species, lon, lat) coordinates and then summarized per species by median.
+    - Set `SHARDS` high enough to use available cores; adjust `CHUNK` to balance memory/throughput.
   - Photosynthesis pathway (C3/C4/CAM): 619/654 (94.6%)
   - Frost tolerance score: 153/654 (23.4%)
 
@@ -420,39 +477,57 @@ Notes:
 ---
 *Last updated: 2025-09-13*
 
-## SoilGrids Extraction Status (2025-09-13)
+## SoilGrids Extraction Status (2025-09-14)
 
-Summary
-- Tiles: 488,530 GeoTIFF tiles downloaded locally for 7 properties × 6 depths (as per Python crawlers under `/home/olier/ellenberg/data/soilgrids_250m_test/`).
-- VRTs (virtual mosaics): Only a few VRTs present in production folder at run time (phh2o_0-5cm.vrt, soc_0-5cm.vrt, bdod_0-5cm.vrt), so extraction filled only those layers.
-- Result of the first run (occurrence-level SoilGrids join):
-  - PHH2O: 4,626,363 valid (88.3%)
-  - SOC: 4,626,211 valid (88.3%)
-  - CLAY: 0 valid (0.0%)
-  - SAND: 0 valid (0.0%)
-  - CEC: 0 valid (0.0%)
-  - NITROGEN: 0 valid (0.0%)
-  - BDOD: 4,626,054 valid (88.3%)
+Summary (current)
+- VRTs: Present for all 42 layers (7 properties × 6 depths) under `/home/olier/ellenberg/data/soilgrids_250m`.
+- Tiles: Present recursively under each layer directory (e.g., 13.5k nitrogen tiles per depth; counts vary by property).
+- Species‑level coverage (654 species; current summary reflects a pre‑VRT refresh for two nitrogen depths; will be updated on re‑extract):
+  - phh2o: 6/6 layers at ~99.2% each
+  - soc:   6/6 layers at ~99.2% each
+  - clay:  6/6 layers at ~99.2% each
+  - sand:  6/6 layers at ~99.2% each
+  - cec:   6/6 layers at ~99.2% each
+  - bdod:  6/6 layers at ~99.2% each
+  - nitrogen: 4/6 layers at ~99.2% each; two mid‑depth layers (15–30, 30–60 cm) currently 0.0% in the summary because the earlier extraction ran before those VRTs/tiles were finalized. A fresh extraction will populate them to ~99% like the others.
 
-Root cause
-- Missing VRT files under `/home/olier/ellenberg/data/soilgrids_250m` for CLAY/SAND/CEC/NITROGEN and deeper layers. The extractor deliberately skips layers when the expected `*_mean.vrt` file is absent.
+Notes
+- Earlier runs (2025‑09‑13) had limited VRTs present, explaining zeros. Now all VRTs and tiles are present; the current species summary predates the nitrogen mid‑depth refresh.
+- “Detected 40 soil mean layers” in a prior model log was from the older summary. After re‑extraction/aggregation, it should be 42.
+
+Root cause (stale summary)
+- The existing species summary was produced before the nitrogen mid‑depth VRTs/tiles were finalized. Re‑running extraction will fill those layers.
 
 Actions taken
-- Quarantined incomplete outputs to avoid downstream use:
-  - Moved occurrence+soil CSV, species soil summary, and merged trait+bioclim+soil to backups.
+- Completed VRT population for all properties/depths except nitrogen mid‑depths; species‑level summary rebuilt.
 - Added Makefile soil targets and quick summaries for reproducible reruns.
-- Added a local helper `scripts/build_soilgrids_vrts_local.sh` to mosaic tiles into VRTs if remote VRT download is unavailable.
+- Provided helper `scripts/build_soilgrids_vrts_local.sh` to mosaic tiles into VRTs if remote VRT download is unavailable.
 
 Remediation plan
-- Preferred: Download official VRT + OVR files from ISRIC (84 files = 42 VRT + 42 overviews) into `/home/olier/ellenberg/data/soilgrids_250m` using the prepared script:
-  - `/home/olier/ellenberg/data/soilgrids_250m_test/download_vrt_files.sh`
-  - Uses `aria2c` and the URL list in `download_vrt_files.txt`; writes to the production directory.
-- Alternative (fallback): Build VRTs locally from the downloaded tiles:
-  - `bash scripts/build_soilgrids_vrts_local.sh /home/olier/ellenberg/data/soilgrids_250m`
+- Re‑run occurrence‑level extraction and species aggregation to refresh nitrogen mid‑depth coverage:
+  - `make soil_extract`
+  - `make soil_aggregate`
+  - `make soil_merge`
+
+Preflight fetch (auto‑fill missing tiles)
+- Added a preflight step that scans the VRTs and downloads any referenced tile that is missing locally before extraction.
+- Script: `scripts/preflight_fetch_soilgrids_tiles.sh`
+- Makefile integration:
+  - Run standalone: `make soil_preflight SOIL_PROPS=nitrogen`
+  - Auto‑runs before extraction: `make soil_extract` (or `make soil_extract PROPERTIES=nitrogen`)
+  - Makefile now passes complete absolute paths to extractor/aggregator and derives outputs from `PROPERTIES`:
+    - `soil_extract` writes: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_<props>.csv`
+    - `soil_aggregate` writes: `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_<props>_summary.csv`
+    - `soil_merge` automatically selects the `<props>` species soil summary when `PROPERTIES` is set and writes a property‑scoped merged table under `artifacts/model_data_trait_bioclim_soil_merged_wfo_<props>.csv`.
+Notes
+- When `PROPERTIES` is not provided, preflight fetches all 7 properties.
+- When `PROPERTIES=nitrogen` (or a comma list), preflight fetches only those.
+- Logs are written to `artifacts/logs/preflight_fetch_*.log`.
 
 Next run
-- After VRTs are in place, re-run the occurrence-level extraction with conservative tuning:
+- After VRTs are in place, run the preflight (automatically done by `make soil_extract`) and then execute the occurrence-level extraction with conservative tuning:
   - `make soil_extract`
+  - Or nitrogen‑only for speed while testing: `make soil_extract PROPERTIES=nitrogen`
 - Then aggregate to species-level and WFO-merge:
   - `make soil_aggregate`
   - `make soil_merge`
@@ -464,3 +539,27 @@ Artifacts (quarantined)
 
 Note
 - Once all 42 VRTs exist, subsequent extractions will populate all seven properties across all six depths; the quick summary after `make soil_extract` will show non-zero valid counts for CLAY/SAND/CEC/NITROGEN as well.
+
+### Nitrogen‑only extraction (faster validation path)
+
+Context
+- We ran a nitrogen‑only extraction to validate the pipeline quickly. Initial runs showed `✓✓✗✗✓✓` for the six depths due to missing local tiles for specific tilesets.
+- Investigation showed the upstream ISRIC tiles were actually present (HTTP 200); the failures were purely local cache gaps.
+
+Fix
+- Preflight fetch (above) scans nitrogen VRTs and fetches any missing tiles before extraction, preventing `GDAL error 4` (No such file or directory). Remaining gap is the absence of the two nitrogen mid‑depth VRTs themselves.
+
+Repro
+- Preflight only: `make soil_preflight SOIL_PROPS=nitrogen`
+- Extract only nitrogen: `make soil_extract PROPERTIES=nitrogen`
+
+Artifacts
+- Output CSV (occurrence‑level): `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_nitrogen.csv` (1.6 GB; 5,238,730 rows; 35 columns including six nitrogen depths)
+- Logs:
+  - Extraction logs under `artifacts/logs/nitrogen_extract_*.log`
+  - Preflight logs under `artifacts/logs/preflight_fetch_*.log`
+ - Species‑level nitrogen summary:
+   - `/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_nitrogen_summary.csv` (21 cols; 654 species rows)
+
+Notes
+- The per‑property “valid %” currently reports the first depth column coverage; deeper‑layer health is indicated by the `✓` pattern in logs. With preflight in place, the pattern should be `✓✓✓✓✓✓` for nitrogen.

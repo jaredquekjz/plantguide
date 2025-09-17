@@ -316,13 +316,19 @@ dir.create(summary_dir, recursive = TRUE, showWarnings = FALSE)
 
 bio_cols <- paste0("bio", 1:19)
 
-# Initialize summary with n_occurrences per species
+# Initialize summary with counts per species
 sp_summary <- final_data[, .(n_occurrences = .N), by = .(species = species_clean)]
+
+# Also compute number of unique coordinates per species
+final_unique <- unique(final_data, by = c("species_clean", "decimalLongitude", "decimalLatitude"))
+unique_counts <- final_unique[, .(n_unique_coords = .N), by = .(species = species_clean)]
+sp_summary <- merge(sp_summary, unique_counts, by = "species", all.x = TRUE)
 
 # Add mean and sd for each bioclim variable
 for (v in bio_cols) {
   if (v %in% names(final_data)) {
-    stats_dt <- final_data[!is.na(get(v)), .(
+    # Compute environmental summaries from unique coordinates to avoid overweighting
+    stats_dt <- final_unique[!is.na(get(v)), .(
       mean_val = mean(get(v), na.rm = TRUE),
       sd_val   = sd(get(v),   na.rm = TRUE)
     ), by = species_clean]

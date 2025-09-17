@@ -1,6 +1,7 @@
 # Extract multiple traits from TRY data
 # Traits: 7 (Mycorrhiza type), 46 (Leaf thickness), 37 (Leaf phenology type),
-#         22 (Photosynthesis pathway), 31 (Species tolerance to frost)
+#         22 (Photosynthesis pathway), 31 (Species tolerance to frost),
+#         47 (Leaf dry matter content, LDMC)
 
 # Specify the library path
 .libPaths("/home/olier/ellenberg/.Rlib")
@@ -16,7 +17,10 @@ target_traits <- list(
   list(id = 46, name = "leaf_thickness", desc = "Leaf thickness"),
   list(id = 37, name = "leaf_phenology_type", desc = "Leaf phenology type"),
   list(id = 22, name = "photosynthesis_pathway", desc = "Photosynthesis pathway"),
-  list(id = 31, name = "species_tolerance_to_frost", desc = "Species tolerance to frost")
+  list(id = 31, name = "species_tolerance_to_frost", desc = "Species tolerance to frost"),
+  # Canonical LDMC for lamina: TraitID 47 (leaf dry mass per leaf fresh mass)
+  # Avoid petiole/cotyledon/rachis LDMC (1010/3055/3081) for Bill Shipley’s lamina advice
+  list(id = 47, name = "leaf_dry_matter_content", desc = "Leaf dry mass per leaf fresh mass (LDMC)")
 )
 
 # Define file paths
@@ -140,7 +144,7 @@ for (trait in target_traits) {
     #   - trait_37_leaf_phenology_type.rds
     #   - trait_22_photosynthesis_pathway.rds
     #   - trait_31_species_tolerance_to_frost.rds
-    if (trait$id %in% c(46, 37, 22, 31)) {
+    if (trait$id %in% c(46, 37, 22, 31, 47)) {
       canonical_out <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, ".rds"))
       saveRDS(combined_data, file = canonical_out)
       message("  Canonical output saved to: ", canonical_out)
