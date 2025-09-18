@@ -125,7 +125,7 @@ les_components <- trimws(unlist(strsplit(les_components_raw, ",")))
 add_predictor_raw <- opts[["add_predictor"]] %||% "logLA"
 add_predictors <- trimws(unlist(strsplit(add_predictor_raw, ",")))
 want_logLA_pred <- any(tolower(add_predictors) == "logla")
-phylo_newick <- opts[["phylogeny_newick"]] %||% ""  # not used here
+phylo_newick <- opts[["phylogeny_newick"]] %||% "data/phylogeny/eive_try_tree.nwk"  # for fold-safe p_phylo computation
 phylo_corr   <- tolower(opts[["phylo_correlation"]] %||% "brownian")
 add_interactions <- opts[["add_interaction"]] %||% (if (target_letter == "L") "ti(logLA,logH),ti(logH,logSSD)" else if (target_letter == "N") "LES:logSSD" else "")
 want_les_x_ssd <- grepl("(^|[, ])LES:logSSD([, ]|$)", add_interactions)
@@ -154,7 +154,7 @@ if (target_letter == "T") {
   needed_extra_cols <- unique(c(needed_extra_cols,
     "mat_mean","mat_sd","mat_q05","mat_q95","temp_seasonality","temp_range",
     "precip_mean","precip_cv","precip_seasonality","ai_amp","ai_cv_month","ai_month_min",
-    "size_temp","height_temp","lma_precip","size_precip"))
+    "size_temp","height_temp","lma_precip","size_precip","p_phylo_T"))
 }
 if (target_letter == "M") {
   needed_extra_cols <- unique(c(needed_extra_cols,
@@ -272,6 +272,26 @@ make_folds <- function(y, K, stratify) {
 
 set.seed(seed_opt)
 
+# Load phylogeny for fold-safe predictor computation
+phylo_cop <- NULL
+phylo_x <- 2  # exponent for weights (w_ij = 1/d_ij^x)
+if (nzchar(phylo_newick) && file.exists(phylo_newick)) {
+  message(sprintf("[info] Loading phylogeny from %s for fold-safe p_phylo computation...", phylo_newick))
+  phy_tree <- try(ape::read.tree(phylo_newick), silent = TRUE)
+  if (!inherits(phy_tree, "try-error")) {
+    # Compute cophenetic distances once
+    phylo_cop <- try(ape::cophenetic.phylo(phy_tree), silent = TRUE)
+    if (inherits(phylo_cop, "try-error")) {
+      message("[warn] Failed to compute cophenetic distances; p_phylo will not be available")
+      phylo_cop <- NULL
+    } else {
+      message(sprintf("[info] Phylogeny loaded with %d species", nrow(phylo_cop)))
+    }
+  } else {
+    message("[warn] Failed to read phylogeny tree; p_phylo will not be available")
+  }
+}
+
 base_cols <- c(id_col, target_name, feature_cols, cluster_var, needed_extra_cols)
 base_cols <- base_cols[nzchar(base_cols)]
 base_cols <- unique(base_cols)
@@ -341,6 +361,86 @@ for (r in seq_len(repeats_opt)) {
     tr <- work[train_idx, , drop = FALSE]
     te <- work[test_idx,  , drop = FALSE]
 
+    # Compute fold-safe phylogenetic predictor if phylogeny available
+    if (!is.null(phylo_cop) && target_letter %in% c("T","M","L","N","R")) {
+      p_phylo_col <- paste0("p_phylo_", target_letter)
+
+      # Map species names to phylogeny tips
+      tr_tips <- gsub(" ", "_", tr$id, fixed = TRUE)
+      te_tips <- gsub(" ", "_", te$id, fixed = TRUE)
+
+      # Get training EIVE values
+      tr_eive <- tr$y
+
+      # Compute p_phylo for test species
+      te_p_phylo <- numeric(nrow(te))
+      for (i in seq_len(nrow(te))) {
+        test_tip <- te_tips[i]
+        if (test_tip %in% rownames(phylo_cop)) {
+          # Get distances to all species
+          dists <- phylo_cop[test_tip, ]
+
+          # Identify training species (exclude test species)
+          train_mask <- names(dists) %in% tr_tips
+          train_dists <- dists[train_mask]
+          train_eive_vals <- tr_eive[match(names(train_dists), tr_tips)]
+
+          # Compute weights (w_ij = 1/d_ij^x)
+          valid <- !is.na(train_dists) & train_dists > 0 & !is.na(train_eive_vals)
+          if (sum(valid) > 0) {
+            weights <- 1 / (train_dists[valid]^phylo_x)
+            te_p_phylo[i] <- sum(weights * train_eive_vals[valid]) / sum(weights)
+          } else {
+            te_p_phylo[i] <- mean(tr_eive, na.rm = TRUE)  # fallback
+          }
+        } else {
+          te_p_phylo[i] <- mean(tr_eive, na.rm = TRUE)  # species not in tree
+        }
+      }
+
+      # Compute p_phylo for training species (leave-one-out within training)
+      tr_p_phylo <- numeric(nrow(tr))
+      for (i in seq_len(nrow(tr))) {
+        train_tip <- tr_tips[i]
+        if (train_tip %in% rownames(phylo_cop)) {
+          # Get distances to other training species (exclude self)
+          # Only select columns that exist in phylo_cop
+          valid_train_tips <- tr_tips[tr_tips %in% colnames(phylo_cop)]
+          dists <- phylo_cop[train_tip, valid_train_tips, drop = TRUE]
+
+          # Map back to training indices
+          valid_idx <- which(tr_tips %in% valid_train_tips)
+
+          # Set self distance to NA
+          self_idx <- which(valid_train_tips == train_tip)
+          if (length(self_idx) > 0) dists[self_idx] <- NA
+
+          # Get EIVE values for valid training species
+          other_eive <- tr_eive[valid_idx]
+          # Exclude self from EIVE values
+          if (i %in% valid_idx) {
+            self_pos <- which(valid_idx == i)
+            if (length(self_pos) > 0) other_eive[self_pos] <- NA
+          }
+
+          # Compute weights
+          valid <- !is.na(dists) & dists > 0 & !is.na(other_eive)
+          if (sum(valid) > 0) {
+            weights <- 1 / (dists[valid]^phylo_x)
+            tr_p_phylo[i] <- sum(weights * other_eive[valid]) / sum(weights)
+          } else {
+            tr_p_phylo[i] <- mean(tr_eive[-i], na.rm = TRUE)  # fallback
+          }
+        } else {
+          tr_p_phylo[i] <- mean(tr_eive[-i], na.rm = TRUE)  # species not in tree
+        }
+      }
+
+      # Add to dataframes
+      tr[[p_phylo_col]] <- tr_p_phylo
+      te[[p_phylo_col]] <- te_p_phylo
+    }
+
     # Optional winsorization and standardization on predictors
     if (winsorize_opt) {
       for (v in c("logLA","logH","logSM","logSSD","LMA","Nmass")) {
@@ -358,6 +458,11 @@ for (r in seq_len(repeats_opt)) {
         te[[v]] <- (te[[v]] - zs$mean)/zs$sd
       }
       extra_vars <- setdiff(needed_extra_cols, base_vars)
+      # Also standardize p_phylo if present
+      p_phylo_col <- paste0("p_phylo_", target_letter)
+      if (p_phylo_col %in% names(tr)) {
+        extra_vars <- unique(c(extra_vars, p_phylo_col))
+      }
       for (v in extra_vars) {
         if (!(v %in% names(tr))) next
         zs <- zscore(tr[[v]])
@@ -533,6 +638,16 @@ for (r in seq_len(repeats_opt)) {
         rhs <- "y ~ LES + logH + logSM + logSSD"
         if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+        # ADD BIOCLIM FEATURES FOR T AXIS IN CV
+        if (target_letter == "T") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
+          if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+          if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+        }
         f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
         m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
         if (inherits(m, "try-error")) {
@@ -545,6 +660,16 @@ for (r in seq_len(repeats_opt)) {
         rhs <- "y ~ LES + logH + logSM + logSSD"
         if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+        # ADD BIOCLIM FEATURES FOR T AXIS IN CV
+        if (target_letter == "T") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
+          if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+          if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+        }
         m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
         aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
         eta <- as.numeric(stats::predict(m, newdata = te))
@@ -553,6 +678,16 @@ for (r in seq_len(repeats_opt)) {
       rhs <- "y ~ LES + SIZE + logSSD"
       if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+      # ADD BIOCLIM FEATURES FOR T AXIS IN CV (SIZE not deconstructed)
+      if (target_letter == "T") {
+        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+        if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+        if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+        if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+        if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
+        if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+      }
       f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
       m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
       if (inherits(m, "try-error")) m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
@@ -562,6 +697,16 @@ for (r in seq_len(repeats_opt)) {
       rhs <- "y ~ LES + SIZE + logSSD"
       if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+      # ADD BIOCLIM FEATURES FOR T AXIS IN CV (SIZE not deconstructed)
+      if (target_letter == "T") {
+        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+        if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+        if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+        if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+        if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
+        if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+      }
       m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
       aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
       eta <- as.numeric(stats::predict(m, newdata = te))

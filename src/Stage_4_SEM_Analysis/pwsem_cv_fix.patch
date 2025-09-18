@@ -1,0 +1,92 @@
+--- run_sem_pwsem.R	original
++++ run_sem_pwsem_fixed.R	fixed
+@@ -460,6 +460,39 @@ for (r in seq_len(repeats_opt)) {
+       if (nonlinear_variant == "rf_plus") {
+         # Variant D: RF+ — add smooths for SIZE/logH and logLA, plus non-linear interaction between LMA and logSSD
+         rhs_txt <- sprintf(
+           "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + %s + s(logLA, k = 5) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5))",
+           if (deconstruct_size_L) sprintf("s(logH, k = %d)", k_smooth_opt) else "s(SIZE, k = 5)"
+         )
++        # FIXED: Add bioclim features for L during CV
++        if ("precip_cv" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(precip_cv, k=5)")
++        if ("tmin_mean" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(tmin_mean, k=5)")
++        if (all(c("LMA","precip_mean") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LMA, precip_mean, k=c(4,4))")
++        if ("p_phylo_L" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ p_phylo_L")
+         if (want_h_x_ssd) rhs_txt <- paste(rhs_txt, "+ logH:logSSD")
+         # ... rest of interactions
+
+@@ -397,6 +430,28 @@ for (r in seq_len(repeats_opt)) {
+       if (nonlinear_variant == "main") {
+         # Variant A: smooth main effects only; keep logSSD linear, optional LES:logSSD
+         rhs_txt <- sprintf("y ~ s(LES, k = %d) + s(SIZE, k = %d) + logSSD", k_smooth_opt, k_smooth_opt)
++        # FIXED: Add bioclim features for L during CV
++        if ("precip_cv" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(precip_cv, k=5)")
++        if ("tmin_mean" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(tmin_mean, k=5)")
++        if (all(c("LMA","precip_mean") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LMA, precip_mean, k=c(4,4))")
++        if ("p_phylo_L" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ p_phylo_L")
+         if (want_les_x_ssd) rhs_txt <- paste(rhs_txt, "+ LES:logSSD")
+
+@@ -510,6 +560,29 @@ for (r in seq_len(repeats_opt)) {
+       # Nonlinear GAM forms for M/N/R
+       if (target_letter %in% c("M","N")) {
+         rhs_txt <- "y ~ LES + s(logH, k = 5) + logSM + logSSD"
++        # FIXED: Add bioclim features for M/N during CV
++        if (target_letter == "M") {
++          if ("precip_seasonality" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(precip_seasonality, k=5)")
++          if ("ai_roll3_min" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(ai_roll3_min, k=5)")
++          if (all(c("LES","ai_roll3_min") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LES, ai_roll3_min, k=c(4,4))")
++          if (all(c("LES","drought_min") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LES, drought_min, k=c(4,4))")
++          if (all(c("SIZE","precip_mean") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(SIZE, precip_mean, k=c(4,4))")
++          if (all(c("LMA","precip_mean") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LMA, precip_mean, k=c(4,4))")
++          if ("p_phylo_M" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ p_phylo_M")
++        }
++        if (target_letter == "N") {
++          if ("precip_cv" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(precip_cv, k=5)")
++          if ("mat_q95" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(mat_q95, k=5)")
++          if (all(c("LES","drought_min") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(LES, drought_min, k=c(4,4))")
++          if (all(c("SIZE","precip_mean") %in% names(tr))) rhs_txt <- paste(rhs_txt, "+ ti(SIZE, precip_mean, k=c(4,4))")
++          if ("p_phylo_N" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ p_phylo_N")
++        }
+         if (smooth_ssd_opt) rhs_txt <- sub("logSSD", sprintf("s(logSSD, k = %d)", k_smooth_opt), rhs_txt, fixed = TRUE)
+
+@@ -532,6 +605,20 @@ for (r in seq_len(repeats_opt)) {
+     } else if (deconstruct_size) {
+       # Linear model with deconstructed SIZE
+       rhs <- "y ~ LES + logH + logSM + logSSD"
++      # FIXED: Add bioclim features for linear models with deconstructed SIZE (T axis)
++      if (target_letter == "T") {
++        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
++        if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
++        if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
++        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
++      }
+       if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
+       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+
+@@ -552,6 +639,20 @@ for (r in seq_len(repeats_opt)) {
+     } else {
+       # Default linear model
+       rhs <- "y ~ LES + SIZE + logSSD"
++      # FIXED: Add bioclim features for linear models (T/R axes)
++      if (target_letter == "T") {
++        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
++        if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
++        if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
++        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
++      }
++      if (target_letter == "R") {
++        if ("phh2o_5_15cm_mean" %in% names(tr)) rhs <- paste(rhs, "+ phh2o_5_15cm_mean")
++        if ("ph_rootzone_mean" %in% names(tr)) rhs <- paste(rhs, "+ ph_rootzone_mean")
++        if ("p_phylo_R" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_R")
++      }
+       if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
+       if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
+
+KEY CHANGES:
+1. For T axis: Add mat_mean, precip_seasonality, temp_seasonality, p_phylo_T to linear models during CV
+2. For M axis: Add precip_seasonality, ai_roll3_min, drought interactions, p_phylo_M to GAM models during CV
+3. For L axis: Add precip_cv, tmin_mean, LMA:precip_mean interaction, p_phylo_L to GAM models during CV
+4. For N axis: Add precip_cv, mat_q95, drought interactions, p_phylo_N to models during CV
+5. For R axis: Add soil pH features (phh2o_5_15cm_mean, ph_rootzone_mean), p_phylo_R to models during CV
+
+These additions ensure that bioclim/soil features are used during cross-validation, not just in the final full model.
