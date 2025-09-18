@@ -159,21 +159,22 @@ if (target_letter == "T") {
 if (target_letter == "M") {
   needed_extra_cols <- unique(c(needed_extra_cols,
     "mat_mean","precip_mean","precip_seasonality","drought_min","precip_coldest_q",
-    "ai_roll3_min","ai_month_min","ai_amp","height_temp","lma_precip","les_drought"))
+    "ai_roll3_min","ai_month_min","ai_amp","height_temp","lma_precip","les_drought","p_phylo_M"))
 }
 if (target_letter == "L") {
   needed_extra_cols <- unique(c(needed_extra_cols,
     "precip_mean","precip_cv","tmin_mean","tmin_q05","lma_precip","height_ssd",
-    "size_precip","les_seasonality"))
+    "size_precip","les_seasonality","p_phylo_L",
+    "EIVEres.M","is_woody"))  # Add high-importance features from XGBoost analysis
 }
 if (target_letter == "N") {
   needed_extra_cols <- unique(c(needed_extra_cols,
-    "precip_mean","precip_cv","les_drought","les_seasonality","mat_q95","size_precip"))
+    "precip_mean","precip_cv","les_drought","les_seasonality","mat_q95","size_precip","p_phylo_N"))
 }
 if (target_letter == "R") {
   needed_extra_cols <- unique(c(needed_extra_cols,
     "mat_mean","temp_range","drought_min","precip_warmest_q","precip_driest_q",
-    "ph_rootzone_mean","hplus_rootzone_mean","phh2o_5_15cm_mean","phh2o_5_15cm_p90"))
+    "ph_rootzone_mean","hplus_rootzone_mean","phh2o_5_15cm_mean","phh2o_5_15cm_p90","p_phylo_R"))
 }
 # Tier-2 gating options for L
 gate_height <- tolower(opts[["gate_height"]] %||% "false") %in% c("1","true","yes","y")
@@ -208,9 +209,18 @@ df <- if (have_readr) readr::read_csv(in_csv, show_col_types = FALSE, progress =
 df <- as.data.frame(df)
 if (length(needed_extra_cols)) {
   missing <- setdiff(needed_extra_cols, names(df))
+  # Don't warn about missing p_phylo columns if phylogeny will be loaded (they're computed in CV)
+  p_phylo_cols <- grep("^p_phylo_", needed_extra_cols, value = TRUE)
+  if (nzchar(phylo_newick) && file.exists(phylo_newick) && length(p_phylo_cols) > 0) {
+    missing <- setdiff(missing, p_phylo_cols)
+  }
   if (length(missing)) {
     message(sprintf("[warn] Predictors not found in input (ignored): %s", paste(missing, collapse=", ")))
     needed_extra_cols <- setdiff(needed_extra_cols, missing)
+    # But keep p_phylo columns in needed_extra_cols if phylo will be enabled
+    if (nzchar(phylo_newick) && file.exists(phylo_newick)) {
+      needed_extra_cols <- unique(c(needed_extra_cols, p_phylo_cols))
+    }
   }
 }
 
@@ -439,6 +449,18 @@ for (r in seq_len(repeats_opt)) {
       # Add to dataframes
       tr[[p_phylo_col]] <- tr_p_phylo
       te[[p_phylo_col]] <- te_p_phylo
+
+      # Debug output for T axis phylo values (only first fold of first rep)
+      if (target_letter == "T" && exists("rep") && exists("fold") && rep == 1 && fold == 1) {
+        cat(sprintf("[DEBUG] T axis p_phylo - tr range: [%.3f, %.3f], sd=%.3f, te range: [%.3f, %.3f]\n",
+                    min(tr_p_phylo, na.rm=T), max(tr_p_phylo, na.rm=T), sd(tr_p_phylo, na.rm=T),
+                    min(te_p_phylo, na.rm=T), max(te_p_phylo, na.rm=T)))
+        # Check correlation with other predictors
+        if ("mat_mean" %in% names(tr)) {
+          cor_mat <- cor(tr_p_phylo, tr$mat_mean, use="complete.obs")
+          cat(sprintf("[DEBUG] Cor(p_phylo_T, mat_mean) = %.3f\n", cor_mat))
+        }
+      }
     }
 
     # Optional winsorization and standardization on predictors
@@ -529,6 +551,16 @@ for (r in seq_len(repeats_opt)) {
           k_smooth_opt, k_smooth_opt,
           if (deconstruct_size_L) sprintf("s(logH, k = %d)", k_smooth_opt) else "SIZE"
         )
+        # Add phylogenetic predictor for L axis if available
+        if (!is.null(phylo_cop) && target_letter == "L" && "p_phylo_L" %in% names(tr)) {
+          rhs_txt <- paste(rhs_txt, "+ p_phylo_L")
+        }
+        # Add high-importance features identified by XGBoost for L axis
+        if (target_letter == "L") {
+          if ("EIVEres.M" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(`EIVEres.M`, k=5)")
+          if ("is_woody" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ is_woody")
+          if ("les_seasonality" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ les_seasonality")
+        }
         if (want_h_x_ssd) rhs_txt <- paste(rhs_txt, "+ logH:logSSD")
         if (want_n_x_la)  rhs_txt <- paste(rhs_txt, "+ Nmass:logLA")
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
@@ -567,6 +599,16 @@ for (r in seq_len(repeats_opt)) {
           "y ~ s(LMA, k = 5) + s(logSSD, k = 5) + %s + s(logLA, k = 5) + Nmass + LMA:logLA + t2(LMA, logSSD, k=c(5,5))",
           if (deconstruct_size_L) sprintf("s(logH, k = %d)", k_smooth_opt) else "s(SIZE, k = 5)"
         )
+        # Add phylogenetic predictor for L axis if available
+        if (!is.null(phylo_cop) && target_letter == "L" && "p_phylo_L" %in% names(tr)) {
+          rhs_txt <- paste(rhs_txt, "+ p_phylo_L")
+        }
+        # Add high-importance features identified by XGBoost for L axis
+        if (target_letter == "L") {
+          if ("EIVEres.M" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ s(`EIVEres.M`, k=5)")
+          if ("is_woody" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ is_woody")
+          if ("les_seasonality" %in% names(tr)) rhs_txt <- paste(rhs_txt, "+ les_seasonality")
+        }
         if (want_h_x_ssd) rhs_txt <- paste(rhs_txt, "+ logH:logSSD")
         if (want_n_x_la)  rhs_txt <- paste(rhs_txt, "+ Nmass:logLA")
         if (want_sm_x_n)  rhs_txt <- paste(rhs_txt, "+ logSM:Nmass")
@@ -646,7 +688,37 @@ for (r in seq_len(repeats_opt)) {
           if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
           if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
           if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
-          if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+          if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
+        }
+        # ADD FEATURES FOR M AXIS IN CV
+        if (target_letter == "M") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+          if ("ai_roll3_min" %in% names(tr)) rhs <- paste(rhs, "+ ai_roll3_min")
+          if (!is.null(phylo_cop) && target_letter == "M") rhs <- paste(rhs, "+ p_phylo_M")
+        }
+        # ADD FEATURES FOR L AXIS IN CV
+        if (target_letter == "L") {
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("tmin_mean" %in% names(tr)) rhs <- paste(rhs, "+ tmin_mean")
+          if (!is.null(phylo_cop) && target_letter == "L") rhs <- paste(rhs, "+ p_phylo_L")
+        }
+        # ADD FEATURES FOR N AXIS IN CV
+        if (target_letter == "N") {
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("les_drought" %in% names(tr)) rhs <- paste(rhs, "+ les_drought")
+          if (!is.null(phylo_cop) && target_letter == "N") rhs <- paste(rhs, "+ p_phylo_N")
+        }
+        # ADD FEATURES FOR R AXIS IN CV
+        if (target_letter == "R") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+          if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+          if ("ph_rootzone_mean" %in% names(tr)) rhs <- paste(rhs, "+ ph_rootzone_mean")
+          if (!is.null(phylo_cop) && target_letter == "R") rhs <- paste(rhs, "+ p_phylo_R")
         }
         f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
         m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
@@ -668,7 +740,37 @@ for (r in seq_len(repeats_opt)) {
           if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
           if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
           if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
-          if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+          if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
+        }
+        # ADD FEATURES FOR M AXIS IN CV
+        if (target_letter == "M") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+          if ("ai_roll3_min" %in% names(tr)) rhs <- paste(rhs, "+ ai_roll3_min")
+          if (!is.null(phylo_cop) && target_letter == "M") rhs <- paste(rhs, "+ p_phylo_M")
+        }
+        # ADD FEATURES FOR L AXIS IN CV
+        if (target_letter == "L") {
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("tmin_mean" %in% names(tr)) rhs <- paste(rhs, "+ tmin_mean")
+          if (!is.null(phylo_cop) && target_letter == "L") rhs <- paste(rhs, "+ p_phylo_L")
+        }
+        # ADD FEATURES FOR N AXIS IN CV
+        if (target_letter == "N") {
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("les_drought" %in% names(tr)) rhs <- paste(rhs, "+ les_drought")
+          if (!is.null(phylo_cop) && target_letter == "N") rhs <- paste(rhs, "+ p_phylo_N")
+        }
+        # ADD FEATURES FOR R AXIS IN CV
+        if (target_letter == "R") {
+          if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+          if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+          if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+          if ("ph_rootzone_mean" %in% names(tr)) rhs <- paste(rhs, "+ ph_rootzone_mean")
+          if (!is.null(phylo_cop) && target_letter == "R") rhs <- paste(rhs, "+ p_phylo_R")
         }
         m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
         aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
@@ -686,7 +788,15 @@ for (r in seq_len(repeats_opt)) {
         if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
         if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
         if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
-        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+        if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
+      }
+      # ADD FEATURES FOR R AXIS IN CV (SIZE not deconstructed)
+      if (target_letter == "R") {
+        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+        if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+        if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+        if ("ph_rootzone_mean" %in% names(tr)) rhs <- paste(rhs, "+ ph_rootzone_mean")
+        if (!is.null(phylo_cop) && target_letter == "R") rhs <- paste(rhs, "+ p_phylo_R")
       }
       f <- stats::as.formula(sprintf("%s + (1|%s)", rhs, cluster_var))
       m <- try(lme4::lmer(f, data = tr, weights = w, REML = FALSE), silent = TRUE)
@@ -705,7 +815,15 @@ for (r in seq_len(repeats_opt)) {
         if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
         if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
         if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
-        if ("p_phylo_T" %in% names(tr)) rhs <- paste(rhs, "+ p_phylo_T")
+        if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
+      }
+      # ADD FEATURES FOR R AXIS IN CV (SIZE not deconstructed)
+      if (target_letter == "R") {
+        if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
+        if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+        if ("drought_min" %in% names(tr)) rhs <- paste(rhs, "+ drought_min")
+        if ("ph_rootzone_mean" %in% names(tr)) rhs <- paste(rhs, "+ ph_rootzone_mean")
+        if (!is.null(phylo_cop) && target_letter == "R") rhs <- paste(rhs, "+ p_phylo_R")
       }
       m <- stats::lm(stats::as.formula(rhs), data = tr, weights = w)
       aic_tr <- tryCatch(AIC(m), error = function(e) NA_real_)
@@ -773,12 +891,88 @@ comps <- build_composites(train = tr, test = tr)
 tr$LES  <- comps$LES_train
 tr$SIZE <- comps$SIZE_train
 
+# Compute phylogenetic predictor for full dataset if phylogeny available
+if (!is.null(phylo_cop) && target_letter %in% c("T","M","L","N","R")) {
+  p_phylo_col <- paste0("p_phylo_", target_letter)
+
+  # Get the correct target column name (could be EIVEres-T or EIVEres.T)
+  target_col <- paste0("EIVEres-", target_letter)
+  if (!(target_col %in% names(tr))) {
+    target_col <- paste0("EIVEres.", target_letter)
+  }
+  if (!(target_col %in% names(tr))) {
+    cat(sprintf("[warning] Target column %s not found in data\n", target_col))
+  }
+
+  # Map species names to phylogeny tips
+  tr_tips <- gsub(" ", "_", tr$wfo_accepted_name)
+  # The target values are in 'y' column (renamed earlier)
+  tr_eive <- tr$y
+
+  # Compute p_phylo for all species (using all others as donors)
+  tr_p_phylo <- numeric(nrow(tr))
+  for (i in seq_len(nrow(tr))) {
+    species_tip <- tr_tips[i]
+    if (species_tip %in% rownames(phylo_cop)) {
+      # Get distances to all other species
+      valid_tips <- tr_tips[tr_tips %in% colnames(phylo_cop)]
+      dists <- phylo_cop[species_tip, valid_tips, drop = TRUE]
+
+      # Map back to indices
+      valid_idx <- which(tr_tips %in% valid_tips)
+
+      # Exclude self
+      self_idx <- which(valid_idx == i)
+      if (length(self_idx) > 0) {
+        valid_idx <- valid_idx[-self_idx]
+        dists <- dists[-self_idx]
+      }
+
+      # Get EIVE values for other species
+      other_eive <- tr_eive[valid_idx]
+
+      # Compute weights
+      valid <- !is.na(dists) & dists > 0 & !is.na(other_eive)
+      if (sum(valid) > 0) {
+        weights <- 1 / (dists[valid]^phylo_x)
+        tr_p_phylo[i] <- sum(weights * other_eive[valid]) / sum(weights)
+      } else {
+        tr_p_phylo[i] <- mean(tr_eive[-i], na.rm = TRUE)  # fallback
+      }
+    } else {
+      tr_p_phylo[i] <- mean(tr_eive[-i], na.rm = TRUE)  # species not in tree
+    }
+  }
+
+  # Add to dataframe
+  tr[[p_phylo_col]] <- tr_p_phylo
+
+  # Apply standardization if requested
+  if (standardize) {
+    tr[[p_phylo_col]] <- scale(tr[[p_phylo_col]])[,1]
+  }
+
+  # Debug output
+  cat(sprintf("[info] Computed %s for full data: range [%.3f, %.3f], mean=%.3f, sd=%.3f\n",
+              p_phylo_col, min(tr[[p_phylo_col]], na.rm=T), max(tr[[p_phylo_col]], na.rm=T),
+              mean(tr[[p_phylo_col]], na.rm=T), sd(tr[[p_phylo_col]], na.rm=T)))
+
+  # Also add to df for multigroup analysis (df still has all original data)
+  # Map to original df rows based on species names
+  df_idx <- match(df$wfo_accepted_name, tr$wfo_accepted_name)
+  df[[p_phylo_col]] <- tr[[p_phylo_col]][df_idx]
+}
+
 # Build sem.functions list (mgcv or gamm4 if random effects and available)
 use_mixed <- have_gamm4 && (cluster_var %in% names(tr)) && length(unique(na.omit(tr[[cluster_var]]))) > 1
 
 gam_or_gamm <- function(formula, data, weights = NULL) {
   if (use_mixed) {
     # gamm4 returns list with $gam and $mer
+    # Convert ti() to t2() for gamm4 compatibility
+    formula_str <- deparse(formula)
+    formula_str <- gsub("ti\\(", "t2\\(", formula_str)
+    formula <- stats::as.formula(formula_str)
     # Try with weights; if not supported, fall back to no weights
     obj <- try(gamm4::gamm4(formula, random = stats::as.formula(sprintf("~(1|%s)", cluster_var)), data = data, family = gaussian(), weights = weights), silent = TRUE)
     if (inherits(obj, 'try-error')) obj <- gamm4::gamm4(formula, random = stats::as.formula(sprintf("~(1|%s)", cluster_var)), data = data, family = gaussian())
@@ -1026,6 +1220,10 @@ if (nzchar(group_var) && (group_var %in% names(tr))) {
       use_mixed_g <- have_gamm4 && (cluster_var %in% names(df_sub)) && length(unique(na.omit(df_sub[[cluster_var]]))) > 1
       gam_or_gamm_g <- function(formula, data, weights = NULL) {
         if (use_mixed_g) {
+          # Convert ti() to t2() for gamm4 compatibility
+          formula_str <- deparse(formula)
+          formula_str <- gsub("ti\\(", "t2\\(", formula_str)
+          formula <- stats::as.formula(formula_str)
           obj <- try(gamm4::gamm4(formula, random = stats::as.formula(sprintf("~(1|%s)", cluster_var)), data = data, family = gaussian(), weights = weights), silent = TRUE)
           if (inherits(obj, 'try-error')) obj <- gamm4::gamm4(formula, random = stats::as.formula(sprintf("~(1|%s)", cluster_var)), data = data, family = gaussian())
           return(obj)
