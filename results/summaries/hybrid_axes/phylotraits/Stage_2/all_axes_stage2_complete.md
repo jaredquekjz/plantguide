@@ -24,9 +24,10 @@ Comprehensive comparison of structured regression approaches for predicting Euro
 | | AIC (linear) | 0.260±0.124 | 1.294±0.111 | -0.099 | Climate 97%, Full 3% |
 | **Light (L)** | GAM (PC + pruned tensor) | **0.340±0.083** | 1.233±0.109 | Canonical | `run_aic_selection_L_tensor_pruned.R` |
 | | pwSEM+enhanced (legacy) | 0.324±0.098 | 1.257±0.118 | – | Retained for structural diagnostics |
-| **Nutrients (N)** | pwSEM | 0.444±0.080 | 1.406±0.108 | Baseline | Linear with bioclim |
+| **Nutrients (N)** | GAM (pwSEM-aligned) | **0.466±0.079** | 1.378±0.099 | Canonical | `run_aic_selection_N_structured.R`; raw traits + PCs + tensors + `s(Family)` |
+| | pwSEM | 0.444±0.080 | 1.406±0.108 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.472±0.076 | 1.370±0.101 | **+0.028** | Phylo signal captured |
-| | AIC | 0.427±0.068 | 1.439±0.098 | -0.017 | Climate 99% |
+| | AIC (full linear) | 0.427±0.068 | 1.439±0.098 | -0.017 | Climate 99% |
 | **Reaction/pH (R)** | pwSEM | 0.166±0.092 | 1.463±0.101 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.222±0.077 | 1.413±0.095 | **+0.056** | Strongest phylo response |
 | | AIC | 0.192±0.084 | 1.449±0.101 | +0.026 | Full 83%, Climate 17% |
