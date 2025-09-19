@@ -5,10 +5,15 @@ Metrics — RF (5×3 CV)
 - RF‑only (+ p_k): 0.538 ± 0.042
 - SEM baseline (traits‑only): 0.216 ± 0.071
 
-Metrics — XGB (10‑fold CV; GPU, 2025‑09‑17 refresh)
+Metrics — XGB (10-fold CV; GPU, 2025‑09‑17 refresh)
 - XGB(3000, lr=0.02)
   - no_pk: R²=0.544 ± 0.056, RMSE=0.881 ± 0.107
   - pk:    R²=0.590 ± 0.033, RMSE=0.835 ± 0.081
+
+Deployment-style nested CV (2025‑09‑19; LOSO=654 folds, spatial blocks=500 km; bootstrap ±1σ)
+- no_pk: LOSO R²=0.550 ± 0.032 (RMSE=0.884 ± 0.031); spatial blocks R²=0.544 ± 0.033 (RMSE=0.891 ± 0.033).
+- pk:    LOSO R²=0.597 ± 0.029 (RMSE=0.837 ± 0.030); spatial blocks R²=0.590 ± 0.031 (RMSE=0.845 ± 0.032).
+- Artefacts: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/T_{nopk,pk}/xgb_T_cv_metrics_{loso,spatial}.json` (per-fold CSVs alongside).
 
 Full Soil check (all SoilGrids predictors, 2025‑09‑17)
 - Run: `conda run -n AI bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withsoil_all_sg250m_20250917 --trait_csv artifacts/model_data_bioclim_subset_enhanced_imputed.csv --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_soilall_sg250m_20250916.csv --axes T --run_rf false --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true`
@@ -31,7 +36,7 @@ Takeaways
 Artifacts
 - RF JSONs: artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed_cleanedAI_rfonly_fast_fixpk_ai/T/comprehensive_results_T.json
 - RF JSONs (pk): artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed_cleanedAI_rfonly_fast_fixpk_ai_pk/T/comprehensive_results_T.json
-- XGB features/outputs: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/T_{nopk,pk}` (non‑soil) and `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withsoil_all_sg250m_20250917/T_{nopk,pk}` (full soil experiment).
+- XGB features/outputs: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/T_{nopk,pk}` (non‑soil) and `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withsoil_all_sg250m_20250917/T_{nopk,pk}` (full soil experiment). Nested-CV artefacts: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/T_{nopk,pk}`.
 
 Repro
 - 3000 trees: `conda run -n AI make -f Makefile.hybrid hybrid_interpret_xgb AXIS=T INTERPRET_LABEL=phylotraits_cleanedAI_discovery_gpu_nosoil_20250917 XGB_GPU=true XGB_ESTIMATORS=3000 XGB_LR=0.02`

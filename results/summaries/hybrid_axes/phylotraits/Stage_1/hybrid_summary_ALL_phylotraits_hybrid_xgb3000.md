@@ -8,6 +8,8 @@ Per‑Axis XGB(3000) CV Metrics
 - T (Temperature)
   - no_pk: R²=0.544 ± 0.056, RMSE=0.881 ± 0.107
   - pk:    R²=0.590 ± 0.033, RMSE=0.835 ± 0.081
+  - Nested LOSO (2025‑09‑19): no_pk 0.550 ± 0.032 (RMSE 0.884 ± 0.031); pk 0.597 ± 0.029 (RMSE 0.837 ± 0.030)
+  - Nested spatial 500 km: no_pk 0.544 ± 0.033 (RMSE 0.891 ± 0.033); pk 0.590 ± 0.031 (RMSE 0.845 ± 0.032)
   - ΔR²=+0.046, ΔRMSE=−0.046
 - M (Moisture)
   - no_pk: R²=0.255 ± 0.091, RMSE=1.291 ± 0.145
