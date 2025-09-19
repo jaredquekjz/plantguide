@@ -334,6 +334,12 @@ XGB_GPU ?= false
 PYTHON ?= python3
 XGB_ESTIMATORS ?= 600
 XGB_LR ?= 0.05
+XGB_CV_STRATEGY ?= kfold
+XGB_OCCURRENCE_CSV ?= data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv
+XGB_SPATIAL_BLOCK_KM ?= 500
+XGB_INNER_FOLDS ?= 5
+XGB_PARAM_GRID ?= []
+XGB_BOOTSTRAP_REPS ?= 1000
 hybrid_interpret_xgb:
 	@echo "[interpret] XGB interpretability for AXIS=$(AXIS) ... (GPU=$(XGB_GPU))"
 	@test -f "artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk/features.csv" || $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$(AXIS) TRAIT_CSV=$(TRAIT_CSV) BIOCLIM_SUMMARY=$(BIOCLIM_SUMMARY) X_EXP=$(X_EXP) K_TRUNC=$(K_TRUNC) FOLDS=$(FOLDS) INTERPRET_LABEL=$(INTERPRET_LABEL)
@@ -343,12 +349,24 @@ hybrid_interpret_xgb:
 	    --axis=$(AXIS) \
 	    --gpu=$(XGB_GPU) \
 	    --n_estimators=$(XGB_ESTIMATORS) --learning_rate=$(XGB_LR) \
+	    --cv_strategy=$(XGB_CV_STRATEGY) \
+	    --occurrence_csv=$(XGB_OCCURRENCE_CSV) \
+	    --spatial_block_km=$(XGB_SPATIAL_BLOCK_KM) \
+	    --inner_folds=$(XGB_INNER_FOLDS) \
+	    --param_grid='$(XGB_PARAM_GRID)' \
+	    --bootstrap_reps=$(XGB_BOOTSTRAP_REPS) \
 	    --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_nopk; \
 	  $(PYTHON) src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
 	    --features_csv=artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk/features.csv \
 	    --axis=$(AXIS) \
 	    --gpu=$(XGB_GPU) \
 	    --n_estimators=$(XGB_ESTIMATORS) --learning_rate=$(XGB_LR) \
+	    --cv_strategy=$(XGB_CV_STRATEGY) \
+	    --occurrence_csv=$(XGB_OCCURRENCE_CSV) \
+	    --spatial_block_km=$(XGB_SPATIAL_BLOCK_KM) \
+	    --inner_folds=$(XGB_INNER_FOLDS) \
+	    --param_grid='$(XGB_PARAM_GRID)' \
+	    --bootstrap_reps=$(XGB_BOOTSTRAP_REPS) \
 	    --out_dir artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_pk; \
 	  echo "[interpret] XGB outputs written under artifacts/stage3rf_hybrid_interpret/$(INTERPRET_LABEL)/$(AXIS)_{nopk,pk}"; \
 	else \

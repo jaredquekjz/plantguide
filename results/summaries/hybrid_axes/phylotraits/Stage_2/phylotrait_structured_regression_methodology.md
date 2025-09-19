@@ -62,3 +62,29 @@ Scripts: `run_aic_selection_T_pc.R`, `run_aic_selection_L_tensor_pruned.R`, `run
 4. **Document**: Summaries in `results/summaries/hybrid_axes/phylotraits/Stage_2/` collect the final formulas, coefficients, and diagnostics for each axis so downstream users know which commands to run (`make stage2_*_gam`) and which artefacts to load.
 
 This workflow preserves interpretability (the final GAM) while respecting the ecological structure (pwSEM) and not missing any signal the ensembles detect. It also ensures that every predictor in the production model has been justified twice: once by predictive merit and once by structural consistency.
+
+## Cross-Validation Options and When to Use Them
+
+### 5×10 Stratified CV (legacy default)
+
+- **What it does**: we shuffle the 654 species, slice them into 10 folds, repeat the split 5 times, and average the scores. Every fold therefore contains the same taxa that appear in the training data, only in different proportions.
+- **When it is handy**: rapid iteration, feature triage, and apples-to-apples comparisons with the historical baselines that were reported in Stage 1 and Stage 2 summaries.
+- **Limitations**: because the same species (and their trait summaries) leak into both train and test folds, this CV can overstate how well the model will cope with a completely new species or a new region.
+
+### Deployment-Aligned Nested CV (leave-one-species-out + spatial blocks)
+
+- **Outer splits**:
+  - *Species cold start*: 654 outer folds, each hiding one species entirely. The held-out species supplies exactly one test row because traits and climate statistics are pre-aggregated species-level values.
+  - *Geography cold start*: 151 outer folds, each hiding every species whose centroid falls inside a 500 km hexagon (centroids derived from the cleaned occurrence table, allowing for multi-record species to be grouped sensibly).
+- **Inner loop**: within each outer split, we re-run the 3-fold CV tuning on the remaining species so that hyperparameters and smooth structures are chosen without seeing the hold-out block.
+- **Outputs**: for each strategy we emit overall R² / RMSE, bootstrap uncertainty (1,000 resamples), and CSVs listing the residuals per species/tile. The first deployment run (T axis, no_pk) yielded:
+  - Random 10-fold: R² ≈ 0.544 ± 0.056, RMSE ≈ 0.881 ± 0.107
+  - Leave-one-species-out: R² ≈ 0.550 ± 0.032 (bootstrap), RMSE ≈ 0.883 ± 0.031
+  - Spatial 500 km blocks: R² ≈ 0.542 ± 0.033, RMSE ≈ 0.892 ± 0.033
+- **Interpretation**: the headline scores stay very close to the random CV numbers because (a) the dataset already summarises each species into a single trait/climate row, and (b) 654 species provide enough diversity that the model does not collapse after removing one at a time. The benefit is conceptual rather than dramatic in magnitude: these scores genuinely reflect “new species” and “new geography” scenarios.
+- **Cost**: each nested run takes ~35–40 minutes per axis on the RTX 6000 GPU (3000-tree models × 654 species folds + 151 spatial folds). Expect roughly 5 hours to sweep all axes sequentially.
+
+### Recommendation
+
+- Use **stratified 10-fold** for rapid experimentation and sanity checks; it is fast and maintains comparability with the legacy tables.
+- Use **nested LOSO + spatial** for any result that will be quoted externally or used for deployment decisions. Even though the numerical gap is small, the nested protocol removes the implicit leakage that random shuffles permit and gives species-by-species residuals you can inspect for outliers.

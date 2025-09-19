@@ -109,6 +109,9 @@ if (all(c("LES_core", "ai_roll3_min") %in% names(data))) tensor_terms <- c(tenso
 if (all(c("LES_core", "drought_min") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(LES_core, drought_min, k=c(4,4))")
 if (all(c("SIZE", "precip_mean") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(SIZE, precip_mean, k=c(4,4))")
 if (all(c("LMA", "precip_mean") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(LMA, precip_mean, k=c(4,4))")
+if (all(c("SIZE", "mat_mean") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(SIZE, mat_mean, k=c(4,4))")
+if (all(c("LES_core", "temp_seasonality") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(LES_core, temp_seasonality, k=c(4,4))")
+if (all(c("logLA", "precip_coldest_q") %in% names(data))) tensor_terms <- c(tensor_terms, "ti(logLA, precip_coldest_q, k=c(4,4))")
 
 random_terms <- character(0)
 if ("Family" %in% names(data) && any(nzchar(as.character(data$Family)))) random_terms <- c(random_terms, "s(Family, bs=\"re\")")

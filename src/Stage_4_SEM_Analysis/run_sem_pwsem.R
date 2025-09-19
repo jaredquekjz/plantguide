@@ -150,11 +150,26 @@ extra_tokens <- function(txt) {
 needed_extra_cols <- unique(c(extra_tokens(add_predictor_raw), extra_tokens(add_interactions)))
 needed_extra_cols <- setdiff(needed_extra_cols,
   c("", "logLA", "logH", "logSM", "logSSD", "LMA", "Nmass", "LES", "SIZE", "y", "ti", "s", "t2", "bs", "te"))
+
+# Add climate features to needed_extra_cols (they should come from input CSV)
+climate_core_cols <- c("mat_mean", "mat_sd", "mat_q05", "mat_q95", "temp_seasonality",
+                       "temp_range", "tmax_mean", "tmin_mean", "precip_mean", "precip_sd",
+                       "precip_seasonality", "precip_cv", "precip_coldest_q", "precip_warmest_q",
+                       "drought_min", "ai_month_min", "ai_amp", "ai_cv_month", "ai_roll3_min")
+interaction_cols <- c("lma_precip", "height_temp", "size_temp", "size_precip", "height_ssd")
 if (target_letter == "T") {
+  # Include all climate and interaction features for T axis
   needed_extra_cols <- unique(c(needed_extra_cols,
-    "mat_mean","mat_sd","mat_q05","mat_q95","temp_seasonality","temp_range",
-    "precip_mean","precip_cv","precip_seasonality","ai_amp","ai_cv_month","ai_month_min",
-    "size_temp","height_temp","lma_precip","size_precip","p_phylo_T"))
+    # Temperature features
+    "mat_mean","mat_sd","mat_q05","mat_q95","temp_seasonality","temp_range","tmax_mean",
+    # Precipitation features
+    "precip_mean","precip_cv","precip_seasonality","precip_coldest_q",
+    # Aridity features
+    "ai_amp","ai_cv_month","ai_month_min",
+    # Critical interactions
+    "lma_precip","height_temp","size_temp","size_precip",
+    # Phylogenetic
+    "p_phylo_T"))
 }
 if (target_letter == "M") {
   needed_extra_cols <- unique(c(needed_extra_cols,
@@ -305,8 +320,20 @@ if (nzchar(phylo_newick) && file.exists(phylo_newick)) {
 base_cols <- c(id_col, target_name, feature_cols, cluster_var, needed_extra_cols)
 base_cols <- base_cols[nzchar(base_cols)]
 base_cols <- unique(base_cols)
+
+# Check for climate features in input data
+climate_check <- c("mat_mean", "precip_mean", "temp_seasonality", "lma_precip")
+climate_present <- intersect(climate_check, names(df))
+if (length(climate_present) > 0) {
+  cat(sprintf("[info] Found %d climate/interaction features in input data\n",
+              length(intersect(needed_extra_cols, names(df)))))
+} else {
+  cat("[warn] No climate features found in input data. Performance may be limited.\n")
+  cat("[warn] Consider using model_data_complete_case_with_climate.csv instead.\n")
+}
+
 if (nzchar(group_var) && (group_var %in% names(df))) base_cols <- unique(c(base_cols, group_var))
-work <- df[, base_cols, drop = FALSE]
+work <- df[, intersect(base_cols, names(df)), drop = FALSE]
 names(work)[names(work) == id_col] <- "id"
 if (!(cluster_var %in% names(work))) work[[cluster_var]] <- NA
 
@@ -680,14 +707,39 @@ for (r in seq_len(repeats_opt)) {
         rhs <- "y ~ LES + logH + logSM + logSSD"
         if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
-        # ADD BIOCLIM FEATURES FOR T AXIS IN CV
+        # ADD COMPREHENSIVE FEATURES FOR T AXIS IN CV
         if (target_letter == "T") {
+          # Core temperature features
           if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
-          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("mat_q05" %in% names(tr)) rhs <- paste(rhs, "+ mat_q05")
+          if ("mat_q95" %in% names(tr)) rhs <- paste(rhs, "+ mat_q95")
+          if ("mat_sd" %in% names(tr)) rhs <- paste(rhs, "+ mat_sd")
+          if ("tmax_mean" %in% names(tr)) rhs <- paste(rhs, "+ tmax_mean")
           if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+          if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+
+          # Precipitation features
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
           if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("precip_coldest_q" %in% names(tr)) rhs <- paste(rhs, "+ precip_coldest_q")
+
+          # Aridity features
           if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
           if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+          if ("ai_month_min" %in% names(tr)) rhs <- paste(rhs, "+ ai_month_min")
+
+          # Critical interactions (top SHAP features)
+          if ("lma_precip" %in% names(tr)) rhs <- paste(rhs, "+ lma_precip")
+          if ("height_temp" %in% names(tr)) rhs <- paste(rhs, "+ height_temp")
+
+          # Composite interactions
+          if ("SIZE" %in% names(tr) && "mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ SIZE:mat_mean")
+          if ("SIZE" %in% names(tr) && "precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ SIZE:precip_mean")
+          if ("LES" %in% names(tr) && "temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ LES:temp_seasonality")
+          if ("LES" %in% names(tr) && "drought_min" %in% names(tr)) rhs <- paste(rhs, "+ LES:drought_min")
+
+          # Phylogenetic predictor
           if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
         }
         # ADD FEATURES FOR M AXIS IN CV
@@ -732,14 +784,39 @@ for (r in seq_len(repeats_opt)) {
         rhs <- "y ~ LES + logH + logSM + logSSD"
         if (want_logLA_pred) rhs <- paste(rhs, "+ logLA")
         if (want_les_x_ssd) rhs <- paste(rhs, "+ LES:logSSD")
-        # ADD BIOCLIM FEATURES FOR T AXIS IN CV
+        # ADD COMPREHENSIVE FEATURES FOR T AXIS IN CV
         if (target_letter == "T") {
+          # Core temperature features
           if ("mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ mat_mean")
-          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
+          if ("mat_q05" %in% names(tr)) rhs <- paste(rhs, "+ mat_q05")
+          if ("mat_q95" %in% names(tr)) rhs <- paste(rhs, "+ mat_q95")
+          if ("mat_sd" %in% names(tr)) rhs <- paste(rhs, "+ mat_sd")
+          if ("tmax_mean" %in% names(tr)) rhs <- paste(rhs, "+ tmax_mean")
           if ("temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ temp_seasonality")
+          if ("temp_range" %in% names(tr)) rhs <- paste(rhs, "+ temp_range")
+
+          # Precipitation features
+          if ("precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ precip_mean")
+          if ("precip_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ precip_seasonality")
           if ("precip_cv" %in% names(tr)) rhs <- paste(rhs, "+ precip_cv")
+          if ("precip_coldest_q" %in% names(tr)) rhs <- paste(rhs, "+ precip_coldest_q")
+
+          # Aridity features
           if ("ai_amp" %in% names(tr)) rhs <- paste(rhs, "+ ai_amp")
           if ("ai_cv_month" %in% names(tr)) rhs <- paste(rhs, "+ ai_cv_month")
+          if ("ai_month_min" %in% names(tr)) rhs <- paste(rhs, "+ ai_month_min")
+
+          # Critical interactions (top SHAP features)
+          if ("lma_precip" %in% names(tr)) rhs <- paste(rhs, "+ lma_precip")
+          if ("height_temp" %in% names(tr)) rhs <- paste(rhs, "+ height_temp")
+
+          # Composite interactions
+          if ("SIZE" %in% names(tr) && "mat_mean" %in% names(tr)) rhs <- paste(rhs, "+ SIZE:mat_mean")
+          if ("SIZE" %in% names(tr) && "precip_mean" %in% names(tr)) rhs <- paste(rhs, "+ SIZE:precip_mean")
+          if ("LES" %in% names(tr) && "temp_seasonality" %in% names(tr)) rhs <- paste(rhs, "+ LES:temp_seasonality")
+          if ("LES" %in% names(tr) && "drought_min" %in% names(tr)) rhs <- paste(rhs, "+ LES:drought_min")
+
+          # Phylogenetic predictor
           if (!is.null(phylo_cop) && target_letter == "T") rhs <- paste(rhs, "+ p_phylo_T")
         }
         # ADD FEATURES FOR M AXIS IN CV
