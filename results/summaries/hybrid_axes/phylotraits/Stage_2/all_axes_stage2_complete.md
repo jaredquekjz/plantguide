@@ -28,9 +28,9 @@ Comprehensive comparison of structured regression approaches for predicting Euro
 | | pwSEM | 0.444±0.080 | 1.406±0.108 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.472±0.076 | 1.370±0.101 | **+0.028** | Phylo signal captured |
 | | AIC (full linear) | 0.427±0.068 | 1.439±0.098 | -0.017 | Climate 99% |
-| **Reaction/pH (R)** | pwSEM | 0.166±0.092 | 1.463±0.101 | Baseline | Linear with bioclim |
+| **Reaction/pH (R)** | GAM (pwSEM-aligned) | **0.237±0.121** | 1.396±0.093 | Canonical | `run_aic_selection_R_structured.R`; no `s(Family)`, retains `s(p_phylo_R)` |
+| | pwSEM | 0.166±0.092 | 1.463±0.101 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.222±0.077 | 1.413±0.095 | **+0.056** | Strongest phylo response |
-| | AIC | 0.192±0.084 | 1.449±0.101 | +0.026 | Full 83%, Climate 17% |
 
 ## Comparison with Stage 1 Black-Box Models (UPDATED)
 
