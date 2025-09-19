@@ -1,30 +1,29 @@
 # Stage 2 Structured Regression Analysis - Complete Results
-Date: 2025-09-18 (Updated with Critical Fixes)
+Date: 2025-09-19 (Updated with Climate Enhancement Test)
 
 ## Overview
 Comprehensive comparison of structured regression approaches for predicting European plant ecological indicator values (EIVE) across all five axes. All methods properly incorporate bioclim features during cross-validation.
 
 **CRITICAL UPDATE**: Fixed implementation bugs that prevented phylogenetic predictors from being included in full models. Previous results showing 0.000 improvement were incorrect.
 
-## Methods Compared
-1. **pwSEM**: Piecewise structural equation modeling with fixed bioclim features in CV
-2. **pwSEM+phylo**: pwSEM with phylogenetic predictor computed within folds
-3. **AIC**: RF+XGBoost importance → correlation clustering → AIC model selection
+# Canonical Stage 2 workflows
+*GAMs (with trait PCs) are now the default Stage‑2 models; pwSEM rows are kept only for historical reference.*
+
+1. **GAM (canonical)**: trait PCs + key climate drivers + targeted smooth/tensor terms
+2. **pwSEM (legacy)**: piecewise SEM with bioclim features (optional, interpretability only)
 
 ## Complete Results Table (UPDATED)
 
 | Axis | Method | R² (CV) | RMSE (CV) | Improvement | Notes |
 |------|--------|---------|-----------|-------------|-------|
-| **Temperature (T)** | pwSEM | 0.543±0.100 | 0.883±0.099 | Baseline | Linear with bioclim |
-| | pwSEM+phylo | 0.543±0.100 | 0.883±0.099 | **0.000** | p_phylo_T redundant with climate |
-| | AIC | 0.504±0.111 | 0.920±0.096 | -0.039 | Climate 78%, GAM 20% |
-| **Moisture (M)** | pwSEM | 0.359±0.118 | 1.198±0.112 | Baseline | Linear with bioclim |
+| **Temperature (T)** | GAM (PC + tensors) | **0.552±0.109** | 0.874±0.093 | Canonical | `run_aic_selection_T_pc.R` |
+| | pwSEM+enhanced (legacy) | 0.546±0.085 | 0.883±0.082 | – | For structural diagnostics only |
+| **Moisture (M)** | GAM (pwSEM-aligned) | **0.393±0.105** | 1.168±0.113 | Canonical | `run_aic_selection_M_pc.R`; PCs + raw traits + tensors + `s(Family)` |
+| | pwSEM | 0.359±0.118 | 1.198±0.112 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.399±0.115 | 1.158±0.109 | **+0.040** | Phylo signal captured |
-| | AIC | 0.260±0.124 | 1.294±0.111 | -0.099 | Climate 97%, Full 3% |
-| **Light (L)** | pwSEM | 0.285±0.098 | 1.293±0.113 | Baseline | GAM rf_plus variant |
-| | pwSEM+phylo | 0.285±0.098 | 1.293±0.113 | **0.000** | Bug: phylo bypassed |
-| | pwSEM+enhanced | 0.324±0.098 | 1.257±0.118 | **+0.039** | Fixed + new features |
-| | AIC | 0.222±0.083 | 1.352±0.121 | -0.063 | Full 100% |
+| | AIC (linear) | 0.260±0.124 | 1.294±0.111 | -0.099 | Climate 97%, Full 3% |
+| **Light (L)** | GAM (PC + pruned tensor) | **0.340±0.083** | 1.233±0.109 | Canonical | `run_aic_selection_L_tensor_pruned.R` |
+| | pwSEM+enhanced (legacy) | 0.324±0.098 | 1.257±0.118 | – | Retained for structural diagnostics |
 | **Nutrients (N)** | pwSEM | 0.444±0.080 | 1.406±0.108 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.472±0.076 | 1.370±0.101 | **+0.028** | Phylo signal captured |
 | | AIC | 0.427±0.068 | 1.439±0.098 | -0.017 | Climate 99% |
@@ -36,19 +35,19 @@ Comprehensive comparison of structured regression approaches for predicting Euro
 
 | Axis | XGBoost no_pk | XGBoost pk | Best Stage 2 | Gap to XGB pk | % of Gap Closed |
 |------|--------------|------------|--------------|---------------|-----------------|
-| **T** | 0.544±0.056 | 0.590±0.033 | 0.543 (pwSEM) | -0.047 | 0% |
+| **T** | 0.544±0.056 | 0.590±0.033 | 0.552 (GAM PC+tensors) | -0.038 | 22% |
 | **M** | 0.255±0.091 | 0.366±0.086 | 0.399 (pwSEM+phylo) | **+0.033** | Exceeds! |
-| **L** | 0.358±0.085 | 0.373±0.078 | 0.324 (enhanced) | -0.049 | 41% |
+| **L** | 0.358±0.085 | 0.373±0.078 | 0.340 (GAM PC+tensor) | -0.033 | 66% |
 | **N** | 0.434±0.049 | 0.487±0.061 | 0.472 (pwSEM+phylo) | -0.015 | 72% |
 | **R** | 0.164±0.053 | 0.225±0.070 | 0.222 (pwSEM+phylo) | -0.003 | 95% |
 
 ## Key Findings (UPDATED WITH FIXES)
 
-### 1. Method Performance After Bug Fixes
-- **Phylogenetic predictor NOW WORKS**: M (+0.040), N (+0.028), R (+0.056) show clear improvements
-- **M axis exceeds XGBoost**: pwSEM+phylo (0.399) outperforms XGBoost pk (0.366)
-- **L axis required special fixes**: Enhanced model with missing features achieves R²=0.324
-- **T axis phylo redundant**: Climate features already capture phylogenetic signal
+### 1. Method Performance (current canon)
+- **T axis**: PC+tensor GAM reaches 0.552 ± 0.109 (closes ~22% of the gap to XGBoost); phylogeny remains significant.
+- **L axis**: PC+tensor GAM reaches 0.340 ± 0.083 (about two-thirds of the gap closed); pwSEM retained only for structural context.
+- **M axis**: The pwSEM-aligned GAM (0.393 ± 0.105) now sits within ~0.006 R² of pwSEM+phylo, providing an additive canonical option.
+- **N/R axes**: pwSEM+phylo combinations still deliver the best balance.
 
 ### 2. Feature Importance Patterns (from AIC analysis)
 - **Temperature**: bio15_mean (precip seasonality) dominant (0.93 combined importance)
@@ -64,7 +63,7 @@ Comprehensive comparison of structured regression approaches for predicting Euro
 
 ### 4. Interpretability vs Performance Trade-off (UPDATED)
 - Stage 2 models now achieve 87-109% of XGBoost pk performance
-- **M axis: pwSEM+phylo EXCEEDS XGBoost** (0.399 vs 0.366)
+- **M axis: pwSEM+phylo EXCEEDS XGBoost** (0.399 vs 0.366) and the new GAM trails by only ~0.006 R² (0.393 vs 0.366)
 - **R axis: Nearly matches XGBoost** (0.222 vs 0.225, 95% performance)
 - **N axis: Strong performance** (0.472 vs 0.487, 97% of XGBoost)
 - **Trade-off eliminated for some axes**, minimal for others
@@ -116,7 +115,36 @@ tmux attach -t stage2_parallel
 | R axis phylo | R²=0.166 | R²=0.222 | **+34% improvement** |
 | L axis enhanced | R²=0.285 | R²=0.324 | **+14% improvement** |
 
+## Climate Enhancement Test (2025-09-19)
+
+### T Axis with Complete Climate Features
+**Objective**: Test if adding all missing climate features closes the 0.047 performance gap
+
+**Features Added**:
+- All temperature extremes: mat_q05, mat_q95, tmax_mean, mat_sd
+- Missing climate: precip_coldest_q, ai_month_min
+- Critical interactions: lma_precip, height_temp, size_temp, size_precip
+- 100% coverage of XGBoost SHAP top features
+
+**Result**: **Minimal improvement** (R² = 0.5462 ± 0.0848)
+- Only +0.003 improvement after fixing `deconstruct_size=FALSE` bug
+- 654 species, 81 features total (29 climate/interaction)
+- Model successfully used all 18 climate features via GAM smoothers
+- Bug fix critical: Initially showed zero improvement due to wrong code path
+
+**Key Finding**: Feature completeness provides marginal gains (+0.003) - GAM/pwSEM structure cannot exploit features as effectively as XGBoost. The 0.044 gap is due to model flexibility and inability to capture complex interactions, not missing features.
+
+**Reproduction**:
+```bash
+# Prepare enhanced data (654 species with climate)
+make prepare_climate_data
+
+# Run enhanced T axis (requires --deconstruct_size true)
+make stage2_T_enhanced
+```
+
 ## Next Steps
-- Complete full 10×10 CV for all fixed implementations
-- Test interaction terms (p_phylo × traits)
+- Test explicit interaction terms (SIZE:mat_mean, LES:temp_seasonality)
+- Increase GAM flexibility (higher k values, tensor products)
+- Consider boosted GAMs or alternative flexible structures
 - Apply validated models to full dataset for production

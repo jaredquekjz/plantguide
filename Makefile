@@ -516,3 +516,125 @@ hybrid_tmux:
   $(if $(TMUX_OFFER_ALL_VARIABLES),--offer_all_variables $(TMUX_OFFER_ALL_VARIABLES),) \
   $(if $(TMUX_OFFER_ALL_VARIABLES_AXES),--offer_all_variables_axes $(TMUX_OFFER_ALL_VARIABLES_AXES),) \
   $(if $(TMUX_RF_ONLY),--rf_only $(TMUX_RF_ONLY),)
+
+# ============================================================================
+# Stage 2 GAM (canonical) workflows
+# ============================================================================
+
+.PHONY: prepare_climate_data stage2_T_enhanced stage2_L_fullfeature_pwsem
+
+# Prepare enhanced climate+trait dataset for pwSEM legacy runs
+prepare_climate_data:
+	@echo "[Stage 2] Preparing enhanced climate+trait dataset for pwSEM..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/prepare_enhanced_model_data.R
+	@echo "[Stage 2] Enhanced dataset ready at artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv"
+
+# Legacy pwSEM reproduction for T axis (climate-enriched branch)
+stage2_T_enhanced: prepare_climate_data
+	@echo "[Stage 2] Running climate-enriched pwSEM for T axis..."
+	@out_dir=results/stage2_T_enhanced_$$(date +%Y%m%d_%H%M%S); \
+	  mkdir -p $$out_dir; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+	    --input_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv \
+	    --target T \
+	    --repeats 5 \
+	    --folds 10 \
+	    --stratify true \
+	    --standardize true \
+	    --deconstruct_size true \
+	    --phylogeny_newick data/phylogeny/eive_try_tree.nwk \
+	    --out_dir $$out_dir \
+	    2>&1 | tee $$out_dir/run.log
+	@echo "[Stage 2] Outputs written to $$out_dir"
+
+# Legacy pwSEM reproduction for L axis with full Stage-1 feature coverage
+stage2_L_fullfeature_pwsem: prepare_climate_data
+	@echo "[Stage 2] Running full-feature pwSEM for L axis..."
+	@out_dir=results/stage2_L_fullfeature_pwsem_$$(date +%Y%m%d_%H%M%S); \
+	  mkdir -p $$out_dir; \
+	  R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_sem_pwsem.R \
+	    --input_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv \
+	    --target L \
+	    --repeats 5 \
+	    --folds 10 \
+	    --stratify true \
+	    --standardize true \
+	    --les_components negLMA,Nmass \
+	    --add_predictor logLA,LES_core,logSM,logSSD,SIZE,LDMC,is_woody,lma_precip,height_ssd,les_seasonality,LMA,Nmass,logH,precip_cv,tmin_mean \
+	    --add_interaction 'ti(logLA,logH),ti(logH,logSSD),SIZE:mat_mean,SIZE:precip_mean,LES_core:temp_seasonality,LES_core:drought_min,LMA:precip_mean' \
+	    --phylogeny_newick data/phylogeny/eive_try_tree.nwk \
+	    --out_dir $$out_dir \
+	    2>&1 | tee $$out_dir/run.log
+	@echo "[Stage 2] Outputs written to $$out_dir"
+
+# Prepare dataset with trait PCs for Stage 2 GAM runs
+prepare_stage2_pc_data:
+	@echo "[Stage 2] Preparing Stage 2 dataset with trait principal components..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/prepare_stage2_pc_data.R
+	@echo "[Stage 2] PC-enhanced data ready at artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_pcs.csv"
+
+# Temperature axis GAM (trait PCs + tensors)
+stage2_T_gam: prepare_stage2_pc_data
+	@echo "[Stage 2] Running canonical T-axis GAM (PC + tensors)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_T_pc.R
+
+# Light axis GAM (trait PCs + pruned tensor)
+stage2_L_gam: prepare_stage2_pc_data
+	@echo "[Stage 2] Running canonical L-axis GAM (PC + pruned tensor)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_L_tensor_pruned.R
+
+# Moisture axis GAM (Stage-1 predictors, smooth climate terms)
+stage2_M_gam: prepare_stage2_pc_data
+	@echo "[Stage 2] Running canonical M-axis GAM (PC tensors)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_M_tensor.R
+
+# Moisture axis GAM with PC and optimized tensors (new canonical)
+stage2_M_gam_pc: prepare_stage2_pc_data
+	@echo "[Stage 2] Running optimized M-axis GAM (PC + targeted tensors + enhanced phylo)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_M_pc.R
+
+# Quick test version with reduced CV (2x5 instead of 5x10)
+stage2_M_gam_pc_quick: prepare_stage2_pc_data
+	@echo "[Stage 2] Running M-axis GAM PC (quick 2x5 CV test)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  CV_REPEATS=2 CV_FOLDS=5 Rscript src/Stage_4_SEM_Analysis/run_aic_selection_M_pc.R
+
+# ============================================================================
+# N Axis GAM with Full Features (addressing critical gaps)
+# ============================================================================
+
+# N axis GAM with ALL missing features (including co-dominant logLA)
+stage2_N_gam_full:
+	@echo "[Stage 2] Running N-axis GAM with FULL feature set (including logLA)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_N_full.R
+
+# Quick test version with reduced CV (2x5 instead of 5x10)
+stage2_N_gam_full_quick:
+	@echo "[Stage 2] Running N-axis GAM full features (quick 2x5 CV test)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  CV_REPEATS=2 CV_FOLDS=5 Rscript src/Stage_4_SEM_Analysis/run_aic_selection_N_full.R
+
+# ============================================================================
+# R Axis (Reaction/pH) GAM with Full Features including Soil pH
+# ============================================================================
+
+# R axis GAM with ALL features including critical soil pH profiles
+stage2_R_gam_full:
+	@echo "[Stage 2] Running R-axis GAM with FULL feature set (including soil pH profiles)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_R_full.R
+
+# Quick test version with reduced CV (2x5 instead of 5x10)
+stage2_R_gam_full_quick:
+	@echo "[Stage 2] Running R-axis GAM full features (quick 2x5 CV test)..."
+	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+	  CV_REPEATS=2 CV_FOLDS=5 Rscript src/Stage_4_SEM_Analysis/run_aic_selection_R_full.R
