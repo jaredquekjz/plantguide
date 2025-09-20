@@ -2,17 +2,17 @@ Combined Hybrid CV Summary — RF (pk vs no_pk), XGBoost (pk vs no_pk), and SEM 
 
 Scope
 - Reports Random Forest (RF) and XGBoost (XGB) cross‑validation (CV) performance for the Non‑SoilGrid dataset (traits + bioclim + AI), with and without the phylogenetic predictor p_k, and compares against the pwSEM baselines (traits‑only; no climate/soil).
-- RF section corresponds to the “fast” RF‑only mode (no AIC/GAM/bootstraps), 5 folds × 3 repeats; XGB section corresponds to 10‑fold CV (gpu_hist; CUDA), 600 trees.
+- RF section corresponds to the “fast” RF‑only mode (no AIC/GAM/bootstraps), 5 folds × 3 repeats; XGB section corresponds to latest 10‑fold CV refresh (gpu_hist; CUDA), 3000 trees (lr=0.02).
 
 Datasets
 - RF fast (imputed traits + bioclim + AI, 5×3 CV):
   - Trait CSV: `artifacts/model_data_bioclim_subset_enhanced_imputed.csv`
   - Bioclim summary: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv`
   - Artifacts: `artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed_cleanedAI_rfonly_fast_fixpk/{AXIS}` and `_pk/{AXIS}`
-- XGB discovery (traits + bioclim + AI; 10‑fold CV; GPU):
-  - Trait CSV: `artifacts/model_data_bioclim_subset.csv`
+- XGB refresh (traits + bioclim + AI; 10‑fold CV; GPU; 3000 trees):
+  - Trait CSV: `artifacts/model_data_bioclim_subset_enhanced_imputed.csv`
   - Bioclim summary: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv`
-  - Artifacts: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu/{AXIS}_{nopk,pk}`
+  - Artifacts: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/{AXIS}_{nopk,pk}`
 
 Method (RF‑only fast)
 - Model: ranger (Random Forest), 1000 trees; `mtry = ceil(sqrt(p))`.
@@ -53,15 +53,15 @@ Files
 - RF JSON sources: `artifacts/stage3rf_hybrid_comprehensive_phylotraits_imputed_cleanedAI_rfonly_fast_fixpk/{AXIS}/comprehensive_results_{AXIS}.json` and `_pk` variant.
 - SEM baseline: `results/summaries/hybrid_axes/phylotraits/bioclim_subset_baseline_phylotraits.md`
 
-XGBoost (GPU) — CV Results (R² mean ± sd; monthly AI; 10‑fold)
+XGBoost (GPU) — CV Results (R² mean ± sd; monthly AI; 10‑fold; 3000 trees)
 
 | Axis | XGB (no p_k) | XGB (+ p_k) | Notes |
 |------|---------------|-------------|-------|
-| T    | 0.547 ± 0.061 | 0.591 ± 0.038 | pk improves; temperature + seasonality + SIZE/logH dominate |
-| M    | 0.227 ± 0.078 | 0.365 ± 0.089 | large pk lift; drought/precip + LES/size interactions |
-| L    | 0.356 ± 0.089 | 0.381 ± 0.071 | trait‑dominated (LMA/logLA); pk marginal |
-| N    | 0.446 ± 0.039 | 0.493 ± 0.054 | pk lift; mixed trait + climate signals |
-| R    | 0.126 ± 0.058 | 0.201 ± 0.103 | pk helps; expect stronger gains with soil pH |
+| T    | 0.544 ± 0.056 | 0.590 ± 0.033 | pk improves; temperature + seasonality + SIZE/logH dominate |
+| M    | 0.255 ± 0.091 | 0.366 ± 0.086 | large pk lift; drought/precip + LES/size interactions |
+| L    | 0.358 ± 0.085 | 0.373 ± 0.078 | trait‑dominated (LMA/logLA); pk marginal |
+| N    | 0.434 ± 0.049 | 0.487 ± 0.061 | pk lift; mixed trait + climate signals |
+| R    | 0.164 ± 0.053 | 0.225 ± 0.070 | pk helps; expect stronger gains with soil pH |
 
 XGB artifacts per axis (examples)
 - CV metrics JSON: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu/<AXIS>_{nopk,pk}/xgb_<AXIS>_cv_metrics.json`
@@ -84,11 +84,8 @@ Reproduce (tmux one‑shot)
 Reproduce (Stage 1 one‑shot discovery; RF + XGB; GPU)
 `conda run -n AI make stage1_discovery_5axes DISC_LABEL=phylotraits_cleanedAI_discovery_gpu DISC_FOLDS=10 DISC_X_EXP=2 DISC_KTRUNC=0 DISC_XGB_GPU=true`
 
-XGBoost on CUDA — more trees?
-- Current: 600 estimators, learning_rate=0.05, max_depth=6, hist/gpu_hist.
-- Likely gains: small but real (≈+0.005–0.02 R² on T/M/N/R) by increasing to 1200–2000 trees, especially if learning_rate is slightly reduced (e.g., 0.03–0.04). Use CV to confirm.
-- Try 1200 trees per axis:
-  - Makefile: `conda run -n AI make -f Makefile.hybrid hybrid_interpret_xgb AXIS=<AXIS> INTERPRET_LABEL=phylotraits_cleanedAI_discovery_gpu XGB_GPU=true XGB_ESTIMATORS=1200`
-  - Direct: `conda run -n AI python src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py --features_csv artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu/<AXIS>_nopk/features.csv --axis <AXIS> --gpu true --n_estimators 1200 --out_dir artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu/<AXIS>_nopk`
+XGBoost on CUDA — current config
+- Current refresh: 3000 estimators, learning_rate=0.02, max_depth=6, tree_method=gpu_hist.
+- Further tuning could explore depth/learning rate tradeoffs, but current run already stabilizes gains across axes.
 
-Generated: 2025‑09‑14
+Generated: 2025‑09‑20
