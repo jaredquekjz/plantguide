@@ -39,6 +39,11 @@ EIVEres-R ~ logSM + log_ldmc_minus_log_la + logLA + logH + logSSD +
 
 The new GAM still edges out the structured regression run by ~0.015 R², while keeping the same feature vocabulary for interpretability.
 
+### Deployment-Style Nested CV (Structured GAM)
+- **LOSO (642 folds, 632 predictions)**: overall R² = **0.244**, bootstrap mean ± sd = **0.243 ± 0.042**, RMSE = **1.398 ± 0.049** (`results/aic_selection_R_structured/gam_R_cv_metrics_loso.json`).
+- **Spatial blocks, 500 km (150 folds)**: overall R² = **0.218**, bootstrap mean ± sd = **0.215 ± 0.040**, RMSE = **1.422 ± 0.049** (`results/aic_selection_R_structured/gam_R_cv_metrics_spatial.json`).
+- **Implication**: the geography-out score relaxes by ~0.02 R² relative to LOSO but still stays ahead of the pwSEM+phylo and XGBoost references, so this GAM remains the deployment default for the Reaction axis.
+
 ## Reproduction
 ```bash
 # Full 5×10 CV run

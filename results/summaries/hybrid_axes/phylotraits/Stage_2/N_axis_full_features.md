@@ -57,6 +57,11 @@ EIVEres-N ~ pc_trait_1 + pc_trait_2 + pc_trait_3 + pc_trait_4 +
 | **pwSEM+phylo** | **0.472 ± 0.076** | 1.370 ± 0.101 | Structured regression benchmark |
 | XGBoost pk (Stage 1) | 0.487 ± 0.061 | 1.339 ± 0.093 | Black-box reference |
 
+### Deployment-Style Nested CV (Structured GAM)
+- **LOSO (639 folds, 617 predictions)**: overall R² = **0.462**, bootstrap mean ± sd = **0.459 ± 0.029**, RMSE = **1.374 ± 0.038** (`results/aic_selection_N_structured/gam_N_cv_metrics_loso.json`).
+- **Spatial blocks, 500 km (148 folds)**: overall R² = **0.456**, bootstrap mean ± sd = **0.453 ± 0.032**, RMSE = **1.385 ± 0.041** (`results/aic_selection_N_structured/gam_N_cv_metrics_spatial.json`).
+- **Takeaway**: the deployment evaluation remains within ~0.01 R² of the pwSEM+phylo benchmark, so the additive model preserves the structured-regression performance in both species-out and geography-out tests.
+
 ## Reproduction
 ```bash
 # Full 5×10 CV run

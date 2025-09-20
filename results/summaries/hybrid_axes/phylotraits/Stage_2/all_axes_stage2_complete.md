@@ -1,5 +1,5 @@
 # Stage 2 Structured Regression Analysis - Complete Results
-Date: 2025-09-19 (Updated with Climate Enhancement Test)
+Date: 2025-09-20
 
 ## Overview
 Comprehensive comparison of structured regression approaches for predicting European plant ecological indicator values (EIVE) across all five axes. All methods properly incorporate bioclim features during cross-validation.
@@ -31,6 +31,21 @@ Comprehensive comparison of structured regression approaches for predicting Euro
 | **Reaction/pH (R)** | GAM (pwSEM-aligned) | **0.237±0.121** | 1.396±0.093 | Canonical | `run_aic_selection_R_structured.R`; no `s(Family)`, retains `s(p_phylo_R)` |
 | | pwSEM | 0.166±0.092 | 1.463±0.101 | Baseline | Linear with bioclim |
 | | pwSEM+phylo | 0.222±0.077 | 1.413±0.095 | **+0.056** | Strongest phylo response |
+
+## Deployment-Style Nested Cross-Validation (LOSO + 500 km Spatial Blocks)
+
+| Axis | Canonical script | LOSO R² ± sd | LOSO RMSE ± sd | Spatial R² ± sd | Spatial RMSE ± sd | Status |
+|------|------------------|--------------|----------------|------------------|--------------------|--------|
+| **T** | `run_aic_selection_T_pc.R` | 0.563 ± 0.038 | 0.872 ± 0.034 | 0.554 ± 0.037 | 0.880 ± 0.034 | Completed |
+| **M** | `run_aic_selection_M_pc.R` | *pending* | *pending* | *pending* | *pending* | Nested run in progress |
+| **L** | `run_aic_selection_L_tensor_pruned.R` | 0.318 ± 0.031 | 1.261 ± 0.049 | 0.307 ± 0.029 | 1.270 ± 0.049 | Completed |
+| **N** | `run_aic_selection_N_structured.R` | 0.459 ± 0.029 | 1.374 ± 0.038 | 0.453 ± 0.032 | 1.387 ± 0.041 | Completed |
+| **R** | `run_aic_selection_R_structured.R` | 0.243 ± 0.042 | 1.398 ± 0.049 | 0.215 ± 0.040 | 1.422 ± 0.049 | Completed |
+
+Notes:
+- LOSO columns report the bootstrap mean ± sd from the JSON artefacts in `results/aic_selection_*/gam_*_cv_metrics_loso.json`. Each axis hides one species per fold (654 outer folds where applicable).
+- Spatial columns use 500 km hexagon blocking with bootstrap uncertainty from `gam_*_cv_metrics_spatial.json` (≈150 folds per axis).
+- The T axis numbers reference the PC + tensor deployment GAM (`results/aic_selection_T_pc/`) because that variant outperforms the raw-trait specification under nested evaluation.
 
 ## Comparison with Stage 1 Black-Box Models (UPDATED)
 
@@ -149,3 +164,8 @@ make stage2_T_enhanced
 - Increase GAM flexibility (higher k values, tensor products)
 - Consider boosted GAMs or alternative flexible structures
 - Apply validated models to full dataset for production
+## Canonical Stage 1 Reference
+
+For the authoritative Stage 1 (black‑box) results — Random Forest CV, XGBoost 10‑fold CV, and XGBoost nested LOSO/spatial where available — see:
+
+- `results/summaries/hybrid_axes/phylotraits/Stage_1/Stage1_canonical_summary.md`

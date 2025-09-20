@@ -44,6 +44,8 @@ EIVEres-T ~ LES_core + logH + logSM + logLA +
 - **Stratified 5×10**: CV R² = **0.525 ± 0.104** (mean ± sd across 50 folds).
 - **Deployment-style LOSO (654 folds)**: R² = **0.525**; bootstrap mean ± sd = **0.523 ± 0.034** (RMSE 0.909 ± 0.032).
 - **Deployment-style spatial blocks (500 km, 155 folds)**: R² = **0.523**; bootstrap mean ± sd = **0.521 ± 0.034** (RMSE 0.909 ± 0.032).
+- **PC+tensor production GAM (LOSO, 654 folds, 645 usable predictions)**: overall R² = **0.564**, bootstrap mean ± sd = **0.563 ± 0.038**, RMSE = **0.873 ± 0.034** (`results/aic_selection_T_pc/gam_Tpc_cv_metrics_loso.json`).
+- **PC+tensor production GAM (500 km spatial blocks, 155 folds)**: overall R² = **0.557**, bootstrap mean ± sd = **0.554 ± 0.037**, RMSE = **0.881 ± 0.034** (`results/aic_selection_T_pc/gam_Tpc_cv_metrics_spatial.json`).
 - **Comparison**: pwSEM climate run = 0.546 ± 0.085; prior “pure linear” AIC run = 0.512 ± 0.106; XGBoost Stage-1 baseline = 0.590 ± 0.033.
 
 ## Pipeline Updates Implemented
@@ -77,3 +79,4 @@ Rscript src/Stage_4_SEM_Analysis/run_aic_selection_T.R
 2. Phylogeny remains indispensable; without `p_phylo_T`, AICc jumps by >37 units and CV R² drops below 0.54.
 3. Despite the richer smooth structure, the interpretability gap is manageable: trait coefficients stay linear, while climate effects can be summarized with partial dependence plots or smooth diagnostics.
 4. The ~0.06–0.07 R² shortfall to Stage-1 XGBoost likely reflects higher-order interactions still absent from the additive GAM; tensor-product smooths or interaction-specific smooths are the next candidates if we decide to pay the complexity cost.
+5. The PC + tensor production variant (see nested-CV metrics above) sustains **R² ≈ 0.56** under both LOSO and 500 km spatial blocking, so we keep it as the deployment default.
