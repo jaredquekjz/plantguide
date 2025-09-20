@@ -87,10 +87,19 @@ bootstrap_summary <- function(y_true, y_pred, reps = 1000, seed = 123) {
   )
 }
 
-build_nested_folds <- function(strategy, species_slugs, spatial_blocks = NULL) {
+build_nested_folds <- function(strategy, species_slugs, spatial_blocks = NULL, families = NULL) {
   idx <- seq_along(species_slugs)
   if (strategy == "loso") {
     keys <- paste0("loso::", species_slugs)
+  } else if (strategy == "loco") {
+    if (is.null(families) || !length(families)) {
+      warning("[warn] LOCO requested but family labels missing; defaulting to LOSO folds")
+      keys <- paste0("loso::", species_slugs)
+    } else {
+      fam_vec <- as.character(families)
+      fam_vec[!nzchar(fam_vec) | is.na(fam_vec)] <- "Unknown"
+      keys <- paste0("loco::", fam_vec)
+    }
   } else if (strategy == "spatial") {
     if (is.null(spatial_blocks) || !length(spatial_blocks)) {
       keys <- paste0("spatial::unmapped::", species_slugs)
@@ -304,6 +313,7 @@ maybe_run_nested_cv <- function(axis_letter,
     fold_map <- switch(
       strategy,
       "loso" = build_nested_folds("loso", species_slugs),
+      "loco" = build_nested_folds("loco", species_slugs, families = family_vec),
       "spatial" = build_nested_folds("spatial", species_slugs, spatial_blocks),
       {
         warning(sprintf("[warn] Unknown nested CV strategy '%s' — skipping", strategy))

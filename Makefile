@@ -39,6 +39,42 @@ SUMMARY_CSV_NOR ?= results/gardening/garden_joint_summary_no_R.csv
 .PHONY: hybrid_tmux
 
 # ----------------------------------------------------------------------------
+# PDF -> MMD conversion (Mathpix API)
+# ----------------------------------------------------------------------------
+
+.PHONY: mmd mmd-papers
+
+MATHPIX_CONVERT ?= src/Stage_1_Data_Extraction/convert_to_mmd.py
+JOBS ?= 2
+
+# Convert a single PDF to MMD using Mathpix.
+# Usage: make mmd FILE='papers/Foo.pdf' [OUT='papers/mmd/Foo.mmd']
+mmd:
+	@if [ -z "$(FILE)" ]; then echo "Usage: make mmd FILE='papers/Foo.pdf' [OUT='papers/mmd/Foo.mmd']"; exit 1; fi
+	@OUT="$(OUT)"; \
+	if [ -z "$$OUT" ]; then \
+	  base=$$(basename "$(FILE)"); stem=$${base%.pdf}; \
+	  if [ "$$PWD" != "/home/olier/ellenberg" ]; then echo "[mmd] Please run from repo root so .env is loaded."; fi; \
+	  if [ "$$(dirname "$(FILE)")" = "papers" ]; then \
+	    mkdir -p papers/mmd; OUT="papers/mmd/$${stem}.mmd"; \
+	  else \
+	    OUT="$$(dirname "$(FILE)")/$${stem}.mmd"; \
+	  fi; \
+	fi; \
+	echo "[mmd] Converting '$(FILE)' -> '$$OUT'"; \
+	python3 "$(MATHPIX_CONVERT)" "$(FILE)" "$$OUT"
+
+# Convert all PDFs in papers/ (non-recursive) to papers/mmd/*.mmd in parallel.
+# Usage: make mmd-papers [JOBS=2]
+mmd-papers:
+	@mkdir -p papers/mmd
+	@J=$(JOBS); \
+	echo "[mmd] Converting all PDFs in papers/ to papers/mmd/ with $$J parallel jobs"; \
+	find papers -maxdepth 1 -type f -name '*.pdf' -print0 | xargs -0 -I{} -P $$J bash -lc '
+	  f="{}"; base=$$(basename "$$f"); stem=$${base%.pdf}; out="papers/mmd/$${stem}.mmd"; \
+	  echo "[mmd] $$f -> $$out"; python3 "$(MATHPIX_CONVERT)" "$$f" "$$out"'
+
+# ----------------------------------------------------------------------------
 # Stage 1 Discovery (RF + XGBoost, no_pk and pk) — one‑shot launcher
 # ----------------------------------------------------------------------------
 

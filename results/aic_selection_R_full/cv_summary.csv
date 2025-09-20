@@ -1,0 +1,2 @@
+"model","formula","AIC","AICc","in_sample_r2","adj_r2","cv_mean","cv_sd","rmse_mean","rmse_sd","n_params","n_folds"
+"gam_cross","logSM + log_ldmc_minus_log_la + logLA + logH + logSSD + p_phylo_R + s(phh2o_5_15cm_p90, k = 5) + s(phh2o_5_15cm_mean, k = 5) + s(EIVEres_N, k = 5) + mat_mean + temp_range + drought_min",2214.3863626664,2216.06568947375,0.26875493069334,0.26875493069334,0.230261550553775,0.136619337998099,1.40558892318615,0.0983206565827428,15.5350031297321,14

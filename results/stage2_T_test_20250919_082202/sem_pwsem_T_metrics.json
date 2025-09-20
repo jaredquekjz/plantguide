@@ -1,0 +1,100 @@
+{
+  "target": ["EIVEres-T"],
+  "n": [654],
+  "repeats": [2],
+  "folds": [3],
+  "stratify": [true],
+  "standardize": [true],
+  "winsorize": [false],
+  "winsor_p": [0.005],
+  "weights": ["none"],
+  "seed": [123],
+  "group_var": {},
+  "transform": ["identity"],
+  "offsets": {
+    "Leaf area (mm2)": [0.6075],
+    "Plant height (m)": [0.0004],
+    "Diaspore mass (mg)": [0.001],
+    "SSD used (mg/mm3)": [0.0002]
+  },
+  "metrics": {
+    "per_fold": [
+      {
+        "rep": 1,
+        "fold": 1,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1139.6173,
+        "model_form": "linear_deconstructed"
+      },
+      {
+        "rep": 1,
+        "fold": 2,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1130.4589,
+        "model_form": "linear_deconstructed"
+      },
+      {
+        "rep": 1,
+        "fold": 3,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1113.5097,
+        "model_form": "linear_deconstructed"
+      },
+      {
+        "rep": 2,
+        "fold": 1,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1147.944,
+        "model_form": "linear_deconstructed"
+      },
+      {
+        "rep": 2,
+        "fold": 2,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1134.163,
+        "model_form": "linear_deconstructed"
+      },
+      {
+        "rep": 2,
+        "fold": 3,
+        "R2": null,
+        "RMSE": null,
+        "MAE": null,
+        "used_gam": false,
+        "edf_s_logH": null,
+        "AIC_train": 1126.7891,
+        "model_form": "linear_deconstructed"
+      }
+    ],
+    "aggregate": [
+      {
+        "R2_mean": null,
+        "R2_sd": null,
+        "RMSE_mean": null,
+        "RMSE_sd": null,
+        "MAE_mean": null,
+        "MAE_sd": null
+      }
+    ]
+  }
+}

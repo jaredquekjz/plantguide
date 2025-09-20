@@ -1,0 +1,16 @@
+{
+  "strategy": "spatial",
+  "outer_folds": 150,
+  "n_predictions": 632,
+  "overall_r2": 0.2181,
+  "overall_rmse": 1.4218,
+  "bootstrap_r2_mean": 0.2152,
+  "bootstrap_r2_sd": 0.0404,
+  "bootstrap_rmse_mean": 1.4215,
+  "bootstrap_rmse_sd": 0.0486,
+  "bootstrap_effective_samples": 500,
+  "per_fold_rmse_mean": 1.0843,
+  "per_fold_rmse_sd": 0.7531,
+  "per_fold_mae_mean": 0.9987,
+  "per_fold_mae_sd": 0.7167
+}

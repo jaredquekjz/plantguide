@@ -1,0 +1,16 @@
+{
+  "strategy": "loso",
+  "outer_folds": 652,
+  "n_predictions": 628,
+  "overall_r2": 0.4355,
+  "overall_rmse": 1.1474,
+  "bootstrap_r2_mean": 0.4348,
+  "bootstrap_r2_sd": 0.0297,
+  "bootstrap_rmse_mean": 1.146,
+  "bootstrap_rmse_sd": 0.0419,
+  "bootstrap_effective_samples": 1000,
+  "per_fold_rmse_mean": 0.865,
+  "per_fold_rmse_sd": 0.7545,
+  "per_fold_mae_mean": 0.865,
+  "per_fold_mae_sd": 0.7545
+}
