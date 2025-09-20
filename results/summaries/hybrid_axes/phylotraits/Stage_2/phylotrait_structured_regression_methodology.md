@@ -88,3 +88,61 @@ This workflow preserves interpretability (the final GAM) while respecting the ec
 
 - Use **stratified 10-fold** for rapid experimentation and sanity checks; it is fast and maintains comparability with the legacy tables.
 - Use **nested LOSO + spatial** for any result that will be quoted externally or used for deployment decisions. Even though the numerical gap is small, the nested protocol removes the implicit leakage that random shuffles permit and gives species-by-species residuals you can inspect for outliers.
+
+## Reproduction Cheat Sheet
+
+### Stage 1 – Research Runs (5×10 stratified CV)
+- **Random Forest** (GPU env not required):
+  ```bash
+  conda run -n AI make -f Makefile.hybrid hybrid_interpret_rf \
+    AXIS=T \
+    TRAIT_CSV=artifacts/model_data_bioclim_subset_enhanced_imputed.csv \
+    BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv \
+    INTERPRET_LABEL=phylotraits_cleanedAI_discovery_gpu_nosoil_20250917
+  ```
+- **XGBoost** (single 5×10 CV, GPU):
+  ```bash
+  conda run -n AI make -f Makefile.hybrid hybrid_interpret_xgb \
+    AXIS=T \
+    INTERPRET_LABEL=phylotraits_cleanedAI_discovery_gpu_nosoil_20250917 \
+    TRAIT_CSV=artifacts/model_data_bioclim_subset_enhanced_imputed.csv \
+    BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv \
+    XGB_GPU=true XGB_ESTIMATORS=3000 XGB_LR=0.02
+  ```
+
+### Stage 1 – Deployment Evaluation (LOSO + spatial blocks)
+- Reuse the same target but add the nested flags:
+  ```bash
+  XGB_CV_STRATEGY=loso,spatial \
+  XGB_OCCURRENCE_CSV=data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv \
+  XGB_SPATIAL_BLOCK_KM=500 \
+  XGB_INNER_FOLDS=3 \
+  XGB_BOOTSTRAP_REPS=1000 \
+  conda run -n AI make -f Makefile.hybrid hybrid_interpret_xgb \
+    AXIS=T INTERPRET_LABEL=phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv \
+    TRAIT_CSV=artifacts/model_data_bioclim_subset_enhanced_imputed.csv \
+    BIOCLIM_SUMMARY=data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv \
+    XGB_GPU=true XGB_ESTIMATORS=3000 XGB_LR=0.02
+  ```
+  Outputs: `artifacts/stage3rf_hybrid_interpret/.../xgb_<AXIS>_cv_metrics_{loso,spatial}.json` plus per-fold CSVs.
+
+### Stage 2 – Research Runs (AIC GAM, 5×10 stratified CV)
+- Replace `<AXIS>` with the desired script:
+  ```bash
+  export R_LIBS_USER=/home/olier/ellenberg/.Rlib
+  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_T.R
+  ```
+  (`run_aic_selection_M_pc.R`, `run_aic_selection_L_tensor_pruned.R`, `run_aic_selection_N_structured.R`, `run_aic_selection_R_structured.R` follow the same pattern.)
+
+### Stage 2 – Deployment Evaluation (LOSO + spatial blocks)
+- Enable nested CV via environment variables before calling the same script:
+  ```bash
+  NESTED_CV_ENABLE=true \
+  NESTED_CV_STRATEGIES=loso,spatial \
+  NESTED_CV_OCC_CSV=data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv \
+  NESTED_CV_BLOCK_KM=500 \
+  NESTED_CV_BOOTSTRAP=1000 \
+  R_LIBS_USER=/home/olier/ellenberg/.Rlib \
+  Rscript src/Stage_4_SEM_Analysis/run_aic_selection_T.R
+  ```
+  Nested metrics are written alongside the research artefacts, e.g. `results/aic_selection_T/gam_T_cv_metrics_{loso,spatial}.json`.

@@ -8,6 +8,11 @@ suppressPackageStartupMessages({
   library(MuMIn)
 })
 
+script_args <- commandArgs(trailingOnly = FALSE)
+script_file_arg <- sub("^--file=", "", grep("^--file=", script_args, value = TRUE))
+script_dir <- if (length(script_file_arg)) dirname(normalizePath(script_file_arg[1])) else getwd()
+source(file.path(script_dir, "nested_gam_cv_utils.R"))
+
 set.seed(123)
 
 `%||%` <- function(x, y) {
@@ -27,6 +32,16 @@ data <- data[!is.na(data[[target_col]]), ]
 resp <- "target_y"
 data[[resp]] <- data[[target_col]]
 cat(sprintf("Working with %d complete cases for M axis\n", nrow(data)))
+
+species_vector <- if ("species_key" %in% names(data)) data$species_key else data$wfo_accepted_name
+species_slugs <- slugify(species_vector)
+species_slugs[!nzchar(species_slugs)] <- paste0("species_", seq_along(species_slugs))[!nzchar(species_slugs)]
+species_labels <- if ("wfo_accepted_name" %in% names(data)) data$wfo_accepted_name else species_vector
+family_vec <- if ("Family" %in% names(data)) data$Family else rep(NA_character_, nrow(data))
+
+if (!"species_slug" %in% names(data)) {
+  data$species_slug <- species_slugs
+}
 
 # --- Build trait principal components (retain raw traits) -------------------
 trait_cols <- c("logLA", "logSM", "logSSD", "logH", "LES_core", "SIZE", "LMA", "Nmass", "LDMC")
@@ -235,6 +250,18 @@ write_csv(summary_df, file.path(out_dir, "summary.csv"))
 coef_df <- tibble(term = names(coef(model)), coefficient = as.numeric(coef(model)))
 write_csv(coef_df, file.path(out_dir, "coefficients.csv"))
 saveRDS(model, file.path(out_dir, "best_model.rds"))
+
+maybe_run_nested_cv(
+  axis_letter = "M",
+  base_data = data,
+  formula_obj = formula(model),
+  is_gam = TRUE,
+  target_col = target_col,
+  species_names = species_labels,
+  species_slugs = species_slugs,
+  family_vec = family_vec,
+  output_dir = out_dir
+)
 
 cat(sprintf("\nResults saved to %s/\n", out_dir))
 cat("Done.\n")
