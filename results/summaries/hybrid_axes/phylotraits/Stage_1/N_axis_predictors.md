@@ -2,23 +2,23 @@
 Date: 2025-09-18
 
 ## Performance Metrics
-- **XGBoost no_pk**: R²=0.434±0.049, RMSE=1.413±0.061
-- **XGBoost pk**: R²=0.487±0.061, RMSE=1.345±0.074
-- **Phylo gain**: ΔR²=+0.053 (moderate gain)
+- **XGBoost no_pk**: R²=0.444±0.050, RMSE≈1.40
+- **XGBoost pk**: R²=0.481±0.059, RMSE≈1.35
+- **Phylo gain**: ΔR²≈+0.037 (moderate gain)
 
 ## Canonical Artifacts & Reproduction
 - **Feature matrices (XGB/Stage 1)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/N_{nopk,pk}/features.csv`
 - **RF interpretability artifacts**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917_rf/N_{nopk,pk}/`
-- **XGB interpretability (10-fold)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/N_{nopk,pk}/xgb_*`
-- **XGB LOSO/Spatial**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/N_{nopk,pk}/xgb_N_cv_*`
+- **XGB interpretability + metrics (kfold/LOSO/spatial)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/N_{nopk,pk}/xgb_N_*`
+- **Legacy nested archives**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/N_{nopk,pk}/`
 - **RF CV (10-fold)**: `R² ≈ 0.457 ± 0.089`, `RMSE ≈ 1.389 ± 0.114`
 - **Re-run (RF only)**: `make -f Makefile.hybrid canonical_stage1_rf_tmux`
-- **Re-run (XGB only)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
+- **Re-run (XGB multi-strategy)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
 
 ## Canonical Top Predictors (pk runs)
 
 **XGBoost (SHAP | `.../N_pk/xgb_N_shap_importance.csv`)**
-- `p_phylo` (0.43) — evolutionary control of nutrient strategies
+- `p_phylo` (0.43) — phylogenetic nutrient strategy
 - `logH` (0.33) — stature metric
 - `log_ldmc_minus_log_la` (0.26) — thickness vs area composite
 - `logLA` (0.17) — leaf area size effect
@@ -35,21 +35,21 @@ Date: 2025-09-18
 
 | Rank | Feature | SHAP Importance | Category | Notes |
 |------|---------|-----------------|----------|-------|
-| 1 | p_phylo | 0.429 | Phylogeny | **Co-dominant with leaf area** |
-| 2 | logLA | 0.412 | Trait | **Co-dominant predictor** |
-| 3 | logH | 0.329 | Trait | Plant height crucial |
-| 4 | les_seasonality | 0.133 | Trait variation | LES temporal variation |
-| 5 | Nmass | 0.132 | Trait | Direct N indicator |
-| 6 | les_drought | 0.109 | Trait-climate | LES × drought |
-| 7 | LES_core | 0.098 | Trait | Leaf economics |
-| 8 | logSSD | 0.097 | Trait | Stem density |
-| 9 | height_ssd | 0.096 | Interaction | Height × density |
-| 10 | mat_q95 | 0.095 | Temperature | 95th percentile temp |
-| 11 | precip_cv | 0.090 | Climate | Precipitation variability |
-| 12 | SIZE | 0.075 | Trait | Composite size |
-| 13 | logSM | 0.072 | Trait | Stem mass |
-| 14 | mat_mean | 0.068 | Temperature | Mean temperature |
-| 15 | les_ai | 0.065 | Trait-aridity | LES × aridity |
+| 1 | p_phylo | 0.427 | Phylogeny | Dominant predictor |
+| 2 | logH | 0.331 | Trait | Plant height crucial |
+| 3 | log_ldmc_minus_log_la | 0.263 | Trait combo | Thickness vs area |
+| 4 | logLA | 0.168 | Trait | Leaf area size effect |
+| 5 | les_seasonality | 0.131 | Trait variation | LES temporal variation |
+| 6 | Nmass | 0.121 | Trait | Direct N indicator |
+| 7 | les_drought | 0.116 | Trait-climate | LES × drought |
+| 8 | LES_core | 0.091 | Trait | Leaf economics |
+| 9 | height_ssd | 0.087 | Interaction | Height × density |
+| 10 | mat_q95 | 0.083 | Temperature | Temperature upper tail |
+| 11 | logSSD | 0.075 | Trait | Stem density |
+| 12 | precip_cv | 0.074 | Climate | Precipitation variability |
+| 13 | precip_seasonality | 0.057 | Climate | Seasonal precipitation |
+| 14 | LMA | 0.055 | Trait | Leaf construction |
+| 15 | precip_warmest_q | 0.044 | Climate | Warm-season precipitation |
 
 ## Key Interactions (2D Partial Dependence)
 
@@ -68,22 +68,22 @@ Date: 2025-09-18
 ## Interpretation
 
 ### Primary Drivers
-- **Phylogeny and leaf area CO-DOMINANT** (both ~40% SHAP)
-- **Plant size dimensions** (logH, logLA) collectively crucial
-- **LES variations** (seasonality, drought) unique to N axis
-- **Nmass** directly indicates N preference (obvious but not top)
+- **Phylogeny and stature dominate** (p_phylo + logH, followed by thickness proxy)
+- **Leaf morphology** (log_ldmc_minus_log_la, logLA) remains critical
+- **LES variations** (seasonality, drought) unique to the N axis
+- **Nmass** directly indicates N preference (important but not top)
 
 ### Ecological Insights
-1. **Size indicates fertility**: Large plants (height × leaf area) on rich soils
-2. **Evolutionary N strategies**: Strong phylogenetic conservation
+1. **Size indicates fertility**: Height plus thickness proxies mark nutrient-rich habitats
+2. **Evolutionary N strategies** remain strongly conserved
 3. **Seasonal N dynamics**: les_seasonality captures temporal strategies
-4. **Drought-N trade-off**: les_drought shows water-nutrient interactions
-5. **Fast-slow spectrum**: LES_core aligns with N availability
+4. **Drought–N trade-off**: les_drought shows water–nutrient interactions
+5. **Fast-slow spectrum**: LES_core still aligns with N availability
 
 ### Model Behavior
-- Dual dominance: phylogeny and leaf area equally important
-- Complex size relationships (height, leaf area, stem mass)
-- Seasonal/temporal features unusually important
+- Dual dominance shifts to phylogeny + stature
+- Complex size relationships (height, thickness, leaf area)
+- Seasonal/temporal features remain unusually important
 - Direct N measure (Nmass) present but not dominant
 
 ## Comparison with pwSEM
@@ -93,8 +93,8 @@ Date: 2025-09-18
 - Missing some LES variation features
 
 ## Key Takeaways
-1. **Dual dominance**: p_phylo and logLA equally important
-2. **Size is key**: Multiple size dimensions (H, LA, SM) critical
-3. **Temporal dynamics matter**: les_seasonality unique importance
+1. **Phylogeny + stature lead**, followed by leaf thickness/area signals
+2. **Size is key**: Multiple size dimensions (H, LA, SM) remain critical
+3. **Temporal dynamics matter**: les_seasonality and les_drought retain prominence
 4. **Strong phylo signal**: N strategies evolutionarily conserved
-5. **Near-optimal pwSEM**: Structured models work well for N axis
+5. **Near-optimal pwSEM**: Structured models still perform well for N axis

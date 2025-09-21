@@ -2,27 +2,28 @@
 Date: 2025-09-18
 
 ## Performance Metrics
-- **XGBoost pk (10-fold)**: R²≈0.203±0.080 (from canonical Stage 1 summary)
-- **XGBoost pk (LOSO)**: R²=0.198±0.042 (nested 500 km spatial R²=0.139±0.041)
+- **XGBoost pk (10-fold)**: R²=0.225±0.070, RMSE≈1.39
+- **XGBoost pk (LOSO)**: R²=0.225±0.042; Spatial 500 km: R²=0.183±0.041
 - **Random Forest pk**: R²=0.107±0.089 (10-fold CV)
 - **Phylo gain**: ΔR²≈+0.06 relative to no_pk configurations
 
 ## Canonical Artifacts & Reproduction
 - **Feature matrices (XGB/Stage 1)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917/R_{nopk,pk}/features.csv`
 - **RF interpretability artifacts**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917_rf/R_{nopk,pk}/`
-- **XGB interpretability (10-fold)**: legacy location `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant/R_{nopk,pk}/xgb_*`
-- **XGB LOSO/Spatial (deployment)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_nestedcv/R_{nopk,pk}/xgb_R_cv_*`
+- **XGB interpretability + metrics (kfold/LOSO/spatial)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917/R_{nopk,pk}/xgb_R_*`
+- **Legacy nested archives**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_nestedcv/R_{nopk,pk}/`
 - **RF CV (10-fold)**: `R² ≈ 0.107 ± 0.089`, `RMSE ≈ 1.513 ± 0.090`
 - **Re-run (RF only)**: `make -f Makefile.hybrid canonical_stage1_rf_tmux`
-- **Re-run (XGB only)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
+- **Re-run (XGB multi-strategy)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
 
 ## Canonical Top Predictors (pk runs)
 
-**XGBoost (SHAP | `.../withph_quant_sg250m_nestedcv/R_pk/xgb_R_shap_importance.csv`)**
-- `p_phylo` (0.40) — strongest signal in the nested deployment model
-- `mat_mean` (0.10) & `drought_min` (0.09) — climate extremes
-- `logSM` (0.08) — structural trait contribution
-- `ai_amp` (0.08) — aridity amplitude
+**XGBoost (SHAP | `.../withph_quant_sg250m_20250917/R_pk/xgb_R_shap_importance.csv`)**
+- `p_phylo` (0.34) — phylogenetic control
+- `phh2o_5_15cm_mean` (0.11) — shallow soil pH mean
+- `logSM` (0.08) — structural investment
+- `phh2o_5_15cm_p90` (0.07) — shallow pH upper tail
+- `temp_range` (0.07) — temperature amplitude
 
 **Random Forest (importance | `.../withph_quant_sg250m_20250917/R_pk/rf_R_importance.csv`)**
 - `ph_alk_depth_min` (0.20)
@@ -35,29 +36,29 @@ Date: 2025-09-18
 
 | Rank | Feature | SHAP Importance | Category | Notes |
 |------|---------|-----------------|----------|-------|
-| 1 | **p_phylo** | 0.396 | Phylogeny | Dominant driver in nested model |
-| 2 | mat_mean | 0.095 | Temperature | Mean annual temperature |
-| 3 | drought_min | 0.094 | Climate | Minimum drought stress |
-| 4 | logSM | 0.083 | Trait | Stem mass |
-| 5 | ai_amp | 0.080 | Aridity | Aridity amplitude |
-| 6 | mat_q95 | 0.074 | Temperature | 95th percentile temperature |
-| 7 | temp_range | 0.073 | Temperature | Annual temperature range |
-| 8 | tmax_mean | 0.066 | Temperature | Mean maximum temperature |
-| 9 | logH | 0.065 | Trait | Plant height |
-| 10 | log_ldmc_minus_log_la | 0.053 | Trait combo | Thickness vs. area |
-| 11 | precip_seasonality | 0.052 | Climate | Precipitation variation |
-| 12 | tmin_mean | 0.052 | Temperature | Mean minimum temperature |
-| 13 | wood_precip | 0.051 | Interaction | Woody × precipitation |
-| 14 | size_precip | 0.044 | Interaction | Size × precipitation |
-| 15 | Nmass | 0.044 | Trait | Leaf nitrogen |
+| 1 | **p_phylo** | 0.345 | Phylogeny | Dominant driver |
+| 2 | phh2o_5_15cm_mean | 0.107 | Soil | Shallow soil pH mean |
+| 3 | logSM | 0.078 | Trait | Stem mass |
+| 4 | phh2o_5_15cm_p90 | 0.070 | Soil | Shallow soil pH upper tail |
+| 5 | temp_range | 0.070 | Climate | Temperature amplitude |
+| 6 | logH | 0.058 | Trait | Plant height |
+| 7 | mat_mean | 0.053 | Climate | Mean temperature |
+| 8 | drought_min | 0.049 | Climate | Minimum drought stress |
+| 9 | precip_warmest_q | 0.048 | Climate | Warm-season precipitation |
+| 10 | log_ldmc_minus_log_la | 0.047 | Trait combo | Thickness vs area |
+| 11 | precip_driest_q | 0.044 | Climate | Dry-season precipitation |
+| 12 | logLA | 0.043 | Trait | Leaf area |
+| 13 | mat_q95 | 0.040 | Climate | Temperature upper tail |
+| 14 | ai_amp | 0.040 | Aridity | Aridity amplitude |
+| 15 | Nmass | 0.039 | Trait | Leaf nitrogen |
 
 ## Unique Soil Interactions (R Axis Special)
 
-1. **ph_rootzone_mean × drought_min**: Soil pH × drought stress
-2. **ph_rootzone_mean × mat_mean**: Soil pH × temperature
-3. **ph_rootzone_mean × precip_driest_q**: pH × dry season water
-4. **hplus_rootzone_mean × drought_min**: Acidity × drought
-5. **hplus_rootzone_mean × precip_driest_q**: H+ × dry precipitation
+1. **phh2o_5_15cm_mean × drought_min**: Shallow soil pH × drought stress
+2. **phh2o_5_15cm_p90 × precip_driest_q**: Shallow pH extremes × dry-season water
+3. **phh2o_15_30cm_sd × mat_mean**: Subsurface pH variability × temperature
+4. **ph_alk_depth_min × drought_min**: Soil alkalinity depth × drought
+5. **phh2o_5_15cm_mean × precip_warmest_q**: Soil buffering vs warm-season precipitation
 
 ## Other Key Interactions
 
@@ -70,16 +71,16 @@ Date: 2025-09-18
 ## Interpretation
 
 ### Primary Drivers
-- **Phylogeny remains the strongest single predictor** (SHAP ~0.40; RF ~0.19)
-- **XGBoost nested model emphasises climate extremes and structural traits**, while **RF highlights direct SoilGrids pH variables** (phh2o percentiles, alkalinity depth)
-- **Soil information is essential** even when SHAP ranks are climate heavy—the RF view confirms substantial pH contributions
+- **Phylogeny remains the strongest single predictor** (SHAP ≈0.34; RF importance ≈0.19)
+- **Shallow SoilGrids pH metrics now dominate the SHAP ranking** (mean and upper-tail 5–15 cm summaries alongside stem mass)
+- **Climate modifiers (temperature range, seasonal precipitation) still contribute but follow the soil stack**
 
 ### Ecological Insights
 1. **Phylogenetic constraints persist** across both models.
-2. **Direct soil information remains critical**—RF importance highlights SoilGrids layers even when XGBoost emphasises climate extremes.
-3. **Climate extremes and aridity metrics** (mat_mean, drought_min, ai_amp) interact with soil buffering capacity, explaining LOSO performance.
-4. **Soil × climate interactions** (e.g., ph_rootzone_mean × drought_min) continue to define calcicole vs. acidophile behaviour.
-5. **Monitoring both black-box views is necessary** so Stage 2 keeps the strong soil signal alongside climatic modifiers.
+2. **Shallow-soil pH information is critical**—both RF and XGB highlight SoilGrids layers as leading predictors.
+3. **Temperature range and seasonal precipitation interact with soil buffering capacity**, explaining the LOSO uplift.
+4. **Soil × climate interactions** (e.g., phh2o depth metrics × drought/precipitation) continue to define calcicole vs. acidophile behaviour.
+5. **Monitoring both black-box views is necessary** so Stage 2 retains the strong soil signal alongside climatic modifiers.
 
 ### Model Behavior & Data Requirements
 - Still the hardest axis to predict; R² values remain the lowest across axes.
@@ -94,7 +95,7 @@ Date: 2025-09-18
 
 ## Key Takeaways
 1. **Phylogeny still anchors the axis** (concordant SHAP + RF)
-2. **SoilGrids pH layers dominate RF importance**, keeping direct soil information in Stage 1 outputs
-3. **Climate extremes (mat_mean, drought_min, ai_amp) feature prominently in nested XGBoost**
+2. **SoilGrids pH layers dominate both models**, keeping soil information in Stage 1 outputs
+3. **Climate modifiers (temp range, seasonal precipitation) still influence the soil response**
 4. **Hardest axis**: overall R² remains lowest despite enriched data
 5. **pwSEM nearly optimal** (R²≈0.22) and now aligns better with the mixed climate/soil signal

@@ -12,8 +12,8 @@ Why the GeoTIFF workflow is canonical
 
 Canonical extraction pipeline (reproducible steps)
 1. **Download & stage tiles** — Use `soil_pipeline_global` (`Makefile`, lines 358–372) or call `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R` directly.
-2. **Aggregate to species** — `scripts/aggregate_soilgrids_species.R` summarises unique coordinates into means, SDs, quantiles (`species_soil_summary_global_sg250m_ph_20250916.csv`).
-3. **Join with monthly AI** — `scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary .../species_soil_summary_global_sg250m_ph_20250916.csv --output .../species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv`.
+2. **Aggregate to species** — `scripts/aggregate_soilgrids_species.R` summarises unique coordinates into means, SDs, quantiles (`data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv`).
+3. **Join with monthly AI** — `scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv`.
 4. **Run hybrid export + RF/XGB interpretability** — `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250916 --axes R --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true --bioclim_summary data/.../species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv` (run from the `AI` conda env so CUDA toolkits are on-path).
 
 GPU execution rationale
