@@ -6,6 +6,31 @@ Date: 2025-09-18
 - **XGBoost pk**: R²=0.487±0.061, RMSE=1.345±0.074
 - **Phylo gain**: ΔR²=+0.053 (moderate gain)
 
+## Canonical Artifacts & Reproduction
+- **Feature matrices (XGB/Stage 1)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/N_{nopk,pk}/features.csv`
+- **RF interpretability artifacts**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917_rf/N_{nopk,pk}/`
+- **XGB interpretability (10-fold)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/N_{nopk,pk}/xgb_*`
+- **XGB LOSO/Spatial**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/N_{nopk,pk}/xgb_N_cv_*`
+- **RF CV (10-fold)**: `R² ≈ 0.457 ± 0.089`, `RMSE ≈ 1.389 ± 0.114`
+- **Re-run (RF only)**: `make -f Makefile.hybrid canonical_stage1_rf_tmux`
+- **Re-run (XGB only)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
+
+## Canonical Top Predictors (pk runs)
+
+**XGBoost (SHAP | `.../N_pk/xgb_N_shap_importance.csv`)**
+- `p_phylo` (0.43) — evolutionary control of nutrient strategies
+- `logH` (0.33) — stature metric
+- `log_ldmc_minus_log_la` (0.26) — thickness vs area composite
+- `logLA` (0.17) — leaf area size effect
+- `les_seasonality` (0.13) — temporal LES dynamics
+
+**Random Forest (importance | `.../N_pk/rf_N_importance.csv`)**
+- `logH` (0.40)
+- `log_ldmc_minus_log_la` (0.26)
+- `p_phylo` (0.24)
+- `height_ssd` (0.24)
+- `logLA` (0.23)
+
 ## Top 15 Predictors (XGBoost SHAP Importance)
 
 | Rank | Feature | SHAP Importance | Category | Notes |

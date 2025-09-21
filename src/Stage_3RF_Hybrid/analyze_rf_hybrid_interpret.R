@@ -10,6 +10,12 @@ suppressPackageStartupMessages({
   library(jsonlite)
 })
 
+emit <- function(fmt, ...) {
+  msg <- sprintf(fmt, ...)
+  cat(msg, "\n", sep = "")
+  flush.console()
+}
+
 `%||%` <- function(a,b) if (!is.null(a) && length(a)>0 && !is.na(a) && nzchar(a)) a else b
 
 args <- commandArgs(trailingOnly = TRUE)
@@ -35,8 +41,13 @@ num_trees <- suppressWarnings(as.integer(opts[["num_trees"]] %||% "1000")); if (
 set.seed(suppressWarnings(as.integer(opts[["seed"]] %||% "123")))
 
 dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
-stopifnot(file.exists(features_csv))
+if (!file.exists(features_csv)) {
+  stop(sprintf("features_csv not found: %s", features_csv))
+}
+emit("[info] (%s) loading features: %s", axis, features_csv)
+load_start <- proc.time()[["elapsed"]]
 dat <- read_csv(features_csv, show_col_types = FALSE)
+emit("[info] (%s) features loaded in %.2fs (n=%d, p=%d)", axis, proc.time()[["elapsed"]] - load_start, nrow(dat), ncol(dat))
 
 # Expect columns: y (target), predictors incl. climate/traits/composites; drop ID/factor cols
 drop_cols <- intersect(c("wfo_accepted_name","species_normalized","Family"), names(dat))
@@ -46,10 +57,16 @@ num_cols <- setdiff(num_cols, c("y"))
 X <- dat[, num_cols, drop = FALSE]
 y <- dat$y
 row_good <- is.finite(y)
+if (!all(row_good)) {
+  emit("[warn] (%s) dropping %d rows with non-finite target", axis, sum(!row_good))
+}
 X <- X[row_good, , drop = FALSE]
 y <- y[row_good]
+emit("[info] (%s) final modeling matrix: n=%d, p=%d", axis, nrow(X), ncol(X))
 
 # Fit RF for interpretability (full data)
+emit("[info] (%s) training ranger RF (%d trees, mtry=%d)", axis, num_trees, ceiling(sqrt(ncol(X))))
+train_start <- proc.time()[["elapsed"]]
 rf <- ranger(
   x = X,
   y = y,
@@ -59,9 +76,11 @@ rf <- ranger(
   importance = "permutation",
   seed = 42
 )
+emit("[info] (%s) RF trained in %.2fs", axis, proc.time()[["elapsed"]] - train_start)
 
 write_csv(data.frame(feature = names(rf$variable.importance), importance = rf$variable.importance),
           file.path(out_dir, sprintf("rf_%s_importance.csv", axis)))
+emit("[progress] (%s) wrote permutation importance", axis)
 
 to_grid <- function(x, n=50) {
   xr <- x[is.finite(x)]
@@ -72,7 +91,9 @@ to_grid <- function(x, n=50) {
 # PDP 1D
 vars <- trimws(unlist(strsplit(vars_csv, ",")))
 vars <- intersect(vars, colnames(X))
-for (v in vars) {
+emit("[info] (%s) computing 1D PDPs (%d features)", axis, length(vars))
+for (idx in seq_along(vars)) {
+  v <- vars[[idx]]
   g <- to_grid(X[[v]], 50)
   preds <- numeric(length(g))
   for (i in seq_along(g)) {
@@ -82,16 +103,20 @@ for (v in vars) {
   }
   out <- data.frame(feature=v, value=g, yhat=preds)
   write_csv(out, file.path(out_dir, sprintf("rf_%s_pdp_%s.csv", axis, gsub("[^A-Za-z0-9]+","_", v))))
+  emit("[progress] (%s) PDP 1D %d/%d -> %s", axis, idx, length(vars), v)
 }
 
 # PDP 2D + H^2
 pairs <- trimws(unlist(strsplit(pairs_csv, ",")))
 pairs <- pairs[nzchar(pairs)]
+emit("[info] (%s) computing 2D PDPs (%d pairs)", axis, length(pairs))
+pair_idx <- 0
 for (p in pairs) {
   ab <- trimws(unlist(strsplit(p, ":")))
   if (length(ab) != 2) next
   a <- ab[1]; b <- ab[2]
   if (!(a %in% colnames(X) && b %in% colnames(X))) next
+  pair_idx <- pair_idx + 1
   g1 <- to_grid(X[[a]], 25); g2 <- to_grid(X[[b]], 25)
   mat <- matrix(NA_real_, nrow=length(g1), ncol=length(g2))
   for (i in seq_along(g1)) {
@@ -113,6 +138,7 @@ for (p in pairs) {
   surf$yhat <- as.vector(mat)
   write_csv(surf, file.path(out_dir, sprintf("rf_%s_pdp2_%s__%s.csv", axis, gsub("[^A-Za-z0-9]+","_", a), gsub("[^A-Za-z0-9]+","_", b))))
   write_csv(data.frame(var1=a, var2=b, H2=H2), file.path(out_dir, sprintf("rf_%s_interaction_%s__%s.csv", axis, gsub("[^A-Za-z0-9]+","_", a), gsub("[^A-Za-z0-9]+","_", b))))
+  emit("[progress] (%s) PDP 2D %d/%d -> %s:%s (H2=%.3f)", axis, pair_idx, length(pairs), a, b, H2)
 }
 
 meta <- list(axis=axis, n=nrow(X), p=ncol(X), features_csv=features_csv, out_dir=out_dir)

@@ -6,6 +6,31 @@ Date: 2025-09-18
 - **XGBoost pk**: R²=0.373±0.078, RMSE=1.195±0.111
 - **Phylo gain**: ΔR²=+0.015 (smallest gain)
 
+## Canonical Artifacts & Reproduction
+- **Feature matrices (XGB/Stage 1)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/L_{nopk,pk}/features.csv`
+- **RF interpretability artifacts**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917_rf/L_{nopk,pk}/`
+- **XGB interpretability (10-fold)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/L_{nopk,pk}/xgb_*`
+- **XGB LOSO/Spatial**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/L_{nopk,pk}/xgb_L_cv_*`
+- **RF CV (10-fold)**: `R² ≈ 0.366 ± 0.081`, `RMSE ≈ 1.216 ± 0.091`
+- **Re-run (RF only)**: `make -f Makefile.hybrid canonical_stage1_rf_tmux`
+- **Re-run (XGB only)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
+
+## Canonical Top Predictors (pk runs)
+
+**XGBoost (SHAP | `.../L_pk/xgb_L_shap_importance.csv`)**
+- `lma_precip` (0.29) — trait × precipitation interaction
+- `p_phylo` (0.26) — phylogenetic signal
+- `LES_core` (0.11) — leaf economics spectrum
+- `LMA` (0.10) — leaf construction cost
+- `logSM` (0.10) — structural investment
+
+**Random Forest (importance | `.../L_pk/rf_L_importance.csv`)**
+- `lma_precip` (0.23)
+- `LES_core` (0.22)
+- `LMA` (0.21)
+- `SIZE` (0.15)
+- `size_precip` (0.14)
+
 ## Top 15 Predictors (XGBoost SHAP Importance)
 
 | Rank | Feature | SHAP Importance | Category | Notes |

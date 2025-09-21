@@ -6,6 +6,31 @@ Date: 2025-09-18
 - **XGBoost pk**: R²=0.590±0.033, RMSE=0.835±0.081
 - **Phylo gain**: ΔR²=+0.046
 
+## Canonical Artifacts & Reproduction
+- **Feature matrices (XGB/Stage 1)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/T_{nopk,pk}/features.csv`
+- **RF interpretability artifacts**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917_rf/T_{nopk,pk}/`
+- **XGB interpretability (10-fold)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_20250917/T_{nopk,pk}/xgb_*`
+- **XGB LOSO/Spatial (deployment)**: `artifacts/stage3rf_hybrid_interpret/phylotraits_cleanedAI_discovery_gpu_nosoil_nestedcv/T_{nopk,pk}/xgb_T_cv_*`
+- **RF CV (10-fold)**: `R² ≈ 0.533 ± 0.091`, `RMSE ≈ 0.892 ± 0.061` (from `rf_T.log`)
+- **Re-run (RF only)**: `make -f Makefile.hybrid canonical_stage1_rf_tmux` (writes to `_rf/` directories)
+- **Re-run (XGB only)**: `make -f Makefile.hybrid canonical_stage1_xgb_seq`
+
+## Canonical Top Predictors (pk runs)
+
+**XGBoost (SHAP mean | source: `.../T_pk/xgb_T_shap_importance.csv`)**
+- `precip_seasonality` (0.38) — dominant climate driver
+- `mat_mean` (0.20) — central temperature control
+- `p_phylo` (0.17) — moderate phylogenetic signal
+- `mat_q05` (0.11) — cold extreme sensitivity
+- `temp_seasonality` (0.08) — seasonal thermal variability
+
+**Random Forest (permutation importance | source: `.../T_pk/rf_T_importance.csv`)**
+- `precip_seasonality` (0.39)
+- `mat_mean` (0.33)
+- `mat_q05` (0.21)
+- `mat_q95` (0.17)
+- `precip_coldest_q` (0.13)
+
 ## Top 15 Predictors (XGBoost SHAP Importance)
 
 | Rank | Feature | SHAP Importance | Category | Notes |

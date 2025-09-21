@@ -259,9 +259,13 @@ ai_month_aggregate:
 CANONICAL_TRAIT ?= artifacts/model_data_bioclim_subset_enhanced_imputed.csv
 CANONICAL_BIOC_NOSOIL ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv
 CANONICAL_BIOC_SOIL ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv
+CANONICAL_LABEL_NOSOIL ?= phylotraits_cleanedAI_discovery_gpu_nosoil_20250917
+CANONICAL_LABEL_SOIL ?= phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917
+CANONICAL_RF_LABEL_NOSOIL ?= $(CANONICAL_LABEL_NOSOIL)_rf
+CANONICAL_RF_LABEL_SOIL ?= $(CANONICAL_LABEL_SOIL)_rf
 canonical_xgb_all:
 	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
-	  --label phylotraits_cleanedAI_discovery_gpu_nosoil_20250917 \
+	  --label $(CANONICAL_LABEL_NOSOIL) \
 	  --trait_csv $(CANONICAL_TRAIT) \
 	  --bioclim_summary $(CANONICAL_BIOC_NOSOIL) \
 	  --axes T,M,L,N \
@@ -270,7 +274,7 @@ canonical_xgb_all:
 	  --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 \
 	  --clean_out true
 	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
-	  --label phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250917 \
+	  --label $(CANONICAL_LABEL_SOIL) \
 	  --trait_csv $(CANONICAL_TRAIT) \
 	  --bioclim_summary $(CANONICAL_BIOC_SOIL) \
 	  --axes R \
@@ -279,6 +283,81 @@ canonical_xgb_all:
 	  --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 \
 	  --clean_out true
 	@echo "[ok] Canonical GPU XGB runs launched (tmux). Attach with: tmux ls"
+
+canonical_stage1_rf_tmux:
+	@echo "[clean] removing prior RF artifacts for $(CANONICAL_RF_LABEL_NOSOIL)"
+	@for axis in T M L N; do \
+	  rm -rf artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_NOSOIL)/$${axis}_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_NOSOIL)/$${axis}_pk; \
+	  mkdir -p artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_NOSOIL)/$${axis}_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_NOSOIL)/$${axis}_pk; \
+	done
+	@echo "[clean] removing prior RF artifacts for $(CANONICAL_RF_LABEL_SOIL)"
+	@rm -rf artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_SOIL)/R_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_SOIL)/R_pk
+	@mkdir -p artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_SOIL)/R_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_RF_LABEL_SOIL)/R_pk
+	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
+	  --label $(CANONICAL_RF_LABEL_NOSOIL) \
+	  --trait_csv $(CANONICAL_TRAIT) \
+	  --bioclim_summary $(CANONICAL_BIOC_NOSOIL) \
+	  --axes T,M,L,N \
+	  --folds 10 --x_exp 2 --k_trunc 0 \
+	  --run_rf true --run_xgb false \
+	  --clean_out false
+	conda run -n AI bash scripts/run_interpret_axes_tmux.sh \
+	  --label $(CANONICAL_RF_LABEL_SOIL) \
+	  --trait_csv $(CANONICAL_TRAIT) \
+	  --bioclim_summary $(CANONICAL_BIOC_SOIL) \
+	  --axes R \
+	  --folds 10 --x_exp 2 --k_trunc 0 \
+	  --run_rf true --run_xgb false \
+	  --clean_out false
+	@echo "[ok] Stage 1 RF interpretability running in tmux. Attach with: tmux ls"
+
+canonical_stage1_xgb_seq:
+	@echo "[clean] removing prior XGB artifacts for $(CANONICAL_LABEL_NOSOIL)"
+	@for axis in T M L N; do \
+	  rm -rf artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_pk; \
+	  mkdir -p artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_pk; \
+	done
+	@echo "[clean] removing prior XGB artifacts for $(CANONICAL_LABEL_SOIL)"
+	@rm -rf artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_pk
+	@mkdir -p artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_nopk artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_pk
+	@echo "[prep] exporting features for $(CANONICAL_LABEL_NOSOIL)"
+	@for axis in T M L N; do \
+	  $(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=$${axis} TRAIT_CSV=$(CANONICAL_TRAIT) BIOCLIM_SUMMARY=$(CANONICAL_BIOC_NOSOIL) X_EXP=2 K_TRUNC=0 FOLDS=10 INTERPRET_LABEL=$(CANONICAL_LABEL_NOSOIL); \
+	done
+	@echo "[prep] exporting features for $(CANONICAL_LABEL_SOIL)"
+	$(MAKE) -f $(lastword $(MAKEFILE_LIST)) hybrid_export_features AXIS=R TRAIT_CSV=$(CANONICAL_TRAIT) BIOCLIM_SUMMARY=$(CANONICAL_BIOC_SOIL) X_EXP=2 K_TRUNC=0 FOLDS=10 INTERPRET_LABEL=$(CANONICAL_LABEL_SOIL)
+	@set -e; \
+	for axis in T M L N; do \
+	  echo "[seq-xgb] axis=$$axis pk"; \
+	  conda run -n AI python src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	    --features_csv artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_pk/features.csv \
+	    --axis $$axis --gpu true --n_estimators 3000 --learning_rate 0.02 \
+	    --cv_strategy kfold --occurrence_csv data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	    --spatial_block_km 500 --bootstrap_reps 0 \
+	    --out_dir artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_pk; \
+	  echo "[seq-xgb] axis=$$axis nopk"; \
+	  conda run -n AI python src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	    --features_csv artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_nopk/features.csv \
+	    --axis $$axis --gpu true --n_estimators 3000 --learning_rate 0.02 \
+	    --cv_strategy kfold --occurrence_csv data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	    --spatial_block_km 500 --bootstrap_reps 0 \
+	    --out_dir artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_NOSOIL)/$${axis}_nopk; \
+	done
+	@echo "[seq-xgb] axis=R pk"; \
+	conda run -n AI python src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	  --features_csv artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_pk/features.csv \
+	  --axis R --gpu true --n_estimators 3000 --learning_rate 0.02 \
+	  --cv_strategy kfold --occurrence_csv data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	  --spatial_block_km 500 --bootstrap_reps 0 \
+	  --out_dir artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_pk
+	@echo "[seq-xgb] axis=R nopk"; \
+	conda run -n AI python src/Stage_3RF_XGBoost/analyze_xgb_hybrid_interpret.py \
+	  --features_csv artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_nopk/features.csv \
+	  --axis R --gpu true --n_estimators 3000 --learning_rate 0.02 \
+	  --cv_strategy kfold --occurrence_csv data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654.csv \
+	  --spatial_block_km 500 --bootstrap_reps 0 \
+	  --out_dir artifacts/stage3rf_hybrid_interpret/$(CANONICAL_LABEL_SOIL)/R_nopk
+	@echo "[ok] Sequential XGB interpretability completed"
 
 # ----------------------------------------------------------------------------
 # Interpretability: export hybrid features and analyze RF PDP/ICE/interactions
