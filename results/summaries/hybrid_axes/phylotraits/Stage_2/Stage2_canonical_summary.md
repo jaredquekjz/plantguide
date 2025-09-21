@@ -28,6 +28,16 @@ Notes
 - N: `results/summaries/hybrid_axes/phylotraits/Stage_2/N_axis_canonical.md`
 - R: `results/summaries/hybrid_axes/phylotraits/Stage_2/R_axis_canonical.md`
 
+## Alignment With Stage 1 Drivers
+
+| Axis | Stage 1 (RF/XGB) Core Predictors | GAM Coverage | Notes |
+|------|----------------------------------|--------------|-------|
+| T | precip seasonality, MAT mean/q05, p_phylo, size composites (`logH/logSM`), `lma_precip` | GAM uses linear terms for MAT/precip seasonality, includes `p_phylo_T`, `is_woody`, PC traits, and tensors/smooths for `lma_precip`, size × climate interactions | All key Stage 1 signals present via linear terms, PCs, or tensor smooths |
+| M | `p_phylo`, `logLA`, `logSM`, LDMC, drought/precip & AI metrics | GAM retains the traits + `p_phylo_M`, adds smooths for drought/precip/AI and tensors for LES interactions | Full coverage; Stage 1 interactions mirrored in smooth/tensor terms |
+| L | `lma_precip`, `p_phylo`, `LES_core`, `LMA`, `logSM`, `logH`, `height_ssd`, `precip_cv` | GAM includes same traits plus smooths on `lma_precip`, `logLA`, `LES_core`, `height_ssd` and tensors with climate | No material gaps; GAM captures trait × climate structure surfaced by XGBoost |
+| N | `p_phylo`, `logH`, `log_ldmc_minus_log_la`, `logLA`, `les_seasonality`, `Nmass`, `les_drought` | GAM keeps those predictors explicitly (`log_ldmc_minus_log_la`, `logH`, `logLA`, `les_seasonality`, `les_drought`, `Nmass`, `p_phylo_N`) with additional smooths/interactions | Stage 1 hierarchy (phylogeny + stature) reflected; temporal LES terms retained |
+| R | `p_phylo`, shallow SoilGrids pH (5–15 cm mean/p90), `logSM`, `logH`, `temp_range`, `drought_min`, seasonal precip | GAM uses linear terms for traits/climate, smooths for shallow pH layers (`phh2o_5_15cm_mean/p90`, `phh2o_15_30cm_mean`), and interaction `ti(ph_rootzone_mean, drought_min)` | Stage 1 soil dominance carried into GAM; climate modifiers also present |
+
 ## Repro (Makefile targets)
 - All axes (AIC/GAM): `make -f Makefile.stage2_structured_regression aic_ALL`
 - Axis‑specific (example T): `make -f Makefile.stage2_structured_regression aic_T`
