@@ -214,3 +214,63 @@ Metadata: protocols, provenance, and uncertainty for gap-filled traits.
 - Crop functional diversity drives multiple ecosystem functions during early agroforestry succession. Santos et al. 2021. Path: `papers/mmd/Journal of Applied Ecology - 2021 - Santos - Crop functional diversity drives multiple ecosystem functions during early.mmd`
 - A global method for calculating plant CSR ecological strategies applied across biomes world-wide. Pierce et al. 2016. Path: `papers/mmd/Functional Ecology - 2016 - Pierce - A global method for calculating plant CSR ecological strategies applied across biomes.mmd`
 - Effects of plant functional traits on ecosystem services: a review. Pan et al. Path: `papers/mmd/Effects of plant functional traits on ecosystem services_ a review.mmd`
+
+## Trait Data Availability (TRY Enhanced & Local TRY 6.0)
+
+### Canonical Trait Inputs for Stage 3 Modelling
+- **Leaf traits**: `3108` leaf area (petiole excluded); `3115` specific leaf area; `47` leaf dry matter content; `14` leaf N per dry mass; `4` stem specific density (wood density)
+- **Structural traits**: `3106` vegetative plant height; `343` Raunkiaer life form (perenniality signal); `37` leaf phenology type (evergreen vs deciduous)
+- **Root mechanics**: `1507` root length density; `1080` specific root length; `2006` fine-root mass fraction; `83` root diameter; `6` rooting depth; `363` root dry mass per plant; `82` root tissue density
+- **Architecture**: `140` shoot branching type (canopy structure proxy)
+- **Floral rewards & structure**: `207` flower colour; `2935` flower symmetry type; `2817` inflorescence height; `3821` flower nectar availability; `210` pollen number per ovule
+- **Phenology for pollination**: `335` flowering time (reproductive phenology window)
+
+### Traits Covered by TRY Enhanced (species means preferred)
+
+| Trait | Proxy TRY ID(s) | Species with data | Notes |
+| --- | --- | --- | --- |
+| Leaf area (mm²) | 3110/3112/3114 | 12 164 | Core CSR input (convert to `3108` conventions as needed) |
+| Leaf mass per area (LMA → SLA) | 3115/3116/3117 | 10 486 | Invert to SLA; combine with LA for CSR |
+| Leaf dry matter content (LDMC) | 47 | 2 116 | Primary constraint on CSR coverage |
+| Plant height (m) | 3106 | 24 704 | Used for hydrology, biocontrol, FD |
+| Leaf N per dry mass (mg g⁻¹) | 14 | 8 689 | Optional for FD & nutrient proxies |
+| Wood density (mg mm⁻³) | 4 | 11 350 | Supports hydrology and stability indices |
+| Diaspore mass (mg) | 26 | 24 766 | Useful for dispersal covariates (not core Stage‑3) |
+
+*No root, floral, or phenology traits are present in the enhanced means; these require supplementation from the raw TRY extracts or new requests.*
+
+### Traits Covered by Local TRY 6.0 Extracts (beyond Enhanced)
+
+| Trait (TRY ID) | Species covered locally | Notes |
+| --- | --- | --- |
+| Leaf area `3108` | 3 075 | Leaflet area (petiole excluded) from raw TRY tables |
+| Specific leaf area `3115` | 8 042 | Complements enhanced LMA values |
+| LDMC `47` | 8 753 | Higher coverage than enhanced but variable quality |
+| Vegetative height `3106` | 32 983 | Extensive records for canopy structure |
+| Leaf N per dry mass `14` | 12 732 | Broad nutrient dataset |
+| Wood density `4` | 11 257 | Aligns with enhanced values |
+| Specific root length `1080` | 671 | Key root trait available only in raw extracts |
+| Root diameter `83` | 481 | Supports slope-stability proxy |
+| Rooting depth `6` | 3 853 | Used in hydrology/stability indices |
+| Root tissue density `82` | 497 | Substitute for root tensile strength |
+| Leaf phenology type `37` | 28 491 | Evergreen/deciduous flags |
+| Raunkiaer life form `343` | 12 834 | Annual vs perennial proxy |
+| Flower nectar availability `3821` | 155 | Direct nectar flag |
+| Nectar tube depth `3579` | 129 | Supports pollinator guild filters |
+| Nectar sugar concentration `1257` | 21 | Limited but usable reward metric |
+
+### Trait Gaps Requiring New TRY Requests
+
+| Trait (TRY ID) | Species available in TRY catalogue* | Purpose |
+| --- | --- | --- |
+| Root length density `1507` | 13 | Surface erosion index input |
+| Fine-root mass fraction `2006` | 86 | Surface stability & resource uptake |
+| Root dry mass per plant `363` | 1 696 | Slope stability biomass term |
+| Shoot branching architecture `140` | 3 877 | Biocontrol & habitat complexity |
+| Flower colour `207` | 10 587 | Pollinator attractiveness |
+| Flower symmetry `2935` | 5 688 | Pollinator specialization |
+| Inflorescence height `2817` | 176 | Floral display height component |
+| Pollen number per ovule `210` | 252 | Reward proxy when nectar absent |
+| Flowering time `335` | 10 856 | Phenology coverage for pollination indices |
+
+*Species counts from `docs/TRY Traits.txt`; these traits are absent in both the enhanced means and the local TRY 6.0 extracts and should be prioritised in the next data request.* For implementation details (including the WFO-based synonym workflow used to merge these traits), see `results/summaries/hybrid_axes/phylotraits/canonical_data_preparation_summary.md` under “TRY Raw Trait Augmentation”.

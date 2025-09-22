@@ -155,3 +155,52 @@ The following sections detail each step with provenance and repro commands.
 5. Generate Stage 2 SEM-ready tables (Section 7).
 
 Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `canonical_stage1_xgb_seq` targets and Stage 2 `gam_ALL` / `aic_ALL` commands can be rerun with full provenance confidence.
+
+## 9. TRY Raw Trait Augmentation (2025-09-24 update 2025-09-22 data pull)
+- **Purpose:** enrich the canonical trait tables with root, architectural, floral, and phenology traits sourced from local TRY 6.0 exports (including dataset `44049.txt`).
+- **Inputs:**
+  - Canonical trait baseline: `artifacts/model_data_bioclim_subset_enhanced.csv`
+  - TRY raw dumps: `data/TRY/*.txt`
+- **Script:** `scripts/augment_try_traits.py` (Python; resolves WFO synonyms via `data/classification.csv`, extracts numeric and categorical traits, computes species means or modes, logs unmatched names).
+- **Recipe:**
+  ```bash
+  conda run -n AI python scripts/augment_try_traits.py \
+    --canonical artifacts/model_data_bioclim_subset_enhanced.csv \
+    --try_dir data/TRY \
+    --classification data/classification.csv \
+    --out_table artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw.csv \
+    --summary_csv artifacts/try_trait_augmented_coverage_summary.csv \
+    --out_absent artifacts/try_raw_species_absent.txt \
+    --out_no_trait artifacts/try_raw_species_without_target_traits.txt
+  ```
+- **Coverage delivered (654 canonical species):**
+
+  | TRY ID | Column | Species |
+  | --- | --- | --- |
+  | 6 | `trait_root_depth_raw` | 275 |
+  | 82 | `trait_root_tissue_density_raw` | 88 |
+  | 83 | `trait_root_diameter_raw` | 101 |
+  | 1080 | `trait_root_srl_raw` | 113 |
+  | 140 | `trait_shoot_branching_raw` | 534 |
+  | 207 | `trait_flower_color_raw` | 512 |
+  | 210 | `trait_flower_pollen_number_raw` | 63 |
+  | 335 | `trait_flowering_time_raw` | 571 |
+  | 343 | `trait_life_form_raw` | 622 |
+  | 363 | `trait_root_biomass_raw` | 205 |
+  | 507 | `trait_flowering_onset_raw` | 23 |
+  | 2006 | `trait_fine_root_fraction_raw` | 24 |
+  | 2817 | `trait_inflorescence_height_raw` | 11 |
+  | 2935 | `trait_flower_symmetry_raw` | 23 |
+  | 3579 | `trait_flower_nectar_tube_depth_raw` | 47 |
+  | 3821 | `trait_flower_nectar_presence_raw` | 38 |
+  | 37 | `trait_leaf_phenology_raw` | 611 |
+  | 1257 | `trait_flower_nectar_sugar_raw` | 0 (still absent)
+
+- **Name-match audit:** WFO synonym resolution removes all unmatched species (list now empty). Six species remain without the selected traits (`artifacts/try_raw_species_without_target_traits.txt`).
+
+### Updated Canonical Artifacts
+- **Stage 1 traits:** `artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw.csv`
+- **Stage 2 SEM-ready:** `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_augmented.csv`
+
+### Follow-up
+- When additional TRY extracts arrive (e.g., to improve nectar sugar coverage), rerun the augmentation command above and re-check the unmatched-species list before merging.
