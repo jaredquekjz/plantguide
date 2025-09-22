@@ -12,27 +12,25 @@ Environment
 
 Key Inputs
 - Enhanced trait table (bioclim subset): `artifacts/model_data_bioclim_subset_enhanced.csv` (654 × 39)
+- TRY-augmented Stage 3 table (with `_raw` columns duplicated): `artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_for_impute.csv` (654 × 95)
 - Bioclim species summary (optional env covariates): `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv`
 - Phylogeny (for categorical and hybrid pk): `data/phylogeny/eive_try_tree.nwk`
 
 Commands Executed
 1) Numeric imputation (BHPMF, no hierarchy)
-   - Command:
+   - Canonical enhanced table:
      - `OMP_NUM_THREADS=1 make phylotraits_impute IMPUTE_USED_LEVELS=0`
-   - Effective parameters (passed to R):
-     - `--used_levels=0 --prediction_level=2 --num_samples=1000 --burn=100 --gaps=2 --num_latent=10 --tuning=false --verbose=false`
-     - `--input_csv=artifacts/model_data_bioclim_subset_enhanced.csv`
-     - `--out_csv=artifacts/model_data_bioclim_subset_enhanced_imputed.csv`
-     - `--diag_dir=artifacts/phylotraits_impute --tmp_dir=artifacts/phylotraits_impute/tmp_bhpmf`
-     - `--traits_to_impute=Leaf_thickness_mm,Frost_tolerance_score,Leaf_N_per_area`
+     - Traits: `Leaf_thickness_mm,Frost_tolerance_score,Leaf_N_per_area`
+   - TRY-augmented Stage 3 table:
+     - `make phylotraits_impute_stage3`
+     - Traits: `Root_depth,Root_srl,Root_diameter,Root_biomass,Root_tissue_density,Fine_root_fraction,Inflorescence_height,Flower_pollen_number,Flowering_time,Flowering_onset,Flower_nectar_tube_depth`
 
 2) Categorical imputation (phylo‑weighted votes)
-   - Command:
+   - Canonical enhanced table:
      - `make phylotraits_impute_categorical TRAITS_CAT=Leaf_phenology,Photosynthesis_pathway`
-   - Effective parameters (defaults):
-     - `--input_csv=artifacts/model_data_bioclim_subset_enhanced_imputed.csv`
-     - `--out_csv=artifacts/model_data_bioclim_subset_enhanced_imputed_cat.csv`
-     - `--diag_dir=artifacts/phylotraits_impute --tree=data/phylogeny/eive_try_tree.nwk --x_exp=2 --k_trunc=0`
+   - TRY-augmented Stage 3 table:
+     - `make phylotraits_impute_stage3_cat`
+     - Traits: `Leaf_phenology,Life_form,Flower_color,Flower_symmetry,Flower_nectar_presence,Shoot_branching`
 
 Notes on Stability
 - Hierarchy column order in BHPMF preprocessing was adjusted to lowest→highest (Species, Genus[, Family]).
@@ -48,19 +46,40 @@ Outputs
   - `artifacts/phylotraits_impute/coverage_before_after.csv`
   - `artifacts/phylotraits_impute/categorical_coverage_before_after.csv`
 
-Coverage Deltas (as written by the pipeline)
+Coverage Deltas (latest run: 2025-09-22)
 ```
 Numeric (coverage_before_after.csv)
 trait,before,after
 Leaf_thickness_mm,349,654
 Frost_tolerance_score,153,654
 Leaf_N_per_area,654,654
+Root_depth,275,654
+Root_srl,113,654
+Root_diameter,101,654
+Root_biomass,205,654
+Root_tissue_density,88,654
+Fine_root_fraction,27,654
+Inflorescence_height,11,654
+Flower_pollen_number,63,654
+Flowering_time,571,654
+Flowering_onset,23,654
+Flower_nectar_tube_depth,47,654
 
 Categorical (categorical_coverage_before_after.csv)
 trait,before,after
 Leaf_phenology,594,654
 Photosynthesis_pathway,619,654
+Leaf_phenology,611,654
+Life_form,622,654
+Flower_color,512,654
+Flower_symmetry,23,654
+Flower_nectar_presence,38,654
+Shoot_branching,534,654
 ```
+
+Clamping Strategy (Stage 3 numeric traits)
+- After BHPMF imputation, each numeric trait was clamped to the minimum/maximum observed in the raw TRY dataset before imputation to avoid unrealistic extrapolations (e.g., negative depths, >100% fine-root fractions).
+- Final ranges include: `Root_depth` 0.016–13.0, `Fine_root_fraction` 0.110–96.541, `Flower_pollen_number` 22.2–2,119,720, `Flowering_time` 0–259, `Root_tissue_density` 0–0.61.
 
 Reproduce from Scratch
 1) Ensure BHPMF is installed (patched if needed):

@@ -467,6 +467,28 @@ phylotraits_impute_categorical:
 	@echo "[Phylotraits] Outputs:"
 	@ls -lh $(IMPUTE_CAT_OUT) $(IMPUTE_DIAG)/categorical_coverage_before_after.csv 2>/dev/null || true
 
+# Convenience targets for Stage 3 augmented traits
+IMPUTE_STAGE3_IN ?= artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_for_impute.csv
+IMPUTE_STAGE3_OUT ?= artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_imputed.csv
+IMPUTE_STAGE3_CAT_OUT ?= artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_imputed_cat.csv
+IMPUTE_STAGE3_TRAITS ?= Root_depth,Root_srl,Root_diameter,Root_biomass,Root_tissue_density,Fine_root_fraction,Inflorescence_height,Flower_pollen_number,Flowering_time,Flowering_onset,Flower_nectar_tube_depth
+IMPUTE_STAGE3_TRAITS_CAT ?= Leaf_phenology,Life_form,Flower_color,Flower_symmetry,Flower_nectar_presence,Shoot_branching
+
+.PHONY: phylotraits_impute_stage3 phylotraits_impute_stage3_cat
+
+phylotraits_impute_stage3:
+	$(MAKE) phylotraits_impute \
+	  IMPUTE_IN=$(IMPUTE_STAGE3_IN) \
+	  IMPUTE_OUT=$(IMPUTE_STAGE3_OUT) \
+	  IMPUTE_TRAITS=$(IMPUTE_STAGE3_TRAITS) \
+	  IMPUTE_USED_LEVELS=0
+
+phylotraits_impute_stage3_cat:
+	$(MAKE) phylotraits_impute_categorical \
+	  IMPUTE_CAT_IN=$(IMPUTE_STAGE3_OUT) \
+	  IMPUTE_CAT_OUT=$(IMPUTE_STAGE3_CAT_OUT) \
+	  TRAITS_CAT=$(IMPUTE_STAGE3_TRAITS_CAT)
+
 # Convenience: numeric + categorical imputation in one go
 IMPUTE_ADD_ENV ?= false
 IMPUTE_ENV_CSV ?= data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv

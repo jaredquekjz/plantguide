@@ -120,7 +120,8 @@ if (!("SSD used (mg/mm3)" %in% names(dt)) && ("SSD combined (mg/mm3)" %in% names
 }
 
 num_cols_new  <- intersect(c("Leaf_thickness_mm", "Frost_tolerance_score", "Leaf_N_per_area", "LDMC"), names(dt))
-num_cols_all  <- unique(c(num_cols_core, num_cols_new))
+traits_existing <- intersect(traits_to_impute, names(dt))
+num_cols_all  <- unique(c(num_cols_core, num_cols_new, traits_existing))
 
 # Optionally join environmental covariates and add to X
 if (add_env_covars) {
