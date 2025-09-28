@@ -156,6 +156,17 @@ FD_main = RaoQ(traits = {SLA, Height, LeafArea, RootDepth, LDMC, SRL, ...}, abun
 
 Usage: include as an additive predictor of multiple functions; consider selected interactions (e.g., FD_main × CWM‑C) where supported by data.
 
+### Grime Strategy (categorical CSR proxies)
+
+- TRY TraitID **196** (“Species strategy type according to Grime”) is present in our local TRY exports (BIOLFLOR subset). After WFO synonym reconciliation it covers **529 of 654** canonical species (~81 %). Values use the classic Grime notation (`c`, `cs`, `csr`, `cr`, `sr`, etc.).
+- Treat these records like the Stage 1/2 EIVE expert values: retain observed categories and build a predictive model for the unlabelled species rather than imputing them.
+- **Suggested workflow**
+  - **Task**: multi-class classification on the Stage 3 trait matrix to predict the Grime category for species lacking expert labels.
+  - **Model**: XGBoost with a softmax objective (or another tree-based classifier that handles mixed predictors). Apply class weighting/focal loss to mitigate class imbalance.
+  - **Features**: CSR inputs (LA, SLA, LDMC), life form, phenology, plant stature, root mechanics, branching architecture, nectar traits, etc. Use the Stage 3 imputed dataset to ensure numeric completeness.
+  - **Evaluation**: stratified CV (macro-F1, per-class recall) plus SHAP/feature-importance checks to keep trait–category relationships biologically sensible (e.g., high SLA + fast phenology → ruderal components).
+  - **Deployment**: output class probabilities for the ~125 unlabelled species; flag low-confidence predictions (<0.4) for expert review before incorporating into downstream indices.
+
 ### Modeling Template
 
 Function ~ CWM‑C + CWM‑S + CWM‑R + SSI_surface/SSI_slope + PSI + BSI + HRI + FD_main + (FD_main × CWM‑C) + controls
