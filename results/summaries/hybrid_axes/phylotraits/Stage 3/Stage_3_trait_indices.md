@@ -43,6 +43,7 @@ Notes
   - Floral traits: color (spectral category), shape, symmetry, size, height, nectar/pollen availability; flowering start, end (phenology)
   - Plant architecture: height, branching/structural complexity; perenniality/annualness
   - Phenology: evergreen/deciduous, leafing duration
+  - Nutrients: Leaf N (required for nutrient proxies); Leaf P (recommended; used in CSR–trait coupling and productivity)
 
 Trait definitions should follow Pérez-Harguindeguy et al. (2016) where applicable.
 
@@ -169,7 +170,10 @@ Usage: include as an additive predictor of multiple functions; consider selected
 
 ### Modeling Template
 
-Function ~ CWM‑C + CWM‑S + CWM‑R + SSI_surface/SSI_slope + PSI + BSI + HRI + FD_main + (FD_main × CWM‑C) + controls
+Function ~ CWM‑C + CWM‑S + CWM‑R + SSI_surface/SSI_slope + PSI + BSI + HRI + FD_main
+           + z(WoodDensity) + z(LeafN) + z(LeafP) + z(Height)
+           + z(WoodDensity × LeafP)
+           + (FD_main × CWM‑C) + controls
 
 Controls may include soil texture, slope, precipitation, temperature, and management.
 
@@ -204,6 +208,37 @@ Controls may include soil texture, slope, precipitation, temperature, and manage
 
 - Santos (2021) shows that greater crop FD (on key plant traits) increases photosynthetic light interception, boosts yield, increases crop soil cover, and reduces weed cover—clear multifunctionality gains via niche complementarity. FD is best modeled as an additive driver with targeted interactions, rather than as a universal scalar multiplier.
 
+### CSR–Trait Coupling (New; based on Han et al., 2024)
+
+Evidence across multiple forest vegetation types and climatic zones shows that the community-weighted means (CWM) of wood density (WD), leaf nitrogen (LNC), leaf phosphorus (LPC), and maximum height (H) jointly and strongly explain community CSR strategy composition. The WD×LPC interaction is especially influential, with WD emerging as the most important single CWM predictor.
+
+Implications and recommended extensions:
+
+- Additive predictors: include z(WoodDensity), z(LeafN), z(LeafP), z(Height) directly in service models (especially productivity, carbon storage, and stability-related outcomes), alongside CSR coordinates.
+- Synergy term: include z(WoodDensity × LeafP) to capture the empirically supported interaction (hierarchical partitioning in Han et al.).
+- CSR cross-check and gap-fill: when LA/SLA/LDMC for StrateFy CSR are missing or low quality, use a CSR-prediction auxiliary model with predictors {WD, LeafN, LeafP, Height, WD×LeafP} to impute CSR (with uncertainty) and to diagnose inconsistencies between measured CSR and community composition.
+- Climate robustness: treat these terms as broadly transferable across climates, but still calibrate weights regionally.
+
+Recommended composite term (standardized within region):
+
+- CSR_modulator = α1·z(WoodDensity) + α2·z(LeafN) + α3·z(LeafP) + α4·z(Height) + α5·z(WoodDensity×LeafP)
+
+Use CSR_modulator in two ways:
+
+1) Diagnostics: regress observed CSR C/S/R (StrateFy) ~ CSR_modulator to check alignment; large residuals flag data/trait issues.
+2) Service models: include CSR_modulator additively with CWM‑C/S/R to improve fit for functions linked to strategy composition (e.g., NPP, biomass, SOC storage, drought stability).
+
+Service‑specific sign expectations:
+
+- NPP/biomass: +LeafN, +LeafP, +Height; WoodDensity often + for standing biomass, neutral/− for instantaneous NPP (context‑dependent).
+- Carbon storage (standing + soil): +WoodDensity; complement with litter recalcitrance terms as available (LDMC, lignin, C:N).
+- Hydrology/temperature regulation: +Height via canopy interception/shading; WD indirectly via structure/longevity.
+
+Estimation notes:
+
+- Start with equal α weights (=1), refine via regularized regression (ridge/elastic net) or hierarchical partitioning; report SHAP/importance and sign consistency.
+- Use abundance‑weighted CWM for all predictors and z‑score within the analysis region/time window.
+
 ## Data Requirements
 
 Minimum trait set:
@@ -225,11 +260,13 @@ Metadata: protocols, provenance, and uncertainty for gap-filled traits.
 - Crop functional diversity drives multiple ecosystem functions during early agroforestry succession. Santos et al. 2021. Path: `papers/mmd/Journal of Applied Ecology - 2021 - Santos - Crop functional diversity drives multiple ecosystem functions during early.mmd`
 - A global method for calculating plant CSR ecological strategies applied across biomes world-wide. Pierce et al. 2016. Path: `papers/mmd/Functional Ecology - 2016 - Pierce - A global method for calculating plant CSR ecological strategies applied across biomes.mmd`
 - Effects of plant functional traits on ecosystem services: a review. Pan et al. Path: `papers/mmd/Effects of plant functional traits on ecosystem services_ a review.mmd`
+- Effects of functional composition on plant competitors, stress-tolerators, and ruderals (forest communities across climatic zones). Han et al. 2024. Path: `papers/mmd/Effects of functional composition on plant competitors.mmd`
 
 ## Trait Data Availability (TRY Enhanced & Local TRY 6.0)
 
 ### Canonical Trait Inputs for Stage 3 Modelling
 - **Leaf traits**: `3108` leaf area (petiole excluded); `3115` specific leaf area; `47` leaf dry matter content; `14` leaf N per dry mass; `4` stem specific density (wood density)
+  - Note: Leaf P per dry mass is recommended where available (present in some local TRY extracts; otherwise treat as a gap to request/augment).
 - **Structural traits**: `3106` vegetative plant height; `343` Raunkiaer life form (perenniality signal); `37` leaf phenology type (evergreen vs deciduous)
 - **Root mechanics**: `1507` root length density; `1080` specific root length; `2006` fine-root mass fraction; `83` root diameter; `6` rooting depth; `363` root dry mass per plant; `82` root tissue density
 - **Architecture**: `140` shoot branching type (canopy structure proxy)
@@ -285,3 +322,28 @@ Metadata: protocols, provenance, and uncertainty for gap-filled traits.
 | Flowering time `335` | 10 856 | Phenology coverage for pollination indices |
 
 *Species counts from `docs/TRY Traits.txt`; these traits are absent in both the enhanced means and the local TRY 6.0 extracts and should be prioritised in the next data request.* For implementation details (including the WFO-based synonym workflow used to merge these traits), see `results/summaries/hybrid_axes/phylotraits/canonical_data_preparation_summary.md` under “TRY Raw Trait Augmentation”.
+
+## StrateFy vs. Expert CSR Alignment (Measured Traits Only)
+
+- Inputs: StrateFy C/S/R from measured LA, SLA, LDMC (no LDMC imputation) for 618 spp.; overlap computed for the 511 spp. with TRY TraitID 196 labels.
+- Agreement banding (`>=0.75` high, `0.40–0.75` medium, `<0.40` low) shows **129 high**, **336 medium**, **46 low** → 91 % of species fall in high/medium confidence.
+- Overlap score distribution: mean **0.63**, median **0.67**, min **0.10**, max **0.95**. Pure competitive (`c`) and `cr` tags align best (mean ~0.71–0.73); stress-heavy classes (`s`, `rs`) show the widest deviation.
+- Auxiliary confidence metrics (stored in `artifacts/stratefy_csr/stratefy_vs_expert_alignment.csv`):
+  - `confidence_gaussian` (σ = 0.2) offers a smooth penalty for total mismatch; conservative tuning (median ~0.25) reflects the overlap profile without losing linear intuition.
+  - `confidence_dirichlet` (α = 15) is ternary-aware and intentionally strict; only near-exact matches produce values ≫0.
+- Interpretation: measured StrateFy coordinates and TRY expert labels agree for the majority of species, providing a defensible backbone for Stage 3 CSR analyses while flagging 46 stress-leaning cases for review.
+
+### Repro commands
+```bash
+# 1. Compute StrateFy percentages (measured LA/SLA/LDMC only)
+python scripts/compute_stratefy_csr.py \
+  --traits artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_imputed_cat.csv \
+  --out artifacts/stratefy_csr/stage3_stratefy_scores.csv
+
+# 2. Compare against expert labels, derive overlap + confidence scores
+python scripts/compare_stratefy_vs_expert.py \
+  --stratefy_csv artifacts/stratefy_csr/stage3_stratefy_scores.csv \
+  --expert_csv artifacts/try_trait196_grime_strategy.csv \
+  --out_csv artifacts/stratefy_csr/stratefy_vs_expert_alignment.csv
+```
+(If the helper scripts are absent, reproduce with `notebooks/stage3_stratefy_alignment.ipynb` or the snippet in this document.)

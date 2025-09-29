@@ -191,6 +191,80 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 Deprecated references:
 - Old helper names under `scripts/clean_gbif_extract_bioclim*.R` are not used anymore. The source of truth lives under `src/Stage_1_Data_Extraction/gbif_bioclim/`.
 
+## GloBI Interactions (Stage 3) — Extraction + Join
+
+Purpose
+
+- Add species–interaction features (pollination, herbivory, pathogen, dispersal proxies) to the Stage 3 plant list, using the local GloBI cache and the WFO backbone for robust name matching.
+
+Inputs
+
+- GloBI interactions (local cache): `/home/olier/plantsdatabase/data/sources/globi/globi_cache/interactions.csv.gz`
+- WFO classification backbone: `/home/olier/plantsdatabase/data/Stage_1/classification.csv`
+- Stage 3 trait table (654 spp): `/home/olier/ellenberg/artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_imputed_cat.csv`
+
+Outputs
+
+- Per‑plant GloBI features (Stage 3 set): `/home/olier/ellenberg/artifacts/globi_mapping/stage3_globi_interaction_features.csv`
+- Final joined dataset (Stage 3 traits + GloBI features): `/home/olier/ellenberg/artifacts/globi_mapping/stage3_traits_with_globi_features.csv`
+- Raw matched interactions (for drill‑downs): `/home/olier/ellenberg/artifacts/globi_mapping/globi_interactions_raw.csv.gz`
+- Report (coverage, top partners, sanity checks): `results/summaries/hybrid_axes/phylotraits/Stage 3/globi_interactions_report.md`
+
+Procedure (repro)
+
+1) Extract plant binomials from GloBI (streaming)
+
+```bash
+cd /home/olier/plantsdatabase
+tmux new -s globi_binom -d "python src/Stage_3/extract_globi_plant_binomials_streaming.py > logs/globi_binom.log 2>&1"
+tmux attach -t globi_binom  # monitor; output: data/Stage_3/globi_plant_binomials.csv
+```
+
+2) WFO normalization of GloBI plants (parallel + fuzzy)
+
+```bash
+cd /home/olier/plantsdatabase
+# smoke test on 100 names
+R_LIBS_USER="/home/olier/ellenberg/.Rlib" Rscript src/Stage_3/globi_wfo_normalize.R --test > logs/globi_wfo_test.log 2>&1
+
+# full run in tmux
+tmux new -s globi_wfo -d "R_LIBS_USER='/home/olier/ellenberg/.Rlib' Rscript src/Stage_3/globi_wfo_normalize.R > logs/globi_wfo.log 2>&1"
+tmux attach -t globi_wfo
+
+# outputs
+# data/Stage_3/globi_plants_wfo/globi_plants_with_wfo.csv
+# data/Stage_3/globi_plants_wfo/normalization_summary.txt
+```
+
+3) Stream interactions and build Stage 3 features (WFO synonyms aware)
+
+```bash
+cd /home/olier/ellenberg
+mkdir -p artifacts/globi_mapping logs
+tmux new -s globi_join -d "python -u scripts/globi_join_stage3.py > logs/globi_join.log 2>&1"
+tmux attach -t globi_join  # monitor progress; writes raw + features + final join
+```
+
+4) Generate summary report
+
+```bash
+cd /home/olier/ellenberg
+python scripts/globi_report_stage3.py
+# report: results/summaries/hybrid_axes/phylotraits/Stage 3/globi_interactions_report.md
+```
+
+Notes
+
+- Name matching strictly follows the WFO backbone (accepted + synonyms), normalized (lowercase; diacritics removed). GloBI matches are credited to the canonical `wfo_accepted_name`.
+- Herbivory currently includes some nectar/pollen “eats” events for pollinators. If you prefer herbivory to reflect tissue consumers only, post‑filter the raw interactions by excluding partners that also “pollinate/visitFlowersOf” the same plant, or limit herbivory to records with plant as target and partner kingdom = Animalia.
+- Dispersal categories depend on available interaction labels in the GloBI dump; extend mapping in `scripts/globi_join_stage3.py` if needed.
+
+Key Artifacts (canonical locations)
+
+- GloBI→WFO normalized plants: `/home/olier/plantsdatabase/data/Stage_3/globi_plants_wfo/globi_plants_with_wfo.csv`
+- Stage 3 features (per plant): `/home/olier/ellenberg/artifacts/globi_mapping/stage3_globi_interaction_features.csv`
+- Final modelling dataset with GloBI features: `/home/olier/ellenberg/artifacts/globi_mapping/stage3_traits_with_globi_features.csv`
+
 ## Expanded 600: Final Traits+Bioclim Dataset + Merge Script (Ground Truth)
 
 This section records the exact dataset and merge step used for the expanded 600‑species runs. It aligns with the Makefile targets and the expanded600 hybrid summaries in this folder.

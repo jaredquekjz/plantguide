@@ -1,0 +1,576 @@
+\section*{Functional flower traits and their diversity drive pollinator visitation}
+
+Felix Fornoff ${ }^{1}$, Alexandra-Maria Klein ${ }^{1}$, Florian Hartig ${ }^{2}$, Gita Benadi ${ }^{3}$, Christine Venjakob ${ }^{4}$, H. Martin Schaefer ${ }^{5}$ and Anne Ebeling ${ }^{6}$
+${ }^{1}$ Faculty of Environment and Natural Resources, Nature Conservation and Landscape Ecology, Univ. of Freiburg, Freiburg, Germany
+${ }^{2}$ Faculty of Biology and Pre-Clinical Medicine, Theoretical Ecology, Univ. of Regensburg, Regensburg, Germany
+${ }^{3}$ Faculty of Environment and Natural Resources, Biometry and Environmental System Analysis, Univ. of Freiburg, Freiburg, Germany
+${ }^{4}$ Inst. of Ecology, Ecosystem Functions, Leuphana Univ. of Lüneburg, Lüneburg, Germany
+${ }^{5}$ Inst. of Biology I, Evolutionary Biology and Animal Ecology, Faculty of Biology, Univ. of Freiburg, Germany
+${ }^{6}$ Inst. of Ecology, Univ. of Jena, Jena, Germany
+Corresponding author: F. Fornoff, Faculty of Environment and Natural Resources, Nature Conservation and Landscape Ecology, Univ. of Freiburg, Freiburg, Germany. Email: felix.fornoff@nature.uni-freiburg.de
+
+Decision date: 23-Nov-2016
+
+This article has been accepted for publication and undergone full peer review but has not been through the copyediting, typesetting, pagination and proofreading process, which may lead to differences between this version and the Version of Record. Please cite this article as doi: [10.1111/oik.03869].
+
+\section*{(Summary)}
+
+Recent studies have shown that the diversity of flowering plants can enhance pollinator richness and visitation frequency and thereby increase the resilience of pollination. It is assumed that flower traits explain these effects, but it is still unclear which flower traits are responsible, and knowing that, if pollinator richness and visitation frequency are more driven by mass-ratio effects (mean trait values) or by trait diversity.
+
+Here, we analyse a three-year data set of pollinator observations collected in a European grassland plant diversity experiment (The Jena experiment). The data entail comprehensive flower trait measurements, including reward traits (nectar and pollen amount), morphological traits (height, symmetry, area, colour spectra), and chemical traits (nectar-amino acid and nectar-sugar concentration). We test if pollinator species richness and visitation frequency of flower communities depend on overall functional diversity combining all flower traits within a community, single trait diversities (within trait variation) and community-weighted means of the single traits, using Bayesian inference.
+
+Overall functional diversity did not affect pollinator species richness, but reduced visitation frequency. When looking at individual flower traits separately, we found that single trait diversity of flower reflectance and flower morphology were important predictors of pollinator visitation frequency. Moreover, independent of total flower abundance, community-weighted means of flower height, area, reflectance, nectar-sugar concentration and nectar-amino acid concentration strongly affected both pollinator species richness and visitation frequency.
+
+Our results, challenge the idea that functional diversity always positively affects ecosystem functions. Nonetheless, we demonstrate that both single trait diversity and mass-ratio effects of flower traits play an important role for diverse and frequent flower visits, which underlines the functionality of flower traits for pollination services.
+
+\section*{$\mathbb{0}$}
+
+\section*{Introduction}
+
+Human activities alter global ecosystems, often with the consequence of decreasing species diversity (Cardinale et al. 2012; Naeem et al. 2012). Many studies have found that the resulting loss of functional diversity has negative effects on ecosystem functions and services provided by these systems (e.g. Hooper and Vitousek 1997; Tilman et al. 1997; Bunker et al. 2005). Understanding the key dimensions of functional diversity that maintain ecosystem functioning is therefore of great interest, both from a practical and scientific viewpoint.
+
+Two mechanisms are widely discussed for explaining trait effects on ecosystem functioning (Dias et al. 2013): (1) diversity effects influencing ecosystem functions via complementarity or nonadditive effects (synergism, antagonism) (Callaway 1995), (2) mass-ratio effects, traits expressed by the most abundant species within a community dominate ecosystem functions, represented by community-weighted means (CWM) (Hector 1998; Grime 1998). We are only beginning to understand general patterns with respect to these mechanisms, and the mechanisms that mediate these effects are still understudied for many important ecosystems. Moreover, many ecosystem functions depend on trophic interactions, but the majority of studies investigating trait effects on ecosystem functions focus on one trophic level (Hooper et al. 2005; Bello et al. 2010). Plant-pollinator systems are key trophic interactions fuelling plant reproduction. They strongly respond to changes in biodiversity and are subject to substantial alterations of diversity and community composition by human interventions. Previous studies found that plant species richness increases pollinator species richness and visitation frequency (Ebeling et al. 2008; Fründ et al. 2010). Frequent and diverse visitations will likely increase pollination success (Brittain et al. 2013, Fründ et al. 2013, Garibaldi et al. 2013).
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+For comprehensibility, we use the term pollinator for all flower visitors, though it needs to be mentioned that not every flower visitation event results in the transfer of pollen (King et al. 2013).
+
+Different pollinators prefer distinct floral traits, or are excluded by them (Blüthgen and Klein 2011). It is generally assumed that diverse plant communities attract a more species rich pollinator community because they provide a higher diversity of flower traits that allow more pollinator species to coexist via niche partitioning (McGill et al. 2006). Junker et al. (2015), who simulated pollinator - flower interactions, found that species richness of pollinators increases with overall functional diversity of plant communities and we expected to find the same pattern. Additionally, we expected a negative effect of overall functional diversity of all flower traits in a community ( $\mathrm{FD}_{\mathrm{Q}}$ ) on visitation frequency at the plant community level, as the most abundant pollinators in our data set were generalists. For generalists high $\mathrm{FD}_{\mathrm{Q}}$ requires changes in, for example, search (low flowers within the vegetation layer vs. high flowers above the vegetation layer) and handling (tubular vs. open flowers) behaviour which are likely to decrease exploitation efficiency and plant community visitation frequency (Cakmak et al. 2009). Combining both, we hypothesize that increasing $\mathrm{FD}_{\mathrm{Q}}$ increases pollinator species richness, but decreases visitation frequency of plant communities (HI, Figure 1A). The diversity of expressions within each single trait and its effect on pollinators needs to be evaluated to identify the traits that likely cause the $\mathrm{FD}_{\mathrm{Q}}$ effect. Positive effects on pollinator diversity have been suggested for diversity in flower morphology, flower height and pollen amount, though in independent studies (e.g.; Yoshioka et al. 2007; Junker et al. 2013, 2015). A comprehensive analysis of the diversity effect of flower traits is still missing. We expected that for each functional trait the diversity of trait expressions ( $\mathrm{FD}_{\text {trait }}$ ) within a flower community should increase pollinator species
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+richness and decrease visitation frequency by the same mechanisms as described for
+$\mathrm{FD}_{\mathrm{Q}}$.
+The mass-ratio hypothesis postulates that the dominant trait expressions have the
+
+\section*{$\cup$}
+strongest effect on the function of interest (Hector 1998; Grime 1998). Flower visitation frequency is frequently driven by the most frequent pollinators, generally the social bees. These groups of bees are known to be polylectic, though individuals of e.g. bumble bees develop flower constancy to specialize on profitable abundant flowers (Chittka et al. 1999). Direct traits that represent pollen or nectar rich flowers, e.g. sugar, nectar and pollen, or indirect traits, e.g. colour or height, could act as attractors for these species. Accordingly, pollinator visitation frequency should be increased by high relative values (mass-ratio) of the most attractive trait expressions in flower communities.
+
+A limitation of many of the existing studies is that they are either of theoretical nature, or that they use only a subset of traits. Consequently, the inherent importance of flower traits, and whether diversity or mass-ratio effects are driving pollinator diversity, is currently not well understood. Dias et al. (2013) proposed that in order to disentangle the effects of functional diversity and community composition (mass-ratio) both should be considered within the same analysis. Few examples follow this approach and the majority identifies mass-ratio effects as main driver (Díaz et al. 2007; Mokany et al. 2008; Schumacher and Roscher 2009; Lavorel et al. 2011; Mouillot et al. 2011; Laughlin 2011, but see Schuldt et al. 2014). In our study we therefore distinguish mass- ratio effects represented by trait community-weighted mean (CWM) and single trait diversity ( $\mathrm{FD}_{\text {trait }}$ ) effects within one regression model. We hypothesise, that community-weighted mean trait values influence flower visitation frequency, but flower community $\mathrm{FD}_{\text {trait }}$ has a negative effect on visitation frequency (HII, Figure 1B). Furthermore, pollinator species richness of a plant community may be
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+affected by trait effects and additionally increases with sample size. As such, pollinator species richness is correlated with visitation frequency and therefore, should respond to the same CWMs as visitation frequency. We therefore formulate as third hypothesis that pollinator species richness responds to flower community single trait diversity ( $\mathrm{FD}_{\text {trait }}$ ) as well as trait community-weighted mean (HIII, Figure 1B).
+
+\section*{Methods}
+
+Experimental design and pollinator flower observations
+
+Data were collected at "The Jena Experiment" (Thuringia, Germany; $50^{\circ} 55^{\prime} \mathrm{N}, 11^{\circ} 35^{\prime} \mathrm{E}$; 130 m a.s.l., Figure A1), a grassland diversity experimental site established in 2002. The experiment consists of communities of common European grassland species sown in 82 $20 \times 20 \mathrm{~m}$ plots arranged in a regular grid. Species composition was maintained by weeding of invading plant species. The diversity gradient consists of 16 treatment plots each for monocultures, two-species mixtures, four-species mixtures and eight-species mixtures, 14 treatment plots of 16-species mixtures and four treatment plots of 60 species mixtures. Each mixture was compiled randomly (except for 60 species mixtures containing all species). For more details on the realized species and the general set up of the Jena Experiment see Roscher et al. (2004).
+
+Observations of flower-pollinator interactions and blossom cover were recorded; each flower-visiting insect and the visited plant species was documented at species level. Unknown pollinator species were captured for later identification. In 2008 all 82 plots (including not weeded only grass plots) were included into the analyses, but only 73 in 2005 and 2006, due to non-flowering of the remaining 9 plots (only grass plots). Data collection in 2005 and 2006 consisted of three surveys of 6 min per plot, each within a square of $80 \times 80 \mathrm{~cm}$ (25th May, 16th June, 19th August and 10th June, 18th June, 5th August, respectively; Ebeling et al. 2008). In 2008 four surveys of 6 min per plot were
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+conducted (05th May, 01st June, 16th July, 6th August; Hudewenz et al. 2012), resulting in 766 plot observations ( 3 times $\times 73$ plots in $2005+3$ times $\times 73$ plots in 2006 + 4 times x 82 plots in 2008) and overall 4596 minutes observation time. Blossom cover was estimated for each plant species after each pollinator observation as percentage cover of the total flower area of sampled core areas.
+
+\section*{Flower traits}
+
+During the whole observation period we found 44 of the 60 plant species in flower and conducted trait measurements for all of these species, although nectar extraction was not possible for all species (see Appendix 1 Methods A1). Traits ranged from flower reflectance, height and inflorescence area to sugar and amino acid content of nectar (for a full list of all 13 traits, see Table 1). All traits were measured on ten blossoms of different plant individuals from the monoculture plots at the experimental field sites during the vegetation period in 2011. In order to determine blossom colour, we measured light reflectance spectra using AvaSpec-2048 Fiber Optic Spectrometer and an AvaLight-XE as a standardized light source (both Avantes, RB Eerbeek, The Netherlands). Since we have no information on the visual perception range for all pollinators recorded we classified the spectra into four binomial categories ( $400-680 \mathrm{~nm}$ each category 70 nm ), blue, green, yellow and red (spectra show local maxima at the respective range), e.g. purple flowers obtain the value 0 for green and yellow and 1 for blue and red. UV reflectance was taken from the database BiolFlor (www.biolflor.de; Klotz et al. 2002), which assigns the numbers from one to seven to ranges of reflectance intensity ( one $=0-7 \%$, two $=8-15 \%$, three $=16-27 \%$, four $=28-39 \%$, five $=40-66 \%$, six $=67-85 \%$, seven $=85-100 \%$; Klotz et al. 2002). Flower height and inflorescence area were measured using a calliper. Flower height is the distance between the flower and the surface. Flower area was calculated for floral units (FU), an aggregation of flowers which a pollinator can access without flying (individual flower of single
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+flowering species e.g. Ranunculus acris L. or full flower stand of composite flowers of e.g. Leontodon autumnalis L.) or whole umbel including several blossoms (Heracleum sphondylium L. or pseudo umbels of Achillea millefolium L.). For round FUs area (A) is calculated by $A=p i^{*} r^{2}$ for non-round FUs we assumed a rectangle and calculated length x width (e.g. for Lathyrus pratensis, with of FU x height of FU ). Flower symmetry was also judged based on FUs not the individual flower, seen from the side to which the flower opens, for e.g. Asteraceae and Apiaceae: radial symmetry, Fabaceae: lateral symmetry. Nectar content (nectar production) was measured using glass capillaries on overnight gauze bagged flowers in the morning between 6 to 12 am. The same nectar was used for sugar content (sucrose, fructose and glucose) and amino acid (alanine, arginine, aspartic acid, cystine, glutamic acid, glycine, histidine, isoleucine, leucine, lysine, methionine, phenylalanine, proline, serine, threonine, tyrosine, valine) analysis via HPLC. Pollen amount was categorized into little/high pollen availability. Details of the nectar and pollen collection and chemical analyses are in the Supplementary material Appendix 1 Methods A1. The flowering length (in days) was measured, by daily investigation of marked FUs. Stamen number and location of individual flowers or florets were determined in the field and supplemented using the plant identification book Rothmaler (Jäger et al. 2013). BiolFlor data base (Klotz et al. 2002) was used to complement the trait information of nectar amount for 6 plant species and for colour of one species, since no measurements in the field were taken for this plants and traits.
+
+\section*{Statistical analyses}
+
+Of the 766 plot observations, 231 observations did not have a single blossom in flower. Diversity cannot sensibly be calculated for these plots and they were therefore excluded (see also Austin and Meyers 1996). Additionally, 49 observations did not have sufficient information to calculate total amino acid single trait diversity, due to
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+insufficient amounts of nectar sampled for chemical analyses and were also excluded. Hence, our total sample size available for statistical analysis comprised 486 plots. Two response variables, pollinator visitation rate and species richness, and all trait indices were calculated on the plot level to analyse the trait effects of flower communities on pollinator communities. Functional diversity was calculated using the function dbFD of the R package 'FD' in the software R (R Development Core Team 2014; Laliberté et al. 2014). We used the index of functional diversity based on the quadratic entropy of Rao (1982) that incorporates both the relative abundances of species (in our study: blossom cover) and a measure of the pairwise functional differences between species as suggested by Botta-Dukát (2005)
+\[
+F D=\sum_{i=1}^{S-1} \sum_{j=i+1}^{S} d_{i j} p_{i} p_{j}
+\]
+where $\mathrm{d}_{\mathrm{ij}}$ is the difference between the $\mathrm{i}^{\text {th }}$ and $\mathrm{j}^{\text {th }}$ species and $\mathrm{p}_{\mathrm{i}}$ is the proportion of the species i of the total community. As suggested by Botta-Dukát we use Euclidean distance divided by the number of traits
+\[
+d_{i j}=\frac{1}{n} \sum_{k=1}^{n}\left(X_{i k}-X_{j k}\right)^{2}
+\]
+where n is the number of traits considered, $\mathrm{X}_{\mathrm{ik}}$ is the value of trait k in species i . Trait selection was based on their assumed importance for flower-pollinator interactions. Table 1 shows these traits, their unit, range and data structure. All traits listed in Table $1(\mathrm{n}=13)$ were included to calculate overall trait diversity $\left(\mathrm{FD}_{\mathrm{Q}}\right)$ using formula (1). Each trait was individually used ( $\mathrm{n}=1$ ) in formula (1) to calculate single trait diversity $\left(\mathrm{FD}_{\text {trait }}\right)$.
+
+In addition to trait diversity, we calculated community-weighted means (CWM) for each individual trait. CWM values express the abundance-weighted mean values of numerical variables or the percentage of relative abundance of each factor level of categorical variables, where n is the number of species in a community, $\mathrm{p}_{\mathrm{i}}$ is the
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+proportion of the species i of the total community and trait the trait value of the species
+i.
+$C W M=\sum_{i=1}^{n} p_{i} \times$ trait
+
+All parameters were standardized by subtracting their mean value and dividing by their standard deviation. Therefore, effect sizes are more comparable, but should not be interpreted as relative to their natural units. Prior to statistical analysis, all covariates were investigated for collinearity and variables with correlation values higher than 0.65 were excluded from the model (for an overview see Supplementary material Appendix 1 Fig. A1 \& A2) (Dormann et al. 2013), but will be discussed accordingly. $\mathrm{FD}_{\text {trait }}$ and $\mathrm{FD}_{\mathrm{Q}}$ indices were correlated to varying amounts, therefore it was necessary to explore the effects of both in separate models. Zero-inflation and overdispersion are common for this type of pollinator count data and therefore we modelled the responses (pollinator species richness and visitation frequency) with zero-inflated Poisson generalized linear mixed effects models (ZIP GLMM) with covariates depending on our respective hypotheses. Model parameterisation is shown in Equation 1.
+
+Equation 1: Zero-inflated Poisson generalized linear mixed effects model
+The models used for testing hypothesis I were:
+(1.1) Species richness $\sim$ ZIP (cover $+\mathrm{FD}_{\mathrm{Q}}+$ Random)
+(1.2) Visitation frequency ~ ZIP (cover $+\mathrm{FD}_{\mathrm{Q}}+$ Random)
+
+The models used for testing hypothesis II and III were:
+(2.1) Species richness $\sim$ ZIP (cover $\quad+$ trait $_{1}$-CWM $+\ldots+$ trait $_{1}$-CWM
+
+CWM part
+\[
++ \text { trait }_{1}-\mathrm{FD}_{\text {trait }}+\ldots+\text { trait }_{1}-\mathrm{FD}_{\text {trait }} \quad \# \mathrm{FD}
+\]
+part
+> + Random)
+(2.2) Visitation frequency ~ ZIP (cover + trait -CWM + ... + trait -CWM \# CWM part
++ trait $_{1}-$ FD $_{\text {trait }}+\ldots+$ trait $_{i}-$ FD $_{\text {trait }} \quad$ \# FD
+part
++ Random)
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+The general structure of a ZIP GLMM is given in Equation 2.
+Equation 2: Mathematical model of the two-way nested Zero-Inflated-Poisson GLMM
+\[
+\begin{aligned}
+& \mathrm{y}_{\mathrm{ijk}} \sim \operatorname{ZIP}\left(\lambda_{\mathrm{ijk}} \times \mathrm{I}_{\mathrm{ijk}}\right) \\
+& \log \left(\lambda_{\mathrm{ijk}}\right)=\alpha+\beta_{1} \times m_{\mathrm{ijk}}^{1}+\beta_{2} \times m_{\mathrm{ijk}}^{2}+\ldots+\varepsilon_{\mathrm{ijk}}+\mathrm{u}_{\mathrm{j}}+\mathrm{v}_{\mathrm{jk}} \\
+& \mathrm{I}_{\mathrm{ijk}} \sim \operatorname{Bernoulli}(\mathrm{Z}) \\
+& \varepsilon_{\mathrm{ijk}} \sim \operatorname{Normal}(0, \mathrm{O}) \\
+& \mathrm{u}_{\mathrm{j}} \sim \operatorname{Normal}\left(0, \sigma_{\text {Plot }}\right) \\
+& \mathrm{v}_{\mathrm{k}} \sim \operatorname{Normal}\left(0, \sigma_{\text {Survey }}\right)
+\end{aligned}
+\]
+
+The response ( y ) is dependent on $\lambda$ calculated by the linear regression with parameters; intercept ( $\alpha$ ), prior ( $\beta_{\mathrm{I}}$ ), predictor variable ( $\mathrm{m}^{\mathrm{l}}$ ) and the random terms ( $\varepsilon, \mathrm{u}$ and v ); overdispersion ( O ) and the incidence of a non-zero observation ( I ). The random terms ( $u$ and $v$ ) in the model included survey ID (Levels 1 to 10 ) nested within plots (levels 1 to 82 ) representing the experimental design and an overdispersion parameter $(\mathrm{O})$. We expected the variance between sampling seasons to be greater than the variance between years, therefore we did not include year as a random term but expected the random term season to also capture variation between years. We specified mildly informative priors ( mean $=0$, sigma $=10$ ) for the main effects. This technique, also known as the "Bayesian Lasso", avoids overfitting in complex models (Park and Casella 2008). One advantage of this method over AIC-based model selection is that it is more conservative regarding effect sizes, due to preference for low effect sizes introduced by the prior. In contrast, AIC-based model selection can lead to overestimation of effects, particularly when predictors are collinear.
+
+Bayesian posteriors for the models were estimated using JAGS 3.4.0 and the Rpackages: rjags (Plummer; Plummer and Stukalov 2014) and jagsUI (Kellner 2015). MCMC chains were considered converged at Rhat values (Potential scale reduction factor) <1.05 (Gelman et al. 2003). A Bayesian analysis does not provide p-values for
+effect sizes, but the posterior distribution that is calculated can still be intuitively interpreted: it provides the probability that the effect is positive or negative. Note that the p-value is often misinterpreted as exactly this probability (Cohen 1994). We considered model parameters with $95 \%$ credible intervals on either positive or negative value as substantial evidence for an effect towards positive and negative values, respectively. Note that the p-value is often misinterpreted as exactly this probability (Cohen 1994).
+
+\section*{Results}
+
+Pollinator community and community overall functional diversity ( $\mathrm{FD}_{\mathrm{Q}}$ )
+
+In total 67 species of pollinators ( 17 solitary bees, 24 social bees (one Apis, two Halictus, six Bombus, 15 Lasioglossum), 21 Syrphidae and five wasps of unknown genus) were visiting blossoms of 44 plant species. Species richness of pollinators and plant species within individual plots and censuses ranged from zero to six and zero to 14, respectively. The data consisted of 6450 individual observations ( 6191 bees), of which 3982 observations belonged to Apis mellifera, 1888 Bombus, 230 syrphids, 136 solitary and semi-social bees, and 29 wasps. Wild bees represented $61 \%$ and syrphids $30 \%$ of the overall species. Two bee species were specialized on a single plant family, but both were observed only once. All other species were flower generalists, hence visit flowers of a variety of different plant families (Westrich 1990). We considered flies and wasps of this study as generalist since these species do not tend to develop strong specialisations. Therefore, we regarded our observed pollinator community as generalist community. Pollinator visitation frequency was correlated with pollinator species richness (Spearman's $\mathrm{r}=0.89, \mathrm{p}<0.001$ ). $\mathrm{FD}_{\mathrm{Q}}$ was positively correlated with plant species richness (Spearman's $\mathrm{r}=0.78, \mathrm{p}<0.001$ ).
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+In order to test Hypothesis I , blossom cover and $\mathrm{FD}_{\mathrm{Q}}$ were used as predictors for pollinator species richness and visitation frequency in Models 1.1 and 1.2. The models identified a strong positive correlation between blossom cover and pollinator species richness and visitation frequency. As expected, visitation frequency was negatively affected by $\mathrm{FD}_{\mathrm{Q}}$, but no clear signal was found for species richness (Table 3, Figures 1 and 2). Visitation frequency showed exponential increase over our measured range of 150\% blossom cover, whereas species richness indicated saturation within the range. The model for visitation frequency showed a large degree of uncertainty about the $\mathrm{FD}_{\mathrm{Q}}$ parameter. This high variation may have been due to high variation between samples and sampling seasons represented as random terms in Figure 2. Model 1.1 (species richness) identified $89 \%$ of the observed zeros as originating from the Poisson distribution and $11 \%$ as additional zeros, whereas model 1.2 (visitation frequency) identified all observed zeros as true zeros belonging to the Poisson distributed response with respect to the fitted model, the same pattern is present in Models 2.1 and 2.2 (Table 3).
+
+Single trait diversity ( $\mathrm{FD}_{\text {trait }}$ ) and community mean ( CWM ) of individual traits In order to test for hypothesis II and III, we used two different models, one for species richness (2.1) and one for visitation frequency (2.2). As predictor variables, blossom cover, CWM and $\mathrm{FD}_{\text {trait }}$ for each flower trait entered both models (Equation 1). In general, we found the same patterns of trait effects for pollinator species richness and visitation frequency. Additionally, flower cover had a strong positive effect on both response variables (Figure 3 \& Table 3). Zero-inflation showed the same pattern as discussed for Model 1.1 and 1.2, where only pollinator species richness data was zero inflated.
+
+In support of Hypothesis II, flower visitation frequency was influenced by the CWMs of four traits, but also responded to two trait $\mathrm{FD}_{\text {trait }}$ measures. CWM of flower height was
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+positively correlated with visitation frequency and moderately correlated with CWM of flower area (Pearson's $r=0.65, \mathrm{p}<0.001$ ). CWM of nectar-sugar concentration was positively correlated with visitation frequency. Green reflectance was negatively correlated with visitation frequency and a priori correlated with white flowers since other flowers rarely reflected strongly in this range. CWM of amino acid amount was negatively correlated with visitation frequency.
+$\mathrm{FD}_{\text {trait }}$ of floral unit symmetry was negatively correlated with visitation frequency. Since floral unit symmetry- and nectar access $\mathrm{FD}_{\text {trait }}$ were strongly positively correlated (Pearson's $r=0.84, \mathrm{p}<0.001$ ) the effects of both traits were indistinguishable in this analysis and floral unit symmetry $\mathrm{FD}_{\text {trait }}$ results will be discussed as flower morphology $\mathrm{FD}_{\text {trait }}$ from now on. Colour $\mathrm{FD}_{\text {trait }}$ was correlated with UV FD ${ }_{\text {trait }}$ (Pearson's $r=0.75, \mathrm{p} <0.001$ ), in the model we used $U V \mathrm{FD}_{\text {trait }}$ only but will refer to it as reflectance $\mathrm{FD}_{\text {trait }}$ from now on. Reflectance $\mathrm{FD}_{\text {trait }}$ was positively correlated with visitation frequency. Figure 3 shows tested parameters and their effect distributions, Table 3 all influential parameters including their effect size, credible intervals and effect direction of posterior samples.
+
+As expected in hypothesis III, three of the CWM parameters strongly influenced visitation frequency (flower height, colour green and nectar-amino acid concentration) and were also correlated with pollinator species richness in Model 2.2. Surprisingly, no $\mathrm{FD}_{\text {trait }}$ measure was positively correlated with species richness (Figure 3 \& Table 3).
+
+\section*{Discussion}
+
+Using, to the best of our knowledge, the largest and most complete data set on pollinators and flower traits collected so far in a controlled biodiversity manipulation experiment, we tested overall trait diversity, single trait diversity and communityweighted mean effects of 13 flower traits on pollinator visitation frequency and
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+pollinator species richness. Our results, based on plot community observations, showed that pollinator visitation frequency declined with increasing overall trait diversity ( $\mathrm{FD}_{\mathrm{Q}}$ ) of plant communities and that pollinator species richness was not affected by $\mathrm{FD}_{\mathrm{Q}}$, in a generalist dominated pollinator community. When comparing single trait diversities ( $\mathrm{FD}_{\text {trait }}$ ) and community mean values (CWM) of single traits, we found evidence for diversity and mass-ratio effects influencing pollinator-flower interactions. Moreover, flower reflectance, flower height/area, flower morphology, nectar-sugar concentration and nectar-amino acid concentration were the most important traits shaping this plantinsect interaction. Additionally, the analyses underlined the pronounced positive effect of increasing blossom cover on pollinator diversity.
+
+Effects of overall trait diversity ( $\mathrm{FD}_{\mathrm{Q}}$ ) on pollinator visitation
+
+Cadotte et al. (2011) predicted a positive correlation between functional diversity and
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-15.jpg?height=1421&width=266&top_left_y=1384&top_left_x=0)
+ecosystem functions. We showed that the opposite was true because $\mathrm{FD}_{\mathrm{Q}}$ reduced one proxy of pollination service, visitation frequency. This supported hypothesis I where we expected that increasing $\mathrm{FD}_{\mathrm{Q}}$ of all flower traits of a community is associated with a decrease in visitation frequency in pollinator communities dominated by generalist bees. An explanation is that a polylectic pollinator foraging on a trait-diverse flower community needs to alter its handling behaviour in respect to changing flower traits, increasing the time spent per flower (Cakmak et al. 2009). In consequence decreased exploitation efficiency leads to decreased attractiveness of diverse communities. Many polylectic bee species have developed flower constancy to counterbalance efficiency loss, allowing them to efficiently exploit flowers of the same species. This behavioural adaptation could also explain decreased flower visits in our trait diverse plant communities, since a flower constant pollinator only visits flowers of the trait combination it has chosen for its actual foraging bout. Theoretically, in pollinator communities with larger proportions of specialised species, the same mechanism should
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+decrease visitation frequency given equal pollinator species abundances.-The dilution of trait expressions would decrease visitation frequency of specialized and flower constant pollinators, especially if flower communities expressing the same trait values but with low diversity are nearby, as provided by the Jena Experiment set up.
+
+The lack of an effect of functional diversity on pollinator species richness can be attributed to the lack of specialized pollinators. Even though some abundantly observed species show specialisation on certain traits (Bombus lapidarius L.: short tongue - open flower, Bombus pascuorum Scopoli: long tongue - tubular flower), most have developed ways to still access trait mismatching flowers (e.g. short tonged bees destructively open tubular flowers at the basis; Stout et al. 2000). Furthermore, phylogenetically distant pollinator groups including Coleopterans and some Dipterans were not or rarely observed, hence our results account for highly generalist-dominated communities an d the observed patterns could be reversed in communities hosting a larger proportion of specialised or phylogenetically distant pollinators as shown by a simulation of a similar grassland community by Junker et al. (2015). A previous study of the same data set by Ebeling et al. (2008) found pollinator species richness and visitation frequency to increase with flower species richness. Although flower species richness and $\mathrm{FD}_{\mathrm{Q}}$ are highly correlated, our analysis showed a negative effect of $\mathrm{FD}_{\mathrm{Q}}$ on visitation frequency, in contrast to the positive effect of flower species richness found by Ebeling et al. (2008). We argue that this difference can be explained by the different temporal resolution of the analyses. Ebeling et al. (2008) pooled all six surveys of flower and pollinator communities at the plot level over a two year period, including observations of zero pollinators in plots with zero flower cover. In our study, we tested individually for each point in time whether a relationship between flower traits and pollinator visitations existed. In contrast to Ebeling et al. (2008), this required removing plots where no flowers occurred from the data. We summarize that the effects
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+found by Ebeling et al. (2008) only become apparent when considering a larger time interval. These effects were not visible or even reversed at any given point in time, because they result from more continuous provision of flowers over time in more diverse plant communities (i.e. a lower probability of periods with zero flowers, Fig. A4).
+
+Effect of community-weighted means on pollinator richness and visitation frequency Mass-ratio effects include positive biodiversity effects resulting from dominance of certain species or trait expressions comprising the highest influence on the function of interest (Huston 1997; Aarssen 1997).
+
+As expected, visitation frequency was primarily influenced by mass-ratio effects, in particular positive by high values of flower height, dominance of green in flower reflectance and low amino acid concentration. Further, pollinator richness was affected by the same set of CMWs and in the same direction as visitation frequency. Additionally, high sugar CWM had a positive effect on pollinator species richness. Both results are in accordance with our hypothesis that (1) pollinator visitation frequency of a generalist pollinator community is mainly driven by mass-ratio effects. (2) High visitation frequencies are correlated with high species richness, potentially explaining the congruent effect of CWMs on pollinator species richness in our analysis. In the following we will discuss in detail the influential traits identified by our analysis. Flower height CWM
+
+Flower height/area was positively correlated with visitation frequency and pollinator species richness. In our study, high/large flowers were represented by a diversity of families including Asteraceae, Apiaceae and Ranunculaceae and attracted a diverse and frequently visiting pollinator community (see also Hegland and Totland 2005). This observation can be explained by a generally high conspicuousness of tall or large floral
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+units for pollinators benefiting the whole plant community (Donnelly et al. 1998).
+Alternatively, the attractiveness of large floral units, for example composed flowers, could arise from high resource availability.
+
+\section*{Nectar sugar CWM}
+
+Pollinator visitation frequency increased with nectar sugar concentration. Nectar samples were not taken in parallel to pollinator observations, but provided estimates for the flower species nectar production and nectar chemical composition. Given that our collection method for nectar was indicative for nectar standing crop (Zimmerman 1988), we showed that high availability of one of the most important reward traits in a plant community attracted many pollinators. The effect is certainly saturating at higher sugar concentrations due to maximal nectar viscosity and optimal foraging theory balancing water and sugar needs of pollinators.
+
+\section*{Nectar amino acid CWM}
+
+Effects of nectar amino acid concentrations on bees are controversially discussed (e.g. Willmer 1980; Alm et al. 1990). We found negative effects of high amino acid concentrations on pollinator diversity and abundance. Generally, nectar-dependent pollinators such as butterflies respond more strongly to amino acid concentrations in nectar whereas most other pollinators primarily rely on pollen for amino acid supply (Alm et al. 1990). We conclude that a hymenoptera dominated pollinator community avoids high nectar amino acid concentrations. A possible mechanistic explanation of our finding was given by Carter et al. (2006) who reported that proline, the prevailing amino acid in our study, was a deterrent of Apis mellifera at high concentrations in nectar. Additionally, it needs to be mentioned, that nectar sampling was not aligned with pollinator observations and high variability of nectar-amino acid concentrations are shown for temperate plants (Willmer 1980); consequently uncontrolled factors could have led to methodological bias in this result.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{$\mathbb{0}$}
+
+\section*{Colour CWM}
+
+The flower reflectance spectrum in the human green range ( $471-540 \mathrm{~nm}$ ) was negatively correlated with visitation frequency and species richness. In our study, reflectance in the
+
+\section*{7}
+green spectrum strongly correlated with reflectance in all colour spectra (except UV), which leads to human white flowers. As reported by other authors (e.g. Lamborn and Ollerton 2000, Zych 2006) Apiaceae, which comprised in our study most of human white flowers, seem rather unattractive for bees, the major visitor and most diverse group in this study.
+
+Effects of single trait diversity ( $\mathrm{FD}_{\text {trait }}$ ) on pollinator richness and visitation frequency Unlike the predictions of hypotheses II and III, $\mathrm{FD}_{\text {trait }}$ indices were correlated with visitation frequency rather than with pollinator species richness. Pollinator species richness should be affected by single trait diversity driven by niche partitioning and complementarity of pollinators (Junker et al. 2015). In Junker et al. (2015) the species/abundance ratio was 250/2549 in our study it was 67/6450 indicating a more diverse pollinator community of the first; the observed plot area was 3.5 times larger than in our analysis. Both, differences in scale and species richness could lead to the discrepancy between our results and their simulations, though species richness and degree of species specialisation should have the strongest effect. Consequently we think that niche differentiation is either not present in relatively species poor generalist pollinator communities, or not measurable due to the smaller plot size. The surprising result that pollinator visitation frequency responded to single trait diversity is supported by Hegland and Totland (2005) and Balzan et al. (2014), who assign the positive effect of functional diversity manly to the addition of highly attractive flower species at high functional diversity levels. This explanation can be mostly excluded in our experimental set up theoretically including all flower species at all trait diversity levels. We discuss
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+the observed correlations between $\mathrm{FD}_{\text {trait }}$ and flower visitation frequency in detail in the following.
+
+\section*{Flower reflectance $F D_{\text {trait }}$}
+
+Since Knuth (1891) found UV signals in flowers, it was shown that pollinators use these patterns for flower identification and localization of rewards (Petropoulou et al. 2001; Binkenstein et al. 2013). In contrast to diversity in other far distance recognition traits, for example flower height or area, a diverse reflectance pattern in flower communities more reliably indicates a variety of flower species. Given that pollen and nectar production varies with time and species (Pacini 2003), a diversity of flowers may indicate stable reward provision for generalist species with high probability of finding resources needed, at all times of the day.
+
+\section*{Flower morphology $F D_{\text {trait }}$}
+
+Higher flower morphology $\mathrm{FD}_{\text {trait }}$ was associated with lower visitation frequency. We expected the $\mathrm{FD}_{\text {trait }}$ of flower morphology to be positively correlated with pollinator species richness, since flower tube depth, for example, is known as a trait selecting for short or long tonged pollinators (Fontaine et al. 2006, Stang et al. 2006). In the tested community the low proportion of specialized pollinators and the behavioural adaptations of morphologically different pollinators to access nectar or pollen of morphologically distant flowers can weaken positive morphology $\mathrm{FD}_{\text {trait }}$ - pollinator species richness effects. The expected preference of generalist pollinators exhibiting flower constancy for plant communities with low trait diversity could explain the negative effect of morphology $\mathrm{FD}_{\text {trait }}$ on visitation frequency.
+
+\section*{Conclusion}
+
+The mechanisms of pollinator-flower interactions are complex. Multiple traits may affect flower visitation, ranging from long-distance attraction (colour, height, area), over nectar/pollen accessibility (symmetry, tube depth and size) or indicators of nectar/pollen
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+presence (UV, scent) to chemical information of sugar and amino acid concentrations of nectar. Our analyses demonstrated the prevailing importance of long-distance attraction and direct reward measures. Hence we suggest that flower communities variable in colour and constant in morphology, providing large flowers or flowers higher than the average grassland vegetation and providing high sugar but low amino acid concentrations are more attractive. Moreover, generalist pollinator visitation frequency to flower communities decreased with overall flower functional diversity (this study), but increased with plant species richness when diverse flower phenologies increase the duration of flower provision (Ebeling et al. 2008). The consequences thereof for pollination quality of crop monocultures or diverse grasslands need to be evaluated by future studies. In general, diversity effects act on pollinator visitation frequency and mass-ratio effects of certain traits are important for this essential ecosystem function by affecting pollinator visitation frequency and species richness.
+
+\section*{Data Accessibility}
+
+All data used in this manuscript will be deposited at http://iodp.pangaea.de/
+
+\section*{Acknowledgements}
+
+The study was funded by the Deutsche Forschungsgemeinschaft (FOR 1451). We thank the technical staff of the Jena Experiment for their work in maintaining the field site and support during measurements and the many student helpers for weeding the experimental plots. Further we thank Martina Stang, Marcos-Méndez and one anonymous reviewer for their valuable comments on the manuscript during the review process.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{References}
+
+Aarssen, L. W. 1997. High Productivity in Grassland Ecosystems: Effected by Species Diversity or Productive Species? - Oikos 80: 183-184.
+
+Alm, J. et al. 1990. Preference of cabbage white butterflies and honey bees for nectar that contains amino acids. - Oecologia 84: 53-57.
+
+Austin, M. P. and Meyers, J. A. 1996. Current approaches to modelling the environmental niche of eucalypts: implication for management of forest biodiversity. - For. Ecol. Manag. 85: 95-106.
+
+Balzan, M. V. et al. 2014. Augmenting flower trait diversity in wildflower strips to optimise the conservation of arthropod functional groups for multiple agroecosystem services. - J. Insect Conserv. 18: 713-728.
+
+Bello, F. de et al. 2010. Towards an assessment of multiple ecosystem processes and services via functional traits. - Biodivers. Conserv. 19: 2873-2893.
+
+Binkenstein, J. et al. 2013. Increasing land-use intensity decreases floral colour diversity of plant communities in temperate grasslands. - Oecologia 173: 461-471.
+
+Blüthgen, N. and Klein, A.-M. 2011. Functional complementarity and specialisation: The role of biodiversity in plant-pollinator interactions. - Basic Appl. Ecol. 12: 282-291.
+
+Botta-Dukát, Z. 2005. Rao's quadratic entropy as a measure of functional diversity based on multiple traits. - J. Veg. Sci. 16: 533-540.
+
+Bunker, D. E. et al. 2005. Species Loss and Aboveground Carbon Storage in a Tropical Forest. - Science 310: 1029-1031.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+Brittain, C. et al. 2013. Synergistic effects of non-Apis bees and honey bees for pollination services. - Proc. R. Soc. B 280: 20122767.
+
+Cadotte, M. W. et al. 2011. Beyond species: functional diversity and the maintenance of 7 ecological processes and services. - J. Appl. Ecol. 48: 1079-1087.
+
+Cakmak, I. et al. 2009. Different solutions by bees to a foraging problem. - Anim. Behav. 77: 1273-1280.
+
+Callaway, R. M. 1995. Positive interactions among plants. - Bot. Rev. 61: 306-349.
+
+Cardinale, B. J. et al. 2012. Biodiversity loss and its impact on humanity. - Nature 486: 59-67.
+
+Carter, C. et al. 2006. A novel role for proline in plant floral nectars. Naturwissenschaften 93: 72-79.
+
+Chittka, L. et al. 1999. Flower Constancy, Insect Psychology, and Plant Evolution Naturwissenschaften 86: 361-377.
+
+Clark, C.M. et al. 2012. Testing the Link between Functional Diversity and Ecosystem Functioning in a Minnesota Grassland Experiment. - PLoS ONE 7: e52821.
+
+Cohen, J. 1994. The earth is round (P-less-than.05). - Am. Psychol. 49: 997-1003.
+
+Dias, A. T. C. et al. 2013. An experimental framework to identify community functional components driving ecosystem processes and services delivery. - J. Ecol. 101: 29-37.
+
+Díaz, S. et al. 2007. Incorporating plant functional diversity effects in ecosystem service assessments. - Proc. Natl. Acad. Sci. 104: 20684-20689.
+
+Donnelly, S.E.et al. 1998. Pollination in Verbascum thapsus (Scrophulariaceae): The Advantage of Being Tall. - Am. J. Bot. 85: 1618-1625.
+
+Dormann, C. F. et al. 2013. Collinearity: a review of methods to deal with it and a $\square$ simulation study evaluating their performance. - Ecography 36: 27-46.
+
+Ebeling, A. et al. 2008. How does plant richness affect pollinator richness and temporal stability of flower visits? - Oikos 117: 1808-1815.
+
+Ebeling, A. et al. 2011. Plant-flower visitor interaction webs: Temporal stability and pollinator specialization increases along an experimental plant diversity gradient. - Basic Appl. Ecol. 12: 300-309.
+
+Fontaine, C. et al. 2006. Functional Diversity of Plant-Pollinator Interaction Webs Enhances the Persistence of Plant Communities. - PLoS Biol 4: e1.
+
+Fründ, J. et al. 2010. Pollinator diversity and specialization in relation to flower diversity. - Oikos 119: 1581-1590.
+
+Fründ, J. et al. 2013. Bee diversity effects on pollination depend on functional complementarity and niche shifts. - Ecology 94: 2042-2054.
+
+Garibaldi, L. A. et al. 2013. Wild Pollinators Enhance Fruit Set of Crops Regardless of Honey Bee Abundance. - Science 339: 1608-1611.
+
+Gelman, A. et al. 2003. Bayesian Data Analysis. - Chapman \& Hall/CRC.
+
+Grime, J. P. 1998. Benefits of plant diversity to ecosystems: immediate, filter and founder effects. - J. Ecol. 86: 902-910.
+
+Haslett, J. R. 1989. Interpreting patterns of resource utilization: randomness and selectivity in pollen feeding by adult hoverflies. - Oecologia 78: 433-442.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{$\mathbb{0}$}
+
+Hector, A. 1998. The Effect of Diversity on Productivity: Detecting the Role of Species Complementarity. - Oikos 82: 597-599.
+
+Hegland, S. J. and Totland, Ø. 2005. Relationships between species’ floral traits and pollinator visitation in a temperate grassland. - Oecologia 145: 586-594.
+
+Hooper, D. U. and Vitousek, P. M. 1997. The Effects of Plant Composition and Diversity on Ecosystem Processes. - Science 277: 1302-1305.
+
+Hooper, D. U. et al. 2005. Effects of Biodiversity on Ecosystem Functioning: A Consensus of Current Knowledge. - Ecol. Monogr. 75: 3-35.
+
+Hudewenz, A. et al. 2012. Herbivore and pollinator responses to grassland management intensity along experimental changes in plant species richness. - Biol. Conserv. 150: 42-52.
+
+Huston, M. A. 1997. Hidden treatments in ecological experiments: re-evaluating the ecosystem function of biodiversity. - Oecologia 110: 449-460.
+
+Junker, R. R. et al. 2013. Specialization on traits as basis for the niche-breadth of flower visitors and as structuring mechanism of ecological networks. - Funct. Ecol. 27: 329-341.
+
+Junker, R. R. et al. 2015. Functional and phylogenetic diversity of plant communities differently affect the structure of flower-visitor interactions and reveal convergences in floral traits. - Evol. Ecol. 29: 437-450.
+
+Kellner, K. 2015. jagsUI: A Wrapper Around rjags to Streamline JAGS Analyses. https://cran.r-project.org/web/packages/jagsUI
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+King, C. et al. 2013. Why flower visitation is a poor proxy for pollination: measuring single-visit pollen deposition, with implications for pollination networks and conservation. - Methods Ecol. Evol. 4: 811-818.
+
+Klotz, S. et al. 2002. BIOLFLOR - Eine Datenbank mit biologisch-ökologischen Merkmalen zur Flora von Deutschland. - BfN-Schriftenvertrieb im Landwirtschaftsverlag GmbH.
+
+Knuth, P. 1891. Die Einwirkung der Blütenfarben auf der photographischen Platte. Biol. Centralbl. 48: 160-165.
+
+Laliberté, E. and Shipley, B. 2011. FD: measuring functional diversity from multiple traits, and other tools for functional ecology.
+
+Lamborn, E. and Ollerton, J. 2000. Experimental assessment of the functional morphology of inflorescences of Daucus carota (Apiaceae): testing the "fly catcher effect." - Funct. Ecol. 14: 445-454.
+
+Laughlin, D. C. 2011. Nitrification is linked to dominant leaf traits rather than functional diversity. - J. Ecol. 99: 1091-1099.
+
+Lavorel, S. et al. 2011. Using plant functional traits to understand the landscape distribution of multiple ecosystem services. - J. Ecol. 99: 135-147.
+
+Mason, N. W. H. and de Bello, F. 2013. Functional diversity: a tool for answering challenging ecological questions. - J. Veg. Sci. 24: 777-780.
+
+McGill, B. J. et al. 2006. Rebuilding community ecology from functional traits. - Trends Ecol. Evol. 21: 178-185.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{$\mathbb{0}$}
+
+Mokany, K. et al. 2008. Functional identity is more important than diversity in influencing ecosystem processes in a temperate native grassland. - J. Ecol. 96: 884-893.
+
+\section*{$\cup$}
+
+Mouillot, D. et al. 2011. Functional Structure of Biological Communities Predicts Ecosystem Multifunctionality. - PLoS ONE 6: e17476.
+
+Naeem, S. et al. 2012. The Functions of Biological Diversity in an Age of Extinction. Science 336: 1401-1406.
+
+Ollerton, J. et al. 2009. A global test of the pollination syndrome hypothesis. - Ann. Bot. 103: 1471-1480.
+
+Pacini, E. et al. 2016. Nectar biodiversity: a short review. - Plant Syst. Evol. 238: 7-21.
+
+Park, T. and Casella, G. 2008. The Bayesian Lasso. - J. Am. Stat. Assoc. 103: 681-686.
+
+Petropoulou, Y. et al. 2001. Improved flower advertisement, pollinator rewards and seed yield by enhanced UV-B radiation in the Mediterranean annual Malcolmia maritima. - New Phytol. 152: 85-90.
+
+Plummer, M. JAGS: A program for analysis of Bayesian graphical models using Gibbs sampling. http://mcmc-jags.sourceforge.net
+
+Plummer, M. and Stukalov, A. 2014. rjags: Bayesian graphical models using MCMC.
+
+R Development Core Team. 2014. R: a language and environment for statistical computing. R foundation for Statistical Computing. Vienna, Austria. www.R- project.org
+
+\section*{$\mathbb{0}$}
+
+Roscher, C. et al. 2004. The role of biodiversity for element cycling and trophic interactions: an experimental approach in a grassland community. - Basic Appl. Ecol. 5: 107-121.
+
+\section*{$\cup$}
+
+Jäger, E. et al. 2013. Rothmaler-Exkursionsflora von Deutschland, Gefässpflanzen: Atlasband. - Springer-Verlag.
+
+Schuldt, A. et al. 2014. Functional and phylogenetic diversity of woody plants drive herbivory in a highly diverse forest. - New Phytol. 202: 864-873.
+
+Schumacher, J. and Roscher, C. 2009. Differential effects of functional traits on aboveground biomass in semi-natural grasslands. - Oikos 118: 1659-1668.
+
+Stout, J. C. et al. 2000. Nectar robbing, forager efficiency and seed set: Bumblebees foraging on the self incompatible plant Linaria vulgaris (Scrophulariaceae). Acta Oecol. 21: 277-283.
+
+Stang, M. et al. 2006. Asymmetric specialization and extinction risk in plant-flower visitor webs: a matter of morphology or abundance? - Oecologia 151: 442-453.
+
+Tilman, D. et al. 1997. The Influence of Functional Diversity and Composition on Ecosystem Processes. - Science 277: 1300-1302.
+
+Westrich, P. 1990. Die Wildbienen Baden-Württembergs. - Eugen Ulmer Verlag.
+
+Willmer, P. G. 1980. The effects of insect visitors on nectar constituents in temperate plants. - Oecologia 47: 270-277.
+
+Yoshioka, Y. et al. 2007. Ability of Bumblebees to Discriminate Differences in the Shape of Artificial Flowers of Primula sieboldii (Primulaceae). - Ann. Bot. 99: 1175-1182.
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+Zimmerman, M. 1988. Pollination Biology of Montane Plants: Relationship Between Rate of Nectar Production and Standing Crop. - Am. Midl. Nat. 120: 50-57.
+
+Zych, M. 2006. On flower visitors and true pollinators: The case of protandrous Heracleum sphondylium. - Plant Syst. Evol. 263: 159-179.
+
+Supplementary material (available online as Appendix oik.XXXXX at <www.oikosjournal.org/readers/appendix>). Appendix 1.
+
+\section*{$\mathbb{0}$}
+
+\section*{Figure Legends}
+
+Figure 1: Schematic overview of hypothesis tested; underlying bars increase with increasing parameter value. A) Expected effects of overall functional diversity including
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-30.jpg?height=141&width=189&top_left_y=485&top_left_x=54)
+all traits $\left(\mathrm{FD}_{\mathrm{Q}}\right)$ on pollinator species richness and visitation frequency. B$)$ Expected effect of individual trait diversity ( $\mathrm{FD}_{\text {trait }}$ ) and community weighted mean ( CWM ) on pollinator species richness and visitation frequency. Traits shown are exemplary; a full list of all 13 traits is given in Table 1. CWM of categorical traits was evaluated as binomial variable.
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-30.jpg?height=581&width=584&top_left_y=959&top_left_x=296)
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-30.jpg?height=167&width=218&top_left_y=1541&top_left_x=25)
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-30.jpg?height=1055&width=1117&top_left_y=1541&top_left_x=291)
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{Figure 2:}
+
+Estimated models for pollinator visitation frequency (model 1.2) and species richness (model 1.1) in response to the strong effect of blossom cover (A, C) and negative effect
+
+\section*{7}
+of $\mathrm{FD}_{\mathrm{Q}}$ on visitation frequency (B) which is absent for species richness (D). Solid lines represent mean estimated effect of blossom cover and $\mathrm{FD}_{\mathrm{Q}}$. Shaded areas represent $\pm$ 95\% credible intervals, keeping the other parameter at 1 and 0 for $\mathrm{FD}_{\mathrm{Q}}$ and blossom cover, respectively. Dotted lines represent mean model estimates for the random effect sampling season, which shows for panel A that variation is largely independent of sampling season, whereas substantial variation between sampling seasons exists for panels $\mathrm{B}, \mathrm{C}$ and D .
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-31.jpg?height=1288&width=686&top_left_y=1222&top_left_x=322)
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-31.jpg?height=1294&width=621&top_left_y=1222&top_left_x=1027)
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{$\mathbb{0}$}
+
+\section*{Figure 3:}
+
+Estimated effect sizes for all single functional flower traits for visitation frequency and species richness. For each variable, medians (points), 50\% credible intervals (thick line)
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-32.jpg?height=141&width=192&top_left_y=485&top_left_x=51)
+and 95\% credible intervals (thin line) of the posterior are shown. Note, that variables were standardized, meaning that effect sizes are directly comparable. (**) denotes more than 95\% posterior probability on either positive or negative values, (-) denotes the absence of such a signal. To allow model convergence one of each pair of autocorrelated predictors was excluded. Therefore is the effect of flower height CWM represented by flower area CWM, of flower access CWM by bilateral symmetry CWM, of stamen number CWM by stamen location CWM and of colour yellow and white CWM by colour green CWM. Auto-correlations between colour $\mathrm{FD}_{\text {trait }}$ and $\mathrm{UV} \mathrm{FD}_{\text {trait }}$ are jointly represented and discussed as reflectance $\mathrm{FD}_{\text {trait }}$ and of flower access and symmetry $\mathrm{FD}_{\text {trait }}$ as morphology $\mathrm{FD}_{\text {trait }}$.
+![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-32.jpg?height=1094&width=689&top_left_y=1456&top_left_x=288)
+
+\footnotetext{
+'This article is protected by copyright. All rights reserved.'
+}
+
+\section*{Table Lege ds}
+
+Table 1:
+
+Flower traits used to calculate overall functional diversity $\left(\mathrm{FD}_{\mathrm{Q}}\right)$, single trait diversities $\left(\mathrm{FD}_{\text {trait }}\right)$ and CWMs . Blossom cover represents the weightir aue 1 r flower functional diversity calculations.
+
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline Nr. & Trait & Unit/Coding & Levels/Range/Raw unit & Data structure & Ecological importance \\
+\hline \multirow[t]{4}{*}{1} & Blossom colour & 1/0 & $400-470 \mathrm{~nm}$ (blue) & integer & Flower recognition \\
+\hline & \multirow{2}{*}{} & 1/0 & $471-540 \mathrm{~nm}$ (green) & integer & Flower recognition \\
+\hline & & 1/0 & $541-610 \mathrm{~nm}$ (yellow) & integer & Flower recognition \\
+\hline & \multirow{2}{*}{![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-33.jpg?height=157\&width=366\&top_left_y=1123\&top_left_x=463)} & 1/0 & $611-680 \mathrm{~nm}$ (red) & integer & Flower recognition \\
+\hline \multirow[t]{2}{*}{2} & Blosso. eflectance & \multirow[t]{2}{*}{1-6} & 0-7, 8-15, 16-27, 28-39, 40- & continuous & \multirow[t]{2}{*}{Flower recognition, sugar availability} \\
+\hline & & & 66,67-85\% & & \\
+\hline 3 & ![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-33.jpg?height=153\&width=337\&top_left_y=1423\&top_left_x=395) & cm & 4.5-58.5 & continuous & Flower recognition, attractiveness, foraging range of visitor (low vs high) \\
+\hline 4 & \multirow[t]{2}{*}{Inflor sci nce rea} & $\mathrm{mm}^{2}$ & 4.2-86.19 & continuous & \multirow{2}{*}{\begin{tabular}{l}
+Flower recognition, availability of space for \\
+simultaneous visitation
+\end{tabular}} \\
+\hline & & & & & \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline 5 & Flower cummetry & 1/0 & radial/bilateral & integer & Adaptation to certain visitor community \\
+\hline 6 & Nectar amount & 1-4 & no, little, medium, high & categorical & Visitor reward \\
+\hline 7 & Suga conten in nectar & $\mu \mathrm{mol} / \mathrm{ml}$ & 31.4-888.2 & continuous & Visitor reward \\
+\hline 8 & Ar , ntent in & $\mu \mathrm{mol} / \mathrm{ml}$ & 5.8-165.3 & continuous & Visitor reward \\
+\hline & & & & & \\
+\hline 9 & Pollen & 1/0 & little/high & integer & Visitor reward \\
+\hline 10 & Flowering leneth & day & 2-51.2 & continuous & Duration of resource availability \\
+\hline 11 & Stamen ${ }^{\mathbf{1}}$, uon & 1/0 & inside/outside & integer & Accessibility of resource \\
+\hline 12 & St ..en nt nber & 2-15 & 2-15 & continuous & Visitor reward, accessibility of resource \\
+\hline 13 & Nectar acces )ility & 1/0 & open /hidden & integer & Filter for visitor morphological traits \\
+\hline & Blossom cover & \% & 1-50 & continuous & Amount of available flowers per plot \\
+\hline
+\end{tabular}
+
+\section*{$\mathbb{0}$}
+
+\section*{Table 2:}
+
+Details of the data sets and chosen statistical models for species richness and visitation frequency of all pollinators for all three years pooled.
+
+Response variable
+No. values $\boldsymbol{=} \mathbf{0}$
+No. values > 0
+Range
+Distribution Lambda
+
+Species richness
+230
+303
+0-6
+Poisson
+0.7
+
+Visitation frequency 230
+303
+0-419 ZI-Poisson
+unknown
+
+Param cer estımates with a clear posterior signal (>95 \% of posterior with same sign as mean regression coefficient (Mean) of the ZIF -I.MMs and extend of zero-inflation. Results are presented for Model 1.1 and 1.2 testing combined trait diversity effects and for Model 2.1 and 2.2 testing $\mathrm{FD}_{\text {trait }}$ and CWM effects on visitation frequency and species richness. Values represent means, low ${ }^{\text {max }}$ uper margins of $95 \%$ credible intervals, and exact proportion of posterior with the same sign as the mean (f).
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline & & \multicolumn{4}{|c|}{Visitation frequency} & \multicolumn{4}{|c|}{Species richness} \\
+\hline & & Mean & lower CI & upper CI & f & Mean & lower CI & upper CI & f \\
+\hline Mode 1.1 and & Intercept & -1.379 & -2.542 & -0.503 & 1 & -1.227 & -1.660 & -0.818 & 1 \\
+\hline \multirow[t]{3}{*}{1.2} & Blossom cover & 1.207 & 0.871 & 1.602 & 1 & 0.532 & 0.405 & 0.660 & 1 \\
+\hline & $\mathrm{FD}_{\mathrm{Q}}$ & -0.217 & -0.424 & 0.011 & 0.966 & & & & \\
+\hline & Zero-inflation & 0.801 & 0.726 & 0.878 & 1 & & & & \\
+\hline \multirow{2}{*}{Model 2.1 and 2.2} & Intercept & -1.545 & -2.659 & -0.534 & 0.993 & -1.317 & -1.753 & -0.913 & 1 \\
+\hline & Blossom cover & 1.299 & 1.023 & 1.637 & 1 & 0.594 & 0.449 & 0.738 & 1 \\
+\hline ![](https://cdn.mathpix.com/cropped/2025_09_28_d743fae1b30cc71d2dc4g-36.jpg?height=178\&width=183\&top_left_y=1616\&top_left_x=399) & Flower height CWM & 0.421 & 0.068 & 0.791 & 0.990 & 0.330 & 0.144 & 0.524 & 1 \\
+\hline
+\end{tabular}
+
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline & UV diversity & 0.181 & -0.002 & 0.378 & 0.973 & \multicolumn{4}{|c|}{} \\
+\hline & Nectar-sugar & \multirow{3}{*}{-0.304} & \multirow{3}{*}{0.003} & \multirow{3}{*}{0.614} & \multicolumn{5}{|c|}{} \\
+\hline & & & & & 0.976 & & & & \\
+\hline & CWM & & & & & & & & \\
+\hline & Symmetry & \multirow{2}{*}{-0.351} & \multirow{2}{*}{-0.608} & \multirow{2}{*}{-0.095} & \multicolumn{2}{|l|}{\multirow{2}{*}{0.996}} & \multirow{2}{*}{} & \multirow{2}{*}{} & \multirow{2}{*}{} \\
+\hline & diversity & & & & & & & & \\
+\hline & Amino acid & & & & & & & & \\
+\hline & CWM & -0.787 & -1.096 & -0.471 & 1 & -0.234 & -0.407 & -0.066 & 0.997 \\
+\hline & Green CWM & -0.551 & -0.890 & -0.237 & 0.998 & -0.185 & -0.376 & 0.004 & 0.972 \\
+\hline & Zero-inflation & 0.886 & 0.808 & 0.959 & 1 & & & & \\
+\hline
+\end{tabular}

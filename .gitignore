@@ -8,6 +8,7 @@
 !/results/
 !/scripts/
 !/artifacts/
+!/papers/
 
 # Keep artifacts ignored by default; selectively unignore small repro files
 artifacts/**

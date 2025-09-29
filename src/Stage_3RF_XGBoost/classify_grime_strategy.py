@@ -17,6 +17,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
+import xgboost as xgb
 from sklearn.base import clone
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
@@ -207,6 +208,8 @@ def main() -> None:
     print(f"[info] Observed classes ({len(classes)}): {', '.join(classes)}")
 
     feature_cols = [c for c in labelled_df.columns if c not in id_cols + [label_col]]
+    # Drop all-NA placeholder to avoid warnings
+    feature_cols = [c for c in feature_cols if c != "trait_flower_nectar_sugar_raw"]
     X_cv = cv_df[feature_cols]
     y_encoded_cv = label_encoder.transform(cv_df[label_col].astype(str))
     X_full = labelled_df[feature_cols]
@@ -316,6 +319,49 @@ def main() -> None:
     with metrics_path.open("w") as fh:
         json.dump(metrics, fh, indent=2)
     print(f"[info] Wrote metrics → {metrics_path}")
+
+    # Feature importance (gain)
+    print("[info] Computing feature importances …", flush=True)
+    preprocess_final: ColumnTransformer = final_pipeline.named_steps["preprocess"]
+    feature_names_out = preprocess_final.get_feature_names_out(feature_cols)
+
+    booster = final_pipeline.named_steps["model"].get_booster()
+    booster.feature_names = list(feature_names_out)
+    gain_importance = booster.get_score(importance_type="gain")
+    importance_rows = [
+        (feature_names_out[int(name[1:])], score) if name.startswith("f") else (name, score)
+        for name, score in gain_importance.items()
+    ]
+    importance_df = pd.DataFrame(importance_rows, columns=["feature", "importance_gain"])
+    importance_df = importance_df.groupby("feature", as_index=False).sum().sort_values(
+        "importance_gain", ascending=False
+    )
+    importance_path = output_dir / "feature_importance.csv"
+    importance_df.to_csv(importance_path, index=False)
+    print(f"[info] Wrote feature importances → {importance_path}")
+
+    # SHAP-style contributions via XGBoost pred_contribs
+    print("[info] Computing SHAP-style contributions …", flush=True)
+    X_transformed = preprocess_final.transform(X_full)
+    dmatrix = xgb.DMatrix(X_transformed, feature_names=feature_names_out)
+    contribs = booster.predict(dmatrix, pred_contribs=True)
+
+    if contribs.ndim == 3:
+        # shape: (n_samples, n_classes, n_features+1)
+        contribs = contribs[:, :, :-1]  # drop bias term
+        shap_abs = np.abs(contribs).mean(axis=(0, 1))
+    else:
+        # shape: (n_samples, n_features+1)
+        contribs = contribs[:, :-1]  # drop bias term
+        shap_abs = np.abs(contribs).mean(axis=0)
+
+    shap_df = pd.DataFrame({
+        "feature": feature_names_out,
+        "mean_abs_shap": shap_abs,
+    }).sort_values("mean_abs_shap", ascending=False)
+    shap_path = output_dir / "shap_summary.csv"
+    shap_df.to_csv(shap_path, index=False)
+    print(f"[info] Wrote SHAP summary → {shap_path}")
 
     print("[done] Grime strategy classification complete.")
 

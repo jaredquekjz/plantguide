@@ -1,0 +1,493 @@
+\title{
+Influence of four major plant traits on average height, leaf-area cover, net primary productivity, and biomass density in single-species forests: a theoretical investigation
+}
+
+\author{
+Daniel S. Falster ${ }^{\mathbf{1} \boldsymbol{*}}$, Åke Brännström ${ }^{\mathbf{2 , 3}}$, Ulf Dieckmann ${ }^{\mathbf{3}}$ and Mark Westoby ${ }^{\mathbf{1}}$ \\ ${ }^{1}$ Department of Biological Sciences, Macquarie University, NSW 2109, Sydney, Australia; ${ }^{2}$ Department of Mathematics and Mathematical Statistics, Umeå University, 901-87 Umeå, Sweden; and ${ }^{3}$ Evolution and Ecology Program, International Institute for Applied Systems Analysis, Schlossplatz 1, 2361 Laxenburg, Austria
+}
+
+\begin{abstract}
+Summary
+1. Numerous plant traits are known to influence aspects of individual performance, including rates of carbon uptake, tissue turnover, mortality and fecundity. These traits are bound to influence emergent properties of vegetation because quantities such as leaf-area cover, average height, primary productivity and density of standing biomass result from the collective behaviour of individuals. Yet, little is known about the influence of individual traits on these emergent properties, despite the widespread use in current vegetation models of plant functional types, each of which is defined by a constellation of traits.
+2. We examine the influence of four key traits (leaf economic strategy, height at maturation, wood density, and seed size) on four emergent vegetation properties (average height of leaf area, leaf-area index, net primary productivity and biomass density). We employ a trait-, size- and patch-structured model of vegetation dynamics that allows scaling up from individual-level growth processes and probabilistic disturbances to landscape-level predictions. A physiological growth model incorporating relevant trade-offs was designed and calibrated based on known empirical patterns. The resulting vegetation model naturally exhibits a range of phenomena commonly observed in vegetation dynamics.
+3. We modelled single-species stands, varying each trait over its known empirical range. Seed size had only a small effect on vegetation properties, primarily because our metapopulations were not seed-limited. The remaining traits all had larger effects on vegetation properties, especially on biomass density. Leaf economic strategy influenced minimum light requirement, and thus total leaf area and basal area. Wood density and height at maturation influenced vegetation mainly by modifying individual stem mass. These effects of traits were maintained, and sometimes amplified, across stands differing in productivity and mean disturbance interval.
+4. Synthesis: Natural trait variation can cause large differences in emergent properties of vegetation, the magnitudes of which approach those arising through changes to site productivity and disturbance frequency. Our results therefore underscore the need for next-generation vegetation models that incorporate functional traits together with their effects on the patch and size structure of vegetation.
+\end{abstract}
+
+Key-words: allometry, determinants of plant community diversity and structure, ecosystem services, functional traits, height, leaf-area index, net primary productivity, partial differential equation, size-asymmetric competition, vegetation model
+
+\section*{Introduction}
+
+\footnotetext{
+*Correspondence author. E-mail: daniel.falster@mq.edu.au
+}
+
+Emergent properties of vegetation are those that result from the collective behaviour of individuals, such as average canopy height, leaf-area cover, biomass production rates and biomass
+density. These quantitative features are of fundamental importance in ecosystems. Autotrophic production and the vertical structure of vegetation provide the foundations for terrestrial biodiversity, in terms of supplying food, adjusting microclimate and creating habitat. Canopies exchange heat and water with the atmosphere, and modulate runoff and soil erosion. Through shifting carbon concentration in the atmosphere, vegetation can also alter global climate over the longer term. In summary, vegetation structure and function can influence processes ranging from the formation and maintenance of complex food webs to regional weather, soil development and regulation of global climate (Shukla \& Mintz 1982; Bonan 2008).
+
+Potential influences on emergent vegetation properties include climate, nutrient supply, disturbance regime and the traits of component species. Species traits are perceived as important drivers of vegetation structure, and this is illustrated by the near-universal adoption of the functional-type paradigm in dynamic global vegetation models (DGVMs) (Cramer et al. 2001; Bonan \& Levis 2002; Sitch et al. 2008). Plant functional types are archetypal plant species that differ from each other in terms of their trait values. One rationale for incorporating these different types into DGVMs is their influence on emergent vegetation properties. Trait variation is also thought to underpin relationships widely observed in small-scale manipulative experiments between species diversity and various aspects of ecosystem function (Tilman et al. 1997; Hector \& Bagchi 2007). Yet, little is known about the actual influence of individual traits on vegetation properties, despite the implied importance of traits.
+
+There are several reasons why it remains poorly understood how the traits of species influence emergent properties of vegetation. One is that manipulative experiments at the required spatial scale and timeframe are very difficult. While numerous experiments have used short-lived herb and grass species, most of these studies were designed to capture the effects of species diversity on vegetation dynamics, rather than the effects of traits per se (reviews by Hooper et al. 2005; Hector \& Bagchi 2007). A second reason is that, although most DGVMs notionally include quite a large number of traits, the tradeoffs and correlations between different traits in these models do not yet reflect the big advances that were made in trait research over the past decade. Third, but perhaps most crucially, many contemporary vegetation models lack the internal population structure required for the effects of traits to be properly described and manifested.
+
+Scaling effectively from traits, which control the allocation decisions of individuals, to emergent properties of vegetation requires individual-scale growth processes to be integrated with the population- and community-level demographic processes determining the size distribution of plants across a landscape (Prentice \& Leemans 1990; Moorcroft, Hurtt \& Pacala 2001; Purves \& Pacala 2008). Since the direct influence of traits is on individual rates of growth, fecundity and mortality, size distributions are needed to integrate these effects over a heterogeneous population. Two of the most important factors influencing the number and size of individuals in a
+landscape are disturbance and size-asymmetric competition for light (Goff \& West 1975; Hara 1984; Shugart 1984; Coomes \& Allen 2007). By removing established individuals, disturbances remove standing biomass and increase local light levels, thereby promoting growth and recruitment. Similarly, success within developing stands depends critically on the amount of shading from local competitors. To account for the influences of these processes on size distributions, models would ideally describe a continuous distribution of individual sizes. However, many vegetation models - including all major DGVMs (reviewed by Cramer et al. 2001; Sitch et al. 2008) - group individuals within each species into a single size class. This limitation renders them unable to capture the full, dynamic effects of competition, disturbance and trait variation on emergent vegetation properties.
+
+There are several ways in which size structure can be introduced when modelling vegetation (Busing \& Mailly 2004). Individual-based, spatially explicit, stochastic simulators such as SORTIE (Pacala et al. 1996) offer the greatest level of ecological realism and detail. However, these models are also computationally intensive, which inhibits their widespread application (Levin et al. 1997). Computational speed can be improved by focussing on the vertical structure of local populations within patches of vegetation, while neglecting fine-scale spatial interactions within patches, as well as the spatial configuration among patches. Models taking this approach have been widely applied since the 1970s and shown to capture a wide range of phenomena (e.g. Shugart 1984; Huston \& Smith 1987; Huston \& DeAngelis 1987; Prentice \& Leemans 1990; Bugmann 2001). However, the stochastic nature of gap models makes it difficult to separate the underlying signal of ecological processes from intrinsic random variation. Models formulated using partial differential equations (PDEs) offer a possible solution. By approximating individual- and patch-level processes with PDEs, the influences of traits, climate, size-structured competition for light and probabilistic disturbance can be analysed in a deterministic fashion (Sinko \& Streifer 1967; Levin \& Paine 1974; Hara 1984; Metz \& Diekmann 1986; Kohyama 1993; Moorcroft, Hurtt \& Pacala 2001). Such PDEbased models are also known as physiologically structured population models (Metz \& Diekmann 1986; de Roos 1997) or as size- and age-structured approximations (Moorcroft, Hurtt \& Pacala 2001). These models have already been shown to predict a range of phenomena in line with empirical data, including patterns of growth within developing stands (Hara 1984; Yokozawa \& Hara 1992) and stem-diameter distributions (Kohyama 1993), as well as temporal patterns of species dominance, biomass accumulation and net ecosystem production (Moorcroft, Hurtt \& Pacala 2001; Medvigy et al. 2009).
+
+In this study, we consider a metapopulation of patches that are linked through dispersal and are subject to probabilistic patch-level disturbances. The vegetation dynamics in each patch are structured with respect to size, and potentially with respect to traits. We therefore refer to the resultant model as a trait-, size-, and patch-structured model (TSPM). We use such a TSPM to examine the influence on emergent properties of vegetation of four functional traits: leaf economic strategy,
+height at maturation, wood density and seed size. These traits have been chosen because they are known to vary widely among species, because the underlying trade-offs are relatively well understood and because they highlight important alternative ways of altering a plant's life history (Westoby et al. 2002; Wright et al. 2004; Chave et al. 2009). We chose four emergent properties that describe some fundamental influences of vegetation on food webs, nutrient cycles and land-surface interactions: average height of leaf area, leaf-area index (LAI), net primary productivity (NPP) and density of standing biomass per ground area (biomass density). Therefore, the goals of this paper are:
+1. to derive a trait-size-patch-structured vegetation model;
+2. to quantify the modelled influence of four life-history traits on average height of leaf area, LAI, NPP and biomass density; and
+3. to assess the sensitivity of trait effects to shifts in site productivity and disturbance frequency.
+
+\section*{Materials and methods}
+
+We consider a trait-, size- and patch-structured metapopulation of plants subject to probabilistic disturbances and competition for light. As such, the model is most applicable to forests. Each element of the model draws on well-established physiology and ecology. Figure 1 gives an overview of the main features, described in more detail below. Corresponding equations and parameters are summarized in
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_27_a7ec6a00ea88109eada7g-03.jpg?height=1441&width=1229&top_left_y=966&top_left_x=422}
+\captionsetup{labelformat=empty}
+\caption{Fig. 1. Overview of processes represented in the model. Top: An individual's vital rates are jointly determined by its light environment, size, and traits. The locations where traits influence performance are indicated. Middle, Landscapes consist of a distribution of patches linked by seed dispersal. Disturbances remove all vegetation within a patch. Competitive hierarchies within developing patches are modelled by tracking the height distribution of individuals as patches age after a disturbance. Density corresponds to the number of plants per unit height per unit ground area. The shown density illustrates the predicted size structure for a developing stand with average trait values. Bottom: Vegetation properties were modelled for single-species metapopulations at equilibrium.}
+\end{figure}
+
+Tables 1 and 2. Additional details regarding model derivation, confirmation and parameterization are given in the Supporting Information.
+
+\section*{Size- and patch-structured metapopulation}
+
+We consider a spatially unstructured metapopulation consisting of a large number of patches linked by dispersal (Fig. 1). Each patch is assumed to contain a large number of individuals. All patches are subject to probabilistic disturbances that remove all individuals in a patch. For this analysis, we assume that the risk of disturbance increases linearly with patch age, defined as the time since the last disturbance. Under this assumption, disturbance intervals follow a Weibull probability distribution (Clark 1989), leading to an analytic solution for the equilibrium distribution of patch ages in the metapopulation defined by a single parameter: the mean disturbance interval (eqn 23; see Appendix S1 in Supporting Information). With the same mean disturbance interval, different disturbance regimes cause only small variations in the predicted age distribution (McCarthy, Gill \& Bradstock 2001), indicating that results are not particularly sensitive to the specific function chosen. Seeds produced in all patches contribute to a global seed rain, from which newly disturbed patches are colonized. Seeds continue to arrive over the lifespan of a patch; however, only seedlings able to maintain positive mass production successfully establish (see below).
+
+Competitive hierarchies within developing patches were modelled by tracking the size distribution of plants, as patches age after a disturbance (eqn 22) (Kohyama 1993; de Roos 1997; Moorcroft, Hurtt \& Pacala 2001). This distribution evolves as: (i) seedlings enter the population after germination, (ii) growth of established plants moves them up in the size spectrum and (iii) mortality removes plants from the population. Growth and mortality rates (eqn 19, 21) vary with an individual's net dry-matter production rate, which in turn is influenced by shading from other plants in the patch. Following Yokozawa \& Hara (1995), we let the leaf area of each individual be distributed over its height according to a distribution governed by a single crown-shape parameter (eqn 9, 10; see Appendix S2 in Supporting Information for details). This vertical leaf-area distribution combines with the distribution of plant sizes in the patch to give cumulative levels of shading down through the canopy (eqn 11). The outcome of this model structure is strong size-asymmetric competition: relatively larger plants continue to grow, while relatively smaller plants are suppressed and removed from the stand.
+
+Net dry-matter production is determined by three factors: an individual's size, its traits, and the degree of shading imposed by its competitors (eqn 15). Gross carbon-dioxide ( $\mathrm{CO}_{2}$ ) assimilation for each individual is calculated by integrating instantaneous photosynthetic rates, at corresponding light levels, over its leaf area (eqn 12). Maintenance respiration, growth respiration and tissue turnover are then accounted for in calculating net dry-matter production. Maintenance respiration increases linearly with the total nitrogen content of leaves, total mass of roots and total volume of sapwood and bark (eqn 13). Bark respiration was set at twice the sapwood respiration, in accordance with observing an average nitrogen content in bark that is approximately twice as high as that of sapwood (Martin et al. 1998). Leaf-turnover rate was set to vary as a function of leaf mass per unit area (LMA), while bark and fine-root turnover were set to a fixed rate (eqn 14). Since total leaf area increases throughout ontogeny, potential gross assimilation also increases. At the same time, an increasing fraction of a plant's mass is occupied in support tissues (stem, bark and heartwood)
+(eqn 4-8), so the total burden of respiration and tissue turnover also increases with size (Fig. S6 in Supporting Information). Consequently, as size increases, the relative growth rate decreases and the minimum light level needed to maintain a positive mass production increases (Fig. S6).
+With increasing size, individuals allocate a greater fraction of newly produced dry matter to reproduction (eqn 16). Height at maturation is one of the considered functional traits; around this size, allocation to reproduction makes a rapid transition from almost $0 \%$ to $100 \%$. This allocation pattern closely approximates the bang-bang strategy derived by theoretical investigations (Mäkelä 1985; Iwasa 2000). Fecundity rates are calculated directly from mass allocated to reproduction via seed mass (eqn 17). To account for the various accessory costs of seed production, we let each unit of seed mass be accompanied by a fixed mass representing flowers, fruits, and dispersal structures (eqn 17).
+
+Individuals in the model are exposed to three sources of mortality: (i) disturbance-driven mortality, which occurs at the scale of whole patches; (ii) intrinsic mortality, which varies among species according to their wood density, and (iii) growth-related mortality, which varies among individuals within a patch according to their net mass production per unit leaf area (eqn 21). The equation for intrinsic mortality was motivated by an empirical relationship relating wood density to average mortality (see Appendix S4 in Supporting Information for details). An exponential increase in growth-related mortality with declining mass production implies that this mortality heavily affects shaded individuals (King et al. 2006; Coomes \& Allen 2007; Baltzer \& Thomas 2007), as well as maladapted plants. We let growth-related mortality be determined by production per unit leaf area, rather than by total production, so that mortality did not depend strongly on size as such.
+Survival of seedlings through germination was also made a function of production per leaf area (eqn 20). Equation 20 was chosen so that both seedling survival and the density of plants at the smallest size declined to zero as dry mass production declined to zero (see Appendix S5 in Supporting Information for details). In addition, growth, fecundity, survival through germination and density of seedlings at smallest size, are all set to zero when an individual's mass production becomes negative (eqn 17, 19, 20, 22).
+
+\section*{Allometric relationships for plant components}
+
+Detailed modelling of size distributions (eqn 22) is facilitated when individuals are organized along a single size dimension. However, to calculate light interception, dry-matter production and growth rate, we need to know the size of all plant components, including an individual's height, as well as the mass of its sapwood, heartwood, bark and roots. Therefore, one component of the model was a set of allometric relationships binding these various components to each other (eqn 2-8, see Appendix S2 for derivations). Functionally, crown size (measured in terms of total leaf area) can be thought of as the primary indicator of an individual's size, but in the equations of the model each component is expressed in relation to total leaf mass, since this resulted in simpler equations. For illustrating results we have used stem height to express the size of individuals, as this seemed easiest for readers to envisage.
+Our allometric model is inspired by Yokozawa \& Hara (1995). It assumes fixed ratios of leaf area to sapwood area (Shinozaki et al.'s 1964) and of leaf area to root mass, as well as an allocation profile between leaf area and height (eqn 3). Bark mass (including true bark and phloem) is modelled using an analogue of the pipe model. Heartwood mass is linked to leaf area using an empirical scaling
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 1. Model variables and equations}
+\begin{tabular}{|l|l|l|l|l|}
+\hline Variable & Symbol & Unit & Determination & Equation \\
+\hline \multicolumn{5}{|c|}{Traits} \\
+\hline Leaf mass per unit area (LMA) & $\phi$ & $\mathrm{kg} \mathrm{m}^{-2}$ & & \\
+\hline Stem tissue density & $\rho$ & $\mathrm{kg} \mathrm{m}^{-3}$ & & \\
+\hline Height at maturation & $h_{\mathrm{m}}$ & sm & & \\
+\hline Seed size* & $s$ & kg & $m_{\mathrm{t}}\left(x, \mathrm{~m}_{1,0}\right)=s$ & 1 \\
+\hline \multicolumn{5}{|c|}{Individual size} \\
+\hline Mass of leaves & $m_{1}$ & kg & & \\
+\hline Leaf area & $\omega\left(x, m_{1}\right)$ & $\mathrm{m}^{2}$ & $\omega=m_{1} \phi^{-1}$ & 2 \\
+\hline Height & $h\left(x, m_{1}\right)$ & m & $h=\alpha_{1} \omega\left(x, m_{1}\right)^{\beta_{1}}$ & 3 \\
+\hline Mass of sapwood & $m_{\mathrm{s}}\left(x, m_{1}\right)$ & kg & $m_{\mathrm{s}}=\rho \eta_{c} \theta^{-1} \omega\left(x, m_{1}\right) h\left(x, m_{1}\right)$ & 4 \\
+\hline Mass of bark & $m_{\mathrm{b}}\left(x, m_{1}\right)$ & kg & $m_{\mathrm{b}}=b m_{s}\left(x, m_{1}\right)$ & 5 \\
+\hline Mass of heartwood & $m_{\mathrm{h}}\left(x, m_{1}\right)$ & kg & $m_{\mathrm{h}}=\rho \eta_{c} \alpha_{2} \omega\left(x, m_{1}\right)^{\beta_{2}}$ & 6 \\
+\hline Mass of fine roots & $m_{\mathrm{r}}\left(x, m_{1}\right)$ & kg & $m_{\mathrm{r}}=\alpha_{3} \omega\left(x, m_{1}\right)$ & 7 \\
+\hline Total mass & $m_{\mathrm{t}}\left(x, m_{1}\right)$ & kg & $m_{\mathrm{t}}=m_{1}+m_{\mathrm{s}}+m_{\mathrm{b}}+m_{\mathrm{h}}+m_{\mathrm{r}}$ & 8 \\
+\hline \multicolumn{5}{|c|}{Competitive environment} \\
+\hline Probability density of leaf area at height $z$ for an individual of height $h$ & $q(z, h)$ & $\mathrm{m}^{-1}$ & $q=2 \eta\left(1-z^{n} h^{-n}\right) z^{n-1} h^{-n}$ if $z \leq h$, otherwise 0 & 9 \\
+\hline Fraction of leaf area above height $z$ for an individual of height $h$ & $Q(z, h)$ & Dimensionless (0 to 1) & $Q=\int_{z}^{h} q\left(z^{\prime}, h\right) d z^{\prime}$ if $z \leq h$, otherwise 0 & 10 \\
+\hline Canopy openness at height $z$ in a patch of age $a$ & $E(z, a)$ & Dimensionless (0 to 1) & $E=\exp \left(-c_{\text {ext }} \int_{0}^{\infty} Q\left(z, h\left(m_{1}\right)\right) \omega\left(x, m_{1}\right) n\left(x, m_{1}, a\right) d m_{1}\right)$ & 11 \\
+\hline \multicolumn{5}{|c|}{Mass production $\dagger$} \\
+\hline Gross annual $\mathrm{CO}_{2}$ assimilation $\ddagger$ & $A\left(x, m_{1}, E(\cdot, a)\right)$ & $\mathrm{mol} \mathrm{yr}^{-1}$ & $A=\omega\left(x, m_{1}\right) \int_{0}^{h\left(m_{1}\right)} A_{1 \mathrm{f}}\left(A_{0} v, E(z, a)\right) q\left(z, h\left(m_{1}\right)\right) d z$ & 12 \\
+\hline Total maintenance respiration & $R\left(x, m_{1}\right)$ & $\mathrm{mol} \mathrm{yr}^{-1}$ & $R=\omega\left(x, m_{1}\right) v c_{\mathrm{R}, 1}+\frac{m_{\mathrm{s}}\left(x, m_{1}\right)+2 m_{\mathrm{b}}\left(x, m_{1}\right)}{\rho} c_{\mathrm{R}, \mathrm{s}}+m_{\mathrm{r}}\left(x, m_{1}\right) c_{\mathrm{R}, \mathrm{r}}$ & 13 \\
+\hline Total turnover & $T\left(x, m_{1}\right)$ & $\mathrm{kg} \mathrm{yr}^{-1}$ & $T=m_{1}\left(\alpha_{4} \phi^{-B_{4}}\right)+m_{\mathrm{b}}\left(x, m_{1}\right) k_{\mathrm{b}}+m_{\mathrm{r}}\left(x, m_{1}\right) k_{\mathrm{r}}$ & 14 \\
+\hline Net production & $P\left(x, m_{1}, E(\cdot, a)\right)$ & $\mathrm{kg} \mathrm{yr}^{-1}$ & $P=c_{\text {bio }} Y\left[A\left(x, m_{1}, E(\cdot, a)\right)-R\left(x, m_{1}\right)\right]-T\left(x, m_{1}\right)$ & 15 \\
+\hline Fraction of production allocated to reproduction & $r\left(x, m_{1}\right)$ & Dimensionless (0 to 1) & $r=c_{\mathrm{r} 1}\left(1+\exp \left(c_{\mathrm{r} 2}\left(1-\frac{h\left(x, m_{1}\right)}{h_{\mathrm{m}}}\right)\right)\right)^{-1}$ & 16 \\
+\hline Rate of offspring production & $f\left(x, m_{1}, E(\cdot, a)\right)$ & $\mathrm{yr}^{-1}$ & $f=r\left(x, m_{1}\right) P\left(x, m_{1}, E(\cdot, a)\right) /\left(c_{\text {acc }} s\right)$ if $P\left(x, m_{1,0}, E(\cdot, a)\right)>0$, otherwise 0 & 17 \\
+\hline Fraction of whole-plant growth that is leaf ${ }^{*}$ & $\frac{\mathrm{d} m_{1}}{\mathrm{~d} m_{t}}\left(x, m_{1}\right)$ & Dimensionless (0 to 1) & $\frac{\mathrm{d} m_{1}}{\mathrm{~d} m_{\mathrm{t}}}=\left(1+\frac{\mathrm{d} m_{\mathrm{s}}}{\mathrm{d} m_{1}}\left(x, m_{1}\right)+\frac{\mathrm{d} m_{\mathrm{b}}}{\mathrm{d} m_{1}}\left(x, m_{1}\right)+\frac{\mathrm{d} m_{\mathrm{h}}}{\mathrm{d} m_{1}}\left(x, m_{1}\right)+\frac{\mathrm{d} m_{\mathrm{r}}}{\mathrm{d} m_{1}}\left(x, m_{1}\right)\right)^{-1}$ & 18 \\
+\hline Growth rate in leaf mass & $g\left(x, m_{1}, E(\cdot, a)\right)$ & $\mathrm{kg} \mathrm{yr}^{-1}$ & $g=\left(1-r\left(x, m_{1}\right)\right) P\left(x, m_{1}, E(\cdot, a)\right) \frac{\mathrm{d} m_{1}}{\mathrm{~d} m_{\mathrm{t}}}\left(x, m_{1}\right)$ if $P\left(x, m_{1,0}, E(\cdot, a)\right)>0$, otherwise 0 & 19 \\
+\hline Mortality Survival of seedlings during germination & $\pi_{1}\left(x, m_{0}, E(\cdot, a)\right)$ & Dimensionless (0 to 1) & $\pi_{1}=\left(\left(\frac{P\left(x, m_{1,0}, E(\cdot, a)\right)}{\omega\left(x, m_{1,0}\right)}\right)^{-2} c_{s 0}^{2}+1\right)^{-1}$ if $P\left(x, m_{1}, 0, E(\cdot, a)\right)>0$, otherwise 0 & 20 \\
+\hline
+\end{tabular}
+\end{table}
+Table 1. (Continued)
+
+\begin{tabular}{|l|l|l|l|l|}
+\hline Variable & Symbol & Unit & Determination & Equation \\
+\hline Instantaneous mortality rate & $d\left(x, m_{1}, E(\cdot, a)\right)$ & $\mathrm{yr}^{-1}$ & $d=c_{\mathrm{d} 0} \exp \left(-c_{\mathrm{d} 1} \rho\right)+c_{\mathrm{d} 2} \exp \left(-c_{\mathrm{d} 3}\left(\frac{P\left(x, m_{1}, E(\cdot, a)\right)}{\omega\left(x, m_{1}\right)}\right)\right)$ & 21 \\
+\hline \begin{tabular}{l}
+Development of size distribution within patches \\
+Density per ground area of individuals with traits $x$ and size $m_{1}$ in a patch of age $a$
+\end{tabular} & $n\left(x, m_{1}, a\right)$ & $\mathrm{kg}^{-1} \mathrm{~m}^{-2}$ & \begin{tabular}{l}
+$\frac{\partial}{\partial a} n\left(x, m_{1}, a\right)=-d\left(x, m_{1}, E(\cdot, a)\right) n\left(x, m_{1}, a\right)-\frac{\partial}{\partial m_{1}}\left[g\left(x, m_{1}, E(\cdot, a)\right) n\left(x, m_{1}, a\right)\right]$ \\
+$n\left(x, m_{1}, 0\right)=0$,
+\[
+\begin{aligned}
+& n\left(x, m_{1,0}, a\right)=\frac{\pi_{1}\left(x, m_{1,0}, E(\cdot, a)\right)}{g\left(x, m_{1,0}, E(\cdot, a)\right)} \int_{0}^{\infty} p(\tau) \int_{0}^{\infty} \pi_{0} f\left(x, m_{1}, E(\cdot, \tau)\right) n\left(x, m_{1}, \tau\right) \mathrm{d} m_{1} \mathrm{~d} \tau \\
+& \text { if } P\left(x, m_{1}, E(., 0)>0\right.
+\end{aligned}
+\]
+\end{tabular} & 22 \\
+\hline \begin{tabular}{l}
+Metapopulation dynamics \\
+Probability density of patch age $a$ in the metapopulation§
+\end{tabular} & $p(a)$ & $\mathrm{yr}^{-1}$ & $p=\frac{1}{\hat{a}} \exp \left(-\frac{\pi}{4}\left(\frac{a}{\bar{a}}\right)^{2}\right)$ & 23 \\
+\hline \begin{tabular}{l}
+Emergent properties of vegetation** \\
+Average height of leaf area
+\end{tabular} & $H(a)$ & m & $\mathrm{H}=\frac{1}{\mathrm{~L}(a)} \int_{0}^{\infty} \int_{0}^{\infty} \omega\left(x, m_{1}\right) q\left(z, h\left(x, m_{1}\right)\right) n\left(x, m_{1}, a\right) h\left(x, m_{1}\right) \mathrm{d} m_{1} \mathrm{~d} z$ & 24 \\
+\hline Leaf-area index & $L(a)$ & Dimensionless & $\mathrm{L}=\int_{0}^{\infty} \omega\left(x, m_{1}\right) n\left(x, m_{1}, a\right) \mathrm{d} m_{1}$ & 25 \\
+\hline Net primary production & $N(a)$ & $\mathrm{kg} \mathrm{m}^{-2} \mathrm{yr}^{-1}$ & $\mathrm{N}=c_{\text {bio }} Y \int_{0}^{\infty}\left[A\left(x, m_{1}, E(\cdot, a)\right)-R\left(x, m_{1}\right)\right] n\left(x, m_{1}, a\right) \mathrm{d} m_{1}$ & 26 \\
+\hline Biomass density & $B(a)$ & $\mathrm{kg} \mathrm{m}^{-2}$ & $\mathrm{B}=\int_{0}^{\infty} m_{\mathrm{t}}\left(m_{1}\right) n\left(x, m_{1}, a\right) \mathrm{d} m_{1}$ & 27 \\
+\hline
+\end{tabular}
+For the sake of brevity, dependencies of functions are shown only in the Symbol column. The variable $x$ refers to a vector of four traits that are varied in the model: $x=\left(\phi, \rho, h_{\mathrm{m}}, s\right)$. Subscripts for size variables are: $1=$ leaves, $\mathrm{s}=$ sapwood, $\mathrm{b}=$ bark and phloem, $\mathrm{h}=$ heartwood, $\mathrm{r}=$ fine roots. All mass measurements are in terms of dry mass.
+* Leaf mass at germination, $m_{l, 0}$, is obtained by finding a value that satisfies equation 1 and varies as a function of $\phi, \rho$ and $s$.
+$\dagger$ All rates are per plant.
+$\ddagger A_{1 \mathrm{f}}\left(A_{0} \mathrm{v}, E(z, a)\right)$ is the gross annual $\mathrm{CO}_{2}$ assimilation per unit leaf area at canopy openness $E(z, a)$ for a leaf with maximum capacity $A_{0} \mathrm{v}$, determined by integrating instantaneous rates of assimilation (described by a rectangular hyperbola) over the diurnal solar cycles throughout the year. For details see Appendix S6.
+$\S \hat{a}$ is the mean interval between disturbances. The probability of patch disturbance is assumed to increase linearly with patch age, and can be expressed as a function of mean disturbance interval, $\gamma(a)=\frac{\pi a}{2 a^{2}}$. For more details see Appendix S1.
+- The derivatives on the right-hand side of eqn 18 can be calculated directly from eqn 4-7. For solutions see Appendix S2.
+** Averages over all patches in the metapopulation, calculated as $\int_{0}^{\infty} p(a) K(a) \mathrm{d} a$, where $K(a)$ is the considered vegetation property at patch age $a$.
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 2. Model parameters}
+\begin{tabular}{|l|l|l|l|l|l|}
+\hline Description & Symbol & Unit & Value & Source & Equation \\
+\hline \multicolumn{6}{|l|}{Competitive interactions} \\
+\hline Light-extinction coefficient & $c_{\text {ext }}$ & Dimensionless (0 to 1) & 0.5 & 3 & 11 \\
+\hline \multicolumn{6}{|l|}{Individual allometry} \\
+\hline Crown-shape parameter & $\eta$ & Dimensionless & 12 & 2 & 9 \\
+\hline Stem-volume adjustment due to crown shape & $\eta_{\mathrm{c}}$ & Dimensionless (0 to 1) & $1-\frac{2}{1+\eta}+\frac{1}{1+2 \eta}$ & - & 4-6,18 \\
+\hline Leaf area per sapwood area & $\theta$ & Dimensionless & 4669 & 1 & 4-5,18 \\
+\hline Parameters describing scaling of height with leaf area & $\alpha_{1}, \beta_{1}$ & $\mathrm{m}^{-1}$, dimensionless & 5.44, 0.306 & 1 & 3-5,18 \\
+\hline Parameters describing scaling of heartwood volume with leaf area & $\alpha_{2}, \beta_{2}$ & m, dimensionless & $6.67 \times 10^{-5}, 1.75$ & 1 & 6,18 \\
+\hline Parameter describing scaling of root mass with leaf area & $\alpha_{3}$ & $\mathrm{kg} \mathrm{m}^{-2}$ & 0.07 & 1 & 7,18 \\
+\hline Ratio of bark area to sapwood area & $b$ & Dimensionless & 0.17 & & 5,18 \\
+\hline \multicolumn{6}{|l|}{Production} \\
+\hline Nitrogen mass per leaf area & $v$ & $\mathrm{kg} \mathrm{m}^{-2}$ & $1.87 \times 10^{-3}$ & 3 & 12-13 \\
+\hline Ratio of light-saturated $\mathrm{CO}_{2}$ assimilation rate to leaf nitrogen mass & $A_{0}$ & $\mathrm{mol} \mathrm{yr}^{-1} \mathrm{~kg}^{-1}$ & $1.78 \times 10^{5}$ & 3 & 12 \\
+\hline Ratio of leaf dark respiration to leaf nitrogen mass & $c_{\mathrm{R}, 1}$ & mol yr ${ }^{-1} \mathrm{~kg}^{-1}$ & $2.1 \times 10^{4}$ & 3 & 13 \\
+\hline Fine-root respiration per mass & $c_{\mathrm{R}, \mathrm{r}}$ & $\mathrm{mol} \mathrm{yr}^{-1} \mathrm{~kg}^{-1}$ & 217 & 3 & 13 \\
+\hline Sapwood respiration per stem volume & $c_{\mathrm{R}, \mathrm{s}}$ & $\mathrm{mol} \mathrm{yr}^{-1} \mathrm{~m}^{-3}$ & 4012 & 3 & 13 \\
+\hline Yield; ratio of carbon fixed in mass per carbon assimilated & $Y$ & Dimensionless (0 to 1) & 0.7 & 3 & 15 \\
+\hline Constant converting assimilated $\mathrm{CO}_{2}$ to dry mass & $c_{\text {bio }}$ & $\mathrm{kg} \mathrm{mol}^{-1}$ & $2.45 \times 10^{-2}$ & 3 & 15 \\
+\hline Parameters describing scaling of turnover rate for leaf with $\phi$ & $\alpha_{4}, \beta_{4}$ & $\mathrm{m}^{2} \mathrm{~kg}^{-1} \mathrm{yr}^{-1}$, dimensionless & $2.86 \times 10^{-2}, 1.71$ & 3 & 14 \\
+\hline Turnover rate for bark & $k_{\mathrm{b}}$ & $\mathrm{yr}^{-1}$ & 0.2 & 2 & 14 \\
+\hline Turnover rate for fine roots & $k_{\mathrm{r}}$ & $\mathrm{yr}^{-1}$ & 1.0 & 3 & 14 \\
+\hline \multicolumn{6}{|l|}{Seed production} \\
+\hline Accessory costs of seed production & $c_{\text {acc }}$ & Dimensionless & 4.0 & 3 & 17 \\
+\hline Maximum allocation to reproduction & $c_{\mathrm{r} 1}$ & Dimensionless (0 to 1) & 1.0 & 2 & 16 \\
+\hline Parameter determining rate of change in $r\left(x, m_{l}\right)$ around $h_{m}$ & $c_{\mathrm{r} 2}$ & Dimensionless & 50 & 2 & 16 \\
+\hline \multicolumn{6}{|l|}{Mortality} \\
+\hline Survival probability during dispersal & $\pi_{0}$ & Dimensionless (0 to 1) & 0.25 & 2 & 22 \\
+\hline Parameter influencing survival through germination & $c_{\mathrm{s} 0}$ & $\mathrm{kg} \mathrm{m}^{-2} \mathrm{yr}^{-1}$ & 0.1 & 2 & 20 \\
+\hline Baseline rate for intrinsic mortality & $c_{\mathrm{d} 0}$ & $\mathrm{yr}^{-1}$ & 0.52 & 2,3 & 21 \\
+\hline Risk coefficient for tissue density in intrinsic mortality & $c_{\mathrm{d} 1}$ & $\mathrm{m}^{3} \mathrm{~kg}^{-1}$ & $6.5 \times 10^{-3}$ & 3 & 21 \\
+\hline Baseline rate for growth-related mortality & $c_{\mathrm{d} 2}$ & $\mathrm{yr}^{-1}$ & 5.5 & 2,3 & 21 \\
+\hline Risk coefficient for dry-mass production per unit leaf area in growth-related mortality & $c_{\mathrm{d} 3}$ & yr m ${ }^{2} \mathrm{~kg}^{-1}$ & 20.0 & 2,3 & 21 \\
+\hline
+\end{tabular}
+\end{table}
+
+Corresponding equations in Table 1 are indicated. Sources: (1) estimate from Coweeta dataset (Martin et al. 1998), (2) arbitrary assumption, (3) see Appendix S7.
+relationship, which amounts to a different approach from many other models that derive heartwood growth from a rate of sapwood turnover. Various traits can be included to produce strategic differences in allocation among species. However, within any species there remains a single ontogenetic pathway along which individuals are transported through growth processes.
+
+The allocation model described by equations $2-8$ was verified using the Coweeta biomass dataset (Martin et al. 1998), which includes data on plant dimensions (leaf area, sapwood mass, bark mass, heartwood mass, height) and traits for individuals spanning a range of sizes in 10 different species. Within species, crown size explained an average of $73 \%$ of variation in height, $88 \%$ of variation in sapwood mass,
+$83 \%$ of variation in bark mass, and $61 \%$ of variation in heartwood mass (Appendix S3 in Supporting Information). Differences in LMA, wood density, leaf area per unit sapwood area and height-leaf area profile explained differences among species in leaf, sapwood, bark and heartwood mass for plants of given leaf area (Appendix S3). Thus, the model seemed to perform well in approximating allocation patterns within and across species.
+
+\section*{Leaf-level assimilation and site productivity}
+
+For a given canopy openness, gross annual $\mathrm{CO}_{2}$ assimilation of a leaf was obtained by integrating instantaneous rates, calculated using a standard rectangular hyperbola (Cannell \& Thornley 1998), over the diurnal and seasonal patterns of solar variation experienced at a given latitude and longitude (see Appendix S6 for details). We let maximum photosynthetic rates per unit leaf area be determined by leaf nitrogen content and by the photosynthetic nitrogen-use efficiency (ratio of light-saturated $\mathrm{CO}_{2}$ assimilation rate to leaf nitrogen mass) of the leaves (Wright et al. 2004). These maximum rates were assumed constant for all individuals in a metapopulation, but were adjusted up and down as a proxy for influences of climate (i.e. rainfall, humidity, temperature) or nutrient supply on growth, and thereby on site productivity. Although these influences could be modelled more mechanistically, by including stomatal and hydraulic submodels (e.g. Moorcroft, Hurtt \& Pacala 2001; Medvigy et al. 2009), this level of physiological detail was deemed unnecessary for the current study.
+
+\section*{Traits and trade-offs}
+
+\section*{LEAF ECONOMICS}
+
+To model variation in leaf economic strategy, we let leaf turnover be inversely related to LMA (eqn 14), while maintaining a constant nitrogen content per unit leaf area. This relationship captures the widely observed coordination between LMA, average leaf lifespan, nitrogen content per unit leaf mass and maximum assimilation rate per unit leaf mass, known as the leaf economics spectrum (Reich, Walters \& Ellsworth 1992; Wright et al. 2004). Species at the fastreturn end of the spectrum, characterized by low LMA and high nitrogen content per unit mass, realize greater mass-specific assimilation rates, but suffer from disproportionately high turnover rates and higher leaf respiration.
+
+\section*{WOOD DENSITY}
+
+The effects of wood density were modelled through a trade-off between the efficiency of stem growth (eqn 4-6) and intrinsic mortality rate (eqn 21), with mortality increasing exponentially as wood density decreases. Two presumed costs of cheaper volumetric growth are an increased risk of infection by pathogens or borers in the stem and decreased structural stability (Chave et al. 2009). These costs could lead to increased mortality rates for stems with lower wood density, independent of the degree of shading. Supporting this idea, we found consistent relationships between low wood density and average mortality rate across species from 4 tropical sites (Appendix S4; see also Muller-Landau 2004; King et al. 2006; Chave et al. 2009).
+
+\section*{HEIGHT AT MATURATION}
+
+Height at maturation describes the size around which an individual's allocation of net dry-matter production gradually switches from
+growth to reproduction (eqn 16). (In eqn 16, it is the height at which allocation to reproduction reaches $50 \%$ of its maximum value.) Height at maturation thereby influences survival until maturation, subsequent reproductive output, length of the reproductive lifespan, and expected lifetime fecundity.
+
+\section*{SEED SIZE}
+
+The effects of seed size were modelled through a trade-off between fecundity and size at germination (eqn 1, 17). Large seed size was not treated as conferring any advantage during the seed and establishment phases of the life cycle, but did influence an individual's size when it entered a patch, implying an advantage during the subsequent competitive interactions.
+
+\section*{Outline of analyses}
+
+We analysed a series of single-species stands under a solar regime corresponding to Sydney, Australia, with a mean disturbance interval of 30 years. The model was calibrated using a variety of sources, including large multi-site databases and detailed site-specific studies. An overview of the parameters used is given in Table 2; for full details of the parameterization see Appendix S7 in Supporting Information. We used the escalator boxcar train technique (de Roos 1997), combined with a fourth-order Runge-Kutta ordinary differential equation solver (Press 1995), to model the dynamics of the vegetation's size distribution (eqn 22).
+To assess the influence of traits on vegetation, we varied individual traits over a majority of their known empirical range. For each trait combination, we modelled a metapopulation at demographic equilibrium (where a patch's seed rain equals its seed production) and recorded temporal patterns of stand development and of metapopulation averages for each of the four vegetation properties (eqn 24-27). Available data on height at maturation are limited; consequently, we chose a range from 6 to 24 m , with an intermediate height of 12 m . For the other three traits, we described the known empirical range from available databases, adopting the median, fifth, and ninety-fifth percentiles for average, low and high parameter settings. Data for LMA were taken from the GLOPNET dataset (Wright et al. 2004) restricted to trees and shrubs. Data for wood density were taken from a global wood database (Zanne et al. 2009). Data for seed size were taken from a published database (Moles et al. 2004), restricted to species that attain more than 5 m height. Each trait was varied across its known range, while the remaining three traits were kept at their global mean values (Table 3).
+
+To quantify any interaction between site productivity or disturbance regime on the one hand and trait-related effects on the other, we repeated our analyses across a range of mean disturbance intervals and site productivities.
+
+\section*{Results}
+
+We first outline some general features of the model observed in a single-species stand with global mean trait values. The purpose of this first section is to highlight how a size-structured model naturally captures several known phenomena in vegetation dynamics. We then describe the influence of the four traits on emergent properties of vegetation. In a final section, we briefly investigate how trait-related shifts in vegetation could interact with shifts in site productivity or disturbance regime.
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 3. Range of trait values used in simulations, and resulting vegetation properties. Low, average, and high values for LMA, wood density, and seed size were determined by taking the fifth, fiftieth, and ninety-fifth percentiles from published trait datasets (see 'Material and Methods' for details), with $N$ indicating the number of species in each dataset. The \% change for each trait and vegetation property was calculated as abs(high-low)/average*100.}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\hline Trait description & Symbol & Unit & $N$ & & Trait value & Average height of leaf area (m) & LAI (dimensionless) & NPP ( $\mathrm{kg} \mathrm{m}^{-2} \mathrm{yr}^{-1}$ ) & Biomass density ( $\mathrm{kg} \mathrm{m}^{-2}$ ) & Seed rain ( $\mathrm{m}^{-2} \mathrm{yr}^{-1}$ ) \\
+\hline \multirow[t]{4}{*}{LMA} & \multirow[t]{4}{*}{$\phi$} & \multirow[t]{4}{*}{$\mathrm{kg} \mathrm{m}^{-2}$} & \multirow[t]{4}{*}{1,700} & Low & 0.05 & 7.60 & 3.19 & 2.22 & 4.60 & 650 \\
+\hline & & & & Average & 0.11 & 7.99 & 3.57 & 2.25 & 5.64 & 946 \\
+\hline & & & & High & 0.32 & 7.60 & 3.72 & 2.22 & 6.51 & 1003 \\
+\hline & & & & \% change & 252 & 0 & 15 & 0 & 34 & 37 \\
+\hline \multirow[t]{4}{*}{Wood density} & \multirow[t]{4}{*}{$\rho$} & \multirow[t]{4}{*}{$\mathrm{kg} \mathrm{m}^{-3}$} & \multirow[t]{4}{*}{8,412} & Low & 345 & 7.91 & 3.55 & 2.25 & 3.45 & 1240 \\
+\hline & & & & Average & 608 & 7.99 & 3.57 & 2.25 & 5.64 & 946 \\
+\hline & & & & High & 969 & 7.10 & 3.53 & 2.26 & 7.60 & 536 \\
+\hline & & & & \% change & 103 & 10 & 1 & 0 & 74 & 74 \\
+\hline \multirow[t]{4}{*}{Height at maturation} & \multirow[t]{4}{*}{$h_{\mathrm{m}}$} & \multirow[t]{4}{*}{$\mathrm{m}^{2}$} & \multirow[t]{4}{*}{n.a.} & Low & 6 & 4.94 & 3.81 & 2.51 & 3.78 & 1924 \\
+\hline & & & & Average & 12 & 7.99 & 3.57 & 2.25 & 5.64 & 946 \\
+\hline & & & & High & 24 & 10.08 & 3.29 & 1.98 & 7.12 & 66 \\
+\hline & & & & \% change & 150 & 64 & 14 & 23 & 59 & 196 \\
+\hline \multirow[t]{4}{*}{Seed mass} & \multirow{4}{*}{$s$} & \multirow[t]{4}{*}{kg} & \multirow[t]{4}{*}{522} & Low & $2.7 \times 10^{-7}$ & 7.45 & 3.69 & 2.32 & 5.38 & 121590 \\
+\hline & & & & Average & $3.8 \times 10^{-5}$ & 7.99 & 3.57 & 2.25 & 5.64 & 946 \\
+\hline & & & & High & $1.7 \times 10^{-3}$ & 8.62 & 3.35 & 2.13 & 5.84 & 23 \\
+\hline & & & & \% change & 4,558 & 15 & 9 & 8 & 8 & 12852 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section*{General features of the model}
+
+\section*{COMPETITION FOR LIGHT LIMITS SEEDLING \\ RECRUITMENT, SAPLING SURVIVAL, LAI, AND DENSITY OF SEED RAIN}
+
+Notwithstanding the continual influx of seeds, the model predicts several waves of recruitment and a bimodal distribution of plant sizes during stand development (see central panel of Fig. 1). The first wave of recruitment occurs immediately after disturbance, when individuals establish in open conditions.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_27_a7ec6a00ea88109eada7g-09.jpg?height=532&width=646&top_left_y=1911&top_left_x=291}
+\captionsetup{labelformat=empty}
+\caption{Fig. 2. Typical representation of the self-thinning trajectories in a stand with average trait values. At any patch age, the density of individuals (per unit ground area) and average size of individuals (in terms of leaf mass) are calculated by integrating over the size distribution shown in Fig. 1.}
+\end{figure}
+
+Individuals at the top of the size hierarchy increase quickly in size and experience only limited mortality. The growth of taller individuals decreases light available for individuals sitting lower in the size hierarchy, reducing growth and increasing mortality. Declining light ultimately limits seedling establishment. Eventually, however, enough individuals from the canopy die to allow light at ground level to rise again above the minimum light requirement for seedlings. This initiates a second wave of recruitment, again followed by competitive thinning (Fig. 1). Competitive thinning operates such that individuals of a given size are removed at an increased rate while light levels are close or below their minimum light requirement. Since seedlings have the lowest burden of stem respiration per unit leaf area they are able to survive at lower light levels. As a result, competitive thinning constrains the LAI of whole stands to lie close to values corresponding to the minimum light requirement of seedlings.
+
+Traditionally, self-thinning has been investigated by plotting average plant size (measured in leaf mass) against the number of individuals per area. A corresponding plot from our model is shown in Fig. 2. Following disturbance, the density of individuals and the LAI of the stand increase rapidly. Leaf area continues to accumulate until production from individuals at the bottom of the size hierarchy is close to zero. This is followed by a period of competitive thinning (from 1.4 to 13.8 years), during which average size increases and population density decreases (Fig. 2). The slope of this self-thinning trajectory is approximately -1.0 , implying that the total mass of leaves remains nearly constant (but not exactly, as highlighted below). A second wave of seedling recruitment then moves the population back along the self-thinning trajectory
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_27_a7ec6a00ea88109eada7g-10.jpg?height=587&width=801&top_left_y=283&top_left_x=205}
+\captionsetup{labelformat=empty}
+\caption{Fig. 3. Changes in LAI during the development of a patch with average trait values. The variability in total LAI corresponds to the non-linearity in the thinning phase of Fig. 2 (see main text for details). In addition to total LAI, the LAI of three separate groups of individuals is shown: dominant individuals in first wave of recruitment, subordinate individuals in first wave of recruitment, and all individuals in second wave of recruitment. These three groups correspond to seedlings germinating (1) between 0 and $3.7 \times 10^{-4}$ years; (2) between $3.7 \times 10^{-4}$ and 11.3 years; and (3) after 11.3 years.}
+\end{figure}
+towards smaller average size and larger density. The return trajectory in Fig. 2 is slightly offset from the initial trajectory, indicating that the actual density of leaf mass, and thus LAI, is not entirely fixed, instead varying slightly throughout stand development. These results are explained in more detail below.
+
+Density-dependent growth within patches results in vegetation that is not seed-limited. The recruitment curve at landscape scale, i.e. integrated over all patch ages, shows that seed production is almost constant with respect to changes in seed rain (results not shown). This suggests that the emergent properties studied below will not differ substantially when mortality during dispersal is varied or when the assumption that metapopulations are demographically stable is relaxed.
+
+\section*{AGE-RELATED DECLINES IN LAI AND NPP ARISE THROUGH COMPETITION, BUT ARE OFFSET BY SEEDLING RECRUITMENT}
+
+A plot of LAI against patch age shows how LAI first increases and then declines slightly before stabilizing (Fig. 3), with NPP showing similar behaviour (results not shown). As outlined in the previous section, equilibrium LAI is mostly determined by the light requirement of seedlings, which accounts for its stabilizing after the second wave of recruitment has been initiated. However, among individuals from the first wave of recruitment, the model predicts an age-related decline in LAI and NPP, as has been observed in numerous stands (see Ryan, Binkley \& Fownes 1997 and refs therein). The decline in LAI is caused by size-structured population dynamics, while increased stem respiration also contributes to the decline in NPP. To illustrate the mechanism of LAI decline, we have plotted LAI separately for three subsets of individuals based
+on the size distribution in older patches: (i) dominant individuals in the first wave of recruitment, which eventually form the canopy in older patches; (ii) subordinates in the first wave of recruitment, which eventually die because they are competitively suppressed; and (iii) all individuals in the second wave of recruitment (Fig. 3).
+
+Among individuals in the first wave of recruitment, the initial decline in LAI after canopy closure (from 3.5 to 14.5 years) is due to mortality of competitively suppressed individuals (Fig. 3). During the first 5 years of stand development, the individuals that later become canopy dominants represent only a small fraction (in numbers and in leaf area) of all individuals in the first wave of recruitment (Fig. 3). However, these individuals have a small size advantage, which provides access to higher light and thus a growth advantage. As these dominant individuals increase in size, subordinate individuals become increasingly shaded, which increases mortality. A time lag occurs between the expansion of new leaves at the top of the canopy and the removal of shaded individuals at the bottom of the canopy. Consequently, LAI exceeds its sustainable value throughout the entire period during which canopy dominants continue to increase in size. This rise in LAI also explains the lack of seedling recruitment between 1.86 and 11.4 years.
+
+A second phase of LAI decline (starting at 19.1 years) results from intrinsic mortality of canopy dominants after they have matured (Fig. 3). The competitive interactions leading to high mortality of subordinate individuals earlier during stand development means that there are few individuals available to replace the lost dominants, so the cumulative LAI of all individuals from the first wave of recruitment decreases. In our model, this second period of decline is compensated for by seedling recruitment, so the decline in LAI does not proceed beyond approximately 15 years. However, if data were reported only for large individuals (as would often be the case in forest surveys), or if recruitment were limited to periods immediately after disturbance, then a prolonged period of decline would be observed.
+
+\section*{Influences of traits on vegetation}
+
+Figure 4 shows changes in the four vegetation properties during stand development following disturbance for low, average, and high settings of each trait, representing, respectively, the 5th, 50th, and 95th percentiles of empirically observed values. These temporal patterns were integrated over the patch-age distribution, to obtain a metapopulation average for each of the vegetation properties. Responses of these metapopulation averages to trait variation are summarized in Table 3. These responses are referred to as being small ( $<10 \%$ ), moderate ( $10-30 \%$ ) or large ( $>30 \%$ ), according to the magnitude of change observed across the trait spectrum (see Table 3 for details). Fig. 5 gives a graphical depiction of the results for two of the four vegetation properties considered, under a range of disturbance regimes and productivities. Plots for the remaining vegetation properties, together with equilibrium seed rain, are included in Figs S7 and S8 in Supporting Information.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_27_a7ec6a00ea88109eada7g-11.jpg?height=1321&width=1323&top_left_y=288&top_left_x=372}
+\captionsetup{labelformat=empty}
+\caption{Fig. 4. Temporal patterns of emergent vegetation properties within single-species stands recovering from disturbance, in a metapopulation with a mean disturbance interval of 30 years. Continuous lines show patterns for a stand with average trait values. Dotted (dashed) show the corresponding temporal patterns for each trait being altered from its average value to its low (high) value, while keeping the other traits at their average values (Table 3). Inset in top-left plot shows behaviour in the first year after disturbance.}
+\end{figure}
+
+\section*{RACE TO THE TOP: LEAF ECONOMICS, WOOD DENSITY, AND SEED SIZE ALL INFLUENCE HEIGHT GROWTH}
+
+Leaf economics, wood density, and seed size all influenced temporal patterns of height growth, while height at maturation had an effect on the eventual height of the canopy (Fig. 4). The influence of seed size on height growth was most intuitive: larger seeds resulted in larger seedlings, with this size advantage being maintained until maturation. The influence of wood density on growth was also intuitive: lower wood density meant more economical stem construction, which in turn enables faster height growth. Note that wood density did not influence instantaneous dry-matter production in the model, but only the deployment of dry matter. Similarly, lower LMA conferred more economical leaf-area construction and thereby a faster height growth rate, at least for smaller individuals. Since allocation to stem increased with size, the relative height advantage of low-wood-density strategies increased until maturation (Fig. 4). In contrast, the initial growth advantages of low LMA diminished over time, to the extent that high-LMA
+stands actually reached maturation size first, even though low LMA stands were initially the fastest growing (Fig. 4). This occurred because of an interaction between size and maximum growth rate. At small sizes, low LMA strategies have an advantage, because the benefits of cheaper leaf construction outweigh the costs of increased leaf turnover. At larger sizes, the opposite is true.
+
+\section*{LAI IS INFLUENCED MORE BY MINIMUM LIGHT REQUIREMENT THAN BY INTRINSIC MORTALITY OR SEED RAIN}
+
+Leaf economics and height at maturation had a moderate influence on LAI, while wood density and seed size had only a small influence (Fig. 5; Table 3). The influence of leaf economics came about by altering the minimum light requirement of seedlings. Fast-growth strategies imply costs of increased leaf turnover and higher respiration rates per mass. The slope in the double logarithmic relationship between turnover rate and LMA was parameterized at -1.71
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_27_a7ec6a00ea88109eada7g-12.jpg?height=1368&width=1288&top_left_y=283&top_left_x=388}
+\captionsetup{labelformat=empty}
+\caption{Fig. 5. Dependence of metapopulation averages for LAI and biomass density on trait values, for metapopulations with different mean interval between disturbances and productivity. Bold lines show averages for a metapopulation with mean interval between disturbances of 30 years, corresponding to Fig. 4. Other lines show averages for: (a) different disturbance intervals of 15 years (dotted lines), 60 years (short dashed lines), 120 years (long dashed lines);(b) different site productivities, resulting from changing the ratio of light-saturated CO2 assimilation rate to leaf nitrogen mass to $90 \%$ (dashed lines) and $125 \%$ (dotted lines) of its baseline value. See Figs S7 and S8 for plots of average height, NPP, and equilibrium seed rain.}
+\end{figure}
+(see Appendix S7). A slope less than -1 means that decreases in the cost of deploying leaves (lower LMA) are associated with disproportionately larger increases in leaf turnover, leading to a greater light requirement for fast-growth strategies. The high light requirement of fast-growth strategies limited the sustainable LAI.
+
+The influences of height at maturation, wood density and seed size were less intuitive. Height at maturation and seed size both influenced the density of seed rain (Table 3): height at maturation by diverting energy away from seed production, and seed size by altering the partitioning of mass among offspring. Higher equilibrium seed rain increased rates of seedling germination, and even though most of the additional seedlings were thinned out through competitive interactions, there was a small to moderate increase in LAI (Fig. 5). Wood density also had a small effect on LAI because of influences on seedling mortality (Fig. 5).
+
+\section*{HEIGHT AT MATURATION INFLUENCES NPP BY CHANGING THE TOTAL RESPIRATORY LOAD OF VEGETATION}
+
+Changes in NPP resulted from changes either in gross primary productivity (GPP), driven by total LAI, or in total respiration. Despite the influence of leaf economics on LAI (and therefore on GPP), leaf strategy caused no shift in NPP, because changes in GPP were compensated by changes in total stem and leaf respiration. The small changes in LAI driven by wood density and seed size translated into even smaller effects on NPP. However, the model assumed stem respiration was proportional to stem volume, and therefore, wood density affected NPP solely via mortality. It remains unclear if rates of stem respiration per volume vary with wood density, but if this were the case, some additional effect of wood density on NPP could be expected. Height at maturation, on the other hand,
+had a moderate effect on NPP, because taller stems had increased volumes of live sapwood and bark per individual.
+
+\section*{TRAIT VARIATION OFFERS THREE ALTERNATIVE PATHWAYS TO INCREASED STANDING BIOMASS}
+
+Leaf economics, wood density, and height at maturation all led to large changes in biomass density (Fig. 5; Table 3), each realized through a different demographic pathway. Along the first pathway, leaf economic strategy altered leaf area and basal area. Increased LMA decreases the light requirement of individuals, causing an increase in population density, which in turn increases LAI and thus total sapwood volume. Additional wood mass accounted for most of the biomass change, but there was also a large (268\%) change in total leaf mass associated with shifts in LMA. Along the second pathway, wood density shifted the allocation of mass between leaf and stem. Since wood density had only limited influence on LAI, similar total volumes of sapwood were maintained in stands having low and high wood density. Stands with higher wood density therefore supported a greater standing mass of wood. Along the third pathway, height at maturation extended the growth period. By deferring the shift from vegetative to reproductive allocation, individuals accumulate more mass as wood.
+
+\section*{LIMITED INFLUENCE OF SEED SIZE ON VEGETATION PROPERTIES}
+
+Changes in seed size had only small effects on LAI, NPP, and biomass density (Table 3), primarily because vegetation was not seed-limited. However, there were some noticeable effects of seed size on patterns of development in young stands (Fig. 4), and on average values for each of the vegetation properties in the metapopulation (Fig. 5). The influence of seed size on young stands had two parts. First, smaller seed size resulted in higher seed rain, which translated into faster increases in LAI and NPP after disturbance. LAI peaked earlier in stands with smaller seeds, and there was also a greater difference between peak and equilibrium LAI (Fig. 4). Second, larger seed size resulted in a height and biomass advantage that was maintained until reproduction. Because younger stands make up more than half the metapopulation, these transient effects of seed size, although small, did lead to changes in emergent vegetation properties of up to $15 \%$ (Table 3).
+
+\section*{Influences of disturbance regime and site productivity on vegetation}
+
+Results presented above apply to stands growing under similar abiotic conditions. Here we investigate the sensitivity of these patterns to changes in site productivity and disturbance regime. While vegetation properties responded strongly to changes in productivity and disturbance, the influence of traits on vegetation dynamics was similar across the different stands (Fig. 5).
+The strongest influence of disturbance interval was on average height and biomass; in contrast, LAI and NPP were almost
+constant for disturbance intervals longer than 15 years (Fig. 5a, S7). Height and biomass increased more slowly in developing stands than do NPP or LAI (Fig. 4). Shorter disturbance intervals decreased the fraction of the metapopulation at older stand ages; therefore, landscape-wide biomass density and height were lower. At disturbance intervals of 15 years or less, LAI decreased strongly with height at maturation, because deferring seed production to large sizes for short disturbance intervals generated chronically low reproductive output. Realistically, species requiring large height at maturation would not persist under these conditions.
+
+All four vegetation properties increased under more productive site conditions, as might be expected (Fig. 5b, S8). The response of NPP to changes in site productivity was larger than to trait variation, while for height, LAI, and biomass, the responses were similar in magnitude (Fig. S8).
+
+\section*{Discussion}
+
+A primary challenge in modelling emergent properties of vegetation is to scale efficiently and transparently from tissue-level, to individual-, population-, and landscape-level phenomena (Prentice \& Leemans 1990; Pacala et al. 1996; Levin et al. 1997; Moorcroft, Hurtt \& Pacala 2001). Ecological and lifehistory traits of individuals must have their influence on emergent properties of vegetation via allocations among different tissue types and via the distributions of ages and sizes. That is why the challenge must be approached with a model that incorporates the entire life cycle of individuals, including the influences of traits, climate, competition, and disturbance on demography and size structure. TSPMs (trait-, size- and patchstructured models) offer a viable compromise between the detailed but noisy output of spatially explicit simulation models and the convenience of modelling idealized stands lacking internal population structure. The TSPM described here was used to investigate the influences of four functional traits, for which trade-offs are relatively well understood, on several key properties of vegetation. The approach could be extended to other traits, once the trade-offs governing their effects are sufficiently described.
+
+\section*{THE DEMOGRAPHIC LINK BETWEEN TRAITS AND EMERGENT PROPERTIES OF VEGETATION}
+
+Leaf economic strategy had a moderate effect on LAI and a large effect on biomass density through a chain of influence that is well supported by empirical evidence. In the model, leaf strategy influenced LAI by altering plant light requirement (Givnish 1988; Baltzer \& Thomas 2007). The relationship between LMA and turnover has a slope of less than -1 (Wright et al. 2004), meaning that fast growth strategies suffer from disproportionately fast leaf turnover. Low-LMA strategies also imply higher respiration per unit leaf mass, because of higher nitrogen content per mass (Wright et al. 2004). High turnover and respiration increases the light requirement for individuals of a given size, which ultimately causes a decrease in LAI. Comparing single-species stands differing in leaf economic
+strategy, Reich, Walters \& Ellsworth (1992) found a decrease in LAI and stand biomass, but no change in NPP, with shifts towards faster leaf strategy (lower LMA), which is consistent with our results. Beyond that, data from species-rich tropical forests support the influence of leaf economic strategy on minimum light requirement and on survival in low light (Condit, Hubbell \& Foster 1996; Poorter \& Bongers 2006; Baltzer \& Thomas 2007). Multi-species datasets also support the notion of faster initial height growth rates for low LMA strategies (Reich, Walters \& Ellsworth 1992; Poorter \& Bongers 2006).
+
+The effect of leaf economic strategy on biomass density resulted from increasing the density of plants in the vegetation, whereas higher wood density and height at maturation increased the mass per individual. These effects are consistent with such stand-level data as are available. Baker et al. (2004) estimated that up to $40 \%$ of regional variation in aboveground mass for Amazonian tropical forests might be attributed to differences in wood density. Keith, Mackey \& Lindenmayer (2009) found that the world's tallest forests also contain the greatest mass of carbon. Furthermore, our model indicates that trait variation may increase biomass density without increasing NPP. In fact, NPP decreased slightly in taller stands because of additional stem respiration. Wood density had a negligible influence on NPP, in line with theoretical expectations (Enquist et al. 1999), but this result hinges on our assumption of constant stem respiration per volume. If rates of stem respiration per volume were found to increase with wood density, then NPP would decrease. So what are plants sacrificing to achieve this additional expenditure on stem tissues in high wood density and tall stands? In the case of height at maturation, additional stem mass came at the expense of reproductive output. In the case of wood density, high-density stands have less intrinsic mortality, decreasing the rate at which accumulated carbon is recycled into the litter pool.
+
+Biomass density was the vegetation property we found to be most sensitive to trait variation and changes in disturbance frequency. Other studies have likewise reported a large influence of disturbance regime on standing biomass. For example, Hurtt et al. (2002) used a PDE-based model to estimate historical patterns of carbon flux resulting from land-use change in North America. They estimated that early land-use changes, mainly clearing for agriculture, caused a net efflux of carbon from terrestrial ecosystems, while fire suppression and agricultural abandonment since 1900 have resulted in a net uptake of carbon throughout the 20th century. The advantage of using a TSPM to estimate landscape-scale changes in biomass is that rates of change are directly constrained by current patch structure and size structure. In this context, it is interesting to note that most DGVMs, as well as land-surface models coupled with global climate models, do not explicitly consider patch structure or size structure (Cramer et al. 2001; Bonan \& Levis 2002; Sitch et al. 2008). While these models may prove accurate in predicting NPP, which we found to be relatively insensitive to traits and disturbance regime, their predictions about biomass density may be less informative than those coming from a TSPM in which patch age and stand structure are explicitly modelled.
+
+Combined, our results underscore the need for vegetation models to incorporate functional traits together with their effects on the patch structure and size structure of vegetation. Our study has shown that the effects of some traits on vegetation properties may be as strong as the influence of site productivity and disturbance, although it should be noted that these predictions have been derived for single-species stands only. The ecological dynamics that give rise to these effects also illustrate why size structure within populations is important. Size structure was present in the stochastic gap models widely used during the past three decades (for reviews, see Shugart 1984; Bugmann 2001). However, stochastic simulators inhibit detailed investigations of ecological feedbacks such as those presented here, and are not practical for incorporation into large-scale applications like DGVMs. For these reasons, researchers have sought ways to approximate the collective dynamics of heterogeneous populations (Sinko \& Streifer 1967; Levin \& Paine 1974; Levin et al. 1997; de Roos 1997), leading to the development of PDE-based models (Kohyama 1993; Moorcroft, Hurtt \& Pacala 2001; Strigul et al. 2008; Medvigy et al. 2009). Since PDE-based models can account for patch and size structure, while enabling deterministic numerical solutions, they have been advocated as a possible foundation for next-generation DGVMs (Purves \& Pacala 2008).
+
+\section*{IMPLICATIONS FOR MULTI-SPECIES STANDS}
+
+For the most part, we expect the results presented here to extend to multi-species stands. Patch- and size-structured models, formulated either as stochastic gap-models or as their deterministic approximations, can easily accommodate multiple species, provided there is an opportunity for the different types to coexist (Shugart 1984; Kohyama 1993). These models are thus well suited for investigating questions about community assembly and the effects of species diversity on ecosystem function. Based on the results presented here, we predict that the LAI of multi-species stands will be determined mainly by the species with highest LMA, since leaf area will continue to accumulate while light levels remain above that species' light requirement. To the extent they are influenced by LAI, NPP and biomass density may exhibit similar patterns. However, these vegetation properties are also influenced by wood density and height at maturation, whose influence on multi-species stands will be determined by the precise mixture of trait values rather than by the most extreme trait value. Shifts in the average trait value are bound to produce a corresponding shift in emergent properties. Quantifying these effects in the field may be complicated by the known covariation of traits with climate and other site factors: leaf economic strategy and wood density move towards faster growth, and height and seed mass increase, as abiotic conditions become more favourable for growth (Wright et al. 2004; Moles et al. 2005, 2009; Chave et al. 2009). This suggests a key role for TSPMs in assessing how climate and traits combine to give rise to variation in vegetation properties across landscapes.
+
+\section*{FURTHER REFINING THE REPRESENTATION OF VEGETATION IN TSPMS}
+
+The representation of vegetation in current TSPMs is an improvement over most DGVMs, which lack internal population and patch structure (see also Moorcroft, Hurtt \& Pacala 2001; Hurtt et al. 2002; Medvigy et al. 2009). Nevertheless, this representation remains a simplified version of real communities. It is therefore worth noting some outstanding challenges for the TSPM approach.
+
+Probably the most significant challenge is to determine whether a single state dimension adequately describes the ontogenetic pathway traversed by individuals within a species as they mature. With a single state dimension, the various size metrics that describe individuals within a species, such as crown leaf area, height, stem basal area, or root mass have to be bound together, so that all size metrics can be predicted from a single variable. This means that allocation, for example to roots versus leaves, cannot change dynamically in response to environmental conditions, except by varying the traits of the entire species (i.e. by redefining the ontogenetic pathway). In principle, more state dimensions can be included (e.g. Moorcroft, Hurtt \& Pacala 2001), but this makes the model harder to solve. In contrast, most DGVMs maintain numerous state dimensions, but to make this possible, they sacrifice all detail regarding size structure within each species, so that the entire metapopulation of a species is represented in terms of a single average-sized individual, with recruits also entering at this size (Cramer et al. 2001; Bonan \& Levis 2002; Woodward \& Lomas 2004; Sitch et al. 2008). While it will be worthwhile to attempt implementing extensions of the TSPM approach presented here to multiple state dimensions, so far stochastic simulations are offering the only practical way to combine multiple state dimensions with detailed size structure.
+
+The assumption that disturbances are stand-replacing may also be cause for concern. This assumption makes it easier to scale up from a single patch to the entire metapopulation. But in many cases, disturbances remove only part of a patch's vegetation, resulting in a complex age structure within each patch (Pickett \& White 1985). To properly incorporate these dynamics would be computationally challenging, since each patch in the metapopulation would need to be simulated explicitly. The question thus remains how much this refinement would influence our results. However, there are vegetation types for which the stand-replacement assumption applies (Pickett \& White 1985; Clark 1989; Coomes \& Allen 2007), making it a reasonable first approximation of disturbance-driven vegetation dynamics.
+
+An even broader challenge is to determine how well the PDEs used in TSPMs approximate competitive and distur-bance-driven vegetation dynamics. The PDE governing stand development used here has been derived both as the deterministic limit for increasingly large patches (Kohyama 1993; de Roos 1997), and as the average of many runs of a stochastic gap model containing few individuals per patch (Moorcroft, Hurtt \& Pacala 2001). This suggests that the PDE may suit a
+variety of disturbance types, although both derivations assume spatial homogeneity within patches. Including spatial interactions within patches could, in principle, alter patterns of stand development, although the effect on the emergent properties considered here might be minimal (Busing \& Mailly 2004). For example, Strigul et al. (2008) showed that when phototropic effects were included in spatial simulations of stand development, basal area and tree density were well approximated by the standard PDE used here, which ignores within-patch spatial effects (see also Hurtt et al. 1998). Likewise, accounting for the distribution of patch ages across a landscape may be sufficient for estimating emergent properties of metapopulations, without considering the spatial arrangement of patches. More generally, the approach of modelling a dynamic landscape, in which individual patches constantly change, within an equilibrium framework seems promising for reconciling 'equilibrium' and 'non-equilibrium' approaches to modelling ecological dynamics (Levin \& Paine 1974; Connell 1978; Bormann \& Likens 1979).
+
+\section*{A NECESSARY BUT DIFFICULT CHALLENGE: CONFIRMING MODEL PREDICTIONS}
+
+As vegetation models become more complex they may account for an increasing array of observable phenomena. However, our ability to confirm the behaviour of sophisticated models has been limited by the availability of suitable data. For example, we found only a single data set relating trait values to emergent properties of vegetation in single-species forest stands (Reich, Walters \& Ellsworth 1992). Other data sets exist for traits, for ecosystem properties, and for stand structure, but these are almost always disconnected from one another, which is far from ideal. There is also a shortage of adequate data with which to parameterize and test the various sub-models in TSPMs. To parameterize our model we have drawn on some of the best data sources available, but still they are not ideal, and also they come from a mixture of situations. Consider the Coweeta dataset (Martin et al. 1998) used to parameterize our allocation model. It provides unusually good within-species resolution, but even so, the dataset is limited to relatively large trees so our estimates of sapling allometry are rough approximations at best. It is also unclear how representative these allometries are of other vegetation types. The general problem is that researchers have thus far relied on a disparate range of data sources of varying quality for model parameterization and confirmation, as have we.
+
+We are optimistic about future opportunities for fruitful model-data comparisons. Long-term records of size-structured growth dynamics are accumulating for a variety of sites, and in some cases, are being supplemented with species trait data (e.g. Wright et al. 2010). Such data will offer unparalleled opportunities to evaluate the performance of TSPMs (Purves \& Pacala 2008; Medvigy et al. 2009). Importantly, detailed datasets allow TSPMs to be evaluated based on their ability to predict multiple phenomena, whereas previous research has focussed on individual phenomena in isolation. Combined with detailed records from ecosystem flux towers, long-term plot data also
+offer a pathway for refining weakly constrained model parameters (Medvigy et al. 2009). There also exist many experimental plantings worldwide established by forestry services, offering a rich source of potential data if it can be accessed. Overall, certainty in model predictions would be improved through collation and assimilation of standardized datasets from a variety of species and systems.
+
+\section*{Conclusions}
+
+To investigate the impact of leaf economic strategy, wood density, seed size, and height at maturation on emergent properties of vegetation, we used a model capturing the entire life cycle of individuals, from germination to sapling growth and maturation, because the advantages of these traits are manifested through influences on size distribution and demography. In the past, individual-based models have often relied on empirically motivated growth equations (e.g. Shugart 1984; Pacala et al. 1996; Bugmann 2001). However, growth is an outcome of traits operating in a given environment, and the model presented here captures physiological processes and generates many aspects of individual performance, stand dynamics, and properties of vegetation from trait variation (see also Friend et al. 1997; Moorcroft, Hurtt \& Pacala 2001). Trait-based models are also easier to calibrate for new sites and species mixtures. It is therefore hoped that the framework we have presented here may open up new avenues for understanding the role of traits in structuring vegetation through physiological, ecological, and evolutionary processes.
+
+\section*{Acknowledgements}
+
+This work has been supported by funding from the Australian Research Council, the International Institute for Applied Systems Analysis, Macquarie University, the Swedish Research Council, and Umeå University. We thank J. Johansson, C. Lusk, A. de Roos and three anonymous reviewers for comments on earlier versions of this paper, and B. Medlyn, I. C. Prentice, and P. Reich for valuable discussions.
+
+\section*{References}
+
+Baker, T.R., Phillips, O.L., Malhi, Y., Almeida, S., Arroyo, L., Di Fiore, A. et al. (2004) Variation in wood density determines spatial patterns in Amazonian forest biomass. Global Change Biology, 10, 545-562.
+Baltzer, J.L. \& Thomas, S.C. (2007) Determinants of whole-plant light requirements in Bornean rain forest tree saplings. Journal of Ecology, 95, 1208-1221.
+Bonan, G.B. (2008) Forests and climate change: forcings, feedbacks, and the climate benefits of forests. Science, 320, 1444-1449.
+Bonan, G. \& Levis, S. (2002) Landscapes as patches of plant functional types: an integrating concept for climate and ecosystem models. Global Biogeochemical Cycles, 16, 1021.
+Bormann, F.H. \& Likens, G.E. (1979) Catastrophic disturbance and the steady state in northern hardwood forests. American Scientist, 67, 660-669.
+Bugmann, H. (2001) A review of forest gap models. Climatic Change, 51, 259305.
+
+Busing, R.T. \& Mailly, D. (2004) Advances in spatial, individual-based modelling of forest dynamics. Journal of Vegetation Science, 15, 831.
+Cannell, M.G.R. \& Thornley, J.H.M. (1998) Temperature and CO[2] responses of leaf and canopy photosynthesis: a clarification using the non-rectangular hyperbola model of photosynthesis. Annals of Botany, 82, 883-892.
+Chave, J., Coomes, D.A., Jansen, S., Lewis, S.L., Swenson, N.G. \& Zanne, A. (2009) Towards a worldwide wood economics spectrum. Ecology Letters, 12, 351-366.
+
+Clark, J.S. (1989) Ecological disturbance as a renewal process: theory and application to fire history. Oikos, 56, 17-30.
+Condit, R., Hubbell, S.P. \& Foster, R.B. (1996) Assessing the response of plant functional types to climate change in tropical forests. Journal of Vegetation Science, 7, 405-416.
+Connell, J.H. (1978) Diversity in tropical rain forests and coral reefs. Science, 199, 1302-1310.
+Coomes, D.A. \& Allen, R.B. (2007) Mortality and tree-size distributions in natural mixed-age forests. Journal of Ecology, 95, 27-40.
+Cramer, W., Bondeau, A., Woodward, F.I., Prentice, I.C., Betts, R.A., Brovkin, V. et al. (2001) Global response of terrestrial ecosystem structure and function to $\mathrm{CO}_{2}$ and climate change: results from six dynamic global vegetation models. Global Change Biology, 7, 357-373.
+Enquist, B.J., West, G.B., Charnov, E.L. \& Brown, J.H. (1999) Allometric scaling of production and life-history variation in vascular plants. Nature, 401, 907-911.
+Friend, A.D., Stevens, A.K., Knox, R. \& Cannell, M.G.R. (1997) A processbased, terrestrial biosphere model of ecosystem dynamics (Hybrid v3.0). Ecological Modelling, 95, 249-287.
+Givnish, T.J. (1988) Adaptation to sun and shade: a whole-plant perspective. Australian Journal of Plant Physiology, 15, 63-92.
+Goff, F.G. \& West, D. (1975) Canopy-understory interaction effects on forest population structure. Forest Science, 21, 98-108.
+Hara, T. (1984) A stochastic model and the moment dynamics of the growth and size distribution of plant populations. Journal of Theoretical Biology, 109, 173-190.
+Hector, A. \& Bagchi, R. (2007) Biodiversity and ecosystem multifunctionality. Nature, 448, 188-190.
+Hooper, D.U., Chapin, F.S., Ewel, J.J., Hector, A., Inchausti, P., Lavorel, S. et al. (2005) Effects of biodiversity on ecosystem functioning: a consensus of current knowledge. Ecological Monographs, 75, 3-35.
+Hurtt, G.C., Moorcroft, P.R., Pacala, S.W. \& Levin, S.A. (1998) Terrestrial models and global change: challenges for the future. Global Change Biology, 4, 581-590.
+Hurtt, G.C., Pacala, S.W., Moorcroft, P.R., Caspersen, J., Shevliakova, E., Houghton, R.A. \& Moore, B. (2002) Projecting the future of the U.S. carbon sink. Proceedings of the National Academy of Sciences, USA, 99, 1389-1394.
+Huston, M.A. \& DeAngelis, D.L. (1987) Size bimodality in monospecific populations: a critical review of potential mechanisms. American Naturalist, 129, 678-707.
+Huston, M. \& Smith, T. (1987) Plant succession: life history and competition. American Naturalist, 130, 168-198.
+Iwasa, Y. (2000) Dynamic optimization of plant growth. Evolutionary Ecology Research, 2, 437-455.
+Keith, H., Mackey, B.G. \& Lindenmayer, D.B. (2009) Re-evaluation of forest biomass carbon stocks and lessons from the world's most carbon-dense forests. Proceedings of the National Academy of Sciences, USA, 106, 1163511640.
+
+King, D.A., Davies, S.J., Tan, S. \& Noor, N.S.M. (2006) The role of wood density and stem support costs in the growth and mortality of tropical trees. Journal of Ecology, 94, 670-680.
+Kohyama, T. (1993) Size-structured tree populations in gap-dynamic forest: the forest architecture hypothesis for the stable coexistence of species. Journal of Ecology, 81, 131-143.
+Levin, S.A. \& Paine, R.T. (1974) Disturbance, patch formation, and community structure. Proceedings of the National Academy of Sciences, USA, 71, 2744-2747.
+Levin, S.A., Grenfell, B., Hastings, A. \& Perelson, A.S. (1997) Mathematical and computational challenges in population biology and ecosystems science. Science, 275, 334-343.
+Mäkelä, A. (1985) Differential games in evolutionary theory: height growth strategies of trees. Theoretical Population Biology, 27, 239-267.
+Martin, J.G., Kloeppel, B.D., Schaefer, T.L., Kimbler, D.L. \& McNulty, S.G. (1998) Aboveground biomass and nitrogen allocation of ten deciduous southern Appalachian tree species. Canadian Journal of Forest Research, 28, 1648-1658.
+McCarthy, M.A., Gill, A.M. \& Bradstock, R.A. (2001) Theoretical fire-interval distributions. International Journal of Wildland Fire, 10, 73-77.
+Medvigy, D., Wofsy, S.C., Munger, J.W., Hollinger, D.Y. \& Moorcroft, P.R. (2009) Mechanistic scaling of ecosystem function and dynamics in space and time: Ecosystem Demography model version 2. Journal of Geophysical Research, 114, G01002.
+Moles, A.T., Falster, D.S., Leishman, M. \& Westoby, M. (2004) Small-seeded plants produce more seeds per square metre of canopy per year, but not per individual per lifetime. Journal of Ecology, 92, 384-396.
+
+Moles, A.T., Ackerly, D.D., Webb, C.O., Tweddle, J.C., Dickie, J.B., Pitman, A.J. \& Westoby, M. (2005) Factors that shape seed mass evolution. Proceedings of the National Academy of Science, USA, 102, 10540-10544.
+Moles, A.T., Warton, D.I., Warman, L., Swenson, N.G., Laffan, S.W., Zanne, A.E., Pitman, A., Hemmings, F.A. \& Leishman, M.R. (2009) Global patterns in plant height. Journal of Ecology, 97, 923-932.
+Moorcroft, P.R., Hurtt, G.C. \& Pacala, S.W. (2001) A method for scaling vegetation dynamics: the ecosystem demography model (ED). Ecological Monographs, 71, 557-585.
+Muller-Landau, H.C. (2004) Interspecific and inter-site variation in wood specific gravity of tropical trees. Biotropica, 36, 20-32.
+Pacala, S.W., Canham, C.D., Saponara, J., Silander, J.A., Kobe, R.K. \& Ribbens, E. (1996) Forest models defined by field measurements - estimation, error analysis and dynamics. Ecological Monographs, 66, 1-43.
+Pickett, S.T.A. \& White, P.S. (1985) The Ecology of Natural Disturbance and Patch Dynamics. Academic Press, New York.
+Poorter, L. \& Bongers, F. (2006) Leaf traits are good predictors of plant performance across 53 rain forest species. Ecology, 87, 1733-1743.
+Prentice, I. \& Leemans, R. (1990) Pattern and process and the dynamics of forest structure: a simulation approach. Journal of Ecology, 78, 340-355.
+Press, W.H. (1995) Numerical Recipes in C: the Art of Scientific Computing. Cambridge University Press, Cambridge, New York.
+Purves, D. \& Pacala, S. (2008) Predictive models of forest dynamics. Science, 320, 1452-1453.
+Reich, P.B., Walters, M.B. \& Ellsworth, D.S. (1992) Leaf life-span in relation to leaf, plant, and stand characteristics among diverse ecosystems. Ecological Monographs, 62, 365-392.
+de Roos, A.M. (1997) A Gentle Introduction to Physiologically Structured Population Models. Structured Population Models in Marine, Terrestrial and Fresh-water Systems, pp. 119-204. Chapman \& Hall, New York.
+Ryan, M.G., Binkley, D. \& Fownes, J.H. (1997) Age-related decline in forest productivity: pattern and process. Advances in Ecological Research, 27, 213262.
+
+Shinozaki, K., Yoda, K., Hozumi, K. \& Kira, T. (1964) A quantitative analysis of plant form - the pipe model theory. I. Basic analyses. Japanese Journal of Ecology, 14, 97-105.
+Shugart, H.H. (1984) A Theory of Forest Dynamics: The Ecological Implications of Forest Succession. Springer-Verlag, New York.
+Shukla, J. \& Mintz, Y. (1982) Influence of land-surface evapotranspiration on the earth's climate. Science, 215, 1498-1501.
+Sinko, J.W. \& Streifer, W. (1967) A new model for age-size structure of a population. Ecology, 48, 910-918.
+Sitch, S., Huntingford, C., Gedney, N., Levy, P.E., Lomas, M., Piao, S.L. et al. (2008) Evaluation of the terrestrial carbon cycle, future plant geography and climate-carbon cycle feedbacks using five Dynamic Global Vegetation Models (DGVMs). Global Change Biology, 14, 20152039.
+
+Strigul, N., Pristinski, D., Purves, D., Dushoff, J. \& Pacala, S. (2008) Scaling from trees to forests: tractable macroscopic equations for forest dynamics. Ecological Monographs, 78, 523-545.
+Tilman, D., Knops, J., Wedin, D., Reich, P., Ritchie, M. \& Siemann, E. (1997) The influence of functional diversity and composition on ecosystem processes. Science, 277, 1300-1302.
+Westoby, M., Falster, D.S., Moles, A.T., Vesk, P. \& Wright, I.J. (2002) Plant ecological strategies: some leading dimensions of variation between species. Annual Review of Ecology and Systematics, 33, 125-159.
+Woodward, F.I. \& Lomas, M.R. (2004) Vegetation dynamics - simulating responses to climatic change. Biological Reviews, 79, 643-670.
+Wright, I.J., Reich, P.B., Westoby, M., Ackerly, D., Baruch, Z., Bongers, F. et al. (2004) The world-wide leaf economics spectrum. Nature, 428, 821-827.
+Wright, S.J., Kitajima, K., Kraft, N., Reich, P., Wright, I., Bunker, D. et al. (2010) Functional traits and the growth-mortality tradeoff in tropical trees. Ecology, 100621220348088.
+Yokozawa, M. \& Hara, T. (1992) A canopy photosynthesis model for the dynamics of size structure and self-thinning in plant-populations. Annals of Botany, 70, 305-316.
+Yokozawa, M. \& Hara, T. (1995) Foliage profile, size structure and stem diameter plant height relationship in crowded plant-populations. Annals of Botany, 76, 271-285.
+Zanne, A., Lopez-Gonzalez, G., Coomes, D.A., Ilic, J., Jansen, S., Lewis, S.L., Miller, R.B., Swenson, N.G., Wiemann, M.C. \& Chave, J. (2009) Global Wood Density Database. Dryad. Identifier: http://hdl.handle.net/10255/ dryad. 235.
+
+Received 3 September 2009; accepted 24 August 2010
+Handling Editor: Hans Cornelissen
+
+\section*{Supporting Information}
+
+Additional supporting information may be found in the online version of this article:
+
+Appendix S1. Derivation of equilibrium patch-age distribution.
+
+Appendix S2. Derivation of biomass-allocation model.
+
+Appendix S3. Confirmation of biomass-allocation model.
+
+Appendix S4. Relationship between mortality and wood density.
+
+Appendix S5. Derivation of seedling germination-survival model.
+
+Appendix S6. Calculation of gross annual assimilation from solar patterns.
+
+Appendix S7. Model calibration.
+
+Table S1. Tests of model assumptions and derived trait values for individuals from 10 species contained in the Coweeta biomass dataset.
+
+Figure S1. Equilibrium density distribution of patch ages in relation mean disturbance interval.
+
+Figure S2. Observed relationships between (a) leaf area and sapwood area, (b) leaf area and height, and (c) leaf area and heartwood volume in the Coweeta biomass data.
+
+Figure S3. Predicted and observed values for (a) sapwood mass and (b) bark mass in the Coweeta biomass data.
+
+Figure S4. Relationship between wood density and log-transformed mortality rate at four sites.
+
+Figure S5. Instantaneous (a) and annual (b) photosynthetic light response curves with nitrogen use efficiency set at different values.
+
+Figure S6. Influence of plant size on allocation and dry mass production.
+
+Figure S7. Dependence of emergent properties of vegetation and equilibrium seed rain on trait values, for metapopulations with different mean interval between disturbances.
+
+Figure S8. Dependence of emergent properties of vegetation and equilibrium seed rain on trait values, for metapopulations with different productivity.
+
+As a service to our authors and readers, this journal provides supporting information supplied by the authors. Such materials may be re-organized for online delivery, but are not copy-edited or typeset. Technical support issues arising from supporting information (other than missing files) should be addressed to the authors.

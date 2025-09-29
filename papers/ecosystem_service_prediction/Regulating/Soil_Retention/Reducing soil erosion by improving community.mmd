@@ -1,0 +1,310 @@
+\title{
+Reducing soil erosion by improving community functional diversity in semi-arid grasslands
+}
+
+\author{
+Huoxing Zhu ${ }^{\mathbf{1 , 2}}$, Bojie Fu ${ }^{\mathbf{1 , 2 *}}$, Shuai Wang ${ }^{\mathbf{1}}$, Linhai Zhu ${ }^{\mathbf{1}}$, Liwei Zhang ${ }^{\mathbf{1}}$, Lei Jiao ${ }^{\mathbf{1}}$ and Cong Wang ${ }^{1}$ \\ ${ }^{1}$ State Key Laboratory of Urban and Regional Ecology, Research Centre for Eco-Environmental Sciences, Chinese Academy of Sciences, Beijing 100085, China; and ${ }^{2}$ Joint Centre for Global Change Studies, Beijing 100875, China
+}
+
+\begin{abstract}
+Summary
+1. Great efforts have been made to control soil erosion by restoring plant communities in degraded ecosystems world-wide. However, soil erosion has not been substantially reduced mainly because current restoration strategies lead to large areas of mono-specific vegetation, which are inefficient in reducing soil erosion because of their simple canopy and root structure. Therefore, an advanced understanding of how community functional composition affects soil erosion processes, as well as an improved restoration scheme to reduce soil erosion, is urgently needed.
+2. We investigated the effect of community functional composition on soil erosion in restored semi-arid grasslands on the Loess Plateau of China. Community functional composition of 16 restored grasslands was quantified by community-weighted mean (CWM) and functional diversity (FD) trait values, which were calculated from nine plant functional traits of thirteen locally dominant plant species. Species richness and evenness were also measured. Soil erosion rates were measured using standard erosion plots. The multimodel inference approach was used to estimate the direction and the relative importance of these biodiversity indices in reducing soil erosion.
+3. A robust and strong negative effect of functional divergence (FDiv) on soil erosion was found. The prevalence of particular trait combinations can also decrease soil erosion. The greatest control over soil erosion was exerted when the community mean root diameter was small and the root tensile strength was great.
+4. Synthesis and applications: These findings imply that community functional diversity plays an important role in reducing soil erosion in semi-arid restored grasslands. This means that current restoration strategies can be greatly improved by incorporating community functional diversity into restoration design. We propose a trait-based restoration framework for reducing soil erosion, termed 'SSM' (Screening-Simulating-Maintaining). SSM aims to translate the target of community functional diversity into community assemblages that can be manipulated by practitioners. Based on this framework, a comprehensive procedure, highlighting functional diversity as the primary concern in determining optimal community assemblages, was developed to meet the pressing need for more effective restoration strategies to reduce soil erosion.
+\end{abstract}
+
+Key-words: community functional composition, ecological restoration, erosion control services, information-theoretic approach, Loess Plateau, plant-soil interactions, trait-based approach
+
+\section*{Introduction}
+
+Soil erosion is one of the global environmental issues and has been accelerating as a result of climate change and
+
+\footnotetext{
+*Correspondence author. E-mail: bfu@rcees.ac.cn
+}
+anthropogenic activities, leading to severe degradation of land and ecosystem functioning (Morgan 2004; Duran Zuazo \& Rodriguez Pleguezuelo 2008; Stokes et al. 2010). Although much effort has been made, soil erosion has not been substantially reduced mainly because current restoration strategies lead to large areas of mono-specific vegetation, which are inefficient in reducing soil erosion because
+of their simple canopy and root structure (Cao, Chen \& Yu 2009; Stokes et al. 2010; Cao 2011). Therefore, the major challenge facing restoration practitioners is how to maximize the erosion-reducing capacity of restored vegetation by manipulating community composition and structure in restoration processes.
+
+Trait-based approaches are increasingly used to understand the relationship between community composition and ecosystem processes (Lavorel \& Garnier 2002; Diaz et al. 2007; Garnier \& Navas 2012). To date, a wide range of ecosystem processes such as productivity, litter decomposition and nutrient cycling have all been well related to different community functional components, each of which represents different aspects of community functional composition (Garnier et al. 2004; Mokany, Ash \& Roxburgh 2008; Laughlin 2011; Mouillot et al. 2011; Clark et al. 2012). These studies have suggested that traitbased approaches have greater explanatory power than traditional species-based approaches because plant functional traits, rather than taxonomic identity, drive ecosystem processes (Cadotte, Carscadden \& Mirotchnick 2011). Moreover, some compelling mechanisms have been proposed to explain this effect. The biomass ratio hypothesis holds that the rates of ecosystem processes are controlled by the traits of the most abundant species present in the community, which are often characterized by communityweighted mean (CWM) trait values (Grime 1998; Diaz et al. 2007). In contrast, the diversity hypothesis proposes that the effects of species on ecosystem processes are mainly due to non-additive effects, such as complementarity effects or facilitation, among coexisting species with different trait values, which can be indicated by various functional diversity indices (FD) (Garnier \& Navas 2012; Dias et al. 2013; Lavorel 2013). Given these methodological strengths and a well-developed theoretical framework, trait-based approaches have great potential for application in ecological restoration (De Baets et al. 2009; Burylo, Dutoit \& Rey 2014; Laughlin 2014). However, little effort has been made to use a trait-based approach to explore the effects of community functional composition on soil erosion processes. Even fewer studies have attempted to transfer the findings to the design of restoration schemes in restoration projects.
+
+Plant functional traits have been well recognized as important predictors for soil erosion. In theory, both plant morphological traits, such as root diameter, and biomechanical traits, such as root tensile strength, have all been shown to significantly affect soil erosion (Gyssels et al. 2005; De Baets et al. 2006, 2008; Pohl et al. 2009; Burylo et al. 2012a,b). In practice, some methodological frameworks have been developed for selecting appropriate species to control soil erosion (De Baets et al. 2009; Burylo, Dutoit \& Rey 2014). However, the vast majority of current studies have been conducted at the species level, focusing on either the effects of different traits of one single species on soil erosion or the differences among different species in reducing soil erosion. Relatively few studies
+have considered the overall effect of species with different trait values on soil erosion at the ecosystem level (Burylo, Dutoit \& Rey 2014). In fact, some researchers have proposed that a mixture of species may control soil erosion better than monocultures because of their diverse and developed root systems, but empirical tests are rare (Reubens et al. 2007). Therefore, understanding the effects of community functional composition on soil erosion is essential for an advanced understanding of biodiversityecosystem functioning (BEF) relationships, and to the development of more effective restoration schemes to reduce erosion.
+
+Here, we investigate the effect of community functional composition on soil erosion in a restored, semi-arid grassland on the Loess Plateau of China. We aim to determine the direction and relative magnitude of the effects of different community functional components on soil erosion rates, ultimately to improve current restoration practices by incorporating this trait-based approach into restoration schemes.
+
+\section*{Materials and methods}
+
+\section*{SITE DESCRIPTION}
+
+This study was conducted in the Yangjuangou watershed $\left(36^{\circ} 42^{\prime} \mathrm{N}, 109^{\circ} 31^{\prime} \mathrm{E}\right)$, located in the central region of the Loess Plateau in China. The climate is semi-arid and continental, with a mean annual precipitation of 535 mm and a mean annual temperature of $14{ }^{\circ} \mathrm{C}$. The soils are mainly Calcaric Cambisols, and the dominant vegetation consists of replanted forests, primarily dominated by Robinia pseudoacacia, and restored grasslands, primarily dominated by Artemisia sacrorum, Stipa bungeana and Artemisia scoparia. This watershed is a region with typical, severe soil erosion on the Loess Plateau. Previous studies have shown that the mean soil erosion rate was $62.73 \mathrm{tha}^{-1}$ year $^{-1}$ from 1992 to 1996 and $36 \cdot 41 \mathrm{t} \mathrm{ha}^{-1}$ year $^{-1}$ in 2006 (Liu et al. 2012).
+
+\section*{VEGETATION SURVEYS AND MEASUREMENTS OF SOIL EROSION}
+
+Sixteen herbaceous communities were selected for vegetation surveying, plant trait sampling and the establishment of run-off plots. These communities were scattered across the watershed and were located on isolated slopes with similar steepness and soil conditions but contrasting species compositions because of different restoration strategies (Fig. 1).
+
+In each community, three run-off plots of $2 \times 10 \mathrm{~m}$ were established to monitor soil erosion. Each plot was surrounded by polyvinyl chloride (PVC) boards, which were embedded in the soil at a depth of 50 cm to impede the lateral movement of sediment and water. A PVC pipe was installed at the bottom of each plot to transfer the run-off and sediment to a bucket. After each rainfall event, the sediments collected in the PVC pipes and together with the sediments in the bucket they were collected, dried and weighed. In total, five erosive rainfall events were recorded across the growing season of 2013 (May-October), which corresponded to the rainfall characteristics of this area (few rainfall events concentrated in July and August). To avoid
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_28_3dc984f8b7a2013fc090g-03.jpg?height=876&width=1090&top_left_y=287&top_left_x=769}
+\captionsetup{labelformat=empty}
+\caption{Fig. 1. Sampling sites and the erosion plots of this study.}
+\end{figure}
+the confounding effects of antecedent soil water content on erosion, we selected three erosive rainfall events with sufficient intervals of time to perform our analysis. Our previous studies have demonstrated that the spatial variation of rainfall in this watershed is insignificant, partly because of the relatively small total area ( $2.02 \mathrm{~km}^{2}$ ) (Fu et al. 2009; Liu et al. 2012; Hou et al. 2014; Zhu et al. 2014).
+To minimize the effects of vegetation surveys and plant sampling on the run-off plots, we conducted non-destructive sampling. Adjacent to each plot, five $1 \times 1 \mathrm{~m}$ quadrats were established. Mean values obtained in the five quadrats were used to represent the vegetation composition of the main plot. All plant species present in each quadrat were identified, the number of individuals per species was counted, and the coverage of each species was estimated to the nearest percentage. Adult plants that were completely unshaded and free from attack by herbivores or pathogens were selected for functional trait measurements. Finally, two soil cores were sampled to the depth of 20 cm for each quadrat using a cylinder soil corer (diameter $=3 \cdot 5 \mathrm{~cm}$ ), to determine the physical and chemical properties of the soil.
+
+\section*{PLANT FUNCTIONAL TRAITS}
+
+Nine plant functional traits that were most likely to be related to the soil erosion process were selected (Pohl et al. 2009; Burylo et al. 2012a,b). Based on a pilot vegetation survey and field observations, we selected 13 species, which accounted for more than $80 \%$ of the biomass of each of the sampled communities, to measure all nine functional traits. For each species, at least 15 individuals were sampled, and 10 leaves per individual were randomly selected and scanned using a universal scanner (HP G3110; Hewlett-Packard Company, Palo Alto, CA, USA) at a resolution of 400 dpi. Digital images were analysed to determine the leaf area using software developed for leaf area measurements (Leaf Area Measurement, version 1.3; University of Sheffield, Sheffield, UK).
+The root systems of these sampled individual plants were cut at the root collar, washed and then scanned at a resolution of
+
+400 dpi. Five root morphological parameters: root length, root mean diameter, the external root surface, root volume and the percentage of fine roots were then determined using WinRHIZO Pro (version 2004a; Regent Instrument, Quebec, Canada). Subsequently, root tensile strength was measured with a universal tensile and compression test machine (Instron 5942, Canton, MA, USA). For each individual of each species, the whole root system was decomposed into separate root sections and numbered, and finally, 10 root sections were randomly selected to test root tensile strength. Using the same machine, we also tested the leaf tensile strength and leaf punch force of at least 10 randomly chosen leaves for each individual of each species.
+
+\section*{COMMUNITY FUNCTIONAL COMPOSITION}
+
+In total, we selected seven indices to characterize community functional composition, each of which represents different aspects of community composition (Table 1). Functional divergence (FDiv) characterizes how the abundance-weighted traits deviate from the gravity centre of the functional space, and thus higher FDiv may suggest a high degree of niche differentiation. Functional evenness (FEve) measures the degree of regularity of these abundance-weighted traits across the multidimensional functional space. Functional richness (FRic) quantifies the amount of functional trait space occupied by a community. The three complementary indices are independent of each other and together provide a comprehensive description of community functional composition (Villeger, Mason \& Mouillot 2008). CWM of studied traits was aggregated in PCA axes. CWM_PC1 mainly reflected the variation in the community mean root diameter, which was opposed to the percentage of fine roots. CWM_PC2 represented the variation in root tensile strength, which was in the same direction as leaf tensile strength and punch force. Species abundance was included as mean values of cover estimates across replicated plots. Species richness (S) and Shannon evenness index (J) were also calculated.
+
+According to Mouillot et al. (2011), these indices can be categorized into three biodiversity components: taxonomic diversity
+
+\section*{$4 H . Z h u$ et al.}
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 1. Summary of biodiversity indices used in multimodel inference (MMI) analysis}
+\begin{tabular}{|l|l|l|}
+\hline Indices & Abbreviations & Biological meaning \\
+\hline Species richness & S & Number of species present in a community \\
+\hline Species evenness & J & The regularity with which species abundance distributed \\
+\hline Axis 1 of PCA & CWM_PC1 & Aggregated trait values at community level. In this case represents mainly the variation in root mean diameter \\
+\hline Axis 2 of PCA & CWM_PC2 & Aggregated trait values at community level. In this case represents mainly the variation in root tensile strength \\
+\hline Functional richness & FRic & Represents the amount of functional space occupied by a community \\
+\hline Functional evenness & FEve & Represents both the regularity with which the functional space is filled and evenness in species abundance \\
+\hline Functional divergence & FDiv & Represents the degree to which highly abundant species deviate from the centre of gravity of the functional space \\
+\hline
+\end{tabular}
+\end{table}
+(S and J), functional identity (CWM_PC1 and CWM_PC2) and functional diversity (FRic, FEve and FDiv), each of which is known to influence ecosystem processes. Species richness and evenness were believed to be important drivers of some ecosystem processes, such as productivity, in the first-generation BEF studies (Naeem et al. 1994; Wilsey \& Potvin 2000; Shahid Naeem et al. 2009). The second-generation BEF studies, characterized by the use of trait-based approaches, have suggested that a large amount of variation in ecosystem processes can be explained by functional identity (i.e., particular functional traits) of the dominant species across a wide range of spatial scales (Grime 1998; Garnier et al. 2004; Cornwell et al. 2008; Mokany, Ash \& Roxburgh 2008). More recently, functional diversity is increasingly used as an important predictor of ecosystem processes (Schumacher \& Roscher 2009; Mouillot et al. 2011; Lavorel 2013). Therefore, synthesizing all of these biodiversity components into one single analysis is critical not only to capture the overall performance of the communities being studied, but also to evaluate their relative effects, which are rarely considered in the existing literature (Mouillot et al. 2011; Clark et al. 2012).
+
+\section*{DATA ANALYSIS}
+
+We first examined the bivariate relationships between soil erosion rates and the seven biodiversity indices. To estimate the effects of each of the biodiversity indices, we employed the multimodel inference (MMI) approach, which makes inferences based on a set of best models, rather than one single best model, and therefore can provide more stable and reliable inference results than traditional statistical inference (Burnham \& Anderson 2002).
+
+Given the heterogeneity of rainfall events, we built separate models for each of the three erosive rainfall events to examine whether the effect of community functional composition on soil erosion rates was robust across these rainfall events. The global models included all seven biodiversity indices. A model selection method was employed to generate all possible candidate models from the global models. These models were then ranked according to the second-order Akaike's Information Criterion (AICc). The effect size of each of the biodiversity indices was indicated by the averaged model parameters, which were derived from averaging the parameters of the models whose accumulated model probability exceeded $95 \%$. The relative importance of the biodiversity indices was also evaluated by summing the Akaike's weights of each model that included the predictors of interest.
+
+All of the analyses were performed using $R$ software, including package 'MuMIn', 'ggplot2' (Wickham 2009; R Development Core Team 2014; Barton 2015).
+
+\section*{Results}
+
+The biodiversity indices differed greatly in determining soil erosion rates (Fig. 2, Table 2). Specifically, FDiv was negatively correlated with soil erosion rates across the three erosive rainfall events and explained $40 \cdot 0 \%$, $39 \cdot 2 \%$ and $38 \cdot 1 \%$ of the variation in soil erosion rates, respectively, suggesting a considerable erosion-reducing capacity. In contrast, CWM_PC1 was positively associated with soil erosion rates and accounted for $58.6 \%, 41.4 \%$ and $35.9 \%$ of the variation in soil erosion rates, respectively. Combined with the results of previous PCAs, this result indicates that smaller community means of root diameter reduce soil erosion. Finally, the remaining five indices did not exhibit a significant relationship with soil erosion rates.
+
+The best eight models for each rainfall event are presented and ranked according to the AICc (Table 3). Most of these models exhibited remarkably high $R$-squared values, especially for event 1 and event 3 which presented minimum $R$-squared values of greater than $60 \%$, indicating significant explanatory power for variations in soil erosion rates. Specifically, nearly all models included FDiv, and when FDiv was removed, there was a substantial decrease in the $R$-squared values and a sharp increase in the AICc, indicating the great importance of FDiv in these models. Many models contained either CWM_PC1 or CWM_PC2 as important predictor variable, which appeared to vary across different rainfall events. In addition, species richness was included in most of the models for rainfall event 1 .
+
+The absence of extreme values of model probabilities, indicated by the similar Akaike's weights, suggests that there were not great differences between these best models in predicting soil erosion rates (Table 3). In this case, model averaging can be used to evaluate the effects of these predictor variables by estimating averaged model parameters. Table 4 displays these averaged model parameters, which were calculated from the models whose
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_28_3dc984f8b7a2013fc090g-05.jpg?height=1724&width=1660&top_left_y=280&top_left_x=202}
+\captionsetup{labelformat=empty}
+\caption{Fig. 2. Soil erosion rate as a function of (a) functional divergence (FDiv), (b) functional richness (FRic), (c) functional evenness (FEve), (d) CWM_PC1 (the first principle component of community-weighted mean trait values, representing mainly mean root diameter), (e) CWM_PC2 (the second principle component of community-weighted mean trait values, representing mainly mean root tensile strength), (f) species richness and (g) species evenness. Significant relationships are shown with solid lines, and non-significant relationships are shown with dashed lines.}
+\end{figure}
+accumulated Akaike's weights exceeded $95 \%$. The standardized coefficients of FDiv, CWM_PC1 and CWM_PC2 were consistently ranked in the top two across the three erosive rainfall events.
+
+Figure 3 shows the relative importance of the biodiversity indices. While most of these indices varied in their relative importance across the three erosive rainfall events, FDiv exhibited a robust and high importance value. The importance of CWM_PC1 and CWM_PC2 was also high and seemed to be contingent upon specific rainfall events.
+
+Interestingly, species richness showed a great importance only during rainfall event 1 .
+
+\section*{Discussion}
+
+\section*{THE EFFECTS OF FUNCTIONAL DIVERSITY ON SOIL EROSION}
+
+While FRic and FEve showed no significant effects, FDiv was found to have a robust and negative effect on soil
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 2. Simple linear regression models for the soil erosion process as a function of a variety of plant community diversity and functional trait indices across three erosive rainfall events}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline \multirow[b]{2}{*}{Predictor} & \multicolumn{2}{|l|}{Event 1} & \multicolumn{2}{|l|}{Event 2} & \multicolumn{2}{|l|}{Event 3} \\
+\hline & $P$ & $R^{2}$ & $P$ & $R^{2}$ & $P$ & $R^{2}$ \\
+\hline FDiv & 0.008 & 0.40 & 0.009 & 0.39 & 0.011 & 0.38 \\
+\hline FRic & $0 \cdot 560$ & $0 \cdot 03$ & 0.894 & $0 \cdot 00$ & $0 \cdot 655$ & $0 \cdot 02$ \\
+\hline FEve & 0.132 & $0 \cdot 16$ & $0 \cdot 266$ & $0 \cdot 09$ & 0.077 & $0 \cdot 21$ \\
+\hline CWM_PC1 & 0.0005 & 0.59 & 0.007 & 0.41 & 0.014 & 0.36 \\
+\hline CWM_PC2 & 0.856 & $0 \cdot 00$ & 0.926 & $0 \cdot 00$ & $0 \cdot 291$ & $0 \cdot 08$ \\
+\hline S & 0.072 & $0 \cdot 21$ & 0.785 & $0 \cdot 01$ & 0.767 & $0 \cdot 01$ \\
+\hline J & 0.013 & 0.37 & 0.151 & $0 \cdot 14$ & $0 \cdot 275$ & $0 \cdot 08$ \\
+\hline
+\end{tabular}
+\end{table}
+
+FDiv, functional divergence; FRic, functional richness; FEve, functional evenness; CWM_ PC1, axis 1 of PCA; CWM_ PC2, axis 2 of PCA; S, species richness; J, species evenness). Significant results ( $P<0.05$ ) are shown in bold.
+erosion rates across all of the rainfall events. The differences among these three indices in determining soil erosion rates may originate from their different emphases on community functional composition. FRic represents the functional space occupied by a community, while FEve quantifies how regularly the trait space is filled. FDiv measures how the most abundant species diverge from the centroid of the community, and thus may be interpreted as the degree of niche differentiation (Villeger, Mason \& Mouillot 2008; Mouillot et al. 2011; Clark et al. 2012). In
+the present study, it is the degree of deviation from the community centroid that strongly affects soil erosion rates. Some recent studies have reported similar results but with regard to other ecosystem processes (Mouillot et al. 2011; Clark et al. 2012). For example, indices focused on divergence better explained the variation in biomass production than those focused on evenness in Minnesota grasslands (Clark et al. 2012). In summary, this result suggests that different FD components may differ greatly in capturing the variation of soil erosion rates due to different emphases on community functional composition.
+
+The mechanistic understanding for the significant FDiv effect can be related to both the complementarity effect (Naeem et al. 1994; Loreau et al. 2001) and the sampling effect (Huston 1997). First, higher FDiv values mean greater niche differentiation, and thus fewer overlaps in plant morphological traits among species within a community, leading to a more complete use of above-ground and below-ground space (Naeem et al. 1994; Diaz et al. 2007). Consequently, in semi-arid grasslands, communities with higher FDiv values, which were calculated from ero-sion-relevant plant morphological and biomechanical traits, tend to develop dense canopies and root systems, which can efficiently shelter and anchor the soil (Reubens et al. 2007). At the same time, higher FDiv values in the present analyses suggest that more abundant species have more extreme biomechanical trait values, resulting in
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 3. Summary of the multiple regression models for the soil erosion process in three erosive rainfall events. Of all 128 models, the top eight models are displayed and ranked according to their AICc values}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|l|}
+\hline Event & FDiv & FEve & FRic & J & CWM_PC1 & CWM_PC2 & S & $R^{2}$ & logLik & AICc & $\Delta \mathrm{AICc}$ & Weights \\
+\hline \multirow[t]{8}{*}{E1} & -6.082 & \multirow{6}{*}{} & \multirow{3}{*}{} & -3.497 & & -0.431 & $0 \cdot 217$ & 0.847 & -4.787 & 30.908 & 0.000 & 0.254 \\
+\hline & -4.148 & & & & 0.400 & & $0 \cdot 219$ & 0.757 & -8.489 & 32.979 & 2.071 & $0 \cdot 090$ \\
+\hline & & & & & 0.750 & & & 0.586 & -12.742 & 33.484 & $2 \cdot 576$ & 0.070 \\
+\hline & -6.637 & & \multicolumn{3}{|c|}{\multirow[b]{5}{*}{\begin{tabular}{l}
+0.676 \\
+$0 \cdot 590$ \\
+-4.686
+\end{tabular}}} & & 0.297 & 0.667 & -11.018 & 33.672 & 2.764 & 0.064 \\
+\hline & -7.739 & & & & & -0.287 & 0.280 & 0.739 & -9.069 & 34.139 & 3.231 & 0.050 \\
+\hline & & & & & & & 0.154 & 0.653 & -11.337 & $34 \cdot 310$ & 3.402 & 0.046 \\
+\hline & -2.707 & \multirow{2}{*}{} & & & & & & 0.636 & -11.725 & $35 \cdot 087$ & 4.179 & 0.031 \\
+\hline & -5.389 & & & & & -0.519 & & 0.720 & -9.621 & $35 \cdot 241$ & 4.333 & 0.029 \\
+\hline \multirow[t]{8}{*}{E2} & & \multicolumn{2}{|r|}{\multirow{5}{*}{0.240}} & & 0.311 & & & 0.414 & -4.255 & $16 \cdot 509$ & 0.000 & 0.164 \\
+\hline & -3.035 & & & & & & & 0.392 & -4.550 & 17.101 & $0 \cdot 592$ & 0.122 \\
+\hline & -1.829 & & & & 0.203 & & & $0 \cdot 506$ & -2.885 & 17.406 & 0.897 & $0 \cdot 105$ \\
+\hline & -3.569 & & & & & & & 0.471 & -3.425 & 18.486 & 1.977 & 0.061 \\
+\hline & & & & 1.210 & 0.423 & & & 0.450 & -3.747 & $19 \cdot 129$ & 2.620 & 0.044 \\
+\hline & -3.526 & \multicolumn{6}{|c|}{\multirow{2}{*}{\begin{tabular}{l}
+$-0.125$ \\
+1.218 \\
+0.294
+\end{tabular}}} & 0.448 & -3.767 & $19 \cdot 171$ & 2.662 & 0.043 \\
+\hline & \multirow{2}{*}{} & & & & & & & 0.428 & -4.061 & 19.758 & 3.249 & 0.032 \\
+\hline & & \multirow{9}{*}{-0.509} & & & 0.326 & & -0.032 & 0.425 & -4.091 & 19.818 & $3 \cdot 309$ & 0.031 \\
+\hline \multirow[t]{8}{*}{E3} & -6.344 & & & & & -0.455 & & 0.704 & -5.512 & $22 \cdot 661$ & $0 \cdot 000$ & 0.482 \\
+\hline & -5.734 & & & -1.320 & & -0.505 & & 0.734 & -4.649 & $25 \cdot 299$ & 2.638 & 0.129 \\
+\hline & -5.548 & & & & 0.114 & -0.424 & & 0.718 & -5.127 & $26 \cdot 254$ & $3 \cdot 593$ & 0.080 \\
+\hline & -6.566 & & $0 \cdot 106$ & & & -0.452 & & 0.711 & -5.330 & $26 \cdot 660$ & 3.999 & 0.065 \\
+\hline & -6.365 & & & & & -0.449 & 0.031 & 0.709 & -5.370 & $26 \cdot 741$ & 4.080 & 0.063 \\
+\hline & -6.505 & & & & & -0.462 & & 0.705 & -5.492 & $26 \cdot 984$ & $4 \cdot 323$ & 0.056 \\
+\hline & -6.281 & & & -2.309 & -0.143 & -0.581 & & 0.740 & -4.493 & $30 \cdot 320$ & 7.659 & $0 \cdot 010$ \\
+\hline & -5.761 & & & -1.274 & & -0.501 & 0.008 & 0.735 & -4.639 & $30 \cdot 611$ & 7.951 & 0.009 \\
+\hline
+\end{tabular}
+\end{table}
+
+\footnotetext{
+FDiv, functional divergence; FRic, functional richness; FEve, functional evenness; CWM_PC1, axis 1 of PCA; CWM_PC2, axis 2 of PCA; S, species richness; J, species evenness. $R$-squared values and Akaike's weights are also presented.
+}
+
+\begin{table}
+\captionsetup{labelformat=empty}
+\caption{Table 4. Averaged model parameters (standardized regression coefficients) calculated from all 128 possible models}
+\begin{tabular}{|l|l|l|l|l|l|l|l|}
+\hline Event & FDiv & J & CWM_PC2 & S & CWM_PC1 & FEve & FRic \\
+\hline E1 & -0.469 & -0.175 & -0.204 & 0.292 & 0.244 & -0.005 & 0.017 \\
+\hline E2 & -0.338 & 0.034 & -0.019 & -0.003 & 0.368 & 0.004 & $0 \cdot 037$ \\
+\hline E3 & -0.831 & -0.039 & -0.617 & 0.005 & $0 \cdot 017$ & -0.002 & 0.007 \\
+\hline
+\end{tabular}
+\end{table}
+
+FDiv, functional divergence; FRic, functional richness; FEve, functional evenness; CWM_ PC1, axis 1 of PCA; CWM_ PC2, axis 2 of PCA; S, species richness; J, species evenness. The top two coefficients for each rainfall event are shown in bold.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_28_3dc984f8b7a2013fc090g-07.jpg?height=781&width=803&top_left_y=661&top_left_x=200}
+\captionsetup{labelformat=empty}
+\caption{Fig. 3. Relative importance of all seven biodiversity indices. The height of each bar is the sum of the Akaike's weights of all the models that contained the predictor variable of interest.}
+\end{figure}
+more flexible canopies and root systems and thereby reinforcing the protective effect of plants against soil erosion (Gyssels et al. 2005; Reubens et al. 2007). In addition, facilitation among species with contrasting trait values can also contribute to this FDiv effect (Hooper et al. 2005; Reubens et al. 2007). For example, in the Great Basin deserts of western North America, deep-rooted species, which increase slope stability by penetrating soil slip surface, can provide $20-50 \%$ water to shallow-rooted species, which fix surface soil by their fibrous root systems (Norris et al. 2008; Chapin, Matson \& Vitousek 2011). Secondly, higher FDiv trait values increase the probability of the presence of species with diverse root characteristics, which are more likely to contain pairs of species that are complementary or facilitative to each other, leading to the decrease in soil erosion (Huston 1997; Flombaum, Sala \& Rastetter 2014). In summary, communities with higher FDiv values may efficiently reduce soil erosion through both the complementary and sampling effect.
+
+\section*{THE EFFECTS OF CWM TRAITS ON SOIL EROSION}
+
+Similar to FDiv, CWM_PC1 and CWM_PC2 were also found to significantly affect soil erosion rates. Previous studies have reported significant CWM effect, however,
+the direction of the effects depends on both the functional traits selected and the ecosystem processes being studied (Mokany, Ash \& Roxburgh 2008; Laughlin 2011). The mechanisms underlying the CWM effect fall into two broad categories: hydrological and mechanical (Reubens et al. 2007). First, penetrating roots create soil macropores, improving the water infiltration capacity of soils (Gyssels et al. 2005; De Baets et al. 2006). Therefore, finer and denser roots have a greater capacity to increase water infiltration and reduce soil erosion. In this study, communities with lower mean root diameters were represented by lower CWM_PC1 scores and soil erosion rates decreased most significantly during rainfall event 2. Secondly, plant roots can reinforce soils through their tensile strength (Gyssels et al. 2005; De Baets et al. 2006; Duran Zuazo \& Rodriguez Pleguezuelo 2008). The downward penetration of roots increases the shear strength of soils at the sheared surface (Reubens et al. 2007; De Baets et al. 2008), while roots extending laterally reinforce soils by increasing in-plane tensile strength (Reubens et al. 2007). In the present study, variations in root tensile strength were primarily represented by CWM_PC2, which showed most significant negative effects on soil erosion rates during rainfall event 3. Taken together, CWM trait values for root traits can also significantly affect soil erosion, either by regulating water infiltration capacity of soils or by physically reinforcing soil mass.
+
+\section*{CONTINGENCY OF THE EFFECTS OF CWM AND SPECIES RICHNESS}
+
+The present study revealed not only a significant CWM effect, but also a variation of this effect across different rainfall events. This variation may reflect the contingency of CWM effect upon rainfall intensity (Gyssels et al. 2005; De Baets et al. 2008; Norris et al. 2008). When rainfall intensity is low (rainfall event 2), CWM_PC1 seemed to play a more significant role in reducing soil erosion. The reason is that at low rainfall intensity, soil erosion is largely affected by the infiltration rates of rainfall. This can be greatly enhanced by the penetration of fine roots because of a greater specific surface area than thicker roots (Reubens et al. 2007; De Baets et al. 2008). In contrast, CWM_PC2 became increasingly important as rainfall intensity increased. At high rainfall intensity (rainfall event 3), the major process responsible for soil erosion is the scouring of run-off on surface soils. Scouring can be greatly mitigated by roots with greater tensile strength
+(Reubens et al. 2007; De Baets et al. 2008). Between these two extremes, the effects of CWM_PC1 and CWM_PC2 appear to be comparable at intermediate rainfall intensity (rainfall event 1) because of the balance between the infiltration and scouring processes (Gyssels et al. 2005; Norris et al. 2008).
+
+Species richness was also found to have a significant effect on soil erosion rates but only during rainfall event 1 (intermediate rainfall intensity). Because a species can be conceived as the integration of various functional traits (both erosion-relevant and erosion-irrelevant traits), the overall performance of these traits in reducing soil erosion may be covered either by CWM_PC1 at low rainfall intensity or by CWM_PC2 at high rainfall intensity (Reubens et al. 2007; Burylo et al. 2012b). Therefore, only when rainfall intensity was intermediate, the overall effect of species richness became prominent. On the other hand, in our systems, high species richness is the result of the addition of species with coarse and succulent (low tensile strength) roots such as Viola verecunda, which are inefficient in reducing erosion. Therefore, the average erosionreducing capacity decreased as species richness increased. It should be noted that the effect of species richness on soil erosion may differ widely among different ecosystems and which species contribute to the increase in species richness (Reubens et al. 2007). Although a definite conclusion cannot be reached in this study due to the limited number of rainfall events, the present findings provided valuable clues to further explore the dependence of CWM and species richness effects on rainfall intensity.
+
+\section*{MANAGEMENT IMPLICATIONS AND APPLICATIONS}
+
+Our study suggests that functional divergence of restored grassland communities is an important predictor of soil erosion rates in semi-arid grassland systems. The
+prevalence of particular trait combinations may also reduce soil erosion to varying degrees, depending on the intensity of rainfall events. These results imply that the restoration goal of reducing soil erosion can be better achieved by managing the functional composition of restored communities. However, practitioners can only actually manipulate specific plant species (which species) and their abundance (how many individuals), rather than the community functional indices (Laughlin 2014). Therefore, a trait-based restoration framework is urgently needed to bridge the gap between what we know and how to do it.
+
+Here, we proposed such a framework. This framework contains three stages: screening, simulating and maintaining and includes feedbacks allowing for dynamic adjustments (Fig. 4). Each stage consists of several steps of decision, accompanied by key points or recommendations. Below, we briefly show how these steps can be taken to develop specific restoration strategies.
+
+Stage I: Screening. The objective of this stage is to find appropriate species that will be used in stage II. First, a regional species pool should be constructed. This can be done through a variety of approaches, such as synthesizing existing data bases and reviewing relevant literature (Dias et al. 2013). Then, key traits influencing soil erosion should be identified by conducting pilot studies such as small-scale artificial rainfall experiments (De Baets et al. 2009). Finally, appropriate species (i.e., species that can be established easily and perform well in reducing soil erosion) can be selected.
+Stage II: Simulating. This stage aims to attain the optimal combinations of species and their abundances. First, as many simulations as possible ( $>5000$ ) should be run (Dias et al. 2013). Then, the functional diversity indices can be calculated and the community assemblages ranked according to their FDiv values (Dias
+
+\begin{figure}
+\captionsetup{labelformat=empty}
+\caption{$\underline{\text { A trait-based restoration scheme for reducing soil erosion: Screen-Simulate-Maintain Scheme (SSM) }}$}
+\includegraphics[width=\textwidth]{https://cdn.mathpix.com/cropped/2025_09_28_3dc984f8b7a2013fc090g-08.jpg?height=687&width=1648&top_left_y=1897&top_left_x=211}
+\end{figure}
+
+Fig. 4. A trait-based restoration scheme for reducing soil erosion.
+et al. 2013; Laughlin 2014). Before implementation, pilot experiments should be carried out to validate the efficiency of these community assemblages. If necessary, simulations should be replicated until the desired community assemblages are selected.
+Stage III: Maintaining. This stage is designed to establish the communities and maintain their functional composition. After establishment, regular surveys should be conducted to monitor the dynamics of community functional composition (Andre F. Clewell \& Aronson 2013). If the communities become functionally converged (decreased FDiv), appropriate management options, such as soil nutrient management and prescribed disturbance, should be taken to maintain functional composition (James et al. 2010; Sandel, Corbin \& Krupa 2011).
+In summary, the novel restoration framework represents an attempt to translate trait-based ecological understanding into detailed restoration guidelines that can be easily implemented by practitioners. Although it may require empirical tests in real restoration projects, it provides guidance for much-needed effective restoration strategies for reducing soil erosion in restoration processes.
+
+\section*{Acknowledgements}
+
+We thank the three anonymous referees for their constructive suggestions. We would also like to thank Doctor Alison Beamish at the University of British Columbia for her assistance with English language and grammatical editing of the manuscript. This work was funded by the National Natural Sciences Foundation of China (No. 41230745).
+
+\section*{Data accessibility}
+
+Data are available from the Dryad Digital Repository. DRYAD entry DOI: 10.5061/dryad.b5tr9. (Zhu et al. 2015)
+
+\section*{References}
+
+Clewell, A.F. \& Aronson, J. (2013) Ecological Restoration, Second Edition: Principles, Values, and Structure of an Emerging Profession. Island Press, Washington, DC.
+Barton, K. (2015) MuMIn: Multi-Model Inference. R package version 1.13.4. http://CRAN.R-project.org/package=MuMIn.
+
+Burnham, K.P. \& Anderson, D.R. (2002) Model Selection and Multi-model Inference: A Practical Information-Theoretic Approach, 2nd edn. Springer, New York City, New York, USA.
+Burylo, M., Dutoit, T. \& Rey, F. (2014) Species traits as practical tools for ecological restoration of Marly Eroded Lands. Restoration Ecology, 22, 633-640.
+Burylo, M., Rey, F., Bochet, E. \& Dutoit, T. (2012a) Plant functional traits and species ability for sediment retention during concentrated flow erosion. Plant and Soil, 353, 135-144.
+Burylo, M., Rey, F., Mathys, N. \& Dutoit, T. (2012b) Plant root traits affecting the resistance of soils to concentrated flow erosion. Earth Surface Processes and Landforms, 37, 1463-1470.
+Cadotte, M.W., Carscadden, K. \& Mirotchnick, N. (2011) Beyond species: functional diversity and the maintenance of ecological processes and services. Journal of Applied Ecology, 48, 1079-1087.
+Cao, S. (2011) Impact of China's large-scale ecological restoration program on the environment and society in arid and semiarid areas of China: achievements, problems, synthesis, and applications. Critical Reviews in Environmental Science and Technology, 41, 317-335.
+
+Cao, S.X., Chen, L. \& Yu, X.X. (2009) Impact of China's Grain for Green Project on the landscape of vulnerable arid and semi-arid agricultural regions: a case study in northern Shaanxi Province. Journal of Applied Ecology, 46, 536-543.
+Chapin, F.S. III, Matson, P.A. \& Vitousek, P. (2011) Principles of Terrestrial Ecosystem Ecology, 2nd edn. Springer, New York City, New York, USA.
+Clark, C.M., Flynn, D.F.B., Butterfield, B.J. \& Reich, P.B. (2012) Testing the link between functional diversity and ecosystem functioning in a Minnesota Grassland experiment. PLoS One, 7, 11.
+Cornwell, W.K., Cornelissen, J.H.C., Amatangelo, K., Dorrepaal, E., Eviner, V.T., Godoy, O. et al. (2008) Plant species traits are the predominant control on litter decomposition rates within biomes worldwide. Ecology Letters, 11, 1065-1071.
+De Baets, S., Poesen, J., Gyssels, G. \& Knapen, A. (2006) Effects of grass roots on the erodibility of topsoils during concentrated flow. Geomorphology, 76, 54-67.
+De Baets, S., Poesen, J., Reubens, B., Muys, B., De Baerdemaeker, J. \& Meersmans, J. (2009) Methodological framework to select plant species for controlling rill and gully erosion: application to a Mediterranean ecosystem. Earth Surface Processes and Landforms, 34, 1374-1392.
+De Baets, S., Poesen, J., Reubens, B., Wemans, K., De Baerdemaeker, J. \& Muys, B. (2008) Root tensile strength and root distribution of typical Mediterranean plant species and their contribution to soil shear strength. Plant and Soil, 305, 207-226.
+Dias, A.T.C., Berg, M.P., de Bello, F., Van Oosten, A.R., Bila, K. \& Moretti, M. (2013) An experimental framework to identify community functional components driving ecosystem processes and services delivery. Journal of Ecology, 101, 29-37.
+Diaz, S., Lavorel, S., de Bello, F., Quetier, F., Grigulis, K. \& Robson, M. (2007) Incorporating plant functional diversity effects in ecosystem service assessments. Proceedings of the National Academy of Sciences of the USA, 104, 20684-20689.
+Duran Zuazo, V.H. \& Rodriguez Pleguezuelo, C.R. (2008) Soil-erosion and runoff prevention by plant covers. A review. Agronomy for Sustainable Development, 28, 65-86.
+Flombaum, P., Sala, O.E. \& Rastetter, E.B. (2014) Interactions among resource partitioning, sampling effect, and facilitation on the biodiversity effect: a modeling approach. Oecologia, 174, 559-566.
+Fu, B.J., Wang, Y.F., Lu, Y.H., He, C.S., Chen, L.D. \& Song, C.J. (2009) The effects of land-use combinations on soil erosion: a case study in the Loess Plateau of China. Progress in Physical Geography, 33, 793-804.
+Garnier, E., Cortez, J., Billes, G., Navas, M.L., Roumet, C., Debussche, M. et al. (2004) Plant functional markers capture ecosystem properties during secondary succession. Ecology, 85, 2630-2637.
+Garnier, E. \& Navas, M.-L. (2012) A trait-based approach to comparative functional plant ecology: concepts, methods and applications for agroecology. A review. Agronomy for Sustainable Development, 32, 365-399.
+Grime, J.P. (1998) Benefits of plant diversity to ecosystems: immediate, filter and founder effects. Journal of Ecology, 86, 902-910.
+Gyssels, G., Poesen, J., Bochet, E. \& Li, Y. (2005) Impact of plant roots on the resistance of soils to erosion by water: a review. Progress in Physical Geography, 29, 189-217.
+Hooper, D.U., Chapin, F.S., Ewel, J.J., Hector, A., Inchausti, P., Lavorel, S. et al. (2005) Effects of biodiversity on ecosystem functioning: a consensus of current knowledge. Ecological Monographs, 75, 3-35.
+Hou, J., Fu, B., Liu, Y., Lu, N., Gao, G. \& Zhou, J. (2014) Ecological and hydrological response of farmlands abandoned for different lengths of time: evidence from the Loess Hill Slope of China. Global and Planetary Change, 113, 59-67.
+Huston, M.A. (1997) Hidden treatments in ecological experiments: re-evaluating the ecosystem function of biodiversity. Oecologia, 110, 449-460.
+James, J.J., Drenovsky, R.E., Monaco, T.A. \& Rinella, M.J. (2010) Managing soil nitrogen to restore annual grass-infested plant communities: effective strategy or incomplete framework? Ecological Applications, 21, 490-502.
+Laughlin, D.C. (2011) Nitrification is linked to dominant leaf traits rather than functional diversity. Journal of Ecology, 99, 1091-1099.
+Laughlin, D.C. (2014) Applying trait-based models to achieve functional targets for theory-driven ecological restoration. Ecology Letters, 17, 771-784.
+Lavorel, S. (2013) Plant functional effects on ecosystem services. Journal of Ecology, 101, 4-8.
+
+Lavorel, S. \& Garnier, E. (2002) Predicting changes in community composition and ecosystem functioning from plant traits: revisiting the Holy Grail. Functional Ecology, 16, 545-556.
+Liu, Y., Fu, B.J., Lu, Y.H., Wang, Z. \& Gao, G.Y. (2012) Hydrological responses and soil erosion potential of abandoned cropland in the Loess Plateau, China. Geomorphology, 138, 404-414.
+Loreau, M., Naeem, S., Inchausti, P., Bengtsson, J., Grime, J.P., Hector, A. et al. (2001) Ecology - biodiversity and ecosystem functioning: current knowledge and future challenges. Science, 294, 804-808.
+Mokany, K., Ash, J. \& Roxburgh, S. (2008) Functional identity is more important than diversity in influencing ecosystem processes in a temperate native grassland. Journal of Ecology, 96, 884-893.
+Morgan, R.P.C. (2004) Soil Erosion and Conservation, 3rd edn. WileyBlackwell, New York City, New York, USA.
+Mouillot, D., Villeger, S., Scherer-Lorenzen, M. \& Mason, N.W.H. (2011) Functional structure of biological communities predicts ecosystem multifunctionality. PLoS One, 6, 1-9.
+Naeem, S., Thompson, L.J., Lawler, S.P., Lawton, J.H. \& Woodfin, R.M. (1994) Declining biodiversity can alter the performance of ecosystems. Nature, 368, 734-737.
+Norris, J.E., Stokes, A., Mickovski, S.B., Cammeraat, E., van Beek, R., Nicoll, B.C. \& Achim, A. (2008) Slope Stability and Erosion Control: Ecotechnological Solutions. Springer, New York City, New York, USA.
+Pohl, M., Alig, D., Korner, C. \& Rixen, C. (2009) Higher plant diversity enhances soil stability in disturbed alpine ecosystems. Plant and Soil, 324, 91-102.
+R Development Core Team (2014) R: A Language and Environment for Statistical Computing. R Foundation for Statistical Computing, Vienna, Austria. URL http://www.R-project.org/.
+Reubens, B., Poesen, J., Danjon, F., Geudens, G. \& Muys, B. (2007) The role of fine and coarse roots in shallow slope stability and soil erosion
+control with a focus on root system architecture: a review. Trees Structure and Function, 21, 385-402.
+Sandel, B., Corbin, J.D. \& Krupa, M. (2011) Using plant functional traits to guide restoration: a case study in California coastal grassland. Ecosphere, 2, 1-16.
+Schumacher, J. \& Roscher, C. (2009) Differential effects of functional traits on aboveground biomass in semi-natural grasslands. Oikos, 118, 1659-1668.
+Naeem, S., Bunker, D.E., Hector, A., Loreau, M. \& Perrings, C. (2009) Biodiversity, Ecosystem Functioning, and Human Wellbeing. Oxford University Press, New York, NY.
+Stokes, A., Sotir, R., Chen, W. \& Chestem, M. (2010) Soil bio- and ecoengineering in China: past experience and future priorities Preface. Ecological Engineering, 36, 247-257.
+Villeger, S., Mason, N.W.H. \& Mouillot, D. (2008) New multidimensional functional diversity indices for a multifaceted framework in functional ecology. Ecology, 89, 2290-2301.
+Wickham, H. (2009) ggplot2: Elegant Graphics for Data Analysis. Springer, New York City, New York, USA.
+Wilsey, B.J. \& Potvin, C. (2000) Biodiversity and ecosystem functioning: importance of species evenness in an old field. Ecology, 81, 887-892.
+Zhu, H., Fu, B., Lv, N., Wang, S. \& Hou, J. (2014) Multivariate control of root biomass in a semi-arid grassland on the Loess Plateau, China. Plant and Soil, 379, 315-324.
+Zhu, H., Fu, B., Wang, S., Zhu, L., Zhang, L., Jiao, L. \& Wang, C. (2015) Data from: Reducing soil erosion by improving community functional diversity in semi-arid grasslands. Dryad Digital Repository, doi: 10.5061/dryad.b5tr9.
+
+Received 21 December 2014; accepted 15 April 2015
+Handling Editor: Jennifer Firn
