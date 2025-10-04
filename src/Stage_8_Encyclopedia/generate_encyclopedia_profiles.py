@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPREHENSIVE = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
 DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
+STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 
 
@@ -202,6 +203,33 @@ class EncyclopediaProfileGenerator:
 
         return dimensions if dimensions else None
 
+    def extract_stage7_content(self, species_name: str) -> Optional[Dict]:
+        """Extract full Stage 7 validation profile content if available."""
+        slug = species_name.lower().replace(' ', '-')
+        stage7_path = STAGE7_PROFILES / f"{slug}.json"
+
+        if not stage7_path.exists():
+            return None
+
+        try:
+            with open(stage7_path, 'r', encoding='utf-8') as f:
+                profile = json.load(f)
+
+            # Extract all Stage 7 sections for legacy compatibility
+            return {
+                'common_names': profile.get('common_names', {}),
+                'description': profile.get('description', {}),
+                'climate_requirements': profile.get('climate_requirements', {}),
+                'environmental_requirements': profile.get('environmental_requirements', {}),
+                'cultivation_and_propagation': profile.get('cultivation_and_propagation', {}),
+                'ecological_interactions': profile.get('ecological_interactions', {}),
+                'uses_harvest_and_storage': profile.get('uses_harvest_and_storage', {}),
+                'distribution_and_conservation': profile.get('distribution_and_conservation', {}),
+            }
+        except Exception as e:
+            logger.warning(f"  Could not load Stage 7 profile for {species_name}: {e}")
+            return None
+
     def generate_profile(self, species_name: str) -> Dict:
         """Generate encyclopedia profile for a single species."""
         row = self.df[self.df['wfo_accepted_name'] == species_name]
@@ -210,6 +238,7 @@ class EncyclopediaProfileGenerator:
 
         row = row.iloc[0]
 
+        # Build base profile with EIVE, traits, dimensions, interactions, occurrences
         profile = {
             'species': species_name,
             'slug': species_name.lower().replace(' ', '-'),
@@ -229,6 +258,11 @@ class EncyclopediaProfileGenerator:
             },
         }
 
+        # Merge Stage 7 content if available (for legacy frontend compatibility)
+        stage7_content = self.extract_stage7_content(species_name)
+        if stage7_content:
+            profile['stage7'] = stage7_content
+
         return profile
 
     def generate_batch(self, species_list: List[str], skip_coordinates: bool = False) -> int:
@@ -236,12 +270,17 @@ class EncyclopediaProfileGenerator:
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
         success = 0
+        with_stage7 = 0
         for i, species in enumerate(species_list, 1):
             if i % 100 == 0:
                 logger.info(f"  Processed {i}/{len(species_list)} species...")
 
             try:
                 profile = self.generate_profile(species)
+
+                # Track Stage 7 coverage
+                if profile.get('stage7'):
+                    with_stage7 += 1
 
                 # Optionally skip coordinate extraction for speed
                 if skip_coordinates:
@@ -258,6 +297,7 @@ class EncyclopediaProfileGenerator:
             except Exception as e:
                 logger.warning(f"  Error generating profile for {species}: {e}")
 
+        logger.info(f"\n✓ Profiles with Stage 7 content: {with_stage7}/{success} ({with_stage7/success*100:.1f}%)")
         return success
 
     # Helper methods for safe type conversion

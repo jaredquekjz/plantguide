@@ -1,0 +1,322 @@
+#!/usr/bin/env python3
+"""
+Upload Encyclopedia Profiles to Firestore
+
+Uploads the encyclopedia JSON profiles to Firestore 'encyclopedia' collection.
+Flattens nested structures for better Firestore querying.
+"""
+
+import json
+import firebase_admin
+from firebase_admin import credentials, firestore
+from pathlib import Path
+from typing import Dict, Any
+import sys
+
+# Initialize Firebase Admin
+def initialize_firebase():
+    """Initialize Firebase Admin SDK."""
+    # Use service account key from olier-farm backend
+    service_account_path = Path("/home/olier/olier-farm/backend/serviceAccountKey.json")
+
+    if not service_account_path.exists():
+        print(f"❌ Service account key not found at {service_account_path}")
+        sys.exit(1)
+
+    try:
+        cred = credentials.Certificate(str(service_account_path))
+        firebase_admin.initialize_app(cred)
+        print(f"✓ Firebase Admin initialized with {service_account_path}")
+    except Exception as e:
+        print(f"❌ Firebase initialization error: {e}")
+        sys.exit(1)
+
+def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Flatten encyclopedia profile for Firestore.
+
+    Keeps Stage 7 content nested, but flattens new fields to top level.
+    """
+    flattened = {
+        'plant_slug': profile['slug'],
+        'species': profile['species'],
+
+        # Taxonomy
+        'family': profile['taxonomy']['family'],
+        'genus': profile['taxonomy']['genus'],
+
+        # EIVE values and labels (NEW - keep as nested objects for easier querying)
+        'eive_values': profile['eive'].get('values', {}),
+        'eive_labels': profile['eive'].get('labels', {}),
+        'eive_source': profile['eive'].get('source'),
+
+        # Reliability (NEW - keep nested)
+        'eive_reliability': profile.get('reliability'),
+
+        # Traits
+        'growth_form': profile['traits'].get('growth_form'),
+        'woodiness': profile['traits'].get('woodiness'),
+        'height_m': profile['traits'].get('height_m'),
+        'leaf_type': profile['traits'].get('leaf_type'),
+        'phenology': profile['traits'].get('phenology'),
+        'life_cycle': profile['traits'].get('phenology'),  # Alias
+        'mycorrhizal': profile['traits'].get('mycorrhizal'),
+
+        # Dimensions (NEW - keep nested)
+        'dimensions_above_ground': profile.get('dimensions', {}).get('above_ground'),
+        'dimensions_root_system': profile.get('dimensions', {}).get('root_system'),
+
+        # For legacy compatibility, also flatten height/spread
+        'height_min_m': profile.get('dimensions', {}).get('above_ground', {}).get('height_min_m'),
+        'height_max_m': profile.get('dimensions', {}).get('above_ground', {}).get('height_max_m'),
+        'spread_min_m': profile.get('dimensions', {}).get('above_ground', {}).get('spread_min_m'),
+        'spread_max_m': profile.get('dimensions', {}).get('above_ground', {}).get('spread_max_m'),
+        'growth_habit_notes': profile.get('dimensions', {}).get('above_ground', {}).get('qualitative_comments'),
+        'root_system_notes': profile.get('dimensions', {}).get('root_system', {}).get('qualitative_comments'),
+
+        # GloBI interactions (NEW - keep nested)
+        'globi_interactions': profile.get('interactions'),
+
+        # GBIF occurrences (NEW - keep nested for map display)
+        'gbif_occurrence_count': profile.get('occurrences', {}).get('count'),
+        'gbif_coordinates': profile.get('occurrences', {}).get('coordinates'),
+    }
+
+    # Add Stage 7 content if available (for legacy frontend)
+    if 'stage7' in profile:
+        stage7 = profile['stage7']
+
+        # Common names
+        if 'common_names' in stage7 and stage7['common_names']:
+            flattened['common_name_primary'] = stage7['common_names'].get('primary')
+            flattened['common_name_alternatives'] = stage7['common_names'].get('alternatives', [])
+
+        # Description
+        if 'description' in stage7 and stage7['description']:
+            flattened['description'] = stage7['description'].get('value')
+            flattened['simple_description'] = stage7['description'].get('simple_description')
+
+        # Climate requirements
+        if 'climate_requirements' in stage7 and stage7['climate_requirements']:
+            climate = stage7['climate_requirements']
+            if 'optimal_temperature_range' in climate:
+                flattened['optimal_temperature_min'] = climate['optimal_temperature_range'].get('min')
+                flattened['optimal_temperature_max'] = climate['optimal_temperature_range'].get('max')
+            if 'hardiness_zone_range' in climate:
+                flattened['hardiness_zone_min'] = climate['hardiness_zone_range'].get('min')
+                flattened['hardiness_zone_max'] = climate['hardiness_zone_range'].get('max')
+            flattened['koppen_zones'] = climate.get('suitable_koppen_zones', [])
+            flattened['microclimate_preferences'] = climate.get('microclimate_preferences')
+            flattened['frost_sensitivity'] = climate.get('frost_sensitivity')
+            if 'tolerances' in climate:
+                flattened['heat_tolerance'] = climate['tolerances'].get('heat')
+                flattened['wind_tolerance'] = climate['tolerances'].get('wind')
+                flattened['drought_tolerance'] = climate['tolerances'].get('drought')
+
+        # Environmental requirements
+        if 'environmental_requirements' in stage7 and stage7['environmental_requirements']:
+            env = stage7['environmental_requirements']
+            flattened['light_requirements'] = env.get('light_requirements', [])
+            flattened['water_requirement'] = env.get('water_requirement')
+            flattened['soil_types'] = env.get('soil_types', [])
+            if 'ph_range' in env:
+                flattened['ph_min'] = env['ph_range'].get('min')
+                flattened['ph_max'] = env['ph_range'].get('max')
+                flattened['ph_notes'] = env['ph_range'].get('notes')
+            if 'tolerances' in env:
+                flattened['shade_tolerance'] = env['tolerances'].get('shade')
+
+        # Cultivation & propagation
+        if 'cultivation_and_propagation' in stage7 and stage7['cultivation_and_propagation']:
+            cult = stage7['cultivation_and_propagation']
+            if 'cultivation' in cult:
+                flattened['maintenance_level'] = cult['cultivation'].get('maintenance_level')
+                flattened['establishment_period_years'] = cult['cultivation'].get('establishment_period_years')
+                if 'spacing' in cult['cultivation']:
+                    flattened['spacing_between_plants_min_m'] = cult['cultivation']['spacing'].get('between_plants_min')
+                    flattened['spacing_between_plants_max_m'] = cult['cultivation']['spacing'].get('between_plants_max')
+                    flattened['spacing_notes'] = cult['cultivation']['spacing'].get('notes')
+                flattened['pruning_requirements'] = cult['cultivation'].get('pruning_requirements')
+
+            if 'propagation' in cult:
+                flattened['propagation_methods'] = cult['propagation'].get('methods', [])
+                # Convert difficulty/timing to JSON strings for legacy format
+                if 'difficulty' in cult['propagation']:
+                    flattened['propagation_difficulty'] = json.dumps(cult['propagation']['difficulty'])
+                if 'timing' in cult['propagation']:
+                    flattened['propagation_timing'] = json.dumps(cult['propagation']['timing'])
+
+        # Ecological interactions
+        if 'ecological_interactions' in stage7 and stage7['ecological_interactions']:
+            eco = stage7['ecological_interactions']
+            flattened['ecological_functions'] = eco.get('ecological_functions', [])
+            if 'relationships' in eco:
+                flattened['attracts_wildlife'] = eco['relationships'].get('attracts', [])
+                flattened['companion_plants'] = eco['relationships'].get('companions', [])
+                flattened['susceptible_to_pests'] = eco['relationships'].get('susceptible_to_pests', [])
+                flattened['susceptible_to_diseases'] = eco['relationships'].get('susceptible_to_diseases', [])
+                flattened['repells'] = eco['relationships'].get('repells', [])
+                flattened['provides_food_for'] = eco['relationships'].get('provides_food_for', [])
+                flattened['provides_habitat_for'] = eco['relationships'].get('provides_habitat_for', [])
+                flattened['beneficial_companion_for'] = eco['relationships'].get('beneficial_companions', [])
+            flattened['is_dynamic_accumulator'] = eco.get('is_dynamic_accumulator', False)
+            flattened['accumulated_elements'] = eco.get('accumulates', [])
+
+        # Uses, harvest & storage
+        if 'uses_harvest_and_storage' in stage7 and stage7['uses_harvest_and_storage']:
+            uses = stage7['uses_harvest_and_storage']
+            if 'human_uses' in uses:
+                flattened['is_medicinal'] = uses['human_uses'].get('is_medicinal', False)
+                flattened['medicinal_uses'] = uses['human_uses'].get('medicinal_uses_description')
+                flattened['other_uses'] = uses['human_uses'].get('other_uses', [])
+                flattened['processing_process'] = uses['human_uses'].get('processing_process')
+                flattened['cultural_significance'] = uses['human_uses'].get('cultural_significance')
+            if 'harvest' in uses:
+                flattened['harvest_window'] = uses['harvest'].get('harvest_window')
+                flattened['harvest_indicators'] = uses['harvest'].get('harvest_indicators')
+                flattened['storage_methods'] = uses['harvest'].get('storage_methods', [])
+
+        # Distribution & conservation
+        if 'distribution_and_conservation' in stage7 and stage7['distribution_and_conservation']:
+            dist = stage7['distribution_and_conservation']
+            if 'distribution' in dist:
+                if 'native_range' in dist['distribution']:
+                    flattened['native_range_summary'] = dist['distribution']['native_range'].get('summary')
+                    flattened['native_regions'] = dist['distribution']['native_range'].get('key_regions', [])
+                if 'introduced_range' in dist['distribution']:
+                    flattened['introduced_range_summary'] = dist['distribution']['introduced_range'].get('summary')
+                    flattened['introduced_regions'] = dist['distribution']['introduced_range'].get('key_regions', [])
+            if 'conservation' in dist:
+                global_status = dist['conservation'].get('global_status')
+                flattened['conservation_status'] = [global_status] if global_status else []
+
+        # Grounding sources (if available)
+        if 'grounding_sources' in stage7:
+            gs = stage7['grounding_sources']
+            flattened['grounding_sources_identity_and_physical_characteristics'] = gs.get('identity_and_physical_characteristics', [])
+            flattened['grounding_sources_climate_requirements'] = gs.get('climate_requirements', [])
+            flattened['grounding_sources_environmental_requirements'] = gs.get('environmental_requirements', [])
+            flattened['grounding_sources_ecological_interactions'] = gs.get('ecological_interactions', [])
+            flattened['grounding_sources_cultivation_and_propagation'] = gs.get('cultivation_and_propagation', [])
+            flattened['grounding_sources_uses_harvest_and_storage'] = gs.get('uses_harvest_and_storage', [])
+            flattened['grounding_sources_distribution_and_conservation'] = gs.get('distribution_and_conservation', [])
+
+    # Add search keys for full-text search
+    search_keys = set()
+    search_keys.add(profile['species'].lower())
+    search_keys.add(profile['slug'])
+    if flattened.get('common_name_primary'):
+        search_keys.add(flattened['common_name_primary'].lower())
+    if flattened.get('common_name_alternatives'):
+        for alt in flattened['common_name_alternatives']:
+            search_keys.add(alt.lower())
+    search_keys.add(profile['taxonomy']['family'].lower())
+    search_keys.add(profile['taxonomy']['genus'].lower())
+
+    # Add tokens from species name
+    for token in profile['species'].lower().split():
+        if len(token) > 2:
+            search_keys.add(token)
+
+    flattened['search_keys'] = list(search_keys)
+
+    # Clean up None values
+    return {k: v for k, v in flattened.items() if v is not None}
+
+def upload_profiles(profiles_dir: Path, batch_size: int = 500):
+    """Upload all encyclopedia profiles to Firestore."""
+    db = firestore.client()
+    collection_ref = db.collection('encyclopedia')
+
+    profile_files = sorted(profiles_dir.glob('*.json'))
+    print(f"\nFound {len(profile_files)} encyclopedia profiles")
+
+    total_uploaded = 0
+    with_stage7 = 0
+    errors = []
+
+    # Upload in batches
+    for i in range(0, len(profile_files), batch_size):
+        batch_files = profile_files[i:i + batch_size]
+        batch = db.batch()
+
+        for profile_path in batch_files:
+            try:
+                with open(profile_path, 'r', encoding='utf-8') as f:
+                    profile = json.load(f)
+
+                # Flatten profile
+                flattened = flatten_profile(profile)
+
+                # Track Stage 7 coverage
+                if 'common_name_primary' in flattened:  # Indicator of Stage 7 content
+                    with_stage7 += 1
+
+                # Upload to Firestore using slug as document ID
+                doc_ref = collection_ref.document(profile['slug'])
+                batch.set(doc_ref, flattened)
+
+                total_uploaded += 1
+
+                if total_uploaded % 100 == 0:
+                    print(f"  Prepared {total_uploaded}/{len(profile_files)} profiles...")
+
+            except Exception as e:
+                errors.append(f"{profile_path.name}: {str(e)}")
+
+        # Commit batch
+        try:
+            batch.commit()
+            print(f"✓ Uploaded batch {i//batch_size + 1} ({len(batch_files)} profiles)")
+        except Exception as e:
+            print(f"❌ Batch upload error: {e}")
+            errors.append(f"Batch {i//batch_size + 1}: {str(e)}")
+
+    # Report
+    print(f"\n{'='*60}")
+    print(f"✓ Upload complete!")
+    print(f"  Total profiles uploaded: {total_uploaded}/{len(profile_files)}")
+    print(f"  Profiles with Stage 7 content: {with_stage7} ({with_stage7/total_uploaded*100:.1f}%)")
+    print(f"  Profiles with EIVE only: {total_uploaded - with_stage7} ({(total_uploaded - with_stage7)/total_uploaded*100:.1f}%)")
+
+    if errors:
+        print(f"\n⚠️  Errors: {len(errors)}")
+        for error in errors[:10]:  # Show first 10 errors
+            print(f"    - {error}")
+        if len(errors) > 10:
+            print(f"    ... and {len(errors) - 10} more")
+
+    print(f"{'='*60}\n")
+
+def main():
+    """Main upload script."""
+    profiles_dir = Path("/home/olier/ellenberg/data/encyclopedia_profiles")
+
+    if not profiles_dir.exists():
+        print(f"❌ Encyclopedia profiles directory not found: {profiles_dir}")
+        sys.exit(1)
+
+    print("="*60)
+    print("Encyclopedia Profile Upload to Firestore")
+    print("="*60)
+
+    # Initialize Firebase
+    initialize_firebase()
+
+    # Confirm upload
+    print(f"\nThis will upload {len(list(profiles_dir.glob('*.json')))} profiles to Firestore.")
+    print("Collection: 'encyclopedia'")
+    print("\nProceed? (y/n): ", end="")
+
+    if input().lower() != 'y':
+        print("Upload cancelled.")
+        sys.exit(0)
+
+    # Upload profiles
+    upload_profiles(profiles_dir)
+
+    print("✓ All done! Encyclopedia profiles are now available in Firestore.")
+    print("  Frontend can now fetch profiles from the 'encyclopedia' collection.")
+
+if __name__ == "__main__":
+    main()
