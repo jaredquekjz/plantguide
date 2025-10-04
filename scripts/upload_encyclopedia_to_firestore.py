@@ -223,10 +223,10 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     # Clean up None values
     return {k: v for k, v in flattened.items() if v is not None}
 
-def upload_profiles(profiles_dir: Path, batch_size: int = 500):
+def upload_profiles(profiles_dir: Path, collection_name: str = 'encyclopedia_ellenberg', batch_size: int = 500):
     """Upload all encyclopedia profiles to Firestore."""
     db = firestore.client()
-    collection_ref = db.collection('encyclopedia')
+    collection_ref = db.collection(collection_name)
 
     profile_files = sorted(profiles_dir.glob('*.json'))
     print(f"\nFound {len(profile_files)} encyclopedia profiles")
@@ -303,9 +303,11 @@ def main():
     # Initialize Firebase
     initialize_firebase()
 
+    collection_name = 'encyclopedia_ellenberg'
+
     # Confirm upload
     print(f"\nThis will upload {len(list(profiles_dir.glob('*.json')))} profiles to Firestore.")
-    print("Collection: 'encyclopedia'")
+    print(f"Collection: '{collection_name}' (separate from main 'encyclopedia' with 8000+ species)")
     print("\nProceed? (y/n): ", end="")
 
     if input().lower() != 'y':
@@ -313,10 +315,11 @@ def main():
         sys.exit(0)
 
     # Upload profiles
-    upload_profiles(profiles_dir)
+    upload_profiles(profiles_dir, collection_name)
 
-    print("✓ All done! Encyclopedia profiles are now available in Firestore.")
-    print("  Frontend can now fetch profiles from the 'encyclopedia' collection.")
+    print(f"✓ All done! Encyclopedia profiles are now available in Firestore.")
+    print(f"  Frontend can fetch profiles from the '{collection_name}' collection.")
+    print(f"  Original 'encyclopedia' collection (8000+ species) remains untouched.")
 
 if __name__ == "__main__":
     main()
