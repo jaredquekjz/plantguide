@@ -106,6 +106,15 @@ ROOT_DEPTH_BANDS = [
     (2.0, math.inf, 'Very deep (>2 m)')
 ]
 
+HEIGHT_BANDS = [
+    (0, 0.15, 'Ground-hugging (<0.15 m)'),
+    (0.15, 0.5, 'Low mound (0.15–0.5 m)'),
+    (0.5, 1.5, 'Compact shrub (0.5–1.5 m)'),
+    (1.5, 4.0, 'Large shrub (1.5–4 m)'),
+    (4.0, 8.0, 'Small tree (4–8 m)'),
+    (8.0, math.inf, 'Tall tree (>8 m)')
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -278,6 +287,15 @@ def normalise_photosynthesis(value: Optional[str]) -> Optional[str]:
     return PHOTOSYNTHESIS_MAP.get(value, value)
 
 
+def height_band(value: Optional[float]) -> Optional[str]:
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        return None
+    for low, high, label in HEIGHT_BANDS:
+        if low <= value < high:
+            return label
+    return None
+
+
 def combine_columns(primary: pd.DataFrame, fallback: pd.DataFrame, column: str, raw_column: Optional[str] = None) -> pd.Series:
     series = primary.get(column)
     if series is None:
@@ -338,6 +356,21 @@ def main() -> None:
     photo = combine_columns(primary, raw, 'Photosynthesis_pathway', 'Photosynthesis_pathway')
     result['photosynthesis_raw'] = photo
     result['photosynthesis_display'] = photo.apply(normalise_photosynthesis)
+
+    def to_float(value) -> Optional[float]:
+        if value is None:
+            return None
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            return None
+        if math.isnan(number):
+            return None
+        return number
+
+    height_series = combine_columns(primary, raw, 'Plant height (m)', 'Plant height (m)')
+    result['height_m'] = height_series.apply(to_float)
+    result['height_band'] = result['height_m'].apply(height_band)
 
     # Flags for imputation when available
     if 'Root_depth_imputed_flag' in primary.columns:

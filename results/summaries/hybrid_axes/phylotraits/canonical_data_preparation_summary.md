@@ -39,7 +39,7 @@
 - **Gardener trait summary (2025-10-05):**
   - Friendly display slice: `data/encyclopedia_gardening_traits.csv` (654 species × curated columns)
   - Built from TRY-augmented datasets via `scripts/build_encyclopedia_traits.py`
-  - Feeds the encyclopedia “Physical Characteristics” replacement blocks (growth form, leaf habit, bloom window, root depth, mycorrhiza, etc.)
+  - Feeds the encyclopedia “Physical Characteristics” replacement blocks (growth form, leaf habit, height band, bloom window, root depth, mycorrhiza, photosynthesis mode, etc.)
 
 ### Data Flow Overview
 

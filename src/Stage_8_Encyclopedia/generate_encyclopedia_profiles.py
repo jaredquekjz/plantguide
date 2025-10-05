@@ -248,6 +248,14 @@ class EncyclopediaProfileGenerator:
                 'raw': clean_value('photosynthesis_raw')
             }
 
+        height_m = clean_number('height_m')
+        height_band = clean_value('height_band')
+        if height_m is not None or height_band:
+            traits['height'] = {
+                'meters': height_m,
+                'band': height_band
+            }
+
         return traits if traits else None
 
     def extract_eive_labels(self, row) -> Dict[str, Optional[str]]:
