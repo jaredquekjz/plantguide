@@ -50,6 +50,7 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
         # Taxonomy
         'family': profile['taxonomy']['family'],
         'genus': profile['taxonomy']['genus'],
+        'synonyms': profile.get('synonyms', []),
 
         # EIVE values and labels (NEW - keep as nested objects for easier querying)
         'eive_values': profile['eive'].get('values', {}),

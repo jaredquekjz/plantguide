@@ -12,11 +12,13 @@ Output: data/encyclopedia_profiles/{species-slug}.json
 """
 
 from pathlib import Path
-import pandas as pd
-import numpy as np
+import csv
 import json
 import logging
+from collections import defaultdict
 from typing import Optional, Dict, List
+
+import pandas as pd
 
 logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
@@ -24,6 +26,7 @@ logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPREHENSIVE = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
 DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
+CLASSIFICATION = REPO_ROOT / "data/classification.csv"
 STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 
@@ -37,6 +40,11 @@ class EncyclopediaProfileGenerator:
         self.df = pd.read_csv(COMPREHENSIVE)
         logger.info(f"  Loaded {len(self.df)} species")
 
+        # Track species we can provide synonyms for (used when parsing classification data)
+        self._target_species = set(self.df['wfo_accepted_name'].tolist())
+        self._synonyms_loaded = False
+        self._synonyms_by_species: Dict[str, List[str]] = {}
+
         # Load dimension data if available
         if DIMENSIONS.exists():
             logger.info("Loading dimension data...")
@@ -47,6 +55,69 @@ class EncyclopediaProfileGenerator:
         else:
             logger.info("  No dimension data found\n")
             self.dim_lookup = {}
+
+    @staticmethod
+    def _clean_scientific_value(value: Optional[str]) -> Optional[str]:
+        """Normalize quoted scientific strings from TSV sources."""
+        if value is None:
+            return None
+        cleaned = str(value).strip()
+        if cleaned.startswith('"') and cleaned.endswith('"') and len(cleaned) >= 2:
+            cleaned = cleaned[1:-1]
+        return cleaned if cleaned else None
+
+    def _load_synonyms_lookup(self) -> None:
+        """Parse World Flora Online classification data to map accepted species to synonyms."""
+        if self._synonyms_loaded:
+            return
+
+        if not CLASSIFICATION.exists():
+            logger.info("  classification.csv not found – skipping synonym enrichment\n")
+            self._synonyms_loaded = True
+            return
+
+        logger.info("Loading World Flora Online classification data for synonyms...")
+
+        accepted_taxon_for_species: Dict[str, str] = {}
+        synonyms_by_taxon: Dict[str, set] = defaultdict(set)
+
+        with open(CLASSIFICATION, 'r', encoding='utf-8', errors='replace') as handle:
+            reader = csv.DictReader(handle, delimiter='\t')
+            for row in reader:
+                scientific_name = self._clean_scientific_value(row.get('scientificName'))
+                taxon_status_raw = (row.get('taxonomicStatus') or '').strip()
+                taxon_status = taxon_status_raw.lower()
+                taxon_id = (row.get('taxonID') or '').strip()
+                accepted_id = (row.get('acceptedNameUsageID') or '').strip()
+
+                if scientific_name and scientific_name in self._target_species and taxon_status in {"accepted", "valid"}:
+                    accepted_taxon_for_species[scientific_name] = taxon_id
+
+                if accepted_id and 'synonym' in taxon_status:
+                    synonym_name = scientific_name
+                    if not synonym_name:
+                        continue
+                    authorship = self._clean_scientific_value(row.get('scientificNameAuthorship'))
+                    synonym = f"{synonym_name} {authorship}".strip() if authorship else synonym_name
+                    synonyms_by_taxon[accepted_id].add(synonym)
+
+        for species_name, taxon_id in accepted_taxon_for_species.items():
+            if not taxon_id:
+                continue
+            synonyms = sorted(synonyms_by_taxon.get(taxon_id, set()))
+            if synonyms:
+                self._synonyms_by_species[species_name] = synonyms
+
+        loaded_count = len(self._synonyms_by_species)
+        logger.info(f"  Loaded synonyms for {loaded_count} species\n")
+        self._synonyms_loaded = True
+
+    def extract_synonyms(self, species_name: str) -> Optional[List[str]]:
+        """Return list of botanical synonyms for a species if available."""
+        if not self._synonyms_loaded:
+            self._load_synonyms_lookup()
+        synonyms = self._synonyms_by_species.get(species_name)
+        return synonyms if synonyms else None
 
     def extract_eive_values(self, row) -> Dict[str, Optional[float]]:
         """Extract actual EIVE values (already expert-given in dataset)."""
@@ -287,6 +358,10 @@ class EncyclopediaProfileGenerator:
                 'coordinates': self.extract_gbif_coordinates(row),
             },
         }
+
+        synonyms = self.extract_synonyms(species_name)
+        if synonyms:
+            profile['synonyms'] = synonyms
 
         # Merge Stage 7 content if available (for legacy frontend compatibility)
         stage7_content = self.extract_stage7_content(species_name)
