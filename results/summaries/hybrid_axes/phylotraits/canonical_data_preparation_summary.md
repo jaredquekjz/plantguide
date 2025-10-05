@@ -36,6 +36,10 @@
   - Optimized for web display with actual EIVE values, reliability, GloBI, occurrence coordinates, bioclim climate data
   - Documentation: `results/summaries/hybrid_axes/phylotraits/Stage 5/encyclopedia_profile_system.md`
   - **Update 2025-10-05:** Fixed missing bioclim integration in profile generation pipeline (see Section 12)
+- **Gardener trait summary (2025-10-05):**
+  - Friendly display slice: `data/encyclopedia_gardening_traits.csv` (654 species × curated columns)
+  - Built from TRY-augmented datasets via `scripts/build_encyclopedia_traits.py`
+  - Feeds the encyclopedia “Physical Characteristics” replacement blocks (growth form, leaf habit, bloom window, root depth, mycorrhiza, etc.)
 
 ### Data Flow Overview
 
@@ -259,6 +263,20 @@ Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `c
 
 ### Follow-up
 - When additional TRY extracts arrive (e.g., to improve nectar sugar coverage), rerun the augmentation command above and re-check the unmatched-species list before merging.
+
+### Gardener Trait Slice (2025-10-05)
+- **Purpose:** distill the augmented TRY traits into layperson-friendly categories for the encyclopedia UI (e.g., growth form, leaf habit, flower colour, root depth bands, mycorrhiza type).
+- **Script:** `scripts/build_encyclopedia_traits.py`
+- **Input priority:**
+  1. `artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw_imputed_cat.csv` (imputed categorical + numeric TRY traits)
+  2. Fallback to `artifacts/model_data_bioclim_subset_enhanced_augmented_tryraw.csv` for any missing raw values
+- **Output:** `data/encyclopedia_gardening_traits.csv` (654 species)
+- **Regeneration:**
+  ```bash
+  # Rebuild friendly trait slice (after rerunning TRY augmentation if needed)
+  ./scripts/build_encyclopedia_traits.py
+  ```
+- **Fields produced:** growth form, woodiness, leaf type, leaf habit, branching style, flower colour, bloom calendar phrases, root depth band + source flag, mycorrhizal association, photosynthesis pathway.
 
 ## 10. GloBI Interaction Data Integration (2025-10-03)
 

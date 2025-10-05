@@ -27,6 +27,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 COMPREHENSIVE = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
 DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
 CLASSIFICATION = REPO_ROOT / "data/classification.csv"
+GARDENING_TRAITS = REPO_ROOT / "data/encyclopedia_gardening_traits.csv"
 STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 
@@ -55,6 +56,19 @@ class EncyclopediaProfileGenerator:
         else:
             logger.info("  No dimension data found\n")
             self.dim_lookup = {}
+
+        # Load gardener trait summaries if available
+        self.gardening_traits: Dict[str, Dict] = {}
+        if GARDENING_TRAITS.exists():
+            logger.info("Loading gardener trait summary dataset...")
+            trait_df = pd.read_csv(GARDENING_TRAITS)
+            for _, row in trait_df.iterrows():
+                species_key = row.get('wfo_accepted_name')
+                if isinstance(species_key, str) and species_key.strip():
+                    self.gardening_traits[species_key.strip()] = row.to_dict()
+            logger.info(f"  Gardener traits available for {len(self.gardening_traits)} species\n")
+        else:
+            logger.info("  Gardener trait summary not found; skipping\n")
 
     @staticmethod
     def _clean_scientific_value(value: Optional[str]) -> Optional[str]:
@@ -128,6 +142,113 @@ class EncyclopediaProfileGenerator:
             'N': self._safe_float(row.get('EIVEres-N')),
             'T': self._safe_float(row.get('EIVEres-T')),
         }
+
+    def extract_gardening_traits(self, species_name: str) -> Optional[Dict[str, Dict]]:
+        """Return gardener-friendly trait summary if available."""
+        if not self.gardening_traits:
+            return None
+
+        trait_row = self.gardening_traits.get(species_name)
+        if not trait_row:
+            return None
+
+        def clean_value(key: str) -> Optional[str]:
+            value = trait_row.get(key)
+            if value is None:
+                return None
+            if isinstance(value, float) and pd.isna(value):
+                return None
+            if isinstance(value, str) and not value.strip():
+                return None
+            return value
+
+        def clean_number(key: str) -> Optional[float]:
+            value = trait_row.get(key)
+            if value is None:
+                return None
+            try:
+                if isinstance(value, float) and pd.isna(value):
+                    return None
+                return float(value)
+            except (TypeError, ValueError):
+                return None
+
+        traits: Dict[str, Dict] = {}
+
+        growth_form = clean_value('growth_form_display') or clean_value('growth_form_raw')
+        if growth_form:
+            traits['growth_form'] = {
+                'label': growth_form,
+                'raw': clean_value('growth_form_raw')
+            }
+
+        woodiness = clean_value('woodiness')
+        if woodiness:
+            traits['woodiness'] = {'label': woodiness}
+
+        leaf_type = clean_value('leaf_type_display') or clean_value('leaf_type_raw')
+        if leaf_type:
+            traits['leaf_type'] = {
+                'label': leaf_type,
+                'raw': clean_value('leaf_type_raw')
+            }
+
+        leaf_habit = clean_value('leaf_habit_display') or clean_value('leaf_habit_raw')
+        if leaf_habit:
+            traits['leaf_habit'] = {
+                'label': leaf_habit,
+                'raw': clean_value('leaf_habit_raw')
+            }
+
+        branching = clean_value('branching_display') or clean_value('branching_raw')
+        if branching:
+            traits['branching'] = {
+                'label': branching,
+                'raw': clean_value('branching_raw')
+            }
+
+        flower_color = clean_value('flower_color_display') or clean_value('flower_color_raw')
+        if flower_color:
+            traits['flower_color'] = {
+                'label': flower_color,
+                'raw': clean_value('flower_color_raw')
+            }
+
+        flowering_label = clean_value('flowering_time_display')
+        flowering_value = clean_number('flowering_time_value')
+        flowering_source = clean_value('flowering_time_source')
+        if flowering_label or flowering_value is not None:
+            traits['flowering_time'] = {
+                'label': flowering_label,
+                'value': flowering_value,
+                'source': flowering_source
+            }
+
+        root_depth_m = clean_number('root_depth_m')
+        root_band = clean_value('root_depth_band')
+        root_source = clean_value('root_depth_source')
+        if root_depth_m is not None or root_band:
+            traits['root_depth'] = {
+                'meters': root_depth_m,
+                'band': root_band,
+                'source': root_source
+            }
+
+        mycorrhiza = clean_value('mycorrhiza_display') or clean_value('mycorrhiza_raw')
+        if mycorrhiza:
+            traits['mycorrhiza'] = {
+                'label': mycorrhiza,
+                'raw': clean_value('mycorrhiza_raw')
+            }
+
+        photosynthesis = clean_value('photosynthesis_display') or clean_value('photosynthesis_raw')
+        if photosynthesis:
+            traits['photosynthesis'] = {
+                'label': photosynthesis,
+                'raw': clean_value('photosynthesis_raw')
+            }
+
+        return traits if traits else None
 
     def extract_eive_labels(self, row) -> Dict[str, Optional[str]]:
         """Extract qualitative EIVE labels."""
@@ -382,6 +503,10 @@ class EncyclopediaProfileGenerator:
                 'coordinates': self.extract_gbif_coordinates(row),
             },
         }
+
+        gardening_traits = self.extract_gardening_traits(species_name)
+        if gardening_traits:
+            profile['gardening_traits'] = gardening_traits
 
         synonyms = self.extract_synonyms(species_name)
         if synonyms:

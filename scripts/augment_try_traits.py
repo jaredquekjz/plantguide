@@ -14,6 +14,9 @@ csv.field_size_limit(sys.maxsize)
 TRAIT_DEFS = {
     6:    {"column": "trait_root_depth_raw", "kind": "numeric"},
     37:   {"column": "trait_leaf_phenology_raw", "kind": "categorical"},
+    38:   {"column": "trait_woodiness_raw", "kind": "categorical"},
+    42:   {"column": "trait_growth_form_raw", "kind": "categorical"},
+    43:   {"column": "trait_leaf_type_raw", "kind": "categorical"},
     82:   {"column": "trait_root_tissue_density_raw", "kind": "numeric"},
     83:   {"column": "trait_root_diameter_raw", "kind": "numeric"},
     1080: {"column": "trait_root_srl_raw", "kind": "numeric"},
