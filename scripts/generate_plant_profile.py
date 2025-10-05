@@ -138,24 +138,38 @@ class PlantProfileGenerator:
 
     def format_climate_section(self, data):
         """Format bioclim variables."""
+        def scaled(value, factor=1.0):
+            if pd.isna(value):
+                return None
+            return float(value) * factor
+
+        annual_mean = scaled(data.get('bio1_mean'))
+        warmest_high = scaled(data.get('bio5_mean'), 0.1)
+        coldest_low = scaled(data.get('bio6_mean'), 0.1)
+        annual_range = None
+        if warmest_high is not None and coldest_low is not None:
+            annual_range = warmest_high - coldest_low
+
         return {
             'temperature': {
-                'annual_mean_C': data.get('bio1_mean'),
-                'max_warmest_C': data.get('bio5_mean'),
-                'min_coldest_C': data.get('bio6_mean'),
-                'seasonality': data.get('bio4_mean'),
+                'annual_mean_C': annual_mean,
+                'warmest_month_high_C': warmest_high,
+                'coldest_month_low_C': coldest_low,
+                'annual_range_C': annual_range,
+                'seasonality_sd_C': scaled(data.get('bio4_mean'), 0.01),
             },
             'precipitation': {
-                'annual_mm': data.get('bio12_mean'),
-                'wettest_month_mm': data.get('bio13_mean'),
-                'driest_month_mm': data.get('bio14_mean'),
+                'annual_mm': scaled(data.get('bio12_mean'), 100.0),
+                'wettest_month_mm': scaled(data.get('bio13_mean'), 10.0),
+                'driest_month_mm': scaled(data.get('bio14_mean'), 0.1),
+                'seasonality_cv': scaled(data.get('bio15_mean')),
             },
             'aridity': {
-                'ai_mean': data.get('AI_mean'),
+                'index_mean': scaled(data.get('AI_mean')),
             },
             'occurrence_summary': {
-                'n_occurrences': data.get('n_occurrences'),
-                'n_unique_coords': data.get('n_unique_coords'),
+                'n_occurrences': int(data.get('n_occurrences')) if pd.notna(data.get('n_occurrences')) else None,
+                'n_unique_coords': int(data.get('n_unique_coords')) if pd.notna(data.get('n_unique_coords')) else None,
             }
         }
 
