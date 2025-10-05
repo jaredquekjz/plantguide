@@ -280,26 +280,50 @@ class EncyclopediaProfileGenerator:
         if pd.isna(row.get('bio1_mean')):
             return None
 
+        def scaled(value, factor=1.0, rounding=2):
+            base = self._safe_float(value)
+            if base is None:
+                return None
+            scaled_value = base * factor
+            return round(scaled_value, rounding) if rounding is not None else scaled_value
+
+        annual_mean = self._safe_float(row.get('bio1_mean'))
+        warmest_high = scaled(row.get('bio5_mean'), 0.1)
+        coldest_low = scaled(row.get('bio6_mean'), 0.1)
+        annual_range = self._safe_float(row.get('bio7_mean'))
+        temp_seasonality = scaled(row.get('bio4_mean'), 0.01)
+
+        annual_rain = scaled(row.get('bio12_mean'), 100.0, rounding=0)
+        wettest_month = scaled(row.get('bio13_mean'), 10.0, rounding=0)
+        driest_month = scaled(row.get('bio14_mean'), 0.1, rounding=0)
+        precip_seasonality = self._safe_float(row.get('bio15_mean'))
+
+        sufficient_raw = row.get('has_sufficient_data_bioclim')
+        if pd.isna(sufficient_raw):
+            sufficient_flag = None
+        else:
+            sufficient_flag = bool(sufficient_raw)
+
         return {
             'temperature': {
-                'annual_mean_C': self._safe_float(row.get('bio1_mean')),
-                'max_warmest_month_C': self._safe_float(row.get('bio5_mean')),
-                'min_coldest_month_C': self._safe_float(row.get('bio6_mean')),
-                'annual_range_C': self._safe_float(row.get('bio7_mean')),
-                'seasonality': self._safe_float(row.get('bio4_mean')),
+                'annual_mean_C': annual_mean,
+                'warmest_month_high_C': warmest_high,
+                'coldest_month_low_C': coldest_low,
+                'annual_range_C': annual_range,
+                'seasonality_sd_C': temp_seasonality,
             },
             'precipitation': {
-                'annual_mm': self._safe_float(row.get('bio12_mean')),
-                'wettest_month_mm': self._safe_float(row.get('bio13_mean')),
-                'driest_month_mm': self._safe_float(row.get('bio14_mean')),
-                'seasonality': self._safe_float(row.get('bio15_mean')),
+                'annual_mm': annual_rain,
+                'wettest_month_mm': wettest_month,
+                'driest_month_mm': driest_month,
+                'seasonality_cv': precip_seasonality,
             },
             'aridity': {
                 'index_mean': self._safe_float(row.get('AI_mean')),
             },
-            'data_quality': {
+            'occurrence_summary': {
                 'n_occurrences': self._safe_int(row.get('n_occurrences_bioclim')),
-                'sufficient_data': bool(row.get('has_sufficient_data_bioclim')),
+                'sufficient_data': sufficient_flag,
             }
         }
 
