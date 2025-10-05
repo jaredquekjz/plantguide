@@ -93,6 +93,9 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
 
         # Soil pH data (NEW - keep nested)
         'soil': profile.get('soil'),
+
+        # Gardener-friendly trait summary
+        'gardening_traits': profile.get('gardening_traits'),
     }
 
     # Add Stage 7 content if available (for legacy frontend)
