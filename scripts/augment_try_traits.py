@@ -17,6 +17,7 @@ TRAIT_DEFS = {
     38:   {"column": "trait_woodiness_raw", "kind": "categorical"},
     42:   {"column": "trait_growth_form_raw", "kind": "categorical"},
     43:   {"column": "trait_leaf_type_raw", "kind": "categorical"},
+    324:  {"column": "trait_crown_diameter_raw", "kind": "numeric"},
     82:   {"column": "trait_root_tissue_density_raw", "kind": "numeric"},
     83:   {"column": "trait_root_diameter_raw", "kind": "numeric"},
     1080: {"column": "trait_root_srl_raw", "kind": "numeric"},
@@ -32,6 +33,7 @@ TRAIT_DEFS = {
     2006: {"column": "trait_fine_root_fraction_raw", "kind": "numeric"},
     2817: {"column": "trait_inflorescence_height_raw", "kind": "numeric"},
     2935: {"column": "trait_flower_symmetry_raw", "kind": "categorical"},
+    2936: {"column": "trait_flower_corolla_type_raw", "kind": "categorical"},
     343:  {"column": "trait_life_form_raw", "kind": "categorical"},
 }
 

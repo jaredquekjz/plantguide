@@ -28,6 +28,7 @@ COMPREHENSIVE = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
 DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
 CLASSIFICATION = REPO_ROOT / "data/classification.csv"
 GARDENING_TRAITS = REPO_ROOT / "data/encyclopedia_gardening_traits.csv"
+SOIL_SUMMARY = REPO_ROOT / "data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv"
 STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 
@@ -69,6 +70,15 @@ class EncyclopediaProfileGenerator:
             logger.info(f"  Gardener traits available for {len(self.gardening_traits)} species\n")
         else:
             logger.info("  Gardener trait summary not found; skipping\n")
+
+        # Load soil data if available
+        if SOIL_SUMMARY.exists():
+            logger.info("Loading comprehensive soil data...")
+            self.soil_data = pd.read_csv(SOIL_SUMMARY)
+            logger.info(f"  Loaded soil data for {len(self.soil_data)} species\n")
+        else:
+            logger.info("  Soil data not found; skipping\n")
+            self.soil_data = None
 
     @staticmethod
     def _clean_scientific_value(value: Optional[str]) -> Optional[str]:
@@ -257,6 +267,168 @@ class EncyclopediaProfileGenerator:
             }
 
         return traits if traits else None
+
+    def extract_soil(self, species_name: str) -> Optional[Dict]:
+        """Extract SoilGrids-derived soil data with friendly summaries."""
+        if self.soil_data is None:
+            return None
+
+        soil_row = self.soil_data[self.soil_data['species'] == species_name]
+        if soil_row.empty:
+            return None
+
+        data = soil_row.iloc[0]
+
+        topsoil_depths = ['0_5cm', '5_15cm', '15_30cm']
+        subsoil_depths = ['30_60cm', '60_100cm']
+        deep_depths = ['100_200cm']
+
+        def summarise(prefix, depths):
+            values = []
+            for depth in depths:
+                value = data.get(f'{prefix}_{depth}_mean')
+                if pd.notna(value):
+                    values.append(value)
+            if not values:
+                return None
+            return float(pd.Series(values).mean())
+
+        def build_metric(config):
+            topsoil_value = summarise(config['prefix'], topsoil_depths)
+            subsoil_value = summarise(config['prefix'], subsoil_depths)
+            deep_value = summarise(config['prefix'], deep_depths)
+
+            if topsoil_value is None and subsoil_value is None and deep_value is None:
+                return None
+
+            metric = {
+                'key': config['key'],
+                'label': config['label'],
+                'units': config.get('units'),
+                'description': config.get('description'),
+            }
+
+            if topsoil_value is not None:
+                metric['topsoil'] = {'mean': topsoil_value}
+            if subsoil_value is not None:
+                metric['subsoil'] = {'mean': subsoil_value}
+            if deep_value is not None:
+                metric['deep'] = {'mean': deep_value}
+
+            return metric
+
+        metric_definitions = [
+            {
+                'key': 'organic_matter',
+                'prefix': 'soc',
+                'label': 'Organic matter',
+                'units': 'g/kg',
+                'description': 'Stored plant material that keeps soil springy and full of life.'
+            },
+            {
+                'key': 'clay_content',
+                'prefix': 'clay',
+                'label': 'Fine particles (clay)',
+                'units': '%',
+                'description': 'Clay helps soils hold onto water and nutrients.'
+            },
+            {
+                'key': 'sand_content',
+                'prefix': 'sand',
+                'label': 'Coarse particles (sand)',
+                'units': '%',
+                'description': 'Sand keeps soils light and free-draining.'
+            },
+            {
+                'key': 'nutrient_capacity',
+                'prefix': 'cec',
+                'label': 'Nutrient capacity',
+                'units': 'cmol(+)/kg',
+                'description': 'Higher values mean the soil can store more nutrients for roots.'
+            },
+            {
+                'key': 'nitrogen',
+                'prefix': 'nitrogen',
+                'label': 'Total nitrogen',
+                'units': 'g/kg',
+                'description': 'Plant-available nitrogen that drives leafy growth.'
+            },
+            {
+                'key': 'bulk_density',
+                'prefix': 'bdod',
+                'label': 'Soil density',
+                'units': 'g/cm³',
+                'description': 'How tightly packed the soil is—a guide to compaction and aeration.'
+            }
+        ]
+
+        soil_metrics = []
+        for metric_config in metric_definitions:
+            metric = build_metric(metric_config)
+            if metric is not None:
+                soil_metrics.append(metric)
+
+        # Helper to convert pandas/numpy types to native Python types
+        def to_native(value):
+            if pd.isna(value):
+                return None
+            if hasattr(value, 'item'):  # numpy type
+                return value.item()
+            return value
+
+        # Return pH data at multiple depth layers with statistics
+        return {
+            'pH': {
+                'surface_0_5cm': {
+                    'mean': to_native(data.get('phh2o_0_5cm_mean')),
+                    'p10': to_native(data.get('phh2o_0_5cm_p10')),
+                    'median': to_native(data.get('phh2o_0_5cm_p50')),
+                    'p90': to_native(data.get('phh2o_0_5cm_p90')),
+                    'sd': to_native(data.get('phh2o_0_5cm_sd')),
+                },
+                'shallow_5_15cm': {
+                    'mean': to_native(data.get('phh2o_5_15cm_mean')),
+                    'p10': to_native(data.get('phh2o_5_15cm_p10')),
+                    'median': to_native(data.get('phh2o_5_15cm_p50')),
+                    'p90': to_native(data.get('phh2o_5_15cm_p90')),
+                    'sd': to_native(data.get('phh2o_5_15cm_sd')),
+                },
+                'medium_15_30cm': {
+                    'mean': to_native(data.get('phh2o_15_30cm_mean')),
+                    'p10': to_native(data.get('phh2o_15_30cm_p10')),
+                    'median': to_native(data.get('phh2o_15_30cm_p50')),
+                    'p90': to_native(data.get('phh2o_15_30cm_p90')),
+                    'sd': to_native(data.get('phh2o_15_30cm_sd')),
+                },
+                'deep_30_60cm': {
+                    'mean': to_native(data.get('phh2o_30_60cm_mean')),
+                    'p10': to_native(data.get('phh2o_30_60cm_p10')),
+                    'median': to_native(data.get('phh2o_30_60cm_p50')),
+                    'p90': to_native(data.get('phh2o_30_60cm_p90')),
+                    'sd': to_native(data.get('phh2o_30_60cm_sd')),
+                },
+                'very_deep_60_100cm': {
+                    'mean': to_native(data.get('phh2o_60_100cm_mean')),
+                    'p10': to_native(data.get('phh2o_60_100cm_p10')),
+                    'median': to_native(data.get('phh2o_60_100cm_p50')),
+                    'p90': to_native(data.get('phh2o_60_100cm_p90')),
+                    'sd': to_native(data.get('phh2o_60_100cm_sd')),
+                },
+                'subsoil_100_200cm': {
+                    'mean': to_native(data.get('phh2o_100_200cm_mean')),
+                    'p10': to_native(data.get('phh2o_100_200cm_p10')),
+                    'median': to_native(data.get('phh2o_100_200cm_p50')),
+                    'p90': to_native(data.get('phh2o_100_200cm_p90')),
+                    'sd': to_native(data.get('phh2o_100_200cm_sd')),
+                },
+            },
+            'metrics': soil_metrics,
+            'data_quality': {
+                'n_occurrences': to_native(data.get('n_occurrences')),
+                'n_unique_coords': to_native(data.get('n_unique_coords')),
+                'has_sufficient_data': to_native(data.get('has_sufficient_data')),
+            }
+        }
 
     def extract_eive_labels(self, row) -> Dict[str, Optional[str]]:
         """Extract qualitative EIVE labels."""
@@ -505,6 +677,7 @@ class EncyclopediaProfileGenerator:
             'traits': self.extract_traits(row),
             'dimensions': self.extract_dimensions(species_name),
             'bioclim': self.extract_bioclim(row),
+            'soil': self.extract_soil(species_name),
             'interactions': self.extract_globi_interactions(row),
             'occurrences': {
                 'count': self._safe_int(row.get('n_occurrences')),

@@ -1,0 +1,42 @@
+```json
+{
+  "summary": "The profile largely aligns with EIVE expectations, showing strong matches for light (L) and moisture (M). The reaction (R) and temperature (T) axes show partial agreement, as the plant appears to be a generalist with a wider tolerance than the EIVE scores suggest. Evidence for nutrients (N) is insufficient but contains indirect clues.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "half-light plant (mostly well lit but tolerates shade) (EIVE score 7.36)",
+      "verdict": "match",
+      "confidence": 1.0,
+      "notes": "The profile's preference for 'full sun' with explicit tolerance for 'partial shade' directly supports the EIVE expectation for a plant that is mostly well-lit but can handle some shade."
+    },
+    {
+      "axis": "M",
+      "expectation": "moderately dry; also in dry sites with humidity (EIVE score 3.83)",
+      "verdict": "match",
+      "confidence": 1.0,
+      "notes": "The profile consistently describes the plant as preferring dry, well-drained soils, being highly drought tolerant, and avoiding wet conditions, which strongly aligns with the expectation."
+    },
+    {
+      "axis": "R",
+      "expectation": "slightly acidic to neutral (EIVE score 5.48)",
+      "verdict": "partial",
+      "confidence": 0.8,
+      "notes": "The plant tolerates the expected slightly acidic to neutral range, but the profile indicates a much broader tolerance (pH 4.7–8.0), making it more of a generalist than the expectation implies."
+    },
+    {
+      "axis": "N",
+      "expectation": "intermediate fertility (EIVE score 5.04)",
+      "verdict": "insufficient",
+      "confidence": 0.9,
+      "notes": "The profile lacks direct statements on soil fertility. However, the recommendation to avoid 'rich' soils indirectly suggests the plant does not thrive in high-nutrient conditions, which is consistent with an intermediate fertility preference, but the evidence is not explicit."
+    },
+    {
+      "axis": "T",
+      "expectation": "rather cool montane climates (EIVE score 3.43)",
+      "verdict": "partial",
+      "confidence": 0.7,
+      "notes": "The evidence is mixed. Cold hardiness (zone 3) and issues in hot summers ('melt out') support the 'cool climate' expectation. However, stated high heat tolerance and a wide hardiness range (up to 9) suggest it is more of a temperate generalist than a strict cool climate specialist."
+    }
+  ]
+}
+```

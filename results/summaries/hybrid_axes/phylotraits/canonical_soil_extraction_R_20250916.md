@@ -52,3 +52,110 @@ Recommendations
 2. If higher R² is required, explore modest smoothing (e.g. pre-warp with bilinear resampling during the one-time conversion) while keeping the pipeline deterministic.
 3. A full SoilGrids dump (`conda run -n AI bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withsoil_all_sg250m_20250917 --trait_csv artifacts/model_data_bioclim_subset_enhanced_imputed.csv --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_soilall_sg250m_20250916.csv --axes R --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true`) confirms that adding every soil variable nudges R² by <0.005; stick to the curated pH stack for clarity.
 4. Document downstream scripts so they point at `...with_aimonth_phq_sg250m_20250916.csv` and not the VRT-derived tables.
+
+---
+
+## Canonical Soil Datasets — Encyclopedia Integration (2025-10-05)
+
+### Comprehensive Soil Summary (All Metrics)
+**Location**: `data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv`
+
+**Purpose**: Comprehensive soil dataset containing ALL SoilGrids 250m metrics for encyclopedia profile generation and frontend display.
+
+**Coverage**: 654 species with sufficient GBIF occurrence data
+
+**Soil Variables** (6 depth layers: 0-5cm, 5-15cm, 15-30cm, 30-60cm, 60-100cm, 100-200cm):
+- **pH (phh2o)**: Soil reaction in water (dimensionless)
+- **Organic matter (soc)**: Soil organic carbon (g/kg)
+- **Clay content (clay)**: Fine particles < 0.002mm (%)
+- **Sand content (sand)**: Coarse particles 0.05-2mm (%)
+- **Nutrient capacity (cec)**: Cation exchange capacity (cmol(+)/kg)
+- **Nitrogen (nitrogen)**: Total nitrogen content (g/kg)
+- **Bulk density (bdod)**: Soil compaction (g/cm³)
+
+**Statistics per variable/depth**: `mean`, `sd`, `p10`, `p50` (median), `p90`, `n_valid`
+
+**Data quality fields**:
+- `n_occurrences`: Total GBIF occurrences used
+- `n_unique_coords`: Unique coordinate locations sampled
+- `has_sufficient_data`: Boolean flag for minimum data threshold
+
+### pH-Only Summary (R Axis Modeling)
+**Location**: `data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv`
+
+**Purpose**: pH-only subset for R axis XGBoost modeling (cleaner feature space)
+
+**Variables**: Only `phh2o` at 6 depth layers with statistics
+
+### Encyclopedia Profile Integration
+The comprehensive soil dataset (`species_soil_summary.csv`) is loaded by:
+- **Profile generator**: `src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py` (line 31)
+- **Legacy generator**: `scripts/generate_plant_profile.py` (line 29)
+
+**Profile structure** (`data/encyclopedia_profiles/{slug}.json`):
+```json
+{
+  "soil": {
+    "pH": {
+      "surface_0_5cm": {"mean": 5.5, "p10": 4.8, "median": 5.6, "p90": 6.4, "sd": 0.8},
+      "shallow_5_15cm": {...},
+      "medium_15_30cm": {...},
+      "deep_30_60cm": {...},
+      "very_deep_60_100cm": {...},
+      "subsoil_100_200cm": {...}
+    },
+    "metrics": [
+      {
+        "key": "organic_matter",
+        "label": "Organic matter",
+        "units": "g/kg",
+        "description": "Stored plant material that keeps soil springy and full of life.",
+        "topsoil": {"mean": 43.1},   // Avg of 0-5, 5-15, 15-30 cm
+        "subsoil": {"mean": 7.9},    // Avg of 30-60, 60-100 cm
+        "deep": {"mean": 5.5}        // Avg of 100-200 cm
+      },
+      // ... 5 more metrics (clay, sand, cec, nitrogen, bdod)
+    ],
+    "data_quality": {
+      "n_occurrences": 743,
+      "n_unique_coords": 676,
+      "has_sufficient_data": true
+    }
+  }
+}
+```
+
+**Frontend display**: `olier-farm/src/components/SoilConditionsDisplay.tsx`
+- pH visualization at multiple depths with color-coded scales
+- Soil texture triangle (clay/sand/silt composition)
+- Nutrient capacity gauges
+- Contextual gardening narratives
+
+### File Lineage
+1. **Raw extraction**: `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R`
+   - Downloads SoilGrids GeoTIFF tiles to `data/soilgrids_250m_global/`
+   - Extracts at GBIF occurrence coordinates
+   - Outputs: `data/bioclim_extractions_bioclim_first/occurrences/{species}/soil_summary.csv`
+
+2. **Species aggregation**: `scripts/aggregate_soilgrids_species.R`
+   - Aggregates occurrence-level data to species-level statistics
+   - Outputs: `data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_all_20250916.csv`
+
+3. **Symlink to canonical**:
+   ```bash
+   ln -s species_soil_summary_global_all_20250916.csv species_soil_summary.csv
+   ```
+   - Creates stable filename for downstream scripts
+   - Points to most recent canonical extraction
+
+4. **Encyclopedia profiles**: `src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py`
+   - Reads `species_soil_summary.csv`
+   - Formats soil metrics by depth zone (topsoil/subsoil/deep)
+   - Embeds in JSON profiles for Firestore upload
+
+### Canonical Dataset Declaration
+**For R axis modeling**: Use `species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv` (pH-only)
+
+**For encyclopedia profiles**: Use `species_soil_summary.csv` → `species_soil_summary_global_all_20250916.csv` (all metrics)
+
+**Rationale**: Encyclopedia profiles need full soil context for gardening recommendations (texture, nutrients, compaction), while XGBoost modeling benefits from focused pH feature space.
