@@ -31,6 +31,12 @@ def initialize_firebase():
         print(f"❌ Firebase initialization error: {e}")
         sys.exit(1)
 
+def extract_value(obj):
+    """Extract 'value' field from object if it exists, otherwise return as-is."""
+    if isinstance(obj, dict) and 'value' in obj:
+        return obj['value']
+    return obj
+
 def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     """
     Flatten encyclopedia profile for Firestore.
@@ -80,6 +86,9 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
         # GBIF occurrences (NEW - keep nested for map display)
         'gbif_occurrence_count': profile.get('occurrences', {}).get('count'),
         'gbif_coordinates': profile.get('occurrences', {}).get('coordinates'),
+
+        # Bioclim climate data (NEW - keep nested)
+        'bioclim': profile.get('bioclim'),
     }
 
     # Add Stage 7 content if available (for legacy frontend)
@@ -99,58 +108,82 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
         # Climate requirements
         if 'climate_requirements' in stage7 and stage7['climate_requirements']:
             climate = stage7['climate_requirements']
-            if 'optimal_temperature_range' in climate:
+            if 'optimal_temperature_range' in climate and climate['optimal_temperature_range']:
                 flattened['optimal_temperature_min'] = climate['optimal_temperature_range'].get('min')
                 flattened['optimal_temperature_max'] = climate['optimal_temperature_range'].get('max')
-            if 'hardiness_zone_range' in climate:
+            if 'hardiness_zone_range' in climate and climate['hardiness_zone_range']:
                 flattened['hardiness_zone_min'] = climate['hardiness_zone_range'].get('min')
                 flattened['hardiness_zone_max'] = climate['hardiness_zone_range'].get('max')
             flattened['koppen_zones'] = climate.get('suitable_koppen_zones', [])
-            flattened['microclimate_preferences'] = climate.get('microclimate_preferences')
-            flattened['frost_sensitivity'] = climate.get('frost_sensitivity')
-            if 'tolerances' in climate:
-                flattened['heat_tolerance'] = climate['tolerances'].get('heat')
-                flattened['wind_tolerance'] = climate['tolerances'].get('wind')
-                flattened['drought_tolerance'] = climate['tolerances'].get('drought')
+            flattened['microclimate_preferences'] = extract_value(climate.get('microclimate_preferences'))
+            flattened['frost_sensitivity'] = extract_value(climate.get('frost_sensitivity'))
+            if 'tolerances' in climate and climate['tolerances']:
+                flattened['heat_tolerance'] = extract_value(climate['tolerances'].get('heat'))
+                flattened['wind_tolerance'] = extract_value(climate['tolerances'].get('wind'))
+                flattened['drought_tolerance'] = extract_value(climate['tolerances'].get('drought'))
 
         # Environmental requirements
         if 'environmental_requirements' in stage7 and stage7['environmental_requirements']:
             env = stage7['environmental_requirements']
             flattened['light_requirements'] = env.get('light_requirements', [])
-            flattened['water_requirement'] = env.get('water_requirement')
+            flattened['water_requirement'] = extract_value(env.get('water_requirement'))
             flattened['soil_types'] = env.get('soil_types', [])
-            if 'ph_range' in env:
+            if 'ph_range' in env and env['ph_range']:
                 flattened['ph_min'] = env['ph_range'].get('min')
                 flattened['ph_max'] = env['ph_range'].get('max')
                 flattened['ph_notes'] = env['ph_range'].get('notes')
-            if 'tolerances' in env:
-                flattened['shade_tolerance'] = env['tolerances'].get('shade')
+            if 'tolerances' in env and env['tolerances']:
+                flattened['shade_tolerance'] = extract_value(env['tolerances'].get('shade'))
 
         # Cultivation & propagation
         if 'cultivation_and_propagation' in stage7 and stage7['cultivation_and_propagation']:
             cult = stage7['cultivation_and_propagation']
-            if 'cultivation' in cult:
-                flattened['maintenance_level'] = cult['cultivation'].get('maintenance_level')
-                flattened['establishment_period_years'] = cult['cultivation'].get('establishment_period_years')
-                if 'spacing' in cult['cultivation']:
+            if 'cultivation' in cult and cult['cultivation']:
+                flattened['maintenance_level'] = extract_value(cult['cultivation'].get('maintenance_level'))
+                flattened['establishment_period_years'] = extract_value(cult['cultivation'].get('establishment_period_years'))
+                if 'spacing' in cult['cultivation'] and cult['cultivation']['spacing']:
                     flattened['spacing_between_plants_min_m'] = cult['cultivation']['spacing'].get('between_plants_min')
                     flattened['spacing_between_plants_max_m'] = cult['cultivation']['spacing'].get('between_plants_max')
                     flattened['spacing_notes'] = cult['cultivation']['spacing'].get('notes')
-                flattened['pruning_requirements'] = cult['cultivation'].get('pruning_requirements')
+                flattened['pruning_requirements'] = extract_value(cult['cultivation'].get('pruning_requirements'))
 
-            if 'propagation' in cult:
-                flattened['propagation_methods'] = cult['propagation'].get('methods', [])
+            if 'propagation' in cult and cult['propagation']:
+                methods = cult['propagation'].get('methods', [])
+                # Extract 'method' field from each object in array, or use as-is if already strings
+                if isinstance(methods, list):
+                    flattened['propagation_methods'] = [
+                        item['method'] if isinstance(item, dict) and 'method' in item else item
+                        for item in methods
+                    ]
+                else:
+                    flattened['propagation_methods'] = extract_value(methods)
                 # Convert difficulty/timing to JSON strings for legacy format
-                if 'difficulty' in cult['propagation']:
+                if 'difficulty' in cult['propagation'] and cult['propagation']['difficulty']:
                     flattened['propagation_difficulty'] = json.dumps(cult['propagation']['difficulty'])
-                if 'timing' in cult['propagation']:
+                if 'timing' in cult['propagation'] and cult['propagation']['timing']:
                     flattened['propagation_timing'] = json.dumps(cult['propagation']['timing'])
 
         # Ecological interactions
         if 'ecological_interactions' in stage7 and stage7['ecological_interactions']:
             eco = stage7['ecological_interactions']
-            flattened['ecological_functions'] = eco.get('ecological_functions', [])
-            if 'relationships' in eco:
+            funcs = eco.get('ecological_functions', [])
+            # Handle if ecological_functions is an object instead of array
+            if isinstance(funcs, dict):
+                funcs_list = funcs.get('functions', [])
+                # Extract 'name' from each function object
+                flattened['ecological_functions'] = [
+                    item['name'] if isinstance(item, dict) and 'name' in item else item
+                    for item in funcs_list
+                ]
+            elif isinstance(funcs, list):
+                # Extract 'name' from each function object in the list
+                flattened['ecological_functions'] = [
+                    item['name'] if isinstance(item, dict) and 'name' in item else item
+                    for item in funcs
+                ]
+            else:
+                flattened['ecological_functions'] = funcs
+            if 'relationships' in eco and eco['relationships']:
                 flattened['attracts_wildlife'] = eco['relationships'].get('attracts', [])
                 flattened['companion_plants'] = eco['relationships'].get('companions', [])
                 flattened['susceptible_to_pests'] = eco['relationships'].get('susceptible_to_pests', [])
@@ -165,28 +198,29 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
         # Uses, harvest & storage
         if 'uses_harvest_and_storage' in stage7 and stage7['uses_harvest_and_storage']:
             uses = stage7['uses_harvest_and_storage']
-            if 'human_uses' in uses:
+            if 'human_uses' in uses and uses['human_uses']:
                 flattened['is_medicinal'] = uses['human_uses'].get('is_medicinal', False)
                 flattened['medicinal_uses'] = uses['human_uses'].get('medicinal_uses_description')
                 flattened['other_uses'] = uses['human_uses'].get('other_uses', [])
                 flattened['processing_process'] = uses['human_uses'].get('processing_process')
                 flattened['cultural_significance'] = uses['human_uses'].get('cultural_significance')
-            if 'harvest' in uses:
-                flattened['harvest_window'] = uses['harvest'].get('harvest_window')
-                flattened['harvest_indicators'] = uses['harvest'].get('harvest_indicators')
-                flattened['storage_methods'] = uses['harvest'].get('storage_methods', [])
+            if 'harvest' in uses and uses['harvest']:
+                flattened['harvest_window'] = extract_value(uses['harvest'].get('harvest_window'))
+                flattened['harvest_indicators'] = extract_value(uses['harvest'].get('harvest_indicators'))
+                storage = uses['harvest'].get('storage_methods', [])
+                flattened['storage_methods'] = storage if isinstance(storage, list) else extract_value(storage)
 
         # Distribution & conservation
         if 'distribution_and_conservation' in stage7 and stage7['distribution_and_conservation']:
             dist = stage7['distribution_and_conservation']
-            if 'distribution' in dist:
-                if 'native_range' in dist['distribution']:
+            if 'distribution' in dist and dist['distribution']:
+                if 'native_range' in dist['distribution'] and dist['distribution']['native_range']:
                     flattened['native_range_summary'] = dist['distribution']['native_range'].get('summary')
                     flattened['native_regions'] = dist['distribution']['native_range'].get('key_regions', [])
-                if 'introduced_range' in dist['distribution']:
+                if 'introduced_range' in dist['distribution'] and dist['distribution']['introduced_range']:
                     flattened['introduced_range_summary'] = dist['distribution']['introduced_range'].get('summary')
                     flattened['introduced_regions'] = dist['distribution']['introduced_range'].get('key_regions', [])
-            if 'conservation' in dist:
+            if 'conservation' in dist and dist['conservation']:
                 global_status = dist['conservation'].get('global_status')
                 flattened['conservation_status'] = [global_status] if global_status else []
 
@@ -223,7 +257,7 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     # Clean up None values
     return {k: v for k, v in flattened.items() if v is not None}
 
-def upload_profiles(profiles_dir: Path, collection_name: str = 'encyclopedia_ellenberg', batch_size: int = 500):
+def upload_profiles(profiles_dir: Path, collection_name: str = 'encyclopedia_ellenberg', batch_size: int = 100):
     """Upload all encyclopedia profiles to Firestore."""
     db = firestore.client()
     collection_ref = db.collection(collection_name)
@@ -290,6 +324,12 @@ def upload_profiles(profiles_dir: Path, collection_name: str = 'encyclopedia_ell
 
 def main():
     """Main upload script."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Upload encyclopedia profiles to Firestore')
+    parser.add_argument('--yes', '-y', action='store_true', help='Auto-confirm upload')
+    args = parser.parse_args()
+
     profiles_dir = Path("/home/olier/ellenberg/data/encyclopedia_profiles")
 
     if not profiles_dir.exists():
@@ -308,11 +348,14 @@ def main():
     # Confirm upload
     print(f"\nThis will upload {len(list(profiles_dir.glob('*.json')))} profiles to Firestore.")
     print(f"Collection: '{collection_name}' (separate from main 'encyclopedia' with 8000+ species)")
-    print("\nProceed? (y/n): ", end="")
 
-    if input().lower() != 'y':
-        print("Upload cancelled.")
-        sys.exit(0)
+    if not args.yes:
+        print("\nProceed? (y/n): ", end="")
+        if input().lower() != 'y':
+            print("Upload cancelled.")
+            sys.exit(0)
+    else:
+        print("\nAuto-confirmed with --yes flag")
 
     # Upload profiles
     upload_profiles(profiles_dir, collection_name)

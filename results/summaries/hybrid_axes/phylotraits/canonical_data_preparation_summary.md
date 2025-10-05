@@ -31,10 +31,11 @@
   - Includes: traits, bioclim, GloBI, EIVE, Stage 7 labels (405 spp), Stage 7 reliability (10 spp), GBIF paths
   - Schema documentation: `data/comprehensive_dataset_schema.md`
   - GBIF index: `data/gbif_occurrence_index.csv` (metadata for 646 species with occurrence files)
-- **Encyclopedia profiles (frontend-ready JSON, 2025-10-04):**
+- **Encyclopedia profiles (frontend-ready JSON, 2025-10-04, updated 2025-10-05):**
   - Individual JSON profiles: `data/encyclopedia_profiles/*.json` (654 files, 14.6 MB)
-  - Optimized for web display with actual EIVE values, reliability, GloBI, occurrence coordinates
+  - Optimized for web display with actual EIVE values, reliability, GloBI, occurrence coordinates, bioclim climate data
   - Documentation: `results/summaries/hybrid_axes/phylotraits/Stage 5/encyclopedia_profile_system.md`
+  - **Update 2025-10-05:** Fixed missing bioclim integration in profile generation pipeline (see Section 12)
 
 ### Data Flow Overview
 
@@ -406,3 +407,147 @@ Per-axis alignment includes deterministic scoring:
 - Build aggregation script to merge alignment verdicts into tabular format
 - Filter high-confidence validation set for downstream model refinement
 - Flag conflicting axes for manual review or model debugging
+
+## 12. Bioclim Integration Fix (2025-10-05)
+
+- **Problem identified:** Encyclopedia profile generation pipeline (`src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py`) was missing bioclim climate extraction despite bioclim data being present in comprehensive dataset
+- **Root cause analysis:**
+  - Bioclim data successfully merged in `build_comprehensive_dataset.py` (Section 1) → `comprehensive_dataset_no_soil_with_gbif.csv`
+  - Comprehensive dataset contains all 19 bioclim variables (bio1-bio19) with mean/SD values
+  - Encyclopedia profile generator had extraction methods for: EIVE, traits, dimensions, GloBI, GBIF coordinates
+  - **Missing:** `extract_bioclim()` method was never implemented despite bioclim data availability
+  - Upload script (`upload_encyclopedia_to_firestore.py`) would have uploaded bioclim if present, but profiles never included it
+- **Pipeline gap:**
+  ```
+  build_comprehensive_dataset.py  ✅ Includes bioclim
+         ↓
+  comprehensive_dataset_no_soil_with_gbif.csv  ✅ Has bio1-bio19
+         ↓
+  generate_encyclopedia_profiles.py  ❌ No extract_bioclim() method
+         ↓
+  encyclopedia_profiles/*.json  ❌ Missing 'bioclim' key
+         ↓
+  upload_encyclopedia_to_firestore.py  ⚠️ Would work but nothing to upload
+         ↓
+  Firestore encyclopedia_ellenberg  ❌ No bioclim field
+  ```
+
+### Fix Applied
+
+**1. Added bioclim extraction to profile generator:**
+```python
+def extract_bioclim(self, row) -> Optional[Dict]:
+    """Extract bioclim climate variables averaged from occurrence data."""
+    if pd.isna(row.get('bio1_mean')):
+        return None
+
+    return {
+        'temperature': {
+            'annual_mean_C': self._safe_float(row.get('bio1_mean')),
+            'max_warmest_month_C': self._safe_float(row.get('bio5_mean')),
+            'min_coldest_month_C': self._safe_float(row.get('bio6_mean')),
+            'annual_range_C': self._safe_float(row.get('bio7_mean')),
+            'seasonality': self._safe_float(row.get('bio4_mean')),
+        },
+        'precipitation': {
+            'annual_mm': self._safe_float(row.get('bio12_mean')),
+            'wettest_month_mm': self._safe_float(row.get('bio13_mean')),
+            'driest_month_mm': self._safe_float(row.get('bio14_mean')),
+            'seasonality': self._safe_float(row.get('bio15_mean')),
+        },
+        'aridity': {
+            'index_mean': self._safe_float(row.get('AI_mean')),
+        },
+        'data_quality': {
+            'n_occurrences': self._safe_int(row.get('n_occurrences_bioclim')),
+            'sufficient_data': bool(row.get('has_sufficient_data_bioclim')),
+        }
+    }
+```
+
+**2. Integrated bioclim into profile generation:**
+```python
+profile = {
+    # ... existing fields ...
+    'bioclim': self.extract_bioclim(row),
+    'interactions': self.extract_globi_interactions(row),
+    # ... rest of profile ...
+}
+```
+
+**3. Updated upload script to include bioclim:**
+```python
+flattened = {
+    # ... existing fields ...
+    'bioclim': profile.get('bioclim'),
+}
+```
+
+**4. Regenerated all 654 profiles:**
+```bash
+python3 src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py
+# ✓ Generated 654/654 profiles
+# ✓ Profiles with Stage 7 content: 371/654 (56.7%)
+```
+
+**5. Uploaded test profiles to Firestore:**
+```bash
+python3 scripts/upload_test_profiles.py --yes
+# ✓ Uploaded 10 test profiles to encyclopedia_ellenberg collection
+```
+
+**6. Created frontend display component:**
+- Component: `/home/olier/olier-farm/src/components/BioclimDisplay.tsx`
+- Styling: `/home/olier/olier-farm/src/components/BioclimDisplay.css`
+- Integration: `EncyclopediaDetailPage.tsx`, `PlantLibrary.tsx`
+- **User-friendly terminology:**
+  - `annual_mean_C` → "Average Temperature"
+  - `max_warmest_month_C` → "Summer High"
+  - `min_coldest_month_C` → "Winter Low"
+  - `annual_mm` → "Annual Rainfall"
+  - `wettest_month_mm` → "Wettest Month"
+  - `driest_month_mm` → "Driest Month"
+- **Unit conversions:**
+  - Bioclim temperature values (stored as °C × 10) → displayed as °C
+  - Bioclim precipitation values (stored as mm × 100) → displayed as mm
+
+### Verification
+
+**Acer saccharum bioclim data (verified 2025-10-05):**
+- Annual Mean Temperature: 8.8°C (± 2.8°C)
+- Summer High: 11.2°C
+- Winter Low: 5.0°C
+- Annual Rainfall: 1160 mm
+- Wettest Month: 3026 mm
+- Driest Month: 989 mm
+- Data quality: 773 GBIF occurrences used for aggregation
+
+### Impact
+
+- **Before:** Encyclopedia profiles displayed EIVE, GloBI interactions, GBIF maps, but no climate envelope
+- **After:** Users see scientifically grounded climate profiles based on actual occurrence data
+- **Value:** Gardeners can assess climate suitability before selecting species
+- **Coverage:** 654/654 species now have bioclim data in JSON profiles (subject to GBIF occurrence availability)
+
+### Lesson
+
+**Pipeline design principle violated:** When building multi-stage data pipelines, ensure each transformation stage explicitly documents and validates all expected data fields. The comprehensive dataset included bioclim from the start (2025-09-17), but the profile generator was never updated to extract it. This gap went unnoticed because:
+1. No schema validation between pipeline stages
+2. No automated tests checking profile completeness
+3. Frontend adapter would have silently handled missing bioclim (returned null)
+
+**Recommendation:** Add schema validation tests at each pipeline boundary to catch missing fields early.
+
+### Repro
+
+To rebuild profiles with bioclim:
+```bash
+# Generate all 654 profiles with bioclim
+python3 src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py
+
+# Upload test batch (10 species)
+python3 scripts/upload_test_profiles.py --yes
+
+# Upload all (when ready)
+python3 scripts/upload_encyclopedia_to_firestore.py --yes
+```

@@ -203,6 +203,35 @@ class EncyclopediaProfileGenerator:
 
         return dimensions if dimensions else None
 
+    def extract_bioclim(self, row) -> Optional[Dict]:
+        """Extract bioclim climate variables averaged from occurrence data."""
+        # Check if bioclim data exists
+        if pd.isna(row.get('bio1_mean')):
+            return None
+
+        return {
+            'temperature': {
+                'annual_mean_C': self._safe_float(row.get('bio1_mean')),
+                'max_warmest_month_C': self._safe_float(row.get('bio5_mean')),
+                'min_coldest_month_C': self._safe_float(row.get('bio6_mean')),
+                'annual_range_C': self._safe_float(row.get('bio7_mean')),
+                'seasonality': self._safe_float(row.get('bio4_mean')),
+            },
+            'precipitation': {
+                'annual_mm': self._safe_float(row.get('bio12_mean')),
+                'wettest_month_mm': self._safe_float(row.get('bio13_mean')),
+                'driest_month_mm': self._safe_float(row.get('bio14_mean')),
+                'seasonality': self._safe_float(row.get('bio15_mean')),
+            },
+            'aridity': {
+                'index_mean': self._safe_float(row.get('AI_mean')),
+            },
+            'data_quality': {
+                'n_occurrences': self._safe_int(row.get('n_occurrences_bioclim')),
+                'sufficient_data': bool(row.get('has_sufficient_data_bioclim')),
+            }
+        }
+
     def extract_stage7_content(self, species_name: str) -> Optional[Dict]:
         """Extract full Stage 7 validation profile content if available."""
         slug = species_name.lower().replace(' ', '-')
@@ -238,7 +267,7 @@ class EncyclopediaProfileGenerator:
 
         row = row.iloc[0]
 
-        # Build base profile with EIVE, traits, dimensions, interactions, occurrences
+        # Build base profile with EIVE, traits, dimensions, interactions, occurrences, bioclim
         profile = {
             'species': species_name,
             'slug': species_name.lower().replace(' ', '-'),
@@ -251,6 +280,7 @@ class EncyclopediaProfileGenerator:
             'reliability': self.extract_reliability(row),
             'traits': self.extract_traits(row),
             'dimensions': self.extract_dimensions(species_name),
+            'bioclim': self.extract_bioclim(row),
             'interactions': self.extract_globi_interactions(row),
             'occurrences': {
                 'count': self._safe_int(row.get('n_occurrences')),
