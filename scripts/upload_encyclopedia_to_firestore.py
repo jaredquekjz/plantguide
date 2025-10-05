@@ -89,6 +89,9 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
 
         # Bioclim climate data (NEW - keep nested)
         'bioclim': profile.get('bioclim'),
+
+        # Soil pH data (NEW - keep nested)
+        'soil': profile.get('soil'),
     }
 
     # Add Stage 7 content if available (for legacy frontend)
