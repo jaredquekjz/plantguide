@@ -216,6 +216,36 @@ The following sections detail each step with provenance and repro commands.
 Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `canonical_stage1_xgb_seq` targets and Stage 2 `gam_ALL` / `aic_ALL` commands can be rerun with full provenance confidence. Stage 7 validation provides qualitative cross-checks and reliability metrics for downstream model refinement.
 
 ## 9. TRY Raw Trait Augmentation (2025-10-06 update with crown diameter and corolla type)
+
+### 9.1 Crown Diameter Allometric Estimation (2025-10-06)
+- **Problem**: Raw TRY crown diameter measurements dominated by juvenile plant observations
+  - Example: Acer rubrum with 3-6cm crown from seedlings labeled as "juvenile" in TRY metadata
+  - Led to unrealistic canopy width values for mature trees
+- **Solution**: Two-stage processing with allometric estimation
+  1. **Filtering**: Exclude crown measurements < 0.5m (likely juveniles) in `augment_try_traits.py`
+  2. **Estimation**: Apply growth-form-specific crown:height ratios when measured data unavailable
+
+#### Allometric Crown-Height Relationships
+Implemented in `scripts/build_encyclopedia_traits.py::estimate_crown_diameter()`:
+
+| Growth Form | Height Range | Crown:Height Ratio | Basis |
+| --- | --- | --- | --- |
+| Large trees | >20m | 0.35 | Forest-grown mature trees |
+| Medium trees | 10-20m | 0.40 | Intermediate canopy |
+| Small trees | <10m | 0.45 | Understory/young trees |
+| Shrubs | Any | 0.60 | Multi-stemmed architecture |
+| Herbaceous/forbs | Any | 0.80 | Rosette/spreading growth |
+| Graminoids | Any | 0.30 | Narrow tufted growth |
+
+**Scientific Basis**:
+- Crown-DBH ratios of 24-27 for urban trees (Pretzsch et al. 2015, *Urban Forestry & Urban Greening* 14:466-479)
+- Global H × CD allometric equation (Jucker et al. 2017, *Global Change Biology* 23:2716-2726)
+- Crown extension types for 22 species (Pretzsch et al. 2015, *Forest Ecology and Management* 356:142-159)
+- Live crown ratio patterns (USDA Forest Service GTR PSW-GTR-253)
+
+**Result**: Realistic canopy widths (e.g., Acer saccharum: 11.5m instead of 0.25m from juvenile data)
+
+### 9.2 TRY Raw Trait Collection
 - **Purpose:** enrich the canonical trait tables with root, architectural, floral, and phenology traits sourced from local TRY 6.0 exports (including dataset `44049.txt`).
 - **Inputs:**
   - Canonical trait baseline: `artifacts/model_data_bioclim_subset_enhanced.csv`

@@ -376,6 +376,52 @@ def main() -> None:
     crown_diameter = combine_columns(primary, raw, 'trait_crown_diameter_raw', 'trait_crown_diameter_raw')
     result['crown_diameter_m'] = crown_diameter.apply(to_float)
 
+    # Estimate crown diameter from height using allometric relationships when measured data unavailable
+    # Based on research: Crown-to-height ratios vary by growth form and species
+    def estimate_crown_diameter(row):
+        """Estimate crown diameter from height using allometric relationships."""
+        # Use measured value if available and reasonable
+        # Filter out unrealistic values (likely from juvenile measurements)
+        if pd.notna(row['crown_diameter_m']) and row['crown_diameter_m'] > 0.5:
+            return row['crown_diameter_m'], 'observed'
+
+        height = row.get('height_m')
+        if pd.isna(height) or height <= 0:
+            return None, None
+
+        growth_form = str(row.get('growth_form_display', '')).lower()
+        woodiness = str(row.get('woodiness', '')).lower()
+
+        # Allometric crown-to-height ratios based on growth form
+        # Conservative estimates based on forestry literature
+        if 'tree' in growth_form or woodiness == 'woody':
+            # Trees typically have crown:height ratio of 0.3-0.5
+            if height > 20:  # Large trees
+                ratio = 0.35
+            elif height > 10:  # Medium trees
+                ratio = 0.40
+            else:  # Small trees
+                ratio = 0.45
+        elif 'shrub' in growth_form:
+            # Shrubs often have wider crowns relative to height
+            ratio = 0.6
+        elif 'herb' in growth_form or 'forb' in growth_form:
+            # Herbaceous plants often have crown width similar to height
+            ratio = 0.8
+        elif 'graminoid' in growth_form or 'grass' in growth_form:
+            # Grasses have narrow crowns
+            ratio = 0.3
+        else:
+            # Default conservative estimate
+            ratio = 0.4
+
+        return height * ratio, 'estimated'
+
+    # Apply estimation to each row
+    crown_estimates = result.apply(estimate_crown_diameter, axis=1)
+    result['crown_diameter_m'] = crown_estimates.apply(lambda x: x[0] if x else None)
+    result['crown_diameter_source'] = crown_estimates.apply(lambda x: x[1] if x else None)
+
     # Flower corolla type
     corolla_type = combine_columns(primary, raw, 'trait_flower_corolla_type_raw', 'trait_flower_corolla_type_raw')
     result['flower_corolla_type'] = corolla_type.apply(lambda x: x.strip().title() if isinstance(x, str) and x.strip() else None)

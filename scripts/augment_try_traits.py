@@ -191,10 +191,50 @@ def main():
     species_present_in_raw = set()
     species_with_trait = {tid: set() for tid in trait_ids}
 
+    # Track juvenile/sapling observations to filter structural traits
+    juvenile_obs_ids = set()
+
     txt_files = sorted(try_dir.glob('*.txt'))
     if not txt_files:
         raise SystemExit(f"No TRY text files found in {try_dir}")
 
+    # First pass: identify juvenile/sapling observations
+    print("First pass: Identifying juvenile/sapling observations...")
+    for txt_path in txt_files:
+        with txt_path.open('r', encoding=args.encoding, errors='replace', newline='') as raw_handle:
+            reader = csv.reader(cleaned_reader(raw_handle), delimiter='\t')
+            try:
+                header = next(reader)
+            except StopIteration:
+                continue
+            index = {name: idx for idx, name in enumerate(header)}
+
+            idx_obs_id = index.get('ObservationID')
+            idx_data_name = index.get('DataName')
+            idx_orig_value = index.get('OrigValueStr')
+
+            if idx_obs_id is None or idx_data_name is None:
+                continue
+
+            for row in reader:
+                if len(row) <= max(idx_obs_id, idx_data_name or 0, idx_orig_value or 0):
+                    continue
+
+                data_name = row[idx_data_name] if idx_data_name is not None and len(row) > idx_data_name else ""
+                if 'life stage' in data_name.lower() or 'maturity' in data_name.lower() or 'developmental status' in data_name.lower():
+                    life_stage = row[idx_orig_value] if idx_orig_value is not None and len(row) > idx_orig_value else ""
+                    life_stage_lower = life_stage.lower().strip()
+                    if any(term in life_stage_lower for term in ['juvenile', 'juvenil', 'sapling', 'seedling']):
+                        obs_id = row[idx_obs_id]
+                        juvenile_obs_ids.add(obs_id)
+
+    print(f"  Found {len(juvenile_obs_ids)} juvenile/sapling observations to filter")
+
+    # Traits to filter by life stage (structural measurements)
+    LIFE_STAGE_FILTERED_TRAITS = {324}  # Crown diameter
+
+    # Second pass: process trait data, filtering juveniles for structural traits
+    print("Second pass: Processing trait data...")
     for txt_path in txt_files:
         with txt_path.open('r', encoding=args.encoding, errors='replace', newline='') as raw_handle:
             reader = csv.reader(cleaned_reader(raw_handle), delimiter='\t')
@@ -210,6 +250,7 @@ def main():
                 raise SystemExit(f"Missing expected column {exc} in {txt_path}")
             idx_std_value = index.get('StdValue')
             idx_orig_value = index.get('OrigValueStr')
+            idx_obs_id = index.get('ObservationID')
 
             for row in reader:
                 if len(row) <= idx_species:
@@ -230,6 +271,12 @@ def main():
                 trait_id = int(trait_raw)
                 if trait_id not in trait_values:
                     continue
+
+                # Skip juvenile/sapling observations for structural traits
+                if trait_id in LIFE_STAGE_FILTERED_TRAITS and idx_obs_id is not None and len(row) > idx_obs_id:
+                    obs_id = row[idx_obs_id]
+                    if obs_id in juvenile_obs_ids:
+                        continue  # Skip this juvenile observation for structural traits
 
                 value = ""
                 if idx_std_value is not None and len(row) > idx_std_value:
