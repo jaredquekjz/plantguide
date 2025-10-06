@@ -266,6 +266,21 @@ class EncyclopediaProfileGenerator:
                 'band': height_band
             }
 
+        # Crown diameter (canopy width)
+        crown_diameter_m = clean_number('crown_diameter_m')
+        if crown_diameter_m is not None:
+            traits['crown_diameter'] = {
+                'meters': crown_diameter_m,
+                'label': f"{crown_diameter_m:.1f}m canopy width" if crown_diameter_m else None
+            }
+
+        # Flower corolla type
+        flower_corolla_type = clean_value('flower_corolla_type')
+        if flower_corolla_type:
+            traits['flower_corolla_type'] = {
+                'label': flower_corolla_type
+            }
+
         return traits if traits else None
 
     def extract_soil(self, species_name: str) -> Optional[Dict]:

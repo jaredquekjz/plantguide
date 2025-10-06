@@ -215,7 +215,7 @@ The following sections detail each step with provenance and repro commands.
 
 Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `canonical_stage1_xgb_seq` targets and Stage 2 `gam_ALL` / `aic_ALL` commands can be rerun with full provenance confidence. Stage 7 validation provides qualitative cross-checks and reliability metrics for downstream model refinement.
 
-## 9. TRY Raw Trait Augmentation (2025-09-24 update 2025-09-22 data pull)
+## 9. TRY Raw Trait Augmentation (2025-10-06 update with crown diameter and corolla type)
 - **Purpose:** enrich the canonical trait tables with root, architectural, floral, and phenology traits sourced from local TRY 6.0 exports (including dataset `44049.txt`).
 - **Inputs:**
   - Canonical trait baseline: `artifacts/model_data_bioclim_subset_enhanced.csv`
@@ -243,6 +243,7 @@ Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `c
   | 140 | `trait_shoot_branching_raw` | 534 |
   | 207 | `trait_flower_color_raw` | 512 |
   | 210 | `trait_flower_pollen_number_raw` | 63 |
+  | 324 | `trait_crown_diameter_raw` | 123 (added 2025-10-06) |
   | 335 | `trait_flowering_time_raw` | 571 |
   | 343 | `trait_life_form_raw` | 622 |
   | 363 | `trait_root_biomass_raw` | 205 |
@@ -250,6 +251,7 @@ Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `c
   | 2006 | `trait_fine_root_fraction_raw` | 24 |
   | 2817 | `trait_inflorescence_height_raw` | 11 |
   | 2935 | `trait_flower_symmetry_raw` | 23 |
+  | 2936 | `trait_flower_corolla_type_raw` | 24 (added 2025-10-06) |
   | 3579 | `trait_flower_nectar_tube_depth_raw` | 47 |
   | 3821 | `trait_flower_nectar_presence_raw` | 38 |
   | 37 | `trait_leaf_phenology_raw` | 611 |

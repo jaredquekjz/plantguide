@@ -372,6 +372,14 @@ def main() -> None:
     result['height_m'] = height_series.apply(to_float)
     result['height_band'] = result['height_m'].apply(height_band)
 
+    # Crown diameter (canopy width)
+    crown_diameter = combine_columns(primary, raw, 'trait_crown_diameter_raw', 'trait_crown_diameter_raw')
+    result['crown_diameter_m'] = crown_diameter.apply(to_float)
+
+    # Flower corolla type
+    corolla_type = combine_columns(primary, raw, 'trait_flower_corolla_type_raw', 'trait_flower_corolla_type_raw')
+    result['flower_corolla_type'] = corolla_type.apply(lambda x: x.strip().title() if isinstance(x, str) and x.strip() else None)
+
     # Flags for imputation when available
     if 'Root_depth_imputed_flag' in primary.columns:
         result['root_depth_source'] = primary['Root_depth_imputed_flag'].map({0: 'observed', 1: 'imputed'})
