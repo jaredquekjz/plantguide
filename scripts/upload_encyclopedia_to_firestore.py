@@ -59,27 +59,31 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
 
         # Reliability (NEW - keep nested)
         'eive_reliability': profile.get('reliability'),
+        'reliability_basket': profile.get('reliability_basket'),
+        'reliability_reason': profile.get('reliability_reason'),
+        'reliability_evidence': profile.get('reliability_evidence'),
+        'stage7_reliability_summary': profile.get('stage7_reliability_summary'),
 
         # Traits
-        'growth_form': profile['traits'].get('growth_form'),
-        'woodiness': profile['traits'].get('woodiness'),
-        'height_m': profile['traits'].get('height_m'),
-        'leaf_type': profile['traits'].get('leaf_type'),
-        'phenology': profile['traits'].get('phenology'),
-        'life_cycle': profile['traits'].get('phenology'),  # Alias
-        'mycorrhizal': profile['traits'].get('mycorrhizal'),
+        'growth_form': (profile.get('traits') or {}).get('growth_form'),
+        'woodiness': (profile.get('traits') or {}).get('woodiness'),
+        'height_m': (profile.get('traits') or {}).get('height_m'),
+        'leaf_type': (profile.get('traits') or {}).get('leaf_type'),
+        'phenology': (profile.get('traits') or {}).get('phenology'),
+        'life_cycle': (profile.get('traits') or {}).get('phenology'),  # Alias
+        'mycorrhizal': (profile.get('traits') or {}).get('mycorrhizal'),
 
         # Dimensions (NEW - keep nested)
-        'dimensions_above_ground': profile.get('dimensions', {}).get('above_ground'),
-        'dimensions_root_system': profile.get('dimensions', {}).get('root_system'),
+        'dimensions_above_ground': (profile.get('dimensions') or {}).get('above_ground'),
+        'dimensions_root_system': (profile.get('dimensions') or {}).get('root_system'),
 
         # For legacy compatibility, also flatten height/spread
-        'height_min_m': profile.get('dimensions', {}).get('above_ground', {}).get('height_min_m'),
-        'height_max_m': profile.get('dimensions', {}).get('above_ground', {}).get('height_max_m'),
-        'spread_min_m': profile.get('dimensions', {}).get('above_ground', {}).get('spread_min_m'),
-        'spread_max_m': profile.get('dimensions', {}).get('above_ground', {}).get('spread_max_m'),
-        'growth_habit_notes': profile.get('dimensions', {}).get('above_ground', {}).get('qualitative_comments'),
-        'root_system_notes': profile.get('dimensions', {}).get('root_system', {}).get('qualitative_comments'),
+        'height_min_m': (profile.get('dimensions') or {}).get('above_ground', {}).get('height_min_m'),
+        'height_max_m': (profile.get('dimensions') or {}).get('above_ground', {}).get('height_max_m'),
+        'spread_min_m': (profile.get('dimensions') or {}).get('above_ground', {}).get('spread_min_m'),
+        'spread_max_m': (profile.get('dimensions') or {}).get('above_ground', {}).get('spread_max_m'),
+        'growth_habit_notes': (profile.get('dimensions') or {}).get('above_ground', {}).get('qualitative_comments'),
+        'root_system_notes': (profile.get('dimensions') or {}).get('root_system', {}).get('qualitative_comments'),
 
         # GloBI interactions (NEW - keep nested)
         'globi_interactions': profile.get('interactions'),
@@ -99,8 +103,8 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
     }
 
     # Add Stage 7 content if available (for legacy frontend)
-    if 'stage7' in profile:
-        stage7 = profile['stage7']
+    stage7 = profile.get('stage7')
+    if stage7:
 
         # Common names
         if 'common_names' in stage7 and stage7['common_names']:
