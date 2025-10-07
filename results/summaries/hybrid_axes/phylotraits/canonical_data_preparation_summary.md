@@ -12,6 +12,8 @@
 - **Stage 2 SEM-ready tables (structured regression):**
   - `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv`
   - `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_pcs.csv` (includes fold-safe PCs for GAM formulas)
+  - `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv` (same as above + StrateFy `C,S,R` columns)
+  - `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv` (CSR + rule-based ecosystem service ratings)
 - **Climate + aridity summaries feeding both stages:**
   - Non-soil axes: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv`
   - Soil axis (R): `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv`
@@ -212,6 +214,66 @@ The following sections detail each step with provenance and repro commands.
 7. Build Stage 7 validation labels (Section 11) ➜ `stage7_validation_eive_labels.csv`.
 8. Normalize Stage 7 profiles (Section 11) ➜ `stage7_normalized_profiles/*.json`.
 9. Generate Stage 7 alignment verdicts (Section 11) ➜ `stage7_alignment/*.json`.
+
+## 10. CSR Computation (StrateFy) from Stage 2 Dataset
+
+The canonical CSR (C,S,R) percentages are computed directly from the Stage 2 SEM-ready dataset using LA, LMA and LDMC:
+
+- `LA` (mm²): `Leaf area (mm2)`
+- `LDMC` (proportion): converted to percentage by ×100 when in [0,1]
+- `SLA` (mm²/mg): derived from `LMA (g/m2)` as `SLA = 1000 / LMA`
+
+Implementation
+- Script: `src/CSR/compute_csr_from_stage2.py`
+- Output: `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv`
+
+Reproducible commands
+```bash
+# Direct call
+conda run -n AI python src/CSR/compute_csr_from_stage2.py \
+  --input_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv \
+  --output_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv
+
+# Makefile target
+make csr-from-stage2
+```
+
+Notes
+- StrateFy equations and calibration constants follow Pierce et al. (2016/2017). See `results/summaries/hybrid_axes/phylotraits/Stage 3/CSR_methodology_and_ecosystem_services.md` for full details.
+- Degenerate boundary edge-cases (rare) are resolved deterministically (winner-take-all on the axis farthest from its minimum), ensuring C+S+R = 100 for all rows.
+
+Sanity checks
+The run produces C,S,R for all 654 species. Example outputs:
+
+## 11. Rule-Based Ecosystem Service Ratings from CSR
+
+To keep predictions qualitative (per Bill Shipley’s recommendation), ordinal rules convert CSR into service ratings with confidence tags.
+
+Implementation
+- Script: `src/Stage_3_CSR/compute_rule_based_ecoservices.py`
+- Input: `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv`
+- Output: `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv`
+
+Makefile target
+```bash
+make ecoservices-from-csr
+```
+
+Columns added
+- `npp_rating`, `decomposition_rating`, `nutrient_cycling_rating`, `nutrient_retention_rating`, `nutrient_loss_rating`
+- `carbon_biomass_rating`, `carbon_recalcitrant_rating`, `carbon_total_rating`, `erosion_protection_rating`
+- Corresponding `*_confidence` columns
+
+Rules and confidence are documented in `Stage 3/CSR_methodology_and_ecosystem_services.md`.
+
+| Species | C | S | R |
+|---|---:|---:|---:|
+| Abies alba | ~0.79 | ~99.21 | 0.00 |
+| Abutilon theophrasti | ~64.31 | ~14.34 | ~21.35 |
+| Acer saccharinum | ~44.01 | ~34.41 | ~21.58 |
+| Acer rubrum | ~40.98 | ~38.59 | ~20.43 |
+| Spergularia diandra | 0.00 | 0.00 | 100.00 |
+
 
 Once these data assets are in place, the Stage 1 `canonical_stage1_rf_tmux` / `canonical_stage1_xgb_seq` targets and Stage 2 `gam_ALL` / `aic_ALL` commands can be rerun with full provenance confidence. Stage 7 validation provides qualitative cross-checks and reliability metrics for downstream model refinement.
 

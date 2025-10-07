@@ -100,7 +100,40 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
 
         # Gardener-friendly trait summary
         'gardening_traits': profile.get('gardening_traits'),
+
+        # CSR (StrateFy) — keep nested plus flattened numeric fields for querying
+        'csr': profile.get('csr'),
+
+        # Ecosystem services (rule-based from CSR)
+        'eco_services': profile.get('eco_services'),
     }
+
+    # Add flattened CSR numeric fields if present
+    csr = profile.get('csr') or {}
+    if isinstance(csr, dict):
+        c = csr.get('C')
+        s = csr.get('S')
+        r = csr.get('R')
+        if c is not None:
+            flattened['csr_C'] = c
+        if s is not None:
+            flattened['csr_S'] = s
+        if r is not None:
+            flattened['csr_R'] = r
+
+    # Add flattened eco service ratings for querying
+    es = profile.get('eco_services') or {}
+    if isinstance(es, dict):
+        def fkey(k):
+            return k.replace(' ', '_')
+        for key, obj in es.items():
+            if isinstance(obj, dict):
+                rating = obj.get('rating')
+                conf = obj.get('confidence')
+                if rating is not None:
+                    flattened[f'svc_{fkey(key)}_rating'] = rating
+                if conf is not None:
+                    flattened[f'svc_{fkey(key)}_confidence'] = conf
 
     # Add Stage 7 content if available (for legacy frontend)
     stage7 = profile.get('stage7')

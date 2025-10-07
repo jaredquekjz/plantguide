@@ -696,3 +696,52 @@ stage2_R_gam_full_quick:
 	@echo "[Stage 2] Running R-axis GAM full features (quick 2x5 CV test)..."
 	@R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 	  CV_REPEATS=2 CV_FOLDS=5 Rscript src/Stage_4_SEM_Analysis/run_aic_selection_R_full.R
+
+# ----------------------------------------------------------------------------
+# CSR from Stage 2 SEM-ready dataset (StrateFy; uses LA, LMA->SLA, LDMC)
+# ----------------------------------------------------------------------------
+
+.PHONY: csr-from-stage2
+
+csr-from-stage2:
+	@echo "[csr] Computing C,S,R from Stage 2 SEM-ready dataset ..."
+	@conda run -n AI python src/CSR/compute_csr_from_stage2.py \
+	  --input_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2.csv \
+	  --output_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv
+
+.PHONY: ecoservices-from-csr
+
+ecoservices-from-csr:
+	@echo "[ecoservices] Computing rule-based ecosystem service ratings from CSR ..."
+	@conda run -n AI python src/Stage_3_CSR/compute_rule_based_ecoservices.py \
+	  --input_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv \
+	  --output_csv artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv
+
+# ----------------------------------------------------------------------------
+# CSR (StrateFy) calculation — reproducible wrapper
+# ----------------------------------------------------------------------------
+
+.PHONY: csr
+
+# Usage: make csr FILE='data/traits.csv' OUT='results/csr_out.csv' \
+#                [SPECIES_COL='wfo_accepted_name'] [LA_COL='LA'] \
+#                [LDMC_COL='LDMC'] [SLA_COL='SLA'] \
+#                [LFW_COL='LFW'] [LDW_COL='LDW']
+# Notes:
+#  - Provide either (LDMC_COL and SLA_COL) OR (LFW_COL and LDW_COL)
+#  - Units must be: LA (mm^2), LDMC (%), SLA (mm^2 mg^-1), LFW/LDW (mg)
+csr:
+	@if [ -z "$(FILE)" ] || [ -z "$(OUT)" ]; then \
+	  echo "Usage: make csr FILE='input.csv' OUT='output.csv' [SPECIES_COL=...] [LA_COL=LA] [LDMC_COL=LDMC] [SLA_COL=SLA] [LFW_COL=LFW] [LDW_COL=LDW]"; exit 1; fi; \
+	SC="$(SPECIES_COL)"; LA="$(LA_COL)"; LDMC="$(LDMC_COL)"; SLA="$(SLA_COL)"; LFW="$(LFW_COL)"; LDW="$(LDW_COL)"; \
+	echo "[csr] Computing StrateFy CSR: $(FILE) -> $(OUT)"; \
+	set -x; \
+	conda run -n AI python src/Stage_3_CSR/calculate_stratefy_csr.py \
+	  --input_csv "$(FILE)" \
+	  --output_csv "$(OUT)" \
+	  $${SC:+--species_col "$$SC"} \
+	  $${LA:+--la_col "$$LA"} \
+	  $${LDMC:+--ldmc_col "$$LDMC"} \
+	  $${SLA:+--sla_col "$$SLA"} \
+	  $${LFW:+--lfw_col "$$LFW"} \
+	  $${LDW:+--ldw_col "$$LDW"}

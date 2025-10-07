@@ -31,6 +31,8 @@ GARDENING_TRAITS = REPO_ROOT / "data/encyclopedia_gardening_traits.csv"
 SOIL_SUMMARY = REPO_ROOT / "data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv"
 STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
+CSR_STAGE2 = REPO_ROOT / "artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv"
+SERVICES_STAGE2 = REPO_ROOT / "artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv"
 
 
 class EncyclopediaProfileGenerator:
@@ -79,6 +81,64 @@ class EncyclopediaProfileGenerator:
         else:
             logger.info("  Soil data not found; skipping\n")
             self.soil_data = None
+
+        # Load CSR (StrateFy) percentages if available
+        self.csr_lookup: Dict[str, Dict[str, float]] = {}
+        if CSR_STAGE2.exists():
+            logger.info("Loading CSR (StrateFy) from Stage 2 dataset...")
+            csr_df = pd.read_csv(CSR_STAGE2, usecols=["wfo_accepted_name", "C", "S", "R"])  # 654 rows expected
+            for _, r in csr_df.iterrows():
+                sp = str(r["wfo_accepted_name"]).strip()
+                if sp:
+                    try:
+                        self.csr_lookup[sp] = {
+                            "C": round(float(r["C"]), 2) if pd.notna(r["C"]) else None,
+                            "S": round(float(r["S"]), 2) if pd.notna(r["S"]) else None,
+                            "R": round(float(r["R"]), 2) if pd.notna(r["R"]) else None,
+                        }
+                    except Exception:
+                        continue
+            logger.info(f"  CSR available for {len(self.csr_lookup)}/{len(self.df)} species\n")
+        else:
+            logger.info("  CSR dataset not found; profiles will omit CSR block\n")
+
+        # Load rule-based ecosystem service ratings if available
+        self.services_lookup = {}
+        if SERVICES_STAGE2.exists():
+            logger.info("Loading ecosystem service ratings from CSR (rule-based)...")
+            svc_df = pd.read_csv(
+                SERVICES_STAGE2,
+                usecols=[
+                    "wfo_accepted_name",
+                    "npp_rating","npp_confidence",
+                    "decomposition_rating","decomposition_confidence",
+                    "nutrient_cycling_rating","nutrient_cycling_confidence",
+                    "nutrient_retention_rating","nutrient_retention_confidence",
+                    "nutrient_loss_rating","nutrient_loss_confidence",
+                    "carbon_biomass_rating","carbon_biomass_confidence",
+                    "carbon_recalcitrant_rating","carbon_recalcitrant_confidence",
+                    "carbon_total_rating","carbon_total_confidence",
+                    "erosion_protection_rating","erosion_protection_confidence",
+                ]
+            )
+            for _, r in svc_df.iterrows():
+                sp = str(r["wfo_accepted_name"]).strip()
+                if not sp:
+                    continue
+                self.services_lookup[sp] = {
+                    'npp': {'rating': r.get('npp_rating'), 'confidence': r.get('npp_confidence')},
+                    'decomposition': {'rating': r.get('decomposition_rating'), 'confidence': r.get('decomposition_confidence')},
+                    'nutrient_cycling': {'rating': r.get('nutrient_cycling_rating'), 'confidence': r.get('nutrient_cycling_confidence')},
+                    'nutrient_retention': {'rating': r.get('nutrient_retention_rating'), 'confidence': r.get('nutrient_retention_confidence')},
+                    'nutrient_loss': {'rating': r.get('nutrient_loss_rating'), 'confidence': r.get('nutrient_loss_confidence')},
+                    'carbon_biomass': {'rating': r.get('carbon_biomass_rating'), 'confidence': r.get('carbon_biomass_confidence')},
+                    'carbon_recalcitrant': {'rating': r.get('carbon_recalcitrant_rating'), 'confidence': r.get('carbon_recalcitrant_confidence')},
+                    'carbon_total': {'rating': r.get('carbon_total_rating'), 'confidence': r.get('carbon_total_confidence')},
+                    'erosion_protection': {'rating': r.get('erosion_protection_rating'), 'confidence': r.get('erosion_protection_confidence')},
+                }
+            logger.info(f"  Ecosystem service ratings available for {len(self.services_lookup)}/{len(self.df)} species\n")
+        else:
+            logger.info("  Ecosystem service ratings dataset not found; profiles will omit eco_services block\n")
 
     @staticmethod
     def _clean_scientific_value(value: Optional[str]) -> Optional[str]:
@@ -708,6 +768,16 @@ class EncyclopediaProfileGenerator:
         if synonyms:
             profile['synonyms'] = synonyms
 
+        # CSR block (if available)
+        csr_vals = self.csr_lookup.get(species_name)
+        if csr_vals:
+            profile['csr'] = csr_vals
+
+        # Ecosystem services block (rule-based ratings)
+        svc = self.services_lookup.get(species_name)
+        if svc:
+            profile['eco_services'] = svc
+
         # Merge Stage 7 content if available (for legacy frontend compatibility)
         stage7_content = self.extract_stage7_content(species_name)
         if stage7_content:
@@ -790,6 +860,7 @@ def main():
 
     parser = argparse.ArgumentParser(description="Generate encyclopedia JSON profiles")
     parser.add_argument('--species', help='Single species to generate (default: all)')
+    parser.add_argument('--species-list', nargs='*', help='Multiple species to generate (optional)')
     parser.add_argument('--skip-coords', action='store_true', help='Skip coordinate extraction for speed')
     parser.add_argument('--limit', type=int, help='Limit number of species (for testing)')
     args = parser.parse_args()
@@ -808,6 +879,14 @@ def main():
             json.dump(profile, f, indent=2, ensure_ascii=False)
         logger.info(f"  Saved to {output_path}")
 
+    elif args.species_list:
+        species_list = args.species_list
+        logger.info(f"Generating {len(species_list)} encyclopedia profiles (list)...")
+        if args.skip_coords:
+            logger.info("  (skipping coordinate extraction for speed)\n")
+        success = generator.generate_batch(species_list, skip_coordinates=args.skip_coords)
+        logger.info(f"\n✓ Generated {success}/{len(species_list)} profiles")
+        logger.info(f"  Output directory: {OUTPUT_DIR}")
     else:
         # Generate all species
         species_list = generator.df['wfo_accepted_name'].tolist()
