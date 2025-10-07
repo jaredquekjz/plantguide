@@ -1,0 +1,52 @@
+{
+  "summary": "Evidence shows Acer campestre tolerates full sun and prefers well-drained soil. It thrives in a pH range of 5.0-8.0 and tolerates a wide range of temperatures.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "semi-shade plant (>10% illumination, seldom full light) (EIVE 5.05)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that Acer campestre can grow in full sun to partial shade. Expert assigned (or predicted) EIVE value shows that semi-shade plant (>10% illumination, seldom full light). Therefore the reliability is Medium because there are mixed signals regarding light requirements.",
+      "evidence": [
+        "full sun",
+        "Can grow in full sun to partial shade"
+      ]
+    },
+    {
+      "axis": "M",
+      "expectation": "fresh/mesic soils of average dampness (EIVE 4.22)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that Acer campestre prefers well-drained soil and moderate water needs. Expert assigned (or predicted) EIVE value shows that fresh/mesic soils of average dampness. Therefore the reliability is Medium because the evidence suggests a preference for well-drained soil, which is slightly drier than average dampness.",
+      "evidence": [
+        "moderate water needs",
+        "well-drained"
+      ]
+    },
+    {
+      "axis": "R",
+      "expectation": "weakly acidic to weakly basic; absent from very acid (EIVE 6.8)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that Acer campestre thrives in pH range 5.0-8.0. Expert assigned (or predicted) EIVE value shows that weakly acidic to weakly basic; absent from very acid. Therefore the reliability is High because the pH range aligns with the EIVE expectation.",
+      "evidence": [
+        "5.0",
+        "8.0"
+      ]
+    },
+    {
+      "axis": "N",
+      "expectation": "moderately rich soils (EIVE 5.79)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that no explicit nutrient tokens were found, suggesting intermediate/average nutrient needs. Expert assigned (or predicted) EIVE value shows that moderately rich soils. Therefore the reliability is Medium because there is no strong evidence to confirm or deny the expectation.",
+      "evidence": []
+    },
+    {
+      "axis": "T",
+      "expectation": "submontane / colline; mild montane (EIVE 4.98)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that Acer campestre has a hardiness zone range of 4-9. Expert assigned (or predicted) EIVE value shows that submontane / colline; mild montane. Therefore the reliability is High because hardiness zone 4 falls into the mid T category.",
+      "evidence": [
+        "4",
+        "9"
+      ]
+    }
+  ]
+}

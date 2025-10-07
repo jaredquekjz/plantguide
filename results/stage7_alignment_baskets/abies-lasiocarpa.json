@@ -1,0 +1,55 @@
+{
+  "summary": "Evidence shows mixed light requirements, consistently moist soil preference, acidic pH range, poor nutrient needs, and cool temperate climate suitability. Expert EIVE values align with these findings, but some contradictions exist.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "half-light plant (mostly well lit but tolerates shade) (EIVE 6.96)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that plant tolerates full sun, part shade, and full shade, but grows slower in dense shade. Expert assigned (or predicted) EIVE value shows that half-light plant (mostly well lit but tolerates shade). Therefore the reliability is Medium because the evidence presents mixed light requirements.",
+      "evidence": [
+        "Full Sun",
+        "Very shade tolerant, especially when young, but growth is slower in dense shade."
+      ]
+    },
+    {
+      "axis": "M",
+      "expectation": "fresh/mesic soils of average dampness (EIVE 4.17)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that plant prefers moist but well-drained soils, tolerating some dry conditions. Expert assigned (or predicted) EIVE value shows that fresh/mesic soils of average dampness. Therefore the reliability is Medium because the evidence indicates a preference for consistently moist soil, but also some drought tolerance.",
+      "evidence": [
+        "Requires average to medium moisture",
+        "established trees are considered drought tolerant."
+      ]
+    },
+    {
+      "axis": "R",
+      "expectation": "slightly acidic; between acid and moderately acid (EIVE 3.78)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that plant prefers acidic soils with a pH range of 4.0-6.5. Expert assigned (or predicted) EIVE value shows that slightly acidic; between acid and moderately acid. Therefore the reliability is High because the evidence strongly supports an acidic soil preference.",
+      "evidence": [
+        "pH_min: 4.0",
+        "pH_max: 6.5"
+      ]
+    },
+    {
+      "axis": "N",
+      "expectation": "intermediate fertility (EIVE 5.05)",
+      "basket": "Low",
+      "reason": "Summary of information found online shows that plant thrives in poor and nutritionally poor soils. Expert assigned (or predicted) EIVE value shows that intermediate fertility. Therefore the reliability is Low because the evidence indicates a preference for poor, low-nutrient soils.",
+      "evidence": [
+        "poor",
+        "nutritionally poor"
+      ]
+    },
+    {
+      "axis": "T",
+      "expectation": "rather cool montane climates (EIVE 3.24)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that plant thrives in cool temperate climates, with hardiness zones ranging from 4-8. Expert assigned (or predicted) EIVE value shows that rather cool montane climates. Therefore the reliability is High because the evidence confirms a preference for cool and cold climates.",
+      "evidence": [
+        "zone_min: 4",
+        "zone_max: 8"
+      ]
+    }
+  ]
+}

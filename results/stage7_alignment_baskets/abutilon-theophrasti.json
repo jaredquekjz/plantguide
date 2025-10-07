@@ -1,0 +1,55 @@
+{
+  "summary": "Evidence generally supports light and temperature expectations, but shows mixed signals for moisture and richness, and a broad pH range. Expert EIVE values align with these findings, leading to varying reliability assessments.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "light-loving plant (rarely <40% illumination) (EIVE 7.71)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that the plant prefers full sun. Expert assigned (or predicted) EIVE value shows that light-loving plant (rarely <40% illumination). Therefore the reliability is High because the evidence strongly supports the expectation.",
+      "evidence": [
+        "full sun",
+        "Prefers full sunlight or partial shade."
+      ]
+    },
+    {
+      "axis": "M",
+      "expectation": "moderately dry; also in dry sites with humidity (EIVE 3.92)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant prefers consistent hydration but is also drought tolerant. Expert assigned (or predicted) EIVE value shows that moderately dry; also in dry sites with humidity. Therefore the reliability is Medium because there are mixed signals regarding moisture preferences.",
+      "evidence": [
+        "Prefers consistent hydration; soil should remain evenly moist but not waterlogged, allowing to partially dry between waterings.",
+        "drought tolerant"
+      ]
+    },
+    {
+      "axis": "R",
+      "expectation": "weakly acidic to weakly basic; absent from very acid (EIVE 6.45)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant grows in a pH range of 4.9-8.2. Expert assigned (or predicted) EIVE value shows that weakly acidic to weakly basic; absent from very acid. Therefore the reliability is Medium because the pH range is broad, including mildly acidic and alkaline conditions.",
+      "evidence": [
+        "pH min 4.9",
+        "pH max 8.2"
+      ]
+    },
+    {
+      "axis": "N",
+      "expectation": "moderately rich soils (EIVE 6.21)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant prefers fertile soil and is a nitrogen accumulator. Expert assigned (or predicted) EIVE value shows that moderately rich soils. Therefore the reliability is Medium because the evidence suggests a preference for fertile, nitrogen-rich soils, which is slightly stronger than moderately rich.",
+      "evidence": [
+        "fertile",
+        "Nitrogen dynamic accumulator"
+      ]
+    },
+    {
+      "axis": "T",
+      "expectation": "warm-submediterranean to mediterranean core (EIVE 6.25)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that the plant has an optimal temperature range of 14-35°C and prefers warm temperate areas. Expert assigned (or predicted) EIVE value shows that warm-submediterranean to mediterranean core. Therefore the reliability is High because the evidence strongly supports the expectation.",
+      "evidence": [
+        "optimal temperature min 14",
+        "optimal temperature max 35"
+      ]
+    }
+  ]
+}

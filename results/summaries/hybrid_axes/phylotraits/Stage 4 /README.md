@@ -123,3 +123,48 @@ For bulk refreshes, adjust `--limit`, `--parallel-plants`, and enable `--evaluat
   python src/Stage_7_Validation/run_stage7_alignment.py --species "Abies alba"
   ```
   Generates an LLM alignment verdict comparing the Stage 7 profile with the EIVE-based expectations.
+
+### Stage 7 – Gemini Reliability Pipeline (Current)
+
+The 2025 refresh moves the alignment step to a lighter Gemini Flash workflow that outputs three reliability buckets (High / Medium / Low) per axis and keeps the qualitative evidence machine-readable.
+
+1. **Normalize legacy profiles**  
+   Extracts numeric/categorical cues (sun hours, pH range, etc.) from the archived Gemini narratives.  
+   ```bash
+   cd /home/olier/ellenberg
+   export GOOGLE_APPLICATION_CREDENTIALS=/home/olier/olier-farm/backend/serviceAccountKey.json
+   python scripts/normalize_stage7_profiles.py --overwrite --model gemini-2.5-flash
+   ```
+   Results land in `data/stage7_normalized_profiles/*.json` so they can be reused across runs.
+
+2. **Align expectations with Gemini Flash**  
+   `scripts/align_stage7_baskets.py` reads the normalized evidence plus the Stage 7 label table and prompts `gemini-2.0-flash` to select a reliability basket for each axis.  
+   ```bash
+   python scripts/align_stage7_baskets.py --slugs abies-alba,acer-saccharum --model gemini-2.0-flash --overwrite
+   ```
+   Outputs are written to `results/stage7_alignment_baskets/{slug}.json` (`summary` + per-axis `basket`, `reason`, `evidence`).
+
+3. **Merge into encyclopedia profiles**  
+   ```bash
+   python scripts/merge_baskets_into_profiles.py --slugs abies-alba,acer-saccharum
+   ```
+   Adds `reliability_basket.{axis}` into `data/encyclopedia_profiles/` so the frontend can render the High/Medium/Low chips alongside EIVE values.
+
+4. **Stage 2 fallbacks for missing axes**  
+   Some trial species lacked canonical R/N predictions; we park Stage 2 GAM/pwSEM predictions (and basket guesses) in `src/data/stage2Predictions.json`.  
+   Utilities in `src/utils/eiveFallback.ts` (`mergeStage2Fallback`, `mergeStage2Labels`, `mergeStage2Baskets`) ensure the frontend surfaces numeric values, qualitative labels, and reliability chips whenever the canonical profile omits an axis.
+
+**Key prompts & configuration**  
+- Prompt instructions live in `src/Stage_7_Validation/prompt_alignment_baskets.md`.  
+- Model configuration uses `GOOGLE_GENAI_USE_VERTEXAI=True` and the same service account the olier-farm backend uses (`serviceAccountKey.json`).
+
+**Where these feeds are consumed**  
+- `results/stage7_alignment_baskets/` — human-readable Gemini verdicts.  
+- `results/stage7_alignment_baskets_summary.csv` — tabular slug/axis/basket/reason export for quick analysis.  
+- `data/encyclopedia_profiles/*.json` — final profiles with merged baskets.  
+- Frontend components (`EIVEDisplay`, `SoilConditionsDisplay`) combine canonical EIVE, Stage 2 fallbacks, and the basket labels to display High/Medium/Low reliability chips.
+
+- `results/stage7_alignment_baskets/` — human-readable Gemini verdicts.  
+- `data/encyclopedia_profiles/*.json` — final profiles with merged baskets.  
+- Frontend components (`EIVEDisplay`, `SoilConditionsDisplay`) combine canonical EIVE, Stage 2 fallbacks, and the basket labels to display High/Medium/Low reliability chips.
+

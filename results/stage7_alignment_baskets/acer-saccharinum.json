@@ -1,0 +1,52 @@
+{
+  "summary": "Evidence shows full sun tolerance, moist to wet soil preference, a wide pH range, intermediate fertility, and hardiness zones 3-9. These factors are considered in relation to the expert's EIVE expectations.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "semi-shade plant (>10% illumination, seldom full light) (EIVE 5.31)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant tolerates full sun but also partial shade. Expert assigned (or predicted) EIVE value shows that semi-shade plant (>10% illumination, seldom full light). Therefore the reliability is Medium because the evidence presents mixed signals.",
+      "evidence": [
+        "full sun",
+        "partial shade"
+      ]
+    },
+    {
+      "axis": "M",
+      "expectation": "fresh/mesic soils of average dampness (EIVE 4.49)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant prefers moist, well-drained to wet alluvial soils and can tolerate seasonal flooding. Expert assigned (or predicted) EIVE value shows that fresh/mesic soils of average dampness. Therefore the reliability is Medium because the evidence indicates a preference for wetter conditions than average dampness.",
+      "evidence": [
+        "prefers moist, well-drained to wet alluvial soils and can tolerate seasonal flooding.",
+        "Requires moist to wet soil conditions, thriving in abundant moisture, tolerates occasional or extended flooding/waterlogging, and needs regular, deep watering weekly during dry periods."
+      ]
+    },
+    {
+      "axis": "R",
+      "expectation": "moderately acidic soils; occasional neutral/basic (EIVE 5.17)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that the plant tolerates a pH range from 2.2 to 8.0. Expert assigned (or predicted) EIVE value shows that moderately acidic soils; occasional neutral/basic. Therefore the reliability is High because the evidence aligns with the expectation.",
+      "evidence": [
+        "2.2",
+        "8.0"
+      ]
+    },
+    {
+      "axis": "N",
+      "expectation": "intermediate fertility (EIVE 4.97)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that no explicit nutrient tokens were found, defaulting to intermediate/average. Expert assigned (or predicted) EIVE value shows that intermediate fertility. Therefore the reliability is High because the evidence supports the expectation.",
+      "evidence": []
+    },
+    {
+      "axis": "T",
+      "expectation": "submontane / colline; mild montane (EIVE 4.96)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant has a hardiness zone minimum of 3. Expert assigned (or predicted) EIVE value shows that submontane / colline; mild montane. Therefore the reliability is Medium because the hardiness zone minimum is slightly lower than expected.",
+      "evidence": [
+        "3",
+        "9"
+      ]
+    }
+  ]
+}

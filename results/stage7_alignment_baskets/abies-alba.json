@@ -1,0 +1,57 @@
+{
+  "summary": "Evidence suggests full sun, consistently moist conditions, slightly acidic to neutral soil, rich soil, and cool temperatures. Expert EIVE values show shade, moist, moderately acidic, intermediate fertility, and moderately cool temperatures.",
+  "axes": [
+    {
+      "axis": "L",
+      "expectation": "shade plant (mostly <5% relative illumination) (EIVE 3.04)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant tolerates 7 hours of sun but is \"Very shade tolerant, especially as a seedling.\". Expert assigned (or predicted) EIVE value shows that shade plant (mostly <5% relative illumination). Therefore the reliability is Medium because the plant tolerates both shade and sun.",
+      "evidence": [
+        "7.0",
+        "Very shade tolerant, especially as a seedling."
+      ]
+    },
+    {
+      "axis": "M",
+      "expectation": "moist; upper range of fresh soils (EIVE 5.18)",
+      "basket": "Medium",
+      "reason": "Summary of information found online shows that the plant requires consistently moist soil with precipitation between 700-1800mm. Expert assigned (or predicted) EIVE value shows that moist; upper range of fresh soils. Therefore the reliability is Medium because the evidence supports moist conditions but also specifies 'not waterlogged'.",
+      "evidence": [
+        "Requires consistently moist, well-drained, deep soil that is not waterlogged.",
+        "700",
+        "1800"
+      ]
+    },
+    {
+      "axis": "R",
+      "expectation": "moderately acidic soils; occasional neutral/basic (EIVE 5.31)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that the plant grows in pH range 5.0-7.4. Expert assigned (or predicted) EIVE value shows that moderately acidic soils; occasional neutral/basic. Therefore the reliability is High because the pH range aligns with the expectation.",
+      "evidence": [
+        "5.0",
+        "7.4"
+      ]
+    },
+    {
+      "axis": "N",
+      "expectation": "intermediate fertility (EIVE 4.9)",
+      "basket": "Low",
+      "reason": "Summary of information found online shows that the plant prefers rich soil. Expert assigned (or predicted) EIVE value shows that intermediate fertility. Therefore the reliability is Low because the evidence indicates a preference for rich soil, contradicting intermediate fertility.",
+      "evidence": [
+        "Prefers rich, well-draining soil high in organic matter."
+      ]
+    },
+    {
+      "axis": "T",
+      "expectation": "moderately cool to moderately warm (montane-submontane) (EIVE 3.68)",
+      "basket": "High",
+      "reason": "Summary of information found online shows that the plant grows in hardiness zones 3-7 and Köppen zones Cfb/Dfb. Expert assigned (or predicted) EIVE value shows that moderately cool to moderately warm (montane-submontane). Therefore the reliability is High because the hardiness and Köppen zones align with the expectation.",
+      "evidence": [
+        "3",
+        "7",
+        "Cfb",
+        "Dfb"
+      ]
+    }
+  ]
+}
