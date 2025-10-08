@@ -33,6 +33,9 @@ STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 CSR_STAGE2 = REPO_ROOT / "artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv"
 SERVICES_STAGE2 = REPO_ROOT / "artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv"
+STAGE7_GARDENING = REPO_ROOT / "results/stage7_gardening_advice"
+GROUNDING_SOURCES_DIR = REPO_ROOT / "data/stage8_grounding_sources"
+STAGE7_ALIGNMENT_SUMMARY = REPO_ROOT / "results/stage7_alignment_baskets_summary.csv"
 
 
 class EncyclopediaProfileGenerator:
@@ -139,6 +142,116 @@ class EncyclopediaProfileGenerator:
             logger.info(f"  Ecosystem service ratings available for {len(self.services_lookup)}/{len(self.df)} species\n")
         else:
             logger.info("  Ecosystem service ratings dataset not found; profiles will omit eco_services block\n")
+
+        # Load Stage 7 gardening advice outputs if present
+        self.gardening_advice_by_slug: Dict[str, Dict] = {}
+        if STAGE7_GARDENING.exists():
+            logger.info("Loading Stage 7 gardening advice JSON...")
+            loaded = 0
+            for path in sorted(STAGE7_GARDENING.glob("*.json")):
+                try:
+                    with open(path, "r", encoding="utf-8") as handle:
+                        payload = json.load(handle)
+                except Exception as exc:
+                    logger.warning(f"  Could not parse gardening advice {path.name}: {exc}")
+                    continue
+
+                slug = str(payload.get("slug") or path.stem).strip()
+                if not slug:
+                    continue
+
+                advice = {
+                    key.removesuffix("_advice"): value
+                    for key, value in payload.items()
+                    if key.endswith("_advice") and isinstance(value, dict)
+                }
+                if advice:
+                    self.gardening_advice_by_slug[slug] = advice
+                    loaded += 1
+            logger.info(f"  Gardening advice available for {loaded} species\n")
+        else:
+            logger.info("  Stage 7 gardening advice directory not found; skipping\n")
+
+
+        # Load compact grounding-source lookup generated from legacy profiles
+        self.grounding_sources_by_slug: Dict[str, Dict[str, List[Dict[str, str]]]] = {}
+        if GROUNDING_SOURCES_DIR.exists():
+            logger.info("Loading grounding sources (legacy Stage 3 provenance)...")
+            loaded = 0
+            for path in sorted(GROUNDING_SOURCES_DIR.glob("*.json")):
+                try:
+                    with open(path, "r", encoding="utf-8") as handle:
+                        payload = json.load(handle)
+                except Exception as exc:
+                    logger.warning("  Could not parse grounding file %s: %s", path.name, exc)
+                    continue
+
+                slug = str(payload.get("plant_slug") or path.stem).strip()
+                if not slug:
+                    continue
+
+                sources = {
+                    key: value
+                    for key, value in payload.items()
+                    if key.startswith("grounding_sources_") and isinstance(value, list)
+                }
+                if sources:
+                    self.grounding_sources_by_slug[slug] = sources
+                    loaded += 1
+            logger.info(f"  Grounding sources available for {loaded} species\n")
+        else:
+            logger.info("  Grounding sources directory not found; skipping\n")
+
+        # Load Stage 7 reliability basket summaries (per-axis explanations)
+        self.reliability_basket_by_slug: Dict[str, Dict[str, str]] = {}
+        self.reliability_reason_by_slug: Dict[str, Dict[str, str]] = {}
+        self.reliability_evidence_by_slug: Dict[str, Dict[str, str]] = {}
+        self.reliability_summary_by_slug: Dict[str, Dict[str, str]] = {}
+
+        if STAGE7_ALIGNMENT_SUMMARY.exists():
+            logger.info("Loading Stage 7 reliability basket summaries...")
+            try:
+                alignment_df = pd.read_csv(STAGE7_ALIGNMENT_SUMMARY)
+            except Exception as exc:
+                logger.warning("  Could not read %s: %s", STAGE7_ALIGNMENT_SUMMARY.name, exc)
+            else:
+                valid_axes = {"L", "M", "R", "N", "T"}
+                for _, row in alignment_df.iterrows():
+                    slug_raw = row.get("slug")
+                    axis_raw = row.get("axis")
+
+                    if pd.isna(slug_raw) or pd.isna(axis_raw):
+                        continue
+
+                    slug = str(slug_raw).strip().lower()
+                    axis = str(axis_raw).strip().upper()
+
+                    if not slug or axis not in valid_axes:
+                        continue
+
+                    def clean(value):
+                        if pd.isna(value):
+                            return None
+                        text = str(value).strip()
+                        return text if text else None
+
+                    basket = clean(row.get("basket"))
+                    reason = clean(row.get("reason"))
+                    evidence = clean(row.get("evidence"))
+                    summary = clean(row.get("summary"))
+
+                    if basket:
+                        self.reliability_basket_by_slug.setdefault(slug, {})[axis] = basket
+                    if reason:
+                        self.reliability_reason_by_slug.setdefault(slug, {})[axis] = reason
+                    if evidence:
+                        self.reliability_evidence_by_slug.setdefault(slug, {})[axis] = evidence
+                    if summary:
+                        self.reliability_summary_by_slug.setdefault(slug, {})[axis] = summary
+
+                logger.info("  Reliability summaries available for %d species\n", len(self.reliability_basket_by_slug))
+        else:
+            logger.info("  Stage 7 alignment summary not found; reliability explanations will use fallbacks\n")
 
     @staticmethod
     def _clean_scientific_value(value: Optional[str]) -> Optional[str]:
@@ -730,6 +843,13 @@ class EncyclopediaProfileGenerator:
             logger.warning(f"  Could not load Stage 7 profile for {species_name}: {e}")
             return None
 
+    def extract_gardening_advice(self, slug: str) -> Optional[Dict]:
+        """Return Stage 7 gardening advice for a species slug if available."""
+        advice = self.gardening_advice_by_slug.get(slug)
+        if advice:
+            return advice
+        return None
+
     def generate_profile(self, species_name: str) -> Dict:
         """Generate encyclopedia profile for a single species."""
         row = self.df[self.df['wfo_accepted_name'] == species_name]
@@ -768,6 +888,24 @@ class EncyclopediaProfileGenerator:
         if synonyms:
             profile['synonyms'] = synonyms
 
+        slug_key = profile['slug'].lower()
+
+        basket_map = self.reliability_basket_by_slug.get(slug_key)
+        if basket_map:
+            profile['reliability_basket'] = dict(basket_map)
+
+        reason_map = self.reliability_reason_by_slug.get(slug_key)
+        if reason_map:
+            profile['reliability_reason'] = dict(reason_map)
+
+        evidence_map = self.reliability_evidence_by_slug.get(slug_key)
+        if evidence_map:
+            profile['reliability_evidence'] = dict(evidence_map)
+
+        summary_map = self.reliability_summary_by_slug.get(slug_key)
+        if summary_map:
+            profile['stage7_reliability_summary'] = dict(summary_map)
+
         # CSR block (if available)
         csr_vals = self.csr_lookup.get(species_name)
         if csr_vals:
@@ -782,6 +920,16 @@ class EncyclopediaProfileGenerator:
         stage7_content = self.extract_stage7_content(species_name)
         if stage7_content:
             profile['stage7'] = stage7_content
+
+        # Attach Stage 7 gardening advice (Gemini prompts)
+        gardening_advice = self.extract_gardening_advice(profile['slug'])
+        if gardening_advice:
+            profile['stage7_gardening_advice'] = gardening_advice
+
+        # Attach grounding sources (legacy Stage 3 provenance)
+        sources = self.grounding_sources_by_slug.get(profile['slug'])
+        if sources:
+            profile.update(sources)
 
         return profile
 
