@@ -1,0 +1,336 @@
+{
+  "species": "Achillea millefolium",
+  "slug": "achillea-millefolium",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Achillea millefolium is a sun-loving friend that's pretty tough and not too thirsty!",
+    "data_summary": [
+      {
+        "insight": "Wow, look at this! The data gives us a Light value of 7.2, which means Achillea millefolium is a 'half-light plant'. The reliability here is a 'match', so we can really trust this info!",
+        "implication": "This tells me it's happiest with lots of light but is flexible enough to handle a little bit of shade. It's not too fussy, which is great news for us gardeners!",
+        "data_points": [
+          "L value=7.2 (half-light plant)",
+          "Reliability: match"
+        ]
+      },
+      {
+        "insight": "For moisture, we have a value of 4.46, described as 'moderately dry'. This also has a 'match' for reliability, so it's a super solid clue about what it likes!",
+        "implication": "This means it doesn't need to be watered constantly. It's used to conditions that aren't super wet, similar to its natural home where it gets about 762.0 mm of rain per year.",
+        "data_points": [
+          "M value=4.46 (moderately dry)",
+          "Reliability: match",
+          "Annual precipitation: 762.0 mm"
+        ]
+      },
+      {
+        "insight": "Okay, for temperature, the data suggests it likes 'rather cool montane climates' (T value of 3.85). The reliability is 'partial', so this is a good hint, but maybe not the whole story.",
+        "implication": "This suggests it probably prefers places that aren't scorching hot all the time. But check this out: it's seen an annual temperature range of 24.16°C where it grows, which means it's a tough cookie and can handle both cool and warm weather!",
+        "data_points": [
+          "T value=3.85 (rather cool montane climates)",
+          "Reliability: partial",
+          "Annual temperature range: 24.16°C"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Find a spot that gets plenty of sunshine, ideally for most of the day.",
+        "why": "It's a 'half-light plant' with a Light value of 7.2, which means it really thrives in bright conditions. Let's give it the sun it loves!",
+        "data_points": [
+          "L value=7.2 (mostly well lit but tolerates shade)"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Water it when the top inch or two of soil feels dry, but don't keep it constantly soaked.",
+        "why": "Its Moisture value of 4.46 tells us it prefers 'moderately dry' conditions. Letting it dry out a bit between waterings mimics its natural preference and keeps it happy.",
+        "data_points": [
+          "M value=4.46 (moderately dry)"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Plant it in soil that drains well. If you have heavy clay, mixing in some compost or sand can really help!",
+        "why": "Since it likes 'moderately dry' conditions, it won't be happy with 'wet feet'. Good drainage is key to prevent the roots from sitting in water.",
+        "data_points": [
+          "M value=4.46 (moderately dry)"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "If you live in a very hot climate, giving it some shade during the hottest part of the afternoon is a kind thing to do.",
+        "why": "The data points to it preferring 'rather cool montane climates' (T value 3.85), so a little break from intense afternoon sun will help it feel more at home.",
+        "data_points": [
+          "T value=3.85 (rather cool montane climates)"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Avoid planting it in a spot that's in deep shade all day long.",
+        "why": "Even though it 'tolerates shade', its Light value of 7.2 shows it really needs good light to be its best self. It won't flower well or be very happy in the dark.",
+        "data_points": [
+          "L value=7.2 (mostly well lit but tolerates shade)"
+        ]
+      },
+      {
+        "tip": "Do not let it sit in a puddle or in constantly waterlogged soil.",
+        "why": "It's a 'moderately dry' plant (M value 4.46), so soggy conditions are a big no-no and could lead to root rot. Yikes! Let's keep those roots healthy.",
+        "data_points": [
+          "M value=4.46 (moderately dry)"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "For a happy Achillea millefolium, think sunny, well-drained soil that's not too rich!",
+    "data_summary": [
+      {
+        "insight": "This plant absolutely loves soil that's slightly acidic to neutral. The data shows it's most at home where the topsoil pH is around 5.9, which is just perfect!",
+        "implication": "You don't need to worry about making your soil super sweet or sour. If your garden soil is in the typical range, your Achillea will likely feel right at home. It's not a fussy plant when it comes to pH!",
+        "data_points": [
+          "R value=5.17 (slightly acidic to neutral)",
+          "Topsoil pH mean 5.91"
+        ]
+      },
+      {
+        "insight": "The soil where this plant thrives has a wonderful, loamy texture! It's got a great balance of sand and clay, making it light and airy, especially at the surface.",
+        "implication": "This structure means the soil drains well, preventing soggy roots, but still holds enough moisture. The low 'Bulk density' of '1.12 g/cm³' in the topsoil means roots have plenty of room to breathe and grow strong.",
+        "data_points": [
+          "Topsoil sand content mean 41.6%",
+          "Topsoil clay content mean 22.3%",
+          "Topsoil bulk density mean 1.12 g/cm³"
+        ]
+      },
+      {
+        "insight": "Achillea millefolium seems to prefer soil with average, not excessive, fertility. While our data on its exact nutrient preference is a little incomplete, the soil it grows in has a good amount of organic matter and nutrients right at the top, but it's not super rich.",
+        "implication": "This is great news for low-maintenance gardeners! It means you don't need to constantly feed it. It's adapted to get what it needs from the top layer of soil and doesn't demand a five-star meal.",
+        "data_points": [
+          "N value=5.87 (intermediate fertility)",
+          "Reliability for N: insufficient",
+          "Topsoil nutrient capacity mean 27.07 cmol(+)/kg"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Aim for a soil pH that's slightly acidic, somewhere between 5.5 and 6.5. You can test your soil to be sure!",
+        "why": "This matches the conditions where Achillea millefolium is happiest, with an average topsoil pH of '5.91' and an Ellenberg 'R value' of '5.17'.",
+        "data_points": [
+          "Topsoil pH mean 5.91",
+          "R value=5.17"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Go easy on the fertilizer! A light top-dressing of compost in the spring is more than enough to provide the nutrients it needs.",
+        "why": "This plant prefers 'intermediate fertility' and can get floppy if the soil is too rich. The soil data shows it thrives with a moderate 'Topsoil nitrogen' level of '5.13 g/kg', not extremely high levels.",
+        "data_points": [
+          "N value=5.87 (intermediate fertility)",
+          "Topsoil nitrogen mean 5.13 g/kg"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "If you have heavy clay soil, mix in some compost or coarse sand before planting to improve drainage and lightness.",
+        "why": "This mimics its preferred soil structure, which has a healthy dose of sand ('topsoil mean 41.6%') and a low density, ensuring roots don't get waterlogged or compacted.",
+        "data_points": [
+          "Topsoil sand content mean 41.6%",
+          "Topsoil bulk density mean 1.12 g/cm³"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Plant it in a spot that drains well, like a gentle slope, a raised bed, or just an area of your garden that doesn't stay soggy after rain.",
+        "why": "Its natural habitat has soil that isn't tightly packed, allowing water to move through. The 'Bulk density' increases to '1.32 g/cm³' in the subsoil, so good surface drainage is key to prevent water from pooling.",
+        "data_points": [
+          "Subsoil bulk density mean 1.316 g/cm³"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not over-fertilize with rich composts or high-nitrogen feeds.",
+        "why": "This plant is adapted to 'intermediate fertility' ('N value=5.87'). Making the soil too rich can cause weak, leggy stems that flop over, and you'll get fewer flowers.",
+        "data_points": [
+          "N value=5.87 (intermediate fertility)"
+        ]
+      },
+      {
+        "tip": "Do not plant in a waterlogged or heavily compacted spot. Avoid walking on the soil around the plant, especially when it's wet.",
+        "why": "It thrives in light, airy topsoil ('Bulk density 1.12 g/cm³'). Compaction crushes those air pockets, stressing the roots and leading to poor growth.",
+        "data_points": [
+          "Topsoil bulk density mean 1.12 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Hooray! Your Achillea millefolium is a superstar for helpful garden friends!",
+    "data_summary": [
+      {
+        "insight": "Wow, your Achillea millefolium is incredibly popular! The data shows over ten thousand recorded visits from more than a thousand different kinds of pollinators.",
+        "implication": "This means it's a fantastic plant for supporting local wildlife! Its top visitors are mostly flies, which are super important but often overlooked pollinators in the garden.",
+        "data_points": [
+          "pollination records: 10284",
+          "pollination partners: 1080",
+          "Sphaerophoria scripta (414)",
+          "Syritta pipiens (243)"
+        ]
+      },
+      {
+        "insight": "It looks like a few different animals enjoy nibbling on your plant, especially some birds.",
+        "implication": "This is a wonderful sign that your plant is part of the local food web! The main herbivore recorded is the Greater Sage-Grouse, so unless you have a lot of them, the nibbling is likely just a little bit of sharing.",
+        "data_points": [
+          "Centrocercus urophasianus (144)",
+          "Meleagris gallopavo (6)"
+        ]
+      },
+      {
+        "insight": "There is one main disease to watch for, a rust fungus called Puccinia cnici-oleracei.",
+        "implication": "This means we should keep an eye out for rusty-colored spots on the leaves, especially in damp weather. The data also lists some bees as 'pathogen' partners, which is unusual; they are more likely just visitors, but it's a good reminder that insects can sometimes move diseases between plants.",
+        "data_points": [
+          "Puccinia cnici-oleracei (345)",
+          "Halictus (108)",
+          "Hymenoptera (76)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pollination",
+        "tip": "Let's plant more flowers with small, open blooms like dill, parsley, or alyssum nearby!",
+        "why": "Your Achillea millefolium is a favorite for important fly pollinators like Sphaerophoria scripta and Syritta pipiens. Giving them more of the flower shapes they love will keep them happy and visiting your garden all season long!",
+        "data_points": [
+          "Sphaerophoria scripta (414)",
+          "Syritta pipiens (243)"
+        ]
+      },
+      {
+        "category": "pathogen",
+        "tip": "I'd suggest checking the leaves of your plant every week or two for any orange or brownish powdery spots.",
+        "why": "The data shows a specific rust fungus, Puccinia cnici-oleracei, can be a problem. If we catch it early, we can just remove the affected leaves to stop it from spreading and keep your plant healthy and strong!",
+        "data_points": [
+          "Puccinia cnici-oleracei (345)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Let's make sure your plant gets plenty of sun and has good air circulation around it.",
+        "why": "The data tells us this plant thrives in light and moderately dry conditions. Keeping it in a spot it loves makes it stronger and helps it naturally resist diseases like that rust fungus we saw.",
+        "data_points": [
+          "L: half-light plant (mostly well lit but tolerates shade)",
+          "M: moderately dry; also in dry sites with humidity"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please don't use broad-spectrum pesticides anywhere near your Achillea millefolium.",
+        "why": "This plant is a hero to over a thousand different types of pollinators! General pesticides could accidentally harm these wonderful friends and disrupt the amazing little ecosystem your plant is supporting.",
+        "data_points": [
+          "pollination partners: 1080"
+        ]
+      },
+      {
+        "tip": "Try not to over-fertilize your plant, especially with high-nitrogen food.",
+        "why": "The data suggests it prefers 'intermediate fertility'. Even though the data for this is a little sparse, too much fertilizer can cause weak growth that's more inviting to pests and diseases.",
+        "data_points": [
+          "N: intermediate fertility",
+          "Reliability: insufficient"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "Achillea millefolium: Your Garden's Cheerful, Tough-as-Nails Team Player!",
+    "data_summary": [
+      {
+        "insight": "This plant is a natural stress-tolerator! Its 'CSR strategy'—a way to describe a plant's personality—shows it's much better at handling tough conditions than it is at aggressively competing with others.",
+        "implication": "This means it's perfect for those less-than-perfect spots in your garden! It won't bully its neighbors and will thrive in places where more demanding plants might give up. It's a resilient friend.",
+        "data_points": [
+          "CSR mix: C=30.91%, S=45.26%, R=23.83%"
+        ]
+      },
+      {
+        "insight": "Achillea millefolium loves sunny, drier spots and isn't fussy about soil. The 'Ellenberg indicators' are like a plant's preference list, and these scores show it enjoys plenty of light and doesn't need constantly moist ground.",
+        "implication": "You can confidently plant it in full sun and well-drained soil without worrying about watering it all the time. It's a low-maintenance sun-worshipper! The data for its nutrient preference is a little less certain, but it generally points to average soil being just fine.",
+        "data_points": [
+          "EIVE Light (L): 7.2, 'half-light plant (mostly well lit but tolerates shade)'",
+          "EIVE Moisture (M): 4.46, 'moderately dry'",
+          "EIVE Nutrients (N): 5.87, 'intermediate fertility' (Reliability: 'insufficient')"
+        ]
+      },
+      {
+        "insight": "It's a fantastic, all-around contributor to your garden's health. I love seeing all those 'Moderate' ratings for ecosystem services! It's like a reliable team member who helps with a little bit of everything.",
+        "implication": "While it's not a superstar in any single category, it consistently helps with nutrient cycling, decomposition, and even erosion protection. It's the kind of plant that makes the whole garden ecosystem stronger just by being there.",
+        "data_points": [
+          "Nutrient Cycling: 'Moderate'",
+          "Decomposition: 'Moderate'",
+          "Erosion Protection: 'Moderate'"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Use it as a pioneer in sunny, dry, or newly established garden beds.",
+        "why": "Its high Stress-Tolerator score (S=45.26%) and preference for sun (L=7.2) and drier soils (M=4.46) make it perfect for thriving in challenging conditions where other plants might fail.",
+        "data_points": [
+          "CSR S-score: 45.26%",
+          "EIVE L: 7.2",
+          "EIVE M: 4.46"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Plant it to build healthy soil without adding lots of fertilizer.",
+        "why": "With 'Moderate' ratings for nutrient cycling and decomposition, it actively helps break down organic matter and make nutrients available in the soil. It's a self-sufficient worker for average-fertility soils.",
+        "data_points": [
+          "Nutrient Cycling: 'Moderate'",
+          "Decomposition: 'Moderate'",
+          "EIVE N: 5.87"
+        ]
+      },
+      {
+        "category": "disturbance",
+        "tip": "Place it in areas that might get occasionally mown or walked on, like a meadow lawn or path edge.",
+        "why": "Its Ruderal (R=23.83%) and Stress-Tolerant (S=45.26%) traits give it the ability to bounce back beautifully from being cut back or trampled. It's tougher than it looks!",
+        "data_points": [
+          "CSR R-score: 23.83%",
+          "CSR S-score: 45.26%"
+        ]
+      },
+      {
+        "category": "planting-role",
+        "tip": "Pair it with other sun-loving perennials like grasses or coneflowers in a prairie-style planting.",
+        "why": "Its relatively low Competitor score (C=30.91%) means it coexists peacefully with neighbors, creating a beautiful, resilient, and low-maintenance plant community.",
+        "data_points": [
+          "CSR C-score: 30.91%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in deep, consistent shade or in waterlogged, boggy soil.",
+        "why": "It's a sun-lover (L=7.2) that prefers drier conditions (M=4.46). It will become weak, leggy, and unhappy in soggy, dark spots.",
+        "data_points": [
+          "EIVE L: 7.2, 'half-light plant (mostly well lit but tolerates shade)'",
+          "EIVE M: 4.46, 'moderately dry'"
+        ]
+      },
+      {
+        "tip": "Don't rely on it as your primary plant for storing large amounts of carbon.",
+        "why": "Its 'Low' rating for carbon stored in biomass means it's not a large, woody plant. Let it focus on its other amazing strengths, like supporting soil health and pollinators!",
+        "data_points": [
+          "Carbon Biomass: 'Low'"
+        ]
+      }
+    ]
+  }
+}

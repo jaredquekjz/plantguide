@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Acer rubrum",
+    "common_name": null,
+    "slug": "acer-rubrum",
+    "eive": {
+      "values": {
+        "L": 4.82,
+        "M": 4.66,
+        "R": 5.31,
+        "N": 5.41,
+        "T": 4.63
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "moderately acidic soils; occasional neutral/basic",
+        "N": "intermediate fertility",
+        "T": "submontane / colline; mild montane"
+      },
+      "predicted": {
+        "L": 9.47180086025439,
+        "M": 4.676174322780495,
+        "N": 5.657162873099397,
+        "R": 5.49006793686679,
+        "T": 5.7963408476579135
+      }
+    },
+    "interactions": {
+      "pollination": {
+        "records": 31,
+        "partners": 13,
+        "top_partners": [
+          "Colletes inaequalis (9)",
+          "Andrena fenningeri (4)",
+          "Nymphalis antiopa (3)",
+          "Dryocopus pileatus (3)",
+          "Andrena tridens (2)"
+        ]
+      },
+      "herbivory": {
+        "records": 159,
+        "partners": 48,
+        "top_partners": [
+          "Tetranychidae (22)",
+          "Antheraea polyphemus (21)",
+          "Acericecis ocellaris (12)",
+          "Castor canadensis (10)",
+          "Bonasa (9)"
+        ]
+      },
+      "pathogen": {
+        "records": 6955,
+        "partners": 1062,
+        "top_partners": [
+          "Rhytisma acerinum (405)",
+          "Phyllosticta minima (240)",
+          "Takamatsuella circinata (194)",
+          "Acericecis ocellaris (182)",
+          "Taphrina dearnessii (166)"
+        ]
+      }
+    },
+    "notes": null
+  },
+  "raw_text": null
+}

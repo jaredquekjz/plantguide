@@ -1,0 +1,373 @@
+{
+  "species": "Acer campestre",
+  "slug": "acer-campestre",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Let's help your Acer campestre feel right at home with the perfect light, water, and temperature!",
+    "data_summary": [
+      {
+        "insight": "Wow, the temperature data for your Acer campestre is super reliable! This means we can be really confident about its comfort zone.",
+        "implication": "This is great news! It means your plant is quite adaptable and tough when it comes to different temperatures, making it a wonderful choice for many gardens.",
+        "data_points": [
+          "T value=4.98 (submontane / colline; mild montane)",
+          "Reliability: High",
+          "hardiness zone range of 4-9"
+        ]
+      },
+      {
+        "insight": "When it comes to light, the data is a little mixed. An expert value suggests it's a \"semi-shade plant,\" but the reliability is \"Low\" because other sources say it can also handle full sun.",
+        "implication": "This tells me your plant is flexible! You have some options for where to plant it, but we should probably aim for a happy medium to be safe.",
+        "data_points": [
+          "L value=5.05 (semi-shade plant (>10% illumination, seldom full light))",
+          "Reliability: Low",
+          "mixed signals regarding light requirements"
+        ]
+      },
+      {
+        "insight": "For moisture, the data points towards soil with \"average dampness.\" The reliability is \"Medium\" because some info suggests it prefers \"well-drained soil,\" which can be a tad drier.",
+        "implication": "This means the key is balance! Your Acer campestre will love consistently moist soil, but it's important that it doesn't get waterlogged.",
+        "data_points": [
+          "M value=4.22 (fresh/mesic soils of average dampness)",
+          "Reliability: Medium",
+          "prefers well-drained soil"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Let's find a spot with morning sun and some afternoon shade.",
+        "why": "Since the light data has \"Low\" reliability, giving it a mix of sun and shade is a perfect compromise. It respects the expert value of \"seldom full light\" (L=5.05) while acknowledging it can take some sun.",
+        "data_points": [
+          "L value=5.05 (...seldom full light)",
+          "Reliability: Low"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Keep the soil consistently moist, but make sure it's in a spot with good drainage.",
+        "why": "This hits the sweet spot! It satisfies the need for \"fresh/mesic soils of average dampness\" (M=4.22) while also respecting the note that it prefers \"well-drained soil.\"",
+        "data_points": [
+          "M value=4.22 (fresh/mesic soils of average dampness)",
+          "Reliability: Medium",
+          "prefers well-drained soil"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Give it a good drink during dry spells to help mimic the 823.0 mm of annual rain it's used to.",
+        "why": "This plant comes from places with pretty consistent rainfall, so it will be much happier if you help it through any droughts.",
+        "data_points": [
+          "annual_mm: 823.0"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "You can feel confident planting this tree, as it's very adaptable to temperature changes!",
+        "why": "The temperature reliability is \"High\"! It's happy in a wide range of climates, from hardiness zones 4-9, and is used to an annual temperature swing of about 17.11°C.",
+        "data_points": [
+          "Reliability: High",
+          "hardiness zone range of 4-9",
+          "annual_range_C: 17.11"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in deep, constant shade.",
+        "why": "Even though it likes some shade, the expert value L=5.05 specifically says it needs \">10% illumination.\" It needs some light to thrive!",
+        "data_points": [
+          "L value=5.05 (semi-shade plant (>10% illumination...))"
+        ]
+      },
+      {
+        "tip": "Do not let the soil get waterlogged or allow the tree to sit in standing water.",
+        "why": "The reliability notes specifically mention a preference for \"well-drained soil.\" Soggy roots are a definite no-go for this friend, even though it likes average moisture (M=4.22).",
+        "data_points": [
+          "prefers well-drained soil",
+          "Reliability: Medium"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's create the perfect soil home for your Acer campestre to thrive!",
+    "data_summary": [
+      {
+        "insight": "Your soil's pH is practically perfect for this tree! Experts say it likes conditions that are 'weakly acidic to weakly basic' (an R value of 6.8), and your soil tests show a lovely range from a 'surface pH mean' of 5.95 to about 6.275 deeper down.",
+        "implication": "This is fantastic news! It means you won't have to fight your soil to make your tree happy. It's already in the ideal zone, so your main job is just to keep it that way.",
+        "data_points": [
+          "R value=6.8 (weakly acidic to weakly basic)",
+          "Reliability for R: High",
+          "pH surface_0_5cm mean: 5.95",
+          "pH subsoil_100_200cm mean: 6.275"
+        ]
+      },
+      {
+        "insight": "The top layer of your soil is wonderfully rich and full of life! It has great levels of 'Organic matter' (42.8 g/kg) and 'Total nitrogen' (4.76 g/kg). This aligns with the idea that your tree enjoys 'moderately rich soils', though we should note the confidence on that specific fertility rating is low.",
+        "implication": "This means your soil has a great natural pantry of food right where the tree's feeder roots are. Your goal will be to keep this top layer well-stocked with goodies.",
+        "data_points": [
+          "N value=5.79 (moderately rich soils)",
+          "Reliability for N: Low",
+          "Organic matter topsoil mean: 42.80833333333334 g/kg",
+          "Nitrogen topsoil mean: 4.7625 g/kg"
+        ]
+      },
+      {
+        "insight": "Your soil has a nice, loamy texture, but it gets pretty dense and compacted deeper down. The topsoil is relatively light with a 'bulk density' of 1.2375 g/cm³, but this jumps to a much heavier 1.50375 g/cm³ in the subsoil.",
+        "implication": "While the topsoil is great for root growth, the dense subsoil could make it tough for roots to spread out and might slow down water drainage. We'll want to give the roots a helping hand!",
+        "data_points": [
+          "Clay content topsoil mean: 25.416666666666668 %",
+          "Sand content topsoil mean: 23.316666666666666 %",
+          "Bulk density topsoil mean: 1.2375 g/cm³",
+          "Bulk density subsoil mean: 1.5037500000000001 g/cm³"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "amendments",
+        "tip": "Top-dress with a 1-2 inch layer of compost or well-rotted manure each spring.",
+        "why": "This will maintain the excellent 'Organic matter' levels (currently 42.8 g/kg) in the topsoil, providing a slow-release source of nutrients that your tree will love.",
+        "data_points": [
+          "Organic matter topsoil mean: 42.80833333333334 g/kg",
+          "N value=5.79 (moderately rich soils)"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When you plant, dig a hole that is two to three times wider than the root ball and gently loosen the soil on the sides of the hole.",
+        "why": "This helps the roots push through the dense subsoil (which has a 'bulk density' of 1.50375 g/cm³) and establish themselves more easily, rather than getting stuck in the planting hole.",
+        "data_points": [
+          "Bulk density subsoil mean: 1.5037500000000001 g/cm³"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Water deeply but infrequently, allowing the top few inches of soil to dry out between waterings.",
+        "why": "Your soil's 'Clay content' of around 25-28% helps it hold water well, but the dense subsoil can trap moisture. This watering method encourages deep roots and prevents waterlogging.",
+        "data_points": [
+          "Clay content topsoil mean: 25.416666666666668 %",
+          "Bulk density subsoil mean: 1.5037500000000001 g/cm³"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Apply a 2-3 inch layer of organic mulch, like wood chips, around the tree's base, keeping it a few inches away from the trunk.",
+        "why": "Mulch is amazing! It will help protect the soil structure, keep the soil from compacting, conserve moisture, and break down over time to replenish that lovely topsoil organic matter.",
+        "data_points": [
+          "Organic matter topsoil mean: 42.80833333333334 g/kg",
+          "Bulk density topsoil mean: 1.2375 g/cm³"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not add lime or other soil acidifiers without getting a new soil test first.",
+        "why": "Your soil's pH is already in the perfect range for *Acer campestre* (around 5.95 to 6.275). Trying to 'fix' it could stress the plant unnecessarily.",
+        "data_points": [
+          "R value=6.8",
+          "pH mean: 5.95 - 6.275 across layers"
+        ]
+      },
+      {
+        "tip": "Do not use heavy, fast-acting synthetic fertilizers.",
+        "why": "This tree prefers 'moderately rich soils', and your topsoil is already well-supplied with nitrogen (4.76 g/kg). A big, artificial boost of nutrients is not needed and could be harmful.",
+        "data_points": [
+          "N value=5.79 (moderately rich soils)",
+          "Nitrogen topsoil mean: 4.7625 g/kg"
+        ]
+      },
+      {
+        "tip": "Avoid walking or placing heavy objects on the ground around the tree, especially when the soil is wet.",
+        "why": "The subsoil is already quite compacted, with a 'bulk density' of 1.50375 g/cm³. Adding more weight will squeeze out air pockets, making it even harder for roots to breathe and grow.",
+        "data_points": [
+          "Bulk density subsoil mean: 1.5037500000000001 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Your Field Maple is a superstar for pollinators, but let's keep an eye out for some pesky fungi!",
+    "data_summary": [
+      {
+        "insight": "Wow, your Acer campestre is a party for pollinators! With 80 different types of visitors recorded, it's especially popular with helpful hoverflies and busy mining bees.",
+        "implication": "This means your tree is a fantastic food source for the good guys in your garden, helping to pollinate other plants too!",
+        "data_points": [
+          "Epistrophe eligans (3)",
+          "Eupeodes luniger (3)",
+          "Andrena nigroaenea (3)"
+        ]
+      },
+      {
+        "insight": "The data shows this tree is very well-known to a lot of pathogens, which are tiny organisms like fungi that can cause diseases. There are tons of records for them!",
+        "implication": "This tells us we should be prepared to see common leaf issues like powdery mildew and tar spot. Knowing this helps us manage it before it becomes a problem!",
+        "data_points": [
+          "Sawadaea bicornis (188)",
+          "Rhytisma acerinum (72)"
+        ]
+      },
+      {
+        "insight": "A whole bunch of little critters like to munch on the leaves, a process called herbivory. The top ones are tiny mites and insects that are often specific to maples.",
+        "implication": "While a little nibbling is normal in a healthy ecosystem, it's good to know who to look for so we can make sure they don't get out of hand.",
+        "data_points": [
+          "Aceria myriadeum (11)",
+          "Aceria macrochela (7)",
+          "Stigmella aceris (7)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pollination",
+        "tip": "Let's plant a mix of early spring and summer flowers nearby, like crocuses, wildflowers, or lavender.",
+        "why": "This will provide a continuous buffet for the wonderful bees and hoverflies like `Andrena dorsata` and `Epistrophe eligans` that visit your maple, keeping them happy in your garden all season long!",
+        "data_points": [
+          "Andrena dorsata (3)",
+          "Epistrophe eligans (3)"
+        ]
+      },
+      {
+        "category": "pathogen",
+        "tip": "Make sure to rake up and dispose of fallen leaves in the autumn rather than leaving them on the ground.",
+        "why": "This is a super easy way to reduce the chances of fungal diseases like Tar Spot (`Rhytisma acerinum`) and powdery mildew (`Sawadaea bicornis`) from coming back next year, as they can survive the winter on old leaves.",
+        "data_points": [
+          "Rhytisma acerinum (72)",
+          "Sawadaea bicornis (188)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "When you plant, give your tree plenty of space for air to move around it and avoid crowding it with other large plants.",
+        "why": "Good air circulation helps leaves dry faster, which makes it much harder for fungal pathogens like `Sawadaea bicornis` to take hold. A happy, healthy tree is always better at fending off problems!",
+        "data_points": [
+          "Sawadaea bicornis (188)",
+          "Phyllactinia guttata (42)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "I'd get in the habit of checking the undersides of leaves once a week during the growing season.",
+        "why": "This helps you spot any early signs of the mites and leafhoppers that like this tree, such as `Aceria myriadeum` or `Acericerus vittifrons`, before their populations get too big.",
+        "data_points": [
+          "Aceria myriadeum (11)",
+          "Acericerus vittifrons (7)"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please don't use general-purpose insect sprays on or around your maple.",
+        "why": "These can harm the amazing variety of pollinators, like `Andrena nitida` and `Eupeodes luniger`, that your tree works so hard to support. We need to protect our friends!",
+        "data_points": [
+          "Andrena nitida (3)",
+          "Eupeodes luniger (3)"
+        ]
+      },
+      {
+        "tip": "Try to avoid watering the leaves directly with a sprinkler, especially in the evening.",
+        "why": "Wet leaves are the perfect place for fungal diseases to grow. The records show this tree is very susceptible to fungi like `Marssonina truncatula` (leaf spot), so watering the soil at the base of the tree is a much better idea.",
+        "data_points": [
+          "Marssonina truncatula (58)",
+          "Sawadaea bicornis (188)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "The tough, adaptable friend for hedges and wildlife gardens.",
+    "data_summary": [
+      {
+        "insight": "Acer campestre is a wonderfully balanced tree! Its personality is mostly a 'Stress-Tolerator' with a good dose of 'Competitor'.",
+        "implication": "This means it's a tough, resilient plant that can handle less-than-perfect conditions (like pruning or urban spots) while still growing steadily. It's not a fragile flower, but it's also not an aggressive spreader.",
+        "data_points": [
+          "CSR mix: S=51.66%, C=37.02%, R=11.32%"
+        ]
+      },
+      {
+        "insight": "This tree is a quiet hero for the climate! It gets a 'High' rating for total carbon storage, especially the long-lasting kind.",
+        "implication": "While it might not grow super fast, it's fantastic at locking away carbon in its wood and the soil for the long term. It's a great choice for making a lasting positive impact on your local environment.",
+        "data_points": [
+          "carbon_total: High",
+          "carbon_recalcitrant: High",
+          "carbon_biomass: Low"
+        ]
+      },
+      {
+        "insight": "It has clear preferences for its home: it loves average moisture, moderately rich soil, and isn't fussy about pH. It's also quite flexible on light.",
+        "implication": "This makes it easy to place! As long as you avoid extremes like waterlogged ground or deep shade, it will be happy. Its adaptability to different soil pH levels is a huge bonus for gardeners.",
+        "data_points": [
+          "EIVE L=5.05 (semi-shade plant)",
+          "EIVE M=4.22 (fresh/mesic soils)",
+          "EIVE R=6.8 (weakly acidic to weakly basic)",
+          "EIVE N=5.79 (moderately rich soils)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Use it as a fantastic hedging plant or a small-to-medium specimen tree.",
+        "why": "Its strong 'Stress-Tolerator' side (S=51.66%) means it handles pruning beautifully, which is perfect for a hedge. As a standalone tree, its moderate size and steady growth make it a manageable and reliable feature.",
+        "data_points": [
+          "CSR mix: S=51.66%"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Plant it to create a stable, healthy soil environment.",
+        "why": "It has 'Moderate' ratings across the board for decomposition, nutrient cycling, and retention. This shows it's a team player, contributing steadily to the web of life in your garden soil without causing imbalances.",
+        "data_points": [
+          "decomposition: Moderate",
+          "nutrient_cycling: Moderate",
+          "nutrient_retention: Moderate"
+        ]
+      },
+      {
+        "category": "planting-role",
+        "tip": "Place it on a woodland edge or in a mixed border with partial sun.",
+        "why": "The Ellenberg value for light (L=5.05) points to a preference for semi-shade. It will thrive in spots that get good morning sun or dappled light, making it a perfect bridge between sunny spots and shadier areas.",
+        "data_points": [
+          "EIVE L=5.05 (semi-shade plant)"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Feel confident planting this in a garden with a wide range of soil acidity.",
+        "why": "The data shows it's happy in everything from weakly acidic to weakly basic soils (EIVE R=6.8), and this finding has 'High' reliability. It's one less thing to worry about when preparing your soil!",
+        "data_points": [
+          "EIVE R=6.8 (weakly acidic to weakly basic)",
+          "Reliability for R: High"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in very wet, boggy soil or extremely dry, sandy spots.",
+        "why": "It prefers 'fresh/mesic soils of average dampness' (EIVE M=4.22). It's a Stress-Tolerator, but it can't handle the extreme stress of waterlogged roots or severe drought.",
+        "data_points": [
+          "EIVE M=4.22 (fresh/mesic soils)"
+        ]
+      },
+      {
+        "tip": "Don't expect it to be a super-fast grower for quick privacy or shade.",
+        "why": "Its ecosystem service rating for 'Net Primary Production' is 'Moderate' and 'carbon_biomass' is 'Low'. It's a steady, marathon runner, not a sprinter. Choose it for its long-term strength, not for immediate, rapid growth.",
+        "data_points": [
+          "npp: Moderate",
+          "carbon_biomass: Low"
+        ]
+      },
+      {
+        "tip": "Don't rely on it as your primary solution for a serious erosion problem.",
+        "why": "Its rating for 'erosion_protection' is only 'Moderate', and the confidence in that rating is also 'Moderate'. It will certainly help, but for a steep, unstable slope, you'll want to pair it with plants known for their powerful, soil-binding roots.",
+        "data_points": [
+          "erosion_protection: Moderate",
+          "Confidence: Moderate"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "payload": {
+    "species": "Acer campestre",
+    "common_name": null,
+    "slug": "acer-campestre",
+    "csr": {
+      "C": 37.02,
+      "S": 51.66,
+      "R": 11.32
+    },
+    "eco_services": {
+      "npp": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "decomposition": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_cycling": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_retention": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_loss": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "carbon_biomass": {
+        "rating": "Low",
+        "confidence": "High"
+      },
+      "carbon_recalcitrant": {
+        "rating": "High",
+        "confidence": "High"
+      },
+      "carbon_total": {
+        "rating": "High",
+        "confidence": "High"
+      },
+      "erosion_protection": {
+        "rating": "High",
+        "confidence": "Moderate"
+      }
+    },
+    "eive": {
+      "values": {
+        "L": 5.05,
+        "M": 4.22,
+        "R": 6.8,
+        "N": 5.79,
+        "T": 4.98
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "weakly acidic to weakly basic; absent from very acid",
+        "N": "moderately rich soils",
+        "T": "submontane / colline; mild montane"
+      },
+      "predicted": {
+        "L": 10.0,
+        "M": 4.585370788422885,
+        "N": 5.693270745118862,
+        "R": 6.360476380199899,
+        "T": 4.83572118865559
+      }
+    }
+  },
+  "raw_text": null
+}

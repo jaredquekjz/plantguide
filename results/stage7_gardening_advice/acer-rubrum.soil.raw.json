@@ -1,0 +1,179 @@
+{
+  "payload": {
+    "species": "Acer rubrum",
+    "common_name": null,
+    "slug": "acer-rubrum",
+    "eive": {
+      "values": {
+        "R": 5.31,
+        "N": 5.41
+      },
+      "labels": {
+        "R": "moderately acidic soils; occasional neutral/basic",
+        "N": "intermediate fertility"
+      },
+      "predicted": {
+        "R": 5.49006793686679,
+        "N": 5.657162873099397
+      }
+    },
+    "reliability": {
+      "R": {
+        "verdict": "match",
+        "score": 1.0,
+        "label": "High",
+        "confidence": 1.0
+      },
+      "N": {
+        "verdict": "insufficient",
+        "score": 0.0,
+        "label": "Unknown",
+        "confidence": 0.0
+      }
+    },
+    "soil": {
+      "pH": {
+        "surface_0_5cm": {
+          "mean": 5.39166666666667,
+          "p10": 4.83,
+          "median": 5.3,
+          "p90": 5.97,
+          "sd": 0.41878250665326
+        },
+        "shallow_5_15cm": {
+          "mean": 5.43333333333333,
+          "p10": 4.92,
+          "median": 5.4,
+          "p90": 6.06,
+          "sd": 0.405268336096498
+        },
+        "medium_15_30cm": {
+          "mean": 5.40833333333333,
+          "p10": 5.0,
+          "median": 5.4,
+          "p90": 5.88,
+          "sd": 0.401040313850532
+        },
+        "deep_30_60cm": {
+          "mean": 5.38333333333333,
+          "p10": 5.01,
+          "median": 5.45,
+          "p90": 5.7,
+          "sd": 0.337997668989631
+        },
+        "very_deep_60_100cm": {
+          "mean": 5.39166666666667,
+          "p10": 5.01,
+          "median": 5.5,
+          "p90": 5.7,
+          "sd": 0.320392751402892
+        },
+        "subsoil_100_200cm": {
+          "mean": 5.56666666666667,
+          "p10": 5.01,
+          "median": 5.6,
+          "p90": 6.0,
+          "sd": 0.424977717775957
+        }
+      },
+      "metrics": [
+        {
+          "key": "organic_matter",
+          "label": "Organic matter",
+          "units": "g/kg",
+          "description": "Stored plant material that keeps soil springy and full of life.",
+          "topsoil": {
+            "mean": 20.50833333333331
+          },
+          "subsoil": {
+            "mean": 3.5375
+          },
+          "deep": {
+            "mean": 2.0
+          }
+        },
+        {
+          "key": "clay_content",
+          "label": "Fine particles (clay)",
+          "units": "%",
+          "description": "Clay helps soils hold onto water and nutrients.",
+          "topsoil": {
+            "mean": 24.40833333333333
+          },
+          "subsoil": {
+            "mean": 34.0625
+          },
+          "deep": {
+            "mean": 34.1833333333333
+          }
+        },
+        {
+          "key": "sand_content",
+          "label": "Coarse particles (sand)",
+          "units": "%",
+          "description": "Sand keeps soils light and free-draining.",
+          "topsoil": {
+            "mean": 27.36388888888887
+          },
+          "subsoil": {
+            "mean": 22.76666666666665
+          },
+          "deep": {
+            "mean": 24.4
+          }
+        },
+        {
+          "key": "nutrient_capacity",
+          "label": "Nutrient capacity",
+          "units": "cmol(+)/kg",
+          "description": "Higher values mean the soil can store more nutrients for roots.",
+          "topsoil": {
+            "mean": 15.163888888888868
+          },
+          "subsoil": {
+            "mean": 15.412500000000001
+          },
+          "deep": {
+            "mean": 15.6916666666667
+          }
+        },
+        {
+          "key": "nitrogen",
+          "label": "Total nitrogen",
+          "units": "g/kg",
+          "description": "Plant-available nitrogen that drives leafy growth.",
+          "topsoil": {
+            "mean": 2.5875
+          },
+          "subsoil": {
+            "mean": 0.526666666666667
+          },
+          "deep": {
+            "mean": 0.465
+          }
+        },
+        {
+          "key": "bulk_density",
+          "label": "Soil density",
+          "units": "g/cm³",
+          "description": "How tightly packed the soil is—a guide to compaction and aeration.",
+          "topsoil": {
+            "mean": 1.4902777777777765
+          },
+          "subsoil": {
+            "mean": 1.65583333333333
+          },
+          "deep": {
+            "mean": 1.6825
+          }
+        }
+      ],
+      "data_quality": {
+        "n_occurrences": 14,
+        "n_unique_coords": 14,
+        "has_sufficient_data": true
+      }
+    }
+  },
+  "raw_text": null
+}

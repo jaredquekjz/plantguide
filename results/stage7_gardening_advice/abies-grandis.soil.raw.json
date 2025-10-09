@@ -1,0 +1,179 @@
+{
+  "payload": {
+    "species": "Abies grandis",
+    "common_name": null,
+    "slug": "abies-grandis",
+    "eive": {
+      "values": {
+        "R": 3.78,
+        "N": 4.99
+      },
+      "labels": {
+        "R": "slightly acidic; between acid and moderately acid",
+        "N": "intermediate fertility"
+      },
+      "predicted": {
+        "R": null,
+        "N": null
+      }
+    },
+    "reliability": {
+      "R": {
+        "verdict": "partial",
+        "score": null,
+        "label": null,
+        "confidence": 0.9
+      },
+      "N": {
+        "verdict": "insufficient",
+        "score": null,
+        "label": null,
+        "confidence": 1.0
+      }
+    },
+    "soil": {
+      "pH": {
+        "surface_0_5cm": {
+          "mean": 6.3,
+          "p10": 6.0,
+          "median": 6.3,
+          "p90": 6.6,
+          "sd": 0.346410161513775
+        },
+        "shallow_5_15cm": {
+          "mean": 6.4,
+          "p10": 6.1,
+          "median": 6.4,
+          "p90": 6.7,
+          "sd": 0.346410161513776
+        },
+        "medium_15_30cm": {
+          "mean": 6.4,
+          "p10": 6.1,
+          "median": 6.4,
+          "p90": 6.7,
+          "sd": 0.346410161513776
+        },
+        "deep_30_60cm": {
+          "mean": 6.5,
+          "p10": 6.1,
+          "median": 6.5,
+          "p90": 6.9,
+          "sd": 0.461880215351701
+        },
+        "very_deep_60_100cm": {
+          "mean": 6.55,
+          "p10": 6.1,
+          "median": 6.55,
+          "p90": 7.0,
+          "sd": 0.519615242270664
+        },
+        "subsoil_100_200cm": {
+          "mean": 6.75,
+          "p10": 6.3,
+          "median": 6.75,
+          "p90": 7.2,
+          "sd": 0.519615242270664
+        }
+      },
+      "metrics": [
+        {
+          "key": "organic_matter",
+          "label": "Organic matter",
+          "units": "g/kg",
+          "description": "Stored plant material that keeps soil springy and full of life.",
+          "topsoil": {
+            "mean": 42.28333333333334
+          },
+          "subsoil": {
+            "mean": 8.1625
+          },
+          "deep": {
+            "mean": 5.375
+          }
+        },
+        {
+          "key": "clay_content",
+          "label": "Fine particles (clay)",
+          "units": "%",
+          "description": "Clay helps soils hold onto water and nutrients.",
+          "topsoil": {
+            "mean": 15.908333333333333
+          },
+          "subsoil": {
+            "mean": 18.637500000000003
+          },
+          "deep": {
+            "mean": 20.9
+          }
+        },
+        {
+          "key": "sand_content",
+          "label": "Coarse particles (sand)",
+          "units": "%",
+          "description": "Sand keeps soils light and free-draining.",
+          "topsoil": {
+            "mean": 31.458333333333332
+          },
+          "subsoil": {
+            "mean": 32.3375
+          },
+          "deep": {
+            "mean": 36.275
+          }
+        },
+        {
+          "key": "nutrient_capacity",
+          "label": "Nutrient capacity",
+          "units": "cmol(+)/kg",
+          "description": "Higher values mean the soil can store more nutrients for roots.",
+          "topsoil": {
+            "mean": 24.59166666666667
+          },
+          "subsoil": {
+            "mean": 22.4
+          },
+          "deep": {
+            "mean": 24.375
+          }
+        },
+        {
+          "key": "nitrogen",
+          "label": "Total nitrogen",
+          "units": "g/kg",
+          "description": "Plant-available nitrogen that drives leafy growth.",
+          "topsoil": {
+            "mean": 3.8275
+          },
+          "subsoil": {
+            "mean": 0.83
+          },
+          "deep": {
+            "mean": 0.7025
+          }
+        },
+        {
+          "key": "bulk_density",
+          "label": "Soil density",
+          "units": "g/cm³",
+          "description": "How tightly packed the soil is—a guide to compaction and aeration.",
+          "topsoil": {
+            "mean": 1.1449999999999998
+          },
+          "subsoil": {
+            "mean": 1.40125
+          },
+          "deep": {
+            "mean": 1.4475
+          }
+        }
+      ],
+      "data_quality": {
+        "n_occurrences": 5,
+        "n_unique_coords": 5,
+        "has_sufficient_data": true
+      }
+    }
+  },
+  "raw_text": null
+}

@@ -1,0 +1,376 @@
+{
+  "species": "Abies lasiocarpa",
+  "slug": "abies-lasiocarpa",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "This cool-climate fir loves a bright spot and steady moisture!",
+    "data_summary": [
+      {
+        "insight": "This plant is a true mountain-dweller and loves the cold!",
+        "implication": "It's going to be happiest in cooler gardens and might struggle in very hot climates. The data is pretty clear on this, which is super helpful!",
+        "data_points": [
+          "T value = 3.24 (rather cool montane climates)",
+          "Annual Mean Temperature: 1.33°C",
+          "Reliability for Temperature: Medium"
+        ]
+      },
+      {
+        "insight": "It seems quite flexible when it comes to sunlight!",
+        "implication": "You have some options for where to plant it. It enjoys good light but can also handle some shade, though it might grow a bit slower there. The 'Medium' reliability on this tells us it's adaptable!",
+        "data_points": [
+          "L value = 6.96 (half-light plant)",
+          "Reliability for Light: Medium",
+          "Reason: 'grows slower in dense shade'"
+        ]
+      },
+      {
+        "insight": "This fir is used to getting a lot of water throughout the year.",
+        "implication": "It will count on you to keep its soil consistently moist, but not waterlogged. Think 'damp forest floor' vibes!",
+        "data_points": [
+          "M value = 4.17 (fresh/mesic soils of average dampness)",
+          "Annual Precipitation: 1325.0 mm",
+          "Reliability for Moisture: Medium"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "temperature",
+        "tip": "If your garden gets hot summers, plant it where it will get some afternoon shade.",
+        "why": "This will protect it from the intense heat it's not used to. The data shows it comes from places with a very low annual mean temperature of just 1.33°C!",
+        "data_points": [
+          "Annual Mean Temperature: 1.33°C",
+          "T value = 3.24 (rather cool montane climates)"
+        ]
+      },
+      {
+        "category": "light",
+        "tip": "Pick a spot with plenty of morning sun or dappled light throughout the day.",
+        "why": "This gives it the best of both worlds! Its L value of 6.96 means it's a 'half-light plant,' and giving it good light will help it grow strong and steady.",
+        "data_points": [
+          "L value = 6.96 (half-light plant)",
+          "Reason for Light Reliability: 'grows slower in dense shade'"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Check the soil regularly and water to keep it consistently moist, like a well-wrung sponge.",
+        "why": "This mimics the 'fresh/mesic soils' it loves (M value of 4.17) and the high rainfall (1325.0 mm annually) of its native habitat. A happy plant is a hydrated plant!",
+        "data_points": [
+          "M value = 4.17 (fresh/mesic soils of average dampness)",
+          "Annual Precipitation: 1325.0 mm"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Make sure your soil has good drainage by adding some compost or grit when you plant.",
+        "why": "Even though it loves moisture, it doesn't want to sit in a puddle! The reliability notes mention it prefers 'moist but well-drained soils' to keep its roots healthy.",
+        "data_points": [
+          "Reliability Reason for Moisture: 'prefers moist but well-drained soils'"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in a hot, dry, sun-baked location.",
+        "why": "This would be the opposite of its happy place! It's a cool-climate species (T value = 3.24) that needs moisture (M value = 4.17), so a hot spot would cause a lot of stress.",
+        "data_points": [
+          "T value = 3.24 (rather cool montane climates)",
+          "Annual Mean Temperature: 1.33°C"
+        ]
+      },
+      {
+        "tip": "Don't let the soil dry out completely for long stretches, especially in summer.",
+        "why": "It's used to a lot of rain (1325.0 mm annually)! While the 'Medium' reliability for moisture suggests it has some tolerance, its preference is for 'fresh/mesic soils,' so keeping it hydrated is key.",
+        "data_points": [
+          "M value = 4.17 (fresh/mesic soils of average dampness)",
+          "Annual Precipitation: 1325.0 mm"
+        ]
+      },
+      {
+        "tip": "Avoid planting it in deep, constant shade if you want to see it grow its best.",
+        "why": "The data is super helpful here, telling us it 'grows slower in dense shade.' Let's give it the light it needs to really flourish!",
+        "data_points": [
+          "Reliability Reason for Light: 'grows slower in dense shade'"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's create a cool, acidic, and well-drained home for your Abies lasiocarpa!",
+    "data_summary": [
+      {
+        "insight": "Hello there! The data shows your Abies lasiocarpa absolutely loves acidic soil. We have a super high-confidence rating for this, which is fantastic news!",
+        "implication": "This means the most important thing you can do is make sure your garden soil is on the acidic side (with a lower pH) and not neutral or alkaline. It's the secret to a happy tree!",
+        "data_points": [
+          "R value=3.78 (slightly acidic; between acid and moderately acid)",
+          "Reliability for R: High",
+          "Topsoil pH mean 5.93943661971831"
+        ]
+      },
+      {
+        "insight": "Now, for feeding, the information is a little mixed. One expert value suggests it likes \"intermediate fertility,\" but other evidence says it actually prefers poor soil. Because of this conflict, the reliability here is \"Low\".",
+        "implication": "This tells us we should be very careful with fertilizers! It's much safer to assume this tree is a light feeder and doesn't need a lot of rich food to thrive. Less is more in this case!",
+        "data_points": [
+          "N value=5.05 (intermediate fertility)",
+          "Reliability for N: Low",
+          "Reliability Reason: ...thrives in poor and nutritionally poor soils."
+        ]
+      },
+      {
+        "insight": "Your tree's typical home has lovely, fluffy topsoil that's full of organic matter, but the soil gets much denser and more compact deeper down.",
+        "implication": "This means we want to protect that wonderful topsoil and give the roots a helping hand to push through the tougher subsoil. Good structure is key for strong anchoring and finding water!",
+        "data_points": [
+          "Topsoil bulk density mean 1.1256874580818232 g/cm³",
+          "Subsoil bulk density mean 1.452092555331995 g/cm³",
+          "Organic matter topsoil mean 47.05928906773976 g/kg"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Before you plant, test your soil's pH. If it's above 6.5, you can gently lower it by mixing in some elemental sulfur, pine needles, or peat moss.",
+        "why": "We know with 'High' reliability that this tree needs acidic soil to be happy. Its ideal 'R value=3.78' points to a strong preference for these conditions.",
+        "data_points": [
+          "R value=3.78 (slightly acidic; between acid and moderately acid)",
+          "Reliability for R: High"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Each year, give your tree a treat by spreading a layer of acidic mulch, like pine bark or composted oak leaves, around its base.",
+        "why": "This mimics its natural forest floor home, helps keep the soil pH low, and maintains the wonderful high organic matter content ('mean 47.059... g/kg') found in its ideal topsoil.",
+        "data_points": [
+          "Organic matter topsoil mean 47.05928906773976 g/kg",
+          "Topsoil pH mean 5.93943661971831"
+        ]
+      },
+      {
+        "category": "fertility",
+        "tip": "Go easy on the fertilizer! If you feel you must feed it, use a slow-release formula for acid-loving plants just once in the early spring.",
+        "why": "Since the data on its nutrient needs is conflicting and has 'Low' reliability, it's best to err on the side of caution. The evidence suggests it's adapted to 'poor soils', so overfeeding could do more harm than good.",
+        "data_points": [
+          "Reliability for N: Low",
+          "Reliability Reason: ...thrives in poor and nutritionally poor soils."
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When planting, dig a wide, shallow hole and loosen the soil in the surrounding area. This gives the roots plenty of space to spread out before hitting the tougher subsoil.",
+        "why": "The soil gets much more compact deeper down, with bulk density jumping from a light '1.125... g/cm³' to a dense '1.452... g/cm³'. Giving the roots an easy start is a wonderful gift!",
+        "data_points": [
+          "Topsoil bulk density mean 1.1256874580818232 g/cm³",
+          "Subsoil bulk density mean 1.452092555331995 g/cm³"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Make sure your planting spot drains well. If you have heavy clay, mix in some coarse grit or sand to improve water flow.",
+        "why": "This tree's native soil is quite sandy, with a 'Topsoil sand content mean' of over 42%. It's used to having 'wet feet' drain quickly and won't like sitting in a puddle.",
+        "data_points": [
+          "Topsoil sand content mean 42.871830985915494%",
+          "Clay content topsoil mean 17.707042253521134%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not add lime, mushroom compost, or wood ash to the soil around your tree.",
+        "why": "These materials make the soil more alkaline, which is the opposite of what this acid-lover wants! We have 'High' reliability that it needs acidic conditions to thrive.",
+        "data_points": [
+          "R value=3.78 (slightly acidic; between acid and moderately acid)",
+          "Reliability for R: High"
+        ]
+      },
+      {
+        "tip": "Avoid walking or placing heavy items like wheelbarrows or large pots on the ground around the tree's root zone.",
+        "why": "The subsoil is already quite dense ('Subsoil bulk density mean 1.452... g/cm³'), and adding more weight will compact it further, making it hard for roots, water, and air to get through.",
+        "data_points": [
+          "Topsoil bulk density mean 1.1256874580818232 g/cm³",
+          "Subsoil bulk density mean 1.452092555331995 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Wow, what a cool tree! Let's help your Abies lasiocarpa thrive by keeping an eye on its specific pests and diseases!",
+    "data_summary": [
+      {
+        "insight": "It looks like your fir is a tasty snack for a few specific caterpillars! The data shows several moth species, especially budworms like Choristoneura fumiferana (39), really like to munch on it.",
+        "implication": "This means we should be on the lookout for tiny caterpillars on the new needles and buds, especially in the spring, to prevent them from causing too much damage.",
+        "data_points": [
+          "Choristoneura fumiferana (39)",
+          "Choristoneura occidentalis (3)",
+          "Choristoneura biennis (2)"
+        ]
+      },
+      {
+        "insight": "Oh my, this tree has a LOT of known fungal and rust diseases! We have so many records, with the top ones being things like Melampsorella elatina (218) and Pucciniastrum epilobii (118).",
+        "implication": "This tells us that keeping the tree from getting stressed is super important, as it can be prone to infections. Good air flow and the right soil conditions will be its best defense!",
+        "data_points": [
+          "pathogen: 3709 records",
+          "Melampsorella elatina (218)",
+          "Pucciniastrum epilobii (118)",
+          "Herpotrichia nigra (103)"
+        ]
+      },
+      {
+        "insight": "You might notice there are no pollinator records, but don't worry! That's totally normal for a conifer like this one.",
+        "implication": "It uses the wind to pollinate, so you don't need to plant flowers to attract bees for it. It handles that all on its own, which is pretty neat!",
+        "data_points": [
+          "pollination: 0 records"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "herbivory",
+        "tip": "Let's start a 'budworm patrol' in the spring! I'd check the tips of the branches weekly for small caterpillars or webbing.",
+        "why": "The records show that budworms like Choristoneura fumiferana (39) are the main herbivores, and catching them early is the best way to protect the new growth.",
+        "data_points": [
+          "Choristoneura fumiferana (39)"
+        ]
+      },
+      {
+        "category": "pathogen",
+        "tip": "To fight off all those fungi, let's make sure your tree has plenty of breathing room! Good air circulation helps keep the needles dry.",
+        "why": "Fungi like Herpotrichia nigra (103), also known as black felt blight, thrive in damp, still air. Pruning any crowded lower branches can make a huge difference!",
+        "data_points": [
+          "Herpotrichia nigra (103)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Let's invite some helpers to the garden! Creating a habitat for birds and predatory insects can provide natural pest control.",
+        "why": "Many birds love to eat the exact caterpillars, like Choristoneura fumiferana, that bother your fir. A simple bird bath or some native plants can bring them right to your yard!",
+        "data_points": [
+          "herbivory: 50 records",
+          "Choristoneura fumiferana (39)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Keep your tree happy by maintaining slightly acidic, well-drained soil that stays cool.",
+        "why": "The data shows it's happiest in 'rather cool montane climates' and 'slightly acidic' soil. A healthy, stress-free plant is naturally much better at resisting pests and diseases!",
+        "data_points": [
+          "R: slightly acidic; between acid and moderately acid",
+          "T: rather cool montane climates"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Try not to plant your fir near plants like fireweed or chickweed.",
+        "why": "Some of the top rust diseases, like Pucciniastrum epilobii (118), need a second, different plant to complete their life cycle. Keeping these 'alternate hosts' away can break the cycle and protect your tree!",
+        "data_points": [
+          "Pucciniastrum epilobii (118)",
+          "Melampsorella elatina (218)"
+        ]
+      },
+      {
+        "tip": "I would definitely avoid giving this tree a lot of fertilizer, especially high-nitrogen types.",
+        "why": "The data suggests it prefers less fertile soil, and forcing lots of new, soft growth can make it a bigger target for pests like Choristoneura fumiferana and more susceptible to disease.",
+        "data_points": [
+          "N: intermediate fertility",
+          "reliability_reason: ...the evidence indicates a preference for poor, low-nutrient soils."
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "A patient giant for cool climates, locking away carbon for the long haul!",
+    "data_summary": [
+      {
+        "insight": "This tree is the ultimate Stress-Tolerator! Its strategy is all about patience and endurance in tough spots, not rapid growth.",
+        "implication": "This means it's a super resilient, low-maintenance friend for your garden once established, but it will take its time to grow. It's a marathon runner, not a sprinter!",
+        "data_points": [
+          "CSR mix: S=99.13%, C=0.87%, R=0.0%"
+        ]
+      },
+      {
+        "insight": "It's a climate superhero! While it's not a fast grower, it's fantastic at capturing carbon and storing it securely for a very, very long time. It's also great at holding onto nutrients in the soil.",
+        "implication": "Planting this tree is a wonderful long-term investment in your local ecosystem and the planet. It creates a stable, resource-conserving environment.",
+        "data_points": [
+          "Carbon (recalcitrant): Very High",
+          "Carbon (total): High",
+          "Nutrient Retention: High",
+          "NPP (growth rate): Low"
+        ]
+      },
+      {
+        "insight": "This fir loves cool, somewhat bright, and acidic conditions. The data on its nutrient needs is a little mixed, but it generally points to a plant that isn't a heavy feeder.",
+        "implication": "To make it happy, you'll want to give it a spot that mimics a cool mountainside with acidic soil. Don't worry about feeding it too much; it's adapted to leaner conditions.",
+        "data_points": [
+          "T (Temperature): 3.24 (rather cool montane climates)",
+          "R (Reaction/pH): 3.78 (slightly acidic)",
+          "L (Light): 6.96 (half-light plant)",
+          "N (Nutrients): 5.05 (intermediate fertility) with low reliability"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Use it as a magnificent 'legacy tree' or a structural anchor in your garden design.",
+        "why": "As a classic Stress-Tolerator (S=99.13%), it's incredibly long-lived and steady. It will provide a permanent, stately presence for decades to come.",
+        "data_points": [
+          "CSR mix: S=99.13%"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Plant it specifically for long-term carbon sequestration to help combat climate change.",
+        "why": "It earns a 'Very High' rating for storing recalcitrant (stable) carbon and 'High' for total carbon. This tree is an ecological powerhouse for locking carbon out of the atmosphere.",
+        "data_points": [
+          "Carbon (recalcitrant): Very High",
+          "Carbon (total): High"
+        ]
+      },
+      {
+        "category": "planting-role",
+        "tip": "Create a beautiful, low-maintenance woodland scene by pairing it with other acid-loving plants like rhododendrons, heathers, or blueberries.",
+        "why": "Its preference for acidic soils (R=3.78) makes it a perfect companion for plants with similar needs, creating a harmonious and self-sustaining plant community.",
+        "data_points": [
+          "R (Reaction/pH): 3.78 (slightly acidic)"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Adopt a 'plant it and forget it' approach. Avoid any heavy pruning or trying to reshape it.",
+        "why": "With a Ruderal (disturbance-recovery) score of R=0.0%, it has almost no ability to recover from significant damage. It's best to let it grow into its natural, beautiful form.",
+        "data_points": [
+          "CSR mix: R=0.0%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant this tree if you are looking for a fast-growing screen or quick results.",
+        "why": "Its 'Low' rating for Net Primary Productivity (NPP) and its Stress-Tolerator strategy mean it grows very slowly and deliberately. Patience is key!",
+        "data_points": [
+          "NPP (growth rate): Low",
+          "CSR mix: S=99.13%"
+        ]
+      },
+      {
+        "tip": "Avoid planting it in alkaline (chalky), compacted, or overly rich soils.",
+        "why": "The EIVE data clearly shows it thrives in acidic conditions (R=3.78) and doesn't need high fertility. The wrong soil will cause it to struggle.",
+        "data_points": [
+          "R (Reaction/pH): 3.78 (slightly acidic)",
+          "N (Nutrients): 5.05 (intermediate fertility)"
+        ]
+      },
+      {
+        "tip": "Don't rely on its leaf litter to quickly build up rich compost or garden soil.",
+        "why": "Its 'Low' decomposition rating means its needles break down very slowly. This is great for retaining moisture and suppressing weeds but not for rapid soil amendment.",
+        "data_points": [
+          "Decomposition: Low"
+        ]
+      }
+    ]
+  }
+}

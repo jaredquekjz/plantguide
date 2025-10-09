@@ -1,0 +1,367 @@
+{
+  "species": "Acer rubrum",
+  "slug": "acer-rubrum",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Wow, Acer rubrum is super adaptable! Let's find the perfect spot for it in your garden.",
+    "data_summary": [
+      {
+        "insight": "When it comes to light, the data is a little mixed, which is actually great news! The official value points towards it being a 'semi-shade plant', but other evidence suggests it can also handle 'full sun'.",
+        "implication": "This means your Acer rubrum is flexible! You have more options for where to plant it, which makes things so much easier.",
+        "data_points": [
+          "L value=4.82 (semi-shade plant)",
+          "Reliability: Medium",
+          "Reason: mixed signals regarding light preference"
+        ]
+      },
+      {
+        "insight": "Okay, this is interesting! The core data suggests your plant likes 'fresh/mesic soils of average dampness'. But! The reliability for this is 'Low' because other sources say it loves even wetter soil and can tolerate 'extended flooding'.",
+        "implication": "You don't have to worry as much about overwatering! This plant seems to be very forgiving and happy with plenty of moisture.",
+        "data_points": [
+          "M value=4.66 (fresh/mesic soils of average dampness)",
+          "Reliability: Low",
+          "Reason: evidence indicates a preference for wetter conditions than expected"
+        ]
+      },
+      {
+        "insight": "For temperature, the data shows it's from 'submontane / colline; mild montane' areas. However, the reliability is 'Medium' because it's known to grow in a huge range of hardiness zones (3-9).",
+        "implication": "This tree is tough and versatile! It can handle a much wider variety of climates than that one number suggests, from pretty cold winters to warm summers.",
+        "data_points": [
+          "T value=4.63 (submontane / colline; mild montane)",
+          "Reliability: Medium",
+          "Reason: hardiness zone range is broad"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Plant your Acer rubrum in a spot that gets morning sun and some afternoon shade, or in part-shade all day.",
+        "why": "This gives it the best of both worlds! It satisfies the 'semi-shade plant' preference (L value=4.82) while respecting that it's flexible enough to handle more sun, as noted by its 'Medium' reliability.",
+        "data_points": [
+          "L value=4.82 (semi-shade plant)",
+          "Reliability: Medium"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Keep the soil consistently moist, especially when the tree is young. Don't be afraid to give it a good, deep watering.",
+        "why": "The data shows it can handle conditions even wetter than 'average dampness' and tolerates 'extended flooding'. This tells us it really appreciates having plenty of water available.",
+        "data_points": [
+          "M value=4.66 (fresh/mesic soils of average dampness)",
+          "Reliability: Low",
+          "Tolerates extended flooding"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Add a layer of mulch around the base of the tree, but not touching the trunk.",
+        "why": "This is a great way to help the soil stay at that 'fresh/mesic' moisture level (M value=4.66) that it likes, and it will reduce how often you need to water!",
+        "data_points": [
+          "M value=4.66 (fresh/mesic soils of average dampness)"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "Feel confident planting this tree in a wide range of climates.",
+        "why": "The data shows it's incredibly adaptable, with a hardiness zone range of 3-9. This means it's much tougher than its 'mild montane' temperature value (T=4.63) might suggest.",
+        "data_points": [
+          "Hardiness zones are 3-9",
+          "T Reliability: Medium"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not let the soil become bone dry for long periods.",
+        "why": "This tree prefers 'fresh/mesic soils of average dampness' (M value=4.66) and even tolerates flooding, which means it definitely does not like drought conditions.",
+        "data_points": [
+          "M value=4.66 (fresh/mesic soils of average dampness)"
+        ]
+      },
+      {
+        "tip": "Avoid planting it in very deep, dark shade.",
+        "why": "Even though it's listed as a 'semi-shade plant' (L value=4.82), the description specifies it needs '>10% illumination'. Total shade will be too dark for it to be happy and healthy!",
+        "data_points": [
+          "L value=4.82 (semi-shade plant >10% illumination)"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Acer rubrum loves acidic, well-drained soil with a good helping of organic matter to keep it fluffy!",
+    "data_summary": [
+      {
+        "insight": "Hooray! All the signs point to your Acer rubrum being a huge fan of acidic soil. Its expert-assigned preference is for \"moderately acidic soils; occasional neutral/basic\" (an R value of 5.31), and this is a perfect match for the soil data, which shows a \"Topsoil pH mean 5.39166666666667\".",
+        "implication": "This is great news! It means you should aim to keep your soil on the acidic side (below pH 6.5) to help your tree absorb all the nutrients it needs to grow strong and show off those beautiful colors.",
+        "data_points": [
+          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
+          "Topsoil pH mean 5.39166666666667"
+        ]
+      },
+      {
+        "insight": "The data suggests your soil has a decent starting point for nutrients, which fits the tree's preference for \"intermediate fertility\" (an N value of 5.41). However, the soil seems a bit packed down, with a \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\" and even higher values deeper down.",
+        "implication": "A compacted soil can make it tough for roots to stretch out and for water and air to get in. So, our main goal will be to improve the soil's structure to make it a comfier, fluffier home for your tree's roots!",
+        "data_points": [
+          "N value=5.41 (intermediate fertility)",
+          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
+          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
+        ]
+      },
+      {
+        "insight": "While we're super confident about this tree's love for acidic soil (Reliability for R is \"High\"), the information on its exact fertilizer needs is a little less certain (Reliability for N is \"Unknown\").",
+        "implication": "No worries at all! This just means we'll focus on creating a great all-around healthy soil with plenty of organic matter, rather than chasing specific fertilizer numbers. A happy, living soil makes for a happy tree!",
+        "data_points": [
+          "Reliability... R... High",
+          "Reliability... N... Unknown"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Before you plant, test your garden soil's pH. If it's above 6.5, you can gently lower it by mixing in some elemental sulfur or using acidic mulches like pine needles or shredded oak leaves.",
+        "why": "Your Acer rubrum will be its happiest self in moderately acidic conditions, just like the data shows with its preferred \"R value=5.31\" and the typical soil \"pH mean\" around \"5.4\".",
+        "data_points": [
+          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
+          "Topsoil pH mean 5.39166666666667"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "Mix in a generous amount of compost or other well-rotted organic matter into the planting hole and the surrounding area. This is the best way to liven up the soil!",
+        "why": "The soil is quite dense, with a \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\". Adding organic matter is like a magic trick that lowers this density, creating a fluffier soil that's easier for roots to explore and for water to soak into.",
+        "data_points": [
+          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
+          "Organic matter... topsoil... mean 20.50833333333331 g/kg"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "In early spring, you can give your tree a little boost with a balanced, slow-release organic fertilizer. Think of it as a healthy breakfast to start the growing season!",
+        "why": "The tree only asks for \"intermediate fertility\", and the soil already has a moderate \"Nutrient capacity... topsoil... mean 15.163888888888868 cmol(+)/kg\". A gentle, slow feed is all it needs to supplement the existing goodness in the soil.",
+        "data_points": [
+          "N value=5.41 (intermediate fertility)",
+          "Nutrient capacity... topsoil... mean 15.163888888888868 cmol(+)/kg"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Apply a 2-3 inch layer of organic mulch (like wood chips or shredded bark) around the base of the tree, but be sure to keep it from touching the trunk directly.",
+        "why": "The subsoil has more clay (\"Subsoil... clay... mean 34.0625 %\") and is very dense, which can slow down water drainage. Mulch is fantastic because it helps the soil hold moisture evenly, preventing it from getting waterlogged or drying out too fast.",
+        "data_points": [
+          "Subsoil... clay... mean 34.0625 %",
+          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not add lime, wood ash, or 'alkaline' soil amendments near your tree.",
+        "why": "These materials raise the soil pH, which goes directly against your tree's strong preference for acidic soil, as shown by its \"R value=5.31\". Let's keep it acidic and happy!",
+        "data_points": [
+          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
+          "Topsoil pH mean 5.39166666666667"
+        ]
+      },
+      {
+        "tip": "Try not to walk or place heavy things like wheelbarrows or lawn furniture on the soil over the tree's root zone, especially when it's wet.",
+        "why": "The soil is already quite compacted, with a high \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\". Any extra pressure will squeeze out the air pockets that roots and water need to thrive.",
+        "data_points": [
+          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
+          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
+        ]
+      },
+      {
+        "tip": "Don't go overboard with fast-acting, high-nitrogen chemical fertilizers.",
+        "why": "This tree prefers \"intermediate fertility\", and a big chemical rush can encourage weak growth. The soil's existing \"Total nitrogen... topsoil... mean 2.5875 g/kg\" provides a good foundation that only needs a gentle, organic top-up.",
+        "data_points": [
+          "N value=5.41 (intermediate fertility)",
+          "Total nitrogen... topsoil... mean 2.5875 g/kg"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Hooray! Your Acer rubrum is a superstar in the garden, and I can help you make it a happy home for friends and keep it strong against pesky visitors!",
+    "data_summary": [
+      {
+        "insight": "Your tree is a fantastic friend to early pollinators! It's visited by a wonderful mix of bees, butterflies, and even woodpeckers.",
+        "implication": "This means your Acer rubrum is a crucial food source for wildlife waking up in the spring, helping to kickstart the whole garden ecosystem.",
+        "data_points": [
+          "Colletes inaequalis (9)",
+          "Andrena fenningeri (4)",
+          "Nymphalis antiopa (3)",
+          "Dryocopus pileatus (3)"
+        ]
+      },
+      {
+        "insight": "Wow, this tree is popular! It hosts a huge number of insects and fungi, especially ones that cause leaf spots and galls.",
+        "implication": "While this shows it's a valuable part of the food web, it means we should keep a gentle eye on its leaves to make sure it stays healthy and vibrant.",
+        "data_points": [
+          "Rhytisma acerinum (405)",
+          "Phyllosticta minima (240)",
+          "Tetranychidae (22)"
+        ]
+      },
+      {
+        "insight": "The data is super clear on one thing: your tree loves acidic soil!",
+        "implication": "Keeping the soil conditions just right is the best way to ensure your tree is strong, healthy, and better able to defend itself from pests and diseases.",
+        "data_points": [
+          "R: moderately acidic soils; occasional neutral/basic",
+          "Reliability: High"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pollination",
+        "tip": "Let's plant some other early-spring flowers like crocuses or lungwort nearby to create a pollinator paradise!",
+        "why": "Your tree is a favorite of early bees like Colletes inaequalis and Andrena fenningeri. Giving them more food choices will encourage them to stick around and help pollinate your whole garden.",
+        "data_points": [
+          "Colletes inaequalis (9)",
+          "Andrena fenningeri (4)"
+        ]
+      },
+      {
+        "category": "pathogen",
+        "tip": "I'd make a fun autumn habit of raking up and composting the fallen leaves from your tree.",
+        "why": "The fungus that causes Tar Spot, Rhytisma acerinum, can survive winter on old leaves. By cleaning them up, you break the cycle and help prevent the spots from coming back next year. It's like giving your tree a fresh start!",
+        "data_points": [
+          "Rhytisma acerinum (405)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "How about we become leaf detectives? Let's check the leaves weekly in summer for tiny spider mites or little bumps called galls.",
+        "why": "Finding visitors like Tetranychidae (spider mites) or the galls from Acericecis ocellaris early makes them much easier to manage. A simple spray of water can often wash mites away!",
+        "data_points": [
+          "Tetranychidae (22)",
+          "Acericecis ocellaris (12)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Let's make sure the soil around your tree is healthy and on the acidic side. We can use a simple soil test to check!",
+        "why": "The data is very confident that Acer rubrum thrives in acidic soil. A happy tree in its perfect environment is naturally more resilient to the many fungi and insects that visit it.",
+        "data_points": [
+          "R: moderately acidic soils; occasional neutral/basic"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please try not to use overhead sprinklers that get the leaves all wet for long periods.",
+        "why": "Fungi that cause leaf spots, like Phyllosticta minima, just love damp leaves. Watering at the base of the tree keeps the foliage dry and makes it a less inviting place for these diseases to grow.",
+        "data_points": [
+          "Phyllosticta minima (240)",
+          "Takamatsuella circinata (194)"
+        ]
+      },
+      {
+        "tip": "If you live where beavers are common, let's not plant a young Acer rubrum right next to a stream or pond.",
+        "why": "Beavers, or Castor canadensis, are listed as one of the top herbivores for this tree! Planting it away from their favorite watery homes, or using a trunk guard, will protect your young tree from becoming a beaver's lunch.",
+        "data_points": [
+          "Castor canadensis (10)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "Acer rubrum: Your Garden's Adaptable All-Star for Steady Support!",
+    "data_summary": [
+      {
+        "insight": "I love how Acer rubrum is such a well-rounded tree! Its CSR strategy shows it's a great balance of a 'Competitor' (C=40.98%) and a 'Stress-Tolerator' (S=38.59%). This means it's tough enough to handle some stress, like tricky soil, but also strong enough to hold its own in a bustling garden community.",
+        "implication": "This makes it a reliable and versatile choice for many garden situations. It's not a diva that needs perfect conditions, nor is it a weedy type that takes over. It's a dependable team player that fits in beautifully.",
+        "data_points": [
+          "CSR mix: C=40.98%, S=38.59%, R=20.43%"
+        ]
+      },
+      {
+        "insight": "This tree is a fantastic, steady contributor to your garden's health. We see 'Moderate' ratings for so many important jobs, like nutrient cycling, storing carbon in its wood, and even helping with erosion protection. It's like a helpful neighbor who pitches in everywhere!",
+        "implication": "While it might not be a 'superstar' in one specific service, its strength is its broad, reliable support. Planting it means you're boosting the overall health and stability of your garden ecosystem in many small but significant ways.",
+        "data_points": [
+          "Nutrient Cycling: Moderate",
+          "Carbon Biomass: Moderate",
+          "Erosion Protection: Moderate"
+        ]
+      },
+      {
+        "insight": "When it comes to where it likes to live, Acer rubrum has a clear preference for 'moderately acidic soils' (R=5.31), and the data for this is super reliable! For other things like light and moisture, it seems wonderfully flexible. The data suggests it's happy from semi-shade to sun and can handle soils that are average or even quite wet.",
+        "implication": "This tells us to prioritize giving it acidic soil, but we don't need to stress about getting the light or water just right. Its adaptability makes it an easy-going friend for many different spots in the garden. We don't have solid data on its nutrient needs, but it seems happy in average soil.",
+        "data_points": [
+          "R (Reaction/pH): 5.31 - moderately acidic soils",
+          "L (Light): 4.82 - semi-shade plant (adaptable)",
+          "M (Moisture): 4.66 - fresh/mesic soils (adaptable to wetter)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Use Acer rubrum as a foundational tree in a mixed planting or woodland garden. Its balanced nature means it will coexist beautifully with other plants without aggressively outcompeting them.",
+        "why": "Its balanced 'Competitor-Stress-Tolerator' profile (C=40.98%, S=38.59%) shows it's a team player, not a bully. It establishes well and shares space, making it a perfect anchor for a plant community.",
+        "data_points": [
+          "CSR mix: C=40.98%, S=38.59%"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Place it where you want to generally improve soil health and create a stable environment. It's a great choice for a developing garden that needs a boost in overall ecological function.",
+        "why": "With 'Moderate' ratings across the board for services like 'Nutrient Cycling' and 'Nutrient Retention', it acts as a slow-and-steady engine for your garden's ecosystem, improving conditions for all the plants around it.",
+        "data_points": [
+          "Nutrient Cycling: Moderate",
+          "Nutrient Retention: Moderate",
+          "NPP: Moderate"
+        ]
+      },
+      {
+        "category": "planting-role",
+        "tip": "Take advantage of its adaptability for tricky spots! Consider it for areas with variable moisture, like a low spot that gets damp, or in a location that gets a mix of sun and shade.",
+        "why": "The data points to incredible flexibility! While its formal rating is for 'fresh/mesic soils' (M=4.66), other evidence suggests it tolerates wetness. Similarly, it's rated for 'semi-shade' (L=4.82) but is known to thrive in sun, making it a problem-solver for those 'in-between' locations.",
+        "data_points": [
+          "M (Moisture): 4.66 (adaptable to wetter)",
+          "L (Light): 4.82 (adaptable to sunnier)",
+          "Reliability for M: Low",
+          "Reliability for L: Medium"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Focus on soil pH for best results. When preparing the planting site, amend the soil with ericaceous compost or sulfur if your soil is neutral or alkaline. This is the one thing it's a little particular about!",
+        "why": "The Ellenberg value for soil reaction (R=5.31) has 'High' reliability, indicating a clear preference for 'moderately acidic soils'. Getting the pH right is the best way to ensure your tree thrives from day one.",
+        "data_points": [
+          "R (Reaction/pH): 5.31 - moderately acidic soils",
+          "Reliability for R: High"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in alkaline (chalky) soils without significant soil amendment. It will really struggle!",
+        "why": "The data is very clear and reliable on this point! Its preference is for 'moderately acidic soils' (R=5.31). It will show signs of stress, like yellowing leaves, in high-pH conditions.",
+        "data_points": [
+          "R (Reaction/pH): 5.31 - moderately acidic soils"
+        ]
+      },
+      {
+        "tip": "Don't expect it to be a superstar for long-term carbon sequestration. It's good, but not the best for that specific job.",
+        "why": "It provides a 'Moderate' amount of carbon storage in its biomass, which is great! But its rating for 'recalcitrant' carbon—the really tough, long-lasting kind—is 'Low'. This means the carbon it stores breaks down more quickly over time compared to other trees.",
+        "data_points": [
+          "Carbon Recalcitrant: Low",
+          "Carbon Biomass: Moderate"
+        ]
+      },
+      {
+        "tip": "Don't rely on it as a 'pioneer' plant for colonizing a bare, heavily disturbed area like a new construction site.",
+        "why": "Its Ruderal (R) score in the CSR mix is relatively low at 20.43%. Ruderals are the tough guys that thrive on frequent, intense disturbance. Acer rubrum prefers to move into a slightly more stable environment, even if it's a stressful one.",
+        "data_points": [
+          "CSR mix: R=20.43%"
+        ]
+      }
+    ]
+  }
+}

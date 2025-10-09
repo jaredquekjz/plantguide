@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Abies alba",
+    "common_name": null,
+    "slug": "abies-alba",
+    "eive": {
+      "values": {
+        "L": 3.04,
+        "M": 5.18,
+        "T": 3.68
+      },
+      "labels": {
+        "L": "shade plant (mostly <5% relative illumination)",
+        "M": "moist; upper range of fresh soils",
+        "T": "moderately cool to moderately warm (montane-submontane)"
+      },
+      "predicted": {
+        "L": 10.0,
+        "M": 4.488091228731931,
+        "T": 3.892724818698002
+      }
+    },
+    "reliability": {
+      "L": {
+        "verdict": "conflict",
+        "score": 1.0,
+        "label": "High",
+        "confidence": 1.0
+      },
+      "M": {
+        "verdict": "match",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      },
+      "T": {
+        "verdict": "match",
+        "score": 1.0,
+        "label": "High",
+        "confidence": 1.0
+      }
+    },
+    "bioclim": {
+      "temperature": {
+        "annual_mean_C": 9.1,
+        "warmest_month_high_C": 10.17,
+        "coldest_month_low_C": 5.79,
+        "annual_range_C": 17.03,
+        "seasonality_sd_C": 9.76
+      },
+      "precipitation": {
+        "annual_mm": 884.0,
+        "wettest_month_mm": 356.0,
+        "driest_month_mm": 59.0,
+        "seasonality_cv": 23.28
+      },
+      "aridity": {
+        "index_mean": null
+      },
+      "occurrence_summary": {
+        "n_occurrences": null,
+        "sufficient_data": null
+      }
+    }
+  },
+  "raw_text": null
+}

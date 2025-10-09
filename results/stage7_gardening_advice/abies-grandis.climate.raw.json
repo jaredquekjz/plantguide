@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Abies grandis",
+    "common_name": null,
+    "slug": "abies-grandis",
+    "eive": {
+      "values": {
+        "L": 5.27,
+        "M": 4.17,
+        "T": 3.83
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "T": "moderately cool to moderately warm (montane-submontane)"
+      },
+      "predicted": {
+        "L": null,
+        "M": null,
+        "T": null
+      }
+    },
+    "reliability": {
+      "L": {
+        "verdict": "partial",
+        "score": null,
+        "label": null,
+        "confidence": 0.8
+      },
+      "M": {
+        "verdict": "match",
+        "score": null,
+        "label": null,
+        "confidence": 1.0
+      },
+      "T": {
+        "verdict": "match",
+        "score": null,
+        "label": null,
+        "confidence": 1.0
+      }
+    },
+    "bioclim": {
+      "temperature": {
+        "annual_mean_C": 6.42,
+        "warmest_month_high_C": 8.9,
+        "coldest_month_low_C": 2.44,
+        "annual_range_C": 35.92,
+        "seasonality_sd_C": 6.7
+      },
+      "precipitation": {
+        "annual_mm": 1310.0,
+        "wettest_month_mm": 410.0,
+        "driest_month_mm": 67.0,
+        "seasonality_cv": 25.38
+      },
+      "aridity": {
+        "index_mean": null
+      },
+      "occurrence_summary": {
+        "n_occurrences": null,
+        "sufficient_data": null
+      }
+    }
+  },
+  "raw_text": null
+}

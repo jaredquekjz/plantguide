@@ -1,0 +1,179 @@
+{
+  "payload": {
+    "species": "Acacia mearnsii",
+    "common_name": null,
+    "slug": "acacia-mearnsii",
+    "eive": {
+      "values": {
+        "R": 5.7,
+        "N": 4.02
+      },
+      "labels": {
+        "R": "slightly acidic to neutral",
+        "N": "moderately poor; low fertility"
+      },
+      "predicted": {
+        "R": 5.254742767340051,
+        "N": 3.4672913304951813
+      }
+    },
+    "reliability": {
+      "R": {
+        "verdict": "partial",
+        "score": 0.8,
+        "label": "Medium",
+        "confidence": 0.8
+      },
+      "N": {
+        "verdict": "insufficient",
+        "score": 0.0,
+        "label": "Unknown",
+        "confidence": 0.0
+      }
+    },
+    "soil": {
+      "pH": {
+        "surface_0_5cm": {
+          "mean": 5.8350367866375,
+          "p10": 5.2,
+          "median": 5.9,
+          "p90": 6.4,
+          "sd": 0.501157290608941
+        },
+        "shallow_5_15cm": {
+          "mean": 5.85703718433088,
+          "p10": 5.2,
+          "median": 5.9,
+          "p90": 6.4,
+          "sd": 0.504745113165785
+        },
+        "medium_15_30cm": {
+          "mean": 5.91196261682243,
+          "p10": 5.2,
+          "median": 6.0,
+          "p90": 6.5,
+          "sd": 0.515344472585038
+        },
+        "deep_30_60cm": {
+          "mean": 6.06705905746669,
+          "p10": 5.3,
+          "median": 6.1,
+          "p90": 6.8,
+          "sd": 0.57875834684392
+        },
+        "very_deep_60_100cm": {
+          "mean": 6.19786040962418,
+          "p10": 5.3,
+          "median": 6.2,
+          "p90": 7.0,
+          "sd": 0.639723485458764
+        },
+        "subsoil_100_200cm": {
+          "mean": 6.25844104195665,
+          "p10": 5.4,
+          "median": 6.3,
+          "p90": 7.1,
+          "sd": 0.657180016923704
+        }
+      },
+      "metrics": [
+        {
+          "key": "organic_matter",
+          "label": "Organic matter",
+          "units": "g/kg",
+          "description": "Stored plant material that keeps soil springy and full of life.",
+          "topsoil": {
+            "mean": 46.10296546695833
+          },
+          "subsoil": {
+            "mean": 20.8096182143567
+          },
+          "deep": {
+            "mean": 18.9394551600716
+          }
+        },
+        {
+          "key": "clay_content",
+          "label": "Fine particles (clay)",
+          "units": "%",
+          "description": "Clay helps soils hold onto water and nutrients.",
+          "topsoil": {
+            "mean": 21.153157022602233
+          },
+          "subsoil": {
+            "mean": 30.776595744680847
+          },
+          "deep": {
+            "mean": 30.8874527739113
+          }
+        },
+        {
+          "key": "sand_content",
+          "label": "Coarse particles (sand)",
+          "units": "%",
+          "description": "Sand keeps soils light and free-draining.",
+          "topsoil": {
+            "mean": 58.24589249022336
+          },
+          "subsoil": {
+            "mean": 50.1662596937761
+          },
+          "deep": {
+            "mean": 49.7679339828992
+          }
+        },
+        {
+          "key": "nutrient_capacity",
+          "label": "Nutrient capacity",
+          "units": "cmol(+)/kg",
+          "description": "Higher values mean the soil can store more nutrients for roots.",
+          "topsoil": {
+            "mean": 22.64490090806657
+          },
+          "subsoil": {
+            "mean": 21.04759196659375
+          },
+          "deep": {
+            "mean": 20.4612408033406
+          }
+        },
+        {
+          "key": "nitrogen",
+          "label": "Total nitrogen",
+          "units": "g/kg",
+          "description": "Plant-available nitrogen that drives leafy growth.",
+          "topsoil": {
+            "mean": 2.776195466295485
+          },
+          "subsoil": {
+            "mean": 0.820968383376417
+          },
+          "deep": {
+            "mean": 0.683683833764168
+          }
+        },
+        {
+          "key": "bulk_density",
+          "label": "Soil density",
+          "units": "g/cm³",
+          "description": "How tightly packed the soil is—a guide to compaction and aeration.",
+          "topsoil": {
+            "mean": 1.1032263538145433
+          },
+          "subsoil": {
+            "mean": 1.2745923642871348
+          },
+          "deep": {
+            "mean": 1.31803976933784
+          }
+        }
+      ],
+      "data_quality": {
+        "n_occurrences": 31158,
+        "n_unique_coords": 27605,
+        "has_sufficient_data": true
+      }
+    }
+  },
+  "raw_text": null
+}

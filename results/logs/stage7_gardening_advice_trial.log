@@ -1,0 +1,60 @@
+[1/10] Starting abies-alba …
+[1/10]   ✓ climate advice ready
+[1/10]   ✓ soil advice ready
+[1/10]   ✓ ecological_interactions advice ready
+[1/10]   ✓ strategy_services advice ready
+[1/10] Finished abies-alba → /home/olier/ellenberg/results/stage7_gardening_advice/abies-alba.json
+[2/10] Starting abies-grandis …
+[2/10]   ✓ climate advice ready
+[2/10]   ✓ soil advice ready
+[2/10]   ✓ ecological_interactions advice ready
+[2/10]   ✓ strategy_services advice ready
+[2/10] Finished abies-grandis → /home/olier/ellenberg/results/stage7_gardening_advice/abies-grandis.json
+[3/10] Starting abies-lasiocarpa …
+[3/10]   ✓ climate advice ready
+[3/10]   ✓ soil advice ready
+[3/10]   ✓ ecological_interactions advice ready
+[3/10]   ✓ strategy_services advice ready
+[3/10] Finished abies-lasiocarpa → /home/olier/ellenberg/results/stage7_gardening_advice/abies-lasiocarpa.json
+[4/10] Starting abutilon-theophrasti …
+[4/10]   ✓ climate advice ready
+[4/10]   ✓ soil advice ready
+[4/10]   ✓ ecological_interactions advice ready
+[4/10]   ✓ strategy_services advice ready
+[4/10] Finished abutilon-theophrasti → /home/olier/ellenberg/results/stage7_gardening_advice/abutilon-theophrasti.json
+[5/10] Starting acacia-mearnsii …
+[5/10]   ✓ climate advice ready
+[5/10]   ✓ soil advice ready
+[5/10]   ✓ ecological_interactions advice ready
+[5/10]   ✓ strategy_services advice ready
+[5/10] Finished acacia-mearnsii → /home/olier/ellenberg/results/stage7_gardening_advice/acacia-mearnsii.json
+[6/10] Starting acer-campestre …
+[6/10]   ✓ climate advice ready
+[6/10]   ✓ soil advice ready
+[6/10]   ✓ ecological_interactions advice ready
+[6/10]   ✓ strategy_services advice ready
+[6/10] Finished acer-campestre → /home/olier/ellenberg/results/stage7_gardening_advice/acer-campestre.json
+[7/10] Starting acer-rubrum …
+[7/10]   ✓ climate advice ready
+[7/10]   ✓ soil advice ready
+[7/10]   ✓ ecological_interactions advice ready
+[7/10]   ✓ strategy_services advice ready
+[7/10] Finished acer-rubrum → /home/olier/ellenberg/results/stage7_gardening_advice/acer-rubrum.json
+[8/10] Starting acer-saccharinum …
+[8/10]   ✓ climate advice ready
+[8/10]   ✓ soil advice ready
+[8/10]   ✓ ecological_interactions advice ready
+[8/10]   ✓ strategy_services advice ready
+[8/10] Finished acer-saccharinum → /home/olier/ellenberg/results/stage7_gardening_advice/acer-saccharinum.json
+[9/10] Starting acer-saccharum …
+[9/10]   ✓ climate advice ready
+[9/10]   ✓ soil advice ready
+[9/10]   ✓ ecological_interactions advice ready
+[9/10]   ✓ strategy_services advice ready
+[9/10] Finished acer-saccharum → /home/olier/ellenberg/results/stage7_gardening_advice/acer-saccharum.json
+[10/10] Starting achillea-millefolium …
+[10/10]   ✓ climate advice ready
+[10/10]   ✓ soil advice ready
+[10/10]   ✓ ecological_interactions advice ready
+[10/10]   ✓ strategy_services advice ready
+[10/10] Finished achillea-millefolium → /home/olier/ellenberg/results/stage7_gardening_advice/achillea-millefolium.json

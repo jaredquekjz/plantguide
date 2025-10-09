@@ -1,0 +1,61 @@
+{
+  "payload": {
+    "species": "Abies lasiocarpa",
+    "common_name": null,
+    "slug": "abies-lasiocarpa",
+    "eive": {
+      "values": {
+        "L": 6.96,
+        "M": 4.17,
+        "R": 3.78,
+        "N": 5.05,
+        "T": 3.24
+      },
+      "labels": {
+        "L": "half-light plant (mostly well lit but tolerates shade)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "slightly acidic; between acid and moderately acid",
+        "N": "intermediate fertility",
+        "T": "rather cool montane climates"
+      },
+      "predicted": {
+        "L": 10.0,
+        "M": 5.473727989471111,
+        "N": 3.3230948864260355,
+        "R": 4.682372783254755,
+        "T": 2.967601070906076
+      }
+    },
+    "interactions": {
+      "pollination": {
+        "records": 0,
+        "partners": 0,
+        "top_partners": null
+      },
+      "herbivory": {
+        "records": 50,
+        "partners": 7,
+        "top_partners": [
+          "Choristoneura fumiferana (39)",
+          "Nepytia freemani (3)",
+          "Choristoneura occidentalis (3)",
+          "Choristoneura biennis (2)",
+          "Pero behrensaria (1)"
+        ]
+      },
+      "pathogen": {
+        "records": 3709,
+        "partners": 637,
+        "top_partners": [
+          "Melampsorella elatina (218)",
+          "Pucciniastrum epilobii (118)",
+          "Lachnellula arida (107)",
+          "Herpotrichia nigra (103)",
+          "Calyptospora columnaris (78)"
+        ]
+      }
+    },
+    "notes": null
+  },
+  "raw_text": null
+}

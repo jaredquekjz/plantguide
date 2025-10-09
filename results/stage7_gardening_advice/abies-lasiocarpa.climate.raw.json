@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Abies lasiocarpa",
+    "common_name": null,
+    "slug": "abies-lasiocarpa",
+    "eive": {
+      "values": {
+        "L": 6.96,
+        "M": 4.17,
+        "T": 3.24
+      },
+      "labels": {
+        "L": "half-light plant (mostly well lit but tolerates shade)",
+        "M": "fresh/mesic soils of average dampness",
+        "T": "rather cool montane climates"
+      },
+      "predicted": {
+        "L": 10.0,
+        "M": 5.473727989471111,
+        "T": 2.967601070906076
+      }
+    },
+    "reliability": {
+      "L": {
+        "verdict": "match",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      },
+      "M": {
+        "verdict": "partial",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      },
+      "T": {
+        "verdict": "match",
+        "score": 0.8,
+        "label": "Medium",
+        "confidence": 0.8
+      }
+    },
+    "bioclim": {
+      "temperature": {
+        "annual_mean_C": 1.33,
+        "warmest_month_high_C": 7.19,
+        "coldest_month_low_C": 3.37,
+        "annual_range_C": 23.26,
+        "seasonality_sd_C": 6.08
+      },
+      "precipitation": {
+        "annual_mm": 1325.0,
+        "wettest_month_mm": 380.0,
+        "driest_month_mm": 78.0,
+        "seasonality_cv": 20.57
+      },
+      "aridity": {
+        "index_mean": null
+      },
+      "occurrence_summary": {
+        "n_occurrences": null,
+        "sufficient_data": null
+      }
+    }
+  },
+  "raw_text": null
+}

@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Acer saccharinum",
+    "common_name": null,
+    "slug": "acer-saccharinum",
+    "eive": {
+      "values": {
+        "L": 5.31,
+        "M": 4.49,
+        "T": 4.96
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "T": "submontane / colline; mild montane"
+      },
+      "predicted": {
+        "L": 9.984430580673427,
+        "M": 5.133218466155966,
+        "T": 5.021429994505902
+      }
+    },
+    "reliability": {
+      "L": {
+        "verdict": "conflict",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      },
+      "M": {
+        "verdict": "conflict",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      },
+      "T": {
+        "verdict": "conflict",
+        "score": 1.0,
+        "label": "Medium",
+        "confidence": 1.0
+      }
+    },
+    "bioclim": {
+      "temperature": {
+        "annual_mean_C": 9.98,
+        "warmest_month_high_C": 7.2,
+        "coldest_month_low_C": 4.95,
+        "annual_range_C": 11.02,
+        "seasonality_sd_C": 7.25
+      },
+      "precipitation": {
+        "annual_mm": 827.0,
+        "wettest_month_mm": 343.0,
+        "driest_month_mm": 60.0,
+        "seasonality_cv": 23.6
+      },
+      "aridity": {
+        "index_mean": null
+      },
+      "occurrence_summary": {
+        "n_occurrences": null,
+        "sufficient_data": null
+      }
+    }
+  },
+  "raw_text": null
+}

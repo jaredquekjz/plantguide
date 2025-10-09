@@ -41,7 +41,7 @@ def rate_band(x: float) -> str:
 def npp_rating(C: float, S: float, R: float) -> str:
     if C >= 60:
         return "Very High"
-    if C >= 50 or R >= 50:
+    if C >= 50:
         return "High"
     if S >= 60:
         return "Low"
@@ -81,11 +81,21 @@ def nutrient_loss_rating(C: float, S: float, R: float) -> str:
         return "Very Low"
     if C >= 50:
         return "Low"
+    if S >= 50:
+        return "Low"
     return "Moderate"
 
 
 def carbon_biomass_rating(C: float, S: float, R: float) -> str:
-    return rate_band(C)
+    if C >= 60:
+        return "Very High"
+    if C >= 50:
+        return "High"
+    if C >= 40 or S >= 60:
+        return "Moderate"
+    if C >= 30 or S >= 50:
+        return "Low"
+    return "Very Low"
 
 
 def carbon_recalcitrant_rating(C: float, S: float, R: float) -> str:
@@ -107,8 +117,10 @@ def carbon_total_rating(C: float, S: float, R: float) -> str:
 def erosion_protection_rating(C: float, S: float, R: float) -> str:
     if C >= 60 or (C >= 50 and S >= 40):
         return "Very High"
-    if C >= 50 or S >= 50:
+    if C >= 50:
         return "High"
+    if R >= 60:
+        return "Very Low"
     if R >= 50:
         return "Low"
     return "Moderate"
@@ -195,4 +207,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

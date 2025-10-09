@@ -1,0 +1,179 @@
+{
+  "payload": {
+    "species": "Abutilon theophrasti",
+    "common_name": null,
+    "slug": "abutilon-theophrasti",
+    "eive": {
+      "values": {
+        "R": 6.45,
+        "N": 6.21
+      },
+      "labels": {
+        "R": "weakly acidic to weakly basic; absent from very acid",
+        "N": "moderately rich soils"
+      },
+      "predicted": {
+        "R": 6.7942728145969635,
+        "N": 6.922347661277098
+      }
+    },
+    "reliability": {
+      "R": {
+        "verdict": "match",
+        "score": 1.0,
+        "label": "High",
+        "confidence": 1.0
+      },
+      "N": {
+        "verdict": "conflict",
+        "score": 0.5,
+        "label": "Medium",
+        "confidence": 0.5
+      }
+    },
+    "soil": {
+      "pH": {
+        "surface_0_5cm": {
+          "mean": 6.15,
+          "p10": 5.31,
+          "median": 6.15,
+          "p90": 6.99,
+          "sd": 1.48492424049175
+        },
+        "shallow_5_15cm": {
+          "mean": 6.25,
+          "p10": 5.33,
+          "median": 6.25,
+          "p90": 7.17,
+          "sd": 1.62634559672906
+        },
+        "medium_15_30cm": {
+          "mean": 6.25,
+          "p10": 5.41,
+          "median": 6.25,
+          "p90": 7.09,
+          "sd": 1.48492424049175
+        },
+        "deep_30_60cm": {
+          "mean": 6.35,
+          "p10": 5.59,
+          "median": 6.35,
+          "p90": 7.11,
+          "sd": 1.34350288425444
+        },
+        "very_deep_60_100cm": {
+          "mean": 6.4,
+          "p10": 5.92,
+          "median": 6.4,
+          "p90": 6.88,
+          "sd": 0.848528137423857
+        },
+        "subsoil_100_200cm": {
+          "mean": 6.5,
+          "p10": 6.18,
+          "median": 6.5,
+          "p90": 6.82,
+          "sd": 0.565685424949239
+        }
+      },
+      "metrics": [
+        {
+          "key": "organic_matter",
+          "label": "Organic matter",
+          "units": "g/kg",
+          "description": "Stored plant material that keeps soil springy and full of life.",
+          "topsoil": {
+            "mean": 57.550000000000004
+          },
+          "subsoil": {
+            "mean": 28.9
+          },
+          "deep": {
+            "mean": 46.95
+          }
+        },
+        {
+          "key": "clay_content",
+          "label": "Fine particles (clay)",
+          "units": "%",
+          "description": "Clay helps soils hold onto water and nutrients.",
+          "topsoil": {
+            "mean": 28.3
+          },
+          "subsoil": {
+            "mean": 33.2
+          },
+          "deep": {
+            "mean": 33.4
+          }
+        },
+        {
+          "key": "sand_content",
+          "label": "Coarse particles (sand)",
+          "units": "%",
+          "description": "Sand keeps soils light and free-draining.",
+          "topsoil": {
+            "mean": 33.766666666666666
+          },
+          "subsoil": {
+            "mean": 31.549999999999997
+          },
+          "deep": {
+            "mean": 30.1
+          }
+        },
+        {
+          "key": "nutrient_capacity",
+          "label": "Nutrient capacity",
+          "units": "cmol(+)/kg",
+          "description": "Higher values mean the soil can store more nutrients for roots.",
+          "topsoil": {
+            "mean": 27.25
+          },
+          "subsoil": {
+            "mean": 22.15
+          },
+          "deep": {
+            "mean": 21.9
+          }
+        },
+        {
+          "key": "nitrogen",
+          "label": "Total nitrogen",
+          "units": "g/kg",
+          "description": "Plant-available nitrogen that drives leafy growth.",
+          "topsoil": {
+            "mean": 5.1274999999999995
+          },
+          "subsoil": {
+            "mean": 2.44
+          },
+          "deep": {
+            "mean": 2.935
+          }
+        },
+        {
+          "key": "bulk_density",
+          "label": "Soil density",
+          "units": "g/cm³",
+          "description": "How tightly packed the soil is—a guide to compaction and aeration.",
+          "topsoil": {
+            "mean": 1.18
+          },
+          "subsoil": {
+            "mean": 1.4425
+          },
+          "deep": {
+            "mean": 1.48
+          }
+        }
+      ],
+      "data_quality": {
+        "n_occurrences": 4,
+        "n_unique_coords": 4,
+        "has_sufficient_data": true
+      }
+    }
+  },
+  "raw_text": null
+}

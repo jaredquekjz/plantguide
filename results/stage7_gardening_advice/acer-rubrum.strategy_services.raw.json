@@ -1,0 +1,74 @@
+{
+  "payload": {
+    "species": "Acer rubrum",
+    "common_name": null,
+    "slug": "acer-rubrum",
+    "csr": {
+      "C": 40.98,
+      "S": 38.59,
+      "R": 20.43
+    },
+    "eco_services": {
+      "npp": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "decomposition": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_cycling": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_retention": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "nutrient_loss": {
+        "rating": "Moderate",
+        "confidence": "Very High"
+      },
+      "carbon_biomass": {
+        "rating": "Moderate",
+        "confidence": "High"
+      },
+      "carbon_recalcitrant": {
+        "rating": "Low",
+        "confidence": "High"
+      },
+      "carbon_total": {
+        "rating": "Moderate",
+        "confidence": "High"
+      },
+      "erosion_protection": {
+        "rating": "Moderate",
+        "confidence": "Moderate"
+      }
+    },
+    "eive": {
+      "values": {
+        "L": 4.82,
+        "M": 4.66,
+        "R": 5.31,
+        "N": 5.41,
+        "T": 4.63
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "moderately acidic soils; occasional neutral/basic",
+        "N": "intermediate fertility",
+        "T": "submontane / colline; mild montane"
+      },
+      "predicted": {
+        "L": 9.47180086025439,
+        "M": 4.676174322780495,
+        "N": 5.657162873099397,
+        "R": 5.49006793686679,
+        "T": 5.7963408476579135
+      }
+    }
+  },
+  "raw_text": null
+}

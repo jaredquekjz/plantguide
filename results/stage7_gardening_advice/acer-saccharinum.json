@@ -1,0 +1,361 @@
+{
+  "species": "Acer saccharinum",
+  "slug": "acer-saccharinum",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Let's find the perfect spot for your Acer saccharinum to thrive!",
+    "data_summary": [
+      {
+        "insight": "This maple seems pretty flexible about sunlight! The official data suggests it's a \"semi-shade plant\", but other notes say it also tolerates full sun.",
+        "implication": "This is great news! It means you have more options for planting. It's not super fussy, which makes our job easier and more fun!",
+        "data_points": [
+          "L value=5.31 (semi-shade plant (>10% illumination, seldom full light))",
+          "Reliability: Medium",
+          "tolerates full sun but also partial shade"
+        ]
+      },
+      {
+        "insight": "When it comes to water, this plant loves a good drink! Its official rating is for soils with \"average dampness\", but the reliability notes mention it actually prefers moist-to-wet conditions.",
+        "implication": "We'll want to make sure it never gets too thirsty. A spot that stays consistently damp will make it feel right at home.",
+        "data_points": [
+          "M value=4.49 (fresh/mesic soils of average dampness)",
+          "Reliability: Medium",
+          "prefers moist, well-drained to wet alluvial soils and can tolerate seasonal flooding"
+        ]
+      },
+      {
+        "insight": "It's used to a mild climate with plenty of rain, similar to a \"mild montane\" region.",
+        "implication": "This tells us it will be happiest somewhere with moderate temperatures and won't enjoy extreme heat or long droughts. It's a temperate-climate friend!",
+        "data_points": [
+          "T value=4.96 (submontane / colline; mild montane)",
+          "Annual precipitation: 827.0 mm"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Find a spot with partial shade, like morning sun and some afternoon protection.",
+        "why": "This is a wonderful compromise! Since the data is mixed ('L value' of 5.31 vs. tolerating full sun), giving it a little of both is a safe and happy bet. The 'Medium' reliability tells us it's flexible!",
+        "data_points": [
+          "L value=5.31 (semi-shade plant...)",
+          "Reliability: Medium (conflict)"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Keep the soil consistently moist, especially during hot, dry weather.",
+        "why": "It loves water! The reliability notes say it prefers conditions even wetter than its 'M value' of 4.49 suggests, and can even handle 'seasonal flooding'. Let's not let it get thirsty!",
+        "data_points": [
+          "M value=4.49 (fresh/mesic soils...)",
+          "can tolerate seasonal flooding"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Add a layer of mulch around the base of the plant.",
+        "why": "Mulch is like a cozy blanket for the soil! It helps hold in all that wonderful moisture that your Acer saccharinum loves, keeping it hydrated and happy.",
+        "data_points": [
+          "prefers moist... to wet alluvial soils"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "If you live in a colder area, plant it in a spot that's a bit sheltered from harsh winter winds.",
+        "why": "The data suggests it might be a little tougher than its 'T value' of 4.96 indicates. Giving it some protection is a kind way to help it through the coldest months, just in case!",
+        "data_points": [
+          "T value=4.96 (submontane / colline; mild montane)",
+          "Reliability: Medium",
+          "hardiness zone minimum is slightly lower than expected"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in a spot with very dry, sandy soil that drains too quickly.",
+        "why": "This plant is a moisture-lover! The data shows it prefers 'moist... to wet' conditions and is used to climates with lots of rain (around 827.0 mm annually). A dry spot would make it very unhappy.",
+        "data_points": [
+          "prefers moist, well-drained to wet alluvial soils",
+          "Annual precipitation: 827.0 mm"
+        ]
+      },
+      {
+        "tip": "Avoid letting the soil completely dry out for long periods.",
+        "why": "It's just not built for drought! Its moisture rating ('M value' of 4.49) is for 'average dampness' at a minimum, and it can even handle flooding. Keeping it consistently watered is key.",
+        "data_points": [
+          "M value=4.49 (fresh/mesic soils of average dampness)",
+          "can tolerate seasonal flooding"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's create the perfect home for your Silver Maple with rich, slightly acidic soil!",
+    "data_summary": [
+      {
+        "insight": "Your Acer saccharinum is happiest in soil that's a little on the acidic side, and guess what? The data shows that the soil where it typically grows is perfect for it!",
+        "implication": "This means you probably won't have to fight your soil's natural tendencies. We're aiming for a pH that's slightly acidic to neutral, which is exactly what we see in the measurements, and our confidence in this is high!",
+        "data_points": [
+          "R value=5.17 (moderately acidic soils)",
+          "Topsoil pH mean 6.0",
+          "Reliability for R: High"
+        ]
+      },
+      {
+        "insight": "The soil is wonderfully rich right at the surface! It's packed with organic matter and has a great balance of sand and clay.",
+        "implication": "This loamy texture is fantastic because it holds onto moisture and nutrients without becoming waterlogged. All that 'Organic matter' (a mean of 43.32 g/kg in the topsoil) acts like a sponge and a pantry, giving your tree a great start!",
+        "data_points": [
+          "Organic matter topsoil mean 43.31666666666666 g/kg",
+          "Clay content topsoil mean 26.83%",
+          "Sand content topsoil mean 27.98%"
+        ]
+      },
+      {
+        "insight": "As we go deeper, the soil gets more packed down. We call this 'bulk density,' and it increases from a nice and fluffy 1.30 g/cm³ at the top to a much denser 1.51 g/cm³ in the subsoil.",
+        "implication": "For a big tree like a Silver Maple, this denser layer can be a bit of a workout for its roots to push through. Giving it a helping hand when you plant will set it up for a long, healthy life!",
+        "data_points": [
+          "Topsoil bulk density mean 1.2983333333333336 g/cm³",
+          "Subsoil bulk density mean 1.5099999999999998 g/cm³"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Keep your soil slightly acidic by using mulches like pine needles, oak leaves, or well-rotted compost.",
+        "why": "This naturally maintains the perfect pH your tree loves, which the data confirms is 'moderately acidic' (R value=5.17) and matches the typical soil pH of around 6.0.",
+        "data_points": [
+          "R value=5.17",
+          "Topsoil pH mean 6.0"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Add a fresh layer of compost around the base of your tree each spring.",
+        "why": "This replenishes the wonderful layer of 'Organic matter' at the surface, which provides steady, 'intermediate fertility' to keep your maple thriving.",
+        "data_points": [
+          "Organic matter topsoil mean 43.31666666666666 g/kg",
+          "N value=4.97 (intermediate fertility)"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When you first plant your tree, be sure to dig a wide hole and loosen the soil on the sides and bottom.",
+        "why": "This helps break up the dense subsoil, which has a 'Bulk density' of 1.51 g/cm³, making it much easier for the roots to spread out and anchor themselves firmly.",
+        "data_points": [
+          "Subsoil bulk density mean 1.5099999999999998 g/cm³"
+        ]
+      },
+      {
+        "category": "fertility",
+        "tip": "Rely on compost and organic mulch for nutrients instead of strong chemical fertilizers.",
+        "why": "The experts suggest your tree likes 'intermediate fertility', and while our confidence in that number is a bit low, aiming for a moderately rich soil is always a safe and wonderful bet! The soil already has a good 'Nutrient capacity' (20.48 cmol(+)/kg), so slow-release nutrients are just right.",
+        "data_points": [
+          "N value=4.97",
+          "Reliability for N: Low",
+          "Nutrient capacity topsoil mean 20.483333333333334 cmol(+)/kg"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please don't add lime to the soil unless a professional soil test shows an extreme need for it.",
+        "why": "Lime raises the pH, but your tree is happiest in the slightly acidic conditions it's already in! The data shows a preference for an 'R value=5.17' and the soil is already at a 'pH mean' of 6.0.",
+        "data_points": [
+          "R value=5.17",
+          "Topsoil pH mean 6.0"
+        ]
+      },
+      {
+        "tip": "Avoid walking or driving heavy equipment over the root zone, especially when the ground is wet.",
+        "why": "The subsoil is already quite compacted, with a 'Bulk density' of 1.51 g/cm³. Adding more weight from above will squeeze out the air pockets roots need to breathe, which can harm your beautiful tree.",
+        "data_points": [
+          "Subsoil bulk density mean 1.5099999999999998 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Let's help your Silver Maple thrive by welcoming its friends and keeping an eye on its many little foes!",
+    "data_summary": [
+      {
+        "insight": "Wow, your Silver Maple has a huge list of known diseases, especially fungal ones that cause spots on the leaves!",
+        "implication": "This means we should be extra watchful for leaf spots and other signs of sickness, especially during damp weather, so we can act fast.",
+        "data_points": [
+          "Rhytisma acerinum (305)",
+          "Takamatsuella circinata (197)",
+          "Phyllosticta minima (96)"
+        ]
+      },
+      {
+        "insight": "It looks like the main munchers on your maple are super tiny critters like mites and scale insects, plus squirrels!",
+        "implication": "These pests can be hard to see, so we'll need to look closely at the leaves and bark for signs of damage like discoloration or sticky residue.",
+        "data_points": [
+          "Vasates quadripedes (12)",
+          "Lopholeucaspis japonica (9)",
+          "Oligonychus aceris (8)"
+        ]
+      },
+      {
+        "insight": "Your Silver Maple gets help with pollination from both the wind and some lovely little bees!",
+        "implication": "This is great news! It means the tree has multiple ways to reproduce, and we can help by making the garden a friendly place for those helpful bees.",
+        "data_points": [
+          "Andrena mandibularis (2)",
+          "Apis mellifera (2)",
+          "Wind (1)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pathogen",
+        "tip": "Let's make sure your maple has plenty of space around it for good air circulation by pruning any crowded branches in late winter.",
+        "why": "Many of the top fungal diseases, like Tar Spot caused by `Rhytisma acerinum`, thrive in damp, stagnant air. Improving airflow helps the leaves dry faster, making it harder for these fungi to grow!",
+        "data_points": [
+          "Rhytisma acerinum (305)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "I'd get into a fun routine of checking the undersides of leaves and the bark weekly during the growing season for tiny mites or scale insects.",
+        "why": "Pests like `Vasates quadripedes` and `Lopholeucaspis japonica` are small but can cause a lot of stress. Catching them early lets you manage them with simple methods before they become a big problem!",
+        "data_points": [
+          "Vasates quadripedes (12)",
+          "Lopholeucaspis japonica (9)"
+        ]
+      },
+      {
+        "category": "pollination",
+        "tip": "To thank the bees for their help, let's plant some early-blooming flowers nearby that provide nectar for them.",
+        "why": "Your maple is visited by bees like `Andrena mandibularis` and `Apis mellifera`. Having other flowers around gives them a reliable food source, encouraging them to stick around and help pollinate your whole garden!",
+        "data_points": [
+          "Andrena mandibularis (2)",
+          "Apis mellifera (2)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Water your maple deeply at the base in the morning, and try to keep the leaves dry.",
+        "why": "The data shows your tree likes moist soil, but we also know it's very susceptible to fungal leaf diseases like those caused by `Phyllosticta minima`. Watering the roots directly gives the tree the moisture it needs without creating the damp leaf surfaces that pathogens love!",
+        "data_points": [
+          "M: fresh/mesic soils of average dampness",
+          "Phyllosticta minima (96)"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please try not to use sprinklers that wet the leaves of your Silver Maple for long periods.",
+        "why": "With so many fungal pathogens recorded, like `Rhytisma acerinum` (Tar Spot), wet leaves are an open invitation for disease. Keeping the foliage dry is one of the best ways to prevent infections.",
+        "data_points": [
+          "Rhytisma acerinum (305)",
+          "Takamatsuella circinata (197)"
+        ]
+      },
+      {
+        "tip": "I would avoid planting other maple species that are also known to get Tar Spot right next to your Silver Maple.",
+        "why": "The fungus `Rhytisma acerinum` is a major issue for this tree and can easily spread between susceptible maples. Giving them space can help contain an outbreak and keep all your trees healthier.",
+        "data_points": [
+          "Rhytisma acerinum (305)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "Your garden's friendly, fast-growing shade-maker and all-around helper!",
+    "data_summary": [
+      {
+        "insight": "I love how this plant, Acer saccharinum, has such a balanced personality! Its CSR profile shows it's a mix of a 'Competitor' and a 'Stress-Tolerator'. This means it's great at growing strong and grabbing resources, but it's also tough enough to handle conditions that aren't picture-perfect.",
+        "implication": "This makes it a super reliable tree for an established garden. It's not a fragile specialist; it's a resilient friend that can thrive in a variety of situations once it gets its roots down.",
+        "data_points": [
+          "CSR mix C=44.01%, S=34.41%, R=22.58%"
+        ]
+      },
+      {
+        "insight": "When it comes to helping the ecosystem, this tree is a fantastic team player! All its main service ratings, from creating biomass to cycling nutrients and protecting against erosion, are rated 'Moderate'. It contributes steadily and reliably across the board.",
+        "implication": "You can count on it to be a solid, foundational member of your garden community, quietly improving soil health and providing habitat without needing special treatment. It’s a dependable workhorse!",
+        "data_points": [
+          "npp: Moderate",
+          "nutrient_cycling: Moderate",
+          "carbon_total: Moderate",
+          "erosion_protection: Moderate"
+        ]
+      },
+      {
+        "insight": "This tree is wonderfully flexible about where it lives. The Ellenberg values show it's happy in 'semi-shade' but can handle more sun (L=5.31), prefers 'moderately acidic soils' but is fine with others (R=5.17), and likes average moisture but can handle wetter spots (M=4.49). Some of the data has medium reliability, which to me just proves how adaptable it is!",
+        "implication": "This is great news for you! It means you don't need the 'perfect' spot. It will likely thrive in that part of the yard where other plants might be a bit fussy, especially with light and soil pH.",
+        "data_points": [
+          "L=5.31 (semi-shade plant)",
+          "M=4.49 (fresh/mesic soils of average dampness)",
+          "R=5.17 (moderately acidic soils; occasional neutral/basic)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Plant it as a fast-growing shade tree in a larger yard, park, or community space.",
+        "why": "Its strong Competitor score (C=44.01%) means it grows vigorously to capture light, creating a wonderful canopy for shade. Its flexibility with light (L=5.31) ensures it will do well.",
+        "data_points": [
+          "CSR mix C=44.01%, S=34.41%, R=22.58%",
+          "L=5.31 (semi-shade plant)"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Use it in a rain garden or near a stream to help manage water and soil.",
+        "why": "It has a 'Moderate' rating for erosion protection and the data notes say it tolerates wet soils and even flooding. It's a great choice for holding soil in place in damp areas.",
+        "data_points": [
+          "erosion_protection: Moderate",
+          "M=4.49 (fresh/mesic soils of average dampness)"
+        ]
+      },
+      {
+        "category": "disturbance",
+        "tip": "Give it a permanent home in a stable part of the garden where the soil won't be constantly dug up.",
+        "why": "Its low Ruderal score (R=21.58%) means it's not a fan of frequent, major disturbances. It's more of a Stress-Tolerator (S=34.41%) that prefers to settle in for the long haul.",
+        "data_points": [
+          "CSR mix C=44.01%, S=34.41%, R=22.58%"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Plan for its size and be ready for some seasonal cleanup of leaves and twigs.",
+        "why": "As a strong Competitor (C=44.01%), this tree gets big! Its 'Moderate' decomposition rating means its leaf litter will break down nicely to enrich the soil, but you'll have a good amount to manage.",
+        "data_points": [
+          "C=44.01%",
+          "decomposition: Moderate"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it too close to sidewalks, pipes, or building foundations.",
+        "why": "That strong 'Competitor' trait (C=44.01%) gives it a vigorous and thirsty root system that can seek out moisture and cause damage to infrastructure. Give it plenty of space!",
+        "data_points": [
+          "C=44.01%"
+        ]
+      },
+      {
+        "tip": "Don't rely on it as your garden's main strategy for very long-term carbon storage.",
+        "why": "While it's a 'Moderate' performer for total carbon, its rating for 'recalcitrant' carbon—the most stable, long-lasting kind—is 'Low'. It's a great helper, but not the ultimate carbon vault.",
+        "data_points": [
+          "carbon_recalcitrant: Low",
+          "carbon_total: Moderate"
+        ]
+      },
+      {
+        "tip": "Avoid planting it in very dry, exposed, or nutrient-poor sites.",
+        "why": "Even though it's a Stress-Tolerator (S=34.41%), it has its limits! It prefers at least average moisture (M=4.49) and fertility (N=4.97). It will struggle in extremely harsh, dry conditions.",
+        "data_points": [
+          "S=34.41%",
+          "M=4.49 (fresh/mesic soils of average dampness)",
+          "N=4.97 (intermediate fertility)"
+        ]
+      }
+    ]
+  }
+}

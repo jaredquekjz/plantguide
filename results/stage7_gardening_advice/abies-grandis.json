@@ -1,0 +1,345 @@
+{
+  "species": "Abies grandis",
+  "slug": "abies-grandis",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "This fir loves a cool, moist home with dappled sunlight!",
+    "data_summary": [
+      {
+        "insight": "Wow, look at this! Your Abies grandis is a 'semi-shade plant' according to its Light value of 5.27. This means it's happiest with some shade and doesn't want to be in bright, direct sun all day.",
+        "implication": "So, finding a spot with dappled light, maybe under taller trees or on the east side of a building, will be key to making it feel right at home! The data confidence here is 'partial', so it might tolerate a bit more sun, but shade is a safer bet.",
+        "data_points": [
+          "L value=5.27 (semi-shade plant)",
+          "Reliability: partial"
+        ]
+      },
+      {
+        "insight": "The data is super clear on this one! With a Moisture value of 4.17 and high reliability ('match'), we know it loves 'fresh/mesic soils of average dampness'. Plus, it's used to getting a lot of rain—about 1310.0 mm a year in its natural habitat!",
+        "implication": "This tells us that keeping the soil consistently moist, but not waterlogged, is super important. It won't be happy if it dries out too much, so let's make sure it gets enough to drink!",
+        "data_points": [
+          "M value=4.17 (fresh/mesic soils of average dampness)",
+          "Reliability: match",
+          "Annual precipitation: 1310.0 mm"
+        ]
+      },
+      {
+        "insight": "Let's talk temperature! Its Temperature value of 3.83 points to 'moderately cool to moderately warm' conditions. The climate data backs this up perfectly, showing it's used to an average annual temperature of just 6.42°C.",
+        "implication": "This means it's definitely not a fan of intense heat. It will be much happier in a cooler part of the garden and might struggle in very hot climates.",
+        "data_points": [
+          "T value=3.83 (moderately cool to moderately warm)",
+          "Annual mean temperature: 6.42°C",
+          "Reliability: match"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Plant your Abies grandis where it gets morning sun and afternoon shade, or in the dappled light under taller trees.",
+        "why": "This mimics its preferred 'semi-shade' environment (L value of 5.27) and protects it from the harsh midday sun it 'seldom' experiences.",
+        "data_points": [
+          "L value=5.27 (semi-shade plant)",
+          "seldom full light"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Water regularly to keep the soil consistently damp, like a wrung-out sponge. Check the soil moisture often, especially during dry spells!",
+        "why": "This matches its love for 'fresh/mesic soils of average dampness' (M value of 4.17) and the high annual rainfall (1310.0 mm) it's used to. We can be really confident about this since the reliability is a 'match'!",
+        "data_points": [
+          "M value=4.17 (fresh/mesic soils of average dampness)",
+          "Annual precipitation: 1310.0 mm",
+          "Reliability: match"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Apply a generous layer of organic mulch (like wood chips or pine needles) around the base of the tree.",
+        "why": "Mulch is amazing! It helps keep the soil cool and retain that 'average dampness' (M value 4.17) your fir loves, reducing the need for constant watering.",
+        "data_points": [
+          "M value=4.17 (fresh/mesic soils of average dampness)"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "If your garden has warmer and cooler microclimates, pick the coolest spot for this fir, like a north-facing slope or a low-lying area.",
+        "why": "This helps replicate the 'moderately cool' conditions it thrives in, as shown by its T value of 3.83 and the cool 6.42°C average temperature from its native range.",
+        "data_points": [
+          "T value=3.83 (moderately cool to moderately warm)",
+          "Annual mean temperature: 6.42°C"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in a spot that gets intense, all-day sun, especially in the hot afternoon.",
+        "why": "The data is pretty clear that it 'seldom' likes 'full light' (L value 5.27). Too much sun will definitely stress it out!",
+        "data_points": [
+          "L value=5.27 (semi-shade plant)",
+          "seldom full light"
+        ]
+      },
+      {
+        "tip": "Avoid letting the soil become bone-dry for extended periods, especially during its first few years.",
+        "why": "This tree is accustomed to 'fresh/mesic soils' (M value 4.17) and lots of rain (1310.0 mm annually), so drought conditions are its enemy!",
+        "data_points": [
+          "M value=4.17 (fresh/mesic soils of average dampness)",
+          "Annual precipitation: 1310.0 mm"
+        ]
+      },
+      {
+        "tip": "Try not to plant it right next to a south- or west-facing brick wall or dark pavement.",
+        "why": "These surfaces absorb and radiate heat, creating a microclimate that's much warmer than the 'moderately cool' environment (T value 3.83) this fir needs to be happy.",
+        "data_points": [
+          "T value=3.83 (moderately cool to moderately warm)",
+          "Annual mean temperature: 6.42°C"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's build a rich, slightly acidic, and airy home for your Abies grandis!",
+    "data_summary": [
+      {
+        "insight": "Your Abies grandis is known to love acidic conditions, with its ideal preference shown by an 'R value=3.78'. The soil measurements in your area show a slightly milder environment, starting at a 'surface pH mean' of 6.3 and getting closer to neutral deeper down. That's great info!",
+        "implication": "This means your soil is on the gentle edge of this tree's comfort zone, but still a wonderful place for it to grow! We'll just want to make sure we keep it on the acidic side. The general preference data has 'partial' reliability, so trusting our on-the-ground soil measurements is the best way forward!",
+        "data_points": [
+          "R value=3.78 (slightly acidic; between acid and moderately acid)",
+          "surface pH mean: 6.3",
+          "reliability for R: partial"
+        ]
+      },
+      {
+        "insight": "Wow, your topsoil is a superstar! It's loaded with 'Organic matter' at 42.28 g/kg and has a lovely, fluffy structure, shown by a low 'Bulk density' of 1.14 g/cm³. Its ability to hold onto food for the plant is also excellent, with a 'Nutrient capacity' of 24.59 cmol(+)/kg.",
+        "implication": "This is fantastic news for getting your tree established! This rich, airy top layer is the perfect nursery for young roots, providing plenty of food, water, and oxygen. We should do everything we can to protect this amazing resource!",
+        "data_points": [
+          "Organic matter: 42.28 g/kg",
+          "Bulk density: 1.14 g/cm³",
+          "Nutrient capacity: 24.59 cmol(+)/kg"
+        ]
+      },
+      {
+        "insight": "Deeper down, the soil changes quite a bit. It becomes much more compact, with the 'Bulk density' rising to 1.40 g/cm³ in the subsoil, and it holds much less organic matter and nitrogen.",
+        "implication": "This contrast tells us that nurturing the topsoil is our most important job! The tree will be happiest if its roots can spread out wide in that wonderful top layer, rather than struggling to push down into the denser subsoil.",
+        "data_points": [
+          "Subsoil Bulk density: 1.40125 g/cm³",
+          "Subsoil Organic matter: 8.1625 g/kg"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Each year, mulch around the tree with acidic materials like pine needles, composted bark, or oak leaves.",
+        "why": "This will help gently nudge your soil from its current 'surface pH mean' of 6.3 toward the more acidic conditions this tree loves ('R value=3.78'), which helps it absorb nutrients perfectly.",
+        "data_points": [
+          "surface pH mean: 6.3",
+          "R value=3.78"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Top-dress the area under the tree's canopy with a 1-2 inch layer of good quality compost every spring.",
+        "why": "This is the best way to maintain that amazing 'Organic matter' level of 42.28 g/kg in the topsoil, providing a slow and steady feast for your tree all year long.",
+        "data_points": [
+          "Topsoil Organic matter: 42.28333333333334 g/kg"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When you plant, dig a hole that is two to three times wider than the root ball, but no deeper. Loosen the soil in this wide area.",
+        "why": "Your topsoil is light and airy ('Bulk density: 1.14 g/cm³'), while the subsoil is dense. This encourages the roots to spread out horizontally into that wonderful top layer instead of struggling downwards.",
+        "data_points": [
+          "Topsoil Bulk density: 1.1449999999999998 g/cm³",
+          "Subsoil Bulk density: 1.40125 g/cm³"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Check for good drainage before planting by filling the hole with water and seeing if it drains in a few hours. If not, consider planting on a slight mound.",
+        "why": "The soil has a nice balance of sand and clay, but the denser subsoil could slow down water drainage. Grand firs need to breathe and won't tolerate sitting in waterlogged soil.",
+        "data_points": [
+          "Topsoil clay_content: 15.908333333333333%",
+          "Topsoil sand_content: 31.458333333333332%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not add lime, wood ash, or any other alkaline soil amendments.",
+        "why": "Your soil's 'surface pH mean' of 6.3 is already at the upper limit of what this acid-loving tree prefers. Making the soil more alkaline would stress the plant and could cause nutrient deficiencies.",
+        "data_points": [
+          "R value=3.78",
+          "surface pH mean: 6.3"
+        ]
+      },
+      {
+        "tip": "Do not walk or place heavy materials on the soil within the tree's drip line, especially when it's wet.",
+        "why": "You have a beautifully light and airy topsoil with a 'Bulk density' of just 1.14 g/cm³. Compaction will squeeze out the air, damage the structure, and make it hard for roots to get the oxygen they need to thrive.",
+        "data_points": [
+          "Topsoil Bulk density: 1.1449999999999998 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Wow, your Abies grandis has a big community! Let's focus on keeping it healthy to manage all those interactions.",
+    "data_summary": [
+      {
+        "insight": "Whoa, look at all those pathogen records! Your tree is known to interact with a huge number of fungi and insects, like Melanophila drummondi (53) and Aleurodiscus amorphus (28).",
+        "implication": "This just means we need to be extra vigilant about keeping your tree healthy and stress-free, because a happy tree can fight off diseases much better!",
+        "data_points": [
+          "pathogen: 982 records",
+          "Melanophila drummondi (53)",
+          "Aleurodiscus amorphus (28)"
+        ]
+      },
+      {
+        "insight": "The data shows only one creature that nibbles on it, Choristoneura occidentalis (3). The information is a little sparse, but it's a great starting point!",
+        "implication": "This gives us a specific pest to watch out for! It's a type of budworm, so we know exactly where to look for signs of trouble on new growth.",
+        "data_points": [
+          "herbivory: 3 records",
+          "Choristoneura occidentalis (3)"
+        ]
+      },
+      {
+        "insight": "There are no pollinator records, but don't worry! That's totally normal for a conifer like this one.",
+        "implication": "Abies grandis is wind-pollinated, so it doesn't need bees or butterflies to help it make cones. It just releases its pollen into the air. So cool!",
+        "data_points": [
+          "pollination: 0 records"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pathogen",
+        "tip": "Let's make sure your tree gets plenty of air! Prune away any dead or crowded branches to improve circulation around the trunk and needles.",
+        "why": "With so many fungal partners like Rasutoria abietis (25) and Lophodermium uncinatum (21), good airflow helps the foliage dry quickly and makes it harder for fungi to grow.",
+        "data_points": [
+          "Rasutoria abietis (25)",
+          "Lophodermium uncinatum (21)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "I'd check the new growth and buds in the spring for any signs of the Western spruce budworm, Choristoneura occidentalis.",
+        "why": "This is the main herbivore listed in the data. Catching any caterpillars early helps protect the tree's fresh new needles and keeps it looking its best!",
+        "data_points": [
+          "Choristoneura occidentalis (3)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Keep the soil just right! Aim for soil that's consistently moist but not soggy, and slightly acidic, just how it likes it.",
+        "why": "The data shows your tree thrives in 'fresh/mesic soils' and 'slightly acidic' conditions. A tree in its happy place is much stronger and more resilient to the many potential pathogens!",
+        "data_points": [
+          "M: fresh/mesic soils of average dampness",
+          "R: slightly acidic; between acid and moderately acid"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Try to avoid watering the needles and branches from overhead.",
+        "why": "Splashing water can spread fungal spores from one part of the tree to another, and with over 268 potential pathogen partners, we want to make their job as hard as possible!",
+        "data_points": [
+          "pathogen partners: 268"
+        ]
+      },
+      {
+        "tip": "Don't plant it in deep, dark shade or crowd it too closely with other firs.",
+        "why": "Your tree is a 'semi-shade plant,' so too much shade can weaken it. Plus, planting similar trees too close together can create a bridge for diseases like Aleurodiscus amorphus to spread easily from one tree to the next.",
+        "data_points": [
+          "L: semi-shade plant (>10% illumination, seldom full light)",
+          "Aleurodiscus amorphus (28)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "Meet your garden's patient, carbon-storing giant!",
+    "data_summary": [
+      {
+        "insight": "This tree is a classic 'Stress-Tolerator'—it's built for the long haul! The CSR mix shows it invests its energy in survival and endurance, not fast growth or recovery from damage.",
+        "implication": "This means it's a wonderfully low-maintenance, long-lived friend for your garden, but it needs a stable, undisturbed spot to truly thrive. It's a legacy tree, not a quick-fix plant.",
+        "data_points": [
+          "CSR mix: S=89.02%, C=10.98%, R=0.0%"
+        ]
+      },
+      {
+        "insight": "I love this part! While it's slow with nutrient cycling, it's an absolute champion at storing carbon for a very, very long time. Its woody structure is incredibly stable.",
+        "implication": "Planting *Abies grandis* is a powerful way to contribute to long-term carbon sequestration. It's a climate-positive choice that locks carbon away securely in its biomass.",
+        "data_points": [
+          "Carbon (recalcitrant): Very High",
+          "Carbon (total): High",
+          "Nutrient Cycling: Low"
+        ]
+      },
+      {
+        "insight": "The Ellenberg values, which are like a plant's environmental preferences, tell us it enjoys cooler sites with some shade, average moisture, and slightly acidic soil. It's not a fussy feeder, preferring intermediate fertility.",
+        "implication": "To make it happy, think of a woodland edge or a spot in your garden that doesn't bake in the sun all day or get waterlogged. It's perfect for creating a cool, forest-like feel. I see it doesn't have a common name in my data, but its scientific name, *Abies grandis*, is grand indeed!",
+        "data_points": [
+          "Light (L): 5.27 (semi-shade plant)",
+          "Moisture (M): 4.17 (fresh/mesic soils)",
+          "Acidity (R): 3.78 (slightly acidic)",
+          "Nutrients (N): 4.99 (intermediate fertility)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Plant it as a 'legacy tree' or the structural backbone of a large garden or woodland planting.",
+        "why": "Its 'Stress-Tolerator' strategy (S=89.02%) means it is incredibly long-lived and stable. It will become a permanent, majestic feature for generations to enjoy.",
+        "data_points": [
+          "CSR mix: S=89.02%"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Leverage its superpower for long-term carbon storage. It's one of the best choices for a climate-friendly garden.",
+        "why": "The 'Very High' rating for recalcitrant carbon means the carbon it captures in its wood is extremely stable and won't be released back into the atmosphere quickly. This is a huge ecosystem benefit!",
+        "data_points": [
+          "Carbon (recalcitrant): Very High",
+          "Carbon (total): High"
+        ]
+      },
+      {
+        "category": "planting-role",
+        "tip": "Use it in a mixed planting where it can start in semi-shade and grow up through other plants over time.",
+        "why": "Its preference for semi-shade (L=5.27) makes it a great candidate for an understory layer in its youth, eventually growing to become a magnificent canopy tree. It doesn't need to be the star right away.",
+        "data_points": [
+          "Light (L): 5.27 (semi-shade plant)"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Find a good spot and then practice 'benign neglect'. The less you disturb it, the happier it will be.",
+        "why": "With a Ruderal (disturbance-tolerance) score of zero (R=0.0%), this tree absolutely hates being disturbed, dug around, or heavily pruned. Plant it, mulch it, and let it be.",
+        "data_points": [
+          "CSR mix: R=0.0%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in a small, busy garden bed that you plan to change or replant frequently.",
+        "why": "Its complete intolerance for disturbance (R=0.0%) means that constant digging, soil compaction, or root competition from aggressive neighbors will cause it significant stress.",
+        "data_points": [
+          "CSR mix: R=0.0%"
+        ]
+      },
+      {
+        "tip": "Don't expect it to be a fast-growing privacy screen or a quick source of garden mulch.",
+        "why": "Its 'Low' rating for Net Primary Productivity (growth rate) and 'Low' decomposition rate mean it grows slowly and its needles break down very slowly, so it won't provide a quick visual barrier or rapidly build up your soil.",
+        "data_points": [
+          "NPP: Low",
+          "Decomposition: Low"
+        ]
+      }
+    ]
+  }
+}

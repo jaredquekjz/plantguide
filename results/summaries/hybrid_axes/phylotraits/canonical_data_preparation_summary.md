@@ -28,6 +28,7 @@
   - Legacy Gemini plant profiles: `data/stage7_validation_profiles/*.json` (405 qualitative dossiers)
   - Normalized axis-specific evidence: `data/stage7_normalized_profiles/*.json` (per-species L/M/R/N/T descriptors)
   - Reliability-scored alignment verdicts: `results/stage7_alignment/*.json` (per-species validation with confidence metrics)
+  - Gardening advice prompt outputs (Gemini climate/soil/interactions/strategy blocks, capped at top 10 interaction partners): `results/stage7_gardening_advice/{slug}.json` produced by `scripts/generate_stage7_gardening_advice.py`
 - **Comprehensive dataset (all components merged, 2025-10-04):**
   - Unified table with GBIF links: `data/comprehensive_dataset_no_soil_with_gbif.csv` (654 species × 243 columns)
   - Includes: traits, bioclim, GloBI, EIVE, Stage 7 labels (405 spp), Stage 7 reliability (10 spp), GBIF paths
@@ -38,6 +39,7 @@
   - Optimized for web display with actual EIVE values, reliability, GloBI, occurrence coordinates, bioclim climate data
   - Documentation: `results/summaries/hybrid_axes/phylotraits/Stage 5/encyclopedia_profile_system.md`
   - **Update 2025-10-05:** Fixed missing bioclim integration in profile generation pipeline (see Section 12)
+  - **Stage 8 (2025-10-08):** Profiles now include `stage7_gardening_advice` (Gemini climate/soil/interactions/strategy blocks) and the legacy `grounding_sources_*` provenance arrays. See Stage 5 documentation for the updated generation pipeline.
 - **Gardener trait summary (2025-10-05):**
   - Friendly display slice: `data/encyclopedia_gardening_traits.csv` (654 species × curated columns)
   - Built from TRY-augmented datasets via `scripts/build_encyclopedia_traits.py`
@@ -604,7 +606,7 @@ python3 src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py
 
 **5. Uploaded test profiles to Firestore:**
 ```bash
-python3 scripts/upload_test_profiles.py --yes
+python3 src/Stage_8_Encyclopedia/upload_test_profiles.py
 # ✓ Uploaded 10 test profiles to encyclopedia_ellenberg collection
 ```
 
@@ -658,8 +660,8 @@ To rebuild profiles with bioclim:
 python3 src/Stage_8_Encyclopedia/generate_encyclopedia_profiles.py
 
 # Upload test batch (10 species)
-python3 scripts/upload_test_profiles.py --yes
+python3 src/Stage_8_Encyclopedia/upload_test_profiles.py
 
 # Upload all (when ready)
-python3 scripts/upload_encyclopedia_to_firestore.py --yes
+python3 src/Stage_8_Encyclopedia/upload_encyclopedia_to_firestore.py
 ```

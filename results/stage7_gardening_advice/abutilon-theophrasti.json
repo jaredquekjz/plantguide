@@ -1,0 +1,363 @@
+{
+  "species": "Abutilon theophrasti",
+  "slug": "abutilon-theophrasti",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Let's find the perfect sunny and warm spot for your Abutilon theophrasti to thrive!",
+    "data_summary": [
+      {
+        "insight": "This plant is a true sun-worshipper! The data shows it's a 'light-loving plant' with a high L value of 7.71.",
+        "implication": "This means finding a spot with lots of direct sunlight is super important for its happiness and growth. It really needs that brightness to feel its best!",
+        "data_points": [
+          "L value=7.71 (light-loving plant (rarely <40% illumination))",
+          "Reliability: Medium"
+        ]
+      },
+      {
+        "insight": "It absolutely loves warmth! The data gives us a 'High' reliability rating that it prefers a 'warm-submediterranean to mediterranean core' climate.",
+        "implication": "Your plant will be happiest in warm conditions, similar to its native habitat where the average temperature is around 9.9°C. It's a warm-weather friend!",
+        "data_points": [
+          "T value=6.25 (warm-submediterranean to mediterranean core)",
+          "Reliability: High",
+          "Annual mean temperature: 9.9°C"
+        ]
+      },
+      {
+        "insight": "When it comes to water, this plant is pretty flexible! The data calls it 'moderately dry' (M value of 3.92), but also notes it can handle drought while appreciating consistent moisture.",
+        "implication": "This is great news! It means we don't have to stress too much about watering. We can aim for a happy medium—not too wet, and not bone-dry for long periods.",
+        "data_points": [
+          "M value=3.92 (moderately dry)",
+          "Reliability: Medium",
+          "Reason: mixed signals regarding moisture preferences"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Plant it in the sunniest spot you have! Think south-facing walls or open garden beds with no overhead shade.",
+        "why": "It's a 'light-loving plant' with an L value of 7.71, so it needs as much direct sun as it can get to really flourish and show off.",
+        "data_points": [
+          "L value=7.71 (light-loving plant)"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "Give it a warm, sheltered location. If you live in a cooler climate, planting it near a wall that absorbs and radiates heat is a fantastic idea!",
+        "why": "We have 'High' reliability that it prefers a 'warm-submediterranean to mediterranean core' climate (T value of 6.25). A little extra warmth will make it feel right at home!",
+        "data_points": [
+          "T value=6.25 (warm-submediterranean to mediterranean core)",
+          "Reliability: High"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Aim for soil that's consistently moist but not waterlogged. Water it well, then let the top inch or so of soil dry out before watering again.",
+        "why": "The data gives us 'mixed signals' with 'Medium' reliability, suggesting it likes consistent hydration but is also drought-tolerant. This balanced approach respects its flexible nature!",
+        "data_points": [
+          "Reliability: Medium",
+          "Reason: prefers consistent hydration but is also drought tolerant"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Make sure your soil has great drainage. Amending heavy clay soil with some compost can really help prevent soggy roots.",
+        "why": "Since it's described as a plant for 'moderately dry' sites (M value of 3.92), it won't like sitting in water. Good drainage mimics the conditions it's best adapted to.",
+        "data_points": [
+          "M value=3.92 (moderately dry; also in dry sites with humidity)"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in deep shade, like under a dense tree or on the north side of a building.",
+        "why": "The data is clear that it's a 'light-loving plant' (L value of 7.71) that 'rarely' grows in 'less than 40% illumination'. It will struggle and become weak without enough sun!",
+        "data_points": [
+          "L value=7.71 (light-loving plant (rarely <40% illumination))"
+        ]
+      },
+      {
+        "tip": "Don't let the soil become a swamp! Avoid constant, heavy watering that leaves the ground soggy for days.",
+        "why": "Its preference for 'moderately dry' conditions (M value of 3.92) means it's not adapted to having wet feet and could be prone to root rot in waterlogged soil.",
+        "data_points": [
+          "M value=3.92 (moderately dry)"
+        ]
+      },
+      {
+        "tip": "Don't leave it exposed to harsh, freezing winters without protection, especially if you're in a colder zone.",
+        "why": "It's a 'warm-submediterranean' plant (T value of 6.25) and the data shows its coldest month low in its native range is just 2.27°C. It's not built for deep freezes!",
+        "data_points": [
+          "T value=6.25 (warm-submediterranean to mediterranean core)",
+          "Coldest month low: 2.27°C"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's get your Abutilon theophrasti a happy home in rich, slightly acidic, and well-structured soil!",
+    "data_summary": [
+      {
+        "insight": "Hooray! This plant loves a soil that's slightly acidic to neutral, and your garden is a perfect match!",
+        "implication": "This means you won't have to fight your soil's natural tendencies. The pH is just right for your plant to soak up all the nutrients it needs to thrive.",
+        "data_points": [
+          "R value=6.45 (weakly acidic to weakly basic)",
+          "Topsoil pH mean 6.15"
+        ]
+      },
+      {
+        "insight": "Your soil is naturally fertile and packed with goodies! It has lots of organic matter and a high capacity to hold onto nutrients.",
+        "implication": "This is a fantastic starting point for a hungry plant like this one. The data suggests it likes 'moderately rich soils', and your topsoil has plenty of 'Total nitrogen' (5.127 g/kg) and a high 'Nutrient capacity' (27.25 cmol(+)/kg) to get it started.",
+        "data_points": [
+          "N value=6.21 (moderately rich soils)",
+          "Topsoil organic matter mean 57.55 g/kg",
+          "Topsoil nitrogen mean 5.127 g/kg",
+          "Nutrient capacity mean 27.25 cmol(+)/kg"
+        ]
+      },
+      {
+        "insight": "The top layer of your soil is wonderfully light and airy, but it gets much denser and more clay-heavy deeper down.",
+        "implication": "This means the surface is perfect for young roots, but we'll want to make sure the plant can push down into the tougher subsoil. This affects how we plant and water to build a strong, resilient root system!",
+        "data_points": [
+          "Topsoil bulk density mean 1.18 g/cm³",
+          "Subsoil bulk density mean 1.4425 g/cm³",
+          "Topsoil clay content mean 28.3%",
+          "Subsoil clay content mean 33.2%"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pH",
+        "tip": "Keep that perfect pH just as it is! You can check it once a year to be sure.",
+        "why": "Your soil's 'Topsoil pH mean 6.15' is right in the sweet spot for this plant, which has a preferred 'R value=6.45'. No need to add anything that would change it.",
+        "data_points": [
+          "Topsoil pH mean 6.15",
+          "R value=6.45"
+        ]
+      },
+      {
+        "category": "fertility",
+        "tip": "Give your plant a boost with a top-dressing of rich compost each spring.",
+        "why": "While your soil is already fertile, the data hints this plant might be even hungrier than its 'N value=6.21 (moderately rich soils)' suggests. A little extra food will ensure it has all the energy it needs for lush growth!",
+        "data_points": [
+          "N value=6.21 (moderately rich soils)",
+          "reliability_reason: ...prefers fertile, nitrogen-rich soils..."
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Maintain that wonderful soil life by adding a 2-inch layer of organic mulch, like shredded leaves or aged bark.",
+        "why": "Your soil is already blessed with a high 'Topsoil organic matter mean 57.55 g/kg'. Mulching protects this precious resource, keeps the soil moist, and feeds the helpful microbes that keep your soil healthy.",
+        "data_points": [
+          "Topsoil organic matter mean 57.55 g/kg"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When planting, loosen the soil a little deeper than the pot and mix in some compost.",
+        "why": "This will help break up the transition to the denser subsoil. Your topsoil is light and fluffy ('Bulk density mean 1.18 g/cm³'), but it gets much more packed below ('Subsoil bulk density mean 1.4425 g/cm³'). This gives roots an easier path downward!",
+        "data_points": [
+          "Topsoil bulk density mean 1.18 g/cm³",
+          "Subsoil bulk density mean 1.4425 g/cm³"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not add lime or wood ash to the soil around this plant.",
+        "why": "These materials make the soil more alkaline. Your soil's 'Topsoil pH mean 6.15' is already ideal, and raising it could prevent your plant from absorbing the nutrients it needs.",
+        "data_points": [
+          "Topsoil pH mean 6.15",
+          "R value=6.45 (weakly acidic to weakly basic)"
+        ]
+      },
+      {
+        "tip": "Try not to walk on the garden bed, especially when the soil is wet.",
+        "why": "Your topsoil is beautifully light, but the subsoil is already quite dense ('Subsoil bulk density mean 1.4425 g/cm³'). Compacting the surface will reduce air space and make it harder for water and roots to get through.",
+        "data_points": [
+          "Topsoil bulk density mean 1.18 g/cm³",
+          "Subsoil bulk density mean 1.4425 g/cm³"
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Let's help your Velvetleaf thrive by welcoming its friends and keeping an eye on its pests!",
+    "data_summary": [
+      {
+        "insight": "Your plant is visited by a lovely mix of different pollinators, including bees and flies!",
+        "implication": "This is wonderful news! It means your plant is supporting local wildlife, and you can expect it to produce seeds if you let it flower.",
+        "data_points": [
+          "Apis mellifera (2)",
+          "Andrena erythrogaster (1)",
+          "Eristalis flavipes (1)"
+        ]
+      },
+      {
+        "insight": "It looks like one little insect in particular, a leaf-mining fly, really likes to munch on the leaves.",
+        "implication": "This means we should keep an eye out for its tell-tale squiggly lines inside the leaves. The plant's preference for rich soil might make its foliage extra tasty for this pest!",
+        "data_points": [
+          "Calycomyza malvae (10)",
+          "N: moderately rich soils"
+        ]
+      },
+      {
+        "insight": "Wow, there are a lot of records for diseases, especially fungal ones like rusts and leaf spots!",
+        "implication": "This tells me your plant might be prone to getting sick, especially in damp weather. Good air circulation and keeping the leaves dry will be super important for its health.",
+        "data_points": [
+          "Puccinia heterospora (92)",
+          "Plasmopara skvortzovii (28)",
+          "Alternaria abutilonis (27)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pollination",
+        "tip": "Let's plant a little buffet for the bees and flies! Adding flowers like asters, cosmos, or sweet alyssum nearby would be fantastic.",
+        "why": "Your plant already attracts a fun mix of helpful insects like the mining bee `Andrena erythrogaster (1)` and the hoverfly `Eristalis flavipes (1)`. Giving them more food sources will encourage them to stick around your whole garden!",
+        "data_points": [
+          "Andrena erythrogaster (1)",
+          "Eristalis flavipes (1)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "I'd suggest checking the leaves weekly for the squiggly trails left by the leaf-miner `Calycomyza malvae`.",
+        "why": "Catching these miners early is easy! You can just pluck off the affected leaves to stop them from spreading, which keeps your plant looking great without needing any sprays.",
+        "data_points": [
+          "Calycomyza malvae (10)"
+        ]
+      },
+      {
+        "category": "pathogen",
+        "tip": "When you plant, make sure to give your Velvetleaf plenty of space for air to move around, and try to water the soil instead of the leaves.",
+        "why": "With so many fungal pathogens like `Puccinia heterospora` on record, keeping the leaves dry is our best defense. Good airflow helps them dry off quickly after rain, preventing diseases from taking hold.",
+        "data_points": [
+          "Puccinia heterospora (92)",
+          "Plasmopara skvortzovii (28)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Feed the soil with compost to keep your plant happy and strong.",
+        "why": "The data says it likes 'moderately rich soils'. Using compost provides steady nutrients, which is better than a big dose of chemical fertilizer that can cause weak, floppy growth and attract even more pests and diseases!",
+        "data_points": [
+          "N: moderately rich soils"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please try not to use overhead sprinklers that get the leaves all wet.",
+        "why": "Many of the recorded fungal diseases, like the downy mildew `Plasmopara skvortzovii (28)`, just love to grow and spread on damp leaf surfaces. Watering the base of the plant is much safer!",
+        "data_points": [
+          "Plasmopara skvortzovii (28)"
+        ]
+      },
+      {
+        "tip": "Don't plant it too close to other members of the mallow family, like hollyhocks, hibiscus, or other Abutilon species.",
+        "why": "Pests and diseases can easily jump between related plants. Since we know your plant is a target for the leaf miner `Calycomyza malvae` and the rust `Puccinia heterospora`, keeping it separate from its relatives can help protect everyone.",
+        "data_points": [
+          "Calycomyza malvae (44)",
+          "Puccinia heterospora (92)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "A Fast-Growing Powerhouse for Sunny, Fertile Spots!",
+    "data_summary": [
+      {
+        "insight": "This plant has a strong 'Competitor' personality! Think of it like an energetic athlete who grows super fast and loves to win.",
+        "implication": "This means it thrives when given plenty of resources like sun, water, and nutrients. It will quickly fill a space, which is fantastic for getting a new garden bed established in a hurry!",
+        "data_points": [
+          "CSR mix C=64.31%, S=14.34%, R=21.35%"
+        ]
+      },
+      {
+        "insight": "Looking at its preferences, this plant is a total sun-worshipper that enjoys warmth and good soil. It's not too fussy about soil pH, which is great news!",
+        "implication": "To keep it happy, you'll want to plant it in your sunniest spots with fertile soil. It's perfect for warm summer gardens. I see it doesn't have a common name in my data, so we'll just call it by its scientific name, Abutilon theophrasti!",
+        "data_points": [
+          "EIVE Light (L) = 7.71",
+          "EIVE Temperature (T) = 6.25",
+          "EIVE Nutrients (N) = 6.21",
+          "EIVE Reaction (R) = 6.45"
+        ]
+      },
+      {
+        "insight": "Wow, this plant is an ecosystem superstar! It scores 'Very High' for building biomass, helping things decompose, and cycling nutrients.",
+        "implication": "It's an amazing helper for building healthy soil. It rapidly pulls up nutrients and, when it breaks down, makes them available for other plants. It's a real team player for soil life!",
+        "data_points": [
+          "NPP (Net Primary Production) rating: 'Very High'",
+          "Decomposition rating: 'Very High'",
+          "Nutrient Cycling rating: 'Very High'"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Use it as a 'pioneer' plant in a new or recently cleared garden bed.",
+        "why": "Its high Competitor score (C=64.31%) and 'Very High' NPP rating mean it will establish incredibly fast, creating a lush, green look in a single season and preparing the soil for other plants.",
+        "data_points": [
+          "CSR mix C=64.31%",
+          "NPP rating: 'Very High'"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Plant it to actively build your soil's health and fertility. It's a perfect 'chop-and-drop' green manure.",
+        "why": "With 'Very High' ratings for decomposition and nutrient cycling, its leaves and stems break down quickly, feeding soil microbes and releasing nutrients right where you need them.",
+        "data_points": [
+          "Decomposition rating: 'Very High'",
+          "Nutrient Cycling rating: 'Very High'"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Give it the best spot you've got: full sun and rich, fertile soil.",
+        "why": "Its Ellenberg scores show it's a 'light-loving plant' (L=7.71) that prefers 'moderately rich soils' (N=6.21). Providing these conditions will let its competitive nature shine!",
+        "data_points": [
+          "EIVE Light (L) = 7.71",
+          "EIVE Nutrients (N) = 6.21"
+        ]
+      },
+      {
+        "category": "disturbance",
+        "tip": "Place it in areas that get turned over each year, like a vegetable patch or an annual flower display.",
+        "why": "Its mix of Competitor (C=64.31%) and Ruderal (R=21.35%) traits means it can handle disturbance and will happily re-establish itself in freshly prepared soil each spring.",
+        "data_points": [
+          "CSR mix C=64.31%, R=21.35%"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in deep shade or poor, neglected soil.",
+        "why": "As a strong Competitor (C=64.31%) that loves sun (L=7.71), it will really struggle without enough light and nutrients. It needs fuel to power its fast growth!",
+        "data_points": [
+          "CSR mix C=64.31%",
+          "EIVE Light (L) = 7.71"
+        ]
+      },
+      {
+        "tip": "Don't rely on it for long-term carbon storage in the soil.",
+        "why": "While it's great at capturing carbon in its biomass, its 'Very Low' rating for recalcitrant carbon means that carbon is released back into the atmosphere quickly as it decomposes. It's a sprinter, not a marathon runner, for carbon sequestration.",
+        "data_points": [
+          "Carbon Recalcitrant rating: 'Very Low'"
+        ]
+      },
+      {
+        "tip": "Avoid planting it right next to small, slow-growing, or delicate plants.",
+        "why": "Its powerful Competitor strategy (C=64.31%) means it can easily outgrow and overshadow less vigorous neighbors, hogging all the sun and nutrients.",
+        "data_points": [
+          "CSR mix C=64.31%"
+        ]
+      }
+    ]
+  }
+}

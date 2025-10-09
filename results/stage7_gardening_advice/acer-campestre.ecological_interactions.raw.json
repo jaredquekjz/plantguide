@@ -1,0 +1,67 @@
+{
+  "payload": {
+    "species": "Acer campestre",
+    "common_name": null,
+    "slug": "acer-campestre",
+    "eive": {
+      "values": {
+        "L": 5.05,
+        "M": 4.22,
+        "R": 6.8,
+        "N": 5.79,
+        "T": 4.98
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "weakly acidic to weakly basic; absent from very acid",
+        "N": "moderately rich soils",
+        "T": "submontane / colline; mild montane"
+      },
+      "predicted": {
+        "L": 10.0,
+        "M": 4.585370788422885,
+        "N": 5.693270745118862,
+        "R": 6.360476380199899,
+        "T": 4.83572118865559
+      }
+    },
+    "interactions": {
+      "pollination": {
+        "records": 144,
+        "partners": 80,
+        "top_partners": [
+          "Epistrophe eligans (3)",
+          "Eupeodes luniger (3)",
+          "Andrena nigroaenea (3)",
+          "Andrena dorsata (3)",
+          "Andrena nitida (3)"
+        ]
+      },
+      "herbivory": {
+        "records": 163,
+        "partners": 77,
+        "top_partners": [
+          "Aceria myriadeum (11)",
+          "Aceria macrochela (7)",
+          "Stigmella aceris (7)",
+          "Acericerus vittifrons (7)",
+          "Sawadaea bicornis (6)"
+        ]
+      },
+      "pathogen": {
+        "records": 1569,
+        "partners": 287,
+        "top_partners": [
+          "Sawadaea bicornis (188)",
+          "Rhytisma acerinum (72)",
+          "Marssonina truncatula (58)",
+          "Neoseiulella aceri (48)",
+          "Phyllactinia guttata (42)"
+        ]
+      }
+    },
+    "notes": null
+  },
+  "raw_text": null
+}

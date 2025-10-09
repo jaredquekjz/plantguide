@@ -1,0 +1,51 @@
+{
+  "payload": {
+    "species": "Abies grandis",
+    "common_name": null,
+    "slug": "abies-grandis",
+    "eive": {
+      "values": {
+        "L": 5.27,
+        "M": 4.17,
+        "R": 3.78,
+        "N": 4.99,
+        "T": 3.83
+      },
+      "labels": {
+        "L": "semi-shade plant (>10% illumination, seldom full light)",
+        "M": "fresh/mesic soils of average dampness",
+        "R": "slightly acidic; between acid and moderately acid",
+        "N": "intermediate fertility",
+        "T": "moderately cool to moderately warm (montane-submontane)"
+      },
+      "predicted": {}
+    },
+    "interactions": {
+      "pollination": {
+        "records": 0,
+        "partners": 0,
+        "top_partners": null
+      },
+      "herbivory": {
+        "records": 3,
+        "partners": 1,
+        "top_partners": [
+          "Choristoneura occidentalis (3)"
+        ]
+      },
+      "pathogen": {
+        "records": 982,
+        "partners": 268,
+        "top_partners": [
+          "Melanophila drummondi (53)",
+          "Aleurodiscus amorphus (28)",
+          "Rasutoria abietis (25)",
+          "Euantennaria alaskensis (24)",
+          "Lophodermium uncinatum (21)"
+        ]
+      }
+    },
+    "notes": null
+  },
+  "raw_text": null
+}

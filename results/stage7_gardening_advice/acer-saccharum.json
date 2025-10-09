@@ -1,0 +1,345 @@
+{
+  "species": "Acer saccharum",
+  "slug": "acer-saccharum",
+  "climate_advice": {
+    "focus": "climate",
+    "headline": "Your Sugar Maple is a sturdy friend that loves a shady spot and consistently moist soil!",
+    "data_summary": [
+      {
+        "insight": "Let's look at light! The data gives a light value of 2.97, which points to it being a 'shade plant'. But here's the interesting part: the reliability is 'Medium' because it's actually super flexible!",
+        "implication": "This means that while your Sugar Maple will be happiest with some shade, especially when it's young, it can also handle full sun or full shade as it gets older. It's very adaptable!",
+        "data_points": [
+          "L value=2.97 (shade plant)",
+          "L reliability='Medium'",
+          "Reason: 'tolerates full sun, partial shade, and full shade, with seedlings requiring partial shade.'"
+        ]
+      },
+      {
+        "insight": "For moisture, your plant is a bit of a Goldilocks! The moisture value of 5.46 means it likes things 'constantly moist or damp but not wet'.",
+        "implication": "It doesn't want its roots to dry out, but it also doesn't want them sitting in a puddle. We'll need to find that perfect, happy medium to keep it thriving.",
+        "data_points": [
+          "M value=5.46 (constantly moist or damp but not wet)",
+          "M reliability='Medium'",
+          "Reason: 'prefers moist, well-drained soils and is sensitive to flooding.'"
+        ]
+      },
+      {
+        "insight": "This tree is tough and used to seasons! The data shows it's native to places with a big annual temperature range of 26.06°C.",
+        "implication": "It's totally comfortable with both warm summers and cold winters, so you don't need to give it special winter protection once it's established. It knows how to handle the cold!",
+        "data_points": [
+          "Annual temperature range=26.06°C",
+          "T value=5.5 (warm; colline, extending to mild northern areas)",
+          "T reliability='Medium'",
+          "Reason: 'hardiness zone range extends from cool to mild temperatures.'"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "light",
+        "tip": "Plant it where it will get some afternoon shade, especially if it's a young tree.",
+        "why": "The data says seedlings really need shade to get started, even though mature trees are more flexible. This gives it the best of both worlds!",
+        "data_points": [
+          "L reliability reason: 'seedlings requiring partial shade'"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Aim to keep the soil consistently moist, like a wrung-out sponge.",
+        "why": "This matches its ideal conditions perfectly! The moisture value is 5.46, for 'constantly moist or damp', and it's used to areas with high annual rainfall (1160.0 mm).",
+        "data_points": [
+          "M value=5.46 (constantly moist or damp but not wet)",
+          "Annual precipitation=1160.0 mm"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Make sure the soil has good drainage.",
+        "why": "It loves moisture, but not soggy feet! The data is very clear that it's 'sensitive to flooding' and prefers soil that is 'not wet'.",
+        "data_points": [
+          "M reliability reason: 'sensitive to flooding'",
+          "M label: 'constantly moist or damp but not wet'"
+        ]
+      },
+      {
+        "category": "temperature",
+        "tip": "Don't worry about cold winters! This tree is built for them.",
+        "why": "It's adapted to a huge annual temperature range (26.06°C) and grows in hardiness zones from 3 to 8, showing it can handle some serious chill.",
+        "data_points": [
+          "Annual temperature range=26.06°C",
+          "T reliability reason: 'grows in hardiness zones 3-8'"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not plant it in a boggy, waterlogged area of your garden.",
+        "why": "It needs moisture, but the data specifically warns that it's 'sensitive to flooding' and does not like soil that is constantly 'wet'.",
+        "data_points": [
+          "M reliability reason: 'sensitive to flooding'",
+          "M label: '...but not wet'"
+        ]
+      },
+      {
+        "tip": "Try not to let the soil become bone-dry for long stretches, especially in summer.",
+        "why": "This tree really counts on steady moisture to be happy, as shown by its preference for 'constantly moist or damp' conditions (M value of 5.46).",
+        "data_points": [
+          "M value=5.46 (constantly moist or damp but not wet)"
+        ]
+      }
+    ]
+  },
+  "soil_advice": {
+    "focus": "soil",
+    "headline": "Let's build a rich, slightly acidic, and airy home for your magnificent Acer saccharum!",
+    "data_summary": [
+      {
+        "insight": "The soil data shows a lovely, slightly acidic pH, starting around a mean of `5.54` at the surface. This is fantastic news because we know your Sugar Maple loves a pH range of `5.5 to 7.3`!",
+        "implication": "This means your soil is likely already in the perfect zone for your tree to soak up all the nutrients it needs to thrive. You probably won't need to make any big adjustments!",
+        "data_points": [
+          "\"pH\": {\"surface_0_5cm\": {\"mean\": 5.5407960199005}}",
+          "\"ideal pH range of 5.5 to 7.3\""
+        ]
+      },
+      {
+        "insight": "Wow, this soil is packed with goodies! The topsoil is rich in organic matter (`43.06 g/kg`) and has a great ability to hold onto food for the tree, with a `nutrient_capacity` of `19.12 cmol(+)/kg`. This matches perfectly with the fact that Sugar Maples prefer fertile soils.",
+        "implication": "To keep your tree happy and well-fed, your main job will be to maintain this wonderful richness. Think of it as keeping the pantry full for your leafy friend!",
+        "data_points": [
+          "\"Organic matter... topsoil: {\"mean\": 43.06...}",
+          "\"Nutrient capacity... topsoil: {\"mean\": 19.12...}",
+          "\"prefers fertile soils\""
+        ]
+      },
+      {
+        "insight": "While the topsoil is nice and fluffy, it gets pretty dense deeper down. The soil's `bulk_density` jumps from a comfortable `1.37 g/cm³` near the surface to a more compacted `1.64 g/cm³` in the subsoil.",
+        "implication": "This density can make it a little tough for roots to stretch out and for water to drain away. We'll want to be careful to keep the soil as light and airy as possible, especially when the tree is establishing itself.",
+        "data_points": [
+          "\"bulk_density... topsoil: {\"mean\": 1.37...}",
+          "\"bulk_density... subsoil: {\"mean\": 1.64...}"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "amendments",
+        "tip": "Every spring, spread a 2-inch layer of compost or well-rotted leaf mulch over the root zone, keeping it away from the trunk.",
+        "why": "This is the best way to mimic its natural forest floor home! It will replenish the high levels of organic matter (`43.06 g/kg`) and nitrogen (`5.09 g/kg`) that its native topsoil provides.",
+        "data_points": [
+          "\"Organic matter... topsoil: {\"mean\": 43.062901439645636}",
+          "\"Total nitrogen... topsoil: {\"mean\": 5.0933333333333355}"
+        ]
+      },
+      {
+        "category": "structure",
+        "tip": "When planting, dig a hole that's two to three times wider than the root ball and mix plenty of compost into the soil you use to fill it back in.",
+        "why": "This gives the roots a fantastic head start by creating a loose, rich zone to grow into, helping them push through the naturally dense subsoil, which has a `bulk_density` of `1.64 g/cm³`.",
+        "data_points": [
+          "\"bulk_density... subsoil: {\"mean\": 1.640091362126245}"
+        ]
+      },
+      {
+        "category": "pH",
+        "tip": "Test your garden's soil pH before planting and then every few years. If it's much higher than 7.0, you can gently lower it with elemental sulfur.",
+        "why": "Your Sugar Maple is happiest in that slightly acidic sweet spot of `5.5 to 7.3`. Keeping the pH in this range ensures it can access all the available nutrients in the soil.",
+        "data_points": [
+          "\"ideal pH range of 5.5 to 7.3\""
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Water your tree deeply and infrequently, rather than giving it little sips every day. Let the top few inches of soil dry out between waterings.",
+        "why": "This encourages the roots to grow deep in search of water, moving past the topsoil and into the subsoil, which is important for anchoring the tree and finding moisture during dry spells.",
+        "data_points": [
+          "\"subsoil... mean\": 1.640091362126245"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Do not walk, drive, or place heavy objects over the tree's root zone.",
+        "why": "The subsoil is already quite dense, with a `bulk_density` of `1.64 g/cm³`. Adding more weight will compact it further, squeezing out precious air pockets that roots need to breathe and grow.",
+        "data_points": [
+          "\"bulk_density... subsoil: {\"mean\": 1.640091362126245}"
+        ]
+      },
+      {
+        "tip": "Avoid using 'liming' products or fertilizers designed to make soil more alkaline.",
+        "why": "Your tree needs slightly acidic conditions to thrive, as its ideal pH is between `5.5 to 7.3`. Making the soil too alkaline can 'lock up' nutrients, essentially starving the tree even if the food is present.",
+        "data_points": [
+          "\"ideal pH range of 5.5 to 7.3\""
+        ]
+      }
+    ]
+  },
+  "ecological_interactions_advice": {
+    "focus": "ecological_interactions",
+    "headline": "Let's help your Sugar Maple team up with its friends and stay strong against pests!",
+    "data_summary": [
+      {
+        "insight": "Your Sugar Maple has some surprising friends helping it make seeds! It's not just bees; it's visited by squirrels like Tamiasciurus hudsonicus (6) and birds like the Dryocopus pileatus (3).",
+        "implication": "This means your tree is a super important part of the local food web, supporting a wonderful variety of wildlife beyond just insects!",
+        "data_points": [
+          "Tamiasciurus hudsonicus (6)",
+          "Dryocopus pileatus (3)",
+          "Colletes inaequalis (2)"
+        ]
+      },
+      {
+        "insight": "It looks like a few critters might enjoy nibbling on your maple. The most frequent visitors recorded are a type of grouse, Bonasa (51), and the caterpillar of a little moth, Paraclemensia acerifoliella (26).",
+        "implication": "Knowing who might be snacking on the leaves helps us watch for any signs of damage, especially on young trees, so we can keep your maple growing healthy and strong.",
+        "data_points": [
+          "Bonasa (51)",
+          "Paraclemensia acerifoliella (26)"
+        ]
+      },
+      {
+        "insight": "Wow, there are a lot of records for diseases and tiny pests! The data is a bit sparse overall, but it shows over 6,000 observations. The most common issues are caused by mites like Vasates aceriscrumena (177) and fungi like Taphrina sacchari (163).",
+        "implication": "This doesn't mean your tree will definitely get sick, but it does tell us to be extra watchful about its health, making sure it has good air circulation and isn't stressed.",
+        "data_points": [
+          "Vasates aceriscrumena (177)",
+          "Taphrina sacchari (163)",
+          "Septoria saccharina (99)"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "pollination",
+        "tip": "Let's make your garden a haven for all your maple's helpers! You could leave some fallen leaves for ground-nesting bees like Colletes inaequalis (2) and add a bird bath to attract feathered friends.",
+        "why": "By supporting the whole team of visitors—birds, bees, and even squirrels—you're helping your maple and building a healthier, more exciting garden ecosystem.",
+        "data_points": [
+          "Colletes inaequalis (2)",
+          "Dryocopus pileatus (3)",
+          "Sitta carolinensis (2)"
+        ]
+      },
+      {
+        "category": "herbivory",
+        "tip": "I'd recommend taking a weekly 'health walk' around your maple. Look for curled or spotted leaves, which could be a sign of the mite Vasates aceriscrumena (177) or the fungus Taphrina sacchari (163).",
+        "why": "Catching these things early makes them much easier to manage! A happy, healthy tree is much better at fending off pests and diseases all by itself.",
+        "data_points": [
+          "Vasates aceriscrumena (177)",
+          "Taphrina sacchari (163)"
+        ]
+      },
+      {
+        "category": "integrated-management",
+        "tip": "Let's make sure your maple's home is just right! Ensure the soil stays 'constantly moist or damp but not wet' and has good drainage. You can also prune branches to open up the canopy for better airflow.",
+        "why": "The data shows your tree can host many fungal pathogens. Keeping it from getting water-stressed and improving air circulation are two of the best ways to prevent fungi from taking hold.",
+        "data_points": [
+          "constantly moist or damp but not wet",
+          "Taphrina sacchari (163)",
+          "Septoria saccharina (99)"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Please try not to let the soil get waterlogged or splash water on the leaves when you're watering.",
+        "why": "Your maple prefers moist, not soggy, soil. More importantly, many of the recorded fungal pathogens, like Taphrina sacchari (163), thrive in damp conditions, and wet leaves can help them spread.",
+        "data_points": [
+          "constantly moist or damp but not wet",
+          "Taphrina sacchari (163)"
+        ]
+      },
+      {
+        "tip": "Be careful to avoid wounding the trunk or major branches with things like lawnmowers or string trimmers.",
+        "why": "Wounds can be open doors for wood-decay fungi like Oxyporus populinus (95). Keeping the bark intact is a super important defense for your maple's long-term health!",
+        "data_points": [
+          "Oxyporus populinus (95)"
+        ]
+      }
+    ]
+  },
+  "strategy_services_advice": {
+    "focus": "strategy_services",
+    "headline": "The Sugar Maple: A Steady, Balanced Friend for Your Garden's Future",
+    "data_summary": [
+      {
+        "insight": "I love how balanced this tree is! Its CSR strategy shows it's almost equally a 'Competitor' (C=39.28%) and a 'Stress-Tolerator' (S=39.0%), with less of a 'Ruderal' or pioneer spirit (R=21.72%). Think of it as a calm, long-term planner.",
+        "implication": "This means it's not a super-fast grower that pops up after a disturbance. Instead, it's a magnificent tree that establishes itself steadily and holds its ground for the long haul, creating a stable environment.",
+        "data_points": [
+          "CSR mix C=39.28%, S=39.0%, R=21.72%"
+        ]
+      },
+      {
+        "insight": "The data tells us it loves a specific kind of home. It's happiest in 'constantly moist or damp but not wet' soil (M=5.46) and prefers warmer climates (T=5.5). It's also quite adaptable with light, starting as a 'shade plant' (L=2.97) but growing to tolerate sun. We don't have specific data here for soil pH or nutrients, but what we have is a great start!",
+        "implication": "For a happy Sugar Maple, the key is getting the moisture right. This isn't a plant for a sun-baked, dry spot or a soggy corner. It wants that 'just right' condition, which you can help create and maintain.",
+        "data_points": [
+          "EIVE M=5.46: constantly moist or damp but not wet",
+          "EIVE L=2.97: shade plant (mostly <5% relative illumination)",
+          "EIVE T=5.5: warm; colline, extending to mild northern areas",
+          "EIVE R & N: null"
+        ]
+      },
+      {
+        "insight": "This tree is a fantastic team player! It scores a solid 'Moderate' rating across the board for things like nutrient cycling, decomposition, and erosion protection. It contributes steadily to the health of the whole garden ecosystem.",
+        "implication": "While it might not be a superstar in one single area, its strength is its reliability. It helps create a balanced, self-sustaining system by keeping nutrients and soil in place, making it a wonderful foundation for a thriving plant community.",
+        "data_points": [
+          "Nutrient Cycling: Moderate",
+          "Erosion Protection: Moderate",
+          "Decomposition: Moderate"
+        ]
+      }
+    ],
+    "recommendations": [
+      {
+        "category": "planting-role",
+        "tip": "Plant the Sugar Maple as a long-term 'anchor' tree in your design. It will become a majestic centerpiece or backbone for a woodland-style garden.",
+        "why": "Its balanced Competitor-Stress-Tolerator strategy (C=39.28%, S=39.0%) means it's built for longevity and stability, not rapid, short-term growth. It will gracefully mature into a legacy tree.",
+        "data_points": [
+          "CSR mix C=39.28%, S=39.0%"
+        ]
+      },
+      {
+        "category": "maintenance",
+        "tip": "Give it a home with evenly moist, well-drained soil and apply a generous layer of mulch around its base, especially when young.",
+        "why": "This directly caters to its preference for 'constantly moist or damp but not wet' conditions (M=5.46). Mulch helps regulate soil moisture and temperature, creating the stable environment it loves.",
+        "data_points": [
+          "EIVE M=5.46: constantly moist or damp but not wet"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Use its future canopy to your advantage! Plan a beautiful understory of shade-loving perennials and shrubs that will thrive once the tree is established.",
+        "why": "The data indicates it's a 'shade plant' (L=2.97), especially in its youth, and will eventually cast significant shade. This creates a perfect microclimate for a whole community of other plants, boosting biodiversity.",
+        "data_points": [
+          "EIVE L=2.97: shade plant (mostly <5% relative illumination)"
+        ]
+      },
+      {
+        "category": "ecosystem-service",
+        "tip": "Pair it with other plants to create a rich, layered garden. Its presence helps build a healthy, functioning ecosystem.",
+        "why": "With 'Moderate' ratings for so many ecosystem services like nutrient cycling and retention, it acts as a system stabilizer. It does the important background work of keeping the garden community healthy and resilient.",
+        "data_points": [
+          "Nutrient Cycling: Moderate",
+          "Nutrient Retention: Moderate"
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "tip": "Don't plant it in a highly disturbed, weedy area and expect it to fend for itself right away.",
+        "why": "It has a low 'Ruderal' score (R=21.72%), meaning it's not an aggressive pioneer. It needs a helping hand to get established and can be outcompeted by fast-growing weeds in the beginning.",
+        "data_points": [
+          "CSR mix R=21.72%"
+        ]
+      },
+      {
+        "tip": "Avoid planting it in locations that are either waterlogged or prone to drought and compaction.",
+        "why": "This tree is very clear about its needs! It wants 'constantly moist or damp but not wet' soil (M=5.46). Extreme conditions will stress it out, despite its good Stress-Tolerator score.",
+        "data_points": [
+          "EIVE M=5.46: constantly moist or damp but not wet"
+        ]
+      },
+      {
+        "tip": "If your main goal is super-fast carbon storage, you might want to look at other species to plant alongside this one.",
+        "why": "Its ratings for carbon storage in its biomass are 'Low'. It contributes in many other amazing ways, but it may not be the fastest tree for this specific job.",
+        "data_points": [
+          "Carbon Biomass: Low",
+          "Carbon Total: Low"
+        ]
+      }
+    ]
+  }
+}
