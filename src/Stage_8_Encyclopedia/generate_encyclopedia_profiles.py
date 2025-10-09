@@ -16,7 +16,7 @@ import csv
 import json
 import logging
 from collections import defaultdict
-from typing import Optional, Dict, List
+from typing import Optional, Dict, Iterable, List
 
 import pandas as pd
 
@@ -24,7 +24,8 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-COMPREHENSIVE = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
+COMPREHENSIVE_PRIMARY = REPO_ROOT / "data/comprehensive_plant_dataset.csv"
+COMPREHENSIVE_FALLBACK = REPO_ROOT / "data/comprehensive_dataset_no_soil_with_gbif.csv"
 DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
 CLASSIFICATION = REPO_ROOT / "data/classification.csv"
 GARDENING_TRAITS = REPO_ROOT / "data/encyclopedia_gardening_traits.csv"
@@ -44,8 +45,11 @@ class EncyclopediaProfileGenerator:
     def __init__(self):
         """Load comprehensive dataset and dimensions."""
         logger.info("Loading comprehensive dataset...")
-        self.df = pd.read_csv(COMPREHENSIVE)
-        logger.info(f"  Loaded {len(self.df)} species")
+        dataset_path = COMPREHENSIVE_PRIMARY if COMPREHENSIVE_PRIMARY.exists() else COMPREHENSIVE_FALLBACK
+        if dataset_path == COMPREHENSIVE_FALLBACK and not COMPREHENSIVE_PRIMARY.exists():
+            logger.info(f"  Canonical dataset missing at {COMPREHENSIVE_PRIMARY}; using fallback {COMPREHENSIVE_FALLBACK.name}")
+        self.df = pd.read_csv(dataset_path)
+        logger.info(f"  Loaded {len(self.df)} species from {dataset_path.name}")
 
         # Track species we can provide synonyms for (used when parsing classification data)
         self._target_species = set(self.df['wfo_accepted_name'].tolist())
@@ -816,6 +820,56 @@ class EncyclopediaProfileGenerator:
             }
         }
 
+    def extract_koppen_distribution(self, row) -> Optional[Dict]:
+        """Extract precomputed Köppen zone distribution."""
+        counts_map = self._parse_json_dict(row.get('koppen_zone_counts_json'))
+        if not counts_map:
+            return None
+
+        percents_map = self._parse_json_dict(row.get('koppen_zone_percents_json')) or {}
+        ranked_list = self._parse_json_list(row.get('koppen_ranked_zones_json'))
+
+        def normalize_counts(data: Dict[str, object]) -> Dict[str, int]:
+            parsed: Dict[str, int] = {}
+            for zone, value in data.items():
+                try:
+                    parsed[str(zone)] = int(value)
+                except (ValueError, TypeError):
+                    continue
+            return parsed
+
+        def normalize_percents(data: Dict[str, object], zones: Iterable[str]) -> Dict[str, float]:
+            parsed: Dict[str, float] = {}
+            for zone in zones:
+                value = data.get(zone)
+                try:
+                    parsed[str(zone)] = round(float(value), 2)
+                except (ValueError, TypeError, AttributeError):
+                    parsed[str(zone)] = None  # type: ignore[assignment]
+            # Remove None values while preserving order
+            return {k: v for k, v in parsed.items() if v is not None}
+
+        counts = normalize_counts(counts_map)
+        if not counts:
+            return None
+
+        percents = normalize_percents(percents_map, counts.keys())
+        if not ranked_list:
+            ranked_list = sorted(counts.keys(), key=lambda z: counts[z], reverse=True)
+
+        return {
+            'total_occurrences': self._safe_int(row.get('koppen_total_occurrences')),
+            'unique_coordinates': self._safe_int(row.get('koppen_unique_coordinates')),
+            'top_zone': {
+                'code': self._safe_str(row.get('koppen_top_zone')),
+                'percent': self._safe_float(row.get('koppen_top_zone_percent')),
+                'description': self._safe_str(row.get('koppen_top_zone_description')),
+            },
+            'counts': counts,
+            'percents': percents,
+            'ranked_zones': ranked_list,
+        }
+
     def extract_stage7_content(self, species_name: str) -> Optional[Dict]:
         """Extract full Stage 7 validation profile content if available."""
         slug = species_name.lower().replace(' ', '-')
@@ -872,6 +926,7 @@ class EncyclopediaProfileGenerator:
             'traits': self.extract_traits(row),
             'dimensions': self.extract_dimensions(species_name),
             'bioclim': self.extract_bioclim(row),
+            'koppen_distribution': self.extract_koppen_distribution(row),
             'soil': self.extract_soil(species_name),
             'interactions': self.extract_globi_interactions(row),
             'occurrences': {
@@ -1000,6 +1055,32 @@ class EncyclopediaProfileGenerator:
         # GloBI format: "Species A (123); Species B (45); ..."
         partners = [p.strip() for p in str(value).split(';') if p.strip()]
         return partners if len(partners) > 0 else None
+
+    def _parse_json_dict(self, value) -> Optional[Dict[str, object]]:
+        """Parse JSON-encoded dict if provided as string."""
+        if pd.isna(value) or not value:
+            return None
+        if isinstance(value, dict):
+            return value
+        try:
+            parsed = json.loads(value)
+        except (TypeError, json.JSONDecodeError):
+            return None
+        return parsed if isinstance(parsed, dict) else None
+
+    def _parse_json_list(self, value) -> Optional[List[str]]:
+        """Parse JSON-encoded list if provided as string."""
+        if pd.isna(value) or value in ("", None):
+            return None
+        if isinstance(value, list):
+            return value
+        try:
+            parsed = json.loads(value)
+        except (TypeError, json.JSONDecodeError):
+            return None
+        if isinstance(parsed, list):
+            return [str(item) for item in parsed]
+        return None
 
 
 def main():

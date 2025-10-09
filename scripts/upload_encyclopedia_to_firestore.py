@@ -94,6 +94,7 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
 
         # Bioclim climate data (NEW - keep nested)
         'bioclim': profile.get('bioclim'),
+        'koppen_distribution': profile.get('koppen_distribution'),
 
         # Soil pH data (NEW - keep nested)
         'soil': profile.get('soil'),
@@ -134,6 +135,20 @@ def flatten_profile(profile: Dict[str, Any]) -> Dict[str, Any]:
                     flattened[f'svc_{fkey(key)}_rating'] = rating
                 if conf is not None:
                     flattened[f'svc_{fkey(key)}_confidence'] = conf
+
+    # Köppen distribution (climate zones)
+    koppen = profile.get('koppen_distribution') or {}
+    if isinstance(koppen, dict) and koppen:
+        flattened['koppen_total_occurrences'] = koppen.get('total_occurrences')
+        flattened['koppen_unique_coordinates'] = koppen.get('unique_coordinates')
+        flattened['koppen_ranked_zones'] = koppen.get('ranked_zones')
+        flattened['koppen_counts'] = koppen.get('counts')
+        flattened['koppen_percents'] = koppen.get('percents')
+        top = koppen.get('top_zone') or {}
+        if isinstance(top, dict):
+            flattened['koppen_top_zone'] = top.get('code')
+            flattened['koppen_top_zone_percent'] = top.get('percent')
+            flattened['koppen_top_zone_description'] = top.get('description')
 
     # Add Stage 7 content if available (for legacy frontend)
     stage7 = profile.get('stage7')

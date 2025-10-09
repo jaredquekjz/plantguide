@@ -486,7 +486,7 @@ Rating scale
 Rules (C,S,R are percentages)
 - NPP (Very High confidence; C > R > S)
   - Very High: C ≥ 60
-  - High: C ≥ 50 or R ≥ 50
+  - High: C ≥ 50
   - Low: S ≥ 60
   - Else: Moderate
 - Decomposition (Very High; R ≈ C > S)
@@ -505,10 +505,14 @@ Rules (C,S,R are percentages)
   - Very High: R ≥ 60
   - High: R ≥ 50
   - Very Low: C ≥ 60
-  - Low: C ≥ 50
+  - Low: C ≥ 50 or S ≥ 50
   - Else: Moderate
-- Carbon Storage — Biomass (High; dominated by C)
-  - Very High / High / Moderate / Low / Very Low based on C bands: ≥60 / ≥50 / ≥40 / ≥30 / <30
+- Carbon Storage — Biomass (High; living biomass strongest with C dominance)
+  - Very High: C ≥ 60
+  - High: C ≥ 50
+  - Moderate: C ≥ 40 or S ≥ 60
+  - Low: C ≥ 30 or S ≥ 50
+  - Else: Very Low
 - Carbon Storage — Recalcitrant (High; dominated by S)
   - Same bands using S
 - Carbon Storage — Total (High; C ≈ S > R)
@@ -519,7 +523,8 @@ Rules (C,S,R are percentages)
   - Else: Low
 - Erosion Protection (Moderate; C > S > R)
   - Very High: C ≥ 60 or (C ≥ 50 and S ≥ 40)
-  - High: C ≥ 50 or S ≥ 50
+  - High: C ≥ 50
+  - Very Low: R ≥ 60
   - Low: R ≥ 50
   - Else: Moderate
 
