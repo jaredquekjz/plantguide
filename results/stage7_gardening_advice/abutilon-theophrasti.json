@@ -3,181 +3,188 @@
   "slug": "abutilon-theophrasti",
   "climate_advice": {
     "focus": "climate",
-    "headline": "Let's find the perfect sunny and warm spot for your Abutilon theophrasti to thrive!",
+    "headline": "Let's find the perfect sunny and warm spot for your Abutilon theophrasti!",
     "data_summary": [
       {
-        "insight": "This plant is a true sun-worshipper! The data shows it's a 'light-loving plant' with a high L value of 7.71.",
-        "implication": "This means finding a spot with lots of direct sunlight is super important for its happiness and growth. It really needs that brightness to feel its best!",
+        "insight": "This plant absolutely loves the sun! Its light value is a super high 7.71, which tells us it's a \"light-loving plant\".",
+        "implication": "This means finding a spot with plenty of direct sunlight is one of the most important things we can do to help it thrive. It really wants to soak up those rays!",
         "data_points": [
-          "L value=7.71 (light-loving plant (rarely <40% illumination))",
-          "Reliability: Medium"
+          "L value=7.71",
+          "L label: light-loving plant (rarely <40% illumination)",
+          "L reliability: Medium"
         ]
       },
       {
-        "insight": "It absolutely loves warmth! The data gives us a 'High' reliability rating that it prefers a 'warm-submediterranean to mediterranean core' climate.",
-        "implication": "Your plant will be happiest in warm conditions, similar to its native habitat where the average temperature is around 9.9°C. It's a warm-weather friend!",
+        "insight": "It's definitely a fan of warmth! The temperature value is 6.25, which points to a \"warm-submediterranean to mediterranean core\" climate. We can be really confident about this one because the reliability is High!",
+        "implication": "Your plant will be happiest in a warm spot, especially during the summer. The climate data shows it's used to summer highs around 27.75°C but can also handle some winter chill, down to about -5.45°C.",
         "data_points": [
-          "T value=6.25 (warm-submediterranean to mediterranean core)",
-          "Reliability: High",
-          "Annual mean temperature: 9.9°C"
+          "T value=6.25",
+          "T reliability: High",
+          "Warmest month high: 27.75°C",
+          "Coldest month low: -5.45°C"
         ]
       },
       {
-        "insight": "When it comes to water, this plant is pretty flexible! The data calls it 'moderately dry' (M value of 3.92), but also notes it can handle drought while appreciating consistent moisture.",
-        "implication": "This is great news! It means we don't have to stress too much about watering. We can aim for a happy medium—not too wet, and not bone-dry for long periods.",
+        "insight": "When it comes to water, this plant is pretty flexible! The moisture value is 3.92, for \"moderately dry\" conditions. The reliability notes say there are \"mixed signals\", which is actually great news!",
+        "implication": "This means it can handle some drought but also appreciates consistent watering. It's adaptable! This makes sense, as the climate data shows it lives where rainfall can vary a lot between wet (105.25 mm) and dry (22.75 mm) months.",
         "data_points": [
-          "M value=3.92 (moderately dry)",
-          "Reliability: Medium",
-          "Reason: mixed signals regarding moisture preferences"
+          "M value=3.92",
+          "M label: moderately dry; also in dry sites with humidity",
+          "Reliability reason: mixed signals regarding moisture preferences",
+          "Wettest month precipitation: 105.25 mm",
+          "Driest month precipitation: 22.75 mm"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "light",
-        "tip": "Plant it in the sunniest spot you have! Think south-facing walls or open garden beds with no overhead shade.",
-        "why": "It's a 'light-loving plant' with an L value of 7.71, so it needs as much direct sun as it can get to really flourish and show off.",
+        "tip": "Plant it in the sunniest spot you have. Full sun is the goal!",
+        "why": "Its light value is a very high 7.71, which is labeled a \"light-loving plant\". It needs that bright light to be happy and healthy.",
         "data_points": [
-          "L value=7.71 (light-loving plant)"
+          "L value=7.71"
         ]
       },
       {
         "category": "temperature",
-        "tip": "Give it a warm, sheltered location. If you live in a cooler climate, planting it near a wall that absorbs and radiates heat is a fantastic idea!",
-        "why": "We have 'High' reliability that it prefers a 'warm-submediterranean to mediterranean core' climate (T value of 6.25). A little extra warmth will make it feel right at home!",
+        "tip": "Choose a warm location, maybe against a south-facing wall, to maximize heat.",
+        "why": "We're highly confident it loves warmth, with a T value of 6.25 (\"warm-submediterranean\") and a preference for summer highs around 27.75°C.",
         "data_points": [
-          "T value=6.25 (warm-submediterranean to mediterranean core)",
-          "Reliability: High"
+          "T value=6.25",
+          "T reliability: High",
+          "Warmest month high_C: 27.75"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Aim for soil that's consistently moist but not waterlogged. Water it well, then let the top inch or so of soil dry out before watering again.",
-        "why": "The data gives us 'mixed signals' with 'Medium' reliability, suggesting it likes consistent hydration but is also drought-tolerant. This balanced approach respects its flexible nature!",
+        "tip": "Aim for consistent moisture, especially when it's hot, but don't worry if the soil dries out a bit between waterings.",
+        "why": "The data shows it's adaptable! It prefers \"consistent hydration\" but is also \"drought tolerant,\" which fits its \"moderately dry\" M value of 3.92.",
         "data_points": [
-          "Reliability: Medium",
-          "Reason: prefers consistent hydration but is also drought tolerant"
+          "M value=3.92",
+          "Reliability reason: prefers consistent hydration but is also drought tolerant"
         ]
       },
       {
-        "category": "moisture",
-        "tip": "Make sure your soil has great drainage. Amending heavy clay soil with some compost can really help prevent soggy roots.",
-        "why": "Since it's described as a plant for 'moderately dry' sites (M value of 3.92), it won't like sitting in water. Good drainage mimics the conditions it's best adapted to.",
+        "category": "season-extension",
+        "tip": "If your winters get much colder than -5°C, consider adding a layer of mulch around the base in the fall.",
+        "why": "The climate data from where it grows shows it can handle freezes down to -5.45°C, so giving it a little extra protection in colder climates is a great way to help it through the winter.",
         "data_points": [
-          "M value=3.92 (moderately dry; also in dry sites with humidity)"
+          "Coldest month low_C: -5.45"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Don't plant it in deep shade, like under a dense tree or on the north side of a building.",
-        "why": "The data is clear that it's a 'light-loving plant' (L value of 7.71) that 'rarely' grows in 'less than 40% illumination'. It will struggle and become weak without enough sun!",
+        "tip": "Do not plant it in a shady corner of your garden.",
+        "why": "It's a \"light-loving plant\" with an L value of 7.71. It will really struggle and won't be happy without lots of direct sun.",
         "data_points": [
-          "L value=7.71 (light-loving plant (rarely <40% illumination))"
+          "L value=7.71",
+          "L label: light-loving plant (rarely <40% illumination)"
         ]
       },
       {
-        "tip": "Don't let the soil become a swamp! Avoid constant, heavy watering that leaves the ground soggy for days.",
-        "why": "Its preference for 'moderately dry' conditions (M value of 3.92) means it's not adapted to having wet feet and could be prone to root rot in waterlogged soil.",
+        "tip": "Avoid leaving the soil constantly soggy or waterlogged.",
+        "why": "Even though it likes moisture, its M value of 3.92 points to a preference for \"moderately dry\" conditions. It's not a swamp plant and needs its roots to breathe!",
         "data_points": [
-          "M value=3.92 (moderately dry)"
-        ]
-      },
-      {
-        "tip": "Don't leave it exposed to harsh, freezing winters without protection, especially if you're in a colder zone.",
-        "why": "It's a 'warm-submediterranean' plant (T value of 6.25) and the data shows its coldest month low in its native range is just 2.27°C. It's not built for deep freezes!",
-        "data_points": [
-          "T value=6.25 (warm-submediterranean to mediterranean core)",
-          "Coldest month low: 2.27°C"
+          "M value=3.92",
+          "M label: moderately dry; also in dry sites with humidity"
         ]
       }
     ]
   },
   "soil_advice": {
     "focus": "soil",
-    "headline": "Let's get your Abutilon theophrasti a happy home in rich, slightly acidic, and well-structured soil!",
+    "headline": "Let's build a rich, fluffy, and perfectly balanced soil for your Abutilon theophrasti!",
     "data_summary": [
       {
-        "insight": "Hooray! This plant loves a soil that's slightly acidic to neutral, and your garden is a perfect match!",
-        "implication": "This means you won't have to fight your soil's natural tendencies. The pH is just right for your plant to soak up all the nutrients it needs to thrive.",
+        "insight": "Hello there! It looks like your Abutilon theophrasti is happiest in soil that's not too acidic and not too alkaline, but just right! The data shows its ideal home has a pH that's pretty close to neutral.",
+        "implication": "This means you don't have to worry about making your soil extremely acidic or alkaline. We just need to aim for that happy middle ground to keep your plant smiling!",
         "data_points": [
-          "R value=6.45 (weakly acidic to weakly basic)",
-          "Topsoil pH mean 6.15"
+          "Ellenberg R value = 6.45 (weakly acidic to weakly basic)",
+          "Native topsoil pH mean = 6.15"
         ]
       },
       {
-        "insight": "Your soil is naturally fertile and packed with goodies! It has lots of organic matter and a high capacity to hold onto nutrients.",
-        "implication": "This is a fantastic starting point for a hungry plant like this one. The data suggests it likes 'moderately rich soils', and your topsoil has plenty of 'Total nitrogen' (5.127 g/kg) and a high 'Nutrient capacity' (27.25 cmol(+)/kg) to get it started.",
+        "insight": "Wow, this plant is a hungry one! In its natural environment, the topsoil is packed with goodies. It's super rich in organic matter and nitrogen, and it has a fantastic ability to hold onto nutrients for the roots to snack on later.",
+        "implication": "This tells us that to get a thriving plant, we need to provide it with plenty of food. A rich, fertile soil is the secret to its success!",
         "data_points": [
-          "N value=6.21 (moderately rich soils)",
-          "Topsoil organic matter mean 57.55 g/kg",
-          "Topsoil nitrogen mean 5.127 g/kg",
-          "Nutrient capacity mean 27.25 cmol(+)/kg"
+          "Ellenberg N value = 6.21 (moderately rich soils)",
+          "Topsoil organic matter = 57.55 g/kg",
+          "Topsoil nitrogen = 5.1275 g/kg",
+          "Topsoil nutrient capacity = 27.25 cmol(+)/kg"
         ]
       },
       {
-        "insight": "The top layer of your soil is wonderfully light and airy, but it gets much denser and more clay-heavy deeper down.",
-        "implication": "This means the surface is perfect for young roots, but we'll want to make sure the plant can push down into the tougher subsoil. This affects how we plant and water to build a strong, resilient root system!",
+        "insight": "The soil where this plant grows naturally has a wonderful, loamy texture. It's got a nice balance of sand and clay, and the topsoil is beautifully light and fluffy, not squished down at all.",
+        "implication": "This means your plant's roots need space to breathe and grow! A loose, well-aerated soil structure will help it establish a strong root system and prevent water from pooling.",
         "data_points": [
-          "Topsoil bulk density mean 1.18 g/cm³",
-          "Subsoil bulk density mean 1.4425 g/cm³",
-          "Topsoil clay content mean 28.3%",
-          "Subsoil clay content mean 33.2%"
+          "Topsoil clay content = 28.3%",
+          "Topsoil sand content = 33.77%",
+          "Topsoil bulk density = 1.18 g/cm³"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "pH",
-        "tip": "Keep that perfect pH just as it is! You can check it once a year to be sure.",
-        "why": "Your soil's 'Topsoil pH mean 6.15' is right in the sweet spot for this plant, which has a preferred 'R value=6.45'. No need to add anything that would change it.",
+        "tip": "Test your garden soil's pH. Aim for a range between 6.0 and 7.0. If your soil is too acidic (below 6.0), you can gently raise the pH by adding some garden lime.",
+        "why": "Your Abutilon thrives in near-neutral conditions, just like in its native soils where the pH is around a \"mean of 6.15\" at the surface.",
         "data_points": [
-          "Topsoil pH mean 6.15",
-          "R value=6.45"
-        ]
-      },
-      {
-        "category": "fertility",
-        "tip": "Give your plant a boost with a top-dressing of rich compost each spring.",
-        "why": "While your soil is already fertile, the data hints this plant might be even hungrier than its 'N value=6.21 (moderately rich soils)' suggests. A little extra food will ensure it has all the energy it needs for lush growth!",
-        "data_points": [
-          "N value=6.21 (moderately rich soils)",
-          "reliability_reason: ...prefers fertile, nitrogen-rich soils..."
+          "Surface pH mean = 6.15",
+          "Ellenberg R value = 6.45"
         ]
       },
       {
         "category": "amendments",
-        "tip": "Maintain that wonderful soil life by adding a 2-inch layer of organic mulch, like shredded leaves or aged bark.",
-        "why": "Your soil is already blessed with a high 'Topsoil organic matter mean 57.55 g/kg'. Mulching protects this precious resource, keeps the soil moist, and feeds the helpful microbes that keep your soil healthy.",
+        "tip": "Be generous with compost! Mix a few inches of rich, mature compost into the top layer of your soil before planting and top it up each spring.",
+        "why": "This plant loves a feast! Its native soil is loaded with nutrients, with a high \"Topsoil organic matter\" of \"57.55 g/kg\" and plenty of nitrogen.",
         "data_points": [
-          "Topsoil organic matter mean 57.55 g/kg"
+          "Topsoil organic matter = 57.55 g/kg",
+          "Topsoil nitrogen = 5.1275 g/kg",
+          "Reliability reason for N: 'prefers fertile soil and is a nitrogen accumulator'"
         ]
       },
       {
         "category": "structure",
-        "tip": "When planting, loosen the soil a little deeper than the pot and mix in some compost.",
-        "why": "This will help break up the transition to the denser subsoil. Your topsoil is light and fluffy ('Bulk density mean 1.18 g/cm³'), but it gets much more packed below ('Subsoil bulk density mean 1.4425 g/cm³'). This gives roots an easier path downward!",
+        "tip": "If you have heavy clay soil, improve its texture by adding both compost and a little coarse horticultural sand. This will help create a lighter, loam-like structure.",
+        "why": "We want to copy that lovely, fluffy topsoil it's used to! The goal is to lower the density from being heavy and compacted, getting closer to the ideal low \"bulk density\" of \"1.18 g/cm³\".",
         "data_points": [
-          "Topsoil bulk density mean 1.18 g/cm³",
-          "Subsoil bulk density mean 1.4425 g/cm³"
+          "Topsoil bulk density = 1.18 g/cm³",
+          "Topsoil clay content = 28.3%",
+          "Topsoil sand content = 33.77%"
+        ]
+      },
+      {
+        "category": "drainage",
+        "tip": "Make sure your planting spot has good drainage. Raised beds can be a great option if your garden tends to get waterlogged after rain.",
+        "why": "While the balanced clay and sand content helps hold moisture, the subsoil gets much denser, which can trap water. We want to avoid soggy roots!",
+        "data_points": [
+          "Subsoil bulk density = 1.4425 g/cm³",
+          "Subsoil clay content = 33.2%"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not add lime or wood ash to the soil around this plant.",
-        "why": "These materials make the soil more alkaline. Your soil's 'Topsoil pH mean 6.15' is already ideal, and raising it could prevent your plant from absorbing the nutrients it needs.",
+        "tip": "Do not let the soil become heavily compacted. Avoid walking right next to the plant's base, especially when the ground is wet.",
+        "why": "Its native topsoil is very light, with a \"bulk density\" of just \"1.18 g/cm³\". Compaction squeezes out the air pockets that roots need to breathe and grow strong.",
         "data_points": [
-          "Topsoil pH mean 6.15",
-          "R value=6.45 (weakly acidic to weakly basic)"
+          "Topsoil bulk density = 1.18 g/cm³"
         ]
       },
       {
-        "tip": "Try not to walk on the garden bed, especially when the soil is wet.",
-        "why": "Your topsoil is beautifully light, but the subsoil is already quite dense ('Subsoil bulk density mean 1.4425 g/cm³'). Compacting the surface will reduce air space and make it harder for water and roots to get through.",
+        "tip": "Don't plant it in extremely acidic soil, like those found near pine or peat bogs, without amending it first.",
+        "why": "The expert analysis is very clear that this plant is \"absent from very acid\" soils. It really prefers conditions much closer to neutral to be happy!",
         "data_points": [
-          "Topsoil bulk density mean 1.18 g/cm³",
-          "Subsoil bulk density mean 1.4425 g/cm³"
+          "Ellenberg R label: 'absent from very acid'"
+        ]
+      },
+      {
+        "tip": "Don't skip on feeding! Planting in poor, sandy, or unfertilized soil will likely lead to a sad, struggling plant.",
+        "why": "This is a hungry plant that thrives in fertile conditions. The data shows its native soil has a high \"nutrient capacity\" of \"27.25 cmol(+)/kg\", meaning it's used to having lots of food available.",
+        "data_points": [
+          "Topsoil nutrient capacity = 27.25 cmol(+)/kg",
+          "Ellenberg N value = 6.21 (moderately rich soils)"
         ]
       }
     ]

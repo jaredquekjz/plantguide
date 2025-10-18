@@ -142,6 +142,9 @@ process_range <- function(ridx) {
   idx <- 1
   while (idx <= nloc) {
     j <- min(nloc, idx + chunk - 1)
+    chunk_start <- start + idx - 1
+    chunk_end <- start + j - 1
+    cli::cli_alert_info("Processing chunk {chunk_start}-{chunk_end}")
     ex <- tryCatch({
       extract(rloc, as.matrix(cbind(feats$lon[idx:j], feats$lat[idx:j])))
     }, error = function(e) {
@@ -178,7 +181,7 @@ process_range <- function(ridx) {
       feats$ai_amp[ii] <- amp
       feats$ai_cv_month[ii] <- cv
     }
-    cli::cli_alert_success("Worker chunk {start + idx - 1}-{start + idx + nr - 2}")
+    cli::cli_alert_success("Completed chunk {chunk_start}-{chunk_end}")
     idx <- idx + nr
   }
   feats

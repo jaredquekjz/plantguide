@@ -3,182 +3,177 @@
   "slug": "acer-rubrum",
   "climate_advice": {
     "focus": "climate",
-    "headline": "Wow, Acer rubrum is super adaptable! Let's find the perfect spot for it in your garden.",
+    "headline": "Wow, Acer rubrum is a super flexible friend for your garden!",
     "data_summary": [
       {
-        "insight": "When it comes to light, the data is a little mixed, which is actually great news! The official value points towards it being a 'semi-shade plant', but other evidence suggests it can also handle 'full sun'.",
-        "implication": "This means your Acer rubrum is flexible! You have more options for where to plant it, which makes things so much easier.",
+        "insight": "Let's look at the light needs! The data suggests your tree likes 'semi-shade' conditions, but the confidence here is 'Medium'.",
+        "implication": "This is great news! It means your Acer rubrum is probably not too fussy about its spot. The reason for the medium rating is that experts see it growing happily in both 'full sun' and 'part shade'. It's so adaptable!",
         "data_points": [
-          "L value=4.82 (semi-shade plant)",
+          "L value = 4.82 (semi-shade plant)",
           "Reliability: Medium",
-          "Reason: mixed signals regarding light preference"
+          "Reason: evidence cites both 'full sun' and 'part shade'"
         ]
       },
       {
-        "insight": "Okay, this is interesting! The core data suggests your plant likes 'fresh/mesic soils of average dampness'. But! The reliability for this is 'Low' because other sources say it loves even wetter soil and can tolerate 'extended flooding'.",
-        "implication": "You don't have to worry as much about overwatering! This plant seems to be very forgiving and happy with plenty of moisture.",
+        "insight": "When it comes to water, the main score points to 'fresh/mesic soils of average dampness'. But, oh, this is interesting! The reliability for this is 'Low'.",
+        "implication": "This low rating is actually a clue! It's because other evidence shows it loves even wetter spots and 'tolerates extended flooding'. So, while it's fine in average soil, it's extra happy with plenty of moisture. It's used to getting around 1260.79 mm of rain a year!",
         "data_points": [
-          "M value=4.66 (fresh/mesic soils of average dampness)",
+          "M value = 4.66 (fresh/mesic soils)",
           "Reliability: Low",
-          "Reason: evidence indicates a preference for wetter conditions than expected"
+          "Reason: evidence cites 'moist to wet soil conditions'",
+          "Annual precipitation: 1260.79 mm"
         ]
       },
       {
-        "insight": "For temperature, the data shows it's from 'submontane / colline; mild montane' areas. However, the reliability is 'Medium' because it's known to grow in a huge range of hardiness zones (3-9).",
-        "implication": "This tree is tough and versatile! It can handle a much wider variety of climates than that one number suggests, from pretty cold winters to warm summers.",
+        "insight": "For temperature, the data points to milder mountain climates. But check this out: it has a huge hardiness zone range of 3-9!",
+        "implication": "This means your tree is a real trooper and can handle a wider range of temperatures than that first score suggests. The climate data from where it grows shows it can handle both hot summers up to 32.69°C and chilly winter lows of -0.91°C. What a tough cookie!",
         "data_points": [
-          "T value=4.63 (submontane / colline; mild montane)",
+          "T value = 4.63 (submontane / colline; mild montane)",
           "Reliability: Medium",
-          "Reason: hardiness zone range is broad"
+          "Reason: hardiness zones are 3-9",
+          "Coldest month low: -0.91°C"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "light",
-        "tip": "Plant your Acer rubrum in a spot that gets morning sun and some afternoon shade, or in part-shade all day.",
-        "why": "This gives it the best of both worlds! It satisfies the 'semi-shade plant' preference (L value=4.82) while respecting that it's flexible enough to handle more sun, as noted by its 'Medium' reliability.",
+        "tip": "Plant it in a spot with part sun, but don't be afraid of full sun either.",
+        "why": "It's super flexible! The 'Medium' reliability for its light preference comes from reports of it thriving in both 'full sun' and 'part shade'.",
         "data_points": [
-          "L value=4.82 (semi-shade plant)",
-          "Reliability: Medium"
+          "L Reliability: Medium",
+          "Reason: cites both 'full sun' and 'part shade'"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Keep the soil consistently moist, especially when the tree is young. Don't be afraid to give it a good, deep watering.",
-        "why": "The data shows it can handle conditions even wetter than 'average dampness' and tolerates 'extended flooding'. This tells us it really appreciates having plenty of water available.",
+        "tip": "Keep the soil consistently moist, especially during dry spells.",
+        "why": "While it's okay with 'average dampness' (M value of 4.66), the reliability notes tell us it really thrives in 'moist to wet' conditions. It's used to a lot of rain!",
         "data_points": [
-          "M value=4.66 (fresh/mesic soils of average dampness)",
-          "Reliability: Low",
-          "Tolerates extended flooding"
+          "M value = 4.66",
+          "Reliability Reason: 'tolerates extended flooding'",
+          "Annual precipitation: 1260.79 mm"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Add a layer of mulch around the base of the tree, but not touching the trunk.",
-        "why": "This is a great way to help the soil stay at that 'fresh/mesic' moisture level (M value=4.66) that it likes, and it will reduce how often you need to water!",
+        "tip": "Add a layer of mulch around the base of the tree.",
+        "why": "This will help keep the soil cool and hold onto that moisture it loves, helping you maintain the 'fresh/mesic soils' mentioned in its profile (M value 4.66).",
         "data_points": [
-          "M value=4.66 (fresh/mesic soils of average dampness)"
+          "M value = 4.66 (fresh/mesic soils of average dampness)"
         ]
       },
       {
         "category": "temperature",
-        "tip": "Feel confident planting this tree in a wide range of climates.",
-        "why": "The data shows it's incredibly adaptable, with a hardiness zone range of 3-9. This means it's much tougher than its 'mild montane' temperature value (T=4.63) might suggest.",
+        "tip": "You can feel confident planting this tree even if you have cold winters.",
+        "why": "It's tougher than it looks! Its 'Medium' temperature reliability is because it has a very broad hardiness zone range (3-9), and climate data shows it can handle freezing temperatures down to -0.91°C.",
         "data_points": [
-          "Hardiness zones are 3-9",
-          "T Reliability: Medium"
+          "T Reliability: Medium",
+          "Reason: hardiness zones are 3-9",
+          "Coldest month low: -0.91°C"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not let the soil become bone dry for long periods.",
-        "why": "This tree prefers 'fresh/mesic soils of average dampness' (M value=4.66) and even tolerates flooding, which means it definitely does not like drought conditions.",
+        "tip": "Don't let the soil become bone-dry for long periods.",
+        "why": "This tree is a moisture-lover! Its profile points to 'fresh/mesic soils' (M=4.66) and the notes even say it can handle 'moist to wet' conditions. Letting it dry out would be really stressful for it.",
         "data_points": [
-          "M value=4.66 (fresh/mesic soils of average dampness)"
+          "M value = 4.66",
+          "Reliability Reason: evidence cites 'moist to wet soil conditions'"
         ]
       },
       {
         "tip": "Avoid planting it in very deep, dark shade.",
-        "why": "Even though it's listed as a 'semi-shade plant' (L value=4.82), the description specifies it needs '>10% illumination'. Total shade will be too dark for it to be happy and healthy!",
+        "why": "While it's happy in 'semi-shade' (L value of 4.82), it also does well in full sun. Deep, all-day shade is likely too little light for this cheerful tree to do its best.",
         "data_points": [
-          "L value=4.82 (semi-shade plant >10% illumination)"
+          "L value = 4.82 (semi-shade plant)",
+          "Reliability Reason: evidence cites both 'full sun' and 'part shade'"
         ]
       }
     ]
   },
   "soil_advice": {
     "focus": "soil",
-    "headline": "Acer rubrum loves acidic, well-drained soil with a good helping of organic matter to keep it fluffy!",
+    "headline": "Your Acer rubrum will be happiest in moist, moderately acidic soil that's rich in organic matter!",
     "data_summary": [
       {
-        "insight": "Hooray! All the signs point to your Acer rubrum being a huge fan of acidic soil. Its expert-assigned preference is for \"moderately acidic soils; occasional neutral/basic\" (an R value of 5.31), and this is a perfect match for the soil data, which shows a \"Topsoil pH mean 5.39166666666667\".",
-        "implication": "This is great news! It means you should aim to keep your soil on the acidic side (below pH 6.5) to help your tree absorb all the nutrients it needs to grow strong and show off those beautiful colors.",
+        "insight": "Hello there! All the data we have shows that your Red Maple is a huge fan of acidic soil. It's not just a slight preference; it's what it's used to in the wild!",
+        "implication": "This means you'll want to make sure your garden soil isn't alkaline (or 'sweet'). If your soil is on the acidic side, your tree will be able to absorb all the nutrients it needs to grow strong and show off those beautiful colors.",
         "data_points": [
-          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
-          "Topsoil pH mean 5.39166666666667"
+          "R value=5.31 (moderately acidic soils)",
+          "Topsoil pH mean 5.39"
         ]
       },
       {
-        "insight": "The data suggests your soil has a decent starting point for nutrients, which fits the tree's preference for \"intermediate fertility\" (an N value of 5.41). However, the soil seems a bit packed down, with a \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\" and even higher values deeper down.",
-        "implication": "A compacted soil can make it tough for roots to stretch out and for water and air to get in. So, our main goal will be to improve the soil's structure to make it a comfier, fluffier home for your tree's roots!",
+        "insight": "In its native habitat, this tree grows in soil that's moderately fertile, with most of the goodies like organic matter concentrated in the top layer. Underneath, the soil gets heavier and more compact.",
+        "implication": "For your garden, this tells us two things! First, your tree will love a good helping of compost to feed its roots. Second, it needs good drainage so its roots don't get stuck in dense, waterlogged subsoil. A happy root system is the secret to a happy tree!",
         "data_points": [
           "N value=5.41 (intermediate fertility)",
-          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
-          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
+          "Topsoil organic matter mean 20.5 g/kg",
+          "Subsoil bulk density mean 1.66 g/cm³"
         ]
       },
       {
-        "insight": "While we're super confident about this tree's love for acidic soil (Reliability for R is \"High\"), the information on its exact fertilizer needs is a little less certain (Reliability for N is \"Unknown\").",
-        "implication": "No worries at all! This just means we'll focus on creating a great all-around healthy soil with plenty of organic matter, rather than chasing specific fertilizer numbers. A happy, living soil makes for a happy tree!",
+        "insight": "While the experts believe your tree likes 'intermediate fertility', we should note the confidence for this is 'Unknown'. So, we'll pay extra close attention to what the actual soil samples tell us!",
+        "implication": "This just means we should focus on creating a healthy, living soil with compost rather than relying on strong chemical fertilizers. It's a safer and more natural approach!",
         "data_points": [
-          "Reliability... R... High",
-          "Reliability... N... Unknown"
+          "N reliability: Unknown",
+          "reliability_reason: no specific nutrient requirement tokens were found"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "pH",
-        "tip": "Before you plant, test your garden soil's pH. If it's above 6.5, you can gently lower it by mixing in some elemental sulfur or using acidic mulches like pine needles or shredded oak leaves.",
-        "why": "Your Acer rubrum will be its happiest self in moderately acidic conditions, just like the data shows with its preferred \"R value=5.31\" and the typical soil \"pH mean\" around \"5.4\".",
+        "tip": "Before you plant, grab a simple soil test kit and check your pH. You're aiming for a reading somewhere between 5.0 and 6.5 to make your Red Maple feel perfectly at home.",
+        "why": "Both the expert rating (`R value=5.31`) and the measurements from its native soils (`Topsoil pH mean 5.39`) shout loud and clear that this tree loves acidic conditions!",
         "data_points": [
-          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
-          "Topsoil pH mean 5.39166666666667"
-        ]
-      },
-      {
-        "category": "structure",
-        "tip": "Mix in a generous amount of compost or other well-rotted organic matter into the planting hole and the surrounding area. This is the best way to liven up the soil!",
-        "why": "The soil is quite dense, with a \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\". Adding organic matter is like a magic trick that lowers this density, creating a fluffier soil that's easier for roots to explore and for water to soak into.",
-        "data_points": [
-          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
-          "Organic matter... topsoil... mean 20.50833333333331 g/kg"
+          "R value=5.31 (moderately acidic soils)",
+          "Topsoil pH mean 5.39"
         ]
       },
       {
         "category": "amendments",
-        "tip": "In early spring, you can give your tree a little boost with a balanced, slow-release organic fertilizer. Think of it as a healthy breakfast to start the growing season!",
-        "why": "The tree only asks for \"intermediate fertility\", and the soil already has a moderate \"Nutrient capacity... topsoil... mean 15.163888888888868 cmol(+)/kg\". A gentle, slow feed is all it needs to supplement the existing goodness in the soil.",
+        "tip": "Each spring, treat your tree to a blanket of compost or leaf mold around its base. This mimics the naturally fertile forest floor it's used to.",
+        "why": "We want to replicate that lovely layer of topsoil from its home, which has a good amount of organic matter (`mean 20.5 g/kg`) and provides the 'intermediate fertility' (`N value=5.41`) it needs.",
         "data_points": [
-          "N value=5.41 (intermediate fertility)",
-          "Nutrient capacity... topsoil... mean 15.163888888888868 cmol(+)/kg"
+          "Organic matter mean 20.5 g/kg",
+          "N value=5.41 (intermediate fertility)"
         ]
       },
       {
-        "category": "drainage",
-        "tip": "Apply a 2-3 inch layer of organic mulch (like wood chips or shredded bark) around the base of the tree, but be sure to keep it from touching the trunk directly.",
-        "why": "The subsoil has more clay (\"Subsoil... clay... mean 34.0625 %\") and is very dense, which can slow down water drainage. Mulch is fantastic because it helps the soil hold moisture evenly, preventing it from getting waterlogged or drying out too fast.",
+        "category": "structure",
+        "tip": "When planting, dig a wide, shallow hole and gently loosen the surrounding soil. If your soil is heavy clay, mixing in some compost or pine bark fines will work wonders for drainage.",
+        "why": "The data shows the subsoil can get quite dense (`Bulk density 1.66 g/cm³`) and high in clay (`Subsoil clay content mean 34.1%`). Improving the structure helps prevent the roots from getting waterlogged or compacted!",
         "data_points": [
-          "Subsoil... clay... mean 34.0625 %",
-          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
+          "Subsoil bulk density mean 1.66 g/cm³",
+          "Subsoil clay content mean 34.1%"
+        ]
+      },
+      {
+        "category": "watering",
+        "tip": "Water your tree deeply and consistently, especially during its first few years and in dry weather. Applying a 2-3 inch layer of mulch will help keep the soil moist and cool.",
+        "why": "The native soils have a fair bit of clay (`Topsoil clay content mean 24.4%`), which holds water well. Your goal is to keep the soil evenly moist like a wrung-out sponge, not soggy or bone-dry.",
+        "data_points": [
+          "Topsoil clay content mean 24.4%"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not add lime, wood ash, or 'alkaline' soil amendments near your tree.",
-        "why": "These materials raise the soil pH, which goes directly against your tree's strong preference for acidic soil, as shown by its \"R value=5.31\". Let's keep it acidic and happy!",
+        "tip": "Please don't plant your Red Maple in alkaline or chalky soil (pH above 7.0) without amending it first with materials like sulfur or acidic compost.",
+        "why": "It's a true acid-lover! In alkaline soil, it can't access iron and other nutrients, which can lead to yellow leaves and poor health. It's happiest where the `Topsoil pH mean` is around `5.39`.",
         "data_points": [
-          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
-          "Topsoil pH mean 5.39166666666667"
+          "Topsoil pH mean 5.39",
+          "R value=5.31 (moderately acidic soils)"
         ]
       },
       {
-        "tip": "Try not to walk or place heavy things like wheelbarrows or lawn furniture on the soil over the tree's root zone, especially when it's wet.",
-        "why": "The soil is already quite compacted, with a high \"Topsoil... bulk density... mean 1.4902777777777765 g/cm³\". Any extra pressure will squeeze out the air pockets that roots and water need to thrive.",
+        "tip": "Avoid compacting the ground over the tree's root zone. That means no parking cars, storing heavy materials, or creating a well-worn path right under its branches.",
+        "why": "The soil in its natural environment already gets pretty dense down below (`Bulk density 1.66 g/cm³`). Extra compaction on top can squeeze out all the air pockets, making it tough for roots to breathe and grow!",
         "data_points": [
-          "Topsoil... bulk density... mean 1.4902777777777765 g/cm³",
-          "Subsoil... bulk density... mean 1.65583333333333 g/cm³"
-        ]
-      },
-      {
-        "tip": "Don't go overboard with fast-acting, high-nitrogen chemical fertilizers.",
-        "why": "This tree prefers \"intermediate fertility\", and a big chemical rush can encourage weak growth. The soil's existing \"Total nitrogen... topsoil... mean 2.5875 g/kg\" provides a good foundation that only needs a gentle, organic top-up.",
-        "data_points": [
-          "N value=5.41 (intermediate fertility)",
-          "Total nitrogen... topsoil... mean 2.5875 g/kg"
+          "Bulk density mean 1.66 g/cm³"
         ]
       }
     ]

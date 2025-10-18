@@ -3,179 +3,192 @@
   "slug": "abies-alba",
   "climate_advice": {
     "focus": "climate",
-    "headline": "This fir loves a cool, shady spot with plenty of moisture to feel right at home!",
+    "headline": "Let's find the perfect cool, moist, and shady spot for your Abies alba!",
     "data_summary": [
       {
-        "insight": "Wow, let's talk about light! The data for Abies alba is super interesting. It's officially called a \"shade plant\" with a Light value of 3.04, but the reliability notes say it can also handle up to 7 hours of sun. This is great news!",
-        "implication": "This means you have options! While it thrives in the shade, especially when young, it's more flexible than a typical shade-only plant. We can be pretty sure about this, as the reliability is rated \"High\", even with the conflicting info.",
+        "insight": "This plant is super interesting when it comes to light! The data says it's a \"shade plant\", but the reliability notes show it's a bit of a chameleon.",
+        "implication": "This means it's very adaptable! It will thrive in the shade, especially when it's just a little seedling, but can also handle more sun as it grows up. How cool is that?",
         "data_points": [
           "L value=3.04 (shade plant)",
           "Reliability: High (conflict)",
-          "Reason: tolerates 7 hours of sun but is \"Very shade tolerant, especially as a seedling.\""
+          "Tolerates 7 hours of sun but is \"Very shade tolerant, especially as a seedling.\""
         ]
       },
       {
-        "insight": "This plant is a big fan of water! Its Moisture value is 5.18, which means it prefers \"moist\" soils. This totally makes sense when you see it comes from places that get around 884.0 mm of rain a year!",
-        "implication": "To keep your fir happy, you'll want to make sure its soil doesn't dry out. The reliability for this is \"Medium\" because while it loves moisture, the notes also say it doesn't like to be waterlogged. So, moist but not swampy is the goal!",
+        "insight": "Your Abies alba loves to have its roots in consistently moist soil. The data points to it being a \"moist\" soil plant, and the climate stats show it's used to getting lots of rain!",
+        "implication": "We'll want to make sure it never gets too thirsty. The key is 'moist', not 'soggy', as the reliability notes mention it doesn't like being waterlogged.",
         "data_points": [
           "M value=5.18 (moist; upper range of fresh soils)",
-          "Annual precipitation: 884.0 mm",
           "Reliability: Medium",
-          "Reason: evidence supports moist conditions but also specifies 'not waterlogged'"
+          "Annual precipitation: 975.52 mm",
+          "Reliability reason: \"not waterlogged\""
         ]
       },
       {
-        "insight": "Abies alba is definitely a cool-climate friend. The data for its temperature preference has a \"High\" reliability rating, describing it as a \"moderately cool to moderately warm\" plant. The climate stats back this up, showing an average annual temperature of just 9.1°C where it grows.",
-        "implication": "This tells us it will be happiest in a garden that doesn't get too hot, especially in the summer. It's used to cooler mountain climates, so think cool and fresh!",
+        "insight": "This is definitely a cool-climate friend! All the temperature data points to it being happiest in places with chilly winters and mild summers.",
+        "implication": "If you live somewhere with distinct seasons, this plant will feel right at home. We have high confidence in this, so you can count on it being tough against the cold!",
         "data_points": [
           "T value=3.68 (moderately cool to moderately warm)",
           "Reliability: High",
-          "Annual mean temperature: 9.1°C"
+          "Coldest month low: -1.62 °C",
+          "Warmest month high: 23.28 °C"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "light",
-        "tip": "Plant it in a spot with morning sun and afternoon shade, or even in a mostly shady area.",
-        "why": "This gives it the best of both worlds! The data has a \"High\" reliability rating showing it's a \"shade plant\" (L=3.04) but also tolerates sun. Protecting it from hot afternoon sun is a perfect strategy.",
+        "tip": "Plant it in a spot with partial or dappled shade, especially when it's young.",
+        "why": "It's naturally a \"shade plant\" (L value 3.04) and the reliability notes highlight that it's \"Very shade tolerant, especially as a seedling.\"",
         "data_points": [
           "L value=3.04 (shade plant)",
-          "Reliability: High (conflict)",
-          "Reason: tolerates 7 hours of sun but is \"Very shade tolerant\""
+          "Reliability reason: \"Very shade tolerant, especially as a seedling.\""
         ]
       },
       {
         "category": "moisture",
-        "tip": "Water regularly to keep the soil consistently damp, like a wrung-out sponge.",
-        "why": "This mimics its natural home, which gets lots of rain (884.0 mm annually)! The expert value for moisture is 5.18, which is described as \"moist\".",
+        "tip": "Keep the soil consistently moist, like a well-wrung-out sponge. Water regularly, especially during dry spells.",
+        "why": "It's rated for \"moist\" soils (M value 5.18) and comes from places with high annual rainfall (975.52 mm), so it expects steady moisture.",
         "data_points": [
           "M value=5.18 (moist; upper range of fresh soils)",
-          "Annual precipitation: 884.0 mm"
+          "Annual precipitation: 975.52 mm"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Make sure your soil has good drainage. Adding compost or other organic matter can really help!",
-        "why": "Even though it loves water, the reliability notes specifically mention it shouldn't be \"waterlogged\". Good drainage prevents the roots from sitting in too much water.",
+        "tip": "Make sure your planting spot has good drainage. Amending heavy clay soil can really help!",
+        "why": "Even though it loves moisture, the reliability notes specifically warn that it shouldn't be in \"waterlogged\" soil. Good drainage prevents root problems!",
         "data_points": [
-          "Reliability: Medium",
-          "Reason: specifies 'not waterlogged'"
+          "Reliability: Medium (for moisture)",
+          "Reliability reason: \"evidence supports moist conditions but also specifies 'not waterlogged'\""
         ]
       },
       {
         "category": "temperature",
-        "tip": "If your garden gets hot summers, try planting it in the coolest part, like on a north-facing slope or where it's shaded by a building.",
-        "why": "This plant's comfort zone is cool! The data is rated \"High\" reliability for its preference for \"moderately cool to moderately warm\" conditions, so giving it a cooler spot will help it thrive.",
+        "tip": "Don't worry too much about protecting it from the cold in winter.",
+        "why": "It's built for the cold! The data shows it's native to areas where winter temperatures drop to -1.62 °C, and its temperature needs have a \"High\" reliability rating.",
         "data_points": [
+          "Coldest month low_C: -1.62",
           "T value=3.68 (moderately cool to moderately warm)",
-          "Reliability: High"
+          "Reliability: High (for temperature)"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Don't plant it in a spot that gets baked by intense, all-day sun.",
-        "why": "It's a \"shade plant\" (L=3.04) at heart and comes from cool climates. Too much direct sun and heat will be very stressful for it.",
+        "tip": "Do not plant it in a spot with intense, all-day sun, especially in a hot climate.",
+        "why": "While it can tolerate some sun, its core identity is a \"shade plant\" (L value 3.04). Too much direct sun could stress it out.",
         "data_points": [
-          "L value=3.04 (shade plant)",
-          "T value=3.68 (moderately cool)"
+          "L value=3.04 (shade plant)"
         ]
       },
       {
-        "tip": "Don't let the soil become bone-dry for long periods.",
-        "why": "This fir is not a drought-tolerant plant! It needs consistently moist soil to be happy, as shown by its Moisture value of 5.18 (\"moist\") and its native high-rainfall climate.",
+        "tip": "Do not let the soil become bone-dry for extended periods.",
+        "why": "This plant thrives in \"moist\" conditions (M value 5.18) and is used to consistent rain, so drought is its enemy!",
         "data_points": [
           "M value=5.18 (moist; upper range of fresh soils)",
-          "Annual precipitation: 884.0 mm"
+          "Driest month precipitation: 57.91 mm"
+        ]
+      },
+      {
+        "tip": "Do not plant it in a low-lying, boggy area where water pools.",
+        "why": "The data specifically warns against this! It needs moisture, but the reliability reason says to avoid \"waterlogged\" conditions to keep its roots healthy.",
+        "data_points": [
+          "Reliability reason for M: \"not waterlogged\""
         ]
       }
     ]
   },
   "soil_advice": {
     "focus": "soil",
-    "headline": "Let's build a rich, slightly acidic, and well-drained home for your magnificent Abies alba!",
+    "headline": "To grow a happy Abies alba, aim for a rich, slightly acidic soil that's light and fluffy on top!",
     "data_summary": [
       {
-        "insight": "In its natural home, your Abies alba loves soil that's a little bit acidic! Think of it like a preference for slightly tangy conditions, not too sweet and not too sour.",
-        "implication": "This means we'll want to check your garden's pH and make sure it's in that comfy acidic range. If your soil is alkaline (the opposite of acidic), the tree might struggle to absorb nutrients.",
+        "insight": "Hello there! Let's look at the soil where your Abies alba naturally grows. It absolutely loves a moderately acidic environment, kind of like the soil you'd find in a pine forest.",
+        "implication": "This is great news for gardeners! It means you'll want to aim for a soil pH that's on the acidic side of neutral. This tree won't be very happy in chalky, alkaline soils.",
         "data_points": [
-          "Ellenberg R value=5.31 (moderately acidic soils)",
+          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
           "Topsoil pH mean 5.89"
         ]
       },
       {
-        "insight": "The soil where this fir naturally grows is wonderfully rich, especially at the surface! It's packed with organic material, which acts like a sponge for water and a pantry full of food.",
-        "implication": "To make your tree feel at home, we should aim to create a soil that's full of life and nutrients. While some expert ratings suggest 'intermediate fertility', the actual soil data shows a very rich top layer, and that's our goal!",
+        "insight": "In its native home, this fir tree enjoys a topsoil that is packed with goodies! It's super rich in organic matter and nitrogen, creating a feast for its roots right at the surface.",
+        "implication": "Even though some data suggests 'intermediate fertility' overall, the soil measurements tell us to focus on creating a wonderfully rich top layer. This is where your tree will get most of its nutrition!",
         "data_points": [
-          "Topsoil Organic matter mean 59.60 g/kg",
-          "Topsoil Total nitrogen mean 5.31 g/kg",
-          "Reliability for N is 'Medium' due to a conflict between expert ratings and evidence for rich soil preference"
+          "Organic matter... topsoil: {mean: 59.60...}",
+          "Total nitrogen... topsoil: {mean: 5.31...}",
+          "N value=4.9 (intermediate fertility)"
         ]
       },
       {
-        "insight": "This tree's native soil has a lovely, crumbly structure on top, but gets much denser and more compact deeper down. It's a mix of sand and clay, which is great for holding both water and air.",
-        "implication": "This tells us that your fir needs a light, airy root zone to get established, but it's adapted to heavier subsoil. We need to prevent the top layer from becoming compacted so the roots can breathe and grow easily!",
+        "insight": "The soil structure is fantastic, too! It's a balanced, loamy mix of sand and clay, which makes it light and airy near the surface but much more compact and dense deeper down.",
+        "implication": "This tells us your tree needs soil that drains well so its roots don't get waterlogged, but also holds enough moisture to stay hydrated. We also need to be careful to avoid compacting the soil!",
         "data_points": [
-          "Topsoil bulk density mean 1.19 g/cm³",
-          "Subsoil bulk density mean 1.43 g/cm³",
-          "Topsoil has 25.54% clay and 34.12% sand"
+          "Topsoil sand content mean 34.12%",
+          "Topsoil clay content mean 25.54%",
+          "Bulk density... topsoil: {mean: 1.19...}",
+          "Bulk density... subsoil: {mean: 1.43...}"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "pH",
-        "tip": "Test your soil's pH and aim for a slightly acidic range, ideally between 5.5 and 6.5. If it's too high (alkaline), you can gently lower it over time by incorporating pine needle mulch or elemental sulfur.",
-        "why": "Your fir thrives in these conditions, as shown by its native soil pH, which averages around 5.9 in the topsoil and has an Ellenberg R value of 5.31.",
+        "tip": "Before planting, test your soil's pH. If it's above 6.5, you can gently lower it by mixing in some ericaceous compost or mulching with pine needles.",
+        "why": "This helps recreate the slightly acidic conditions it loves in the wild, where the topsoil pH is around 5.9.",
         "data_points": [
           "R value=5.31",
-          "Topsoil pH mean 5.89"
+          "Topsoil pH mean 5.89340659340659"
         ]
       },
       {
         "category": "amendments",
-        "tip": "Be generous with organic matter! Mix a good few inches of compost, leaf mold, or well-rotted manure into the top foot of soil before planting.",
-        "why": "This mimics the wonderfully rich topsoil found in its natural habitat, which is loaded with an average of 59.60 g/kg of organic matter and provides plenty of nitrogen.",
+        "tip": "Each spring, treat your tree to a blanket of well-rotted compost or leaf mold around its base.",
+        "why": "Its native soil is incredibly rich in organic matter at the surface, with a mean of '59.6 g/kg'. Topping up the organic matter annually will keep your tree well-fed and happy!",
         "data_points": [
-          "Organic matter topsoil mean 59.60 g/kg",
-          "Total nitrogen topsoil mean 5.31 g/kg"
+          "Organic matter... topsoil: {mean: 59.6021978021978}"
         ]
       },
       {
         "category": "structure",
-        "tip": "Improve the soil structure to create a light, loamy texture. If you have heavy clay, add compost and coarse sand to improve drainage. If you have very sandy soil, add compost and a little clay to help it hold water.",
-        "why": "The native soil has a great balance of sand (34.12%) and clay (25.54%), creating a light topsoil with a low bulk density of 1.19 g/cm³ that's perfect for young roots.",
+        "tip": "When you plant, dig a hole that is wide but not much deeper than the root ball. Gently loosen the soil on the sides of the hole to help the roots spread out.",
+        "why": "The soil in its natural habitat gets much denser deeper down, with bulk density jumping from '1.19 g/cm³' to '1.43 g/cm³'. Giving the roots an easy start in loose soil is a huge help!",
         "data_points": [
-          "Topsoil clay_content mean 25.54%",
-          "Topsoil sand_content mean 34.12%",
-          "Topsoil bulk_density mean 1.19 g/cm³"
+          "Bulk density... topsoil: {mean: 1.19186813186813}",
+          "Bulk density... subsoil: {mean: 1.43846153846154}"
         ]
       },
       {
-        "category": "amendments",
-        "tip": "Top-dress with an organic mulch like pine bark or wood chips each year. This will continue to feed the soil, keep roots cool, and help maintain that acidic pH.",
-        "why": "This replicates the continuous supply of organic material found in its native forest floor, which is key to its high nutrient capacity of 24.69 cmol(+)/kg in the topsoil.",
+        "category": "drainage",
+        "tip": "Make sure your planting spot has good drainage. If your soil is heavy clay, work in plenty of organic matter and some coarse horticultural grit to improve the structure.",
+        "why": "This tree is used to a balanced loamy soil with a good amount of sand ('Topsoil sand content mean 34.12%'), which prevents waterlogging and keeps roots healthy.",
         "data_points": [
-          "Nutrient capacity topsoil mean 24.69 cmol(+)/kg"
+          "Topsoil sand content mean 34.123809523809534"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not add lime or wood ash to the soil around your fir.",
-        "why": "These materials make the soil more alkaline, which goes directly against this tree's strong preference for acidic conditions, as shown by its native soil pH of around 5.9.",
+        "tip": "Do not add lime or mushroom compost to the soil around your Abies alba.",
+        "why": "These amendments make the soil more alkaline, which this acid-loving tree dislikes. It's happiest in conditions that match its native soil pH of around '5.9'.",
         "data_points": [
-          "R value=5.31",
-          "pH surface_0_5cm mean 5.89"
+          "R value=5.31 (moderately acidic soils; occasional neutral/basic)",
+          "pH... surface_0_5cm: {mean: 5.89...}"
         ]
       },
       {
-        "tip": "Avoid compacting the soil, especially within the tree's drip line. Don't repeatedly walk on it or place heavy objects there.",
-        "why": "The data shows that while the topsoil is light and airy, the subsoil becomes much denser (bulk density increases from 1.19 to 1.43 g/cm³). Compacting the surface will prevent water and air from reaching the roots and mimic this dense subsoil too close to the surface.",
+        "tip": "Avoid walking or placing heavy items on the soil around the tree's base, especially when it's wet.",
+        "why": "Its native topsoil is wonderfully light and fluffy ('Bulk density 1.19 g/cm³'). Compacting the soil will squeeze out the air pockets, making it hard for water and oxygen to reach the roots.",
         "data_points": [
-          "Topsoil bulk_density mean 1.19 g/cm³",
-          "Subsoil bulk_density mean 1.43 g/cm³"
+          "Bulk density... topsoil: {mean: 1.19186813186813}"
+        ]
+      },
+      {
+        "tip": "Don't bother with deep-root fertilizers or amendments dug in way down low.",
+        "why": "All the good stuff is at the top! In its natural home, the nitrogen level plummets from '5.31 g/kg' in the topsoil to just '1.32 g/kg' in the subsoil. Focus your love on the surface!",
+        "data_points": [
+          "Total nitrogen... topsoil: {mean: 5.31945054945055}",
+          "Total nitrogen... subsoil: {mean: 1.32802197802198}"
         ]
       }
     ]

@@ -30,6 +30,7 @@ DIMENSIONS = REPO_ROOT / "data/legacy_dimensions_matched.csv"
 CLASSIFICATION = REPO_ROOT / "data/classification.csv"
 GARDENING_TRAITS = REPO_ROOT / "data/encyclopedia_gardening_traits.csv"
 SOIL_SUMMARY = REPO_ROOT / "data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv"
+BIOCLIM_CLEAN_SUMMARY = REPO_ROOT / "data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv"
 STAGE7_PROFILES = REPO_ROOT / "data/stage7_validation_profiles"
 OUTPUT_DIR = REPO_ROOT / "data/encyclopedia_profiles"
 CSR_STAGE2 = REPO_ROOT / "artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv"
@@ -88,6 +89,19 @@ class EncyclopediaProfileGenerator:
         else:
             logger.info("  Soil data not found; skipping\n")
             self.soil_data = None
+
+        # Load corrected bioclim summary (post-fix ordering) for accurate climate stats
+        self.bioclim_lookup: Dict[str, Dict] = {}
+        if BIOCLIM_CLEAN_SUMMARY.exists():
+            logger.info("Loading corrected bioclim summary (post WorldClim ordering fix)...")
+            bioclim_df = pd.read_csv(BIOCLIM_CLEAN_SUMMARY)
+            for _, row in bioclim_df.iterrows():
+                species_name = str(row.get('species', '')).strip()
+                if species_name:
+                    self.bioclim_lookup[species_name] = row.to_dict()
+            logger.info(f"  Correct bioclim data available for {len(self.bioclim_lookup)} species\n")
+        else:
+            logger.info("  Corrected bioclim summary not found; falling back to comprehensive dataset values\n")
 
         # Load CSR (StrateFy) percentages if available
         self.csr_lookup: Dict[str, Dict[str, float]] = {}
@@ -769,29 +783,46 @@ class EncyclopediaProfileGenerator:
 
     def extract_bioclim(self, row) -> Optional[Dict]:
         """Extract bioclim climate variables averaged from occurrence data."""
-        # Check if bioclim data exists
-        if pd.isna(row.get('bio1_mean')):
+        species_name = str(row.get('wfo_accepted_name', '')).strip()
+        bioclim_source: Optional[Dict] = None
+        if species_name and species_name in self.bioclim_lookup:
+            bioclim_source = self.bioclim_lookup[species_name]
+
+        def get_value(key: str) -> Optional[float]:
+            source = bioclim_source if bioclim_source is not None else row
+            if isinstance(source, dict):
+                value = source.get(key)
+            else:
+                value = source.get(key)
+            return self._safe_float(value)
+
+        # If we have corrected summary data, use that; otherwise fall back
+        annual_mean = get_value('bio1_mean')
+        if annual_mean is None:
             return None
 
-        def scaled(value, factor=1.0, rounding=2):
-            base = self._safe_float(value)
-            if base is None:
-                return None
-            scaled_value = base * factor
-            return round(scaled_value, rounding) if rounding is not None else scaled_value
+        warmest_high = get_value('bio5_mean')
+        coldest_low = get_value('bio6_mean')
+        annual_range = get_value('bio7_mean')
 
-        annual_mean = self._safe_float(row.get('bio1_mean'))
-        warmest_high = scaled(row.get('bio5_mean'), 0.1)
-        coldest_low = scaled(row.get('bio6_mean'), 0.1)
-        annual_range = self._safe_float(row.get('bio7_mean'))
-        temp_seasonality = scaled(row.get('bio4_mean'), 0.01)
+        temp_seasonality_raw = get_value('bio4_mean')
+        temp_seasonality = round(temp_seasonality_raw * 0.01, 2) if temp_seasonality_raw is not None else None
 
-        annual_rain = scaled(row.get('bio12_mean'), 100.0, rounding=0)
-        wettest_month = scaled(row.get('bio13_mean'), 10.0, rounding=0)
-        driest_month = scaled(row.get('bio14_mean'), 0.1, rounding=0)
-        precip_seasonality = self._safe_float(row.get('bio15_mean'))
+        annual_rain = get_value('bio12_mean')
+        wettest_month = get_value('bio13_mean')
+        driest_month = get_value('bio14_mean')
+        precip_seasonality = get_value('bio15_mean')
 
-        sufficient_raw = row.get('has_sufficient_data_bioclim')
+        # Aridity index still comes from comprehensive dataset (already scalar)
+        aridity_mean = self._safe_float(row.get('AI_mean'))
+
+        if bioclim_source is not None:
+            n_occurrences = self._safe_int(bioclim_source.get('n_occurrences'))
+            sufficient_raw = bioclim_source.get('has_sufficient_data')
+        else:
+            n_occurrences = self._safe_int(row.get('n_occurrences_bioclim'))
+            sufficient_raw = row.get('has_sufficient_data_bioclim')
+
         if pd.isna(sufficient_raw):
             sufficient_flag = None
         else:
@@ -812,10 +843,10 @@ class EncyclopediaProfileGenerator:
                 'seasonality_cv': precip_seasonality,
             },
             'aridity': {
-                'index_mean': self._safe_float(row.get('AI_mean')),
+                'index_mean': aridity_mean,
             },
             'occurrence_summary': {
-                'n_occurrences': self._safe_int(row.get('n_occurrences_bioclim')),
+                'n_occurrences': n_occurrences,
                 'sufficient_data': sufficient_flag,
             }
         }

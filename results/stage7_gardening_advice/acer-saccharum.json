@@ -3,170 +3,172 @@
   "slug": "acer-saccharum",
   "climate_advice": {
     "focus": "climate",
-    "headline": "Your Sugar Maple is a sturdy friend that loves a shady spot and consistently moist soil!",
+    "headline": "Sugar Maple is a tough and adaptable tree that loves moisture and can handle a wide range of light and temperatures!",
     "data_summary": [
       {
-        "insight": "Let's look at light! The data gives a light value of 2.97, which points to it being a 'shade plant'. But here's the interesting part: the reliability is 'Medium' because it's actually super flexible!",
-        "implication": "This means that while your Sugar Maple will be happiest with some shade, especially when it's young, it can also handle full sun or full shade as it gets older. It's very adaptable!",
+        "insight": "Let's talk about light! The data is super interesting here. While one score (the L value of 2.97) suggests Sugar Maple is a deep 'shade plant', we have 'Medium' reliability on that. Why? Because other info shows it's actually super flexible and can grow in full sun, partial shade, or full shade! How cool is that?",
+        "implication": "This means you have lots of options for where to plant it! You don't have to worry too much about finding the *perfect* light, as long as you keep its other needs in mind.",
         "data_points": [
           "L value=2.97 (shade plant)",
-          "L reliability='Medium'",
-          "Reason: 'tolerates full sun, partial shade, and full shade, with seedlings requiring partial shade.'"
+          "Reliability: Medium",
+          "tolerates full sun, partial shade, and full shade"
         ]
       },
       {
-        "insight": "For moisture, your plant is a bit of a Goldilocks! The moisture value of 5.46 means it likes things 'constantly moist or damp but not wet'.",
-        "implication": "It doesn't want its roots to dry out, but it also doesn't want them sitting in a puddle. We'll need to find that perfect, happy medium to keep it thriving.",
+        "insight": "When it comes to water, Sugar Maple has a clear preference! The data points to it loving soil that's 'constantly moist or damp but not wet' (that's an M value of 5.46). It's used to places that get a lot of rain, around 992.73 mm annually, so it definitely appreciates a good drink.",
+        "implication": "The key will be keeping its roots happy with consistent moisture, but making sure it doesn't get waterlogged. Think 'damp sponge,' not 'mud puddle'!",
         "data_points": [
           "M value=5.46 (constantly moist or damp but not wet)",
-          "M reliability='Medium'",
-          "Reason: 'prefers moist, well-drained soils and is sensitive to flooding.'"
+          "prefers moist, well-drained soils",
+          "Annual precipitation: 992.73 mm"
         ]
       },
       {
-        "insight": "This tree is tough and used to seasons! The data shows it's native to places with a big annual temperature range of 26.06°C.",
-        "implication": "It's totally comfortable with both warm summers and cold winters, so you don't need to give it special winter protection once it's established. It knows how to handle the cold!",
+        "insight": "Wow, this tree is a champ when it comes to temperature! The climate data shows it can handle a huge temperature range, from lows of -10.67°C in the coldest month to highs of 27.9°C in the warmest. It's a true four-season plant!",
+        "implication": "This means it's very adaptable to different climates. As long as you're within its hardiness zones (3-8), it should feel right at home with your local seasons.",
         "data_points": [
-          "Annual temperature range=26.06°C",
-          "T value=5.5 (warm; colline, extending to mild northern areas)",
-          "T reliability='Medium'",
-          "Reason: 'hardiness zone range extends from cool to mild temperatures.'"
+          "Coldest month low_C: -10.67",
+          "Warmest month high_C: 27.9",
+          "grows in hardiness zones 3-8"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "light",
-        "tip": "Plant it where it will get some afternoon shade, especially if it's a young tree.",
-        "why": "The data says seedlings really need shade to get started, even though mature trees are more flexible. This gives it the best of both worlds!",
+        "tip": "If you're planting a young Sugar Maple, try to give it a spot with partial shade to get it started on the right foot.",
+        "why": "The reliability notes specifically mention that 'seedlings requiring partial shade', even though mature trees can handle more sun. This gives them the best start in life!",
         "data_points": [
-          "L reliability reason: 'seedlings requiring partial shade'"
+          "seedlings requiring partial shade",
+          "Reliability (L): Medium"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Aim to keep the soil consistently moist, like a wrung-out sponge.",
-        "why": "This matches its ideal conditions perfectly! The moisture value is 5.46, for 'constantly moist or damp', and it's used to areas with high annual rainfall (1160.0 mm).",
+        "tip": "Keep the soil consistently moist, like a wrung-out sponge. You'll want to water it regularly, especially if you have a dry week.",
+        "why": "This matches its preference for 'constantly moist or damp' conditions (M value of 5.46) and the fact that it's native to areas with nearly 1000 mm of annual rain.",
         "data_points": [
           "M value=5.46 (constantly moist or damp but not wet)",
-          "Annual precipitation=1160.0 mm"
+          "Annual precipitation: 992.73 mm"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Make sure the soil has good drainage.",
-        "why": "It loves moisture, but not soggy feet! The data is very clear that it's 'sensitive to flooding' and prefers soil that is 'not wet'.",
+        "tip": "Make sure your planting spot has good drainage! Amending heavy clay soil with some compost can really help.",
+        "why": "The data is very clear that while it loves moisture, it's also 'sensitive to flooding' and prefers 'well-drained soils'. Good drainage prevents the roots from sitting in water.",
         "data_points": [
-          "M reliability reason: 'sensitive to flooding'",
-          "M label: 'constantly moist or damp but not wet'"
+          "sensitive to flooding",
+          "prefers moist, well-drained soils"
         ]
       },
       {
         "category": "temperature",
-        "tip": "Don't worry about cold winters! This tree is built for them.",
-        "why": "It's adapted to a huge annual temperature range (26.06°C) and grows in hardiness zones from 3 to 8, showing it can handle some serious chill.",
+        "tip": "Embrace the seasons! This tree is built for them, so you don't need to provide special winter protection or summer shade once it's established.",
+        "why": "The climate data shows it's perfectly happy in places with cold winters (down to -10.67°C) and warm summers (up to 27.9°C). It's adapted to a wide 'annual range' of 38.57°C!",
         "data_points": [
-          "Annual temperature range=26.06°C",
-          "T reliability reason: 'grows in hardiness zones 3-8'"
+          "Annual temperature range_C: 38.57",
+          "Coldest month low_C: -10.67",
+          "Warmest month high_C: 27.9"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not plant it in a boggy, waterlogged area of your garden.",
-        "why": "It needs moisture, but the data specifically warns that it's 'sensitive to flooding' and does not like soil that is constantly 'wet'.",
+        "tip": "Try not to let the soil dry out completely for long periods, especially in the summer.",
+        "why": "This goes against its core need for 'constantly moist or damp' conditions, as shown by its M value of 5.46. It's just not a drought-tolerant plant.",
         "data_points": [
-          "M reliability reason: 'sensitive to flooding'",
-          "M label: '...but not wet'"
+          "M value=5.46 (constantly moist or damp but not wet)"
         ]
       },
       {
-        "tip": "Try not to let the soil become bone-dry for long stretches, especially in summer.",
-        "why": "This tree really counts on steady moisture to be happy, as shown by its preference for 'constantly moist or damp' conditions (M value of 5.46).",
+        "tip": "Avoid planting your Sugar Maple in low-lying areas that collect water or have very poor drainage.",
+        "why": "The reliability notes specifically warn that it is 'sensitive to flooding'. Its roots need to breathe, and sitting in water will harm it.",
         "data_points": [
-          "M value=5.46 (constantly moist or damp but not wet)"
+          "sensitive to flooding",
+          "prefers moist, well-drained soils"
         ]
       }
     ]
   },
   "soil_advice": {
     "focus": "soil",
-    "headline": "Let's build a rich, slightly acidic, and airy home for your magnificent Acer saccharum!",
+    "headline": "Let's create a rich, slightly acidic, and well-aerated soil for your Acer saccharum to thrive!",
     "data_summary": [
       {
-        "insight": "The soil data shows a lovely, slightly acidic pH, starting around a mean of `5.54` at the surface. This is fantastic news because we know your Sugar Maple loves a pH range of `5.5 to 7.3`!",
-        "implication": "This means your soil is likely already in the perfect zone for your tree to soak up all the nutrients it needs to thrive. You probably won't need to make any big adjustments!",
+        "insight": "Looking at the data from where Acer saccharum grows naturally, it absolutely loves slightly acidic soil!",
+        "implication": "This means your garden soil should be a little on the tangy side, not neutral or alkaline. This helps the tree absorb all the nutrients it needs to grow strong and healthy.",
         "data_points": [
-          "\"pH\": {\"surface_0_5cm\": {\"mean\": 5.5407960199005}}",
-          "\"ideal pH range of 5.5 to 7.3\""
+          "Topsoil pH mean 5.5407960199005",
+          "Subsoil pH mean 6.07943615257048"
         ]
       },
       {
-        "insight": "Wow, this soil is packed with goodies! The topsoil is rich in organic matter (`43.06 g/kg`) and has a great ability to hold onto food for the tree, with a `nutrient_capacity` of `19.12 cmol(+)/kg`. This matches perfectly with the fact that Sugar Maples prefer fertile soils.",
-        "implication": "To keep your tree happy and well-fed, your main job will be to maintain this wonderful richness. Think of it as keeping the pantry full for your leafy friend!",
+        "insight": "Wow, the topsoil in its native environment is incredibly rich and full of life!",
+        "implication": "Your Sugar Maple will be happiest in a soil that's packed with goodies. It's used to a forest floor with lots of decomposed leaves and other organic material that acts like a pantry full of food and helps hold moisture.",
         "data_points": [
-          "\"Organic matter... topsoil: {\"mean\": 43.06...}",
-          "\"Nutrient capacity... topsoil: {\"mean\": 19.12...}",
-          "\"prefers fertile soils\""
+          "Organic matter mean 43.06 g/kg in topsoil",
+          "Total nitrogen mean 5.09 g/kg in topsoil",
+          "Nutrient capacity mean 19.12 cmol(+)/kg in topsoil"
         ]
       },
       {
-        "insight": "While the topsoil is nice and fluffy, it gets pretty dense deeper down. The soil's `bulk_density` jumps from a comfortable `1.37 g/cm³` near the surface to a more compacted `1.64 g/cm³` in the subsoil.",
-        "implication": "This density can make it a little tough for roots to stretch out and for water to drain away. We'll want to be careful to keep the soil as light and airy as possible, especially when the tree is establishing itself.",
+        "insight": "The soil structure shows us something really important: the soil gets much more packed and dense just below the surface.",
+        "implication": "While the topsoil is lovely and loose, the subsoil can be a bit tough for roots to push through. We need to make sure the roots have plenty of room to spread out near the surface and that water can drain away properly.",
         "data_points": [
-          "\"bulk_density... topsoil: {\"mean\": 1.37...}",
-          "\"bulk_density... subsoil: {\"mean\": 1.64...}"
+          "Topsoil bulk density mean 1.3759856035437432 g/cm³",
+          "Subsoil bulk density mean 1.640091362126245 g/cm³"
         ]
       }
     ],
     "recommendations": [
       {
-        "category": "amendments",
-        "tip": "Every spring, spread a 2-inch layer of compost or well-rotted leaf mulch over the root zone, keeping it away from the trunk.",
-        "why": "This is the best way to mimic its natural forest floor home! It will replenish the high levels of organic matter (`43.06 g/kg`) and nitrogen (`5.09 g/kg`) that its native topsoil provides.",
+        "category": "pH",
+        "tip": "Before planting, test your soil's pH. Aim for a range between 5.5 and 6.5 to make your tree feel right at home.",
+        "why": "The data shows that in its natural habitat, the soil pH is consistently acidic, with a topsoil mean of just 5.54. Getting the pH right is the first step to a happy tree!",
         "data_points": [
-          "\"Organic matter... topsoil: {\"mean\": 43.062901439645636}",
-          "\"Total nitrogen... topsoil: {\"mean\": 5.0933333333333355}"
+          "Topsoil pH mean 5.5407960199005"
+        ]
+      },
+      {
+        "category": "amendments",
+        "tip": "Generously mix in compost, leaf mold, or aged pine bark into your planting area, and top-dress with more compost every year.",
+        "why": "This mimics the super-rich forest floor where it naturally grows, which has a very high organic matter content of 43.06 g/kg and tons of nitrogen.",
+        "data_points": [
+          "Organic matter mean 43.06 g/kg",
+          "Total nitrogen mean 5.09 g/kg"
         ]
       },
       {
         "category": "structure",
-        "tip": "When planting, dig a hole that's two to three times wider than the root ball and mix plenty of compost into the soil you use to fill it back in.",
-        "why": "This gives the roots a fantastic head start by creating a loose, rich zone to grow into, helping them push through the naturally dense subsoil, which has a `bulk_density` of `1.64 g/cm³`.",
+        "tip": "When you plant, dig a hole that is two to three times wider than the root ball, but no deeper.",
+        "why": "The native subsoil gets dense and compacted quickly (Bulk density 1.64 g/cm³). A wide hole encourages roots to spread out in the nutrient-rich topsoil instead of struggling to go down.",
         "data_points": [
-          "\"bulk_density... subsoil: {\"mean\": 1.640091362126245}"
-        ]
-      },
-      {
-        "category": "pH",
-        "tip": "Test your garden's soil pH before planting and then every few years. If it's much higher than 7.0, you can gently lower it with elemental sulfur.",
-        "why": "Your Sugar Maple is happiest in that slightly acidic sweet spot of `5.5 to 7.3`. Keeping the pH in this range ensures it can access all the available nutrients in the soil.",
-        "data_points": [
-          "\"ideal pH range of 5.5 to 7.3\""
+          "Subsoil bulk density mean 1.640091362126245 g/cm³"
         ]
       },
       {
         "category": "drainage",
-        "tip": "Water your tree deeply and infrequently, rather than giving it little sips every day. Let the top few inches of soil dry out between waterings.",
-        "why": "This encourages the roots to grow deep in search of water, moving past the topsoil and into the subsoil, which is important for anchoring the tree and finding moisture during dry spells.",
+        "tip": "If you have heavy clay soil, amend it well with organic matter to improve aeration and structure.",
+        "why": "The native soil has a good balance of sand and clay, but the increasing density with depth suggests that poor drainage could be a problem. Organic matter will keep the soil from becoming waterlogged and hard.",
         "data_points": [
-          "\"subsoil... mean\": 1.640091362126245"
+          "Topsoil clay content mean 23.24%",
+          "Subsoil bulk density mean 1.64 g/cm³"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not walk, drive, or place heavy objects over the tree's root zone.",
-        "why": "The subsoil is already quite dense, with a `bulk_density` of `1.64 g/cm³`. Adding more weight will compact it further, squeezing out precious air pockets that roots need to breathe and grow.",
+        "tip": "Do not add lime, wood ash, or 'alkaline' soil amendments around your tree.",
+        "why": "These materials raise the soil pH, which is the opposite of what Acer saccharum wants! It's used to acidic conditions, with a native topsoil pH around 5.54.",
         "data_points": [
-          "\"bulk_density... subsoil: {\"mean\": 1.640091362126245}"
+          "Topsoil pH mean 5.5407960199005"
         ]
       },
       {
-        "tip": "Avoid using 'liming' products or fertilizers designed to make soil more alkaline.",
-        "why": "Your tree needs slightly acidic conditions to thrive, as its ideal pH is between `5.5 to 7.3`. Making the soil too alkaline can 'lock up' nutrients, essentially starving the tree even if the food is present.",
+        "tip": "Avoid walking, parking, or placing heavy objects over the root zone of the tree.",
+        "why": "The data shows the subsoil is already quite dense (Bulk density 1.64 g/cm³). Any extra weight will compact it further, squeezing out air and making it very difficult for roots to breathe and grow.",
         "data_points": [
-          "\"ideal pH range of 5.5 to 7.3\""
+          "Subsoil bulk density mean 1.640091362126245 g/cm³"
         ]
       }
     ]

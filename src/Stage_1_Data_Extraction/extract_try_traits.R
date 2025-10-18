@@ -1,7 +1,8 @@
 # Extract multiple traits from TRY data
 # Traits: 7 (Mycorrhiza type), 46 (Leaf thickness), 37 (Leaf phenology type),
 #         22 (Photosynthesis pathway), 31 (Species tolerance to frost),
-#         47 (Leaf dry matter content, LDMC)
+#         47 (Leaf dry matter content, LDMC),
+#         3115 (Specific leaf area, leaf area per leaf dry mass)
 
 # Specify the library path
 .libPaths("/home/olier/ellenberg/.Rlib")
@@ -10,6 +11,7 @@
 # Ensure rtry is installed. If not, run: install.packages("rtry")
 library(rtry)
 library(dplyr)
+library(data.table)
 
 # Define traits to extract
 target_traits <- list(
@@ -20,14 +22,16 @@ target_traits <- list(
   list(id = 31, name = "species_tolerance_to_frost", desc = "Species tolerance to frost"),
   # Canonical LDMC for lamina: TraitID 47 (leaf dry mass per leaf fresh mass)
   # Avoid petiole/cotyledon/rachis LDMC (1010/3055/3081) for Bill Shipley’s lamina advice
-  list(id = 47, name = "leaf_dry_matter_content", desc = "Leaf dry mass per leaf fresh mass (LDMC)")
+  list(id = 47, name = "leaf_dry_matter_content", desc = "Leaf dry mass per leaf fresh mass (LDMC)"),
+  list(id = 3115, name = "specific_leaf_area", desc = "Leaf area per leaf dry mass (SLA, petiole excluded)")
 )
 
 # Define file paths
-input_files <- list(
-  "/home/olier/ellenberg/data/TRY/43244.txt",  # Main file with most traits
-  "/home/olier/ellenberg/data/TRY/43289.txt"   # Has additional phenology data
-)
+input_files <- sort(list.files(
+  "/home/olier/ellenberg/data/TRY",
+  pattern = "\\.txt$",
+  full.names = TRUE
+))
 
 output_dir <- "/home/olier/ellenberg/artifacts/stage1_data_extraction"
 
@@ -144,7 +148,7 @@ for (trait in target_traits) {
     #   - trait_37_leaf_phenology_type.rds
     #   - trait_22_photosynthesis_pathway.rds
     #   - trait_31_species_tolerance_to_frost.rds
-    if (trait$id %in% c(46, 37, 22, 31, 47)) {
+    if (trait$id %in% c(46, 37, 22, 31, 47, 3115)) {
       canonical_out <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, ".rds"))
       saveRDS(combined_data, file = canonical_out)
       message("  Canonical output saved to: ", canonical_out)
@@ -177,10 +181,13 @@ summary_data <- data.frame(
   stringsAsFactors = FALSE
 )
 
+all_trait_records <- list()
+
 for (trait in target_traits) {
   combined_file <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, "_combined.rds"))
   if (file.exists(combined_file)) {
     data <- readRDS(combined_file)
+    data$TraitSlug <- trait$name
     summary_data <- rbind(summary_data, data.frame(
       TraitID = trait$id,
       TraitName = trait$name,
@@ -189,12 +196,24 @@ for (trait in target_traits) {
       UniqueSpecies = length(unique(data$AccSpeciesName)),
       stringsAsFactors = FALSE
     ))
+    all_trait_records[[length(all_trait_records) + 1]] <- data
   }
 }
 
 summary_file <- file.path(output_dir, "extracted_traits_summary.csv")
 write.csv(summary_data, summary_file, row.names = FALSE)
 message("Summary saved to: ", summary_file)
+
+if (length(all_trait_records) > 0) {
+  combined_traits <- rbindlist(all_trait_records, fill = TRUE)
+  combined_traits <- unique(combined_traits)
+  csv_output_path <- "/home/olier/ellenberg/data/stage1/try_selected_traits.csv"
+  parquet_source <- file.path(output_dir, "try_selected_traits.csv")
+  fwrite(combined_traits, csv_output_path)
+  fwrite(combined_traits, parquet_source)
+  message("Combined CSV saved to: ", csv_output_path)
+  message("Combined CSV (artifact copy) saved to: ", parquet_source)
+}
 
 message("\n===================================")
 message("Script finished successfully!")

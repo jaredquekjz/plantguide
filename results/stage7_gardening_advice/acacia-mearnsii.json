@@ -3,180 +3,192 @@
   "slug": "acacia-mearnsii",
   "climate_advice": {
     "focus": "climate",
-    "headline": "Let's find the perfect sunny and warm spot for your Acacia mearnsii to thrive!",
+    "headline": "This plant is a real sun-worshipper that thrives in warm, comfy spots!",
     "data_summary": [
       {
-        "insight": "This plant absolutely adores the sun! The data we have on its light needs is super clear and reliable.",
-        "implication": "This means you'll want to find the sunniest place in your garden for it. It's a true sun-worshipper and won't be happy in the shade.",
+        "insight": "Wow, this plant absolutely loves the sun! The data we have on its light needs is super reliable.",
+        "implication": "This means you'll want to find the sunniest spot you possibly can for it. It's not a plant for a shady corner!",
         "data_points": [
-          "L value = 8.79 (full-light plant)",
+          "L value=8.79 (full-light plant)",
           "Reliability: High",
-          "Reason: 'evidence explicitly states \\'full sun\\' and \\'8 hours\\''"
+          "requires around 8 hours of direct sunlight daily"
         ]
       },
       {
-        "insight": "It also loves staying warm and cozy. The information we have points to it being a plant for warmer climates.",
-        "implication": "This tells us it will be happiest in a spot that's sheltered from harsh cold. It's not a fan of deep freezes, as its native climate rarely drops below 3.6°C.",
+        "insight": "It's also a big fan of warmth! The data shows it comes from places that don't get very cold.",
+        "implication": "We should think about protecting it from frost. It's happiest when it feels cozy and warm, just like it would in its natural home.",
         "data_points": [
-          "T value = 7.65 (very warm)",
-          "Reliability: High",
-          "Coldest month low: 3.6°C"
+          "T value=7.65 (very warm)",
+          "coldest_month_low_C: 5.07",
+          "hardiness zone is min 8, max 11"
         ]
       },
       {
-        "insight": "When it comes to water, your Acacia mearnsii seems to like a happy medium – not too wet, not too dry!",
-        "implication": "We should aim for soil that stays consistently moist, like a wrung-out sponge. The confidence here is 'Medium', so we can watch and learn, but the general idea is to avoid extremes.",
+        "insight": "When it comes to water, this plant likes a happy medium. The data suggests it prefers soil that's consistently moist, but not soaking wet.",
+        "implication": "This tells us to aim for balance in our watering. The reliability for this is 'Medium', so it's a great chance to watch your plant and learn its specific needs!",
         "data_points": [
-          "M value = 4.18 (fresh/mesic soils of average dampness)",
-          "Reliability: Medium"
+          "M value=4.18 (fresh/mesic soils of average dampness)",
+          "Reliability: Medium",
+          "prefers moist, well-drained soils"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "light",
-        "tip": "Find a spot that gets at least 8 hours of direct sunlight each day.",
-        "why": "This is a 'full-light plant' with a very high Light value (8.79), and the data we have is rated 'High' reliability, specifically mentioning '8 hours' of sun. Let's give it what it loves!",
+        "tip": "Find the sunniest spot in your garden! This plant needs lots of direct light to be happy.",
+        "why": "The data is super clear on this! It has a 'High' reliability light score (L value of 8.79) and needs about '8 hours of direct sunlight daily'. Let's give it what it loves!",
         "data_points": [
-          "L value = 8.79",
-          "Reliability: High"
+          "L value=8.79 (full-light plant)",
+          "Reliability: High",
+          "requires around 8 hours of direct sunlight daily"
         ]
       },
       {
         "category": "temperature",
-        "tip": "If your winters involve hard frosts, protect your plant or grow it in a container.",
-        "why": "It's a 'very warm' climate plant (T value = 7.65) and its native environment has a coldest month low of 3.6°C. Bringing it indoors or into a greenhouse will keep it safe from the cold it's not used to.",
+        "tip": "Plant it in a warm, sheltered location, like against a sunny wall, especially if your winters get chilly.",
+        "why": "It's a 'very warm' climate plant (T value of 7.65) and its natural range sees coldest month lows around 5.07°C, so it really doesn't like deep freezes.",
         "data_points": [
-          "T value = 7.65",
-          "Coldest month low: 3.6°C"
+          "T value=7.65 (very warm)",
+          "coldest_month_low_C: 5.07"
         ]
       },
       {
         "category": "moisture",
-        "tip": "Aim to keep the soil consistently moist, especially during dry spells.",
-        "why": "The data points towards a preference for 'fresh/mesic soils' (M value = 4.18), which means it doesn't want to dry out completely. Good drainage is key to prevent soggy roots!",
+        "tip": "Aim for soil that feels like a wrung-out sponge – not soggy and not bone-dry. Check the soil every few days to see how it's doing.",
+        "why": "It prefers 'fresh/mesic soils of average dampness' (M value of 4.18). Since the reliability is 'Medium', observing your plant is the best way to get the watering just right!",
         "data_points": [
-          "M value = 4.18 (fresh/mesic soils of average dampness)",
+          "M value=4.18 (fresh/mesic soils of average dampness)",
           "Reliability: Medium"
+        ]
+      },
+      {
+        "category": "moisture",
+        "tip": "Make sure your soil drains well. You can add some sand or perlite to heavy soil to improve drainage.",
+        "why": "This helps maintain the 'moist, well-drained' condition it loves and prevents the roots from sitting in too much water.",
+        "data_points": [
+          "prefers moist, well-drained soils",
+          "M value=4.18"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Don't plant it in a shady spot or under a large tree.",
-        "why": "This is a 'full-light plant' (L value = 8.79) with 'High' reliability data confirming its need for sun. It will really struggle without enough light!",
+        "tip": "Don't plant it in a shady corner or under a big tree.",
+        "why": "It's a 'full-light plant' with a very high L value of 8.79. It will really struggle and be unhappy without enough sun!",
         "data_points": [
-          "L value = 8.79 (full-light plant)",
-          "Reliability: High"
+          "L value=8.79 (full-light plant)",
+          "requires around 8 hours of direct sunlight daily"
         ]
       },
       {
-        "tip": "Avoid letting the soil become waterlogged or completely bone-dry.",
-        "why": "It prefers 'fresh/mesic soils' (M value = 4.18), so both soggy ground and parched earth will stress it out. Consistency is our goal!",
+        "tip": "Don't leave it exposed to hard frosts or freezing temperatures.",
+        "why": "This plant is from warm climates where the coldest month's low is typically 5.07°C. It's just not built for the cold and could get seriously damaged.",
         "data_points": [
-          "M value = 4.18 (fresh/mesic soils of average dampness)"
+          "coldest_month_low_C: 5.07",
+          "T value=7.65 (very warm)",
+          "hardiness zone is min 8, max 11"
         ]
       },
       {
-        "tip": "Don't leave it exposed to temperatures that drop much below freezing.",
-        "why": "With a 'very warm' temperature preference (T value = 7.65) and a native climate where the coldest month's low is 3.6°C, it's just not built for icy weather.",
+        "tip": "Don't let the soil become waterlogged or completely dry out for long periods.",
+        "why": "It's happiest in 'fresh/mesic soils of average dampness' (M value 4.18), so either extreme will stress it out. Let's aim for that happy middle ground!",
         "data_points": [
-          "T value = 7.65",
-          "Coldest month low: 3.6°C"
+          "M value=4.18 (fresh/mesic soils of average dampness)"
         ]
       }
     ]
   },
   "soil_advice": {
     "focus": "soil",
-    "headline": "Your Acacia mearnsii will thrive in light, slightly acidic soil that's not too rich!",
+    "headline": "I love slightly acidic, free-draining soil and don't need a lot of fuss or fertilizer to be happy!",
     "data_summary": [
       {
-        "insight": "This plant absolutely loves soil that's a little on the acidic side! The data points to a happy place with a pH value around 5.7, which is labeled as 'slightly acidic to neutral'.",
-        "implication": "This is fantastic news because the typical soil where it grows is a perfect match! The measurements show a topsoil pH mean of 5.8, so you're starting in a great spot and won't need to make big changes.",
+        "insight": "Hello there! Let's look at the soil where I, Acacia mearnsii, naturally grow. The data shows I absolutely thrive in slightly acidic conditions. The soil starts out acidic near the surface and stays that way pretty far down.",
+        "implication": "This means you'll want to make sure my spot in your garden isn't too alkaline. A happy plant starts with the right soil pH!",
         "data_points": [
           "R value=5.7 (slightly acidic to neutral)",
-          "Topsoil pH mean 5.835"
+          "Topsoil pH mean 5.8350367866375",
+          "Subsoil pH mean 6.25844104195665"
         ]
       },
       {
-        "insight": "When it comes to food, your Acacia is not a greedy plant. It seems to prefer 'moderately poor; low fertility' conditions. We're not 100% certain about this preference, but the soil data gives us great clues!",
-        "implication": "The soil has a decent amount of organic matter right at the top, but it's not overly rich, which suits this plant just fine. This means you can relax and not worry about a complicated feeding schedule!",
+        "insight": "I'm not a very hungry plant! The expert notes suggest I do best in soils with \"moderately poor; low fertility,\" and the soil measurements back this up, showing very little nitrogen available where I'm from. Even though the expert note has 'Unknown' reliability, the soil data tells the same story!",
+        "implication": "This is great news for you! It means I'm super low-maintenance. You don't need to worry about fancy fertilizers. In fact, giving me too much can do more harm than good.",
         "data_points": [
           "N value=4.02 (moderately poor; low fertility)",
-          "Reliability for N: Unknown",
-          "Topsoil organic matter mean 46.10 g/kg"
+          "Total nitrogen topsoil mean 2.776195466295485 g/kg",
+          "Reliability for N: Unknown"
         ]
       },
       {
-        "insight": "The soil has a lovely, light, and sandy texture at the surface, but it gets a bit heavier and more compact deeper down.",
-        "implication": "This structure is great for drainage around the roots, preventing them from getting waterlogged. The loose topsoil is easy for young roots to grow in, while the denser subsoil can hold onto moisture for later.",
+        "insight": "My native soil has a wonderful structure! It's light and sandy on top, which lets water drain away quickly, but has more clay deeper down to hold onto moisture for later. The topsoil is also beautifully light and fluffy.",
+        "implication": "For your garden, this means I need good drainage, especially around my base, but I won't like drying out completely. The key is to avoid heavy, compacted clay that stays soggy.",
         "data_points": [
-          "Topsoil sand content mean 58.24%",
-          "Topsoil bulk density mean 1.10 g/cm³",
-          "Subsoil bulk density mean 1.27 g/cm³"
+          "Topsoil sand content mean 58.24589249022336%",
+          "Subsoil clay content mean 30.776595744680847%",
+          "Topsoil bulk density mean 1.1032263538145433 g/cm³"
         ]
       }
     ],
     "recommendations": [
       {
         "category": "pH",
-        "tip": "Keep the soil slightly acidic, just how it likes it. A yearly mulch of pine needles or oak leaves can help maintain that perfect pH.",
-        "why": "Your plant's ideal pH is around 5.7, and the local soil is already a wonderful match with a pH of about 5.8. Let's keep it that way!",
+        "tip": "Before planting, test your soil's pH. If it's above 7.0, you can gently make it more acidic by mixing in some ericaceous compost or mulching with pine needles.",
+        "why": "This helps create the slightly acidic home I love, matching the conditions where my wild relatives grow, which have an \"R value=5.7\" and a \"Topsoil pH mean 5.8350367866375\".",
         "data_points": [
-          "R value=5.7",
-          "Surface pH mean 5.835"
+          "R value=5.7 (slightly acidic to neutral)",
+          "Topsoil pH mean 5.8350367866375"
         ]
       },
       {
         "category": "fertility",
-        "tip": "Go very light on fertilizer! A thin layer of compost once a year in the spring is more than enough to keep your plant happy.",
-        "why": "This species prefers 'moderately poor' soil and is likely a nitrogen-fixer, meaning it makes its own! The soil's nitrogen is mostly at the surface anyway, so a little top-dressing is all it needs.",
+        "tip": "Feed me very sparingly! A single application of a balanced, slow-release organic fertilizer or a layer of compost in the spring is all I'll ever need.",
+        "why": "I am adapted to soils with low fertility, as shown by my \"N value=4.02\". The soil where I'm from is naturally low in nitrogen, so rich fertilizers will just overwhelm me.",
         "data_points": [
-          "N value=4.02",
-          "Topsoil nitrogen mean 2.77 g/kg",
-          "Subsoil nitrogen mean 0.82 g/kg"
+          "N value=4.02 (moderately poor; low fertility)",
+          "Total nitrogen topsoil mean 2.776195466295485 g/kg"
         ]
       },
       {
         "category": "structure",
-        "tip": "Apply a 2-3 inch layer of organic mulch (like wood chips or shredded bark) around the base of the plant.",
-        "why": "This will protect the lovely, loose topsoil structure from getting compacted and baking in the sun. It helps keep the soil with a 'bulk density of 1.10 g/cm³' nice and airy for the roots.",
+        "tip": "If your garden has heavy clay, give me a great start by amending the planting hole with lots of organic matter and some horticultural grit or coarse sand.",
+        "why": "This will improve drainage and lighten the soil, recreating the sandy, airy topsoil I'm used to, which has a \"Topsoil sand content mean 58.24589249022336%\".",
         "data_points": [
-          "Topsoil bulk density mean 1.10 g/cm³"
+          "Topsoil sand content mean 58.24589249022336%",
+          "Topsoil bulk density mean 1.1032263538145433 g/cm³"
         ]
       },
       {
-        "category": "drainage",
-        "tip": "Ensure the planting area is well-draining. If you have heavy clay soil, consider a raised bed or mixing in coarse sand and compost.",
-        "why": "The plant is used to soil with a high sand content of '58.24%' in the topsoil, which lets excess water drain away quickly. It won't like having its feet wet!",
+        "category": "amendments",
+        "tip": "Add a 2-inch layer of organic mulch, like composted bark or leaf mold, around my base each year.",
+        "why": "This is a fantastic way to mimic the natural \"Organic matter topsoil mean 46.10296546695833 g/kg\" I'm used to. It helps keep the soil moist, suppresses weeds, and provides a very gentle supply of nutrients.",
         "data_points": [
-          "Topsoil sand content mean 58.24%"
+          "Organic matter topsoil mean 46.10296546695833 g/kg"
         ]
       }
     ],
     "avoid": [
       {
-        "tip": "Do not add lime or wood ash to the soil around your Acacia.",
-        "why": "These materials make the soil more alkaline, but your plant is happiest in acidic conditions. The soil's natural pH of '5.8 to 6.1' is perfect, so let's not change it!",
+        "tip": "Please don't add garden lime to the soil around me!",
+        "why": "Lime makes soil more alkaline, which is the opposite of what I like! I'm happiest in acidic to neutral soil, as shown by my \"R value=5.7\" and the fact my native soil pH rarely goes above 7.0.",
         "data_points": [
           "R value=5.7 (slightly acidic to neutral)",
-          "pH mean 5.835 to 6.258"
+          "very_deep_60_100cm pH p90: 7.0"
         ]
       },
       {
-        "tip": "Avoid using high-nitrogen liquid feeds or rich manures.",
-        "why": "This plant prefers a lean diet and likely produces its own nitrogen. Too much fertilizer can lead to weak, floppy growth instead of a strong, healthy plant.",
+        "tip": "Avoid using high-nitrogen fertilizers, like the kind you'd use on a lawn.",
+        "why": "I'm a pro at surviving in low-nutrient environments, reflected in my \"N value=4.02\". A big rush of nitrogen can shock my system and lead to weak, floppy growth instead of making me strong.",
         "data_points": [
           "N value=4.02 (moderately poor; low fertility)"
         ]
       },
       {
-        "tip": "Don't walk around the base of the plant or allow the soil to become compacted.",
-        "why": "The topsoil is wonderfully light with a 'bulk density of 1.10 g/cm³', but the subsoil is much denser. Compacting the surface will reduce aeration and make it harder for water and roots to penetrate.",
+        "tip": "Try not to walk on the soil right around my base or let it get heavily compacted.",
+        "why": "My roots need to breathe! I thrive in light, airy soil with a very low \"Topsoil bulk density mean 1.1032263538145433 g/cm³\". Squashed soil means unhappy roots.",
         "data_points": [
-          "Topsoil bulk density mean 1.10 g/cm³",
-          "Subsoil bulk density mean 1.27 g/cm³"
+          "Topsoil bulk density mean 1.1032263538145433 g/cm³"
         ]
       }
     ]

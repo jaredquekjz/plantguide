@@ -131,9 +131,18 @@ species_tracking[is.na(n_with_coords), n_with_coords := 0]
 cat("\nStep 3: Extracting bioclim (this will take 5-10 minutes)...\n")
 
 # Load WorldClim rasters
-bio_files <- list.files(config$worldclim_dir, 
-                        pattern = "wc2\\.1_30s_bio_.*\\.tif$", 
-                        full.names = TRUE)
+bio_files <- list.files(
+  config$worldclim_dir,
+  pattern = "wc2\\.1_30s_bio_.*\\.tif$",
+  full.names = TRUE
+)
+if (length(bio_files) == 0) {
+  stop("No WorldClim BIO rasters found in directory: ", config$worldclim_dir)
+}
+# Ensure rasters are ordered numerically (bio_1.tif ... bio_19.tif)
+bio_indices <- as.integer(sub("^.*_bio_(\\d+)\\.tif$", "\\1", basename(bio_files)))
+order_idx <- order(bio_indices)
+bio_files <- bio_files[order_idx]
 bio_stack <- rast(bio_files)
 names(bio_stack) <- paste0("bio", 1:19)
 

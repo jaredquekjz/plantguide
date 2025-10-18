@@ -94,7 +94,7 @@ Notes
 ### 1.5 Implementation Tools
 
 - StrateFy Excel calculator (Pierce et al. 2016/2017 Supporting Information)
-- Open implementations: R code reproducing the Excel logic (constants and equations) are publicly available and match the formulas above.
+- Open implementations: R code reproducing the Excel logic (constants and equations) are publicly available and match the formulas above. We validated our equations against the community-maintained [`commonreed/StrateFy`](https://github.com/commonreed/StrateFy) repository, which reproduces the Pierce et al. mappings.
 
 ### 1.6 Reproducible Commands (this repository)
 
