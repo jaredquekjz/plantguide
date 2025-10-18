@@ -119,8 +119,8 @@ def sample_chunk(con, datasets, offset, chunk_size):
         'lat': chunk['lat'].to_numpy(),
     }
     for key, ds in datasets.items():
-        samples = list(ds.sample(coords))
-        values = np.array(samples, dtype='float32').reshape(-1)
+        iterator = ds.sample(coords)
+        values = np.fromiter((val[0] for val in iterator), dtype='float32', count=len(coords))
         nodata = ds.nodata
         if nodata is not None and not np.isnan(nodata):
             values = np.where(np.isclose(values, nodata), np.nan, values)
