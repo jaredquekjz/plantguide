@@ -5,7 +5,7 @@ Summary
 - XGB (no_pk) improves vs the no‑soil baseline (ΔR² ≈ +0.044). SHAP shows strong pH signal, especially 5–15 cm mean and p90. pk run is in progress; results will be appended.
 
 Data Lineage
-- Global extractor: `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R` (new; moved from data folder, robust CLI)
+- Global extractor: `src/Stage_1/Data_Extraction/extract_soilgrids_global_250m.R` (new; moved from data folder, robust CLI)
 - Make targets (new): `soil_extract_global`, `soil_pipeline_global`
 - Occurrence input: `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`
 - Soil (pH only) summary (distinct label):
@@ -19,7 +19,7 @@ Repro Commands
 - Build pH‑only global 250m dataset (tmux):
   - `make soil_pipeline_global PROPERTIES=phh2o SOIL_GLOBAL_INPUT_CSV=data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv SOIL_GLOBAL_SUMMARY=data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv MERGED_SOIL_OUT_GLOBAL=artifacts/model_data_trait_bioclim_soil_merged_wfo_global_sg250m_ph_20250916.csv CHUNK=500000`
 - Augment bioclim with pH:
-  - `Rscript scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv`
+  - `Rscript src/Stage_1/Soil/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv`
 - R‑axis interpretability (RF + XGB, GPU 3000 trees; distinct label):
   - `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withph_sg250m_ph_20250916 --axes R --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv`
 
@@ -57,7 +57,7 @@ Comparison vs earlier SoilGrids R runs (XGB 3000; 10‑fold CV)
 
 Notes on Pipeline Adjustments
 - Added global 250m extractor and Make targets to remove dependence on remote VRTs and reduce NA gaps.
-- Added `scripts/augment_bioclim_summary_with_soil.R` to append soil columns (pH here) into the bioclim summary used by the exporter.
+- Added `src/Stage_1/Soil/augment_bioclim_summary_with_soil.R` to append soil columns (pH here) into the bioclim summary used by the exporter.
 - Fixed Makefile.hybrid bug: `hybrid_interpret_rf` now respects `TRAIT_CSV`/`BIOCLIM_SUMMARY` passed by callers (prevents accidental re‑export with defaults that omit soil columns).
 
 Interpretation

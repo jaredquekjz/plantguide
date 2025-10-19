@@ -3,7 +3,7 @@
 Convert an Excel workbook (.xlsx) sheet to CSV.
 
 Arcane formula (CLI):
-  python src/Stage_1_Data_Extraction/convert_excel_to_csv.py \
+  python src/Stage_1/Data_Extraction/convert_excel_to_csv.py \
     --input_xlsx data/EIVE_Paper_1.0_SM_08.xlsx \
     --sheet mainTable \
     --output_csv data/EIVE/EIVE_Paper_1.0_SM_08_csv/mainTable.csv

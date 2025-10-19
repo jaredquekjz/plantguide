@@ -449,7 +449,7 @@ Datasets (assembled)
 
 Assumptions and pipeline scripts
 - Assumptions: species linked via WFO‑accepted names (`data/EIVE/EIVE_TaxonConcept_WFO_EXACT.csv`); curated TRY means provide six numeric traits per species; EIVE main table carries five indicator columns and derivatives (e.g., `.nw3`, `.n`).
-- Extraction/assembly scripts: Excel→CSV converter (`src/Stage_1_Data_Extraction/convert_excel_to_csv.py`), EIVE→WFO normalization (`src/Stage_1_Data_Extraction/normalize_eive_to_wfo_EXACT.R`), TRY↔EIVE matcher (`src/Stage_1_Data_Extraction/match_trycurated_species_to_eive_wfo.R`), model dataset assembly (`src/Stage_2_Data_Processing/assemble_model_data.R`).
+- Extraction/assembly scripts: Excel→CSV converter (`src/Stage_1/Data_Extraction/convert_excel_to_csv.py`), EIVE→WFO normalization (`src/Stage_1/Data_Extraction/normalize_eive_to_wfo_EXACT.R`), TRY↔EIVE matcher (`src/Stage_1/Data_Extraction/match_trycurated_species_to_eive_wfo.R`), model dataset assembly (`src/legacy/Stage_2_Data_Processing/assemble_model_data.R`).
 - Coverage snapshot (repo state): 5,799 unique species matched; complete‑case 1,069 spp (SSD combined) with SSD provenance 389 observed / 680 imputed; observed‑SSD‑only sensitivity set 389 spp.
 
 Preprocessing (standard across stages unless noted)

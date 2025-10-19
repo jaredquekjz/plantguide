@@ -139,7 +139,7 @@ The following sections detail each step with provenance and repro commands.
 ## 3. Climate Extraction & Summaries
 - Base extraction already performed (GBIF occurrences filtered, bioclim variables summarised).
 - Canonical species summary: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv`
-- Key script: `src/Stage_1_Data_Extraction/gbif_bioclim/aggregate_bioclim_summaries.R`
+- Key script: `src/Stage_1/Data_Extraction/gbif_bioclim/aggregate_bioclim_summaries.R`
 - Repro (if needed): `make bioclim_summary`
 
 ## 4. Aridity Augmentation (AI)
@@ -154,11 +154,11 @@ The following sections detail each step with provenance and repro commands.
 - Documentation: `results/summaries/hybrid_axes/phylotraits/canonical_soil_extraction_R_20250916.md`
 - Steps:
   1. Download + warp SoilGrids 250 m GeoTIFF tiles.
-  2. Aggregate to species means/quantiles via `scripts/aggregate_soilgrids_species.R`
+  2. Aggregate to species means/quantiles via `src/Stage_1/Soil/aggregate_soilgrids_species.R`
      - Output: `data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv`
   3. Join with AI monthly summary:
      ```bash
-     Rscript scripts/augment_bioclim_summary_with_soil.R \
+     Rscript src/Stage_1/Soil/augment_bioclim_summary_with_soil.R \
        --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv \
        --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv \
        --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv

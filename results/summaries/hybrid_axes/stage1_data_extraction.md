@@ -111,7 +111,7 @@ Total: 1,051 matches (98.7%)
 ### Novel Approach: Extract First, Clean Later
 Unlike traditional pipelines that clean coordinates before extraction, we extract bioclim for ALL coordinates first, then apply quality filters. This provides complete visibility into data loss causes.
 
-**Extraction script**: `/home/olier/ellenberg/src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
+**Extraction script**: `/home/olier/ellenberg/src/Stage_1/Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
 
 ### Processing Steps
 
@@ -180,8 +180,8 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 
 ### Cleaned Pipeline (Unique‑Coordinates Summary)
 - Canonical targets (updated):
-  - `make clean_extract_bioclim` → runs `src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noDups.R`
-  - `make clean_extract_bioclim_v2` → runs `src/Stage_1_Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noSea.R`
+  - `make clean_extract_bioclim` → runs `src/Stage_1/Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noDups.R`
+  - `make clean_extract_bioclim_v2` → runs `src/Stage_1/Data_Extraction/gbif_bioclim/clean_gbif_extract_bioclim_noSea.R`
 - Both produce `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary.csv` with:
   - `n_occurrences` (all cleaned observations)
   - `n_unique_coords` (count of unique lon/lat per species)
@@ -189,7 +189,7 @@ Unlike traditional pipelines that clean coordinates before extraction, we extrac
 - Recommendation: use `clean_extract_bioclim` (noDups) for parity with bioclim‑first; use `*_v2` (noSea) if sea‑test hangs are an issue.
 
 Deprecated references:
-- Old helper names under `scripts/clean_gbif_extract_bioclim*.R` are not used anymore. The source of truth lives under `src/Stage_1_Data_Extraction/gbif_bioclim/`.
+- Old helper names under `scripts/clean_gbif_extract_bioclim*.R` are not used anymore. The source of truth lives under `src/Stage_1/Data_Extraction/gbif_bioclim/`.
 
 ## GloBI Interactions (Stage 3) — Extraction + Join
 
@@ -296,7 +296,7 @@ Cross‑reference:
 
 The bioclim‑subset trait CSV used in the expanded 600 runs is produced inside the Stage‑1 pipeline (Step 6c) by merging the species‑level climate summary onto the trait table and filtering to species with ≥3 valid occurrences.
 
-- Script: `src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R` (Step 6c)
+- Script: `src/Stage_1/Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R` (Step 6c)
 - Effective inputs:
   - Traits: `artifacts/model_data_complete_case_with_myco.csv`
 - Bioclim summary: `data/bioclim_extractions_bioclim_first/summary_stats/species_bioclim_summary.csv`
@@ -338,13 +338,13 @@ Note: The ≥3 inclusion threshold refers to occurrence count. Environmental sum
 
 ## SoilGrids Extraction and Aggregation (aligned with Bioclim)
 
-- Extraction: `scripts/extract_soilgrids_efficient.R` extracts values for unique coordinates, then joins back to occurrences.
-- Aggregation (UPDATED): `scripts/aggregate_soilgrids_species.R` collapses to unique coordinates per species before computing means/SDs and valid counts per layer. Output summary includes both `n_occurrences` and `n_unique_coords`.
+- Extraction: `src/Stage_1/Soil/extract_soilgrids_efficient.R` extracts values for unique coordinates, then joins back to occurrences.
+- Aggregation (UPDATED): `src/Stage_1/Soil/aggregate_soilgrids_species.R` collapses to unique coordinates per species before computing means/SDs and valid counts per layer. Output summary includes both `n_occurrences` and `n_unique_coords`.
 
 ## Aridity Index (AI)
 
 - Annual AI raster: `data/PET/Global-AI_ET0__annual_v3_1/ai_v31_yr.tif` (UInt16; scaled by 1/10000 to dimensionless P/PET).
-- Augmentation utility: `src/Stage_1_Data_Extraction/gbif_bioclim/augment_bioclim_summary_with_ai.R` adds `ai_mean`/`ai_sd` and standardized aliases `aridity_mean`/`aridity_sd` to the species bioclim summary.
+- Augmentation utility: `src/Stage_1/Data_Extraction/gbif_bioclim/augment_bioclim_summary_with_ai.R` adds `ai_mean`/`ai_sd` and standardized aliases `aridity_mean`/`aridity_sd` to the species bioclim summary.
 - De‑duplication: AI stats are computed from unique (species, lon, lat) coordinates (consistent with Bioclim/Soil).
 
 ### Monthly AI (P/PET) Features (Added)
@@ -438,7 +438,7 @@ Notes:
 
 ### Key Scripts
 1. **Species matching**: `/home/olier/ellenberg/src/Stage_3RF_Hybrid/match_gbif_complete_to_traits_via_wfo.py`
-2. **Bioclim extraction**: `/home/olier/ellenberg/src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
+2. **Bioclim extraction**: `/home/olier/ellenberg/src/Stage_1/Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
 3. **Validation**: `/home/olier/ellenberg/validate_extraction_results.R`
 
 ### Configuration
@@ -458,11 +458,11 @@ Notes:
 
 - TRY traits (enhanced) — extraction and merge
   - Extract (canonical): `make try_extract_traits`
-    - Script: `src/Stage_1_Data_Extraction/extract_try_traits.R`
+    - Script: `src/Stage_1/Data_Extraction/extract_try_traits.R`
     - Outputs: `artifacts/stage1_data_extraction/trait_{46|37|22|31}*.rds`, `extracted_traits_summary.csv`
   - Merge into traits (canonical):
     - Full: `make try_merge_enhanced_full`
-      - Script: `src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`
+      - Script: `src/legacy/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`
       - Outputs: `artifacts/model_data_enhanced_traits_full.csv`, `..._complete.csv`
     - Expanded600 subset: `make try_merge_enhanced_subset`
       - Script: same as above
@@ -470,7 +470,7 @@ Notes:
 
 - GBIF → WorldClim (bioclim) — extract, clean, summarize (duplicates preserved)
   - Canonical one‑shot: `make bioclim_first`
-    - Script: `src/Stage_1_Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
+    - Script: `src/Stage_1/Data_Extraction/gbif_bioclim/extract_bioclim_then_clean.R`
     - Outputs: `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv`,
       `.../summary_stats/species_bioclim_summary.csv`, `artifacts/model_data_bioclim_subset.csv`
   - Legacy alternatives (bioclim extraction only — not matching):
@@ -478,9 +478,9 @@ Notes:
     - R (older variants): `scripts/extract_bioclim_pipeline.R`, `scripts/clean_gbif_extract_bioclim*.R`, `scripts/clean_gbif_extract_bioclim.py`
 
 - SoilGrids — extract, aggregate, WFO merge
-  - Extract: `make soil_extract` → `scripts/extract_soilgrids_efficient.R`
-  - Aggregate: `make soil_aggregate` → `scripts/aggregate_soilgrids_species.R`
-  - Merge (canonical WFO alignment): `make soil_merge` → `scripts/merge_trait_bioclim_soil_wfo.R`
+  - Extract: `make soil_extract` → `src/Stage_1/Soil/extract_soilgrids_efficient.R`
+  - Aggregate: `make soil_aggregate` → `src/Stage_1/Soil/aggregate_soilgrids_species.R`
+  - Merge (canonical WFO alignment): `make soil_merge` → `src/Stage_1/Soil/merge_trait_bioclim_soil_wfo.R`
   - One‑shot pipeline: `make soil_pipeline`
 
 ## Common Merge Methodology (TRY, GBIF/WorldClim, Soil)
@@ -492,7 +492,7 @@ Notes:
 - Name normalization (shared idea)
   - Lowercase, trim, collapse spaces, ASCII transliteration, and removal of stray hybrid markers (`×`).
   - Example (R):
-    - `normalize_name()` in `scripts/merge_trait_bioclim_soil_wfo.R`.
+    - `normalize_name()` in `src/Stage_1/Soil/merge_trait_bioclim_soil_wfo.R`.
 
 - WFO resolution (how strings become accepted names)
   - Build mapping: normalized `scientificName` → accepted WFO name using `taxonomicStatus`/`acceptedNameUsageID`.
@@ -504,12 +504,12 @@ Notes:
     - Inputs: TRY RDS with `AccSpeciesName`; base trait CSV with `wfo_accepted_name`.
     - Normalize both to `species_norm`, then LEFT‑join onto the base (keeps all trait species).
     - Aggregation: numeric → median (+ mean/sd); categorical → majority value. Counts stored with `_n` suffix.
-    - Script: `src/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`.
+    - Script: `src/legacy/Stage_2_Data_Processing/assemble_model_data_with_enhanced_traits.R`.
   - Bioclim/Soil species summaries → traits base:
     - Summaries carry `species` (from occurrences). Normalize and harmonize to WFO (`wfo_final`).
     - INNER‑join by design (both sides must exist) to create strictly “available‑data” merged tables.
     - Climate stats columns: `bio{1..19}_mean`, `bio{1..19}_sd`; Soil columns: `phh2o_*`, `soc_*`, `bdod_*`, etc.
-    - Script: `scripts/merge_trait_bioclim_soil_wfo.R`.
+    - Script: `src/Stage_1/Soil/merge_trait_bioclim_soil_wfo.R`.
 
 - Aggregation and de‑duplication
   - Occurrence‑level duplicates at identical coordinates are preserved in `all_occurrences_cleaned.csv` (provenance).
@@ -575,7 +575,7 @@ Root cause (stale summary)
 Actions taken
 - Completed VRT population for all properties/depths except nitrogen mid‑depths; species‑level summary rebuilt.
 - Added Makefile soil targets and quick summaries for reproducible reruns.
-- Provided helper `scripts/build_soilgrids_vrts_local.sh` to mosaic tiles into VRTs if remote VRT download is unavailable.
+- Provided helper `src/Stage_1/Soil/build_soilgrids_vrts_local.sh` to mosaic tiles into VRTs if remote VRT download is unavailable.
 
 Remediation plan
 - Re‑run occurrence‑level extraction and species aggregation to refresh nitrogen mid‑depth coverage:
@@ -585,7 +585,7 @@ Remediation plan
 
 Preflight fetch (auto‑fill missing tiles)
 - Added a preflight step that scans the VRTs and downloads any referenced tile that is missing locally before extraction.
-- Script: `scripts/preflight_fetch_soilgrids_tiles.sh`
+- Script: `src/Stage_1/Soil/preflight_fetch_soilgrids_tiles.sh`
 - Makefile integration:
   - Run standalone: `make soil_preflight SOIL_PROPS=nitrogen`
   - Auto‑runs before extraction: `make soil_extract` (or `make soil_extract PROPERTIES=nitrogen`)

@@ -10,9 +10,9 @@ Data
 
 Pre-step: refresh myco grouping and with_myco datasets
 - Rebuild classification and WFO match (keeps taxonomy in sync), then re-assemble with myco columns into modeling CSVs:
-  - `Rscript src/Stage_1_Data_Extraction/classify_myco_data_v2.R`
-  - `Rscript src/Stage_1_Data_Extraction/match_species_wfo.R`
-  - `Rscript src/Stage_2_Data_Processing/assemble_model_data_with_myco.R`
+  - `Rscript src/Stage_1/Data_Extraction/classify_myco_data_v2.R`
+  - `Rscript src/Stage_1/Data_Extraction/match_species_wfo.R`
+  - `Rscript src/legacy/Stage_2_Data_Processing/assemble_model_data_with_myco.R`
   - Outputs refreshed: `artifacts/model_data_full_with_myco.csv`, `artifacts/model_data_complete_case_with_myco.csv` (n=1,068 with 832 myco-labeled).
 
 Methodology (exact match to Run 2; Myco grouping only)

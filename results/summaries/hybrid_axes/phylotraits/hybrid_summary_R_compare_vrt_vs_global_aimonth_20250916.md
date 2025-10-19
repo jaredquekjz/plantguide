@@ -48,14 +48,14 @@ Notes
 **Repro Commands**
 - Old VRT + monthly AI + pH (this comparison)
   - Merge soil (VRT summary) into monthly‑AI bioclim:
-    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_vrt_20250916.csv`
+    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_1/Soil/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_vrt_20250916.csv`
   - Run interpretability (RF + XGB 3000 GPU):
     - `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withph_quant_aimonth_vrt_20250916 --axes R --trait_csv artifacts/model_data_bioclim_subset_enhanced_imputed.csv --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_vrt_20250916.csv --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true`
 - New Global 250m + monthly AI + pH (this comparison)
   - Build pH‑only global‑250m soil summary (if needed):
     - `make soil_pipeline_global PROPERTIES=phh2o SOIL_GLOBAL_INPUT_CSV=/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv SOIL_GLOBAL_SUMMARY=/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv MERGED_SOIL_OUT_GLOBAL=artifacts/model_data_trait_bioclim_soil_merged_wfo_global_sg250m_ph_20250916.csv CHUNK=500000`
   - Merge soil (global 250m) into monthly‑AI bioclim:
-    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv`
+    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_1/Soil/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv`
   - Run interpretability (RF + XGB 3000 GPU):
     - `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withph_sg250m_ph_20250916 --axes R --trait_csv artifacts/model_data_bioclim_subset_enhanced_imputed.csv --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_ph_sg250m_ph_20250916.csv --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true`
 
@@ -63,7 +63,7 @@ Notes
   - Build full‑soil global‑250m summary:
     - `make soil_pipeline_global SOIL_GLOBAL_INPUT_CSV=/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv SOIL_GLOBAL_SUMMARY=/home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_all_20250916.csv MERGED_SOIL_OUT_GLOBAL=artifacts/model_data_trait_bioclim_soil_merged_wfo_global_all_20250916.csv CHUNK=500000`
   - Merge full soil into monthly‑AI bioclim:
-    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_all_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_soilall_sg250m_20250916.csv`
+    - `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_1/Soil/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_all_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_soilall_sg250m_20250916.csv`
   - Run interpretability (RF + XGB 3000 GPU):
     - `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withsoil_all_sg250m_aimonth_20250916 --axes R --trait_csv artifacts/model_data_bioclim_subset_enhanced_imputed.csv --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_soilall_sg250m_20250916.csv --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true`
 
@@ -72,13 +72,13 @@ Data Processing Overview (this comparison)
   - Source: `data/bioclim_extractions_bioclim_first/all_occurrences_cleaned.csv` (bioclim‑first pipeline)
   - Soil extraction at unique coordinates (lon, lat); species‑level aggregation from unique coords to avoid overweighting repeated observations.
 - SoilGrids extraction
-  - VRT (OLD): `scripts/extract_soilgrids_efficient.R` reads local VRTs in `data/soilgrids_250m`, extracts per‑depth layers (6 depths), scales to physical units, and writes to occurrence table. Species aggregation: `scripts/aggregate_soilgrids_species.R` computes per‑species mean, sd, p10/p50/p90, and per‑layer n_valid across unique coords; output: `.../species_soil_summary.csv`.
-  - Global 250m (NEW): `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R` reads local GeoTIFFs in `data/soilgrids_250m_global`, extracts per‑depth layers with the same scaling, and writes to occurrence table; species aggregation as above; outputs:
+  - VRT (OLD): `src/Stage_1/Soil/extract_soilgrids_efficient.R` reads local VRTs in `data/soilgrids_250m`, extracts per‑depth layers (6 depths), scales to physical units, and writes to occurrence table. Species aggregation: `src/Stage_1/Soil/aggregate_soilgrids_species.R` computes per‑species mean, sd, p10/p50/p90, and per‑layer n_valid across unique coords; output: `.../species_soil_summary.csv`.
+  - Global 250m (NEW): `src/Stage_1/Data_Extraction/extract_soilgrids_global_250m.R` reads local GeoTIFFs in `data/soilgrids_250m_global`, extracts per‑depth layers with the same scaling, and writes to occurrence table; species aggregation as above; outputs:
     - pH only: `.../species_soil_summary_global_sg250m_ph_20250916.csv`
     - Full soil: `.../species_soil_summary_global_all_20250916.csv`
 - Monthly AI integration
   - Base bioclim summary with monthly AI dryness metrics: `data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv`
-  - Augment bioclim with soil columns via `scripts/augment_bioclim_summary_with_soil.R` (joins by normalized species names; preserves monthly AI fields). Distinct outputs per variant as shown above.
+  - Augment bioclim with soil columns via `src/Stage_1/Soil/augment_bioclim_summary_with_soil.R` (joins by normalized species names; preserves monthly AI fields). Distinct outputs per variant as shown above.
 - Modeling configuration
   - Trait table: `artifacts/model_data_bioclim_subset_enhanced_imputed.csv`
   - Export + RF CV baseline + XGB interpretability orchestrated by `scripts/run_interpret_axes_tmux.sh` → `Makefile.hybrid` targets.

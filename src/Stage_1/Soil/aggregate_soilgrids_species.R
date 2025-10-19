@@ -3,7 +3,7 @@
 
 # Usage example:
 #   R_LIBS_USER=/home/olier/ellenberg/.Rlib \
-#   Rscript scripts/aggregate_soilgrids_species.R \
+#   Rscript src/Stage_1/Soil/aggregate_soilgrids_species.R \
 #     --input /home/olier/ellenberg/data/bioclim_extractions_bioclim_first/all_occurrences_cleaned_654_with_soil.csv \
 #     --species_col species_clean \
 #     --min_occ 3 \

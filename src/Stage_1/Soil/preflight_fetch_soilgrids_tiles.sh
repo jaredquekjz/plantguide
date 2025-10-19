@@ -3,7 +3,7 @@
 # exist locally before running extraction. Downloads only missing files.
 #
 # Usage:
-#   scripts/preflight_fetch_soilgrids_tiles.sh \
+#   src/Stage_1/Soil/preflight_fetch_soilgrids_tiles.sh \
 #     --properties nitrogen[,soc,...] \
 #     [--soilgrids-dir /home/olier/ellenberg/data/soilgrids_250m] \
 #     [--base-url https://files.isric.org/soilgrids/latest/data] \

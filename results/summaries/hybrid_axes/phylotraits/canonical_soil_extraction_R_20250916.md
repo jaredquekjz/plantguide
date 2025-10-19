@@ -11,9 +11,9 @@ Why the GeoTIFF workflow is canonical
 4. GDAL best practice ➜ GDAL docs recommend pre-warping big mosaics (`docs/txt/gdal-org-en-stable.txt:19780`, `42595`) to avoid constant reprojection and file-handle churn. SoilGrids’ own README explains the VRT format is meant for browsing, whereas the tile folders contain the authoritative pixels (`files.isric.org/soilgrids/latest/data/README.md`).
 
 Canonical extraction pipeline (reproducible steps)
-1. **Download & stage tiles** — Use `soil_pipeline_global` (`Makefile`, lines 358–372) or call `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R` directly.
-2. **Aggregate to species** — `scripts/aggregate_soilgrids_species.R` summarises unique coordinates into means, SDs, quantiles (`data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv`).
-3. **Join with monthly AI** — `scripts/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv`.
+1. **Download & stage tiles** — Use `soil_pipeline_global` (`Makefile`, lines 358–372) or call `src/Stage_1/Data_Extraction/extract_soilgrids_global_250m.R` directly.
+2. **Aggregate to species** — `src/Stage_1/Soil/aggregate_soilgrids_species.R` summarises unique coordinates into means, SDs, quantiles (`data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv`).
+3. **Join with monthly AI** — `src/Stage_1/Soil/augment_bioclim_summary_with_soil.R --bioclim_summary data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth.csv --soil_summary data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_sg250m_ph_20250916.csv --output data/bioclim_extractions_cleaned/summary_stats/species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv`.
 4. **Run hybrid export + RF/XGB interpretability** — `bash scripts/run_interpret_axes_tmux.sh --label phylotraits_cleanedAI_discovery_gpu_withph_quant_sg250m_20250916 --axes R --folds 10 --x_exp 2 --k_trunc 0 --run_rf true --run_xgb true --xgb_gpu true --xgb_estimators 3000 --xgb_lr 0.02 --clean_out true --bioclim_summary data/.../species_bioclim_summary_with_aimonth_phq_sg250m_20250916.csv` (run from the `AI` conda env so CUDA toolkits are on-path).
 
 GPU execution rationale
@@ -132,12 +132,12 @@ The comprehensive soil dataset (`species_soil_summary.csv`) is loaded by:
 - Contextual gardening narratives
 
 ### File Lineage
-1. **Raw extraction**: `src/Stage_1_Data_Extraction/extract_soilgrids_global_250m.R`
+1. **Raw extraction**: `src/Stage_1/Data_Extraction/extract_soilgrids_global_250m.R`
    - Downloads SoilGrids GeoTIFF tiles to `data/soilgrids_250m_global/`
    - Extracts at GBIF occurrence coordinates
    - Outputs: `data/bioclim_extractions_bioclim_first/occurrences/{species}/soil_summary.csv`
 
-2. **Species aggregation**: `scripts/aggregate_soilgrids_species.R`
+2. **Species aggregation**: `src/Stage_1/Soil/aggregate_soilgrids_species.R`
    - Aggregates occurrence-level data to species-level statistics
    - Outputs: `data/bioclim_extractions_bioclim_first/summary_stats/species_soil_summary_global_all_20250916.csv`
 

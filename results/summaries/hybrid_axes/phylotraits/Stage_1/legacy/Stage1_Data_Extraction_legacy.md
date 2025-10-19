@@ -9,9 +9,9 @@ Overview
 - Objective: create a reconciled universe of candidate plants by merging the Duke ethnobotanical corpus with the EIVE reference list via the WFO backbone.  
 - Motivation: this “ground truth” roster underpins the new science-based encyclopedia shortlisting process, ensuring trait-ready species are prioritised before downstream EIVE modelling and CSR strategy assignments.  
 - Deliverables (generated 2025‑10‑12):
-  - `src/Stage_1_Data_Extraction/stage1_duckdb_pipeline.py` (DuckDB canonicaliser)
-  - `src/Stage_1_Data_Extraction/update_gbif_occurrence_counts.py` (GBIF attach)
-  - `src/Stage_1_Data_Extraction/canonicalise_try_traits.py` (TRY canonicaliser)
+  - `src/Stage_1/Data_Extraction/stage1_duckdb_pipeline.py` (DuckDB canonicaliser)
+  - `src/Stage_1/Data_Extraction/update_gbif_occurrence_counts.py` (GBIF attach)
+  - `src/Stage_1/Data_Extraction/canonicalise_try_traits.py` (TRY canonicaliser)
   - `data/analysis/duke_eive_wfo_union.(csv|parquet)`
   - `data/stage1/*` canonical snapshots (Duke/EIVE/union parquet + unmatched logs)
   - `data/gbif/occurrence_plantae.parquet` (Plantae-only GBIF occurrence archive)
@@ -35,7 +35,7 @@ Source Datasets
 
 Matching Methodology
 --------------------
-- Script: `src/Stage_1_Data_Extraction/stage1_duckdb_pipeline.py`
+- Script: `src/Stage_1/Data_Extraction/stage1_duckdb_pipeline.py`
   - Registers the full WFO backbone (`data/classification.csv`) in DuckDB, exposing both accepted concepts and synonym → accepted mappings via canonicalised (`canonicalize`) strings.
   - Duke processing:
     - Reads the raw JSON corpus, extracts multiple candidate labels (`scientific_name`, `taxonomy.taxon`, genus + species, slugified `plant_key`), normalises each in DuckDB, and resolves to the accepted WFO identifier with provenance.  
@@ -45,18 +45,18 @@ Matching Methodology
     - Matched 13,456 of 14,835 taxa (~90.7 %); unmatched concepts are written to `data/stage1/eive_unmatched.csv`.
   - Union synthesis:
     - Performs a full outer join on accepted WFO IDs, recomputes aggregate columns (`duke_*`, `eive_*`, axis counts, etc.), and refreshes the master union table in both Parquet and CSV formats.
-- TRY canonicalisation (`src/Stage_1_Data_Extraction/canonicalise_try_traits.py`):
+- TRY canonicalisation (`src/Stage_1/Data_Extraction/canonicalise_try_traits.py`):
   - Reads the TRY enhanced workbook, normalises TPL-standardised species names, and resolves them to WFO using the same synonym maps.
   - Aggregates duplicate matches per accepted WFO ID (averaging trait means, summing replicate counts) and computes readiness flags (`try_numeric_traits_ge3`, `try_core_traits_ge3`).
   - Output: `data/stage1/try_canonical.parquet` (45,266 matched profiles, ~98.3 % coverage) and `data/stage1/try_unmatched.csv` (781 unresolved names for audit).
-- GBIF attachment (`src/Stage_1_Data_Extraction/update_gbif_occurrence_counts.py`):
+- GBIF attachment (`src/Stage_1/Data_Extraction/update_gbif_occurrence_counts.py`):
   - Materialises a plant-only parquet (`data/gbif/occurrence_plantae.parquet`) from the 130 M-row GBIF master file.
   - Canonicalises each plant record, maps via WFO synonyms, and falls back to canonical strings only when no WFO ID exists.
   - Updates `data/analysis/duke_eive_wfo_union.(csv|parquet)` with `gbif_record_count` / `gbif_has_data` and logs the 21,049 residual unmatched taxa in `data/analysis/gbif_wfo_unmatched.csv`.
 - Invocation:  
   ```
-  conda run -n AI python src/Stage_1_Data_Extraction/stage1_duckdb_pipeline.py
-  conda run -n AI python src/Stage_1_Data_Extraction/update_gbif_occurrence_counts.py
+  conda run -n AI python src/Stage_1/Data_Extraction/stage1_duckdb_pipeline.py
+  conda run -n AI python src/Stage_1/Data_Extraction/update_gbif_occurrence_counts.py
   ```
 - Output paths land in `data/stage1/` (canonical snapshots) and `data/analysis/` (union CSV/Parquet).
 
@@ -129,10 +129,10 @@ Reproduction Checklist
    - Duke JSON directory (`duke_complete_with_refs`)
    - EIVE CSVs (`EIVE_Paper_1.0_SM_08_csv/mainTable.csv`)
 2. Run the DuckDB canonicaliser:  
-   `conda run -n AI python src/Stage_1_Data_Extraction/stage1_duckdb_pipeline.py`
+   `conda run -n AI python src/Stage_1/Data_Extraction/stage1_duckdb_pipeline.py`
 3. Canonicalise TRY traits and refresh GBIF counts:  
-   `conda run -n AI python src/Stage_1_Data_Extraction/canonicalise_try_traits.py`  
-   `conda run -n AI python src/Stage_1_Data_Extraction/update_gbif_occurrence_counts.py`
+   `conda run -n AI python src/Stage_1/Data_Extraction/canonicalise_try_traits.py`  
+   `conda run -n AI python src/Stage_1/Data_Extraction/update_gbif_occurrence_counts.py`
 4. Inspect the canonical snapshots in `data/stage1/` and the updated union in `data/analysis/`.
 
 Change Log

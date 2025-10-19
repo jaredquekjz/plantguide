@@ -37,13 +37,13 @@ EIVE vs. Ellenberg (Conceptual Differences To Respect)
 
 Data Pipeline
 1) EIVE table extraction
-   - Convert Excel to CSV: `src/Stage_1_Data_Extraction/convert_excel_to_csv.py`
-   - WFO normalization (EXACT): `src/Stage_1_Data_Extraction/normalize_eive_to_wfo_EXACT.R`
+   - Convert Excel to CSV: `src/Stage_1/Data_Extraction/convert_excel_to_csv.py`
+   - WFO normalization (EXACT): `src/Stage_1/Data_Extraction/normalize_eive_to_wfo_EXACT.R`
 2) TRY curated traits subset
-   - Script: `src/Stage_1_Data_Extraction/match_trycurated_species_to_eive_wfo.R`
+   - Script: `src/Stage_1/Data_Extraction/match_trycurated_species_to_eive_wfo.R`
    - Outputs: `artifacts/traits_matched.{csv,rds}` — species matched to EIVE, with six core trait means.
 3) Modeling dataset assembly (done)
-  - Script: `src/Stage_2_Data_Processing/assemble_model_data.R`
+  - Script: `src/legacy/Stage_2_Data_Processing/assemble_model_data.R`
    - Join `artifacts/traits_matched.rds` to EIVE indicators by WFO accepted name (normalized species name), one record per species.
    - Define `SSD used (mg/mm3)` for modeling as: observed SSD when available; otherwise the LDMC‑based imputed value from `SSD combined (mg/mm3)`. For the complete‑case filter, we require non‑missing `SSD combined (mg/mm3)` to maximize coverage. We also emit an observed‑SSD‑only complete‑case file for sensitivity.
    - Include provenance columns: `ssd_imputed_used` flag and `min_records_6traits`.
