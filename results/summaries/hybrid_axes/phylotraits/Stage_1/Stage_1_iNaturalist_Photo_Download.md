@@ -430,8 +430,8 @@ Steps to reproduce:
    ```
 
 5. **Regenerate per-species download lists**
-   Run `/tmp/inat_lists_top10.py` to build
-   `data/external/inat/manifests/species_lists_top10/*.txt` and
+   Run `/tmp/inat_lists_top10.py` for the >10 bucket and `/tmp/inat_lists_full.py`
+   to union back species with ≤10 photos, writing to `data/external/inat/manifests/species_lists_full/*.txt` and updating `photos_large/<slug>/license_manifest.csv`. and
    `photos_large/<slug>/license_manifest.csv`, each capped at 10 entries.
 
 **Coverage snapshot**

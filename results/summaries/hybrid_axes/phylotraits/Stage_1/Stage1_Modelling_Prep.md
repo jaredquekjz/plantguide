@@ -1,0 +1,139 @@
+# Stage 1 — Modelling Preprocessing for Traits
+
+Date: 2025-10-21  
+Maintainer: Stage 1 modelling support
+
+---
+
+## 1. Context & Scope
+- **Canonical baseline** (`Stage1_canonical_summary.md:9-18`) combined Duke, EIVE, Mabberly, and TRY trait sources, producing a 654-species modelling table.  
+- **Current refresh** expands the trait universe to **86 815 WFO taxa** aligned through `data/stage1/master_taxa_union.parquet` and focuses modelling on the Stage 1 shortlist (≥30 GBIF occurrences).  
+- Stage 2 CLMs expect log-transformed core traits (`Stage2_clm_trait_phylo_summary.md:6-33`), so Stage 1 must deliver pre-logged trait columns plus BHPMF-imputed gaps for the modelling shortlist.
+
+---
+
+## 2. Trait Aggregation Workflow (2025-10-21)
+
+1. **Source tables**  
+   - TRY enhanced roster: `data/stage1/tryenhanced_worldflora_enriched.parquet` (46 047 rows; 45 194 matched).  
+   - TRY long-form traits: `data/stage1/try_selected_traits_worldflora_enriched.parquet` (618 932 rows; 590 030 matched).  
+   - AusTraits roster/traits: `data/stage1/austraits/austraits_taxa_worldflora_enriched.parquet` and `data/stage1/austraits/traits.parquet`.  
+2. **Coverage harmonisation**  
+   - Filter to WFO IDs in `data/stage1/master_taxa_union.parquet`, ensuring all joins align with the master roster (86 815 taxa).  
+3. **Per-taxon aggregation**  
+   - TRY enhanced medians → `data/stage1/traits_tryenhanced_processed.parquet` (44 286 taxa).  
+   - AusTraits medians for `plant_height`, `leaf_lamina_mass_per_area`, `leaf_dry_matter_content`, `seed_dry_mass` → `data/stage1/traits_austraits_processed.parquet` (27 966 taxa with ≥1 trait).  
+   - Combined merge with provenance flags → `data/stage1/traits_model_ready_20251021_rerun.parquet` (86 815 taxa).  
+4. **Unit conventions**  
+   | Trait | Unit | Notes |
+   |-------|------|-------|
+   | Leaf area (mm²) | mm² | sourced directly from TRY enhanced |
+   | LMA (g m⁻²) | g m⁻² | converted to SLA via `1000 / LMA` |
+   | SLA (mm² mg⁻¹) | derived | stored as `sla_mm2_mg` |
+   | LDMC (g g⁻¹) | fraction | TRY/AusTraits native units |
+   | Seed mass (mg) | mg | TRY/AusTraits native units |
+   | Plant height (m) | m | averaged per taxon |
+5. **Log transforms**  
+   - Columns `logLA`, `logLDMC`, `logSLA`, `logSM`, `logH`, `logNmass` calculated during aggregation (natural log).  
+   - Coverage snapshot: `logLA` 11 776 taxa, `logLDMC` 3 573, `logSLA` 14 559, `logSM` 29 151, `logH` 42 075.  
+6. **Zero/negative guards**  
+   - Medians filtered for strictly positive values before logging; zero values remain `NULL`.  
+7. **Derived metrics**  
+   - Trait contrasts (`logLDMC ± logLA`, etc.) can be recomputed after imputation if downstream models require them. Record any derived formulas in modelling manifests.
+
+---
+
+## 3. BHPMF Imputation Strategy
+
+### 3.1 Input bundles
+- **Full shortlist** (11 680 taxa; very sparse): `model_data/inputs/trait_imputation_input_shortlist_20251021.csv`. Use only if wide coverage is required—expect chunked runs.  
+- **Modelling shortlist** (current focus; 1 273 taxa with ≥8 TRY numeric traits & ≥30 GBIF occurrences): `model_data/inputs/trait_imputation_input_modelling_shortlist_20251021_rerun.csv`. Average gaps ≈0.43 traits per species.
+
+Both bundles carry: `wfo_accepted_name`, `Genus`, `Family`, `Leaf area (mm2)`, `Nmass (mg/g)`, `LMA (g/m2)`, `Plant height (m)`, `Diaspore mass (mg)`, `LDMC`, `SSD used (mg/mm3)` plus log-derived fields for recomputation.
+
+### 3.2 Modelling-first run (2025-10-21 rerun)
+```bash
+R_LIBS_USER=/home/olier/ellenberg/.Rlib \
+Rscript src/Stage_2_Data_Processing/phylo_impute_traits_bhpmf.R \
+  --input_csv=model_data/inputs/trait_imputation_input_modelling_shortlist_20251021_rerun.csv \
+  --out_csv=model_data/outputs/trait_imputation_bhpmf_modelling_shortlist_20251021_rerun.csv \
+  --diag_dir=model_data/outputs/diag_bhpmf_modelling_shortlist_20251021_rerun \
+  --traits_to_impute="Leaf area (mm2),Nmass (mg/g),LMA (g/m2),Plant height (m),Diaspore mass (mg),LDMC" \
+  --used_levels=0 --prediction_level=2 --num_samples=1000 --burn=100 --gaps=2 --num_latent=10
+```
+- Replacements: Leaf area 29, Nmass 107, LMA 3, Plant height 23, Diaspore mass 16, LDMC 369.  
+- Derived log contrasts (`log_ldmc_plus_log_la`, etc.) recalculated for 1 178 species.  
+- Diagnostics: `coverage_before_after.csv`, `bhpmf_mean.tsv`, `bhpmf_std.tsv` under `model_data/outputs/diag_bhpmf_modelling_shortlist_20251021_rerun/`.
+
+### 3.3 Chunked fallback for full shortlist
+- Chunk generator: `model_data/inputs/chunks_shortlist_20251021/trait_imputation_input_shortlist_20251021_chunk{NNN}.csv` (100 species each).  
+- Runner: `scripts/run_bhpmf_chunks_sequential.sh` (sequential launches; logs under `model_data/outputs/chunks_shortlist_20251021/`). Use only if wide coverage is essential; expect multi-hour runtime.
+
+### 3.4 Post-processing
+- Imputed outputs merged back into the aggregated table, regenerating derived columns (`sla_mm2_mg`, log contrasts).  
+- Ready-to-model artefacts:  
+  - `model_data/inputs/traits_model_ready_20251021_rerun_imputed.parquet`  
+  - `data/stage1/traits_model_ready_20251021_rerun_imputed.parquet`
+
+---
+
+## 4. Trait Verification Checklist & Pipeline
+
+Execute the following checks after every aggregation/imputation refresh. Capture command outputs and spot-check notes in `logs/stage1_modelling_prep/<date>/qa_report.md` before promoting artefacts to Stage 2/3.
+
+### 4.1 Source & Aggregation QA
+- Confirmed source parquet row counts (`tryenhanced_worldflora_enriched.parquet`, `austraits/traits.parquet`).  
+- Aggregated table size check:  
+  ```sql
+  SELECT COUNT(DISTINCT wfo_taxon_id)
+  FROM read_parquet('data/stage1/traits_model_ready_20251021_rerun.parquet');
+  ```  
+  Result: **86 815** taxa.  
+- Spot-checked medians for positivity and inspected log fields for `Inf/NaN`—none observed beyond structural gaps.
+
+### 4.2 Modelling Shortlist QA
+- `data/stage1/stage1_modelling_shortlist.parquet` → **1 273** taxa meeting the ≥8 TRY numeric trait threshold.  
+- Trait matrix extracted via the rebuild script preserved all taxa; pre-imputation gaps: mean **0.43**, median 0, max 3 traits per species.  
+- Left joins against aggregated traits and WFO taxonomy preserved row counts (no dropped taxa).
+
+### 4.3 BHPMF Run QA
+- Console log captured replacement totals (Leaf area 29, Nmass 107, LMA 3, Height 23, Diaspore mass 16, LDMC 369).  
+- `coverage_before_after.csv` confirmed the same deltas; post-imputation all six traits are complete (1 273/1 273 non-null).  
+- `bhpmf_mean.tsv` spot-checks revealed no extreme outliers; random manual inspection against TRY/AusTraits values looked reasonable.
+
+### 4.4 Final Trait Table QA
+- Imputed table row count equals aggregation baseline (86 815).  
+- Coverage uplift (pre vs post) summarised in Section 5.  
+- Source flags updated to `bhpmf_imputed` for 369 LDMC, 3 LMA, 16 seed mass, and 23 height entries.  
+- QA outputs archived under `logs/stage1_modelling_prep/20251021/`.
+
+### 4.5 Repro Pipeline Commands (Traits Only)
+1. `conda run -n AI --no-capture-output python scripts/rebuild_stage1_trait_tables.py --stamp <YYYYMMDD>`  
+2. `R_LIBS_USER=/home/olier/ellenberg/.Rlib Rscript src/Stage_2_Data_Processing/phylo_impute_traits_bhpmf.R --input_csv=model_data/inputs/trait_imputation_input_modelling_shortlist_<STAMP>.csv --out_csv=...`  
+3. *(Optional)* Python merge helper (see notebook snippet) to build `traits_model_ready_<STAMP>_imputed.parquet`.  
+4. `python scripts/archive_stage1_trait_logs.py` *(planned)* — package console logs and QA reports under `logs/stage1_modelling_prep/<date>/`.
+
+---
+
+## 5. Latest Run Snapshot (2025-10-21 rerun)
+- Aggregated artefacts:  
+  - Pre-imputation: `data/stage1/traits_model_ready_20251021_rerun.parquet` / `model_data/inputs/traits_model_ready_20251021_rerun.parquet`.  
+  - Post-imputation: `model_data/inputs/traits_model_ready_20251021_rerun_imputed.parquet`.  
+- Modelling shortlist inputs (1 273 taxa):  
+  - Pre-BHPMF: `model_data/inputs/trait_imputation_input_modelling_shortlist_20251021_rerun.parquet` (mean gaps 0.43, median 0, max 3).  
+  - Post-BHPMF: `model_data/outputs/trait_imputation_bhpmf_modelling_shortlist_20251021_rerun.csv/parquet` (100 % trait coverage).  
+- Coverage uplift across the full roster:  
+  | Trait | Pre non-null | Post non-null | Δ |  
+  |-------|--------------|---------------|----|  
+  | Leaf area (mm²) | 11 776 | 11 805 | +29 |  
+  | Nmass (mg/g) | 8 490 | 8 597 | +107 |  
+  | LDMC (g/g) | 3 573 | 3 942 | +369 |  
+  | LMA (g/m²) | 10 283 | 10 286 | +3 |  
+  | Seed mass (mg) | 29 151 | 29 167 | +16 |  
+  | Plant height (m) | 41 994 | 42 017 | +23 |  
+- Diagnostics (RMSE banner `4792.92`) archived under `model_data/outputs/diag_bhpmf_modelling_shortlist_20251021_rerun/`.  
+- Source flags now include `bhpmf_imputed` for 369 LDMC, 3 LMA, 16 seed mass, and 23 height records.
+
+---
+
+Keep this document updated after each refresh so Stage 2/3 colleagues can reproduce the trait preprocessing pipeline and trust the coverage statistics.

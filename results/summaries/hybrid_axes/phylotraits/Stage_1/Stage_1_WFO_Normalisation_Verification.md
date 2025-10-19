@@ -596,6 +596,12 @@ Each section below lists the planned checks, the commands used, and the observed
 - Filename audit: `photo_filename` column equals `{photo_id}_large.{extension}` for every row.
 - Attribution check: `license_manifest.csv` files will be rebuilt from this manifest; confirm `license` + `login/name` present.
 
+
+- **Post-download check (Oct 18)**: 10 811 shortlist taxa populated; per-species file counts match the manifest (sum of per-species unique photo IDs = 104 950).
+- **Total images**: 104 950 files (~53 GiB); `license_manifest.csv` entries match downloaded filenames.
+- **Edge case**: *Aquilaria sinensis* and *Syzygium nervosum* initially returned 404 for S3 `large` derivatives; replacements inserted (photo IDs 16730288, 16730323, … and 133904480, 133904488, …), manifest regenerated, and download rerun → now exactly 10 CC0/CC-BY research-grade photos each.
+- **Duplication**: 6 photo IDs span two WFO taxa (legitimate cross-species duplicates). Files stored once per species directory; counts align with manifest sums.
+
 ### 6. Final QA Notes
 
 - Log files (`inat_taxa_wfo_worldflora.log`, any DuckDB scripts) copied to `data/external/inat/manifests/qa_logs/` for audit trail.

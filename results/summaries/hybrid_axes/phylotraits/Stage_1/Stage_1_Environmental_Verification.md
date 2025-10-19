@@ -1,173 +1,146 @@
-# Stage 1 Verification — Environmental Sampling
+# Stage 1 — Environmental Verification
 
-## Scope & Goals
-- Confirm the **terra-based samplers** (WorldClim, SoilGrids, Agroclim) generated complete per-occurrence and per-species outputs for the **11 680 shortlist taxa (≥30 GBIF occurrences)**.
-- Detect any raster coverage gaps, null-heavy layers, or aggregation errors before modelling begins.
-- Ensure the three summary tables join cleanly with the shortlist/modelling tables via `wfo_taxon_id`.
+Date: 2025-10-21  
+Maintainer: Stage 1 environmental pipeline
 
-## Baseline Checks (All Datasets)
-- **File inventory**
+This checklist validates the outputs produced by the Stage 1 environmental workflow (sampling → mean aggregation → quantiles). Run the generation steps described in `Climate_Soil_Agroclim_Workflows.md` first, then apply the checks below.
+
+---
+
+## 1. Verification Checklist
+
+Work through the sections below after every refresh. Record findings (queries executed, anomalies) in the QA log referenced in Section 3.
+
+### 1.1 Baseline File Checks
+- Presence:
   ```bash
   ls data/stage1/{worldclim,soilgrids,agroclime}_occ_samples.parquet
   ls data/stage1/{worldclim,soilgrids,agroclime}_species_summary.parquet
+  ls data/stage1/{worldclim,soilgrids,agroclime}_species_quantiles.parquet
   ```
-  Expect all six files present after the 2025‑10‑18 reruns.
-- **Row / species counts**
+- Row / species counts:
   ```bash
-  conda run -n AI python -c "import duckdb; 
-for ds in ['worldclim','soilgrids','agroclime']:
-    occ=f\"data/stage1/{ds}_occ_samples.parquet\"
-    print(ds, duckdb.sql(f\"SELECT COUNT(*) AS rows, COUNT(DISTINCT wfo_taxon_id) AS taxa FROM read_parquet('{occ}')\").fetchall(),
-               duckdb.sql(f\"SELECT COUNT(*) AS taxa, COUNT(*) FROM read_parquet('data/stage1/{ds}_species_summary.parquet')\").fetchall())"
+  conda run -n AI python - <<'PY'
+import duckdb
+for ds in ["worldclim","soilgrids","agroclime"]:
+    occ = f"data/stage1/{ds}_occ_samples.parquet"
+    summ = f"data/stage1/{ds}_species_summary.parquet"
+    quant = f"data/stage1/{ds}_species_quantiles.parquet"
+    print(ds,
+          duckdb.sql(f"SELECT COUNT(*) rows, COUNT(DISTINCT wfo_taxon_id) taxa FROM read_parquet('{occ}')").fetchall(),
+          duckdb.sql(f"SELECT COUNT(*) taxa FROM read_parquet('{summ}')").fetchall(),
+          duckdb.sql(f"SELECT COUNT(*) taxa FROM read_parquet('{quant}')").fetchall())
+  PY
   ```
-  Target: 31 345 882 rows / 11 680 taxa for each occurrence parquet; 11 680 rows in each species summary.
-- **Shortlist alignment**
+  - Expect 31 345 882 rows / 11 680 taxa in each occurrence file.
+  - Expect 11 680 taxa in each summary and quantile file; mismatches require rerun.
+- Shortlist alignment (should be exact):
   ```sql
   WITH shortlist AS (
     SELECT DISTINCT wfo_taxon_id
     FROM read_parquet('data/stage1/stage1_shortlist_with_gbif_ge30.parquet')
   ),
   env AS (
-    SELECT DISTINCT wfo_taxon_id, 'worldclim' AS source FROM read_parquet('data/stage1/worldclim_species_summary.parquet')
-    UNION ALL
-    SELECT DISTINCT wfo_taxon_id, 'soilgrids' FROM read_parquet('data/stage1/soilgrids_species_summary.parquet')
-    UNION ALL
-    SELECT DISTINCT wfo_taxon_id, 'agroclime' FROM read_parquet('data/stage1/agroclime_species_summary.parquet')
+    SELECT DISTINCT wfo_taxon_id, 'worldclim' AS src FROM read_parquet('data/stage1/worldclim_species_summary.parquet')
+    UNION ALL SELECT DISTINCT wfo_taxon_id, 'soilgrids' FROM read_parquet('data/stage1/soilgrids_species_summary.parquet')
+    UNION ALL SELECT DISTINCT wfo_taxon_id, 'agroclime' FROM read_parquet('data/stage1/agroclime_species_summary.parquet')
   )
   SELECT
     (SELECT COUNT(*) FROM shortlist) AS shortlist_taxa,
-    COUNT(DISTINCT CASE WHEN source = 'worldclim' THEN wfo_taxon_id END) AS worldclim_taxa,
-    COUNT(DISTINCT CASE WHEN source = 'soilgrids' THEN wfo_taxon_id END) AS soilgrids_taxa,
-    COUNT(DISTINCT CASE WHEN source = 'agroclime' THEN wfo_taxon_id END) AS agroclime_taxa,
+    COUNT(DISTINCT CASE WHEN src='worldclim' THEN wfo_taxon_id END) worldclim_taxa,
+    COUNT(DISTINCT CASE WHEN src='soilgrids' THEN wfo_taxon_id END) soilgrids_taxa,
+    COUNT(DISTINCT CASE WHEN src='agroclime' THEN wfo_taxon_id END) agroclim_taxa,
     COUNT(DISTINCT wfo_taxon_id) FILTER (WHERE wfo_taxon_id NOT IN (SELECT wfo_taxon_id FROM shortlist)) AS extra_taxa
   FROM env;
   ```
-  Expect all four counts to equal 11 680 and `extra_taxa = 0`.
-- **Schema inspection**
+  - All counts must equal 11 680; `extra_taxa` must be 0.
+
+### 1.2 Log Integrity
+- Confirm each `dump/<dataset>_samples.log` ends with `Chunk 63/63 … 100.00%`.
+- SoilGrids log should include `Aggregation complete.`; WorldClim/Agroclim aggregation reruns are logged via `scripts/aggregate_stage1_env_summaries.py`.
+- Archive logs to `logs/stage1_environment/<date>/` after QA (see Section 4).
+
+### 1.3 WorldClim QA
+- **Raster inventory** — `find data/worldclim_uncompressed -name '*.tif' | wc -l` → 44 files.
+- **CRS/resolution** — verify one raster via rasterio (EPSG:4326, 0.008333° resolution).
+- **Occurrence sanity**:
   ```sql
-  DESCRIBE SELECT * FROM read_parquet('data/stage1/<dataset>_species_summary.parquet');
+  SELECT
+    SUM(CASE WHEN lat BETWEEN -90 AND 90 THEN 0 ELSE 1 END) bad_lat,
+    SUM(CASE WHEN lon BETWEEN -180 AND 180 THEN 0 ELSE 1 END) bad_lon
+  FROM read_parquet('data/stage1/worldclim_occ_samples.parquet');
   ```
-  Validate expected column counts: WorldClim 177, SoilGrids 169, Agroclim 205.
-- **Log termination**
-  - Confirm each `dump/<dataset>_samples.log` ends with `Chunk 63/63 … 100.00%`.
-  - SoilGrids log should also display `Aggregation complete.`; WorldClim/Agroclim aggregations were regenerated via DuckDB and need explicit mention in the QA notes.
+  - Expect zeros.
+- **Null fraction sweep (occurrence)** — unpivot check:
+  ```sql
+  SELECT column_name,
+         SUM(CASE WHEN value IS NULL THEN 1 ELSE 0 END)::DOUBLE / COUNT(*) AS null_fraction
+  FROM (
+    SELECT *
+    FROM read_parquet('data/stage1/worldclim_occ_samples.parquet')
+    UNPIVOT (value FOR column_name IN (EXCLUDE (wfo_taxon_id, gbifID, lon, lat)))
+  )
+  GROUP BY 1
+  ORDER BY null_fraction DESC
+  LIMIT 10;
+  ```
+  - Any variable >3 % nulls must be justified (typically coastal clipping).
+- **Means vs raw parity** — pick three taxa, recompute AVG/MIN/MAX from `*_occ_samples` and compare with `_avg/_min/_max` columns in the summary parquet; tolerance ≤1e‑6.
+- **Quantile sanity** — ensure `min ≤ q05 ≤ q50 ≤ q95 ≤ max` for key variables:
+  ```sql
+  SELECT COUNT(*) violations
+  FROM read_parquet('data/stage1/worldclim_species_summary.parquet') s
+  JOIN read_parquet('data/stage1/worldclim_species_quantiles.parquet') q USING (wfo_taxon_id)
+  WHERE "wc2.1_30s_bio_1_min" > "wc2.1_30s_bio_1_q05"
+     OR "wc2.1_30s_bio_1_q05" > "wc2.1_30s_bio_1_q50"
+     OR "wc2.1_30s_bio_1_q50" > "wc2.1_30s_bio_1_q95"
+     OR "wc2.1_30s_bio_1_q95" > "wc2.1_30s_bio_1_max";
+  ```
+  - Expect 0 violations; investigate otherwise.
+- **Range guardrails** — temperatures in °C within [-50, 50]; precip (`bio12`) between 0 and 15 000 mm. Run `MIN`/`MAX` queries on summary and quantile columns.
 
-## Raster Integrity
-1. **Layer discovery**
-   ```bash
-   find data/worldclim_uncompressed -maxdepth 2 -name '*.tif' | sort | wc -l    # Expect 44
-   find data/soilgrids_250m_global -maxdepth 1 -name '*.tif' | sort            # 42 expected files
-   find data/agroclime_mean -maxdepth 1 -name '*.tif' | wc -l                  # 51 GeoTIFF means
-   ```
-2. **CRS & resolution spot-checks**
-   ```python
-   import rasterio
-   for path in [
-       'data/worldclim_uncompressed/wc2.1_30s_bio_1.tif',
-       'data/soilgrids_250m_global/phh2o_0-5cm_global_250m.tif',
-       'data/agroclime_mean/bedday_mean.tif'
-   ]:
-       with rasterio.open(path) as ds:
-           print(path, ds.crs, ds.res)
-   ```
-   Expect WGS84 (EPSG:4326) and native resolutions (30 arc‑sec for WorldClim, 250 m for SoilGrids, dataset-specific for Agroclim).
+### 1.4 SoilGrids QA
+- **Raster inventory** — `find data/soilgrids_250m_global -maxdepth 1 -name '*.tif' | wc -l` → 42 files.
+- **CRS/resolution** — EPSG:4326, ~0.00225° (~250 m).
+- **Value ranges** (occurrence):
+  ```sql
+  SELECT MIN("phh2o_0_5cm"), MAX("phh2o_0_5cm"), MIN("soc_0_5cm"), MAX("soc_0_5cm")
+  FROM read_parquet('data/stage1/soilgrids_occ_samples.parquet');
+  ```
+  - Expect pH 3–9 (after ÷10), SOC 0–225 kg/m².
+- **Chunk coverage** — confirm no missing chunks:
+  ```sql
+  SELECT COUNT(*)
+  FROM (
+    SELECT DISTINCT floor(row_number() OVER (ORDER BY wfo_taxon_id, gbifID) / 500000) AS chunk_id
+    FROM read_parquet('data/stage1/soilgrids_occ_samples.parquet')
+  );
+  ```
+  - Expect 63 unique chunk IDs.
+- **Means vs raw parity** — replicate AVG vs `_avg` comparisons for three taxa (e.g., `phh2o_0_5cm`, `soc_0_30cm`).
+- **Quantile sanity** — check depth gradients:
+  ```sql
+  SELECT COUNT(*) AS out_of_range
+  FROM read_parquet('data/stage1/soilgrids_species_quantiles.parquet')
+  WHERE ABS("phh2o_0_5cm_q50" - "phh2o_60_100cm_q50") > 3;
+  ```
+  - Large deltas (>3 pH units) require review.
+- **Null thresholds** — run unpivot null sweep; any column with >1 % nulls triggers investigation (usually missing coastal coverage).
 
-## Dataset-Specific Validation
+### 1.5 Agroclim QA
+- **Raster inventory** — `find data/agroclime_mean -maxdepth 1 -name '*.tif' | wc -l` → 51 files.
+- **Source conversion check**:
+  ```bash
+  conda run -n AI python src/Stage_1_Sampling/verify_agroclim_mean.py
+  ```
+  - Ensure script reports “No differences” between NetCDF averages and GeoTIFF means.
+- **Occurrence coordinate sanity** — same lat/lon bounds check as WorldClim.
+- **Null sweep** — unpivot query; null fraction should stay <1 %.
+- **Means vs raw parity** — compare rainfall and temperature means for three taxa; differences >1e‑4 flag a regression.
+- **Quantile sanity** — ensure `q05–q95` sits within physical limits (e.g., rainfall ≥0, growing-degree days within expected bounds).
 
-### WorldClim
-1. **Random coordinate re-sample**  
-   Export a 1 000-row sample and confirm values with `terra::extract`.
-   ```sql
-   COPY (
-     SELECT wfo_taxon_id, lon, lat, "wc2.1_30s_bio_1"
-     FROM read_parquet('data/stage1/worldclim_occ_samples.parquet')
-     USING SAMPLE 1000
-   ) TO 'tmp/worldclim_check.csv' (FORMAT CSV, HEADER TRUE);
-   ```
-2. **Species aggregate parity**
-   ```sql
-   WITH occ AS (
-     SELECT "wc2.1_30s_bio_1"
-     FROM read_parquet('data/stage1/worldclim_occ_samples.parquet')
-     WHERE wfo_taxon_id = 'wfo-0000507113'
-   )
-   SELECT AVG("wc2.1_30s_bio_1") FROM occ;
-   SELECT "wc2.1_30s_bio_1_avg"
-   FROM read_parquet('data/stage1/worldclim_species_summary.parquet')
-   WHERE wfo_taxon_id = 'wfo-0000507113';
-   ```
-3. **Null ratio sweep**
-   ```sql
-   SELECT column_name,
-          SUM(CASE WHEN value IS NULL THEN 1 ELSE 0 END)::DOUBLE / COUNT(*) AS null_fraction
-   FROM (
-     SELECT *
-     FROM read_parquet('data/stage1/worldclim_occ_samples.parquet')
-     UNPIVOT (value FOR column_name IN (EXCLUDE (wfo_taxon_id, gbifID, lon, lat)))
-   )
-   GROUP BY 1
-   ORDER BY null_fraction DESC
-   LIMIT 10;
-   ```
-   Investigate any variable above ~3 % nulls (coastal buffers are acceptable).
-4. **Legacy aggregation patch** — If the log ends immediately after chunk 63/63 (no `Aggregation complete.` line), rerun:
-   ```bash
-   conda run -n AI python scripts/aggregate_stage1_env_summaries.py worldclim
-   ```
-   Confirm the regenerated summary has 11 680 taxa.
-5. **Coordinate sanity**
-   ```sql
-   SELECT
-     SUM(CASE WHEN lat < -90 OR lat > 90 THEN 1 ELSE 0 END) AS bad_lat,
-     SUM(CASE WHEN lon < -180 OR lon > 180 THEN 1 ELSE 0 END) AS bad_lon
-   FROM read_parquet('data/stage1/worldclim_occ_samples.parquet');
-   ```
-   Both counts must be zero; if not, trace the offending `gbifID` values.
-
-### SoilGrids
-1. **Value range auditing**
-   ```sql
-   SELECT
-     MIN("phh2o_0_5cm"), MAX("phh2o_0_5cm"),
-     MIN("soc_0_5cm"),   MAX("soc_0_5cm")
-   FROM read_parquet('data/stage1/soilgrids_occ_samples.parquet');
-   ```
-   Compare against SoilGrids documentation (pH scaled 0–14, SOC up to ~300 kg/m²).
-2. **Per-chunk consistency**  
-   Run `duckdb` query to confirm no chunk-sized gaps:
-   ```sql
-   SELECT COUNT(*), MIN(gbifID), MAX(gbifID)
-   FROM read_parquet('data/stage1/soilgrids_occ_samples.parquet')
-   GROUP BY floor(row_number() OVER (ORDER BY wfo_taxon_id, gbifID) / 500000);
-   ```
-3. **Aggregation parity**  
-   Repeat AVG vs `_avg` comparison for three random taxa.
-
-### Agroclim
-1. **Mean conversion verification**
-   ```bash
-   conda run -n AI python src/Stage_1_Sampling/verify_agroclim_mean.py
-   ```
-   Confirm no diff against prior log.
-2. **Temporal mean spot-check**  
-   Use xarray on the original NetCDF for 5 coordinates to ensure the GeoTIFF mean equals the arithmetic mean over the documented period.
-3. **Null ratio sweep**  
-   Same UNPIVOT strategy as WorldClim; thresholds should stay below 1 %.
-4. **Legacy aggregation patch** — if the sampler log lacks the closing aggregation lines, rebuild with:
-   ```bash
-   conda run -n AI python scripts/aggregate_stage1_env_summaries.py agroclime
-   ```
-   Expect 11 680 taxa in the resulting summary.
-5. **Coordinate sanity**
-   ```sql
-   SELECT
-     SUM(CASE WHEN lat BETWEEN -90 AND 90 AND lon BETWEEN -180 AND 180 THEN 0 ELSE 1 END) AS invalid_coords
-   FROM read_parquet('data/stage1/agroclime_occ_samples.parquet');
-   ```
-   Expect zero invalid coordinate rows; investigate otherwise.
-
-## Cross-Dataset Consistency
-- **Species overlap matrix**
+### 1.6 Cross-Dataset Consistency
+- **Species overlap** — all taxa must appear in all summaries:
   ```sql
   WITH
   w AS (SELECT DISTINCT wfo_taxon_id FROM read_parquet('data/stage1/worldclim_species_summary.parquet')),
@@ -186,29 +159,44 @@ for ds in ['worldclim','soilgrids','agroclime']:
     SELECT wfo_taxon_id FROM a
   );
   ```
-  All “only” buckets must be zero.
-- **Join rehearsal**
+- **Join rehearsal** — ensure modelling shortlist retains full environmental coverage:
   ```sql
-  SELECT COUNT(*) AS missing_env
+  SELECT COUNT(*) missing_env
   FROM read_parquet('data/stage1/stage1_modelling_shortlist_with_gbif_ge30.parquet') m
   LEFT JOIN read_parquet('data/stage1/worldclim_species_summary.parquet') w USING (wfo_taxon_id)
   LEFT JOIN read_parquet('data/stage1/soilgrids_species_summary.parquet') s USING (wfo_taxon_id)
   LEFT JOIN read_parquet('data/stage1/agroclime_species_summary.parquet') a USING (wfo_taxon_id)
-  WHERE w.wfo_taxon_id IS NULL OR s.wfo_taxon_id IS NULL OR a.wfo_taxon_id IS NULL;
+  LEFT JOIN read_parquet('data/stage1/worldclim_species_quantiles.parquet') wq USING (wfo_taxon_id)
+  LEFT JOIN read_parquet('data/stage1/soilgrids_species_quantiles.parquet') sq USING (wfo_taxon_id)
+  LEFT JOIN read_parquet('data/stage1/agroclime_species_quantiles.parquet') aq USING (wfo_taxon_id)
+  WHERE w.wfo_taxon_id IS NULL
+     OR s.wfo_taxon_id IS NULL
+     OR a.wfo_taxon_id IS NULL
+     OR wq.wfo_taxon_id IS NULL
+     OR sq.wfo_taxon_id IS NULL
+     OR aq.wfo_taxon_id IS NULL;
   ```
-  Expect zero; investigate otherwise.
-- **Metric coherence**
-  ```sql
-  SELECT COUNT(*) AS violations
-  FROM read_parquet('data/stage1/worldclim_species_summary.parquet')
-  WHERE "wc2.1_30s_bio_1_min" > "wc2.1_30s_bio_1_avg"
-     OR "wc2.1_30s_bio_1_avg" > "wc2.1_30s_bio_1_max";
-  ```
-  Repeat for representative variables across soil and agroclim to ensure `min ≤ avg ≤ max`.
-- **Distribution sanity**  
-  Plot quick histograms (DuckDB or pandas) comparing a temperature variable vs soil pH to detect implausible spikes.
+  - Expect 0; any positive result means a regeneration failed.
 
-## Documentation & Handover
-- Record verification results (queries executed, notable findings) in the QA log for reproducibility.
-- Once all checks pass, archive the `dump/*.log` files with timestamps and update `Dataset_Construction.md` / modelling docs with the confirmed counts.
-- If discrepancies appear (e.g., missing taxa), revisit `sample_env_terra.R` with smaller chunk sizes or targeted re-runs before modelling sign-off.
+---
+
+## 2. Summary of Latest Run (2025-10-21 UTC)
+- Sampling logs unchanged (63/63 chunks completed for all datasets; no resampling required).  
+- Means/std/min/max regenerated with  
+  ```
+  conda run -n AI --no-capture-output python scripts/aggregate_stage1_env_summaries.py worldclim soilgrids agroclime
+  ```  
+- Quantiles rebuilt via the DuckDB snippet in `Climate_Soil_Agroclim_Workflows.md` (using `quantile`/`median` aggregators).  
+- Resulting artefacts all contain 11 680 taxa; column counts: WorldClim 176 mean & 176 quantile columns, SoilGrids 168 & 168, Agroclim 205 & 204.  
+- QA summary captured in `logs/stage1_environment/20251021/qa_report.md`.
+
+---
+
+## 3. Documentation & Archival
+- After each refresh:
+  1. Capture console output from sampling, mean aggregation, and quantile scripts into `logs/stage1_environment/<YYYYMMDD>/`.
+  2. Save SQL/Python commands executed during QA in `logs/stage1_environment/<YYYYMMDD>/qa_report.md`.
+  3. Update the date stamp and coverage notes at the top of this document.
+  4. Notify Stage 1/Stage 2 maintainers if any verification step fails or thresholds drift beyond tolerances.
+
+Maintaining this checklist ensures environmental artefacts remain trustworthy before they feed Stage 1/Stage 2 modelling.
