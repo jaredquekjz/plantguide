@@ -126,6 +126,28 @@ def load_austraits_aggregates() -> pd.DataFrame:
     return aust
 
 
+def assign_canonical_sla(df: pd.DataFrame) -> pd.DataFrame:
+    """Assign canonical SLA values with provenance preference."""
+    result = df.copy()
+
+    result["sla_mm2_mg"] = result.get("try_sla")
+    result["sla_source"] = np.where(result["sla_mm2_mg"].notna(), "try_enhanced", None)
+
+    if "aust_sla" in result.columns:
+        aust_mask = result["sla_mm2_mg"].isna() & result["aust_sla"].notna()
+        result.loc[aust_mask, "sla_mm2_mg"] = result.loc[aust_mask, "aust_sla"]
+        result.loc[aust_mask, "sla_source"] = "austraits"
+
+    lma_vals = np.where(result["lma_g_m2"] > 0, 1000.0 / result["lma_g_m2"], np.nan)
+    lma_mask = result["sla_mm2_mg"].isna() & np.isfinite(lma_vals)
+    result.loc[lma_mask, "sla_mm2_mg"] = lma_vals[lma_mask]
+    result.loc[lma_mask, "sla_source"] = "derived_from_lma"
+
+    result.loc[result["sla_mm2_mg"].isna(), "sla_source"] = pd.NA
+    result["logSLA"] = np.where(result["sla_mm2_mg"] > 0, np.log(result["sla_mm2_mg"]), np.nan)
+    return result
+
+
 def combine_traits(try_df: pd.DataFrame, aust_df: pd.DataFrame) -> pd.DataFrame:
     """Merge TRY and AusTraits aggregates and compute derived columns."""
     merged = try_df.join(aust_df, how="outer")
@@ -156,7 +178,7 @@ def combine_traits(try_df: pd.DataFrame, aust_df: pd.DataFrame) -> pd.DataFrame:
         np.where(merged["aust_lma"].notna(), "austraits", None),
     )
 
-    merged["sla_mm2_mg"] = np.where(merged["lma_g_m2"] > 0, 1000.0 / merged["lma_g_m2"], np.nan)
+    merged = assign_canonical_sla(merged)
 
     merged["seed_mass_mg"] = merged["try_seed_mass"].combine_first(merged["aust_seed_mass"])
     merged["seed_mass_source"] = np.where(
@@ -174,7 +196,6 @@ def combine_traits(try_df: pd.DataFrame, aust_df: pd.DataFrame) -> pd.DataFrame:
 
     # Log columns
     merged["logLDMC"] = np.where(merged["ldmc_frac"] > 0, np.log(merged["ldmc_frac"]), np.nan)
-    merged["logSLA"] = np.where(merged["sla_mm2_mg"] > 0, np.log(merged["sla_mm2_mg"]), np.nan)
     merged["logSM"] = np.where(merged["seed_mass_mg"] > 0, np.log(merged["seed_mass_mg"]), np.nan)
     merged["logH"] = np.where(merged["plant_height_m"] > 0, np.log(merged["plant_height_m"]), np.nan)
     merged["logLA"] = merged["try_logLA"]
@@ -252,6 +273,15 @@ def apply_bhpmf(
     bhpmf_subset = bhpmf_df[present_cols].rename(columns=rename_map)
     merged = merged.merge(bhpmf_subset, on="wfo_taxon_id", how="left")
 
+    invalid_rules = {
+        "leaf_area_mm2": lambda s: s <= 0,
+        "try_nmass": lambda s: s <= 0,
+        "lma_g_m2": lambda s: s <= 0,
+        "plant_height_m": lambda s: s <= 0,
+        "seed_mass_mg": lambda s: s <= 0,
+        "ldmc_frac": lambda s: (s <= 0) | (s >= 1),
+    }
+
     for raw_col, (target_col, source_col) in trait_map.items():
         value_col = rename_map[raw_col]
         flag_col = rename_map[flag_map[raw_col]]
@@ -260,10 +290,16 @@ def apply_bhpmf(
             continue
 
         value_mask = merged[value_col].notna()
-        merged.loc[value_mask, target_col] = merged.loc[value_mask, value_col]
+        invalid_mask = merged[target_col].isna()
+        rule = invalid_rules.get(target_col)
+        if rule is not None:
+            invalid_mask |= rule(merged[target_col])
+
+        replace_mask = value_mask & invalid_mask
+        merged.loc[replace_mask, target_col] = merged.loc[replace_mask, value_col]
 
         if source_col:
-            impute_mask = merged[flag_col] == 1
+            impute_mask = (merged[flag_col] == 1) | replace_mask
             merged.loc[impute_mask, source_col] = "bhpmf_imputed"
 
     provenance_pairs = [
@@ -278,9 +314,8 @@ def apply_bhpmf(
         if source_col in merged.columns:
             merged.loc[merged[value_col].isna(), source_col] = pd.NA
 
-    merged["sla_mm2_mg"] = np.where(merged["lma_g_m2"] > 0, 1000.0 / merged["lma_g_m2"], np.nan)
+    merged = assign_canonical_sla(merged)
     merged["logLDMC"] = np.where(merged["ldmc_frac"] > 0, np.log(merged["ldmc_frac"]), np.nan)
-    merged["logSLA"] = np.where(merged["sla_mm2_mg"] > 0, np.log(merged["sla_mm2_mg"]), np.nan)
     merged["logSM"] = np.where(merged["seed_mass_mg"] > 0, np.log(merged["seed_mass_mg"]), np.nan)
     merged["logH"] = np.where(merged["plant_height_m"] > 0, np.log(merged["plant_height_m"]), np.nan)
     merged["logLA"] = np.where(merged["leaf_area_mm2"] > 0, np.log(merged["leaf_area_mm2"]), np.nan)
@@ -379,6 +414,7 @@ def main(stamp: str, bhpmf_output: Optional[str]) -> None:
         "try_sla",
         "aust_sla",
         "sla_mm2_mg",
+        "sla_source",
         "try_seed_mass",
         "aust_seed_mass",
         "seed_mass_mg",

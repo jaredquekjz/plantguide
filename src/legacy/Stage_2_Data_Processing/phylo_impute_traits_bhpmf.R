@@ -81,7 +81,8 @@ norm_species <- function(x) {
 
 # --- Load data ---
 if (!file.exists(in_csv)) fail(sprintf("Input not found: %s", in_csv))
-dt <- fread(in_csv)
+dt_raw <- fread(in_csv)
+dt <- copy(dt_raw)
 ok(sprintf("Loaded input: %s (%d rows, %d cols)", in_csv, nrow(dt), ncol(dt)))
 
 # --- Build hierarchy (Family -> Genus -> Species) ---
@@ -151,12 +152,52 @@ if (length(missing_core) > 0) {
 }
 
 # Ensure numeric types
+transform_info <- list()
+log_traits <- c("Leaf area (mm2)", "Nmass (mg/g)", "LMA (g/m2)",
+                "Plant height (m)", "Diaspore mass (mg)")
+fraction_traits <- c("LDMC")
+eps <- 1e-06
+
 for (cn in num_cols_all) {
   if (!(cn %in% names(dt))) next
   suppressWarnings({ dt[[cn]] <- as.numeric(dt[[cn]]) })
-  # sanitize
   bad <- !is.finite(dt[[cn]])
   if (any(bad, na.rm = TRUE)) dt[[cn]][bad] <- NA_real_
+  values <- dt[[cn]]
+  tf_type <- "identity"
+
+  if (cn %in% log_traits) {
+    values[values <= 0] <- NA_real_
+    logged <- log(values)
+    mu <- mean(logged, na.rm = TRUE)
+    sdv <- stats::sd(logged, na.rm = TRUE)
+    if (!is.finite(mu)) mu <- 0
+    if (!is.finite(sdv) || sdv < 1e-09) sdv <- 1
+    dt[[cn]] <- (logged - mu) / sdv
+    transform_info[[cn]] <- list(type = "log", mean = mu, sd = sdv)
+    next
+  }
+
+  if (cn %in% fraction_traits) {
+    values[values <= 0] <- NA_real_
+    values[values >= 1] <- 1 - eps
+    logit <- log(values / (1 - values))
+    mu <- mean(logit, na.rm = TRUE)
+    sdv <- stats::sd(logit, na.rm = TRUE)
+    if (!is.finite(mu)) mu <- 0
+    if (!is.finite(sdv) || sdv < 1e-09) sdv <- 1
+    dt[[cn]] <- (logit - mu) / sdv
+    transform_info[[cn]] <- list(type = "logit", mean = mu, sd = sdv)
+    next
+  }
+
+  # default: center & scale
+  mu <- mean(values, na.rm = TRUE)
+  sdv <- stats::sd(values, na.rm = TRUE)
+  if (!is.finite(mu)) mu <- 0
+  if (!is.finite(sdv) || sdv < 1e-09) sdv <- 1
+  dt[[cn]] <- (values - mu) / sdv
+  transform_info[[cn]] <- list(type = "identity", mean = mu, sd = sdv)
 }
 
 # BHPMF cannot handle rows with all features missing; ensure at least 1 observation per row
@@ -249,7 +290,7 @@ pred_mean <- pred_mean[, colnames(X), drop = FALSE]
 pred_std  <- pred_std[,  colnames(X), drop = FALSE]
 
 # Map back to full species table
-dt_imputed <- copy(dt)
+dt_imputed <- copy(dt_raw)
 row_map <- match(dt$species_key, rownames(X))
 
 # Only impute for selected traits; skip categorical ones here
@@ -271,9 +312,40 @@ for (cn in traits_supported) {
   # If original missing, replace with imputed; else keep original
   orig <- dt_imputed[[cn]]
   replaced <- is.na(orig) & !is.na(imputed_vals)
-  dt_imputed[[cn]][replaced] <- imputed_vals[replaced]
+  info <- transform_info[[cn]]
+
+  inv_transform <- function(zvals, info) {
+    scaled <- zvals * info$sd + info$mean
+    if (info$type == "log") {
+      return(exp(scaled))
+    } else if (info$type == "logit") {
+      return(1 / (1 + exp(-scaled)))
+    } else {
+      return(scaled)
+    }
+  }
+
+  inv_sd <- function(sd_z, zvals, info) {
+    if (is.null(sd_z)) return(sd_z)
+    scaled_sd <- sd_z * info$sd
+    scaled_mean <- zvals * info$sd + info$mean
+    if (info$type == "log") {
+      return(scaled_sd * exp(scaled_mean))
+    } else if (info$type == "logit") {
+      p <- 1 / (1 + exp(-scaled_mean))
+      return(scaled_sd * p * (1 - p))
+    } else {
+      return(scaled_sd)
+    }
+  }
+
+  converted_vals <- inv_transform(imputed_vals[replaced], info)
+  dt_imputed[[cn]][replaced] <- converted_vals
   dt_imputed[[flag_col]] <- as.integer(replaced)
-  dt_imputed[[sd_col]]   <- imputed_sds
+  dt_imputed[[sd_col]]   <- NA_real_
+  if (!all(is.na(imputed_sds))) {
+    dt_imputed[[sd_col]][replaced] <- inv_sd(imputed_sds[replaced], imputed_vals[replaced], info)
+  }
   ok(sprintf("Imputed %s: replaced %d missing values", cn, sum(replaced)))
 }
 
