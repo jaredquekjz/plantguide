@@ -58,8 +58,6 @@ set.seed(opt$seed)
 # ---------------------------------------------------------------------------
 clean_taxon <- function(x) {
   x %>%
-    str_replace(" subsp\\..*", "") %>%
-    str_replace(" var\\..*", "") %>%
     str_replace(" ×", " x") %>%
     str_trim()
 }

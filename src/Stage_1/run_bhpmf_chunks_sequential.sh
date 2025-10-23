@@ -5,8 +5,8 @@
 
 set -euo pipefail
 
-chunk_dir="model_data/inputs/chunks_shortlist_20251021"
-out_root="model_data/outputs/chunks_shortlist_20251021"
+chunk_dir="model_data/inputs/chunks_shortlist_20251022_2000_balanced"
+out_root="model_data/outputs/chunks_shortlist_20251022_env"
 log_dir="${out_root}/logs"
 master_log="${out_root}/bhpmf_chunks_master.log"
 

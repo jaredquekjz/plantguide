@@ -24,13 +24,21 @@ else
   echo "Chunk filename must contain '_chunkNNN.csv': $chunk_basename" >&2
   exit 1
 fi
-out_root="model_data/outputs/chunks_shortlist_20251021"
+out_root="model_data/outputs/chunks_shortlist_20251022_env"
 log_dir="${out_root}/logs"
 out_csv="${out_root}/trait_imputation_bhpmf_chunk${chunk_id}.csv"
 diag_dir="${out_root}/diag_chunk${chunk_id}"
 log_file="${log_dir}/chunk${chunk_id}.log"
 
+chunk_dir="$(dirname "$chunk_file")"
+env_chunk="${chunk_dir}/env/env_features_shortlist_20251022_all_q50_chunk${chunk_id}.csv"
+
 mkdir -p "$out_root" "$log_dir"
+
+if [[ ! -f "$env_chunk" ]]; then
+  echo "[error] Missing environment covariates file: $env_chunk" | tee "$log_file"
+  exit 1
+fi
 
 echo "[info] Starting chunk ${chunk_id} at $(date)" | tee "$log_file"
 
@@ -39,6 +47,9 @@ Rscript src/legacy/Stage_2_Data_Processing/phylo_impute_traits_bhpmf.R \
   --input_csv="$chunk_file" \
   --out_csv="$out_csv" \
   --diag_dir="$diag_dir" \
+  --add_env_covars=true \
+  --env_csv="$env_chunk" \
+  --env_cols_regex=".+_q50$" \
   --traits_to_impute="Leaf area (mm2),Nmass (mg/g),LMA (g/m2),Plant height (m),Diaspore mass (mg),LDMC" \
   --used_levels=0 \
   --prediction_level=2 \
