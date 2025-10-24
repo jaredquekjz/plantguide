@@ -38,3 +38,7 @@ __pycache__/
 # Allow hybrid axes summaries to be tracked
 !/results/summaries/hybrid_axes/
 !/results/summaries/hybrid_axes/**/*.md
+
+# Ignore experimental results and feature importance outputs
+/results/experiments/
+/results/feature_importance/
