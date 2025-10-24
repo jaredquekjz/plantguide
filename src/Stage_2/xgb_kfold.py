@@ -107,12 +107,19 @@ def train_xgb(
         random_state=seed,
         n_jobs=0,
         tree_method="hist",
-        device="cuda" if gpu else "cpu",
     )
+    if gpu:
+        params["device"] = "cuda"
+    else:
+        params["device"] = "cpu"
     if params_overrides:
         params.update(params_overrides)
     model = xgb.XGBRegressor(**params)
     model.fit(X, y, verbose=False)
+    if gpu:
+        config = model.get_booster().save_config()
+        if '"device":"cuda' not in config:
+            print("[warn] GPU requested but booster reported CPU; check CUDA availability.")
     return model
 
 
@@ -417,10 +424,8 @@ def main() -> None:
         pd_df = pd_2d(final_model, Xz_full, j, k, gj, gk, gpu=gpu)
         pd_df.to_csv(os.path.join(args.out_dir, f"xgb_{args.axis}_pd2_{left}__{right}.csv"), index=False)
 
-    model_json = final_model.get_booster().save_raw("json")
     model_path = os.path.join(args.out_dir, f"xgb_{args.axis}_model.json")
-    with open(model_path, "wb") as fh:
-        fh.write(model_json)
+    final_model.get_booster().save_model(model_path)
 
     zscore_path = os.path.join(args.out_dir, f"xgb_{args.axis}_scaler.json")
     with open(zscore_path, "w") as fh:

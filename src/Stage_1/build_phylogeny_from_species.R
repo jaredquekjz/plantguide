@@ -70,6 +70,7 @@ if (missing_family > 0) {
 tmp$family <- ifelse(is.na(tmp$family) | tmp$family == "", NA_character_, tmp$family)
 tmp$species_label <- paste(tmp$genus, tmp$species, sep = "_")
 sp_list <- data.frame(species = tmp$species_label, genus = tmp$genus, family = tmp$family, stringsAsFactors = FALSE)
+label_map <- data.frame(species_label = tmp$species_label, wfo_taxon_id = tmp$wfo_taxon_id, stringsAsFactors = FALSE)
 
 message(sprintf("Input species: %d", nrow(sp_list)))
 
@@ -78,7 +79,16 @@ if (!exists("GBOTB.extended")) stop("GBOTB.extended dataset not available")
 phy_out <- V.PhyloMaker::phylo.maker(sp_list, GBOTB.extended, scenarios = "S3")
 if (is.null(phy_out$scenario.3)) stop("phylo.maker returned NULL scenario.3")
 
+tree <- phy_out$scenario.3
+if (!is.null(label_map$wfo_taxon_id)) {
+  match_idx <- match(tree$tip.label, label_map$species_label)
+  matched_wfo <- label_map$wfo_taxon_id[match_idx]
+  message(sprintf("Matched WFO IDs for %d / %d tips", sum(!is.na(matched_wfo)), length(tree$tip.label)))
+  fallback <- ifelse(is.na(matched_wfo) | matched_wfo == "", tree$tip.label, matched_wfo)
+  tree$tip.label <- paste(fallback, tree$tip.label, sep = "|")
+}
+
 out_dir <- dirname(opts$output_newick)
 if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
-ape::write.tree(phy_out$scenario.3, file = opts$output_newick)
+ape::write.tree(tree, file = opts$output_newick)
 message(sprintf("Newick written to %s", opts$output_newick))
