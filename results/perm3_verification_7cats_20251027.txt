@@ -1,0 +1,46 @@
+======================================================================
+DATASET CONSTRUCTION VERIFICATION REPORT
+======================================================================
+Generated: 2025-10-26 22:54:33
+
+❌ VERDICT: FAILED - Critical checks failed
+   Dataset does NOT meet Perm3 requirements
+   DO NOT proceed with imputation until issues resolved
+
+======================================================================
+DETAILED RESULTS
+======================================================================
+
+1. Column Structure:
+   column_count             : PASS
+   row_count                : 11680
+   column_ordering          : SKIP
+   taxon_id_unique          : PASS
+
+2. Feature Composition:
+   target_traits            : FAIL
+   log_transforms           : PASS
+   try_categorical          : PASS
+   phylogenetic             : PASS
+   text_taxonomy            : FAIL
+
+3. EIVE Exclusion (CRITICAL):
+   Status: PASS
+
+4. Log Transform Computation:
+   logLA          : PASS
+   logH           : PASS
+   logSM          : PASS
+   logLDMC        : FAIL
+   logNmass       : PASS
+
+5. Missing Value Patterns:
+   leaf_area_mm2       :  44.8% complete (6448 to impute)
+   nmass_mg_g          :  35.0% complete (7595 to impute)
+   ldmc_frac           :  24.6% complete (8804 to impute)
+   plant_height_m      :  77.1% complete (2671 to impute)
+   seed_mass_mg        :  65.9% complete (3984 to impute)
+
+6. Data Type Validation:
+   18/19 columns have correct data types
+

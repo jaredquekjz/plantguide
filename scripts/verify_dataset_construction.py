@@ -24,7 +24,7 @@ EXPECTED_COUNTS = {
     'total_columns': 182,
     'target_traits': 6,
     'provenance': 6,
-    'try_categorical': 4,
+    'try_categorical': 7,
     'log_transforms': 6,
     'phylogenetic': 5,
     'text_taxonomy': 2,
@@ -33,7 +33,8 @@ EXPECTED_COUNTS = {
 # Feature lists
 TARGET_TRAITS = ['leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac', 'lma_g_m2', 'plant_height_m', 'seed_mass_mg']
 LOG_TRANSFORMS = ['logLA', 'logH', 'logSM', 'logLDMC', 'logNmass', 'logSLA']
-TRY_CATEGORICAL = ['try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type']
+TRY_CATEGORICAL = ['try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type',
+                   'try_leaf_phenology', 'try_photosynthesis_pathway', 'try_mycorrhiza_type']
 PHYLOGENETIC = ['phylo_depth', 'phylo_terminal', 'genus_code', 'family_code', 'phylo_proxy_fallback']
 TEXT_TAXONOMY = ['genus', 'family']
 
