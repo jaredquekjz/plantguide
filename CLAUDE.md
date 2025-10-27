@@ -8,30 +8,61 @@ This R-based scientific pipeline predicts European plant ecological indicator va
 
 ## Environment Setup
 
-- **XGBoost and ML packages**: Use conda environment `AI` for XGBoost and other ML operations
-  - Activate: `conda activate AI` or use `conda run -n AI python ...`
-  - Contains: XGBoost 3.0.5, scikit-learn, pandas, numpy
-- **R packages**: Use custom R library at `/home/olier/ellenberg/.Rlib`
-  - Set: `export R_LIBS_USER=/home/olier/ellenberg/.Rlib`
+### Python Environment (Conda)
+**ONLY Python tasks run in conda environment `AI`**
 
-### Critical: Conda Output Buffering with nohup
+- Use for: XGBoost, scikit-learn, pandas, numpy, all Python ML operations
+- Activate: `conda activate AI` or use `conda run -n AI python ...`
+- For scripts: `/home/olier/miniconda3/envs/AI/bin/python`
+- Contains: XGBoost 3.0.5, scikit-learn, pandas, numpy
 
-When running R scripts with nohup for long-running jobs, `conda run` buffers output and prevents real-time logging even with `flush.console()`.
+### R Environment (Custom Library)
+**R scripts use custom library at `.Rlib` with different executables depending on task**
 
-**Problem**:
+- **Always set**: `R_LIBS_USER=/home/olier/ellenberg/.Rlib`
+- **CRITICAL**: Choice of R executable depends on package requirements
+
+#### For Phylogeny Work (V.PhyloMaker2, ape, etc.)
+Use **system R** at `/usr/bin/Rscript`:
 ```bash
-# This buffers output (no logs until completion)
-nohup conda run -n AI Rscript script.R > log.txt 2>&1 &
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/build_phylogeny_improved_wfo_mapping.R
 ```
 
-**Solution**:
+#### For XGBoost/mixgb Work (requires C++ compilation)
+Use **conda AI Rscript** with PATH for compilers:
 ```bash
-# Use direct path to conda environment's Rscript
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
+  /home/olier/miniconda3/envs/AI/bin/Rscript src/Stage_1/mixgb/mixgb_cv_eval_parameterized.R
+```
+
+**Why different executables?**
+- System R: Simpler, works for most phylogenetic packages
+- Conda AI Rscript: Provides C++ compilers needed for mixgb dependencies (mice, Rfast)
+- Both use the same `.Rlib` custom library
+
+### Critical: Output Buffering with nohup
+
+When running long-running jobs with nohup, **DO NOT use `conda run`** - it buffers output. Use direct paths instead.
+
+**Python (nohup):**
+```bash
+nohup /home/olier/miniconda3/envs/AI/bin/python script.py > log.txt 2>&1 &
+```
+
+**R Phylogeny (nohup with system R):**
+```bash
 nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript script.R > log.txt 2>&1 &
+```
+
+**R XGBoost/mixgb (nohup with conda AI Rscript):**
+```bash
+nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
   /home/olier/miniconda3/envs/AI/bin/Rscript script.R > log.txt 2>&1 &
 ```
-
-This applies to both Python and R scripts. For Python, use `/home/olier/miniconda3/envs/AI/bin/python` directly instead of `conda run -n AI python`.
 
 ## Style
 
