@@ -97,11 +97,31 @@ dt$species_key <- norm_species(dt$wfo_accepted_name)
 dt$Genus  <- ifelse(is.na(dt$Genus)  | dt$Genus  == "", "UnknownGenus", dt$Genus)
 dt$Family <- ifelse(is.na(dt$Family) | dt$Family == "", "UnknownFamily", dt$Family)
 
+# --- Detect anti-leakage vs legacy mode ---
+# Anti-leakage: Only log traits (logLA, logNmass, etc.), no raw traits
+# Legacy: Raw traits (Leaf area (mm2), etc.)
+has_log_traits <- any(grepl("^log[A-Z]", names(dt)))
+num_cols_core_raw <- c("Leaf area (mm2)", "Nmass (mg/g)", "SLA (mm2/mg)",
+                       "Plant height (m)", "Diaspore mass (mg)")
+has_raw_traits <- any(num_cols_core_raw %in% names(dt))
+
+if (!has_raw_traits && !has_log_traits) {
+  fail("No trait columns found (neither raw traits nor log traits)")
+}
+
+anti_leakage_mode <- !has_raw_traits && has_log_traits
+
+if (anti_leakage_mode) {
+  cat("[info] ANTI-LEAKAGE MODE: Using log traits only (no raw traits)\n")
+  num_cols_core <- c()  # Empty - no raw traits
+} else {
+  cat("[info] LEGACY MODE: Using raw traits\n")
+  num_cols_core <- num_cols_core_raw
+}
+
 # --- Build numeric matrix X for BHPMF ---
 # Include core numeric traits to anchor correlations + selected new numeric traits
 # NOTE: Use canonical SLA (mm2/mg) not LMA (g/m2) - see 1.3b_Dataset_Processing.md
-num_cols_core <- c("Leaf area (mm2)", "Nmass (mg/g)", "SLA (mm2/mg)",
-                   "Plant height (m)", "Diaspore mass (mg)")
 
 # Legacy support: if LMA present but not SLA, convert
 if (!("SLA (mm2/mg)" %in% names(dt)) && ("LMA (g/m2)" %in% names(dt))) {
@@ -119,6 +139,7 @@ if ("SSD used (mg/mm3)" %in% names(dt)) {
 
 num_cols_new  <- intersect(c("Leaf_thickness_mm", "Frost_tolerance_score", "Leaf_N_per_area", "LDMC"), names(dt))
 traits_existing <- intersect(traits_to_impute, names(dt))
+
 
 # DUAL-SCALE MODIFICATION: DISABLED FOR CV (creates raw copies AFTER masking = broken)
 # Raw trait copies are created AFTER CV masking, so they're also NA when target is masked.
@@ -145,6 +166,7 @@ traits_existing <- intersect(traits_to_impute, names(dt))
 # Add pre-computed log transforms as auxiliary features (like XGBoost)
 num_cols_log <- intersect(c("logLA", "logNmass", "logSLA", "logH", "logSM", "logLDMC"), names(dt))
 # num_cols_raw_aux <- unlist(raw_trait_mapping[traits_existing])  # DISABLED
+
 num_cols_all  <- unique(c(num_cols_core, num_cols_new, traits_existing, num_cols_log))
 
 # AUTO-DETECT environmental q50 columns already in merged data (for merged workflow)
@@ -190,12 +212,16 @@ if (tolower(hierarchy_mode) == "family_genus_species") {
                                          stringsAsFactors = FALSE))
 }
 
-missing_core <- setdiff(num_cols_core, names(dt))
-if (length(missing_core) > 0) {
-  fail(sprintf("Missing core numeric trait columns: %s", paste(missing_core, collapse=", ")))
+# Additional validation for legacy mode (raw traits)
+if (!anti_leakage_mode && length(num_cols_core) > 0) {
+  missing_core <- setdiff(num_cols_core, names(dt))
+  if (length(missing_core) > 0) {
+    fail(sprintf("Missing core numeric trait columns: %s", paste(missing_core, collapse=", ")))
+  }
 }
 
 # Ensure numeric types
+cat("[progress] Transforming and standardizing features...\n")
 transform_info <- list()
 log_traits <- c("Leaf area (mm2)", "Nmass (mg/g)", "SLA (mm2/mg)",
                 "Plant height (m)", "Diaspore mass (mg)")
@@ -267,6 +293,14 @@ for (cn in num_cols_all) {
 }
 
 # BHPMF cannot handle rows with all features missing; ensure at least 1 observation per row
+# Filter num_cols_all to only existing columns (anti-leakage safety)
+existing_cols <- intersect(num_cols_all, names(dt))
+missing_cols <- setdiff(num_cols_all, names(dt))
+if (length(missing_cols) > 0) {
+  cat(sprintf("[warn] Excluding %d non-existent columns from BHPMF matrix\n", length(missing_cols)))
+  num_cols_all <- existing_cols
+}
+
 have_any_numeric <- Reduce(`|`, lapply(num_cols_all, function(cn) !is.na(dt[[cn]])))
 if (!all(have_any_numeric)) {
   n_drop <- sum(!have_any_numeric)
@@ -328,7 +362,10 @@ cat("============================================================\n")
 cat(sprintf("Rows: %d, Cols: %d, Used levels: %d, Predict level: %d\n",
             nrow(X), ncol(X), used_levels, prediction_lv))
 
+cat("[progress] Starting BHPMF GapFilling (this may take 10-30 seconds)...\n")
+flush.console()
 set.seed(123)
+start_time <- Sys.time()
 GapFilling(
   X = X,
   hierarchy.info = hier_sub,
@@ -346,8 +383,12 @@ GapFilling(
   rmse.plot.test.data = TRUE,
   verbose = verbose
 )
+end_time <- Sys.time()
+elapsed <- round(difftime(end_time, start_time, units = "secs"), 1)
+cat(sprintf("[progress] BHPMF completed in %.1f seconds\n", elapsed))
 
-# --- Read BHPMF outputs and merge back --- 
+# --- Read BHPMF outputs and merge back ---
+cat("[progress] Reading BHPMF outputs...\n")
 pred_mean <- as.data.frame(as.matrix(read.table(mean_out, sep = "\t", header = TRUE, check.names = FALSE)))
 pred_std  <- as.data.frame(as.matrix(read.table(std_out,  sep = "\t", header = TRUE, check.names = FALSE)))
 

@@ -3,10 +3,10 @@
 Collect BHPMF cross-validation predictions for masked cells.
 
 Usage:
-conda run -n AI python scripts/collect_bhpmf_cv_predictions.py \
-  --schedule_dir model_data/inputs/bhpmf_cv_chunks_20251022 \
-  --predictions_root model_data/outputs/bhpmf_cv_chunks_20251022 \
-  --output_csv model_data/outputs/bhpmf_cv_predictions_20251022.csv
+conda run -n AI python src/Stage_1/collect_bhpmf_cv_predictions.py \
+  --schedule_dir model_data/inputs/bhpmf_cv_chunks_20251027 \
+  --predictions_root model_data/outputs/bhpmf_cv_chunks_20251027 \
+  --output_csv model_data/outputs/bhpmf_cv_predictions_20251027.csv
 """
 
 from __future__ import annotations

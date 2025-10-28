@@ -155,9 +155,9 @@ log_info('[mixgb] Starting %d imputations (device=%s)', M, device_value)
 for (i in seq_len(M)) {
   run_seed <- seed_value + i - 1L
   log_info('')
-  log_info('='*70)
+  log_info(strrep('=', 70))
   log_info('[mixgb] IMPUTATION %d/%d (seed=%d)', i, M, run_seed)
-  log_info('='*70)
+  log_info(strrep('=', 70))
   run_start <- Sys.time()
   set.seed(run_seed)
   run_warnings <- character()

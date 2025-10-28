@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-10-28T13:26:40.725501",
+  "input_file": "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251027.csv",
+  "production_file": "model_data/outputs/perm2_production/perm2_11680_eta0025_n3000_20251027_mean.csv",
+  "n_species": 11686,
+  "n_traits": 6,
+  "checks": {
+    "completeness": {
+      "status": "PASS",
+      "total_gaps_filled": 35667,
+      "remaining_gaps": 0
+    },
+    "range_validation": {
+      "status": "WARNING",
+      "traits_in_bounds": 1,
+      "max_oob_pct": 100.0
+    },
+    "distribution_similarity": {
+      "status": "WARNING",
+      "significant_differences": 30,
+      "total_comparisons": 30,
+      "pct_different": 100.0
+    },
+    "correlations": {
+      "status": "PASS",
+      "sign_correct": 3,
+      "strength_correct": 1,
+      "total_checked": 3
+    },
+    "ensemble_stability": {
+      "status": "WARNING",
+      "median_cv_max": 0.09615402591036223,
+      "traits_stable": 3
+    }
+  },
+  "overall_status": "WARNING"
+}

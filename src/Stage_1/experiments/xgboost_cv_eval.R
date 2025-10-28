@@ -36,6 +36,49 @@ eta_val <- as.numeric(get_opt('eta', '0.3'))
 folds_val <- as.integer(get_opt('folds', '5'))
 traits_val <- get_opt('traits', 'all')
 
+# Production imputation parameters
+run_production <- tolower(get_opt('run_production', 'false')) %in% c('true', 't', '1', 'yes')
+imputation_m <- as.integer(get_opt('m', '10'))
+imputation_seed <- as.integer(get_opt('seed', '20251027'))
+output_dir <- get_opt('output_dir', 'model_data/imputed')
+output_prefix <- get_opt('output_prefix', 'xgboost_imputed')
+
+# Clean flag - purge previous outputs
+clean_previous <- tolower(get_opt('clean', 'false')) %in% c('true', 't', '1', 'yes')
+
+# Perform cleanup if requested
+if (clean_previous) {
+  message('\n========================================')
+  message('CLEAN MODE: Purging previous outputs')
+  message('========================================')
+
+  # Clean CV outputs
+  cv_files <- c(output_path, sub('\\.csv$', '_predictions.csv', output_path))
+  for (f in cv_files) {
+    if (file.exists(f)) {
+      file.remove(f)
+      message('Removed: ', f)
+    }
+  }
+
+  # Clean production outputs
+  if (run_production && dir.exists(output_dir)) {
+    output_base <- file.path(output_dir, output_prefix)
+    prod_files <- c(
+      sprintf('%s_m%d.csv', output_base, 1:imputation_m),
+      paste0(output_base, '_mean.csv')
+    )
+    for (f in prod_files) {
+      if (file.exists(f)) {
+        file.remove(f)
+        message('Removed: ', f)
+      }
+    }
+  }
+
+  message('Cleanup complete\n')
+}
+
 message('CV Parameters:')
 message('  Input: ', input_path)
 message('  Output: ', output_path)
@@ -44,6 +87,13 @@ message('  eta: ', eta_val)
 message('  device: ', device_val)
 message('  folds: ', folds_val)
 message('  traits: ', traits_val)
+if (run_production) {
+  message('\nProduction Imputation: ENABLED')
+  message('  m: ', imputation_m)
+  message('  seed: ', imputation_seed)
+  message('  output_dir: ', output_dir)
+  message('  output_prefix: ', output_prefix)
+}
 
 mix_data <- readr::read_csv(input_path, show_col_types = FALSE)
 message('Loaded input with ', nrow(mix_data), ' rows and ', ncol(mix_data), ' columns')
@@ -102,10 +152,12 @@ prepare_features <- function(df) {
   feat
 }
 
-# CANONICAL SLA: Use sla_mm2_mg (not lma_g_m2) to match BHPMF and Stage 2
+# IMPUTE LOG TRAITS DIRECTLY: More statistically sound for XGBoost learning
+# Log traits are already normalized and more normally distributed
+# Other log traits are included as predictors (leverages trait correlations)
 trait_info_all <- tibble::tibble(
-  trait = c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac', 'sla_mm2_mg', 'plant_height_m', 'seed_mass_mg'),
-  transform = c('log', 'log', 'logit', 'log', 'log', 'log')
+  trait = c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM'),
+  transform = c('none', 'none', 'none', 'none', 'none', 'none')
 )
 
 # Filter traits if specified
@@ -277,3 +329,84 @@ message('Total CV time: ', signif(cv_elapsed, 3), ' minutes')
 predictions_path <- sub('\\.csv$', '_predictions.csv', output_path)
 readr::write_csv(predictions_df, predictions_path)
 message('Saved CV predictions to ', predictions_path)
+
+# ============================================================================
+# PRODUCTION IMPUTATION (Optional)
+# ============================================================================
+if (run_production) {
+  message('\n========================================')
+  message('Starting Production Imputation')
+  message('========================================')
+
+  if (!dir.exists(output_dir)) {
+    dir.create(output_dir, recursive = TRUE)
+    message('Created output directory: ', output_dir)
+  }
+
+  output_base <- file.path(output_dir, output_prefix)
+
+  # Get log trait columns present in dataset
+  log_traits <- c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM')
+  present_log_traits <- intersect(log_traits, names(mix_data))
+
+  if (length(present_log_traits) == 0) {
+    message('WARNING: No log traits found in dataset. Skipping production imputation.')
+  } else {
+    message('Log traits to impute: ', paste(present_log_traits, collapse=', '))
+
+    # Report missingness for each trait
+    for (trait in present_log_traits) {
+      n_obs <- sum(!is.na(mix_data[[trait]]))
+      n_missing <- sum(is.na(mix_data[[trait]]))
+      pct_obs <- 100 * n_obs / nrow(mix_data)
+      message(sprintf('  %s: %d obs (%.1f%%), %d missing (%.1f%%)',
+                     trait, n_obs, pct_obs, n_missing, 100 - pct_obs))
+    }
+
+    # Prepare features for production imputation
+    feature_data <- prepare_features(mix_data)
+    id_data <- mix_data %>% select(all_of(id_cols))
+
+    # Run M imputations
+    imputed_list <- vector('list', imputation_m)
+    production_start <- Sys.time()
+
+    for (i in seq_len(imputation_m)) {
+      run_seed <- imputation_seed + i - 1L
+      message('')
+      message(sprintf('[%d/%d] Running imputation (seed=%d)', i, imputation_m, run_seed))
+      run_start <- Sys.time()
+      set.seed(run_seed)
+
+      fit <- mixgb(feature_data,
+                   m = 1,
+                   nrounds = nrounds_val,
+                   pmm.type = 2,
+                   pmm.k = 4,
+                   xgb.params = list(device = device_val, tree_method = 'hist', eta = eta_val),
+                   verbose = 1)
+
+      fit_df <- as.data.frame(fit[[1]])
+      imputed_list[[i]] <- fit_df
+      elapsed_min <- as.numeric(difftime(Sys.time(), run_start, units = 'mins'))
+      message(sprintf('[%d/%d] Completed in %.2f min', i, imputation_m, elapsed_min))
+
+      # Save individual imputation
+      imp_df <- cbind(id_data, fit_df)
+      imp_path <- sprintf('%s_m%d.csv', output_base, i)
+      readr::write_csv(imp_df, imp_path)
+      message(sprintf('[%d/%d] Saved to %s', i, imputation_m, basename(imp_path)))
+    }
+
+    # Compute and save mean of all imputations (for log traits only)
+    summary_df <- Reduce(`+`, lapply(imputed_list, function(df) df[, present_log_traits, drop = FALSE])) / imputation_m
+    summary_df <- cbind(id_data, summary_df)
+    mean_path <- paste0(output_base, '_mean.csv')
+    readr::write_csv(summary_df, mean_path)
+    message('Saved mean imputation to ', basename(mean_path))
+
+    production_elapsed <- as.numeric(difftime(Sys.time(), production_start, units = 'mins'))
+    message(sprintf('Production imputation completed in %.2f min', production_elapsed))
+    message('All outputs written to: ', output_dir)
+  }
+}

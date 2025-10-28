@@ -46,9 +46,9 @@ dir.create(models_dir, recursive = TRUE, showWarnings = FALSE)
 cat(sprintf("[info] Loading imputed dataset: %s\n", input_csv))
 imputed_data <- read_csv(input_csv, show_col_types = FALSE)
 
-# Define target traits (in log scale)
-target_traits <- c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac',
-                   'lma_g_m2', 'plant_height_m', 'seed_mass_mg')
+# Define target traits (log-transformed, canonical 6 traits)
+# Using log traits directly for feature importance analysis
+target_traits <- c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM')
 
 # ID columns to exclude from features
 id_cols <- c('wfo_taxon_id', 'wfo_scientific_name')
@@ -169,11 +169,12 @@ cat(sprintf("[ok] Global importance (top %d): %s\n", top_n, global_path))
 # Cluster analysis: categorize features by source
 cat("\n[cluster] Categorizing features by source\n")
 
-# Define feature patterns
-phylo_pattern <- "^(genus_code|family_code|phylo_)"
-eive_pattern <- "^EIVEres_"
-worldclim_pattern <- "_(q50|q05|q95)$"  # Environmental features with quantiles
-categorical_pattern <- "^try_"
+# Define feature patterns for NEW Perm 1-3 datasets
+phylo_pattern <- "^phylo_ev"  # Phylogenetic eigenvectors (Perm 1, 2 only)
+eive_pattern <- "^EIVEres-"   # EIVE ecological indicators (Perm 2 only)
+env_pattern <- "_q50$"        # Environmental features (q50 quantiles)
+categorical_pattern <- "^try_"  # TRY categorical traits
+log_pattern <- "^log"         # Log-transformed traits
 
 global_importance_annotated <- global_importance %>%
   mutate(
@@ -181,7 +182,8 @@ global_importance_annotated <- global_importance %>%
       grepl(phylo_pattern, Feature) ~ 'Phylogenetic',
       grepl(eive_pattern, Feature) ~ 'EIVE Ecological',
       grepl(categorical_pattern, Feature) ~ 'TRY Categorical',
-      grepl(worldclim_pattern, Feature) ~ 'Environmental',
+      grepl(env_pattern, Feature) ~ 'Environmental',
+      grepl(log_pattern, Feature) ~ 'Log Traits',
       TRUE ~ 'Other'
     )
   )
