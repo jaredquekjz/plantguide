@@ -55,7 +55,8 @@ EIVE_COLS = [
 CORE_ID_COLS = ['wfo_taxon_id', 'wfo_scientific_name']
 CORE_LOG_COLS = ['logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM']
 CORE_CAT_COLS = [
-    'try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type'
+    'try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type',
+    'try_leaf_phenology', 'try_photosynthesis_pathway', 'try_mycorrhiza_type'
 ]
 
 

@@ -22,17 +22,17 @@ from datetime import datetime
 
 
 # File paths
-PERM8_BASE = "model_data/inputs/mixgb_perm8_11680/mixgb_input_perm8_eigenvectors_11680_20251026.csv"
+PERM8_BASE = "model_data/inputs/mixgb_perm8_11680/mixgb_input_perm8_eigenvectors_11680_20251027.csv"
 ENV_FEATURES = "model_data/inputs/env_features_shortlist_20251025_complete_q50_xgb.csv"
 EIVE_DATA = "data/stage1/eive_worldflora_enriched.parquet"
 
-PERM1_CSV = "model_data/inputs/mixgb_perm1_11680/mixgb_input_perm1_11680_20251027.csv"
-PERM2_CSV = "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251027.csv"
-PERM3_CSV = "model_data/inputs/mixgb_perm3_11680/mixgb_input_perm3_minimal_11680_20251027.csv"
+PERM1_CSV = "model_data/inputs/mixgb_perm1_11680/mixgb_input_perm1_11680_20251028.csv"
+PERM2_CSV = "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251028.csv"
+PERM3_CSV = "model_data/inputs/mixgb_perm3_11680/mixgb_input_perm3_minimal_11680_20251028.csv"
 
-PERM1_PARQUET = "model_data/inputs/mixgb_perm1_11680/mixgb_input_perm1_11680_20251027.parquet"
-PERM2_PARQUET = "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251027.parquet"
-PERM3_PARQUET = "model_data/inputs/mixgb_perm3_11680/mixgb_input_perm3_minimal_11680_20251027.parquet"
+PERM1_PARQUET = "model_data/inputs/mixgb_perm1_11680/mixgb_input_perm1_11680_20251028.parquet"
+PERM2_PARQUET = "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251028.parquet"
+PERM3_PARQUET = "model_data/inputs/mixgb_perm3_11680/mixgb_input_perm3_minimal_11680_20251028.parquet"
 
 # Expected feature groups
 RAW_TRAIT_COLS = [
@@ -45,7 +45,8 @@ CORE_ID_COLS = ['wfo_taxon_id', 'wfo_scientific_name']
 CORE_LOG_COLS = ['logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM']
 
 CORE_CAT_COLS = [
-    'try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type'
+    'try_woodiness', 'try_growth_form', 'try_habitat_adaptation', 'try_leaf_type',
+    'try_leaf_phenology', 'try_photosynthesis_pathway', 'try_mycorrhiza_type'
 ]
 
 EIVE_COLS = ['EIVEres-L', 'EIVEres-T', 'EIVEres-M', 'EIVEres-N', 'EIVEres-R']
@@ -85,22 +86,30 @@ def verify_input_files():
     """Verify all input files exist and have correct structure."""
     print_section("1. INPUT FILE VERIFICATION")
 
-    # Check Perm 8 base
+    # Check Perm 8 base (optional - may have been deleted after building Perm 1/2/3)
     print_subsection("Perm 8 Base Dataset")
-    perm8_path = check_file_exists(PERM8_BASE, "Perm 8 base")
+    perm8_path = Path(PERM8_BASE)
+    df_perm8 = None
+    if not perm8_path.exists():
+        print(f"⚠ WARNING: Perm 8 base not found (may have been deleted): {perm8_path}")
+        print(f"  Skipping Perm 8 verification (Perm 1/2/3 will still be verified)")
+    else:
+        size_mb = perm8_path.stat().st_size / 1e6
+        print(f"✓ Perm 8 base: {perm8_path}")
+        print(f"  Size: {size_mb:.2f} MB")
 
-    df_perm8 = pd.read_csv(perm8_path)
-    print(f"  Dimensions: {df_perm8.shape[0]:,} rows × {df_perm8.shape[1]} columns")
+        df_perm8 = pd.read_csv(perm8_path)
+        print(f"  Dimensions: {df_perm8.shape[0]:,} rows × {df_perm8.shape[1]} columns")
 
-    # Verify Perm 8 has raw traits (should be present in base)
-    raw_present = [c for c in RAW_TRAIT_COLS if c in df_perm8.columns]
-    if len(raw_present) != len(RAW_TRAIT_COLS):
-        raise VerificationError(f"✗ Perm 8 base missing raw traits: {set(RAW_TRAIT_COLS) - set(raw_present)}")
-    print(f"  ✓ All {len(raw_present)} raw trait columns present (expected)")
+        # Verify Perm 8 has raw traits (should be present in base)
+        raw_present = [c for c in RAW_TRAIT_COLS if c in df_perm8.columns]
+        if len(raw_present) != len(RAW_TRAIT_COLS):
+            raise VerificationError(f"✗ Perm 8 base missing raw traits: {set(RAW_TRAIT_COLS) - set(raw_present)}")
+        print(f"  ✓ All {len(raw_present)} raw trait columns present (expected)")
 
-    # Check eigenvectors
-    eigenvector_cols = [c for c in df_perm8.columns if c.startswith('phylo_ev')]
-    print(f"  ✓ {len(eigenvector_cols)} phylogenetic eigenvectors present")
+        # Check eigenvectors
+        eigenvector_cols = [c for c in df_perm8.columns if c.startswith('phylo_ev')]
+        print(f"  ✓ {len(eigenvector_cols)} phylogenetic eigenvectors present")
 
     # Check environmental features
     print_subsection("Environmental Features")
@@ -425,26 +434,26 @@ def main():
 
         # 5. Structure verification
         print_section("5. STRUCTURE VERIFICATION")
-        verify_structure(df_perm1, 1, 260)
-        verify_structure(df_perm2, 2, 265)
-        verify_structure(df_perm3, 3, 168)
+        verify_structure(df_perm1, 1, 263)
+        verify_structure(df_perm2, 2, 268)
+        verify_structure(df_perm3, 3, 171)
         print("\n✓ All structure checks passed")
 
         # 6. Feature group verification
         print_section("6. FEATURE GROUP VERIFICATION")
 
         verify_feature_groups(df_perm1, 1, {
-            'ids': 2, 'log': 6, 'categorical': 4,
+            'ids': 2, 'log': 6, 'categorical': 7,
             'env': 156, 'eigenvectors': 92
         })
 
         verify_feature_groups(df_perm2, 2, {
-            'ids': 2, 'log': 6, 'categorical': 4,
+            'ids': 2, 'log': 6, 'categorical': 7,
             'env': 156, 'eigenvectors': 92, 'eive': 5
         })
 
         verify_feature_groups(df_perm3, 3, {
-            'ids': 2, 'log': 6, 'categorical': 4,
+            'ids': 2, 'log': 6, 'categorical': 7,
             'env': 156, 'eigenvectors': 0
         })
 
