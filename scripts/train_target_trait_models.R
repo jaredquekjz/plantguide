@@ -47,8 +47,15 @@ cat(sprintf("[info] Loading imputed dataset: %s\n", input_csv))
 imputed_data <- read_csv(input_csv, show_col_types = FALSE)
 
 # Define target traits (in log scale)
-target_traits <- c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac',
-                   'lma_g_m2', 'plant_height_m', 'seed_mass_mg')
+# Check if dataset has log-transformed traits or raw traits
+if ('logLA' %in% names(imputed_data)) {
+  # Anti-leakage datasets with log traits
+  target_traits <- c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM')
+} else {
+  # Legacy datasets with raw traits
+  target_traits <- c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac',
+                     'lma_g_m2', 'plant_height_m', 'seed_mass_mg')
+}
 
 # ID columns to exclude from features
 id_cols <- c('wfo_taxon_id', 'wfo_scientific_name')
@@ -89,9 +96,25 @@ for (trait in target_traits) {
     }
   }
 
+  # Remove rows with NA in any feature BEFORE encoding
+  # This prevents model.matrix from silently dropping rows
+  complete_rows_before <- complete.cases(X)
+  n_removed_before <- sum(!complete_rows_before)
+  if (n_removed_before > 0) {
+    cat(sprintf("  - Removing %d rows with NA in features\n", n_removed_before))
+    X <- X[complete_rows_before, ]
+    y <- y[complete_rows_before]
+  }
+
+  cat(sprintf("  - Dimensions before encoding: X=%dx%d, y=%d\n",
+              nrow(X), ncol(X), length(y)))
+
   # Convert to matrix (xgboost expects numeric matrix)
   # One-hot encode categorical features
-  X_encoded <- model.matrix(~ . - 1, data = X)
+  X_encoded <- model.matrix(~ . - 1, data = X, na.action = na.pass)
+
+  cat(sprintf("  - Dimensions after encoding: X_encoded=%dx%d, y=%d\n",
+              nrow(X_encoded), ncol(X_encoded), length(y)))
 
   # Create DMatrix
   dtrain <- xgb.DMatrix(data = X_encoded, label = y)
