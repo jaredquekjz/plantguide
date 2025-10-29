@@ -8,6 +8,8 @@ Validates:
 3. Cross-trait correlations (biological relationships)
 4. Imputation completeness (no remaining gaps)
 5. Ensemble stability (variance across 10 runs)
+6. PMM donor selection (imputations within observed range)
+7. Sanity check vs previous run (optional)
 """
 
 import numpy as np
@@ -15,13 +17,35 @@ import pandas as pd
 from pathlib import Path
 from scipy import stats
 import json
+import argparse
+import sys
+
+# Parse arguments
+parser = argparse.ArgumentParser(description='Verify XGBoost production imputation')
+parser.add_argument('--date', type=str, required=True,
+                    help='Date string for production run (e.g., 20251028)')
+parser.add_argument('--compare-to', type=str, default=None,
+                    help='Optional: compare to previous run date for sanity check (e.g., 20251027)')
+parser.add_argument('--cv-results', type=str, default=None,
+                    help='Optional: CV results file to compare production quality')
+parser.add_argument('--verify-final', action='store_true',
+                    help='Verify final complete dataset (268 columns) instead of mean imputation only')
+
+args = parser.parse_args()
 
 # Paths
-INPUT_PATH = Path('model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251027.csv')
-PRODUCTION_MEAN = Path('model_data/outputs/perm2_production/perm2_11680_eta0025_n3000_20251027_mean.csv')
-PRODUCTION_DIR = Path('model_data/outputs/perm2_production')
-OUTPUT_DIR = Path('results/verification/xgboost_production_20251027')
+DATE = args.date
+INPUT_PATH = Path(f'model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_{DATE}.csv')
 
+if args.verify_final:
+    PRODUCTION_MEAN = Path(f'model_data/outputs/perm2_production/perm2_11680_complete_imputed_{DATE}.csv')
+    OUTPUT_DIR = Path(f'results/verification/xgboost_final_dataset_{DATE}')
+    print(f'\n*** VERIFYING FINAL COMPLETE DATASET (268 columns) ***\n')
+else:
+    PRODUCTION_MEAN = Path(f'model_data/outputs/perm2_production/perm2_11680_eta0025_n3000_{DATE}_mean.csv')
+    OUTPUT_DIR = Path(f'results/verification/xgboost_production_{DATE}')
+
+PRODUCTION_DIR = Path('model_data/outputs/perm2_production')
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Trait definitions
@@ -59,7 +83,7 @@ production_df = pd.read_csv(PRODUCTION_MEAN)
 # Get individual runs for ensemble analysis
 individual_runs = []
 for i in range(1, 11):
-    run_path = PRODUCTION_DIR / f'perm2_11680_eta0025_n3000_20251027_m{i}.csv'
+    run_path = PRODUCTION_DIR / f'perm2_11680_eta0025_n3000_{DATE}_m{i}.csv'
     if run_path.exists():
         individual_runs.append(pd.read_csv(run_path))
     else:
@@ -69,10 +93,52 @@ print(f'  ✓ Input: {len(input_df)} species, {len(input_df.columns)} columns')
 print(f'  ✓ Production mean: {len(production_df)} species, {len(production_df.columns)} columns')
 print(f'  ✓ Individual runs: {len(individual_runs)} files loaded')
 
+# Additional verification for final complete dataset
+if args.verify_final:
+    print(f'\n[1b/6] Verifying final complete dataset structure...')
+
+    # Check dimensions
+    expected_cols = 268
+    if len(production_df.columns) != expected_cols:
+        print(f'  ⚠ WARNING: Expected {expected_cols} columns, found {len(production_df.columns)}')
+    else:
+        print(f'  ✓ Column count: {len(production_df.columns)} (expected {expected_cols})')
+
+    # Check feature categories
+    phylo_cols = [c for c in production_df.columns if c.startswith('phylo_ev')]
+    eive_cols = [c for c in production_df.columns if c.startswith('EIVE')]
+    cat_cols = [c for c in production_df.columns if c.startswith('try_')]
+    env_cols = [c for c in production_df.columns if c.endswith('_q50')]
+
+    print(f'  ✓ Phylogenetic eigenvectors: {len(phylo_cols)} (expected 92)')
+    print(f'  ✓ EIVE indicators: {len(eive_cols)} (expected 5)')
+    print(f'  ✓ Categorical traits: {len(cat_cols)} (expected 7)')
+    print(f'  ✓ Environmental features: {len(env_cols)} (expected 156)')
+    print(f'  ✓ Log traits: {len([c for c in LOG_TRAITS if c in production_df.columns])}/6')
+
+    # Verify all critical columns present
+    missing_critical = []
+    for col in LOG_TRAITS + ['wfo_taxon_id', 'wfo_scientific_name']:
+        if col not in production_df.columns:
+            missing_critical.append(col)
+
+    if missing_critical:
+        print(f'  ✗ Missing critical columns: {missing_critical}')
+    else:
+        print(f'  ✓ All critical columns present')
+
 # Merge to align
-merged = input_df.merge(production_df[['wfo_taxon_id'] + LOG_TRAITS],
-                        on='wfo_taxon_id',
-                        suffixes=('_input', '_imputed'))
+if args.verify_final:
+    # For final dataset, traits are already in production_df
+    merged = production_df.copy()
+    # Add '_input' suffix to original trait columns from input
+    for trait in LOG_TRAITS:
+        merged[f'{trait}_input'] = input_df[trait].values
+        merged[f'{trait}_imputed'] = production_df[trait].values
+else:
+    merged = input_df.merge(production_df[['wfo_taxon_id'] + LOG_TRAITS],
+                            on='wfo_taxon_id',
+                            suffixes=('_input', '_imputed'))
 
 # ============================================================================
 # 2. Completeness Check
@@ -301,6 +367,127 @@ else:
     print(f'  ⚠ Only {len(individual_runs)} runs available (expected 10), skipping ensemble analysis')
 
 # ============================================================================
+# 7. PMM Verification (Imputations within Observed Range)
+# ============================================================================
+print('\n[7/9] Verifying PMM donor selection (imputations within observed range)...')
+
+pmm_results = []
+for trait in LOG_TRAITS:
+    input_col = f'{trait}_input'
+    imputed_col = f'{trait}_imputed'
+
+    # Get observed range
+    observed_vals = merged[input_col].dropna()
+    obs_min, obs_max = observed_vals.min(), observed_vals.max()
+
+    # Check imputed values
+    gap_mask = merged[input_col].isna()
+    imputed_vals = merged.loc[gap_mask, imputed_col].dropna()
+
+    # Count extrapolations (outside observed range)
+    below_min = (imputed_vals < obs_min).sum()
+    above_max = (imputed_vals > obs_max).sum()
+    total_extrap = below_min + above_max
+    pct_extrap = 100 * total_extrap / len(imputed_vals) if len(imputed_vals) > 0 else 0
+
+    pmm_results.append({
+        'trait': trait,
+        'observed_min': obs_min,
+        'observed_max': obs_max,
+        'imputed_min': imputed_vals.min() if len(imputed_vals) > 0 else np.nan,
+        'imputed_max': imputed_vals.max() if len(imputed_vals) > 0 else np.nan,
+        'n_gap_filled': len(imputed_vals),
+        'n_below_min': below_min,
+        'n_above_max': above_max,
+        'n_extrapolation': total_extrap,
+        'pct_extrapolation': pct_extrap
+    })
+
+    status = '✓' if pct_extrap == 0 else '⚠'
+    print(f'  {status} {trait}: {total_extrap} / {len(imputed_vals)} ({pct_extrap:.2f}%) outside observed range [{obs_min:.3f}, {obs_max:.3f}]')
+
+pmm_df = pd.DataFrame(pmm_results)
+pmm_df.to_csv(OUTPUT_DIR / 'pmm_verification.csv', index=False)
+
+# ============================================================================
+# 8. Sanity Check vs Previous Run (if provided)
+# ============================================================================
+if args.compare_to:
+    print(f'\n[8/9] Sanity check: comparing to previous run ({args.compare_to})...')
+
+    prev_mean_path = PRODUCTION_DIR / f'perm2_11680_eta0025_n3000_{args.compare_to}_mean.csv'
+
+    if prev_mean_path.exists():
+        prev_df = pd.read_csv(prev_mean_path)
+
+        # Merge current and previous
+        comparison = production_df.merge(prev_df[['wfo_taxon_id'] + LOG_TRAITS],
+                                         on='wfo_taxon_id',
+                                         suffixes=('_current', '_previous'))
+
+        sanity_results = []
+        for trait in LOG_TRAITS:
+            curr_col = f'{trait}_current'
+            prev_col = f'{trait}_previous'
+
+            # Only compare on species with data in both
+            valid_mask = comparison[curr_col].notna() & comparison[prev_col].notna()
+            curr_vals = comparison.loc[valid_mask, curr_col]
+            prev_vals = comparison.loc[valid_mask, prev_col]
+
+            # Compute differences
+            abs_diff = np.abs(curr_vals - prev_vals)
+            pct_diff = 100 * abs_diff / np.abs(prev_vals)
+
+            # Correlation
+            r, p = stats.pearsonr(curr_vals, prev_vals)
+
+            sanity_results.append({
+                'trait': trait,
+                'n_compared': len(curr_vals),
+                'mean_abs_diff': abs_diff.mean(),
+                'median_abs_diff': abs_diff.median(),
+                'max_abs_diff': abs_diff.max(),
+                'mean_pct_diff': pct_diff.mean(),
+                'median_pct_diff': pct_diff.median(),
+                'max_pct_diff': pct_diff.max(),
+                'correlation': r,
+                'p_value': p
+            })
+
+            status = '✓' if abs_diff.mean() < 0.1 else '⚠'
+            print(f'  {status} {trait}: mean abs diff = {abs_diff.mean():.4f}, r = {r:.4f}, {len(curr_vals)} species compared')
+
+        sanity_df = pd.DataFrame(sanity_results)
+        sanity_df.to_csv(OUTPUT_DIR / f'sanity_check_vs_{args.compare_to}.csv', index=False)
+    else:
+        print(f'  ⚠ Previous run not found: {prev_mean_path}')
+else:
+    print('\n[8/9] Sanity check: SKIPPED (no --compare-to provided)')
+
+# ============================================================================
+# 9. CV Quality Comparison (if provided)
+# ============================================================================
+if args.cv_results:
+    print(f'\n[9/9] Comparing production quality to CV predictions...')
+
+    cv_path = Path(args.cv_results)
+    if cv_path.exists():
+        cv_df = pd.read_csv(cv_path)
+
+        print('  ℹ  CV metrics loaded for reference')
+        print('  Note: Production imputations on missing data cannot be directly validated')
+        print('  CV metrics predict expected accuracy when filling gaps')
+
+        # Just print for reference
+        for _, row in cv_df.iterrows():
+            print(f'    {row["trait"]}: RMSE={row["rmse_mean"]:.3f}, R²={row["r2_transformed"]:.3f}')
+    else:
+        print(f'  ⚠ CV results not found: {cv_path}')
+else:
+    print('\n[9/9] CV quality comparison: SKIPPED (no --cv-results provided)')
+
+# ============================================================================
 # Summary Report
 # ============================================================================
 print('\n' + '=' * 80)
@@ -376,6 +563,33 @@ else:
     summary['checks']['ensemble_stability'] = {'status': 'SKIPPED'}
     print('\n[⚠] Ensemble stability: SKIPPED (incomplete runs)')
 
+# PMM verification
+pmm_pass = (pmm_df['pct_extrapolation'] == 0).all()
+summary['checks']['pmm_verification'] = {
+    'status': 'PASS' if pmm_pass else 'WARNING',
+    'traits_no_extrapolation': int((pmm_df['pct_extrapolation'] == 0).sum()),
+    'max_extrapolation_pct': float(pmm_df['pct_extrapolation'].max())
+}
+print(f'\n[{"✓" if pmm_pass else "⚠"}] PMM verification: {summary["checks"]["pmm_verification"]["status"]}')
+print(f'    Traits with no extrapolation: {(pmm_df["pct_extrapolation"] == 0).sum()} / {len(pmm_df)}')
+print(f'    Max extrapolation: {pmm_df["pct_extrapolation"].max():.2f}%')
+
+# Sanity check
+if args.compare_to and 'sanity_df' in locals():
+    sanity_pass = (sanity_df['mean_abs_diff'] < 0.1).all()
+    summary['checks']['sanity_check'] = {
+        'status': 'PASS' if sanity_pass else 'WARNING',
+        'compare_to': args.compare_to,
+        'mean_correlation': float(sanity_df['correlation'].mean()),
+        'max_mean_diff': float(sanity_df['mean_abs_diff'].max())
+    }
+    print(f'\n[{"✓" if sanity_pass else "⚠"}] Sanity check vs {args.compare_to}: {summary["checks"]["sanity_check"]["status"]}')
+    print(f'    Mean correlation: {sanity_df["correlation"].mean():.4f}')
+    print(f'    Max mean abs diff: {sanity_df["mean_abs_diff"].max():.4f}')
+else:
+    summary['checks']['sanity_check'] = {'status': 'SKIPPED'}
+    print('\n[ℹ] Sanity check: SKIPPED')
+
 # Overall verdict
 all_pass = all(
     check.get('status') in ['PASS', 'SKIPPED']
@@ -397,5 +611,15 @@ print('  - completeness_check.csv')
 print('  - range_validation.csv')
 print('  - feature_distribution_comparison.csv')
 print('  - correlation_validation.csv')
-print('  - ensemble_stability.csv')
+print('  - ensemble_stability.csv (if 10 runs available)')
+print('  - pmm_verification.csv')
+if args.compare_to:
+    print(f'  - sanity_check_vs_{args.compare_to}.csv')
 print('  - verification_summary.json')
+print(f'\nCommand to re-run:')
+print(f'  python src/Stage_1/verify_xgboost_production.py --date {DATE}', end='')
+if args.compare_to:
+    print(f' --compare-to {args.compare_to}', end='')
+if args.cv_results:
+    print(f' --cv-results {args.cv_results}', end='')
+print()
