@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tier 2 Production CV - No-EIVE Models (WITHOUT cross-axis EIVE)
+# Tier 2 Production CV - Full Models (WITH cross-axis EIVE)
 # Uses context-matched phylo predictors and Tier 1 optimal hyperparameters
 
 set -e
@@ -7,7 +7,7 @@ set -e
 PYTHON="/home/olier/miniconda3/envs/AI/bin/python"
 SCRIPT="src/Stage_2/xgb_kfold.py"
 
-# Tier 1 optimal hyperparameters (reuse)
+# Tier 1 optimal hyperparameters
 declare -A BEST_LR
 BEST_LR["L"]=0.03
 BEST_LR["T"]=0.03
@@ -25,8 +25,8 @@ BEST_N["R"]=1500
 AXES=("L" "T" "M" "N" "R")
 
 echo "======================================"
-echo "Tier 2 Production CV - No-EIVE Models"
-echo "Context-matched phylo, NO cross-axis EIVE"
+echo "Tier 2 Production CV - Full Models"
+echo "Context-matched phylo + cross-axis EIVE"
 echo "======================================"
 echo ""
 
@@ -36,9 +36,9 @@ for axis in "${AXES[@]}"; do
     echo "----------------------------------------"
 
     $PYTHON $SCRIPT \
-        --features_csv "model_data/inputs/stage2_features/${axis}_features_11680_no_eive_20251029.csv" \
+        --features_csv "model_data/inputs/stage2_features/${axis}_features_11680_corrected_20251029.csv" \
         --axis "$axis" \
-        --out_dir "model_data/outputs/stage2_xgb/${axis}_11680_no_eive_20251029" \
+        --out_dir "model_data/outputs/stage2_xgb/${axis}_11680_production_corrected_20251029" \
         --learning_rates "${BEST_LR[$axis]}" \
         --n_estimators_grid "${BEST_N[$axis]}" \
         --cv_folds 10 \
