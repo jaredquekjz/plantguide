@@ -49,6 +49,17 @@ def parse_args() -> argparse.Namespace:
         default="",
         help="Optional comma-separated list of tree counts to evaluate; overrides --n_estimators if provided.",
     )
+    parser.add_argument(
+        "--predict_missing",
+        default="false",
+        help="After CV, train on all observed data and predict missing EIVE values (like Stage 1 production imputation).",
+    )
+    parser.add_argument(
+        "--m_predictions",
+        type=int,
+        default=10,
+        help="Number of prediction runs for uncertainty quantification (default 10, like Stage 1).",
+    )
     return parser.parse_args()
 
 
@@ -124,9 +135,8 @@ def train_xgb(
 
 
 def predict_array(model: xgb.XGBRegressor, X: np.ndarray, gpu: bool) -> np.ndarray:
-    if gpu:
-        dm = xgb.DMatrix(X)
-        return model.get_booster().predict(dm)
+    # Use sklearn interface predict() for both CPU/GPU - automatically optimized
+    # For sklearn interface, inplace_predict is used internally (faster, less memory)
     return model.predict(X)
 
 
@@ -171,6 +181,8 @@ def kfold_metrics(
     r2s: List[float] = []
     rmses: List[float] = []
     maes: List[float] = []
+    acc_rank1: List[float] = []
+    acc_rank2: List[float] = []
     records: List[Dict[str, object]] = []
 
     for fold_idx, (train_idx, test_idx) in enumerate(kf.split(X), start=1):
@@ -207,6 +219,13 @@ def kfold_metrics(
         rmses.append(rmse)
         maes.append(mae)
 
+        # Rank-based accuracy: round to nearest integer and count matches
+        y_rank_true = np.round(yte_arr)
+        y_rank_pred = np.round(preds)
+        rank_diff = np.abs(y_rank_true - y_rank_pred)
+        acc_rank1.append(float(np.mean(rank_diff <= 1)))
+        acc_rank2.append(float(np.mean(rank_diff <= 2)))
+
         if species is not None:
             for local_idx, global_idx in enumerate(test_idx):
                 records.append({
@@ -236,6 +255,10 @@ def kfold_metrics(
         "rmse_sd": float(np.std(rmses, ddof=0)) if rmses else float("nan"),
         "mae_mean": float(np.mean(maes)) if maes else float("nan"),
         "mae_sd": float(np.std(maes, ddof=0)) if maes else float("nan"),
+        "accuracy_rank1_mean": float(np.mean(acc_rank1)) if acc_rank1 else float("nan"),
+        "accuracy_rank1_sd": float(np.std(acc_rank1, ddof=0)) if acc_rank1 else float("nan"),
+        "accuracy_rank2_mean": float(np.mean(acc_rank2)) if acc_rank2 else float("nan"),
+        "accuracy_rank2_sd": float(np.std(acc_rank2, ddof=0)) if acc_rank2 else float("nan"),
         "fold_effective": len(r2s),
     }
     preds_df = pd.DataFrame(records)
@@ -258,6 +281,11 @@ def main() -> None:
     if not numeric_cols:
         raise SystemExit("No numeric feature columns found.")
 
+    # Keep original full dataset for production predictions
+    df_full = df.copy()
+    X_full = df_full[numeric_cols].to_numpy(dtype=float)
+    y_full = df_full[args.target_column].to_numpy(dtype=float)
+
     X = df[numeric_cols].to_numpy(dtype=float)
     y = df[args.target_column].to_numpy(dtype=float)
 
@@ -269,7 +297,7 @@ def main() -> None:
             else []
         )
         if dropped:
-            print(f"[info] Dropping {len(dropped)} rows with non-finite target.")
+            print(f"[info] Dropping {len(dropped)} rows with non-finite target for CV.")
         X = X[finite_mask]
         y = y[finite_mask]
         df = df.loc[finite_mask].reset_index(drop=True)
@@ -335,8 +363,8 @@ def main() -> None:
                 m["n_estimators"] = int(trees)
                 grid_results.append(m)
                 print(
-                    "[cv] lr={:.3f} trees={} ⇒ R² {:.3f} ± {:.3f}".format(
-                        lr, trees, m["r2_mean"], m["r2_sd"]
+                    "[cv] lr={:.3f} trees={} ⇒ R² {:.3f} ± {:.3f}, Acc±1 {:.1%}".format(
+                        lr, trees, m["r2_mean"], m["r2_sd"], m["accuracy_rank1_mean"]
                     )
                 )
                 if (
@@ -367,11 +395,16 @@ def main() -> None:
         preds_path = os.path.join(args.out_dir, f"xgb_{args.axis}_cv_predictions_kfold.csv")
         preds_df.to_csv(preds_path, index=False)
         print(
-            "[cv] best combo lr={:.3f} trees={} | mean R² {:.3f} ± {:.3f}".format(
+            "[cv] best combo lr={:.3f} trees={} | R² {:.3f} ± {:.3f}, RMSE {:.3f} ± {:.3f}, "
+            "Acc±1 {:.1%}, Acc±2 {:.1%}".format(
                 metrics["learning_rate"],
                 metrics["n_estimators"],
                 metrics["r2_mean"],
                 metrics["r2_sd"],
+                metrics["rmse_mean"],
+                metrics["rmse_sd"],
+                metrics["accuracy_rank1_mean"],
+                metrics["accuracy_rank2_mean"],
             )
         )
 
@@ -431,7 +464,128 @@ def main() -> None:
     with open(zscore_path, "w") as fh:
         json.dump({"mean": means.tolist(), "scale": sds.tolist(), "features": numeric_cols}, fh, indent=2)
 
-    print(f"[ok] Stage 2 XGBoost outputs written to {args.out_dir}")
+    # Production prediction phase (like Stage 1 imputation)
+    if to_bool(args.predict_missing):
+        print("\n[production] Predicting missing EIVE values...")
+        print(f"  Multiple predictions: m={args.m_predictions} (for uncertainty quantification)")
+
+        # Identify observed vs missing in full dataset
+        observed_mask = np.isfinite(y_full)
+        missing_mask = ~observed_mask
+        n_observed = observed_mask.sum()
+        n_missing = missing_mask.sum()
+
+        print(f"  Observed EIVE: {n_observed:,} species")
+        print(f"  Missing EIVE:  {n_missing:,} species")
+
+        if n_missing == 0:
+            print("  No missing values to predict.")
+        else:
+            # Prepare missing data once
+            X_missing_raw = X_full[missing_mask]
+            X_missing_z = (X_missing_raw - means) / sds
+            missing_indices = np.where(missing_mask)[0]
+
+            # Store all m predictions
+            all_predictions = np.zeros((n_missing, args.m_predictions))
+
+            # Train m models with different seeds for uncertainty quantification
+            print(f"  Running {args.m_predictions} prediction(s) with different seeds...")
+            for m_idx in range(args.m_predictions):
+                pred_seed = args.seed + 1000 + m_idx
+
+                # Train model with different seed (stochastic: subsample, colsample)
+                model_m = train_xgb(
+                    Xz_full,
+                    y,
+                    gpu=gpu,
+                    seed=pred_seed,
+                    params_overrides=base_params,
+                )
+
+                # Predict
+                preds_m = predict_array(model_m, X_missing_z, gpu=gpu)
+                all_predictions[:, m_idx] = preds_m
+
+                print(f"    m{m_idx + 1}/{args.m_predictions}: mean={preds_m.mean():.3f}, std={preds_m.std():.3f}")
+
+            # Calculate ensemble statistics
+            preds_mean = all_predictions.mean(axis=1)
+            preds_std = all_predictions.std(axis=1, ddof=1)
+
+            # Create base dataframe with identifiers
+            if args.species_column in df_full.columns:
+                species_missing = df_full.loc[missing_mask, args.species_column].fillna("").astype(str).tolist()
+            else:
+                species_missing = None
+
+            # Save individual predictions (m1, m2, ..., m10)
+            for m_idx in range(args.m_predictions):
+                pred_records = []
+                for i, idx in enumerate(missing_indices):
+                    record = {
+                        "row": int(idx),
+                        "y_pred": float(all_predictions[i, m_idx]),
+                    }
+                    if species_missing is not None:
+                        record["species"] = species_missing[i]
+                    if "wfo_taxon_id" in df_full.columns:
+                        record["wfo_taxon_id"] = df_full.loc[idx, "wfo_taxon_id"]
+                    pred_records.append(record)
+
+                preds_m_df = pd.DataFrame(pred_records)
+                preds_m_path = os.path.join(args.out_dir, f"xgb_{args.axis}_production_predictions_m{m_idx + 1}.csv")
+                preds_m_df.to_csv(preds_m_path, index=False)
+
+            # Save ensemble mean predictions
+            pred_records_mean = []
+            for i, idx in enumerate(missing_indices):
+                record = {
+                    "row": int(idx),
+                    "y_pred_mean": float(preds_mean[i]),
+                    "y_pred_std": float(preds_std[i]),
+                }
+                if species_missing is not None:
+                    record["species"] = species_missing[i]
+                if "wfo_taxon_id" in df_full.columns:
+                    record["wfo_taxon_id"] = df_full.loc[idx, "wfo_taxon_id"]
+                pred_records_mean.append(record)
+
+            preds_mean_df = pd.DataFrame(pred_records_mean)
+            preds_mean_path = os.path.join(args.out_dir, f"xgb_{args.axis}_production_predictions_mean.csv")
+            preds_mean_df.to_csv(preds_mean_path, index=False)
+
+            print(f"\n  Saved {args.m_predictions} individual prediction files: xgb_{args.axis}_production_predictions_m*.csv")
+            print(f"  Saved ensemble mean: {preds_mean_path}")
+
+            # Summary statistics
+            overall_mean = preds_mean.mean()
+            overall_std = preds_mean.std()
+            pred_min = preds_mean.min()
+            pred_max = preds_mean.max()
+
+            # Uncertainty: median std across species
+            median_uncertainty = np.median(preds_std)
+
+            print(f"\n  Ensemble prediction statistics:")
+            print(f"    Mean: {overall_mean:.3f} ± {overall_std:.3f}")
+            print(f"    Range: [{pred_min:.3f}, {pred_max:.3f}]")
+            print(f"    Median prediction uncertainty (std): {median_uncertainty:.3f}")
+
+            # Compare to observed distribution
+            if n_observed > 0:
+                obs_mean = y_full[observed_mask].mean()
+                obs_std = y_full[observed_mask].std()
+                print(f"  Observed EIVE statistics (for comparison):")
+                print(f"    Mean: {obs_mean:.3f} ± {obs_std:.3f}")
+
+                # Distribution shift check
+                mean_diff = abs(overall_mean - obs_mean)
+                print(f"    Mean difference (predicted - observed): {overall_mean - obs_mean:+.3f}")
+                if mean_diff > 0.5:
+                    print(f"    ⚠ Warning: Predicted mean differs from observed by {mean_diff:.3f} units")
+
+    print(f"\n[ok] Stage 2 XGBoost outputs written to {args.out_dir}")
 
 
 if __name__ == "__main__":

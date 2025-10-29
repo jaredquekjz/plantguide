@@ -71,11 +71,16 @@ def validate_schema(df, expected_shape, dataset_name):
     if len(phylo_ev) != 92:
         issues.append(f"Expected 92 phylo eigenvectors, found {len(phylo_ev)}")
 
-    # Environmental q50
+    # Environmental quantiles (full: q05, q50, q95, iqr)
+    env_q05 = [c for c in df.columns if c.endswith('_q05')]
     env_q50 = [c for c in df.columns if c.endswith('_q50')]
-    print(f"✓ Environmental q50:   {len(env_q50)} columns (expected 156)")
-    if len(env_q50) != 156:
-        issues.append(f"Expected 156 environmental q50, found {len(env_q50)}")
+    env_q95 = [c for c in df.columns if c.endswith('_q95')]
+    env_iqr = [c for c in df.columns if c.endswith('_iqr')]
+    print(f"✓ Environmental quantiles: {len(env_q05)+len(env_q50)+len(env_q95)+len(env_iqr)} columns "
+          f"(expected 624: 156 vars × 4 quantiles)")
+    if len(env_q05) != 156 or len(env_q50) != 156 or len(env_q95) != 156 or len(env_iqr) != 156:
+        issues.append(f"Expected 156 for each quantile, found q05={len(env_q05)}, q50={len(env_q50)}, "
+                     f"q95={len(env_q95)}, iqr={len(env_iqr)}")
 
     return issues
 
@@ -113,7 +118,7 @@ def validate_data_integrity(df, dataset_name):
             issues.append(f"{trait} not 100% complete: {pct:.2f}%")
 
     # Environmental completeness (must be 100%)
-    env_cols = [c for c in df.columns if c.endswith('_q50')]
+    env_cols = [c for c in df.columns if c.endswith(('_q05', '_q50', '_q95', '_iqr'))]
     missing_all_env = df[env_cols].isna().all(axis=1).sum()
     print(f"\nSpecies missing ALL environmental features: {missing_all_env}")
     if missing_all_env > 0:
@@ -390,8 +395,8 @@ def main():
     print(f"  Modelling shortlist:  {df_1084.shape}")
 
     # 2. Schema validation
-    all_issues.extend(validate_schema(df_full, (11680, 273), "Full Production (11,680)"))
-    all_issues.extend(validate_schema(df_1084, (1084, 273), "Modelling Shortlist (1,084)"))
+    all_issues.extend(validate_schema(df_full, (11680, 741), "Full Production (11,680)"))
+    all_issues.extend(validate_schema(df_1084, (1084, 741), "Modelling Shortlist (1,084)"))
 
     # 3. Data integrity
     all_issues.extend(validate_data_integrity(df_full, "Full Production (11,680)"))
@@ -427,8 +432,8 @@ def main():
     else:
         print("\n✓ ALL VALIDATIONS PASSED")
         print("\nBoth datasets are ready for Stage 2:")
-        print(f"  • Full production:     11,680 × 273 features")
-        print(f"  • Modelling shortlist:  1,084 × 273 features")
+        print(f"  • Full production:     11,680 × 741 features")
+        print(f"  • Modelling shortlist:  1,084 × 741 features")
         sys.exit(0)
 
 if __name__ == '__main__':
