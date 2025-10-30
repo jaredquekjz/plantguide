@@ -1,6 +1,0 @@
-label,requirement,joint_min_prob
-ThePioneer,"T=high,M=low",0.6
-RichSoilSpecialist,"M=high,N=high",0.6
-SunVsWaterTradeoff,"L=high,M=low",0.6
-LushShadePlant,"L=low,M=high,N=high",0.6
-CoolClimateSpecialist,"T=low,M=med,N=high",0.6
