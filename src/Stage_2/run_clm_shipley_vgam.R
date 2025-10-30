@@ -205,7 +205,7 @@ for (i in seq_along(assignments)) {
   train_y <- as.numeric(train_df$axis_y) - 1
   test_y <- as.numeric(test_df$axis_y) - 1
 
-  # Metrics
+  # Metrics (continuous predictions for R2, MAE, RMSE)
   train_resid <- train_y - train_pred
   test_resid <- test_y - test_pred
 
@@ -223,11 +223,21 @@ for (i in seq_along(assignments)) {
   train_rmse <- sqrt(mean(train_resid^2))
   test_rmse <- sqrt(mean(test_resid^2))
 
-  # Calculate ordinal accuracy (within 1 and 2 ranks)
-  train_acc_rank1 <- mean(abs(train_resid) <= 1.0) * 100
-  train_acc_rank2 <- mean(abs(train_resid) <= 2.0) * 100
-  test_acc_rank1 <- mean(abs(test_resid) <= 1.0) * 100
-  test_acc_rank2 <- mean(abs(test_resid) <= 2.0) * 100
+  # Calculate ordinal accuracy (MATCH XGBoost methodology exactly)
+  # Round both predictions and true values, then calculate rank difference
+  train_y_rank <- round(train_y)
+  train_pred_rank <- round(train_pred)
+  test_y_rank <- round(test_y)
+  test_pred_rank <- round(test_pred)
+
+  train_rank_diff <- abs(train_y_rank - train_pred_rank)
+  test_rank_diff <- abs(test_y_rank - test_pred_rank)
+
+  # Return as proportion (0-1) to match XGBoost output format
+  train_acc_rank1 <- mean(train_rank_diff <= 1)
+  train_acc_rank2 <- mean(train_rank_diff <= 2)
+  test_acc_rank1 <- mean(test_rank_diff <= 1)
+  test_acc_rank2 <- mean(test_rank_diff <= 2)
 
   results[[i]] <- tibble(
     fold_id = i,
@@ -297,8 +307,8 @@ message(sprintf("  Train R²: %.3f ± %.3f", summary_stats$mean_train_r2, summar
 message(sprintf("  Test R²:  %.3f ± %.3f", summary_stats$mean_test_r2, summary_stats$sd_test_r2))
 message(sprintf("  Test MAE: %.3f ± %.3f", summary_stats$mean_test_mae, summary_stats$sd_test_mae))
 message(sprintf("  Test RMSE: %.3f ± %.3f", summary_stats$mean_test_rmse, summary_stats$sd_test_rmse))
-message(sprintf("  Test Acc±1: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank1, summary_stats$sd_test_acc_rank1))
-message(sprintf("  Test Acc±2: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank2, summary_stats$sd_test_acc_rank2))
+message(sprintf("  Test Acc±1: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank1 * 100, summary_stats$sd_test_acc_rank1 * 100))
+message(sprintf("  Test Acc±2: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank2 * 100, summary_stats$sd_test_acc_rank2 * 100))
 
 # ---------------------------------------------------------------------------
 # Save outputs
