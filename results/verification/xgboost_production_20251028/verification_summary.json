@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-29T08:15:00.650802",
+  "timestamp": "2025-10-30T19:32:30.708189",
   "input_file": "model_data/inputs/mixgb_perm2_11680/mixgb_input_perm2_eive_11680_20251028.csv",
   "production_file": "model_data/outputs/perm2_production/perm2_11680_eta0025_n3000_20251028_mean.csv",
   "n_species": 11680,
@@ -38,10 +38,7 @@
       "max_extrapolation_pct": 0.0
     },
     "sanity_check": {
-      "status": "WARNING",
-      "compare_to": "20251027",
-      "mean_correlation": 0.9814476500820555,
-      "max_mean_diff": 0.2027293309667352
+      "status": "SKIPPED"
     }
   },
   "overall_status": "WARNING"
