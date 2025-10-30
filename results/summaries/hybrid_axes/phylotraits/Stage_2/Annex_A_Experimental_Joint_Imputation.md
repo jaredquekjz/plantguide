@@ -558,6 +558,13 @@ The two-stage approach aligns with established ecological methods and demonstrat
 - Improvement: 2-6× R², 31-45% lower error
 - Most striking: M-axis (moisture) CLM R² 0.11 vs XGBoost R² 0.68 (508% improvement)
 
+**Replication validation (Stage 2.6b, 2025-10-30):**
+- Attempted strict Shipley et al. 2017 replication with ordinal::clm and AIC-selected interactions
+- Result: Severe numerical instability - prediction failures in 8-9/10 CV folds
+- VGAM baseline with simplified interactions is most stable and methodologically sound
+- Even best-case CLM improvement (+30% R²) cannot approach XGBoost (88-369% advantage remains)
+- See Stage 2.6b for full investigation details
+
 **Scientific implications:**
 - Environmental context (633 climate/soil quantiles) is essential, not optional
 - Phylogenetic conservatism (p_phylo predictors) captures niche inheritance
