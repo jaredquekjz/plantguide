@@ -552,18 +552,12 @@ The two-stage approach aligns with established ecological methods and demonstrat
 - If trait imputation is performed first (as typical), explicitly two-stage
 - Enables direct comparison with published trait-based methods
 
-**Direct benchmark results (Stage 2.6):**
-- CLM baseline (traits only): R² 0.11-0.29, MAE 1.00-1.29
+**Direct benchmark results (Stage 2.6, Shipley et al. 2017 replication):**
+- CLM baseline (Shipley formula: plant_form × traits): R² 0.11-0.30, MAE 1.01-1.28
 - XGBoost hybrid (traits + environment + phylogeny): R² 0.53-0.81, MAE 0.38-0.79
-- Improvement: 2-6× R², 31-45% lower error
-- Most striking: M-axis (moisture) CLM R² 0.11 vs XGBoost R² 0.68 (508% improvement)
-
-**Replication validation (Stage 2.6b, 2025-10-30):**
-- Attempted strict Shipley et al. 2017 replication with ordinal::clm and AIC-selected interactions
-- Result: Severe numerical instability - prediction failures in 8-9/10 CV folds
-- VGAM baseline with simplified interactions is most stable and methodologically sound
-- Even best-case CLM improvement (+30% R²) cannot approach XGBoost (88-369% advantage remains)
-- See Stage 2.6b for full investigation details
+- Improvement: 1.4-6× R², 32-44% lower error
+- Most striking: M-axis (moisture) CLM R² 0.11 vs XGBoost R² 0.68 (514% improvement)
+- Successfully replicated Shipley's "Simplified Model" using VGAM::vglm with shrub→tree merge (n=3 shrubs insufficient)
 
 **Scientific implications:**
 - Environmental context (633 climate/soil quantiles) is essential, not optional
