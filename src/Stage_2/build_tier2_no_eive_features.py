@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Build no-EIVE feature tables for Tier 2 (exclude all cross-axis EIVE predictors).
+"""Build no-EIVE feature tables for Tier 2 (exclude ALL EIVE-related predictors).
 
 Purpose: Create feature tables for training models to predict EIVE for species
-with NO observed EIVE values (5,419 species). These models exclude all cross-axis
-EIVE features since they are unavailable for the target species.
+with NO observed EIVE values (5,419 species) or partial EIVE (337 species).
+These models exclude ALL EIVE-related features:
+- Direct EIVE: EIVEres-L, T, M, N, R
+- EIVE-based phylo: p_phylo_L, p_phylo_T, p_phylo_M, p_phylo_N, p_phylo_R
 
 Input: Corrected feature tables (with context-matched p_phylo)
-Output: No-EIVE feature tables (cross-axis EIVE columns removed)
+Output: No-EIVE feature tables (all EIVE-related columns removed)
 """
 
 import sys
@@ -16,13 +18,18 @@ import pandas as pd
 
 def main():
     print("="*70)
-    print("BUILD NO-EIVE FEATURE TABLES")
+    print("BUILD NO-EIVE FEATURE TABLES (CORRECTED)")
     print("="*70)
-    print("Removing all cross-axis EIVE predictors from Tier 2 feature tables")
+    print("Removing ALL EIVE-related predictors from Tier 2 feature tables:")
+    print("  - Direct EIVE: EIVEres-L, T, M, N, R (5 features)")
+    print("  - EIVE-based phylo: p_phylo_L, T, M, N, R (5 features)")
+    print("  - Total: 10 EIVE-related features excluded")
     print()
 
     axes = ['L', 'T', 'M', 'N', 'R']
     eive_cols = [f'EIVEres-{ax}' for ax in axes]
+    phylo_eive_cols = [f'p_phylo_{ax}' for ax in axes]
+    all_eive_related = eive_cols + phylo_eive_cols
 
     success_count = 0
 
@@ -42,14 +49,16 @@ def main():
         features = pd.read_csv(full_features_path)
         print(f"[{axis}] Loaded shape: {features.shape}")
 
-        # Identify cross-axis EIVE columns to exclude
-        cross_axis_eive = [c for c in features.columns if c in eive_cols]
+        # Identify ALL EIVE-related columns to exclude
+        eive_to_exclude = [c for c in features.columns if c in all_eive_related]
 
-        if cross_axis_eive:
-            features = features.drop(columns=cross_axis_eive)
-            print(f"[{axis}] Excluded {len(cross_axis_eive)} cross-axis EIVE columns: {cross_axis_eive}")
+        if eive_to_exclude:
+            features = features.drop(columns=eive_to_exclude)
+            print(f"[{axis}] Excluded {len(eive_to_exclude)} EIVE-related columns:")
+            print(f"[{axis}]   Direct EIVE: {[c for c in eive_to_exclude if c.startswith('EIVEres')]}")
+            print(f"[{axis}]   EIVE phylo: {[c for c in eive_to_exclude if c.startswith('p_phylo')]}")
         else:
-            print(f"[{axis}] WARNING: No cross-axis EIVE columns found (unexpected)")
+            print(f"[{axis}] WARNING: No EIVE-related columns found (unexpected)")
 
         # Verify target column 'y' still present
         if 'y' not in features.columns:

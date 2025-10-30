@@ -93,49 +93,160 @@ Notes
 
 ### 1.5 Implementation Tools
 
-- StrateFy Excel calculator (Pierce et al. 2016/2017 Supporting Information)
-- Open implementations: R code reproducing the Excel logic (constants and equations) are publicly available and match the formulas above. We validated our equations against the community-maintained [`commonreed/StrateFy`](https://github.com/commonreed/StrateFy) repository, which reproduces the Pierce et al. mappings.
+**Canonical Implementation (R):**
+- Our implementation: `src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R`
+- Based on: [`commonreed/StrateFy`](https://github.com/commonreed/StrateFy) R repository
+- Reference: Pierce et al. (2016/2017) StrateFy Excel calculator (Supporting Information)
 
-### 1.6 Reproducible Commands (this repository)
+**Enhancements to StrateFy:**
+1. LDMC clipping (prevents logit explosion for extreme values)
+2. Explicit NaN handling (transparent edge case behavior)
+3. Shipley Part II: Life form-stratified NPP (Height × C for woody species)
+4. Shipley Part II: Nitrogen fixation (Fabaceae taxonomy)
+5. Complete ecosystem services suite (10 services)
 
-We ship a small Python tool that implements the exact formulas above.
+**Verification:**
+- ✓ Verified against Pierce et al. (2016) paper equations
+- ✓ Verified against commonreed/StrateFy R implementation
+- ✓ Produces identical CSR scores to original method (max diff < 1e-10)
+- See: `src/Stage_3_CSR/R_IMPLEMENTATION_SUMMARY.md`
 
-- Compute CSR from LA/LDMC/SLA columns (ensure units: mm², %, mm²·mg⁻¹):
+**Migration Note:**
+- As of 2025-10-30, R implementation is canonical (Python archived)
+- Rationale: Native to plant ecology community, easier for Prof Shipley to review
+- See: `src/Stage_3_CSR/MIGRATION_TO_R.md`
 
-```
-conda run -n AI python src/Stage_3_CSR/calculate_stratefy_csr.py \
-  --input_csv data/your_traits.csv \
-  --output_csv results/csr_out.csv \
-  --species_col wfo_accepted_name \
-  --la_col LA \
-  --ldmc_col LDMC \
-  --sla_col SLA
-```
+### 1.6 Complete Implementation Pipeline
 
-- Or from LA + fresh/dry masses (mg) with succulent correction (LDMC/SLA derived):
-
-```
-conda run -n AI python src/Stage_3_CSR/calculate_stratefy_csr.py \
-  --input_csv data/your_traits_with_masses.csv \
-  --output_csv results/csr_out.csv \
-  --species_col wfo_accepted_name \
-  --la_col LA \
-  --lfw_col LFW \
-  --ldw_col LDW
-```
-
-- Makefile wrapper (preferred for reproducibility):
-
-```
-make csr FILE='data/your_traits.csv' OUT='results/csr_out.csv' \
-  SPECIES_COL='wfo_accepted_name' LA_COL='LA' LDMC_COL='LDMC' SLA_COL='SLA'
-
-# or, with masses
-make csr FILE='data/your_traits_with_masses.csv' OUT='results/csr_out.csv' \
-  SPECIES_COL='wfo_accepted_name' LA_COL='LA' LFW_COL='LFW' LDW_COL='LDW'
+**Full reproduction script (R implementation):**
+```bash
+bash src/Stage_3_CSR/run_full_csr_pipeline.sh
 ```
 
-Outputs add `C`,`S`,`R` columns that sum to 100.
+This executes the complete pipeline in a **single R script**:
+- Back-transforms traits from log scale (LA, LDMC, SLA)
+- Calculates CSR scores using StrateFy (Pierce et al. 2016)
+- Computes 10 ecosystem service ratings (Shipley 2025 Parts I & II)
+- Validates results and reports coverage statistics
+
+**Direct R invocation:**
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R \
+  --input model_data/outputs/perm2_production/perm2_11680_enriched_stage3_20251030.parquet \
+  --output model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet
+```
+
+**Expected output:**
+```
+============================================================
+Stage 3 CSR & Ecosystem Services (R Implementation)
+============================================================
+
+Loading data...
+Loaded 11680 species
+
+Back-transforming traits...
+  LA: 0.80 - 2796250.00 mm²
+  LDMC: 0.42 - 116.00 %
+  SLA: 0.66 - 204.08 mm²/mg
+
+Calculating CSR scores (StrateFy method)...
+  Valid CSR: 11650/11680 (99.74%)
+  Failed (NaN): 30 species
+  CSR sum to 100: 11650/11650 (100.00%)
+
+Computing ecosystem services (Shipley 2025)...
+  Services computed: 10
+    1. NPP (life form-stratified)
+    2. Litter Decomposition
+    [... 8 more services ...]
+
+Writing output...
+Saved: model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet
+  11680 species × 772 columns
+
+============================================================
+Pipeline Complete
+============================================================
+```
+
+**Final outputs:**
+- `model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet`
+  - 11,680 species × 772 columns
+  - Includes: C, S, R scores + 10 ecosystem service ratings + 10 confidence levels
+  - All original trait/taxonomy columns preserved
+
+**Data requirements:**
+- Input: Enriched master table with height_m, life_form_simple, family, is_fabaceae, logLA, logLDMC, logSLA
+- Coverage: 99.3% family, 100% height, 78.8% life form, 99.7% valid CSR
+- Source: Stage 2 production output + Stage 3 taxonomy enrichment
+
+**Archived Python implementation:**
+- Python version archived in: `src/Stage_3_CSR/archive_python_20251030/`
+- Produces identical CSR scores (verified 2025-10-30)
+- See migration notes: `src/Stage_3_CSR/MIGRATION_TO_R.md`
+
+### 1.7 Known Limitations: StrateFy Calibration Boundaries
+
+**Issue**: 30 species (0.26% of 11,680) produce NaN CSR scores due to extreme trait combinations falling outside the StrateFy calibration space.
+
+**Root Cause**: These species hit **all three boundaries simultaneously** in the Pierce et al. (2016) calibration:
+
+| Boundary | Condition | Ecological Interpretation |
+|----------|-----------|--------------------------|
+| **minC** (C_raw ≤ 0) | Very small leaves (LA: 1-24 mm²) | Low competitive ability |
+| **minS** (S_raw ≤ -0.756) | Very low LDMC (6.94-16.52% vs population mean 24.6%) | Low tissue investment per StrateFy mapping |
+| **maxR** (R_raw ≥ 1.108) | Low SLA (3-9 mm²/mg) inverted → Low ruderality | Slow growth |
+
+**Mathematical Consequence**:
+```
+When all boundaries hit:
+  valorC = 0 + 0 = 0           → propC = (0/57.4) × 100 = 0
+  valorS = 0.756 + (-0.756) = 0 → propS = (0/6.55) × 100 = 0
+  valorR = 11.35 + 1.108 = 12.45 → propR = 100 - (12.45/12.45)×100 = 0
+
+  sum = 0 + 0 + 0 = 0
+  conv = 100 / 0 = NaN
+  C = S = R = NaN
+```
+
+**Affected Functional Groups**:
+- **21 Conifers** (Gymnosperms): Thuja occidentalis, Juniperus pseudosabina, Tsuga canadensis, Abies magnifica, Cupressus sempervirens, Sequoia sempervirens, etc.
+- **8 Halophytes** (Chenopodioideae): Suaeda vera, Sclerolaena spp., Atriplex lindleyi, Chenopodium desertorum, etc.
+- **1 Other**: Ulex europaeus, Arctostaphylos crustacea, Cassiope tetragona, Petrosedum sediforme
+
+**Ecological Context**:
+- **Reality**: Most are stress-tolerators (conifers in cold/nutrient-poor habitats; halophytes in saline soils)
+- **StrateFy calibration**: Based on 3,068 species, primarily herbaceous/woody **angiosperms** (Pierce et al. 2016)
+- **Gap**: Conifers (gymnosperms) have fundamentally different needle structure; halophytes have specialized succulent/salt-storing tissues
+- **Trait pattern**: Low LDMC + Low SLA is atypical (normal pattern: low LDMC → thin leaves → high SLA). These species fall outside the angiosperm leaf economics spectrum.
+
+**Validation Against Pierce et al. (2016)**:
+- ✓ Trait transformations correct (LA sqrt-standardized, LDMC logit, SLA log)
+- ✓ Mapping equations faithful to paper (coefficients from Figure S1)
+- ✓ Clamping ranges match 3,068-species calibration
+- ✓ Conversion mathematics sound
+- ✓ Back-transformation from log scale correct
+- Verification script: `src/Stage_3_CSR/verify_stratefy_implementation.py`
+
+**Resolution**: Document as known limitation
+- Keep CSR = NaN for these 30 species (no arbitrary values)
+- Ecosystem services marked as "Unable to Classify" with confidence "Not Applicable"
+- **Coverage**: 11,650/11,680 species (99.74%) with valid CSR
+- **Justification**: Scientific transparency > forced completeness; these species genuinely fall outside the method's calibration boundaries
+
+**Impact on Analyses**:
+- Filter out NaN CSR before community-weighted calculations
+- Report completeness statistics in all outputs (99.74% coverage)
+- Note: 99.74% coverage is excellent for a global method spanning vascular plants
+
+**Future Refinement** (optional):
+- Taxonomy-based fallback for gymnosperms/halophytes (would require separate ecological justification)
+- Alternative CSR method for extreme cases (e.g., Hodgson et al. 1999)
+- Currently not implemented to maintain methodological consistency
+
+**Detailed Analysis**: See `results/summaries/hybrid_axes/phylotraits/Stage_3/CSR_edge_case_analysis.md`
 
 ---
 
@@ -158,6 +269,46 @@ Outputs add `C`,`S`,`R` columns that sum to 100.
 | R | Moderate | High RGR but small biomass (disturbance losses) |
 
 **Evidence**: Vile et al. (2006) - ecosystem productivity predictable from RGR_max + species abundance; Garnier & Navas (2013) Chapter 6
+
+#### NPP: Life Form Adjustments (Shipley Part II, 2025)
+
+**Critical limitation identified**: CSR alone captures growth **rate** (via C-score ≈ RGR_max) but ignores **initial biomass** (B₀), which is the multiplicand in the NPP equation.
+
+**Mechanistic formula** (exponential growth):
+```
+ΔB = B₀ × r × t
+```
+Where:
+- **ΔB** = NPP (new biomass produced per growing season)
+- **B₀** = Living biomass at start of growing season (life-form dependent)
+- **r** = Relative growth rate ≈ C-score/100 (normalized to 0-1)
+- **t** = Growing season length (assume constant within site)
+
+**Key insight**: A large tree with moderate C-score produces MORE NPP than a small herb with high C-score, because B₀ × r (large × moderate) > B₀ × r (small × high).
+
+**Life form-stratified NPP equations**:
+
+| Life Form | NPP Calculation | Rationale |
+|-----------|-----------------|-----------|
+| **Herbaceous** (non-woody) | NPP ∝ C-score | B₀ ≈ seed weight or small perennial reserves → negligible variation, so r dominates |
+| **Woody** (trees, shrubs) | NPP ∝ **Height × C-score** | B₀ scales with height (larger plants = more capital to grow from) → both B₀ and r matter |
+
+**Data requirements**:
+- Height (back-transformed from logH): 100% coverage
+- Life form classification (try_woodiness): 78.8% coverage
+  - Non-woody: 4,922 species (42.1%)
+  - Woody: 4,241 species (36.3%)
+  - Semi-woody: 41 species (0.4%)
+
+**Validation approach** (Shipley recommendation): Compare predictions for contrasting species (e.g., tall tree with C=40 vs short herb with C=60) to verify height adjustment differentiates appropriately.
+
+**Confidence**: Very High (mechanistic basis well-established; empirical validation needed for threshold calibration)
+
+**Limitations and Assumptions:**
+1. **Growing season (t) assumed constant**: Shipley Part II notes "We can't know the growing season length of each species... so the best that we can do is assume that it is the same for all of the plants in the garden." Site-specific predictions would require site-specific growing season data.
+2. **Height as B₀ proxy**: Actual woody biomass requires allometric equations (species-specific relationships between height, diameter, wood density). Height is a reasonable first-order approximation but underestimates biomass for dense-wooded species.
+3. **Thresholds empirically calibrated**: The rating thresholds (e.g., score ≥ 4.0 → Very High) were calibrated based on contrasting species examples, not validated against measured NPP data.
+4. **No validation against actual NPP**: As Shipley states, "without actual values of the variable that we are trying to predict, we cannot know" which method is better. These are qualitative predictions for comparative purposes only.
 
 #### Litter Decomposition Rate
 **Trait Drivers** (same as NPP, opposite direction):
@@ -227,6 +378,33 @@ Outputs add `C`,`S`,`R` columns that sum to 100.
 
 **Confidence**: Moderate (limited research base; Shipley explicitly flags uncertainty)
 
+#### Nitrogen Fixation (Shipley Part II, 2025)
+
+**Mechanism**: Rhizobium symbiosis in root nodules → atmospheric N₂ → plant-available NH₄⁺/NO₃⁻
+
+**Taxonomic signal**:
+- **Leguminosae (Fabaceae)** subfamilies with N-fixation capacity:
+  - Papilionoideae (largest subfamily, strongest fixation)
+  - Caesalpinioideae (less common, tropical trees)
+  - Mimosoideae (woody/tropical taxa)
+- Note: Not all Leguminosae fix N (some subfamilies lost capacity)
+
+**Data sources**:
+- Family taxonomy from WFO (World Flora Online)
+- NodDB database (optional refinement): https://dx.doi.org/10.15156/BIO/587469
+- TRY trait: "Plant nitrogen (N) fixation capacity" (optional)
+
+**CSR relationship**:
+- Nitrogen fixers often R or C strategy (fast-growing, N-rich tissues)
+- S-strategists rarely fix N (slow growth incompatible with symbiosis costs)
+- However, fixation is primarily **taxonomic**, not CSR-driven
+
+**Implementation** (conservative approach):
+- Fabaceae family → High N-fixation potential (983 species in dataset, 8.4%)
+- Non-Fabaceae → Low (baseline)
+
+**Confidence**: Very High (taxonomically determined, well-studied; subfamily-level refinement possible if needed)
+
 ### 2.2 Limitations of Shipley Framework
 
 1. **Site-specificity**: Trait effects modulated by environment; quantitative predictions require site-level data
@@ -243,12 +421,13 @@ Outputs add `C`,`S`,`R` columns that sum to 100.
 ## 3. Ecosystem Services Gap Analysis
 
 ### 3.1 Services Covered by Shipley
-✓ Net Primary Productivity
+✓ Net Primary Productivity (with life form adjustments - Part II)
 ✓ Litter Decomposition
 ✓ Carbon Storage (partial - above-ground focus)
 ✓ Nutrient Cycling
 ✓ Nutrient Retention/Loss
 ✓ Soil Erosion (low confidence)
+✓ Nitrogen Fixation (Part II - taxonomic/Fabaceae)
 
 ### 3.2 Critical Services MISSED by Shipley
 
@@ -416,6 +595,49 @@ For traits not in CSR core set but needed for extended services:
 - CSR-environment interactions
 - Non-linear threshold effects
 
+### 4.6 Community-Weighted Aggregation (Shipley Part II, 2025)
+
+For multi-species plantations, gardens, or plant communities, aggregate species-level ecosystem service predictions using the **mass-ratio hypothesis** (Grime 1998).
+
+**Formula**:
+```
+E_community = Σ(pᵢ × Eᵢ)
+```
+Where:
+- **Eᵢ** = Ecosystem service value for species i (e.g., NPP rating, N-fixation capacity)
+- **pᵢ** = Proportional abundance of species i (by biomass, cover, or count)
+
+**Rationale**: Dominant species control most nutrient/water/energy fluxes in ecosystems. This proportional contribution (mass-ratio effect) is the primary driver of community-level properties.
+
+**Limitations**:
+- Ignores nonlinear species interactions (facilitation, competition, complementarity)
+- Such interactions are small relative to mass-ratio effects (empirical studies)
+- Trait-based prediction of interactions currently impossible
+
+**Example** (NPP for 3-species garden):
+```r
+# Species composition:
+# Oak (40% cover), Clover (30% cover), Fern (30% cover)
+
+# Species-level NPP calculations:
+NPP_oak   = height_oak * (C_oak / 100)    # Woody: 20m * 0.45 = 9.0
+NPP_clover = C_clover / 100               # Herb: 0.65
+NPP_fern   = C_fern / 100                 # Herb: 0.30
+
+# Community-weighted NPP:
+NPP_community = 0.4 * 9.0 + 0.3 * 0.65 + 0.3 * 0.30
+              = 3.6 + 0.195 + 0.09
+              = 3.885
+```
+
+**Implementation priority**: High (critical for garden/landscape applications where users select species mixes)
+
+**Data requirements**:
+- Species-level ecosystem service ratings (from CSR + height/family)
+- Proportional abundance (user-specified or estimated from planting density)
+
+**Confidence**: High (mass-ratio hypothesis well-validated empirically; assumes additive effects)
+
 ---
 
 ## 5. Methodological Recommendations
@@ -469,71 +691,11 @@ For traits not in CSR core set but needed for extended services:
 - Grime (2001) Plant Strategies, Vegetation Processes, and Ecosystem Properties
 
 **Ecosystem Services Framework**:
-- Shipley (2025) Personal communication - CSR and ecosystem services
+- Shipley (2025) Personal communication Part I - CSR and ecosystem services (qualitative predictions)
+- Shipley (2025) Personal communication Part II - Life form adjustments for NPP/biomass, nitrogen fixation, community aggregation
 - Garnier & Navas (2013) Diversité fonctionnelle des plantes
 - Vile et al. (2006) Ecology Letters 9:1061-1067 - NPP from RGR_max
 
 **Gap Analysis**:
 - Repository model fusion summaries (Water, Heat, Soil, Biomass services)
 - Stage 3 ecosystem services gap analysis (this volume)
-### 2.1 Rule-Based Qualitative Ratings from CSR
-
-To remain faithful to Bill Shipley’s qualitative guidance (and avoid implying quantitative precision), we convert species‑level CSR (C,S,R) into ordinal ratings for key ecosystem properties/services using simple rules that enforce his rank orders. Each service also carries a confidence tag reflecting the strength of evidence in Bill’s note.
-
-Rating scale
-- Very Low / Low / Moderate / High / Very High (no numeric values shown in UI)
-
-Rules (C,S,R are percentages)
-- NPP (Very High confidence; C > R > S)
-  - Very High: C ≥ 60
-  - High: C ≥ 50
-  - Low: S ≥ 60
-  - Else: Moderate
-- Decomposition (Very High; R ≈ C > S)
-  - Very High: R ≥ 60 or C ≥ 60
-  - High: R ≥ 50 or C ≥ 50
-  - Low: S ≥ 60
-  - Else: Moderate
-- Nutrient Cycling (Very High; R ≈ C > S)
-  - Same rules as Decomposition
-- Nutrient Retention (Very High; C > S > R)
-  - Very High: C ≥ 60
-  - High: (C ≥ 50 and S ≥ 30) or S ≥ 60
-  - Low: R ≥ 50
-  - Else: Moderate
-- Nutrient Loss (Very High; inverse of retention, render as caution)
-  - Very High: R ≥ 60
-  - High: R ≥ 50
-  - Very Low: C ≥ 60
-  - Low: C ≥ 50 or S ≥ 50
-  - Else: Moderate
-- Carbon Storage — Biomass (High; living biomass strongest with C dominance)
-  - Very High: C ≥ 60
-  - High: C ≥ 50
-  - Moderate: C ≥ 40 or S ≥ 60
-  - Low: C ≥ 30 or S ≥ 50
-  - Else: Very Low
-- Carbon Storage — Recalcitrant (High; dominated by S)
-  - Same bands using S
-- Carbon Storage — Total (High; C ≈ S > R)
-  - Very High: (C ≥ 50 and S ≥ 40) or (S ≥ 50 and C ≥ 40)
-  - High: C ≥ 50 or S ≥ 50
-  - Moderate: C ≥ 40 or S ≥ 40
-  - Very Low: C < 30 and S < 30
-  - Else: Low
-- Erosion Protection (Moderate; C > S > R)
-  - Very High: C ≥ 60 or (C ≥ 50 and S ≥ 40)
-  - High: C ≥ 50
-  - Very Low: R ≥ 60
-  - Low: R ≥ 50
-  - Else: Moderate
-
-Confidence tags (from Bill’s note)
-- Very High: NPP, Decomposition, Nutrient Cycling, Nutrient Retention/Loss
-- High: Carbon Storage (biomass, recalcitrant, total)
-- Moderate: Erosion Protection
-
-Implementation
-- Script: `src/Stage_3_CSR/compute_rule_based_ecoservices.py`
-- Input: `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr.csv` (per‑species CSR)
-- Output: `artifacts/model_data_bioclim_subset_sem_ready_20250920_stage2_with_csr_services.csv` (appended rating + confidence columns)
