@@ -223,6 +223,12 @@ for (i in seq_along(assignments)) {
   train_rmse <- sqrt(mean(train_resid^2))
   test_rmse <- sqrt(mean(test_resid^2))
 
+  # Calculate ordinal accuracy (within 1 and 2 ranks)
+  train_acc_rank1 <- mean(abs(train_resid) <= 1.0) * 100
+  train_acc_rank2 <- mean(abs(train_resid) <= 2.0) * 100
+  test_acc_rank1 <- mean(abs(test_resid) <= 1.0) * 100
+  test_acc_rank2 <- mean(abs(test_resid) <= 2.0) * 100
+
   results[[i]] <- tibble(
     fold_id = i,
     train_r2 = train_r2,
@@ -231,6 +237,10 @@ for (i in seq_along(assignments)) {
     test_mae = test_mae,
     train_rmse = train_rmse,
     test_rmse = test_rmse,
+    train_acc_rank1 = train_acc_rank1,
+    train_acc_rank2 = train_acc_rank2,
+    test_acc_rank1 = test_acc_rank1,
+    test_acc_rank2 = test_acc_rank2,
     train_n = length(train_idx),
     test_n = length(test_idx)
   )
@@ -271,7 +281,15 @@ summary_stats <- results_df %>%
     mean_train_rmse = mean(train_rmse),
     sd_train_rmse = sd(train_rmse),
     mean_test_rmse = mean(test_rmse),
-    sd_test_rmse = sd(test_rmse)
+    sd_test_rmse = sd(test_rmse),
+    mean_train_acc_rank1 = mean(train_acc_rank1),
+    sd_train_acc_rank1 = sd(train_acc_rank1),
+    mean_test_acc_rank1 = mean(test_acc_rank1),
+    sd_test_acc_rank1 = sd(test_acc_rank1),
+    mean_train_acc_rank2 = mean(train_acc_rank2),
+    sd_train_acc_rank2 = sd(train_acc_rank2),
+    mean_test_acc_rank2 = mean(test_acc_rank2),
+    sd_test_acc_rank2 = sd(test_acc_rank2)
   )
 
 message("\n[results] Cross-validation summary:")
@@ -279,6 +297,8 @@ message(sprintf("  Train R²: %.3f ± %.3f", summary_stats$mean_train_r2, summar
 message(sprintf("  Test R²:  %.3f ± %.3f", summary_stats$mean_test_r2, summary_stats$sd_test_r2))
 message(sprintf("  Test MAE: %.3f ± %.3f", summary_stats$mean_test_mae, summary_stats$sd_test_mae))
 message(sprintf("  Test RMSE: %.3f ± %.3f", summary_stats$mean_test_rmse, summary_stats$sd_test_rmse))
+message(sprintf("  Test Acc±1: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank1, summary_stats$sd_test_acc_rank1))
+message(sprintf("  Test Acc±2: %.1f%% ± %.1f%%", summary_stats$mean_test_acc_rank2, summary_stats$sd_test_acc_rank2))
 
 # ---------------------------------------------------------------------------
 # Save outputs
