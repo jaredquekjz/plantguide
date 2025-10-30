@@ -1,6 +1,0 @@
-axis,label,rf_cv_r2,rf_cv_sd,rf_cv_r2_pk,rf_cv_sd_pk
-T,Temperature,0.533,0.043,0.547,0.040
-M,Moisture,0.224,0.071,0.317,0.069
-L,Light,0.348,0.055,0.355,0.050
-N,Nitrogen,0.426,0.068,0.449,0.068
-R,Reaction,0.115,0.071,0.155,0.068

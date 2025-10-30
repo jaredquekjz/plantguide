@@ -67,7 +67,9 @@ mix_data <- readr::read_csv(input_path, show_col_types = FALSE)
 log_info('Input rows: %d, columns: %d', nrow(mix_data), ncol(mix_data))
 
 # CANONICAL SLA: Use sla_mm2_mg (not lma_g_m2) to match BHPMF and Stage 2
-target_vars <- c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac', 'sla_mm2_mg', 'plant_height_m', 'seed_mass_mg')
+log_target_vars <- c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM')
+raw_target_vars <- c('leaf_area_mm2', 'nmass_mg_g', 'ldmc_frac', 'sla_mm2_mg',
+                     'plant_height_m', 'seed_mass_mg')
 
 id_cols <- c('wfo_taxon_id', 'wfo_scientific_name')
 
@@ -96,14 +98,22 @@ log_info('  ID columns: %d', length(id_cols))
 log_info('  Dropped columns: %d', length(intersect(drop_predictors, names(mix_data))))
 log_info('  Feature columns: %d', length(feature_cols))
 
-# Check target traits present
-missing_targets <- setdiff(target_vars, names(feature_data))
-if (length(missing_targets) > 0) {
-  log_info('WARNING: Missing target traits: %s', paste(missing_targets, collapse=', '))
+# Determine target traits (log-transformed expected; raw supported for legacy datasets)
+if (all(log_target_vars %in% names(feature_data))) {
+  target_vars <- log_target_vars
+  log_info('Using log-transformed trait targets: %s', paste(target_vars, collapse = ', '))
+} else if (all(raw_target_vars %in% names(feature_data))) {
+  target_vars <- raw_target_vars
+  log_info('Using raw trait targets: %s', paste(target_vars, collapse = ', '))
+} else {
+  found <- intersect(c(log_target_vars, raw_target_vars), names(feature_data))
+  stop(sprintf(
+    'None of the expected trait targets were found. Present targets: %s',
+    paste(found, collapse = ', ')
+  ))
 }
-present_targets <- intersect(target_vars, names(feature_data))
-log_info('Target traits present: %d/%d', length(present_targets), length(target_vars))
-for (trait in present_targets) {
+
+for (trait in target_vars) {
   n_obs <- sum(!is.na(feature_data[[trait]]))
   pct <- 100 * n_obs / nrow(feature_data)
   log_info('  %s: %d obs (%.1f%%)', trait, n_obs, pct)

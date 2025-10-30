@@ -22,6 +22,50 @@ def run_query(con, query, description):
         print(f"ERROR in {description}: {e}")
         return None
 
+def build_wfo_union_query(name, path, columns, con):
+    """
+    Normalise WFO-based columns across heterogeneous datasets.
+    Returns (union_query, info_lines) where union_query selects:
+      dataset, role, wfo_taxon_id, wfo_scientific_name
+    """
+    union_parts = []
+    info_lines = []
+
+    def add_part(role_label, wfo_col, sci_col):
+        union_parts.append(f"""
+            SELECT '{name}' AS dataset,
+                   '{role_label}' AS role,
+                   "{wfo_col}" AS wfo_taxon_id,
+                   "{sci_col}" AS wfo_scientific_name
+            FROM read_parquet('{path}')
+            WHERE "{wfo_col}" IS NOT NULL
+        """)
+        count = con.execute(
+            f'SELECT COUNT(DISTINCT "{wfo_col}") '
+            f'FROM read_parquet(\'{path}\') '
+            f'WHERE "{wfo_col}" IS NOT NULL'
+        ).fetchone()[0]
+        info_lines.append(f"      {role_label}: {count:,} unique WFO IDs")
+
+    # Direct canonical columns
+    if 'wfo_taxon_id' in columns and 'wfo_scientific_name' in columns:
+        add_part('primary', 'wfo_taxon_id', 'wfo_scientific_name')
+
+    # Prefixed columns (e.g., source/target)
+    for col in columns:
+        if col.endswith('wfo_taxon_id') and col != 'wfo_taxon_id':
+            prefix = col[:-len('wfo_taxon_id')]
+            sci_col = prefix + 'wfo_scientific_name'
+            if sci_col in columns:
+                role = prefix.rstrip('_') or 'wfo'
+                add_part(role, col, sci_col)
+
+    if not union_parts:
+        return None, []
+
+    union_query = " UNION ALL ".join(union_parts)
+    return union_query, info_lines
+
 def verify_gbif():
     """Verify GBIF occurrence dataset"""
     print_section("GBIF Occurrences Verification")
@@ -35,10 +79,13 @@ def verify_gbif():
     if result:
         print(f"  Row count: {result[0][0]:,}")
 
-    query = "SELECT COUNT(*) FROM (PRAGMA table_info('read_parquet(data/gbif/occurrence_plantae.parquet)'))"
-    result = run_query(con, query, "column count")
-    if result:
-        print(f"  Column count: {result[0][0]}")
+    try:
+        schema_rows = con.execute(
+            "DESCRIBE SELECT * FROM read_parquet('data/gbif/occurrence_plantae.parquet')"
+        ).fetchall()
+        print(f"  Column count: {len(schema_rows)}")
+    except Exception as e:
+        print(f"ERROR in column count: {e}")
 
     query = """SELECT scientificName
                FROM read_parquet('data/gbif/occurrence_plantae.parquet')
@@ -382,7 +429,6 @@ def verify_cross_dataset_consistency():
     print_section("Cross-Dataset Consistency Checks")
     con = duckdb.connect(':memory:')
 
-    # Collect all enriched parquets with WFO IDs
     datasets = [
         ('GBIF', 'data/gbif/occurrence_plantae_wfo.parquet'),
         ('GloBI_plants', 'data/stage1/globi_interactions_plants_wfo.parquet'),
@@ -396,7 +442,6 @@ def verify_cross_dataset_consistency():
     ]
 
     existing_datasets = [(name, path) for name, path in datasets if Path(path).exists()]
-
     if not existing_datasets:
         print("  No enriched datasets found for cross-dataset checks")
         con.close()
@@ -404,69 +449,70 @@ def verify_cross_dataset_consistency():
 
     print(f"\n  Found {len(existing_datasets)} datasets for consistency checks")
 
-    # For each dataset, collect unique WFO IDs and scientific names
+    dataset_union_queries = []
     print("\n  Dataset coverage:")
-    total_wfo_ids = set()
 
     for name, path in existing_datasets:
         try:
-            query = f"SELECT COUNT(DISTINCT wfo_taxon_id) FROM read_parquet('{path}') WHERE wfo_taxon_id IS NOT NULL"
-            result = con.execute(query).fetchone()
-            if result:
-                print(f"    {name}: {result[0]:,} unique WFO IDs")
-                # Collect IDs for union
-                ids_query = f"SELECT DISTINCT wfo_taxon_id FROM read_parquet('{path}') WHERE wfo_taxon_id IS NOT NULL"
-                ids = con.execute(ids_query).fetchall()
-                total_wfo_ids.update([row[0] for row in ids])
+            schema_rows = con.execute(
+                f"DESCRIBE SELECT * FROM read_parquet('{path}')"
+            ).fetchall()
+            columns = [row[0] for row in schema_rows]
+
+            union_query, info_lines = build_wfo_union_query(name, path, columns, con)
+            if union_query is None:
+                print(f"    {name}: SKIP (no WFO identifier columns detected)")
+                continue
+
+            dataset_union_queries.append(union_query)
+            count = con.execute(
+                f"SELECT COUNT(DISTINCT wfo_taxon_id) FROM ({union_query})"
+            ).fetchone()[0]
+            print(f"    {name}: {count:,} unique WFO IDs")
+            for line in info_lines:
+                print(line)
         except Exception as e:
             print(f"    {name}: ERROR - {e}")
 
-    print(f"\n  Union of all WFO IDs across datasets: {len(total_wfo_ids):,}")
+    if not dataset_union_queries:
+        print("\n  No datasets with WFO identifiers available for cross-dataset checks")
+        con.close()
+        return
 
-    # Check for WFO IDs with inconsistent scientific names across datasets
+    combined_union = " UNION ALL ".join(dataset_union_queries)
+
+    total_wfo_ids = con.execute(
+        f"SELECT COUNT(DISTINCT wfo_taxon_id) FROM ({combined_union})"
+    ).fetchone()[0]
+    print(f"\n  Union of all WFO IDs across datasets: {total_wfo_ids:,}")
+
     print("\n  Checking for WFO ID → scientific name consistency...")
+    mismatch_query = f"""
+        SELECT wfo_taxon_id,
+               COUNT(DISTINCT wfo_scientific_name) AS name_variants
+        FROM ({combined_union})
+        GROUP BY 1
+        HAVING name_variants > 1
+    """
+    mismatches = con.execute(mismatch_query).fetchall()
 
-    # Build a union query to check consistency
-    # Sample a few WFO IDs that appear in multiple datasets
-    try:
-        # Create temp table with all WFO mappings
-        union_parts = []
-        for name, path in existing_datasets:
-            union_parts.append(f"""
-                SELECT '{name}' AS source,
-                       wfo_taxon_id,
-                       wfo_scientific_name
-                FROM read_parquet('{path}')
-                WHERE wfo_taxon_id IS NOT NULL
-            """)
-
-        if union_parts:
-            union_query = " UNION ALL ".join(union_parts)
-
-            # Find WFO IDs with multiple scientific names
-            check_query = f"""
-                WITH all_mappings AS ({union_query})
-                SELECT wfo_taxon_id,
-                       COUNT(DISTINCT wfo_scientific_name) AS name_variants,
-                       COUNT(DISTINCT source) AS source_count,
-                       ARRAY_AGG(DISTINCT source) AS sources
-                FROM all_mappings
-                GROUP BY wfo_taxon_id
-                HAVING COUNT(DISTINCT wfo_scientific_name) > 1
-                ORDER BY source_count DESC, name_variants DESC
-                LIMIT 10
-            """
-
-            result = con.execute(check_query).fetchall()
-            if result:
-                print(f"  Found {len(result)} WFO IDs (showing top 10) with inconsistent names across datasets:")
-                for row in result:
-                    print(f"    {row[0]}: {row[1]} name variants across {row[2]} sources")
-            else:
-                print("  ✓ No WFO ID inconsistencies detected")
-
-    except Exception as e:
-        print(f"  Consistency check failed: {e}")
+    if not mismatches:
+        print("  ✓ No WFO ID inconsistencies detected")
+    else:
+        print(f"  ⚠ Found {len(mismatches)} WFO IDs with inconsistent names")
+        sample_query = mismatch_query + " LIMIT 5"
+        sample = con.execute(sample_query).fetchall()
+        print("  Sample mismatches:")
+        for row in sample:
+            detail = con.execute(f"""
+                SELECT dataset,
+                       string_agg(DISTINCT wfo_scientific_name, '; ') AS names
+                FROM ({combined_union})
+                WHERE wfo_taxon_id = '{row[0]}'
+                GROUP BY dataset
+            """).fetchall()
+            sources = "; ".join(f"{d[0]}: {d[1]}" for d in detail)
+            print(f"    {row[0]} (variants: {row[1]}) → {sources}")
 
     print("\n  Status: ✓ CROSS-DATASET VERIFICATION COMPLETE")
     con.close()

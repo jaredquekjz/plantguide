@@ -382,7 +382,7 @@ def generate_markdown_summary(all_results: Dict, axis_names: Dict, output_file: 
     lines.append("**Script:** `src/Stage_2/analyze_shap_by_category.py`")
     lines.append("")
     lines.append("**Output files:**")
-    lines.append("- `results/summaries/hybrid_axes/phylotraits/Stage_2/shap_category_analysis_20251030.csv`")
+    lines.append("- `results/verification/stage2_shap_20251030/shap_category_analysis_20251030.csv`")
     lines.append("- `results/summaries/hybrid_axes/phylotraits/Stage_2/shap_category_comparison_20251030.csv`")
     lines.append("")
     lines.append("---")

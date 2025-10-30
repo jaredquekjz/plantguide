@@ -10,7 +10,7 @@
 #   1. LDMC clipping (prevents logit explosion for extreme values)
 #   2. Explicit NaN handling (clearer edge case behavior)
 #   3. Shipley Part II: Life form-stratified NPP
-#   4. Shipley Part II: Nitrogen fixation (Fabaceae)
+#   4. Shipley Part II: Nitrogen fixation (TRY TraitID 8 weighted evidence)
 #   5. Full ecosystem services suite (10 services)
 #
 # Usage:
@@ -385,7 +385,7 @@ main <- function() {
   cat("    7. Carbon Storage - Recalcitrant\n")
   cat("    8. Carbon Storage - Total\n")
   cat("    9. Soil Erosion Protection\n")
-  cat("   10. Nitrogen Fixation (Fabaceae)\n")
+  cat("   10. Nitrogen Fixation (TRY TraitID 8 weighted evidence)\n")
 
   cat("\nWriting output...\n")
   write_parquet(df, opt$output)

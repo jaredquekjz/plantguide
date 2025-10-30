@@ -8,7 +8,7 @@ library(ape)
 cat("=== Pruning Tree for Tier 1 Modelling Subset ===\n\n")
 
 # Load full tree
-tree_path <- "data/phylogeny/mixgb_tree_11676_species_20251027.nwk"
+tree_path <- "data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk"
 cat(sprintf("Loading full tree: %s\n", tree_path))
 phy <- read.tree(tree_path)
 cat(sprintf("Full tree: %d tips\n\n", length(phy$tip.label)))
@@ -20,7 +20,7 @@ modelling <- read.csv(modelling_path, stringsAsFactors = FALSE)
 cat(sprintf("Modelling dataset: %d species\n\n", nrow(modelling)))
 
 # Load mapping to get tree tips for these species
-mapping_path <- "data/phylogeny/mixgb_wfo_to_tree_mapping_11676.csv"
+mapping_path <- "data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11676.csv"
 cat(sprintf("Loading WFO-to-tree mapping: %s\n", mapping_path))
 mapping <- read.csv(mapping_path, stringsAsFactors = FALSE)
 cat(sprintf("Mapping file: %d entries\n\n", nrow(mapping)))
@@ -41,7 +41,7 @@ phy_1084 <- keep.tip(phy, tips_in_tree)
 cat(sprintf("Pruned tree: %d tips\n\n", length(phy_1084$tip.label)))
 
 # Save pruned tree
-output_path <- "data/phylogeny/mixgb_tree_1084_modelling_20251029.nwk"
+output_path <- "data/stage1/phlogeny/mixgb_tree_1084_modelling_20251029.nwk"
 cat(sprintf("Saving pruned tree: %s\n", output_path))
 write.tree(phy_1084, output_path)
 

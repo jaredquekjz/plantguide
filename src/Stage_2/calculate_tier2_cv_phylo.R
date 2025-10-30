@@ -16,7 +16,7 @@ cat("======================================================================\n")
 cat("Calculating context-matched p_phylo for each axis's CV set\n\n")
 
 # Load full tree
-tree_path <- "data/phylogeny/mixgb_tree_11676_species_20251027.nwk"
+tree_path <- "data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk"
 if (!file.exists(tree_path)) {
   stop("Tree file not found: ", tree_path)
 }
