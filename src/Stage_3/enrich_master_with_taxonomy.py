@@ -3,10 +3,10 @@
 Enrich master table with taxonomy and back-transformed height for Stage 3 CSR ecosystem services.
 
 Adds:
-- family, genus (from combined worldflora sources)
+- family, genus (from combined WorldFlora sources; used for reporting only)
 - height_m (back-transformed from logH)
 - life_form_simple (woody/non-woody/semi-woody from try_woodiness)
-- is_fabaceae (boolean flag for nitrogen fixation)
+- nitrogen fixation evidence columns merged from TRY TraitID 8 (weighted ratings)
 """
 
 import pandas as pd

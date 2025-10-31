@@ -31,7 +31,7 @@ normalise_name <- function(x) {
 
 main <- function() {
   traits_csv <- get_opt("traits_csv", "model_data/inputs/traits_model_ready_20251022_shortlist.csv")
-  tree_newick <- get_opt("tree_newick", "data/phylogeny/mixgb_shortlist_full_tree_20251023.nwk")
+  tree_newick <- get_opt("tree_newick", "data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk")
   output_base <- get_opt("output_base", "model_data/outputs/p_phylo_proxy_shortlist_20251023")
 
   message("[info] Loading roster and tree...")
