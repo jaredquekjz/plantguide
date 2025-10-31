@@ -1,2 +1,0 @@
-"formula","AIC","AICc","cv_mean","cv_sd"
-"target_y ~ pc_trait_1 + pc_trait_2 + pc_trait_3 + pc_trait_4 + precip_cv + tmin_mean + mat_mean + precip_mean + lma_precip + height_ssd + lma_la + size_temp + EIVEres_M + p_phylo_L + is_woody + s(lma_precip, k=5) + te(pc_trait_2, precip_mean, k=c(5,5))",2142.74806027067,2145.74801871198,0.325521657869883,0.0739227735963633

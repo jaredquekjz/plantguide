@@ -26,7 +26,11 @@ __pycache__/
 .DS_Store
 .ipynb_checkpoints/
 
-# Results: keep only Markdown summaries under results/summaries/
+# Results: ignore everything except summaries/
+/results/*
+!/results/summaries/
+
+# Within summaries, track specific subdirectories
 /results/summaries/*
 !/results/summaries/*.md
 # Allow pwSEM summaries in a dedicated subfolder to be tracked
@@ -41,7 +45,3 @@ __pycache__/
 # Allow phylotraits summaries to be tracked
 !/results/summaries/phylotraits/
 !/results/summaries/phylotraits/**
-
-# Ignore experimental results and feature importance outputs
-/results/experiments/
-/results/feature_importance/

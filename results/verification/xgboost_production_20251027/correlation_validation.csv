@@ -1,4 +1,0 @@
-trait1,trait2,expected_sign,expected_range,r_overall,r_observed,r_imputed,n_overall,n_observed,n_imputed,sign_correct,strength_ok
-logSLA,logLDMC,negative,"[-0.50, -0.80]",-0.528967334351744,-0.4734803811868184,-0.5422501465842262,11686,2297,9389,Yes,No
-logLA,logSLA,positive,"[0.20, 0.50]",0.1342901199120003,0.141068689875,0.12242915861787845,11686,4509,7177,Yes,No
-logH,logSM,positive,"[0.30, 0.60]",0.5628375775982061,0.5257162693243682,0.6392633626598456,11686,7021,4665,Yes,Yes
