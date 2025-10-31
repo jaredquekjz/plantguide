@@ -38,6 +38,9 @@ __pycache__/
 # Allow hybrid axes summaries to be tracked
 !/results/summaries/hybrid_axes/
 !/results/summaries/hybrid_axes/**/*.md
+# Allow phylotraits summaries to be tracked
+!/results/summaries/phylotraits/
+!/results/summaries/phylotraits/**
 
 # Ignore experimental results and feature importance outputs
 /results/experiments/
