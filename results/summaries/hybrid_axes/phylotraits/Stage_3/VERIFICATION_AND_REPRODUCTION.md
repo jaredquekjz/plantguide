@@ -1,4 +1,4 @@
-# Stage 3 CSR: Verification and Reproduction Guide
+# Stage 3.2 — CSR Pipeline & Verification
 
 **Date:** 2025-10-30
 **Status:** COMPLETE - Canonical pipeline validated
@@ -37,16 +37,20 @@ This document provides complete verification that Stage 3 CSR implementation:
    - `data/external/inat/manifests/inat_taxa_wfo_worldflora.csv`
 3. Back-transform height: `height_m = exp(logH)`
 4. Simplify life form: woody/non-woody/semi-woody
-5. Flag Fabaceae for nitrogen fixation
+5. Merge TRY TraitID 8 nitrogen fixation evidence (requires `src/Stage_3/extract_try_nitrogen_fixation.py`)
 
 **Output:** `model_data/outputs/perm2_production/perm2_11680_enriched_stage3_20251030.parquet`
-- **Dimensions:** 11,680 species × 746 columns
+- **Dimensions:** 11,680 species × 750 columns
 - **New columns:**
   - `family` (99.3% coverage, 11,600 species)
   - `genus` (99.3% coverage, 11,600 species)
   - `height_m` (100% coverage, range: 0.0004m - 1,877m)
   - `life_form_simple` (78.8% coverage: 4,922 non-woody, 4,241 woody, 41 semi-woody)
-  - `is_fabaceae` (100% coverage: 983 Fabaceae, 10,697 non-Fabaceae)
+  - `nitrogen_fixation_rating` (TRY TraitID 8 weighted evidence; 603 High, 90 Moderate-High, 455 Moderate-Low, 10,532 Low)
+  - `nfix_n_yes` (TRY positive observations per species)
+  - `nfix_n_no` (TRY negative observations per species)
+  - `nfix_n_total` (classified TRY records per species)
+  - `nfix_proportion_yes` (proportion of YES reports per species)
 
 **Execution:**
 ```bash
@@ -56,7 +60,8 @@ conda run -n AI python src/Stage_3/enrich_master_with_taxonomy.py
 **Validation:**
 - Family coverage: 99.3% (11,600/11,680) ✓
 - Height coverage: 100% (11,680/11,680) ✓
-- Fabaceae identification: 983 species (8.4%) ✓
+- TRY nitrogen fixation coverage: 4,706/11,680 species (40.3%) ✓
+- Species without TRY data default to Low with Low confidence ✓
 
 ---
 
@@ -115,16 +120,15 @@ print(f'SLA range: {df[\"SLA\"].min():.2f} - {df[\"SLA\"].max():.2f} mm²/mg')
 
 **Purpose:** Apply globally calibrated StrateFy equations to compute C, S, R percentages
 
-**Script:** `src/Stage_3_CSR/calculate_stratefy_csr.py`
+**Script:** `src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R`
 
 **Command:**
 ```bash
-conda run -n AI python src/Stage_3_CSR/calculate_stratefy_csr.py \
-  --input_csv model_data/outputs/traits_for_csr_20251030.csv \
-  --output_csv model_data/outputs/traits_with_csr_20251030.csv \
-  --la_col LA \
-  --ldmc_col LDMC \
-  --sla_col SLA
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R \
+    --input model_data/outputs/perm2_production/perm2_11680_complete_final_20251028.parquet \
+    --output_csr model_data/outputs/traits_with_csr_20251030.csv \
+    --strata_table data/stage3/stratefy_lookup.csv
 ```
 
 **Output:** `model_data/outputs/traits_with_csr_20251030.csv`
@@ -166,17 +170,23 @@ master_with_csr.to_parquet('model_data/outputs/perm2_production/perm2_11680_with
 ```
 
 **Output:** `model_data/outputs/perm2_production/perm2_11680_with_csr_20251030.parquet`
-- 11,680 species × 749 columns (original 746 + C, S, R)
+- 11,680 species × 753 columns (enriched 750 + C, S, R)
 
 **Verification:**
+
+**Note:** This intermediate file may not exist if using the automated pipeline (which writes directly to the final output). If needed, extract from the final ecoservices file:
 ```bash
-python -c "
-import pandas as pd
-df = pd.read_parquet('model_data/outputs/perm2_production/perm2_11680_with_csr_20251030.parquet')
-print(f'Total species: {len(df)}')
-print(f'Columns: {df.shape[1]}')
-print(f'Species with C: {df[\"C\"].notna().sum()} ({100*df[\"C\"].notna().sum()/len(df):.1f}%)')
-print(f'Required columns present: {all(c in df.columns for c in [\"C\", \"S\", \"R\", \"height_m\", \"life_form_simple\", \"is_fabaceae\"])}')
+conda run -n AI python -c "
+import duckdb
+with duckdb.connect() as con:
+    df = con.execute(
+        'SELECT * FROM read_parquet(\"model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet\")'
+    ).df()
+    print(f'Total species: {len(df)}')
+    print(f'Columns: {df.shape[1]}')
+    print(f'Species with C: {df[\"C\"].notna().sum()} ({100*df[\"C\"].notna().sum()/len(df):.1f}%)')
+    required = ['C', 'S', 'R', 'height_m', 'life_form_simple', 'nitrogen_fixation_rating', 'nfix_n_total']
+    print(f'Required columns present: {all(c in df.columns for c in required)}')
 "
 ```
 
@@ -186,13 +196,14 @@ print(f'Required columns present: {all(c in df.columns for c in [\"C\", \"S\", \
 
 **Purpose:** Apply Shipley (2025) Part I & II framework to generate qualitative ratings
 
-**Script:** `src/Stage_3_CSR/compute_ecoservices_shipley.py`
+**Script:** `src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R`
 
 **Command:**
 ```bash
-conda run -n AI python src/Stage_3_CSR/compute_ecoservices_shipley.py \
-  --input_file model_data/outputs/perm2_production/perm2_11680_with_csr_20251030.parquet \
-  --output_file model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_3_CSR/calculate_csr_ecoservices_shipley.R \
+  --input model_data/outputs/perm2_production/perm2_11680_with_csr_20251030.parquet \
+  --output model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet
 ```
 
 **Output:** `model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet`
@@ -211,20 +222,35 @@ conda run -n AI python src/Stage_3_CSR/compute_ecoservices_shipley.py \
 7. **Carbon Storage - Recalcitrant** (S dominant)
 8. **Carbon Storage - Total** (C ≈ S > R)
 9. **Erosion Protection** (C > S > R)
-10. **Nitrogen Fixation** (Fabaceae flag)
+10. **Nitrogen Fixation** (TRY TraitID 8 weighted evidence with Low fallback)
 
 **Verification:**
+
+**Note:** The final parquet file has a PyArrow compatibility issue when reading with pandas (`OSError: Repetition level histogram size mismatch`). Use the DuckDB-based verification script instead:
+
 ```bash
-python -c "
-import pandas as pd
-df = pd.read_parquet('model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet')
-services = [c for c in df.columns if c.endswith('_rating')]
-print(f'Total species: {len(df)}')
-print(f'Service columns: {len(services)}')
-for svc in services:
-    print(f'\n{svc}:')
-    print(df[svc].value_counts().sort_index())
-"
+conda run -n AI python src/Stage_3/verification/verify_csr_pipeline.py
+```
+
+Alternatively, read with DuckDB directly:
+```python
+import duckdb
+with duckdb.connect() as con:
+    df = con.execute(
+        "SELECT * FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet')"
+    ).df()
+    services = [c for c in df.columns if c.endswith('_rating')]
+    print(f'Total species: {len(df)}')
+    print(f'Service columns: {len(services)}')
+    for svc in services:
+        print(f'\n{svc}:')
+        print(df[svc].value_counts().sort_index())
+```
+
+Or read with R:
+```r
+library(arrow)
+df <- read_parquet('model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet')
 ```
 
 ---
@@ -233,16 +259,17 @@ for svc in services:
 
 **Purpose:** Verify Shipley Part II enhancements and CSR patterns
 
-**Script:** `src/Stage_3_CSR/validate_shipley_part2.py`
+**Script:** `src/Stage_3_CSR/verify_stratefy_implementation.py`
 
 **Command:**
 ```bash
-conda run -n AI python src/Stage_3_CSR/validate_shipley_part2.py
+conda run -n AI python src/Stage_3_CSR/verify_stratefy_implementation.py \
+  --input model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet
 ```
 
 **Tests performed:**
 1. **Life form-stratified NPP**: Verify tall trees with moderate C rate higher than short herbs with high C
-2. **Nitrogen fixation**: Verify 100% Fabaceae = High, 100% non-Fabaceae = Low
+2. **Nitrogen fixation**: Confirm TRY-derived distribution (603 High, 90 Moderate-High, 455 Moderate-Low, 10,532 Low) and fallback for species without TRY data
 3. **CSR patterns**: Verify NPP (C > R > S), Decomposition (R ≈ C > S), Nutrient Loss (R > C)
 4. **Data quality**: Verify CSR sum to 100, all ratings complete, coverage metrics
 
@@ -250,8 +277,7 @@ conda run -n AI python src/Stage_3_CSR/validate_shipley_part2.py
 - ✓ Tall tree example (22m, C=37.8) → NPP Very High
 - ✓ Short herb example (0.5m, C=63.5) → NPP Very High (but via different pathway)
 - ✓ Woody NPP distribution: 36.0% Very High vs Herbaceous: 10.0% Very High
-- ✓ Fabaceae N-fixation: 983/983 High (100%)
-- ✓ Non-Fabaceae N-fixation: 10,697/10,697 Low (100%)
+- ✓ Nitrogen fixation ratings: 603 High, 90 Moderate-High, 455 Moderate-Low, 10,532 Low (sums to 11,680)
 - ✓ C-dominant NPP: 56.9% Very High
 - ✓ S-dominant NPP: 8.3% Very High
 - ✓ R-dominant NPP: 0.9% Very High
@@ -304,7 +330,7 @@ return "Moderate"
 | Life form | 78.8% (9,204) | try_woodiness | ✓ |
 | Family | 99.3% (11,600) | Combined worldflora | ✓ |
 | CSR scores | 99.7% (11,650) | StrateFy calculation | ✓ |
-| Fabaceae flag | 100% (11,680) | Family = Fabaceae | ✓ |
+| TRY nitrogen fixation evidence | 40.3% (4,706) | TRY TraitID 8 weighted merge | ✓ |
 
 ---
 
@@ -335,9 +361,9 @@ return "Moderate"
 - Woody 36.0% Very High vs Herbaceous 10.0% Very High ✓
 
 **Nitrogen Fixation:**
-- 983 Fabaceae species flagged ✓
-- 100% Fabaceae = High rating ✓
-- 100% non-Fabaceae = Low rating ✓
+- TRY TraitID 8 weighted ratings merged (603 High, 90 Moderate-High, 455 Moderate-Low) ✓
+- Species without TRY data default to Low with Low confidence ✓
+- Evidence summary documented in `3.1_Nitrogen_Fixation_Methodology.md` ✓
 
 **Community Aggregation:**
 - Mass-ratio hypothesis documented in methodology ✓
@@ -357,9 +383,17 @@ return "Moderate"
 | Nutrient Loss | Very High | Part I strong evidence | ✓ |
 | Carbon Storage | High | Part I "moderate uncertainty" | ✓ |
 | Erosion Protection | Moderate | Part I "moderate level of confidence" | ✓ |
-| Nitrogen Fixation | Very High | Part II taxonomic (well-studied) | ✓ |
+| Nitrogen Fixation | Evidence-dependent (Very High for TRY data, Low when inferred) | Part II empirical integration + fallback rationale | ✓ |
 
 ---
+
+### Edge Case Analysis (NaN CSR Outputs)
+
+- 30 species (0.26%) sit outside the StrateFy calibration space (needles or halophyte leaves with extremely small area, low LDMC, low SLA).
+- When C, S, R all clamp to zero simultaneously the normalisation step fails → CSR = NaN, so ecosystem-service ratings remain `NaN`.
+- Functional groups: mainly conifers and halophytes; behaviour expected given angiosperm-focused calibration.
+- Decision: leave values missing and flag them in the dataset (documented limitation rather than ad‑hoc fallback).
+- Full trait tables and remediation options are preserved in `legacy/CSR_edge_case_analysis.md`.
 
 ### ✓ Limitations Documented
 
@@ -373,19 +407,29 @@ From methodology document Section 2.1:
 
 ---
 
+### Automated Verification (2025-10-30)
+
+- **Script:** `src/Stage_3/verification/verify_csr_pipeline.py`
+- **Command:** `conda run -n AI python src/Stage_3/verification/verify_csr_pipeline.py`
+- **Enriched table:** `perm2_11680_enriched_stage3_20251030.parquet` verified at 11,680 × 750 with coverage matching the enrichment summary (family/genus = 11,600; life_form_simple = 9,204; TRY nitrogen fixation = 4,706 with distribution High 603 / Moderate-High 90 / Moderate-Low 455 / Low 3,558 / Unknown 6,974).
+- **Final ecoservices parquet:** `perm2_11680_with_ecoservices_20251030.parquet` confirmed at 11,680 × 775 with 10 service ratings plus 10 confidence columns, zero missing ratings, nitrogen-fixation counts unchanged, and CSR NaN edge cases limited to the expected 30 species.
+- **Pipeline log:** latest run recorded in `logs/stage3_csr_pipeline_20251030_202450.log`.
+- *(Optional)* Intermediate CSV/Parquet (`traits_with_csr_20251030.csv`, `perm2_11680_with_csr_20251030.parquet`) are not regenerated by the automated pipeline; the final ecoservices parquet already contains all CSR and service columns.
+
+---
+
 ## File Manifest
 
 ### Scripts (Canonical)
 ```
 src/Stage_3/
-  └─ enrich_master_with_taxonomy.py         # Step 0: Add taxonomy/height/life form
+  └─ enrich_master_with_taxonomy.py               # Step 0: taxonomy/height/life form
 
 src/Stage_3_CSR/
-  ├─ calculate_stratefy_csr.py              # Step 2: Pierce et al. StrateFy
-  ├─ compute_ecoservices_shipley.py         # Step 4: Shipley framework
-  ├─ validate_shipley_part2.py              # Step 5: Validation tests
-  └─ run_full_csr_pipeline.sh               # Automated pipeline
-
+  ├─ calculate_csr_ecoservices_shipley.R          # Steps 2-4: StrateFy + Shipley services
+  ├─ run_full_csr_pipeline.sh                     # Wrapper invoking the R pipeline
+  ├─ compare_r_vs_python_results.py               # Regression test vs legacy python
+  └─ verify_stratefy_implementation.py            # Validation + stratification checks
 ```
 
 ### Data (Outputs)
@@ -403,9 +447,12 @@ model_data/outputs/
 
 ### Documentation
 ```
-results/summaries/hybrid_axes/phylotraits/Stage_3/
-  ├─ CSR_methodology_and_ecosystem_services.md            # Complete methodology
-  └─ VERIFICATION_AND_REPRODUCTION.md                     # This document
+results/summaries/phylotraits/Stage_3/
+  ├─ 3.0_Stage3_Overview.md                     # Pipeline overview
+  ├─ 3.1_Taxonomy_and_Enrichment.md             # Step 0 enrichment details
+  ├─ 3.1_Nitrogen_Fixation_Methodology.md       # TRY nitrogen fixation extraction
+  ├─ 3.2_CSR_and_Verification.md                # This document
+  └─ legacy/CSR_edge_case_analysis.md           # Detailed NaN case study
 ```
 
 ---
@@ -418,7 +465,7 @@ results/summaries/hybrid_axes/phylotraits/Stage_3/
 - CSR scores: 99.7% coverage (11,650 species)
 - 10 ecosystem services: 100% coverage
 - Life form stratification: 78.8% coverage (fallback to CSR only for unknown)
-- Nitrogen fixation: 100% coverage (983 Fabaceae flagged)
+- Nitrogen fixation: 603 High, 90 Moderate-High, 455 Moderate-Low, 10,532 Low (TRY evidence + Low-confidence fallback)
 
 **Verification:** All tests pass
 - Formula implementation matches Shipley exactly
