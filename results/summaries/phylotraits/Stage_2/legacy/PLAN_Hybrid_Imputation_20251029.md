@@ -181,13 +181,9 @@ for axis in ['L', 'T', 'M', 'N', 'R']:
 }
 ```
 
-### 3. Verification Report
-**File:** `results/verification/eive_hybrid_imputation_20251029.md`
-
-- Summary statistics per axis
-- Species breakdown by imputation strategy
-- Model selection logic validation
-- Cross-axis EIVE utilization patterns
+### 3. Verification Artefacts
+- Metadata snapshot: `model_data/outputs/eive_imputation_metadata_20251029.json`
+- Performance/QA summary: `results/verification/tier2_production_corrected_full_summary_20251029.md`
 
 ---
 
@@ -230,13 +226,10 @@ for axis in ['L', 'T', 'M', 'N', 'R']:
 ## Execution
 
 ```bash
-conda run -n AI python src/Stage_2/impute_eive_hybrid.py \
-    --out_csv model_data/outputs/eive_imputed_hybrid_20251029.csv \
-    --out_metadata model_data/outputs/eive_imputation_metadata_20251029.json \
-    --out_report results/verification/eive_hybrid_imputation_20251029.md
+conda run -n AI python src/Stage_2/impute_eive_hybrid.py
 ```
 
-**Note:** Model and feature paths are hardcoded in the script to prevent accidental use of wrong models. See `MODEL_PATHS_REFERENCE_20251029.md` for path verification.
+**Note:** Model and feature paths are hardcoded in the script to prevent accidental use of wrong models. Outputs are written to `model_data/outputs/eive_imputed_hybrid_20251029.csv` and `model_data/outputs/eive_imputation_metadata_20251029.json`. See `MODEL_PATHS_REFERENCE_20251029.md` for path verification.
 
 **Estimated runtime:** ~2-5 minutes (single-threaded, 5,756 × 5 predictions = 28,780 forward passes)
 

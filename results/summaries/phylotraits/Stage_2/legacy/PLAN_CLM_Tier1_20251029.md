@@ -224,7 +224,7 @@ run_clm_trait_phylo.R --axis N --no_phylo ...
 - `artifacts/stage2_clm_trait_only_tier1_20251029/N/cv_metrics.csv`
 
 **3. Comparison document:**
-- `results/summaries/hybrid_axes/phylotraits/Stage_2/2.6_CLM_vs_XGBoost_Tier1.md`
+- `results/summaries/phylotraits/Stage_2/2.6_CLM_vs_XGBoost_Production.md`
   - CLM metrics (traits only)
   - XGBoost metrics (full features)
   - Gap analysis
@@ -261,7 +261,7 @@ run_clm_trait_phylo.R --axis N --no_phylo ...
 
 ## Next Steps After CLM Completion
 
-1. **Document results** in 2.6_CLM_vs_XGBoost_Tier1.md
+1. **Document results** in `2.6_CLM_vs_XGBoost_Production.md`
 2. **Interpret gap:** Why does XGBoost pull ahead?
 3. **Feature ablation:** Test XGBoost with traits-only to isolate env/phylo contributions
 4. **Decision:** Keep CLM as historical baseline or focus on XGBoost?

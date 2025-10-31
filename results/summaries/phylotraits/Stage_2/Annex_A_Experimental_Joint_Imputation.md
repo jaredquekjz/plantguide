@@ -172,7 +172,7 @@ model_data/inputs/mixgb_experimental_11targets/
 
 ### 3.2 Run mixgb CV + Production
 
-**Script:** `scripts/train_xgboost_experimental_11targets.R` (adapted from perm2 script)
+**Script:** `src/Stage_1/mixgb/train_experimental_11targets.R` (adapted from perm2 script)
 
 **Key changes from Stage 1.7d script:**
 ```r
@@ -190,7 +190,7 @@ target_vars <- c("logLA", "logNmass", "logLDMC", "logSLA", "logH", "logSM",
 env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
   nohup /home/olier/miniconda3/envs/AI/bin/Rscript \
-    scripts/train_xgboost_experimental_11targets.R \
+    src/Stage_1/mixgb/train_experimental_11targets.R \
     > logs/experimental_11targets_20251029.log 2>&1 &
 ```
 
@@ -278,11 +278,10 @@ print(df[targets].isnull().sum())
 
 **Comparison to XGBoost:**
 ```bash
-# Script to compare imputed EIVE values
-conda run -n AI python src/Stage_1/compare_mixgb_vs_xgboost_eive.py \
-  --mixgb model_data/outputs/experimental_11targets_20251029/experimental_11targets_mean.csv \
-  --xgboost model_data/outputs/eive_imputed_no_eive_20251029.csv \
-  --output results/experiments/experimental_11targets_20251029/comparison_report.md
+# Derive accuracy metrics against Stage 2 benchmarks
+conda run -n AI python src/Stage_1/compute_eive_accuracy_metrics.py \
+  --cv_predictions results/experiments/experimental_11targets_20251029/cv_10fold_11targets_20251029_predictions.csv \
+  --output results/experiments/experimental_11targets_20251029/eive_accuracy_metrics_20251029.csv
 ```
 
 ---
@@ -316,8 +315,8 @@ conda run -n AI python src/Stage_1/compare_mixgb_vs_xgboost_eive.py \
 
 **Key scripts:**
 - Build input: `src/Stage_1/build_experimental_11target_input.py` (NEW)
-- mixgb training: `scripts/train_xgboost_experimental_11targets.R` (adapted)
-- Verification: `src/Stage_1/verify_experimental_11targets.py` (NEW)
+- mixgb training: `src/Stage_1/mixgb/train_experimental_11targets.R` (adapted)
+- Accuracy metrics: `src/Stage_1/compute_eive_accuracy_metrics.py`
 
 ---
 
