@@ -1,0 +1,2196 @@
+66
+Final formatted article © Institute of Entomology, Biology Centre, Czech Academy of Sciences, České Budějovice.
+An Open Access article distributed under the Creative Commons (CC-BY) license (http://creativecommons.org/licenses/by/4.0/).
+EUROPEAN JOURNAL OF ENTOMOLOGY
+EUROPEAN JOURNAL OF ENTOMOLOGY
+ISSN (online): 1802-8829
+http://www.eje.cz
+policy in the European Union (EU) and some other coun-
+tries in Europe. Indeed, within the EU, part of the direct 
+payments is conditional on farmers implementing various 
+ecological measures, including the maintenance of “eco-
+logical focus areas”, such as ﬁ eld margins (i.e. “greening 
+of direct payment” in Pillar 1, Hodge et al., 2015). Moreo-
+ver, agri-environmental schemes (Pillar 2), which may be 
+adopted by farmers on a voluntary basis, were developed 
+to “reduc[e] environmental risks associated with modern 
+farming on the one hand, and preserve nature and cultivat-
+ed landscapes on the other hand” (European Commission, 
+2005). More recently, there have been calls to diversify ag-
+ri-environmental schemes to include measures enhancing 
+Do ﬂ ower mixtures with high functional diversity enhance aphid 
+predators in wildﬂ ower strips?
+SÉVERIN HATT 1, 2, 3, ROEL UYTTENBROECK 1, 4, THOMAS LOPES 2, PIERRE MOUCHON 2, 5, JULIAN CHEN 3, 
+JULIEN PIQUERAY 6, ARNAUD MONTY 4 and FRÉDÉRIC FRANCIS 2
+1 TERRA – AgricultureIsLife, Gembloux Agro-Bio Tech, University of Liège, Passage des Déportés 2, 5030 Gembloux, Belgium; 
+e-mail: severin.hatt@ulg.ac.be
+2 Functional and Evolutionary Entomology, Department of Agronomy, Biology and Chemistry, Gembloux Agro-Bio Tech, 
+University of Liège, Passage des Déportés 2, 5030 Gembloux, Belgium; e-mails: tlopes@doct.ulg.ac.be, 
+frederic.francis@ulg.ac.be
+3 State Key Laboratory for Biology of Plant Diseases and Insect Pests, Institute of Plant Protection, Chinese Academy 
+of Agricultural Sciences, 2 West Yuanmingyuan Rd., Haidian District, 100193 Beijing, China; e-mail: jlchen@ippcaas.cn
+4 Biodiversity and Landscapes, Department of Biosystems Engineering, Gembloux Agro-Bio Tech, University of Liège, 
+Passage des Déportés 2, 5030 Gembloux, Belgium; e-mails: roel.uyttenbroeck@ulg.ac.be, arnaud.monty@ulg.ac.be
+5 Institut Supérieur d’Agriculture de Lille, 48 boulevard Vauban, 59046 Lille, France; e-mail: mouchonpierre@gmail.com
+6 Natagriwal asbl, Passage des Déportés 2, 5030 Gembloux, Belgium; e-mail: jpiqueray@natagriwal.be
+Key words. Syrphidae, Coccinellidae, Chrysopidae, agri-environmental measure, conservation biological control, wildﬂ ower 
+strips, functional diversity, Rao’s index
+Abstract. Among the semi-natural elements in agricultural landscapes, wildﬂ ower strips sown at ﬁ eld margins or within ﬁ elds are 
+potential habitats for the natural enemies of insect pests. As insects are sensitive to a variety of ﬂ ower traits, we hypothesized that 
+mixtures with high functional diversity attract and support a higher abundance and species richness of aphid ﬂ ower visiting preda-
+tors than mixtures with low functional diversity. During a ﬁ eld experiment, repeated over two years (2014 and 2015) in Gembloux 
+(Belgium), aphid predators (i.e., lacewings, ladybeetles and hoverﬂ ies) were pan-trapped in ﬁ ve sown ﬂ ower mixtures (including 
+a control mixture, with three replicates of each mixture) of low to high functional diversity based on seven traits (i.e., ﬂ ower colour, 
+ultra-violet reﬂ ectance and pattern, start and duration of ﬂ owering, height and ﬂ ower class, primarily based on corolla morphol-
+ogy). In both years, the species of ﬂ owering plants in the sown mixtures (i.e., sown and spontaneous ﬂ owers) were listed, and the 
+realized functional diversity in each plot calculated. Over the two years, a high functional diversity was not associated with high 
+abundance and richness of aphid predators. Moreover, ladybeetles, which made up the majority of the predators trapped, were 
+more abundant in mixtures with very low or intermediate functional diversity at sowing, especially in 2014. We hypothesize that 
+certain ﬂ owers, which were abundant in certain mixtures (and not in those exhibiting the highest functional diversity), attracted 
+predators and were sufﬁ ciently abundant to support them. Our results present novel information that could be used for developing 
+ﬂ ower mixtures that provide effective ecosystem services, such as pest control.
+INTRODUCTION
+Wildﬂ ower strips (WFS) are one of several types of habi-
+tats used by insects in agricultural landscapes (Holland et 
+al., 2016). There is extensive evidence that, when sown at 
+ﬁ eld margins, WFS support a higher abundance and diver-
+sity of insects compared to adjacent crops (reviewed by 
+Haaland et al., 2011). Indeed, WFS provide insects with 
+ﬂ oral food (such as nectar and pollen), as well as alternative 
+prey and hosts for insect predators and parasitoids, respec-
+tively. WFS also provide insects with overwintering sites 
+and shelters against adverse conditions, such as pesticide 
+spraying (Landis et al., 2000). For these reasons, subsidiz-
+ing the sowing of WFS is part of the agri-environmental 
+Eur. J. Entomol. 114: 66–76, 2017
+doi: 10.14411/eje.2017.010
+ORIGINAL ARTICLE
+
+67
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+vided by ﬂ owers must be available when the insects need it 
+(Colley & Luna, 2000).
+The extensive literature available on how ﬂ ower traits 
+affect natural enemy behaviour highlights that different 
+insect species respond differently to the same trait. There-
+fore, it is hypothesized that mixing ﬂ ower species with dif-
+ferent values for these traits, generating a high functional 
+diversity (FD) at the mixture level, will attract and support 
+a high diversity and abundance of insects. Previous studies 
+showed that plant mixtures with high FD beneﬁ t both natu-
+ral enemies and pollinators (Fontaine et al., 2006; Camp-
+bell et al., 2012; Balzan et al., 2014). However, the high 
+FD in these studies was based on an increased diversity in 
+types of corolla, which determines the availability of food 
+resources. Because insects are sensitive to several other 
+ﬂ ower traits, the present study aimed to explore whether 
+a high FD in ﬂ ower mixtures based on a multiplicity of 
+traits enhances their use by ﬂ ower visiting aphid predators. 
+Our results are expected to provide baseline information 
+for developing effective WFS mixtures for use in agricul-
+tural landscapes.
+MATERIAL AND METHODS
+Study design
+Field experiments were conducted during the 2014 and 2015 
+growing seasons in a 9 ha ﬁ eld of the experimental farm belong-
+ing to Gembloux Agro-Bio Tech (University of Liège), Namur 
+Province, Belgium (50°34´03 ̋ N; 4°42´27 ̋ E). The ﬁ eld was char-
+acterized by a loamy soil that drains naturally (Service Public de 
+Wallonie, 2014). Before starting this experiment, the ﬁ eld was 
+managed conventionally (i.e. synthesised fertilisers and pesti-
+cides were applied), and winter wheat was grown the previous 
+year. No particular soil treatments were implemented before the 
+experiment. A forest (i.e. l’Escaille natural reserve) is present 
+on the north-west side of the ﬁ eld, while a young agroforestry 
+system (planted in 2013) is present on the north-east side. Five 
+WFS (125 m × 8 m) were sown in 2013. Each strip was divid-
+ed into ﬁ ve equally sized plots (25 m × 8 m), i.e., a total of 25 
+plots. These plots were sown with ﬁ ve different ﬂ ower mixtures 
+in a Latin square design. Three out of the ﬁ ve strips were as-
+sessed due to logistic constraints and work force limitation (Fig. 
+1). Four of the ﬁ ve mixtures contained seven ﬂ ower species and 
+three grass species (Festuca rubra, Agrostis spp. and Poa praten-
+sis). The ﬁ fth mixture (control, C) only contained the three grass 
+species (Table 1). All ﬂ owering plants are native perennial spe-
+cies that are commonly found in Belgian grasslands (beneﬁ ts of 
+such species, compared to exotic and/or annual species are re-
+viewed by Fiedler & Landis, 2007a), are typically used in agri-
+environmental schemes in Wallonia, Belgium, and are available 
+commercially (seeds were obtained from ECOSEM, Belgium). 
+Flower species (0.5 kg.ha–1 of each, see Table 1) and grass species 
+(Festuca rubra: 11.5 kg.ha–1; Agrostis spp.: 5 kg.ha–1; Poa prat-
+ensis: 5 kg.ha–1) were sown on 6th June 2013. Equal seed masses 
+of the ﬂ ower species were sown so that the species were similarly 
+abundant. Species with lower seed mass are expected to suffer a 
+greater mortality and, thus, might need more seeds compared to 
+species with higher seed mass in order to obtain the same abun-
+dance (Turnbull et al., 1999). Each year, WFS were mown at the 
+end of June and September. Adjacent to WFS, oilseed rape (Bras-
+sica napus L.) was grown from September 2013 to June 2014, 
+while winter wheat (Triticum aestivum L.) was grown from Octo-
+ber 2014 to July 2015.
+ecosystem services, in addition to approaches that purely 
+aim to support biodiversity (McKenzie et al., 2013; Ekroos 
+et al., 2014). Among other ecosystem services (Zhang et 
+al., 2007), the natural regulation of insect pests is of par-
+ticular interest when considering the damaging effects of 
+insecticides on human health and the environment (Devine 
+& Furlong, 2007; Baldi et al., 2013) and the resistance of 
+pests to insecticides (Foster et al., 2007).
+Conservation biological control is deﬁ ned as “the use 
+of tactics and approaches that involve the manipulation of 
+the environment (i.e., the habitat) of natural enemies so as 
+to enhance their survival, and/or physiological and behav-
+ioural performance, and resulting in enhanced effective-
+ness” (Barbosa, 1998). When applied to WFS, such ma-
+nipulations consist of sowing mixtures that support natural 
+enemies. Yet, enhancing natural enemies through habitat 
+management might not necessarily lead to pest control. 
+In addition to the ﬁ ve hypotheses proposed by Tscharntke 
+et al. (2016), the resources and shelter provided by WFS 
+might retain natural enemies, limiting their ability to con-
+trol pests in adjacent crops (Rand et al., 2006). Moreover, 
+simply sowing ﬂ owers might not generate a higher abun-
+dance of key beneﬁ cial species in strips, and reduce the 
+abundance of pests in adjacent crops (Uyttenbroeck et al., 
+2016). One explanation is that some natural enemies might 
+not be attracted to the species of ﬂ owers that are sown, 
+or, if they are, might not ﬁ nd the resources that they need 
+(Wäckers, 2004). Therefore, several studies have explored 
+the effects of speciﬁ c ﬂ ower species on insect behaviour 
+in order to select the species that effectively attract and 
+support the beneﬁ cial ones (Tooker et al., 2006; Fiedler & 
+Landis, 2007a; Van Rijn & Wäckers, 2010; Carrié et al., 
+2012). However, the functional traits of ﬂ owers must be 
+assessed in order to understand why some ﬂ ower species 
+are suitable for insects, and why some are not.
+Traits are deﬁ ned as “any morphological, physiological 
+or phenological feature measurable at the individual level” 
+(Violle et al., 2007). When traits are considered in the envi-
+ronment in which a plant grows, they may affect ecological 
+processes, and are qualiﬁ ed as functional (Dı́az & Cabido, 
+2001). Several studies have explored the effect of ﬂ ower 
+traits on the behaviour of natural enemies using labora-
+tory experiments, monospeciﬁ c plots in ﬁ elds or plants in 
+pots (Mondor & Warren, 2000; Schaller & Nentwig, 2000; 
+Fiedler & Landis, 2007b; Miller et al., 2013; Van Rijn & 
+Wäckers, 2016). The shape of the corolla is another ﬂ ower 
+trait, which determines how insects access the food pro-
+vided by ﬂ owers. This trait has been extensively studied 
+because many natural enemies need pollen and nectar at 
+certain stages in their development (Lu et al., 2014; Van 
+Rijn et al., 2016). Other morphological traits, such as col-
+our and ultra-violet (UV) reﬂ ectance, are involved in host 
+plant recognition and, thus, ﬂ ower attractiveness (Chittka 
+et al., 1994; Campbell et al., 2010), while plant height 
+might affect their ﬂ ight (Wratten et al., 2003). Finally, phe-
+nological traits, such as the month of the onset and duration 
+of ﬂ owering, might be important, because the food pro-
+
+68
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+Fig. 1. Experimental ﬁ eld design. C – control, VL – very low, L – low, H – high, and VH – very high are the ﬁ ve ﬂ ower mixtures sown de-
+scribed in terms of their functional diversity at sowing.
+Table 1. Flower mixtures sown in June 2013, constituting a gradient of functional diversity based on Rao’s index. C – control, VL very low, 
+L – low, H – high, VH – very high. All ﬂ owering species were perennial species that are commonly found in Belgian grasslands and used 
+in agri-environmental schemes in Wallonia, Belgium.
+Family
+Species
+Mixtures / Functional diversity (Rao’s index)
+C / 0
+VL / 0.08
+L / 0.11
+H / 0.15
+VH / 0.19
+Flowering species
+Apiaceae
+Anthriscus sylvestris
+x
+x
+x
+Apiaceae
+Heracleum sphondylium 
+x
+Asteraceae
+Achillea millefolium 
+x
+x
+x
+x
+Asteraceae
+Crepis biennis
+x
+Asteraceae
+Hypochaeris radicata
+x
+Asteraceae
+Leontodon hispidus 
+x
+x
+Asteraceae
+Leucanthemum vulgare
+x
+x
+Dipsacaceae
+Knautia arvensis
+x
+x
+Fabaceae
+Lotus corniculatus
+x
+Fabaceae
+Medicago lupulina
+x
+Fabaceae
+Trifolium pratense
+x
+Geraniaceae
+Geranium pyrenaicum
+x
+Lamiaceae
+Origanum vulgare
+x
+Lamiaceae
+Prunella vulgaris
+x
+x
+Lythraceae
+Lythrum salicaria
+x
+x
+Malvaceae
+Malva moschata
+x
+Rubiaceae
+Galium verum
+x
+x
+Grass species
+Poaceae
+Agrostis spp.
+x
+x
+x
+x
+x
+Poaceae
+Festuca rubra
+x
+x
+x
+x
+x
+Poaceae
+Poa pratensis
+x
+x
+x
+x
+x
+
+69
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+Sown functional diversity
+The four ﬂ ower mixtures (the ﬁ fth one being the control) were 
+chosen based on their FD values using Rao’s quadratic index 
+(Botta-Dukát, 2005). To create the mixtures, 20 ﬂ ower species 
+were chosen and described based on seven of their functional 
+traits that were retrieved from Lambinon et al. (2008) and the 
+TRY database (Kattge et al., 2011) (Table S1). The seven traits 
+were chosen based on their potential effect on ﬂ ower visitors. 
+First, visual cues are known to be decisive for insects when se-
+lecting a plant (Campbell et al., 2010). Hence, the following traits 
+were considered: (i) ﬂ ower colour, (ii) UV reﬂ ectance of the pe-
+ripheral part of the ﬂ ower, and (iii) whether the UV reﬂ ectance of 
+the internal ﬂ ower part differed from that of the external part (also 
+called “UV pattern”). Second, ﬂ owering phenology determines 
+whether ﬂ oral resources are available when target insects need 
+them (Colley et al., 2000). Therefore, (iv) the month of the onset 
+of ﬂ owering and (v) the duration of ﬂ owering were chosen. Third, 
+(vi) vegetation height was included, because it might affect insect 
+ﬂ ight (Wratten et al., 2003). Fourth, (vii) ﬂ ower class after Müller 
+(1881) was used, because it provides a measure of the the avail-
+ability of nectar for insects that visit ﬂ owers, which determines 
+whether WFS are able to support natural enemies (Van Rijn et 
+al., 2016). All of the possible combinations of mixtures of seven 
+species were listed, and their FD value was calculated (R function 
+“divc”, package “ade4”; Dray & Dufour, 2007). Combinations 
+with the lowest and the highest FD were selected, as well as those 
+with a value closest to the 33rd and the 67th percentile of the range. 
+As a result, four mixtures were generated with contrasting FD, 
+termed very low (VL), low (L), high (H) and very high (VH) 
+(Table 1). 
+Realized functional diversity
+To evaluate the effect of the realized FD of the mixtures on 
+ﬂ ower visiting aphid predators, the effective composition of the 
+ﬂ ower mixtures was assessed each year. In three 1 m*1 m perma-
+nent quadrats in each plot (Fig. 1), ﬂ ower species were recorded 
+and their relative cover estimated on 18–19 June 2014 and 19–23 
+June 2015 (before mowing). The nomenclature of Lambinon et 
+al. (2004) was followed. Based on the species of ﬂ owers listed 
+(both sown and spontaneous), their traits and their relative cover 
+in the quadrats, the realized FD of the mixture in each plot was 
+calculated.
+Monitoring of insect species
+Flower visiting predators were trapped from 7 May to 25 June 
+2014 and from 12 May to 30 June 2015 (i.e. for seven weeks 
+in both years). In each plot, a yellow pan trap (Flora®, 27 cm 
+diameter and 10 cm depth) was installed on a ﬁ berglass stick and 
+positioned at vegetation height. Its position was adjusted during 
+the growing season to follow plant growth. Traps were ﬁ lled with 
+water containing a few drops of detergent (dish-washing liquid) 
+to reduce the surface tension of the water. The traps were emptied 
+and reﬁ lled every seven days, and the trapped insects were con-
+served in 70% ethanol. Aphidophagous ladybeetles (Coleoptera: 
+Coccinellidae), as well as lacewings (Neuroptera: Chrysopidae) 
+and hoverﬂ ies (Diptera: Syrphidae), the larvae of which prey on 
+aphids, were identiﬁ ed to species using identiﬁ cation keys in San 
+Martin (2004), van Veen (2010) and Roy et al. (2013), respective-
+ly. Because the adults of these predatory families are all highly 
+mobile and able to traverse agricultural landscapes (Evans, 2003; 
+Villenave et al., 2006; Almohamad et al., 2009), their dispersion 
+through the different plots was comparable.
+Statistical analyses 
+First, the linear relation between the sown and realized FD in 
+each plot was tested for both years by using Pearson’s correlation 
+(P < 0.05).
+Second, the effects of the sown mixtures on insect abundance 
+(response variables: all predators pooled, and lacewings, lady-
+beetles, hoverﬂ ies individually) and total predator species rich-
+ness (species of the three predator families pooled) were assessed 
+by ﬁ tting generalised linear mixed effect models (R function 
+“glmer”, package “lme4”; Bates et al., 2014) with Poisson error 
+distribution (log-link function). Mixtures (C, VL, L, H, VH), 
+years (2014, 2015) and their interaction were included as ﬁ xed 
+factors, and the plots included as random effects, as measures 
+were repeated on seven consecutive occasions in the same plots 
+each year. For every model, data over-dispersion was tested and 
+found to occur for the summed predator, ladybeetle and hoverﬂ y 
+abundance. For these variables, generalised linear models with 
+negative binomial error distribution were ﬁ tted (R function “glm.
+nb”, package “MASS”, Venables & Ripley, 2002), as suggested 
+by Ver Hoef & Boveng (2007). The effects of ﬁ xed factors in 
+every model were tested using likelihood-ratio tests (P < 0.05). 
+When their interaction was signiﬁ cant, analyses were performed 
+for each year separately.
+Third, the effect of the realized FD on insect abundance (re-
+sponse variables: all predators pooled, and lacewings, ladybee-
+tles, hoverﬂ ies individually) and total predator species richness 
+(numbers of species of the three predator families pooled) were 
+assessed for each year separately, as each year each plot poten-
+tially had a different value of FD, by ﬁ tting generalised linear 
+mixed effect models. FD values were included as ﬁ xed factors 
+and plots were included as random factors. Data over-dispersion 
+was tested and found to occur for the summed predator, lady-
+beetle and hoverﬂ y abundance in 2014. Thus, generalised linear 
+models with negative binomial error distribution were ﬁ tted in-
+stead. The effects of realized FD in every model were tested using 
+likelihood-ratio tests (P < 0.05). All analyses were done using R 
+program (R Core Team, 2013).
+RESULTS
+Flower cover, species and functional diversity 
+Twenty-one and 20 ﬂ ower species were recorded in the 
+quadrats in 2014 and 2015, respectively (Table 2), out of 
+which eight species in both years were not sown. Among 
+these spontaneous species, Cirsium arvense and Sinapis 
+alba had the highest cover in plots in 2014, whereas in 
+2015 it was C. arvense and Rumex obtusifolius (Table 2). 
+The cover of all other spontaneous species never on aver-
+age exceeded 3% of the quadrat surface in each plot. Con-
+versely, three of the sown species, Anthriscus sylvestris, 
+Heracleum sphondylium and Lythrum salicaria, were not 
+recorded in either year, with Origanum vulgare also not 
+recorded in 2015.
+The values of the realized FD in 2014 and 2015 are given 
+in Table 2. Except for the C plots, the values of the realized 
+FD were lower than those of the sown mixtures. No signiﬁ -
+cant correlations were found between the sown and real-
+ized FD in both 2014 (df = 13; r = 0.48; p-value = 0.071) 
+and 2015 (df = 13; r = 0.22; p-value = 0.423). 
+Aphid predator abundance and diversity
+Predators were signiﬁ cantly more abundant in 2014 than 
+2015 (i.e. 161 and 51 individuals trapped respectively, Ta-
+
+70
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+bles 3–4). Ladybeetles were the most abundant predators 
+in both years, especially in 2014, followed by hoverﬂ ies 
+and lacewings (total abundance is presented in Table 3). 
+Equal species richness was recorded for ladybeetles and 
+hoverﬂ ies in 2014 (i.e., four species); however, hoverﬂ y 
+species richness was higher in 2015 (i.e. ﬁ ve and three 
+species respectively, Table 3). During this two year experi-
+ment, only one species of lacewing was recorded.
+Effect of sown mixtures and realized functional 
+diversity on aphid predators
+Only ladybeetle abundance was signiﬁ cantly associated 
+with the mixtures sown (Table 4). As the interaction be-
+tween mixture and year effects was also signiﬁ cant, annual 
+analyses showed that mixtures had a nearly signiﬁ cant ef-
+fect in 2014 (df = 4; χ² = 9.4; p-value = 0.052) and a signiﬁ -
+cant effect in 2015 (df = 4; χ² = 12.4; p-value = 0.014). The 
+mixtures had no signiﬁ cant effect on the sums of predators, 
+lacewings and hoverﬂ ies and their species richness (Table 
+4). In 2014, ladybeetles were the most numerous in VL, L 
+and H mixtures, whereas they were the least abundant in 
+L and VH mixtures in 2015 (Fig. 2). Neither insect abun-
+dance (i.e., sum of predators, as well as every family sepa-
+rately) nor their species richness was signiﬁ cantly affected 
+by the realized FD in either 2014 or 2015 (Table 5).
+Table 2. Realized functional diversity (FD, Rao’s index) and mean cover (%) of each ﬂ ower species in each plot (C – control, VL – very 
+low, L – low, H – high, VH – very high; the numbers are the number of replicates of each mixture sown; see Fig. 1), based on the three 1 
+m² quadrats in each plot in 2014 and 2015. Flower cover was assessed at the end of June each year.
+C1
+C2
+C3
+VL1
+VL2
+VL3
+L1
+L2
+L3
+H1
+H2
+H3
+VH1
+VH2
+VH3
+2014
+Realized FD (Rao’s index) 0.075 0.053 0.012 0.006 0.006 0.006 0.044 0.046 0.048 0.093 0.020 0.058 0.055 0.115 0.112
+Flower cover (%)
+Achillea millefolium
+0.67
+0
+0.67
+9.67
+11.67
+4.67
+5
+14.33 12.67
+1
+15
+9.67
+8.33
+3.67
+1.33
+Aethusa cynapium
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+0
+0
+0
+0
+Capsella bursa-pastoris 
+0.33
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Cichorium intybus
+0
+0
+0
+0.67
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Cirsium arvense
+1
+5.33
+0.33
+0
+0
+0.67
+0.67
+0
+0.67
+0
+0
+0
+0
+0
+0.67
+Conyza canadensis
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+0
+0
+Crepis biennis
+0
+0
+0
+0
+0
+0
+6
+1.33
+3.67
+0
+0
+0
+0.67
+0
+0
+Galium verum
+0.33
+0
+0
+2
+2
+3.33
+1.33
+1
+3.33
+0
+0.33
+0
+0
+0
+0
+Geranium pyrenaicum
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+4.67
+0.33
+0.67
+0
+0
+0
+Hypochaeris radicata
+0.67
+0
+0
+0
+0
+0
+11.33
+13
+20
+0
+0.33
+0
+0
+0
+0
+Knautia arvensis
+0
+0
+0
+0
+0
+0.33
+0.33
+0
+0.33
+0
+0
+0
+0
+0
+0
+Leontodon hispidus
+0
+0
+0
+0
+0
+0
+0
+1
+1.67
+0
+0
+0
+0
+0
+0
+Leucanthemum vulgare
+0.67
+0
+0
+56.67 56.67 63.33
+0
+1
+2
+3.67
+38.33
+45
+0
+1
+3
+Lotus corniculatus
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+33.33
+1.33
+0.67
+Malva moschata
+0
+0
+0
+0
+0.33
+0
+0
+0
+0
+0
+0
+1.33
+2.33
+1.33
+4.33
+Matricaria recutita
+1
+0.33
+0.33
+1
+0
+0
+0
+0
+0
+0.33
+0
+0
+2.67
+0
+1.67
+Medicago lupulina
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+2.33
+1
+1.33
+Origanum vulgare
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.67
+0
+0
+0
+0
+Prunella vulgaris
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1.67
+8
+1.33
+2
+1
+Sinapis alba
+1.33
+1.33
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+5
+0
+Trifolium repense
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+2015
+Realized FD (Rao’s index) 0.096 0.000 0.036 0.008 0.011 0.005 0.057 0.051 0.059 0.059 0.018 0.026 0.075 0.041 0.069
+Flower cover (%)
+Achillea millefolium
+1
+0
+1.33
+9.67
+20
+8.67
+13.67
+24
+20.33
+5.33
+33.33 22.67
+20
+38.33 27.67
+Silene latifolia
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+0
+Cirsium arvense
+1.67
+10.67
+0.67
+0
+0
+2
+1.33
+0
+0.67
+1
+0.33
+0.33
+1
+2
+0.67
+Crepis biennis
+0
+0
+0
+0
+0
+0
+0.67
+0.67
+0
+0
+0
+0
+0
+0
+0
+Galium verum
+0.33
+0
+0.33
+2.33
+3.33
+1.67
+1.33
+1
+4
+0
+0
+0
+0.33
+0
+0
+Geranium pyrenaicum
+0
+0
+0
+0
+0
+0
+0.67
+0
+0
+5.33
+0.33
+0
+0
+0
+0
+Hypochaeris radicata
+0.33
+0
+0
+0
+0.33
+0
+3.33
+22.33
+8
+0
+0.33
+0
+0
+0
+0
+Knautia arvensis
+0
+0
+0
+0
+0
+0.33
+0.33
+0
+0
+0
+0
+0
+0
+0
+0
+Leontodon hispidus
+0
+0
+0
+0
+0
+0
+1
+2.67
+8.33
+0
+1.33
+1
+0
+0
+0
+Leucanthemum vulgare
+1.67
+0
+0
+71.67
+80
+96
+0
+1.33
+8
+19.33 68.33 51.67
+0
+0.33
+6.67
+Lotus corniculatus
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.67
+0
+0
+Malva moschata
+0
+0
+0
+0
+0
+0
+0
+0
+0.67
+0
+0.33
+0.33
+1.67
+1.33
+4.33
+Malva sylvestris
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+0
+0
+0
+0
+Medicago lupulina
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.33
+0
+0
+Plantago major
+0.33
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Prunella vulgaris
+1.33
+0
+0
+0.33
+0.67
+0
+0
+0
+0
+0
+1.67
+2.67
+2
+2
+1.67
+Rumex obtusifolius
+0
+0
+0
+3.33
+0
+0
+0
+1.33
+0
+0
+0
+0
+10.33
+0.67
+0
+Rumex crispus
+2
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.67
+0
+0
+Sonchus sp.
+0
+0
+0
+0.33
+0
+0
+0.67
+0
+0
+0
+0
+0
+0
+0
+0
+Trifolium sp.
+0
+0
+0
+0.33
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0.67
+0
+
+71
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+DISCUSSION
+Our study indicates that a high abundance and richness 
+of ﬂ ower visiting aphid predators is not necessarily asso-
+ciated with a high FD of ﬂ ower mixtures. Only ladybee-
+tles, which made up the majority of the predators trapped 
+in both years, were affected by the sown mixtures. Lady-
+beetles were mostly trapped in plots where the FD of the 
+mixture was very low or intermediate at sowing, especially 
+in 2014.
+A surprisingly low number of predators was trapped. 
+In the case of hoverﬂ ies, we trapped on average 30 times 
+more per week per trap in the crops growing adjacent to 
+the WFS in 2015 (Hatt et al., 2017) while Tschumi et al. 
+(2016) trapped on average 20 times more per week per 
+trap in WFS adjacent to potato crops in June and July in 
+Switzerland. A reason for this might be that hoverﬂ y abun-
+dance often peaks in July in such regions, as was the case 
+in 2015 in adjacent crops (Hatt et al., 2017). In the present 
+experiment, insects were trapped in the WFS only up to 
+the end of June. As for ladybeetles, a slightly higher num-
+ber than recorded in these previous studies was trapped in 
+2014, but three times less was recorded in 2015. Indeed, 
+insect abundance differed in the two years of the study. The 
+higher abundance of predators, especially ladybeetles, in 
+2014 might be due to the early summer in that year, favour-
+ing greater insect occurrence in early spring compared to 
+2015. In addition, other studies conducted in the same re-
+gion report a very low density of ladybeetles in 2015, indi-
+cating that their abundance was low that year in the region 
+of Gembloux (Fassotte, 2016; Hatt et al., 2017). Similar 
+annual variability in ladybeetle abundance is reported in 
+Belgium (Vandereycken et al., 2013).
+The results recorded for the effect of FD contradicted 
+our hypothesis. We expected the abundance and richness 
+of natural enemies to be positively associated with FD, 
+Table 3. Summed abundance of every aphid predator species trapped in each mixture (over a seven-week period from May to June in 
+both years, three repetitions per mixture, one yellow pan-trap per repetition, which was emptied and reﬁ lled every week).
+ 
+2014
+ 
+2015
+ 
+ 
+2014–2015
+C
+VL
+L
+H
+VH
+Total
+C
+VL
+L
+H
+VH
+Total
+Total
+Lacewings
+4
+5
+3
+2
+1
+15
+1
+2
+3
+2
+1
+9
+24
+Chrysoperla carnae (Stephens, 1836)
+4
+5
+3
+2
+1
+15
+1
+2
+3
+2
+1
+9
+24
+Ladybeetles
+15
+31
+23
+30
+14
+113
+5
+6
+–
+9
+3
+23
+136
+Coccinella 7 punctata (Linnaeus, 1758)
+–
+8
+3
+4
+–
+15
+1
+4
+–
+3
+1
+9
+24
+Harmonia 4 punctata (Pontoppidan, 1763)
+–
+–
+–
+–
+–
+–
+–
+–
+–
+1
+–
+1
+1
+Harmonia axyridis (Pallas, 1773)
+7
+11
+9
+12
+8
+47
+–
+–
+–
+–
+–
+–
+47
+Propylea 14 punctata (Linnaeus, 1758)
+9
+12
+10
+14
+5
+50
+4
+2
+–
+5
+2
+13
+63
+Tytthaspis 16 punctata (Linnaeus, 1761)
+–
+–
+1
+–
+1
+2
+–
+–
+–
+–
+–
+–
+2
+Hoverﬂ ies
+6
+6
+9
+6
+6
+33
+6
+1
+2
+6
+4
+19
+52
+Episyrphus balteatus (De Geer, 1776)
+5
+5
+8
+4
+4
+26
+1
+1
+–
+–
+3
+5
+31
+Eupeodes corollae (Fabricius, 1794)
+–
+1
+1
+–
+1
+3
+1
+–
+2
+1
+–
+4
+7
+Melanostoma mellinum (Linnaeus, 1758)
+–
+–
+–
+2
+–
+2
+–
+–
+–
+2
+–
+2
+4
+Platycheirus manicatus (Meigen, 1822)
+–
+–
+–
+–
+–
+–
+–
+–
+–
+1
+–
+1
+1
+Sphaerophoria scripta (Linnaeus, 1758)
+–
+–
+–
+–
+–
+–
+4
+–
+–
+2
+1
+7
+7
+Syrphus ribesii (Linnaeus, 1758)
+–
+–
+–
+–
+1
+1
+–
+–
+–
+–
+–
+–
+1
+Total
+25
+42
+35
+38
+21
+161
+12
+9
+5
+17
+8
+51
+ 
+212
+“–” indicates that no individuals of these species were trapped.
+Table 4. Effect of mixtures sown (C, VL, L, H, VH) and years (2014, 
+2015), and their interaction, on the abundance and species rich-
+ness of predators. Signs of estimates were retrieved from the se-
+lected models when signiﬁ cant, “–” means that the values for 2015 
+were lower than those for 2014. Degree of freedom (df), χ²- and 
+p-values were obtained from the likelihood ratio tests performed on 
+the selected model. * P < 0.05; *** P < 0.001.
+ 
+Estimate
+df
+χ²
+p-value
+Abundance
+Predators
+Mixture
+4
+7.75
+0.101
+Year
+–
+1
+45.6
+  < 0.001 ***
+FD:Year
+4
+6.18
+0.186
+Lacewings
+Mixture
+4
+3.41
+0.476
+Year
+1
+1.52
+0.212
+FD:Year
+4
+1.74
+0.784
+Ladybeetles
+Mixture
+4
+12.2
+  0.016 *
+Year
+–
+1
+55.3
+  < 0.001 ***
+FD:Year
+4
+9.82
+  0.044 *
+Hoverﬂ ies
+Mixture
+4
+1.12
+0.891
+Year
+1
+1.99
+0.158
+FD:Year
+4
+2.74
+0.602
+Species richness
+Predators
+Mixture
+4
+7.12
+0.130
+Year
+–
+1
+33.7
+  < 0.001 ***
+FD:Year
+4
+5.67
+0.225
+Table 5. Effect of realized functional diversity (Rao’s index) on 
+predator abundance and species richness of predators in 2014 and 
+2015. Signs of estimates were retrieved from the selected models. 
+Degree of freedom (df), χ²- and p-values were obtained from the 
+likelihood ratio tests performed on the selected models.
+ 
+2014
+ 
+2015
+Estimate df
+χ²
+p-value Estimate df
+χ² p-value
+Abundance
+Predators
+–
+1  2.78 0.096
+–
+1 0.04 0.846
+Lacewings
+–
+1  2.18 0.140
+–
+1 0.12 0.73
+Ladybeetles
+–
+1  2.93 0.089
+–
+1 1.70 0.192
+Hoverﬂ ies
+–
+1 <0.01
+1
++
+1 2.09 0.148
+Diversity
+Species
+richness
+–
+1  2.75 0.097  
+–
+1 0.63 0.428
+
+72
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+because these predators have different nutritional require-
+ments and might react differently to different ﬂ ower traits 
+at different times. However, our ﬁ ndings are consistent 
+with Balzan et al. (2014, 2016), who report that FD had 
+no effect on the abundance of ﬂ ower visiting natural en-
+emies. Furthermore, these authors report that mixtures 
+with intermediary FD support a higher natural enemy rich-
+ness. Balzan et al. (2014, 2016) increased FD by increas-
+ing the diversity of ﬂ ower corolla types, which determines 
+the ability of natural enemies to beneﬁ t from ﬂ ower nectar 
+(Vattala et al., 2006; Van Rijn & Wäckers, 2016). Insect 
+abundance and diversity recorded in this study, however is 
+not associated with FD based on seven traits. Balzan et al. 
+(2014, 2016) suggest that the presence of certain species of 
+plants, particularly those attractive to natural enemies (i.e., 
+Apiaceae spp. in their case), might mask the effect of FD 
+on ﬂ ower visitors. This might also have affected our re-
+sults, especially as some ﬂ owering species covered a large 
+surface area in some plots, whereas others that were sown 
+were not even recorded (Table 2).
+There are several explanations for the unequal establish-
+ment of different species of plants, despite similar seed 
+weights being sown. For instance, competition for space 
+and resources might result in the establishment of the most 
+competitive species. Alternatively, the conventional farm-
+ing practices used in the ﬁ eld before the experiment (es-
+pecially the application of nitrogen fertilisers) might have 
+favoured the most productive species, which limited the 
+establishment of diversiﬁ ed mixtures (Pywell et al., 2002). 
+In our experiment, the Asteraceae Leucanthemum vulgare 
+was the most abundant species in VL and H mixtures (Table 
+2). The high abundance of this species, compared to others, 
+may account for the lower than expected values of realized 
+FD in H and the low values in VL plots. However, most of 
+the predators trapped, especially ladybeetles, were trapped 
+in the H and VL plots. Leucanthemum vulgare is typically 
+visited by hoverﬂ ies, ladybeetles and lacewings (Ricci et 
+al., 2005; Carrié et al., 2012; Wäckers & Van Rijn, 2012), 
+because it is a rich source of nectar and pollen (Brodie et 
+al., 2015). This resource might be of particular beneﬁ t to 
+ladybeetles, for which pollen is one its most nutritious non-
+prey food sources, enabling them to complete their devel-
+opment and survive when prey are scarce (Berkvens et al., 
+2008; Lundgren, 2009).
+Adult hoverﬂ ies exclusively feed on ﬂ owers, with pol-
+len providing a source of proteins that directly inﬂ uence 
+their fecundity, while nectar is a source of sugars, provid-
+ing energy and increasing their longevity and foraging 
+capacity (Laubertie et al., 2012; Van Rijn et al., 2013). 
+Thus, any ﬂ ower that was abundant in the mixtures and 
+produced nectar (i.e. ﬂ owers with shallow ﬂ orets, because 
+hoverﬂ ies have a short proboscis; Van Rijn & Wäckers, 
+2016) and pollen are likely to be attractive. For instance, 
+the Asteraceae, Achillea millefolium, is typically visited 
+by hoverﬂ ies (Salveter, 1998; Tooker et al., 2006; Car-
+rié et al., 2012) and enhances their longevity (Van Rijn & 
+Wäckers, 2016). In our study, A. millefolium was present 
+in every ﬂ ower mixture, and was quite abundant in most 
+plots (Table 2). The presence of this species might have 
+resulted in hoverﬂ ies being equally distributed across the 
+different treatments. Moreover, ladybeetles and hoverﬂ ies 
+are sensitive to colour, especially yellow (Sutherland et al., 
+1999; Mondor et al., 2000). Hoverﬂ ies are also sensitive to 
+ﬂ owers with a contrasting UV-pattern (Koski & Ashman, 
+2014). Some species with these traits might have been at-
+tractive. For instance, Hypochaeris radicata was quite 
+abundant in L mixtures, especially in 2014, and might have 
+attracted hoverﬂ ies, resulting in their being slightly (but 
+not signiﬁ cantly) more numerous in plots with these than 
+other mixtures.
+Lacewings were less abundant than other predators in 
+both years. They might also have beneﬁ ted from a large 
+variety of ﬂ owers in the strips, as they are considered to 
+be opportunistic (Villenave et al., 2006). In addition, some 
+spontaneous weeds, such as C. arvense and R. obtusifolius 
+(the most abundant spontaneous plants listed in several 
+plots), might have attracted predators, as they often host 
+aphids that are prey for ladybeetle adults and the larvae 
+of all three predators studied (Salveter, 1998). This phe-
+nomenon might also explain why some individuals were 
+trapped in the control plots, even when few ﬂ oral resources 
+were available but with the values of the functional traits 
+differed enough to result in higher than expected values of 
+realized FD. 
+The presence of prey in adjacent crops might also have 
+attracted natural enemies out of the ﬂ ower strips, poten-
+tially explaining their generally low abundance in the mix-
+tures. Indeed, hoverﬂ y adults for instance search for aphid 
+colonies in which to lay their eggs after having fed on 
+ﬂ owers (Almohamad et al., 2009). While further analyses 
+are needed to conﬁ rm such a hypothesis, a higher abun-
+dance of natural enemies in adjacent crops than in WFS, 
+would enhance biological pest control. Despite the high-
+er FD of VH mixtures at sowing, and to some extent in 
+2014 and 2015 (Table 2), the low attraction of the WFS 
+to natural enemies might also be explained by the limited 
+establishment of some of the species sown. The cover of 
+Fig. 2. Mean (summed abundance recorded during seven weeks 
+of trapping each year divided by the three repetitions ± SEM) lady-
+beetle abundance in each mixture sown, based on their functional 
+diversity at sowing: C – control, VL – very low, L – low, H – high, 
+VH – very high.
+
+73
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+sown ﬂ ower species in the quadrats was low (except for A. 
+millefolium, which was also abundant in other mixtures) 
+and, some sown species, like Lythrum salicaria, were not 
+even recorded in the quadrats (Table 2). Moreover, some 
+of the plant species that established successfully could a 
+priori not provide food for hoverﬂ ies, ladybeetles or lace-
+wings, because of their ﬂ ower morphology. This is the case 
+for plants of both Fabaceae and Malvaceae, which have a 
+corolla that is too deep for e.g. hoverﬂ ies to access their 
+nectar (Wäckers & Van Rijn, 2012).
+The non-signiﬁ cant correlations between the sown and 
+realized FD indicate that it is difﬁ cult to obtain a certain 
+realized FD by sowing ﬂ ower mixtures. This may be due 
+to various factors such as the presence of spontaneous spe-
+cies, the better development of the most productive and 
+competitive, and the non-development of some sown spe-
+cies. Considering the optimal growing conditions (e.g. ex-
+posure to sun, humidity, soil disturbance) for the different 
+species on the one hand, and better balancing of the num-
+ber of seeds between the different species by also consider-
+ing their productivity and competitiveness (and not only 
+considering their weight as in this study) on the other hand, 
+may result in more diversiﬁ ed mixtures. Moreover, rather 
+than relying on mixture FD, sowing ﬂ ower species that 
+are known to support natural enemies might enhance their 
+presence in WFS, and even favour pest control in adjacent 
+crops. This is the “pick and mix” approach developed by 
+Wäckers & Van Rijn (2012) and successfully tested in 
+the ﬁ eld by Tschumi et al. (2014, 2015, 2016). Neverthe-
+less, WFS have to provide multiple ecosystem services, 
+including pollination, and participate in the conservation 
+of insect species that are endangered in agricultural land-
+scapes (Ekroos et al., 2014; Batáry et al., 2015). Within this 
+context, a higher diversity of arthropods could potentially 
+occur in ﬂ ower mixtures with a high FD. Indeed, Balzan et 
+al. (2014) report that the abundance of wild bees (Hyme-
+noptera) increases with FD. Depending on the objectives 
+assigned to WFS (i.e. enhancing pest control, pollination, 
+conservation, or all of these combined), different strategies 
+could be used when formulating ﬂ ower mixtures. 
+Within an agricultural context, sowing WFS is proposed 
+to enhance biodiversity conservation and ecosystem ser-
+vices, with doubts being raised about whether they will be a 
+source of pests infesting adjacent crops (Frank, 1998; Hatt 
+et al., 2015; Tscharntke et al., 2016). Moreover, it is worth 
+establishing the threshold at which increasing the mixture 
+of FD also improves its attraction for predators and shelters 
+pests. For instance, aphids use visual and olfactory cues to 
+locate host plants (Döring, 2014). Thus, increasing plant 
+functional diversity might increase the chance of including 
+more colours, UV patterns and odours that are attractive to 
+aphids. It is also possible, a higher diversity of trait values 
+might confuse aphids. For instance, when a high diversity 
+of colours is present, the attractive ones might be masked. 
+In parallel, if a large variety of odours is present, it might 
+not be possible to distinguish attractive cues. This effect of 
+diversiﬁ ed plant systems was ﬁ rst theorised by Root (1973) 
+in the Resource concentration hypothesis. This suggests 
+that diversiﬁ ed cropping systems (e.g. intercropping), or, 
+in the present case, diversiﬁ ed ﬂ ower strips, might be less 
+attractive to pests than monospeciﬁ c systems (Letourneau 
+et al., 2011; Lopes et al., 2016).
+The present study investigated an array of traits; howev-
+er, the selection was not exhaustive. Other traits could have 
+been chosen; for instance, traits related to the abundance 
+and quality of nectar and pollen (rather than just availabili-
+ty, as used here in the context of “ﬂ ower type” based on the 
+classiﬁ cation of Müller, 1881) or the proﬁ le of semiochem-
+ical volatiles emitted by ﬂ owers. Indeed, ﬂ ower visiting in-
+sects, particularly aphid predators, respond to nectar and 
+pollen abundance and quality, as well as odour (Laubertie 
+et al., 2006; Adedipe & Park, 2010; Laubertie et al., 2012). 
+Thus, it is necessary to screen a variety of ﬂ ower species 
+for these traits and establish their ability to attract and sup-
+port aphid predators, in order to advance our knowledge in 
+this ﬁ eld of research. As the value of the FD being tested 
+depends on the chosen traits, further ﬁ eld-based research 
+assessing different mixtures based on several other traits 
+should be implemented, with the objective of enhancing 
+the ability of WFS to deliver multiple ecosystem services 
+in agriculture.
+ACKNOWLEDGMENTS. The authors thank the Experimental 
+Farm of Gembloux Agro-Bio Tech (University of Liège) for pro-
+viding technical support, F. Van De Meutter (The Research Insti-
+tute for Nature and Forest – INBO, Belgium) for verifying hover-
+ﬂ y identiﬁ cations, the TRY initiative on plant traits (http://www.
+try-db.org) for providing the data on ﬂ ower traits, and the two 
+anonymous reviewers whose accurate comments and suggestions 
+improved the manuscript. The Belgian National Fund for Scien-
+tiﬁ c Research (FNRS) awarded FRIAs (Fonds pour la Recherche 
+en Industrie et Agronomie) PhD scholarship to T. Lopes. S. Hatt, 
+R. Uyttenbroeck, and this study in general was funded by CARE 
+AgricultureIsLife (University of Liège) and the Chinese Opening 
+Fund of State Key Laboratory for Biology of Plant Diseases and 
+Insect Pests (SKLOF201601).
+REFERENCES
+ADEDIPE F. & PARK Y.-L. 2010: Visual and olfactory preference of 
+Harmonia axyridis (Coleoptera: Coccinellidae) adults to vari-
+ous companion plants. — J. Asia-Pac. Entomol. 13: 316–323.
+ALMOHAMAD R., VERHEGGEN F. & HAUBRUGE É. 2009: Searching 
+and oviposition behavior of aphidophagous hoverﬂ ies (Di-
+ptera: Syrphidae): a review. — Biotechnol. Agron. Soc. Envi-
+ron. 13: 467–481.
+BALDI I., CORDIER S., COUMOUL X., ELBAZ A., GAMET-PAYRASTRE 
+L., LE BAILLY P., MULTIGNER L., RAHMANI R., SPINOSI J. & VAN 
+MAELE-FABRY G. 2013: Pesticides: Effets sur la Santé. Institut 
+national de la santé et de la recherche médicale, Paris, 1002 pp.
+BALZAN M.V., BOCCI G. & MOONEN A.-C. 2014: Augmenting 
+ﬂ ower trait diversity in wildﬂ ower strips to optimise the con-
+servation of arthropod functional groups for multiple agroeco-
+system services. — J. Insect Conserv. 18: 713–728.
+BALZAN M.V., BOCCI G. & MOONEN A.-C. 2016: Utilisation of 
+plant functional diversity in wildﬂ ower strips for the delivery 
+of multiple agroecosystem services. — Entomol. Exp. Appl. 
+158: 304–319.
+BARBOSA P.A. 1998: Conservation Biological Control. Academic 
+Press, San Diego, 420 pp.
+
+74
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+BATÁRY P., DICKS L.V., KLEIJN D. & SUNDERLAND W.J. 2015: The 
+role of agri-environment schemes in conservation and environ-
+mental management. — Conserv. Biol. 29: 1006–1016.
+BATES D., MAECHLER M., BOLKER B. & WALKER S. 2014: lme4: 
+Linear mixed-effects models using Eigen and S4. R package. 
+URL: http://CRAN.R-project.org/package=lme4
+BERKVENS N., BONTE J., BERKVENS D., DEFORCE K., TIRRY L. & DE 
+CLERCQ P. 2008: Pollen as an alternative food for Harmonia 
+axyridis. — BioControl 53: 201–210.
+BOTTA-DUKÁT Z. 2005: Rao’s quadratic entropy as a measure of 
+functional diversity based on multiple traits. — J. Veg. Sci. 16: 
+533–540.
+BRODIE B.S., SMITH M.A., LAWRENCE J. & GRIES G. 2015: Effects 
+of ﬂ oral scent, color and pollen on foraging decisions and oo-
+cyte development of common green bottle ﬂ ies. — PLoS ONE 
+10(12): e0145055, 15 pp.
+CAMPBELL A.J., BIESMEIJER J.C., VARMA V. & WÄCKERS F.L. 2012: 
+Realising multiple ecosystem services based on the response of 
+three beneﬁ cial insect groups to ﬂ oral traits and trait diversity. 
+— Basic Appl. Ecol. 13: 363–370.
+CAMPBELL D.R., BISCHOFF M., LORD J.M. & ROBERTSON A.W. 
+2010: Flower color inﬂ uences insect visitation in alpine New 
+Zealand. — Ecology 91: 2638–2649.
+CARRIÉ R.J.G., GEORGE D.R. & WÄCKERS F.L. 2012: Selection 
+of ﬂ oral resources to optimise conservation of agriculturally-
+functional insect groups. — J. Insect Conserv. 16: 635–640.
+CHITTKA L., SHMIDA A., TROJE N. & MENZEL R. 1994: Ultraviolet 
+as a component of ﬂ ower reﬂ ections, and the colour perception 
+of Hymenoptera. — Vision Res. 34: 1489–1508.
+COLLEY M.R. & LUNA J.M. 2000: Relative attractiveness of po-
+tential beneﬁ cial insectary plants to aphidophagous hoverﬂ ies 
+(Diptera: Syrphidae). — Environ. Entomol. 29: 1054–1059.
+DEVINE G.J. & FURLONG M.J. 2007: Insecticide use: Contexts and 
+ecological consequences. — Agric. Hum. Values 24: 281–306.
+DÍAZ S. & CABIDO M. 2001: Vive la différence: plant functional 
+diversity matters to ecosystem processes. — Trends Ecol. Evol. 
+16: 646–655.
+DÖRING T.F. 2014: How aphids ﬁ nd their host plants, and how 
+they don’t. — Ann. Appl. Biol. 165: 3–26.
+DRAY S. & DUFOUR A.B. 2007: The ade4 package: implement-
+ing the duality diagram for ecologists. — J. Stat. Softw. 22(4): 
+1–20.
+EKROOS J., OLSSON O., RUNDLÖF M., WÄTZOLD F. & SMITH H.G. 
+2014: Optimizing agri-environment schemes for biodiversity, 
+ecosystem services or both? — Biol. Conserv. 172: 65–71.
+EUROPEAN COMMISSION 2005: Agri-environment Measures. Over-
+view on General Principles, Types of Measures and Applica-
+tion. European Commission, Directorate General for Agricul-
+ture and Rural Development, Brussels, 24 pp.
+EVANS E.W. 2003: Searching and reproductive behaviour of fe-
+male aphidophagous ladybirds (Coleoptera: Coccinellidae): a 
+review. — Eur. J. Entomol. 100: 1–10.
+FASSOTTE B. 2016: Sexual Attraction in Lady Beetles: Fundamen-
+tals and Applications. PhD Thesis, University of Liège – Gem-
+bloux Agro-Bio Tech, Gembloux, 160 pp.
+FIEDLER A.K. & LANDIS D.A. 2007a: Attractiveness of Michigan 
+native plants to arthropod natural enemies and herbivores. — 
+Environ. Entomol. 36: 751–765.
+FIEDLER A.K. & LANDIS D.A. 2007b: Plant characteristics associ-
+ated with natural enemy abundance at Michigan native plants. 
+— Environ. Entomol. 36: 878–886.
+FONTAINE C., DAJOZ I., MERIGUET J. & LOREAU M. 2006: Function-
+al diversity of plant-pollinator interaction webs enhances the 
+persistence of plant communities. — PLoS Biol. 4: 129–135.
+FOSTER S.P., DEVINE G.J. & DEVONSHIRE A.L. 2007: Insecticide 
+resistance. In Van Emden H.F. & Harrington R. (eds): Aphids 
+Crop Pests. CABI, Cambridge, MA, pp. 261–286.
+FRANK T. 1998: The role of different slug species in damage to oil-
+seed rape bordering on sown wildﬂ ower strips. — Ann. Appl. 
+Biol. 133: 483–493.
+HAALAND C., NAISBIT R.E. & BERSIER L.-F. 2011: Sown wildﬂ ow-
+er strips for insect conservation: a review. — Insect Conserv. 
+Divers. 4: 60–80.
+HATT S., UYTTENBROECK R., LOPES T., PAUL A., DANTHINE S., BOD-
+SON B., PIQUERAY J., MONTY A. & FRANCIS F. 2015: Do wild-
+ﬂ ower strips favor insect pest populations at ﬁ eld margins? — 
+Agric. Agric. Sci. Procedia 6: 30–37.
+HATT S., LOPES T., BOERAEVE F., CHEN J. & FRANCIS F. 2017: Pest 
+regulation and support of natural enemies in agriculture: ex-
+perimental evidence of within ﬁ eld wildﬂ ower strips. — Ecol. 
+Eng. 98: 240–245.
+HODGE I., HAUCK J. & BONN A. 2015: The alignment of agricul-
+tural and nature conservation policies in the European Union. 
+— Conserv. Biol. 29: 996–1005.
+HOLLAND J.M., BIANCHI F.J.J.A., ENTLING M.H., MOONEN A.C., 
+SMITH B.M. & JEANNERET P. 2016: Structure, function and man-
+agement of semi-natural habitats for conservation biological 
+control: a review of European studies. — Pest Manag. Sci. 72: 
+1638–1651.
+KATTGE J., DÍAZ S., LAVOREL S., PRENTICE I.C., LEADLEY P., BÖNISCH 
+G., GARNIER E., WESTOBY M., REICH P.B., WRIGHT I.J. ET AL. 
+2011: TRY – a global database of plant traits. — Glob. Change 
+Biol. 17: 2905–2935.
+KOSKI M.H. & ASHMAN T.-L. 2014: Dissecting pollinator re-
+sponses to a ubiquitous ultraviolet ﬂoral pattern in the wild. 
+— Funct. Ecol. 28: 868–877.
+LAMBINON J., DELVOSALLE L. & DUVIGNEAUD J. 2004: Nouvelle 
+Flore de Belgique, du Grand-Duché de Luxembourg, du Nord 
+de la France et des Régions Voisines. 5th ed. Jardin Botanique 
+National de Belgique, Meise, 1167 pp.
+LAMBINON J., DE LANGHE J.-E., DELVOSALLE L. & DUVIGNEAUD 
+J. 2008: Flora van België, het Groothertogdom Luxemburg, 
+Noord-Frankrijk en de Aangrenzende Gebieden. Nationale 
+Plantentuin van België, Meise, 1091 pp.
+LANDIS D.A., WRATTEN S.D. & GURR G.M. 2000: Habitat manage-
+ment to conserve natural enemies of arthropod pests in agricul-
+ture. — Annu. Rev. Entomol. 45: 175–201.
+LAUBERTIE E.A., WRATTEN S.D. & SEDCOLE J.R. 2006: The role 
+of odour and visual cues in the pan-trap catching of hoverﬂ ies 
+(Diptera: Syrphidae). — Ann. Appl. Biol. 148: 173–178. 
+LAUBERTIE E.A., WRATTEN S.D. & HEMPTINNE J.-L. 2012: The con-
+tribution of potential beneﬁ cial insectary plant species to adult 
+hoverﬂ y (Diptera: Syrphidae) ﬁ tness. — Biol. Contr. 61: 1–6.
+LETOURNEAU D.K., ARMBRECHT I., RIVERA B.S., LERMA J.M., CAR-
+MONA E.J., DAZA M.C., ESCOBAR S., GALINDO V., GUTIÉRREZ C., 
+LÓPEZ S.D. ET AL. 2011: Does plant diversity beneﬁ t agroeco-
+systems? A synthetic review. — Ecol. Appl. 21: 9–21.
+LOPES T., HATT S., XU Q., CHEN J., LIU Y. & FRANCIS F. 2016: 
+Wheat (Triticum aestivum L.)-based intercropping systems 
+for biological pest control: a review. — Pest Manag. Sci. 72: 
+2193–2202.
+LU Z.-X., ZHU P.-Y., GURR G.M., ZHENG X.-S., READ D.M.Y., 
+HEONG K.-L., YANG Y.-J. & XU H.-X. 2014: Mechanisms for 
+ﬂ owering plants to beneﬁ t arthropod natural enemies of insect 
+pests: Prospects for enhanced use in agriculture. — Insect Sci. 
+21: 1–12.
+LUNDGREN J.G. 2009: Nutritional aspects of non-prey foods in the 
+life histories of predaceous Coccinellidae. — Biol. Contr. 51: 
+294–305.
+
+75
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+MCKENZIE A.J., EMERY S.B., FRANKS J.R. & WHITTINGHAM M.J. 
+2013: Landscape-scale conservation: collaborative agri-envi-
+ronment schemes could beneﬁ t both biodiversity and ecosys-
+tem services, but will farmers be willing to participate? — J. 
+Appl. Ecol. 50: 1274–1280.
+MILLER N., AL DOBAI S., LEGASPI J. & SIVINSKI J. 2013: Estimat-
+ing attraction of Syrphidae (Diptera) to ﬂ owering plants with 
+interception traps. — Biocontr. Sci. Technol. 23: 1040–1052.
+MONDOR E.B. & WARREN J.L. 2000: Unconditioned and condi-
+tioned responses to colour in the predatory coccinellid, Harmo-
+nia axyridis (Coleoptera: Coccinellidae). — Eur. J. Entomol. 
+97: 463–467.
+MÜLLER H. 1881: Alpenblumen, ihre Befruchtung durch Insek-
+ten und ihre Anpassungen an dieselben. Wilhelm Engelmann, 
+Leipzig, 612 pp.
+PYWELL R.F., BULLOCK J.M., HOPKINS A., WALKER K.J., SPARKS 
+T.H., BURKE M.J.W. & PEEL S. 2002: Restoration of species-
+rich grassland on arable land: assessing the limiting processes 
+using a multi-site experiment. — J. Appl. Ecol. 39: 294–309.
+R CORE TEAM 2013: R: A Language and Environment for Sta-
+tistical Computing. R Foundation for Statistical Computing, 
+Vienna.
+RAND T.A., TYLIANAKIS J.M. & TSCHARNTKE T. 2006: Spillover 
+edge effects: the dispersal of agriculturally subsidized insect 
+natural enemies into adjacent natural habitats. — Ecol. Lett. 
+9: 603–614.
+RICCI C., PONTI L. & PIRES A. 2005: Migratory ﬂ ight and pre-
+diapause feeding of Coccinella septempunctata (Coleoptera) 
+adults in agricultural and mountain ecosystems of Central Italy. 
+— Eur. J. Entomol. 102: 531–538.
+ROOT R.B. 1973: Organization of a plant-arthropod association 
+in simple and diverse habitats: the fauna of collards (Brassica 
+oleracea). — Ecol. Monogr. 43: 95–124.
+ROY H.E., BROWN P.M.J., COMONT R.F., POLAND R.L. & SLOGGETT 
+J.J. 2013: Ladybirds. Pelagic Publishing, Exeter, 142 pp.
+SALVETER R. 1998: The inﬂ uence of sown herb strips and sponta-
+neous weeds on the larval stages of aphidophagous hoverﬂ ies 
+(Dipt., Syrphidae). — J. Appl. Entomol. 122: 103–114.
+SAN MARTIN G. 2004: Clé de Détermination des Chrysopidae de 
+Belgique. Jeune et Nature asbl, Wavre, 43 pp.
+SCHALLER M. & NENTWIG W. 2000: Olfactory orientation of the 
+seven-spot ladybird beetle, Coccinella septempuctata (Coleo-
+ptera: Coccinellidae): Attraction of adults to plants and conspe-
+ciﬁ c females. — Eur. J. Entomol. 97: 155–159.
+SERVICE PUBLIC DE WALLONIE 2014: Cartes des Sols de Wallonie. 
+URL: http://geoapps.wallonie.be/CigaleInter/#CTX=CNSW# 
+BBOX=172556.38064514095,175228.67765640165,139464
+.25249213536,140017.23276476256 (last accessed 28 Nov. 
+2016).
+SUTHERLAND J.P., SULLIVAN M.S. & POPPY G.M. 1999: The inﬂ u-
+ence of ﬂ oral character on the foraging behaviour of the hover-
+ﬂ y, Episyrphus balteatus. — Entomol. Exp. Appl. 93: 157–164.
+TOOKER J.F., HAUSER M. & HANKS L.M. 2006: Floral host plants of 
+Syrphidae and Tachinidae (Diptera) of central Illinois. — Ann. 
+Entomol. Soc. Am. 99: 96–112.
+TSCHARNTKE T., KARP D.S., CHAPLIN-KRAMER R., BATÁRY P., DE-
+CLERCK F., GRATTON C., HUNT L., IVES A.R., JONSSON M., LARS-
+EN A. ET AL. 2016: When natural habitat fails to enhance bio-
+logical pest control – Five hypotheses. — Biol. Conserv. 204: 
+449–458.
+TSCHUMI M., ALBRECHT M., ENTLING M.H. & JACOT K. 2014: 
+Targeted ﬂ ower strips effectively promote natural enemies of 
+aphids. — IOBCwprs Bull. 100: 131–135.
+TSCHUMI M., ALBRECHT M., ENTLING M.H. & JACOT K. 2015: High 
+effectiveness of tailored ﬂ ower strips in reducing pests and 
+crop plant damage. — Proc. R. Soc. (B) 282: 20151369, 8 pp.
+TSCHUMI M., ALBRECHT M., COLLATZ J., DUBSKY V., ENTLING M.H., 
+NAJAR-RODRIGUEZ A.J. & JACOT K. 2016: Tailored ﬂ ower strips 
+promote natural enemy biodiversity and pest control in potato 
+crops. — J. Appl. Ecol. 53: 1169–1176.
+TURNBULL L.A., REES M. & CRAWLEY M.J. 1999: Seed mass and 
+the competition/colonization trade-off: a sowing experiment. 
+— J. Ecol. 87: 899–912.
+UYTTENBROECK R., HATT S., PAUL A., BOERAEVE F., PIQUERAY J., 
+FRANCIS F., DANTHINE S., FRÉDERICH M., DUFRÊNE M., BODSON 
+B. ET AL. 2016: Pros and cons of ﬂ owers strips for farmers: a 
+review. — Biotechnol. Agron. Soc. Environ. 20: 225–235.
+VAN RIJN P.C.J. & WÄCKERS F.L. 2010: The suitability of ﬁ eld 
+margin ﬂ owers as food source for zoophagous hoverﬂ ies. — 
+IOBCwprs Bull. 56: 125–128.
+VAN RIJN P.C.J. & WÄCKERS F.L. 2016: Nectar accessibility deter-
+mines ﬁ tness, ﬂ ower choice and abundance of hoverﬂ ies that 
+provide natural pest control. — J. Appl. Ecol. 53: 925–933.
+VAN RIJN P.C.J., KOOIJMAN J. & WÄCKERS F.L. 2013: The contri-
+bution of ﬂ oral resources and honeydew to the performance of 
+predatory hoverﬂ ies (Diptera: Syrphidae). — Biol. Contr. 67: 
+32–38.
+VAN VEEN M.P. 2010: Hoverﬂ ies of Northwest Europe: Identiﬁ ca-
+tion Keys to the Syrphidae. KNNV, Zeist, 248 pp.
+VANDEREYCKEN A., DURIEUX D., JOIE E., SLOGGETT J.J., HAUBRUGE 
+É. & VERHEGGEN F.J. 2013: Is the multicolored Asian ladybee-
+tle, Harmonia axyridis, the most abundant natural enemy to 
+aphids in agroecosystems? — J. Insect Sci. 13(158): 14 pp.
+VATTALA H.D., WRATTEN S.D., VATTALA C.B., PHILLIPS F.L. & 
+WÄCKERS F.L. 2006: The inﬂ uence of ﬂ ower morphology and 
+nectar quality on the longevity of a parasitoid biological con-
+trol agent. — Biol. Contr. 39: 179–185.
+VENABLES W.N. & RIPLEY B.D. 2002: Modern Applied Statistics 
+with S. 4th ed. Springer, New York, xi + 495 pp.
+VER HOEF J.M. & BOVENG P.L. 2007: Quasi-poisson vs. nega-
+tive binomial regression: how should we model overdispersed 
+count data? — Ecology 88: 2766–2772.
+VILLENAVE J., DEUTSCH B., LODÉ T. & RAT-MORRIS E. 2006: Pollen 
+preference of the Chrysoperla species (Neuroptera: Chrysopi-
+dae) occurring in the crop environment in western France. — 
+Eur. J. Entomol. 103: 771–777.
+VIOLLE C., NAVAS M.-L., VILE D., KAZAKOU E., FORTUNEL C., HUM-
+MEL I. & GARNIER E. 2007: Let the concept of trait be func-
+tional! — Oikos 116: 882–892.
+WÄCKERS F. 2004: Assessing the suitability of ﬂ owering herbs as 
+parasitoid food sources: ﬂ ower attractiveness and nectar acces-
+sibility. — Biol. Control 29: 307–314.
+WÄCKERS F.L. & VAN RIJN P.C.J. 2012: Pick and mix: selecting 
+ﬂ owering plants to meet the requirements of target biological 
+control insects. In Gurr G.M., Wratten S.D., Snyder W.E., & 
+Read D.M.Y. (eds): Biodiversity and Insect Pests: Key Issues 
+for Sustainable Management. John Wiley & Sons, Chichester, 
+pp. 139–165.
+WRATTEN S.D., BOWIE M.H., HICKMAN J.M., EVANS A.M., SEDCOLE 
+J.R. & TYLIANAKIS J.M. 2003: Field boundaries as barriers to 
+movement of hover ﬂ ies (Diptera: Syrphidae) in cultivated 
+land. — Oecologia 134: 605–611.
+ZHANG W., RICKETTS T.H., KREMEN C., CARNEY K. & SWINTON 
+S.M. 2007: Ecosystem services and dis-services to agriculture. 
+— Ecol. Econ. 64: 253–260.
+Received October 12, 2016; revised and accepted January 13, 2017
+Published online January 27, 2017
+
+76
+Hatt et al., Eur. J. Entomol. 114: 66–76, 2017 
+doi: 10.14411/eje.2017.010
+Table S1. Traits of each ﬂ ower species considered to constitute the mixtures. Traits were retrieved from Lambinon et al. (2008) and the 
+TRY database (Kattge et al., 2011).
+Flower species
+Colour UV periphery 
+(%)
+UV
+pattern
+Blooming 
+start
+Blooming 
+duration 
+(months)
+Max. height 
+(cm)
+Flower type (Müller, 1881)
+Achillea millefolium 
+White
+3.5
+No
+June
+6
+45
+Associations with totally hidden nectar
+Anthriscus sylvestris
+White
+3.5
+No
+May
+2
+120
+Open nectaries
+Crepis biennis
+Yellow
+33.5
+Yes
+June
+3
+120
+Associations with totally hidden nectar
+Galium verum
+Yellow
+3.5
+No
+May
+5
+80
+Open nectaries
+Geranium pyrenaicum
+Violet
+76
+Yes
+May
+5
+60
+Totally hidden nectar
+Heracleum sphondylium White
+3.5
+No
+June
+3
+150
+Open nectaries
+Hypericum perforatum
+Yellow
+53
+Yes
+July
+3
+60
+Pollen ﬂ owers
+Hypochaeris radicata 
+Yellow
+33.5
+Yes
+June
+4
+60
+Associations with totally hidden nectar
+Knautia arvensis
+Violet
+3.5
+No
+June
+4
+60
+Associations with totally hidden nectar
+Leontodon hispidus 
+Yellow
+53
+Yes
+June
+5
+40
+Associations with totally hidden nectar
+Leucanthemum vulgare
+White
+3.5
+No
+May
+4
+60
+Associations with totally hidden nectar
+Lotus corniculatus
+Yellow
+3.5
+No
+May
+5
+30
+Bee ﬂ owers
+Lythrum salicaria
+Violet
+76
+Yes
+June
+4
+150
+Totally hidden nectar
+Malva moschata
+Violet
+53
+Yes
+July
+3
+80
+Totally hidden nectar
+Medicago lupulina
+Yellow
+3.5
+No
+April
+7
+50
+Hymenoptera ﬂ owers
+Origanum vulgare
+Violet
+11.5
+No
+July
+3
+80
+Totally hidden nectar
+Prunella vulgaris
+Violet
+76
+Yes
+July
+3
+50
+Hymenoptera ﬂ owers
+Ranunculus acris
+Yellow
+21.5
+Yes
+May
+5
+90
+Partly hidden nectar
+Silene latifolia
+White
+21.5
+Yes
+May
+6
+90
+Moth ﬂ owers
+Trifolium pratense
+Violet
+3.5
+No
+May
+6
+50
+Bee ﬂ owers

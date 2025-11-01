@@ -1,0 +1,1175 @@
+Contents lists available at ScienceDirect
+Journal of Environmental Management
+journal homepage: www.elsevier.com/locate/jenvman
+Research article
+Plant functional diversity drives carbon storage following vegetation
+restoration in Loess Plateau, China
+Yang Yanga,b,c, Yanxing Doua, Huan Chengd, Shaoshan Ana,∗
+a State Key Laboratory of Soil Erosion and Dryland Farming on the Loess Plateau, Northwest A&F University, Yangling, 712100, China
+b State Key Laboratory of Loess and Quaternary Geology, Institute of Earth Environment, Chinese Academy of Sciences, Xi'an, 710061, China
+c CAS Center for Excellence in Quaternary Science and Global Change, Xi'an, 710061, China
+d Department of Biology, University of Maryland, College Park, MD, 20742, USA
+A R T I C L E I N F O
+Keywords:
+C storage
+Structural equation model
+Functional diversity
+Vegetation restoration
+Loess plateau
+A B S T R A C T
+Ongoing climatic changes induced by human activities increases in atmospheric carbon dioxide (CO2), which
+have considerable eﬀects on the structure and function of ecosystems, including carbon (C) storage, plant
+functional traits and therefore on a wide set of ecosystem services. Plant functional diversity is beneﬁt to im-
+prove plant photosynthesis and enhance C eﬃciency and therefore decrease CO2. Here, the focus of this article is
+on integrating of plant functional diversity and C storage, which aims to contribute to C sequestration for climate
+change mitigation following vegetation restoration in Loess Plateau, China. Firstly, the CWM (plant community-
+weighted mean) traits of the most abundant plant species can account for C storage in AGBC (above-ground
+biomass C), ALC (above-ground litter C), STC (soil total carbon) and TEC (total ecosystem carbon). Secondly, the
+CWM of plant height and LCC (leaf carbon concentration) had a positive eﬀect C storage in diﬀerent part (AGBC,
+ALC, STC and TEC), while the CWM of LNC (leaf nitrogen concentration) and SLA (speciﬁc leaf area) had a
+negative eﬀect on C storage in diﬀerent part. Further, the CWM of plant height, LCC, SLA and plant functional
+dispersion (FDis) can be used to predict C storage by multiple linear regression analysis. Finally, the positive
+association between FDis and C storage was found in SEM, shedding light on the key role of plant functional
+diversity driving C storage following vegetation restoration. The ﬁndings presented here highlight the im-
+portance of both plant traits of dominant species and plant functional diversity in regulating C storage, and show
+that favorable climate conditions, particularly vegetation restoration, tend to increase C storage and plant
+functional diversity, which have important implications for improving global C cycling and ecosystem services.
+1. Introduction
+Ongoing climatic changes induced by large-scale human activities
+increases in atmospheric CO2 since the early 19th century and re-
+presents one of the biggest scientiﬁc and political challenges of the 21st
+century (Nolan et al., 2018; De Nijs et al., 2019). At present, China has
+the largest annual CO2 emissions in the world, and reducing CO2
+emissions to mitigate regional and global climate change is one of the
+most challenging issues facing humanity (Fang et al., 2018; Chen et al.,
+2019). As a consequence, increasing in atmospheric CO2 have con-
+siderable eﬀects on the structure and function of ecosystems, including
+C storage, plant functional traits and therefore on a wide set of eco-
+system services (Chen et al., 2018; Liu et al., 2018). So plant functional
+traits are beneﬁt to improve plant photosynthesis and enhance C eﬃ-
+ciency and therefore mitigate the increasing in atmospheric CO2.
+Currently, we know little about how plant functional traits drive C
+storage (plant C, soil C, and the whole ecosystem C storage) (Kunstler
+et al., 2015; Anne et al., 2018). Growing evidence have shown that
+plant functional traits strongly aﬀected plant growth, species richness,
+biomass and C storage (Pietsch et al., 2014; Moreau et al., 2015; Fang
+et al., 2018), and there was the evolutionary trade-oﬀs between C ac-
+quisition and decomposition (Gardarin et al., 2014; Moreau et al.,
+2015). For example, acquisitive resource use syndromes are char-
+acterized by the combination of attributes such as high SLA (speciﬁc
+leaf area), high LNC (leaf nitrogen concentration), and low LDMC (leaf
+dry matter content) (Ruiz-Benito et al., 2014; Moreau et al., 2015; Chen
+et al., 2018). They are consistently associated with high C input through
+photosynthesis and also high C losses through decomposition (Dı́az and
+Cabido, 2001; Elmqvist et al., 2003; Lu et al., 2018; Wang et al., 2018).
+On the other hand, plants traits associated with the large plant biomass,
+plant height and LDMC, are therefore expected to directly inﬂuence C
+storage in above-ground and below-ground (Mokany et al., 2008;
+https://doi.org/10.1016/j.jenvman.2019.06.054
+Received 23 April 2019; Received in revised form 10 June 2019; Accepted 11 June 2019
+∗Corresponding author.
+E-mail address: shan@ms.iswc.ac.cn (S. An).
+Journal of Environmental Management 246 (2019) 668–678
+0301-4797/ © 2019 Elsevier Ltd. All rights reserved.
+T
+
+Schmidt et al., 2011; Zuppinger-Dingley et al., 2014). Plant functional
+diversity, the extent of functional diﬀerences among plant species, is
+one of the most important plant trait that closely linked to C cycling
+(Tilman et al., 1997; Petchey and Gaston, 2002; He et al., 2017; Xu
+et al., 2018). Large numbers of evidence conformed that plant func-
+tional diversity can be regarded as the main indicator for forecasting C
+storage (Chen et al., 2014; Handa et al., 2014; Smiseth et al., 2014). In
+this case, the abundant plant CWMs (community weighted mean) pri-
+marily supported to the biomass ratio hypothesis (Grime, 1998), which
+proposed that ecosystem function and C storage were mainly driven by
+the abundant of plant CWMs (Cong et al., 2015; Fatichi et al., 2014;
+Wang et al., 2015; Latz et al., 2016). Thus, the abundant of plant CWMs
+have been proven to be the dominant factors in determining ecosystem
+function and C storage. Meanwhile, multi-traits of functional dispersion
+(FDis), weighted by plant relative abundances, could also enhance
+ecosystem function and C storage (Zuo et al., 2016a; Zuo et al., 2016b;
+Fang et al., 2018). Previous studies have reported that FDis had a po-
+sitive eﬀect on ecosystem function and C storage in order to get the
+more resource niches, supporting the niche-complementarity hypoth-
+esis (Flynn et al., 2011; Gardarin et al., 2014; Harrison et al., 2018). For
+Nomenclature
+Af
+artiﬁcial forest
+Al
+abandoned land
+Ns
+natural shrub
+FDis
+functional dispersion
+AGBC
+above-ground biomass carbon
+STC
+soil total carbon
+SLA
+speciﬁc leaf area
+LCC
+leaf carbon content
+AGB
+above-ground biomass
+BA
+basal area
+SOC
+soil organic carbon
+D
+soil thickness
+Ag
+artiﬁcial grassland
+Ng
+natural grassland
+FDvar
+functional trait dispersion index
+CWM
+plant community-weighted mean
+ALC
+above-ground litter carbon
+TEC
+total ecosystem carbon
+LDMC
+leaf dry matter content
+LNC
+leaf nitrogen content
+DBH
+diameter at breast height
+CA
+crown area
+BD
+soil bulk density
+H
+height
+Fig. 1. Location of the study area and layout of the plot, and the picture of the main type of vegetation restoration. The pictures were phoned by Yanxing Dou in July
+2016, and generated by ArcMap Version 10.2 (http://www.esri.com/).
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+669
+
+example, the higher FDis with the diverging values of resource niches,
+would lead to an increase in niche-complementarity, and then resulting
+in the higher biomass and C storage. As expected, more evidence de-
+monstrated that niche-complementarity hypotheses and biomass ratio
+co-regulated ecosystem function and C storage, while they are not ne-
+cessarily mutually exclusive (Conti and Díaz, 2013; Bragina et al., 2013;
+Wu et al., 2016).
+The Loess Plateau of China is one of the most eroded areas and
+deepest loess deposits in the world (Fu et al., 2017). To reduce soil
+water and C loss, soil erosion, the Chinese Government launched a
+series of remarkable programs in the 1980s (Chen et al., 2015; Feng
+et al., 2016). Thereafter, the Grain-for-Green program largely con-
+tribute to maintaining soil conservation, improving C sequestration
+since 1999 (Fu et al., 2011). Indeed, a large area of abandoned farm-
+land has been converted to a natural grass-land/shrub-land (natural
+restoration) or artiﬁcial forest (artiﬁcial restoration). Subsequently,
+natural restoration and artiﬁcial restoration became the two most
+successful ecological restoration methods (Li et al., 2017; Tong et al.,
+2018). In fact, artiﬁcial restoration has been regarded as an eﬀective
+measure for promoting ecosystem restoration by mitigating CO2 con-
+centrations in the atmosphere (Li et al., 2017; Nave et al., 2018), ac-
+celerating soil C sequestration and leading to the increase of soil C
+storage (Li et al., 2012; Lange et al., 2015; Lal, 2018). In contrast to
+artiﬁcial restoration, natural restoration promotes the ecosystem bio-
+geochemical cycles (particularly soil microbial community activity) by
+a natural enclosure process (Li et al., 2017; Tong et al., 2018). Most
+importantly, both of artiﬁcial restoration and natural restoration can
+increase C storage by present studies. For instance, Yang et al. (2018)
+declared that soil C storage had a strong increase due to vegetation
+restoration. Similarly, soil nutrients (Zhang et al., 2016) or the other
+environmental variables make a large contribution to C storage (Karhu
+et al., 2014; Laforestlapointe et al., 2017; Geml and Wagner, 2018;
+Tripathi et al., 2018). Whereas, how plant functional diversity changed
+following vegetation restoration, and the relative contribution of plant
+functional diversity to C storage still largely unknown in this region.
+Plant functional diversity is beneﬁt to improve plant photosynthesis
+and enhance C eﬃciency and therefore decrease CO2. Estimates plant
+functional diversity following vegetation restoration are critical to
+predicting future ecosystem C sequestration under global change. Here,
+the focus of this article is on integrating of plant functional diversity
+and C storage, which aims to contribute to C sequestration for climate
+change mitigation following vegetation restoration in the Loess Plateau,
+China. Thus, we quantiﬁed FDis and CWMs and sought to disentangle
+how plant functional diversity drives C storage (i.e., STC, the soil total
+carbon; AGBC, the above-ground biomass carbon; ALC, the above-litter
+carbon; TEC, the total ecosystem carbon) following vegetation re-
+storation in the Loess Plateau. Three questions addressed: (1) How do
+dominant abundant plant species, plant functional diversity and C
+storage change following vegetation restoration? and (2) How do plant
+functional diversity drive C storage following vegetation restoration? If
+it doing so, we hypothesized that (i) Plant functional diversity aﬀects C
+storage through the dominant plant functional traits; (ii) C storage in
+diﬀerent part could be predicted by FDis or CWMs, based on biomass
+ratio hypothesis; (iii) C storage in diﬀerent part are positively asso-
+ciated with FDis, according to niche-complementarity hypothesis.
+2. Methods
+2.1. Sampling areas
+This study was carried out in northern of Shannxi province of the
+Loess Plateau, located in Zhifanggou (Fig. 1). The studied area has a
+semi-arid climate, and hills with steep slopes (more than 40%) and cliﬀs
+cover 90% of the region with a heavy periodic ﬂooding and seasonal
+rainfall with the loessal soil. The rainy season is from June to Sep-
+tember, while August occupied more than 20% of the total rainfall. The
+average annual temperature is from 5 to 9 °C, and the average annual
+rainfall was approximately 497 mm during two decades.
+2.2. Experimental design
+Five vegetation types were investigated: Af (artiﬁcial forest, Robinia
+pseudoacacia), Ag (artiﬁcial grassland, Sophora viciifolia), Ng (natural
+grassland, Stipa bungeana), Ns (natural shrub, Sophora davidii), Al
+(abandoned land, Medicago sativa). These vegetation types changed by
+diﬀerent land-use regimes, including diﬀerent intensities of extensive
+grazing and excess reclamation. Despite diﬀerences in the historic dis-
+turbance regime, currently there was the same soil type among these
+land use types. We set three replicate plots for each land use type
+(100 × 100 m) for a total of 45 plots. Each plots were at a distance of
+1 km apart, and three replicate sub-plots of 15 × 15 m, 5 × 5 m, and
+1 × 1 m were selected for forestland, shrub land, grassland in Sep.
+2016. We established ﬁve replicate sub-plots in the forest to quantify C
+in woody, litter and soil at a depth of 100 cm (0–20, 20–40, 40–60,
+60–80, 80–100 cm). Speciﬁcally, we measured more than 580 trees
+across
+the
+site,
+and
+we
+calculated
+diameter
+at
+breast
+height
+(DBH, > 5 cm diameter) and plant height, then estimated above-ground
+dry biomass by the allometric model in the following formula (Walker
+et al., 1999):
+AGB = exp [-0.548 + lg(BA)].
+(1)
+BA means the basal area (cm2), which was calculated by π*(DBH/
+2)2, DBH means the diameter at the breast height (cm).
+We established ﬁve replicate plots (5 × 5 m) to estimate the shrub
+biomass. more than 870 shrubs were measured across the site, and then
+calculated the individual shrub above-ground dry biomass (AGB) ac-
+cording to a general model as following (Jackson et al., 2002):
+AGB = 1.23×exp (−8.37 + In(CA)).
+(2)
+CA means the crown area (cm2), deﬁned as the circle, and calcu-
+lated by the projection diameter. We converted AGB to above-ground
+biomass C (AGBC) by multiplying 0.5, since C always represents ap-
+proximately 50% of the dry biomass.
+In addition, we harvested all above-ground biomass and litters from
+ﬁve plots (1 × 1 m) to obtain the dry biomass, which was collected
+from the ground surface. The above-ground biomass and litters were
+oven-dried at 80 °C until the constant weight (about 36 h) and then
+weighed. Besides, the dead above-ground biomass were also sampled
+but not considered in the ﬁnal calculations. Calculations indicated that
+the dead biomass represented only 0.1% of the total biomass, which
+was unlikely to aﬀect the results. In addition, we investigated plant
+coverage, plant height and the number of species in each site, and the
+vegetation characteristics, the land-use regimes following vegetation
+restoration are summarized in Supplementary Table 1.
+2.3. C storage
+The total herbaceous and woody vegetation represented the above-
+ground biomass C (AGBC, g·m−2). The total litter (i.e., the leaf litter and
+woody debris) represented the above-ground litter C (ALC, g·m−2), and
+we measured the C content of each plant species. The total soil C sto-
+rage (divided into ﬁve depths, 0–20, 20–40, 40–60, 60–80 and
+80–100 cm) was quantiﬁed by collecting soil from 0 to 100 cm (STC,
+g·m−2). STC was calculated (Deng et al., 2014):
+STC=SOC×BD×D/10
+(3)
+SOC means soil organic carbon (g·kg−1), BD means soil bulk density
+(g·cm−3), D means soil thickness (cm).
+Soil samples were collected along an S-shaped curve by a soil corer
+10 cm in diameter in each site, air-dried for 20 d, and sieved through a
+0.15-mm mesh. SOC was measured by the oxidation method in
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+670
+
+K2Cr2O7–H2SO4.
+TEC = ALC+AGBC+STC
+(4)
+TEC means the total ecosystem C.
+Meanwhile, latitude, longitude and altitude was determined using
+Global Position System (GPS).
+2.4. Plant functional traits and diversity
+To calculate plant trait values across all plots, 42 types of dominant
+species (a total of 57 species) were collected, since they could account
+for more than 90% of the total biomass and at least 75% of the total
+plant coverage. All the plant samples was conducted between 7:30–9:30
+a.m. to reduce relative error. Because of variation due to diﬀerent po-
+sitions, the leaves were collected from diﬀerent azimuths without the
+petiole, and at least six replicates with diﬀerent maturity and healthy
+individuals were collected in each plot. The plant functional traits of
+these dominant plant species presented in Supplementary Table 2.
+Generally, LCC, LNC and SLA, are the key traits in the ‘leaf eco-
+nomics spectrum’. LDMC and plant height are trade-oﬀto plant life
+history strategy and strong related to plant growth. Thus, we selected
+ﬁve key functional traits (i.e., plant height, the LCC, LNC, SLA and
+LDMC) that are known or expected to aﬀect the C dynamics and storage
+(Shipley et al., 2006; Santiago, 2007). The measurements of plant
+functional traits with the standard method in Supplementary Table 3.
+We calculated the dominant trait values by using by the average
+trait value, and then get the community weighted mean (CWM)
+(Villéger et al., 2008). The variety of an individual trait value re-
+presents the variance of a trait value, and FDvar (functional trait dis-
+persion index) weighted by each plant species' abundance (Mason et al.,
+2003):
+∑
+∑
+=
+⋅
+=
+⋅
+x
+pi xi
+x
+pi xi
+CWM(trait )
+.
+CWM(trait )
+.
+(5)
+=
+π
+FDvar
+2/
+arctan(5V),
+(6)
+∑
+=
+−
+V
+pi
+xi
+x
+(In
+In ) .
+2
+(7)
+CWM (traitx) refers to the community weighted mean for x trait, pi
+refers to the relative richness of species i, and xi refers to the trait value
+for the species i, V is plant volume of the species i.
+In addition, we calculated FDis (the functional dispersion) ac-
+cording to multiple traits, which reﬂects species divergence in distance,
+weighted by the multi-trait functional space. In this way, FDis should be
+closely related to complementarity eﬀects range between 0 and 1.
+2.5. Data analysis
+All the data analyses were done in Excel 2010 and SAS 9.4 software
+for windows (SAS Inc., Chicago, IL). Before parametric tests, we tested
+for the homogeneity of variance. An analysis of variance (ANOVA) and
+multiple comparisons were used to determine the least signiﬁcant dif-
+ference by Tukey's test. For all data tests, statistically signiﬁcant dif-
+ferences were assigned at p < 0.05 or p < 0.01. The statistical
+package FDi-versity v. 2011 was used to calculate all the functional
+diversity indices.
+Firstly, we used the linear regression analysis to disentangle asso-
+ciation between C storage and plant functional diversity. Given the
+strong correlations between several driving factors, we conducted a
+principal component analysis (PCA) of the standardized values of those
+parameters to identify the primary axes of covariation among the
+driving factors. Then, we used a Monte Carlo permutation test to de-
+termine the signiﬁcance of PCA eﬀects. Secondly, we selected the best
+Fig. 2. C storage in diﬀerent components following vegetation restoration. Diﬀerent lower-case letters indicate signiﬁcant diﬀerences at p < 0.05. artiﬁcial forest,
+Af; natural shrub, Ns; artiﬁcial grassland, Ag; natural grassland, Ng; abandoned land, Al.
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+671
+
+predictors for explaining C storage in diﬀerent part by the stepwise
+regression. Finally, structural equation modeling (SEM) was con-
+structed, and the path coeﬃcients were calculated after 999 bootstraps
+in AMOS (version 20.0). In SEM, we selected the speciﬁc variables that
+depend on the root mean square error of approximation (RMSEA,
+p < 0.05) and Akaike information criterion (AIC); then, we obtained
+the indirect and direct eﬀects from the interaction pathways. Finally,
+we assessed the ﬁtting goodness using the chi-squared tests (χ2).
+3. Results
+3.1. C storage and plant function diversity following vegetation restoration
+In this study, C storage in artiﬁcial forest (Af) and natural shrubs
+(Ns) followed the order TEC > AGBC > STC > ALC, with the lowest C
+storage in litter, whereas C storage in artiﬁcial grassland (Ag) followed
+the order TEC > STC > ALC > AGBC (Fig. 2). Compared with aban-
+doned land (Al), the average total ecosystem C storage of Af, Ns, Ag and
+Ng increased 16.79, 11.54, 1.20, and 3.86 times, respectively. More-
+over, C storage in litter was higher than in aboveground biomass in Ag
+(as shown in Fig. 2), litter C in Ng was substantially higher than other
+land use types. These ﬁndings suggested that vegetation restoration
+(artiﬁcial and natural vegetation restoration) could increase C storage
+in diﬀerent ecosystem components. In addition, the mainly C storage in
+Af, Ng, Ns stored in above ground, whereas the mainly C storage in Ag
+stored in litter. Besides, soil C storage in Al was 14.2–15.3 g m−2 at
+0–20 cm and 10.4–10.7 g m−2 at 80–100 cm, and no signiﬁcant diﬀer-
+ence in Al and Ag (p > 0.05). Soil C storage in Ng and Ns were ap-
+proximately 105.4–143.0 g m−1 at 0–100 cm, and higher than the other
+vegetation types (p > 0.05). As for AGBC, Ns was higher among land
+use types. TEC in Af, Ns, Ag and Ng were higher than Al and followed
+Af > Ns > Ng > Ag > Al. TEC in Ng was roughly half as much for the
+other land use types. These results provided a comprehensive com-
+parison for C storage. Besides, a similar vertical distribution of STC
+(gradually deceased with soil depth) was found following vegetation
+restoration.
+As a component of plant diversity, FDis provides an eﬀective
+method to study plant species distribution in niche space and resources,
+which has attracted a great deal of attention. We found that C storage is
+closely related to vegetation restoration (Fig. 3). Compared to Al, there
+was an increase in plant height regardless of vegetation types (Table 1).
+Both of LDMC and SLA in Ag were lower, and LCC in Af and Ns were
+higher among land use types. LNC in Ns and Ag were higher than Af, Ng
+and Al. FDis of SLA and LNC showed no signiﬁcant diﬀerences among
+vegetation types (p > 0.05). FDis of LDMC in Ag and Al were sig-
+niﬁcantly lower, and FDis of LCC in Ns was signiﬁcantly higher among
+vegetation types (p < 0.05). Besides, FDis in Al was signiﬁcantly lower
+among vegetation types (p < 0.05).
+Fig. 3. Correlation of C storage following vegetation restoration. * and ** indicates that the C storage were signiﬁcantly following vegetation restoration at 0.05 and
+0.01 level as detected by analysis of similarities (ANOSIM). The R values of ANOSIM results, which were calculated based on 999 permutations, can be observed
+under the dissimilarity value.
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+672
+
+3.2. Correlation analysis between C storage and functional diversity
+We examined the correlation between functional diversity and C
+storage in diﬀerent ecosystem compartments. Not unexpectedly, func-
+tional diversity was signiﬁcantly related to C storage in diﬀerent part
+(Supplementary Table 4). Speciﬁcally, the CWM of LCC and plant
+height were positively related to AGBC, ALC, STC and TEC (p < 0.01),
+while the CWM of LNC was negatively related to AGBC, ALC, STC and
+TEC (p < 0.01). The CWM of SLA and LDMC were positively related to
+TEC (p < 0.01). Besides, FDis was positively related to AGBC, ALC,
+STC and TEC (p < 0.01). Not unexpectedly, plant functional diversity
+was positively related to C storage in diﬀerent part. As a consequence,
+Table 1
+Changes in functional diversity components following vegetation restoration (Mean ± SE). Means followed by the same letter do not diﬀer signiﬁcantly at p ≤0.05
+by Duncan's multiple range test.
+Item
+Artiﬁcial restoration
+Abandoned land (Al)
+Natural restoration
+F
+p
+Artiﬁcial forest (Af)
+Artiﬁcial grassland (Ag)
+Natural grassland (Ng)
+Natural shrub (Ns)
+Community weighted mean (CWM)
+Height (cm)
+620.3 ± 23.5a
+30.3 ± 6.9d
+26.9 ± 3.6d
+81.6 ± 9.8c
+196.8 ± 18.4b
+56.32
+< 0.001
+SLA (m−2 kg−1)
+21.8 ± 3.2a
+13.3 ± 1.3c
+15.7 ± 2.8b
+14.5 ± 2.1bc
+19.6 ± 1.8a
+9.28
+< 0.01
+LDMC (g· kg−1)
+215.0 ± 23.6a
+120.5 ± 15.3d
+136.8 ± 15.9d
+174.2 ± 16.2c
+192.3 ± 19.8b
+42.01
+< 0.001
+LCC (%)
+45.7 ± 6.9a
+34.5 ± 4.2c
+35.1 ± 5.1c
+39.9 ± 6.1b
+43.0 ± 5.8a
+32.17
+< 0.001
+LNC (%)
+2.98 ± 0.56b
+3.26 ± 0.69a
+2.54 ± 0.61b
+2.85 ± 0.23b
+3.03 ± 0.41ab
+13.25
+< 0.05
+FDis
+0.09 ± 0.02c
+0.09 ± 0.01c
+0.005 ± 0.01d
+0.25 ± 0.05a
+0.19 ± 0.03b
+5.98
+< 0.05
+Height, plant height; SLA, speciﬁc leaf area; LDMC, leaf dry matter content, LCC, leaf carbon content, LNC, leaf nitrogen content. Diﬀerent lower-case letters indicate
+signiﬁcant diﬀerences at p < 0.05.
+Fig. 4. Simple linear regression analyses between the magnitude of C storage and functional diversity components following vegetation restoration. Only variables
+included in the multiple linear regression analysis are shown (n = 45).
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+673
+
+individual plant traits would be more appropriate to explain C storage
+according to linear regression models (Fig. 4). Among these plant
+functional traits, the CWM of plant height, SLA, LCC, LNC, and LDMC
+explained more variation for C storage in diﬀerent part. Speciﬁcally, the
+CWM of plant height could positively predict C storage except for STC.
+The CWM of SLA and LDMC positively predicted C storage in AGBC,
+ALC and TEC but not well explained C storage in STC. In addition, the
+CWM of LCC positively predicted C storage in diﬀerent part, and the
+CWM of LNC had no signiﬁcant relationship with C storage (p > 0.05).
+In total, all the plant functional diversity could explain C storage
+well in the diﬀerent part, only the single-trait indices explained C sto-
+rage well in the ﬁnal models (Table 3). Speciﬁcally, AGBC was posi-
+tively predicted by the CWM of plant height and LCC. ALC was best
+predicted by FDis and the CWM of plant height. STC was positively
+predicted by the CWM of SLA and plant height. Finally, TEC was ne-
+gatively predicted by FDis and the CWM of LDMC and plant height.
+3.3. Plant functional diversity drives C storage following vegetation
+restoration
+A principal component analysis (PCA) of plant functional traits were
+used to identify the correlations between C storage and functional di-
+versity components (Fig. 5A). PCA axis 1 primarily reﬂected plant
+height, LDMC, LCC, which accounted for 49.13% of the overall var-
+iance; axis 2 mainly reﬂected SLA, explaining 34.78% of the standar-
+dized variance, Suggesting that plant height, LDMC, LCC were posi-
+tively
+correlated
+with C storage,
+while LNC
+and SLA
+had
+no
+signiﬁcantly diﬀerence (p > 0.05). In addition, Partial correlations
+between the magnitude of C storage and functional diversity compo-
+nents was also similar to PCA analysis (Table 2).
+Based on theses above analyses, structural equation models (SEM)
+was built to summarize the pathways of the interactions between plant
+functional diversity and C storage (F=236.14, p=0.537, df = 27,
+χ2 = 6.52, GFI = 0.953, AIC = 156.31, RSMEA = 0.001) (Fig. 5B,
+Supplementary Table 5), and we tested for the possible inﬂuence in a
+priori structural equation model (Supplementary Fig. 1). The variation
+of all of the explanatory factors was 75.04%, indicating that this model
+could explain C storage well (p < 0.01). In the ﬁnal SEM, FDis was
+negatively related to the CWM of LNC and SLA, however, the CWM of
+SLA and LNC was negatively related to AGBC, ALC and TEC with the
+higher standard coeﬃcient. Similarly, the CWM of plant height and
+LCC, which showed a positive association with FDis, were regarded as
+the main predictors for C storage, suggesting that both the mass ratio
+hypothesis and the niche complementarity hypothesis were not mu-
+tually exclusive, they explain C storage in the ecosystem compartments
+together, which were agreement with the results from linear regression
+analyses. Further, SEM would provide a new insight to the underlying
+ecological relationships between FDis and C storage in the ecosystem
+compartments, such as, FDis increased with the increased species
+richness following vegetation restoration, supporting the evidence that
+the more rich species in ecosystem had the more C storage. This is re-
+lated to that the richness species enhanced above-ground biomass, and
+then resulted in a higher C storage. In total, increased CWMs of plant
+trait was not associated with species richness but with C storage in
+diﬀerent ecosystem compartments.
+4. Discussion
+4.1. C storage and plant function diversity following vegetation restoration
+C sequestration plays an important role in mitigating anthropogenic
+increases in atmospheric carbon dioxide (CO2). Compelling evidence
+indicates that large amounts of C have been lost because of the eﬀects of
+climate change and human disturbance (Nolan et al., 2018; De Nijs
+et al., 2019). Specially, previous studies have suggested that the in-
+creased C storage in Asian terrestrial ecosystems can primarily be at-
+tributed to considerable aﬀorestation and reforestation, especially
+China's vegetation restoration project (Chen et al., 2015; Feng et al.,
+2016). Recently, NASAEarth satellites showed that Earth has grown
+markedly greener since the turn of the millennium, and human activity
+in China and India dominate the greening of our planet, thanks to forest
+conservation and tree planting, as well as intense crop cultivation (Chen
+et al., 2019). Here, this study is focus on integrating the possible me-
+chanisms that plant functional diversity explaining C storage, and also
+test the links between plant functional diversity and C storage in the
+Loess Plateau. Here, three aspects of our study distinguished from
+previous studies. First, unlike few studies of the eﬀect of plant func-
+tional diversity on C storage, our study not only clariﬁed the changes of
+C storage and plant functional diversity in terms of vegetation re-
+storation, but also examined the relationships between plant functional
+diversity and C storage. Second, our study was conducted in the Loess
+Plateau, which has the world's highest rate of C erosion and faces severe
+C loss (Fu et al., 2017). It represents a rare exploration of an ecologi-
+cally important but vulnerable area in the world, and we focused on
+deciphering association between C storage and plant functional di-
+versity following vegetation restoration. The third and most important,
+our study demonstrated the positive association between plant func-
+tional diversity and C storage, providing an evidence that there were
+strong links between plant functional diversity and C storage regardless
+of vegetation restoration in the Loess Plateau.
+We found that vegetation restoration (artiﬁcial and natural re-
+storation) had a signiﬁcant eﬀect on C storage (Fig. 2). STC was sig-
+niﬁcantly higher in natural restoration (natural grassland, natural
+shrub) than in artiﬁcial restoration (artiﬁcial grassland, artiﬁcial
+forest), while AGBC was signiﬁcantly greater in artiﬁcial restoration
+(artiﬁcial forest) than in natural restoration (natural grassland, natural
+shrub). The ﬁndings revealed that STC increased following vegetation
+restoration. The possible reason maybe that vegetation restoration
+(Robinia pseudoacacia and Sophora davidii) were dominated by Legumi-
+nosae plants in this region, which are beneﬁcial to accumulate more
+Table 2
+Partial correlations between the magnitude of C storage and functional diversity components. The p values were calculated on the basis of 999 permutations
+irrespective of plant species.
+Item
+Total variance
+explained (84.36%)
+AGBC
+ALC
+STC
+TEC
+Partial correlation
+coeﬃcient
+Sig.
+Partial correlation
+coeﬃcient
+Sig.
+Partial correlation
+coeﬃcient
+Sig.
+Partial correlation
+coeﬃcient
+Sig.
+Height
+18.36
+0.725
+< 0.01**
+0.716
+< 0.01**
+0.396
+ns
+0.658
+< 0.01**
+SLA
+12.05
+0.201
+ns
+0.159
+ns
+0.251
+ns
+0.223
+ns
+LDMC
+13.47
+0.695
+< 0.01**
+0.671
+< 0.01**
+0.303
+ns
+0.685
+< 0.01**
+LCC
+17.95
+0.674
+< 0.01**
+0.759
+< 0.01**
+0.517
+< 0.05*
+0.701
+< 0.01**
+LNC
+0.68
+0.196
+ns
+0.257
+ns
+0.324
+ns
+0.216
+ns
+Note: Values in bold indicate a signiﬁcant diﬀerence. * and ** signify p < 0.05 and p < 0.01, respectively. ns, not signiﬁcant. AGBC, Aboveground biomass carbon;
+ALC, Aboveground litter carbon; STC, The soil total carbon; TEC, Total ecosystem carbon.
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+674
+
+nitrogen (N) by N-ﬁxing microorganisms, and then promote an increase
+in C storage (An et al., 2013; Deng et al., 2014). In particular, STC was
+higher in natural restoration (Ns, Ng), and AGBC was more higher
+compared to abandoned land (Al). Further, there was a large AGBC and
+TEC due to the large above-ground biomass, leading to more C storage.
+As for Al, a lower C input and higher C mineralization resulted in less C
+storage, because conventional tillage was still used in this area, which
+induced large C losses (Beare et al., 1994; Skjemstad et al., 2008).
+Overall, the ﬁndings conﬁrmed the fact that C storage has been in-
+creased due to vegetation restoration in the Loess Plateau.
+Moreover, the ﬁndings of the higher C storage in the surface soil
+layer do agree with the results from An (An et al., 2013), Wang (Fu
+et al., 2011), Deng (Deng et al., 2014), Fang (Fang et al., 2018) and Liu
+(Liu et al., 2018), because of the higher C input in the surface litters.
+However, this ﬁndings were not in agreement with the study of Fu (Fu
+et al., 2011) and Liu (Liu et al., 2018), who reported that soil C storage
+in artiﬁcial grassland (Ag) was slightly less than in abandoned land, nor
+did they agree with the results of Chen (Chen et al., 2015) and Tang
+(Tang et al., 2018), who reported that soil C storage in artiﬁcial
+grassland was signiﬁcantly higher in the top soil (0–20 cm). This is
+related to the management and regimes from government in land use
+types. Artiﬁcial grassland was mowed several times to feed cattle or
+sheep in this region, leading to a reduction in C storage, while artiﬁcial
+forest was usually managed with no application of chemical or organic
+fertilizer, resulting in the large plant biomass and C storage (Wang
+et al., 2010; Fu et al., 2011; Chen et al., 2015). Overall, conversion of
+the vegetation types in this region, i.e., vegetation restoration, could
+increase C storage in diﬀerent ecosystem compartments. Interestingly,
+the plant functional traits showed the similar variation trend with the C
+storage (Table 1), suggesting a strong links between plant functional
+traits and C storage.
+4.2. Plant functional diversity drives C storage following vegetation
+restoration
+The present study had shown how plant functional diversity ex-
+plained ecosystem C storage in terms of vegetation restoration in the
+Loess Plateau, which could be extensively discussed in the role of plant
+functional diversity eﬀects on ecosystem function. Specially, we found
+that C storage is closely related to vegetation restoration (Fig. 3) and
+apparently linked to plant functional diversity (Table 2; Fig. 4), sup-
+porting our ﬁrst hypothesis that plant functional diversity aﬀects C
+Table 3
+Final models obtained from multiple linear regression analysis of the magnitude of C storage and functional diversity components following vegetation restoration,
+using a stepwise ascending procedure. All multiple regression models were statistically signiﬁcant (p < 0.05). R2, regression adjusted coeﬃcient for the multiple
+regression model.
+Response variable (y)
+Model form
+Predictor variables (x)
+Slope
+p
+R2
+Aboveground biomass carbon (AGBC)
+AGBC = 38.25 + 2.14 Height-23.45 LCC
+Model
+< 0.001
+0.856
+Height
+–
+< 0.001
+LCC
++
+0.016
+Aboveground litter carbon (ALC)
+ALC = −19.58 + 1.27 Height+178.23 FDis
+Model
+< 0.001
+0.785
+Height
++
+< 0.001
+FDis
++
+0.029
+The soil total carbon (STC)
+STC = −985.36 + 22.58 Height+105.89 SLA
+Model
+< 0.001
+0.813
+Height
++
+< 0.001
+SLA
++
+< 0.001
+Total ecosystem carbon (TEC)
+TEC = −2154.62 + 54.13 Height+5231.47 FDis+11.02 LCC
+Model
+< 0.001
+0.874
+Height
++
+< 0.001
+FDis
++
+0.008
+LCC
++
+0.013
+Fig. 5. Principal component analysis of the magnitude of C storage and functional diversity components (A); Each arrow represents the eigenvector corresponding to
+an individual variable. PC1 accounted for 49.13% of the overall variance, and PC2 accounted for 34.78% of the overall variance. The structural equation model
+(SEM) of FDis and functional diversity components eﬀects on C storage (B). The structural equation model considered all plausible pathways through which CWM of
+plant functional traits inﬂuence C storage. Red, black arrows represent signiﬁcant positive and negative pathways, respectively. Bold numbers indicate the standard
+path coeﬃcients are signiﬁcant diﬀerence. Arrow width is strongly related to the path coeﬃcients. R2 represent the proportion of variance explained for each
+dependent variable in SEM. *, and ** indicate statistically signiﬁcant paths at p < 0.05, p < 0.01, respectively. (F=236.14, p=0.537, df = 27, χ2 = 6.52,
+GFI = 0.953, AIC = 156.31, RSMEA = 0.001, 75.04%). (For interpretation of the references to colour in this ﬁgure legend, the reader is referred to the Web version
+of this article.)
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+675
+
+storage through the dominant plant functional traits. Further, a strong
+relationship between C storage and plant functional diversity was found
+in diﬀerent ecosystem compartments (Fig. 4). This result indicates that
+plant functional diversity represents the abiotic variables and in-
+dependently explains C storage in diﬀerent ecosystem compartments.
+Speciﬁcally, the CWM of plant height was signiﬁcantly and positively
+correlated with ALC, AGBC, STC and TEC (p < 0.01), which explained
+C storage in regression analyses. Not surprisingly, the CWM of plant
+height was an important factor in explaining C storage. This can be
+explained by that the higher abundant species can increase plant bio-
+mass due to vegetation restoration, thus contributing to the higher C
+storage, and supporting the ﬁrst hypotheses that the trait values of the
+dominant abundant species could predict C storage in diﬀerent eco-
+system compartments (Wright et al., 2006; Weng et al., 2014; Xiao
+et al., 2014; Kammann et al., 2015; Nie et al., 2015). Besides, the CWM
+of plant traits (plant height, LCC) were signiﬁcantly and correlated to C
+storage in diﬀerent ecosystem compartments, supporting our second
+hypothesis that C storage in diﬀerent ecosystem compartments could be
+predicted by CWMs in accordance with the biomass ratio hypotheses.
+Most importantly, the positive association between C storage and plant
+functional diversity were found, providing an evidence that strong links
+between C storage and plant functional diversity regardless of vegeta-
+tion restoration in the Loess Plateau.
+In addition, PCA was used to identify the correlations between C
+storage and plant functional diversity (Fig. 5A), and we found that FDis
+was positively related to C storage in structural equation model (SEM)
+(Fig. 5B, Supplementary Table 5). This result partly supported the third
+hypothesis that a higher FDis was associated with greater C storage,
+suggesting that FDis has an important role in explaining C storage. This
+result is also consistent with other ﬁndings because diﬀerent plant
+species can use C in a complementary manner (Cornelissen and
+Cornwell, 2014; Prentice et al., 2014). On the one hand, dominant plant
+species increase the above-ground biomass, which is known as the
+“selection eﬀect” due to vegetation restoration. On the other hand, this
+is related to the “niche-complementarity eﬀect”—at a higher diversity,
+a greater range of plant functional diversity will be represented, pro-
+viding opportunities for more eﬃcient use of C resources (Fierer et al.,
+2005; Manzoni et al., 2011; McCormack et al., 2015). Following
+changes in dominant species and richness in vegetation restoration, C
+storage were mainly governed by litter quality, and the above- and
+under-ground biomass (Thakur et al., 2015; Freschet et al., 2015).
+Therefore, the links between the plant functional diversity and C sto-
+rage may primarily be explained either by the biomass ratio hypothesis
+or the niche-complementarity model (Cornelissen and Cornwell, 2014;
+Prentice et al., 2014). This result supported the ﬁndings that the mass
+ratio and niche-complementarity hypotheses in combination explain C
+storage. Besides, FDis was negatively related to the CWM of plant traits,
+and C storage was negatively related to the CWM of SLA and LNC with a
+higher standard coeﬃcient (Table 3). Similarly, the CWM of plant
+height and LCC, which showed a positive association with FDis, were
+regarded as signiﬁcant predictors for C storage. Giving the reason that
+plant height and LCC would improve microclimatic factors, such as soil
+temperature, humidity and natural resources, so plant height largely
+determines C storage. Therefore, we can get the conclusion that the
+FDis and CWM traits, together explained C storage, supporting most of
+previous studies (Walker et al., 1999; Berg and Meentemeyer, 2002;
+Murphy et al., 1998). These ﬁndings supported some previous results
+that FDis and CWM traits can explain C storage reported by Zuo (Zuo
+et al., 2016a) in Horqin sandy and Conti and Díaz (2013) in semi-arid
+forest ecosystems. These ﬁndings have important implications for im-
+proving global C cycling and ecosystem services. Although our results
+demonstrated that the major plant functional diversity-dominant trait
+values are the main drivers for C storage in Loess Plateau, the other
+environmental drivers (such as the climate factors, land use types,
+human management, temperature, precipitation and so on) aﬀecting C
+storage should be considered in further study.
+5. Conclusions
+In summary, we found the strong positive eﬀect of plant functional
+diversity on C storage, by increasing plant functional diversity, may
+enhance C storage, indicating that vegetation restoration contribute to
+plant functional diversity and C storage in the Loess Plateau, and the
+prevalence of particular trait combinations may also increase C storage.
+These results imply that increasing C storage can be better achieved by
+managing the functional composition of restored communities. So the
+implementation of vegetation restoration could be a quantitatively
+important strategy, and thus should be continually paid a great atten-
+tion.
+6. Practical implications
+Our study highlights the importance of both plant traits of dominant
+species and plant functional diversity in regulating C storage in the
+Loess Plateau. The current vegetation restoration can be greatly im-
+proved by incorporating plant functional diversity into C storage in the
+future, providing some guidance for management for C storage in terms
+of vegetation restoration. Thus, maintaining high levels of plant func-
+tional diversity can help sustain the beneﬁts of C storage and ecosystem
+services in the Loess Plateau.
+Acknowledgments
+This
+project
+was
+funded
+by
+the
+National
+Natural
+Sciences
+Foundation of China (41671280), Key foreign cooperation project of
+the Chinese Academy of Sciences (161461KYSB20170013) and Key
+cultivation project of the Chinese Academy of Sciences.
+Appendix A. Supplementary data
+Supplementary data to this article can be found online at https://
+doi.org/10.1016/j.jenvman.2019.06.054.
+References
+An, S.S., Darboux, F., Cheng, M., 2013. Revegetation as an eﬃcient means of increasing
+soil aggregate stability in Loess Plateau (China). Geoderma 209, 75–85. https://doi.
+org/10.1016/j.geoderma.2013.05.020.
+Anne, D., Isla, H.M., Evan, W., 2018. Plant functional trait change across a warming
+tundra biome. Nature 9. https://doi.org/10.1038/s41586-018-0563-7.
+Beare, M.H., Hendrix, P.F., Cabrera, M.L., Coleman, D.C., 1994. Aggregate-protected and
+unprotected organic matter pools in conventional-and no-tillage soils. Soil Sci. Soc.
+Am. J. 58, 787–795. https://doi.org/10.2136/sssaj1994.03615995005800030021x.
+Berg, B., Meentemeyer, V., 2002. Litter quality in a north European transect versus carbon
+storage potential. Plant Soil 242, 83–92. https://doi.org/10.1023/
+A:1019637807021.
+Bragina, A., Berg, C., Müller, H., Moser, D., Berg, G., 2013. Insights into functional
+bacterial diversity and its eﬀects on Alpine bog ecosystem functioning. Sci. Rep-UK 3
+1955. https://doi.org/10.2136/sssaj1994.03615995005800030021x.
+Chen, R., Senbayram, M., Blagodatsky, S., Myachina, O., Dittert, K., Lin, X., Kuzyakov, Y.,
+2014. Soil C and N availability determine the priming eﬀect: microbial N mining and
+stoichiometric decomposition theories. Glob. Chang. Biol. 20, 2356–2367. https://
+doi.org/10.1111/gcb.12475.
+Chen, M., Xue, Z., Xiang, Y., Darboux, F., An, S., 2015. Soil organic carbon sequestration
+in relation to revegetation in Loess Plateau, China. Plant Soil 397, 31–42. https://doi.
+org/10.1007/s11104-015-2486-5.
+Chen, S., Wang, W., Xu, W., Wang, Y., Wan, H., Chen, D., 2018. Plant diversity enhances
+productivity and soil carbon storage. Proc. Natl. Acad. Sci. Unit. States Am. 115,
+4027–4032. https://doi.org/10.1073/pnas.1700298114.
+Chen, C., Park, T., Wang, X., Piao, S., Xu, B., Chaturvedi, R.K., Tømmervik, H., 2019.
+China and India lead in greening of the world through land-use management. Nature
+sustainability 2 (2), 122. https://doi.org/10.1038/s41893-019-0220-7.
+Cong, J., Yang, Y., Liu, X., Lu, H., Liu, X., Zhou, J., Zhang, Y., 2015. Analyses of soil
+microbial community compositions and functional genes reveal potential con-
+sequences of natural forest succession. Sci. Rep-UK 5, 10007. https://doi.org/10.
+1038/srep10007.
+Conti, G., Díaz, S., 2013. Plant functional diversity and carbon storage-an empirical test in
+semi‐arid forest ecosystems. J. Ecol. 101, 18–28. https://doi.org/10.2307/23354662.
+Cornelissen, J.H., Cornwell, W.K., 2014. The Tree of Life in ecosystems: evolution of plant
+eﬀects on carbon and nutrient cycling. J. Ecol. 102, 269–274. https://doi.org/10.
+1111/1365-2745.12217.
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+676
+
+De Nijs, E.A., Hicks, L.C., Leizeaga, A., Tietema, A., Rousk, J., 2019. Soil microbial
+moisture dependences and responses to drying–rewetting: the legacy of 18 years
+drought. Glob. Chang. Biol. 25, 1005–1015. https://doi.org/10.1111/gcb.14508.
+Deng, L., Liu, G.B., Shangguan, Z.P., 2014. Land‐use conversion and changing soil carbon
+stocks in China's ‘Grain‐for‐Green’Program: a synthesis. Glob. Chang. Biol. 20,
+3544–3556. https://doi.org/10.1111/gcb.12508.
+Dı́az, S., Cabido, M., 2001. Vive la diﬀerence: plant functional diversity matters to eco-
+system processes. Trends Ecol. Evol. 16, 646–655. https://doi.org/10.1016/S0169-
+5347(01)02283-2.
+Elmqvist, T., Folke, C., Nyström, M., Peterson, G., Bengtsson, J., Walker, B., Norberg, J.,
+2003. Response diversity, ecosystem change, and resilience. Front. Ecol. Environ. 1,
+488–494. https://doi.org/10.1890/1540-9295(2003)001[0488:RDECAR]2.0.CO;2.
+Fang, J., Yu, G., Liu, L., Hu, S., Chapin, F.S., 2018. Climate change, human impacts, and
+carbon sequestration in China. Proc. Natl. Acad. Sci. Unit. States Am. 115,
+4015–4020. https://doi.org/10.1073/pnas.1700304115.
+Fatichi, S., Leuzinger, S., Körner, C., 2014. Moving beyond photosynthesis: from carbon
+source to sink‐driven vegetation modeling. New Phytol. 201, 1086–1095. https://doi.
+org/10.1111/nph.12614.
+Feng, X., Fu, B., Piao, S., Wang, S., Ciais, P., Zeng, Z., Wu, B., 2016. Revegetation in China
+Loess Plateau is approaching sustainable water resource limits. Nat. Clim. Change 6,
+1019–1022. https://doi.org/10.1038/nclimate3092.
+Fierer, N., Craine, J.M., McLauchlan, K., Schimel, J.P., 2005. Litter quality and the
+temperature sensitivity of decomposition. Ecology 86, 320–326. https://www.jstor.
+org/stable/3450950.
+Flynn, D.F., Mirotchnick, N., Jain, M., Palmer, M.I., Naeem, S., 2011. Functional and
+phylogenetic diversity as predictors of biodiversity-ecosystem‐function relationships.
+Ecology 92, 1573–1581. https://doi.org/10.1111/ddi.12087.
+Freschet, G.T., Swart, E.M., Cornelissen, J.H., 2015. Integrated plant phenotypic re-
+sponses to contrasting above‐and below‐ground resources: key roles of speciﬁc leaf
+area and root mass fraction. New Phytol. 206, 1247–1260. https://doi.org/10.1111/
+nph.13352.
+Fu, B.J., Liu, Y., Lü, Y., He, C., Zeng, Y., Wu, B., 2011. Assessing the soil erosion control
+service of ecosystems change in Loess Plateau of China. Ecol. Complex. 8, 284–293.
+https://doi.org/10.1016/j.ecocom.2011.07.003.
+Fu, B.J., Wang, S., Liu, Y., Liu, J., Liang, W., Miao, C., 2017. Hydrogeomorphic ecosystem
+responses to natural and anthropogenic changes in Loess Plateau of China. Annu.
+Rev. Earth Planet Sci. 45, 223–243. https://doi.org/10.1146/annurev-earth-063016-
+020552.
+Gardarin, A., Garnier, É., Carrère, P., Cruz, P., Andueza, D., Bonis, A., Gaucherand, S.,
+2014. Plant trait-digestibility relationships across management and climate gradients
+in permanent grasslands. J. Appl. Ecol. 51, 1207–1217. https://doi.org/10.1111/
+1365-2664.12293.
+Geml, J., Wagner, M.R., 2018. Out of sight, but no longer out of mind - towards an
+increased recognition of the role of soil microbes in plant speciation. New Phytol.
+217, 965–967. https://doi.org/10.1111/nph.14979.
+Grime, J.P., 1998. Beneﬁts of plant diversity to ecosystems: immediate, ﬁlter and founder
+eﬀects. J. Ecol. 86, 902–910. https://doi.org/10.1046/j.1365-2745.1998.00306.x.
+Handa, I.T., Aerts, R., Berendse, F., Berg, M.P., Bruder, A., Butenschoen, O., McKie, B.G.,
+2014. Consequences of biodiversity loss for litter decomposition across biomes.
+Nature 509, 218–221. https://doi.org/10.1038/nature13247.
+Harrison, J.G., Philbin, C., Gompert, Z., Forister, G., Hernandez‐Espinoza, L., Sullivan,
+B.W., 2018. Deconstruction of a plant‐arthropod community reveals inﬂuential plant
+traits with nonlinear eﬀects on arthropod assemblages. Funct. Ecol. 32, 1317–1328.
+https://doi.org/10.1111/1365-2435.13060.
+He, N., Liu, C., Tian, M., Li, M., Yang, H., Yu, G., 2017. Variation in leaf anatomical traits
+from tropical to cold‐temperate forests and linkage to ecosystem functions. Funct.
+Ecol. 32, 1175–1181. https://doi.org/10.1111/1365-2435.12934.
+Jackson, R.B., Banner, J.L., Jobbágy, E.G., Pockman, W.T., Wall, D.H., 2002. Ecosystem
+carbon loss with woody plant invasion of grasslands. Nature 418 (6898), 623.
+https://doi.org/10.1038/nature00910.
+Kammann, C.I., Schmidt, H.P., Messerschmidt, N., Linsel, S., Steﬀens, D., Müller, C.,
+Joseph, S., 2015. Plant growth improvement mediated by nitrate capture in co-
+composted biochar. Sci. Rep-UK 5, 11080. https://doi.org/10.1038/srep11080.
+Karhu, K., Auﬀret, M.D., Dungait, J.A.J., Hopkins, D.W., Prosser, J.I., Singh, B.K., Subke,
+J.A., Wookey, P.A., Ågren, G.I., Sebastià, M.T., Gouriveau, F., Bergkvist, G., Meir, P.,
+Nottingham, A.T., Salinas, N., Hartley, I.P., 2014. Temperature sensitivity of soil
+respiration rates enhanced by microbial community response. Nature 513, 81–84.
+https://doi.org/10.1038/nature13604.
+Kunstler, G., Falster, D., Coomes, D.A., Hui, F., Kooyman, R.M., Laughlin, D.C., Aiba, M.,
+2015. Plant functional traits have globally consistent eﬀects on competition. Nature
+529, 204. https://doi.org/10.1038/nature16476.
+Laforestlapointe, I., Paquette, A., Messier, C., Kembel, S.W., 2017. Leaf bacterial diversity
+mediates plant diversity and ecosystem function relationships. Nature 546, 145.
+https://doi.org/10.1038/nature22399.
+Lal, R., 2018. Digging deeper: a holistic perspective of factors aﬀecting soil organic
+carbon sequestration in agroecosystems. Glob. Chang. Biol. https://doi.org/10.
+1111/gcb.14054.
+Lange, M., Eisenhauer, N., Sierra, C.A., Bessler, H., Engels, C., Griﬃths, R.I., 2015. Plant
+diversity increases soil microbial activity and soil carbon storage. Nat. Commun. 6,
+6707. https://doi.org/10.1038/ncomms7707.
+Latz, E., Eisenhauer, N., Rall, B.C., Scheu, S., Jousset, A., 2016. Unravelling linkages
+between plant community composition and the pathogen-suppressive potential of
+soils. Sci. Rep-UK. 6, 23584. https://doi.org/10.1038/srep23584.
+Li, D., Niu, S., Luo, Y., 2012. Global patterns of the dynamics of soil carbon and nitrogen
+stocks following aﬀorestation: a meta‐analysis. New Phytol. 195, 172. https://doi.
+org/10.1111/j.1469-8137.2012.04150.x.
+Li, D., Wen, L., Zhang, W., Yang, L., Xiao, K., Chen, H., 2017. Aﬀorestation eﬀects on soil
+organic carbon and nitrogen pools modulated by lithology. For. Ecol. Manag. 400,
+85–92. https://doi.org/10.1111/j.1469-8137.2012.04150.x.
+Liu, H., Mi, Z., Lin, L., Wang, Y., Zhang, Z., Zhang, F., 2018. Shifting plant species
+composition in response to climate change stabilizes grassland primary production.
+Proc. Natl. Acad. Sci. Unit. States Am. 115 (16), 4051–4056. https://doi.org/10.
+1073/pnas.1700299114.
+Lu, F., Hu, H., Sun, W., Zhu, J., Liu, G., Zhou, W., 2018. Eﬀects of national ecological
+restoration projects on carbon sequestration in China from 2001 to 2010. Proc. Natl.
+Acad. Sci. Unit. States Am. 115, 4039–4044. https://doi.org/10.1073/pnas.
+1700294115.
+Manzoni, S., Vico, G., Katul, G., Fay, P.A., Polley, W., Palmroth, S., Porporato, A., 2011.
+Optimizing stomatal conductance for maximum carbon gain under water stress: a
+meta‐analysis across plant functional types and climates. Funct. Ecol. 25, 456–467.
+https://doi.org/10.1111/j.1365-2435.2010.01822.x.
+Mason, N.W., MacGillivray, K., Steel, J.B., Wilson, J.B., 2003. An index of functional
+diversity. J. Veg. Sci. 14, 571–578. https://doi.org/10.1111/j.1654-1103.2003.
+tb02184.x.
+McCormack, M.L., Dickie, I.A., Eissenstat, D.M., Fahey, T.J., Fernandez, C.W., Guo, D.,
+Leppälammi‐Kujansuu, J., 2015. Redeﬁning ﬁne roots improves understanding of
+below‐ground contributions to terrestrial biosphere processes. New Phytol. 207,
+505–518. https://doi.org/10.1111/nph.13363.
+Mokany, K., Ash, J., Roxburgh, S., 2008. Functional identity is more important than di-
+versity in inﬂuencing ecosystem processes in a temperate native grassland. J. Ecol.
+96, 884–893. https://doi.org/10.1111/j.1365-2745.2008.01395.x.
+Moreau, D., Pivato, B., Bru, D., Busset, H., Deau, F., Faivre, C., Mougel, C., 2015. Plant
+traits related to nitrogen uptake inﬂuence plant‐microbe competition. Ecology 96,
+2300–2310. https://doi.org/10.1890/14-1761.1.
+Murphy, K.L., Klopatek, J.M., Klopatek, C.C., 1998. The eﬀects of litter quality and cli-
+mate on decomposition along an elevational gradient. Ecol. Appl. 8, 1061–1071.
+https://doi.org/10.1890/1051-0761.
+Nave, L.E., Domke, G.M., Hofmeister, K.L., Mishra, U., Perry, C.H., Walters, B.F., 2018.
+Reforestation can sequester two petagrams of carbon in us topsoils in a century. Proc.
+Natl. Acad. Sci. Unit. States Am. 17, 196. https://doi.org/10.1073/pnas.
+1719685115.
+Nie, M., Bell, C., Wallenstein, M.D., Pendall, E., 2015. Increased plant productivity and
+decreased microbial respiratory C loss by plant growth-promoting rhizobacteria
+under elevated CO2. Sci. Rep-UK. 5, 9212. https://doi.org/10.1038/srep09212.
+Nolan, C., Overpeck, J.T., Allen, J.R., Anderson, P.M., Betancourt, J.L., Binney, H.A.,
+Djamali, M., 2018. Past and future global transformation of terrestrial ecosystems
+under climate change. Science 361 (6405), 920–923. https://doi.org/10.1126/
+science.aan5360.
+Petchey, O.L., Gaston, K.J., 2002. Functional diversity (FD), species richness and com-
+munity composition. Ecol. Lett. 5, 402–411. https://doi.org/10.1046/j.1461-0248.
+2002.00339.x.
+Pietsch, K.A., Ogle, K., Cornelissen, J.H., Cornwell, W.K., Bönisch, G., Craine, J.M., Reich,
+P.B., 2014. Global relationship of wood and leaf litter decomposability: the role of
+functional traits within and across plant organs. Glob. Ecol. Biogeogr. 23, 1046–1057.
+https://doi.org/10.1111/geb.12172.
+Prentice, I.C., Dong, N., Gleason, S.M., Maire, V., Wright, I.J., 2014. Balancing the costs of
+carbon gain and water transport: testing a new theoretical framework for plant
+functional ecology. Ecol. Lett. 17, 82–91. https://doi.org/10.1111/ele.12211.
+Ruiz-Benito, P., Gómez‐Aparicio, L., Paquette, A., Messier, C., Kattge, J., Zavala, M.A.,
+2014. Diversity increases carbon storage and tree productivity in Spanish forests.
+Glob. Ecol. Biogeogr. 23, 311–322. https://doi.org/10.1111/geb.12126.
+Santiago, L.S., 2007. Extending the leaf economics spectrum to decomposition: evidence
+from a tropical forest. Ecology 88, 1126–1131. https://www.jstor.org/stable/
+27651212.
+Schmidt, M.W., Torn, M.S., Abiven, S., Dittmar, T., Guggenberger, G., Janssens, I.A.,
+Nannipieri, P., 2011. Persistence of soil organic matter as an ecosystem property.
+Nature 478, 49. https://doi.org/10.1038/nature10386.
+Shipley, B., Lechowicz, M.J., Wright, I., Reich, P.B., 2006. Fundamental trade‐oﬀs gen-
+erating the worldwide leaf economics spectrum. Ecology 87, 535–541. https://doi.
+org/10.1038/nature02403.
+Skjemstad, J.O., Gillman, G.P., Massis, A., Spouncer, L.R., 2008. Measurement of cation
+exchange capacity of organic‐matter fractions from soils using a modiﬁed compulsive
+exchange method. Commun. Soil Sci. 39, 926–937. https://doi.org/10.1080/
+00103620701881279.
+Smiseth, P.T., Andrews, C.P., Mattey, S.N., Mooney, R., 2014. Phenotypic variation in
+resource acquisition inﬂuences trade‐oﬀbetween number and mass of oﬀspring in a
+burying beetle. J. Zool. 293, 80–83. https://doi.org/10.1111/jzo.12115.
+Tang, X., Zhao, X., Bai, Y., Tang, Z., Wang, W., Zhao, Y., 2018. Carbon pools in China's
+terrestrial ecosystems: new estimates based on an intensive ﬁeld survey. Proc. Natl.
+Acad. Sci. Unit. States Am. 115 (16), 4021–4026. https://doi.org/10.1073/pnas.
+1700291115.
+Thakur, M.P., Milcu, A., Manning, P., Niklaus, P.A., Roscher, C., Power, S., Guo, H., 2015.
+Plant diversity drives soil microbial biomass carbon in grasslands irrespective of
+global environmental change factors. Glob. Chang. Biol. 21, 4076–4085. https://doi.
+org/10.1111/gcb.13011.
+Tilman, D., Knops, J., Wedin, D., Reich, P., Ritchie, M., Siemann, E., 1997. The inﬂuence
+of functional diversity and composition on ecosystem processes. Science 277,
+1300–1302. https://doi.org/10.1016/science.1997.1300.
+Tong, X., W., Brandt, M., Yue, Y.,M., Horion, S., Wang, K.,L., Keersmaecker, W., Tian, F.,
+Schurgers, G., Xiao, X.M., Luo, Y.Q., Chen, C., Myneni, R., Shi, Z., Chen, H.S., 2018.
+Rasmus Fensholt. Increased vegetation growth and carbon stock in China karst via
+ecological engineering. Nat. Sustainability 1, 44–50. https://doi.org/10.1038/
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+677
+
+s41893-017-0004-x.
+Tripathi, B.M., Stegen, J.C., Kim, M., Dong, K., Adams, J.M., Lee, Y.K., 2018. Soil pH
+mediates the balance between stochastic and deterministic assembly of bacteria.
+ISME J. 12, 1072–1083. https://doi.org/10.1038/s41396-018-0082-4.
+Villéger, S., Mason, N.W., Mouillot, D., 2008. New multidimensional functional diversity
+indices for a multifaceted framework in functional ecology. Ecology 89, 2290–2301.
+https://www.jstor.org/stable/27650754.
+Walker, B., Kinzig, A., Langridge, J., 1999. Original articles: plant attribute diversity,
+resilience, and ecosystem function: the nature and signiﬁcance of dominant and
+minor species. Ecosystems 2, 95–113. https://doi.org/10.1007/s100219900062.
+Wang, Y., Fu, B., Lü, Y., Song, C., Luan, Y., 2010. Local-scale spatial variability of soil
+organic carbon and its stock in the hilly area of the Loess Plateau, China. Quat. Res.
+(Tokyo) 73, 70–76. https://doi.org/10.1016/j.yqres.2008.11.006.
+Wang, F., Liang, Y., Jiang, Y., Yang, Y., Xue, K., Xiong, J., Sun, B., 2015. Planting in-
+creases the abundance and structure complexity of soil core functional genes relevant
+to carbon and nitrogen cycling. Sci. Rep-UK 5, 14345. https://doi.org/10.1038/
+srep14345.
+Wang, R., Wang, Q., Zhao, N., Xu, Z., Zhu, X., Jiao, C., 2018. Diﬀerent phylogenetic and
+environmental controls of ﬁrst‐order root morphological and nutrient traits: evidence
+of multidimensional root traits. Funct. Ecol. 32. https://doi.org/10.1111/1365-
+2435.12983.
+Weng, X., Wang, L., Wang, J., Hu, Y., Du, H., Xu, C., Zhang, Q., 2014. Grain number, plant
+height, and heading date7 is a central regulator of growth, development, and stress
+response. Plant Physiol. 164, 735–747. https://doi.org/10.1104/pp.113.231308.
+Wright, I.J., Reich, P.B., Atkin, O.K., Lusk, C.H., Tjoelker, M.G., Westoby, M., 2006.
+Irradiance, temperature and rainfall inﬂuence leaf dark respiration in woody plants:
+evidence from comparisons across 20 sites. New Physiol 169, 309–319. https://doi.
+org/10.1111/j.1469-8137.2005.01590.x.
+Wu, J., Wurst, S., Zhang, X., 2016. Plant functional trait diversity regulates the nonlinear
+response of productivity to regional climate change in Tibetan alpine grasslands. Sci.
+Rep-UK. 6, 35649. https://doi.org/10.1038/srep35649.
+Xiao, Y., Zhou, G., Zhang, Q., Wang, W., Liu, S., 2014. Increasing active biomass carbon
+may lead to a breakdown of mature forest equilibrium. Quat. Res. 4, 3681. https://
+doi.org/10.1038/srep03681.
+Xu, Z., Li, M.H., Zimmermann, N.E., Li, S., Li, H., Ren, H., 2018. Plant functional diversity
+modulates global environmental change eﬀects on grassland productivity. J. Ecol. 3,
+1–11. https://doi.org/10.1111/1365-2745.12951.
+Yang, Y., Dou, Y., An, S., 2018. Testing association between soil bacterial diversity and
+soil carbon storage on the loess plateau. Sci. Total Environ. 626, 48–58. https://doi.
+org/10.1016/j.scitotenv.2018.01.081.
+Zhang, C., Liu, G., Xue, S., Wang, G., 2016. Soil bacterial community dynamics reﬂect
+changes in plant community and soil properties during the secondary succession of
+abandoned farmland in the Loess Plateau. Soil Biol. Biochem. 97, 40–49. https://doi.
+org/10.1016/j.soilbio.2016.02.013.
+Zuo, X., Wang, S., Lv, P., Zhou, X., Zhao, X., Zhang, T., Zhang, J., 2016a. Plant functional
+diversity enhances associations of soil fungal diversity with vegetation and soil in the
+restoration of semiarid sandy grassland. Ecol. Evol. 6, 318–328. https://doi.org/10.
+1002/ece3.1875.
+Zuo, X., Zhang, J., Lv, P., Zhou, X., Li, Y., Luo, Y., Yue, X., 2016b. Plant functional di-
+versity mediates the eﬀects of vegetation and soil properties on community-level
+plant nitrogen use in the restoration of semiarid sandy grassland. Ecol. Indicat. 64,
+272–280. https://doi.org/10.1016/j.ecolind.2016.01.012.
+Zuppinger-Dingley, D., Schmid, B., Petermann, J.S., Yadav, V., De Deyn, G.B., Flynn, D.F.,
+2014. Selection for niche diﬀerentiation in plant communities increases biodiversity
+eﬀects. Nature 515, 108–111. https://doi.org/10.1038/nature13869.
+Y. Yang, et al.
+Journal of Environmental Management 246 (2019) 668–678
+678

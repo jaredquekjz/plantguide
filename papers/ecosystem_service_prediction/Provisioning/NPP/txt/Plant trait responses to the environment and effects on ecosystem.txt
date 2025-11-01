@@ -1,0 +1,1107 @@
+Basic and Applied Ecology 13 (2012) 301–311
+Plant trait responses to the environment and effects on ecosystem
+properties
+Patrick Lienin∗, Michael Kleyer
+Landscape Ecology Group, University of Oldenburg, P.O. Box 2503, 26111 Oldenburg, Germany
+Received 18 August 2011; accepted 21 May 2012
+Abstract
+A combined analysis of plant trait responses to the environment, and their effects on ecosystem properties has recently been
+proposed. In this study, we related the trait composition of plant communities to soil nutrients and disturbance as environmental
+drivers and to productivity, decomposition and soil carbon as ecosystem properties. We surveyed two sites, one comprising
+intensivelygrazedandfertilizedgrasslands,theotherconsistingofsemi-naturalgrasslandandopenheathland.Speciesabundance
+and trait values of 49 species were recorded in 69 plots, as well as parameters describing soil resources, land-use disturbances,
+and ecosystem properties. Our main goal was to test whether the average or the diversity of the trait values of the vegetation had
+stronger effects on ecosystem properties (mass ratio vs. diversity hypothesis). Structural equation modeling was used to perform
+a simultaneous analysis of trait responses and effects. Speciﬁc leaf area and leaf nutrient contents were always negatively
+correlated with stem dry matter content and canopy height, indicating greater investments in supportive and nutrient-conserving
+tissue as plants increased in size. In the agricultural site, disturbance was the single most important factor decreasing plant height,
+while leaf traits such as speciﬁc leaf area and leaf nutrient contents increased with soil resources in heathlands. Productivity
+was directly or indirectly driven by leaf traits, and investments in structural tissue increased standing biomass and soil carbon.
+Different environmental drivers in the two sites produced opposing leaf trait effects on litter decomposition. Ecosystem properties
+were explained by the community mean trait value as predicted by the mass ratio hypothesis. Evidence for effects of functional
+diversity on productivity and other ecosystem properties was not detected, suggesting that diversity–productivity relationships
+depend on the length of the investigated environmental gradients. We conclude that changes in community composition and
+dominance hierarchies deserve the most attention when ecosystem properties must be maintained.
+Zusammenfassung
+Eine kombinierte Analyse der Reaktion von Pﬂanzenmerkmalen (traits) auf die Umwelt und ihrer Auswirkungen auf Ökosys-
+temfunktionen wurde kürzlich vorgeschlagen (‘response-effect framework’). In der vorliegenden Studie wenden wir diese
+Analyse auf zwei landwirtschaftliche Gebiete, welche sich in der Nutzungsintensität unterscheiden, und folgende Ökosys-
+temprozesse an: oberirdische Biomasse, speziﬁsche Nettoprimärproduktion (SANPP), Streuzersetzung und Bodenkohlenstoff.
+Dafür wurden die Frequenz und die trait-Werte von 49 Arten in insgesamt 69 Plots aufgenommen. Darüber hinaus wurden
+Parameter erhoben, welche Bodenwasser und -nährstoffe, Landnutzung und Ökosystemeigenschaften beschreiben. Wir haben
+zudem getestet, ob der durchschnittliche trait-Wert oder die Diversität der trait-Werte aller Arten einer Gemeinschaft größere
+Effekte auf Ökosystemprozesse zeigt (‘mass ratio’ versus ‘diversity’ Hypothese). Strukturgleichungsmodelle wurden verwendet,
+um eine simultane Analyse des ‘response-effect framework’ zu untersuchen. Der Gesamtdatensatz wurde in zwei Gruppen
+∗Corresponding author. Present address: Department of Plant Science and Landscape Architecture, University of Connecticut, 1376 Storrs Rd, Storrs,
+CT 06269, United States. Tel.: +1 860 856 0300; fax: +1 860 486 0682.
+E-mailaddresses:patrick.lienin@uconn.edu, patrick.lienin@uni-oldenburg.de (P. Lienin).
+1439-1791/$ – see front matter © 2012 Gesellschaft für Ökologie. Published by Elsevier GmbH. All rights reserved.
+http://dx.doi.org/10.1016/j.baae.2012.05.002
+
+302
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+eingeteilt: die eine bestehend aus intensiv gedüngten Weiden und Grasﬂächen, die andere aus naturnahem Grasland und offener
+Heide. In beiden Datensätzen waren die Blattmerkmale negativ korreliert mit der Stängeltrockenmasse und der Wuchshöhe, was
+auf einen eher konservierenden Umgang mit Ressourcen hindeutet. Auf den landwirtschaftlich geprägten Plots war Störung der
+wichtigste Umweltfaktor der zu einer Abnahme der Wuchshöhe führte, während die Bodenressourcen die Blatteigenschaften,
+z.B. speziﬁsche Blattﬂäche und Blattnährstoffgehalte in den Heidegebieten geprägt haben. Die Biomasseproduktivität war direkt
+oder indirekt angetrieben von den Blattmerkmalen, wobei verstärkte Investitionen in die Pﬂanzenstruktur zu einer Erhöhung
+der stehenden Biomasse und Bodenkohlenstoffgehalte führten. Die unterschiedlichen Landnutzungen hatten gegensätzliche
+Effekte der Blatteigenschaften auf die Streuzersetzung zur Folge. Die gemittelten trait-Werte aller Arten einer Gemeinschaft
+hatten den größten Einﬂuss auf die Ökosystemeigenschaften, wie durch die ‘mass ratio’ Hypothese vorhergesagt. Belege für
+EffektederfunktionellenDiversitätaufdieProduktivitätundandereÖkosystemeigenschaftenwurdennichtgefunden,wasdarauf
+hindeutet, dass Diversitäts-Produktivität-Beziehungen von der Ausdehnung (Länge) der untersuchten Umweltgradienten abhän-
+gen. Deshalb verdienen Änderungen in der Artenzusammensetzung und in der Dominanzhierarchie von Pﬂanzengemeinschaften
+große Aufmerksamkeit bei der Betrachtung von Ökosystemeigenschaften.
+© 2012 Gesellschaft für Ökologie. Published by Elsevier GmbH. All rights reserved.
+Keywords: Disturbance; Ecosystem function; Functional diversity; Landuse; Leaf economics spectrum; Mass-ratio hypothesis; Path analysis;
+Litter decomposition; Productivity; Structural equation model
+Introduction
+Currentresearchinplantfunctionaltraitsusestwodifferent
+approaches providing valuable insights into the mechanisms
+of ecosystem function. First, extensive study on trait response
+to environmental drivers and biotic interactions has been
+reported (e.g. Garnier et al. 2004). Second, investigations
+addressed how ecosystem properties including primary pro-
+ductivity and litter decomposition depend on functional traits
+(e.g. Kremen & Ostfeld 2005). The response–effect frame-
+work (Lavorel & Garnier 2002; Suding et al. 2008) offers
+a combined analysis of trait responses to the environment
+and the subsequent effects on ecosystem properties, but the
+methodology has rarely been applied in natural landscapes
+(Pakeman 2004). This remains a notable disparity (Lavorel
+et al. 2011). In the present study, we perform a simultaneous
+analysis of trait responses and effects in an agricultural region
+characterized by land-use intensiﬁcation.
+In agricultural landscapes, ecosystem processes and prop-
+erties such as primary productivity, standing biomass, and
+litter decomposition translate directly into ecosystem ser-
+vices, including forage and crop yields, and associated
+nutrient balance (Díaz et al. 2007a; Lavorel et al. 2011).
+Therefore, quantiﬁed relationships between environmental
+conditions, plant traits, and ecosystem properties are partic-
+ularly relevant for agricultural landscape management. One
+central aim was to study these response–effect relationships,
+particularly for aboveground biomass (AGB), speciﬁc above
+ground net primary productivity (SANPP), litter decom-
+position (LITTER), and total soil carbon (CARBON) of
+grasslands and heathlands, managed for agriculture and
+conservation, respectively. Farmers manipulate these ecosys-
+tem properties by selecting soils with appropriate water
+resources, by changing the nutrient status of the soil, and
+by applying disturbances such as tilling, mowing or graz-
+ing. Therefore soil nutrients, soil water holding capacity and
+disturbance intensity are considered relevant environmental
+drivers affecting ecosystem properties in agricultural land-
+scapes. These effects can be direct, for example increasing
+tillage and fertilization improve decomposition of organic
+carbon by enhancing microbial activity (DeGryze et al.
+2004). The response–effect framework, however, assumes
+that most links between the abiotic environment and carbon-
+related ecosystem properties are indirect and operate through
+changes in the trait composition of plant communities, which
+in turn depend on gains and losses of species, i.e. changes
+in biodiversity. Traits related to plant growth and carbon
+gain are likely candidates to simultaneously respond to
+environmental drivers and affect ecosystem properties of
+the carbon cycle. For instance, speciﬁc leaf area (SLA)
+is associated with net assimilation and plant growth rates
+(Reich, Walters, & Ellsworth 1997) while leaf dry matter
+content (LDMC) is tied to plant nutrient retention (Poorter
+& Garnier 1999). Leaf nitrogen content (LNC) and leaf
+phosphorus content (LPC) are correlated with protein con-
+centrations involved in photosynthesis (Evans 1989) as well
+as leaf growth and defense strategies (Reich et al. 2008).
+Global (Wright et al. 2004) and local (Lienin & Kleyer
+2011) datasets reported these leaf traits as highly corre-
+lated, indicating a ‘leaf economics spectrum’ that runs
+from resource conservation to rapid resource acquisition and
+turnover in leaves. Freschet, Cornelissen, Logtestijn, and
+Aerts (2010) proposed that the ‘leaf economics spectrum’
+can be expanded to a whole plant economics spectrum as
+stem and root dry matter show a strongly coordinated pat-
+tern with leaf traits. Another trait associated with growth and
+carbon gain is plant height. It is a major determinant for
+a plant’s ability to compete for light but requires increas-
+ing investments in structural tissues, such as stems and
+branches (Westoby, Falster, Moles, Vesk, & Wright 2002;
+Moles et al. 2009), which should decrease plant growth
+rates.
+Here, we hypothesize that ecosystem processes such as
+biomass, litter and soil C accumulation are associated with
+
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+303
+resource conservation and height attaining strategies in plants
+as well as with low soil resources and disturbance inten-
+sities (Lavorel & Grigulis 2012). On the other hand, high
+soil resources and increasing land use intensity should favor
+rapid resource acquisition by plant leaves and lower plant
+height, which in turn increases carbon turnover in terms
+of annual productivity and decomposition, whereas effects
+on standing biomass and soil carbons stocks should be
+negative.
+Evidence from experiments indicates that plant species
+richness has positive effects on multiple ecosystem prop-
+erties (e.g. Isbell et al. 2011). Consequently, we ask if
+multiple ecosystem properties and multiple environmental
+factors are linked via recurring key traits, or if each ecosys-
+tem property is affected by different traits (Hooper et al.
+2005).
+However, the diversity of traits responding to environ-
+mental drivers and affecting ecosystem properties is only
+one facet of functional diversity. Another aspect refers to
+trait value diversity within communities, and two hypothe-
+ses were generated. The mass ratio hypothesis states that
+the functional traits of the most abundant species in a com-
+munity determine ecosystem properties (Grime 1998). To
+address this hypothesis, the trait values of all species in
+a community are averaged, then weighted by species rela-
+tive abundance (termed CWM: community weighted mean;
+Díaz et al. 2007b). According to the ‘diversity hypothesis’,
+organismal diversity in a community, and species’ func-
+tional traits should inﬂuence ecosystem properties through
+complementary resource use, among other factors (Tilman
+et al. 1997). Increased functional diversity (FD) should lead
+to heightened niche packing along a resource use axis,
+therefore a highly diverse community will have more sub-
+stantial effects on biogeochemical pools and ﬂuxes (Hooper
+1998). Empirical evidence has been reported for both the-
+ories (e.g. Vile, Shipley, & Garnier 2006). Mokany, Ash,
+and Roxburgh (2008) for instance demonstrated that func-
+tional traits of dominant species had the greatest effect on
+ecosystemproperties.Díazetal.(2007b)includedabioticfac-
+tors, aggregated trait values, and FD in a single analysis and
+described differential effects on standing biomass, productiv-
+ity, and litter decomposition. The fact that both hypotheses
+are normally tested separately does not mean that they are
+mutually exclusive. Rather, community weighted means and
+functional diversity of traits may exhibit an additive inﬂuence
+in response–effect frameworks.
+To specify these hypotheses in greater detail, we ﬁrst
+devised an initial model based on published knowledge. We
+then used structural equation modeling (SEM) to evaluate the
+initial model. SEM can be considered as a method that seeks
+to create a connection between empirical data and theoretical
+ideas (Grace, Anderson, Olff, & Scheiner 2010). We per-
+formed our survey in two sites, one consisted of intensively
+grazed and fertilized grasslands classiﬁed as ‘agriculture’,
+while ‘heath’ was comprised extensively grazed and unfer-
+tilized semi-natural grassland and open heathlands.
+Materials and methods
+Study sites
+Two ﬁeld sites were located in Northwest Germany,
+approximately 25 km apart from each other (52◦55′N,
+8◦15′E; 52◦55′N, 7◦56′E) (Appendix A). The climate is char-
+acterized as oceanic, with dominant westerly winds. Mean
+annual rainfall is 740 mm, and mean annual temperature is
+8.7 ◦C. Elevation ranges from 19 m to 44 m a.s.l. Soils are
+primarily sandy on moraine sediments.
+We applied a random stratiﬁed design to select 69 non-
+contiguous plots (4.5 m × 4.5 m) across both sites. Sampling
+was conducted in 2007 and 2008. The plots selected were
+stratiﬁed by broad categories of land-use intensity and soil
+moisture. The ‘agriculture’ site ranged from intensively and
+extensively used grassland to fallow land (29 plots) and
+the ‘heath’ site from semi-natural grasslands (dry soils) to
+shrub/heathlands (well-drained and dry soils; 40 plots).
+A common feature of both sites was the “Plaggen’ cultiva-
+tion, a historic land use practiced from the Middle Ages to the
+18th century. In this land use system, the top soil including
+the litter layer was removed from forests, used as bedding
+for cattle, and after being enriched with slurry, spread on
+arable ﬁelds for fertilization. As an outcome of these land
+use practices, forests almost vanished, and open heaths and
+even denuded soils became predominant. This land use sys-
+tem was abandoned with the availability of mineral fertilizer.
+Today, remaining heathlands are extensively managed and
+conﬁned to small areas (Behre 2008) whereas the majority
+was converted to fertilized pastures and ﬁelds.
+Environmental parameters
+In each plot, soil samples were obtained from each soil
+horizon (typically three or less) down to a depth of 60 cm
+using a 100-cm3 soil sample ring, air-dried, and sieved using
+a 2 mm sieve. Field and lab measured variables included
+bulk density, soil solution pH, soil texture, soil density
+(Schlichting, Blume, & Stahr 1995), available soil potassium
+(K), and phosphorus (P) per unit mass (Table 1). K und P were
+extracted with ammonia-lactate solution. K was measured
+with a ﬂame photometer, P with a Continuous Flow Ana-
+lyzer (Murphy & Riley 1962; Skalar Analytic, Netherlands).
+Soil texture and organic carbon content were used to esti-
+matesoilwaterholdingcapacity(WHC)followingAGBoden
+(2005).
+Plots were ranked on a disturbance gradient using an index
+which was calculated as the product of the percentage of
+biomass removal per disturbance event (F) with the dis-
+turbance return interval per year (I), summarized over all
+disturbances (i) that represent the land management of a plot
+(e.g. cutting, grazing, ploughing):
+D =
+
+Fi × Ii
+
+304
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+Table 1. Abbreviations and units of environmental (A), trait (B), and ecosystem property (C) variables.
+Abbreviation
+Type of variable/unit
+‘Agriculture’ site
+‘Heath’ site
+Mean
+SD
+Min
+Max
+Mean
+SD
+Min
+Max
+(A) Environmental variables
+Disturbance index
+DISTURBANCE
+Relativea
+1.13
+0.44
+0.14
+1.80
+0.42
+0.17
+0.06
+0.70
+Soil potassium content
+Soil K
+kg/haa
+64.78
+10.99
+37.54
+84.00
+92.00
+33.57
+50.61
+168.14
+Soil phosphorus content
+Soil P
+kg/haa
+300.25
+304.70
+89.05
+1237.88
+141.94
+195.30
+4.02
+642.49
+pH value
+pH
+log-scale
+4.66
+0.57
+3.50
+5.70
+3.66
+0.51
+3.00
+4.43
+Soil water holding capacity
+WHC
+mm
+119.92
+21.50
+40.42
+149.27
+95.58
+31.04
+53.79
+148.90
+(B) Trait variables
+Canopy height
+HEIGHT
+cm
+28.26
+9.44
+16.93
+53.80
+22.63
+6.29
+12.11
+36.92
+Speciﬁc leaf area
+SLA
+mm2/mg
+24.10
+1.62
+20.96
+26.38
+12.18
+6.30
+6.44
+22.56
+Leaf dry matter content
+LDMC
+mg/g
+299.46
+100.55
+215.22
+568.50
+512.70
+206.99
+238.17
+708.40
+Leaf nitrogen content
+LNC
+%
+22.87
+1.79
+19.43
+26.45
+17.68
+2.97
+13.73
+24.15
+Leaf phosphorus content
+LPC
+%
+2.72
+0.33
+2.06
+3.40
+1.30
+0.75
+0.63
+2.49
+Leaf C/N ratio
+LC/N
+Ratio
+19.81
+2.54
+16.66
+26.37
+28.36
+5.86
+19.45
+36.13
+Stem dry matter content
+SDMC
+mg/g
+311.93
+59.24
+242.25
+430.78
+459.83
+80.47
+319.75
+547.00
+Functional dispersion
+FDis
+–
+1.01
+0.22
+0.38
+1.43
+1.25
+0.38
+0.49
+1.80
+(C) Ecosystem properties
+Aboveground biomass
+AGB
+g/m2
+409.76
+138.75
+215.48
+731.12
+494.54
+292.15
+159.66
+1067.14
+Speciﬁc aboveground net
+primary productivity
+SANPP
+g/kg/month
+0.07
+0.04
+0.01
+0.15
+0.07
+0.05
+0.01
+0.19
+Rate of litter mass loss
+LITTER
+%
+65.02
+11.87
+37.32
+89.44
+42.33
+20.05
+15.74
+85.19
+Total soil organic carbon
+concentration
+CARBON
+t/ha
+202.93
+179.76
+41.77
+697.25
+164.11
+70.70
+65.19
+297.30
+aTrait log10-transformed for analysis. Mean values, standard deviation, minimum and maximum values for each variable are displayed for each dataset.
+
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+305
+In areas grazed by cattle or sheep, plots were fenced to
+exclude grazing. Biomass removal by grazing was quantiﬁed
+by harvesting 1-m2 inside and outside the exclosure. Harvest
+differences were expressed as percentage of aboveground
+biomass removal.
+Species selection and trait measurements
+Frequencies of plant species at each plot were recorded
+with a 1 m × 1 m frame. Nomenclature followed Jäger and
+Werner (2002). Traits of the most abundant species (total of
+49 species) were measured for ten individuals of each species
+as follows (Table 1): speciﬁc leaf area (SLA), leaf dry matter
+content (LDMC), leaf nitrogen content (LNC), leaf phospho-
+rus content (LPC), leaf C/N ratio (LC/N), stem dry matter
+content (SDMC), and canopy height of an individual plant
+(HEIGHT). Trait measurements and chemical analyses from
+all samples obtained in the laboratory followed standard pro-
+tocols (Knevel, Bekker, Kunzmann, Stadler, & Thompson
+2005).
+Ecosystem properties
+Total aboveground standing biomass (AGB) was harvested
+in March and August (minimum and maximum yearly values,
+respectively) on 0.5-m2 per plot for each date. Speciﬁc above-
+ground net primary productivity (SANPP) was calculated as
+follows:
+SANPP
+= loge(live biomass in August) −loge(live biomass in March)
+tAugust −tMarch
+where tAugust and tMarch are the harvest dates, and loge
+expresses the natural logarithm to the base e
+SANPP expresses primary productivity on a per gram of
+green biomass basis instead of a ground area basis (Garnier
+et al. 2004), and describes the net increase in a community
+aboveground biomass per unit time (here: per month).
+Litter mass loss (or decomposition rate) was determined in
+a litterbag experiment. Fresh plant material was collected in
+autumn 2007, and left to decompose for 12 months in the ﬁeld
+on the soil surface in 1 mm mesh litterbags (four replicates
+per plot, 2 g litter each). The recovered material was cleaned,
+oven dried, and weighed. The rate of litter mass loss was
+calculated relative to its initial mass. In addition, total soil
+carbon was measured for the upper 60 cm of soil.
+Statistical analysis
+For each plot, community weighted means of each trait
+were calculated by weighing the trait value of a species
+by its frequency, and averaging the weighted trait values
+across all species of a community selected for trait mea-
+surements. As a functional diversity index, we calculated the
+functional dispersion (FDis) of all traits. FDis is the mean dis-
+tance in multidimensional trait space of individual species to
+the centroid of all species in the community. FDis accounts
+for species abundance, and is by construction unaffected by
+species richness. For more details see Laliberté and Legendre
+(2010).
+Leaf traits (SLA, LDMC, LNC, LPC, LC/N) and soil
+parameters (Soil P, Soil K and pH) were converted into aggre-
+gate variables (‘LEAFTRAITS’ and ‘NUTRIENTS’, respec-
+tively) via principal component analyses (PCA). The ﬁrst
+principal component score was generated as a new/aggregate
+value. The ﬁrst PCA component for leaf traits accounted for
+55.13% (‘agriculture’) and 72.25% (‘heath’) of the variance
+in the ﬁve trait variables. The ﬁrst PCA component for soil
+variables accounted for 61.03% (‘agriculture’) and 66.92%
+(‘heath’) of the variance in the three soil parameters. LEAF-
+TRAITS summarized the leaf economics spectrum, which
+ranged from leaves exhibiting acquisition properties with
+high SLA, LNC, and LPC and low LDMC and LC/N val-
+ues to conservative leaves with low SLA, LNC, and LPC and
+high LDMC and LC/N values (Wright et al. 2004). LEAF
+TRAITS increased with SLA and decreased with LDMC.
+We applied path modeling to quantify the response–effect
+framework. Path modeling can be considered a special
+approach to structural equation modeling (SEM; Grace
+2006), where only single indicators are applied to each of
+the variables. SEM results are dependent on the correct
+speciﬁcations of theoretical underlying relationships among
+variables prior to analysis (Shipley 2000). SEM can be used
+in a conﬁrmatory or exploratory mode. If used in a con-
+ﬁrmatory mode, the theoretical model is tested to examine
+if the model adequately ﬁts the data. In this study, we used
+an exploratory mode where an initial theoretical model was
+separately applied to the ‘agriculture’ and ‘heath’ datasets.
+The initial response–effect model
+The initial path-model (Fig. 1, variables explained in
+Table 1) speciﬁes the hypothesized relationships between
+environmental variables (NUTRIENTS, DISTURBANCE,
+and WHC) inﬂuencing traits (SDMC, HEIGHT, LEAF-
+TRAITS, and FDis), which determined ecosystem properties
+(AGB, SANPP, LITTER and CARBON). The environmen-
+tal variables were considered exogenous variables with no
+incoming arrows and all other variables were endogenous
+variables, assumed to depend on the exogenous variables.
+We assumed a positive relationship between disturb-
+ance regimes (DISTURBANCE) and nutrient availability
+(NUTRIENTS). Fertilizer application is more pervasive in
+intensively used sites, such as agricultural landscapes. Soil
+water holding capacity (WHC) should exhibit a negative cor-
+relation with DISTURBANCE and NUTRIENTS, because
+we expect that land use concentrates on soils with lower
+
+306
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+Fig. 1. Initial path model structure showing the hypothesized relationships between plant species traits, the environment and ecosystem
+properties. ‘LEAFTRAITS’ and ‘NUTRIENTS’ are the ﬁrst principal component scores of correlated leaf traits (SLA, LDMC, LNC, LPC,
+LC/N) and soil parameters (Soil P, Soil K and pH), respectively. Single-headed arrows represent assumed direct effects; double-headed arrows
+represent correlations. Expected positive relationships are indicated by ‘+’, negative relationships by ‘−’. For names and abbreviations see
+Table 1.
+WHC, avoiding stagnant soils under the humid conditions
+of Northwest Germany. The model core comprised of plant
+traits that respond to soil resources and disturbances, and
+affect components of the carbon and/or nitrogen cycles. Stem
+dry matter content (SDMC) is often correlated with LDMC
+(Freschet et al. 2010), therefore the relationship between
+LEAFTRAITS and SDMC should be negative.
+LEAFTRAITS,
+SDMC,
+and
+plant
+canopy
+height
+(HEIGHT) entered the model as community weighted
+means. As a measure of FD, we chose the functional
+dispersion of these traits (FDis, Laliberté & Legendre 2010).
+We expected that increasing NUTRIENTS, WHC, and
+DISTURBANCE would favor plants with acquisitive leaf
+traits, i.e. high LEAFTRAITS values. DISTURBANCE
+should negatively affect HEIGHT and SDMC, because
+frequent biomass removal favors non-woody plants of
+relatively small stature (Garnier et al. 2004; Lienin &
+Kleyer 2011). Frequent biomass removal represents a strong
+environmental ﬁlter, therefore we assumed that increasing
+DISTURBANCE reduces the diversity of viable plant
+strategies in a community, and consequently negatively
+affects FDis. Alternatively, higher WHC should result in a
+broader range of viable functional strategies, due to fewer
+restrictions on water use (‘physiological tolerance’, Currie
+et al. 2004).
+Our second set of initial paths focused on how plant com-
+munities affect the ecosystem through speciﬁc traits. An
+increase in SANPP was expected with LEAFTRAITS due
+to the correlation of SLA with relative growth rate, whereas
+plant height should have an opposite effect on SANPP, due to
+additional investments in structural tissue. FDis was expected
+to affect SANPP positively via niche complementary (Díaz
+et al. 2007a). LITTER and CARBON are mainly controlled
+by leaf characteristics. For example, species with low LDMC
+and high leaf nutrient values produce rapidly decompos-
+ing litter (Kazakou, Vile, Shipley, Gallet, & Garnier 2006).
+Therefore, LEAFTRAITS should increase LITTER, and be
+negatively correlated to CARBON, however SDMC should
+increase CARBON and AGB, while decreasing litter decom-
+position (De Deyn, Cornelissen, & Bardgett 2008; Freschet
+et al. 2010).
+Based on modiﬁcation indices and residuals, the initial
+model was altered by removing or adding paths to improve
+the ﬁt between the model and the data from each site. This
+was achieved by maintaining the overall initial relationships
+(as described above). This approach allowed assessment
+and identiﬁcation of the speciﬁc paths contingent on man-
+agement. The best-ﬁt model was selected by aiming to
+achieve the following: (i) a non-signiﬁcant χ2 value with
+an associated high P-value; (ii) a root mean square error of
+approximation (RMSEA) with values <0.05; and (iii) a Com-
+parative Fit Index (CFI) with values >0.90 (Byrne 2010).
+The χ2 test of model ﬁt determined whether the ﬁt between
+model and data was adequate and is recommended since a
+non-signiﬁcant result is a strong indication of an adequate
+ﬁt between model and data. RMSEA and CFI, which take
+sample size into account, are recognized as one of the most
+helpful criteria in structure modeling (Grace 2006).
+Additional model interpretation was facilitated by ‘direct
+effects’ and ‘total effects’, which are the sum of direct and
+indirect pathways from the predictors. Statistical analyses
+were conducted using the computer software R to calculate
+
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+307
+Fig. 2. Final structural equation model with standardized direct effects for datasets ‘agriculture’ (A) and ‘heath’ (B). Leaf traits (SLA, LDMC,
+LNC, LPC, LC/N) and soil parameters (Soil P, Soil K and pH) were converted into aggregate variables (‘LEAFTRAITS’ and ‘NUTRIENTS’,
+respectively). Single-headed arrows represent direct effects; double-headed arrows represent correlations. Positive effects are indicated by
+‘+’ and negative effects by ‘−’. Arrow widths are proportional to the standardized direct effects. The R2 values represent the total variance
+explained as a result of all predictors pointing to that variable.
+CWM; and the package “FDis” within R was used to generate
+FDis (R Development Core Team 2011). Amos 18 (Arbuckle
+2010) was employed to conduct path analysis and SEM for
+model evaluation.
+Results
+Differences between ‘agriculture’ and ‘heath’
+sites
+The pastures, meadows and ﬁeld margins of the ‘agri-
+culture’ site had on average higher soil phosphorus, water
+holding capacity, pH, and disturbance intensity values than
+the ‘heath’ site (Table 1). Soil potassium was the only vari-
+able that exhibited a higher value in ‘heath’. Correspondingly,
+‘agriculture’ plant communities showed increased canopy
+height, SLA, LNC, LPC, and decreased SDMC and LDMC
+values relative to ‘heath’. However, AGB, SANPP, rate of lit-
+ter mass loss, and soil carbon were not signiﬁcantly different
+between both sites.
+SEM modiﬁcations
+The initial model (Fig. 1) did not produce an adequate ﬁt
+for the ‘agriculture’ data. Results suggested the deletion of
+
+308
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+several non-signiﬁcant paths (WHC →LEAFTRAITS and
+FDis,
+NUTRIENTS →LEAFTRAITS,
+DIST →FDis,
+SDMC →LITTER
+and
+CARBON,
+LEAF-
+TRAITS →SANPP and FDis →SANPP). Adding paths
+from WHC to CARBON, HEIGHT to LEAFTRAITS,
+LEAFTRAITS to FDis, and FDis to CARBON improved
+model ﬁt. The resulting ‘agriculture’ model exhibited
+good consistency with the data (P = 0.46, RMSEA = 0.02,
+CFI = 0.99; see Fig. 2 for standardized direct effects), and
+explained 23% of the variation in AGB, 14% of the variation
+in SANPP, 38% of the variation in LITTER, and 63% of the
+variation in CARBON.
+The initial ‘heath’ model did not produce adequate
+ﬁt.
+Similarly,
+we
+removed
+non-signiﬁcant
+pathways
+from
+the
+model
+(DISTURBANCE →SDMC
+and
+FDIS,
+WHC →LEAFTRAITS,
+SDMC →LITTER,
+FDIS →SANPP and HEIGHT →SANPP). Modiﬁcation
+indices suggested the addition of two direct paths from
+NUTRIENTS to CARBON and WHC to CARBON. The
+resulting stable model was consistent with the data (P = 0.19,
+RMSEA = 0.07, CFI = 0.98; see Fig. 2 for standardized direct
+effects), and explained 44% of the variation in AGB, 39%
+of the variation in SANPP, 73% of the variation in LITTER,
+and 52% of the variation in CARBON.
+Our description of the ﬁnal models will be primar-
+ily restricted to direct effects, but considers standardized
+total effects where necessary for model interpretation
+(Appendix A).
+Environment–trait–ecosystem property
+relationships
+Trait–trait relationships were largely consistent with the
+initial model. In both sites, increasing values of leaf traits, i.e.
+higher SLA and lower LDMC, covaried with lower SDMC.
+Increased canopy height required an increase in SDMC,
+and concomitantly lower SLA and LNC, and higher LDMC
+(∼lower leaf trait values). In our initial model, a correlation
+between FDis and traits calculated as community-weighted
+means was not detected. However, in the ‘agriculture’
+model, FDis increased with positive leaf trait values and
+decreased with plant height (total effect), indicating that
+grassland communities consist, on average of small, fast-
+growing acquisitive species with higher variation in trait
+values. The ‘agriculture’ plant community traits were pri-
+marily controlled by disturbance intensity; however, soil
+nutrients affected the ‘heath’ communities. FDis was con-
+trolled by water holding capacity only in heathlands. Most
+paths from traits to ecosystem properties in the ‘heath’ com-
+munities were consistent with the initial model, e.g. leaf
+traits positively affected SANPP and litter decomposition
+rates. A limited number of relationships between traits and
+ecosystem properties conformed to the initial model for the
+‘agriculture’ communities, for either the path or path direc-
+tion. For example, leaf traits were not related to SANPP,
+although we assumed high SLA, LNC, LPC, and low LDMC
+would increase SANPP. Furthermore, litter decomposition
+rates decreased instead of increased with higher leaf trait val-
+ues, and showed a positive relationship with canopy height
+(total effect). The only paths consistent with the initial
+model and ‘heath’ data were a negative leaf trait relation-
+ship with soil carbon, a positive SDMC relationship with
+AGB, and a negative canopy height relationship with SANPP.
+Results of the initial model indicated FDis should posi-
+tively affect SANPP, which was not supported by the ﬁnal
+models.
+Both models included indirect links between environmen-
+tal variables and ecosystem properties. The ‘agriculture’
+model detected a positive correlation between soil carbon and
+water holding capacity. In the ‘heath’ model, soil nutrients
+and water holding capacity directly affected soil carbon.
+Discussion
+This study provided further evidence that plant-related
+ecosystem properties are inﬂuenced by plant traits (e.g.
+Chapin et al. 2000). Furthermore, traits depend on envi-
+ronmental conditions, which add a functional element to
+the long-standing biodiversity–ecosystem functioning debate
+(Tilman et al. 1997; Naeem et al. 2000; Wardle et al. 2000).
+Results also indicated direct environment–ecosystem links,
+but according to the number and strength of signiﬁcant paths,
+environment–trait–ecosystem controls were more cohesive.
+Trait–trait correlations within plants remained consistent
+across both sites, conﬁrming our initial model. A negative
+relationship between the leaf economics spectrum (Wright
+et al. 2004) and SDMC and canopy height was detected, indi-
+cating increased investments in supportive and conservative
+tissue as plants grew and matured (Freschet et al. 2010; Lienin
+& Kleyer 2011).
+Responses of this general functional pattern to the environ-
+ment and its effect on ecosystem properties were markedly
+shapedbyland-useintensity.Inourinitialmodel,weassumed
+that soil nutrients and disturbance intensity should cumula-
+tively inﬂuence leaf traits, and that canopy height and SDMC
+should respond to disturbance intensity, that is, more frequent
+disturbances lead to smaller plants (Tilman 1988; Kühner &
+Kleyer 2008). However, in the agricultural site the main envi-
+ronmental gradient affecting trait responses was disturbance,
+and the nutrient gradient had no inﬂuence, probably because
+all plots had been fertilized. In contrast to that, the nutrient
+and water holding capacity gradient determined to a consider-
+able extent trait responses in the unfertilized heathland, which
+was managed with overall light sheep grazing. In the ‘heath’
+model,SDMCandleaftraitswerehighlycorrelated,andwere
+key traits that inﬂuenced all ecosystem properties. In contrast
+to this result, the ‘agriculture’ model showed the absence
+of any obvious key trait. Instead, each trait affected another
+ecosystem property (with the exception of functional disper-
+sion). Consequently, this study revealed context-dependent
+
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+309
+results regarding whether a few key traits or diverse traits
+inﬂuenced ecosystem properties.
+Nutrient-driven relationships in the ‘heath’
+model
+As expected, and described for the initial model, leaf
+traits inﬂuenced the rate of productivity (SANPP), litter
+decomposition, and soil carbon in the ‘heath’ model. These
+relationships were identiﬁed in an overall nutrient-poor envi-
+ronment (Table 1), where relatively little variation in soil
+nutrients was responsible for trait responses and effects.
+Aboveground biomass was negatively correlated with leaf
+traits (indirect effects, Appendix A), and positively corre-
+lated with SDMC, indicating biomass accumulation in dry,
+nutrient-poor sites inhabited by plants exhibiting a resource-
+conservation strategy, according to the high leaf C/N ratios
+and dry matter content (e.g. Pakeman, Leps, Kleyer, Lavorel,
+& Garnier 2009). Litter decomposition in heathlands occurs
+gradually, resulting in slow soil carbon cycling and increased
+soil organic carbon (Aerts & Chapin 2000; Tjoelker, Craine,
+Wedin, Reich, & Tilman 2005).
+Disturbance-driven relationships in the
+‘agriculture’ model
+Some trait–ecosystem paths in the ‘agriculture’ model
+were not consistent with the initial model. Disturbance inten-
+sity increased with soil nutrient availability and decreased
+with water holding capacity, i.e. farming and fertilization
+were concentrated on drier sites, and moister sites were less
+intensely farmed or abandoned. These correlations added
+indirect effects to the model. For example, almost no direct
+effect by disturbance on leaf traits was observed, however,
+a correlation with soil nutrient availability yielded a posi-
+tive indirect effect, as SLA increased with high soil nutrients
+(Freschet et al. 2010). That said, a concurrent decrease of
+LDMC and SDMC with increasing disturbance intensity was
+observed.
+Cumulatively, disturbance and increasing soil nutrient
+availability favored smaller plants with acquisitive leaves,
+which facilitated productivity, i.e. high SANPP, during
+shorter intervals between disturbance events. However,
+aboveground standing biomass accumulated in less disturbed
+sites, with plants exhibiting high investments in supporting
+tissue.
+Inconsistent with the ‘heath’ model, leaf traits had nega-
+tive effects on litter decomposition, which we did not expect.
+This effect may be explained by decreased litter decomposi-
+tion at drier and open sites due to reduced microbial activity,
+although high disturbance and fertilization on these sites
+favored plants with low leaf dry matter content, which typi-
+cally shows enhanced decomposition (DeGryze et al. 2004;
+Kazakou et al. 2006).
+Diversity effects on ecosystem properties
+The results showed that ecosystem properties were best
+explained by the average trait value of all species of a com-
+munity weighted by their abundance, as predicted by the
+mass ratio hypothesis (Grime 1998). Evidence for the species
+diversity hypothesis (e.g. Tilman et al. 1997) was not revealed
+by our study, most likely because of a scaling effect. Envi-
+ronmental gradients control species occurrence patterns by
+strong selective pressure on responsive traits, sieving differ-
+ent subsets of the total range of trait expressions in the species
+poolofalandscape.Consequently,thedistributionoftraitval-
+ues in each community converges around a mean describing
+each subset (Grime 2006). Over a relatively large gradient
+such as that observed in this study, differences between com-
+munity means affect ecosystem properties more heavily than
+within-community trait dispersion, which is congruent with
+Grime’s (1998) mass ratio hypothesis. This is particularly
+relevant when the trait values are weighted by abundance,
+and therefore emphasize the effect of traits of the most abun-
+dant species on ecosystem properties (Díaz et al. 2007b).
+However, the importance of within-community functional
+dispersion to explain productivity may increase when envi-
+ronmental gradients shorten (Schwilk & Ackerly 2005). In a
+recent global synthesis of biodiversity–ecosystem function-
+ing experiments, Hooper et al. (2012) found that species
+losses had to reach high levels (41–60%) to complement
+nutrient enrichment effects on productivity. All abiotic con-
+ditions including disturbance being equal, it is unlikely to
+ﬁnd such variations in species richness in local communi-
+ties of our study sites. This may explain why changes in
+environmental conditions and resulting changes in functional
+trait composition are stronger predictors than trait disper-
+sion within communities. However, the relationship between
+functionalandspeciesdiversityisnotalwaysstraightforward,
+and the question of intra- versus inter-community trait diver-
+sity effects on productivity should deserve further attention,
+requiring more studies aiming at a simultaneous analysis of
+trait responses and effects.
+Conclusions
+This is one of the ﬁrst studies showing trait responses
+to environmental drivers and effects on ecosystem proper-
+ties in a simultaneous analysis (Lavorel et al. 2011; Minden
+& Kleyer 2011; de Bello et al. 2010). Two different land-
+use systems with common history were compared, and
+results showed that trait–trait relationships remained consis-
+tent, however environmental drivers exhibited marked effects
+on how the trait pattern affected carbon related ecosys-
+tem properties. Our results indicated that trade-offs and
+allometries between traits deﬁned the general spectra in the
+functional organization of plants. Plant positions in these
+spectra were sorted by land-use intensity, which then resulted
+in speciﬁc effects on ecosystem properties, particularly
+
+310
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+litter decomposition. Productivity was directly or indirectly
+inﬂuenced by the leaf economics spectrum, whereas stand-
+ing biomass increased with investments in structural tissue.
+Most responses and effects were context-depending, suggest-
+ing that differences in land use intensity result in speciﬁc
+effects on ecosystem properties. The results further reinforce
+that traits of the most abundant species have the greatest
+effects on ecosystem properties following Grime’s (1998)
+mass ratio hypothesis. Functional diversity had hardly any
+effect on ecosystem properties. These results suggest that the
+relevance of diversity-productivity relationships decreases
+with increasing length of environmental gradients. There-
+fore, changes in community composition and dominance
+hierarchies following environmental change deserve the most
+attention when ecosystem properties in natural systems must
+be maintained.
+Acknowledgments
+This study was conducted as part of a collaborative
+research project with the Hebrew University, Israel, and
+funded by the State of Lower-Saxony and the Volkswagen
+Foundation, Hannover, Germany (Grant No. ZN 2026). We
+thank the OOWV and Biohof Bakenhus in Cloppenburg,
+Germany for their onsite support. We greatly acknowledge
+Benjamin Hell for his preparatory work, Regine Kayser
+for laboratory assistance, and Kirsten Brandt, Tobias Feldt,
+Christian Ketzer, and Natali Könitz for ﬁeld assistance. The
+editor and three anonymous reviewers improved the article
+with valuable comments.
+Appendix A. Supplementary data
+Supplementary data associated with this article can be
+found, in the online version, at http://dx.doi.org/10.1016/
+j.baae.2012.05.002.
+References
+Aerts, R., & Chapin, F. S. (2000). The mineral nutrition of wild
+plants revisited: A re-evaluation of processes and patterns.
+Advances in Ecological Research, 30, 1–68.
+AG Boden. (2005). Bodenkundliche Kartieranleitung. Stuttgart:
+Schweizerbart verb. und erw. Auﬂ.
+Arbuckle, J. (2010). AMOS: Analysis of Moment Structures.
+Behre, K.-E. (2008). Landschaftsgeschichte Norddeutschlands:
+Umwelt und Siedlung von der Steinzeit bis zur Gegenwart.
+Wachholtz.
+Byrne, B. M. (2010). Structural equation modeling with AMOS:
+Basic concepts, applications and programming (2nd ed.). New
+York/London: Tylor and Francis Group.
+Chapin, F. S., Zavaleta, E. S., Eviner, V. T., Naylor, R. L., Vitousek,
+P. M., Reynolds, H. L., et al. (2000). Consequences of changing
+biodiversity. Nature, 405, 234–242.
+Currie, D., Mittelbach, G., Cornell, H., Field, R., Guégan, J.-F.,
+Hawkins, B., et al. (2004). Predictions and tests of climate-
+based hypotheses of broad-scale variation in taxonomic richness.
+Ecology Letters, 7, 1121–1134.
+de Bello, F., Lavorel, S., Díaz, S., Harrington, R., Cornelissen, J., &
+Bardgett, R. (2010). Towards an assessment of multiple ecosys-
+tem processes and services via functional traits. Biodiversity and
+Conservation, 19, 2873–2893.
+DeDeyn,G.B.,Cornelissen,J.H.C.,&Bardgett,R.D.(2008).Plant
+functional traits and soil carbon sequestration in contrasting
+biomes. Ecology Letters, 11, 516–531.
+DeGryze, S., Six, J., Paustian, K., Morris, S. J., Paul, E. A., &
+Merckx, R. (2004). Soil organic carbon pool changes following
+land-use conversions. Global Change Biology, 10, 1120–1132.
+Díaz, S., Lavorel, S., Chapin, F. S., Tecco, P. A., Gurvich, D. E.,
+& Grigulis, K. (2007). Functional diversity—at the crossroads
+between ecosystem functioning and environmental ﬁlters. In J.
+G. Canadell, D. E. Pataki, & L. F. Pitelka (Eds.), Terrestrial
+ecosystems in a changing world (pp. 81–91). Berlin, Heidelberg:
+Springer.
+Díaz, S., Lavorel, S., McIntyre, S., Falczuk, V., Casanoves,
+F., Milchunas, D. G., et al. (2007). Plant trait responses
+to grazing—A global synthesis. Global Change Biology, 13,
+313–341.
+Evans, J. R. (1989). Photosynthesis and nitrogen relationships in
+leaves of C3 plants. Oecologia, 78, 9–19.
+Freschet, G. T., Cornelissen, J. H. C., Logtestijn, R. S. P. v., &
+Aerts, R. (2010). Evidence of the ‘plant economics spectrum’ in
+a subarctic ﬂora. Journal of Ecology, 98, 362–373.
+Garnier, E., Cortez, J., Billès, G., Navas, M.-L., Roumet, C.,
+Debussche, M., et al. (2004). Plant functional markers capture
+ecosystem properties during secondary succession. Ecology, 85,
+2630–2637.
+Grace, J. B. (2006). Structural equation modeling and natural sys-
+tems. Cambridge: Cambridge University Press.
+Grace, J. B., Anderson, T. M., Olff, H., & Scheiner, S. M. (2010).
+On the speciﬁcation of structural equation models for ecological
+systems. Ecological Monographs, 80, 67–87.
+Grime, J. P. (1998). Beneﬁts of plant diversity to ecosystems: Imme-
+diate, ﬁlter and founder effects. Journal of Ecology, 86, 902–910.
+Grime, J. P. (2006). Trait convergence and trait divergence in
+herbaceous plant communities: Mechanisms and consequences.
+Journal of Vegetation Science, 17, 255–260.
+Hooper, D. U. (1998). The role of complementarity and competition
+in ecosystem responses to variation in plant diversity. Ecology,
+79, 704–719.
+Hooper, D. U., Adair, E. C., Cardinale, B. J., Byrnes, J. E. K., Hun-
+gate, B. A., Matulich, K. L., et al. (2012). A global synthesis
+reveals biodiversity loss as a major driver of ecosystem change.
+Nature, http://dx.doi.org/10.1038/nature11118(advanced online
+publication)
+Hooper, D. U., Chapin, F. S., Ewel, J. J., Hector, A., Inchausti,
+P., Lavorel, S., et al. (2005). Effects of biodiversity on ecosys-
+tem functioning: A consensus of current knowledge. Ecological
+Monographs, 75, 3–35.
+Isbell, F., Calcagno, V., Hector, A., Connolly, J., Harpole, W. S.,
+Reich, P. B., et al. (2011). High plant diversity is needed to
+maintain ecosystem services. Nature, 477, 199–202.
+Jäger, E. J., & Werner, K. (2002). Exkursionsﬂora von Deutschland.
+Gefäßpﬂanzen: Kritischer Band. Heidelberg, Berlin: Spektrum
+Akademischer Verlag.
+
+P. Lienin, M. Kleyer / Basic and Applied Ecology 13 (2012) 301–311
+311
+Kazakou, E., Vile, D., Shipley, B., Gallet, C., & Garnier, E. (2006).
+Co-variations in litter decomposition, leaf traits and plant growth
+in species from a Mediterranean old-ﬁeld succession. Functional
+Ecology, 20, 21–30.
+Knevel, I. C., Bekker, R. M., Kunzmann, D., Stadler, M., & Thomp-
+son, K. (2005). The LEDA traitbase collecting and measuring
+standards of life history. Traits of the NW European Flora.
+Groningen, The Netherlands: University of Groningen.
+Kremen, C., & Ostfeld, R. S. (2005). A call to ecologists: Measur-
+ing, analyzing, and managing ecosystem services. Frontiers in
+Ecology and the Environment, 3, 540–548.
+Kühner, A., & Kleyer, M. (2008). A parsimonious combination of
+functional traits predicting plant response to disturbance and soil
+fertility. Journal of Vegetation Science, 19, 681–692.
+Laliberté, E., & Legendre, P. (2010). A distance-based framework
+for measuring functional diversity from multiple traits. Ecology,
+91, 299–305.
+Lavorel, S., & Garnier, E. (2002). Predicting changes in commu-
+nity composition and ecosystem functioning from plant traits:
+revisiting the Holy Grail. Functional Ecology, 16, 545–556.
+Lavorel, S., & Grigulis, K. (2012). How fundamental plant func-
+tional trait relationships scale-up to trade-offs and synergies in
+ecosystem services. Journal of Ecology, 100, 128–140.
+Lavorel, S., Grigulis, K., Lamarque, P., Colace, M.-P., Garden, D.,
+Girel, J., et al. (2011). Using plant functional traits to under-
+stand the landscape distribution of multiple ecosystem services.
+Journal of Ecology, 99, 135–147.
+Lienin, P., & Kleyer, M. (2011). Plant leaf economics and reproduc-
+tive investment are responsive to gradients of land use intensity.
+Agriculture, Ecosystems & Environment, 145, 67–76.
+Minden, V., & Kleyer, M. (2011). Testing the effect–response frame-
+work: Key response and effect traits determining aboveground
+biomass of salt marshes. Journal of Vegetation Science, 22,
+387–401.
+Mokany, K., Ash, J., & Roxburgh, S. (2008). Functional identity
+is more important than diversity in inﬂuencing ecosystem pro-
+cesses in a temperate native grassland. Journal of Ecology, 96,
+884–893.
+Moles, A. T., Warton, D. I., Warman, L., Swenson, N. G., Laffan, S.
+W., Zanne, A. E., et al. (2009). Global patterns in plant height.
+Journal of Ecology, 97, 923–932.
+Murphy, J., & Riley, J. P. (1962). A modiﬁed single solution method
+for the determination of phosphate in natural waters. Analytica
+Chimica Acta, 27, 31–36.
+Naeem, S., Chapin, F. S., Costanza, R., Ehrlich, P., Golley, F.,
+Hooper, D., et al. (2000). Biodiversity and ecosystem func-
+tioning: Maintaining natural life support processes. Issues in
+ecology. Ecological Society of America., pp. 4–12
+Pakeman, R. J. (2004). Consistency of plant species and trait
+responses to grazing along a productivity gradient: A multi-site
+analysis. Journal of Ecology, 92, 893–905.
+Pakeman, R. J., Leps, J., Kleyer, M., Lavorel, S., & Garnier, E.
+(2009). Relative climatic, edaphic and management controls of
+plant functional trait signatures. Journal of Vegetation Science,
+20, 148–159.
+Poorter, H., & Garnier, E. (1999). The ecological signiﬁcance of
+variation in relative growth rate and its components. In F. Pug-
+naire, & F. Valladares (Eds.), Handbook of plant functional
+ecology (pp. 81–120). New York: Marcel Dekker.
+R Development Core Team. (2011). R: A language and environment
+for statistical computing. Vienna: R Foundation for Statistical
+Computing.
+Reich, P. B., Tjoelker, M. G., Pregitzer, K. S., Wright, I. J., Oleksyn,
+J., & Machado, J.-L. (2008). Scaling of respiration to nitrogen
+in leaves, stems and roots of higher land plants. Ecology Letters,
+11, 793–801.
+Reich, P. B., Walters, M. B., & Ellsworth, D. S. (1997). From tropics
+to tundra: Global convergence in plant functioning. In Proceed-
+ings of the National Academy of Sciences of the United States of
+America 94, (pp. 13730–13734).
+Schlichting, E., Blume, H.-P., & Stahr, K. (1995). Bodenkundliches
+Praktikum (2. neubearb. A.). Blackwell Wissenschafts-Verlag.
+Schwilk, D. W., & Ackerly, D. D. (2005). Limiting similarity and
+functional diversity along environmental gradients. Ecology Let-
+ters, 8, 272–281.
+Shipley, B. (2000). Cause and correlation in biology: A user’s guide
+topathanalysis,structuralequationsandcausalinference.Cam-
+bridge University Press.
+Suding, K. N., Lavorel, S., Chapin, F. S., Cornelissen, J. H. C.,
+Diaz, S., Garnier, E., et al. (2008). Scaling environmental change
+through the community-level: A trait-based response-and-effect
+framework for plants. Global Change Biology, 14, 1125–1140.
+Tilman, D. (1988). In D. Tilman (Ed.), Plant strategies and the
+dynamics and structure of plant communities. Princeton, NJ:
+Princeton University Press.
+Tilman, D., Knops, J., Wedin, D., Reich, P., Ritchie, M., & Siemann,
+E. (1997). The inﬂuence of functional diversity and composition
+on ecosystem processes. Science, 277, 1300–1302.
+Tjoelker, M. G., Craine, J. M., Wedin, D., Reich, P. B., &
+Tilman, D. (2005). Linking leaf and root trait syndromes among
+39 grassland and savannah species. New Phytologist, 167,
+493–508.
+Vile, D., Shipley, B., & Garnier, E. (2006). Ecosystem productivity
+can be predicted from potential relative growth rate and species
+abundance. Ecology Letters, 9, 1061–1067.
+Wardle, D. A., Huston, M. A., Grime, P. J., Berendse, F., Garnier,
+E., Lauenroth, W. K., et al. (2000). Biodiversity and ecosystem
+function: An issue in ecology. Bulletin of the Ecological Society
+of America, 81, 235–239.
+Westoby, M., Falster, D. S., Moles, A. T., Vesk, P. A., & Wright, I.
+J. (2002). Plant ecological strategies: Some leading dimensions
+of variation between species. Annual Review of Ecology and
+Systematics, 33, 125–159.
+Wright, I. J., Reich, P. B., Westoby, M., Ackerly, D. D., Baruch,
+Z., Bongers, F., et al. (2004). The worldwide leaf economics
+spectrum. Nature, 428, 821–827.
+Available online at www.sciencedirect.com

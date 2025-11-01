@@ -1,0 +1,1500 @@
+S Y N T H E S I S & I N T E G R A T I O N
+Plant functional traits as measures of ecosystem service
+provision
+Liane Miedema Brown
+|
+Madhur Anand
+School of Environmental Sciences,
+University of Guelph, Guelph, Ontario,
+Canada
+Correspondence
+Madhur Anand
+Email: manand@uoguelph.ca
+Funding information
+Canada First Research Excellence Fund;
+Natural Sciences and Engineering
+Research Council Discovery grant
+Handling Editor: Debra P. C. Peters
+Abstract
+Despite the relevance of ecosystem services (ES) to society and modern ecological
+research, current methods of measurement and mapping remain inconsistent
+and often lack primary data in estimating and modeling ES. A key player in
+our understanding of ES and their measurements are plant functional traits—
+chemical and physical aspects of plants—which are often cited as one of the
+drivers of ecosystem processes and functions. In order to better quantify the
+ES–plant functional trait indicators, we outline existing evidence of this rela-
+tionship and identify gaps between the best predicted ES and the most valued
+ES. This study offers an up-to-date review of plant functional traits’ direct or
+indirect relationships with ecosystem service provision and discusses the quan-
+titative evidence these traits might hold as indicators. With this review, we
+seek to (1) offer a current summary of the quantitative evidence on ecosystem
+service–plant functional trait relationships, (2) identify which traits have been
+used to successfully indicate ecosystem services, and (3) identify research gaps,
+and ecosystem services or traits that receive little attention or have weak
+criteria as indicators. In a comprehensive literature review of the 19 services
+that were searched for, genetic materials, medicine, and cultural services had
+no relevant plant functional trait indicators, while the remaining 16 services
+had a range of traits associated with them. We found that functional traits
+showed varying relationships to ES, with some depending on the ecosystem
+type they were found in, while others appeared to remain consistent across
+ecosystems and conditions. This indicates that there could exist a subset of
+traits that are “universal” indicators across all ecosystem types, while others
+are ecosystem dependent. Our review suggests the need for more research on
+less clearly defined ES (such as cultural, educational, and refugium services)
+both by more careful definitions to make quantitative measures more applica-
+ble, and through increased quantitative and qualitative studies to better under-
+stand the nature of ES indicators for these services. This summary shows how
+plant functional traits can quantitatively and reliably predict and provide
+details on a subset of ES.
+Received: 29 June 2021
+Accepted: 15 July 2021
+DOI: 10.1002/ecs2.3930
+This is an open access article under the terms of the Creative Commons Attribution License, which permits use, distribution and reproduction in any medium, provided
+the original work is properly cited.
+© 2022 The Author(s). Ecosphere published by Wiley Periodicals LLC on behalf of The Ecological Society of America.
+Ecosphere. 2022;13:e3930.
+https://onlinelibrary.wiley.com/r/ecs2
+1 of 13
+https://doi.org/10.1002/ecs2.3930
+
+K E Y W O R D S
+community-weighted averages, ecosystem functions, ecosystem services, indicators,
+literature review, plant functional traits, service providing units
+INTRODUCTION
+Ecosystem processes depend on the species and func-
+tional composition of an ecosystem, particularly the plant
+community (Hooper et al., 2005; Lavorel et al., 2007;
+Lavorel & Garnier, 2002; Suding et al., 2008). Plant spe-
+cies richness and abundances are often used to assess
+ecosystem health, restoration, external influences (both
+positive and negative), and other important aspects of
+ecosystem processes and functions. More recently, the
+use of plant functional traits—the characteristics of
+plants that determine responses to and effects on the sur-
+rounding environment, other species, and trophic levels
+(Pérez-Harguindeguy et al., 2016)—has become an effi-
+cient and accurate way to investigate the effects of large-
+scale land and climate change (Dı́az & Cabido, 2001;
+Suding et al., 2008) as well as various disturbance effects
+(Hooper et al., 2005; Pérez-Harguindeguy et al., 2016). In
+fact, since they offer both a mechanistic explanation and
+accurate estimate of multiple ecosystem processes and
+functions, the use of plant functional traits to explain eco-
+system processes has been deemed the “Holy Grail” in
+ecology (Funk et al., 2017; Lavorel et al., 2007). These
+functional traits provide accurate measures of many eco-
+system processes and responses, directly scaling up from
+plants (which are often considered the foundation of an
+ecosystem) to ecosystem-level functions (Kremen, 2005;
+Suding et al., 2008) since changes in plant traits have a
+direct and often determinative effect on the ecosystem
+functions
+which
+drive
+ecosystem
+processes
+(Suding
+et al., 2008). This is particularly relevant, as ecosystem
+services (ES)—the aspects of ecosystems that directly or
+indirectly benefit humanity—have also been both theo-
+retically and quantitatively linked to these functional
+trait responses and measures (see Figure 1; Bardgett
+et al., 2014; de Bello et al., 2010). These ES can be any-
+thing from food and raw materials, benefits of biodiver-
+sity, clean air and water, to the regulation of whole
+systems of water flow, nutrient cycling, and climate regu-
+lation (Fisher & Turner, 2008). Given the relevance of
+ES to society and recent importance in the inter-
+section of conservation and applied ecology, it is essen-
+tial
+to
+have
+consistent
+and
+accurate
+methods
+of
+measurement (Carpenter et al., 2009), particularly with
+the growing threat of climate change and global land-use
+change (Imbert et al., 2021; IPBES, 2019; Schlickmann
+et al., 2020).
+Many frameworks for measuring the demand and
+flow of ES focus on social variables that influence ES pro-
+vision (Olander et al., 2018; Quintas-Soriano et al., 2018;
+Spangenberg et al., 2014) investigate trade-offs between
+ES and conservation (Chianucci et al., 2018; Lang &
+Song, 2018; Moein et al., 2018), or categorize the world’s
+ES potential on global, national, and municipal levels
+(Ala-Hulkko et al., 2019; Milheiras & Mace, 2019). Unfor-
+tunately, these methods of measurement and mapping
+remain inconsistent between studies, often relying on
+indirect
+indicators
+such
+as
+land
+cover
+(Burkhard
+et al., 2009) which overlooks significant beta diversity
+changes and other heterogeneity across a single habitat.
+Since landscape averages and ecosystem type estimates
+depend on generic characteristics of an ecosystem to pre-
+dict provision, rather than recognizing and investigating
+the dynamics of the ecological or biotic mechanisms of
+service delivery, these measures do not account for the
+complexities and influence of multiple environmental
+and human drivers (Suding et al., 2008). Additionally, the
+social measures that are a frequent alternative (Sherrouse
+et al., 2011) are highly subjective (Malherbe et al., 2019;
+Martínez-Harms & Balvanera, 2012; Olander et al., 2018;
+Paudyal et al., 2019). These inconsistent and subjective
+measures remain the norm, despite several calls to
+develop a standard indicator (Boyd & Banzhaf, 2007;
+Kremen, 2005; Layke et al., 2012) and to include more
+primary data in service measures (Eigenbrod et al., 2010;
+Lavorel, 2013). Using plant functional traits as a standard
+indicator of ES delivery can reference the mechanism or
+a deeper understanding of ecological principles which
+allows for management of ES and prediction of future
+service availability. With the growing consensus that it is
+composition and functional effects of individual species,
+rather than species diversity or richness, that better pre-
+dicts ecosystem processes (and thus ES), plant functional
+traits are one option to provide an accurate and holistic
+explanation of ecosystem services (Chapin III, 2003;
+Dı́az & Cabido, 2001; Manzoor et al., 2019; Shipley
+et al., 2006).
+The idea of functional traits providing measures of
+ecosystem
+services
+is
+not
+new.
+In
+fact,
+de
+Bello
+et al. (2010), completed a general review outlining the
+relationships between plant functional traits and ecosys-
+tem services, justifying the increasing attention that these
+traits were receiving as a key factor in how biotic forces
+influence the ecosystems around them, including ES. In
+2 of 13
+MIEDEMA BROWN AND ANAND
+
+this paper, they listed 247 studies of trait–service relation-
+ships between plants and invertebrates, discussed many
+theoretical mechanisms of how traits lead to ES, and pro-
+vided a basis for the applicability of these traits to mea-
+sure and explain ES and trait–service clusters for ES
+prediction. In the 10 years since its publication, many
+new papers have continued the investigation of the links
+between ES and plant functional traits. To better under-
+stand the potential that functional traits hold for accu-
+rately measuring service delivery, we offer a current
+review of the literature from 2010 to 2021, investigating
+the use of plant functional traits as indicators for ES. We
+outline what plant functional traits specifically have been
+used to identify relationships with ES provision and dis-
+cuss the theoretical and quantitative evidence these traits
+might hold as indicators. ES are increasingly relevant for
+both researchers and policymakers alike, and knowledge
+of functional traits as measures of ES could be incorpo-
+rated into estimates of natural resources and capital for
+municipalities (Lam & Conway, 2018; Sang et al., 2021),
+conservation and restoration (do Vale et al., 2010; Zirbel
+et al., 2017), and measures of changes in ecosystems due
+to climate change and urban expansion (Song et al., 2019).
+The objectives of this paper are to (a) offer a current
+review of the literature on ecosystem service–plant func-
+tional trait relationships, (b) identify which traits have
+been used to successfully indicate ecosystem services, and
+which
+traits
+have
+strong
+theoretical
+evidence,
+and
+(c) identify research gaps, and ecosystem services or traits
+that receive little attention or have weak criteria as
+F I G U R E 1
+The relationship between plant functional traits (shown in the circle), ecosystem functions and processes (shown with
+double sided arrows), and ecosystem services (with movements shown with a single arrow). (a) Plant functional traits can both determine
+ecosystem processes (through community averages shaping the way the ecosystem function or be shaped by them (the influence of
+ecosystem determining how individual plants or communities respond, or filtering which traits are able to survive). Traits of the plant
+community, as the producers of an ecosystem, form the basis for (b) ecosystem processes or ecosystem functions, which are the flows of
+nutrients or processes in an ecosystem (e.g., water filtration or carbon sequestration) that occur on an ecosystem-wide scale and keep the
+ecosystem functioning as whole. Ecosystem processes include how plant communities interact with abiotic factors of the environment such
+as soil–root interactions. These processes can be complex or simple and although they occur at a large scale, they encompass the traits and
+characteristics of entire communities across the ecosystem. They occur, whether or not humans are present or benefit unlike (c) ecosystem
+services, which refers to ecosystem processes that have a direct or indirect benefit to human society or individuals. Ecosystem services refer
+only to the benefits that society derives from these naturally occurring processes and is thus necessarily anthropocentric in nature
+ECOSPHERE
+3 of 13
+
+indicators. In this way, we seek to further the understand-
+ing of current trait–service research to provide an updated
+and thorough summary of the research as well as outline
+which traits have the potential to act as robust indicators
+of ecosystem service.
+METHODS
+For this review, we followed the guidelines for systematic
+review outlined by Pullin and Stewart (2006) to search
+for papers investigating the relationship between plant
+functional traits and ecosystem services. A Boolean sea-
+rch was performed in Google Scholar, including the key-
+words
+of
+plant
+functional
+traits
+and
+the
+titles
+of
+19 different ES (as outlined by de Groot et al. (2002) and
+cross-referenced with IPBES, 2019 Science’s more mod-
+ern interpretation of these classic categories) (see Appen-
+dix S1 for full search terms for each service–trait
+relationship). The
+19
+ecosystem
+services
+that
+were
+searched for were as follows: gas regulation, climate regu-
+lation, disturbance prevention, water regulation, water
+supply, soil retention, soil formation, nutrient regulation,
+waste treatment, pollination, biological controls, refu-
+gium, nursery, food, biodiversity, medicinal, raw mate-
+rials, genetic resources, and ornamental resources. All
+results were amalgamated, and duplicates were removed
+resulting in a total of 1427 papers from all searches. The
+papers were then refined—the abstract and text were
+skimmed, and only quantitative studies that measured a
+relationship between one of the ecosystem services listed
+and at least one plant functional trait were kept, elimi-
+nating papers that did not measure specific functional
+traits or functional diversity. We also eliminated any
+meta-analysis
+or
+literature
+reviews,
+books,
+reports,
+summaries, as the focus was on discovering published
+quantitative studies that had investigated trait–service
+relationship. Finally, papers that investigated functional
+trait or plant community assembly through management,
+land-use type, land-use change, or ecosystem type, rather
+than direct or indirect links between functional traits and
+ecosystem services were removed. This resulted in a total
+of 127 papers.
+RESULTS
+We found a total of 127 relevant studies with primary
+results showing relationships between plant functional
+traits and ES or service-related functions (see Appendix S2
+for full details). For these papers, there were 84 individual
+plant functional traits cited as having associations with eco-
+system services (see Table 1 and Appendix S2). Specific leaf
+area (SLA) was the functional trait that was cited most
+often, being referred to in 45 papers, and with 18 different
+ES relationships (Appendix S2) and relating to 11 different
+ES categories—biodiversity, climate regulation, disturbance
+prevention, erosion prevention, food/fodder, gas regulation,
+nutrient cycling, raw materials, refugia, soil fertility, and
+water provision. SLA was also cited as being related to sev-
+eral subservices. For example, SLA was associated with N
+content, litter decomposition, and soil carbon all of which
+are often used as indices of soil fertility (Daou &
+Shipley, 2019; Partey et al., 2017; Yageta et al., 2019). Plant
+height was the second most frequent functional trait, along
+with functional diversity (the diversity of several different
+traits, dependent on the paper) identified in 29 papers.
+Plant height was found to be relating to seven different
+ES—climate regulation, disturbance prevention, pollina-
+tion, raw materials, soil fertility, and water provision, while
+functional diversity was related to nine services: climate
+regulation, disturbance prevention, erosion prevention, gas
+regulation, multifunctionality, nutrient cycling, pollination,
+raw materials, and soil fertility (Appendix S2). Functional
+diversity was tied with plant height for reference used in
+29 papers. Leaf dry matter content (LDMC) and leaf nitro-
+gen content (leaf N) were fourth and fifth with 25 and
+24 citations, respectively, followed by leaf area (with 18 cita-
+tions)—the other leaf nutrient contents, such as phospho-
+rus (7) and carbon (7) cited much less frequently (see
+Table 1 for full list of citations and traits).
+Of the 19 services that were searched for, two of them
+came up with no relevant plant functional trait indicators
+in our literature review: genetic materials and nursery
+services. The remaining 16 had a range of traits associ-
+ated with them, from medicinal resources—which found
+only two functional traits related—to soil fertility—which
+had 65 citations (some trait associations were repeated
+across studies) (see Table 2 and Appendix S2). The sec-
+ond most commonly cited ES (after soil fertility) was cli-
+mate regulation (cited 63 times), followed by disturbance
+prevention (56 times), water provision (52 times), raw
+materials (45 times), and erosion prevention (35 times)
+(see Table 2 and Appendix S2). Traits were frequently
+associated with more than one ES and those that were
+related to multiple services could even be related to dif-
+ferent aspects of ecosystem functioning (e.g., both soil
+and water, or both raw materials and atmospheric regula-
+tion, as opposed to soil retention and soil fertility, both of
+which refer to aspects of the soil). Additionally, there are
+several service–trait relationships that were repeated in
+the literature, the most frequent of which was the posi-
+tive association between plant height and raw materials
+(seven occurrences) closely followed by the negative asso-
+ciation between SLA measures and disturbance preven-
+tion (seven occurrences) (see Appendix S2 for all details).
+4 of 13
+MIEDEMA BROWN AND ANAND
+
+T A B L E 1
+Functional traits found to have statistical evidence of relationship to ecosystem services
+Plant trait
+Functional trait
+No.
+references
+Citation number
+Diversity
+measures
+Plant functional identity
+18
+[2,4,10,22,25,44,49,50,55,67,77,83,86,120]
+Functional diversity (aspects see papers)
+29
+[11,15,21,23,28,32,41,42,51,52,57,58,59,
+61,64,65,68,76,81,84,88,102,123]
+Functional evenness
+3
+[41,61,87]
+Functional divergence
+3
+[46,103]
+Functional dispersion
+1
+[56]
+Functional variation
+3
+[84,114]
+Functional richness
+3
+[87,112]
+Functional variance
+10
+[14,33,115]
+Plant functional identity
+18
+[2,4,10,22,25,44,49,50,55,67,77,83,86,120]
+Whole plant
+Plant height
+29
+[1,12,14,18,24,27,32,34,35,46,52,53,58,60,66,
+84,85,94,98,100,115,119,121,122]
+Aboveground biomass
+3
+[4,16,35]
+Basal area
+2
+[24,35]
+Wood density
+6
+[27,33,48,84,93,119]
+Legumes
+6
+[32,55,77,96,109,123]
+Leaf/stem biomass
+1
+[37]
+Xylem vulnerability
+1
+[38]
+Shoot mass
+3
+[40]
+Root : shoot ratio
+2
+[40]
+Plant tensile strength
+1
+[61]
+dbh
+1
+[62]
+Shoot biomass
+1
+[75]
+Shoot length
+2
+[75,125]
+Growth rate
+2
+[78,94]
+Wood specific gravity
+1
+[87]
+Canopy density
+2
+[92,122]
+Bark thickness
+2
+[100,127]
+Wood P content
+1
+[105]
+Flowers
+Floristic status
+1
+[123]
+Nectar availability
+2
+[52,124]
+Pollen tubes
+1
+[52]
+Flower size
+1
+[52]
+Flower color
+2
+[52,124]
+Seed mass
+3
+[27,39,90]
+Leaf
+SLA
+45
+[3,6,12,13,14,18,20,22,23,27,31,34,35,36,40,41,53,54,58,60,69,71,
+74,75,76,78,85,93,96,99,101,109,111,113,115,123,127]
+Leaf length
+1
+[4]
+Leaf width
+4
+[4,40]
+Lignin content
+2
+[5]
+Leaf area/surface area/leaf area density
+18
+[7,18,23,27,30,31,60,62,70,78,89,92,98,104,109,117]
+Leaf N content
+24
+[7,18,19,20,34,48,54,55,58,60,66,69,72,85,91,105,107,111,115,125]
+Leaf C:N ratio
+6
+[7,20,73,74,120]
+(Continues)
+ECOSPHERE
+5 of 13
+
+T A B L E 1
+(Continued)
+Plant trait
+Functional trait
+No.
+references
+Citation number
+LDMC
+25
+[8,18,20,23,36,39,48,58,60,71,79,82,85,96,101,113,115]
+Leaf thickness
+9
+[9,13,31,36,39,101,108,109]
+Stem density
+5
+[10,47,60]
+Leaf toughness
+2
+[13,54]
+LAI
+3
+[17,22,122]
+Leaf mass per area
+1
+[19]
+Leaf weight ratio
+1
+[19]
+Leaf K content
+2
+[19,73]
+Leaf cover
+2
+[24]
+Leaf biomass
+1
+[30]
+Photosynthetic rate
+1
+[36]
+Leaf P content
+7
+[36,72,105,107]
+Leaf turgor loss
+1
+[38]
+Leaf force to tear
+1
+[41]
+Leaf chlorophyll
+2
+[43]
+Leaf density
+4
+[47,89,101]
+Leaf C content
+7
+[58,85,107,115]
+Leaf N:P ratio
+5
+[60,72,107]
+Leaf pubescence
+2
+[70,104]
+Leaf Ca content
+1
+[73]
+Stomatal density
+1
+[73]
+Leaf surface area: volume ratio
+1
+[99]
+Leaf bulk density
+1
+[99]
+Root
+Root depth/shallow root allocation
+8
+[12,26,32,40,58,98,119]
+root thickness
+1
+[26]
+root density (deep root density, root
+tissue density, root mass density)
+7
+[26,45,47,53,58,115,116]
+SRL
+3
+[26,63,78]
+Root chemistry
+2
+[29]
+Root biomass
+2
+[37]
+Fine root proportion
+4
+[37,58,95]
+Coarse root proportion
+1
+[37]
+Root mass
+4
+[40,80,126]
+Root surface area
+1
+[41]
+Root diameter
+6
+[41,63,95,103,109]
+Root aerenchyma
+1
+[53]
+RDMC
+1
+[53]
+SRA/surface area
+3
+[58,109]
+Root length density
+1
+[79]
+Root N content
+1
+[91]
+Fine root density/fine root length
+density
+3
+[91,126]
+(Continues)
+6 of 13
+MIEDEMA BROWN AND ANAND
+
+DISCUSSION
+Plant functional traits offer some of the clearest potential
+to measure ES and provide a scientifically defensible and
+comparable quantification method, with both inter- and
+intra-specific traits being strong indicators of environmental
+conditions and change (Cadotte, 2017; Pérez-Harguindeguy
+et al., 2016). As the ecological community continues to
+scale up the implications of plant functional traits to
+larger ecosystem-level processes and effects (Suding
+et al., 2008), we must not overlook the potential to use
+these traits to measure the changes in ES provision
+(Chapin
+III,
+2003;
+Hooper
+et
+al.,
+2005;
+Shipley
+et al., 2006). Our review reveals 127 research articles with
+statistical evidence of the potential of functional traits as
+indicators or co-indicators of ES. This is fewer papers
+than de Bello’s 247 papers, a fact most likely due to de
+Bello et al.’s search for multiple trophic levels (including
+the functional traits of birds, invertebrates, microbes, and
+vertebrates as well as vegetation), and inclusion of theo-
+retical relationships, while our review focused only on
+quantitative evidence. In keeping with de Bello et al., the
+majority of our searches found functional indicators for
+ES which had clear definitions (e.g., food/fodder, water
+regulation) compared to more loosely defined services
+often directly tied to human use (e.g., cultural and medic-
+inal services). The only two services that seemed to differ
+in frequency between our results and those of de Bello
+T A B L E 1
+(Continued)
+Plant trait
+Functional trait
+No.
+references
+Citation number
+Root tensile strength
+1
+[103]
+Root C content
+2
+[106,109]
+No. Tillers
+1
+[110]
+Tiller density
+1
+[110]
+Root length
+5
+[108,110,116,118,126]
+Notes: The traits are divided by plant trait type (whether it is a leaf, root, whole plant, etc.). The citation numbers correspond to the paper citation in Appendix
+S2. The number of references might be higher than the number of citations as some papers reference multiple trait–services per study. See Appendix S2 for
+details of the trait–service relationship.
+T A B L E 2
+Ecosystem services found to have statistical evidence of relationship to plant functional traits
+Ecosystem service
+No. references
+Study number (see Appendix S2)
+Raw material
+45
+[1,14,21,32,34,46,58,60,64,66,90,119,123,125]
+Nutrient cycling
+27
+[2,5,20,29,62,72,76,82,86,91,115]
+Disturbance prevention
+56
+[3,4,11,15,17,26,31,37,38,53,63,78,99,100,101,102,108,109,118,121,123]
+Soil fertility
+65
+[6,8,9,10,13,19,23,24,27,29,43,47,48,50,62,66,67,72,74,75,76,81,91,94,105,
+112,113,115,126]
+Water provision
+52
+[6,7,18,22,30,35,36,39,43,47,59,65,73,74,75,79,83,94,98,101,126]
+Climate regulation
+63
+[8,12,14,16,18,33,40,46,50,55,56,74,80,84,85,87,93,106,107,111,114,115]
+Waste regulation
+8
+[9,44,104,117,120]
+Nursery
+1
+[10]
+Gas regulation
+5
+[14,50,81]
+Food/fodder
+15
+[24,25,54,69,71,77,96]
+Habitat provision
+1
+[24]
+Multifunctionality
+2
+[28,97]
+Erosion prevention
+35
+[40,41,42,45,57,61,70,89,92,95,103,110,116,122]
+Biodiversity
+6
+[40]
+Pollination
+13
+[49,51,52,68,88,102,124]
+Refugia
+2
+[127]
+Notes: The citation numbers correspond to the paper citation in Appendix S2. The number of references might be higher than the number of citations as some
+papers reference multiple trait–services per study. See Appendix S2 for details of the trait–service relationship.
+ECOSPHERE
+7 of 13
+
+were disturbance prevention and soil retention (first and
+sixth most commonly studied services, respectively, and
+which were not clearly outlined in de Bello et al.’s paper).
+This is likely due to the increase in the rampancy of inva-
+sive species and the recent push from ecologists and stake-
+holders alike for preventing invasive species takeover both
+natural areas and urban sites (Lishawa et al., 2019; Mollot
+et al., 2017). This could also relate to the increase in distur-
+bance phenomena (i.e., flooding, forest fires, runoff, etc.)
+in the past decade and an effort to use knowledge of eco-
+logical
+processes
+to
+mitigate
+their
+negative
+effects
+(Abatzoglou & Williams, 2016; Arnell & Gosling, 2016).
+The shift in frequency of specific trait–service rela-
+tionships could indicate an evolution of research in ES
+and is likely connected to whatever services are currently
+at most risk or have the greatest potential to mitigate neg-
+ative natural phenomena. (Droste et al., 2018). For exam-
+ple, there were a high number of studies investigating
+disturbance prevention and erosion prevention, two ser-
+vices the benefits of which are increasingly noticed and
+valued in both agricultural and development sectors. Ero-
+sion prevention not only saves topsoil but can save both
+money and resources (Alam, 2018) in both industrial and
+small-scale farming operations—important benefits given
+concerns
+over
+global
+food
+security
+(Rhodes,
+2014;
+Wuepper et al., 2020). Disturbance prevention, especially
+fire resistance and recovery, is of particular interest as cli-
+mate projections often suggest an increase in fire fre-
+quency and severity due to climate change (Halofsky
+et al., 2020). The same is true of flooding resistance and
+recovery, which is also likely to becoming increasingly
+necessary in coming years (Hirabayashi et al., 2013).
+While papers dealing with remediation were not usually
+included in the results, as they focused on progression of
+ecosystems rather than service provision, there were
+quite a few papers returned in the search that used func-
+tional traits to measure recovery and restoration goals,
+another
+indicator
+of
+increased
+restoration
+ecology
+(do Vale et al., 2010; Winfrey et al., 2018).
+Several papers from our search discussed trait change
+due to climate warming, urban expansion, and/or resis-
+tance invasion (Schlickmann et al., 2020; Song et al., 2019).
+These studies were not included in our final table, as they
+measured changes in traits rather than ES delivery. How-
+ever, these studies along with those on restoration ecology
+do indicate that traits are being leveraged to provide
+insight into current climate and ecological issues. There
+were also discussions of the development of planting
+and
+restoration
+regimes
+based
+on
+functional
+trait
+effects—using trait–service relationships to design sys-
+tems via known plant functional trait effects that pro-
+vide the greatest probability of desired ES given a
+particular ecological risk. For example, the mitigation of
+flooding through planning of high soil retaining species
+or plans to increase resistance to/recovery after forest
+fires through planting of fire-resistant species (Feagin
+et al., 2015; Pickering & Barros, 2015).
+Three of the ecosystem services searched for—genetic
+resources, medicinal resources, and cultural services—did
+not have any functional trait associations. The lack of
+information on these services is likely due to a two-
+pronged—difficulty in defining them, and the already
+established standards of measure. Sources throughout the
+past decade had difficulty measuring mainly refugium and
+nursery function, as well as establishing proper measure-
+ments for cultural services (de Bello et al., 2010). For nurs-
+ery services (only one relationship found), there is little
+information, and it does not serve a concrete and easily
+measurable benefit to society, being a provisioning service
+(de Bello et al., 2010). This could also be the case for the
+less cited services such as refugium (another provisioning
+service, with only a single study found), or for medicinal
+services (no studies found), which do not provide a great
+observable benefit to nearby society (de Groot et al., 2002).
+This inconsistency in measurement standard also makes it
+difficult to provide conventional measures of these ser-
+vices, let alone to connect them to functional traits.
+The opposite is true of biodiversity (which had only
+one relationship found) and genetic materials. These ser-
+vices have accepted measures, with species diversity and
+abundance along with phylogenetic diversity for genetic
+resources typically acting as measures for these services
+(Avolio et al., 2012; Mace et al., 2012). However, their
+benefits to society are much more abstracted. Biodiversity
+and genetic resources are regulating services—those
+functions and processes which allow for the provision of
+life-sustaining ecosystems to continue—while refugium
+and nursery services are considered habitat services—the
+provision of habitat and resources for living organisms to
+live (de Groot et al., 2002; de Groot et al., 2012). Although
+these services are perhaps the most important (as they
+act as the foundation for all the other services consid-
+ered), they possess a minimal market value and are often
+estimated in indirect costs when their value is estimated
+in dollars (de Groot et al., 2012). The reason we see few
+studies investigating new and more accurate ways to
+quantitatively measure ES for these regulating services
+could simply be that there is no demand or interest in
+them from a conservation or management perspective, as
+they are too abstract (Ruckelshaus et al., 2015).
+Along with variation in the number of service studies,
+there was also a great deal of variation in the number of
+plant functional traits that were found to have statisti-
+cally significant relationships to ecosystem services (rang-
+ing from zero for some, to 28 for disturbance prevention)
+(see Table 1). This could be due to the varying complexity
+8 of 13
+MIEDEMA BROWN AND ANAND
+
+of the ES in question. Some of the ES have little varia-
+tion, for example, medicinal ES, referring to whether or
+not plants are used as medicine for human beings, essen-
+tially a binary trait. On the other hand, services such as
+nutrient cycling are far more complex processes with a
+multitude of different nutrients (e.g., nitrogen, carbon,
+potassium) being cycled through both plants and soils,
+each of which could account for some of the variation in
+this service (Hobbie, 2015; Schröder et al., 2016). As the
+complexity of the service provided increases, it follows
+that the number of indicators for this function/service
+might also increase. One service with multiple iterations
+and functional trait measures was also observed the case
+for disturbance prevention, the most frequently cited
+ES. While it is only a single ES, this trait was found to
+have multiple types of disturbance prevention, from fire
+to floods, to drought and exotic species invasion. Floods
+and fires, both disturbances, are extremely different phe-
+nomenon with different functional traits that may pre-
+vent or resist them (e.g., deep roots and a high percentage
+of fine roots aid in flood resistance while thick bark and
+fast growth rate aid in fire resilience).
+It should be noted that the lack of results for func-
+tional trait linkages with services such as biodiversity,
+genetic, and cultural resources in this search does not
+mean that no functional trait indicators exist, nor, even,
+that none have been used. The nature of our search—
+focused on plant functional traits and specific services—
+was limited to statistical research with specific criteria
+and thus was not comprehensive of all possible trait–
+functional relationships. For example, there were several
+papers on the subject of cultural services, aesthetic ser-
+vices that referenced functional traits, and using func-
+tional traits as an evaluation technique, but did not
+specifically investigate quantitative ties between traits
+and services and were thus not included (Goodness
+et al., 2016; Sautkin & Rogova, 2018). The lack of quanti-
+tative study in the papers found indicates the likelihood
+that there are fewer and less well-read papers on these
+subjects. Thus, further research on these services and
+possible functional trait indicators is needed.
+As research in the area continues to develop, and new
+trait–service relationships are studied, functional traits
+such as SLA, LDMC, and leaf nitrogen hold potential as
+economic measures of ES proxies (see Appendix S2).
+Multiple services have been associated these traits, and
+thus, measures of just one of these traits for a community
+could offer rough estimates or proxies for several services.
+This is contrasted with more specific and targeted traits
+such as leaf tensile strength, number of root tillers, and
+photosynthetic rate which have much more limited appli-
+cation and would be best suited for a targeted study of a
+specific desired service in a limited area. We found that
+these traits have only been used in association with a sin-
+gle service and would suit a focused investigation rather
+than a general comparison of functional assembly or
+multiple service provision. This is where a database of
+standardized methods would prove particularly useful,
+allowing general service provision measures with mini-
+mal traits or specific traits that target a service but are
+more labor-intensive and focused. Such a database would
+allow for selection of traits/indicators to isolate and mea-
+sure for the services that is most desired by stakeholders.
+This would ensure comparability and quantifiable mea-
+sures of service, allow for the customization of testing for
+ES, and still provide comparable measures, something
+that is very much in demand as research into ecosystem
+services continues. Specific indicators would be especially
+important for such broad and diverse categories as “dis-
+turbance prevention.” For services like this, subservices
+in a database would allow for the specific functional trait
+associations (i.e., whether, fire resilience or flood preven-
+tion that are most desired) could be accurately measured
+with a minimal amount of resource expenditure. A list of
+all known and measured trait–service relationships could
+provide for designing monitoring programs, restoration,
+and ES measurement as it is unlikely that there exists a
+catch-all trait—a functional trait that indicates measures
+of most ES or that measure consistently between diverse
+ecosystems. Such a database would also ensure that a
+suitably diverse measure of traits could be used to pro-
+vide a more accurate measure of ecosystem service provi-
+sion, as no single trait, no matter how many services it is
+associated with, can account for all the services and func-
+tions required in an ecosystem (Damour et al., 2014).
+Including habitat type and other abiotic factors may
+also prove an important aspect of such a database. We
+found within this review, 11 papers reported differences in
+trait–service relationships depending on the habitat type,
+season or other abiotic differences between plant commu-
+nities (Kozlov et al., 2015; Linstädter et al., 2014; Ruiz-
+Jaen & Potvin, 2011). This suggests that subsets of plant
+functional traits could indicate optimal ES for different eco-
+system types/circumstances and that traits could have dif-
+ferent, sometimes even opposite relationships dependent
+on these factors. Certain functional traits or groups of traits
+act as indicators of improved or ideal ecosystem service
+delivery for a specific ecosystem (Kozlov et al., 2015;
+Linstädter et al., 2014), while others show that they might
+remain constant across ecosystem types (He et al., 2010).
+These are described as soft traits—those that change
+depending on the circumstances—and hard traits—those
+that remain consistent (Belluau & Shipley, 2018). Other
+plant functional trait–ES relationships are habitat depen-
+dent (Sfair et al., 2016), and even season dependent (Hou,
+Lu, et al., 2020; Hou, Zhu, et al., 2020), rather than
+ECOSPHERE
+9 of 13
+
+universal. Since trait–service relationships are often depen-
+dent upon the service and the habitat which they are found
+in (Kozlov et al., 2015; Linstädter et al., 2014; Ruiz-Jaen &
+Potvin, 2011), clarifying regional or ecosystem-specific
+plant functional traits indicators is a field of study that is
+essential in developing habitat and regionally specific mon-
+itoring or measurement programs for ecosystem services.
+Despite the acceptance and clear prevalence of trait–
+service relationship in the literature, there has been some
+recent doubt as to the ability of plant functional traits alone
+to predict changes in ecosystem functioning, which would
+extend to changes in ecosystem service provision (van der
+Plas et al., 2020). Such studies have pointed out the limits
+to the predictive ability of using functional traits alone to
+predict service provision or changes in ecosystem function
+(Lanta et al., 2011). This caution around treating functional
+traits as the “Holy Grail” in ecology is also found other
+studies which recommend inclusion of traits to increase
+the accuracy of estimates and service mappings but refrain
+from using traits alone to measure ES (Xu et al., 2021;
+Graux et al., 2016). While these functional traits often show
+clear correlation along with mechanistic basis for their
+influence and prediction of ecosystem processes and
+services, it is important that their limitations also be
+understood.
+With increased knowledge on the functional trait
+effects, we have a deepened understanding of which func-
+tional traits are dominant in specific landscapes—whether
+it is due to management or based on the surrounding
+landscape—and this knowledge has the potential to provide
+insight into the ecosystem services provided, and the trade-
+offs that occur. Given the thorough understanding of plant
+functional
+trait
+responses
+to
+land-use
+intensification,
+anthropogenic disturbances, and climate change that has
+been developed in the past decade, these functional trait
+responses could be scaled up to provide initial answers
+about these same disturbance effects on ecosystem service
+provision (Bjorkman et al., 2018; Miedema et al., 2019;
+Pérez-Camacho et al., 2012). The next step in ecology is to
+combine these two, filling in the knowledge gaps and info-
+rming restoration, management, and ecological theory
+using these plant functional traits as indicators of the pres-
+ence and trade-offs of ecosystem service. This is particularly
+relevant with the discovery of common trends in functional
+relationships across the globe—indicating the potential of
+worldwide indicators of service provision (Bruelheide
+et al., 2018; Gross et al., 2017; Reich et al., 1997). Combina-
+tion of this knowledge, a literature of ES built off of the
+foundation of the study of ecosystem functions, would
+greatly improve their management, allowing stakeholders
+and conservationists alike to predict and respond to the
+changes caused by climate and land-use change related dis-
+turbances (Chillo et al., 2018; Jones et al., 2019)
+CONCLUSION
+Plant functional traits offer great potential as indicators of
+ES delivery and ES changes, allowing for accurate mea-
+surement, mapping, and the development of unique man-
+agement and recovery strategies in the face of climate
+change and urban expansion. A deeper understanding of
+the influence of dominant plant functional traits on eco-
+system processes and the services they provide could lead
+to a future where management and policy are informed to
+the point where ecosystems could be engineered, if neces-
+sary, to provide the ecosystem services needed (Storkey
+et al., 2015). The use of these plant functional traits to
+improve measures of ecosystem service delivery has wide
+implications for developing accurate models of the effects
+of climate change, as well as scientifically defensible,
+policy-relevant, and widely accepted ES quantification
+methods (Heink et al., 2016; Polasky et al., 2015). While a
+great deal of the foundation has been laid for the applica-
+tion of plant functional traits in this capacity, there is still
+a great deal to be uncovered, notably the influence of
+microbes on both plant functional trait filtering as well as
+on ecosystem processes (and thus on ES). This along with
+research into habitat-dependent plant functional trait indi-
+cators and the development of consistent and comparable
+trait measures for under-represented services such as
+medicinal services, refugium, and nursery functions and
+genetic provision is the next step in consistent and accu-
+rate measures of ecosystem services.
+ACKNOWLEDGMENTS
+This research was funded by an Natural Sciences and Engi-
+neering Research Council Discovery grant to Madhur Anand,
+with partial support from the Canada First Research Excel-
+lence Fund. Liane Miedema Brown conceived of research
+idea through collaboration with Madhur Anand. Review and
+writing were completed by Liane Miedema Brown together
+with review and assistance of Madhur Anand.
+CONFLICT OF INTEREST
+The authors declare that there is no conflict of interest.
+DATA AVAILABILITY STATEMENT
+Data utilized for this research come from previously pub-
+lished works, cited in Appendix S2.
+REFERENCES
+Abatzoglou, J.T., and A.P. Williams. 2016. “Impact of Anthropogenic
+Climate Change on Wildfire across Western US Forests.” Pro-
+ceedings of the National Academy of Sciences 113(42): 11770–5.
+Ala-Hulkko, T., O. Kotavaara, J. Alahuhta, and J. Hjort. 2019.
+“Mapping Supply and Demand of a Provisioning Ecosystem
+Service across Europe.” Ecological Indicators 103: 520–9.
+10 of 13
+MIEDEMA BROWN AND ANAND
+
+Alam, M. 2018. “Ecological and Economic Indicators for Measuring
+Erosion Control Services Provided by Ecosystems.” Ecological
+Indicators 95: 695–701.
+Arnell, N.W., and S.N. Gosling. 2016. “The Impacts of Climate
+Change on River Flood Risk at the Global Scale.” Climatic
+Change 134(3): 387–401.
+Avolio, M.L., J.M. Beaulieu, E.Y. Lo, and M.D. Smith. 2012. “Mea-
+suring Genetic Diversity in Ecological Studies.” Plant Ecology
+213(7): 1105–15.
+Bardgett, R.D., L. Mommer, and F.T. De Vries. 2014. “Going Under-
+ground: Root Traits as Drivers of Ecosystem Processes.” Trends
+in Ecology & Evolution 29(12): 692–9.
+de Bello, F., S. Lavorel, S. Díaz, R. Harrington, J.H. Cornelissen, R.
+D. Bardgett, S.G. Potts, et al. 2010. “Towards an Assessment of
+Multiple Ecosystem Processes and Services via Functional
+Traits.” Biodiversity and Conservation 19(10): 2873–93.
+Belluau, M., and B. Shipley. 2018. “Linking Hard and Soft Traits:
+Physiology, Morphology and Anatomy Interact to Determine
+Habitat Affinities to Soil Water Availability in Herbaceous
+Dicots.” PLoS One 13(3): e0193130.
+Bjorkman, A.D., I.H. Myers-Smith, S.C. Elmendorf, S. Normand, N.
+Rüger, P.S. Beck, A. Blach-Overgaard, et al. 2018. “Plant Func-
+tional Trait Change across a Warming Tundra Biome.” Nature
+562(7725): 57–62.
+Boyd, J., and S. Banzhaf. 2007. “What Are Ecosystem Services? The
+Need for Standardized Environmental Accounting Units.” Eco-
+logical Economics 63(2-3): 616–26.
+Bruelheide, H., J. Dengler, O. Purschke, J. Lenoir, B. Jiménez-
+Alfaro, S.M. Hennekens, Z. Botta-Dukat, et al. 2018. “Global
+Trait–Environment
+Relationships
+of Plant Communities.”
+Nature Ecology & Evolution 2(12): 1906–17.
+Burkhard, B., F. Kroll, F. Müller, and W. Windhorst. 2009. “Land-
+scapes’ Capacities to Provide Ecosystem Services—A Concept
+for Land-Cover Based Assessments.” Landscape Online 15: 1–22.
+Cadotte, M.W. 2017. “Functional Traits Explain Ecosystem Func-
+tion Through Opposing Mechanisms.” Ecology Letters 20(8):
+989–96. https://doi.org/10.1111/ele.12796
+Carpenter, S.R., H.A. Mooney, J. Agard, D. Capistrano, R.S.
+DeFries, S. Díaz, T. Dietz, et al. 2009. “Science for Managing
+Ecosystem
+Services:
+Beyond
+the
+Millennium
+Ecosystem
+Assessment.” Proceedings of the National Academy of Sciences
+of the United States of America 106(5): 1305–12.
+Chapin, F.S., III. 2003. “Effects of Plant Traits on Ecosystem and
+Regional Processes: A Conceptual Framework for Predicting
+the Consequences of Global Change.” Annals of Botany 91(4):
+455–63.
+Chianucci, F., S. Landi, S. Bagella, A. Cutini, P. Corona, and C.
+Ferrara. 2018. “Designing Sustainable Management Option for
+Maintaining Diversity and Ecosystem Function in Mediterra-
+nean Coppice Forests: An Ecological Approach.” EGU General
+Assembly Conference Abstracts 20: 16062.
+Chillo, V., D.P. Vazquez, M.M. Amoroso, and E.M. Bennett. 2018.
+“Land-Use Intensity Indirectly Affects Ecosystem Services
+Mainly through Plant Functional Identity in a Temperate For-
+est.” Functional Ecology 32(5): 1390–9.
+Damour, G., M. Dorel, H.T. Quoc, C. Meynard, and J.M. Risède.
+2014. “A Trait-Based Characterization of Cover Plants to
+Assess Their Potential to Provide a Set of Ecological Services
+in Banana Cropping Systems.” European Journal of Agronomy
+52: 218–28.
+Daou, L., and B. Shipley. 2019. “The Measurement and Quantifica-
+tion of Generalized Gradients of Soil Fertility Relevant to Plant
+Community Ecology.” Ecology 100(1): e02549.
+De Groot, R.S., M.A. Wilson, and R.M. Boumans. 2002. “A Typology for
+the Classification, Description and Valuation of Ecosystem Func-
+tions, Goods and Services.” Ecological Economics 41(3): 393–408.
+De Groot, R., L. Brander, S. Van Der Ploeg, R. Costanza, F.
+Bernard, L. Braat, L. Braat, et al. 2012. “Global Estimates of
+the Value of Ecosystems and Their Services in Monetary
+Units.” Ecosystem Services 1(1): 50–61.
+Dı́az, S., and M. Cabido. 2001. “Vive la différence: Plant Functional
+Diversity Matters to Ecosystem Processes.” Trends in Ecology &
+Evolution 16(11): 646–55.
+do Vale, V.S., I. Schiavini, and A.P. de Oliveira. 2010. “When Eco-
+logical Functions Are More Important Than Richness: A Con-
+servation Approach.” Journal of Ecology and The Natural
+Environment 2(12): 270–80.
+Droste, N., D. D’Amato, and J.J. Goddard. 2018. “Where Communi-
+ties Intermingle, Diversity Grows—The Evolution of Topics in
+Ecosystem Service Research.” PLoS One 13(9): e0204749.
+Eigenbrod, F., P.R. Armsworth, B.J. Anderson, A. Heinemeyer, S.
+Gillings, D.B. Roy, C.D. Thomas, and K.J. Gaston. 2010. “The
+Impact of Proxy-Based Methods on Mapping the Distribution of
+Ecosystem Services.” Journal of Applied Ecology 47(2): 377–85.
+Feagin, R.A., J. Figlus, J.C. Zinnert, J. Sigren, M.L. Martínez, R. Silva,
+W.K. Smith, D. Cox, D.R. Young, and G. Carter. 2015. “Going
+with the Flow or Against the Grain? The Promise of Vegetation
+for Protecting Beaches, Dunes, and Barrier Islands from Ero-
+sion.” Frontiers in Ecology and the Environment 13(4): 203–10.
+Fisher, B., and R.K. Turner. 2008. “Ecosystem Services: Classifica-
+tion for Valuation.” Biological Conservation 141(5): 1167–9.
+Funk, J.L., J.E. Larson, G.M. Ames, B.J. Butterfield, J. Cavender-
+Bares, J. Firn, D.C. Laughlin, A.E. Sutton-Grier, L. Williams,
+and J. Wright. 2017. “Revisiting the Holy Grail: Using Plant
+Functional Traits to Understand Ecological Processes.” Biologi-
+cal Reviews 92(2): 1156–73.
+Goodness, J., E. Andersson, P.M. Anderson, and T. Elmqvist. 2016.
+“Exploring the Links between Functional Traits and Cultural
+Ecosystem Services to Enhance Urban Ecosystem Manage-
+ment.” Ecological Indicators 70: 597–605.
+Graux, A.I., K. Klumpp, S. Ma, R. Martin, and G. Bellocchi. 2016. “Plant
+Trait-Based Assessment of the Pasture Simulation Model.” In Inter-
+national Congress on Environmental Modelling and Software 41.
+International Environmental Modelling and Software Society
+(iEMSs).
+Gross, N., Y. Le Bagousse-Pinguet, P. Liancourt, M. Berdugo, N.J.
+Gotelli, and F.T. Maestre. 2017. “Functional Trait Diversity
+Maximizes Ecosystem Multifunctionality.” Nature Ecology &
+Evolution 1(5): 1–9.
+Halofsky, J.E., D.L. Peterson, and B.J. Harvey. 2020. “Changing
+Wildfire, Changing Forests: The Effects of Climate Change on
+Fire Regimes and Vegetation in the Pacific Northwest, USA.”
+Fire Ecology 16(1): 4.
+He, J.S., X. Wang, B. Schmid, D.F. Flynn, X. Li, P.B. Reich, and J.
+Fang. 2010. “Taxonomic Identity, Phylogeny, Climate and Soil
+Fertility as Drivers of Leaf Traits across Chinese Grassland
+Biomes.” Journal of Plant Research 123(4): 551–61.
+Heink, U., J. Hauck, K. Jax, and U. Sukopp. 2016. “Requirements
+for the Selection of Ecosystem Service Indicators—The Case of
+MAES Indicators.” Ecological Indicators 61: 18–26.
+ECOSPHERE
+11 of 13
+
+Hirabayashi, Y., R. Mahendran, S. Koirala, L. Konoshima, D. Yamazaki,
+S. Watanabe, H. Kim, and S. Kanae. 2013. “Global Flood Risk
+under Climate Change.” Nature Climate Change 3(9): 816–21.
+Hobbie, S.E. 2015. “Plant Species Effects on Nutrient Cycling: Rev-
+isiting Litter Feedbacks.” Trends in Ecology & Evolution 30(6):
+357–63.
+Hooper, D.U., F.S. Chapin, J.J. Ewel, A. Hector, P. Inchausti, S.
+Lavorel, J.H. Lawton, et al. 2005. “Effects of Biodiversity on
+Ecosystem Functioning: A Consensus of Current Knowledge.”
+Ecological Monographs 75(1): 3–35.
+Hou, J., Y. Lu, Z. Li, and H. Zhu. 2020. “Effects of Different Func-
+tional Structure Parameters of Plant Communities on Slope
+Runoff in Different Periods of the Year in Semiarid Grass-
+lands.” Science of the Total Environment 713: 136705.
+Hou, J., H. Zhu, B. Fu, Y. Lu, and J. Zhou. 2020. “Functional Traits
+Explain Seasonal Variation Effects of Plant Communities on
+Soil Erosion in Semiarid Grasslands in the Loess Plateau of
+China.” Catena 194: 104743.
+Imbert, J.B., J.A. Blanco, D. Candel-Pérez, Y.H. Lo, E.G. de Andrés,
+A. Yeste, X. Herrera-Alvarez, G.R. Barba, Y. Liu, and S.-C.
+Chang. 2021. “Synergies between Climate Change, Biodiver-
+sity, Ecosystem Function and Services, Indirect Drivers of
+Change and Human Well-Being in Forests.” Exploring Syner-
+gies and Trade-offs between Climate Change and the Sustain-
+able Development Goals 20(8): 263–320.
+IPBES. 2019. Summary for Policymakers of the Global Assessment
+Report on Biodiversity and Ecosystem Services of the Intergovern-
+mental Science-Policy Platform on Biodiversity and Ecosystem
+Services. Bonn: IPBES Secretariat.
+Jones, H.P., N.A. Barber, and D.J. Gibson. 2019. “Is Phylogenetic
+and Functional Trait Diversity a Driver or a Consequence of
+Grassland Community Assembly?” Journal of Ecology 107(5):
+2027–32.
+Kozlov, M.V., V. Lanta, V. Zverev, and E.L. Zvereva. 2015. “Back-
+ground Losses of Woody Plant Foliage to Insects Show Vari-
+able Relationships with Plant Functional Traits across the
+Globe.” Journal of Ecology 103(6): 1519–28.
+Kremen, C. 2005. “Managing Ecosystem Services: What Do We Need
+to Know about Their Ecology?” Ecology Letters 8(5): 468–79.
+Lam, S.T., and T.M. Conway. 2018. “Ecosystem Services in Urban
+Land Use Planning Policies: A Case Study of Ontario Munici-
+palities.” Land Use Policy 77: 641–51.
+Lang, Y., and W. Song. 2018. “Trade-off Analysis of Ecosystem Ser-
+vices in a Mountainous Karst Area, China.” Water 10(3): 300.
+Lanta, V., J. Klimešova, K. Martincova, Š. Janecˇek, J. Doležal, J.
+Rosenthal, J. Leps, and L. Klimeš. 2011. “A Test of the Explan-
+atory Power of Plant Functional Traits on the Individual and
+Population Levels.” Perspectives in Plant Ecology, Evolution
+and Systematics 13(3): 189–99.
+Lavorel, S. 2013. “Plant Functional Effects on Ecosystem Services”.
+https://doi.org/10.1111/1365-2745.12031
+Lavorel, S., and E. Garnier. 2002. “Predicting Changes in Commu-
+nity Composition and Ecosystem Functioning from Plant
+Traits: Revisiting the Holy Grail.” Functional Ecology 16(5):
+545–56.
+Lavorel, S., S. Díaz, J.H.C. Cornelissen, E. Garnier, S.P. Harrison, S.
+McIntyre, J.G. Pausas, N. Pérez-Harguindeguy, C. Roumet,
+and C. Urcelay. 2007. “Plant Functional Types: Are We Get-
+ting Any Closer to the Holy Grail?” Terrestrial Ecosystems in a
+Changing World. Global Change — The IGBP Series. Berlin,
+Heidelberg: Springer, 149–64.
+Layke, C., A. Mapendembe, C. Brown, M. Walpole, and J. Winn.
+2012. “Indicators from the Global and Sub-Global Millennium
+Ecosystem Assessments: An Analysis and Next Steps.” Ecologi-
+cal Indicators 17: 77–87.
+Linstädter, A., J. Schellberg, K. Brüser, C. Moreno García, R.
+Oomen, C. du Preez, J.C. Ruppert, and F. Ewert. 2014. “Are
+There Consistent Grazing Indicators in Drylands? Testing
+Plant
+Functional
+Types
+of
+Various
+Complexity
+in
+South Africa’s Grassland and Savanna Biomes.” PLoS One
+9(8): e104672.
+Lishawa, S.C., B.A. Lawrence, D.A. Albert, D.J. Larkin, and N.C.
+Tuchman. 2019. “Invasive Species Removal Increases Species
+and Phylogenetic Diversity of Wetland Plant Communities.”
+Ecology and Evolution 9(11): 6231–44.
+Mace, G.M., K. Norris, and A.H. Fitter. 2012. “Biodiversity and Eco-
+system Services: A Multilayered Relationship.” Trends in Ecol-
+ogy & Evolution 27(1): 19–26.
+Malherbe, H., S. Pauleit, and C. Lorz. 2019. “Mapping the Loss of
+Ecosystem Services in a Region under Intensive Land Use
+along the Southern Coast of South Africa.” Land 8(3): 51.
+Manzoor, S.A., A. Malik, M. Zubair, G. Griffiths, and M. Lukac.
+2019. “Linking Social Perception and Provision of Ecosystem
+Services in a Sprawling Urban Landscape: A Case Study of
+Multan, Pakistan.” Sustainability 11(3): 654.
+Martínez-Harms, M.J., and P. Balvanera. 2012. “Methods for Map-
+ping Ecosystem Service Supply: A Review.” International Jour-
+nal of Biodiversity Science, Ecosystem Services & Management
+8(1–2): 17–25.
+Miedema, L.J., V. Capmourteres, and M. Anand. 2019. “Impact of
+Land Composition and Configuration on the Functional Trait
+Assembly of Forest Communities in Southern Ontario.” Eco-
+sphere 10(3): e02633.
+Milheiras, S.G., and G.M. Mace. 2019. “Assessing Ecosystem Service
+Provision in a Tropical Region with High Forest Cover: Spatial
+Overlap and the Impact of Land Use Change in Amapa,
+Brazil.” Ecological Indicators 99: 12–8.
+Moein, M., A. Asgarian, Y. Sakieh, and A. Soffianian. 2018. “Sce-
+nario-based Analysis of Land-Use Competition in Central
+Iran: Finding the Trade-off between Urban Growth Patterns
+and Agricultural Productivity.” Sustainable Cities and Society
+39: 557–67.
+Mollot, G., J.H. Pantel, and T.N. Romanuk. 2017. “The Effects of
+Invasive Species on the Decline in Species Richness: A Global
+Meta-Analysis.” Advances in Ecological Research 56: 61–83.
+Olander, L.P., R.J. Johnston, H. Tallis, J. Kagan, L.A. Maguire, S.
+Polasky, D. Urban, J. Boyd, L. Wainger, and M. Palmer. 2018.
+“Benefit Relevant Indicators: Ecosystem Services Measures
+that Link Ecological and Social Outcomes.” Ecological Indica-
+tors 85: 1262–72.
+Partey, S.T., R.B. Zougmore, N.V. Thevathasan, and R.F. Preziosi.
+2017.
+“N
+Availability,
+Soil
+Microbial
+Biomass
+and
+β-Glucosidase Activity as Influenced by the Decomposition of
+Nine Plant Residues during Soil Fertility Improvement in
+Ghana.” Pedosphere 29(5): 608–618. https://doi.org/10.1016/
+S1002-0160(17)60433-8
+Paudyal, K., H. Baral, S.P. Bhandari, A. Bhandari, and R.J. Keenan.
+2019. “Spatial Assessment of the Impact of Land Use and Land
+12 of 13
+MIEDEMA BROWN AND ANAND
+
+Cover Change on Supply of Ecosystem Services in Phewa
+Watershed, Nepal.” Ecosystem Services 36: 100895.
+Pérez-Camacho, L., S. Rebollo, V. Hernandez-Santana, G. García-
+Salgado, J. Pavon-García, and A. Gomez-Sal. 2012. “Plant
+Functional Trait Responses to Interannual Rainfall Variability,
+Summer Drought and Seasonal Grazing in Mediterranean
+Herbaceous Communities.” Functional Ecology 26(3): 740–9.
+Pérez-Harguindeguy, N., S. Dı́az, E. Garnier, S. Lavorel, H. Poorter,
+P. Jaureguiberry, M.S. Bret-Harte, et al. 2016. “Corrigendum
+to: New Handbook for Standardised Measurement of Plant
+Functional Traits Worldwide.” Australian Journal of Botany
+64(8): 715–6.
+Pickering, C.M., and A. Barros. 2015. “Using Functional Traits to
+Assess the Resistance of Subalpine Grassland to Trampling by
+Mountain Biking and Hiking.” Journal of Environmental
+Management 164: 129–36.
+van der Plas, F., T. Schröder-Georgi, A. Weigelt, K. Barry, S. Meyer,
+A. Alzate, R.L. Barnard, et al. 2020. “Plant Traits Alone Are
+Poor Predictors of Ecosystem Properties and Long-Term Ecosys-
+tem Functioning.” Nature Ecology & Evolution 4(12): 1602–11.
+Polasky, S., H. Tallis, and B. Reyers. 2015. “Setting the Bar: Stan-
+dards for Ecosystem Services.” Proceedings of the National
+Academy of Sciences of the United States of America 112(24):
+7356–61.
+Pullin, A.S., and G.B. Stewart. 2006. “Guidelines for Systematic
+Review in Conservation and Environmental Management.”
+Conservation Biology 20(6): 1647–56.
+Quintas-Soriano, C., J.S. Brandt, K. Running, C.V. Baxter, D.M.
+Gibson, J. Narducci, and A.J. Castro. 2018. “Social-Ecological
+Systems Influence Ecosystem Service Perception: A Pro-
+gramme on Ecosystem Change and Society (PECS) Analysis.”
+Ecology and Society 23(3): 1–18.
+Reich, P.B., M.B. Walters, and D.S. Ellsworth. 1997. “From Tropics
+to Tundra: Global Convergence in Plant Functioning.” Pro-
+ceedings
+of
+the
+National
+Academy
+of
+Sciences
+of
+the
+United States of America 94(25): 13730–4.
+Rhodes, C.J. 2014. “Soil Erosion, Climate Change and Global Food Secu-
+rity: Challenges and Strategies.” Science Progress 97(2): 97–153.
+Ruckelshaus, M., E. McKenzie, H. Tallis, A. Guerry, G. Daily, P.
+Kareiva, S. Polasky, et al. 2015. “Notes from the Field: Lessons
+Learned from Using Ecosystem Service Approaches to Inform
+Real-World Decisions.” Ecological Economics 115: 11–21.
+Ruiz-Jaen, M.C., and C. Potvin. 2011. “Can we Predict Carbon
+Stocks in Tropical Ecosystems from Tree Diversity? Comparing
+Species and Functional Diversity in a Plantation and a Natural
+Forest.” New Phytologist 189(4): 978–87.
+Sang, Å.O., F.A. Hagemann, N. Ekelund, and J. Svännel. 2021.
+“Urban Ecosystem Services in Strategic Planning in Swedish
+Municipalities.” Urban Ecosystem 24: 1343–57.
+Sautkin, I.S., and T.V. Rogova. 2018. “Functional Approach in Esti-
+mation of Cultural Ecosystem Services of Recreational Areas.”
+IOP Conference Series: Earth and Environmental Science
+107(1): 012091.
+Schlickmann, M.B., A.C. da Silva, L.M. de Oliveira, D.O. Matteucci,
+F.D. Machado, T. Cuchi, E. Duarte, and P. Higuchi. 2020.
+“Specific Leaf Area Is a Potential Indicator of Tree Species Sen-
+sitive to Future Climate Change in the Mixed Subtropical For-
+ests of Southern Brazil.” Ecological Indicators 116: 106477.
+Schröder, J.J., R.P.O. Schulte, R.E. Creamer, A. Delgado, J. Van
+Leeuwen, T. Lehtinen, M. Rutgers, et al. 2016. “The Elusive
+Role of Soil Quality in Nutrient Cycling: A Review.” Soil Use
+and Management 32(4): 476–86.
+Sfair, J.C., B.H. Rosado, and M. Tabarelli. 2016. “The Effects of
+Environmental Constraints on Plant Community Organization
+Depend on which Traits Are Measured.” Journal of Vegetation
+Science 27(6): 1264–74.
+Sherrouse, B.C., J.M. Clement, and D.J. Semmens. 2011. “A GIS Appli-
+cation for Assessing, Mapping, and Quantifying the Social Values
+of Ecosystem Services.” Applied Geography 31(2): 748–60.
+Shipley, B., D. Vile, and E. Garnier. 2006. “From Plant Traits to
+Plant Communities: A Statistical Mechanistic Approach to
+Biodiversity.” Science 314(5800): 812–4.
+Song, G., J. Wang, T. Han, Q. Wang, H. Ren, H. Zhu, X. Wen, and D.
+Hui. 2019. “Changes in Plant Functional Traits and Their Rela-
+tionships with Environmental Factors along an Urban–Rural Gra-
+dient in Guangzhou, China.” Ecological Indicators 106: 105558.
+Spangenberg,
+J.H.,
+C.
+Görg,
+D.T.
+Truong,
+V.
+Tekken,
+J.V.
+Bustamante, and J. Settele. 2014. “Provision of Ecosystem Ser-
+vices Is Determined by Human Agency, Not Ecosystem Func-
+tions. Four Case Studies.” International Journal of Biodiversity
+Science, Ecosystem Services & Management 10(1): 40–53.
+Storkey, J., T. Döring, J. Baddeley, R. Collins, S. Roderick, H. Jones,
+and C. Watson. 2015. “Engineering a Plant Community to
+Deliver Multiple Ecosystem Services.” Ecological Applications
+25(4): 1034–43.
+Suding, K.N., S. Lavorel, F.S. Chapin, III, J.H. Cornelissen, S. Díaz,
+E. Garnier, D. Goldberg, D.U. Hooper, S.T. Jackson, and M.-L.
+Navas. 2008. “Scaling Environmental Change through the
+Community-Level: A Trait-Based Response-and-Effect Frame-
+work for Plants.” Global Change Biology 14(5): 1125–40.
+Winfrey, B.K., B.E. Hatt, and R.F. Ambrose. 2018. “Biodiversity and
+Functional Diversity of Australian Stormwater Biofilter Plant
+Communities.” Landscape and Urban Planning 170: 112–37.
+Wuepper, D., P. Borrelli, and R. Finger. 2020. “Countries and the
+Global Rate of Soil Erosion.” Nature Sustainability 3(1): 51–5.
+Xu, Y., S. Dong, X. Gao, M. Yang, S. Li, H. Shen, J. Xiao, et al. 2021.
+“Aboveground Community Composition and Soil Moisture
+Play
+Determining
+Roles
+in
+Restoring
+Ecosystem
+Multi-
+functionality of Alpine Steppe on Qinghai-Tibetan Plateau.”
+Agriculture, Ecosystems & Environment 305: 107163.
+Yageta, Y., H. Osbahr, Y. Morimoto, and J. Clark. 2019. “Compar-
+ing Farmers’ Qualitative Evaluation of Soil Fertility with
+Quantitative Soil Fertility Indicators in Kitui County, Kenya.”
+Geoderma 344: 153–63.
+Zirbel, C.R., T. Bassett, E. Grman, and L.A. Brudvig. 2017. “Plant
+Functional Traits and Environmental Conditions Shape Com-
+munity Assembly and Ecosystem Functioning during Restora-
+tion.” Journal of Applied Ecology 54(4): 1070–9.
+SUPPORTING INFORMATION
+Additional supporting information may be found in the
+online version of the article at the publisher’s website.
+How to cite this article: Miedema Brown, Liane,
+and Madhur Anand. 2022. “Plant Functional Traits
+as Measures of Ecosystem Service Provision.”
+Ecosphere 13(2): e3930. https://doi.org/10.1002/
+ecs2.3930
+ECOSPHERE
+13 of 13

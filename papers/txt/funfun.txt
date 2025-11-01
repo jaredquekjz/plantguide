@@ -1,0 +1,1507 @@
+Vol.:(0123456789)
+1 3
+https://doi.org/10.1007/s00248-022-01973-2
+FUNGAL MICROBIOLOGY
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional 
+Assignments of Leaf‑ and Needle‑Associated Fungi Across 12 
+Temperate Tree Species
+Benjawan Tanunchai1,2   · Li Ji1,3 · Simon Andreas Schroeter4 · Sara Fareed Mohamed Wahdan1,5 · 
+Shakhawat Hossen1,6 · Yoseph Delelegn1 · François Buscot1,7   · Ann‑Sophie Lehnert4 · Eliane Gomes Alves4 · 
+Ines Hilke4 · Gerd Gleixner4 · Ernst‑Detlef Schulze4 · Matthias Noll2,6   · Witoon Purahong1 
+Received: 11 October 2021 / Accepted: 21 January 2022 
+© The Author(s) 2022
+Abstract
+Recently, a new annotation tool “FungalTraits” was created based on the previous FUNGuild and ­FunFun databases, which has 
+attracted high attention in the scientific community. These databases were widely used to gain more information from fungal 
+sequencing datasets by assigning fungal functional traits. More than 1500 publications so far employed FUNGuild and the aim 
+of this study is to compare this successful database with the recent FungalTraits database. Quality and quantity of the assignment 
+by FUNGuild and FungalTraits to a fungal internal transcribed spacer (ITS)–based amplicon sequencing dataset on amplicon 
+sequence variants (ASVs) were addressed. Sequencing dataset was derived from leaves and needles of 12 temperate broadleaved 
+and coniferous tree species. We found that FungalTraits assigned more functional traits than FUNGuild, and especially the 
+coverage of saprotrophs, plant pathogens, and endophytes was higher while lichenized fungi revealed similar findings. Moreover, 
+ASVs derived from leaves and needles of each tree species were better assigned to all available fungal traits as well as to 
+saprotrophs by FungalTraits compared to FUNGuild in particular for broadleaved tree species. Assigned ASV richness as well as 
+fungal functional community composition was higher and more diverse after analyses with FungalTraits compared to FUNGuild. 
+Moreover, datasets of both databases showed similar effect of environmental factors for saprotrophs but for endophytes, unidentical 
+patterns of significant corresponding factors were obtained. As a conclusion, FungalTraits is superior to FUNGuild in assigning 
+a higher quantity and quality of ASVs as well as a higher frequency of significant correlations with environmental factors.
+Keywords  Amplicon sequence variants · Endophytes · Functional assignment · Fungal amplicon sequencing · ITS · 
+Lichenized fungi · Plant pathogens · Saprotrophs
+Benjawan Tanunchai and Li Ji contributed equally.
+ *	 Matthias Noll 
+	
+Matthias.noll@hs-coburg.de
+ *	 Witoon Purahong 
+	
+witoon.purahong@ufz.de
+	
+François Buscot 
+	
+francois.buscot@ufz.de
+1	
+Department of Soil Ecology, UFZ-Helmholtz Centre 
+for Environmental Research, Theodor‑Lieser‑Str. 4, 
+06120 Halle (Saale), Germany
+2	
+Bayreuth Center of Ecology and Environmental Research 
+(BayCEER), University of Bayreuth, Bayreuth, Germany
+3	
+Key Laboratory of Sustainable Forest Ecosystem 
+Management‑Ministry of Education, School of Forestry, 
+Northeast Forestry University, 150040 Harbin, 
+People’s Republic of China
+4	
+Max Planck Institute for Biogeochemistry, Biogeochemical 
+Processes Department, Hans‑Knöll‑Str. 10, 07745 Jena, 
+Germany
+5	
+Botany Department, Faculty of Science, Suez Canal 
+University, Ismailia 41522, Egypt
+6	
+Institute of Bioanalysis, Coburg University of Applied 
+Sciences and Arts, Coburg, Germany
+7	
+German Centre for Integrative Biodiversity Research (iDiv) 
+Halle-Jena-Leipzig, Deutscher Platz 5e, 04103 Leipzig, 
+Germany
+/ Published online: 5 February 2022
+Microbial Ecology (2023) 85:411–428
+
+1 3
+Introduction
+Fungi play a pivotal role in terrestrial ecosystems and exert 
+important ecological functions including decomposition, 
+transformation, and effective utilization of organic sub-
+strates, facilitating the cycling processes [1]. The under-
+standing of fungal community diversity associated with 
+leaf decomposition provides new insights into changes in 
+biodiversity and forest ecosystem functions under climate 
+change scenarios [2, 3]. Leaf properties (especially pH, 
+availability of N and C nutrients) vary greatly among dif-
+ferent host tree species and tree types and are known to 
+shape the microbial community composition and micro-
+bial functional groups [4–6]. However, little attention has 
+been paid to the fungal community functions related to 
+leaves and needles of temperate tree species [7] and their 
+relation to the host tree species. A functional guild sum-
+marizes a functional group composed of different phy-
+logenetic taxa, which employs similar utilization of the 
+same substrate type. Nevertheless, not all fungal groups 
+perform consistent ecological functions, potentially 
+resulting in guild bias in the relationships between the 
+relative abundance of fungal communities and ecologi-
+cal functions. Some fungal groups even have overlapping 
+niches under certain conditions [8–10]. Less is known 
+until recently on how different fungal guilds interplay in 
+facilitating and competitive modes in different host tree 
+species. The interaction between fungal guilds can impact 
+the decomposition rate of organic matter through the prim-
+ing effect (additional carbon input) or the Gadgil effect 
+(competition between saprotrophs and ectomycorrhizas 
+for limited organic resources) [11–13]. Saprotrophs and 
+plant pathogens are the two main guilds inhabiting the 
+leaf litter. Saprotrophs exert a variety of functions in for-
+est debris (e.g., dead wood and leaf litter), soil carbon, 
+and nutrient cycling [14], while plant pathogens usually 
+exhibit saprophytic activities after leaf senescence (in the 
+early stage of decomposition) [15]. These characteristics 
+can lead to differences of the functional richness between 
+the saprotrophs and plant pathogens in different habitats. 
+Therefore, identifying and evaluating how fungal guilds 
+and their richness in the respective functional diversity 
+response to the variation in host tree species and diversity 
+is a crucial issue for microbial ecology and biodiversity. 
+The functional assignment to phylogenetic datasets is an 
+important step to assess fungal community functions and 
+guild differentiation.
+In recent years, several relatively efficient and accurate 
+databases or molecular tools that depict and identify fun-
+gal functions have been established, for example LIAS [16, 
+17], DEEMY [18], ­FunFun [19], Notes on genera: Ascomy-
+cota [20], FUNGuild [21], and FacesOfFungi [22]. LIAS 
+focuses on lichens, lichenicolous fungi, and non-lichenized 
+Ascomycetes, whereas DEEMY focuses on ectomycorrhi-
+zal fungi [16, 18]. FacesOfFungi is a broad database and 
+includes three main fungal groups, Ascomycota, Basidi-
+omycota, basal fungi as well as fungus-like organisms 
+[22]. Notes on genera: Ascomycota has been built up from 
+FacesOfFungi by focusing on habitats, substrates, gross 
+biotic interactions, and trophic modes of Ascomycetes 
+[20]. FUNGuild is a database for the comparison of fungal 
+functions and can link fungal gene sequencing information 
+with the ecological functions of fungi, as well as identify 
+the nutrient types used by fungi at the genus level and 
+conduct the specific functional classifications [21]. ­FunFun 
+database has been developed from FUNGuild by addition 
+of data on various number of traits at the genus and spe-
+cies levels (including cellular, ecological, and biochemical 
+traits) [19]. The FUNGuild annotation tool proposed by 
+Nguyen et al. (2016) for analyzing the functional guilds of 
+fungal communities [21] has received more attention and 
+has been applied to perform the fungal ecological func-
+tions in terrestrial and aquatic ecosystems [23–28]. The 
+script is written in Python and licensed under GNU Gen-
+eral Public License. FUNGuild’s script works by matching 
+terms in the taxonomy column of the OTU table to those 
+in the database in the GitHub repository [21]. Even though 
+FUNGuild has been used to analyze the functions of fungi 
+to a certain extent, the functions of 59% of soil fungi and 
+20% of saprophytic organisms have not yet been resolved 
+[21]. This tool has certain limitations as it is based on 
+existing literature and data. Therefore, the fungal taxon 
+and functional group datasets still need to be updated with 
+higher resolution.
+Based on the previous fungal functional annotation 
+tools, FUNGuild [21] and ­FunFun [19], the recent work by 
+Põlme et al. developed the FungalTraits tool and reanno-
+tated 10,210 genera of fungi and 151 genera of Strameno-
+pila associated with 17 characteristic lifestyles [29]. They 
+manually classified and assigned the 697,413 fungal ITS 
+sequences and obtained the 92,623 fungal characteristics and 
+host information (at 1% dissimilarity threshold). Compared 
+with FUNGuild, FungalTraits clearly provides the most 
+commonly occurring lifestyle as primary lifestyle and addi-
+tional relevant lifestyle as secondary lifestyles. Furthermore, 
+FungalTraits introduced the “aquatic_habitat” feature, which 
+allows fungi to be classified as marine, freshwater, more 
+extensive aquatic, or partial aquatic organisms, because 
+many previous aquatic species were usually annotated to 
+root or soil environments. They unravelled that it may be 
+necessary to parse accidental spores of terrestrial fungi from 
+functional groups that naturally grow in water or similar 
+substrates [29]. In addition, FungalTraits has also expanded 
+the “growth_form” field, with 15 characteristic states cover-
+ing amoeba, filamentous, mycelium, and various single-cell 
+B. Tanunchai et al.
+412
+
+1 3
+forms related to fungi and Stramepiles. For ectomycorrhizal 
+fungi, the evolutionary characters “ectomycorrhiza_lineage” 
+and “ectomycorrhiza_exploration_type” are introduced. In 
+addition, they collected specific information about primary 
+and secondary symbiotic photosynthetic organisms in the 
+literature to annotated information about lichen traits [29].
+Until now, more than 1500 publications (last accessed 
+16.12.2021) have employed FUNGuild to annotate sequenc-
+ing datasets to ecological functions. Due to the large num-
+ber of previous studies using FUNGuild, it is necessary to 
+compare the performance and the ecological interpretation 
+provided by the two annotation tools (FUNGuild vs. Fungal-
+Traits). Our study aimed to compare state-of-the-art methods 
+(FungalTraits vs. FUNGuild) for leaf- and needle-associated 
+fungal functional diversity analyses. We investigated the 
+leaf- and needle-associated fungi of 12 temperate tree spe-
+cies in Central Europe forests and validated the consistency 
+of using the two functional annotation tools. We hypoth-
+esize that (1) for overall and for all main fungal guilds, 
+FungalTraits outperforms FUNGuild as it contains a higher 
+number of fungal genera in its database; (2) both functional 
+annotation tools provide consistent results for interpreting 
+the richness and community composition of the leaf- and 
+needle-associated fungi across 12 temperate tree species.
+Materials and Methods
+Study Site and Sampling
+This study was conducted in the Hainich-Dün region of 
+Thuringia, Germany (51°12' N 10°18'E). Elevations range 
+from 100 to 494 m above sea level, the mean annual pre-
+cipitations from 600 to 800 mm, and the mean annual tem-
+peratures from 6 to 7.5 °C (average temperatures in Janu-
+ary = 0.65 °C and July = 17.17 °C). The parent material is 
+Triassic limestone, which is covered by a Pleistocene loess 
+layer of variable thickness (ca. 10–50 cm) at most sites. The 
+litter layer consists mainly of past years foliage (1 to 3 cm). 
+The main soil type is a Cambisol on limestone as bed-rock. 
+The soil pH is weakly acidic (5.1 ± 1.1; mean ± SD).
+In October 2019, we collected senescing leaves and 
+needles from 60 tree individual (12 tree species, five true 
+replicates (trees), minimum 200-g leaves or needles per 
+tree individual). These tree species include 8 broadleaved 
+(including Acer pseudoplatanus, Carpinus betulus, Fagus 
+sylvatica, Fraxinus excelsior, Populus sp., Prunus avium, 
+Quercus robur, and Tilia cordata) and 4 coniferous tree spe-
+cies (including Picea abies, Larix decidua, Pinus sylvestris, 
+and Pseudotsuga menziesii). Sampling was carried out with 
+gloves and sterilized plastic bags, and leaves and needles 
+from each tree were separately packed and transported under 
+cooled conditions to the lab. In the laboratory, each leaf 
+and needle were frozen at − 80 °C for subsequent molecular 
+approaches.
+DNA Extraction and Illumina Sequencing
+Healthy-looking leaves (up to 10 leaves per tree individual 
+depending on the size of the leaves) and needles (from five 
+branches per tree individual) were subsampled and prepared 
+for DNA extraction. Briefly, we removed loosely adherent 
+dust particles and microbes from leaf and needle samples by 
+vortexing them with a maximum speed for 5 min in sterile 
+Tween solution (0.1% vol/vol), and this step was repeated 
+three times. The samples were then washed three to five 
+times using deionized water. Finally, leaf and needle samples 
+were incubated for 1 h in sterile water at room tempera-
+ture. Each composite sample was then ground using liquid 
+nitrogen and pestle, homogenized, then stored at − 20 °C 
+for further analysis. Fungal community attached firmly to 
+the leaf and needle samples (~ 120 mg homogenized leaves 
+and needles) was then subjected to DNA extraction using 
+DNeasy PowerSoil Kit (Qiagen, Hilden, Germany) and a 
+Precellys 24 tissue homogenizer (Bertin Instruments, Mon-
+tigny-le-Bretonneux, France) according to the manufac-
+turer’s instructions. The presence and quantity of genomic 
+DNA were checked using NanoDrop ND-1000 spectropho-
+tometer (Thermo Fisher Scientific, Dreieich, Germany), and 
+the extracts were stored at − 20 °C. Leaf- and needle-associ-
+ated fungi were characterized by fungal internal transcribed 
+spacer (ITS)–based amplicon sequencing on the Illumina 
+MiSeq sequencing platform, as outlined earlier [30]. For 
+establishing fungal amplicon libraries, the fungal ITS2 gene 
+was amplified using the fungal primer pair fITS7 [5-GTG​
+ART​CAT​CGA​ATC​TTT​G-3] [31] and ITS4 primer [5-TCC​
+TCC​GCT​TAT​TGA​TAT​GC-3] [32] with Illumina adapter 
+sequences. Amplifications were performed using 20-µL 
+reaction volumes with 5 × HOT FIRE Pol Blend Master 
+Mix (Solis BioDyne, Tartu, Estonia). The amplified products 
+were visualized by gel electrophoresis and purified using 
+an Agencourt AMPure XP kit (Beckman Coulter, Krefeld, 
+Germany). Illumina Nextera XT Indices were added to both 
+ends of fungal amplicons. The products from three techni-
+cal replicates were then pooled in equimolar concentrations. 
+Paired-end sequencing (2 × 300 bp) was performed on the 
+pooled PCR products using a MiSeq Reagent kit v3 on an 
+Illumina MiSeq system (Illumina Inc., San Diego, CA, USA) 
+at the Department of Soil Ecology, Helmholtz Centre for 
+Environmental Research, Germany.
+Bioinformatics
+The ITS rDNA sequences corresponding to the forward 
+and reverse primers were trimmed from the demultiplexed 
+raw reads using cutadapt [33]. Paired-end sequences were 
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+413
+
+1 3
+quality-trimmed, filtered for chimeras, and merged using 
+the DADA2 package [34] through the pipeline dadasnake 
+[30]. Assembled reads fulfilling the following criteria were 
+retained for further analyses: a minimum length of 70 nt, 
+quality scores at least equal to 9 with maximum expected 
+error score of 5 for forward and reverse sequences, and no 
+ambiguous nucleotides. Merging was conducted with 2 
+mismatches allowed and a minimum overlap of 20 nucleo-
+tides required for fungal sequences. High-quality reads were 
+clustered into 2480 amplicon sequence variants (ASVs) for 
+fungi after chimera removal. Fungal ASVs were classified 
+against the UNITE v7.2 database [35]. Set of ASVs were 
+classified using the Bayesian classifier as implemented in 
+the mothur classify.seqs command, with a cut-off of 60. The 
+ASV method is used to infer the biological sequences in the 
+sample, as described previously [36]. Rare ASVs (single-
+tons), which potentially represent artificial sequences, were 
+removed. The dataset was then rarefied. Finally, we obtained 
+2451 rarefied fungal ASVs with the minimum sequencing 
+depths of 21,967 sequences per sample. Presence/Absence 
+datasets for fungi were used in the statistical analyses. The 
+rarefaction curves of all the samples are provided in the Sup-
+plementary Figure S1. The fungal ecological function of 
+each ASV was determined using FUNGuild [21] and Fun-
+galTraits [29] according to the authors’ instructions.
+Physiochemical analyses
+Wet leaf and needle samples were shaken for 1 h in falcon 
+tubes with 30 mL milliQ water to leach water-soluble com-
+ponents from their surfaces. The leachates were centrifuged 
+for 5 min at 3500 rpm, decanted, and filtered through pre-
+flushed 0.45-µm regenerated cellulose syringe filters. The 
+remaining leaf/needle material was dried for two weeks at 
+40 °C for dry weight determination. All quantification results 
+are given in reference to the dry weight. The pH of the lea-
+chates was determined using pH paper with a scale precision 
+of 0.2 pH units. ­Norg was calculated as the difference: 
+­Norg = ­TNb – ­Nmin. ­TNb was analyzed using a sum parameter 
+analyzer with high temperature combustion and chemilumi-
+nescence detection (Mitsubishi TN-100; a1 envirosciences, 
+Düsseldorf, Germany). For ­NMin quantification, a flow injec-
+tion analyzer (Quikchem QC85S5; Lachat Instruments, 
+Hach Company, Loveland CO, USA) with corresponding 
+manifolds for the nitrogen measurement of ammonium NNH+
+4 , 
+nitrite NNO−
+2 , and nitrate- plus nitrite NNO−
+3 +NO−
+2 was used. 
+DOC was quantified as non-purgeable organic carbon 
+(NPOC) with a sum parameter analyzer using high-temper-
+ature combustion and infrared detection (vario TOC cube, 
+Elementar Analysensysteme GmbH, Langenselbold, Ger-
+many). Nutrient ions, Ca, Fe, K, Mg, and P content were 
+determined using Inductively Coupled Plasma–Optical 
+Emission Spectrometry (ICP–OES, PerkinElmer Inc., 
+Waltham, MA, USA) according to manufacturers’ specifica-
+tions. All method details on physiochemical analyses are 
+provided in supplementary material.
+Statistical analysis
+The datasets were tested for normality using the Jarque–Bera 
+JB test and for the equality of group variances using F-test 
+(for two datasets) and Levene’s test (for more than two 
+datasets). The statistical differences between proportions 
+of functional assignment by FUNGuild and FungalTraits 
+were performed using T-test (for normal distributed data) 
+and Mann–Whitney U test (for non-normal distributed 
+data). Effects of tree species and tree types on fungal com-
+munity composition were visualized and tested with clus-
+ter analysis (based on presence-absence data, paired group 
+algorithms, and the Jaccard distance measure) and one-way 
+PERMANOVA (based on presence-absence data and the 
+Jaccard distance measure), over 999 permutations were 
+run. The correlation analyses were performed using Pear-
+son’s r (for normal distributed data) and Spearman’ ρ (for 
+non-normal distributed data). The statistical differences of 
+ASV richness among different tree species were performed 
+using one-way ANOVA with Tukey’s post hoc test or KW 
+test with Mann–Whitney U test. All statistical analyses were 
+performed using PAST version 2.17 [37].
+Results
+Overall Performances of Ecological Function 
+Assignments of FUNGuild and FungalTraits
+In total, we assigned functions to 1,395 ASVs (accounted for 
+57% of total ASVs) using both FUNGuild and FungalTraits 
+annotation tools (Table 1 and Fig. 1). In these total assigned 
+ASVs, 70% and 89% were assigned functions by FUNGuild 
+and FungalTraits, respectively (Table 1 and Fig. 1a). The 
+remaining 30% that were not assigned functions by FUN-
+Guild were assigned solely by FungalTraits and vice versa. 
+977 ASVs (~ 40% of total ASVs) could not functionally be 
+assigned by both FUNGuild and FungalTraits. As suggested 
+by Nguyen et al. [21], genera with confidence level of “pos-
+sible” (in total 349 ASVs) were classified as “uncertained” 
+and excluded from the functional analyses in this study 
+(Table 1 and Supplementary Table S1). Overall, we found 
+that the proportion of the total fungal functional assignment 
+by FungalTraits (average of all tree species = 60%) was sig-
+nificantly higher than those by FUNGuild (average of all 
+tree species = 43%) (Fig. 1a). We found a consistent pattern 
+when considering each fungal guild (including saprotroph, 
+plant pathogen, and endophyte) (Fig. 1b–d). The proportions 
+B. Tanunchai et al.
+414
+
+1 3
+of the functional assignment of these fungal guilds by Fun-
+galTraits were also significantly higher than those by FUN-
+Guild, especially for saprotrophs (FungalTraits = 30% and 
+FUNGuild = 14%), plant pathogens (FungalTraits = 20% and 
+FUNGuild = 10%), and endophytes (FungalTraits = 0.24% 
+and FUNGuild = 0.08%). Considering main fungal guilds, 
+FUNGuild assigned only 53 and 51% of plant pathogens and 
+saprotrophs, respectively. Contrarily, FungalTraits assigned 
+up to 99% of these main fungal guilds. Furthermore, 98 
+and 79% of plant pathogens and saprotrophs, respectively, 
+assigned by FUNGuild were also assigned by FungalTraits. 
+However, for lichenized fungi, we found no significant dif-
+ference between the proportions of functional assignment 
+by both annotation tools (P > 0.05) (Fig. 1e). FUNGuild and 
+FungalTraits shared 88% of total lichenized fungal ASVs. 
+Remarkedly, all ASVs assigned functions such as animal 
+pathogen/animal parasite, ectomycorrhiza, fungal parasite/
+mycoparasite, and lichen parasite by FUNGuild were subset 
+of those assigned by FungalTraits (Table 1). Epiphyte was, 
+however, an exception. There was no shared epiphytic ASV 
+between both annotation tools.
+Specific Performances of Ecological Function 
+Assignments of FUNGuild and FungalTraits Across 
+12 Temperate Tree Species
+Based on individual tree species, we also found that Fun-
+galTraits provided a significantly higher proportion of the 
+total fungal functional assignment compared to FUNGuild 
+(Fig. 2). This pattern was consistent across all 12 tree spe-
+cies. Among broadleaved tree species, Populus sp. revealed 
+the highest proportion of the total fungal functional assign-
+ments by FungalTraits, whereas F. sylvatica has the low-
+est proportion (Figs. 1 and 2). Remarkably, the differences 
+between these proportions assigned by both annotation tools 
+were much higher in broadleaved tree species compared to 
+coniferous tree species. The highest difference was found 
+in broadleaved Populus sp. (31%), while the lowest differ-
+ence was observed for P. abies (7%). While the proportions 
+of overall fungal functional assignments by FungalTraits 
+were much higher in broadleaved tree species compared to 
+coniferous tree species, FUNGuild provided similar propor-
+tions across all tree species. The consistent patterns were 
+found in saprotrophs. The proportions of saprotrophic fungal 
+functional assignments by FungalTraits were significantly 
+higher than those by FUNGuild across 12 tree species. The 
+differences between them were also higher in broadleaved 
+tree species (13–24%) compared to coniferous tree species 
+(7–18%).
+FUNGuild vs. FungalTraits: Interpretation 
+of Richness and Community Composition of Main 
+Fungal Guilds
+We found a significant correlation between the percentage 
+points of total functional assignments by FUNGuild and 
+Table 1   Number of ASVs assigned functions by FUNGuild and FungalTraits
+* 79 ASVs are shared ASVs between “uncertained” in FUNGuild and “unassigned” in FungalTraits
+Functions
+Total number of ASVs assigned 
+to functions by both annotation 
+tools
+Total number of ASVs assigned 
+to functions by FUNGuild
+Total number of ASVs assigned 
+to functions by FungalTraits
+Shared 
+ASVs
+All functions
+1395
+982
+1240
+827
+Animal pathogen/animal 
+parasite
+48
+21
+48
+21
+Ectomycorrhiza
+13
+8
+13
+8
+Endophyte
+19
+8
+13
+2
+Epiphyte
+50
+5
+45
+0
+Ericoid mycorrhiza
+1
+1
+NA
+NA
+Fungal parasite/mycoparasite
+57
+7
+57
+7
+Lichen parasite
+18
+6
+18
+6
+Lichenized fungi
+60
+59
+54
+53
+Multifunction
+317
+317
+NA
+NA
+Plant pathogen
+405
+216
+400
+211
+Saprotroph
+654
+334
+585
+265
+Sooty mold
+7
+NA
+7
+NA
+Unassigned
+1354
+1120
+1211
+977
+Uncertained
+(FUNGuild with confidence 
+level of “possible”)
+349*
+349*
+0
+0
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+415
+
+1 3
+Fig. 1   Proportions of functional assignments and Venn diagrams of 
+(a) all functions, (b) saprotrops, (c) plant pathogens, (d) endophytes, 
+and (e) lichenized fungi by FungalTraits and FUNGuild. The statis-
+tical differences were performed using T-test (for normal distrib-
+uted data) and Mann–Whitney U test (for non-normal distributed 
+data). Color code of each data point refers to leaves and needles of 
+respective tree species identity and is similar to the color code of 
+Fig. 2. Data used for Venn diagrams are provided in Supplementary 
+Table S3–S6
+B. Tanunchai et al.
+416
+
+1 3
+Fig. 2   Bar plots of functional assign-
+ments of (a) all functions and (b) 
+saprotrophs across 12 tree species. 
+Median of average proportion with 
+standard error are denoted. FT and FG 
+stand for FungalTraits and FUNGuild, 
+respectively. Yellow–red-brown color 
+tone refers to the broadleaved tree 
+species and blue-green color tone 
+the coniferous tree species. The sta-
+tistical differences between propor-
+tions of functional assignments by 
+FungalTraits and FUNGuild in each 
+tree species were performed using 
+T-test 
+(P < 0.05 = *, 
+P < 0.01 = **, 
+P < 0.001 = ***)
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+417
+
+1 3
+B. Tanunchai et al.
+418
+
+1 3
+FungalTraits (Pearson’s r = 0.62, P < 0.001) (Fig. 3a). How-
+ever, the correlations were different among fungal guilds. 
+We found that lichenized fungi revealed the highest signifi-
+cant correlation between proportions of functional assign-
+ment by FUNGuild and FungalTraits (ρ = 0.96, P < 0.001), 
+followed by plant pathogens (Pearson’s r = 0.80, P < 0.001). 
+A significant, but lower correlation, was found for sapro-
+trophs (Pearson’s r = 0.63, P < 0.001). Contrarily, no cor-
+relation was observed for endophytes (P > 0.05).
+Likewise, the consistent results of the effect of tree spe-
+cies and tree types (broadleaved vs. coniferous trees) on rich-
+ness and community composition were highly correlated to 
+fungal guilds (Figs. 4, 5, and 6). For lichenized fungi, such 
+results from FUNGuild and FungalTraits are almost identi-
+cal. We found that needles of all coniferous trees harboured 
+significantly higher richness of lichenized fungi as compared 
+to the broadleaved trees (Fig. 4). An exception was found 
+for Q. robur, which exhibited similar richness as compared 
+with L. decidua, P. sylvestris, and P. menziesii. Picea abies 
+and Populus sp. harboured highest and lowest richness. For 
+fungal community composition, we found that almost all 
+needle samples of coniferous trees clustered together into 
+one clade with few broadleaved trees (Fig. 5). The majority 
+of leaf samples from broadleaved trees (Populus sp., A. pseu-
+doplatanus, F. sylvatica, T. cordata) contained no lichenized 
+fungi and clustered together on the left side of the plot. The 
+effects of tree species (Ftree species, FG = 1.52, P = 0.0001 
+and Ftree species, FT = 1.52, P = 0.0001, respectively) and tree 
+types (Ftree type, FG = 3.29, P = 0.0001 and Ftree type, FT = 3.32, 
+P = 0.0001, respectively) on lichenized fungal community 
+composition based on FUNGuild and FungalTraits were 
+almost identical.
+On the other hand, for saprotrophs, the results from FUN-
+Guild and FungalTraits were partly inconsistent (Figs. 4 
+and 6). Both functional annotation tools showed that tree 
+species and tree types significantly affect the richness of 
+saprotrophic fungi and Populus sp. harboured the lowest 
+richness. However, FUNGuild and FungalTraits showed 
+that A. pseudoplatanus and F. excelsior, respectively, har-
+boured the highest saprotrophic richness (Fig. 4). Neverthe-
+less, we found strong correlations for all tree species of both 
+saprotrophic (Pearson’s r = 0.82, P < 0.001) and lichenized 
+(ρ = 0.96, P < 0.001) fungal richness obtained by FUNGuild 
+and FungalTraits (Fig. 4e and f). For saprotrophic fungal 
+community composition derived from FUNGuild and Fun-
+galTraits, we found that all leaf samples of coniferous trees 
+separated from broadleaved trees (Fig. 6). However, based 
+on FUNGuild, we detected two clades belong to broadleaved 
+trees (Populus sp. separated from other broadleaved trees) 
+and two clades belong to coniferous trees (L. decidua sepa-
+rated from other coniferous trees) (Fig. 6a) whereas based 
+on FungalTraits, we detected two clades, each belonged to 
+coniferous and broadleaved trees (one Populus sp. sample 
+separated from other trees) (Fig. 6b).
+FUNGuild vs. FungalTraits: Factors Shaping 
+Community Composition of Main Fungal Guilds
+We found similar patterns of factors shaping the saprotrophic 
+community composition derived from FUNGuild and Fun-
+galTraits. Here, tree species and tree type were the main 
+factors shaping the saprotrophic community composi-
+tion (Table 2). Besides tree species and tree type, we also 
+found that water content, the majority of water-leachable 
+leaf/needle nutrient compounds (DOC, organic ­(NOrg) and 
+inorganic (mineralized) N ­(NMin, NNH+
+4 , and NNO−
+2 ) as well as 
+Ca, Fe, Mg, and P content), and location significantly cor-
+responded with saprotrophic community composition of 
+both annotation tools (Table 2). In the endophytic commu-
+nity, where no correlation between proportions of functional 
+assignment by FUNGuild and FungalTraits was detected, 
+unidentical patterns of factors were found (Table 2). Tree 
+species was the main factor shaping endophytic community 
+composition of both annotation tools along with P content. 
+However, when FUNGuild was employed, we obtained lon-
+gitude as another main factor significantly corresponded 
+with endophytic community composition. On the other hand, 
+when FungalTraits was applied, Ca and K content were 
+found to be additional factors that significantly corresponded 
+with endophytic community composition (Table 2).
+Variation partitioning analysis revealed similar results for 
+saprotrophs derived from both FUNGuild and FungalTraits 
+(Supplementary Table S2). Tree species alone explained the 
+largest variation (45% of total explainable variance) in the 
+saprotrophic community composition of both annotation 
+tools, followed by leaf/needle nutrients (FUNGuild: 6% and 
+FungalTraits: 3% of total explainable variance). Water con-
+tent/pH and location alone did not explain the saprotrophic 
+community compositions. The combinations of these factors 
+revealed similar percentage of total explainable variance in 
+saprotrophic community composition of both annotation 
+tools. In the endophytic community composition obtained 
+from FUNGuild, tree species, leaf/needle nutrients, loca-
+tion, and the combination of these three factors explained 
+46%, 26%, 18%, and 10%, respectively, of total explainable 
+variance (Supplementary Table S2). In the endophytic com-
+munity composition obtained from FungalTraits, only two 
+factors (tree species and leaf/needle nutrients) were used to 
+Fig. 3   Linear regressions between proportions of functional assign-
+ments by FungalTraits and FUNGuild for (a) all functions, (b) sapro-
+trophs, (c) plant pathogens, (d) endophytes, and (e) lichenized fungi. 
+The statistical differences were performed using Pearson’s r (for nor-
+mal distributed data) and Spearman’ ρ (for non-normal distributed 
+data)
+◂
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+419
+
+1 3
+B. Tanunchai et al.
+420
+
+1 3
+explain the variation (Supplementary Table S2). Sixty-six 
+percent, 18%, and 16% of total explainable variance were 
+explained by tree species, leaf/needle nutrient, and the com-
+bination of these two factors, respectively.
+Discussion
+Performance of Ecological Function Assignments 
+of FUNGuild and FungalTraits
+FUNGuild has been routinely used for functional annota-
+tions of mycobiome members across different ecosystems 
+and biomes encompassing both terrestrial and aquatic 
+environments [23, 38–42]. Many studies detected specific 
+responses of a defined set of fungal guilds to different envi-
+ronmental factors which cannot be detected based on the 
+total community analyses [40, 43]. A recent study based 
+on total and active microbiome also illustrates that some 
+ecosystem functions are related to the changes in richness, 
+abundances, and community composition of specific fungal 
+guilds [39]. While FUNGuild is based on a publicly avail-
+able Python script to annotate fungal functions, Fungal-
+Traits works in similar way with the same Python script 
+but offers a more user-friendly Excel-based database and 
+a web-based interface for users without Python expertise 
+[29]. As FungalTraits proof-checked all entries from FUN-
+Guild and included a large set of additional entries, the 
+database FungalTraits encompasses a more comprehensive 
+and faster annotation. FungalTraits receives high attention 
+in the scientific community and has been already applied for 
+investigating fungal guilds in some terrestrial ecosystems 
+[44, 45]. Due to the large number of previous studies using 
+FUNGuild, it is necessary to compare the performance and 
+the ecological interpretation provided by these two annota-
+tion tools with high scientific reputation. FungalTraits has 
+been applied together with FUNGuild to annotate func-
+tional groups of fungi associated with Orchidaceae [45]. 
+The authors of that study successfully demonstrated sym-
+biont switching and shifts of trophic mode of fungi associ-
+ated with Orchidaceae. FungalTraits was also successfully 
+applied to annotate the fungal guilds for wood-inhabiting 
+fungi [44]. In this current study, we used the data on myco-
+biome associated with senescing leaves and needles of 12 
+temperate tree species to compare the performance and the 
+results obtained by FUNGuild and FungalTraits. Our results 
+clearly show that FungalTraits outperforms FUNGuild in 
+terms of percent functional assignment quantity and quality. 
+The average value of percent functional assignment of Fun-
+galTraits reaches 60% and in Populus sp., such value reaches 
+76%. The average value of percent functional assignment of 
+FUNGuild is 43% (ranging from 38–46%). These values are 
+consistent with the percentage points of functional assign-
+ment of FUNGuild reported before in many publications 
+[39, 46, 47]. Nevertheless, it is known that the percentage 
+points of functional assignments of taxonomically dependent 
+functional annotation tool highly depends on the quality and 
+quantity of the database backbone of each sequence data, 
+taxonomic identification and functional description [48]. 
+The better performance of FungalTraits is not surprising as 
+it contains a higher number of fungal genera in its database 
+than FUNGuild [21, 29]. Interestingly, we found that the val-
+ues of percentage points of functional assignments are rela-
+tively constant across different tree species when FUNGuild 
+is applied, such value varied greatly when FungalTraits is 
+applied. Furthermore, for FungalTraits-derived datasets, the 
+percentage points of functional assignments are higher for 
+deciduous trees (including broadleaved trees and L. decidua) 
+and lower for the remaining coniferous trees (Fig. 2).
+FUNGuild vs. FungalTraits: There Are Some 
+Similarities but also Some Differences
+Our current study demonstrates that the quality of functional 
+annotations and the resulting interpretations derived from 
+FUNGuild and FungalTraits are relatively similar; however, 
+they are not identical. Furthermore, the degrees of similar-
+ity greatly depend on which fungal guilds were considered. 
+While the results on the effect of tree species and tree types 
+on richness and community composition of lichenized fungi 
+are almost identical when FUNGuild and FungalTraits are 
+applied, for saprotrophic fungi, we could detect some dis-
+crepancies between these two annotation tools (Fig. 3). Low 
+discrepancies are expected for plant pathogens as correla-
+tions between proportions of percentage points of functional 
+assignments of FUNGuild and FungalTraits are high. In 
+contrast, we expected high discrepancies for endophytes 
+as we detected no correlation (Fig. 3). Such discrepancies 
+derive from the fact that there are mismatches of functional 
+assignments between FUNGuild and FungalTraits. We now 
+identified these mismatches for fungal genera associated 
+with our datasets (Supplementary Table S3–S6). For exam-
+ple, the genus Fusarium was assigned to “plant pathogen” 
+as a primary function in FungalTraits. In turn, FUNGuild 
+assigned Fusarium to “Animal Pathogen-Endophyte-Lichen 
+Fig. 4   Average ASV richness of fungal saprotrophs (a, c) and 
+lichenized fungi (b, d) across 12 tree species obtained by FUNGuild 
+(a, b) and FungalTraits (c, d) and correlations between ASV rich-
+ness values obtained by FUNGuild and FungalTraits for fungal sap-
+rotrophs (e) and lichenized fungi (f). Median of average proportion 
+with standard error are denoted. Yellow–red-brown color tone refers 
+to the broadleaved tree species and blue-green color tone refers to the 
+coniferous tree species. The statistical differences of ASV richness 
+among different tree species were performed using ANOVA or KW 
+test. Correlations were determined using Pearson’s r and Spearman’s 
+rank correlation coefficients
+◂
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+421
+
+1 3
+Fig. 5   Community composition of lichenized fungi derived from 
+FUNGuild (a) and FungalTraits (b) of five independent leaf/needle 
+replicates. Yellow–red-brown color tone refers to the broadleaved tree 
+species and blue-green color tone the coniferous tree species. Num-
+bers in yellow circle indicate different clades in the dendrogram for 
+lichen cluster analysis. Species abbreviations for broadleaved tree 
+species are as follows: AH: Acer pseudoplatanus, BU: Fagus syl-
+vatica, EI: Quercus robur, ES: Fraxinus excelsior,  HBU: Carpinus 
+betulus, KB: Prunus avium, LI: Tilia cordata, and PA: Populus sp., 
+and coniferous tree species are: DG: Pseudotsuga menziesii, FI: Picea 
+abies, KI: Pinus sylvestris, and LA: Larix decidua. Effects of tree 
+species and tree types were tested with one-way PERMANOVA
+B. Tanunchai et al.
+422
+
+1 3
+parasite-Plant Pathogen-Soil Saprotroph-Wood Saprotroph” 
+with confidence level “possible”. According to the original 
+FUNGuild article, function with confidence level “possible” 
+should be excluded or interpreted with caution. Confidence 
+level “possible” in FUNGuild may contain genera with split 
+ecologies (they perform different or even conflicting func-
+tions depending on life stage and environmental conditions). 
+Another example for the mismatch is the identification of 
+genus Cenangium. Cenangium is classified as “foliar endo-
+phyte” in FungalTraits, while it is identified as “saprotroph” 
+with confidence level “probable” in FUNGuild. According 
+to recent research, Cenangium was identified as endophyte, 
+saprotroph, and plant pathogen [49, 50], which is consistent 
+with the “Comment on lifestyle” in FungalTraits [29].
+Apart from mismatches, FUNGuild identified two or 
+more functions (with confidence level “probable”) for a 
+single fungal taxon; thus, it is difficult to make decision 
+which function or both functions are most likely fitting to 
+this fungus. Nevertheless, it is quite common to report all 
+functions obtained by FUNGuild for a single taxon when the 
+confidence level is at least “probable”. Another possibility 
+for the discrepancy is that FUNGuild can annotate functions 
+to fungi at a higher taxonomic rank (such as family). For 
+example, we found that four fungal ASVs belonged to Pan-
+nariaceae, Candelariaceae, and Ramalinaceae, which were 
+annotated as lichenized fungi using FUNGuild (with prob-
+able and highly probable confidence levels), but the same 
+ASVs cannot be annotated to any function by FungalTraits. 
+As demonstrated before, FUNGuild and FungalTraits can 
+be applied together to maximize the number of fungal func-
+tional annotations and to remove ambiguous annotations. 
+However, based on the results of our datasets, FungalTraits 
+alone already yielded successful functional assignments for 
+high proportions of the fungal community. Adding the func-
+tions specifically annotate with FUNGuild to the Fungal-
+Traits datasets can increase the percentage points of the total 
+functional assignment by approximately 6%. Apart from the 
+primary lifestyle (function), FungalTraits also provides other 
+interesting information on secondary lifestyle, endophytic 
+interaction capability, plant pathogenic capacity, preferred 
+substrate type, decay type, habitat characteristics, animal 
+biotrophic capacity, hosts, growth form, fruitbody type, 
+Hymenium type, ectomycorrhiza exploration type, ectomy-
+corrhizal lineage, and photobiont.
+FUNGuild vs. FungalTraits: Factors Shaping 
+Community Composition of Main Fungal Guilds
+Saprotrophic fungi are among the most important fungal 
+groups driving important ecosystem functions such as accel-
+erating the decomposition rate, enabling the nutrients acces-
+sibility and availability for themselves and other microbes 
+[51, 52]. FungalTraits assigns substantially higher number 
+of saprotrophic ASVs (89% of the total assigned sapro-
+trophic ASVs) compared to FUNGuild (51% of the total 
+assigned saprotrophic ASVs). The shared ASVs assigned by 
+both annotation tools account to only ~ 41% of the total 
+assigned saprotrophic ASVs and only moderate correlation 
+is obtained (Pearson’s r = 0.63, P < 0.001). This is due to the 
+reannotation process of the fungal genera in FungalTraits. 
+Some changes are made to some specific fungal genera by 
+the experts of the field during this process. Nevertheless, we 
+detect similar patterns of factors that shape the saprotrophic 
+community composition derived from both annotation tools. 
+In both datasets, we found that tree species and tree type are 
+the main factors that significantly shape saprotrophic com-
+munity composition, along with water content and nutrients 
+(water-leachable DOC amount, water-leachable organic and 
+inorganic nitrogen species ( NNH+
+4 , NNO−
+2 , ­NMin, ­NOrg), Ca, Fe, 
+Mg, and P content), and location. These findings are in line 
+with previously published studies [53, 54]. The microbial 
+macronutrients (such as C, N, and Ca) and transition metal 
+(Fe) have been previously reported to shape the fungal com-
+munity in different forest management practices [53]. These 
+nutrients are essential elements in macromolecules and also 
+required for many important enzymatic and metabolic pro-
+cesses which are important for microbial growth and activity 
+[53]. In contrast to the results of saprotrophs, the shared 
+ASVs of endophytes account only to 11% of the total 
+assigned endophytic ASVs and no correlation is observed. 
+Longitude is an additional main factor shaping the endo-
+phytic community composition of FUNGuild, while Ca and 
+K content solely significantly correspond with those of Fun-
+galTraits. The different patterns of significant factors might 
+lead to a different ecological interpretation of endophytes.
+Unexpected High Diversity of Lichens Associated 
+with Senescing Leaves and Needles: Implication 
+and Future Study
+In this study, we revealed a high diversity of lichens associ-
+ated with senescing leaves and needles assigned by both 
+FUNGuild and FungalTraits. In total, we are able to assign 
+60 lichenized fungal ASVs that were assigned to 21 genera. 
+The proportion of lichenized fungal assignments obtained 
+from both annotation tools is highly correlated and shared 
+ASVs account to ~ 88% of the total assigned lichenized 
+fungal ASVs. FUNGuild provides six more lichenized fun-
+gal ASV assignments compared to those of FungalTraits. 
+Among these, four ASVs are not identified at genus level 
+and functions are only assigned on family level. We found 
+a potential controversial issue for the functional assignment 
+of the genus Sphaerulina as FUNGuild classifies Sphaer-
+ulina as lichenized fungi with the confidence level “highly 
+probable”, while FungalTraits assigns in the primary and 
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+423
+
+1 3
+secondary lifestyles of this genus as “saprotroph” and “plant 
+pathogen”, respectively. A recent study, however, reports 
+Sphaerulina as lichenicolous fungi [55], while other studies 
+attributed them as plant pathogen [56, 57]. Therefore, careful 
+double and crosschecking with published datasets is manda-
+tory to verify database outputs especially at low confidence 
+B. Tanunchai et al.
+424
+
+1 3
+level. FUNGuild provided information on growth morphol-
+ogy and habitat, while FungalTraits additionally provided 
+information on fruitbody type, hymenium type, and primary 
+photobiont of the assigned lichens. Most of the lichens (55 
+out of 60 ASVs) detected in this study are associated with 
+senescing needles of coniferous tree species (Supplementary 
+Table S1). We observed lichens on the branches of all conif-
+erous tree species used in this study. Our work showed that 
+lichens associated with senescing leaves and needles were 
+both foliicolous lichens (their development starts directly on 
+leaves or needles) and lichens that accidentally grow onto 
+the leaves or needles from the bark of adjacent branches 
+(their development does not start on leaves or needles) [58]. 
+This current work sheds light solely on richness of lichens 
+as influenced by tree species and tree types. Future studies 
+should focus on the effects of tree species, tree types, leaf/
+needle physicochemical properties, and geographical dis-
+tances on richness and community composition of lichens.
+FUNGuild vs. FungalTraits: Similarities 
+and Differences of the Assignments of Arbuscular 
+and Ectomycorrhizal Fungi
+Our present study emphasizes on the functional assignments 
+and the performances of the annotation tools, FUNGuild and 
+FungalTraits, in the leaf/needle-associated fungal communi-
+ties. However, in nature, mycorrhizal fungi are also consid-
+ered as important functional groups associated with plants 
+and play crucial role in promoting their performances [59, 
+60]. Thus, for the sake of completeness, we further evalu-
+ate the functional assignment of arbuscular (AMF) and 
+ectomycorrhizal (EcM) fungi using FUNGuild [21] and 
+FungalTraits [29]. As AMF are mostly derived from the 
+phylum Glomeromycota, we simply compare all 51 AMF 
+genera from both annotation tools. All assigned AMF gen-
+era are covered by FungalTraits alone and 20 AMF genera 
+from FungalTraits are absent from the FUNGuild database 
+(Supplementary Table S7). These new 20 AMF genera 
+are erected in previous studies published between the year 
+2018 and 2019 [61–64]. However, FUNGuild assigns AMF 
+already at family, order, and phylum level (Glomeromycota). 
+For the analysis of EcM, we employ a dataset from a recently 
+published study investigating EcM in soils at different eleva-
+tion levels (830 and 1300 m a.s.l) [65]. We assign 26 EcM 
+genera by both annotation tools. FungalTraits covers all 26 
+EcM genera and FUNGuild assigns 25 EcM genera (Supple-
+mentary Figure S2). The fungal genus, Pustularia, cannot be 
+assigned to the ecological function by FUNGuild. Members 
+Fig. 6   Community composition of saprotrophic fungi derived from 
+FUNGuild (a) and FungalTraits (b) of five independent leaf/needle 
+replicates. Yellow–red-brown color tone refers to the broadleaved tree 
+species and blue-green color tone the coniferous tree species. Num-
+bers in yellow circle indicate different clades in the dendrogram for 
+saprotroph cluster analysis. Species abbreviations for broadleaved 
+tree species are: AH: Acer pseudoplatanus, BU: Fagus sylvatica, EI: 
+Quercus robur, ES: Fraxinus excelsior, HBU: Carpinus betulus, KB: 
+Prunus avium, LI: Tilia cordata, and PA: Populus sp., and conifer-
+ous tree species are: DG: Pseudotsuga menziesii, FI: Picea abies, KI: 
+Pinus sylvestris, and LA: Larix decidua. Effects of tree species and 
+tree types were tested with one-way PERMANOVA
+◂
+Table 2   Goodness-of-fit 
+statistics (R2) of environmental 
+variables fitted to the nonmetric 
+multidimensional scaling 
+(NMDS) ordination of 
+saprotrophic and endophytic 
+fungal community based on 
+presence/absence data and 
+Jaccard distance measure. 
+Bold letter indicates statistical 
+significances
+Saprotroph
+Endophyte
+FUNGuild
+FungalTraits
+FUNGuild
+FungalTraits
+R2
+P
+R2
+P
+R2
+P
+R2
+P
+Tree species
+0.86
+0.001
+0.89
+0.001
+0.74
+0.044
+0.77
+0.007
+Tree type
+0.51
+0.001
+0.61
+0.001
+0.01
+0.886
+0.08
+0.304
+Water content
+0.11
+0.042
+0.14
+0.020
+0.02
+0.949
+0.15
+0.339
+pH
+0.06
+0.184
+0.08
+0.090
+0.41
+0.213
+0.19
+0.199
+DOC
+0.50
+0.001
+0.54
+0.001
+0.15
+0.613
+0.26
+0.107
+NNH+
+4
+0.15
+0.008
+0.23
+0.004
+0.19
+0.538
+0.20
+0.202
+NNO−
+2
+0.42
+0.001
+0.41
+0.001
+0.05
+0.843
+0.10
+0.469
+NNO−
+3
+0.04
+0.311
+0.03
+0.317
+ND
+ND
+0.25
+0.218
+NMin
+0.16
+0.008
+0.20
+0.006
+0.15
+0.607
+0.26
+0.151
+NOrg
+0.36
+0.001
+0.40
+0.001
+0.03
+0.935
+0.30
+0.085
+Ca
+0.50
+0.001
+0.53
+0.001
+0.01
+0.956
+0.39
+0.016
+Fe
+0.15
+0.009
+0.20
+0.001
+0.03
+0.929
+0.03
+0.808
+K
+0.01
+0.695
+0.04
+0.329
+0.59
+0.074
+0.44
+0.017
+Mg
+0.26
+0.003
+0.31
+0.001
+0.12
+0.708
+0.31
+0.059
+P
+0.30
+0.001
+0.31
+0.001
+0.68
+0.034
+0.40
+0.018
+Latitude
+0.65
+0.001
+0.66
+0.001
+0.02
+0.938
+0.14
+0.296
+Longitude
+0.17
+0.007
+0.15
+0.010
+0.87
+0.004
+0.24
+0.124
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+425
+
+1 3
+of this genus were previously reported as EcM [66, 67]. Nev-
+ertheless, both annotation tools refer to the same ecological 
+interpretation (Supplementary Figure S2). The richness and 
+community composition of EcM significantly differ at dif-
+ferent elevation levels. On the basis of this information, we 
+conclude that the performances of FUNGuild and Fungal-
+Traits in assigning AMF and EcM are not different.
+Conclusions
+Functional assignment of fungal amplicon sequencing 
+datasets is of pivotal interest to infer a more mechanistic 
+understanding of phylogenetic information and to ease the 
+assessment of ecosystem processes of the respective habitat. 
+The quantity and quality of fungal functional annotations 
+were significantly better in FungalTraits than in FunGuild 
+for evaluating the functional guilds on senescing leaves and 
+needles of 12 temperate tree species. The transferability to 
+other environments and research tasks should be addressed 
+in upcoming studies.
+Supplementary Information  The online version contains supplemen-
+tary material available at https://​doi.​org/​10.​1007/​s00248-​022-​01973-2.
+Acknowledgements  The community composition data have been com-
+puted at the High-Performance Computing (HPC) Cluster EVE, a joint 
+effort of both the Helmholtz Centre for Environmental Research—UFZ 
+and the German Centre for Integrative Biodiversity Research (iDiv) 
+Halle-Jena-Leipzig. We thank Beatrix Schnabel and Melanie Günther 
+for their help with Illumina sequencing. Li Ji appreciates the financial 
+support by the China Scholarship Council (No. 201906600038).  
+Author Contribution  WP and EDS conceived and designed the study. 
+BT, WP, EDS, SH, YD, and SW collected the samples and metadata. 
+WP and FB contributed reagents and laboratory equipment. BT, WP, 
+and SW led the DNA analysis. SW led bioinformatics. BT, LJ, and WP 
+led the microbial taxonomy and data analyses. SS, IH, GG, ASL, and 
+EGA led the physicochemical analyses. BT, LJ, MN, and WP wrote the 
+manuscript. MN and WP supervised BT. MN, EDS, and FB reviewed 
+and gave comments and suggestions for manuscript. All of the authors 
+gave final approval for manuscript submission.
+Funding  Open Access funding enabled and organized by Projekt 
+DEAL. This work has been partially funded by the internal research 
+budget to Department of Soil Ecology, UFZ-Helmholtz Centre for 
+Environmental Research.
+Data availability  The ITS rRNA gene sequences were deposited in the 
+National Center for Biotechnology Information (NCBI) Sequence Read 
+Archive under the accession number PRJNA753096.
+Declarations 
+Institutional Review Board Statement  Ethical review and approval 
+were waived for this study as ethical considerations of humans or ani-
+mals were not addressed.
+Informed Consent Statement  Not applicable.
+Conflict of Interest  The authors declare no competing interests.
+Open Access  This article is licensed under a Creative Commons Attri-
+bution 4.0 International License, which permits use, sharing, adapta-
+tion, distribution and reproduction in any medium or format, as long 
+as you give appropriate credit to the original author(s) and the source, 
+provide a link to the Creative Commons licence, and indicate if changes 
+were made. The images or other third party material in this article are 
+included in the article's Creative Commons licence, unless indicated 
+otherwise in a credit line to the material. If material is not included in 
+the article's Creative Commons licence and your intended use is not 
+permitted by statutory regulation or exceeds the permitted use, you will 
+need to obtain permission directly from the copyright holder. To view a 
+copy of this licence, visit http://​creat​iveco​mmons.​org/​licen​ses/​by/4.​0/.
+References
+	 1.	 van der Heijden MGA, Klironomos JN, Ursic M et al (1998) Myc-
+orrhizal fungal diversity determines plant biodiversity, ecosystem 
+variability and productivity. Nature 396:69–72. https://​doi.​org/​10.​
+1038/​23932
+	 2.	 Osono T (2011) Diversity and functioning of fungi associated 
+with leaf litter decomposition in Asian forests of different climatic 
+regions. Fungal Ecol 4:375–385. https://​doi.​org/​10.​1016/j.​funeco.​
+2011.​02.​004
+	 3.	 Bani A, Pioli S, Ventura M et al (2018) The role of microbial 
+community in the decomposition of leaf litter and deadwood. Appl 
+Soil Ecol 126:75–84. https://​doi.​org/​10.​1016/j.​apsoil.​2018.​02.​017
+	 4.	 Purahong W, Wubet T, Lentendu G, et al (2018) Determinants of 
+deadwood-inhabiting fungal communities in temperate forests: 
+molecular evidence from a large scale deadwood decomposition 
+experiment. Front Microbiol 9https://​doi.​org/​10.​3389/​fmicb.​2018.​
+02120
+	 5.	 Joly F-X, Fromin N, Kiikkilä O, Hättenschwiler S (2016) Diver-
+sity of leaf litter leachates from temperate forest trees and its con-
+sequences for soil microbial activity. Biogeochemistry 129:373–
+388. https://​doi.​org/​10.​1007/​s10533-​016-​0239-z
+	 6.	 Chapman SK, Newman GS, Hart SC et al (2013) Leaf litter mix-
+tures alter microbial community development: mechanisms for 
+non-additive effects in litter decomposition. PLoS ONE 8:e62671. 
+https://​doi.​org/​10.​1371/​journ​al.​pone.​00626​71
+	 7.	 Baldrian P, Kolařík M, Štursová M et al (2012) Active and total 
+microbial communities in forest soil are largely different and 
+highly stratified during decomposition. ISME J 6:248–258. https://​
+doi.​org/​10.​1038/​ismej.​2011.​95
+	 8.	 Clemmensen KE, Finlay RD, Dahlberg A et al (2015) Carbon 
+sequestration is related to mycorrhizal fungal community shifts 
+during long-term succession in boreal forests. New Phytol 
+205:1525–1536. https://​doi.​org/​10.​1111/​nph.​13208
+	 9.	 Bödeker ITM, Lindahl BD, Olson Å, Clemmensen KE (2016) 
+Mycorrhizal and saprotrophic fungal guilds compete for the same 
+organic substrates but affect decomposition differently. Funct Ecol 
+30:1967–1978. https://​doi.​org/​10.​1111/​1365-​2435.​12677
+	10.	 Shigyo N, Hirao T (2021) Saprotrophic and ectomycorrhizal fungi 
+exhibit contrasting richness patterns along elevational gradients 
+in cool-temperate montane forests. Fung Ecol 50:101036. https://​
+doi.​org/​10.​1016/j.​funeco.​2020.​101036
+	11.	 Fernandez CW, Kennedy PG (2016) Revisiting the ‘Gadgil effect’: 
+do interguild fungal interactions control carbon cycling in forest 
+soils? New Phytol 209:1382–1394. https://​doi.​org/​10.​1111/​nph.​
+13648
+B. Tanunchai et al.
+426
+
+1 3
+	12.	 Bhatnagar JM, Peay KG, Treseder KK (2018) Litter chemistry 
+influences decomposition through activity of specific microbial 
+functional guilds. Ecol Monogr 88:429–444. https://​doi.​org/​10.​
+1002/​ecm.​1303
+	13.	 Kohout P, Charvátová M, Štursová M et al (2018) Clearcutting 
+alters decomposition processes and initiates complex restructuring 
+of fungal communities in soil and tree roots. ISME J 12:692–703. 
+https://​doi.​org/​10.​1038/​s41396-​017-​0027-3
+	14.	 Baldrian P (2017) Forest microbiome: diversity, complexity and 
+dynamics. FEMS Microbiol Rev 41:109–130. https://​doi.​org/​10.​
+1093/​femsre/​fuw040
+	15.	 Otsing E, Barantal S, Anslan S et al (2018) Litter species rich-
+ness and composition effects on fungal richness and community 
+structure in decomposing foliar and root litter. Soil Biol Biochem 
+125:328–339. https://​doi.​org/​10.​1016/j.​soilb​io.​2018.​08.​006
+	16.	 Triebel D, Peršoh D, Nash TH, et al (2007) LIAS — an interactive 
+database system for structured descriptive data of Ascomycetes. 
+In: Biodiversity Databases. CRC Press
+	17.	 Rambold G, Zedda L, Coyle JR et al (2016) Geographic heat 
+maps of lichen traits derived by combining LIAS light descrip-
+tion and GBIF occurrence data, provided on a new platform. 
+Biodivers Conserv 25:2743–2751. https://​doi.​org/​10.​1007/​
+s10531-​016-​1199-2
+	18.	 Agerer R., Rambold G. (2021) DEEMY – An information system 
+for characterization and determination of ectomycorrhizae. [first 
+posted on 2004–06–01; most recent update: 2011–01–10]. In: 
+DEEMY. www.​deemy.​de
+	19.	 Zanne AE, Abarenkov K, Afkhami ME et al (2020) Fungal func-
+tional ecology: bringing a trait-based approach to plant-associated 
+fungi. Biol Rev 95:409–433. https://​doi.​org/​10.​1111/​brv.​12570
+	20.	 Guerreiro MA, Wijayawardene N, Hyde K, Peršoh D (2018) Ecol-
+ogy of Ascomycete genera – a searchable compilation of “Notes 
+on genera: Ascomycota.” Asian Journal of Mycology 1:146–150
+	21.	 Nguyen NH, Song Z, Bates ST et al (2016) FUNGuild: an open 
+annotation tool for parsing fungal community datasets by eco-
+logical guild. Fungal Ecol 20:241–248. https://​doi.​org/​10.​1016/j.​
+funeco.​2015.​06.​006
+	22.	 Jayasiri SC, Hyde KD, Ariyawansa HA et al (2015) The Faces of 
+Fungi database: fungal names linked with morphology, phylogeny 
+and human impacts. Fung Div 74:3–18. https://​doi.​org/​10.​1007/​
+s13225-​015-​0351-8
+	23.	 Talbot JM, Martin F, Kohler A et al (2015) Functional guild clas-
+sification predicts the enzymatic role of fungi in litter and soil 
+biogeochemistry. Soil Biol Biochem 88:441–456
+	24.	 Zhao D, Shen F, Zeng J et al (2016) Network analysis reveals sea-
+sonal variation of co-occurrence correlations between Cyanobac-
+teria and other bacterioplankton. Sci Total Environ 573:817–825. 
+https://​doi.​org/​10.​1016/j.​scito​tenv.​2016.​08.​150
+	25.	 Luis P, Saint-Genis G, Vallon L et al (2019) Contrasted ecologi-
+cal niches shape fungal and prokaryotic community structure in 
+mangroves sediments. Environ Microbiol 21:1407–1424. https://​
+doi.​org/​10.​1111/​1462-​2920.​14571
+	26.	 Schmidt R, Mitchell J, Scow K (2019) Cover cropping and no-till 
+increase diversity and symbiotroph:saprotroph ratios of soil fungal 
+communities. Soil Biol Biochem 129:99–109. https://​doi.​org/​10.​
+1016/j.​soilb​io.​2018.​11.​010
+	27.	 Gallardo CA, Baldrian P, López-Mondéjar R (2020) Litter-inhab-
+iting fungi show high level of specialization towards biopolymers 
+composing plant and fungal biomass. Biol Fertil Soils 57:77–88
+	28.	 Ji L, Yang Y, Yang L (2021) Seasonal variations in soil fungal 
+communities and co-occurrence networks along an altitudinal gra-
+dient in the cold temperate zone of China: a case study on Oakley 
+Mountain. CATENA 204:105448. https://​doi.​org/​10.​1016/j.​cat-
+ena.​2021.​105448
+	29.	 Põlme S, Abarenkov K, Henrik Nilsson R et al (2020) Fungal-
+Traits: a user-friendly traits database of fungi and fungus-like 
+stramenopiles. Fungal Diversity 105:1–16. https://​doi.​org/​10.​
+1007/​s13225-​020-​00466-2
+	30.	 Weißbecker C, Schnabel B, Heintz-Buschart A (2020) Dadasnake, 
+a Snakemake implementation of DADA2 to process amplicon 
+sequencing data for microbial ecology. GigaScience 9https://​doi.​
+org/​10.​1093/​gigas​cience/​giaa1​35
+	31.	 Ihrmark K, Bödeker ITM, Cruz-Martinez K et al (2012) New 
+primers to amplify the fungal ITS2 region – evaluation by 
+454-sequencing of artificial and natural communities. FEMS 
+Microbiol Ecol 82:666–677. https://​doi.​org/​10.​1111/j.​1574-​6941.​
+2012.​01437.x
+	32.	 White TJ, Bruns TD, Lee S, Taylor J (1990) Amplification and 
+direct sequencing of fungal ribosomal RNA genes for phyloge-
+netics. In: Innis MA, Gelfand DH, Sninsky JJ, White TJ (eds) 
+PCR protocols: A guide to methods and applications. Academic 
+Press, San Diego, pp 315–322
+	33.	 Martin M (2011) Cutadapt removes adapter sequences from 
+high-throughput sequencing reads. EMBnet.journal 17:10–12. 
+https://​doi.​org/​10.​14806/​ej.​17.1.​200
+	34.	 Callahan BJ, McMurdie PJ, Rosen MJ et al (2016) DADA2: 
+High-resolution sample inference from Illumina amplicon data. 
+Nat Methods 13:581–583. https://​doi.​org/​10.​1038/​nmeth.​3869
+	35.	 Kõljalg U, Nilsson RH, Abarenkov K et al (2013) Towards a 
+unified paradigm for sequence-based identification of fungi. 
+Mol Ecol 22:5271–5277. https://​doi.​org/​10.​1111/​mec.​12481
+	36.	 Callahan BJ, McMurdie PJ, Holmes SP (2017) Exact sequence 
+variants should replace operational taxonomic units in marker-
+gene data analysis. ISME J 11:2639–2643. https://​doi.​org/​10.​
+1038/​ismej.​2017.​119
+	37.	 Hammer Ø, Harper DAT, Ryan PD (2001) PAST: paleontologi-
+cal statistics software package for education and data analysis. 
+Palaeontol Electron 4:9
+	38.	 Prada-Salcedo LD, Goldmann K, Heintz-Buschart A et al (2021) 
+Fungal guilds and soil functionality respond to tree community 
+traits rather than to tree diversity in European forests. Mol Ecol 
+30:572–591. https://​doi.​org/​10.​1111/​mec.​15749
+	39.	 Wahdan SFM, Heintz-Buschart A, Sansupa C, et al (2021) Tar-
+geting the active rhizosphere microbiome of Trifolium pratense 
+in grassland evidences a stronger-than-expected belowground 
+biodiversity-ecosystem functioning link. Front Microbiol 
+12https://​doi.​org/​10.​3389/​fmicb.​2021.​629169
+	40.	 Weißbecker C, Wubet T, Lentendu G, et al (2018) Experimental 
+evidence of functional group-dependent effects of tree diversity 
+on soil fungi in subtropical forests. Front Microbiol 9https://​doi.​
+org/​10.​3389/​fmicb.​2018.​02312
+	41.	 Nawaz A, Purahong W, Lehmann R et al (2018) First insights 
+into the living groundwater mycobiome of the terrestrial biogeo-
+sphere. Water Res 145:50–61. https://​doi.​org/​10.​1016/j.​watres.​
+2018.​07.​067
+	42.	 Nawaz A, Purahong W, Lehmann R, et al (2016) Superimposed 
+pristine limestone aquifers with marked hydrochemical differ-
+ences exhibit distinct fungal communities. Front Microbiol 
+666https://​doi.​org/​10.​3389/​fmicb.​2016.​00666
+	43.	 Wang P, Chen Y, Sun Y, et al (2019) Distinct biogeography of 
+different fungal guilds and their associations with plant species 
+richness in forest ecosystems. Front Ecol Evol 7https://​doi.​org/​
+10.​3389/​fevo.​2019.​00216
+	44.	 Lepinay C, Jiráska L, Tláskal V et al (2021) Successional devel-
+opment of fungal communities associated with decomposing 
+deadwood in a natural mixed temperate forest. J Fungi 7:412. 
+https://​doi.​org/​10.​3390/​jof70​60412
+	45.	 Wang D, Jacquemyn H, Gomes SIF et al (2021) Symbiont 
+switching and trophic mode shifts in Orchidaceae. New Phytol 
+231:791–800. https://​doi.​org/​10.​1111/​nph.​17414
+	46.	 Purahong W, Hossen S, Nawaz A, et al (2021) Life on the 
+rocks: first insights into the microbiota of the threatened aquatic 
+FungalTraits vs. FUNGuild: Comparison of Ecological Functional Assignments of Leaf and…
+‑
+427
+
+1 3
+rheophyte Hanseniella heterophylla. Front Plant Sci 12https://​
+doi.​org/​10.​3389/​fpls.​2021.​634960
+	47.	 Ottosson E, Kubartová A, Edman M et al (2015) Diverse eco-
+logical roles within fungal communities in decomposing logs of 
+Picea abies. FEMS Microbiol Ecol 91:fiv012. https://​doi.​org/​
+10.​1093/​femsec/​fiv012
+	48.	 Sansupa C, Wahdan SFM, Hossen S et al (2021) Can we use 
+Functional Annotation of Prokaryotic Taxa (FAPROTAX) 
+to assign the ecological functions of soil bacteria? Appl Sci 
+11:688. https://​doi.​org/​10.​3390/​app11​020688
+	49.	 Ryu M, Mishra RC, Jeon J et al (2018) Drought-induced suscepti-
+bility for Cenangium ferruginosum leads to progression of Cenan-
+gium -dieback disease in Pinus koraiensis. Sci Rep 8:16368. 
+https://​doi.​org/​10.​1038/​s41598-​018-​34318-6
+	50.	 Wrzosek M, Ruszkiewicz-Michalska M, Sikora K et al (2017) 
+The plasticity of fungal interactions. Mycol Progress 16:101–108. 
+https://​doi.​org/​10.​1007/​s11557-​016-​1257-x
+	51.	 Fang M, Liang M, Liu X et al (2020) Abundance of saprotrophic 
+fungi determines decomposition rates of leaf litter from arbuscular 
+mycorrhizal and ectomycorrhizal trees in a subtropical forest. Soil 
+Biol Biochem 149:107966. https://​doi.​org/​10.​1016/j.​soilb​io.​2020.​
+107966
+	52.	 Marañón-Jiménez S, Radujković D, Verbruggen E et al (2021) 
+Shifts in the abundances of saprotrophic and ectomycorrhizal 
+fungi with altered leaf litter inputs. Front Plant Sci 12:1452. 
+https://​doi.​org/​10.​3389/​fpls.​2021.​682142
+	53.	 Purahong W, Kapturska D, Pecyna MJ et al (2015) Effects of for-
+est management practices in temperate beech forests on bacterial 
+and fungal communities involved in leaf litter degradation. Microb 
+Ecol 69:905–913. https://​doi.​org/​10.​1007/​s00248-​015-​0585-8
+	54.	 Prescott CE, Grayston SJ (2013) Tree species influence on 
+microbial communities in litter and soil: Current knowledge and 
+research needs. For Ecol Manage 309:19–27. https://​doi.​org/​10.​
+1016/j.​foreco.​2013.​02.​034
+	55.	 Diederich P, Lawrey JD, Ertz D (2018) The 2018 classification 
+and checklist of lichenicolous fungi, with 2000 non-lichenized, 
+obligately lichenicolous taxa. bryo 121:340–425. https://​doi.​org/​
+10.​1639/​0007-​2745-​121.3.​340
+	56.	 Qin R, LeBoldus JM (2014) The infection biology of Sphaerulina 
+musiva: clues to understanding a forest pathogen. PLoS ONE 
+9:e103477. https://​doi.​org/​10.​1371/​journ​al.​pone.​01034​77
+	57.	 Søndreli KL, Keriö S, Frost K et al (2020) Outbreak of Septoria 
+Canker caused by Sphaerulina musiva on Populus trichocarpa 
+in Eastern Oregon. Plant Dis 104:3266–3266. https://​doi.​org/​10.​
+1094/​PDIS-​03-​20-​0494-​PDN
+	58.	 Lücking R, Wirth V, Ahrens M (2009) Foliicolous lichens in the 
+black forest, Southwest-Germany. Carolinea 67:23–31
+	59.	 Jiang Y, Luan L, Hu K et al (2020) Trophic interactions as deter-
+minants of the arbuscular mycorrhizal fungal community with 
+cascading plant-promoting consequences. Microbiome 8:142. 
+https://​doi.​org/​10.​1186/​s40168-​020-​00918-6
+	60.	 Kurth F, Zeitler K, Feldhahn L et al (2013) Detection and quan-
+tification of a mycorrhization helper bacterium and a mycor-
+rhizal fungus in plant-soil microcosms at different levels of 
+complexity. BMC Microbiol 13:205. https://​doi.​org/​10.​1186/​
+1471-​2180-​13-​205
+	61.	 Baltruschat H, Santos VM, da Silva DKA et al (2019) Unexpect-
+edly high diversity of arbuscular mycorrhizal fungi in fertile 
+Chernozem croplands in Central Europe. CATENA 182:104135. 
+https://​doi.​org/​10.​1016/j.​catena.​2019.​104135
+	62.	 Błaszkowski J, Niezgoda P, Goto BT, Kozłowska A (2018) 
+Halonatospora gen. nov. with H. pansihalos comb. nov. and 
+Glomus bareae sp. nov. (Glomeromycota; Glomeraceae). Botany 
+96:737–748. https://​doi.​org/​10.​1139/​cjb-​2018-​0107
+	63.	 Walker C, Gollotte A, Redecker D (2018) A new genus, Planti-
+consortium (Mucoromycotina), and new combination (P. tenue), 
+for the fine root endophyte, Glomus tenue (basionym Rhizopha-
+gus tenuis). Mycorrhiza 28:213–219. https://​doi.​org/​10.​1007/​
+s00572-​017-​0815-7
+	64.	 Błaszkowski J, Niezgoda P, de Paiva JN et al (2019) Siever-
+dingia gen. nov., S. tortuosa comb. nov., and Diversispora 
+peloponnesiaca sp. nov. in the Diversisporaceae (Glomeromy-
+cota). Mycol Progress 18:1363–1382. https://​doi.​org/​10.​1007/​
+s11557-​019-​01534-x
+	65.	 Ji L, Shen F, Liu Y et al (2022) Contrasting altitudinal patterns 
+and co-occurrence networks of soil bacterial and fungal commu-
+nities along soil depths in the cold-temperate montane forests of 
+China. CATENA 209:105844. https://​doi.​org/​10.​1016/j.​catena.​
+2021.​105844
+	66.	 Tedersoo L, Arnold AE, Hansen K (2013) Novel aspects in the 
+life cycle and biotrophic interactions in Pezizomycetes (Ascomy-
+cota, Fungi). Mol Ecol 22:1488–1493. https://​doi.​org/​10.​1111/​
+mec.​12224
+	67.	 Rudawska M, Leski T (2021) Ectomycorrhizal fungal assemblages 
+of nursery-grown Scots pine are influenced by age of the seed-
+lings. Forests 12:134. https://​doi.​org/​10.​3390/​f1202​0134
+B. Tanunchai et al.
+428

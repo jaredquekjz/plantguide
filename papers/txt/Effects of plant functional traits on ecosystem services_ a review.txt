@@ -1,0 +1,1363 @@
+植物生态学报  2021, 45 (10): 1140-1153                                             
+DOI: 10.17521/cjpe.2020.0142 
+Chinese Journal of Plant Ecology                                                       http://www.plant-ecology.com 
+—————————————————— 
+收稿日期Received: 2020-05-11  接受日期Accepted: 2020-11-08 
+基金项目: 国家自然科学基金(41925005和41871217)。Supported by the National Natural Science Foundation of China (41925005 and 41871217). 
+* 通信作者Corresponding author (zhenghua@rcees.ac.cn) 
+植物功能性状对生态系统服务影响研究进展 
+潘  权1,2  郑  华1,2*  王志恒3  文  志1,2  杨延征1 
+1中国科学院生态环境研究中心, 城市与区域生态国家重点实验室, 北京 100085; 2中国科学院大学, 北京 100049; 3北京大学城市与环境学院生态研
+究中心, 地表过程分析与模拟教育部重点实验室, 北京 100871 
+摘  要  全面认识和理解生态系统服务的形成机制是维持其持续供给的前提。植物功能性状直接参与多种生态系统过程, 影
+响生态系统服务供给, 探讨植物功能性状与生态系统服务的关系是揭示生态系统服务形成机制的重要途径。该文采用系统的
+文献综述方法, 分析了植物功能性状与生态系统服务关系的研究特点, 总结了影响不同生态系统服务的主要植物功能性状, 
+阐述了可能的影响途径。结果表明: 植物功能性状与生态系统服务关系研究以草地和森林等自然生态系统为主; 大部分研究
+集中在生态系统供给服务和支持服务, 包括生物量、净初级生产力、土壤肥力等; 根据植物功能性状对不同生态系统服务的
+影响程度, 植物功能性状可以聚类为土壤保持服务相关性状、水分循环相关性状、多功能相关性状、产品提供服务与养分循
+环相关性状以及授粉与生物控制服务相关性状; 并阐述了植物功能性状指标影响不同的生态系统服务途径。围绕植物功能性
+状对生态系统服务的影响, 今后尚需进一步探讨生态系统多功能性、植物功能性状相关性、气候变化和人类活动不确定性、
+时空尺度差异等因素对二者关系的影响。 
+关键词  植物功能性状; 生态系统服务; 生态系统服务形成机制; 生态系统功能 
+潘权, 郑华, 王志恒, 文志, 杨延征 (2021). 植物功能性状对生态系统服务影响研究进展. 植物生态学报, 45, 1140-1153. DOI: 10.17521/cjpe.2020.0142 
+Effects of plant functional traits on ecosystem services: a review 
+PAN Quan1,2, ZHENG Hua1,2*, WANG Zhi-Heng3, WEN Zhi1,2, and YANG Yan-Zheng1 
+1State Key Laboratory of Urban and Regional Ecology, Research Center for Eco-Environmental Sciences, Chinese Academy of Sciences, Beijing 100085, 
+China; 2University of Chinese Academy of Sciences, Beijing 100049, China; and 3Institute of Ecology, College of Urban and Environmental Sciences and Key 
+Laboratory for Earth Surface Processes of the Ministry of Education, Peking University, Beijing 100871, China 
+Abstract 
+Comprehensively understanding the mechanisms underlying the formation of ecosystem services is a prerequisite 
+for maintaining the sustainable supply of ecosystem services. Plant functional traits directly participate in a variety 
+of ecosystem processes, which in turn affect the supply of ecosystem services. Revealing the relationship between 
+plant functional traits and ecosystem services is an important way to understand the formation mechanism of 
+ecosystem services. Based on a systematic literature review, 86 papers on plant functional properties and 
+ecosystem services were retrieved in the Web of Science database, and data for 466 pairs of plant functional traits 
+and ecosystem services and 83 plant functional traits were collected. The current status of research on the 
+relationship between plant functional traits and ecosystem services was revealed. Moreover, the main plant 
+functional traits that affect different ecosystem services and their mechanisms underlying their impacts were also 
+demonstrated. The results show that the research on the relationship between plant functional traits and ecosystem 
+services mostly focuses on natural ecosystems such as grasslands and forests. Most of these studies focus on 
+ecosystem products providing and supporting services, including biomass, net primary productivity, and soil 
+fertility. Based on the impacts of plant functional traits on different ecosystem services, the plant functional traits 
+can be clustered into five categories: soil-conservation-related traits, water-cycle-related traits, ecosystem- 
+multifunction- related traits, product-providing-related traits, and pollination-biocontrol-related traits. The impacts 
+of climate change, human activities, and variations in spatial and temporal scales on the relationship between plant 
+functional traits and ecosystem services need to be further explored. 
+Key words  plant functional trait; ecosystem service; ecosystem service formation mechanism; ecosystem 
+function 
+©植物生态学报 Chinese Journal of Plant Ecology
+扫 
+码 
+提 
+问
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1141
+ 
+DOI: 10.17521/cjpe.2020.0142 
+Pan Q, Zheng H, Wang ZH, Wen Z, Yang YZ (2021). Effects of plant functional traits on ecosystem services: a review. Chinese 
+Journal of Plant Ecology, 45, 1140-1153. DOI: 10.17521/cjpe.2020.0142 
+生态系统服务是指由生态系统与生态过程所形
+成并维持的人类赖以生存的自然环境条件与效用
+(Daily, 1997; 欧阳志云等, 1999)。人类活动以及气
+候变化导致的生态系统服务退化对人类经济社会可
+持续发展造成巨大威胁, 全面认识和理解生态系统
+服务形成机制是保护和提升生态系统服务的前提
+(欧阳志云和郑华, 2009)。认识生态系统服务与生物
+多样性的关系是探究其形成机制的重要途径
+(Cardinale et al., 2012; 文志等, 2020)。依据优势度
+假说和生态位互补性假说, 研究者们已经探讨了多
+种生物多样性指数(物种多样性、功能多样性以及系
+统发育多样性)与不同类型生态系统服务(如: 生物
+量生产、土壤固碳、土壤肥力维持等)的关系(Card-
+inale et al., 2006; Tscharntke et al., 2012; Bardgett & 
+van der Putten, 2014; Handa et al., 2014)。然而, 生物
+多样性指数在解释生态系统服务形成机制上仍存在
+较大的不确定性, 如Staples等(2019)对澳大利亚植
+树造林项目的研究发现, 生物多样性无法有效预测
+生态系统的生物量。 
+基于植物功能性状的途径为揭示生态系统服务
+形成机制提供了重要视角和方法(Diaz et al., 2007; 
+Hillebrand & Matthiessen, 2009)。植物功能性状是指
+影响植物生存、生长和繁殖的适应性与效应特征, 
+反映植物对环境的响应以及能够影响生态系统功能
+可测量的性状(Violle et al., 2007; 刘晓娟和马克平, 
+2015), 它能响应环境因素的变化并直接参与生态
+系统过程, 影响生态系统的属性和功能, 进而影响
+生态系统服务(Eviner & Chapin III, 2003; Balvanera 
+et al., 2006)。Lamarque等(2014)提出“植物功能性状-
+生态系统属性或过程/功能-生态系统服务”框架, 揭
+示了在气候变化和人类干扰背景下, 植物功能性状
+在生态系统服务相互作用与权衡中的重要作用, 为
+揭示生态系统服务形成机制提供了重要思路。目前, 
+国内外围绕“植物功能性状与生态系统服务关系”开
+展了大量研究, 但其中的机制错综复杂, 一种植物
+功能性状影响多种生态系统服务, 例如: 植物的比
+叶面积不仅影响生态系统净初级生产力(Klumpp & 
+Soussana, 2009), 而且与生态系统的水文与温度调
+节服务息息相关(Everwand et al., 2014; Lundholm et 
+al., 2015); 同一种生态系统服务又受制于多种植物
+功能性状的共同作用, 例如: 生态系统土壤保持服
+务的同时受到植物冠层密度、叶片形状和大小、根
+长密度等多个植物功能性状的控制(Burylo et al., 
+2012a, 2012b; Serna-Chavez et al., 2017)。 
+为了明晰植物功能性状与生态系统服务的关系, 
+本文通过系统的文献综述, 旨在探讨以下两个具体
+问题: (1)基于植物功能性状途径, 当前生态系统服
+务研究有哪些特点? (2)影响生态系统服务的主要植
+物功能性状及其影响途径是什么? 本文还展望了今
+后植物功能性状与生态系统服务关系研究的重点。 
+1  研究方法 
+为量化研究植物功能性状对生态系统服务影响
+的研究进展, 我们进行了系统的文献检索和分析: 
+首先, 从发文数量、生态系统类型、生态系统服务
+类型和研究尺度四个方面探讨植物功能性状与生态
+系统服务关系研究的特点; 其次, 使用文献计量分
+析方法, 总结影响不同类型生态系统服务的主要植
+物功能性状; 并阐述植物功能性状影响生态系统服
+务的可能途径。 
+1.1  文献检索 
+为扩大检索结果并提高检索效率, 本研究在
+Web of Science核心集合数据库中进行了两次文献
+检索: (1)在2019年11月15日, 以“ecosystem services”
+和“plant functional trait”为关键词, 进行了主题检索, 
+时间范围默认为所有年限, 检索出496篇文献; (2)在
+2020年3月4日, 对标题中含有“ ‘biodiversity’ or 
+‘functional diversity’ or ‘plant functional trait’ ”和
+“ ‘ecosystem function(ing)’ or ‘ecosystem service’ or 
+‘ecosystem property’ or ‘biomass’ or ‘productivity’ or 
+‘production’ or ‘soil organic carbon’ or ‘carbon sto-
+rage’ or ‘carbon stock’ or ‘decomposition’ or ‘litter’ or 
+‘soil fertility’ or ‘biocontrol’ or ‘herbivory’ or ‘herbi-
+vore damage’ or ‘pest damage’ or ‘pathogen damage’ 
+or ‘pathogen infection’ or ‘pollination’ or ‘soil reten-
+tion’ or ‘soil erosion’ or ‘temperature’ or ‘heat’ or 
+‘water’ or ‘hydrology’ or ‘stability’ or ‘ecosystem mu-
+ltifunctionality’ or ‘cultural’ ”的文献进行检索, 最终
+累积检索出2 237篇文献。在文献筛选中, 首先我们
+通过判断标题和摘要是否同时含有“生物多样
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1142  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+性”“植物功能多样性”或“植物功能性状”以及“生态
+系统服务”或“生态系统功能”, 对2 237篇文献进行
+筛选, 剔除了1 811篇无关文献; 然后对剩下的426
+篇文献的内容进行筛选, 最终得到文中论述植物功
+能性状与生态系统服务关系的文献86篇(图1)。 
+为了揭示植物功能性状影响生态系统服务的总
+体特征和一般途径, 我们选择研究次数高于整体研
+究次数3%的生态系统服务, 进行进一步分析, 例如: 
+地上生物量、净初级生产力、土壤有机碳、水文调
+节、温度调节、生物控制、土壤保持、土壤肥力以
+及授粉等。这9种生态系统服务可以归属于供给服
+务、调节服务和支持服务三类(表1)。 
+1.2  文献分析 
+针对86篇文献进行分类与统计。首先, 根据每
+篇文献的发表时间、生态系统类型以及研究尺度,
+进行分类, 着重记录每篇文献中所研究的生态系统
+服务类型和采用的植物功能性状指标, 最终得到植
+物功能性状有83个(表2), 最后, 统计文中得出单个
+植物功能性状指标(如比叶面积的群落加权均值 
+(CWMSLA)、比叶面积的功能差异(FDSLA))影响生
+态系统服务的证据466组。在植物功能性状及其对生
+态系统服务影响途径分析中, 我们计算影响各类生
+态系统服务的植物功能性状出现频率, 并将频率高于 
+ 
+ 
+图1  植物功能性状与生态系统服务研究的文献筛选流程。 
+Fig. 1  Flow diagram of literature filtering for research on 
+plant functional traits and ecosystem services. 
+ 
+表1  生态系统服务分类与内涵 
+Table 1  Classification and connotation of ecosystem services 
+生态系统服务类别 
+Ecosystem service 
+type 
+生态系统服务 
+Ecosystem service 
+定义内涵 
+Definition and connotation 
+参考文献 
+Reference 
+生物量  
+Biomass  
+生态系统内所有物种的总质量(干质量) 
+The mass (dry mass) of all species in the ecosystem 
+Grigulis et al., 2013; Adair 
+et al., 2018 
+供给服务 
+Provisioning  
+service 
+净初级生产力 
+Net primary production  
+生态系统在给定的时间内积累的化学能的量, 通常由碳生物量表示 
+The amount of chemical energy, typically expressed as carbon biomass,
+that ecosystem accumulate in a given length of time 
+Quétier et al., 2007 
+土壤有机碳含量 
+Soil organic carbon content  
+生态系统中的土壤有机碳储量 
+Soil organic carbon sequestration in the ecosystems 
+Adair et al., 2018 
+水文调节 
+Water regulation 
+生态系统参与水文过程而形成的调洪补枯效应 
+Ecosystems mitigate flood and increase base flow in dry season through 
+participating hydrological processes 
+Wen et al., 2019 
+温度调节 
+Heat regulation 
+生态系统通过影响热量交换而调节大气温度 
+Ecosystems regulate air temperature by affecting heat exchange 
+Lundholm et al., 2015 
+土壤保持 
+Soil retention  
+生态系统固持土壤、减少土壤侵蚀的效应 
+Ecosystems retain soils and reduce soil erosion 
+Burylo et al., 2012a 
+调节服务 
+Regulating  
+service 
+生物控制 
+Biocontrol 
+生态系统控制有害生物(如害虫、有害杂草等)的效应 
+Ecosystems control pests (e.g., harmful insects and weeds) 
+Storkey et al., 2013; Santala 
+et al., 2019 
+土壤肥力 
+Soil fertility  
+生态系统通过促进物质分解和矿化从而提高土壤肥力的效应 
+Soil fertility is increased by promoting organic material decomposition
+and mineralization 
+Handa et al., 2014 
+支持服务 
+Supporting  
+service 
+授粉 
+Pollination 
+生态系统通过支持授粉昆虫活动而产生的效应 
+Ecosystems provide habitats for pollinator to increase productivity 
+Fornoff et al., 2017; Robleño 
+et al., 2018 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1143
+ 
+DOI: 10.17521/cjpe.2020.0142 
+表2  影响生态系统服务的主要植物功能性状 
+Table 2  Major plant functional traits influencing ecosystem services 
+类型 Type 
+植物功能性状 Plant functional trait 
+解释 Explanation 
+参考文献 Reference 
+生活型 Life form 
+植物的年度周期或外貌特征The annual cycle or appearance 
+characteristics of plants 
+Storkey et al., 2013 
+繁殖方式 Reproduction mode 
+有性或无性繁殖 Sexual or asexual reproduction 
+Paquette & Messier, 2011 
+冠层结构 Canopy architecture 
+冠层大小和厚度 Canopy size and thickness 
+Lundholm et al., 2014 
+生长速率 Relative growth rate 
+一段时间内生物量增长量 Biomass growth over a period of time 
+Everwand et al., 2014 
+最大高度 Max height 
+成熟植株的最大高度 Maximum height of a mature plant 
+Zhang et al., 2018 
+茎生长速率 Stem growth rate 
+植物高度与生长年龄的比值 Ratio of plant height to growth age 
+Moonen et al., 2019 
+茎质量百分比 Stem mass ratio 
+茎生物量占植株生物量的比例 Ratio of stem biomass to plant 
+biomass 
+Zhang et al., 2018 
+叶质量百分比 Leaf mass ratio 
+叶片生物量占植株生物量比例 Ratio of leaf biomass to plant 
+biomass 
+Zhang et al., 2018 
+根质量百分比 Root mass ratio 
+根生物量占植株生物量的比例 Ratio of root biomass to plant 
+biomass 
+Zhang et al., 2018 
+花质量百分比 Flower mass ratio  
+花生物量占植株生物量的比例 Ratio of flower biomass to plant 
+biomass 
+Zhang et al., 2018 
+叶茎质量比 Leaf:stem ratio 
+叶片和茎的干质量的比 Ratio of the dry mass of the leaf to the 
+stem 
+Storkey et al., 2015 
+根茎比  Root:shoot ratio 
+根与茎的干物质量比 Dry matter ratio of root to stem 
+Zhang et al., 2018 
+耐阴性 Shade tolerance 
+植物忍耐阴蔽的能力, 常用无量纲量表示 The ability of plants to 
+tolerate shade, often expressed as a dimensionless 
+Paquette & Messier, 2011 
+耐旱性 Drought tolerance 
+植物忍耐干旱的能力, 常用无量纲量表示 The ability of plants to 
+tolerate drought, usually dimensionless 
+Paquette & Messier, 2011 
+植株 
+Plant 
+耐涝性 Waterlogging tolerance 
+植物忍耐洪涝的能力, 常用无量纲量表示 The ability of plants to 
+withstand floods, often expressed in dimensionless terms 
+Paquette & Messier, 2011 
+种子质量 Seed mass 
+单颗种子的质量 The mass of a single seed 
+Paquette & Messier, 2011 
+种子数量 Seed number 
+单位面积生产的种子数量 Number of seeds produced per unit area Santala et al., 2019 
+种子 
+Seed 
+种子长度 Seed length 
+单颗种子或多颗种子的平均长度 The average length of a single 
+seed or multiple seeds 
+Rolo et al., 2016 
+开花时间 Time of flowering 
+植物开始开花时间 The time plant starting to bloom 
+Pakeman, 2014 
+花期长度 Duration of flowering 
+开花的持续时间 Duration of flowering 
+Fornoff et al., 2017 
+花形状 Flower shape 
+花冠的形状 Corolla shape 
+Sole-Senan et al., 2017 
+花对称性 Flower symmetry 
+花朵的对称性, 单边/双边 Symmetry of flowers, 
+unilateral/bilateral 
+Fornoff et al., 2017 
+授粉模式 Pollination mode 
+植物的授粉媒介 Pollinator 
+Zirbel et al., 2017 
+花大小和密度 Flower size and density  花的直径和单位面积花朵数量 Flower diameter and number of 
+flowers per unit area 
+Fornoff et al., 2017 
+花序类型 Inflorescence type 
+花在花轴上的排列顺序 The order of flowers on the flower axis 
+Fornoff et al., 2017 
+紫外线反射率 UV reflectance 
+植物对紫外线的反射率 Plant reflectance to ultraviolet 
+Fornoff et al., 2017 
+花颜色 Flower color 
+花朵的反射光谱范围 Reflectance spectrum range of flowers 
+Fornoff et al., 2017 
+花蜜类型 Nectar type 
+花蜜的可及性以及糖、氨基酸含量 Availability of nectar, sugar 
+and amino acid content 
+Fornoff et al., 2017 
+花 
+Flower 
+花的高度 Flower height 
+花朵的高度 Flower height to ground 
+Fornoff et al., 2017 
+叶片数量 Leaf number 
+单个枝条上叶片的数量 Number of leaves on a single branch 
+Li et al., 2015 
+长叶时间 Time of leafing 
+植物叶片开始生长时间 Plant leaf start time 
+Pakeman, 2014 
+叶面积 Leaf area 
+单个叶片或多个叶片平均的单侧投影面积 The average 
+single-sided projected area of a single blade or multiple blades 
+Cornelissen et al., 2003 
+叶片厚度 Leaf thickness 
+叶片的厚度 Blade thickness 
+La Pierre & Smith, 2015 
+叶 
+Leaf 
+叶片韧性 Leaf toughness 
+穿透叶片最宽部分(避免中脉)所需的力 The force required to 
+penetrate the widest part of the leaf (avoid the midrib) 
+La Pierre & Smith, 2015 
+ 
+叶片组织密度 Leaf tissue density 
+单位面积的叶片鲜质量 Leaf fresh mass per unit area 
+Wen et al., 2019 
+ 
+叶片形状 Leaf shape 
+叶片的形状, 常用宽与长的比率表示 The shape of the blade, 
+usually expressed by the ratio of width to length 
+Burylo et al., 2012a 
+ 
+叶片寿命 Leaf lifespan 
+叶片从生长到凋落的时间 Time from growth to fall of leaves 
+Wright et al., 2004 
+ 
+比叶质量 Leaf mass per area 
+单位面积的叶片干质量 Dry mass of leaf per unit area 
+Wright et al., 2004 
+ 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1144  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+表2 (续)  Table 2 (Continued) 
+类型 Type 
+植物功能性状 Plant functional trait 
+解释 Explanation 
+参考文献 Reference 
+比叶面积 Specific leaf area 
+单位质量的叶面积 Leaf area per unit mass 
+Cornelissen et al., 2003 
+叶片氮含量 Leaf nitrogen content 
+叶片中氮的含量 Nitrogen content in leaves 
+Wright et al., 2004 
+叶片磷含量 Leaf phosphorus content 
+叶片中磷的含量 Phosphorus content in leaves 
+Lin et al., 2016 
+叶碳氮比 Leaf carbon:nitrogen ratio 
+叶片碳氮含量之比 Ratio of leaf carbon content to nitrogen content Fu et al., 2014 
+叶碳磷比 Leaf carbon:phosphorus ratio 
+叶片碳磷含量之比 Ratio of leaf carbon content to phosphorus content Schuldt et al., 2014 
+叶氮磷比 Leaf nitrogen:phosphorus ratio 叶片氮磷含量之比 Ratio of leaf nitrogen content to phosphorus content Finegan et al., 2015 
+叶其他营养元素含量 Leaf other 
+elements content  
+叶片除碳、氮、磷外其他元素的含量, 如钾、镁等  
+The content of other elements besides carbon, nitrogen, and 
+phosphorus in leaves, such as potassium, magnesium, etc. 
+Kröber et al., 2015 
+叶木质素含量 Leaf lignin content 
+叶片中木质素的含量 Lignin content in leaves 
+Schindler & Gessner, 2009 
+叶片酚类含量 Leaf polyphenolic content 叶片中多酚类的含量 The content of polyphenols in leaves 
+Schuldt et al., 2014 
+叶片单宁含量 Leaf tannin content 
+叶片中单宁的含量 Tannin content in leaves 
+Patoine et al., 2017 
+叶片碳含量 Leaf carbon content 
+叶片中碳的含量 The content of carbon in leaves 
+Zhang et al., 2018 
+叶片碳同位素比值 Leaf δ13C 
+叶片碳同位素特征 Leaf carbon isotope signature 
+Orwin et al., 2018 
+叶片干物质含量 Leaf dry mass content 叶片干质量与鲜质量的比值 The ratio of leaf dry mass to fresh 
+mass 
+Fu et al., 2014 
+叶片总叶绿素含量  
+Leaf total chlorophyll content 
+叶片中叶绿素的含量 Chlorophyll content in leaves 
+Bu et al., 2019 
+叶脉密度 Leaf vein density 
+单位面积叶片的叶脉长度 Vein length per unit area of leaf 
+Hanif et al., 2019 
+光合同化速率  
+Photosynthetic assimilation rates 
+在光饱和条件下测得健康叶片的光合速率 The photosynthetic 
+rate of healthy leaves measured under light saturation conditions 
+Everwand et al., 2014 
+ 
+气孔导度 Stomatal conductance 
+健康叶片的气孔对水蒸气的传导率 Transmission rate of water 
+vapor to stomata of healthy leaves 
+Everwand et al., 2014 
+木材密度 Wood density 
+单位体积木材的干物质量 Dry matter mass per unit volume of 
+wood 
+Burylo et al., 2012a 
+茎干物质含量 Stem dry matter content 茎干质量占鲜质量的百分比 The percentage of stem dry mass to 
+fresh mass 
+Fu et al., 2014 
+分支数量 Number of branches 
+从主茎分叉的开花分支或从次级枝干上的分支数 Flowering 
+branches branching from the main stem or secondary branches 
+Adamidis et al., 2019 
+茎投影面积 Projected stem area 
+茎在水流动方向上接触面积 Stem contact area in the direction of 
+water flow 
+Kervroedan et al., 2018 
+茎比质量 Specific stem density 
+茎的干质量与茎体积之比 The ratio of stem dry mass to stem 
+volume 
+Kervroedan et al., 2018 
+茎直径 Maximum stem diameter 
+基茎(根部上方2–6 cm)的直径 Diameter of the base stem (2–6 cm 
+above the root) 
+Fu et al., 2014 
+茎导度 Stem conductance 
+单位木质部面积和单位压力梯度下的水流量 Water flow per unit 
+xylem area and unit pressure gradient 
+Kröber et al., 2015 
+茎氮含量 Stem nitrogen ratio 
+单位干质量茎的氮含量 Nitrogen content per dry mass of stem 
+Belshe et al., 2018 
+茎 
+Stem 
+木材抗腐性 Wood decay resistance 
+木材腐烂的速度 Rate of wood decay 
+Zhang et al., 2018 
+根长/生物量 Root length/biomass 
+根的总长度或生物量 Total root length or biomass 
+Pommier et al., 2018 
+根的分布形态 Root distribution 
+根系在土壤中分布的形态 The distribution of roots in the soil 
+Matheny et al., 2017 
+根深 Rooting depth 
+主根在土壤中分布的深度 Depth of taproot distribution in the soil Fu et al., 2014 
+根 
+Root 
+根长密度 Root length density 
+单位体积土壤中的总根长 Total root length per unit volume of soil Burylo et al., 2012b 
+ 
+比根长 Specific root length 
+单位干质量的根长度 Root length per dry mass 
+Cornelissen et al., 2003 
+ 
+根干物质含量 Root dry mass content 
+根干质量与鲜质量的比值 Root dry mass and fresh mass ratio 
+Pommier et al., 2018 
+ 
+根氮含量 Root nitrogen content 
+根中氮元素的含量 Nitrogen content in roots 
+Zhang et al., 2018 
+ 
+根磷含量 Root phosphorus content 
+根中磷元素的含量 Phosphorus content in roots 
+Hanif et al., 2019 
+ 
+氮吸收 Nitrogen uptake 
+单位时间内氮吸收量 Nitrogen absorption per unit time 
+Abalos et al., 2014 
+ 
+根系外表面积  
+External area of root surface 
+根系的外表面积 External surface area of root system 
+Burylo et al., 2012b 
+ 
+根系体积 Volume of roots 
+根系的体积 Root volume 
+Zhu et al., 2015 
+ 
+根系直径 Root diameter 
+吸收根的平均直径 Average diameter of absorbing roots 
+Burylo et al., 2012b 
+ 
+根组织密度 Root tissue density 
+单位体积根的生物量 Root biomass per unit volume 
+Burylo et al., 2012b 
+ 
+根碳含量 Root carbon content 
+单位干质量根的碳含量 Carbon content per dry mass root 
+Zhang et al., 2018 
+ 
+根碳氮比 Root carbon:nitrogen ratio 
+根中碳氮含量之比 Ratio of carbon to nitrogen content in roots 
+Zhang et al., 2018  
+ 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1145
+ 
+DOI: 10.17521/cjpe.2020.0142 
+表2 (续)  Table 2 (Continued) 
+类型 Type 
+植物功能性状 Plant functional trait 
+解释 Explanation 
+参考文献 Reference 
+极细根百分率 Very fine root fraction 
+<0.1 mm的根长占总根比例 Ratio of root length <0.1 mm to total 
+root 
+Garcia et al., 2019 
+根质量密度 Root mass density 
+单位体积土壤中的根总生物量 Total root biomass per unit volume 
+of soil 
+Burylo et al., 2012b 
+根抗张力强度 Root tensile strength 
+细根(<0.1 mm)断裂所需的最大力与其截面面积的比值 Ratio of 
+the maximum force required to break fine roots (<0.1 mm) to its 
+cross-sectional area 
+Burylo et al., 2012b 
+ 
+菌根定植 Mycorrhizal colonization 
+菌根定植根长占总根长的百分比 Mycorrhiza colonized root 
+length as a percentage of total root length 
+Elumeeva et al., 2018 
+ 
+20%的植物功能性状作为影响该生态系统服务的主
+要植物功能性状; 最后, 以9种生态系统服务为基
+础, 对影响每种生态系统服务的主要植物功能性状
+进行聚类分析, 以探讨植物功能性状影响生态系统
+服务的主要途径。 
+2  研究结果 
+2.1  植物功能性状与生态系统服务关系研究特点 
+围绕发表的论文数量、涉及的生态系统类型、
+研究的生态系统服务类型以及涉及的空间尺度, 植物
+功能性状与生态系统服务关系的研究呈现如下特点: 
+(1)植物功能性状与生态系统服务关系是新兴
+的研究领域。在2011年及以前, 植物功能性状与生
+态系统服务关系研究的文章数量虽然也在逐年上升, 
+但增长速度较慢, 并且整体数量仍然较少; 在2011
+年以后, 与该主题相关的研究成果迅速增加。这与
+研究者们对植物功能多样性与生态系统服务关系的
+重视, 以及植物功能性状与生态系统服务关系研究
+里程碑式文章的发表有关(Díaz et al., 2007; de Bello 
+et al., 2010)(图2A)。 
+(2)植物功能性状与生态系统服务的研究以自
+然生态系统为主。植物功能性状与生态系统服务的
+研究主要集中在自然生态系统上, 包括草地生态系
+统和森林生态系统, 而关于农业和城市生态系统的
+研究较少, 这可能是因为生态系统服务的形成机制
+在自然生态系统中更为复杂(图2B)。 
+(3)大部分研究集中在与生态系统养分循环和
+物质生产相关的服务上, 生态系统调节服务关注相
+对较少。生物量、土壤有机碳含量、土壤肥力以及
+生态系统净初级生产力4种生态系统服务与植物功
+能性状关系的研究数量占研究总数的75%, 而生态
+系统温度调节、生物控制、土壤保持、授粉等生态
+系统服务的研究数量约占研究总数的25% (图2C)。 
+(4)植物功能性状与生态系统服务关系的探讨
+主要集中在生态系统尺度上, 景观尺度和区域尺度
+上的研究相对较少。样地尺度的研究数量占研究总
+数的60%以上, 并且9种生态系统服务在该尺度上
+均有研究。而在其他尺度上, 研究者们关注的重点
+有所不同: 在景观尺度上, 主要关注种间互作相关
+的生态系统服务, 如授粉和生物控制服务(Zirbel et 
+al., 2017; Bartual et al., 2019); 在区域尺度上, 更关
+注植物功能性状对生态系统生物量和初级生产力的
+影响; 在控制实验中, 研究人员主要通过梯度实验
+探讨了植物功能性状与生态系统服务的关系(Schin-
+dler & Gessner, 2009; Patoine et al., 2017)(图2D)。 
+(5)植物功能性状对生态系统服务的影响错综
+复杂, 同一性状可以影响多种生态系统服务, 而同
+一种生态系统服务又受多个植物功能性状的影响, 
+但同一植物功能性状对不同生态系统服务的影响程
+度不同, 例如: 植物花的功能性状(例如花高、花蜜
+类型、花色)主要影响作物授粉服务和生物控制服务, 
+而对其他服务的影响极小(图3)。根据植物功能性状
+对不同生态系统服务的影响程度进行聚类, 植物功
+能性状可以分为5类: 土壤保持服务相关性状、水分
+循环相关性状、多功能相关性状、产品提供服务与
+养分循环相关性状以及授粉与生物控制服务相关性
+状(图3)。 
+2.2  植物功能性状对供给服务的影响 
+供给服务指人类从生态系统中获得生存和发展
+所必需的各类产品(如木材生产、纤维和燃料等), 陆
+地生态系统中可使用生物量和净初级生产力作为供
+给服务的主要指标(Millennium Ecosystem Assessment 
+Board, 2005; de Bello et al., 2010)。植物功能性状通
+过影响生态系统的光合作用过程以及营养分配过程, 
+进而影响生态系统净初级生产力及生物量。植物的
+比叶面积、叶干物质含量、叶片氮含量等经济学性
+状对生态系统光合速率具有重要影响, 而植物最大
+高度、木材密度以及种子质量等决定了植物生长繁 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1146  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+ 
+ 
+图2  植物功能性状与生态系统服务关系研究的特点。 
+Fig. 2  Characteristics of the current research on the relationship between plant functional traits and ecosystem services. BC, 
+biocontrol; BD, biodiversity; BM, biomass; HR, heat regulation; NPP, net primary production; PN, pollination; SF, soil fertility; 
+SOC, soil organic carbon content; SR, soil retention; WR, water regulation. 
+ 
+殖的养分分配策略, 是影响生态系统生物量蓄积的
+重要因素(Westoby, 1998; Golodets et al., 2009)。 
+从生物量来看, 影响供给服务的主要植物功能
+性状有植物最大高度、比叶面积、叶片氮含量、木
+材密度、叶片面积以及叶干物质含量等(图3)。来自
+成熟森林生态系统的证据表明, 植物最大高度是影
+响生物量最强的植物功能性状指标(Adair et al., 
+2018), 并且, 植物的木材密度也会影响生态系统生
+物量的蓄积(Falster et al., 2011); 而对于演替过程中
+的生态系统, 生物量与植物叶片氮含量的多样性具
+有显著正相关关系(Conti & Díaz, 2013; Zuo et al., 
+2016), 而与叶片碳含量和比叶面积成反比(Yang et 
+al., 2019); 在草地生态系统中, 较高的比叶面积和
+叶片氮含量以及较低的叶片干物质含量有助于提高
+草地生态系统的生物量(Grigulis et al., 2013)。 
+从净初级生产力来看, 影响供给服务的植物功
+能性状指标主要包括: 植物叶片氮含量、最大高度、
+比叶面积、叶片干物质含量、叶片磷含量以及气孔
+导度等(图3)。在草地生态系统中, 叶片比叶面积和
+干物质含量多样性差异对生态系统净初级生产力变
+化具有很强的解释力(Klumpp & Soussana, 2009); 
+而在农业生态系统中, 植物的最大高度与生态系统
+净初级生产力具有较弱的负相关性(Lienin & Kleyer, 
+2012); 较高的叶片氮含量能促进光能的利用效率
+以提高生态系统的净初级生产力(Quétier et al., 
+2007); 在湿地生态系统中, 叶片厚度与生态系统净
+初级生产力具有很强的相关性(Fu et al., 2014); 而
+也有研究表明, 在控制实验中, 叶片韧性也影响着
+生态系统净初级生产力(La Pierre & Smith, 2015); 
+但种子质量增加会降低生态系统的地下部分的生产
+力(Zirbel et al., 2017)。 
+2.3  植物功能性状对调节服务的影响 
+调节服务是指从生态系统在维持能量流动和物
+质循环过程中对人类生存环境产生的调节效应(如: 
+洪水调蓄、气候调节、有害生物控制、净化水质等), 
+在生态系统尺度上, 通常使用土壤有机碳、水文调
+节、温度调节、土壤保持和生物控制作为调节服务
+的主要指标(Millennium Ecosystem Assessment Board, 
+2005; de Bello et al., 2010)。植物功能性状通过影响
+物质生产和根系代谢而影响土壤有机碳储存, 通过
+改变冠层结构影响水文和温度调节服务, 通过改变
+生态系统地表及地下结构而影响生态系统土壤保持
+功能, 通过改变栖息地条件以影响生物控制功能。 
+在土壤有机碳储存方面, 影响调节服务的主要 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1147
+ 
+DOI: 10.17521/cjpe.2020.0142 
+ 
+ 
+图3  植物功能性状与生态系统服务关系研究频率统计。字的颜色代表植物性状所在的部位。线条粗细代表研究中用到的
+植物功能性状与生态系统服务关系研究的频率。 
+Fig. 3  Frequencies of the research on the relationship between plant functional traits and ecosystem services. Colors of the word 
+represent the location of trait. The thickness of the black lines represents the frequencies of different plant functional traits used to 
+correlate with ecosystem services. BC, biocontrol; BM, biomass; HR, heat regulation; NPP, net primary production; PN, 
+pollination; SF, soil fertility; SOC, soil organic carbon content; SR, soil retention; WR, water regulation. 
+ 
+植物功能性状指标有植物的最大高度、叶片氮
+含量、比叶面积、叶片干物质含量、木材密度以及
+叶片碳含量等(图3)。研究表明, 植物最大高度是冠
+层生长率的重要影响因子, 能通过促进冠层生长以
+增加土壤有机碳含量(Conti & Díaz, 2013; Lundholm 
+et al., 2015); 在森林生态系统中, 植物群落叶片比
+叶质量的加权平均值与土壤有机碳储量呈正相关关
+系, 而降低的叶片比叶质量多样性会降低土壤有机
+碳储存量(Adair et al., 2018), 另外, 土壤有机碳含
+量与植物群落中的木材密度呈正相关关系, 而与比
+叶面积和叶片氮含量呈负相关关系(Lin et al., 2016); 
+在农业生态系统中, 高的叶片氮含量能够促进土壤
+有机碳储存(García-Palacios et al., 2018); 在草地生
+态系统中, 植物叶片比叶面积、叶片干物质含量多
+样性能够解释土壤碳储量48%的变化率(Klumpp & 
+Soussana, 2009); 值得注意的是, 土壤有机碳含量
+还与比根长、根直径和根组织密度高度相关(Garcia 
+et al., 2019)。 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1148  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+在水文调节方面, 影响调节服务的主要植物功
+能性状指标有: 植株最大高度、比叶面积、生活型、
+木材密度、叶片寿命以及叶组织密度等(图3)。植物
+冠层密度以及细根百分率对生态系统水文调节服务
+都有重要影响(Wen et al., 2019); 生态系统雨水捕
+获能力主要受植物高度和冠层结构影响(Lundholm 
+et al., 2015); 叶片比叶面积以及叶片厚度与群落蒸
+散量具有很强的正相关关系(Everwand et al., 2014); 
+而叶片的气孔导度作为影响植物群落蒸散的直接影
+响因素, 由于受植物水分保持和碳吸收权衡的影响, 
+其影响程度在不同季节之间变化剧烈(Everwand et 
+al., 2014; Matheny et al., 2017)。 
+在温度调节方面, 影响调节服务的主要植物功
+能性状指标有: 植株最大高度、比叶面积、叶片氮
+含量、冠层结构以及叶片气孔导度等(图3)。在城市
+屋顶绿化中, 具有高气孔导度和冠层密度的植物群
+落在白天降温效应更为明显, 并且在晚上也同样具
+有较好的保温效果(Monteiroa et al., 2017); 植物比
+叶面积和高度也通过影响植被的冠层密度从而间接
+影响生态系统的温度调节功能(Lundholm et al., 
+2015), 而Lundholm等(2014)的研究结果表明, 植物
+高度与温度调节之间只具有微弱的正相关关系。 
+在土壤保持方面, 影响支持服务的主要植物功
+能性状指标有: 植物叶面积、根系直径、茎干物质
+含量以及茎投影面积等(图3)。在地上部分, 植物叶
+片形状和大小也会影响泥沙的拦截能力, 并且叶片
+圆度指数和大小与拦截的泥沙量成正比(Burylo et 
+al., 2012a); 而在地下部分, 土壤侵蚀强度与植物根
+直径呈显著的正相关关系, 并且与比根长、根长密
+度以及根系外表面积也具有一定的相关性(Burylo 
+et al., 2012b)。在半干旱草地的证据也表明, 根直径
+较小的群落对于生态系统土壤保持具有积极的作用
+(Zhu et al., 2015)。 
+在生物控制方面, 影响调节服务的主要植物功
+能性状指标包括: 植物开花时间、植物最大高度、
+比叶面积、叶片氮含量、花型、花期长度、花蜜类
+型以及花的颜色等(图3)。诸多研究表明: 植物功能
+性状多样性对生态系统生物控制具有积极的作用
+(Hatt et al., 2017; Santala et al., 2019); 花的颜色和
+紫外线反射率是吸引昆虫的重要性状, 与白色和紫
+色花朵相比, 黄色花朵能吸引更多的寄生害虫, 但
+花粉甲虫(Meligethes spp.)更容易被具有高的紫外线
+反射率的花所吸引, 并且花蜜的可用性同样影响着
+植物对昆虫的吸引力(Hatt et al., 2018); 晚期开花的
+植物可以避开虫害高峰期从而减轻害虫危害
+(Lundin et al., 2019); 除此之外, 比叶面积、叶片干
+物质含量等影响植物叶片适口性的植物功能性状与
+植食性昆虫的种类和数量具有很强的相关性(Stor-
+key et al., 2013)。 
+2.4  植物功能性状对支持服务的影响 
+支持服务是指生态系统支撑供给、调节和文化
+服务形成和维持的服务(如: 土壤肥力与养分循环、
+土壤形成与保持、授粉等), 在陆地生态系统中, 支
+持服务可用土壤保持、土壤肥力和授粉等作为支持
+服务的主要指标(Millennium Ecosystem Assessment 
+Board, 2005; de Bello et al., 2010)。植物功能性状通
+过影响生态系统物质分解过程以及植物根系代谢等
+途径进而影响生态系统土壤肥力, 通过给授粉媒介
+提供栖息地条件以保障授粉服务。 
+在土壤肥力方面, 影响支持服务的主要植物功
+能性状指标包括: 植物最大高度、比叶面积、叶片
+干物质含量以及叶片氮含量等(图3)。叶片碳氮含量
+多样性能够促进凋落物分解, 从而增加土壤肥力
+(Handa et al., 2014), 较低的叶片干物质含量也能促
+进凋落物分解(Quétier et al., 2007); 而在干旱区的
+研究表明, 植物群落比叶面积加权平均值是土壤碳
+氮含量最佳预测指标之一(Zuo et al., 2016)。在植物
+根系方面, 根的分布形态和最大根深对土壤肥力也
+具有较大影响, 一般来说, 侧向分根率较低的物种, 
+更有利于改善土壤肥力(Navarro-Cano et al., 2018)。 
+在作物授粉方面, 影响支持服务的主要植物功
+能性状指标有: 花力、开花时间、花型、花颜色、
+花蜜类型、花期长度、花的高度等(图3)。花的高度
+和花蜜浓度与昆虫的吸引力都有较强的相关性, 其
+中授粉媒介对植物的吸引力与花的高度以及花蜜浓
+度正相关, 而与花的反射光谱以及花形状多样性负
+相关(Fornoff et al., 2017); 也有研究表明, 花的面积
+和开花时期也会影响植物群落对传粉媒介的吸引力
+(Lundin et al., 2019); 而在景观尺度上, 配置多种生
+活型、多种花型和花期共存的植物对于维持生态系
+统授粉服务具有重要作用(Robleño et al., 2018)。 
+3  研究展望 
+目前, 围绕植物功能性状与生态系统服务的关
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1149
+ 
+DOI: 10.17521/cjpe.2020.0142 
+系, 已经取得一系列研究进展, 这些研究表明: 植
+物功能性状途径深化了生态系统服务形成机制的认
+识。但是由于植物功能性状本身的多样性与复杂性
+以及生态系统服务复杂的时空尺度特征, 植物功能
+性状与生态系统服务关系的研究仍存在诸多亟待解
+决的问题, 以下四个方面的具体问题值得进一步深
+入探讨。 
+3.1  植物功能性状对生态系统多功能性的影响 
+生态系统多功能性是指生态系统往往同时能提
+供多种生态系统功能和服务(Hector & Bagchi, 
+2007)。一般来说, 随着生物多样性的增加, 生态系
+统多功能性往往比单个生态系统服务表现出更强的
+增长效应(van der Plas, 2019), 但也有研究表明, 这
+种增长效应很大程度上取决于生态系统功能多样性
+指标中所选取的生态系统功能或服务(Allan et al., 
+2015)。因此, 基于植物功能性状途径揭示生物多样
+性对生态系统多功能性或多种生态系统服务的影响
+(Lu et al., 2014), 对于进一步认识植物功能性状与
+生态系统服务的复杂关系至关重要。 
+3.2  植物功能性状相关性对植物功能性状与生态
+系统服务关系的影响 
+植物功能性状是不同植物在各种环境条件下的
+适应性表征, 不同植物功能性状之间存在着复杂的
+相互作用与功能联系, 且不同功能性状之间存在着
+显著的相关性(Wright et al., 2004; Bin et al., 2019), 
+但具有相关关系的不同植物功能性状之间对生态系
+统服务的解释能力存在巨大差异(Hu et al., 2019), 
+如: Pakeman等(2011)研究表明, 叶片氮含量与叶片
+干物质含量具有显著的负相关关系, 但叶片干物质
+含量对凋落物分解速率的解释能力远远高于叶片氮
+含量。因此, 研究植物功能性状之间的相关性, 明晰
+影响不同生态系统服务的主要植物功能性状及其影
+响路径, 是揭示植物功能性状相关性对生态系统服
+务影响机制的重要任务。另外, 为阐明植物功能性
+状之间的复杂联系以及其在不同群落中的协同变化, 
+He等(2020)提出了植物功能性状网络(Plant Trait 
+Networks), 这为探究植物功能性状的相关性对生态
+系统多种功能之间关系的影响提供了重要的思路。 
+3.3  气候变化和人类活动对植物功能性状与生态
+系统服务关系的影响 
+气候变化和人类活动干扰是影响全球生态系统
+的两大关键因子(文志等, 2020)。植物功能性状和生
+态系统服务都会受到气候以及人类活动等因素的影
+响: 一方面, 气候变化和人类活动能够直接影响生
+态系统服务的形成与供给(Zheng et al., 2019); 另一
+方面, 气候变化和人类活动也能改变植物功能性状
+并影响生态系统的功能组成(Schröter et al., 2005; 
+Tecco et al., 2010)。但是复杂的气候变化和人类活
+动导致植物功能性状与生态系统服务关系存在巨大
+的不确定性, 同时也增加了植物功能性状对生态系
+统服务影响机制的复杂性。因此, 在不同气候条件
+和人为干扰因素梯度下开展植物功能性状与生态系
+统服务关系研究, 对于降低植物功能性状与生态系
+统服务关系的不确定性至关重要。 
+3.4  植物功能性状与生态系统服务关系的时空尺
+度特征 
+生态系统过程和服务的研究依赖特定的空间和
+时间尺度(欧阳志云和郑华, 2009)。然而, 将植物功
+能性状与生态系统服务关系的研究推广到更大的空
+间尺度以及更长的时间尺度上面临着巨大的挑战。
+一方面, 生态系统尺度上的植物功能性状与生态系
+统服务的关系难以推广到区域尺度; 另一方面, 生
+态系统服务与植物功能性状不仅年际间存在变化, 
+并且可能在一年甚至一天之内也存在变化。因此, 
+将个体的植物功能性状与宏观的生态系统服务关联
+起来是进行其时空尺度推广的重要环节。He等(2019)
+认为: 生态系统性状能够将实地调查、涡流观测、
+遥感大数据以及生态模型进行相互关联和整合, 是
+将传统的植物功能性状关联到宏观尺度的有效途径, 
+同时也为揭示植物功能性状与生态系统服务关系的
+时空尺度特征提供了重要思路。另外, 还有必要建
+立多尺度、长时间的观测平台, 以建立植物功能性
+状与生态系统服务空间网格数据库(Kattge et al., 
+2011; Anderson-Teixeira et al., 2015), 进而为揭示植
+物功能性状影响生态系统服务的机制提供证据
+(Willemen, 2020)。 
+致谢  感谢中国科学院生态环境研究中心李若男副
+研究员在论文构思讨论中给予的帮助。 
+参考文献 
+Abalos D, de Deyn GB, Kuyper TW, van Groenigen JW 
+(2014). Plant species identity surpasses species richness as 
+a key driver of N2O emissions from grassland. Global 
+Change Biology, 20, 265-275. 
+Adair EC, Hooper DU, Paquette A, Hungate BA (2018). 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1150  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+Ecosystem context illuminates conflicting roles of plant 
+diversity in carbon storage. Ecology Letters, 21, 1604-1619. 
+Adamidis GC, Cartar RV, Melathopoulos AP, Pernal SF, 
+Hoover SE (2019). Pollinators enhance crop yield and 
+shorten the growing season by modulating plant functional 
+characteristics: a comparison of 23 canola varieties. Scientific 
+Reports, 9, 14208. DOI: 10.1038/s41598-019-50811-y. 
+Allan E, Manning P, Alt F, Binkenstein J, Blaser S, Blüthgen 
+N, Böhm S, Grassein F, Hölzel N, Klaus VH, Kleine-
+becker T, Morris EK, Oelmann Y, Prati D, Renner SC, et 
+al. (2015). Land use intensification alters ecosystem 
+multifunctionality via loss of biodiversity and changes to 
+functional composition. Ecology Letters, 18, 834-843. 
+Anderson-Teixeira KJ, Davies SJ, Bennett AC, Gonzalez-Akre 
+EB, Muller-Landau HC, Wright SJ, Abu Salim K, 
+Almeyda Zambrano AM, Alonso A, Baltzer JL, Basset Y, 
+Bourg NA, Broadbent EN, Brockelman WY, Bunya-
+vejchewin S, et al. (2015). CTFS-ForestGEO: a worldwide 
+network monitoring forests in an era of global change. 
+Global Change Biology, 21, 528-549. 
+Balvanera P, Pfisterer AB, Buchmann N, He JS, Nakashizuka 
+T, Raffaelli D, Schmid B (2006). Quantifying the evidence 
+for biodiversity effects on ecosystem functioning and 
+services. Ecology Letters, 9, 1146-1156. 
+Bardgett RD, van der Putten WH (2014). Belowground 
+biodiversity and ecosystem functioning. Nature, 515, 
+505-511. 
+Bartual AM, Sutter L, Bocci G, Moonen AC, Cresswell JE, 
+Entling MH, Giffard B, Jacot K, Jeanneret P, Holland JM, 
+Pfister SC, Pintér O, Veromann E, Winkler K, Albrecht M 
+(2019). The potential of different semi-natural habitats to 
+sustain pollinators and natural enemies in European agri-
+cultural landscapes. Agriculture, Ecosystems & Enviro-
+nment, 279, 43-52. 
+Belshe EF, Hoeijmakers D, Herran N, Mtolera M, Teichberg M 
+(2018). Seagrass community-level controls over organic 
+carbon storage are constrained by geophysical attributes 
+within meadows of Zanzibar, Tanzania. Biogeosciences, 
+15, 4609-4626. 
+Bin Y, Lin GJ, Russo SE, Huang ZL, Shen Y, Cao HL, Lian J, 
+Ye WH (2019). Testing the competition-colonization 
+trade-off and its correlations with functional trait varia-
+tions among subtropical tree species. Scientific Reports, 9, 
+14942. DOI: 10.1038/s41598-019-50604-3. 
+Bu WS, Zhang CC, Huang JH, Zang RG, Ding Y, Xu H, Lin 
+MX, Wang JS (2019). The influences of disturbance 
+histories and soil properties on aboveground biomass 
+through plant functional traits in a tropical rainforest. 
+Forests, 10, 774. DOI: 10.3390/f10090774. 
+Burylo M, Rey F, Bochet E, Dutoit T (2012a). Plant functional 
+traits and species ability for sediment retention during 
+concentrated flow erosion. Plant and Soil, 353, 135-144. 
+Burylo M, Rey F, Mathys N, Dutoit T (2012b). Plant root traits 
+affecting the resistance of soils to concentrated flow erosion. 
+Earth Surface Processes and Landforms, 37, 1463-1470. 
+Cardinale BJ, Duffy JE, Gonzalez A, Hooper DU, Perrings C, 
+Venail P, Narwani A, Mace GM, Tilman D, Wardle DA, 
+Kinzig AP, Daily GC, Loreau M, Grace JB, Larigauderie 
+A, Srivastava DS, Naeem S (2012). Biodiversity loss and 
+its impact on humanity. Nature, 486, 59-67. 
+Cardinale BJ, Srivastava DS, Duffy JE, Wright JP, Downing 
+AL, Sankaran M, Jouseau C (2006). Effects of biodiversity 
+on the functioning of trophic groups and ecosystems. 
+Nature, 443, 989-992. 
+Conti G, Díaz S (2013). Plant functional diversity and carbon 
+storage: an empirical test in semi-arid forest ecosystems. 
+Journal of Ecology, 101, 18-28. 
+Cornelissen JHC, Lavorel S, Garnier E, Diaz S, Buchmann N, 
+Gurvich DE, Reich PB, ter Steege H, Morgan HD, van der 
+Heijden MGA, Pausas JG, Poorter H (2003). A handbook 
+of protocols for standardised and easy measurement of 
+plant functional traits worldwide. Australian Journal of 
+Botany, 51, 335-380. 
+Daily GC (1997). Nature’s Services: Societal Dependence on 
+Natural Ecosystems. Island Press, Washington D.C. 
+de Bello F, Lavorel S, Díaz S, Harrington R, Cornelissen JHC, 
+Bardgett RD, Berg MP, Cipriotti P, Feld CK, Hering D, 
+Martins da Silva P, Potts SG, Sandin L, Sousa JP, Storkey 
+J, Wardle DA, Harrison PA (2010). Towards an asse-
+ssment of multiple ecosystem processes and services via 
+functional traits. Biodiversity and Conservation, 19, 
+2873-2893. 
+Díaz S, Lavorel S, de Bello F, Quétier F, Grigulis K, Robson 
+TM (2007). Incorporating plant functional diversity effects 
+in ecosystem service assessments. Proceedings of the 
+National Academy of Sciences of the United States of 
+America, 104, 20684-20689. 
+Elumeeva TG, Onipchenko VG, Cornelissen JHC, Semenova 
+GV, Perevedentseva LG, Freschet GT, van Logtestijn 
+RSP, Soudzilovskaia NA (2018). Is intensity of plant root 
+mycorrhizal colonization a good proxy for plant growth 
+rate, dominance and decomposition in nutrient poor 
+conditions? Journal of Vegetation Science, 29, 715-725. 
+Everwand G, Fry EL, Eggers T, Manning P (2014). Seasonal 
+variation in the capacity for plant trait measures to predict 
+grassland carbon and water fluxes. Ecosystems, 17, 
+1095-1108. 
+Eviner VT, Chapin III FS (2003). Functional matrix: a 
+conceptual framework for predicting multiple plant effects 
+on ecosystem processes. Annual Review of Ecology 
+Evolution and Systematics, 34, 455-485. 
+Falster DS, Brannstrom A, Dieckmann U, Westoby M (2011). 
+Influence of four major plant traits on average height, 
+leaf-area cover, net primary productivity, and biomass 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1151
+ 
+DOI: 10.17521/cjpe.2020.0142 
+density in single-species forests: a theoretical investi-
+gation. Journal of Ecology, 99, 148-164. 
+Finegan B, Peña-Claros M, de Oliveira A, Ascarrunz N, 
+Bret-Harte MS, Carreño-Rocabado G, Casanoves F, Díaz 
+S, Eguiguren Velepucha P, Fernandez F, Licona JC, 
+Lorenzo L, Salgado Negret B, Vaz M, Poorter L (2015). 
+Does functional trait diversity predict above-ground 
+biomass and productivity of tropical forests? Testing three 
+alternative hypotheses. Journal of Ecology, 103, 191-201. 
+Fornoff F, Klein AM, Hartig F, Benadi G, Venjakob C, 
+Schaefer HM, Ebeling A (2017). Functional flower traits 
+and their diversity drive pollinator visitation. Oikos, 126, 
+1020-1030. 
+Fu H, Zhong JY, Yuan GX, Ni LY, Xie P, Cao T (2014). 
+Functional 
+traits 
+composition 
+predict 
+macrophytes 
+community productivity along a water depth gradient in a 
+freshwater lake. Ecology and Evolution, 4, 1516-1523. 
+Garcia L, Damour G, Gary C, Follain S, Bissonnais Y, Metay A 
+(2019). Trait-based approach for agroecology: contribution 
+of service crop root traits to explain soil aggregate stability 
+in vineyards. Plant and Soil, 435, 1-14. 
+García-Palacios P, Gattinger A, Bracht-Jørgensen H, Brussaard 
+L, Carvalho F, Castro H, Clément JC, de Deyn G, 
+D'Hertefeldt T, Foulquier A, Hedlund K, Lavorel S, Legay 
+N, Lori M, Mäder P, et al. (2018). Crop traits drive soil 
+carbon sequestration under organic farming. Journal of 
+Applied Ecology, 55, 2496-2505. 
+Golodets C, Sternberg M, Kigel J (2009). A community-level 
+test of the leaf-height-seed ecology strategy scheme in 
+relation to grazing conditions. Journal of Vegetation 
+Science, 20, 392-402. 
+Grigulis K, Lavorel S, Krainer U, Legay N, Baxendale C, 
+Dumont M, Kastl E, Arnoldi C, Bardgett RD, Poly F, 
+Pommier T, Schloter M, Tappeiner U, Bahn M, Clement J 
+(2013). Relative contributions of plant traits and soil 
+microbial properties to mountain grassland ecosystem 
+services. Journal of Ecology, 101, 47-57. 
+Handa IT, Aerts R, Berendse F, Berg MP, Bruder A, Buten-
+schoen O, Chauvet E, Gessner MO, Jabiol J, Makkonen M, 
+McKie BG, Malmqvist B, Peeters ET, Scheu S, Schmid B, 
+et al. (2014). Consequences of biodiversity loss for litter 
+decomposition across biomes. Nature, 509, 218-221. 
+Hanif MA, Yu Q, Rao X, Shen W (2019). Disentangling the 
+contributions of plant taxonomic and functional diversities 
+in shaping aboveground biomass of a restored forest 
+landscape in Southern China. Plants, 8, 612. DOI: 
+10.3390/plants8120612. 
+Hatt S, Uyttenbroeck R, Lopes T, Chen JL, Piqueray J, Monty 
+A, Francis F (2018). Effect of flower traits and hosts on 
+the abundance of parasitoids in perennial multiple species 
+wildflower strips sown within oilseed rape (Brassica 
+napus) crops. Arthropod-Plant Interactions, 12, 787-797. 
+Hatt S, Uyttenbroeck R, Lopes TCM, Mouchon P, Chen J, 
+Piqueray J, Monty A, Francis F (2017). Do flower mix-
+tures with high functional diversity enhance aphid pre-
+dators in wildflower strips? European Journal of Ento-
+mology, 114, 66-76. 
+He NP, Li Y, Liu CC, Xu L, Li MX, Zhang JH, He JS, Tang 
+ZY, Han XG, Ye Q, Xiao CW, Yu Q, Liu SR, Sun W, Niu 
+SL, Li SG, Sack L, Yu GR (2020). Plant trait networks: 
+improved resolution of the dimensionality of adaptation. 
+Trends in Ecology & Evolution, 35, 908-918. 
+He NP, Liu CC, Piao SL, Sack L, Xu L, Luo Y, He JS, Han 
+XG, Zhou GS, Zhou XH, Lin Y, Yu Q, Liu SR, Sun W, 
+Niu SL, Li SG, Zhang JH, Yu GR (2019). Ecosystem traits 
+linking functional traits to macroecology. Trends in 
+Ecology & Evolution, 34, 200-210. 
+Hector A, Bagchi R (2007). Biodiversity and ecosystem 
+multifunctionality. Nature, 448, 188-190. 
+Hillebrand H, Matthiessen B (2009). Biodiversity in a complex 
+world: 
+consolidation 
+and 
+progress 
+in 
+functional 
+biodiversity research. Ecology Letters, 12, 1405-1419. 
+Hu YK, Pan X, Yang XJ, Liu GF, Liu XY, Song YB, Zhang 
+MY, Cui LJ, Dong M (2019). Is there coordination of leaf 
+and fine root traits at local scales? A test in temperate 
+forest swamps. Ecology and Evolution, 9, 8714-8723. 
+Kattge J, Diaz S, Lavorel S, Prentice C, Leadley P, Bonisch G, 
+Garnier E, Westoby M, Reich PB, Wright IJ, Cornelissen 
+JHC, Violle C, Harrison SP, van Bodegom PM, Reichstein 
+M, et al. (2011). TRY—A global database of plant traits. 
+Global Change Biology, 17, 2905-2935. 
+Kervroedan L, Armand R, Saunier M, Ouvry J, Faucon M 
+(2018). Plant functional trait effects on runoff to design 
+herbaceous hedges for soil erosion control. Ecological 
+Engineering, 118, 143-151. 
+Klumpp K, Soussana J (2009). Using functional traits to predict 
+grassland ecosystem change: a mathematical test of the 
+response-and-effect trait approach. Global Change Bio-
+logy, 15, 2921-2934. 
+Kröber W, Li Y, Härdtle W, Ma KP, Schmid B, Schmidt K, 
+Scholten T, Seidler G, von Oheimb G, Welk E, Wirth C, 
+Bruelheide H (2015). Early subtropical forest growth is 
+driven by community mean trait values and functional 
+diversity rather than the abiotic environment. Ecology and 
+Evolution, 5, 3541-3556. 
+La Pierre KJ, Smith MD (2015). Functional trait expression of 
+grassland species shift with short- and long-term nutrient 
+additions. Plant Ecology, 216, 307-318. 
+Lamarque P, Lavorel S, Mouchet M, Quetier F (2014). Plant 
+trait-based models identify direct and indirect effects of 
+climate change on bundles of grassland ecosystem ser-
+vices. Proceedings of the National Academy of Sciences of 
+the United States of America, 111, 13751-13756. 
+Li XL, Liu ZY, Wang Z, Wu XH, Li XL, Hu J, Shi HX, Guo 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+1152  植物生态学报Chinese Journal of Plant Ecology  2021, 45 (10): 1140-1153 
+ 
+www.plant-ecology.com 
+FH, Zhang Y, Hou XY (2015). Pathways of Leymus 
+chinensis individual aboveground biomass decline in 
+natural semiarid grassland induced by overgrazing: a study 
+at the plant functional trait scale. PLOS ONE, 10, 
+e0124443. DOI: 10.1371/journal.pone.0124443. 
+Lienin P, Kleyer M (2012). Plant trait responses to the 
+environment and effects on ecosystem properties. Basic 
+and Applied Ecology, 13, 301-311. 
+Lin DM, Anderson-Teixeira KJ, Lai JS, Mi XC, Ren HB, Ma 
+KP (2016). Traits of dominant tree species predict local 
+scale variation in forest aboveground and topsoil carbon 
+stocks. Plant and Soil, 409, 435-446. 
+Liu XJ, Ma KP (2015). Plant functional traits: concepts, 
+applications and future directions. Scientia Sinica (Vitae), 
+45, 325-339. [刘晓娟, 马克平 (2015). 植物功能性状研
+究进展. 中国科学: 生命科学, 45, 325-339.] 
+Lu N, Fu BJ, Jin TT, Chang RY (2014). Trade-off analyses of 
+multiple ecosystem services by plantations along a 
+precipitation gradient across Loess Plateau landscapes. 
+Landscape Ecology, 29, 1697-1708. 
+Lundholm J, Heim A, Tran S, Smith T (2014). Leaf and life 
+history traits predict plant growth in a green roof 
+ecosystem. PLOS ONE, 9, e101395. DOI: 10.1371/journal. 
+pone.0101395. 
+Lundholm J, Tran S, Gebert L (2015). Plant functional traits 
+predict green roof ecosystem services. Environmental 
+Science & Technology, 49, 2366-2374. 
+Lundin O, Ward KL, Williams NM (2019). Identifying native 
+plants for coordinated habitat management of arthropod 
+pollinators, herbivores and natural enemies. Journal of 
+Applied Ecology, 56, 665-676. 
+Matheny AM, Mirfenderesgi G, Bohrer G (2017). Trait-based 
+representation of hydrological functional properties of 
+plants in weather and ecosystem models. Plant Diversity, 
+39, 1-12. 
+Millennium Ecosystem Assessment Board (2005). Ecosystems 
+and Human Well-Being: Synthesis Report. Island Press, 
+Washington D.C. 
+Monteiroa MV, Blanusa T, Verhoef A, Richardson M, Hadley 
+P, Cameron RWF (2017). Functional green roofs: 
+importance of plant choice in maximising summertime 
+environmental cooling and substrate insulation potential. 
+Energy and Buildings, 141, 56-68. 
+Moonen PCJ, Verbist B, Bosela FB, Norgrove L, Dondeyne S, 
+van Meerbeek K, Kearsley E, Verbeeck H, Vermeir P, 
+Boeckx 
+P, 
+Muys 
+B 
+(2019). 
+Disentangling 
+how 
+management affects biomass stock and productivity of 
+tropical secondary forests fallows. Science of the Total 
+Environment, 659, 101-114. 
+Navarro-Cano JA, Verdú M, Goberna M (2018). Trait-based 
+selection of nurse plants to restore ecosystem functions in 
+mine tailings. Journal of Applied Ecology, 55, 1195-1206. 
+Orwin KH, Mason NWH, Jordan OM, Lambie SM, Stevenson 
+BA, Mudge PL (2018). Season and dominant species 
+effects on plant trait-ecosystem function relationships in 
+intensively grazed grassland. Journal of Applied Ecology, 
+55, 236-245. 
+Ouyang ZY, Wang RS, Zhao JZ (1999). Ecosystem services 
+and their economic valuation. Chinese Journal of Applied 
+Ecology, 10, 3-5. [欧阳志云, 王如松, 赵景柱 (1999). 
+生态系统服务功能及其生态经济价值评价. 应用生态
+学报, 10, 3-5.] 
+Ouyang ZY, Zheng H (2009). Ecological mechanisms of eco-
+system services. Acta Ecologica Sinica, 29, 6183-6188. 
+[欧阳志云, 郑华 (2009). 生态系统服务的生态学机制
+研究进展. 生态学报, 29, 6183-6188.] 
+Pakeman RJ (2014). Leaf dry matter content predicts herbivore 
+productivity, but its functional diversity is positively 
+related to resilience in grasslands. PLOS ONE, 9, e101876. 
+DOI: 10.1371/journal.pone.0101876. 
+Pakeman RJ, Eastwood A, Scobie A (2011). Leaf dry matter 
+content as a predictor of grassland litter decomposition: a 
+test of the “mass ratio hypothesis”. Plant and Soil, 342, 
+49-57. 
+Paquette A, Messier C (2011). The effect of biodiversity on tree 
+productivity: from temperate to boreal forests. Global 
+Ecology and Biogeography, 20, 170-180. 
+Patoine G, Thakur MP, Friese J, Nock CA, Honig L, Haase J, 
+Scherer-Lorenzen M, Eisenhauer N (2017). Plant litter 
+functional diversity effects on litter mass loss depend on 
+the macro-detritivore community. Pedobiologia, 65, 29-42. 
+Pommier T, Cantarel AAM, Grigulis K, Lavorel S, Legay N, 
+Baxendale C, Bardgett RD, Bahn M, Poly F, Clément JC 
+(2018). The added value of including key microbial traits 
+to determine nitrogen-related ecosystem services in mana-
+ged grasslands. Journal of Applied Ecology, 55, 49-58. 
+Quétier F, Thébault A, Lavorel S (2007). Plant traits in a state 
+and transition framework as markers of ecosystem response 
+to land-use change. Ecological Monographs, 77, 33-52. 
+Robleño I, Storkey J, Solé-Senan XO, Recasens J (2018). Using 
+the response-effect trait framework to quantify the value of 
+fallow patches in agricultural landscapes to pollinators. 
+Applied Vegetation Science, 21, 267-277. 
+Rolo V, Rivest D, Lorente M, Kattge J, Moreno G (2016). 
+Taxonomic and functional diversity in Mediterranean pa-
+stures: insights on the biodiversity-productivity trade-off. 
+Journal of Applied Ecology, 53, 1575-1584. 
+Santala K, Aubin I, Hoepting M, Bachand M, Pitt D (2019). 
+Managing conservation values and tree performance: 
+lessons learned from 10 year experiments in regenerating 
+eastern white pine (Pinus strobus L.). Forest Ecology and 
+Management, 432, 748-760. 
+Schindler MH, Gessner MO (2009). Functional leaf traits and 
+biodiversity effects on litter decomposition in a stream. 
+©植物生态学报 Chinese Journal of Plant Ecology
+
+潘权等: 植物功能性状对生态系统服务影响研究进展   1153
+ 
+DOI: 10.17521/cjpe.2020.0142 
+Ecology, 90, 1641-1649. 
+Schröter D, Cramer W, Leemans R, Prentice IC, Araújo MB, 
+Arnell NW, Bondeau A, Bugmann H, Carter TR, Gracia 
+CA, de la Vega-Leinert AC, Erhard M, Ewert F, 
+Glendining M, House JI, et al. (2005). Ecosystem service 
+supply and vulnerability to global change in Europe. 
+Science, 310, 1333-1337. 
+Schuldt A, Assmann T, Bruelheide H, Durka W, Eichenberg D, 
+Härdtle W, Kröber W, Michalski SG, Purschke O (2014). 
+Functional and phylogenetic diversity of woody plants 
+drive herbivory in a highly diverse forest. New Phyto-
+logist, 202, 864-873. 
+Serna-Chavez HM, Swenson NG, Weiser MD, van Loon EE, 
+Bouten W, Davidson MD, van Bodegom PM (2017). Strong 
+biotic influences on regional patterns of climate regulation 
+services. Global Biogeochemical Cycles, 31, 787-803. 
+Sole-Senan XO, Juarez-Escario A, Robleno I, Conesa JA, 
+Recasens J (2017). Using the response-effect trait 
+framework to disentangle the effects of agricultural 
+intensification on the provision of ecosystem services by 
+Mediterranean arable plants. Agriculture Ecosystems & 
+Environment, 247, 255-264. 
+Staples TL, Dwyer JM, England JR, Mayfield MM (2019). 
+Productivity does not correlate with species and functional 
+diversity in Australian reforestation plantings across a 
+wide climate gradient. Global Ecology and Biogeography, 
+28, 1417-1429. 
+Storkey J, Brooks D, Haughton A, Hawes C, Smith BM, 
+Holland JM (2013). Using functional traits to quantify the 
+value of plant communities to invertebrate ecosystem ser-
+vice providers in arable landscapes. Journal of Ecology, 
+101, 38-46. 
+Storkey J, Döring T, Baddeley J, Collins R, Roderick S, Jones 
+H, Watson C (2015). Engineering a plant community to 
+deliver multiple ecosystem services. Ecological Applica-
+tions, 25, 1034-1043. 
+Tecco PA, Díaz S, Cabido M, Urcelay C (2010). Functional 
+traits of alien plants across contrasting climatic and 
+land-use regimes: Do aliens join the locals or try harder 
+than them? Journal of Ecology, 98, 17-27. 
+Tscharntke T, Tylianakis JM, Rand TA, Didham RK, Fahrig L, 
+Batáry P, Bengtsson J, Clough Y, Crist TO, Dormann CF, 
+Ewers RM, Fründ J, Holt RD, Holzschuh A, Klein AM, et 
+al. (2012). Landscape moderation of biodiversity patterns 
+and processes—Eight hypotheses. Biological Reviews, 87, 
+661-685. 
+van der Plas F (2019). Biodiversity and ecosystem functioning 
+in naturally assembled communities. Biological Reviews, 
+94, 1220-1245. 
+Violle C, Navas ML, Vile D, Kazakou E, Fortunel C, Hummel 
+I, Garnier E (2007). Let the concept of trait be functional! 
+Oikos, 116, 882-892. 
+Wen Z, Zheng H, Ouyang ZY (2020). Research progress on the 
+relationship between biodiversity and ecosystem services. 
+Chinese Journal of Applied Ecology, 31, 1-10. [文志, 郑
+华, 欧阳志云 (2020). 生物多样性与生态系统服务关系
+研究进展. 应用生态学报, 31, 1-10.] 
+Wen Z, Zheng H, Smith JR, Zhao H, Liu L, Ouyang ZY (2019). 
+Functional diversity overrides community-weighted mean 
+traits in linking land-use intensity to hydrological ecosystem 
+services. Science of the Total Environment, 682, 583-590. 
+Westoby M (1998). A leaf-height-seed (LHS) plant ecology 
+strategy scheme. Plant and Soil, 199, 213-227. 
+Willemen L (2020). It’s about time: advancing spatial analyses 
+of ecosystem services and their application. Ecosystem 
+Services, 44, 101125. 
+Wright IJ, Reich PB, Westoby M, Ackerly DD, Baruch Z, 
+Bongers F, Cavender-Bares J, Chapin T, Cornelissen JHC, 
+Diemer M, Flexas J, Garnier E, Groom PK, Gulias J, 
+Hikosaka K, et al. (2004). The worldwide leaf economics 
+spectrum. Nature, 428, 821-827. 
+Yang Y, Dou YX, Cheng H, An SS (2019). Plant functional 
+diversity drives carbon storage following vegetation resto-
+ration in Loess Plateau, China. Journal of Environmental 
+Management, 246, 668-678. 
+Zhang JH, Huang YM, Chen HY, Gong JR, Qi Y, Li EG, Wu 
+XC (2018). Response of plant functional traits at species 
+and community levels to grazing exclusion on Inner 
+Mongolian steppe, China. Rangeland Journal, 40, 179-189. 
+Zheng H, Wang LJ, Peng WJ, Zhang CP, Li C, Robinson BE, 
+Wu XC, Kong LQ, Li RN, Xiao Y, Xu WH, Ouyang ZY, 
+Daily GC (2019). Realizing the values of natural capital 
+for inclusive, sustainable development: informing China’s 
+new ecological development strategy. Proceedings of the 
+National Academy of Sciences of the United States of 
+America, 116, 8623-8628. 
+Zhu HX, Fu BJ, Wang S, Zhu LH, Zhang LW, Jiao L, Wang C 
+(2015). Reducing soil erosion by improving community 
+functional diversity in semi-arid grasslands. Journal of 
+Applied Ecology, 52, 1063-1072. 
+Zirbel CR, Bassett T, Grman E, Brudvig LA (2017). Plant 
+functional traits and environmental conditions shape com-
+munity assembly and ecosystem functioning during restor-
+ation. Journal of Applied Ecology, 54, 1070-1079. 
+Zuo XA, Zhou X, Lv P, Zhao XY, Zhang J, Wang SK, Yue XY 
+(2016). Testing associations of plant functional diversity 
+with carbon and nitrogen storage along a restoration 
+gradient of sandy grassland. Frontiers in Plant Science, 7, 
+189. DOI: 10.3389/fpls.2016.00189. 
+ 
+ 
+特邀编委: 刘国方  责任编辑: 李  敏 
+ 
+©植物生态学报 Chinese Journal of Plant Ecology

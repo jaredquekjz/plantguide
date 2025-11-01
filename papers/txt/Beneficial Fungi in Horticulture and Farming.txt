@@ -1,0 +1,1206 @@
+ 
+Fungal Allies in Agriculture: A Functional 
+Categorization and Mechanistic Analysis 
+of Beneficial Fungi in Horticultural and 
+Farming Systems 
+ 
+ 
+1. A Functional Taxonomy of Beneficial Fungi in 
+Agricultural Ecosystems 
+ 
+ 
+1.1 Introduction: The 'Fungal Kingdom' in Agri-Horticultural Systems 
+ 
+Within agricultural and horticultural ecosystems, the Fungi kingdom represents a diverse and 
+foundational component of soil biodiversity, essential for critical ecosystem functions.1 While 
+often perceived through the narrow lens of either culinary resources or plant pathogens, the 
+vast majority of fungi perform beneficial roles vital for soil health, carbon cycling, nutrient 
+availability, and overall plant productivity.2 A nuanced understanding of these beneficial fungi, 
+moving beyond simple identification and toward functional roles, is essential for developing 
+sustainable and resilient agricultural systems.5 
+For the practical purposes of horticulture and farming, beneficial fungi can be classified into 
+distinct categories based on their ecological niche—that is, where they live—and their primary 
+function relative to the plant, soil, and broader agroecosystem.1 
+ 
+1.2 The Primary Functional Guilds 
+ 
+
+Analysis reveals four primary functional guilds of beneficial fungi relevant to crop production 
+4: 
+1.​ Mycorrhizal Fungi (The Symbiotic Nutrient Foragers): These fungi form a direct, 
+mutualistic partnership, or symbiosis, with the roots of living plants, acting as an 
+extension of the root system.4 
+2.​ Endophytic Fungi (The Internal Plant Allies): This group is defined by its niche. These 
+fungi live asymptomatically inside the tissues of host plants (e.g., roots, stems, and 
+leaves), often providing profound benefits from within.8 
+3.​ Saprotrophic Fungi (The External Decomposers): These fungi are the ecosystem's 
+primary recyclers. They acquire nutrients by secreting enzymes to decompose dead 
+organic matter, such as leaf litter, crop residues, and compost.4 
+4.​ Biocontrol Fungi (The Specialized Protectors): This is a functional designation for 
+fungi whose primary applied role is the suppression of agricultural pests. This group 
+includes entomopathogenic (insect-killing), mycoparasitic (fungus-killing), and 
+nematicidal (nematode-killing) fungi.5 
+The following table provides a comprehensive functional taxonomy to clarify these categories, 
+their ecological roles, and their key functions in agriculture. 
+ 
+1.3 Table 1: A Functional Taxonomy of Beneficial Fungi in Agriculture 
+ 
+Primary 
+Category 
+Sub-type / 
+Key Example 
+Ecological 
+Niche (Where 
+they live) 
+Primary 
+Function 
+(What they 
+do) 
+Key Genera 
+Mycorrhizal 
+Fungi 
+Arbuscular 
+Mycorrhizae 
+(AMF) 
+Obligate 
+symbiont; 
+colonizes root 
+cortex cells of 
+living plants. 
+Nutrient/water 
+exchange for 
+plant carbon; 
+soil 
+aggregation 
+(Glomalin). 
+Glomus, 
+Rhizophagus 
+ 
+Ectomycorrhiz
+ae (EMF) 
+Symbiont; 
+forms external 
+sheath around 
+living plant 
+Nutrient/water 
+exchange; 
+"mines" 
+organic N for 
+Pisolithus, 
+Tuber 
+
+roots. 
+woody plants. 
+Endophytic 
+Fungi 
+Plant 
+Growth-Promo
+ting (PGPF) 
+Lives 
+asymptomatic
+ally within all 
+plant tissues 
+(roots, stems, 
+leaves). 
+Phytohormone 
+production 
+(auxins, 
+gibberellins); 
+stress 
+tolerance; 
+nutrient 
+solubilization. 
+Fusarium, 
+Penicillium 
+ 
+Biocontrol 
+Endophytes 
+Lives 
+asymptomatic
+ally within 
+plant tissues. 
+Induces 
+Systemic 
+Resistance 
+(ISR); 
+produces 
+anti-herbivore 
+or 
+anti-pathogen 
+metabolites. 
+Beauveria, 
+Trichoderma 
+Saprotrophic 
+Fungi 
+Decomposers 
+(e.g., 
+White-rot) 
+Decomposer 
+of dead 
+organic matter 
+in soil and 
+compost. 
+Lignin & 
+cellulose 
+breakdown; 
+nutrient 
+mineralization; 
+soil building. 
+Agaricus, 
+Coprinus 
+Biocontrol 
+Fungi 
+Entomopathog
+enic 
+Parasite of 
+insects. 
+Kills insect 
+pests by 
+penetrating 
+the cuticle. 
+Metarhizium, 
+Beauveria 
+ 
+Mycoparasitic 
+Parasite of 
+other fungi. 
+Kills fungal 
+pathogens via 
+parasitism, 
+antibiosis, and 
+competition. 
+Trichoderma 
+ 
+Nematicidal 
+Parasite/preda
+Kills 
+Purpureocilliu
+
+tor of 
+nematodes. 
+plant-parasitic 
+nematodes via 
+trapping, egg 
+parasitism, or 
+toxins. 
+m 
+ 
+1.4 Functional Overlap: A Core Concept 
+ 
+It is critical to understand that these functional categories are not rigid or mutually exclusive. 
+A single fungal species or even strain can, and often does, occupy multiple niches and 
+perform several functions simultaneously. This "functional duality" is a key component of their 
+value.13 
+For example, fungi in the genus Trichoderma are celebrated as a premier mycoparasitic 
+biocontrol agent.14 However, they are also aggressive saprotrophs (decomposers) in the soil 
+11 and are well-documented as endophytes that colonize root tissues to promote growth and 
+induce plant defenses.14 
+Similarly, Beauveria bassiana and Metarhizium anisopliae are famously entomopathogenic 
+(insect-killing).17 Yet, modern research confirms they are also highly effective endophytes 
+that live systemically within plant tissues, providing protection from the inside.10 Therefore, a 
+fungus is defined not just by its species, but by the role it is playing in a specific context. 
+ 
+2. The Mycorrhizal Symbiosis: Engineering the 
+Plant-Soil Interface 
+ 
+ 
+2.1 Defining the "Mycorrhiza": A Foundational Symbiosis 
+ 
+The "mycorrhiza," or "fungus-root" 19, represents a foundational mutualism that has been 
+co-evolving with plants for over 400 million years.8 This symbiosis is ubiquitous, formed by 
+
+approximately 90% of all land plants.4 
+The relationship is a "barter" system: the plant, through photosynthesis, supplies the fungus 
+with carbon (sugars), and in return, the fungus acts as a vast subterranean foraging network, 
+delivering minerals, nutrients, and water to the plant roots.4 This creates an intricate 
+information and nutrient exchange system, often called the "wood wide web," that links plants 
+and soil.22 
+ 
+2.2 Arbuscular Mycorrhizal Fungi (AMF): The Universal Symbionts 
+ 
+Arbuscular Mycorrhizal Fungi (AMF) are the most common and agriculturally significant type, 
+forming associations with approximately 80% of terrestrial plants, including the majority of 
+horticultural vegetables (e.g., tomatoes, corn), row crops, and grasses.11 
+●​ Niche: AMF are obligate symbionts, meaning they cannot complete their life cycle 
+without a living host plant.29 
+●​ Mechanism: AMF hyphae penetrate the root and grow into the root cortex cells, 
+penetrating the cell membrane (but not the cytoplasm) to form highly branched, tree-like 
+structures called "arbuscules".30 These arbuscules are the primary sites of the 
+bidirectional nutrient exchange. The fungi also form "vesicles," which are storage 
+structures within the root.19 
+●​ Horticultural Exceptions: A critical consideration for farm management is that a few 
+major crop families do not form mycorrhizal associations. These include the 
+Brassicaceae (e.g., cabbage, broccoli, canola, mustard, and radish) and the 
+Chenopodiaceae (e.g., spinach, beets, and chard).11 Applying AMF inoculants to these 
+crops will have no effect. 
+ 
+2.3 Ectomycorrhizal Fungi (EMF): The Woody Crop Specialists 
+ 
+Ectomycorrhizal Fungi (EMF) are dominant symbionts for many woody plants, accounting for 
+about 3% of mycorrhizal associations.19 
+●​ Niche: In contrast to AMF, EMF hyphae do not penetrate the root cells. Instead, they form 
+a thick fungal "sheath" or "mantle" that completely surrounds the root tip. From this 
+sheath, hyphae grow between the root cells to form a network known as the "Hartig net," 
+which is the site of nutrient exchange.19 
+●​ Horticultural Relevance: This category is crucial for many horticultural tree crops, 
+
+including nut trees (e.g., pecan, hazelnut 19), and in forestry (e.g., pines).4 
+●​ AMF vs. EMF Functional Distinction: The choice between AMF and EMF inoculants is 
+not interchangeable; it is entirely crop-dependent. Furthermore, EMF possess a 
+specialized function that AMF lack, which is derived from their saprotrophic ancestors: 
+the ability to "mine" nutrients, particularly nitrogen, directly from complex organic 
+matter.32 While AMF are superior at "foraging" for mineral nutrients in the soil solution, 
+EMF can secrete enzymes to decompose organic matter and unlock the nutrients 
+(especially N) bound within it, giving them a significant competitive advantage in 
+nutrient-poor forest soils.32 
+ 
+2.4 Core Function: Nutrient Mobilization and Uptake (The Phosphorus 
+Pathway) 
+ 
+The primary benefit of mycorrhizae is the vast enhancement of nutrient uptake. The fungal 
+hyphal network is significantly finer than plant root hairs 11 and extends far beyond the root's 
+"nutrient depletion zone" (the area of soil immediately surrounding the root from which 
+nutrients have been removed).28 
+This "virtual root system" 21 is especially critical for the uptake of Phosphorus (P), a key 
+macronutrient that is highly immobile in soil.22 The fungi are not just passive pipes; they 
+actively facilitate P acquisition, particularly from insoluble sources that would otherwise be 
+unavailable to the plant.35 For example, in one study, inoculation with the AMF G. intraradices 
+increased the phosphorus concentration in plants grown in P-deficient soil by 107%.36 
+This symbiosis fundamentally alters the plant's own energy economy. Plants normally exude 
+energy-intensive phosphatase enzymes to liberate P from soil. Research shows that 
+AMF-inoculated plants significantly decrease their own production of these enzymes.36 The 
+fungal partner effectively "outsources" this P-scavenging function. This frees up significant 
+plant energy (carbon), allowing the plant to reallocate its resources, investing less in its 
+below-ground root biomass and more into its above-ground shoot biomass, which directly 
+translates to increased crop yield.35 The network also enhances the uptake of other vital 
+nutrients, including Nitrogen (N), Potassium (K), Zinc (Zn), Manganese (Mn), and Copper 
+(Cu).19 
+ 
+2.5 Core Function: Water Relations and Soil Structure Engineering 
+
+ 
+Mycorrhizal fungi are also master "ecosystem engineers" that physically modify their soil 
+environment.30 
+●​ Water Uptake: The fine hyphae can explore soil micropores that are physically 
+inaccessible to plant roots, tapping into water reserves that would otherwise be lost.29 
+They also improve the soil's hydraulic conductivity by bridging macropores (air gaps).29 
+This enhanced access to soil water directly confers plant tolerance to drought and 
+salinity.19 
+●​ Soil Structure (AMF): AMF play a crucial role in soil aggregation.27 The hyphal network 
+itself physically binds soil particles.4 More importantly, AMF exude a unique, sticky 
+glycoprotein called glomalin.28 Glomalin acts as a potent and stable "glue" that binds soil 
+microparticles together to form stable macroaggregates, or "crumbs".28 This aggregation 
+is the hallmark of healthy soil structure, improving porosity, aeration, and water infiltration 
+while reducing soil crusting and erosion.28 
+●​ Rhizosphere Management: The influence of AMF extends beyond just the plant-fungus 
+connection. They are active "managers" of the rhizosphere. Not only do they physically 
+build their habitat via glomalin, but they also modulate plant signaling to "coordinate soil 
+bacterial communities".38 This creates a three-way, synergistic relationship where the 
+AMF-colonized plant directs specific bacterial populations to mobilize other nutrients, 
+such as phosphate and sulfur, further enhancing the entire system's efficiency.38 
+ 
+3. Endophytic Fungi: Internal Mechanisms for Growth 
+and Defense 
+ 
+ 
+3.1 Definition: The "Internal Microbiome" of Plants 
+ 
+Endophytic fungi are microorganisms that colonize the internal tissues of plants—including 
+roots, stems, and leaves—without causing any visible symptoms of disease.8 This ancient and 
+ubiquitous relationship is found in most, if not all, plant species, forming a critical part of the 
+plant's "microbiome".8 They are transmitted both horizontally (e.g., from the soil or airborne 
+spores) and vertically (from the parent plant via seed).40 
+
+ 
+3.2 Function: Direct Plant Growth Promotion (PGPF) 
+ 
+Many endophytes are classified as Plant Growth-Promoting Fungi (PGPF) due to their direct, 
+positive effects on host physiology.6 They achieve this through two primary mechanisms: 
+1.​ Phytohormone Production: Endophytes synthesize and secrete a range of potent 
+plant-growth-regulating hormones. These include Auxins (IAA), which stimulate root 
+development 40, and Gibberellins (GA) (e.g., GA3, GA4, GA7), which promote stem 
+elongation and germination.40 
+2.​ Nutrient Acquisition: Endophytes provide direct nutrient benefits to their host.8 They 
+possess a "better ability over bacteria" to mobilize nutrients like phosphorus, particularly 
+in the harsh, acidic soil conditions where bacteria often struggle.40 They also produce 
+siderophores, which are low-molecular-weight compounds that chelate iron 
+($\text{Fe}^{3+}$) from the soil, making this essential micronutrient available to the 
+plant.8 
+ 
+3.3 Function: Conferring Abiotic Stress Tolerance 
+ 
+One of the most valuable functions of endophytic fungi is their ability to enhance plant 
+resilience to major abiotic stresses, including drought, salinity, and temperature extremes.6 
+For instance, endophyte-conferred tolerance has been shown to reduce water consumption 
+by 20-30% in commercial rice varieties, all while increasing biomass and yield.49 
+This profound stress mitigation is achieved through several sophisticated internal 
+mechanisms: 
+●​ Hormonal Regulation: Endophytes modulate the plant's own stress hormone signaling, 
+such as by balancing Abscisic Acid (ABA) and Gibberellin (GA) levels, to mount a more 
+effective response.47 
+●​ Osmotic Adjustment: Under drought or salt stress, endophytes help the host plant 
+accumulate organic solutes (osmolytes), which helps maintain cellular turgor pressure 
+and prevent wilting.45 
+●​ Antioxidant System Management: Abiotic stress creates a flood of damaging Reactive 
+Oxygen Species (ROS) within plant cells. Endophytes protect the plant by both 
+scavenging these ROS directly and, more importantly, by upregulating the plant's native 
+antioxidant enzyme systems, such as Catalase (CAT), Superoxide Dismutase (SOD), and 
+
+Peroxidase (POD).45 
+ 
+3.4 Function: Mediating Biotic Stress Resistance (Pests & Pathogens) 
+ 
+Endophytes act as "bodyguards" 51 by providing systemic protection against herbivores 
+(insects) and pathogens.10 This defense is multi-layered: 
+1.​ Induced Systemic Resistance (ISR): This is an indirect mechanism.8 The mere presence 
+of the "friendly" endophyte acts as a "vaccination," priming the plant's own systemic 
+defense pathways (ISR/ASR).41 When a real pathogen or pest attacks, the plant's 
+defenses are activated faster and more robustly. This is often triggered when the plant's 
+receptors recognize fungal MAMPs (Microbial-Associated Molecular Patterns) like chitin 
+from the endophyte cell wall.44 
+2.​ Direct Antagonism (Antibiosis): This is a direct mechanism.44 The endophytes 
+themselves produce a "wide range of bioactive metabolites" 46 that are antifungal, 
+antibacterial, or toxic/deterrent to insect herbivores.8 
+3.​ Competition: Endophytes colonize the plant's internal tissues, "competing for space and 
+nutrients".42 This physical occupation effectively prevents incoming pathogens from 
+gaining a foothold.41 
+The relationship between a plant and its endophytic community can be understood as the 
+plant "outsourcing" critical physiological functions. The endophytes function as an 
+outsourced endocrine system by producing growth hormones 40, an outsourced stress 
+response system by managing ROS and stress hormones 47, and an outsourced immune 
+system by providing ISR and producing defensive antibiotics.44 The resulting "holobiont" (the 
+plant + its microbes) is far more resilient and efficient than a sterile, endophyte-free plant. 
+ 
+4. Fungal Biocontrol Agents (BCAs): Specialized 
+Applications for Plant Protection 
+ 
+ 
+4.1 Introduction to Fungal BCAs 
+ 
+
+This functional group includes fungi that are applied specifically as "natural enemies" 53 or 
+"microbial pesticides" 6 to manage agricultural pests and diseases. Their use is a cornerstone 
+of Integrated Pest Management (IPM) programs, offering an eco-friendly alternative to 
+synthetic chemical pesticides.51 
+ 
+4.2 Entomopathogenic Fungi (EPF): The Insect Killers 
+ 
+Entomopathogenic fungi (EPFs) are organisms that naturally infect and parasitize arthropod 
+pests.12 
+●​ Key Species: The most widely commercialized EPFs in agriculture are Beauveria 
+bassiana 12 and the Metarhizium anisopliae species complex.12 Other important genera 
+include Cordyceps (formerly Isaria) and Akanthomyces.12 
+●​ Mode of Action (Direct Infection): Unlike bacterial pesticides that must be ingested, 
+EPFs are contact killers. 
+1.​ Spores adhere to the insect's outer body (the cuticle).12 
+2.​ The fungus germinates, releasing enzymes and using mechanical pressure to 
+penetrate the cuticle.12 
+3.​ Once inside the insect's body cavity (the hemolymph), the fungus multiplies, attacks 
+vital organs, and often releases toxins, leading to host death.12 
+4.​ The fungus then emerges from the host cadaver, producing a characteristic 
+"muscardine"—a white moldy growth for Beauveria (white muscardine disease) or a 
+green-spored mold for Metarhizium (green muscardine disease)—which releases 
+new spores into the environment.12 
+●​ Target Pests: EPFs are effective against a broad spectrum of pests, including aphids, 
+whiteflies, thrips, mealybugs, psyllids, stem borers, weevils, grasshoppers, ticks, and 
+mites.12 
+A critical development in EPF research is the discovery of their "dual role".13 The traditional 
+application method is a foliar spray 51, which acts as a short-lived contact pesticide vulnerable 
+to UV radiation and desiccation. However, modern research confirms that B. bassiana and M. 
+anisopliae can also be applied to the soil or as a seed treatment, where they will colonize the 
+plant endophytically.10 When living as an endophyte, the fungus provides systemic biological 
+control 53, protecting the plant from within by deterring insect feeding and even antagonizing 
+fungal pathogens.13 Thus, the application method (foliar spray vs. soil drench) fundamentally 
+changes the fungus's function from a temporary contact pesticide to a persistent, systemic 
+bodyguard. 
+
+ 
+4.3 Mycoparasitic Fungi: The Fungal Pathogen Killers 
+ 
+Mycoparasitic fungi are those that parasitize and kill other fungi, particularly plant pathogens. 
+●​ Key Species: This category is dominated by the genus Trichoderma, with species like T. 
+harzianum, T. virens, and T. asperellum.14 Trichoderma-based products account for an 
+estimated 60% of the global fungal biocontrol market.14 
+●​ Target Pathogens: They are highly effective against a wide range of devastating 
+soil-borne pathogens, including Pythium, Rhizoctonia, Fusarium, and Sclerotinia.12 
+●​ Mechanisms of Action: Trichoderma employs a multi-pronged attack strategy: 
+1.​ Mycoparasitism: The Trichoderma hyphae directly attack the pathogen, coiling 
+around its hyphae, penetrating its cell wall, and "feeding" on its contents.14 
+2.​ Antibiosis: Trichoderma secretes a powerful cocktail of lytic enzymes (e.g., 
+chitinases and glucanases) that degrade the pathogen's cell wall, along with 
+secondary metabolites and antibiotics (e.g., trichodermin, viridin) that inhibit its 
+growth.14 
+3.​ Competition: Trichoderma is an extremely fast-growing and aggressive colonizer of 
+the rhizosphere (the root zone).15 It simply outcompetes pathogens for space and 
+essential nutrients, "starving" them out.14 
+4.​ Endophytic Function: As noted previously, Trichoderma also colonizes plant roots 
+endophytically, where it promotes plant growth (PGPF) and activates the plant's 
+Induced Systemic Resistance (ISR).16 
+ 
+4.4 Nematicidal Fungi: The Nematode Killers 
+ 
+Nematicidal fungi are specialized fungi that prey on or parasitize plant-parasitic nematodes 
+(PPNs), which are microscopic roundworms that cause significant crop damage.61 These fungi 
+employ several ingenious mechanisms 11: 
+1.​ Nematode-Trapping (Predatory): Fungi such as Arthrobotrys are "carnivorous," 
+forming physical traps in the soil. These traps can be adhesive "nets" or "knobs" that 
+stick to the nematode, or constricting "rings" that snap shut on the nematode when it 
+passes through.11 
+2.​ Ovicidal (Egg Parasites): This is the most common commercial strategy. Fungi 
+parasitize the nematode eggs, digesting their contents. The key commercial species in 
+this group is Purpureocillium lilacinum (formerly Paecilomyces).12 
+
+3.​ Endoparasitic: Fungal spores attach to the nematode's cuticle or are ingested, 
+germinating inside the host and killing it from within. 
+4.​ Toxin-Producing: Some fungi, such as the common edible oyster mushroom (Pleurotus 
+ostreatus), produce toxins that immobilize nematodes, which the fungus then penetrates 
+and digests.64 
+5.​ Multi-Guild Action: Trichoderma species also exhibit strong nematicidal activity, 
+capable of parasitizing nematode eggs and affecting juvenile viability.61 
+ 
+4.5 Table 2: Comparative Analysis of Fungal Biocontrol Mechanisms 
+ 
+ 
+BCA Type 
+Key Genera 
+Primary 
+Target 
+Primary 
+Mechanism 
+(Direct 
+Action) 
+Secondary 
+Mechanism 
+(Indirect/End
+ophytic) 
+Entomopatho
+genic 
+Beauveria, 
+Metarhizium 
+Sucking/chewi
+ng insects 
+(e.g., Aphids, 
+Thrips, 
+Weevils) 12 
+Direct cuticle 
+penetration; 
+toxin 
+production in 
+hemolymph.12 
+Endophytic 
+colonization; 
+systemic 
+defense; 
+herbivore 
+deterrence.[13, 
+53] 
+Mycoparasiti
+c 
+Trichoderma 
+Fungal 
+pathogens 
+(e.g., 
+Fusarium, 
+Rhizoctonia) 12 
+Mycoparasitis
+m (direct 
+attack); 
+antibiosis 
+(enzymes/met
+abolites); 
+competition.[1
+4, 15, 16] 
+Endophytic 
+PGP; Induced 
+Systemic 
+Resistance 
+(ISR).16 
+Nematicidal 
+(Ovicidal) 
+Purpureocilliu
+m 
+Plant-Parasitic 
+Nematode 
+eggs 12 
+Direct 
+parasitism and 
+digestion of 
+egg 
+contents.[62] 
+Toxin 
+production; 
+enzyme 
+secretion.64 
+
+Nematicidal 
+(Predatory) 
+Arthrobotrys 
+Nematode 
+juveniles/adult
+s [62] 
+Physical 
+trapping with 
+adhesive nets 
+or constricting 
+rings.11 
+(N/A) 
+ 
+5. Saprotrophic Fungi: The Foundation of Soil Fertility 
+and Nutrient Cycling 
+ 
+ 
+5.1 The Ecological Role of Decomposition 
+ 
+Saprotrophic fungi are the ecosystem's "primary recyclers".4 They are defined by their ability 
+to acquire nutrients from dead organic matter. In terrestrial ecosystems, they are the "key 
+regulators of nutrient cycling" 67 and the primary agents responsible for the decomposition of 
+plant litter.11 This decomposition function is what replenishes the soil with organic matter and 
+liberates mineral nutrients for plant use.4 
+ 
+5.2 The Mechanism: Enzymatic Breakdown of Recalcitrant Matter 
+ 
+Saprotrophs function by secreting a powerful cocktail of extracellular enzymes into their 
+environment (e.g., soil, leaf litter, compost).11 While soil bacteria are efficient at degrading 
+simple sugars and proteins, fungi are the unique specialists required to break down the most 
+complex and recalcitrant plant polymers.11 
+Their primary targets are: 
+●​ Cellulose: The main structural component of plant cell walls.70 
+●​ Lignin: The tough, complex, "woody" compound that binds cellulose fibers together. 
+Lignin is notoriously difficult to degrade and is handled almost exclusively by fungi (e.g., 
+white-rot fungi).11 
+By breaking down these complex molecules, saprotrophs convert locked-up organic nutrients 
+
+into simpler, mineralized forms that can be absorbed by plant roots and mycorrhizal fungi. 
+ 
+5.3 Application in Composting and Soil Building 
+ 
+Saprotrophic fungi are the biological engines of the composting process.69 A compost pile 
+undergoes a "fungal succession" as it matures: 
+1.​ Initial/Mesophilic Phase: Mesophilic fungi (and bacteria) rapidly consume the most 
+soluble, easily degradable compounds. Yeasts such as Candida and Dipodascus may be 
+dominant during this initial stage.71 
+2.​ Thermophilic Phase: As decomposition generates heat, compost temperatures rise 
+above $40^\circ\text{C}$.71 Heat-loving thermophilic fungi take over, specializing in the 
+breakdown of complex polymers like cellulose and hemicellulose.71 Non-thermophilic 
+fungi are restricted to the cooler, outer 10-15 cm of the pile.71 
+3.​ Maturation/Curing Phase: As the most energetic compounds are exhausted, the pile 
+cools. Mesophilic fungi and actinomycetes (filamentous bacteria) re-colonize to 
+decompose the most resistant compounds remaining, primarily lignin, forming the stable, 
+nutrient-rich organic end-product: humus.71 
+A key horticultural product derived from this process is Spent Mushroom Compost (SMC). 
+SMC is the recycled substrate (e.g., composted straw and manure) after saprotrophic fungi 
+like Agaricus bisporus (button mushroom) have been cultivated on it. This "spent" material is 
+an exceptional soil amendment, rich in organic carbon, nutrients, and a diverse community of 
+beneficial microbes that can enhance soil quality.79 
+ 
+5.4 Contribution to Soil Structure and Water Dynamics 
+ 
+Like mycorrhizae, saprotrophic fungi are critical "soil engineers." Their extensive mycelial 
+networks (the thread-like body of the fungus) grow through the soil and physically bind loose 
+particles together, creating water-stable aggregates.80 Furthermore, their hyphae can 
+perform "hydraulic redistribution," acting as a "fast connection" to transport water from wet 
+soil patches to dry ones. This process facilitates decomposition by keeping the soil 
+micro-environment moist, even during periods of drought.82 
+These fungi are the foundational guild of the soil food web. They are the "architects" that 
+build the physical soil structure (aggregates) 80 and the "chefs" that "cook" the raw, complex 
+
+ingredients (lignin, cellulose).11 This "cooking" process (decomposition) mineralizes nutrients, 
+effectively "stocking the pantry" for the entire soil ecosystem. This saprotrophic activity is 
+what enables the other guilds to thrive; for example, the application of compost (the product 
+of saprotrophs) is known to increase the functional populations of both saprophytic fungi and 
+AMF in the soil.69 
+ 
+6. Commercialization and Application in Modern 
+Agriculture 
+ 
+ 
+6.1 Commercial Formulations: From Lab to Field 
+ 
+The beneficial fungi discussed are commercially available to growers in a variety of 
+formulations.84 These products are broadly grouped into two classes: 
+1.​ Biofertilizers / Biostimulants: These products contain live microbes intended to 
+promote plant growth, nutrient uptake, and stress tolerance.7 They typically contain AMF 
+(e.g., Glomus intraradices) or PGPF (e.g., Trichoderma spp.). Commercial examples 
+include MycoApply 88, Mykos 89, and various other AMF-based inoculants.7 
+2.​ Biopesticides (or Mycopesticides): These are products containing fungal Biocontrol 
+Agents (BCAs) registered for the management of pests and diseases.6 
+○​ Mycoinsecticides: Contain EPFs such as Beauveria bassiana (e.g., BotaniGard 
+22WP, Mycotrol) or Metarhizium anisopliae (e.g., Met52).12 
+○​ Mycofungicides / Myconematicides: Contain mycoparasites like Trichoderma 
+harzianum (e.g., RootShield WP) or nematicides like Purpureocillium lilacinum (e.g., 
+BioAct WG).12 
+These fungal products are sold in various formats, including wettable powders (WP), granules, 
+and liquids. The active fungal spores or hyphae are typically mixed with inert "carriers" (e.g., 
+peat, vermiculite, talc, or oil) to ensure viability and ease of application.84 
+ 
+6.2 Inoculation and Delivery Systems: A Comparative Analysis 
+ 
+
+The method of application is critical for establishing the fungus and ensuring its intended 
+function.92 
+●​ Seed Inoculation: A highly cost-effective, precise, and practical method that places the 
+inoculant exactly where it is needed at the moment of germination.92 
+○​ Seed Coating/Dressing: Applying microbes in a thin polymer layer to the seed 
+surface.91 This is an ideal delivery system for AMF and Trichoderma, as it ensures the 
+fungus is present when the first roots emerge.95 
+○​ Seed Priming/Soaking: Soaking seeds in a liquid suspension of microbes before 
+planting.91 
+●​ Soil Inoculation: Applying the inoculant directly to the soil or growing media.84 
+○​ Liquid In-Furrow: Spraying a liquid formulation directly into the planting furrow with 
+the seed.91 
+○​ Soil Drench: Applying a liquid suspension to the soil surface or root zone after 
+planting.84 
+○​ Granular Application: Incorporating dry granules into the soil or potting mix.92 
+●​ Plant/Root Inoculation: Applying directly to the plant, primarily used for transplants or 
+established crops.92 
+○​ Root Dipping: Immersing the roots of bare-root transplants (e.g., orchard trees, 
+grapevines) into a fungal gel or slurry before planting. This is a common method for 
+EMF.92 
+○​ Foliar Spray: Spraying a liquid suspension onto the plant's leaves.92 This is the 
+primary method for EPFs when used as a contact pesticide.51 
+ 
+6.3 Practical Challenges and Incompatibilities 
+ 
+Fungal inoculants are not "silver bullets"; they are living organisms and their success is 
+subject to biological and environmental constraints. 
+●​ Efficacy and Competition: Commercial inoculants must compete with the diverse, 
+complex, and already-established native soil microbiome. In some field conditions, 
+laboratory-raised inoculants may struggle to establish, making field results less 
+reproducible than greenhouse trials.84 
+●​ Environmental Sensitivity: The efficacy of biopesticides, particularly EPFs applied as 
+foliar sprays, is highly dependent on environmental conditions. They are sensitive to UV 
+radiation (sunlight), low humidity, and extreme temperatures, which can rapidly reduce 
+spore viability and persistence.51 
+●​ Chemical Incompatibility: This is the most critical management challenge for growers. 
+○​ Fungicides: Most chemical fungicides are broad-spectrum and will kill beneficial 
+
+fungal inoculants, rendering them useless.4 
+○​ Fertilizers: The mycorrhizal symbiosis is suppressed by high levels of available soil 
+phosphorus. If a plant can get P easily from chemical fertilizers, it will not expend the 
+carbon (sugars) needed to form the fungal partnership.4 
+●​ Ecological Risk: There is an emerging scientific concern regarding the "microbial 
+invasion" of non-native, commercially aggressive fungal strains, which could potentially 
+outcompete and reduce the diversity of beneficial native fungal communities that are 
+locally adapted to the environment.26 
+ 
+6.4 Table 3: Practical Application Guide for Fungal Inoculants 
+ 
+ 
+Fungal 
+Category 
+Product 
+Type 
+Primary 
+Applicatio
+n 
+Method(s) 
+Target 
+Crops 
+Key 
+Function 
+Critical 
+Incompati
+bility 
+Arbuscular 
+Mycorrhiza
+e (AMF) 
+Biofertilizer 
+/ Soil 
+Inoculant 
+(e.g., 
+Glomus 
+intraradices
+) 
+Seed 
+Coating, 
+In-Furrow, 
+Soil Drench, 
+Root Dip 
+[91, 92, 95] 
+Vegetables, 
+Row Crops, 
+Grasses 11 
+P-Uptake, 
+Drought 
+Tolerance, 
+Soil 
+Structure 
+[29, 30, 35] 
+High-P 
+Fertilizers, 
+Fungicides 
+4 
+Ectomycor
+rhizae 
+(EMF) 
+Biofertilizer 
+/ Soil 
+Inoculant 
+(e.g., 
+Pisolithus) 
+Root Dip 
+(transplants
+), Soil 
+Drench [92, 
+96] 
+Woody 
+Plants 
+(Orchards: 
+Pecan, 
+Hazelnut) 19 
+N/P Uptake 
+(from 
+organic 
+matter) 32 
+Fungicides 
+Trichoder
+ma spp. 
+Mycofungic
+ide / 
+Biostimulan
+t (e.g., T. 
+harzianum) 
+12 
+Seed 
+Coating, 
+Soil Drench, 
+In-Furrow 
+[12, 92] 
+All (field, 
+greenhouse
+, nursery) 12 
+Suppress 
+Pythium, 
+Fusarium; 
+Plant 
+Growth 
+Promotion 
+[12, 14, 16] 
+Fungicides, 
+some 
+pesticides 
+53 
+
+EPF 
+(Contact 
+Pesticide) 
+(Beauveria, 
+Metarhiziu
+m) 12 
+Mycoinsecti
+cide (e.g., 
+BotaniGard
+) 12 
+Foliar Spray 
+[51, 97] 
+All (for 
+foliar pests) 
+Kills aphids, 
+whiteflies, 
+thrips on 
+contact 12 
+UV light, 
+Low 
+humidity, 
+Fungicides 
+51 
+EPF 
+(Systemic 
+Endophyte
+) 
+(Beauveria, 
+Metarhiziu
+m) 
+Mycoinsecti
+cide / 
+Inoculant 
+Soil Drench, 
+Seed 
+Coating, 
+In-Furrow 
+[10, 17] 
+All 
+Systemic, 
+internal 
+defense 
+against 
+herbivores 
+[13, 53] 
+Soil 
+fungicides 
+ 
+7. Concluding Analysis: The Fungal Network as a 
+Cornerstone of Sustainable Production 
+ 
+ 
+7.1 Synthesis: The Synergistic Fungal Network 
+ 
+The true power of beneficial fungi in agriculture lies not in any single category, but in the 
+synergistic and holistic function of the entire fungal network. These guilds do not work in 
+isolation; they are deeply interconnected, with each group enabling the success of the others. 
+A fully functional, sustainable agricultural soil relies on this multi-guild synergy: 
+1.​ Foundation (The "Chefs"): The Saprotrophic Fungi are the foundational guild. They 
+initiate the process by decomposing complex crop residues and compost, building soil 
+structure, and "cooking" raw organic matter (lignin, cellulose) to mineralize nutrients, 
+stocking the soil's pantry.11 
+2.​ Transport (The "Logistics"): The Mycorrhizal Fungi (AMF) then act as the transport 
+network. Their extensive hyphae access the nutrients liberated by the saprotrophs and 
+efficiently deliver them to the plant root in exchange for carbon.22 
+3.​ Internal Optimization (The "Managers"): The Endophytic Fungi work inside the plant. 
+They receive the nutrients and water delivered by the AMF and, through phytohormone 
+production, optimize the plant's internal physiology to use those resources for maximum 
+
+growth and stress resilience.40 
+4.​ Defense (The "Bodyguards"): Finally, the Biocontrol Fungi (like Trichoderma and 
+Beauveria, often also acting as endophytes) protect this high-functioning, nutrient-rich 
+plant from attack by insect pests and fungal pathogens.13 
+This holistic system—where saprotrophs build fertility, mycorrhizae enhance uptake, 
+endophytes optimize growth, and biocontrol agents provide protection—creates a resilient, 
+self-sustaining agricultural ecosystem. This multi-guild approach 5 is the biological foundation 
+that can significantly reduce the required inputs of both chemical fertilizers and chemical 
+pesticides.7 
+ 
+7.2 Future Outlook and Research Directions 
+ 
+The clear trend in modern agriculture is a shift away from single-action chemical inputs and 
+toward complex, multi-functional biological solutions.6 Fungi are at the forefront of this 
+transition. Future progress will depend on several key areas of research: 
+●​ Understanding Competition: More field research is needed to understand the complex 
+interactions between commercial inoculants and robust, locally-adapted native microbial 
+communities.26 
+●​ Developing Native Inoculants: A promising strategy involves isolating and developing 
+native fungal strains from local high-performing ecosystems, which may be better 
+adapted and more effective than generic commercial products.7 
+●​ Improving Formulations: Significant research is focused on developing new 
+formulations (e.g., encapsulation, oil dispersions) that improve the shelf-life and 
+environmental persistence of fungal biopesticides, particularly protecting them from UV 
+radiation and desiccation.51 
+Ultimately, harnessing the power of these diverse fungal guilds is no longer a niche practice 
+but a fundamental component of productive, resilient, and sustainable food production for the 
+21st century. 
+Works cited 
+1.​ Current Insights in Fungal Importance—A Comprehensive Review - PMC - 
+PubMed Central, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10304223/ 
+2.​ Benefits of Fungi for the Environment and Humans - UN Decade on Ecosystem 
+Restoration, accessed November 1, 2025, 
+https://www.decadeonrestoration.org/stories/benefits-fungi-environment-and-h
+
+umans 
+3.​ accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10304223/#:~:text=In%20agriculture%2
+C%20fungi%20play%20a,area%20of%20the%20root%20system. 
+4.​ Beneficial Fungi in the Landscape - Oklahoma State University Extension, 
+accessed November 1, 2025, 
+https://extension.okstate.edu/programs/gardening/grow-gardening-columns/gro
+w-columns-2020/june-21-2020-beneficial-fungi.html 
+5.​ Fungal Biodiversity and Their Role in Soil Health - Frontiers, accessed November 1, 
+2025, 
+https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2018.007
+07/full 
+6.​ Fungi in Horticultural Crops: Promotion, Pathogenicity and Monitoring, accessed 
+November 1, 2025, https://www.mdpi.com/2073-4395/15/7/1699 
+7.​ Soil Fungi in Sustainable Agriculture - PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10819681/ 
+8.​ Endophytic fungi: a tool for plant growth promotion and sustainable agriculture - 
+PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC8856089/ 
+9.​ Fungi in Horticultural Crops: Promotion, Pathogenicity and Monitoring - 
+ResearchGate, accessed November 1, 2025, 
+https://www.researchgate.net/publication/393672421_Fungi_in_Horticultural_Crop
+s_Promotion_Pathogenicity_and_Monitoring 
+10.​Entomopathogenic fungal endophytes - UNL Digital Commons - University of 
+Nebraska–Lincoln, accessed November 1, 2025, 
+https://digitalcommons.unl.edu/cgi/viewcontent.cgi?article=1390&context=usdaar
+sfacpub 
+11.​Role of Soil Fungus | Ohioline, accessed November 1, 2025, 
+https://ohioline.osu.edu/factsheet/anr-37 
+12.​Fungi Used for Pest Management in Crop Production | Oklahoma ..., accessed 
+November 1, 2025, 
+https://extension.okstate.edu/fact-sheets/fungi-used-for-pest-management-in-c
+rop-production.html 
+13.​Entomopathogenic Fungi as Dual Control Agents against Two Phytopathogens 
+and the Lepidopteran Pest Rachiplusia nu in Soybean (Glycine max (L.) Merr) - 
+MDPI, accessed November 1, 2025, https://www.mdpi.com/2309-608X/10/2/93 
+14.​Trichoderma Species: Our Best Fungal Allies in the Biocontrol of ..., accessed 
+November 1, 2025, https://www.mdpi.com/2223-7747/12/3/432 
+15.​Molecular interaction between plants and Trichoderma species against soil-borne 
+plant pathogens - Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2023.11457
+15/full 
+16.​Harnessing Trichoderma Mycoparasitism as a Tool in the Management of Soil 
+Dwelling Plant Pathogens - PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC11663191/ 
+
+17.​Fungal Endophytes: Beyond Herbivore Management - Frontiers, accessed 
+November 1, 2025, 
+https://www.frontiersin.org/journals/microbiology/articles/10.3389/fmicb.2018.005
+44/full 
+18.​Use and impact of endophytic entomopathogenic fungi: Their potential in the 
+context of agricultural sustainability - Redalyc, accessed November 1, 2025, 
+https://www.redalyc.org/journal/6729/672978747049/html/ 
+19.​Mycorrhizal Fungi | Oklahoma State University, accessed November 1, 2025, 
+https://extension.okstate.edu/fact-sheets/mycorrhizal-fungi.html 
+20.​Question: Is mycorrhizae a "process of symbiosis" or an actual class of fungi? 
+How foes it compare to humic acid for root growth? : r/botany - Reddit, accessed 
+November 1, 2025, 
+https://www.reddit.com/r/botany/comments/10luk43/question_is_mycorrhizae_a_
+process_of_symbiosis_or/ 
+21.​Mycorrhizae, accessed November 1, 2025, 
+https://www2.nau.edu/gaud/bio300/mycorrhizae.htm 
+22.​Fungi Fertilize the Future | Crop and Soil Sciences, accessed November 1, 2025, 
+https://cals.ncsu.edu/crop-and-soil-sciences/news/fungi-fertilize-the-future/ 
+23.​Mycorrhizae - Wisconsin Horticulture, accessed November 1, 2025, 
+https://hort.extension.wisc.edu/articles/mycorrhizae/ 
+24.​The power of fungi | Agency of Agriculture Food and Markets, accessed 
+November 1, 2025, https://agriculture.vermont.gov/power-fungi 
+25.​Mycorrhizal Relationships - Muir Woods National Monument (U.S. National Park 
+Service), accessed November 1, 2025, 
+https://www.nps.gov/muwo/learn/nature/mycorrhizal-relationships.htm 
+26.​Does Commercial Inoculation Promote Arbuscular Mycorrhizal Fungi Invasion? - 
+PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC8879836/ 
+27.​Arbuscular Mycorrhizal Fungi in Sustainable Agriculture - MDPI, accessed 
+November 1, 2025, https://www.mdpi.com/2071-1050/14/19/12250 
+28.​Mycorrhizal Fungi: Beneficial Microbes for Increased Plant Health, accessed 
+November 1, 2025, https://rvpadmin.cce.cornell.edu/pdf/veg_edge/pdf5_pdf.pdf 
+29.​Mycorrhizal Fungi – The Powerhouse Of The Soil » Green Cover, accessed 
+November 1, 2025, https://greencover.com/mycorrhizal-fungi-powerhouse/ 
+30.​Role of Arbuscular Mycorrhizal Fungi in Regulating Growth ..., accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC10489935/ 
+31.​The Importance and Conservation of Ectomycorrhizal Fungal Diversity in Forest 
+Ecosystems: Lessons From Europe and the Pacific Northwest, accessed 
+November 1, 2025, https://www.fs.usda.gov/pnw/pubs/pnw_gtr431.pdf 
+32.​Insights into the Biotic Factors Shaping Ectomycorrhizal Associations - MDPI, 
+accessed November 1, 2025, https://www.mdpi.com/2079-7737/13/12/1044 
+33.​Decomposition of soil organic matter by ectomycorrhizal fungi: Mechanisms and 
+consequences for organic nitrogen uptake and soil carbon stabilization - 
+Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/forests-and-global-change/articles/10.3389/ff
+
+gc.2022.934409/full 
+34.​accessed November 1, 2025, 
+https://www2.nau.edu/gaud/bio300/mycorrhizae.htm#:~:text=The%20roots%20p
+rovide%20essential%20nutrients,obtain%20from%20the%20surrounding%20soil
+. 
+35.​Arbuscular Mycorrhizal Fungi Contribute to Phosphorous Uptake and Allocation 
+Strategies of Solidago canadensis in a Phosphorous-Deficient Environment - 
+Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.8316
+54/full 
+36.​Arbuscular Mycorrhizal Fungi Contribute to Phosphorous Uptake and Allocation 
+Strategies of Solidago canadensis in a Phosphorous-Deficient Environment - NIH, 
+accessed November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC8987128/ 
+37.​Roles of Arbuscular Mycorrhizal Fungi on Soil Fertility: Contribution in the 
+Improvement of Physical, Chemical, and Biological Properties of the Soil - 
+Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/fungal-biology/articles/10.3389/ffunb.2022.72
+3892/full 
+38.​Arbuscular mycorrhizal fungi enhance phosphate uptake and alter bacterial 
+communities in maize rhizosphere soil - Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2023.1206
+870/full 
+39.​Nutrient transfer to plants by phylogenetically diverse fungi suggests convergent 
+evolutionary strategies in rhizospheric symbionts - NIH, accessed November 1, 
+2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC3689567/ 
+40.​Beneficial fungal communities from different habitats and their roles in plant 
+growth promotion and soil health - Microbial Biosystems, accessed November 1, 
+2025, 
+https://mb.journals.ekb.eg/article_99231_4f436f8d598cb9c02f1c8590492bae94.p
+df 
+41.​Fungi That Promote Plant Growth in the Rhizosphere Boost Crop Growth - PMC - 
+NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9966197/ 
+42.​Full article: Endophytic fungi: a tool for plant growth promotion and sustainable 
+agriculture, accessed November 1, 2025, 
+https://www.tandfonline.com/doi/full/10.1080/21501203.2021.1945699 
+43.​Elucidating Mechanisms of Endophytes Used in Plant Protection and Other 
+Bioactivities With Multifunctional Prospects - PMC - NIH, accessed November 1, 
+2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC7242734/ 
+44.​Uniting the Role of Endophytic Fungi against Plant Pathogens and ..., accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC9860820/ 
+45.​Fungal Endophytes to Combat Biotic and Abiotic Stresses ... - Frontiers, accessed 
+November 1, 2025, 
+https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2022.9538
+36/full 
+
+46.​Fungal Endophytes as Mitigators against Biotic and Abiotic Stresses in Crop Plants 
+- MDPI, accessed November 1, 2025, https://www.mdpi.com/2309-608X/10/2/116 
+47.​Full article: A review on plant endophytes in response to abiotic stress, accessed 
+November 1, 2025, 
+https://www.tandfonline.com/doi/full/10.1080/26395940.2024.2323123 
+48.​Endophytic Fungi for Crops Adaptation to Abiotic Stresses - PMC - NIH, accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC11279104/ 
+49.​Fungal endophytes for sustainable crop production | FEMS Microbiology Ecology | 
+Oxford Academic, accessed November 1, 2025, 
+https://academic.oup.com/femsec/article/92/12/fiw194/2570446 
+50.​Fungal Endophytes and Their Role in Agricultural Plant Protection against Pests 
+and Pathogens - MDPI, accessed November 1, 2025, 
+https://www.mdpi.com/2223-7747/11/3/384 
+51.​Model Application of Entomopathogenic Fungi as Alternatives to Chemical 
+Pesticides: Prospects, Challenges, and Insights for Next-Generation Sustainable 
+Agriculture - Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2021.74180
+4/full 
+52.​Advances in the beneficial endophytic fungi for the growth and health of woody 
+plants - PMC, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC11524292/ 
+53.​Endophytic Entomopathogenic Fungi: Their Role in Enhancing Plant Resistance, 
+Managing Insect Pests, and Synergy with Management Routines - NIH, accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC11677045/ 
+54.​General Limitations to Endophytic Entomopathogenic Fungi Use as Plant Growth 
+Promoters, Pests and Pathogens Biocontrol Agents - MDPI, accessed November 
+1, 2025, https://www.mdpi.com/2223-7747/10/10/2119 
+55.​Management of Plant Beneficial Fungal Endophytes to Improve the Performance 
+of Agroecological Practices - PMC, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9604847/ 
+56.​Entomopathogen-based biopesticides: insights into unraveling their potential in 
+insect pest management - PubMed Central, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10411202/ 
+57.​Beauveria bassiana and Metarhizium anisopliae endophytically colonize cassava 
+roots following soil drench in - USDA ARS, accessed November 1, 2025, 
+https://www.ars.usda.gov/arsuserfiles/5818/Greenfield%20et%20al%20-%20B%2
+0bassiana%20and%20M%20anisopliae%20endophytically%20colonize%20cassa
+va%20roots%20-%20Biological%20Control%202016%20.pdf 
+58.​Tropical Occurrence and Agricultural Importance of Beauveria bassiana and 
+Metarhizium anisopliae - Frontiers, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/sustainable-food-systems/articles/10.3389/fs
+ufs.2020.00006/full 
+59.​Field Applications of Entomopathogenic Fungi Beauveria bassiana and 
+Metarhizium anisopliae F52 (Hypocreales: Clavicipitaceae) for the Control of 
+Ixodes scapularis (Acari: Ixodidae) - Oxford Academic, accessed November 1, 
+
+2025, https://academic.oup.com/jme/article/47/6/1107/994317 
+60.​Trichoderma and its role in biological control of plant fungal and nematode 
+disease - PMC, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10189891/ 
+61.​Biocontrol Strategies Against Plant-Parasitic Nematodes Using Trichoderma spp.: 
+Mechanisms, Applications, and Management Perspectives - MDPI, accessed 
+November 1, 2025, https://www.mdpi.com/2309-608X/11/7/517 
+62.​ENY-058/NG047: Nematode Management in Organic Agriculture - UF/IFAS EDIS, 
+accessed November 1, 2025, https://edis.ifas.ufl.edu/publication/NG047 
+63.​Insights into Biocontrol through Antagonistic ... - USDA ARS, accessed November 
+1, 2025, 
+https://www.ars.usda.gov/ARSUserFiles/2279/Bhat%20et%20al%202023.%20Micr.
+pdf 
+64.​Biocontrol of plant parasitic nematodes by bacteria and fungi: a multi-omics 
+approach for the exploration of novel nematicides in sustainable agriculture - 
+PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC11316259/ 
+65.​Strategy of Nematophagous Fungi in Determining the Activity of Plant Parasitic 
+Nematodes and Their Prospective Role in Sustainable Agriculture - NIH, accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC10512347/ 
+66.​Saprotrophic fungi / RHS Gardening, accessed November 1, 2025, 
+https://www.rhs.org.uk/biodiversity/saprotrophic-fungi 
+67.​Functional and ecological consequences of saprotrophic fungus–grazer 
+interactions - PMC, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3475375/ 
+68.​accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC3475375/#:~:text=Saprotrophic%20fung
+i%20are%20key%20regulators,which%20nutrients%20are%20readily%20distribu
+ted. 
+69.​Microbial Community in the Composting Process and Its Positive Impact on the 
+Soil Biota in Sustainable Agriculture - MDPI, accessed November 1, 2025, 
+https://www.mdpi.com/2073-4395/13/2/542 
+70.​accessed November 1, 2025, 
+https://www.rhs.org.uk/biodiversity/saprotrophic-fungi#:~:text=Saprotrophic%20f
+ungi%20produce%20enzymes%20that,fungi%20can%20also%20decompose%2
+0lignin. 
+71.​Compost Microorganisms - CORNELL Composting, accessed November 1, 2025, 
+https://compost.css.cornell.edu/microorg.html 
+72.​Microbes in the Compost Pile - Mansfield, CT, accessed November 1, 2025, 
+http://www.mansfieldct.org/mms-compost/microbes.htm 
+73.​Saprotrophic nutrition - Wikipedia, accessed November 1, 2025, 
+https://en.wikipedia.org/wiki/Saprotrophic_nutrition 
+74.​What Is the Role of Fungi in Compost? → Question - Lifestyle → Sustainability 
+Directory, accessed November 1, 2025, 
+https://lifestyle.sustainability-directory.com/question/what-is-the-role-of-fungi-in
+
+-compost/ 
+75.​Relative Contribution of Fungal Communities to Carbon Loss and Humification 
+Process in Algal Sludge Aerobic Composting - MDPI, accessed November 1, 2025, 
+https://www.mdpi.com/2073-4441/16/8/1084 
+76.​Fungal and bacterial successions in the process of co-composting of organic 
+wastes as revealed by 454 pyrosequencing | PLOS One - Research journals, 
+accessed November 1, 2025, 
+https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0186051 
+77.​Core fungal species strengthen microbial cooperation in a food-waste 
+composting process - PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC9500350/ 
+78.​Chapter 1, The Decomposition Process - Earth-Kind® Landscaping Earth-Kind® 
+Landscaping - Aggie Horticulture, accessed November 1, 2025, 
+https://aggie-horticulture.tamu.edu/earthkind/landscape/dont-bag-it/chapter-1-t
+he-decomposition-process/ 
+79.​Agro-Based Spent Mushroom Compost Substrates Improve Soil ..., accessed 
+November 1, 2025, https://www.mdpi.com/2073-4395/13/9/2291 
+80.​Systematic Review on the Role of Microbial Activities on Nutrient Cycling and 
+Transformation Implication for Soil Fertility and Crop Productivity | bioRxiv, 
+accessed November 1, 2025, 
+https://www.biorxiv.org/content/10.1101/2024.09.02.610905v1.full-text 
+81.​Stimulated saprotrophic fungi in arable soil extend their activity to the rhizosphere 
+and root microbiomes of crop seedlings, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC8596668/ 
+82.​Redistribution of soil water by a saprotrophic fungus enhances carbon 
+mineralization | PNAS, accessed November 1, 2025, 
+https://www.pnas.org/doi/10.1073/pnas.1514435112 
+83.​Redistribution of soil water by a saprotrophic fungus enhances carbon 
+mineralization - PMC, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC4664368/ 
+84.​Soil Microbial Inoculants: Biology and Commercial Use ..., accessed November 1, 
+2025, 
+https://gpnmag.com/article/soil-microbial-inoculants-biology-and-commercial-us
+e/ 
+85.​A comprehensive overview of eco-friendly bio-fertilizers extracted from living 
+organisms, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC10663222/ 
+86.​Recent advances in the commercial formulation of arbuscular mycorrhizal 
+inoculants, accessed November 1, 2025, 
+https://www.frontiersin.org/journals/industrial-microbiology/articles/10.3389/finmi.
+2025.1553472/full 
+87.​Can mycorrhizal fungi fix farming? Benefits and limitations of applying them to 
+agroecosystems | The Biochemist | Portland Press, accessed November 1, 2025, 
+https://portlandpress.com/biochemist/article/45/3/2/233130/Can-mycorrhizal-fun
+gi-fix-farming-Benefits-and 
+
+88.​Mycorrhizae Biostimulants for Plants | Horticulture Soil & Garden Mycorrhizal 
+Products, accessed November 1, 2025, https://mycorrhizae.com/ 
+89.​Mycorrhizal Fungi Inoculant | Mycorrhizae for Sale - Grow Organic, accessed 
+November 1, 2025, 
+https://www.groworganic.com/collections/mycorrhizal-inoculants 
+90.​Commercial Mycorrhizal Fungi | Reforestation Technologies International | Gilroy, 
+accessed November 1, 2025, https://www.reforest.com/ 
+91.​Biological Seed Treatments: A Comprehensive Guide for Farmers, Distributors & 
+Retailers, accessed November 1, 2025, 
+https://locusag.com/blog/biological-seed-treatments/ 
+92.​Microbial seed coating: An attractive tool for sustainable agriculture ..., accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC9841043/ 
+93.​Seed Coating: A Tool for Delivering Beneficial Microbes to Agricultural Crops - 
+PMC - NIH, accessed November 1, 2025, 
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6852281/ 
+94.​Seed Treatment: Types, Methods & Benefits - Verdesian Life Sciences, accessed 
+November 1, 2025, https://vlsci.com/blog/seed-treatment-guide/ 
+95.​Seed Coating with Arbuscular Mycorrhizal Fungi for Improved Field Production of 
+Chickpea, accessed November 1, 2025, 
+https://www.mdpi.com/2073-4395/9/8/471 
+96.​Complete Guide to Mycorrhizal Fungi | BBC Gardeners World Magazine, 
+accessed November 1, 2025, 
+https://www.gardenersworld.com/how-to/maintain-the-garden/mycorrhizal-fungi
+/ 
+97.​Materials Engineering to Help Pest Control: A Narrative Overview of 
+Biopolymer-Based Entomopathogenic Fungi Formulations - NIH, accessed 
+November 1, 2025, https://pmc.ncbi.nlm.nih.gov/articles/PMC10532551/ 
+98.​Soil Inoculants | CAES Field Report - UGA, accessed November 1, 2025, 
+https://fieldreport.caes.uga.edu/publications/C990/soil-inoculants/ 
+99.​Integrated Pest Management Program The Use of Entomopathogenic Fungi in the 
+Greenhouse - University of Connecticut, accessed November 1, 2025, 
+https://ipm-cahnr.media.uconn.edu/wp-content/uploads/sites/3216/2023/02/2023
+entomopathogenicfungghsfactsheetfinal.pdf 
+100.​
+9 Ways To Help The Beneficial Fungi In Your Soil - Smiling Gardener, accessed 
+November 1, 2025, 
+https://www.smilinggardener.com/garden-planning/beneficial-fungi/ 
+101.​
+Arbuscular Mycorrhizae Contribute to Growth, Nutrient Uptake, and 
+Ornamental Characteristics of Statice (Limonium sinuatum [L.] Mill.) Subject to 
+Appropriate Inoculum and Optimal Phosphorus - MDPI, accessed November 1, 
+2025, https://www.mdpi.com/2311-7524/9/5/564 

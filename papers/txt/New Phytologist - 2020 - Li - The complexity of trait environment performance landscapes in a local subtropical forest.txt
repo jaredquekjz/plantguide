@@ -1,0 +1,1122 @@
+The complexity of trait–environment performance landscapes in
+a local subtropical forest
+Yuanzhi Li1*
+, Yuan Jiang1*
+, Bill Shipley2
+, Buhang Li1, Wenqi Luo1
+, Yongfa Chen1,
+Kangning Zhao3
+, Dong He4
+, Diego I. Rodrıguez-Hernandez1 and Chengjin Chu1
+1Department of Ecology, State Key Laboratory of Biocontrol, School of Life Sciences, Sun Yat-sen University, Guangzhou 510275, China; 2Departement de biologie, Universite de Sherbrooke,
+Sherbrooke, QC J1K 2R1, Canada; 3School of Architecture, University of South China, Hengyang, Hunan 421001, China; 4School of Ecological and Environmental Sciences, East China
+Normal University, Shanghai 200241, China
+Author for correspondence:
+Chengjin Chu
+Email: chuchjin@mail.sysu.edu.cn
+Received: 16 July 2020
+Accepted: 29 August 2020
+New Phytologist (2021) 229: 1388–1397
+doi: 10.1111/nph.16955
+Key words: alternative functional designs,
+demography, intraspeciﬁc trait variation,
+multiple performance peaks, performance
+landscapes, trait 9 environment interactions.
+Summary
+ That functional traits should affect individual performance and, in turn, determine ﬁtness
+and population growth, is a foundational assumption of trait-based ecology. This assumption
+is, however, not supported by a strong empirical base.
+ Here, we measured simultaneously two individual performance metrics (survival and
+growth), seven traits and 10 environmental properties for each of 3981 individuals of 205
+species in a 50-ha stem-mapped subtropical forest. We then modelled survival/growth as a
+function of traits, environments and trait 9 environment interactions, and quantiﬁed their rel-
+ative importance at both the species and individual levels.
+ We found evidence of alternative functional designs and multiple performance peaks along
+environmental gradients, indicating the presence of complicated trait 9 environment interac-
+tions. However, such interactions were relatively unimportant in our site, which had relatively
+low environmental variations. Moreover, individual performance was not better predicted,
+and trait 9 environment interactions were not more likely detected, at the individual level than
+at the species level.
+ Although the trait 9 environment interactions might be safely ignored in relatively homoge-
+neous environments, we encourage future studies to test the interactive effects of traits and
+environments on individual performances and lifelong ﬁtness at larger spatial scales or along
+experimentally manipulated environmental gradients.
+Introduction
+The trait-based approach has emerged as a promising way to
+understand the mechanisms of species coexistence and processes
+of community assembly (McGill et al., 2006; Laughlin et al.,
+2012; Kraft et al., 2015; Lusk & Laughlin, 2017), to predict the
+distribution of organisms along environmental gradients (Chapin
+et al., 1993; Westoby et al., 2002), and to explain the relationship
+between biodiversity and ecosystem functioning (Lavorel &
+Garnier, 2002; Cadotte, 2017). This approach is built on the
+assumption that ‘functional’ traits should affect individual perfor-
+mance (e.g. survival, growth and reproduction), which in turn
+determine ﬁtness and population growth (Violle et al., 2007;
+Laughlin & Messier, 2015; Shipley et al., 2016; Struckman et al.,
+2019; Treurnicht et al., 2020). The entire discipline of trait-
+based ecology will be at risk if this foundational assumption is
+not reinforced by a strong empirical base (Shipley et al., 2016),
+which is still weak and fragmentary. For instance, those studies
+that empirically tested this assumption have reported typically
+weak or nonexistent trait–performance relationships (e.g. Poorter
+et al., 2008; Kraft et al., 2010; Wright et al., 2010; Adler et al.,
+2014; Paine et al., 2015).
+One important reason why traits alone might poorly predict
+performance is that the effects of traits on individual performance
+should depend on the environment (Laughlin & Messier, 2015;
+Yang et al., 2018; Swenson et al., 2020), because no organism
+would have optimal adaptation to all relevant environments at the
+same time (i.e. a Darwinian demon). Recently, a few empirical
+studies have detected signiﬁcant interactive effects between some
+traits and environments on individual performance (Blonder et al.,
+2018; Laughlin et al., 2018; Zirbel & Brudvig, 2020). For exam-
+ple, speciﬁc leaf area is positively related to survival probability at
+low soil C : N ratio, but negatively correlated to survival probabil-
+ity at high soil C : N ratio (Laughlin et al., 2018). However, these
+studies consider only interactions between one trait and one envi-
+ronment, ignoring the multidimensional nature of phenotypic
+traits and environments (Laughlin, 2014; Laughlin & Messier,
+2015). Therefore, testing the interactive effects of multiple traits
+and
+environments
+via
+the
+inclusion
+of
+higher-order
+trait 9 trait 9 environment 9 environment
+interactions
+is
+an
+*These authors contributed equally to this work.
+1388
+New Phytologist (2021) 229: 1388–1397
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+www.newphytologist.com
+Full paper
+
+important next step towards understanding the effects of whole-or-
+ganism phenotypes on individual performance in different envi-
+ronments (Laughlin et al., 2018). Speciﬁcally, the inclusion of
+such higher-order interactions between traits and environments
+enables us to explore performance landscapes (mapping perfor-
+mance on multiple trait axes) and the possibility of multiple optima
+along environmental gradients (Laughlin & Messier, 2015). Each
+optimum represents an alternative functional design (a speciﬁc trait
+combination) of approximately equal performance in a given envi-
+ronment (Marks & Lechowicz, 2006). To our knowledge, Worthy
+et al. (2020) is the only example to date that has empirically tested
+higher-order trait 9 trait 9 environment interactions and found
+evidence of alternative designs and multiple growth performance
+peaks. That study did not consider other performance metrics
+besides growth nor the multidimensional nature of the environ-
+ment. Therefore, more comprehensive studies that test the interac-
+tive effects of multiple traits and multiple environments on
+different measures of individual performances are necessary.
+One practical barrier that hinders the empirical test of
+trait 9 environment interactions (especially the higher-order
+interactions) is the difﬁculty of obtaining sufﬁcient data regard-
+ing individual performances, traits and environments for accurate
+estimation of numerous parameters (Laughlin et al., 2018).
+Therefore, it is not enough to just simply identify such signiﬁcant
+trait 9 environment interactions, as done in previous studies
+(Blonder et al., 2018; Laughlin et al., 2018; Worthy et al., 2020;
+Zirbel & Brudvig, 2020). It is also necessary to explicitly quantify
+the relative importance of such trait 9 environment interactions
+to individual performance, because this tells us how much infor-
+mation one might lose when ignoring these complicated
+trait 9 environment interactions. If trait 9 environment interac-
+tions contribute little information to the prediction of individual
+performance, we can ignore these interactions without introduc-
+ing substantial bias of estimating trait–performance relationships.
+For example, these interactions might be safely ignored in sites
+with relatively homogenous environments because the impor-
+tance of trait 9 environment interactions for predicting plant
+performance would logically increase with the heterogeneity of
+environments.
+Otherwise,
+trait 9 environment
+interactions
+would be necessary despite the challenge of obtaining sufﬁcient
+data. However, there is still a lack of empirical studies quantify-
+ing the relative importance of trait 9 environment interactions to
+know when such interactions can be safely ignored.
+Another reason for the surprisingly weak trait–performance
+relationships reported so far is the shortcut of characterising all
+individuals of a species with its species mean trait value (Yang
+et al., 2018; Swenson et al., 2020). This shortcut implicitly
+assumes that interspeciﬁc trait variation is far greater than
+intraspeciﬁc trait variation. However, intraspeciﬁc trait variation,
+arising from phenotypic plasticity and genetic diversity, has been
+acknowledged as a substantial source of trait variation in a grow-
+ing number of studies (e.g. Albert et al., 2010; Messier et al.,
+2010; Siefert et al., 2015). Moreover, phenotypic plasticity may
+enable individuals of a species to adjust their trait values to a cer-
+tain extent in order to better adapt to their local environments
+(Gratani, 2014), and thus trait–performance relationships will
+likely be stronger when evaluated at the individual level (Yang
+et al., 2018; Swenson et al., 2020). However, few studies have
+empirically tested trait–performance relationships at both the
+species and individual levels to see if the models using individual
+level traits would outperform the ones using species mean traits
+(but see Liu et al., 2016), and further tested if trait 9 environ-
+ment interactions are more likely to be detected at the individual
+level than at the species level.
+In this study, we measured two performance metrics (survival
+and growth), seven traits and 10 environmental properties for
+each of 3981 individuals of 205 species in a 50-ha stem-mapped
+subtropical forest plot. Using this large dataset, we modelled size-
+dependent individual survival/growth as a function of traits, envi-
+ronments and their interactions (including the higher-order ones)
+at both the species and individual levels to address the following
+questions:
+(1) Do alternative functional designs (multiple performance
+peaks) exist in a given environment and (if exist) how do they
+shift along multiple environmental gradients?
+A single optimum for a given environment and different
+optima for different environments are often assumed in single
+trait and environment analyses (Enquist et al., 2015; Laughlin,
+2018). With the inclusion of higher-order trait 9 trait 9 environ-
+ment 9 environment interactions, alternative functional designs
+are expected for a given environment and either same or different
+optima are possible for different environments.
+(2) What is the relative importance of the trait 9 environment
+interactions to individual survival and growth?
+Their relative importance is expected to decline with decreas-
+ing environmental heterogeneity and might be safely ignored in
+relatively homogenous environments.
+(3) Are individual survival and growth better predicted, and
+trait 9 environment interactions more likely detected, at the indi-
+vidual level than at the species level?
+This would be true when intraspeciﬁc trait variation is substan-
+tial responding to the changing environments.
+Materials and Methods
+Study site
+The study was conducted in a 50-ha forest dynamic plot within
+the Heishiding Provincial Nature Reserve (23°270N, 111°520E;
+altitude: 150–927 m asl), Guangdong Province, southern China.
+The region has a subtropical moist monsoon climate with a mean
+annual temperature of 19.6°C and mean annual precipitation of
+c. 1740 mm. The monthly mean temperature ranges from
+10.6°C in January to 28.4°C in July, and the precipitation falls
+predominantly (79%) from April to September. The vegetation,
+characterised by an evergreen broadleaved forest, is dominated by
+the Lauraceae, Fagaceae and Theaceae families.
+Demographic data
+The 50-ha plot (1000 m 9 500 m) was established following the
+ForestGEO (https://www.forestgeo.si.edu) protocol in 2011.
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+New Phytologist (2021) 229: 1388–1397
+www.newphytologist.com
+New
+Phytologist
+Research 1389
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+The ﬁrst census was completed in 2013 with all free-standing
+individuals with diameter at breast height (DBH) more than
+1 cm being tagged, mapped, measured and identiﬁed to species.
+About 273 000 free-standing stems belonging to 245 species, 160
+genera and 71 families were recorded. The second census was ﬁn-
+ished in 2017, in which we recorded the status (0 for dead and 1
+for alive) and DBH of all individuals recorded in the ﬁrst census.
+The individual relative growth rate (RGR) was calculated as [log
+(DBH2)log(DBH1)]/5, where DBH1 and DBH2 are DBH
+recorded in the two censuses.
+Functional traits
+We measured seven traits including speciﬁc leaf area (SLA), leaf
+nitrogen concentration (LNC), leaf phosphorus concentration
+(LPC), leaf dry matter content (LDMC), leaf area (LA), wood
+density (WD) and wood dry matter content (WDMC), on
+3981 individuals of 205 species randomly distributed within the
+50-ha plot (Supporting Information Fig. S1). Details on how
+these traits were sampled and measured can be found in our
+previous studies (Chen, 2015; He & Deane, 2016; He &
+Biswas, 2019). These traits have been reported to have effects
+on survival and growth rates (Poorter et al., 2008; Kraft et al.,
+2010; Wright et al., 2010; Adler et al., 2014). For example,
+light-demanding species with high growth and mortality rates
+tend to have larger SLA and LNC, but smaller WD than shade-
+tolerant species with low growth and mortality rates (Adler
+et al., 2014). We performed principal component analyses for
+these traits and found that the ﬁrst two principal components
+captured 64% variation of the seven traits (Fig. 1a). One dimen-
+sion runs from individuals with ‘conservative’ leaves (low SLA,
+LNC and LPC, and high LDMC) to individuals with ‘acquisi-
+tive’ leaves (high SLA, LNC and LPC, and low LDMC), corre-
+lated with the world-wide leaf economics spectrum (Wright
+et al., 2004; Shipley et al., 2006; Dıaz et al., 2016). The other
+dimension runs from individuals with low LA, high WD and
+WDMC to individuals with high LA, low WD and WDMC.
+This negative relationship between LA and WD has been
+reported in some previous studies (Cavender-Bares et al., 2004;
+Pickup et al., 2005; Wright et al., 2007), probably because indi-
+viduals with lower wood density usually have higher hydraulic
+conductivity and thus can transport more water to support
+larger leaves (Wright et al., 2007).
+Environmental conditions
+In total, 625 surface soil samples (0–10 cm depth), randomly dis-
+tributed within the 50-ha plot, were collected during the summer
+of 2016. Nine soil properties for each soil sample were measured
+with detailed methods shown in Table S1. Two orthogonal soil
+properties (Fig. 1b), soil organic matter (SOM) and soil acidity
+(pH), were selected in the following analyses. Soils with higher
+SOM had more total nitrogen, total phosphorus and available
+nitrogen, while soils with higher pH had more available phospho-
+rus, available potassium and higher sand content. In addition, the
+understory light availability was estimated using hemispherical
+photography at 2352 places randomly distributed within the 50-ha
+plot (Zhao & He, 2016). The SOM, soil pH and light availability
+were interpolated to grids of 10 m 9 10 m using the Ordinary
+Kriging in the AUTOMAP package (Hiemstra et al., 2009) to estimate
+the environmental conditions in which the individuals were
+located; predictions in the grids that contained observations were
+replaced with the average of the observations in the grids (Fig. S1).
+Data analysis
+To explore interactive effects of multivariate traits and multivari-
+ate environments, we modelled individual performance (Z, sur-
+vival or growth) as a function of: (1) a size effect (DBH), (2)
+main effects of two traits (T1 and T2) and two environments (E1
+and E2), as well as (3) their two-way, (4) three-way, and (5) four-
+way interactions with a general form:
+We built linear mixed models of individual performance, treat-
+ing survival (0 for death and 1 for survival) as a binomial-family
+model with a logit link function and growth (log-transformation
+of RGR) as a Gaussian-family model with an identity link func-
+tion, respectively. Two random effects were considered. First, we
+included random intercepts across species (cspecies) to account for
+species-level differences in survival and growth that were unre-
+lated to the traits. Second, we divided the 50-ha plot into 1250
+(20 m 9 20 m) quadrats and included random intercepts across
+quadrats (dquadrat) to account for spatial autocorrelation. We
+computed the R2-marginal (variance explained by all the ﬁxed
+effects) and R2-conditional (variance explained by both ﬁxed and
+random effects) using the function r.squaredGLMM in the
+MUMIN package (Zuur et al., 2009). We further partitioned the
+R2-marginal to quantify the relative contribution of the size effect
+αα
+γγ
+δδ
+ββ
+ββ
+αα
+γγ
+δδ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+ββ
+=
++
++
++
+⋅
++
+⋅
+×
+×
+×
+=
++
++
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
++
+⋅
+−
+−
+−
+D
+Z
+BH
+T
+T
+E
+E
+DBH
+T
+T
+E
+E
+T T
+T
+E
+T
+E
+T
+E
+T
+E
+E
+E
+T T
+E
+T T
+E
+T
+E
+E
+T
+E
+E
+T T
+E
+E
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+:
+species
+quadrat
+species
+quadrat
+random effects
+size effect
+main effects
+two way
+three way
+four way
+1
+1
+2
+1
+2
+1
+2
+1
+3
+2
+4
+1
+5
+2
+6
+1
+2
+7
+1
+1
+8
+1
+2
+9
+2
+1
+10
+2
+2
+11
+1
+2
+12
+1
+2
+1
+13
+1
+2
+2
+14
+1
+1
+2
+15
+2
+1
+2
+16
+1
+2
+1
+2
+New Phytologist (2021) 229: 1388–1397
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+www.newphytologist.com
+Research
+New
+Phytologist
+1390
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+(DBH), main effects of two traits and two environments, and
+their two-way, three-way and four-way interactions to the vari-
+ance explained by ﬁxed effects (Notes S1).
+The above analyses were repeated for 36 models with different
+combinations of two independent traits (T1 and T2) and two
+independent environments (E1 and E2) for individual survival
+and growth, respectively. The ﬁrst trait of the pair (T1) was
+selected from the four traits relating to the ﬁrst dimension (SLA,
+LNC, LPC and LDMC) and the second trait of the pair (T2) was
+selected from the three traits relating to the second dimension
+(LA, WD and WDMC) (Fig. 1a). The two environments (E1
+and E2) were the pairwise combinations of SOM, pH and light.
+The predictors DBH, LA, SLA, LNC and LPC and light avail-
+ability were log-transformed to better approximate normality and
+all ﬁxed predictors were then scaled to unit variance before analy-
+ses. To control the false discovery rate, we adjusted the P-values
+for each parameter estimation of 36 models using the Ben-
+jamini–Hochberg correction (Benjamini & Hochberg, 1995;
+Chen et al., 2017). All these models were run at both the species
+and individual levels. To explore the occurrence of alternative
+functional designs and multiple performance peaks, we con-
+structed 3D plots (performance landscapes) displaying how logit-
+survival or log-RGR varied along with two trait axes at four
+extreme environmental conditions (combinations of minimum
+and maximum observed values of the two environmental vari-
+ables used in the model) in the PLOT3D package (Soetaert, 2019).
+All analyses were done in R v.3.6.2 (R Core Team, 2019).
+Results
+Summary of individual performance models
+The standardised coefﬁcients, their signiﬁcance and model ﬁt
+statistics of the 36 models (Z  DBH + T1 9 T2 9 E1 9 E2) for
+survival and growth at both the species and individual levels are
+summarised in Tables S2–S5. Individual size (DBH) was always
+positively correlated with survival probability but negatively cor-
+related with RGR (Tables S2–S5). Out of the 36 survival models,
+most of them detected signiﬁcant main effects (of traits rather
+than environments), but only a few models detected signiﬁcant
+two-way, three-way and four-way interactions at both the species
+and individual levels (Table 1). Modelling survival probability at
+the individual level did not detect more trait 9 environment
+interactions (except for the three-way interactions) than at the
+species level (Table 1). Out of the 36 growth models, most of
+them detected the signiﬁcant main effects of traits or environ-
+ments and their two-way interactions, but a few models detected
+signiﬁcant
+three-way
+and
+four-way
+interactions
+(Table 1).
+Modelling RGR at the individual level did not increase the detec-
+tion of two-way, three-way or four-way interactions than at the
+species level. In addition, both survival and growth were only
+slightly better modelled (the R2-marginal and R2-conditional
+were higher) at the individual level than at the species level in
+most cases (Tables S2–S5).
+Performance landscapes at extreme environmental
+conditions
+We selected one survival model and one growth model with sig-
+niﬁcant four-way interaction as an example to display the perfor-
+mance landscapes and explore the occurrence of functional
+alternative designs and performance peaks along environmental
+gradients. For the survival model with a signiﬁcant four-way
+interaction between LNC, WDMC, SOM and pH at the species
+level, we found two survival peaks in each of the four extreme
+environments (Fig. 2). Speciﬁcally, in environments with mini-
+mum observed values of SOM and pH (or maximum SOM and
+pH), the survival probability peaked for individuals of high LNC
+Fig. 1 Principal component analyses of seven traits (a) and nine soil properties (b). The seven traits, that is leaf area (LA), speciﬁc leaf area (SLA), leaf dry
+matter content (LDMC), leaf nitrogen concentration (LNC), leaf phosphorus concentration (LPC), wood density (WD) and wood dry matter content
+(WDMC), were simultaneously measured on 3981 individuals of 205 species within the 50-ha forest plot. The ﬁrst two principal components explain c.
+64% of total trait variation. The nine soil properties, that is soil pH, soil organic matter (SOM), total nitrogen (TN), total phosphorus (TP), total potassium
+(TK), available nitrogen (AN), available phosphorus (AP), available potassium (AK) and sand content (Sand), were measured for 625 soil samples randomly
+collected within the 50-ha forest plot. The ﬁrst two principal components explained c. 58% of total soil variation.
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+New Phytologist (2021) 229: 1388–1397
+www.newphytologist.com
+New
+Phytologist
+Research 1391
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+and low WDMC as well as for individuals of low LNC and high
+WDMC (Fig. 2a,d). In environments with maximum SOM and
+minimum pH (or minimum SOM and maximum pH), the sur-
+vival probability peaked for individuals of low LNC and low
+WDMC as well as for individuals of high LNC and high
+WDMC (Fig. 2b,c). For the growth model with a signiﬁcant
+four-way interaction between SLA, WD, pH and light at the
+species level, we also found two growth peaks in each of four
+extreme environments (Fig. 3). In environments with minimum
+observed values of pH and light (or maximum pH and light), the
+RGR peaked for individuals of low SLA and WD as well as for
+individuals of high SLA and WD (Fig. 3a,d). While in environ-
+ments with maximum pH and minimum light (or minimum pH
+and maximum light), the RGR peaked for individuals of low
+SLA and high WD as well as for individuals of high SLA and low
+WD (Fig. 3b,c).
+Relative importance of trait 9 environment interactions
+On average, the ﬁxed and random effects explain c. 30% of the
+variation in survival and growth at both the species and individ-
+ual levels (Fig. 4). We further portioned the variance explained
+by ﬁxed effects to estimate the relative contribution of the size
+effect (DBH), the main effects of two traits and two environ-
+ments and their interactions. For the survival models analysed at
+the species level, the explained variance due to the size effect
+(DBH), main effects of two traits and two environments and
+their interactions (sum of two-way, three-way and four-way inter-
+actions) were, on average, 41%, 43% and 16%, respectively
+(Fig. 4a). The results at the individual level were generally the
+same as the results at the species level (Fig. 4b). However, the
+trait 9 environment interactions on average accounted for less
+than 5% of the explained variance of the growth models
+Table 1 The number of survival and growth models (out of 36 models) that detected a signiﬁcant size effect (diameter at breast height, DBH), main effects
+(T1, T2, E1 or E2), two-way (T1:T2, T1:E1, T1:E2, T2:E1, T2:E2 or E1:E2), three-way (T1:T2:E1, T1:T2:E2, T1:E1:E2 or T2:E1:E2) or four-way (T1:T2:E1:E2)
+interactions at the species and individual levels, respectively.
+Predictors
+Survival
+Growth
+Species level
+Individual level
+Species level
+Individual level
+DBH
+36
+36
+36
+36
+Main effects (T1, T2, E1, E2)
+27 (15, 12, 0, 0)
+33 (15, 24, 0, 0)
+20 (3, 4, 0, 19)
+29 (18, 3, 0, 22)
+Two-way (T1:T2, T1:E1, T1:E2, T2:E1, T2:E2, E1:E2)
+3 (0, 2, 1, 0, 0, 0)
+0 (0, 0, 0, 0, 0, 0)
+20 (0, 9, 0, 8, 0, 4)
+18 (5, 6, 0, 5, 0, 6)
+Three-way (T1:T2:E1, T1:T2:E2, T1:E1:E2, T2:E1:E2)
+1 (0, 0, 1, 0)
+8 (0, 2, 5, 1)
+2 (0, 2, 0, 0)
+0 (0, 0, 0, 0)
+Four-way (T1:T2:E1:E2)
+1
+0
+2
+2
+There are four terms of main effects, six terms of two-way interactions and four terms of three-way interactions in each survival and growth model. The
+numbers outside the brackets indicate the number of models that detected at least one signiﬁcant term and the numbers inside the brackets indicate the
+number of models that detected each of the signiﬁcant terms.
+Fig. 2 The survival landscapes involving leaf
+nitrogen concentration (LNC) and wood dry
+matter content (WDMC) at four extreme
+environmental conditions with minimum or
+maximum observed values (a–d) of soil
+organic matter (SOM) and pH.
+New Phytologist (2021) 229: 1388–1397
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+www.newphytologist.com
+Research
+New
+Phytologist
+1392
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+Fig. 3 The growth landscapes involving
+speciﬁc leaf area (SLA) and wood density
+(WD) at four extreme environmental
+conditions with minimum or maximum
+observed values (a–d) of pH and light.
+Fig. 4 The average contributions of ﬁxed and random effects to variance in survival and growth at both the species and individual levels (a–d) summarised
+from Supporting Information Tables S2–S6. The ﬁxed effects include size effect (diameter at breast height, DBH), main effects of two traits and two
+environments as well as their two-way, three-way and four-way interactions.
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+New Phytologist (2021) 229: 1388–1397
+www.newphytologist.com
+New
+Phytologist
+Research 1393
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+regardless of at the species or individual level (Fig. 4c,d). The size
+effect (DBH) accounted for the majority (c. 90%) of the
+explained variance of the growth models (Fig. 4c,d).
+Discussion
+Despite the importance of trait 9 environment interactions to
+individual performance and the resulting population dynamics
+and composition of communities (Laughlin & Messier, 2015;
+Shipley et al., 2016), such interactions have been empirically
+tested in only a few studies (Blonder et al., 2018; Laughlin et al.,
+2018; Worthy et al., 2020; Zirbel & Brudvig, 2020). By measur-
+ing the two individual performance metrics (survival and
+growth), seven functional traits and 10 environmental conditions
+for thousands of individuals in a subtropical forest, we have been
+able to explicitly test for more complicated interactions at both
+the species and individual levels. Because of the high levels of sta-
+tistical power provided by our data (Notes S2; Fig. S2), we
+detected a few signiﬁcant two-way (e.g. an interaction between
+LDMC and SOM on individual survival at the species level),
+three-way (e.g. an interaction between LPC, pH and light on
+individual survival at the species level), and four-way interactions
+(e.g. an interaction between LNC, WDMC, SOM and pH on
+individual survival at the species level) involving the survival and
+growth models at both the species and individual levels (Tables 1,
+S2–S5).
+Two-way (one trait 9 one environment) interactions had been
+reported to affect individual survival probability (Laughlin et al.,
+2018), seedling establishment (Zirbel & Brudvig, 2020) and
+multiple demographic rates (Blonder et al., 2018). With the
+inclusion of three-way interactions between two traits and one
+environment, Worthy et al. (2020) found alternative functional
+designs and multiple growth peaks and they shifted along envi-
+ronmental gradients. In our study, we found multiple perfor-
+mance peaks, not only for growth but also for survival, in a few
+models with signiﬁcant three-way and four-way interactions
+(Table 1). As examples illustrated in 3D plots (Figs 2, 3), the per-
+formance landscapes became more complicated in the presence
+of signiﬁcant four-way interactions. First, the existence of alterna-
+tive functional designs and multiple performance peaks (Figs 2,
+3) means that there is not a single optimal trait (or trait combina-
+tion) value for an environment. Given this, the correlations
+between community-weighted mean traits and environments can
+be unreliable estimates of the adaptive value of traits (Laughlin
+et al., 2018), which requires higher-order moments of community-
+level trait distributions like community-weighted variances to be
+considered (Shipley, 2010; Loranger et al., 2018). Second, the
+alternative functional designs and multiple performance peaks
+shifted along environmental gradients and thus the same strategy
+might be favoured in contrasting environments (Figs 2, 3).
+This surprising result contrasts with common expectations that dif-
+ferent optima should be favoured in different environments and
+that environmental heterogeneity increases functional diversity
+(Stark et al., 2017). Finally, different performance landscapes for
+survival and growth can obscure our understanding of how traits
+affect lifelong ﬁtness (Caswell, 1989). Future studies should
+integrate effects of traits on different measures of performance to
+explore the overall ﬁtness landscapes and estimate population
+growth (Struckman et al., 2019).
+The presence of trait 9 environment interactions (especially
+the three-way and four-way interactions) points to the potential
+for the types of complications described above. Such interactions,
+however, contributed a relatively small proportion of the total
+explained variance in most cases in our plot (Table S6; Fig. 4).
+This is good news because it means that trait–performance rela-
+tionships might be simple in many situations and we may not
+lose much information if we simply ignore these complicated
+interactions. If this is generally true, then the estimated trait–per-
+formance relationships without considering traits 9 environment
+interactions in many prior studies (e.g. Poorter et al., 2008; Kraft
+et al., 2010; Adler et al., 2014) did not introduce large errors in
+their estimates. The above conclusion must be qualiﬁed, because
+the importance of trait 9 environment interactions would logi-
+cally increase with increasing environmental heterogeneity. We
+suspect that the small proportion of signiﬁcant trait 9 environ-
+ment interactions and their generally small contributions to indi-
+vidual performance in our study, is due to the fact that our study
+was conducted within a 50-ha plot in a well established forest
+that had low environmental variation relative to other studies.
+The coefﬁcients of variance of SOM, soil pH and light availabil-
+ity are lower in our plot, relative to a pine forest in Arizona
+(Laughlin et al., 2018), a tropical rainforest in Xishuangbanna
+(Worthy et al., 2020) and abandoned ﬁelds in southwestern
+Michigan (Zirbel & Brudvig, 2020) (Table S7). In addition, sig-
+niﬁcant trait 9 temperature and trait 9 precipitation interactions
+on individual survival were also found (Laughlin et al., 2018),
+but temperature and precipitation were often assumed to be the
+same at local scales like in our study. Although trait 9 environ-
+ment interactions might be safely ignored in relatively homoge-
+neous environments at local scales, we encourage future studies
+to test the interactive effects of traits and environments on indi-
+vidual performance at larger spatial scales (e.g. across forest sites)
+or along experimentally manipulated environmental gradients.
+Another, but less likely, reason for the unimportance of
+trait 9 environment interactions is that these commonly mea-
+sured traits failed to effectively capture the individual response to
+the environments (Yang et al., 2018). If this was the case, the
+inclusion of more relevant trait 9 environment interactions
+should improve our predictions of individual performance.
+Phenotypic plasticity enables individuals of a species to adjust
+their traits to better adapt to local environments (Gratani, 2014),
+thus trait–performance relationships can be greatly improved
+(Liu et al., 2016) and trait 9 environment interactions should be
+more likely to be detected at the individual level rather than at
+the species level. In contrast with our expectations, we did not
+observe this in our study (Tables 1, S2–S5). This also might be
+due to the small environmental variation in our plot. Individual
+adaptation to relatively homogeneous local environments led to
+much smaller intraspeciﬁc trait variation relative to interspeciﬁc
+trait variation (Fig. S3), therefore few beneﬁts were obtained
+when considering this relatively small intraspeciﬁc trait variation
+at the individual level. In this case, characterising trait–
+New Phytologist (2021) 229: 1388–1397
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+www.newphytologist.com
+Research
+New
+Phytologist
+1394
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+performance relationships at the species level were similarly effec-
+tive to that at the individual level. However, we expect that
+intraspeciﬁc trait variation should be more substantial and play a
+more important role in studies confronting more heterogeneous
+environments at larger scales (Bolnick et al., 2011; Violle et al.,
+2012; Siefert et al., 2015).
+Our study conducted a comprehensive test of the trait–perfor-
+mance relationship in a subtropical forest by simultaneously con-
+sidering multiple performance metrics, interactions between
+multivariate traits and multivariate environments at both the
+species and individual levels. Although some traits and environ-
+ments were found to have signiﬁcant interactive effects on indi-
+vidual performance, they were not very important and inclusion
+of intraspeciﬁc variation did not improve the detection and
+importance of these interactions. We encourage future studies to
+test the interactive effects of traits and environments on different
+performance metrics at larger spatial scales (e.g. across forest sites)
+or along experimentally manipulated environmental gradients,
+and further integrate different measures of performance to esti-
+mate their effects on lifelong ﬁtness and population growth.
+Acknowledgements
+We greatly thank Daniel Laughlin, Benjamin Blonder and two
+anonymous reviewers for their insightful comments on this
+manuscript. This research was funded by the National Natural
+Science Foundation of China (31925027, 31622014 and
+31570426 to CC, 31901106 to YL and 31800366 to KZ), and
+China Postdoctoral Science Foundation (2018M643295) to YL.
+YJ was supported by the International Programme for PhD can-
+didates, Sun Yat-sen University.
+Author contributions
+YL and CC conceived the project. YJ synthesised the data and
+conducted the analyses with inputs from YL, CC and BS. YL
+wrote the manuscript with input from CC, BS and YJ. BL is
+responsible for the census data. DH, YC, DIR-H, WL and KZ
+collected the data of leaf morphological traits, leaf chemical traits,
+stem traits, soil properties and light availability, respectively. YL
+and YJ contributed equally to this work.
+ORCID
+Chengjin Chu
+https://orcid.org/0000-0002-0606-449X
+Dong He
+https://orcid.org/0000-0002-8789-6385
+Yuan Jiang
+https://orcid.org/0000-0001-8704-3676
+Yuanzhi Li
+https://orcid.org/0000-0002-5258-877X
+Wenqi Luo
+https://orcid.org/0000-0002-7454-0961
+Bill Shipley
+https://orcid.org/0000-0002-7026-3880
+Kangning Zhao
+https://orcid.org/0000-0002-3254-821X
+Data availability
+Data associated with this study are deposited in the TRY Plant
+Trait Database: https://www.try-db.org/TryWeb/Data.php#68.
+References
+Adler PB, Salguero-Gomez R, Compagnoni A, Hsu JS, Ray-Mukherjee J,
+Mbeau-Ache C, Franco M. 2014. Functional traits explain variation in plant
+life history strategies. Proceedings of the National Academy of Sciences, USA 111:
+740–745.
+Albert CH, Thuiller W, Yoccoz NG, Soudant A, Boucher F, Saccone P, Lavorel
+S. 2010. Intraspeciﬁc functional variability: extent, structure and sources of
+variation. Journal of Ecology 98: 604–613.
+Benjamini Y, Hochberg Y. 1995. Controlling the false discovery rate: a practical
+and powerful approach to multiple testing. Journal of the Royal Statistical
+Society: Series B (Methodological) 57: 289–300.
+Blonder B, Kapas RE, Dalton RM, Graae BJ, Heiling JM, Opedal ØH. 2018.
+Microenvironment and functional-trait context dependence predict alpine
+plant community dynamics. Journal of Ecology 106: 1323–1337.
+Bolnick DI, Amarasekare P, Araujo MS, B€urger R, Levine JM, Novak M,
+Rudolf VHW, Schreiber SJ, Urban MC, Vasseur DA. 2011. Why intraspeciﬁc
+trait variation matters in community ecology. Trends in Ecology & Evolution 26:
+183–192.
+Cadotte MW. 2017. Functional traits explain ecosystem function through
+opposing mechanisms. Ecology Letters 20: 989–996.
+Caswell H. 1989. Matrix population models: construction, analysis, and
+interpretation. Oxford, UK: Oxford University Press.
+Cavender-Bares J, Kitajima K, Bazzaz FA. 2004. Multiple trait associations in
+relation to habitat differentiation among 17 ﬂoridian oak species. Ecological
+Monographs 74: 635–662.
+Chapin FS, Autumn K, Pugnaire F. 1993. Evolution of suites of traits in
+response to environmental stress. The American Naturalist 142: S78–S92.
+Chen S-Y, Feng Z, Yi X. 2017. A general introduction to adjustment for multiple
+comparisons. Journal of Thoracic Disease 9: 1725–1729.
+Chen Y. 2015. Intraspeciﬁc foliar pH variation and traits correlation patterns.
+Masters’ thesis, Sun Yat-sen University, Guangzhou, China.
+Dıaz S, Kattge J, Cornelissen JHC, Wright IJ, Lavorel S, Dray S, Reu B, Kleyer
+M, Wirth C, Prentice IC et al. 2016. The global spectrum of plant form and
+function. Nature 529: 167–171.
+Enquist B, Norberg J, Bonser S, Violle C, Webb CT, Henderson A, Sloat L,
+Savage VM. 2015. Scaling from traits to ecosystems: developing a general trait
+driver theory via integrating trait-based and metabolic scaling theories. In:
+Pawar S, Woodward G, Dell AI, eds. Trait-based ecology - from structure to
+function. Waltham, MA, USA: Elsevier Science, 249–318.
+Gratani L. 2014. Plant phenotypic plasticity in response to environmental factors.
+Advances in Botany 2014: 1–17.
+He D, Biswas SR. 2019. Negative relationship between interspecies spatial
+association and trait dissimilarity. Oikos 128: 659–667.
+He D, Deane DC. 2016. The relationship between trunk- and twigwood density
+shifts with tree size and species stature. Forest Ecology and Management 372:
+137–142.
+Hiemstra PH, Pebesma EJ, Twenh€ofel CJW, Heuvelink GBM. 2009. Real-
+time automatic interpolation of ambient gamma dose rates from the
+Dutch radioactivity monitoring network. Computers & Geosciences 35:
+1711–1721.
+Kraft NJB, Godoy O, Levine JM. 2015. Plant functional traits and the
+multidimensional nature of species coexistence. Proceedings of the National
+Academy of Sciences, USA 112: 797–802.
+Kraft NJB, Metz MR, Condit RS, Chave J. 2010. The relationship between
+wood density and mortality in a global tropical forest data set. New Phytologist
+188: 1124–1136.
+Laughlin DC. 2014. The intrinsic dimensionality of plant traits and its relevance
+to community assembly. Journal of Ecology 102: 186–193.
+Laughlin DC. 2018. Rugged ﬁtness landscapes and Darwinian demons in trait-
+based ecology. New Phytologist 217: 501–503.
+Laughlin DC, Joshi C, van Bodegom PM, Bastow ZA, Fule PZ. 2012. A
+predictive model of community assembly that incorporates intraspeciﬁc trait
+variation. Ecology Letters 15: 1291–1299.
+Laughlin DC, Messier J. 2015. Fitness of multidimensional phenotypes in
+dynamic adaptive landscapes. Trends in Ecology & Evolution 30: 487–496.
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+New Phytologist (2021) 229: 1388–1397
+www.newphytologist.com
+New
+Phytologist
+Research 1395
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+Laughlin DC, Strahan RT, Adler PB, Moore MM. 2018. Survival rates indicate
+that correlations between community-weighted mean traits and environments
+can be unreliable estimates of the adaptive value of traits. Ecology Letters 21:
+411–421.
+Lavorel S, Garnier E. 2002. Predicting changes in community composition and
+ecosystem functioning from plant traits: revisiting the Holy Grail. Functional
+Ecology 16: 545–556.
+Liu X, Swenson NG, Lin D, Mi X, Uma~na MN, Schmid B, Ma K. 2016.
+Linking individual-level functional traits to tree growth in a subtropical forest.
+Ecology 97: 2396–2405.
+Loranger J, Munoz F, Shipley B, Violle C. 2018. What makes trait–abundance
+relationships when both environmental ﬁltering and stochastic neutral
+dynamics are at play? Oikos 127: 1735–1745.
+Lusk CH, Laughlin DC. 2017. Regeneration patterns, environmental ﬁltering and
+tree species coexistence in a temperate forest. New Phytologist 213: 657–668.
+Marks CO, Lechowicz MJ. 2006. Alternative designs and the evolution of
+functional diversity. The American Naturalist 167: 55–66.
+McGill BJ, Enquist BJ, Weiher E, Westoby M. 2006. Rebuilding
+community ecology from functional traits. Trends in Ecology & Evolution
+21: 178–185.
+Messier J, McGill BJ, Lechowicz MJ. 2010. How do traits vary across ecological
+scales? A case for trait-based ecology. Ecology Letters 13: 838–848.
+Paine CET, Amissah L, Auge H, Baraloto C, Baruffol M, Bourland N,
+Bruelheide H, Da€ınou K, de Gouvenain RC, Doucet J-L et al. 2015.
+Globally, functional traits are weak predictors of juvenile tree growth, and we
+do not know why. Journal of Ecology 103: 978–989.
+Pickup M, Westoby M, Basden A. 2005. Dry mass costs of deploying leaf area in
+relation to leaf size. Functional Ecology 19: 88–97.
+Poorter L, Wright SJ, Paz H, Ackerly DD, Condit R, Ibarra-Manrıquez G,
+Harms KE, Licona JC, Martınez-Ramos M, Mazer SJ et al. 2008. Are
+functional traits good predictors of demographic rates? Evidence from ﬁve
+neotropical forests. Ecology 89: 1908–1920.
+R Core Team. 2019. R: a language and environment for statistical computing.
+Vienna, Austria: R Foundation for Statistical Computing [WWW document]
+https://www.r-project.org/.
+Shipley B. 2010. From plant traits to vegetation structure: chance and selection in the
+assembly of ecological communities. Cambridge, UK: Cambridge University Press.
+Shipley B, De Bello F, Cornelissen JHC, Laliberte E, Laughlin DC, Reich PB.
+2016. Reinforcing loose foundation stones in trait-based plant ecology.
+Oecologia 180: 923–931.
+Shipley B, Lechowicz MJ, Wright I, Reich PB. 2006. Fundamental trade-offs
+generating the worldwide leaf economics spectrum. Ecology 87: 535–541.
+Siefert A, Violle C, Chalmandrier L, Albert CH, Taudiere A, Fajardo A, Aarssen
+LW, Baraloto C, Carlucci MB, Cianciaruso MV et al. 2015. A global meta-
+analysis of the relative extent of intraspeciﬁc trait variation in plant
+communities. Ecology Letters 18: 1406–1419.
+Soetaert K. 2019. Plot3D R package: plotting multi-dimensional data. R package
+v.1.3. [WWW document] https://cran.r-project.org/package=plot3D.
+Stark J, Lehman R, Crawford L, Enquist BJ, Blonder B. 2017. Does
+environmental heterogeneity drive functional trait variation? A test in montane
+and alpine meadows. Oikos 126: 1650–1659.
+Struckman S, Couture JJ, LaMar MD, Dalgleish HJ. 2019. The demographic
+effects of functional traits: an integral projection model approach reveals
+population-level consequences of reproduction-defence trade-offs. Ecology
+Letters 22: 1396–1406.
+Swenson NG, Worthy SJ, Eubanks D, Iida Y, Monks L, Petprakob K, Rubio
+VE, Staiger K, Zambrano J. 2020. A reframing of trait–demographic rate
+analyses for ecology and evolutionary biology. International Journal of Plant
+Sciences 181: 33–43.
+Treurnicht M, Pagel J, Tonnabel J, Esler KJ, Slingsby JA, Schurr FM. 2020.
+Functional traits explain the Hutchinsonian niches of plant species. Global
+Ecology and Biogeography 29: 534–545.
+Violle C, Enquist BJ, McGill BJ, Jiang L, Albert CH, Hulshof C, Jung V,
+Messier J. 2012. The return of the variance: intraspeciﬁc variability in
+community ecology. Trends in Ecology & Evolution 27: 244–252.
+Violle C, Navas M-L, Vile D, Kazakou E, Fortunel C, Hummel I, Garnier E.
+2007. Let the concept of trait be functional!. Oikos 116: 882–892.
+Westoby M, Falster DS, Moles AT, Vesk PA, Wright IJ. 2002. Plant ecological
+strategies: some leading dimensions of variation between species. Annual
+Review of Ecology and Systematics 33: 125–159.
+Worthy SJ, Laughlin DC, Zambrano J, Uma~na MN, Zhang C, Lin L, Cao M,
+Swenson NG. 2020. Alternative designs and tropical tree seedling growth
+performance landscapes. Ecology 101: e03007.
+Wright IJ, Ackerly DD, Bongers F, Harms KE, Ibarra-Manriquez G,
+Martinez-Ramos M, Mazer SJ, Muller-Landau HC, Paz H, Pitman NCA
+et al. 2007. Relationships among ecologically important dimensions of
+plant trait variation in seven neotropical forests. Annals of Botany 99:
+1003–1015.
+Wright IJ, Reich PB, Westoby M, Ackerly DD, Baruch Z, Bongers F,
+Cavender-Bares J, Chapin T, Cornelissen JHC, Diemer M et al. 2004. The
+worldwide leaf economics spectrum. Nature 428: 821–827.
+Wright SJ, Kitajima K, Kraft NJB, Reich PB, Wright IJ, Bunker DE, Condit R,
+Dalling JW, Davies SJ, Dıaz S et al. 2010. Functional traits and the growth–
+mortality trade-off in tropical trees. Ecology 91: 3664–3674.
+Yang J, Cao M, Swenson NG. 2018. Why functional traits do not predict tree
+demographic rates. Trends in Ecology & Evolution 33: 326–336.
+Zhao K, He F. 2016. Estimating light environment in forests with a new
+thresholding method for hemispherical photography. Canadian Journal of
+Forest Research 46: 1103–1110.
+Zirbel CR, Brudvig LA. 2020. Trait–environment interactions affect plant
+establishment success during restoration. Ecology 101: e02971.
+Zuur A, Ieno EN, Walker N, Saveliev AA, Smith GM. 2009. Mixed effects models
+and extensions in ecology with R. New York, NY, USA: Springer.
+Supporting Information
+Additional Supporting Information may be found online in the
+Supporting Information section at the end of the article.
+Fig. S1 Distribution of 3981 sampled individuals within the 50-
+ha forest plot with interpolated soil organic matter (SOM), soil
+pH and light availability to grids of 10 m 9 10 m using the Ordi-
+nary Kriging.
+Fig. S2 The chance of detecting every simulated effect given dif-
+ferent sample sizes at four levels of b and three levels of r.
+Fig. S3 Trait variance explained by interspeciﬁc variation and
+intraspeciﬁc variation plus measurement error.
+Notes S1 R 2-marginal partitioning.
+Notes S2 Power analysis.
+Table S1 Details of measurements of soil properties in the
+Heishiding plot.
+Table S2 The standardised coefﬁcients, their signiﬁcance, and
+model
+ﬁt
+statistics
+for
+36
+survival
+models
+(Z  DBH+T1 9 T29E1 9 E2) including different trait (T)
+and environment (E) combinations analysed at the species level.
+Table S3 The standardised coefﬁcients, their signiﬁcance, and
+model
+ﬁt
+statistics
+for
+36
+survival
+models
+(Z  DBH+T1 9 T29E1 9 E2) including different trait (T)
+and environment (E) combinations analysed at the individual
+level.
+New Phytologist (2021) 229: 1388–1397
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+www.newphytologist.com
+Research
+New
+Phytologist
+1396
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+
+Table S4 The standardised coefﬁcients, their signiﬁcance, and
+model
+ﬁt
+statistics
+for
+36
+growth
+models
+(Z  DBH+T1 9 T29E1 9 E2) including different trait (T)
+and environment (E) combinations analysed at the species level.
+Table S5 The standardised coefﬁcients, their signiﬁcance, and
+model
+ﬁt
+statistics
+for
+36
+growth
+models
+(Z 
+DBH+T1 9 T29E1 9 E2) including different trait (T) and envi-
+ronment (E) combinations analysed at the individual level.
+Table S6 The contributions of the size effect (DBH), main
+effects of two traits (T1 and T2) and two environments (E1 and
+E2) as well as their two-way, three-way and four-way interactions
+to the total explained variance of survival and growth at both the
+species and individual levels.
+Table S7 Coefﬁcients of variance (standard deviation/ mean) of
+soil organic matter (SOM), soil pH and light availability in our
+and other studies.
+Please note: Wiley Blackwell are not responsible for the content
+or functionality of any Supporting Information supplied by the
+authors. Any queries (other than missing material) should be
+directed to the New Phytologist Central Ofﬁce.
+New Phytologist is an electronic (online-only) journal owned by the New Phytologist Foundation, a not-for-profit organization
+dedicated to the promotion of plant science, facilitating projects from symposia to free access for our Tansley reviews and
+Tansley insights.
+Regular papers, Letters, Research reviews, Rapid reports and both Modelling/Theory and Methods papers are encouraged. 
+We are committed to rapid processing, from online submission through to publication ‘as ready’ via Early View – our average time
+to decision is <26 days. There are no page or colour charges and a PDF version will be provided for each article. 
+The journal is available online at Wiley Online Library. Visit www.newphytologist.com to search the articles and register for table
+of contents email alerts.
+If you have any questions, do get in touch with Central Office (np-centraloffice@lancaster.ac.uk) or, if it is more convenient,
+our USA Office (np-usaoffice@lancaster.ac.uk)
+For submission instructions, subscription and all the latest information visit www.newphytologist.com
+ 2020 The Authors
+New Phytologist  2020 New Phytologist Foundation
+New Phytologist (2021) 229: 1388–1397
+www.newphytologist.com
+New
+Phytologist
+Research 1397
+ 14698137, 2021, 3, Downloaded from https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.16955, Wiley Online Library on [07/08/2025]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License

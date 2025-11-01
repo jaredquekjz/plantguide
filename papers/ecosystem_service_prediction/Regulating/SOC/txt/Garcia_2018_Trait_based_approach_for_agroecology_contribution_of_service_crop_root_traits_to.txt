@@ -1,0 +1,1213 @@
+HAL Id: hal-02063618
+https://hal.science/hal-02063618v1
+Submitted on 23 Nov 2023
+HAL is a multi-disciplinary open access
+archive for the deposit and dissemination of sci-
+entific research documents, whether they are pub-
+lished or not.
+The documents may come from
+teaching and research institutions in France or
+abroad, or from public or private research centers.
+L’archive ouverte pluridisciplinaire HAL, est
+destinée au dépôt et à la diffusion de documents
+scientifiques de niveau recherche, publiés ou non,
+émanant des établissements d’enseignement et de
+recherche français ou étrangers, des laboratoires
+publics ou privés.
+Trait-based approach for agroecology: contribution of
+service crop root traits to explain soil aggregate stability
+in vineyards
+Léo Garcia, Gaëlle Damour, Christian Gary, Stéphane Follain, Yves Le
+Bissonnais, Aurélie Métay
+To cite this version:
+Léo Garcia, Gaëlle Damour, Christian Gary, Stéphane Follain, Yves Le Bissonnais, et al.. Trait-based
+approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in
+vineyards. Plant and Soil, 2019, 435 (1-2), pp.1-14. ￿10.1007/s11104-018-3874-4￿. ￿hal-02063618￿
+
+Trait-based approach for agroecology: contribution of service crop
+root traits to explain soil aggregate stability in vineyards
+Léo Garciaa,b, Gaëlle Damourc, Christian Garya, Stéphane Follaind,e, Yves Le Bissonnaisd, Aurélie Metaya
+aUMR SYSTEM, CIHEAM-IAMM, CIRAD, INRA, Montpellier SupAgro, Univ Montpellier, F-34060 Montpellier, France
+bCIRAD, UMR SYSTEM, F-34398 Montpellier, France
+cCIRAD, UPR GECO, F-34398 Montpellier, France
+dUMR LISAH, INRA, IRD, Montpellier SupAgro, Univ. Montpellier, Montpellier, France
+eAgroécologie, AgroSup Dijon, INRA, Univ. Bourgogne, Univ.Bourgogne Franche-Comté, F-21000 Dijon, France
+aleo.garcia@supagro.fr
+Published in Plant and Soil, 2019, Vol. 435. Supplementary ﬁgures and tables are available at https://doi.org/10.1007/s11104-018-3874-4.
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+Abstract
+Aims The aim of this study was to explore the impact of soil management strategies and the contribution of root traits of
+plant communities and soil organic carbon (SOC) in explaining soil aggregate stability in vineyards.
+Methods We measured topsoil aggregate stability, soil properties and root traits of 38 plant communities in an experimental
+vineyard, previously subjected to different soil management strategies. Then we investigated statistical relations between
+aggregate stability, root traits and SOC and estimated root trait and SOC contributions to gain insight into aggregate
+stability.
+Results Soil management strategies strongly affected soil aggregate stability, with a negative effect of tillage, even after
+several years of service crop cover. Among the investigated parameters, soil organic carbon was found to contribute the
+most to aggregate stability. Root mean diameter and root mass density showed positive correlations with aggregate stability,
+while speciﬁc root length showed a negative correlation with aggregate stability.
+Conclusions Soil aggregate stability is the result of complex interactions between soil management strategies, soil properties
+and plant root traits. Service crops improve aggregate stability, and a trait-based approach could help to identify service
+crop ideotypes and expand the pool of species of interest for providing services in agroecosystems in relation with the soil
+physical quality.
+1.
+Introduction
+Agricultural soils are currently affected by various is-
+sues related to erosion, loss of soil organic carbon and
+poor soil structure, especially with respect to perennial
+crops (Don et al., 2011; Poeplau and Don, 2013; Panagos
+et al., 2015). In particular, vineyard soil quality is strongly
+impacted by the soil management strategies, as frequent
+tillage performed to limit competition between weeds and
+grapevine exacerbates soil erosion (García-Díaz et al., 2017;
+Novara et al., 2011), especially on steep slopes (Panagos
+et al., 2015; Le Bissonnais et al., 2002). Moreover, tillage im-
+pairs soil organic matter and alters the soil structure (Six
+et al., 1999; Coll et al., 2011; Salomé et al., 2016). Viticulture
+has thus been shown to be one of the most erosion-prone
+types of land use (Cerdan et al., 2010; Panagos et al., 2015;
+García-Ruiz, 2010). Soil loss and associated fertility loss in
+vineyards directly threaten the sustainability of grape pro-
+duction systems, so adopting a soil conservation strategy
+is a major issue in viticulture.
+Growing service crops is a major feature in soil conser-
+vation strategies. These crops are grown with the aim of
+providing non-marketed ecosystem services (Garcia et al.,
+2018), e.g. to increase soil organic matter and fertility,
+maintain the soil structure, control weeds, while limiting
+erosion, pests and diseases (Lu et al., 2000; Zhang et al.,
+2007; Médiène et al., 2011; Blanco-Canqui et al., 2015; Gaba
+et al., 2015). In soils, service crops prevent water and wind
+erosion (Durán Zuazo and Rodríguez Pleguezuelo, 2008;
+Blavet et al., 2009; De Baets et al., 2011; Ruiz-Colmenero
+et al., 2013; David et al., 2014). These crops also directly
+protect the soil from rainsplash, and reduce excessive
+amounts of soil surface water and associated runoff gene-
+sis and velocity by favoring soil inﬁltration and increasing
+the soil surface roughness (Dabney et al., 2001; Celette
+et al., 2008; Gaudin et al., 2010; Gumiere et al., 2011). Ser-
+vice crops also improve the stability of soil aggregates,
+i.e. their resistance to breakdown, and thus maintenance
+of a good soil structure and inﬁltration. Several studies
+have highlighted the beneﬁts of service crops for aggregate
+stability in vineyards (Goulet et al., 2004; Ferrero et al.,
+2004; Peregrina et al., 2010; Ruiz-Colmenero et al., 2013),
+but few studies have compared the respective roles of
+root traits and soil properties in stabilizing soils in such
+agroecosystems.
+Among soil properties, soil organic carbon (SOC) has
+been shown to be one of the main explanatory factors
+with regard to soil aggregate stability (Tisdall and Oades,
+1
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+1982; Six and Paustian, 2014), and no-tillage agriculture is
+known to promote soil aggregate stability as it increases
+SOC (Six et al., 2004). SOC improves ﬂocculation of clay
+particles and forms binding agents with clay and poly-
+valent cations that increase particle cohesion (Tisdall and
+Oades, 1982; Six et al., 2004; Abiven et al., 2009). Bonds be-
+tween clay particles and carbohydrates of bacteria capsules
+or with fungal hyphae also participate in soil cohesion
+(Tisdall and Oades, 1982). Moreover, SOC and microbial
+activity increase the hydrophobicity of aggregates, thus re-
+ducing their sensitivity to breakdown by water (Cosentino
+et al., 2006; Abiven et al., 2009). Bacteria and fungi also
+produce extracellular polysaccharides that bind soil parti-
+cles, and fungal hyphae physically enmesh soil particles
+and thus protect them from alteration (Tisdall and Oades,
+1982; Six et al., 2004; Cosentino et al., 2006; Abiven et al.,
+2009, 2007).
+The action of roots in the soil stabilization process in-
+volves physical, chemical, and biotic interactions with soil
+particles. Physical action consists of aggregate enmesh-
+ment by ﬁne roots that maintains the aggregate structure
+and protects it from breakdown (Jastrow et al., 1998; Fat-
+tet et al., 2011; Pérès et al., 2013; Le Bissonnais et al.,
+2017).
+Roots also increase the soil wetting-drying fre-
+quency, which contributes to strengthening the soil ag-
+gregates (Angers and Caron, 1998; Czarnes et al., 2000).
+The chemical action of roots on soil stability is mainly
+due to root exudation of sugars, carbohydrates, organic
+and amino acids into soils (Bardgett et al., 2014). These
+compounds act as glue for mineral particles and strongly
+contribute to building stable soil aggregates (Six et al.,
+2004; Pérès et al., 2013). Bardgett et al. (2014) state that
+root exudation may be the root trait with the greatest
+impact on soil stability. The biotic action of roots con-
+sists of stimulating microbial biomass in soil and forming
+associations with symbiotic fungi whose hyphae and exu-
+dates increase soil aggregate stability (Jastrow et al., 1998;
+Hamilton and Frank, 2001). The effect of roots in soil
+stabilization mainly depends on their density in soils and
+their nature, i.e. ﬁne roots versus coarse roots (Freschet
+and Roumet, 2017). Studying root traits thus seems rele-
+vant to better understand the role of roots in driving soil
+aggregate stability.
+Trait-based approaches have recently been developed to
+assess the potential of service crops in providing speciﬁc
+ecosystem services in agroecosystems and consequently
+choosing the best-suited species according to targeted
+services (Damour et al., 2014; Tardy et al., 2015; Tribouil-
+lois et al., 2015). Such approaches may help understand
+the functioning and dynamics of plant communities un-
+der various environments, and predict how ecosystem
+services vary across agroecosystems (Duarte et al., 1995;
+Martin and Isaac, 2015; Wood et al., 2015; Damour et al.,
+2018). The effect of root traits on soil aggregate stability
+has already been shown in grasslands and natural plant
+communities, along with environmental gradients, with
+ﬁndings of positive effects of root density and speciﬁc root
+length (SRL) on aggregate stability (Erktan et al., 2016;
+Gould et al., 2016; Ali et al., 2017; Le Bissonnais et al.,
+2017). However, to our knowledge, the respective roles
+of roots and soil properties have been barely studied in
+agroecosystems with low organic inputs.
+The aim of this study was to explore the contribution of
+root traits and soil organic carbon in driving soil aggregate
+stability in vineyards after contrasted soil management
+strategies. We therefore measured topsoil aggregate stabil-
+ity, soil properties and root traits of 38 plant communities
+in an experimental vineyard, previously subjected to dif-
+ferent previous soil management. The plant communities
+consisted of 13 service crop species sown in the inter-rows
+and spontaneous species growing amongst the service
+crops. Considering the small spatial footprint of the exper-
+iment, we assumed that there was little variability in the
+soil mineral phase. For these conditions, we hypothesized
+that: i) vinegrowers’ soil management drives soil aggre-
+gate stability through its effect on soil organic carbon and
+mechanical disturbances, ii) service crop root traits con-
+tribute to explaining soil aggregate stability in vineyards
+and they contribute more than soil properties due to low
+carbon content in these soils (Erktan et al., 2016; Le Bis-
+sonnais et al., 2017), and iii) graminoids have a stronger
+positive effect on aggregate stability than legumes due to
+their higher SRL and root density (Pérès et al., 2013; Gould
+et al., 2016; Roumet et al., 2016).
+2.
+Material and methods
+2.1.
+Experimental site and design
+The experiment was carried out from 2012 to 2017 in a
+vineyard located near Montpellier (Domaine du Chapitre)
+in the south of France (43◦31’55"N 3◦51’51"E). The area
+is under a Mediterranean climate with mean annual rain-
+fall of about 550 mm (2013-2017). The soil is a calcaric
+cambisol (30% clay, 40% silt and 30% sand) with a 5%
+stone content. Grapevines (V.vinifera L. cv. Mourvèdre
+and Grenache) were planted in 2008 at a density of 4,000
+vines per hectare (2.5 m x 1 m). They were trained using a
+midwire bilateral cordon system and were spur pruned to
+12 nodes per vine. Mechanical weed control was applied
+under the vine rows. Three different soil management
+strategies were used in inter-rows at random locations in
+the experimental ﬁeld: some had been tilled since 2012 (T)
+while others had been sown with service crops each year
+since 2012 (SC) and some of the latter were tilled the year
+before the last growing season (SCT). The term “soil man-
+agement strategy” refers to past inter-row management
+before the last growing season (Table 1). All inter-rows
+2
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+were sown with service crops during the 2016-2017 grow-
+ing season.
+In September 2016, all inter-rows were tilled for seedbed
+preparation. 13 different monocultures of service crop
+species were sown in inter-rows of 30m length and 2
+m wide at random locations in the experimental ﬁeld.
+Three inter-rows were sown for each service crop species.
+Species were chosen to have a diversity of botanical fami-
+lies (Fabaceae, Poaceae, Plantaginaceae, Hydrophyllaceae,
+Rosaceae, Brassicaceae), life cycles, and growing behavior
+(growth rate, biomass production): Achillea millefolium,
+Brassica carinata, Dactylis glomerata, Festuca ovina, Med-
+icago lupulina, Medicago sativa, Phacelia tanacetifolia, Plan-
+tago coronopus, Poterium sanguisorba, Secale cereale, Trifolium
+fragiferum, Triticosecale and Vicia villosa. Moreover, three
+inter-rows were maintained with spontaneous vegetation.
+Inter-rows were sown in late September 2016 and were
+destroyed at the beginning of May 2017. No weeding was
+performed in the inter-rows, so we obtained plant commu-
+nities composed of sown and spontaneous species (Table
+S1).
+2.2.
+Measurements
+Before grapevine budburst (April 2017), three quadrats
+(0.25 m2) were placed in each inter-row, except in those
+with Triticosecale and Secale cereale (2 quadrats) and Bras-
+sica carinata (1 quadrat) cover, for a total of 38 quadrats.
+In each quadrat, the plant communities were composed of
+sown and spontaneous species (Table S1).
+2.2.1.
+Soil sampling
+To account for the effect of soil management strategies
+on soils, soil samples were collected at service crop emer-
+gence in order to determine the soil organic carbon (SOC,
+mg g−1), microbial biomass (MB, mg kg−1) and inorganic
+nitrogen (inorgN, mg kg−1) content. Samples were col-
+lected within the 0-10 cm topsoil layer in the most con-
+trasted strategies (SC and T), with 10 composite samples
+included in each soil management strategy. Each com-
+posite sample was composed of 4 sub-samples taken in
+4 adjacent inter-rows with an identical soil management
+strategy.
+To measure the soil aggregate stability, soil samples
+were collected at grapevine budburst with a small shovel
+at the soil surface of each quadrat (0-10 cm). Samples were
+air-dried (∼25◦C, 72 h), sieved (3–5 mm) and stored at 5◦C
+(Le Bissonnais, 1996; ISO-10930, 2012).
+2.2.2.
+Aggregate stability measurements
+Aggregate stability was measured using the method
+of Le Bissonnais (1996) (ISO-10930, 2012). Only the fast
+wetting disruptive test was performed here. For the 38
+quadrats, the test was performed on three soil subsamples
+(10 g each). Before measurements, samples were dried
+at 40◦C for 24 h. After drying, soil aggregates were im-
+mersed in distilled water for 10 min, and transferred onto
+a 50 µm sieve immersed in ethanol to separate >50 µm
+fragments from <50 µm fragments. The >50 µm fraction
+was collected, oven-dried (40◦C, 48 h) and sieved through
+a column of 6 sieves (2.00, 1.00, 0.50, 0.20, 0.10, and 0.05
+mm). The mean weight diameter (MWD) was calculated
+to express aggregate stability, corresponding to the sum
+of the mass fraction of soil remaining on each sieve mul-
+tiplied by the mean diameter of the two adjacent sieves.
+Coarse elements (>2 mm gravel) were weighed to correct
+the MWD values.
+2.2.3.
+Root sampling and measurements
+At budburst, all species were identiﬁed in each quadrat
+and aboveground biomass was removed for root sampling.
+Then two soil cores (8 cm diameter) per quadrat were
+collected in the 0-10 cm topsoil layer and stored in freezer
+at -20◦C before root measurement. After storage, the two
+soil cores originating from a same quadrat were thawed
+together in water. Roots were washed and sorted to sepa-
+rate herbaceous roots from grapevine roots, which were
+not used in this study. Subsamples of roots were placed
+in water in a clear acrylic tray, and scanned at 600 dpi
+with an Epson Perfection V800 scanner. Scanned images
+were analyzed using WinRHIZO Reg software (Regent
+Instruments, Quebec, Canada). Several diameter classes
+were set for the analysis: each 0.1 mm from 0 to 1 mm,
+each 0.5 mm from 1 to 2 mm, and the >2 mm class. The
+proportion of <2 mm roots was systematically 98–100%
+of the total length over all plant communities. The Win-
+RHIZO software was used to calculate the total length,
+surface area, volume and mean diameter of the scanned
+roots, and the total length for each diameter class. Scanned
+and non-scanned samples were air dried (60◦C, 72 h) and
+weighed separately.
+As the roots of species composing the communities
+could not be differentiated, six “root functional markers”
+of the communities (Damour et al., 2015) were calculated
+instead of the functional traits of each species (Violle et al.,
+2007). These functional markers stand for community-
+aggregated traits (Garnier et al., 2004) and represent the
+root traits of an average plant in this community. The
+total root length was calculated with the scanned length
+and dry mass and non-scanned dry mass. The root length
+density (RLD, cm cm−3) and root mass density (RMD,
+kg m−3) were calculated as the total root length and dry
+mass divided by the soil volume, respectively. The speciﬁc
+root length (SRL, m g−1) was calculated as the total root
+length divided by the root dry mass, and the very ﬁne root
+fraction (VFRf) was calculated as the length of roots <0.1
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+3
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Table 1 Description of the three soil management strategies applied in the inter-rows before the sowing in September 2016
+Soil management
+strategy
+Soil Management
+2012-2013
+2013-2014
+2014-2015
+2015-2016
+SC
+Festuca sp. + Lolium perenne
+Festuca sp. + Lolium perenne
+Hordeum vulgare
+Vicia faba
+SCT
+Festuca sp. + Lolium perenne
+Festuca sp. + Lolium perenne
+Hordeum vulgare
+Tillage
+T
+Tillage
+Tillage
+Tillage
+Tillage
+mm divided by the total root length. The mean diameter
+(DIAM) was calculated by the software, and the root tissue
+density (RTD, g cm−3) was calculated as the root volume
+divided by the root biomass.
+2.3.
+Statistical analysis
+The effect of plant communities and soil organic carbon
+on MWD was tested with ANOVA for each soil manage-
+ment strategy, except for the effect of soil organic carbon
+in the soil management strategy SCT (soil properties data
+not available). We used the Fischer’s least signiﬁcant dif-
+ference to assess for differences between communities and
+with control quadrats (bare soil), for each soil management
+strategy. The impact of the soil management strategies on
+the soil properties, MWD and root functional markers was
+tested with Kruskal-Wallis tests.
+The relations between all root functional markers were
+assessed with a principal component analysis (PCA) using
+R package ‘FactomineR’ (Lê et al., 2008). The soil man-
+agement strategy and botanical family of the dominant
+species in each quadrat were included as supplementary
+qualitative variables. Relations between qualitative vari-
+ables and the PCA axes were assessed with a v.test (Hus-
+son et al., 2017). Krustal-Wallis test were performed to
+assess differences of root functional markers between soil
+management strategies.
+Relations between root functional markers, soil organic
+carbon and soil aggregates stability were assessed with
+multiple regressions and variable selection procedures, the
+variable MWD as the dependent variable, root functional
+markers and SOC as independent variables. We used
+the R package ‘leaps’ which performs a selection of best
+subsets of variables with exhaustive search, and selected
+models according to their R2 and p-value. Before selecting
+a model, we ﬁrst tested multicollinearity using the ‘vif’
+function of the R package ‘car’ (Fox and Weisberg, 2011)
+and eliminated redundant variables if necessary (VIF >
+5). Then when a variable had a signiﬁcant slope in the
+model, we checked its consistency with its slope in a sim-
+ple regression with MWD. We thus selected best models
+(R2 criterion) that were built with non-correlated variables,
+and consistent with the slope of the variables in simple re-
+gression with MWD. The model selection was performed
+on data from soil management strategy SC only, T only,
+and both. In each case, we performed model selection
+with and without variable SOC in the dataset, resulting in
+6 ﬁnal models. In each model, the relative contribution of
+selected variables to the model R2 was assessed with the
+LMG computer-intensive method that averages sequential
+sums of squares over all orderings of regression variables
+(‘relaimpo’ R package, Grömping (2006)). All analyses
+were performed with R version 3.4.3 (Team, 2018).
+3.
+Results
+3.1.
+Impacts of soil management strategies on soil
+properties and MWD
+Very unstable
+Unstable
+Medium stable
+Soil manag.
+Figure 1 MWD for the 38 quadrats under the three soil man-
+agement strategies (SC: service crop; SCT: service crop + tillage
+at year n-1; and T: tillage).
+B: Boxplots and distribution of
+MWD under the three soil management strategies. Point data
+were rounded at 0.03 mm in this graph. Different letters indi-
+cate a signiﬁcant difference between soil management strategies
+(Kruskal-Wallis rank test with α = 0.05). Dashed lines separate
+the stability classes deﬁned by Le Bissonnais (1996). MWD: mean
+weight diameter
+The soil management strategies highly affected the soil
+aggregate stability (Fig. 1, Table 2). MWD were signiﬁ-
+cantly higher under the SC strategy than MWD recorded
+under the SCT and T strategies (Fig. 1), and no signiﬁcant
+difference was found between the SCT and T strategies
+4
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+(MWDSCT = 0.50 ± 0.16). Overall, MWD were low in
+our experiment, ranging from 0.31 mm to 1.19 mm and
+covering the “very unstable”, “unstable” and “medium
+stable” classes according to Le Bissonnais (1996) (Fig. 1).
+The MWD under the SC strategy covered the “unstable”
+(0.4 < MWD < 0.8) and “medium stable” (0.8 < MWD <
+1.3) classes, while MWD under the SCT and T strategies
+covered the “very unstable” (MWD < 0.4) and “unstable”
+classes, except for one quadrat. For all soil properties,
+signiﬁcant differences were found between the SC and T
+strategies, with higher SOC, MB and inorganic N under
+the SC soil management strategy (Table 2). Overall, the
+SOC content was low, ranging from 6.7 to 13.7 mg g−1
+(Erktan et al., 2016).
+Table 2 Description of the two soil management strategies ap-
+plied in the inter-rows before the sowing in September 2016
+SC
+T
+MWD (mm)
+0.81 ± 0.16 a
+0.47 ± 0.08 b
+SOC (mg g-1)
+12.17 ± 1.78 a
+7.33 ± 0.42 b
+MB (mg kg-1)
+321.03 ± 45.56 a
+122.74 ± 15.40 b
+inorgN (mg kg-1)
+18.72 ± 5.98 a
+1.84 ± 0.51 b
+3.2.
+Belowground functional characterization of ser-
+vice crop communities
+The PCA conducted on root functional markers ex-
+plained 83.5% of the total variance on the ﬁrst two axes
+(Fig. 2). The ﬁrst axis explained 51.2% of the total varia-
+tion, and opposed speciﬁc root length and very ﬁne root
+fraction (positive coordinates) to root mean diameter (neg-
+ative coordinates), with respective contributions of 23.0%,
+30.2% and 31.5%. The second axis explained 32.3% of
+the total variance, with main contributions from RMD
+(42.1%), RTD (24.5%) and RLD (22.7%), the three variables
+being positively related to axis 2 (Fig. 2). Regarding to the
+species, the ﬁrst axis opposed Fabaceae species to Poaceae,
+Hydrophyllaceae and Brassicaceae species, while second
+axis opposed Asteraceae and Plantaginaceae species to
+Fabaceae, Brassicaceae and Rubiaceae species (Fig. 2, Ta-
+ble S2). Soil management strategies were also related to
+the PCA axes: ﬁrst axis opposed soil management strate-
+gies SC and T while second axis opposed SC and SCT (Fig.
+2, Table S2).
+The ranges of functional markers variation depended
+on the type of functional markers (Fig. 3). Markers related
+to the soil rooting density (RLD and RMD) were more
+variable than other functional markers, with coefﬁcients of
+variation of 0.45 and 0.42, respectively. The mean diameter
+was the least variable marker, with a coefﬁcient of variation
+of 0.23 that ranged only from 0.12 to 0.28 mm. The effect of
+soil management strategies was signiﬁcant for root mean
+diameter, SRL and RTD.
+3.3.
+Service crop communities, root functional mark-
+ers and MWD
+In each soil management strategy, plant communities
+had a signiﬁcant effect on MWD (α = 0.05, Fig. 4). The
+majority of the quadrats had signiﬁcantly higher MWD
+than bare soil in soil management strategies SC and T,
+whereas 6 communities over 10 had similar MWD than
+bare soil in soil management strategy SCT (LSD test, α =
+0.05). The soil organic carbon (SOC) signiﬁcantly affected
+MWD in the two soil management strategies SC and T
+(α = 0.05, Fig. 4). SOC data was not available for soil
+management strategy SCT.
+The model selection procedure revealed different pat-
+terns of relations between MWD, root functional markers
+and soil organic carbon, depending on the soil manage-
+ment strategy. Performed on the whole dataset (i.e. soil
+management strategies SC and T), the best model included
+variables SOC, root diameter (DIAM), root tissue density
+(RTD) and root mass density (RMD), with respective con-
+tributions of 62%, 21%, 8% and 9% to the model R2; all
+slopes were positive and signiﬁcant except for RMD (Table
+3). Performed on data from soil management strategy
+T, the best model included SOC, DIAM, RLD, speciﬁc
+root lensth (SRL) and root mass density (RMD). However,
+only SOC was signiﬁcant in the model, with a positive
+slope and a contribution of 80% to the model R2 (Table 3).
+Using data from soil management strategy SC only, the
+best model included RLD, SOC, RMD and very ﬁne root
+fraction (VFRf). Slopes of SOC and RLD were signiﬁcant,
+with positive and negative slopes, respectively (Table 3).
+The inclusion of variable SOC strongly improved the R2
+of the best models in the soil management strategy T and
+over the whole dataset (SC + T).
+4.
+Discussion
+4.1.
+Role of past soil management strategies in increas-
+ing the MWD and soil quality
+The overall low SOC content, which ranged from 6.7 to
+13.7 mg g−1, was not surprising in our experiment (Table
+2). Indeed, vineyards are often sub-fertilized or even not
+fertilized to ensure berry production and quality rather
+than vegetative growth, and organic restitutions are low
+in these agroecosystems (Celette et al., 2009). Moreover,
+soil organic matter content increases slowly (Morlat and
+Jacquet, 2003), which may explain the low SOC content
+in the SC soil management strategy compared with other
+studies (e.g. Erktan et al. (2016)). However, SOC, MB
+and inorganic N were signiﬁcantly higher in the SC soil
+management strategy compared to the T soil management
+strategy. The lowest values for the three soil variables,
+corresponding to low soil fertility, may have been due to
+the history of several years of tillage with low organic
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+5
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Figure 2 Biplot of the principal component analysis (PCA) between root functional markers. Point shapes and colors indicate the
+family of the dominant species in each quadrat. MWD: mean weight diameter (mm); SOC: soil organic carbon; DIAM: root mean
+diameter; VFRf: very ﬁne root fraction; SRL: speciﬁc root length; RTD: root tissue density; RMD: root mass density; RLD: root length
+density
+input (Table 1, Table 2). Unfortunately, soil properties
+were not measured in the SCT soil management strategy
+for comparison with other soil management strategies.
+MWD were signiﬁcantly higher under the SC soil man-
+agement strategy compared with the SCT and T soil man-
+agement strategies. Moreover, MWD did not signiﬁcantly
+differ between the SCT and T soil management strate-
+gies (Table 2). These results show that soil management
+markedly impacts the soil aggregate stability, as one year
+of tillage impaired the soil aggregate stability even af-
+ter three years of service crops and organic inputs (root
+turnover, root decomposition, mulch). The highest MWD
+found in the SC soil management strategy may be partially
+explained by the better soil organic matter conditions. In-
+deed, SOC increases particle cohesion and the formation
+of bonds with bacterial and fungal compounds that par-
+ticipate in soil stabilization (Tisdall and Oades, 1982; Six
+et al., 2004; Abiven et al., 2009). Microbial activity also
+increases aggregate stability by the production of extracel-
+lular compounds that act as binding agents between soil
+particles, and by physical enmeshment of soil particles
+with fungal hyphae that protect aggregates (Tisdall and
+Oades, 1982; Six et al., 2004; Cosentino et al., 2006; Abiven
+et al., 2009, 2007).
+4.2.
+Impact of root functional markers on soil aggre-
+gate stability
+Following the soil management strategy, the model selec-
+tion procedure revealed different types of root functional
+markers related to soil aggregate stability. Roots play di-
+rect and indirect roles in driving soil aggregate stability:
+physical enmeshment and protection of soil aggregates, ex-
+udation of compounds that act as binding agents between
+soil particles, stimulation of microbial biomass which also
+enhances the soil aggregate stability (Jastrow et al., 1998;
+Hamilton and Frank, 2001; Six et al., 2004; Gyssels et al.,
+2005; Bardgett et al., 2014). In this study, the majority
+of plant communities had higher aggregate stability than
+bare soil (Fig. 4), however the predictive power of root
+functional markers appeared marginal compared to soil
+organic carbon, except for soil management strategy SC,
+and the inclusion of soil organic carbon systematically
+increased models R2 (Table 3).
+Combining data from soil management strategy SC and
+T, the best model included soil organic carbon (SOC), root
+mean diameter (DIAM), root tissue density (RTD) and root
+mass density (RMD, non-signiﬁcant). Highest contribu-
+tions were found for variables SOC (62%) and DIAM (21%)
+which had positive effect of MWD in the model (Table 3).
+The positive relation between SOC and MWD is not sur-
+prising, the effect of SOC on aggregate stability have been
+discussed in the previous section. Erktan et al. (2016) stud-
+ied soil aggregate stability along a successional gradient
+6
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Soil manag.
+Figure 3 Root traits measured in the quadrats under the three soil management strategies. Curves indicate probability densities for
+each trait, and points indicate values measured in the experiment. Point shape and color indicate the soil management strategy to
+which belongs the community. Means and standard deviations were added to each density curve (black point with error bars). Cv:
+coefﬁcient of variation. Point data were jittered in this graph for clarity. DIAM: root mean diameter; VFRf: very ﬁne root fraction; SRL:
+speciﬁc root length; RTD: root tissue density; RMD: root mass density; RLD: root length density
+Community ***
+SOC *
+α = 0.05 
+ 
+ 
+Community ***
+α = 0.05 
+Community ***
+SOC ***
+α = 0.05 
+Figure 4 MWD of the service crop communities in the soil management strategies SC (A), SCT (B) and T (C). Dashed lines and black
+bars indicate the mean value of the bare soil quadrats. Letters indicate signiﬁcant differences between communities (Fisher’s least
+signiﬁcant difference, α = 0.05). The results of ANOVA tests are indicated for each soil management strategy
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+7
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Table 3 Results of the model selection procedures with contributions of the variable to the model R2. The ﬁrst column indicates the
+data used for model selection. Var: variables of the best model; Slope: slope estimates of the variables. Only signiﬁcant slopes are
+indicated; Contrib: relative contribution of the variables; R2: coefﬁcient of determination; p: p-value of the models. SOC: soil organic
+carbon; DIAM: root mean diameter; VFRf: very ﬁne root fraction; SRL: speciﬁc root length; RTD: root tissue density; RMD: root mass
+density; RLD: root length density
+Variable SOC included
+Variable SOC excluded
+Var.
+Slope
+Contrib.
+R2
+pvalue
+Var.
+Slope
+Contrib.
+R2
+pvalue
+SC
+RLD
+-0.118
+58%
+0.25
+0.006
+RLD
+-0.139
+74%
+0.21
+0.020
+SOC
+0.085
+27%
+RMD
+ns.
+12%
+RMD
+ns.
+10%
+VFRf
+ns.
+9%
+VFRf
+ns.
+5%
+RTD
+ns.
+5%
+T
+SOC
+0.6
+80%
+0.77
+6.54 × 10−7
+RTD
+0.094
+62%
+0.26
+0.048
+DIAM
+ns.
+6%
+RLD
+ns.
+29%
+RLD
+ns.
+6%
+VFRf
+ns.
+8%
+RMD
+ns.
+6%
+SRL
+ns.
+3%
+SC+T
+SOC
+0.2
+62%
+0.56
+1.21 × 10−18
+DIAM
+0.215
+79%
+0.27
+1.90 × 10−7
+DIAM
+0.146
+21%
+RTD
+0.115
+17%
+RTD
+0.14
+8%
+RLD
+ns.
+4%
+RMD
+ns.
+9%
+of plant communities and found that mean root diameter
+was positively correlated with aggregate stability. More
+precisely, they found a negative relation between MWD
+and the very ﬁne root fraction (<0.2 mm), and a positive
+relation with the ﬁne root fraction (0.2–1 mm) which corre-
+sponds to high diameter values in our experiment (mean
+diameter of 0.18 mm and a third quartile value of 0.22 mm,
+Fig. 3). Jastrow et al. (1998) reported that ﬁne roots be-
+tween 0.2 and 1 mm had a strong effect on soil stabilization
+due to their greater interaction with external hyphae and
+microbial biomass, whereas very ﬁne roots, i.e. diameter
+<0.2 mm, had an overall low contribution to soil stability.
+Moreover, Roumet et al. (2016) highlighted a positive close
+correlation between the root water-soluble concentration
+and the root diameter among a majority of herbaceous
+species. As the root water-soluble concentration is pos-
+itively related to soil aggregate stability (Le Bissonnais
+et al., 2017; Poirier et al., 2017), that could explain the pos-
+itive relation between MWD and root diameter, although
+we didn’t directly measure root solubles concentration in
+our experiment. Root tissue density (RTD) is also related
+to hemicellulose and carbon concentration (Prieto et al.,
+2015; Roumet et al., 2016), and to root soluble compounds
+in graminoid species (Roumet et al., 2016). These traits
+have been previously related to soil aggregate formation
+(Poirier et al., 2017, 2018), but measuring only the RTD
+may not allow to explain MWD variations, which could
+explain the low contribution of the variable in the model
+(Table 3).
+The separation of the dataset following soil management
+strategies revealed other relations. Regarding to the soil
+management strategy T only, only soil organic carbon was
+signiﬁcant in the best model, with a contribution to the
+model R2 of 80% (Table 3). Moreover, the R2 of the model
+including SOC was strongly higher than the best model
+including only root functional markers, which conﬁrms
+the predominant role of SOC in aggregation processes
+(Abiven et al., 2009). Regarding to the soil management
+strategy SC, the root length density (RLD) contributed the
+most to explain MWD, with a negative slope in the model
+(Table 3). This negative relation contradicts previous re-
+sults that showed a positive effect of RLD on aggregates
+stability (Fattet et al., 2011; Pohl et al., 2012; Gould et al.,
+2016; Le Bissonnais et al., 2017). However, in our case the
+relation is mainly due to one quadrat sown with Medicago
+sativa (Q27, see Table S1), which had the highest MWD
+and the lowest root length density in the dataset (see Fig.
+S1). The low RLD is probably due to the root system of
+Medicago sativa, which had a high proportion of tap roots
+in the 0-10 cm soil layer, and less total root length than
+other plant communities, while the high MWD may be
+due to the positive relation between root diameter and
+MWD. However, the relation is too weak to suggest gener-
+alizable ﬁndings, as the other plant communities including
+Medicago sativa had different plant composition and cover
+rates, and didn’t conﬁrm these assumptions (Table S1).
+Moreover, the correlation between MWD and RLD wasn’t
+signiﬁcant in the SC dataset (see Fig. S2).
+8
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+4.3.
+Role of the botanical family of sown species in
+soil stabilization in vineyards
+Although this study was not designed to compare the
+effect of species on MWD, we could analyze the quadrats
+in terms of dominant botanical families, as inﬂuenced by
+the sown service crop species (Fig. 2). The impact of the
+root functional markers of the botanical families on soil
+stabilization may have been twofold, with one related to
+the speciﬁc effects of roots and the other to the develop-
+ment of species, with poor development probably leading
+to a weak impact of the species on soil stabilization.
+The PCA conducted in all quadrats highlighted some
+avenues for discussing the impacts of the sown botanical
+family, and suggested some trends. First axis conﬁrmed
+previous ﬁndings on the existence of a root economics
+spectrum opposing species and plant communities by their
+root diameter and speciﬁc root length (Prieto et al., 2015;
+Roumet et al., 2016). Here, high diameter was mainly ex-
+hibited by Fabaceae species and to a lesser extent Plantag-
+inaceae and Asteraceae (Fig. 2, Table S2), while high SRL
+and very ﬁne root fraction was exhibited by Poaceae and
+Hydrophyllaceae species. The high proportion of very ﬁne
+roots may physically limit the formation of macroaggre-
+gates, resulting in lower MWD with graminoids (Jastrow
+et al., 1998; Poirier et al., 2017). In addition, Roumet et al.
+(2016) showed that eudicot species had thicker ﬁne roots,
+and a higher concentration of water-soluble compounds
+than graminoids, and a recent study showed that root
+soluble compound concentration was the best predictor of
+MWD among several root traits (Poirier et al., 2017). MWD
+was negatively related to axis 1 so as Fabaceae coordinates:
+although we didn’t measure root chemical compounds, we
+hypothesize here that the inﬂuence of Fabaceae on MWD
+is related to root soluble compound composition, and in a
+further extent to root exudation (Bardgett et al., 2014).
+However, contrary results were reported in other studies
+Pérès et al. (2013); Gould et al. (2016) found that soil
+aggregate stability increased with grasses, and decreased
+with legumes. In their experiment, although unfertilized,
+plant communities were sown 4 years before their soil
+stability measurements, following 40 years of vegetable
+and wheat cultivation. We hypothesize that their plant
+communities beneﬁted from better soil conditions than in
+the present study (e.g. higher soil organic matter contents,
+i.e. 2–3% SOC), and the higher root biomass they found
+in the presence of grasses compared to legumes supports
+this hypothesis. Gould et al. (2016) also found lower root
+length densities under legume cover than under grasses,
+which may have limited the impact of legumes on the soil
+aggregate stability. Their experiment was set up in spring
+2002 and their aggregate stability measurements were
+done in summer 2012; here again we hypothesize that the
+plant communities beneﬁted from better soil conditions
+than plants in the present study, thus favoring graminoid
+development compared to the vineyard soil. These results
+raise the question as to what species would be the most
+efﬁcient to increase soil aggregate stability in soils with
+low SOC content, such as the soils from our experimental
+vineyard. Indeed, symbiotic N ﬁxation that occurs with
+Fabaceae may allow such species to grow in less favorable
+conditions than graminoids, and consequently produce
+more root biomass, and in ﬁne increase the soil aggregate
+stability more efﬁciently than graminoids would in such
+conditions (Table S1).
+4.4.
+Study limitations
+First of all, the time scale of this study probably explain
+the low predictive potential of root functional markers
+to explain aggregate stability. Indeed, service crops and
+spontaneous vegetation had a 6 months growth only, while
+in other studies MWD are often measured several years
+after plant community establishment (Pérès et al., 2013;
+Gould et al., 2016; Poirier et al., 2017). In this study, the
+inﬂuence of root functional markers strongly depended on
+plant growth, which was lower under poor soil conditions
+(Table 2). Moreover, the sowings of service crops were not
+balanced across soil management strategies, which makes
+difﬁcult to discriminate the effects of soil properties vs.
+root functional markers (Table S1). The measurements of
+soil organic properties were not made at each quadrat but
+with composites, and the precision of SOC values may
+have hindered the inﬂuence of root functional markers
+in some situations. We couldn’t measure soil aggregate
+stability at the beginning of the experiment, which compli-
+cates the interpretation of differences observed a posteriori.
+However, plant communities were compared to bare soil
+quadrats to assess for root system effect on MWD. Finally,
+the measurement of only one indicator of soil aggregate
+stability, the mean weight diameter (MWD), didn’t allow
+us to study the relations between root functional markers
+and particular classes of aggregate sizes (Poirier et al.,
+2017).
+The efﬁciency of certain botanical families and their root
+functional markers in improving soil aggregate stability on
+a short-term in agrosystems would need further research.
+In heterogeneous agricultural ﬁelds, a ﬁne characterization
+of initial soil conditions would probably reﬁne results of
+statistical relations between plant functional markers, soil
+organic properties and aggregate stability. As plant traits
+respond to environmental factors, it is important to study
+the relations between plant traits and services in various
+soil conditions to reﬂect the diversity of ﬁeld situations
+and cropping systems. Balanced experiments including
+various species and botanical families are needed to ﬁnd
+ideotypes of service crops on the basis of plant traits, and
+expand the pool of species of interest to provide services
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+9
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+in agriculture.
+5.
+Conclusion
+In this study, we did not conﬁrm the hypothesis that
+root functional markers would have a higher contribution
+than soil properties to explain aggregate stability in soils
+with low soil organic carbon content; SOC had higher
+potential than root functional markers to predict aggre-
+gate stability overall and in situations with the lowest soil
+organic carbon contents. However we highlighted some
+positive relations between root functional markers and
+soil aggregate stability that encourages research efforts
+for the study of plant traits and ecosystem services in
+agriculture. Soil aggregate stability in cropped soils re-
+sults from complex interactions between soil management
+strategies, soil properties and plant functional markers,
+and this study highlighted that service crop communi-
+ties have an impact on soil stabilization even after a short
+growth period. Within herbaceous species, we showed
+that the root mean diameter is an important functional
+marker to explain soil aggregate stability as it is linked to
+the root water-soluble concentration and exudation, which
+have a marked impact on the soil aggregate stability. We
+also suggest that Fabaceae species may be more efﬁcient
+than Poaceae species in increasing soil aggregate stability
+on a short time scale under low SOC contents. Moreover
+we underlined the predominant role of the past manage-
+ment strategy in soil stabilization, which directly drives
+soil organic carbon and the rooting efﬁciency of service
+crops. Functional approach is a powerful tool for gaining
+insight into how plants inﬂuence ecosystems and how they
+respond to environmental factors on a broad scale, and it
+enables comparison of studies and general application of
+the ﬁndings across a wide range of environments. Plant
+functioning patterns could be identiﬁed on the basis of
+plant traits, and plant traits may thus reveal ideotypes of
+service crops and expand the pool of species of interest to
+provide services in agriculture.
+Acknowledgements
+This research beneﬁted from ﬁnancial support for re-
+search activities carried out in the FertilCrop project, in
+the framework of the FP7 ERA-Net programme CORE
+Organic Plus. The authors would like to thank Clément
+Énard, Yvan Bouisson and Bénédicte Ohl for their work
+in the experimental vineyard, from grapevine manage-
+ment to data sampling; Jean-Luc Belotti for his experience
+and advice on aggregate stability measurement; Catherine
+Roumet, Florian Fort and Christophe Jourdan for shar-
+ing their root analysis experience and for their precious
+advice. Last but not least (at all!), we thank Inti Gan-
+ganelli for his help during the root trait measurements,
+and Nicolas Fleureau and Élise Rivière for their help in
+root trait measurements, aggregate stability measurements
+and explanatory data analysis.
+References
+Abiven, S., Menasseri, S., Angers, D. A., and Leterme, P. (2007). Dy-
+namics of aggregate stability and biological binding agents during
+decomposition of organic materials. European Journal of Soil Science,
+58(1):239–247.
+Abiven, S., Menasseri, S., and Chenu, C. (2009). The effects of organic
+inputs over time on soil aggregate stability – A literature analysis. Soil
+Biology and Biochemistry, 41(1):1–12.
+Ali, H. E., Reineking, B., and Münkemüller, T. (2017). Effects of plant
+functional traits on soil stability: intraspeciﬁc variability matters. Plant
+and Soil, 411(1-2):359–375.
+Angers, D. A. and Caron, J. (1998). Plant-induced changes in soil struc-
+ture: Processes and feedbacks. Biogeochemistry, 42:55–72.
+Bardgett, R. D., Mommer, L., and De Vries, F. T. (2014). Going under-
+ground: Root traits as drivers of ecosystem processes. Trends in Ecology
+and Evolution, 29(12):692–699.
+Blanco-Canqui, H., Shaver, T. M., Lindquist, J. L., Shapiro, C. A., Elmore,
+R. W., Francis, C. A., and Hergert, G. W. (2015). Cover crops and
+ecosystem services: Insights from studies in temperate soils. Agronomy
+Journal, 107(6):2449–2474.
+Blavet, D., De Noni, G., Le Bissonnais, Y., Leonard, M., Maillo, L.,
+Laurent, J., Asseline, J., Leprun, J., Arshad, M., and Roose, E. (2009).
+Effect of land use and management on the early stages of soil water
+erosion in French Mediterranean vineyards. Soil and Tillage Research,
+106(1):124–136.
+Celette, F., Findeling, A., and Gary, C. (2009). Competition for nitrogen
+in an unfertilized intercropping system: The case of an association
+of grapevine and grass cover in a Mediterranean climate. European
+Journal of Agronomy, 30(1):41–51.
+Celette, F., Gaudin, R., and Gary, C. (2008). Spatial and temporal changes
+to the water regime of a Mediterranean vineyard due to the adoption
+of cover cropping. European Journal of Agronomy, 29(4):153–162.
+Cerdan, O., Govers, G., Le Bissonnais, Y., Van Oost, K., Poesen, J., Saby,
+N., Gobin, A., Vacca, A., Quinton, J., Auerswald, K., Klik, A., Kwaad,
+F. J. P. M., Raclot, D., Ionita, I., Rejman, J., Rousseva, S., Muxart, T.,
+Roxo, M. J., and Dostal, T. (2010). Rates and spatial variations of soil
+erosion in Europe: A study based on erosion plot data. Geomorphology,
+122(1-2):167–177.
+Coll, P., Le Cadre, E., Blanchart, E., Hinsinger, P., and Villenave, C. (2011).
+Organic viticulture and soil quality: A long-term study in Southern
+France. Applied Soil Ecology, 50(1):37–44.
+Cosentino, D., Chenu, C., and Le Bissonnais, Y. (2006). Aggregate stability
+and microbial community dynamics under drying–wetting cycles in a
+silt loam soil. Soil Biology and Biochemistry, 38(8):2053–2062.
+Czarnes, S., Dexter, A. R., and Bartoli, F. (2000). Wetting and drying cycles
+in the maize rhizosphere under controlled conditions. Mechanics of
+the root-adhering soil. Plant and Soil, 221(2):253–271.
+Dabney, S. M., Delgado, J. A., and Reeves, D. W. (2001). Using winter
+cover crops to improve soil and water quality. Communications in Soil
+Science and Plant Analysis, 32(7-8):1221–1250.
+10
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Damour, G., Dorel, M., Quoc, H. T., Meynard, C., and Risède, J. M. (2014).
+A trait-based characterization of cover plants to assess their potential
+to provide a set of ecological services in banana cropping systems.
+European Journal of Agronomy, 52:218–228.
+Damour, G., Garnier, E., Navas, M. L., Dorel, M., and Risède, J.-M. (2015).
+Using Functional Traits to Assess the Services Provided by Cover
+Plants. Advances in Agronomy, 134:81–133.
+Damour, G., Navas, M. L., and Garnier, E. (2018). A revised trait-based
+framework for agroecosystems including decision rules. Journal of
+Applied Ecology, 55(1):12–24.
+David, M., Follain, S., Ciampalini, R., Le Bissonnais, Y., Couturier, A., and
+Walter, C. (2014). Simulation of medium-term soil redistributions for
+different land use and landscape design scenarios within a vineyard
+landscape in Mediterranean France. Geomorphology, 214:10–21.
+De Baets, S., Poesen, J., Meersmans, J., and Serlet, L. (2011). Cover crops
+and their erosion-reducing effects during concentrated ﬂow erosion.
+Catena, 85(3):237–244.
+Don, A., Schumacher, J., and Freibauer, A. (2011). Impact of tropical
+land-use change on soil organic carbon stocks – a meta-analysis. Global
+Change Biology, 17(4):1658–1670.
+Duarte, C. M., Sand-Jensen, K., Nielsen, S. L., Enríquez, S., and Agustí, S.
+(1995). Comparative functional plant ecology: rationale and potentials.
+Trends in Ecology & Evolution, 10(10):418–421.
+Durán Zuazo, V. H. and Rodríguez Pleguezuelo, C. R. (2008).
+Soil-
+erosion and runoff prevention by plant covers. A review. Agronomy
+for Sustainable Development, 28:65–86.
+Erktan, A., Cécillon, L., Graf, F., Roumet, C., Legout, C., and Rey, F. (2016).
+Increase in soil aggregate stability along a Mediterranean successional
+gradient in severely eroded gully bed ecosystems: combined effects
+of soil, root traits and plant community characteristics. Plant and Soil,
+398(1-2):121–137.
+Fattet, M., Fu, Y., Ghestem, M., Ma, W., Foulonneau, M., Nespoulous,
+J., Le Bissonnais, Y., and Stokes, A. (2011). Effects of vegetation type
+on soil resistance to erosion: Relationship between aggregate stability
+and shear strength. CATENA, 87(1):60–69.
+Ferrero, A., Sudiro, L., Nosalewicz, A., and Lipiec, J. (2004). Effects of
+grass cover and tillage on temperature of soil in sloping vineyard.
+International Agrophysics, 18(2):121–126.
+Fox, J. and Weisberg, S. (2011). An R Companion to Applied Regression.
+Sage, Thousand Oaks CA, second edition.
+Freschet, G. T. and Roumet, C. (2017). Sampling roots to capture plant
+and soil functions. Functional Ecology, 31(8):1506–1518.
+Gaba, S., Lescourret, F., Boudsocq, S., Enjalbert, J., Hinsinger, P., Journet,
+E. P., Navas, M. L., Wery, J., Louarn, G., Malézieux, E., Pelzer, E.,
+Prudent, M., and Ozier-Lafontaine, H. (2015). Multiple cropping
+systems as drivers for providing multiple ecosystem services: from
+concepts to design. Agronomy for Sustainable Development, 35(2):607–
+623.
+Garcia, L., Celette, F., Gary, C., Ripoche, A., Valdés-Gómez, H., and
+Metay, A. (2018). Management of service crops for the provision of
+ecosystem services in vineyards: A review. Agriculture, Ecosystems &
+Environment, 251:158–170.
+García-Díaz, A., Bienes, R., Sastre, B., Novara, A., Gristina, L., and
+Cerdà, A. (2017). Nitrogen losses in vineyards under different types of
+soil groundcover. A ﬁeld runoff simulator approach in central Spain.
+Agriculture, Ecosystems and Environment, 236:256–267.
+García-Ruiz, J. M. (2010). The effects of land uses on soil erosion in Spain:
+A review. Catena, 81(1):1–11.
+Garnier, E., Cortez, J., Billès, G., Navas, M. L., Roumet, C., Debussche,
+M., Laurent, G., Blanchard, A., Aubry, D., Bellmann, A., Neill, C., and
+Toussaint, J. P. (2004). Plant functional markers capture ecosystem
+properties during secondary succession. Ecology, 85(9):2630–2637.
+Gaudin, R., Celette, F., and Gary, C. (2010). Contribution of runoff to
+incomplete off season soil water reﬁlling in a Mediterranean vineyard.
+Agricultural Water Management, 97(10):1534–1540.
+Gould, I. J., Quinton, J. N., Weigelt, A., De Deyn, G. B., and Bardgett,
+R. D. (2016). Plant diversity and root traits beneﬁt physical properties
+key to soil function in grasslands. Ecology Letters, 19(9):1140–1149.
+Goulet, E., Dousset, S., Chaussod, R., Bartoli, F., Doledec, A. F., and
+Andreux, F. (2004). Water-stable aggregates and organic matter pools
+in a calcareous vineyard soil under four soil-surface management
+systems. Soil Use and Management, 20(3):318–324.
+Grömping, U. (2006). Relative importance for linear regression in R: the
+package relaimpo. Journal of Statistical Software, 17(1):1–27.
+Gumiere, S. J., Le Bissonnais, Y., Raclot, D., and Cheviron, B. (2011).
+Vegetated ﬁlter effects on sedimentological connectivity of agricultural
+catchments in erosion modelling: a review. Earth Surface Processes and
+Landforms, 36(1):3–19.
+Gyssels, G., Poesen, J., Bochet, E., and Li, Y. (2005). Impact of plant roots
+on the resistance of soils to erosion by water: a review. Progress in
+Physical Geography, 29(2):189–217.
+Hamilton, E. W. and Frank, D. A. (2001). Can plants stimulate soil
+microbes and their own nutrient supply? Evidence from a grazing
+tolerant grass. Ecology, 82(9):2397–2402.
+Husson, F., Lê, S., and Pagès, J. (2017). Exploratory Multivariate Analysis
+by Example Using R - Second edition. Chapman and Hall/CRC, New
+York.
+ISO-10930 (2012). Soil quality - Measurement of the stability of soil
+aggregates subjected to the action of water.
+Jastrow, J., Miller, R., and Lussenhop, J. (1998). Contributions of interact-
+ing biological mechanisms to soil aggregate stabilization in restored
+praririe. Soil Biology and Biochemistry, 30(7):905–916.
+Lê, S., Josse, J., Husson, F., and Mazet, J. (2008). FactoMineR: An R
+Package for Multivariate Analysis. Journal of Statistical Software, 25(1):1–
+18.
+Le Bissonnais, Y. (1996). Aggregate stability and assessment of soil
+crustability and erodibility: I. Theory and methodology. European
+Journal of Soil Science, 47:425–437.
+Le Bissonnais, Y., Prieto, I., Roumet, C., Nespoulous, J., Metayer, J., Huon,
+S., Villatoro, M., and Stokes, A. (2017). Soil aggregate stability in
+Mediterranean and tropical agro-ecosystems: effect of plant roots and
+soil characteristics. Plant and Soil, 424(1-2):303–317.
+Le Bissonnais, Y., Thorette, J., Bardet, C., and Daroussin, J. (2002).
+L’érosion hydrique des sols en France - Rapport Final. Technical
+report, INRA, IFEN.
+Lu, Y.-C., Watkins, K. B., Teasdale, J. R., and Abdul-Baki, A. A. (2000).
+Cover Crops in Sustainable Food Production. Food Reviews Interna-
+tional, 16(2):121–157.
+Martin, A. R. and Isaac, M. E. (2015). Functional traits in agroecoogy: a
+blueprint for research. Journal of Applied Ecology, 52:1425–1435.
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license
+11
+
+Garcia et al. (2019) Trait-based approach for agroecology: contribution of service crop root traits to explain soil aggregate stability in vineyards
+Médiène, S., Valantin-Morison, M., Sarthou, J.-P., de Tourdonnet, S.,
+Gosme, M., Bertrand, M., Roger-Estrade, J., Aubertot, J.-N., Rusch, A.,
+Motisi, N., Pelosi, C., and Doré, T. (2011). Agroecosystem management
+and biotic interactions: a review. Agronomy for Sustainable Development,
+31(3):491–514.
+Morlat, R. and Jacquet, A. (2003). Grapevine root system and soil charac-
+teristics in a vineyard maintained long-term with or without interrow
+sward. American Journal of Enology and Viticulture, 54(1):1–7.
+Novara, A., Gristina, L., Saladino, S., Santoro, A., and Cerdà, A. (2011).
+Soil erosion assessment on tillage and alternative soil managements
+in a Sicilian vineyard. Soil and Tillage Research, 117:140–147.
+Panagos, P., Borrelli, P., Poesen, J., Ballabio, C., Lugato, E., Meusburger,
+K., Montanarella, L., and Alewell, C. (2015). The new assessment of
+soil loss by water erosion in Europe. Environmental Science & Policy,
+54:438–447.
+Peregrina, F., Larrieta, C., Ibáñez, S., and García-Escudero, E. (2010).
+Labile organic matter, aggregates, and stratiﬁcation ratios in a semiarid
+vineyard with cover crops.
+Soil Science Society of America Journal,
+74(6):2120–2130.
+Pérès, G., Cluzeau, D., Menasseri, S., Soussana, J. F., Bessler, H., Engels,
+C., Habekost, M., Gleixner, G., Weigelt, A., Weisser, W. W., Scheu,
+S., and Eisenhauer, N. (2013). Mechanisms linking plant community
+properties to soil aggregate stability in an experimental grassland
+plant diversity gradient. Plant and Soil, 373(1-2):285–299.
+Poeplau, C. and Don, A. (2013). Sensitivity of soil organic carbon stocks
+and fractions to different land-use changes across Europe. Geoderma,
+192:189–201.
+Pohl, M., Graf, F., Buttler, A., and Rixen, C. (2012). The relationship
+between plant species richness and soil aggregate stability can depend
+on disturbance. Plant and Soil, 355(1-2):87–102.
+Poirier, V., Roumet, C., Angers, D. A., and Munson, A. D. (2017). Species
+and root traits impact macroaggregation in the rhizospheric soil of
+a Mediterranean common garden experiment. Plant and Soil, 424(1-
+2):289–302.
+Poirier, V., Roumet, C., and Munson, A. D. (2018). The root of the matter:
+Linking root traits and soil organic matter stabilization processes. Soil
+Biology and Biochemistry, 120:246–259.
+Prieto, I., Roumet, C., Cardinael, R., Dupraz, C., Jourdan, C., Kim,
+J. H., Maeght, J. L., Mao, Z., Pierret, A., Portillo, N., Roupsard, O.,
+Thammahacksa, C., and Stokes, A. (2015). Root functional parameters
+along a land-use gradient: evidence of a community-level economics
+spectrum. Journal of Ecology, 103(2):361–373.
+Roumet, C., Birouste, M., Picon-Cochard, C., Ghestem, M., Osman, N.,
+Vrignon-Brenas, S., Cao, K.-f., and Stokes, A. (2016). Root structure-
+function relationships in 74 species: evidence of a root economics
+spectrum related to carbon economy. New Phytologist, 210(3):815–826.
+Ruiz-Colmenero, M., Bienes, R., Eldridge, D., and Marques, M. (2013).
+Vegetation cover reduces erosion and enhances soil organic carbon in
+a vineyard in the central Spain. CATENA, 104:153–160.
+Salomé, C., Coll, P., Lardo, E., Metay, A., Villenave, C., Marsden, C.,
+Blanchart, E., Hinsinger, P., and Le Cadre, E. (2016). The soil quality
+concept as a framework to assess management practices in vulnerable
+agroecosystems: A case study in Mediterranean vineyards. Ecological
+Indicators, 61:456–465.
+Six, J., Bossuyt, H., Degryze, S., and Denef, K. (2004). A history of
+research on the link between (micro)aggregates, soil biota, and soil
+organic matter dynamics. Soil and Tillage Research, 79(1):7–31.
+Six, J., Elliott, E., and Paustian, K. (1999). Aggregate and Soil Organic
+Matter Dynamics under Conventional and No-Tillage Systems. Soil
+Science Society of America Journal, 63(5):1350.
+Six, J. and Paustian, K. (2014). Aggregate-associated soil organic matter
+as an ecosystem property and a measurement tool. Soil Biology and
+Biochemistry, 68:A4–A9.
+Tardy, F., Moreau, D., Dorel, M., and Damour, G. (2015). Trait-based
+characterisation of cover plants’ light competition strategies for weed
+control in banana cropping systems in the French West Indies. Euro-
+pean Journal of Agronomy, 71:10–18.
+Team, R. C. (2018). R: A Language and Environment for Statistical
+Computing.
+Tisdall, J. M. and Oades, J. M. (1982). Organic matter and water-stable
+aggregates in soils. Journal of Soil Science, 33(2):141–163.
+Tribouillois, H., Fort, F., Cruz, P., Charles, R., Flores, O., Garnier, E., and
+Justes, E. (2015). A Functional Characterisation of a Wide Range of
+Cover Crop Species: Growth and Nitrogen Acquisition Rates, Leaf
+Traits and Ecological Strategies. PLOS ONE, 10(3):e0122156.
+Violle, C., Navas, M.-L., Vile, D., Kazakou, E., Fortunel, C., Hummel, I.,
+and Garnier, E. (2007). Let the concept of trait be functional! Oikos,
+116(5):882–892.
+Wood, S. A., Karp, D. S., DeClerck, F., Kremen, C., Naeem, S., and Palm,
+C. A. (2015). Functional traits in agriculture: Agrobiodiversity and
+ecosystem services. Trends in Ecology and Evolution, 30(9):531–539.
+Zhang, W., Ricketts, T. H., Kremen, C., Carney, K., and Swinton, S. M.
+(2007). Ecosystem services and dis-services to agriculture. Ecological
+Economics, 64(2):253–260.
+12
+c⃝2019. This manuscript version is made available under the CC-BY-NC-ND 4.0 license

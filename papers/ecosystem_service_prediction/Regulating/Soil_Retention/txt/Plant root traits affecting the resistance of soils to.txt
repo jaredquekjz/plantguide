@@ -1,0 +1,956 @@
+Plant root traits affecting the resistance of soils to
+concentrated flow erosion
+Melanie Burylo,1* Freddy Rey,1 Nicolle Mathys2 and Thierry Dutoit3
+1 Irstea, Centre de Grenoble, UR EM, Saint Martin d’Hères, France
+2 Irstea, Centre de Grenoble, UR ETNA, Saint Martin d’Hères, France
+3 IMEP, UMR-CNRS, IRD, IUT d’Avignon, Avignon, France
+Received 23 May 2011; Revised 20 March 2012; Accepted 20 March 2012
+*Correspondence to: Melanie Burylo, Muséum National d’Histoire Naturelle, UMR MNHN-CNRS CERSP, 55 rue Buffon, 75005, Paris, France. E-mail: mburylo@mnhn.fr
+ABSTRACT:
+The effect of plant species on erosion processes may be decisive for long-term soil protection in degraded ecosystems. The
+identification of functional effect traits that predict species ability for erosion control would be of great interest for ecological restoration
+purposes. Flume experiments were carried out to investigate the effect of the root systems of three species having contrasted ecological
+requirements from eroded marly lands of the French Southern Alps [i.e. Robinia pseudo acacia (tree), Pinus nigra austriaca (tree) and
+Achnatherum calamagrostis (grass)], on concentrated flow erosion rates. Ten functional traits, describing plant morphological and biome-
+chanical features, were measured on each tested sample. Analyses were performed to identify traits that determine plant root effects on
+erosion control. Erosion rates were lowest for samples of Robinia pseudo acacia, intermediate in Achnatherum calamagrostis and highest
+in Pinus nigra austriaca. The three species also differed strongly in their traits. Principal components analysis showed that the erosion-
+reducing potential of plant species was negatively correlated to root diameter and positively correlated to the percentage of fine roots.
+The results highlighted the role of small flexible roots in root reinforcement processes, and suggested the importance of high root surface
+and higher tensile strength for soil stabilization. By combining flume experiment to plant functional traits measurements, we identified
+root system features influencing plant species performance for soil protection against concentrated flow erosion. Plant functional traits
+related to species efficiency for erosion control represent useful tools to improve the diagnosis of land vulnerability to erosion, plant
+community resistance and the prediction of ecosystem functioning after ecological restoration. Copyright © 2012 John Wiley & Sons, Ltd.
+KEYWORDS: concentrated runoff erosion; plant trait; flume experiment; soil fixation; root system
+Introduction
+During the past 15 years, researchers from various disciplinary
+fields have addressed the importance of ecosystems services
+(Millennium Ecosystem Assessment, 2005), defined as the
+benefits human populations derive from ecosystem processes
+(Costanza et al., 1997), to human societies. Soil retention and
+erosion control are part of the regulation functions provided
+by vegetation (De Groots et al., 2002) historically recognized
+since the nineteenth century and have become critically
+important in many ecosystems (Pimentel and Kounang, 1998).
+Indeed, the loss of soil through water erosion is one of the
+greatest environmental issues affecting both agricultural and
+natural lands worldwide (Morgan, 1995; Pimentel et al., 1995;
+Durán and Rodríguez, 2008). In the French Southern Alps, marly
+lands are subjected to severe water erosion and intense gullying
+(Figure 1), ending in the formation of badlands (Poesen et al.,
+2003), where concentrated runoff and shallow soil slippage
+processes cause considerable soil losses (35 cm yr–1 in Lecompte
+et al., 1998; 100 tons ha–1 yr–1 in Mathys et al., 2003).
+Vegetation has long been recognized as a factor significantly
+influencing erosion rates on slopes prone to instability (Thornes,
+1990; Morgan, 1995) and has thus been used for decades in eco-
+logical restoration operations on degraded lands (e.g. Coutancier,
+2004; Norris et al., 2008; Stokes et al., 2010). The effects of
+vegetation on concentrated flow erosion are manifold. Plant
+canopy intercepts rainfall, increases water infiltration and surface
+roughness (Styzcen and Morgan, 1995), thus reducing surface
+runoff and concentrated flow erosion. This protective effect of
+vegetation has mostly been related to vegetation cover without
+taking into account community composition and functional
+diversity (Garnier et al., 2004). Yet, species with certain functional
+traits may be more efficient in soil stabilization than others and
+may have a stronger impact on erosive dynamics and ecosystem
+stability (De Baets et al., 2009; Stokes et al., 2009). Evidence has
+shown that ecosystem processes are strongly influenced by the
+functional
+traits
+of
+individual
+species
+that
+compose
+the
+community (Díaz and Cabido, 2001; Garnier et al., 2004;
+Mokany et al., 2008). Classifying species according to their
+impact on ecosystem processes and predicting ecosystem func-
+tioning from these so-called ‘functional effect traits’ that have a
+significant influence on ecosystems processes, is therefore a
+major challenge in applied ecology (Lavorel and Garnier,
+2002). This approach has been used to determine plant traits that
+control litter decomposition rates (e.g. Cortez et al., 2007;
+Cornwell et al., 2008), primary productivity (e.g. Pontes et al.,
+2007) or nitrogen cycling (e.g. Craine et al., 2002) but can
+be generalized to other ecological processes including soil
+EARTH SURFACE PROCESSES AND LANDFORMS
+Earth Surf. Process. Landforms (2012)
+Copyright © 2012 John Wiley & Sons, Ltd.
+Published online in Wiley Online Library
+(wileyonlinelibrary.com) DOI: 10.1002/esp.3248
+
+protection against concentrated flow erosion. In degraded areas
+in a context of ecosystem restoration, several authors have
+stressed the need to identify species and plant traits that
+contribute to the provision of ecosystem services (Díaz et al.,
+2006; Luck et al., 2009). In addition, it is becoming widely
+acknowledged that interdisciplinary studies, relating ecology
+and geomorphology are necessary (Osterkamp et al., 2012;
+Stoffel and Wilford, 2012).
+Often neglected in soil erosion models, plant roots also have a
+number of hydrological and mechanical effects (Gyssels et al.,
+2005). The effect of plant root systems on soil stability has
+received increasing attention in recent years. Small flexible roots
+lower pore water pressure, increase surface roughness and
+provide additional soil cohesion through root reinforcement
+(Reubens et al., 2007). Concentrated flow erosion rates have
+been related to root traits such as root density (i.e. root mass per
+unit volume of soil – Li et al., 1991; De Baets et al., 2006; Gyssels
+et al., 2006), root length density (i.e. root length per unit volume
+of soil – Mamo and Bubenzer, 2001; De Baets et al., 2006; De
+Baets et al., 2007), root system type (heart versus tap root system
+– De Baets et al., 2007) and root surface area density (i.e. root
+surface per unit volume of soil – Zhou and Shangguan, 2005).
+Li et al. (1991) also reported that root reinforcement of soils
+depends on the number of fibrous roots less than 1 mm in
+diameter, the most resistant to tension (Gray and Sotir, 1996).
+Although the literature on the effects of plant roots on soil
+erosion by runoff is well documented, information remains
+rather
+descriptive.
+Quantitative
+research
+and
+laboratory
+experiments on hydraulic flume remains sparse (Mamo and
+Bubenzer, 2001; De Baets et al., 2006), primarily because of
+methodological difficulties. Moreover, experimental studies
+have been carried out on different species, traits and soil condi-
+tions, and different relationships between plant traits and
+erosion rates have been obtained. So far, generalizing on the
+functional traits that can explain or predict the effect of plant
+species on soil stability against concentrated flow is not achiev-
+able. Previous studies related erosion rates to ad hoc chosen or
+easy to measure root variables, whereas this study measured a
+complete set of root variables potentially influencing soil
+erosion rates and investigated their correlation with erosion-
+reducing potential of plant root systems, in order to present
+the root variables that relate best to the erosion-reducing poten-
+tial of plant root systems in early growth stages.
+The present study, focusing on the erosion processes in the
+marly badlands of the French Southern Alps, aims to expand
+our knowledge on plant functional traits that are involved in root
+reinforcement of soils and in reducing concentrated flow erosion
+rates. To meet this objective, we conducted flume experiments to
+simulate concentrated runoff similar to the ones that can be
+observed in gully beds during intense rainfalls. Tests were carried
+out on soil samples with laboratory grown plant species to evalu-
+ate the influence of the root system of three different species on
+soil resistance to incision by concentrated flow erosion. Soil
+detachment rates were assessed and 10 plant traits related to root
+biomass, root morphology and root mechanical properties were
+measured. Results are discussed in order to identify the relevant
+traits to evaluate and predict species performance for soil
+reinforcement against concentrate flow erosion.
+Materials and Methods
+Plant material
+Three species were selected according to the following criteria:
+they are pioneer species prevalent in eroded marly lands, they
+include different root system types to have different root traits
+values, they are, or were, used for land restoration. Added to
+availability constraints in the field or in nurseries and to exper-
+imental constraints, three species were studied: two tree
+species, Pinus nigra austriaca and Robinia pseudo acacia and
+the grass Achnatherum calamagrostis. The two tree species
+are both exotic species native to Austria and North America
+respectively but they did not show invasive development in
+marly lands of the French Southern Alps since they were first
+introduced during restoration operations at the end of the
+nineteenth century (Vallauri et al., 2002).
+In April 2009, seeds of the two tree species were germinated in
+vermiculite, a chemically inert mineral substrate, for four weeks
+in a growth chamber at 25 C /15 C day/night temperature and
+70% relative humidity. For the grass species, individual tussocks
+were collected in the field in autumn and cultivated in common
+garden during winter. Ramets were then isolated in April 2009,
+cut to 3 cm and 5 cm for aerial parts and roots respectively, and
+planted in vermiculite.
+Four weeks after germination and multiplication, seedlings,
+similar in size and shape, were transplanted into plastic pots
+(16 cm square  23 cm deep) filled with marly substrate
+collected from the field (Draix experimental site, Alpes de
+Haute Provence department, France, 44 8’N, 6 20’E). At the
+Figure 1.
+Eroded marly land in the French Southern Alps (Draix, Alpes-de-Haute-Provence, France). This figure is available in colour online at wileyonlinelibrary.
+com/journal/espl
+M. BURYLO ET AL.
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+same time, bare soil pots were prepared to serve as control. The
+soil from this site corresponded to the detrital and regolith
+layers that deposited after removal by erosion processes and
+was made of structureless marl fragments and colluvial
+materials. These marls have relatively low carbonate content
+(from 20 to 35%) their effective cohesion ranges from 6 to 12 kPa
+(Antoine et al., 1995; Maquaire et al., 2003).
+Pots were planted with 10 seedlings regularly distributed and
+then randomly placed in the experimental garden, with a 20 cm
+distance, where plants were let to grow. Root growth and root
+density were checked weekly by excavating soil samples from
+additional pots and flume experiment took place eight weeks
+later (July 2009) when root density was assumed sufficient to
+have a significant effect on soil stability
+Hydraulic flume experiment
+Flume experiments were conducted in July 2009, on three
+month old seedlings. Before each test, soil samples were
+prepared as follows: the above-ground biomass was removed
+(clipped level at the soil surface) and samples were placed in
+a container filled with water to wet the entire soil column and
+ensure similar soil moisture content between the samples. After
+soaking, samples were left to drain for 12 hours.
+Before the experiment, the bottom of the pots was cut and
+thin plates of polystyrene were added to raise the soil surface
+at the upper rim of the pot. Pots were placed in an open box
+at the bottom of the flume (Figure 2) and adhesive tape was
+stuck straddling the rims of the pot and the bottom of the flume
+to prevent edge effects. Samples were then exposed to a
+concentrated flow at a constant discharge (Q) of 00015 m3 s–
+1 during 60 seconds. This duration was determined after
+preliminary tests had shown that soil detachment mainly
+occurred during the first 60 seconds of the experiment. The
+corresponding flow shear stress (t), which was used to evaluate
+the erosive force of the concentrated flow (Gimenez and
+Govers, 2002; De Baets et al., 2006), was 52 Pa (see Appendix
+for details), which falls within the range of values needed for
+incipient motion of soil particles (18–106 Pa, Poesen et al.,
+2003). Detached soil particles were collected at the bottom
+end of the flume in two 50 L buckets every 30 seconds to calcu-
+late erosion rates. Tests were repeated on 10 pots per species.
+Ten tests were also carried out on bare soil samples (control).
+Soil detachment rate
+After the flume experiments, the collected sediments were left
+to decant, and then separated from the water, dried (48 hours
+at 70 C) and weighed. Relative soil detachment (RSD) rate
+was calculated for each test as the ratio of the mass of sediment
+detached from root-permeated samples to the average mass of
+sediment detached from bare soil samples (control).
+Morphological traits measurement
+The above-ground parts of plants, cut before the flume experi-
+ments, were dried (48 hours at 70 C) and weighed. After the
+tests, samples were cleaned by gently removing the soil by
+hand with a water jet, and conserved in ethanol 50% (v/v) until
+analysis. Root traits were measured using WinRHIZO PRO
+(version 2003b, Regent Instrument, Quebec, Canada) following
+the protocol described in Bouma et al. (2000). The roots were
+stained with blue methylene (5 g L–1) in order to increase
+contrast and then scanned at a resolution of 400 dpi. WinRHIZO
+was then used to determine root mean diameter (D), root length
+(L), external root surface (RSA), volume (V) and the percentage
+of fine roots with a diameter less than 0.5 mm (FR). Roots were
+then dried for 48 hours at 70 C and weighed.
+Root density (root mass per unit volume of root-permeated
+soil, RD in kg m–3), root tissue density (RTD in g cm–3), specific
+root length (SRL in m g–1) and root length density (root length
+per unit volume of root-permeated soil, RLD in km m–3) were
+calculated. Finally, root to shoot ratio (R/S) was obtained by
+dividing dry root mass by dry shoot mass.
+Figure 2.
+Schematic diagram of the hydraulic flume during concentrated flow tests. This figure is available in colour online at wileyonlinelibrary.com/journal/espl
+PLANT ROOT TRAITS AND SOIL STABILITY
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+Root tensile strength
+Root samples were collected on another set of pots not used in
+the flume experiments. Roots were cleaned and undamaged
+root fragments were selected for tensile tests on a tensile-
+strength meter built on the basis of Hendry and Grime (1993).
+Before testing, root diameter was measured at three points
+along the root length. Once the root had broken, root tensile
+strength TR (in MPa) was calculated as the peak force
+(N) needed to break the root per unit of cross-sectional area
+(in mm2). For each species, at least 30 tests were performed
+on roots with diameters ranging from 006 to 088 mm.
+Data analysis
+Variations in soil detachment rates and trait values between
+species were investigated using one-way analysis of variance
+(ANOVA). Root tensile strength values were analysed through
+analysis of co-variance (ANCOVA) with root diameter as a
+covariate. The assumption of normality was verified prior to
+analysis (Shapiro–Wilk’s test) and significant differences were
+assessed with Tukey’s HSD test.
+Principal components analysis (PCA) was performed to relate
+plant traits to erosion rates. All measured traits, except TR which
+was not calculated on the same samples, were included
+untransformed in the analyses.
+Analyses were carried out with STATISTICA (version 8.0 for
+Windows, Statsoft, 2008).
+Results
+Soil detachment rates
+Erosion occurred in all soil samples but the presence of roots
+greatly reduced erosion rates (Figure 3). However, there were
+large differences in RSD rates between the three species studied
+and through time. Robinia pseudo acacia showed the strongest
+effect and reduced soil detachment by more than 95% since
+the first 30 seconds (no sediment was collected in the last 30
+seconds of the test) compared with control. The grass species,
+Achnatherum calamagrostis, and the tree species Pinus nigra,
+also substantially stabilized the soil but to a lesser extent. RSD
+rates decreased with time for Achnatherum calamagrostis but
+stayed constant for Pinus nigra.
+Plant traits and root tensile strength
+All traits measured were significantly different between species
+except root volume (Table I), traducing important morphological
+differences in species root systems. Achnatherum calamagrostis
+had the more developed root system (RD, RLD and RSA) and
+presented the roots with highest tissue density (RTD), before
+Robinia pseudo acacia and Pinus nigra austriaca. However,
+Robinia pseudo acacia had finer roots [D, SRL and percentage
+of fine roots (%FR)] than Achnatherum calamagrostis and Pinus
+nigra austriaca, the later one having the thickest and shorter roots.
+Root biomechanical properties were also different between
+species (Figure 4). As revealed by tensile strength tests, root
+tensile strength decreased as root diameter increased (r = 051,
+p< 0001). Analysis of covariance (D: F=52.8, p< 0.000; Species:
+F=16.6, p< 0.000) showed that Achnatherum calamagrostis
+had roots more resistant to traction than the two tree species, that
+had similar responses to traction (post-hoc Tukey’s HSD test).
+Relationship between erosion rates and
+functional traits
+Multivariate analysis revealed distinct clustering of the three
+species (Figure 5) according to the two first axes of the PCA,
+accounting for 46% and 30% of the variation in the data set
+respectively.
+Robinia pseudo acacia occupied the lower end of axis 2
+whereas Pinus nigra austriaca occupied the lower end of axis
+1 and the upper end of axis 2. Achnatherum calamagrostis
+was located in the upper end of axis 1 and along the entire axis
+2. RSD rate variation was consistent with the results of analysis
+of variance, high erosion rates being graphically associated to
+Pinus nigra and low erosion rates to Robinia pseudo acacia.
+The analysis showed relationship between RSD rates and
+some functional traits (Figure 5 and Table II). RSD rate was pos-
+itively correlated to mean root diameter and negatively corre-
+lated to the proportion of fine roots. However, root mass (RD
+and V), root length density and external root surface did not
+directly influence erosion rates.
+There were also significant relationships between D and %FR
+and other root traits that must be considered to interpret the
+relationship between plant traits and the effect on erosion rates
+(Table II). Both D and %FR were strongly correlated to RLD,
+RSA and SRL, the former negatively and the latter positively.
+Therefore, for a given root biomass, species with thinner roots
+tend to have higher root–soil contact thanks to longer roots.
+Discussion
+Species effect on concentrated flow erosion rates
+The present study clearly demonstrated that plant root systems
+substantially decreased concentrated flow erosion rates, even
+at very low densities at the first stages of plant development
+(Table I and Figure 3). Here, we reported decreases of soil
+detachment rates in the first 30 seconds of the tests ranging
+from 72% (Pinus nigra) to 95% (Robinia pseudo acacia) on
+average, with root densities of only 003 kg m–3. These values
+are higher than those reported by Mamo and Bubenzer (2001)
+and De Baets et al. (2006), who measured similar decreases
+but for root densities higher than 1 kg m–3. These differences
+may be attributed to differences in experimental parameters
+such as flow shear stress and soil properties. Indeed, in our
+study, we applied a flow shear stress of 52 Pa on marly
+Figure 3.
+Relative soil detachment rates between species. Results are
+presented in two 30 second time periods to show the evolution of soil
+detachment through time. Analyses of variance found species effect
+on soil detachment significant both in the first 30 seconds (0–30
+seconds: F = 37, p = 003) and in the last 30 seconds (30–60 seconds:
+F = 56, p = 0009) of the tests. Bars are means  standard errors. Letters
+indicate significant differences between species (ANOVA, Tukey’s HSD
+test, a = 005)
+M. BURYLO ET AL.
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+samples, whereas values ranged from 11 to 22 Pa on silt loam
+in Mamo and Bubenzer (2001), and from 9 to 45 Pa on sandy
+loam in De Baets et al. (2006). In addition, the flume bed and
+the tape, have a different bed roughness than the soil sample,
+which may cause higher flow velocities upslope of the sample.
+This, also called clear water effect, may increase the vulnerabil-
+ity of bare soil samples (control) to soil detachment, and thus
+lead to an overestimation of the erosion reduction values. In
+future experiments, such effect should be reduced by increas-
+ing the roughness of the flume bed.
+The use of a flume experiment presents some obvious
+advantages such as the control of environmental parameters.
+The observation of the effect of one species or individual on
+erosion rates at a time, which is barely possible in the field, is
+also easier as well as the reproducibility of the observations.
+However, the method has some limitations, on top of which
+the possible lack of connection with field processes which
+may lead to difficulties when extrapolating the results. In addi-
+tion, the pot size used here would be insufficient to investigate
+the effectiveness of juvenile tree species roots, and bigger
+samples would be required. Therefore, these results, which
+refer to plants in the early stages of their development, must
+be interpreted with caution and could be validated by further
+experiments or field observations.
+Plant morphological and biomechanical traits
+The three species selected in our study presented important
+morphological and ecological differences that appeared in the
+trait values (Table I). Achnatherum calamagrostis, a grass
+species successfully colonizing badland areas (Guàrdia et al.,
+2000) and presenting a heart root system with many fibrous
+roots developing from the base of the tussocks, had a high fine
+roots content, high RLD and RSA. The tree species Robinia
+pseudo acacia and Pinus nigra austriaca, both have a tap root
+system, characterized at the seedling stage, by a strong vertical
+root and many laterals. However, these two species had oppo-
+site values on several traits. The former was characterized by
+small diameters and high values of %FR, SRL, RLD and RSA
+while the latter had opposite features. These morphological
+differences may result from contrasted species growth patterns:
+Robinia pseudo acacia (Fabaceae) being a fast-growing inva-
+sive species particularly vigorous in poor and dry environments
+(Boring and Swank, 1984), and Pinus nigra having a rather
+slow-growing behaviour. Indeed, fast-growing woody species
+generally have smaller diameters and greater SRL allowing
+successful resource foraging and acquisition (Comas and
+Eissenstat,
+2004).
+In
+addition,
+SRL
+has
+been
+positively
+correlated to root proliferation (Eissenstat, 1991), and may be
+relevant to assess species ability to capture nutrients in
+nutrient-rich patches in otherwise poor soils (Hodge, 2004)
+and to colonize newly restored areas.
+Table I.
+Mean values  standard errors of traits for the three species studied, and results of one-way ANOVA (Statistic test F ).
+Robinia pseudo acacia
+Achnatherum calamagrostis
+Pinus nigra austriaca
+ANOVA (F-statistic)
+R/S
+021  003
+028  003
+031  002
+421*
+RD (kg m–3)
+003  000
+009  001
+003  000
+2035***
+V (cm3)
+115  009
+153  021
+125  010
+205 ns
+D (mm)
+039  001
+037  001
+060  002
+1007***
+RLD (km m–3)
+156  015
+206  021
+073  007
+2214***
+RSA (cm²)
+11415  975
+1456  1535
+815  664
+892**
+SRL (m g–1)
+4976  353
+2714  459
+2317  087
+2127***
+RTD (g cm–3)
+016  001
+033  001
+015  001
+5992***
+%FR
+8657  100
+7808  280
+4817  251
+9137***
+Note: R/S, root to shoot biomass ratio; RD, root density; V, root volume; D, root diameter; RLD, root length density; RSA, external root surface; SRL,
+specific root length; RTD, root tissue density; %FR, percentage of fine roots
+Levels of significance are: ns, non significant; *p < 005; **p < 001; ***p < 0001.
+Figure 4.
+Relationship between root diameter and root tensile
+strength and differences between species.
+Figure 5.
+Principal component analysis joint plot ordination of functional
+traits, relative soil detachment and the three species studied (●, Robinia
+pseudo acacia; ●, Achnatherum calamagrostis; ○, Pinus nigra austriaca).
+RSD, relative sol detachment; D, root diameter; R/S, root to shoot biomass
+ratio; V, root volume; RD, root density; RTD, root tissue density; RSA, exter-
+nal root surface; RLD, root length density; %FR, percentage of fine roots;
+SRL, specific root length.
+PLANT ROOT TRAITS AND SOIL STABILITY
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+Species also differed regarding their biomechanical proper-
+ties (Figure 4). Root tensile strength decreased as root diameter
+increased, indicating that fine roots are the most resistant in
+tension (Bischetti et al., 2005; De Baets et al., 2008; Burylo
+et al., 2011). This relationship has been attributed to differences
+in root structure and in particular to higher cellulose concentra-
+tions in small roots (Genet et al., 2005). Hathaway and Penny
+(1975) demonstrated that root elasticity decreased with increas-
+ing lignin/cellulose ratio. Therefore, roots of tree species might
+be weaker in tension than fibrous roots of grasses because of
+their higher lignin content.
+Erosion-reducing potential and plant traits
+Our
+results
+highlighted
+significant
+correlations
+between
+concentrated flow erosion rates and functional traits (Figure 5
+and Table I). RSD rate was positively correlated to root diameter
+and negatively correlated to the percentage of fine roots: the
+higher fine root content, the lower erosion rates. This result
+confirmed the importance of small flexible roots (< 2 mm) that
+hold soil particles together and increase soil shear strength
+(Stokes et al., 2009). As fine roots are stronger in tension that
+thick roots (Figure 4), many fine roots will be more efficient
+than a few coarse roots to prevent soil erosion from concen-
+trated flow. In addition, D and %FR are significantly correlated
+to RLD, RSA and SRL, suggesting that these traits may also indi-
+rectly influence erosion rates. Indeed, high values of RLD, RSA
+and SRL imply more fine roots and more root–soil contact.
+Several studies demonstrated the influence of RLD (De Baets
+et al., 2006; De Baets et al., 2007) and RSA (Li et al., 1991)
+on RSD rate but, to our knowledge, SRL has not yet been
+related to erosion rates during concentrated flow.
+However, although RD was previously found a relevant
+parameter to predict the erosion-reducing effect of grasses
+(De Baets et al., 2006), we found no direct relationship with
+root density. This suggests that RD alone is not sufficient to
+compare species effect on erosion rates and that other traits
+must be considered, which is in accordance with the findings
+of De Baets and coworkers (De Baets et al., 2007; De Baets
+and Poesen, 2010) who stated that to compare the effectiveness
+of species with contrasted root architectures, an interaction
+term between RD and root diameter is needed.
+Nevertheless, further laboratory and field experiments on
+larger sets and mixture of species would bring a valuable
+insight on the trait–erosion relationship. Moreover, we focused
+on the mechanical effects of roots and only measured morpho-
+logical traits whereas the effect of the rhizosphere on soil
+stability include a wide range of processes (Angers and Caron,
+1998), such as the exudation of cementing material (mucilage,
+polysaccharides) or a strong biological activity (microbial or
+myccorhyzal), that must be kept in mind when comparing
+species suitability for erosion control.
+The findings of our study could find useful implications, for
+restoration purposes, in predicting plant root effects on erosive
+dynamics and in identifying the most efficient species for erosion
+control. This would make the diagnosis of ecosystem vulnerability
+to environmental constraints and the evaluation of ecosystem func-
+tioning after restoration more operational. The results presented
+here suggest that fast-growing species, having higher fine roots
+contents, could be efficient at the early stages of plant development
+for soil reinforcement. Moreover, such species have fast growth
+both above and below ground, which could also make them inter-
+esting for fast vegetation cover development after restoration.
+However, further investigations are necessary to confirm these
+interpretations that remain speculative based on a small scale
+study. In addition, while the results are interesting, the influence
+of plant species and functional traits on erosion control and ecosys-
+tem functioning as the plants, especially tree species, mature, must
+be taken into consideration for a long-term sustainable manage-
+ment of degraded lands. For example, as the trees grow, root
+system morphological and architectural features change (Chiatante
+et al., 2003), which may modify plant effects on soil processes. The
+development of fast-growing pioneer species can quickly restore
+some of the damaged or lost ecosystem services, here erosion
+control and soil retention, but restoring one particular service,
+can modify environmental conditions and can be detrimental to
+the provision of other services (Ehrenfeld, 2000).
+Understanding and predicting vegetation response to envi-
+ronmental change and the effects of plant species on ecosystem
+processes is a major challenge in applied ecology. During
+the last decade, trait-based approaches have multiplied in
+theoretical as well as in applied ecology to meet this objective.
+In eroded areas, it is necessary to identify functional traits
+related both to species response to erosive constraints and to
+species effects on erosive processes. Lavorel and Garnier
+(2002) formalized this idea and proposed the conceptual
+response-and-effect framework, in which a varying degree of
+overlap exists between response and effect traits.
+The present study highlighted the role of fine roots in reduc-
+ing erosion rates due to concentrated flow. In particular, the
+percentage of fine roots was related to relative soil detachment
+rates. In a previous study on species response to uprooting by
+erosive forces (Burylo et al., 2009), percentage of fine roots
+was identified as a relevant trait to evaluate and predict species
+resistance to uprooting. In a context of land restoration, this
+match between functional response and effect traits is promis-
+ing, and further comparisons should be carried out.
+Table II.
+Correlation matrix between functional traits and relative soil detachment (RSD).
+RSD
+R/S
+RD
+V
+D
+RLD
+RSA
+SRL
+RTD
+%FR
+RSD
+1
+—
+—
+—
+—
+—
+—
+—
+—
+—
+R/S
+013
+1
+—
+—
+—
+—
+—
+—
+—
+—
+RD
+011
+038*
+1
+—
+—
+—
+—
+—
+—
+—
+V
+013
+051**
+077***
+1
+—
+—
+—
+—
+—
+—
+D
+037*
+037
+034
+002
+1
+—
+—
+—
+—
+—
+RLD
+033
+006
+070***
+058***
+074***
+1
+—
+—
+—
+—
+RSA
+029
+025
+080***
+082***
+052**
+093***
+1
+—
+—
+—
+SRL
+030
+053**
+040*
+026
+053**
+032
+014
+1
+—
+—
+RTD
+008
+019
+083***
+033
+054**
+059***
+053**
+038*
+1
+—
+%FR
+038*
+042*
+015
+009
+095***
+068***
+046*
+069***
+033
+1
+Note: RSD, relative soil detachment; R/S: root to shoot biomass ratio; RD, root density; V, root volume; D, root diameter; RLD, root length density;
+RSA, external root surface; SRL, specific root length; RTD, root tissue density; %FR, percentage of fine roots.
+Indicated are correlation coefficient r and significance levels: *p < 005; **p < 001; ***p < 0001.
+M. BURYLO ET AL.
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+Acknowledgements—The authors wish to thank F. Cottard for perfect
+assistance in the laboratory and help in collecting and analysing root
+samples and F. Ousset for technical support. Thanks also to E. Bochet
+whose experience in flume experiments was essential.
+Nomenclature
+t
+= flow shear stress (Pa)
+rw = water density (kg m–3)
+g
+= acceleration due to gravity (m s–2)
+R
+= hydraulic radius (m)
+S
+= sin(a) (—)
+a
+= slope angle of the flume (deg)
+a
+= flume width (m)
+d
+= depth of water in the flume (m)
+q
+= unit flow discharge (m2 s–1)
+Q
+= flow discharge (m3 s–1)
+u
+= mean flow velocity (m s–1)
+References
+Angers DA, Caron J. 1998. Plant-induced changes in soil structure:
+processes and feedbacks. Biogeochemistry 42: 55–72.
+Antoine P, Giraud A, Meunier M, Van Asch T. 1995. Geological and
+goetechnical properties of the ‘Terres noires’ in southeastern France:
+weathering, erosion, solid transport and instability. Engineering Geology
+40: 223–234.
+Bischetti GB, Chiaradia EA, Simonato T, Speziali B, Vitali B, Vullo P,
+Zocco A. 2005. Root strength and root area ratio of forest species
+in Lombardy (northern Italy). Plant and Soil 278: 11–22.
+Boring LR, Swank WT. 1984. The role of black locust (Robinia pseudo-
+acacia) in forest succession. Journal of Ecology 72: 749–766.
+Bouma TJ, Nielsen KL, Koutstaal K. 2000. Sample preparation and
+scanning protocol for computerised analysis of root length and
+diameter. Plant and Soil 218: 185–196.
+Burylo M, Hudek C, Rey F. 2011. Soil reinforcement by the roots of six
+dominant species on eroded mountainous marly slopes (Southern
+Alps, France). Catena 84: 70–78.
+Burylo M, Rey F, Roumet C, Buisson E, Dutoit T. 2009. Linking plant
+morphological traits to uprooting resistance in eroded marly lands
+(Souhern Alps, France). Plant and Soil 324: 31–42.
+Chiatante D, Scippa SG, Di Iorio A, Sarnataro M. 2003. The influence
+of steep slopes on root system development. Journal of Plant Growth
+Regulation 21: 247–260.
+Comas LH, Eissenstat DM. 2004. Linking fine root traits to maximum
+potential growth rate among 11 mature temperate tree species.
+Functional Ecology 18: 388–397.
+Coutancier B. 2004. Restaurer la montagne. Photographies des eaux et
+forêts du XIXe siècle. Somogy Éditions d’art: Paris.
+Cornwell WK, Cornelissen JHC, Amatangelo K, Dorrepaal E, Eviner VT,
+Godoy O, Hobbie SE, Hoorens B, Kurokawa H, Pérez-Harguindeguy
+N, Quested HM, Santiago LS, Wardle DA, Wright IJ, Aerts R, Allison
+SD, van Bodegom P, Brovkin V, Chatain A, Callaghan TV, Díaz S,
+Garnier E, Gurvich DE, Kazakou E, Klein JA, Read J, Reich PB,
+Soudzilovskaia NA, Vaieretti MA, Westoby M. 2008. Plant species
+traits are the predominant control on litter decomposition rates
+within biomes worldwide. Ecology Letters 11: 1065–1071.
+Cortez J, Garnier E, Pérez-Harguindeguy N, Debussche M, Gillon D.
+2007. Plant traits, litter quality and decomposition rates in a Mediter-
+ranean old-field succession. Plant and Soil 296: 19–34.
+Costanza R, d’Arge R, de Groots R, Farber S, Grasso M, Hannon B,
+Limburg K, Naeem S, O’Neil RV, Paruelo J, Raskin RG, Sutton P,
+van den Belt M. 1997. The value of the world’s ecosystem services
+and natural capital. Nature 387: 253–260.
+Craine JM, Tilman D, Wedin D, Reich P, Tjoelker M, Knops J. 2002.
+Functional traits, productivity and effects on nitrogen cycling of 33
+grassland species. Functional Ecology 16: 563–574.
+De Baets S, Poesen J. 2010. Empirical models for predicting the erosion-
+reducing effects of plant roots during concentrated flow erosion.
+Geomorphology 118: 425–432.
+De Baets S, Poesen J, Gyssels G, Knapen A. 2006. Effects of grass roots on
+the erodibility of topsoils during concentrated flow. Geomorphology
+76: 54–67.
+De Baets S, Poesen J, Knapen A, Galindo P. 2007. Impact of root
+architecture on the erosion-reducing potential of roots during
+concentrated flow. Earth Surface Processes and Landforms 32:
+1323–1345.
+De Baets S, Poesen J, Reubens B, Muys B, De Baerdemaeker J. 2009.
+Methodological framework to select plant species for controlling rill
+and gully erosion: application to a Mediterranean ecosystem. Earth
+Surface Processes and Landforms 34: 1374–1392.
+De Baets S, Poesen J, Reubens B, Wemans K, De Baerdemaeker J, Muys B.
+2008. Root tensile strength and root distribution of typical Mediterra-
+nean plant species and their contribution to soil shear strength. Plant
+and Soil 305: 207–226.
+de Groots RS, Wilson MA, Boumans RMJ. 2002. A typology for the
+classification, description and valuation of ecosystem functions,
+goods and services. Ecological Economics 41: 393–408.
+Díaz S, Cabido M. 2001. Vive la différence: plant functional diversity
+matters to ecosystem processes. Trends in Ecology & Evolution 16:
+646–655.
+Díaz S, Fargione J, Chapin FS III, Tilman D. 2006. Biodiversity loss
+threatens human well-being. PLoS Biology 4: 1300–1305.
+Durán ZVH, Rodríguez PCR. 2008. Soil erosion and runoff prevention
+by plant cover. A review. Agronomy for Sustainable Development
+28: 65–86.
+Ehrenfeld JG. 2000. Defining the limits of restoration: the need for
+realistic goals. Restoration Ecology 8: 2–9.
+Eissenstat D. 1991. On the relationship between specific root length
+and the rate of root proliferation: a field study using Citrus rootstocks.
+New Phytologist 118: 63–68.
+Garnier E, Cortez J, Billès G, Navas M-L, Roumet C, Debussche M,
+Laurent G, Blanchard A, Aubry D, Bellmann A, Neill C, Toussaint
+J-T. 2004. Plant functional markers capture ecosystem properties
+during secondary succession. Ecology 85: 2630–2637.
+Genet M, Stokes A, Mickovski SB, Fourcaud T, Salin F, Dumail J-F, Van
+Beek R. 2005. The influence of cellulose content on tensile strength
+in tree roots. Plant and Soil 278: 1–9.
+Gimenez R, Govers G. 2002. Flow detachment by concentrated flow
+on smooth and irregular beds. Soil Science Society of America Journal
+66: 1475–1483.
+Guàrdia R, Raventós J, Caswell H. 2000. Spatial growth and population
+dynamics of a perennial tussock grass (Achnatherum calamagrostis)
+in a badland area. Journal of Ecology 88: 950–963.
+Gray DH, Sotir RB. 1996. Biotechnical and Soil Bioengineering Slope
+Stabilization: A Practical Guide for Erosion Control. John Wiley &
+Sons: Chichester.
+Gyssels G, Poesen J, Bochet E, Li Y. 2005. Impact of plant roots on the
+resistance of soils to erosion by water: a review. Progress in Physical
+Geography 29: 189–217.
+Gyssels G, Poesen J, Liu G, Van Dessel W, Knapen A, De Baets S. 2006.
+Effects of cereal roots on detachment rates of single- and double-
+drilled topsoil during concentrated flow. European Journal of Soil
+Science 57: 381–391.
+Hathaway RL, Penny D. 1975. Root strength in some populus and salix
+clones. New Zealand Journal of Botany 13: 333–344.
+Hendry GAF, Grime JP. 1993. Methods in Comparative Plant Ecology. A
+Laboratory Manual. Chapman & Hall: London.
+Hodge A. 2004. The plastic plant: root responses to heterogeneous
+supplies of nutrients. New Phytologist 162: 9–24.
+Lavorel S, Garnier E. 2002. Predicting changes in community composi-
+tion and ecosystem functioning from plant traits: revisiting the Holy
+Grail. Functional Ecology 16: 546–556.
+Lecompte M, Lhenaff R, Marre A. 1998. Huit ans de mesures du
+ravinement des marnes dans les Baronnies méridionales (Préalpes
+françaises du sud). Géomorphologie: Relief, Processus, Environne-
+ment 4: 351–374.
+Li Y, Zhu XM, Tian JY. 1991. Effectiveness of plant roots to increase the
+anti-scourability of soil on the Loess Plateau. Chinese Science Bulletin
+36: 2077–2082.
+PLANT ROOT TRAITS AND SOIL STABILITY
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)
+
+Luck GW, Harrington R, Harrison PA, Kremen C, Berry PM, Bugter R,
+Dawson TR, De Bello F, Díaz S, Feld CK, Haslett JR, Hering D,
+Kontogianni A, Lavorel S, Rounsevell M, Samways MJ, Sandin L,
+Settele J, Sykes MT, Van Den Hove S, Vandewalle M, Zobel M.
+2009. Quantifying the contribution of organisms to the provision of
+ecosystems services. BioScience 59: 223–235.
+Mamo M, Bubenzer GD. 2001. Detachment rate, soil erodibility, and soil
+strength as influenced by living plant roots part I: laboratory study. Trans-
+actions of the American Society of Agricultural Engineers 44: 1167–1174.
+Maquaire O, Malet J-P, Remaître A, Locat J, Klotz S, Guillon J. 2003.
+Instability conditions of marly hillslopes: towards landsliding or
+gullying? The case of the Barcelonnette basin, south east France.
+Engineering Geology 70: 109–130.
+Mathys N, Brochot S, Meunier M, Richard D. 2003. Erosion quantification
+in the small marly experimental catchments of Draix (Alpes de Haute
+Provence, France). Calibration of the ETC rainfall–runoff–erosion
+model. Catena 50: 527–548.
+Millennium Ecosystem Assessment. 2005. Ecosystems and Human
+Well-being: Synthesis. Inland Press: Washington, DC.
+Mokany K, Ash J, Roxburgh S. 2008. Functional identity is more
+important than diversity in influencing ecosystem processes in a
+temperate native grassland. Journal of Ecology 96: 884–896.
+Morgan RPC. 1995. Soil Erosion and Conservation, 2nd edn. Longman:
+New York.
+Norris JE, Stokes A, Mickovski SB, Cammeraat E, van Beek R, Nicoll BC,
+Achim A. 2008. Slope Stability and Erosion Control: Ecotechnological
+Solutions. Springer: Dordrecht.
+Osterkamp W, Hupp C, Stoffel M. 2012. The interactions between
+vegetation and erosion: new directions for research at the interface
+of ecology end geomorphology. Earth Surface Processes and Landforms
+37: 23–36.
+Pimentel D, Harvey C, Resosudarmo P, Sinclair K, Kurz D, McNair M,
+Crist S, Shpritz L, Fitton L, Saffouri R, Blair R. 1995. Environmental
+and economic costs of soil erosion and conservation benefits.
+Science 267: 1117–1123.
+Pimentel D, Kounang N. 1998. Ecology of soil erosion in ecosystems.
+Ecosystems 1: 416–426.
+Poesen J, Nachtergaele J, Verstraeten G, Valentin C. 2003. Gully erosion
+and environmental change: importance and research needs. Catena
+50: 91–133.
+Pontes L da S, Soussana J-F, Louault F, Andueza D, Carrère P. 2007. Leaf
+traits affect the above-ground productivity and quality of pasture
+grasses. Functional Ecology 21: 844–853.
+Reubens B, Poesen J, Danjon F, Geudens G, Muys B. 2007. The role of
+fine and coarse roots in shallow slope stability and soil erosion control
+with a focus on root system architecture: a review. Trees 21: 384–402.
+Stoffel M, Wilford D. 2012. Hydrogeomorphic processes and vegetation:
+disturbance, process histories, dependencies and interactions. Earth
+Surface Processes and Landforms 37: 9–22.
+Stokes A, Atger C, Glyn Bengough A, Fourcaud T, Sidle RC. 2009.
+Desirable plant root traits for protecting natural and engineered
+slopes against landslides. Plant and Soil 324: 1–30.
+Stokes A, Sotir R, Chen W, Ghestem M. 2010. Soil bio- and eco-
+engineering in China: past experience and future priorities. Ecological
+Engineering 36: 247–257.
+Styzcen ME, Morgan RPC. 1995. Engineering properties of vegeta-
+tion. In Slope Stabilization and Erosion Control: A Bioengineering
+Approach, Morgan RPC, Rickson RJ (eds). E&FN SPON: London;
+5–58.
+Thornes JB. 1990. Vegetation and Erosion – Processes and Environments.
+John Wiley & Sons: Chichester.
+Vallauri D, Aronson J, Barbero M. 2002. An analysis of forest restoration
+120 years after reforestation on badlands in the Southwestern Alps.
+Restoration Ecology 10: 16–26.
+Zhou ZC, Shangguan ZP. 2005. Soil anti-scouribility enhanced by plant
+roots. Journal of Integrative Plant Biology 47: 676–682.
+Appendix
+Detailed flow shear stress calculation
+Flow shear stress (t) was calculated to evaluate the erosive
+force of the concentrated flow simulated by the flume experi-
+ment (De Baets et al., 2006, 2007) and to relate to erosion in
+actively eroded gullies (Gimenez and Govers, 2002).
+The following equations were used:
+t ¼ rwgRS
+(1)
+R ¼
+ad
+a þ 2d
+(2)
+d ¼ q=u
+(3)
+q ¼ Q=a
+(4)
+M. BURYLO ET AL.
+Copyright © 2012 John Wiley & Sons, Ltd.
+Earth Surf. Process. Landforms, (2012)

@@ -1,0 +1,926 @@
+Functional traits composition predict macrophytes
+community productivity along a water depth gradient in a
+freshwater lake
+Hui Fu1,2, Jiayou Zhong1, Guixiang Yuan1, Leyi Ni2, Ping Xie2 & Te Cao2
+1Jiangxi Provincial Key Laboratory of Water Resources and Environment of Poyang Lake, Jiangxi Institute of Water Sciences, Nanchang, China
+2Donghu Experimental Station of Lake Ecosystems, State Key Laboratory of Freshwater Ecology and Biotechnology, Institute of Hydrobiology, The
+Chinese Academy of Sciences, Wuhan, China
+Keywords
+Aquatic macrophytes, community
+productivity, community-weighted means,
+functional diversity, functional trait
+composition, water depth gradient.
+Correspondence
+Jiayou Zhong, Jiangxi Provincial Key
+Laboratory of Water Resources and
+Environment of Poyang Lake, Jiangxi Institute
+of Water Sciences, Nanchang 330029, China.
+Tel: +86 0791 87606679; Fax: +86 0791
+88323724; E-mail: jiayou@jxsl.gov.cn
+and
+Te Cao, Donghu Experimental Station of
+Lake Ecosystems, State Key Laboratory of
+Freshwater Ecology and Biotechnology,
+Institute of Hydrobiology, The Chinese
+Academy of Sciences, Wuhan 430027,
+China. Tel: +86 27 68780702; Fax: +86 27
+68780622; E-mail: caote@ihb.ac.cn
+Funding Information
+This study was supported by the National
+Science Foundation of China (Grant Nos.
+31300398, 31270508, 41230853) and the
+National High Technology Research and
+Development Program of China (Grant No.
+2012ZX07105-004).
+Received: 21 January 2014; Revised: 28
+January 2014; Accepted: 8 February 2014
+Ecology and Evolution 2014; 4(9): 1516–
+1523
+doi: 10.1002/ece3.1022
+Abstract
+Functional trait composition of plant communities has been proposed as a
+helpful key for understanding the mechanisms of biodiversity effects on ecosys-
+tem functioning. In this study, we applied a step-wise modeling procedure to
+test the relative effects of taxonomic diversity, functional identity, and func-
+tional diversity on macrophytes community productivity along water depth gra-
+dient. We sampled 42 plots and 1513 individual plants and measured 16
+functional traits and abundance of 17 macrophyte species. Results showed that
+there was a signiﬁcant decrease in taxonomic diversity, functional identity (i.e.,
+stem dry mass content, leaf [C] and leaf [N]), and functional diversity (i.e.,
+ﬂoating leaf, mean Julian ﬂowering date and rooting depth) with increasing
+water depth. For the multiple-trait functional diversity (FD) indices, functional
+richness decreased, while functional divergence increased with water depth gra-
+dient. Macrophyte community productivity was strongly determined by func-
+tional trait composition within community, but not signiﬁcantly affected by
+taxonomic diversity. Community-weighted means (CWM) showed a two times
+higher explanatory power relative to FD indices in determining variations in
+community productivity. For nine of sixteen traits, CWM and FD showed sig-
+niﬁcant correlations with community productivity, although the strength and
+direction of those relations depended on selected trait. Furthermore, functional
+composition in a community affected productivity through either additive or
+opposite effects of CWM and FD, depending on the particular traits being con-
+sidered. Our results suggested both mechanisms of mass ratio and niche com-
+plementarity
+can
+operate
+simultaneously
+on
+variations
+in
+community
+productivity, and considering both CWM and FD would lead to a more pro-
+found understanding of traits–productivity relationships.
+Introduction
+Experimental and ﬁeld researches have documented a
+positive relationship between biodiversity and ecosystem
+functioning for a number of ecosystems (Loreau et al.
+2001; Hooper et al. 2005, 2012; Cardinale et al. 2011).
+Two main candidate mechanisms have been proposed to
+explain positive biodiversity–ecosystem functioning rela-
+tionships: selection and complementarity effects (Loreau
+et al. 2001). Selection effects occur when the most pro-
+ductive species are more likely to be included in species-
+rich
+communities
+and
+had
+greatest
+species-speciﬁc
+1516
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+This is an open access article under the terms of the Creative Commons Attribution License, which permits use,
+distribution and reproduction in any medium, provided the original work is properly cited.
+
+impacts on biomass (Fargione et al. 2007; Wang et al.
+2013). Complementarity effects are thought to occur
+when species exhibit various forms of niche partitioning
+or facilitation that allow for a more complete use of
+resources in space or time and therefore larger inﬂuences
+on ecosystem functioning (Cardinale et al. 2007; Reich
+et al. 2012). Although most previous studies have mainly
+focused on taxonomic diversity (e.g., species richness) as
+measures of biodiversity related to ecosystem processes
+(Hooper et al. 2005), all of the mechanisms by which
+diversity is expected to affect ecosystem functioning strongly
+depend on the functional characteristics of local communi-
+ties (McGill et al. 2006; Dıaz et al. 2007; Hillebrand et al.
+2008; Mokany et al. 2008; Roscher et al. 2012).
+Functional trait composition of communities, manifest-
+ing the major aspects of biodiversity, is a key component
+that most often explains ecosystem functioning better
+than species richness per se (Dı́ az and Cabido 2001; Dıaz
+et al. 2007; Flynn et al. 2011; Lavorel and Grigulis 2012;
+Roscher et al. 2013). Functional trait composition can be
+quantiﬁed by two main components: CWM (i.e., the
+average trait value of the species) and different indices of
+functional diversity (FD, i.e., the distribution of trait val-
+ues representing the degree of overlap in trait values
+within the community) (Garnier et al. 2004; Mason et al.
+2005). Ecosystem functioning is primarily determined by
+trait values of the dominant species to plant biomass, and
+thus can be predicted by CWM as suggested by mass ratio
+hypothesis (Grime 1998; Dıaz et al. 2007; Roscher et al.
+2012). Moreover, a larger functional dissimilarity among
+plant species is likely to increase the diversity in strategies
+of resource acquisition, which greatly promotes primary
+productivity
+as
+predicted
+by
+niche
+complementarity
+hypothesis (Dı́ az and Cabido 2001; Petchey and Gaston
+2002, 2006). Despite the fact that the effects of FD on
+productivity were greatly dependent on the traits or
+niches considered, recent studies have reported that both
+components will be valuable predictors for primary pro-
+ductivity (Mouillot et al. 2011; Roscher et al. 2013).
+Overall, taxonomic diversity, functional identity, and
+functional diversity of plant communities are each known
+to determining community productivity, but their relative
+effects remain highly controversial (Hooper et al. 2005;
+Mouillot et al. 2011). Nevertheless, all these biodiversity
+components are not inherently exclusive and may simulta-
+neously contribute to the variations in community produc-
+tivity along environmental gradients (Mouillot et al. 2011).
+In this study, we aimed to test the relative effects of
+taxonomic diversity, functional identity, and functional
+diversity on macrophytes community productivity along
+water depth gradient. First, we test how different mea-
+sures of diversity and community productivity change
+along the gradient. Second, we examine whether the
+effects of functional trait composition on productivity are
+largely dependent on speciﬁc traits. Finally, we assess the
+relative importance of taxonomic diversity, functional
+identity (CWM), and functional diversity (FD) in deter-
+mining the macrophytes community productivity along
+the gradient.
+Materials and Methods
+Field sampling designs
+This study was carried out in Erhai Lake (25°520N,
+100°060E) in Yunnan Province, China. In this Lake, mac-
+rophytes species showed a zonation distribution along
+water depth gradient. Most of macrophyte species can
+inhabit and dominate in the shallow water (e.g., 0–3.0 m
+depth), and only a few species can extent to deeper water.
+Macrophytes community composition and biomass were
+estimated in forty-two 25-m2 plots at seven sites of this
+lake (Fu et al. 2013). Sites were selected to represent the
+full range of water depth gradient and macrophytes com-
+munity variation along this gradient. At each site, six
+5 9 5 m plots were located along the water depth gradi-
+ent in each 0.5-m interval as a depth stratus, extending
+from 0 m to 3.0 m water depth. The plots were randomly
+assigned to these six water depth gradients within macro-
+phyte species dominated areas. Locations that were dis-
+turbed by recent human activity (e.g., mowing and
+ﬁshing) were also excluded from sampling. Within each
+25-m2 plot, there were three 0.2 m2 quadrats that we used
+for this analysis, as in these plots all species had been
+identiﬁed and recorded during ﬁeldwork in October and
+September of 2011. Samples were collected using a rotat-
+able reaping hook (diameter = 0.5 m, area = 0.2 m2),
+and it can usually uproot the vast majority of individuals
+within the quadrat in mud. The biomass of 17 macro-
+phyte species within each of 126 quadrats was collected at
+each plot. Sampled plants were spun to remove excess
+water (about 3 min) and weighted to the nearest 0.10 kg
+fresh weight (FW). To measure the dry weight (gm2) of
+each species in each quadrat, we randomly collected 10–
+30 samples, weighted after oven-dried at 80°C for 48 h,
+and calculated the average wet per dry weight ratio for
+each species. The biomass of each species (community
+productivity) in each plot was calculated as the averaged
+biomass of each species and total biomass across the three
+quadrats within the 25-m2 plot, respectively.
+Functional traits measurements
+We measured (or collected date from literature) 16 key
+functional traits on all 17 macrophyte species following
+standardized protocols. We sampled a total of 1513
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+1517
+H. Fu et al.
+Functional traits composition predict
+
+individuals for the measurements on functional traits.
+The data of ﬁve functional traits (ﬂoating leaf, perennial,
+tuber, mean Julian ﬂowering date, and ﬂowering dura-
+tion) were collected from regional ﬂoras.
+Mean Julian ﬂowering dates and ﬂowering duration for
+each species were determined using regional ﬂoras that
+describe the earliest and latest months that a species is in
+ﬂower. Information of species showing yes or no for three
+ordinal traits (i.e., ﬂoating leaf, perennial growth form,
+and tuber) was also obtained from the regional ﬂoras.
+We measured the other 11 functional traits on 3–56
+robust and healthy individuals of each species. Speciﬁc
+leaf area is part of the leaf economic spectrum and closely
+correlated with photosynthetic capacity, nitrogen content
+per mass, and leaf life span (Reich et al. 1999; Wright
+et al. 2004). Leaf dry mass content reﬂects the fundamen-
+tal trade-off in investing resources in structural tissues vs.
+liquid-phase processes and therefore has been argued to
+be the root variable governing correlations among the
+traits in the leaf economic spectrum (Reich et al. 1999;
+Wright et al. 2004; Messier et al. 2010). Lamina thickness
+plays an important role in leaf and plant functioning and
+relates to species’ strategies of resources acquisition and
+use (Kitajima and Poorter 2010). We collected a fully
+formed adult leaf, with no signs of damage or senescence
+at peak biomass. Collected leaves were stored in sealed
+plastic bags with a moist paper towel and scanned (to
+determine area) within 2 h of collection. Lamina thick-
+ness (mm) was measured on ﬁve to ten points per leaf-
+lets, avoiding the mid-vein. Leaves were then dried at
+60°C for 4 days and weighed to determine leaf dry
+weight. Individual leaf area was calculated from the leaf
+scans using Image-Pro Plus (IPP) 6.0 (Media Cybernetics,
+Inc., Silver Spring, MD). Speciﬁc leaf area was calculated
+as leaf area (cm2) per unit of leaf dry mass (g), and leaf
+dry mass content as the ratio of a leaf dry mass to its
+water-saturated mass (gg1).
+Leaf carbon [C] and nitrogen [N] were determined on
+3–10 individual replicates per species. Samples were oven-
+dried at 80°C for 48 h and then ground to <0.5 mm
+using a Wiley Mill (Thompson Scientiﬁc, Swedesboro,
+NJ). Leaf carbon and nitrogen was analyzed on a Flash
+EA 1112 Elemental Analyzer (CE Elantech Inc., Lake-
+wood, NJ) at Donghu Experimental Station of Lake Eco-
+systems, State Key Laboratory of Freshwater Ecology and
+Biotechnology, Institute of Hydrobiology, China. The leaf
+carbon/nitrogen [C/N] ratio was calculated as leaf [C]
+divided by leaf [N].
+Ramet size (g) was calculated as the total dry weight
+(DW) of a single ramet. Shoot height (cm), a trait that
+is often allometrically related to overall plant size and
+competitive interactions for light (Westoby et al. 2002),
+was calculated as the distance from the basal stem to the
+top of photosynthetic tissues. Stem dry matter content is
+the dry mass-to-fresh mass ratio of twigs expressed as
+gg1. Stem diameter (mm) was measured as diameter at
+the basal stem (2–6 cm above the roots) using a vernier
+caliper, which is expressed as mm. Rooting depth (cm)
+was measured as the length of major roots for each spe-
+cies with expectation of Ceratophyllum demersum, because
+it is a rootless macrophyte species. This trait may be
+underestimated for submersed and ﬂoating-leaved macro-
+phytes in that systematic sampling error did not allow us
+to sample absolutely intact roots of these species.
+Diversity and trait metrics
+We selected a number of taxonomic and functional diver-
+sity indices with which to relate variations in ecosystem
+processes. For each plot, species richness, Simpson’s even-
+ness, and Simpson’s diversity were calculated as measures
+of taxonomic diversity.
+CWM trait values were used to describe the functional
+composition of each plot (Garnier et al. 2004) and were
+calculated as PS
+i¼1 PiTi, where Pi is the proportional bio-
+mass of ith species in the community, Ti is the trait val-
+ues of species i, and S is the number of species. CWM
+trait values are a quantitative translation of the biomass
+ratio hypothesis (Grime 1998) and calculated as the sum
+across all species of the products of each species trait
+value and their relative abundance (Garnier et al. 2004).
+FD indices based on single and multiple traits were
+used in the regression model to predict the community
+productivity. Functional trait diversity (FDQ) using Rao’s
+quadratic
+entropy
+(Rao
+1982)
+was
+computed
+as
+PS
+i¼1
+PS
+j¼1 PiPjDij, where Pi is the proportional biomass
+of ith species in the community, Dij is the pair-wise trait
+dissimilarity of species i and j, and S is the number of
+species. Thus, FDQ is the sum of the dissimilarities among
+all possible pairs of species in the trait space weighted by
+the product of species relative abundances. FDQ based on
+single and multiple traits were calculated, respectively.
+We also measured three functional diversity indices
+based on multiple traits: functional richness, functional
+evenness, and functional divergence (Villeger et al. 2008).
+Functional richness quantiﬁes the convex hull volume of
+functional space occupied by the community, functional
+evenness represents the regularity of the distribution in
+abundance in this volume, and functional divergence rep-
+resents the divergence in the distribution of the species
+traits within the trait volume occupied (Villeger et al.
+2008; Spasojevic and Suding 2012). Functional evenness
+and functional divergence scale from 0 to 1; a high value
+indicates more regularity and more deviation, respectively,
+in the distribution of abundance of individuals in this
+volume (Villeger et al. 2008).
+1518
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+Functional traits composition predict
+H. Fu et al.
+
+Statistical analysis
+A general linear mixed model was applied to assess the vari-
+ations in community productivity, taxonomic diversity,
+functional identity (CWM), and functional diversity indices
+along the water depth gradient, with sites as random effects.
+The explanatory power of different sets of predictor vari-
+ables and water depth gradient for variation in community
+biomass production was explored in a series of nested mul-
+tiple regression model analysis (Roscher et al. 2013): (1)
+CWM trait values; (2) FDQ based on single traits; (3) func-
+tional diversity based on multiple traits (functional rich-
+ness,
+functional
+evenness,
+functional
+divergence,
+and
+RaoQ); and (4) species richness, species evenness, and
+Simpson’s diversity. Firstly, we ﬁtted linear regression mod-
+els with each single predictor variable to evaluate their sig-
+niﬁcance in explaining variation in community biomass.
+Secondly, models ﬁtting initially all signiﬁcant variables per
+predictor group as ﬁxed effects were simpliﬁed through
+backward selection and step-wise exclusion of nonsigniﬁ-
+cant variables. Thirdly, the remaining candidate variables
+per predictor group were entered in a combined model
+including water depth gradient and its interaction with the
+predictor variables. The combined model was successively
+reduced by eliminating nonsigniﬁcant interaction terms
+ﬁrst and nonsigniﬁcant main effects afterward.
+Results
+Taxonomic diversity along the gradient
+Seventeen species including twelve submerged macro-
+phytes, four ﬂoating-leaved macrophytes, and one ﬂoat-
+ing
+macrophyte
+occurred
+in
+the
+42
+sampling
+plots
+across the water depth gradient in Erhai Lake (Table
+S1). The trait values of each species were showed in
+Table S1. Standing biomass of macrophyte communities
+increased from 310 gDWm2 in the shallow water
+(0.5 m) to 2010 gDWm2 in the deep water (2.5 m)
+(Fig. 1A).
+Overall,
+macrophytes
+community
+biomass
+showed a unimodel distribution along water depth gra-
+dient,
+with
+peaked
+biomass
+at
+intermediate
+depth
+(Fig. 1A). Species richness ranged from 4 to 12 species
+per plot with the median plot containing eight species.
+There were signiﬁcant decreases in species richness, spe-
+cies evenness, and Simpson’s diversity toward the dee-
+per water (Fig. 1B,C and D), where a few dominant
+submersed macrophytes represented 60–80% of commu-
+nity
+biomass. Five perennial submersed macrophytes
+including three Potamogetonaceae species (Potamogeton
+maackianus, Potamogeton lucens, and Potamogeton malai-
+anus) and two Hydrocharitaceae species (Hydrilla verticilla-
+ta and Vallisneria natans) dominate across the water depth
+gradient, in which they represented >50% of the biomass.
+Functional identity and diversity along the
+gradient
+Community-weighted means (CWM) showed signiﬁcant
+decreases along the gradient for stem dry mass content,
+leaf [C], and leaf [N] (Table 1). Single-trait FDQ exhib-
+ited signiﬁcant decreases with increasing water depth for
+ﬂoating
+leaf,
+ﬂowering
+duration,
+and
+rooting
+depth
+(Table 1). Functional richness decreased (Fig. 2A), while
+functional divergence increased signiﬁcantly along the
+gradient (Fig. 2C). However, functional evenness and Rao
+(A)
+(B)
+(D)
+(C)
+Figure 1. Relation between water depth
+gradient and (A) community biomass, (B)
+species richness, (C) species evenness, (D)
+Simpson’s diversity. Open circles represent
+each of the 42 communities sampled. The
+regression line is drawn in black when it is
+signiﬁcant.
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+1519
+H. Fu et al.
+Functional traits composition predict
+
+Q indices did not change with varying water depths
+(Fig. 2B and D).
+Predictions of community biomass
+The variations in community biomass along the gradient
+were signiﬁcantly dependent on CWM traits and single-
+trait FDQ. The CWM traits were positively related to
+community biomass for ﬂoating leaf, shoot height and
+leaf [C/N], and negatively for perennial growth form,
+tuber, stem diameter, leaf dry mass content, stem dry
+mass content, and leaf [N] (Table 1). Single-trait FDQ
+were positively related to community biomass for ﬂoating
+leaf, perennial growth form, tuber, mean Julian ﬂowering
+date, ramet size, leaf [C] and leaf [N], and negatively for
+shoot height and lamina thickness (Table 1). Multiple-
+trait FD were positively related to community biomass
+only
+for
+functional
+divergence
+(R2 = 0.15,
+F = 8.48,
+P = 0.006). Each individual group of predictor variables
+explained a signiﬁcant proportion of total variation in
+community biomass (Table 2): CWM (57%), single-trait
+FDQ (64%), multiple traits FD (26%), species richness
+(4%), water depth gradient (15%). The ﬁnal model com-
+bining different groups of predictor variables explained
+over 65% of total variation in community biomass pro-
+duction (Table 2), in which each group of predictor con-
+tributed 61.5% for CWM, 30% for single-trait FDQ, and
+2.6% for water depth gradient.
+Discussions
+In this study, we applied a step-wise modeling procedure
+to test the relative effects of taxonomic diversity, functional
+identity, and functional diversity on macrophytes commu-
+nity productivity along water depth gradient and explore
+whether there were signiﬁcant differences among different
+functional traits in explaining productivity. Study results
+showed that functional trait composition (i.e., functional
+identity and functional diversity) provided a more appro-
+priate framework for explaining macrophytes community
+productivity in comparison with the taxonomic diversity.
+CWM exhibited a two times higher explanatory power rel-
+ative to FD indices in determining variations in commu-
+nity productivity, supporting the mass ratio hypothesis
+that it is the traits of the dominant species which largely
+contribute to high productivity. Our results are consistent
+with previous study indicating a higher explanatory power
+of CWM relative to FD indices in determining variations
+in community productivity (Dıaz et al. 2007; Roscher et al.
+2013). Notably, FD indices also explained remarkable vari-
+ations in community productivity, and the combination of
+CWM and FD would largely promoted the explanatory
+power of regressions models (Flynn et al. 2011; Roscher
+et al. 2013). This result suggests the mass ratio hypothesis
+(Grime 1998) and niche complementary hypothesis are not
+mutually exclusive in explaining the biodiversity–ecosys-
+tem functioning relationships.
+Table 1. Functional trait composition-environmental gradient–community biomass relationships. Functional trait composition is represented by
+components of community-weighted mean (CWM) traits and single-trait Rao Q diversity indices (FDQ). F-values were showed for speciﬁc traits
+showing signiﬁcant regression relationships with environmental gradient or community biomass.
+Variable
+Type of variable
+CWM-Environment
+regression
+CWM-Community
+biomass regression
+FDQ-Environment
+regression
+FDQ-Community
+biomass regression
+Floating leaf
+Ordinal: (1 = no, 2 = yes)
+6.78* (+)
+3.92** ()
+4.47* (+)
+Perennial growth form
+Ordinal: (1 = no, 2 = yes)
+8.76** ()
+7.42** (+)
+Tuber
+Ordinal: (1 = no, 2 = yes)
+5.58* ()
+5.01* (+)
+Mean Julian ﬂowering
+Date
+Continuous (day)
+5.60* (+)
+Flowering duration
+Continuous (Julian day)
+2.56* ()
+Ramet size
+Continuous (mg)
+12.51** (+)
+Shoot height
+Continuous (cm)
+19.8*** (+)
+22.86*** ()
+Stem diameter
+Continuous (mm)
+5.26* ()
+Speciﬁc leaf area
+Continuous (m2kg1)
+Leaf dry mass content
+Continuous (gg1)
+5.50* ()
+Lamina thickness
+Continuous (mm)
+4.43* ()
+Rooting depth
+Continuous (cm)
+4.45** ()
+Stem dry mass content
+Continuous (gg1)
+8.12*** ()
+4.44* ()
+Leaf carbon content
+Continuous (mgg1)
+7.55*** ()
+17.8** (+)
+Leaf nitrogen content
+Continuous (mgg1)
+3.62** ()
+4.59* ()
+19.4*** (+)
+Leaf carbon/nitrogen
+ratio
+Continuous (gg1)
+8.94** (+)
+*P < 0.05; **P < 0.01; ***P < 0.001.
+(+) indicates positive regression relationships; () indicates negative regression relationships.
+1520
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+Functional traits composition predict
+H. Fu et al.
+
+For nine of sixteen traits, CWM and FDQ showed sig-
+niﬁcant
+correlations
+with
+community
+productivity,
+although the strength and direction of those relations
+depended on traits considered. The effects of CWM and
+FD on productivity can operate independently on the dif-
+ferent traits or simultaneously on the same traits. For
+instance, communities with lower trait values of stem
+diameter, leaf/stem dry mass content, and leaf [C/N]
+showed higher productivity, while those with great even
+distributions of mean Julian ﬂowering date, lamina thick-
+ness, and leaf [C] also had higher productivity. This ﬁnd-
+ing
+suggests
+that
+ecosystem
+functioning
+may
+be
+inﬂuenced either by some traits’ values of dominant spe-
+cies or by the other traits’ distributions in communities.
+In addition, both mean values and spread distribution of
+ﬂoating leaf positively affected community productivity.
+Our results implied that the variation in community pro-
+ductivity may result from either speciﬁc functional com-
+ponent in some functional axes or both functional
+components
+in
+other
+functional
+axes.
+For
+perennial
+growth form, tuber, and leaf [N], however, productivity
+decreased with their mean trait values but increased with
+their distribution in a community. That is, functional
+composition
+in
+a
+community
+affected
+productivity
+through either additive or opposite effects of CWM and
+FD, depending on the traits considered. Remarkably, the
+negative relationships between functional diversity and
+ecosystem processes are impressive but not often reported
+by previous studies. This result suggests that the comple-
+mentary effects on ecosystem functioning may be greatly
+dependent on the particular functional traits (Mokany
+et al. 2008). For some functional traits, productivity may
+increase with functional diversity; while for other traits,
+the higher productivity is largely due to all species pos-
+sessing a particular trait value. Overall, after accounting
+for all candidate signiﬁcant indicators in the ﬁner model,
+FD showed a greatly positive effect on productivity, which
+demonstrates that complementary as a mechanism affect-
+ing ecosystem functioning may be associating with a
+number of trade-offs among different functional niches.
+In contrary to the great effects of single-trait FDQ on
+productivity, the multiple-traits FD contributed to a very
+less variations in community productivity, although the
+multi-trait FD indices may reﬂect unique information of
+functional composition and predict ecosystem functioning
+in certain condition. These results lend further supports
+(A)
+(B)
+(D)
+(C)
+Figure 2. Relation between water depth
+gradient and multiple-trait functional diversity
+indices such as: (A) functional richness, (B)
+functional evenness, (C) functional divergence,
+(D) Rao Q. Open circles represent each of the
+42 communities sampled. The regression line is
+drawn in black when it is signiﬁcant.
+Table 2. Multiple regression model analysis of different groups of
+predictor variables on community biomass production. The ﬁnal model
+included the remaining signiﬁcant variables per predictor group, water
+depth gradient, and its interaction as the predictor variables. The sta-
+tistical parameters (i.e., RAdj
+2, df, F, P) were showed. FD indicates
+functional diversity, CWM indicates community-weighted mean, and
+FDQ indicates Rao Q diversity indices.
+Group of predictors
+RAdj
+2
+df
+F
+P
+Water depth gradient
+0.15
+2,39
+4.67
+0.015
+Species richness
+0.04
+1,40
+2.78
+0.103
+Species evenness
+0.05
+1,40
+3.18
+0.082
+Simpson’s diversity
+0.03
+1,40
+2.23
+0.143
+Multiple-trait FD
+0.26
+2,39
+8.21
+0.001
+Single-trait CWM
+0.57
+3,38
+18.80
+<0.0001
+Single-trait FDQ
+0.64
+4,37
+18.90
+<0.0001
+Final model
+0.65
+15,26
+6.18
+<0.0001
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+1521
+H. Fu et al.
+Functional traits composition predict
+
+to the idea that single-trait functional indices outperform
+multiple-traits indices in predicting ecosystem functioning
+(Butterﬁeld and Suding 2013). The limited predictive
+power of multiple-traits FD was largely due to that the
+different individual traits were included in a composite
+index, which may have irrelevant or opposing effects on
+productivity (Table 2). Therefore, the mix of positive,
+negative, and independent effects incorporated into calcu-
+lations of multiple traits FD likely result in the relative
+few inﬂuences on productivity.
+In present study, however, taxonomic diversity (i.e.,
+richness,
+evenness,
+Simpson’s
+diversity)
+generally
+explained very little variation in macrophyte community
+productivity. The low predictive power of species richness
+on productivity was particularly impressive. Most empiri-
+cal researches on biodiversity–ecosystem functioning rela-
+tionships have focused on species richness as a core in
+understanding the number of species in a community may
+inﬂuence ecosystem process (Hooper et al. 2005; Maestre
+et al. 2012). The observed weak effects of species richness
+and evenness on productivity suggest that the number and
+abundance of species present in a community may have
+little direct impact on ecosystem processes, and those vari-
+ations in the functional identity and functional diversity of
+the communities will be of far greater importance.
+With increasing water depth, we observed a signiﬁcant
+decrease in taxonomic diversity, functional identity (i.e.,
+CWM of stem dry mass content, leaf [C], and leaf [N]),
+and functional diversity (i.e., FDQ of ﬂoating leaf, mean
+Julian ﬂowering date, and rooting depth). However, com-
+munity productivity tended to increase along water depth
+gradient. In present study, the inﬂuences of water depth
+on taxonomic diversity and productivity may operate
+independently of each other, because there were no signif-
+icant relationships between taxonomic diversity and pro-
+ductivity. The signiﬁcant negative effects of water depth
+on functional compositions were only found on particular
+traits, which also showed either irrelevant or negative
+inﬂuences on productivity. This result indicates that water
+depth may affect ecosystem functioning indirectly through
+functional composition. For the multiple-trait FD indices,
+functional richness decreased while functional divergence
+increased with water depth gradient. Previous studies
+have identiﬁed that functional richness is often positively
+correlated with species richness (Petchey and Gaston
+2006). Similarly, functional richness had no signiﬁcant
+effects on productivity. However, functional divergence
+showed a positive inﬂuence on productivity, lending fur-
+ther supports to the idea that water depth had an indi-
+rectly effect on ecosystem functioning.
+In conclusion, the variations in functional trait compo-
+sition (i.e., CWM and FD) exhibited remarkably great
+power in predicting variations in community productivity
+along environmental gradients. Functional composition in
+a community affected productivity through either additive
+or opposite effects of CWM and FD, depending on the
+particular traits being considered. Our results suggested
+both mechanisms of biomass ratio and niche complemen-
+tarity can operate simultaneously on variations in com-
+munity productivity, and considering both CWM and FD
+would lead to a more profound understanding of traits–
+productivity relationships.
+Acknowledgments
+This study was supported by the National Science Foun-
+dation
+of
+China
+(Grant
+Nos.
+31300398,
+31270508,
+41230853) and the National High Technology Research
+and
+Development
+Program
+of
+China
+(Grant
+No.
+2012ZX07105-004).
+Conﬂict of Interest
+None declared.
+References
+Butterﬁeld, B. J., and K. N. Suding. 2013. Single-trait
+functional indices outperform multi-trait indices in linking
+environmental gradients and ecosystem services in a
+complex landscape. J. Ecol. 101:9–17.
+Cardinale, B. J., J. P. Wright, M. W. Cadotte, I. T. Carroll,
+A. Hector, D. S. Srivastava, et al. 2007. Impacts of plant
+diversity on biomass production increase through time
+because of species complementarity. Proc. Natl Acad. Sci.
+104:18123–18128.
+Cardinale, B. J., K. L. Matulich, D. U. Hooper, J. E. Byrnes, E.
+Duffy, L. Gamfeldt, et al. 2011. The functional role of
+producer diversity in ecosystems. Am. J. Bot. 98:572–592.
+Dı́ az S., and M. Cabido. 2001. Vive la difference: plant
+functional diversity matters to ecosystem processes. Trends
+Ecol. Evol. 16:646–655.
+Dıaz, S., S. Lavorel, F. de Bello, F. Quetier, K. Grigulis, and T.
+M. Robson. 2007. Incorporating plant functional diversity
+effects in ecosystem service assessments. Proc. Natl Acad.
+Sci. 104:20684–20689.
+Fargione, J., D. Tilman, R. Dybzinski, J. H. R. Lambers, C.
+Clark, W. S. Harpole, et al. 2007. From selection to
+complementarity: shifts in the causes of biodiversity–
+productivity relationships in a long-term biodiversity
+experiment. Proc. Biol. Sci. 274:871–876.
+Flynn, D. F., N. Mirotchnick, M. Jain, M. I. Palmer, and S.
+Naeem. 2011. Functional and phylogenetic diversity as
+predictors of biodiversity-ecosystem-function relationships.
+Ecology 92:1573–1581.
+Fu, H., G. Yuan, J. Zhong, T. Cao, L. Ni, and P. Xie. 2013.
+Environmental and Ontogenetic Effects on Intraspeciﬁc
+1522
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+Functional traits composition predict
+H. Fu et al.
+
+Trait Variation of a Macrophyte Species across Five
+Ecological Scales. PLoS ONE 8:e62794.
+Garnier, E., J. Cortez, G. Billes, M.-L. Navas, C. Roumet, M.
+Debussche, et al. 2004. Plant functional markers capture
+ecosystem properties during secondary succession. Ecology
+85:2630–2637.
+Grime, J. 1998. Beneﬁts of plant diversity to ecosystems:
+immediate, ﬁlter and founder effects. J. Ecol. 86:902–910.
+Hillebrand, H., D. M. Bennett, and M. W. Cadotte. 2008.
+Consequences of dominance: a review of evenness effects on
+local and regional ecosystem processes. Ecology 89:1510–
+1520.
+Hooper, D., F. Chapin Iii, J. Ewel, A. Hector, P. Inchausti,
+S. Lavorel, et al. 2005. Effects of biodiversity on ecosystem
+functioning: a consensus of current knowledge. Ecol.
+Monogr. 75:3–35.
+Hooper, D. U., E. C. Adair, B. J. Cardinale, J. E. Byrnes, B. A.
+Hungate, K. L. Matulich, et al. 2012. A global synthesis
+reveals biodiversity loss as a major driver of ecosystem
+change. Nature 486:105–108.
+Kitajima, K., and L. Poorter. 2010. Tissue-level leaf toughness,
+but not lamina thickness, predicts sapling leaf lifespan and
+shade tolerance of tropical tree species. New Phytol.
+186:708–721.
+Lavorel, S., and K. Grigulis. 2012. How fundamental plant
+functional trait relationships scale-up to trade-offs and
+synergies in ecosystem services. J. Ecol. 100:128–140.
+Loreau, M., S. Naeem, P. Inchausti, J. Bengtsson, J. Grime, A.
+Hector, et al. 2001. Biodiversity and ecosystem functioning:
+current knowledge and future challenges. Science 294:804–
+808.
+Maestre, F. T., J. L. Quero, N. J. Gotelli, A. Escudero, V.
+Ochoa, M. Delgado-Baquerizo, et al. 2012. Plant species
+richness and ecosystem multifunctionality in global
+drylands. Science 335:214–218.
+Mason, N. W., D. Mouillot, W. G. Lee, and J. B. Wilson.
+2005. Functional richness, functional evenness and
+functional divergence: the primary components of
+functional diversity. Oikos 111:112–118.
+McGill, B. J., B. J. Enquist, E. Weiher, and M. Westoby. 2006.
+Rebuilding community ecology from functional traits.
+Trends Ecol. Evol. 21:178–185.
+Messier, J., B. J. McGill, and M. J. Lechowicz. 2010. How do
+traits vary across ecological scales? A case for trait-based
+ecology. Ecol. Lett. 13:838–848.
+Mokany, K., J. Ash, and S. Roxburgh. 2008. Functional
+identity is more important than diversity in inﬂuencing
+ecosystem processes in a temperate native grassland. J. Ecol.
+96:884–893.
+Mouillot, D., S. Villeger, M. Scherer-Lorenzen, and N. W.
+Mason. 2011. Functional structure of biological
+communities predicts ecosystem multifunctionality. PLoS
+ONE 6:e17476.
+Petchey, O. L., and K. J. Gaston. 2002. Functional diversity
+(FD), species richness and community composition. Ecol.
+Lett. 5:402–411.
+Petchey, O. L., and K. J. Gaston. 2006. Functional diversity:
+back to basics and looking forward. Ecol. Lett. 9:741–758.
+Rao, C. R. 1982. Diversity and dissimilarity coefﬁcients: a
+uniﬁed approach. Theor. Popul. Biol. 21:24–43.
+Reich, P. B., D. S. Ellsworth, M. B. Walters, J. M. Vose, C.
+Gresham, J. C. Volin, et al. 1999. Generality of leaf trait
+relationships: a test across six biomes. Ecology 80:1955–1969.
+Reich, P. B., D. Tilman, F. Isbell, K. Mueller, S. E. Hobbie, D.
+F. Flynn, et al. 2012. Impacts of biodiversity loss escalate
+through time as redundancy fades. Science 336:589–592.
+Roscher, C., J. Schumacher, M. Gubsch, A. Lipowsky, A.
+Weigelt, N. Buchmann, et al. 2012. Using plant functional
+traits to explain diversity–productivity relationships. PLoS
+ONE 7:e36760.
+Roscher, C., J. Schumacher, A. Lipowsky, M. Gubsch, A.
+Weigelt, S. Pompe, et al. 2013. A functional trait-based
+approach to understand community assembly and diversity–
+productivity relationships over 7 years in experimental
+grasslands. Perspect. Plant Ecol. Evol. Syst. 15:139–149.
+Spasojevic, M. J., and K. N. Suding. 2012. Inferring
+community assembly mechanisms from functional diversity
+patterns: the importance of multiple assembly processes.
+J. Ecol. 100:652–661.
+Villeger, S., N. W. H. Mason, and D. Mouillot. 2008. New
+multidimensional functional diversity indices for a
+multifaceted framework in functional ecology. Ecology
+89:2290–2301.
+Wang, J., C. B. Zhang, T. Chen, and W. H. Li. 2013. From
+selection to complementarity: the shift along the abiotic
+stress gradient in a controlled biodiversity experiment.
+Oecologia 171:227–235.
+Westoby, M., D. S. Falster, A. T. Moles, P. A. Vesk, and I. J.
+Wright. 2002. Plant ecological strategies: some leading
+dimensions of variation between species. Annu. Rev. Ecol.
+Syst. 33:125–159.
+Wright, I. J., P. B. Reich, M. Westoby, D. D. Ackerly, Z.
+Baruch, F. Bongers, et al. 2004. The worldwide leaf
+economics spectrum. Nature 428:821–827.
+Supporting Information
+Additional Supporting Information may be found in the
+online version of this article:
+Table S1. The mean values of 16 traits for the 17
+occurred macrophyte species in the studied areas.
+ª 2014 The Authors. Ecology and Evolution published by John Wiley & Sons Ltd.
+1523
+H. Fu et al.
+Functional traits composition predict

@@ -1,0 +1,2313 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/325036329
+Plant functional trait effects on runoff to design herbaceous hedges for soil
+erosion control
+Article  in  Ecological Engineering · May 2018
+DOI: 10.1016/j.ecoleng.2018.04.024
+CITATIONS
+70
+READS
+632
+5 authors, including:
+Léa Kervroëdan
+UniLaSalle
+17 PUBLICATIONS   201 CITATIONS   
+SEE PROFILE
+Romain Armand
+UniLaSalle
+26 PUBLICATIONS   422 CITATIONS   
+SEE PROFILE
+Michel-Pierre Faucon
+UniLaSalle
+152 PUBLICATIONS   3,690 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Michel-Pierre Faucon on 23 May 2018.
+The user has requested enhancement of the downloaded file.
+
+Plant functional trait effects on runoff to design herbaceous 
+1 
+hedges for soil erosion control 
+2 
+ 
+3 
+Léa Kervroëdan* ab, Romain Armand a, Mathieu Saunier b, Jean-François 
+4 
+Ouvry b, Michel-Pierre Faucon a 
+5 
+a AGHYLE, UP.2018.C101, SFR Condorcet FR CNRS 3417, UniLaSalle, 19 Rue 
+6 
+Pierre Waguet, 60026 Beauvais, France 
+7 
+b AREAS, 2 avenue Foch, 76460 St Valéry en Caux, France 
+8 
+ 
+9 
+* Corresponding author: lea.kervroedan@unilasalle.fr 
+10 
+ 
+11 
+ 
+12 
+Abstract 
+13 
+Vegetation controls concentrated runoff and erosion in the European loess belt by 
+14 
+increasing hydraulic roughness and sediment retention. Studies of plant effects on runoff 
+15 
+velocity are usually based on a taxonomical characterisation and do not consider the 
+16 
+effects of aboveground plant functional traits in attempts to understand soil erosion by 
+17 
+water. This trait-based plant study investigates aboveground plant functional trait effects 
+18 
+of herbaceous hedges on the hydraulic roughness to understand soil erosion. Eight 
+19 
+aboveground functional traits were measured on fourteen indigenous and perennial plant 
+20 
+species (caespitose or comprising dry biomass in winter) from north-west Europe with a 
+21 
+high morphological variability. For each trait, density-weighted traits were calculated. 
+22 
+ACCEPTED VERSION
+
+ 
+2
+The effects of functional traits and density-weighted traits were examined using a runoff 
+23 
+simulator with four discharges. The leaf density and area, as well as density-weighted 
+24 
+stem and leaf areas, stem diameter and specific leaf area were positively correlated with 
+25 
+the hydraulic roughness. Generalised linear models defined the best combinations of traits 
+26 
+and density-weighted traits: (1) leaf density and leaf area, (2) density-weighted leaf area 
+27 
+and density-weighted projected stem area, and (3) density-weighted leaf area and density-
+28 
+weighted stem diameter. Moreover, the effects of leaf density, leaf area and density-
+29 
+weighted specific leaf area, varied depending on the discharge. This study is one of the 
+30 
+first characterisation of aboveground trait effects on hydraulic roughness and highlights 
+31 
+that vegetation with important stem density, diameter and leaf area plays a significant role 
+32 
+in minimising soil erosion. The selection of plant species can derive from these plant trait 
+33 
+effects to design reconstructed herbaceous hedges to minimise soil erosion. 
+34 
+ 
+35 
+Key-words  
+36 
+Aboveground functional traits; ecohydrological processes; hydraulic roughness; plant-
+37 
+runoff interaction; sediment retention; soil erosion control 
+38 
+ 
+39 
+1. Introduction 
+40 
+Soil erosion by water is influenced by precipitation, soil texture and structure, slopes that 
+41 
+can generate intense discharges, and plant and litter covers which vary according to 
+42 
+cultural practices in cultivated areas. Intense runoff and soil erosion are frequently found 
+43 
+in north-western European catchments where the sloping loamy soils are intensively tilled 
+44 
+and cultivated with annual crops (Boardman and Poesen, 2006; Gobin et al., 2003). In the 
+45 
+European loess belt, erosion can be mitigated by both (1) tillage reduction and the 
+46 
+
+ 
+3
+establishment of cover crops during sensitive seasons which increase the crop residue 
+47 
+quantity on soil surface and thus, reduce the rill and inter-rill soil erosion (Knapen et al., 
+48 
+2007), and (2) establishment of vegetative barriers across the thalweg to mitigate rill and 
+49 
+ephemeral gully erosion (Richet et al., 2017). Richet et al. (2017) demontrated the effects 
+50 
+of fascines (i.e. vegetative barriers made of bundles of stems) on hydraulic roughness and 
+51 
+soil erosion mitigation however, their short lifetime and high cost represent a main 
+52 
+limitation. Herbaceous hedges, defined as narrow strips of dense and stiff perennial 
+53 
+vegetation, constitute a major interest to develop vegetative barriers with a high efficiency 
+54 
+on the reduction of soil erosion at lower cost against concentrated flows (Dabney et al., 
+55 
+1995; Yuan et al., 2009). Besides, herbaceous hedges composed of indigenous plant 
+56 
+species could offer other ecosystem services than regulating services such as the provision 
+57 
+of habitats and their ecological connectivity in these catchments (Ouin and Burel, 2002; 
+58 
+Smith et al., 2008). 
+59 
+The effect of herbaceous vegetation on runoff and soil erosion, have been studied over 
+60 
+the past decades (Haan et al., 1994; Lambrechts et al., 2014; Ludwig et al., 2005; Temple 
+61 
+et al., 1987). Blanco-Canqui et al. (2006), Dosskey et al. (2010), Lambrechts et al. (2014), 
+62 
+Le Bissonnais et al. (2005), Ruiz-Colmenero et al. (2013) and Stokes et al. (2014) noted 
+63 
+the direct effects of vegetation cover on splash detachment and inter-rill erosion 
+64 
+reduction. The impact of plant roots on infiltration capacity and resistance of soils to 
+65 
+erosion by water has been well documented (Berendse et al., 2015; Dabney et al., 2009; 
+66 
+De Baets et al., 2006; De Baets and Poesen, 2010; Gyssels et al., 2005; Isselin-Nondedeu 
+67 
+and Bédécarrats, 2007; Lambrechts et al., 2014). The influence of vegetation on sediment 
+68 
+retention was highlighted (Burylo et al., 2012; Dabney et al., 2009; Dillaha et al., 1989; 
+69 
+Haan et al., 1994; Isselin-Nondedeu and Bédécarrats, 2007; Lowrance et al., 1995). The 
+70 
+
+ 
+4
+relationship between vegetation and sediment retention can be understood only if the 
+71 
+vegetation effect on hydraulic roughness, which is the frictional resistance due to the 
+72 
+contact of runoff with the vegetation, is characterised, as it is the main process with 
+73 
+gravity furthering sediment retention. This effect has been previously investigated 
+74 
+(Akram et al., 2014; Cantalice et al., 2015; Cao et al., 2015; Haan et al., 1994; Järvelä, 
+75 
+2002; Temple et al., 1987). The presence of herbaceous vegetation has positive impacts 
+76 
+on hydraulic roughness, as it reduces flow velocity and increases backwater depth (Akram 
+77 
+et al., 2014; Cantalice et al., 2015; Hussein et al., 2007), thereby increasing sediment 
+78 
+retention due to its linear relationship with backwater depth (Dabney et al., 1995; Hussein 
+79 
+et al., 2007; Meyer et al., 1995). Plant effects on hydraulic roughness are highly variable 
+80 
+among species and are difficult to explain without characterisation of all aboveground 
+81 
+morphological traits (Cantalice et al., 2015; Cao et al., 2015; Dabney et al., 1995). The 
+82 
+relationship between aboveground plant morphology and hydraulic roughness should be 
+83 
+specified to globally understand runoff and soil erosion processes.  
+84 
+One of the challenges to improving the understanding in plant and vegetation (e.g. 
+85 
+herbaceous hedges) effects on hydraulic roughness and soil erosion is the development 
+86 
+of a functional trait-based approach (Faucon et al., 2017). This approach, which allows 
+87 
+for characterising trait effects on ecosystem processes and services (Lavorel and Garnier, 
+88 
+2002), has been developed with the establishment of the relationship between the soil 
+89 
+detachment ratio and root length density for underground biomass (De Baets and Poesen, 
+90 
+2010; Mekonnen et al., 2016; Vannoppen et al., 2015). Concerning aboveground 
+91 
+characteristics, trait-based approaches highlighted the relationships between stem density, 
+92 
+diameter and stiffness, and between leaf area and density with sediment retention (Bochet 
+93 
+et al., 2000; Burylo et al., 2012; Mekonnen et al., 2016; Zhu et al., 2015). Because the 
+94 
+
+ 
+5
+hydraulic roughness is one of the main process influencing sediment retention, plant 
+95 
+functional traits known to influence sediment retention could influence the hydraulic 
+96 
+roughness. Those traits, such as the stem and tiller density (Hayes et al., 1978; Isselin-
+97 
+Nondedeu and Bédécarrats, 2007; Morgan and Duzant, 2008; Temple, 1982), stem 
+98 
+diameter (Bochet et al., 2000; Meyer et al., 1995; Morgan and Duzant, 2008), stem 
+99 
+stiffness (Dabney et al., 2009; Meyer et al., 1995), specific leaf area (Graff et al., 2005), 
+100 
+leaf area (Burylo et al., 2012) and leaf density (Lambrechts et al., 2014), should be 
+101 
+considered to specifically characterise the effect of aboveground traits on hydraulic 
+102 
+roughness. In addition to characterising vegetation effects on hydrological processes and, 
+103 
+notably, hydraulic roughness, the weight of traits in the vegetation should be considered 
+104 
+(Garnier and Navas, 2012) to improve the overall understanding of soil erosion.  
+105 
+Plant functional trait effects on hydraulic roughness should vary according to water 
+106 
+discharge and different hydraulic processes (Cao et al., 2015). Vieira and Dabney (2012) 
+107 
+showed that flow resistance of vegetation changed with flow depth. Temple et al. (1987) 
+108 
+and Van Dijk et al. (1996) found that for low flows, the mean flow velocity was dependent 
+109 
+on the vegetation density. However, for higher flows, when the flow depth was higher 
+110 
+than the deflecting vegetation height, the leaf structures had less impact and the flow 
+111 
+resistance was primarily dependent on the stem density and length and on the stem 
+112 
+diameter and stiffness (Meyer et al., 1995; Temple et al., 1987). 
+113 
+  It is thus expected that high discharges would challenge the mechanical resistance 
+114 
+through the stiffness, the density and the diameter of the stems, while low discharges 
+115 
+would be impacted by the overall vegetation density. The challenge is to highlight plant 
+116 
+functional trait effects on hydraulic roughness at several discharges that are representative 
+117 
+of those present in catchments of north-west Europe. 
+118 
+
+ 
+6
+This study of trait-based plant ecohydrology examined the relationship between 
+119 
+aboveground plant functional traits with the hydraulic roughness at different discharges 
+120 
+in fourteen perennial plant species presenting contrasting aboveground functional traits. 
+121 
+The objectives are (1) to highlight the major functional traits influencing hydraulic 
+122 
+roughness and (2) to examine the effect of discharges on the relationship between plant 
+123 
+functional traits and hydraulic roughness to improve the understanding of soil erosion and 
+124 
+select candidate species to create reconstructed herbaceous ecosystems to mitigate soil 
+125 
+erosion in north-west Europe. 
+126 
+ 
+127 
+2. Materials and methods 
+128 
+2.1. Plant materials 
+129 
+Fourteen plant species that display contrasting aboveground morphological traits were 
+130 
+chosen from 76 candidate species, resulting in six filters of selected functional types 
+131 
+involved in mitigation of soil erosion in north-west Europe applied to the 3,500 
+132 
+spermatophyte species from north-west Europe (Lambinon et al., 2012). These selective 
+133 
+filters were as follows: (1) Raunkiaer’s life-form categories of “herbaceous 
+134 
+chamaephytes”, “hemicryptophytes” and “geophytes”, i.e., perennial herbaceous 
+135 
+vegetation that provide an effective soil cover during all seasons; (2) the presence of fresh 
+136 
+(i.e., herbaceous chamaephytes and caespitose hemicryptophytes) or dry (i.e., non-
+137 
+caespitose hemicryptophytes and geophytes) biomass in winter when soil erosion is 
+138 
+observed in north-west Europe (Boardman and Poesen, 2006); (3) the presence of 
+139 
+rhizomes or stolon to ensure lateral spreading capacity and burial tolerance due to 
+140 
+sediment deposition; (4) vegetative height ≥ 20 cm, as it is the water maximal level in the 
+141 
+catchment in north-west Europe; (5) a broad ecological niche to select species able to 
+142 
+
+ 
+7
+grow in several silty agricultural soils; and (6) non-weed species to prohibit their 
+143 
+expansion in agricultural territories of north-west Europe. 
+144 
+Thirteen of the tested species were from the list of candidates (Carex sylvatica, Carex 
+145 
+flacca, Carex acutiformis, Carex pendula, Artemisia vulgaris, Origanum vulgare, Lolium 
+146 
+perene, Senecio jacobaea, Tanacetum vulgare, Festuca arundinacea, Dactylis glomerata, 
+147 
+Melica nutans, Phalaris arundinacea) (Table 1). An exotic species, Miscanthus sinensis, 
+148 
+was also tested along the thirteen indigenous species as it is considered a model plant in 
+149 
+studies of plant hydraulic properties and erosion mitigation (Dabney et al., 2009).These 
+150 
+species, varying in leaf and stem traits (e.g., density, area and specific area – density, 
+151 
+diameter, specific density and dry matter content), were chosen to establish a range of 
+152 
+traits to highlight the effect of aboveground plant traits on hydraulic roughness. The 
+153 
+species were collected in natura, selecting only established individuals, and planted in 
+154 
+60 x 30 x 15 cm plots in early April 2016, creating 14 monospecific herbaceous hedges. 
+155 
+These vegetation plots consisted of a wooden frame with a 1.5 cm grid fence at the bottom 
+156 
+and were buried for three months prior the experiments to allow the full development of 
+157 
+the plants and roots. The plot design allowed for both plant growth and plot extraction for 
+158 
+the experiments in the runoff simulator. 
+159 
+ 
+ 
+160 
+
+ 
+8
+Table 1. List of the species used for the study and basic information. 
+ 
+161 
+Category 
+Species name 
+Family 
+Life form 
+Vegetative 
+height (m) 
+Graminoid 
+Dactylis glomerata L. 
+Poaceae 
+Hemicryptophyte 
+0.96 (± 0.11) 
+Festuca arundinacea Schreb. Poaceae 
+Hemicryptophyte 
+0.54 (± 0.14) 
+Lolium perenne L. 
+Poaceae 
+Hemicryptophyte 
+0.34 (± 0.02) 
+Melica nutans L. 
+Poaceae 
+Hemicryptophyte 
+0.28 (± 0.02) 
+Miscanthus sinensis 
+Poaceae 
+Hemicryptophyte; Geophyte 
+1.03 (± 0.26) 
+Phalaris arundinacea L. 
+Poaceae 
+Hemicryptophyte 
+0.49 (± 0.11) 
+Herb 
+Artemisia vulgaris L. 
+Asteraceae 
+Hemicryptophyte 
+0.96 (± 0.17) 
+Origanum vulgare L. 
+Lamiaceae 
+Chamaephyte; Hemicryptophyte 
+0.48 (± 0.06) 
+Senecio jacobaea L. 
+Asteraceae 
+Hemicryptophyte 
+0.98 (± 0.04) 
+Tanacetum vulgare L. 
+Asteraceae 
+Hemicryptophyte 
+0.64 (± 0.07) 
+Sedge 
+Carex acutiformis Ehrh. 
+Cyperaceae 
+Hemicryptophyte 
+0.17 (± 0.03) 
+Carex flacca Schreb. 
+Cyperaceae 
+Hemicryptophyte 
+0.31 (± 0.04) 
+Carex pendula Huds. 
+Cyperaceae 
+Caespitose hemicryptophyte 
+0.23 (± 0.15) 
+Carex sylvatica Huds. 
+Cyperaceae 
+Caespitose hemicryptophyte 
+0.12 (± 0.03) 
+The stem height values represent the mean values (± standard deviation) measured on the experimental plots. 
+  
+  
+  
+  
+  
+
+ 
+9
+2.2. Plant morphological trait measurements 
+162 
+Eight aboveground plant morphological traits (leaf – area, density and specific area; stem 
+163 
+– density, diameter, specific density, area and dry matter content), potentially involved in 
+164 
+increasing hydraulic roughness, were measured (Table 2) at three levels along the stem – 
+165 
+between 0 and 5 cm, 0 and 10 cm, and 0 and 20 cm – related to the variation of the water 
+166 
+flow depth. Sampling collection and process methods followed the guidelines from 
+167 
+(Pérez-Harguindeguy et al., 2013). The leaves and stems were wrapped in moist paper 
+168 
+and sealed in bags to limit water loss until the measures were complete, and they were 
+169 
+then dried at 70°C for 72 h. 
+ 
+170 
+
+ 
+10
+Table 2. List of the measured traits, their abbreviations and formulas used. 
+171 
+ 
+ 
+172 
+Morphological trait 
+Abbreviation 
+Unit 
+Formulaa 
+Abbreviation 
+after density-
+weighting 
+Stem density 
+SD 
+stems.dm-² 
+- 
+- 
+Leaf density 
+LD 
+leaves.dm-² 
+- 
+- 
+Leaf area 
+LA 
+mm² 
+- 
+WLA 
+Specific leaf area 
+SLA 
+mm².mg-1 
+SLA = LA (Leaf massdry)-1 
+WSLA 
+Stem diameter 
+SDm 
+mm 
+- 
+WSDm 
+Specific stem density 
+SSD 
+mg.mm-3 
+SSD = Massoven dry (Stem volume)-1 
+WSSD 
+Stem dry matter content 
+SDMC 
+- 
+SDMC = Massoven dry (Massfresh)-1 
+WSDMC 
+Projected stem area 
+SA 
+mm² 
+SA = L SDm  
+WSA 
+  
+a Volume formulas used were (1) for cylindrical stems: V = π L [(SDm) (0.5)]² and (2) for triangular stems (Carex 
+sp.): V = [√(3)/4] SDm² L with L = height of the stem portion on which the concerned trait is measured 
+  
+  
+  
+  
+  
+
+ 
+11
+Trait measurements were performed within two 10 x 10 cm quadrats in each plot, to 
+173 
+ensure representative sampling. Stem density was measured within each quadrat, defining 
+174 
+pseudoculms in sedge species (Cyperaceae) and tillers in grass species as stems. Fresh 
+175 
+and dry leaves were counted to determine the leaf density at each level along the stems in 
+176 
+the quadrats. Specific leaf area (SLA) and leaf area were calculated from three mature 
+177 
+leaves per quadrat. The leaves were scanned while fresh using a 600 dpi resolution, and 
+178 
+the images were then analysed using the software Gimp 2.8 to determine the leaf area. 
+179 
+The SLA was calculated by dividing the leaf area by the oven-dry mass of the leaf. Stem 
+180 
+diameter, stem specific density and stem dry matter content were measured on three stems 
+181 
+per quadrat. Stem diameter (mm) was measured three times along each vertical level of 
+182 
+the fresh stem using a calliper. From the measurements of stem diameter, the projected 
+183 
+stem area was calculated using the rectangle area formula and represented the contact 
+184 
+area of a stem toward the flow direction. The stem specific density (mg.mm-3) was 
+185 
+calculated by dividing the oven-dry mass of the first 20 cm of the stem by the volume of 
+186 
+the stem, measured when still fresh. The volume of the stems was calculated using the 
+187 
+formula for the volume of a cylinder, except for the sledge species, which have triangular 
+188 
+stems, and for which we used the formula for the volume of a triangular prism. The stem 
+189 
+specific density of each height level along the stem was estimated using the volume of 
+190 
+each level by assuming the density was homogeneous within the stem section. The stem 
+191 
+specific density, representing the structural strength of a stem, was used as the estimation 
+192 
+of the plant resistance to the water flow (Burylo et al., 2012; Cornelissen et al., 2003; 
+193 
+Pérez-Harguindeguy et al., 2013). The stem dry matter content was calculated from the 
+194 
+ratio of the oven dry-mass of the first 20 cm of the stem and the fresh mass of the stem. 
+195 
+The mean values of the measured traits are listed in Appendices A1, A2 and A3. 
+196 
+
+ 
+12
+To characterise the effect of the herbaceous hedge on hydraulic roughness, the density-
+197 
+weighted mean of the trait values was calculated for each trait as the mean value of the 
+198 
+trait multiplied by the proportion of the trait, here by the stem density for stem traits and 
+199 
+by leaf density for leaf traits. This method does not include plant cover, given that all 
+200 
+monospecific vegetation plot presented 100% cover and more precisely characterise the 
+201 
+abundance of traits from stem and leaf densities. These density-weighted traits were 
+202 
+determined for each vertical level along the stem (i.e. 0 – 5 cm, 0 – 10 cm and 0 – 20 cm). 
+203 
+ 
+204 
+2.3. Hydraulic measurements 
+205 
+We used the same runoff simulator as Richet et al. (2017) to quantify the effect of plant 
+206 
+morphological traits on hydraulic roughness (Fig. 1). The simulator allowed the 
+207 
+recreation of a flow at chosen discharges and the measurement of hydrological parameters 
+208 
+resulting from the presence of plants. The upper and lower parts of the simulator are 
+209 
+equipped with flowmeters made of Venturi channels with a flow range of 0.06 L.s-1 to 6 
+210 
+L.s-1, comprising ultrasound probes that measure the water level in the channel at ± 1.26 
+211 
+mm. This system was manufactured by ISMA, France (Richet et al., 2017). The water 
+212 
+was circulating within the system, with the aid of two pumps and a reservoir, in a closed 
+213 
+circuit. The central part of the simulator is a channel setup with two galvanised iron 
+214 
+sheets. The channel was 60 cm wide and 5.40 m long along a 5% slope. The entire channel 
+215 
+was waterproofed using a plastic tarpaulin to avoid any water loss during the experiments. 
+216 
+The tarpaulin was placed in order to obtain a smooth channel bottom and limit bottom 
+217 
+roughness as much as possible. The roughness of the tarpaulin was determined by 
+218 
+experiment using a control plot without any plants and represented a small percentage of 
+219 
+the roughness created by the plants (Appendix B). The vegetation was placed 4 m away 
+220 
+
+ 
+13
+from the head of the channel, in a 17 cm deep rectangular hole to level the ground with 
+221 
+the flow and the slope. The tarpaulin used in the upper part of the channel was placed 
+222 
+continually underneath the plot and through the lower part of the channel to avoid water 
+223 
+loss by infiltration. The boundary effects were minimal as the plants were left in the 
+224 
+wooden frame where they grew, and a wooden plank was placed along each side the entire 
+225 
+channel. The small gap areas along the base of the planks and the bottom of the channel 
+226 
+were sealed using clay. Along the channel, 7 spacers were set up to measure the 
+227 
+topography of the channel bed and the water heights in the backwater and downstream of 
+228 
+the plot. Five were located upstream of the plants and two were located downstream. 
+229 
+Approximately 1.46 m from the channel head, the spacers were spaced at 0.75 m.  
+230 
+
+ 
+14
+ 
+231 
+Figure 1. Runoff simulator used during the study. 
+ 
+232 
+
+ 
+15
+The four discharges used in this study were 2, 4, 8 and 11 L.s-1.m-1 at ± 7%. The tested 
+233 
+discharges are observed approximately every 0.5, 1, 2 and 5 years, respectively, in 5 ha 
+234 
+catchments in the European loess belt with a 5 m-wide thalweg, as precised by Richet et 
+235 
+al. (2017). Both upstream and downstream discharges were continuously monitored. 
+236 
+Water level were measured when the upstream and downstream discharges were 
+237 
+equivalent. No infiltration occurred as the soil in the plots was saturated in water. The 
+238 
+backwater and downstream flow levels were measured using the spacers as elevation-
+239 
+known baselines. The levels were determined by measuring the distance between the top 
+240 
+of the water flow and the spacer every 10 cm from the edges of the channel, corresponding 
+241 
+to seven vertical profiles.  
+242 
+To express the hydraulic resistance related to the plant presence, we used the unit stream 
+243 
+power (USP), a sediment transport capacity index (Govers, 1992; Yang, 1972). USP is 
+244 
+defined as the “energy dissipation per unit of time and per unit of weight of the flow” 
+245 
+(Govers, 1992), depending on its velocity and the slope:  
+246 
+USP = V S 
+(1) 
+247 
+where USP is expressed in m.s-1, V is the mean velocity (m.s-1), and S is the channel slope 
+248 
+(m.m-1) (Cao et al., 2015; Hessel et al., 2016; Morgan et al., 1998). The lower the USP is, 
+249 
+the greater the hydraulic roughness will be. The mean velocity was calculated using the 
+250 
+water levels measured at the closest spacer upstream of the plot. Govers (1990) 
+251 
+determined a USP critical value of 0.004 m.s-1 that indicates that the threshold from which 
+252 
+soil is most likely to erode in the loamy soils found in the European loess belt. Govers 
+253 
+(1990) established this critical value for bare loess soils with a D50 from 58 µm to 218 
+254 
+µm, at slopes ranging from 1° to 8° and for discharges varying from 0.2 to 10 L.s-1.m-1. 
+255 
+The USP, Manning coefficients and backwater depths are presented in Appendix B. 
+256 
+
+ 
+16
+ 
+257 
+2.4. Data analysis  
+258 
+Principal component analysis (PCA) was conducted to examine the link between each 
+259 
+trait. Data used for the PCA included the measured traits in the two quadrats within the 
+260 
+plots. Generalised linear models (GLM) for the inverse-link gamma family were then 
+261 
+processed to examine the effect of plant morphological traits on the USP at each 
+262 
+discharge.  
+263 
+Another analysis using GLMs were then used to analyse the relationship between the USP 
+264 
+and the significant traits and density-weighted traits identified in the previous step 
+265 
+between 0 and 10 cm. These models were run separately for each discharge to highlight 
+266 
+differences of trait effects among the discharge levels. To avoid autocorrelation within 
+267 
+the models, traits and density-weighted traits were processed in separate models. Due to 
+268 
+the small sample size n and ratio n/K < 40 (where K the number of parameters used in the 
+269 
+models), second order Akaike’s Information Criterion (AICc) and ∆AICc were used to 
+270 
+assess the model performance, as recommended in Burnham and Anderson (2002). 
+271 
+∆AICc is the difference between the AICc of a model i and the model with the lowest 
+272 
+AICc (also characterised as the best model fit). Burnham and Anderson (2002) recognise 
+273 
+the models with a ∆AICc < 2 as models with substantial support, which are identified as 
+274 
+the best model fits in this study. Models with ∆AICc varying between 2 and 7, indicating 
+275 
+less support, were also analysed as recommended by Burnham et al. (2011). Akaike 
+276 
+weights (wAICc) were used in this study to assess the relative likelihood of the models, 
+277 
+as this indicates the probability of a model i being the best among the set of tested models 
+278 
+(Brown et al., 2011; Burnham and Anderson, 2002). 
+279 
+All the data in this study were analysed using the statistical software R (version 3.3.2). 
+280 
+
+ 
+17
+ 
+281 
+3. Results 
+282 
+3.1. Variations of plant morphological traits 
+283 
+Covariation among the seven traits of the 14 species studied were analysed using a PCA 
+284 
+(Fig. 2), which showed that the first two principal components explained 71.9% of the 
+285 
+variance. The first principal component (PC1) accounted for 47% of the total variance 
+286 
+and was associated with the projected stem area, the stem diameter and the stem density. 
+287 
+The variance of PC1 was explained by the leaf area, the stem specific density and the 
+288 
+specific leaf area. Two groups of variables were observed along the PC1 axis: the 
+289 
+projected stem area and the stem diameter on the positive end and the stem density on the 
+290 
+negative end. The second principal component (PC2) accounted for 24.9% of the total 
+291 
+variance and was explained by the stem dry matter content, which was found on the 
+292 
+negative end of the axis. The variance of PC2 was explained by the leaf density and the 
+293 
+stem height. 
+294 
+ 
+ 
+295 
+
+ 
+18
+ 
+296 
+Figure 2. Principal component analysis of nine morphological traits measured on 14 
+297 
+plant species. PC1 explained 47% of the variance and PC2 explained 24.9%. LA = leaf 
+298 
+area, LD = leaf density, SA = projected stem area, SD = stem density, SDm = stem 
+299 
+diameter, SDMC = stem dry matter content, SLA = specific leaf area, SSD = stem 
+300 
+specific density. The vegetative stem height (SH) was added to the other traits for this 
+301 
+analysis. 
+302 
+ 
+ 
+303 
+
+ 
+19
+3.2. Effect of morphological traits on the Unit Stream Power 
+304 
+The effects of traits on hydraulic roughness were analysed using GLMs to show the traits 
+305 
+affecting the USP at each discharge (Table 3). The leaf densities (0-5 cm and 0-10 cm) 
+306 
+were correlated to the USP for the four discharge levels. The leaf area had a significant 
+307 
+relationship with the USP at discharges Q1 and Q2, while the leaf density (0-20 cm) was 
+308 
+significant with the USP at discharges Q3 and Q4. The weighted leaf area (0-5 cm, 0-10 
+309 
+cm and 0-20 cm), the weighted projected stem area (0-5 cm, 0-10 cm and 0-20 cm), the 
+310 
+weighted stem diameter (0-5 cm, 0-10 cm and 0-20 cm) and the weighted SLA (0-5 cm) 
+311 
+were correlated to the USP at discharges Q1, Q2, Q3 and Q4. The weighted SLA (0-10 
+312 
+cm) influenced the USP at discharges Q2, Q3 and Q4. 
+313 
+ 
+ 
+314 
+
+ 
+20
+Table 3. Morphological trait effects on USP for each discharge used. Generalised 
+315 
+linear models (GLM) of each trait and density-weighted trait at each stem level in relation 
+316 
+to the USP for each discharge. LA = leaf area, LD = leaf density, SA = projected stem 
+317 
+area, SD = stem density, SDm = stem diameter, SDMC = stem dry matter content, 
+318 
+SLA = specific leaf area, SSD = stem specific density. The density-weighted traits were 
+319 
+named by adding “W” at the beginning of their existing abbreviations. 
+320 
+ 
+ 
+321 
+
+ 
+21
+322 
+Traits 
+Level 
+along the 
+stem 
+Q1 = 2 L.s-1.m-1 
+Q2 = 4 L.s-1.m-1 
+Q3 = 8 L.s-1.m-1 
+Q4 = 11 L.s-1.m-1 
+AIC 
+ß 
+AIC 
+ß 
+AIC 
+ß 
+AIC 
+ß 
+LA 
+  
+-158.15 
+0.04 * 
+-147.27 
+0.03 * 
+-131.38 
+0.02 ns 
+-125.83 
+0.02 ns 
+LD 
+0 - 5 cm 
+-159.11 
+1.33 * 
+-150.06 
+1.07 ** 
+-135.45 
+0.78 ** 
+-131.14 
+0.76 ** 
+  
+0 - 10 cm 
+-157.68 
+0.81 * 
+-148.34 
+0.65 * 
+-134.21 
+0.49 * 
+-129.23 
+0.46 ** 
+  
+0 - 20 cm 
+-154.49 
+0.44 ns 
+-145.21 
+0.37 ns 
+-131.54 
+0.29 * 
+-126.12 
+0.27 * 
+SA 
+0 - 5 cm 
+-152.71 
+0.46 ns 
+-141.33 
+0.22 ns 
+-126.83 
+0.11 ns 
+-120.93 
+0.1 ns 
+  
+0 - 10 cm 
+-152.55 
+0.22 ns 
+-141.25 
+0.11 ns 
+-126.78 
+0.05 ns 
+-120.87 
+0.05 ns 
+  
+0 - 20 cm 
+-151.70 
+0.08 ns 
+-140.75 
+0.02 ns 
+-126.51 
+0.0048 ns 
+-120.58 
+0.0037 ns 
+SD 
+  
+-151.71 
+0.73 ns 
+-142.22 
+0.84 ns 
+-128.89 
+0.77 ns 
+-122.19 
+0.57 ns 
+SDMC 
+  
+-153.37 
+-707.3 ns 
+-143.40 
+-571.4 ns 
+-130.15 
+-475.66 ns 
+-124.26 
+-429.54 ns 
+SDm 
+0 - 5 cm 
+-152.70 
+22.9 ns 
+-141.33 
+11.02 ns 
+-126.83 
+5.54 ns 
+-120.93 
+5.18 ns 
+  
+0 - 10 cm 
+-152.58 
+22.47 ns 
+-141.27 
+10.76 ns 
+-126.79 
+5.32 ns 
+-120.89 
+4.96 ns 
+  
+0 - 20 cm 
+-152.41 
+21.78 ns 
+-141.15 
+9.93 ns 
+-126.72 
+4.72 ns 
+-120.80 
+4.33 ns 
+SLA 
+  
+-154.96 
+-7.87 ns 
+-142.59 
+-4.47 ns 
+-127.46 
+-2.39 ns 
+-121.92 
+-2.46 ns 
+SSD 
+0 - 5 cm 
+-153.46 
+-128.71 ns 
+-142.06 
+-75.4 ns 
+-127.63 
+-49.26 ns 
+-121.86 
+-46.93 ns 
+  
+0 - 10 cm 
+-153.64 
+-277 ns 
+-141.95 
+-151.2 ns 
+-127.38 
+-91.26 ns 
+-121.75 
+-93.63 ns 
+  
+0 - 20 cm 
+-153.33 
+-569.8 ns 
+-141.35 
+-251.1 ns 
+-126.88 
+-134.38 ns 
+-121.05 
+-134.77 ns 
+WLA 
+0 - 5 cm 
+-163.29 
+0.0004 ** 
+-154.63 
+0.0003 ** 
+-138.44 
+0.0002 ** 
+-136.08 
+0.0002 ** 
+  
+0 - 10 cm 
+-163.26 
+0.0003 ** 
+-153.79 
+0.0002 ** 
+-137.69 
+0.0001 ** 
+-135.63 
+0.0001 ** 
+  
+0 - 20 cm 
+-163.44 
+0.0002 ** 
+-153.65 
+0.0001 ** 
+-137.78 
+0.0001 ** 
+-136.37 
+0.0001 ** 
+WSA 
+0 - 5 cm 
+-161.43 
+0.02 ** 
+-154.14 
+0.02 ** 
+-141.02 
+0.02 ** 
+-133.45 
+0.01 ** 
+  
+0 - 10 cm 
+-160.97 
+0.01 ** 
+-153.49 
+0.01 ** 
+-140.30 
+0.0081 ** 
+-132.81 
+0.0071 ** 
+  
+0 - 20 cm 
+-158.44 
+0.0055 * 
+-149.75 
+0.0046 * 
+-136.37 
+0.0036 ** 
+-129.07 
+0.0031 * 
+WSDMC 
+  
+-151.38 
+1.72 ns 
+-141.76 
+2.31 ns 
+-128.25 
+2.14 ns 
+-121.66 
+1.51 ns 
+WSDm 
+0 - 5 cm 
+-161.43 
+1.25 ** 
+-154.14 
+1.05 ** 
+-141.02 
+0.82 ** 
+-133.45 
+0.71 ** 
+  
+0 - 10 cm 
+-161.06 
+1.24 ** 
+-153.64 
+1.05 ** 
+-140.46 
+0.82 ** 
+-132.96 
+0.71 ** 
+  
+0 - 20 cm 
+-160.46 
+1.21 * 
+-152.56 
+1.01 ** 
+-139.27 
+0.79 ** 
+-131.86 
+0.68 ** 
+WSLA 
+0 - 5 cm 
+-157.33 
+0.06 * 
+-148.47 
+0.05 * 
+-134.37 
+0.04 * 
+-129.65 
+0.04 ** 
+  
+0 - 10 cm 
+-154.34 
+0.03 ns 
+-145.19 
+0.03 * 
+-131.64 
+0.02 * 
+-125.92 
+0.02 * 
+  
+0 - 20 cm 
+-151.38 
+0.0058 ns 
+-141.71 
+0.0076 ns 
+-128.17 
+0.007 ns 
+-122.10 
+0.0061 ns 
+WSSD 
+0 - 5 cm 
+-151.10 
+0.12 ns 
+-141.05 
+0.22 ns 
+-127.32 
+0.23 ns 
+-121.02 
+0.15 ns 
+  
+0 - 10 cm 
+-151.07 
+0.19 ns 
+-141.03 
+0.41 ns 
+-127.32 
+0.45 ns 
+-120.99 
+0.28 ns 
+  
+0 - 20 cm 
+-151.04 
+0.23 ns 
+-141.00 
+0.8 ns 
+-127.33 
+0.91 ns 
+-121.00 
+0.58 ns 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+N = 14; AIC = Aikake's Information Criterion; ß = regression coefficient; *** = p < 0.001; ** = p < 0.01; * = p < 0.05; ns = not 
+significant. The significant correlations are indicated in bold. 
+
+ 
+22
+From the results in Table 3, GLMs were used to highlight traits and density-weighted 
+323 
+traits (0-10 cm) that have a greater impact on the USP within the traits previously 
+324 
+identified as significantly impacting the USP (Fig 3, Table 4, Table 5). The GLMs for 
+325 
+single traits (Table 4) highlighted that the combination of leaf area and leaf density was 
+326 
+the best model fit for all discharges (wAICc > 0.50), although the leaf density was also a 
+327 
+good fit for the data at discharges Q3 and Q4 (wAICc = 0.39 and wAICc = 0.34, 
+328 
+respectively). The results of the density-weighted trait GLMs (Table 5) showed that 
+329 
+models USP ~ WLA + WSA and USP ~ WLA + WSDm were the best fit for all 
+330 
+discharges, with cumulative wAICc ranging from 0.75 at discharge Q1 to 0.84 at Q4, 
+331 
+showing a growing significance along with the discharge gradient. However, the ranking 
+332 
+of importance changed with the discharges, as USP ~ WLA + WSA was greater for 
+333 
+discharges Q1 and Q4, USP ~ WLA + WSDm was greater for Q3 and both combinations 
+334 
+were equivalent for Q2. 
+335 
+ 
+ 
+336 
+
+ 
+23
+337 
+Figure 3. Relationship between USP and traits and density-weighted traits identified 
+338 
+as the best fit to hydraulic roughness at 0 – 10 cm. USPc represents the threshold of 
+339 
+0.004 m.s-1 from which soil is likely to erode in loamy soils found in the European loess 
+340 
+belt (Govers, 1990). 
+ 
+341 
+0.000
+0.002
+0.004
+0.006
+0.008
+0.010
+0
+2000
+4000
+6000
+8000
+USP (m.s-1)
+Leaf area (mm2)
+0.000
+0.002
+0.004
+0.006
+0.008
+0.010
+0
+100
+200
+300
+400
+USP (m.s-1)
+Leaf density (dm-2)
+0
+0.002
+0.004
+0.006
+0.008
+0.01
+0
+500000
+1000000
+1500000
+USP (m.s-1)
+W. leaf area (mm2.dm-2)
+0
+0.002
+0.004
+0.006
+0.008
+0.01
+0
+10000
+20000
+30000
+40000
+USP (m.s-1)
+W. stem area (mm2.dm-2) 
+0.000
+0.002
+0.004
+0.006
+0.008
+0.010
+0
+100
+200
+300
+400
+USP (m.s-1)
+W. stem diameter  (mm.dm-2) 
+2 L.s-1.m-1
+4 L.s-1.m-1
+8 L.s-1.m-1
+11 L.s-1.m-1
+USPc
+
+ 
+24
+Table 4. Selected GLMs fitted to USP and two traits as estimation variables for each 
+342 
+discharge used. The models are sorted from the smallest ∆AICc to the highest ∆AICc at 
+343 
+each discharge used. 
+344 
+ 
+ 
+345 
+Discharge 
+Models 
+AICc 
+∆AICc 
+wAICc 
+ 
+USP ~ LA + LD 
+-158.68 
+0.0 
+0.707 
+Q1 = 2 L.s-1.m-1 
+USP ~ LA 
+-155.75 
+2.9 
+0.164 
+ 
+USP ~ LD 
+-155.28 
+3.4 
+0.129 
+ 
+  
+  
+  
+  
+ 
+USP ~ LA + LD 
+-148.93 
+0.0 
+0.737 
+Q2 = 4 L.s-1.m-1 
+USP ~ LD 
+-145.94 
+3.0 
+0.166 
+ 
+USP ~ LA 
+-144.87 
+4.1 
+0.097 
+ 
+  
+  
+  
+  
+ 
+USP ~ LA + LD 
+-132.34 
+0.0 
+0.512 
+Q3 = 8 L.s-1.m-1 
+USP ~ LD 
+-131.81 
+0.5 
+0.393 
+ 
+USP ~ LA 
+-128.98 
+3.4 
+0.096 
+ 
+  
+  
+  
+  
+ 
+USP ~ LA + LD 
+-127.94 
+0.0 
+0.595 
+Q4 = 11 L.s-1.m-1 
+USP ~ LD 
+-126.83 
+1.1 
+0.342 
+ 
+USP ~ LA 
+-123.43 
+4.5 
+0.063 
+ 
+  
+  
+  
+  
+Full model was: USP ~ LA + LD; LD from (0-10 cm). AICc = second order 
+Aikake's Information Criterion; see text for more details on ∆AICc and 
+wAICc. LA = leaf area and LD = leaf density 
+ 
+ 
+ 
+ 
+ 
+
+ 
+25
+Table 5. Selected GLMs fitted to USP and four density-weighted traits as estimation 
+346 
+variables for each discharge used. The models are sorted from the smallest ∆AICc to 
+347 
+the highest ∆AICc for each discharge used. 
+348 
+ 
+ 
+349 
+Discharge 
+Models 
+AICc 
+∆AICc 
+wAICc 
+ 
+USP ~ WLA + WSA 
+-165.33 
+0.00 
+0.377 
+ 
+USP ~ WLA + WSDm 
+-165.29 
+0.04 
+0.370 
+ 
+USP ~ WLA + WSLA + WSDm 
+-161.93 
+3.40 
+0.069 
+Q1 = 2 L.s-1.m-1 
+USP ~ WLA + WSA + WSLA 
+-161.92 
+3.41 
+0.069 
+ 
+USP ~ WLA 
+-160.86 
+4.47 
+0.040 
+ 
+USP ~ WLA + WSDm + WSA 
+-160.48 
+4.85 
+0.033 
+ 
+USP ~ WSDm 
+-158.66 
+6.67 
+0.013 
+ 
+USP ~ WSA 
+-158.57 
+6.76 
+0.013 
+ 
+  
+  
+  
+  
+ 
+USP ~ WLA + WSA 
+-160.22 
+0.00 
+0.412 
+ 
+USP ~ WLA + WSDm 
+-160.22 
+0.00 
+0.412 
+Q2 = 4 L.s-1.m-1 
+USP ~ WLA + WSLA + WSDm 
+-156.45 
+3.77 
+0.063 
+ 
+USP ~ WLA + WSA + WSLA 
+-156.38 
+3.84 
+0.060 
+ 
+USP ~ WLA + WSDm + WSA 
+-155.16 
+5.05 
+0.033 
+ 
+  
+  
+  
+  
+ 
+USP ~ WLA + WSDm 
+-143.44 
+0.00 
+0.405 
+ 
+USP ~ WLA + WSA 
+-143.44 
+0.01 
+0.404 
+ 
+USP ~ WLA + WSLA + WSDm 
+-138.78 
+4.67 
+0.039 
+Q3 = 8 L.s-1.m-1 
+USP ~ WLA + WSA + WSLA 
+-138.73 
+4.71 
+0.038 
+ 
+USP ~ WLA + WSDm + WSA 
+-138.39 
+5.06 
+0.032 
+ 
+USP ~ WSDm 
+-138.06 
+5.39 
+0.027 
+ 
+USP ~ WSA 
+-137.9 
+5.55 
+0.025 
+ 
+  
+  
+  
+  
+ 
+USP ~ WLA + WSA 
+-140.87 
+0.00 
+0.423 
+ 
+USP ~ WLA + WSDm 
+-140.86 
+0.02 
+0.419 
+ 
+USP ~ WLA + WSLA + WSDm 
+-136.7 
+4.17 
+0.053 
+Q4 = 11 L.s-1.m-1 USP ~ WLA + WSA + WSLA 
+-136.68 
+4.20 
+0.052 
+ 
+USP ~ WLA + WSDm + WSA 
+-135.85 
+5.03 
+0.034 
+ 
+  
+  
+  
+  
+Full model was: USP ~ WLA + WSA + WSLA + WSDm. All variables are for traits (0-10 
+cm). AICc = second order Aikake's Information Criterion; see text for more details on ∆AICc 
+and wAICc. WLA = weighted leaf area, WSA = weighted projected stem area, 
+WSDm = weighted stem diameter, WSLA = weighted specific leaf area. 
+ 
+  
+  
+  
+  
+
+ 
+26
+4. Discussion 
+350 
+Contrary to processes of soil detachment by water flow (De Baets and Poesen, 2010; 
+351 
+Vannoppen et al., 2015) and sediment retention (Burylo et al., 2012), the effect of 
+352 
+morphological plant traits on hydraulic roughness corresponds to a lack of research to 
+353 
+understand the role of plant and vegetation on soil erosion. This study examined the 
+354 
+effects of plant morphological traits on hydraulic roughness for four discharges.  
+355 
+ 
+356 
+4.1. Effect of morphological traits and density-weighted traits on hydraulic 
+357 
+roughness 
+358 
+Stem and leaf traits influenced hydraulic roughness, given that they constitute a hydraulic 
+359 
+brake on water flows. However, some stem and leaf traits may have a greater effect on 
+360 
+hydraulic roughness. This study has highlighted that, among the considered aboveground 
+361 
+traits involved in soil erosion (i.e., leaf area, SLA, leaf density, stem density, stem 
+362 
+diameter, stem specific density, projected stem area and stem dry matter content), only 
+363 
+the leaf area and the leaf density presented a significant effect on hydraulic roughness. 
+364 
+The leaf traits have a better impact on hydraulic roughness than stem traits, regarding 
+365 
+non-weighted traits. The GLMs showed that the combination of leaf density and leaf area 
+366 
+better explained the effect on hydraulic roughness than these traits alone for any discharge 
+367 
+used. Plant individuals with better trade-off between leaf density and leaf area, meaning 
+368 
+high leaf density and long leaves, such as some graminoid species, would have a great 
+369 
+impact on mitigating the unit stream power and thus increase hydraulic roughness. These 
+370 
+results are in agreement with other studies highlighting the efficiency of several 
+371 
+graminoid species in soil erosion mitigation (Isselin-Nondedeu and Bédécarrats, 2007; 
+372 
+Morgan, 2004). The absence of the stem density effect on hydraulic roughness is not in 
+373 
+
+ 
+27
+agreement with the literature where the stem density is considered a main trait impacting 
+374 
+flow velocity and soil erosion (Isselin-Nondedeu and Bédécarrats, 2007; Mekonnen et al., 
+375 
+2016; Meyer et al., 1995; Morgan and Duzant, 2008; Temple et al., 1987). This 
+376 
+contradiction could be explained by the lack of a standard characterisation of all stem and 
+377 
+leaf traits involved in hydraulic roughness and soil erosion (e.g. defining the tillers and 
+378 
+pseudoculms as stems when characterising the stem density). The stem density is one of 
+379 
+the main traits included in hydraulic and soil erosion models such as VFSMOD (Muñoz 
+380 
+Carpena and Parsons, 2014) and in studies focusing on the relationship between 
+381 
+vegetation and hydraulic roughness or sediment retention (Morgan, 2004; Temple, 1982; 
+382 
+Van Dijk et al., 1996; Xiao et al., 2011), which could be improved by considering the 
+383 
+effect of other stem traits (e.g., stem diameter). In the trait-based approach, the importance 
+384 
+of stem density in the plant-hydraulic roughness relationship lays in its use in the 
+385 
+calculation of weighted stem trait values in the vegetation. Indeed, this approach 
+386 
+highlighted that mainly density-weighted traits influenced hydraulic roughness. 
+387 
+Specifically, all the GLMs included weighted leaf area, indicating its great importance in 
+388 
+the increase of hydraulic roughness. Projected stem area or stem diameter showed no 
+389 
+significance on the hydraulic roughness at the trait level but, by considering weighted 
+390 
+stem traits, weighted projected stem area and weighted stem diameter showed highly 
+391 
+significant effects on the unit stream power. The GLMs showed that the best fit model 
+392 
+was WSA + WLA (weighted projected stem area + weighted leaf area) as these traits 
+393 
+represent the interception area of the leaves and stems with the water flow in the 
+394 
+vegetation, i.e., a hydraulic brake. As the stem diameter, projected stem area and leaf area 
+395 
+were negatively associated with the stem density, trade-offs among these stem and leaf 
+396 
+traits can be considered to improve herbaceous hedge effects on hydraulic roughness. The 
+397 
+
+ 
+28
+effect of weighted SLA, when associated with weighted leaf area and weighted stem 
+398 
+diameter or weighted leaf area and weighted projected stem area, was also observed (3 < 
+399 
+∆AICc < 5). Overall, vegetation presenting the best trade-off between stem density and 
+400 
+weighted stem diameter, as well as between leaf density and leaf area, will have a greater 
+401 
+efficiency to increase hydraulic roughness. Herbaceous hedges that present these 
+402 
+weighted leaf and stem traits would be partly composed of graminoid species, given that 
+403 
+these present large leaf density, leaf area, stem diameter and a greater hydraulic roughness 
+404 
+than non-graminoid species (Isselin-Nondedeu and Bédécarrats, 2007). Stem and leaf 
+405 
+densities should be considered to calculate weighted-traits in herbaceous hedges and 
+406 
+quantify the effect on soil erosion. Characterisation of trait weights in herbaceous hedges 
+407 
+vegetation allowed to highlight the main morphological aboveground traits and their 
+408 
+combinations involved in hydraulic roughness, as well as the importance of stem density 
+409 
+as a plant marker to examine the effect of vegetation on runoff. As a result, this trait-
+410 
+based approach can be effectively applied at the vegetation level to understand and model 
+411 
+runoff and soil erosion.  
+412 
+ 
+413 
+4.2. Effects of morphological traits on hydraulic roughness depending on runoff 
+414 
+processes  
+415 
+Flow rate variations can trigger different soil-plant-water processes (Dabney et al., 2004; 
+416 
+Temple et al., 1987; Vieira and Dabney, 2012). The results here are consistent with the 
+417 
+hypothesis that the influence of aboveground traits on hydraulic roughness can change 
+418 
+with the discharge. The effect of leaf density (0-20 cm) and leaf area on hydraulic 
+419 
+roughness varied with the discharge. The results showed the importance of leaf density 
+420 
+in increasing hydraulic roughness at higher discharges (∆AIC < 2). However, for lower 
+421 
+
+ 
+29
+discharges, a combination of leaf area and leaf density should be considered rather than 
+422 
+the traits alone. The results for the leaf area are in accordance with the one found by 
+423 
+Temple et al. (1987) showing a decreasing impact of the leaf structure with an increasing 
+424 
+discharge. At a small discharge (2 L.s-1.m-1), weighted SLA (0-10 cm) did not present an 
+425 
+effect on the hydraulic roughness, but a positive influence was observed at 4 L.s-1.m-1. 
+426 
+Differences in the influence of leaf density and weighted SLA among the discharges may 
+427 
+be interpreted as the water depth being too low to enter into contact with all the leaves 
+428 
+between 0 and 20 cm of each individual and with large SLA until 5 cm of the vegetation 
+429 
+at small discharges. Herbaceous hedges, playing a key role in hydraulic roughness, 
+430 
+presents the best trade-off between stem density and diameter, as well as leaf density and 
+431 
+area at low discharges, and with increasing water discharge, larger basal leaf density and 
+432 
+basal SLA. This study indicates that some trait and density-weighted trait effects on 
+433 
+hydraulic roughness are linked to the flow water level. The characterisation of these 
+434 
+effects according to flow depth constitutes an advance to model water flows and soil 
+435 
+erosion in ecosystems and landscapes.   
+436 
+ 
+437 
+4.3. Consequences on sediment retention 
+438 
+As hydraulic roughness is linked to sediment retention and transport capacities (Dabney 
+439 
+et al., 2009; Isselin-Nondedeu and Bédécarrats, 2007; Lambrechts et al., 2014; Munoz-
+440 
+Carpena et al., 1999), plant morphological traits, which have positive effects on hydraulic 
+441 
+roughness, can be discussed with studies highlighting plant trait effects on sediment 
+442 
+retention. Indeed, results showed the positive effect of the leaf area on hydraulic 
+443 
+roughness, whereas there was no effect of stem specific density at small discharges, such 
+444 
+as 2 L.s-1.m-1, which is consistent with Burylo et al. (2012) on the sediment retention 
+445 
+
+ 
+30
+capacity for more intense erosion processes. Results display the greater impact of density-
+446 
+weighted traits, which were previously not considered in studies on plant trait effects on 
+447 
+sediment retention. The density-weighted trait approach is therefore important in 
+448 
+understanding the plant-soil interaction involved in soil erosion. 
+449 
+Application of this trait-based approach in ecohydrology involves using the results to 
+450 
+manage the reduction of soil erosion. Use of the unit stream power allows to characterise 
+451 
+the plant efficiency with regard to sediment retention, with a critical USP (USPc) value 
+452 
+of 0.004 m.s-1 determined by (Govers, 1990), which indicates the threshold from which 
+453 
+soil is most likely to erode in loamy soils found in the European loess belt. From identified 
+454 
+traits and density-weighted traits presenting an effect on hydraulic roughness and their 
+455 
+values (USP < 0.004 m.s-1) plant species selection could be performed to create new 
+456 
+herbaceous ecosystems that will be efficient to reduce runoff and further sediment 
+457 
+retention on degraded areas (e.g., bare soils in degraded agroecosystems, urban and 
+458 
+mining habitats) (Fig. 3). 
+459 
+ 
+460 
+5. Conclusions 
+461 
+This trait-based ecohydrology study allows the identification of important plant traits that 
+462 
+influence the hydraulic roughness. The results indicate the stronger effect of density-
+463 
+weighted traits, showing that communities with the best trade-offs between stem density, 
+464 
+diameter and leaf area are the key to mitigate soil erosion. This new knowledge in the 
+465 
+relationship between plant functional traits with hydraulic roughness and soil erosion 
+466 
+constitutes a new advancement for modelling vegetation effects on soil erosion and 
+467 
+creating new herbaceous ecosystems in degraded areas (e.g. bare soils of agroecosystems, 
+468 
+mining and urban habitats). These newly reconstructed herbaceous ecosystems will play 
+469 
+
+ 
+31
+an important role in soil erosion mitigation. Future work should (1) include these 
+470 
+relationships between aboveground traits and hydraulic roughness in existing models to 
+471 
+estimate the transport and sediment retention capacities of flows and design herbaceous 
+472 
+hedges to mitigate soil erosion and (2) examine the effect of functional diversity on runoff 
+473 
+and soil erosion, as it could influence hydraulic roughness by ecologically complementing 
+474 
+aboveground biomass and, more precisely, by limiting vegetation lodging.  
+475 
+ 
+476 
+Acknowledgements 
+477 
+The authors thank the funders of this study: Agence de l’Eau Seine-Normandie (Seine-
+478 
+Normandie Catchment Agency), Région Normandie (Normandy council) and ANRT 
+479 
+(National Association for Technological Research). Special acknowledgements are given 
+480 
+to Dr. Yves le Bissonnais and Dr. Freddy Rey for their scientific comments on the 
+481 
+methods of our study and M. Jean-Baptiste Richet for his insightful comments and 
+482 
+technical advice. 
+483 
+ 
+484 
+References 
+485 
+Akram, S., Yu, B., Ghadiri, H., Rose, C., Hussein, J., 2014. The links between water 
+486 
+profile, net deposition and erosion in the design and performance of stiff grass 
+487 
+hedges. J. Hydrol. 510, 472–479. https://doi.org/10.1016/j.jhydrol.2014.01.001 
+488 
+Berendse, F., van Ruijven, J., Jongejans, E., Keesstra, S., 2015. Loss of plant species 
+489 
+diversity reduces soil erosion resistance. Ecosystems. 18, 881–888. 
+490 
+https://doi.org/10.1007/s10021-015-9869-6 
+491 
+Blanco-Canqui, H., Gantzer, C.J., Anderson, S.H., 2006. Performance of grass barriers 
+492 
+and filter strips under interrill and concentrated flow. J. Environ. Qual. 35, 1969. 
+493 
+https://doi.org/10.2134/jeq2006.0073 
+494 
+Boardman, J., Poesen, J. (Eds.), 2006. Soil Erosion in Europe. John Wiley & Sons, Ltd. 
+495 
+Bochet, E., Poesen, J., Rubio, J.L., 2000. Mound development as an interaction of 
+496 
+individual plants with soil, water erosion and sedimentation processes on slopes. 
+497 
+Earth Surf. Process. Landf. 25, 847–867. 
+498 
+Brown, K.A., Flynn, D.F.B., Abram, N.K., Ingram, J.C., Johnson, S.E., Wright, P., 2011. 
+499 
+Assessing natural resource use by forest-reliant communities in Madagascar using 
+500 
+
+ 
+32
+functional diversity and functional redundancy metrics. PLoS ONE 6, e24107. 
+501 
+https://doi.org/10.1371/journal.pone.0024107 
+502 
+Burnham, K.P., Anderson, D.R., 2002. Model Selection and Multimodel Inference: A 
+503 
+Practical Information-Theoretic Approach, 2nd ed. Springer, New York. 
+504 
+Burnham, K.P., Anderson, D.R., Huyvaert, K.P., 2011. AIC model selection and 
+505 
+multimodel inference in behavioral ecology: Some background, observations, and 
+506 
+comparisons. Behav. Ecol. Sociobiol. 65, 23–35. https://doi.org/10.1007/s00265-
+507 
+010-1029-6 
+508 
+Burylo, M., Rey, F., Bochet, E., Dutoit, T., 2012. Plant functional traits and species ability 
+509 
+for sediment retention during concentrated flow erosion. Plant Soil 353, 135–144. 
+510 
+https://doi.org/10.1007/s11104-011-1017-2 
+511 
+Cantalice, J.R.B., Melo, R.O., Silva, Y.J.A.B., Cunha Filho, M., Araújo, A.M., Vieira, 
+512 
+L.P., Bezerra, S.A., Barros, G., Singh, V.P., 2015. Hydraulic roughness due to 
+513 
+submerged, emergent and flexible natural vegetation in a semiarid alluvial 
+514 
+channel. J. Arid Environ. 114, 1–7. https://doi.org/10.1016/j.jaridenv.2014.10.012 
+515 
+Cao, L., Zhang, Y., Lu, H., Yuan, J., Zhu, Y., Liang, Y., 2015. Grass hedge effects on 
+516 
+controlling soil loss from concentrated flow: A case study in the red soil region of 
+517 
+China. Soil Tillage Res. 148, 97–105. https://doi.org/10.1016/j.still.2014.12.009 
+518 
+Cornelissen, J.H.C., Lavorel, S., Garnier, E., Diaz, S., Buchmann, N., Gurvich, D.E., 
+519 
+Reich, P.B., ter Steege, H., Morgan, H.D., van der Heijden, M.G.A., Pausas, J.G., 
+520 
+Poorter, H., 2003. A handbook of protocols for standardised and easy 
+521 
+measurement of plant functional traits worldwide. Aust. J. Bot. 51, 335–380. 
+522 
+Dabney, S.M., McGregor, K.C., Wilson, G.V., Cullum, R.F., 2009. How management of 
+523 
+grass hedges affects their erosion reduction potential. Soil Sci. Soc. Am. J. 73, 
+524 
+241. https://doi.org/10.2136/sssaj2007.0434 
+525 
+Dabney, S.M., Meyer, L.D., Harmon, W.C., Alonso, C.V., Foster, G.R., 1995. 
+526 
+Depositional patterns of sediment trapped by grass hedges. Trans. ASAE 38, 
+527 
+1719–1729. 
+528 
+Dabney, S.M., Shields Jr, F.D., Temple, D.M., Langendoen, E.J., 2004. Erosion processes 
+529 
+in gullies modified by establishing grass hedges. Trans. ASAE 47, 1561. 
+530 
+De Baets, S., Poesen, J., 2010. Empirical models for predicting the erosion-reducing 
+531 
+effects of plant roots during concentrated flow erosion. Geomorphology. 118, 
+532 
+425–432. https://doi.org/10.1016/j.geomorph.2010.02.011 
+533 
+De Baets, S., Poesen, J., Gyssels, G., Knapen, A., 2006. Effects of grass roots on the 
+534 
+erodibility of topsoils during concentrated flow. Geomorphology. 76, 54–67. 
+535 
+https://doi.org/10.1016/j.geomorph.2005.10.002 
+536 
+Dillaha, T.A., Reneau, R.B., Mostaghimi, S., Lee, D., 1989. Vegetative filter strips for 
+537 
+agricultural nonpoint source pollution control. Trans. ASAE 32, 513–0519. 
+538 
+Dosskey, M.G., Vidon, P., Gurwick, N.P., Allan, C.J., Duval, T.P., Lowrance, R., 2010. 
+539 
+The role of riparian vegetation in protecting and improving chemical water quality 
+540 
+in streams. J. Am. Water Resour. Assoc. 1–18. https://doi.org/10.1111/j.1752-
+541 
+1688.2010.00419.x 
+542 
+Faucon, M.-P., Houben, D., Lambers, H., 2017. Plant functional traits: soil and ecosystem 
+543 
+services. 
+Trends 
+Plant 
+Sci. 
+22, 
+385–394. 
+544 
+https://doi.org/10.1016/j.tplants.2017.01.005 
+545 
+
+ 
+33
+Garnier, E., Navas, M.-L., 2012. A trait-based approach to comparative functional plant 
+546 
+ecology: concepts, methods and applications for agroecology. A review. Agron. 
+547 
+Sustain. Dev. 32, 365–399. 
+548 
+Gobin, A., Govers, G., Jones, R., Kirkby, M., Kosmas, C., Gentile, A.R., 2003. 
+549 
+Assessment and reporting on soil erosion: background and workshop report. 
+550 
+(Technical No. 94). European Environment Agency, Copenhagen. 
+551 
+Govers, G., 1992. Relationship between discharge, velocity and flow area for rills eroding 
+552 
+loose, non-layered materials. Earth Surf. Process. Landf. 17, 515–528. 
+553 
+Govers, G., 1990. Empirical relationships for the transport capacity of overland flow. Int. 
+554 
+Assoc. Hydrol. Sci. 189, 45–63. 
+555 
+Graff, C.D., Sadeghi, A.M., Lowrance, R.R., Williams, R.G., 2005. Quantifying the 
+556 
+sensitivity of the riparian ecosystem management model (REMM) to changes in 
+557 
+climate and buffer characteristics common to conservation practices. Trans. 
+558 
+ASAE 48, 1377–1387. 
+559 
+Gyssels, G., Poesen, J., Bochet, E., Li, Y., 2005. Impact of plant roots on the resistance 
+560 
+of soils to erosion by water: a review. Prog. Phys. Geogr. 29, 189–217. 
+561 
+https://doi.org/10.1191/0309133305pp443ra 
+562 
+Haan, C.T., Barfield, B.J., Hayes, J.C., 1994. Design Hydrology and Sedimentology for 
+563 
+Small Catchments. Academic Press. 
+564 
+Hayes, J.C., Barfield, B.J., Barnhisel, R.I., 1978. Evaluation of grass characteristics 
+565 
+related to sediment filtration. ASAE 78-2513, 21. 
+566 
+Hessel, R., Jetten, V.G., Liu, B., Qiu, Y., 2016. Evaluating effects of soil and water 
+567 
+management and land use change on the Loess Plateau of China using LISEM, in: 
+568 
+Morgan, R.P.C., Nearing, M. (Eds.), Handbook of Erosion Modelling. John Wiley 
+569 
+and Sons, pp. 223–248. 
+570 
+Hussein, J., Yu, B., Ghadiri, H., Rose, C., 2007. Prediction of surface flow hydrology and 
+571 
+sediment retention upslope of a vetiver buffer strip. J. Hydrol. 338, 261–272. 
+572 
+Isselin-Nondedeu, F., Bédécarrats, A., 2007. Influence of alpine plants growing on steep 
+573 
+slopes on sediment trapping and transport by runoff. Catena. 71, 330–339. 
+574 
+https://doi.org/10.1016/j.catena.2007.02.001 
+575 
+Järvelä, J., 2002. Flow resistance of flexible and stiff vegetation: A flume study with 
+576 
+natural plants. J. Hydrol. 269, 44–54. 
+577 
+Knapen, A., Poesen, J., Govers, G., Gyssels, G., Nachtergaele, J., 2007. Resistance of 
+578 
+soils to concentrated flow erosion: A review. Earth-Sci. Rev. 80, 75–109. 
+579 
+https://doi.org/10.1016/j.earscirev.2006.08.001 
+580 
+Lambinon, J., Delvosalle, L., Duvigneaud, J., 2012. Nouvelle flore de la Belgique, du G.-
+581 
+D. de Luxembourg, du nord de la France et des régions voisines, 6th ed. 
+582 
+Lambrechts, T., François, S., Lutts, S., Muñoz-Carpena, R., Bielders, C.L., 2014. Impact 
+583 
+of plant growth and morphology and of sediment concentration on sediment 
+584 
+retention efficiency of vegetative filter strips: Flume experiments and VFSMOD 
+585 
+modeling. J. Hydrol. 511, 800–810. https://doi.org/10.1016/j.jhydrol.2014.02.030 
+586 
+Lavorel, S., Garnier, E., 2002. Predicting changes in community composition and 
+587 
+ecosystem functioning from plant traits: Revisiting the Holy Grail. Funct. Ecol. 
+588 
+16, 545–556. 
+589 
+Le Bissonnais, Y., Cerdan, O., Lecomte, V., Benkhadra, H., Souchère, V., Martin, P., 
+590 
+2005. Variability of soil surface characteristics influencing runoff and interrill 
+591 
+erosion. CATENA 62, 111–124. https://doi.org/10.1016/j.catena.2005.05.001 
+592 
+
+ 
+34
+Lowrance, R.R., Altier, L.S., Newbold, J.D., Schnabel, R.R., Groffman, P.M., Denver, 
+593 
+J.M., Correll, D.L., Gilliam, J.W., Robinson, J.L., Brinsfield, R.B., Staver, K.W., 
+594 
+Lucas, W., Todd, A.H., 1995. Water quality functions of riparian forest buffer 
+595 
+systems in the Chesapeake Bay watershed (Technology transfer report No. EPA 
+596 
+903-R-95-004). U.S. Environmental Protection Agency, Chesapeake Bay 
+597 
+Program. 
+598 
+Ludwig, J.A., Wilcox, B.P., Breshears, D.D., Tongway, D.J., Imeson, A.C., 2005. 
+599 
+Vegetation patches and runoff-erosion as interacting ecohydrological processes in 
+600 
+semiarid landscapes. Ecology. 86, 288–297. https://doi.org/10.1890/03-0569 
+601 
+Mekonnen, M., Keesstra, S.D., Ritsema, C.J., Stroosnijder, L., Baartman, J.E.M., 2016. 
+602 
+Sediment trapping with indigenous grass species showing differences in plant 
+603 
+traits 
+in 
+northwest 
+Ethiopia. 
+Catena 
+147, 
+755–763. 
+604 
+https://doi.org/10.1016/j.catena.2016.08.036 
+605 
+Meyer, L.D., Dabney, S.M., Harmon, W.C., 1995. Sediment-trapping effectiveness of 
+606 
+stiff-grass hedges. Am. Soc. Agric. Eng. 38, 809–815. 
+607 
+Morgan, R.P.C., 2004. Vegetative-based technologies for erosion control, in: Stokes, A., 
+608 
+Spanos, I., Norris, J.E., Cammeraat, E. (Eds.), Eco- and Ground Bio-Engineering: 
+609 
+The Use of Vegetation to Improve Slope Stability. Springer, Dordrecht, The 
+610 
+Netherlands, pp. 265–272. 
+611 
+Morgan, R.P.C., Duzant, J.H., 2008. Modified MMF (Morgan–Morgan–Finney) model 
+612 
+for evaluating effects of crops and vegetation cover on soil erosion. Earth Surf. 
+613 
+Process. Landf. 33, 90–106. https://doi.org/10.1002/esp.1530 
+614 
+Morgan, R.P.C., Quinton, J.N., Smith, R.E., Govers, G., Poesen, J.W.A., Chisci, G., 
+615 
+Torri, D., 1998. The EUROSEM model, in: Boardman, J., Favis-Mortlock, D. 
+616 
+(Eds.), Modelling Soil Erosion by Water. Springer Science and Business Media, 
+617 
+pp. 389 – 398. 
+618 
+Muñoz Carpena, R., Parsons, J.E., 2014. VFSMOD - Vegetative filter strips modelling 
+619 
+system (Model documentation and user’s manual No. 6.x). University of Florida. 
+620 
+Munoz-Carpena, R., Parsons, J.E., Gilliam, J.W., 1999. Modeling hydrology and 
+621 
+sediment transport in vegetative filter strips. J. Hydrol. 214, 111–129. 
+622 
+Ouin, A., Burel, F., 2002. Influence of herbaceous elements on butterfly diversity in 
+623 
+hedgerow agricultural landscapes. Agric. Ecosyst. Environ. 93, 45–53. 
+624 
+Pérez-Harguindeguy, N., Díaz, S., Garnier, E., Lavorel, S., Poorter, H., Jaureguiberry, P., 
+625 
+Bret-Harte, M.S., Cornwell, W.K., Craine, J.M., Gurvich, D.E., Urcelay, C., 
+626 
+Veneklaas, E.J., Reich, P.B., Poorter, L., Wright, I.J., Ray, P., Enrico, L., Pausas, 
+627 
+J.G., de Vos, A.C., Buchmann, N., Funes, G., Quétier, F., Hodgson, J.G., 
+628 
+Thompson, K., Morgan, H.D., ter Steege, H., Sack, L., Blonder, B., Poschlod, P., 
+629 
+Vaieretti, M.V., Conti, G., Staver, A.C., Aquino, S., Cornelissen, J.H.C., 2013. 
+630 
+New handbook for standardised measurement of plant functional traits worldwide. 
+631 
+Aust. J. Bot. 61, 167–234. https://doi.org/10.1071/BT12225 
+632 
+Richet, J.-B., Ouvry, J.-F., Saunier, M., 2017. The role of vegetative barriers such as 
+633 
+fascines and dense shrub hedges in catchment management to reduce runoff and 
+634 
+erosion effects: Experimental evidence of efficiency, and conditions of use. Ecol. 
+635 
+Eng. 103, 455–469. https://doi.org/10.1016/j.ecoleng.2016.08.008 
+636 
+Ruiz-Colmenero, M., Bienes, R., Eldridge, D.J., Marques, M.J., 2013. Vegetation cover 
+637 
+reduces erosion and enhances soil organic carbon in a vineyard in the central 
+638 
+Spain. Catena. 104, 153–160. https://doi.org/10.1016/j.catena.2012.11.007 
+639 
+
+ 
+35
+Smith, J., Potts, S., Eggleton, P., 2008. The value of sown grass margins for enhancing 
+640 
+soil macrofaunal biodiversity in arable systems. Agric. Ecosyst. Environ. 127, 
+641 
+119–125. https://doi.org/10.1016/j.agee.2008.03.008 
+642 
+Stokes, A., Douglas, G.B., Fourcaud, T., Giadrossich, F., Gillies, C., Hubble, T., Kim, 
+643 
+J.H., Loades, K.W., Mao, Z., McIvor, I.R., Mickovski, S.B., Mitchell, S., Osman, 
+644 
+N., Phillips, C., Poesen, J., Polster, D., Preti, F., Raymond, P., Rey, F., Schwarz, 
+645 
+M., Walker, L.R., 2014. Ecological mitigation of hillslope instability: ten key 
+646 
+issues 
+facing 
+researchers 
+and 
+practitioners. 
+Plant 
+Soil 
+377, 
+1–23. 
+647 
+https://doi.org/10.1007/s11104-014-2044-6 
+648 
+Temple, D.M., 1982. Flow Retardance of Submerged Grass Channel Linings. Trans. 
+649 
+ASAE 25, 1300–1303. https://doi.org/10.13031/2013.33717 
+650 
+Temple, D.M., Robinson, K.M., Ahring, R.M., Davis, A.G., 1987. Stability Design of 
+651 
+Grass-Lined Open Channels, Agriculture Handbook. U.S. Department of 
+652 
+Agriculture, Washington, D.C. 
+653 
+Van Dijk, P.M., Kwaad, F.J.P.M., Klapwijk, M., 1996. Retention of water and sediment 
+654 
+by 
+grass 
+strips. 
+Hydrol. 
+Process. 
+10, 
+1069–1080. 
+655 
+https://doi.org/10.1002/(SICI)1099-1085(199608)10:8<1069::AID-
+656 
+HYP412>3.0.CO;2-4 
+657 
+Vannoppen, W., Vanmaercke, M., De Baets, S., Poesen, J., 2015. A review of the 
+658 
+mechanical effects of plant roots on concentrated flow erosion rates. Earth-Sci. 
+659 
+Rev. 150, 666–678. https://doi.org/10.1016/j.earscirev.2015.08.011 
+660 
+Vieira, D.A.N., Dabney, S.M., 2012. Two-dimensional flow patterns near contour grass 
+661 
+hedges. Hydrol. Process. 26, 2225–2234. https://doi.org/10.1002/hyp.8262 
+662 
+Xiao, B., Wang, Q., Wang, H., Dai, Q., Wu, J., 2011. The effects of narrow grass hedges 
+663 
+on soil and water loss on sloping lands with alfalfa (Medicago sativa L.) in 
+664 
+Northern 
+China. 
+Geoderma. 
+167-168, 
+91–102. 
+665 
+https://doi.org/10.1016/j.geoderma.2011.09.010 
+666 
+Yang, C.T., 1972. Unit stream power and sediment transport. ASCE J. Hydraul. Div. 98, 
+667 
+1805–1826. 
+668 
+Yuan, Y., Bingner, R.L., Locke, M.A., 2009. A Review of effectiveness of vegetative 
+669 
+buffers on sediment trapping in agricultural areas. Ecohydrology 2, 321–336. 
+670 
+https://doi.org/10.1002/eco.82 
+671 
+Zhu, H., Fu, B., Wang, S., Zhu, L., Zhang, L., Jiao, L., Wang, C., 2015. Reducing soil 
+672 
+erosion by improving community functional diversity in semi-arid grasslands. J. 
+673 
+Appl. Ecol. 52, 1063–1072. https://doi.org/10.1111/1365-2664.12442 
+674 
+  
+675 
+View publication stats

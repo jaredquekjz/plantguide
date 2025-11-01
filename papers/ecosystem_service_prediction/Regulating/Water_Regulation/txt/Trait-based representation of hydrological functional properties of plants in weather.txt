@@ -1,0 +1,2934 @@
+Accepted Manuscript
+Trait-based representation of hydrological functional properties of plants in weather
+and ecosystem models
+Ashley M. Matheny, Golnazalsadat Mirfenderesgi, Gil Bohrer
+PII:
+S2468-2659(16)30015-4
+DOI:
+10.1016/j.pld.2016.10.001
+Reference:
+PLD 35
+To appear in:
+Plant Diversity
+Received Date: 20 April 2016
+Revised Date:
+3 October 2016
+Accepted Date: 8 October 2016
+Please cite this article as: Matheny, A.M., Mirfenderesgi, G., Bohrer, G., Trait-based representation of
+hydrological functional properties of plants in weather and ecosystem models, Plant Diversity (2016),
+doi: 10.1016/j.pld.2016.10.001.
+This is a PDF file of an unedited manuscript that has been accepted for publication. As a service to
+our customers we are providing this early version of the manuscript. The manuscript will undergo
+copyediting, typesetting, and review of the resulting proof before it is published in its final form. Please
+note that during the production process errors may be discovered which could affect the content, and all
+legal disclaimers that apply to the journal pertain.
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+1 
+ 
+Trait-based representation of hydrological functional properties of plants in weather and 
+1 
+ecosystem models 
+2 
+Ashley M. Matheny1*, Golnazalsadat Mirfenderesgi1, Gil Bohrer1 
+3 
+1Department of Civil, Environmental, and Geodetic Engineering, The Ohio State University, 
+4 
+Columbus, OH, USA.  
+5 
+*Corresponding Author: A. M. Matheny, Department of Civil, Environmental, and Geodetic 
+6 
+Engineering, The Ohio State University, Columbus, Ohio 43210, USA 
+7 
+(matheny.44@osu.edu) 
+8 
+ 
+9 
+Abstract 
+10 
+Land surface models and dynamic global vegetation models typically represent 
+11 
+vegetation through coarse plant functional type groupings based on leaf form, phenology, and 
+12 
+bioclimatic limits. Although these groupings were both feasible and functional for early model 
+13 
+generations, in light of the pace at which our knowledge of functional ecology, ecosystem 
+14 
+demographics, and vegetation-climate feedbacks has advanced and the ever growing demand for 
+15 
+enhanced model performance, these groupings have become antiquated and are identified as a 
+16 
+key source of model uncertainty. The newest wave of model development is centered on shifting 
+17 
+the vegetation paradigm away from plant functional types (PFTs) and towards flexible trait-
+18 
+based representations. These models seek to improve errors in ecosystem fluxes that result from 
+19 
+information loss due to over-aggregation of dissimilar species into the same functional class. We 
+20 
+advocate the importance of the inclusion of plant hydraulic trait representation within the new 
+21 
+paradigm through a framework of the whole-plant hydraulic strategy. Plant hydraulic strategy is 
+22 
+known to play a critical role in the regulation of stomatal conductance and thus transpiration and 
+23 
+latent heat flux. It is typical that coexisting plants employ opposing hydraulic strategies, and 
+24 
+therefore have disparate patterns of water acquisition and use. Hydraulic traits are deterministic 
+25 
+of drought resilience, response to disturbance, and other demographic processes. The addition of 
+26 
+plant hydraulic properties in models may not only improve the simulation of carbon and water 
+27 
+fluxes but also vegetation population distributions.   
+ 
+28 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+2 
+ 
+The role of vegetation in the global land surface energy and water budgets 
+29 
+Feedbacks between vegetation, weather, and climate are critical to the function of the 
+30 
+Earth system (Pitman 2003; Bonan 2008; Quillet et al., 2010). Forested ecosystems provide a 
+31 
+carbon sink of 2.3-2.5 Pg-C yr-1 (Le Quere et al., 2013), while releasing ~62,000 km3 yr-1 water  
+32 
+to the atmosphere (Jasechko et al., 2013). Carbon uptake and transpirational water loss are 
+33 
+regulated dynamically through stomatal aperture, which, in many cases, is governed by water 
+34 
+status and plant hydraulic properties (Sperry 2000; Buckley 2005; Skelton et al., 2015). 
+35 
+Transpiration from plants has been shown to be the largest component of the terrestrial water 
+36 
+cycle and is an integral component of latent heat flux – the energy component that is expended 
+37 
+evaporating water (Schlesinger and Jasechko 2014). Changes to transpiration, and therefore 
+38 
+latent heat flux, affect the partitioning of the surface energy balance. Incoming solar radiation is 
+39 
+redistributed at the surface through different heat and radiative fluxes. Vegetation at the land 
+40 
+surface strongly affects this energy redistribution. As transpiration occurs, the surface of the leaf 
+41 
+cools due to the latent heat of vaporization, altering its long-wave emissivity through the Stefan-
+42 
+Boltzmann Law and thereby modifying the radiation budget (Strengers et al., 2010). 
+43 
+Alternatively, when stomata are closed, most of the incoming solar energy that is absorbed by 
+44 
+leaf surfaces turns into heat, which increases sensible heat flux to the atmosphere, and drives 
+45 
+stronger emissions of long-wave radiation. Root water uptake from different depths alters the 
+46 
+hydrologic cycle through changes in soil water content, groundwater availability, and 
+47 
+transpiration (Fatichi et al., 2016). Moisture recycling through transpiration is integral to the 
+48 
+rewetting of the boundary layer and continental precipitation patterns, particularly in tropical 
+49 
+regions (Hesslerova and Pokorny 2010; Lee and Boyce 2010; Aemisegger et al., 2014). 
+50 
+Transpiration has been also shown to drive cloud formation (de Arellano et al., 2014). 
+51 
+Furthermore, vegetation canopy structure and leaf area index (LAI) determine the fraction of 
+52 
+precipitation which is intercepted and evaporated, and that which reaches the soil as throughfall 
+53 
+(Peng et al., 2014). Canopy roughness exerts strong controls over boundary layer turbulence and 
+54 
+atmospheric mixing (Maurer et al., 2015). At a longer time scale, vegetation processes affect soil 
+55 
+development and biogeochemical processes (Chapin 2003). These and other vegetation-climate 
+56 
+feedbacks necessitate the inclusion of an adequate representation of vegetation dynamics within 
+57 
+hydrologic and climate models (Bonan et al., 2003).  
+58 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+3 
+ 
+ 
+59 
+PFTs and beyond 
+60 
+Land surface models (LSMs) and dynamic global vegetation models (DGVMs), typically 
+61 
+indicated as terrestrial biosphere models (e. g. Fisher et al., 2014), are types of models that 
+62 
+handle the surface energy budget for the atmospheric, hydrological, or combined Earth-system 
+63 
+models of which they are often a component. The land surface serves as the upper boundary for 
+64 
+hydrological models, and the lower boundary for weather and climate models. LSMs explicitly 
+65 
+resolve the effects of vegetation and its interactions with climate while representing the 
+66 
+vegetation as a static set of parameters. DGVMs likewise represent vegetation using static 
+67 
+parameters at the short time scales, but dynamically evolve the vegetative state over time 
+68 
+following plant ecological dynamics of establishment, growth, competition, and mortality. Both 
+69 
+types of models, and thus, most weather, climate, hydrology, and Earth system models which 
+70 
+employ them, generally cluster vegetation into groups on the basis of relatively few 
+71 
+characteristics such as aboveground live biomass permanence, leaf longevity, and leaf form 
+72 
+(Running et al., 1994). DGVMs and LSMs typically define plant functional types (PFTs) through 
+73 
+bioclimatic properties and static physical properties, such as plant height and leaf phenology 
+74 
+(Boulangeat et al., 2012; Pappas et al., 2016). These PFTs provide a basic and practical means of 
+75 
+classification for modeling of vegetation-climate interactions at large spatial and temporal scales 
+76 
+(Kucharik et al., 2006; Moorcroft 2006; Quillet et al., 2010; Yang et al., 2015). The use of PFTs 
+77 
+to model vegetation dynamics originated from the need to categorize plants by 
+78 
+‘ecophysiognomic traits’ into groups having similar structure and function (Box 1981; Box 1995; 
+79 
+Box 1996).  
+80 
+PFTs have since provided a feasible method for classification of global vegetation into a 
+81 
+small, finite number of clusters with assumed similar ecological behaviors on the basis of a 
+82 
+relatively small number of traits. Generally, models employ between 10 and 20 different PFTs, 
+83 
+with various combinations of these characteristics, to represent thousands plant species (Poulter 
+84 
+et al., 2011). However, specific models may use more or fewer PFTs depending on the intended 
+85 
+model application. For a global general circulation model, Box (1996) suggested 15 major plant 
+86 
+types. The current, broadly used Community Land Model (CLM) version 4.5 (which is the LSM 
+87 
+component of NCAR's Earth system model – CESM) also relies on 15 basic PFTs (Table 1), 
+88 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+4 
+ 
+with additional crop functional types available under specific irrigation schemes or with a 
+89 
+particular crop sub-model (Lawrence et al., 2011; Oleson et al., 2013). Kleidon et al., (2007) 
+90 
+found that a minimum of eight discrete vegetation classes was required to prevent the formation 
+91 
+of multiple steady-states in the SimBA dynamic vegetation model. In contrast, Euskirchen et al., 
+92 
+(2009) chose to use 39 different PFTs to test predictions regarding the migration of arctic plant 
+93 
+communities under future climate scenarios using the Terrestrial Ecosystem Model.  
+94 
+ 
+Global distributions of plant functional types are derived from remotely sensed land-
+95 
+cover data sets (DeFries et al., 1995; DeFries et al., 2000; Jung et al., 2006). Satellite data is used 
+96 
+to differentiate vegetation types in term of deciduousness, leaf form (needle or broad), and LAI 
+97 
+(Bonan et al., 2002; Moorcroft 2006; Quillet et al., 2010). The International Geosphere-
+98 
+Biosphere Programme (IGBP) developed the first broadly used map of land cover classes at a 1 
+99 
+km resolution from Normalized Difference Vegetation Index (NDVI) data from the Advanced 
+100 
+Very High Resolution Radiometer (AVHRR) 1992-1993 dataset (Loveland et al., 2000) (Table 
+101 
+1). Recent reclassifications using newer satellite tools such as MODIS (1 and 0.5 km resolution), 
+102 
+SPOT4-VEGETATION (1 km), and ENVISTAT-MERIS (0.3 km) have improved the resolution 
+103 
+of these maps both spatially and temporally (Lawrence and Chase 2007; Poulter et al., 2011). 
+104 
+The 17 land cover classifications from the IGBP were developed in keeping with the logic of 
+105 
+Running et al., (1994) that plant classification should be independent of climate zone. Therefore, 
+106 
+the IGBP assessment of vegetative cover focused only on aspects of biomass permanence, leaf 
+107 
+longevity, and leaf type. Climatologic limits are imposed on PFTs through merger with Köppen-
+108 
+Geiger climate zones (Kottek et al., 2006; Peel et al., 2007; Poulter et al., 2011) or through the 
+109 
+prescription of ‘climate envelopes’ or temperature ranges where specific PFTs can exist (Sitch et 
+110 
+al., 2003). While these PFT distribution maps are widely accepted and heavily relied upon by 
+111 
+models, uncertainties still remain (Sun et al., 2008). For example, in a study using the LPJmL 
+112 
+model, Poulter et al., (2011) found that large uncertainties in key ecosystem fluxes, 30% of gross 
+113 
+primary productivity (GPP) and 20% of evapotranspiration, expressed as latent heat flux (LE), 
+114 
+resulted from land cover uncertainties.  
+115 
+ 
+ The heterogeneity of Earth’s vegetation and its critical role in mediating biosphere-
+116 
+atmosphere exchanges make it one of the largest sources of uncertainty in predictions of climate 
+117 
+change (Friedlingstein et al., 2006; Moorcroft 2006; Denman and Brasseur 2007; Scheiter et al., 
+118 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+5 
+ 
+2013; Wullschleger et al., 2014; Musavi et al., 2015; Yang et al., 2015; Matthes et al., 2016). A 
+119 
+recent, large and still evolving body of work has drawn into question the capabilities of the 
+120 
+current plant classification scheme to accurately reflect the biodiversity of vegetative 
+121 
+ecophysiological functionalities. The coarse resolution at which PFTs are defined and vegetation 
+122 
+is resolved has been shown to lead to errors in simulations of carbon flux (Van Bodegom et al., 
+123 
+2012; Pavlick et al., 2013; Matthes et al., 2016), evapotranspiration (Poulter et al., 2011; 
+124 
+Matheny et al., 2014a; Matthes et al., 2016), and nitrogen cycling (Ostle et al., 2009). Current 
+125 
+PFTs define plant traits that govern these processes as static point estimates that lack the 
+126 
+flexibility to reflect any sort of inter- or intra-specific, spatial, or temporal variation or plasticity 
+127 
+(As discussed in Prentice et al., 2007; Van Bodegom et al., 2012; Scheiter et al., 2013; 
+128 
+Wullschleger et al., 2014). Reich et al., (2007) demonstrated that only 33-66% of the variability 
+129 
+of five key leaf functional traits of 2,021 species could be attributed to their PFT classification. 
+130 
+Likewise, Kattge et al., (2011) demonstrated that up to 75% of variation for certain traits 
+131 
+occurred within a given PFT. Recently, Wullschleger et al., (2014) ascertained that the plant 
+132 
+traits most useful in determining functional behaviors in terms of carbon, water, and nutrient use, 
+133 
+and therefore most relevant for determining more meaningful PFT groups, are plant size, 
+134 
+permanence of structure (woody vs. herbaceous), architecture (the ratio of water loss to carbon 
+135 
+uptake surface areas), leaf form, carbon metabolism (C3, C4, or CAM), reproduction, and 
+136 
+phenology. The assimilation of physiologically diverse species into the same PFT results in the 
+137 
+inability of current PFTs to capture variations between species’ carbon metabolisms and water 
+138 
+use efficiencies (WUE) (Reichstein et al., 2014; Musavi et al., 2015). This type of over-
+139 
+aggregation has been identified as a critical source of information loss, which may obfuscate 
+140 
+species-level traits and responses to environmental forcing and competition (Clark et al., 2011; 
+141 
+Scheiter et al., 2013; Matheny et al., 2014a). Frequently, competition dynamics are only resolved 
+142 
+between PFTs rather than between individuals comprising a functional group (As discussed in 
+143 
+Sato et al., 2007; Fisher et al., 2010; Quillet et al., 2010; Scheiter et al., 2013). Multiple studies 
+144 
+have shown that more variation can exist between the species comprising a single PFT than 
+145 
+among different PFTs (e. g. Wright et al., 2005; Anderegg 2015). However, encouraging results 
+146 
+from Bonan et al., (2012) demonstrated that by using observed trait values for maximum 
+147 
+carboxylation rate (Vcmax) with existing PFTs and a multilayer canopy structure, among other 
+148 
+improvements, they were able to increase the accuracy of GPP as predicted by CLM 4. 
+149 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+6 
+ 
+Furthermore, the inclusion of trait variation within PFT classifications by Verheijen et al., (2013) 
+150 
+enhanced the accuracy of predictions of carbon assimilation and vegetation distributions.  
+151 
+ 
+In keeping with these findings, the current sweeping challenge for DGVMs and LSMs is 
+152 
+to shift the PFT paradigm from its current representation of over-aggregated static parameters to 
+153 
+a more flexible trait-based classification scheme (Pavlick et al., 2013; Scheiter et al., 2013; 
+154 
+Fyllas et al., 2014; Reichstein et al., 2014; van Bodegom et al., 2014; Enquist et al., 2015; 
+155 
+Musavi et al., 2015; Sakschewski et al., 2015; Yang et al., 2015; Pappas et al., 2016). Classically 
+156 
+defined PFTs are themselves based in plant traits, albeit a small number. However, this fact 
+157 
+creates a false dichotomy in terms of a naming convention. Following the distinction made by 
+158 
+Pappas et al., (2016), we refer to models that employ probabilistic representations of trait 
+159 
+diversity using stochastic approaches and coordinated whole-plant trait spectra as ‘trait-based’ in 
+160 
+contrast to those which employ the conventional PFT definitions.  
+161 
+Flexible trait-based representations, like the one put forward by Scheiter et al., (2013), 
+162 
+rely on ecological theory and environmental filtering to evolve a composition of various trait 
+163 
+combinations. In this review, we will focus specifically on the need for representation of plant 
+164 
+hydraulic traits within the context of reimagined PFTs and trait-based modeling schemes. The 
+165 
+integral role of transpiration from vegetation, as mediated through plant hydrodynamics, in both 
+166 
+the carbon cycle and the global energy budget, makes it a priority for model improvement 
+167 
+(Jasechko et al., 2013; Matheny et al., 2014a; Schlesinger and Jasechko 2014). However, impacts 
+168 
+and feedbacks on transpiration from predicted increases in the variability of precipitation and the 
+169 
+number of droughts and disturbances add complexity to this challenge (Allen et al., 2010; Dai 
+170 
+2013; Fatichi and Ivanov 2014). Baldocchi and Meyers (1998) showed that simulations of carbon 
+171 
+and water fluxes using the classic PFT definitions in CANVEG were only well adapted during 
+172 
+times of non-limiting soil moisture and dry leaves, and that additional parameterization was 
+173 
+necessary to capture the behaviors of water-stressed and water-logged scenarios. Missing 
+174 
+behaviors of water storage and transport within vegetation compartments (Baldocchi and Meyers 
+175 
+1998), and within-PFT variation in hydraulic traits (Anderegg 2015) makes current vegetation 
+176 
+schemes poorly suited to replicate the effects of drought on vegetation.  
+177 
+It is understood that traits such as relative growth rate, seed dispersal capacity, and 
+178 
+mortality are the primary determinants of demography (Perez-Harguindeguy et al., 2013; Yang et 
+179 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+7 
+ 
+al., 2015). However, a number of hydraulic functional traits have also been shown to influence 
+180 
+establishment and mortality (Pockman and Sperry 2000; McDowell et al., 2008; Poorter et al., 
+181 
+2010; Anderegg and Meinzer 2015; Anderegg et al., 2016). For instance, run-away cavitation is a 
+182 
+common cause of mortality in seedlings (Williams et al., 1997; Pratt et al., 2014); ring porous 
+183 
+wood has been suggested to be an adaptation to resist damage to the conductive system during 
+184 
+freeze-thaw cycles (Taneda and Sperry 2008); and leaf hydraulic strategy has been hypothesized 
+185 
+to exert a strong influence on species’ ability to survive drought (McDowell et al., 2013; Bartlett 
+186 
+et al., 2014). The difference between a plant’s minimum xylem water potential and the potential 
+187 
+at which dysfunction occurs, defined as the hydraulic safety margin, has been related to mortality 
+188 
+risk during drought (Anderegg et al., 2016). This margin of hydraulic safety has also been shown 
+189 
+to correlate with regional precipitation predictability, while cavitation vulnerability has been 
+190 
+shown to correlate with species distributions along soil moisture gradients (Pockman and Sperry 
+191 
+2000). Li et al., (2015) demonstrated that the hydraulic properties of conductance and leaf water 
+192 
+potential were good indicators of species abundance. Wood density, another trait associated with 
+193 
+drought susceptibility (Hoffmann et al., 2011) as well as a number of additional plant hydraulic 
+194 
+properties (Pratt et al., 2007; Chave et al., 2009; Lachenbruch and McCulloh 2014; Anderegg 
+195 
+and Meinzer 2015), has been successfully employed by the current trait-based demographic 
+196 
+models TFS (Fyllas et al., 2014) and LPJmL-FIT (Sakschewski et al., 2015). 
+197 
+ 
+198 
+Hydraulic functional traits and strategies 
+199 
+ 
+Functional traits are, by definition, those traits that exert strong influence over how an 
+200 
+organism performs in terms of growth, survival, and reproduction (McGill et al., 2006; Violle et 
+201 
+al., 2007). Hydraulic functional traits at the leaf, stem, and root levels determine a plant’s ability 
+202 
+to acquire, circulate, and use water. The whole-plant hydraulic strategy, which we define as the 
+203 
+syndrome of emergent phenotypical hydraulic functional traits that occur at all three levels (leaf, 
+204 
+stem, and root), is critical to understanding the timing and magnitude of transpiration fluxes and 
+205 
+species’ responses to drought and disturbance (Ford et al., 2007; McDowell et al., 2008; 
+206 
+Matheny et al., 2014b; von Allmen et al., 2014; Gaines et al., 2015). It is common for co-existing 
+207 
+species to employ contrasting whole-plant hydraulic strategies which result in distinct, species-
+208 
+specific patterns of transpiration and growth (e.g. McCulloh et al., 2012; Kocher et al., 2013; 
+209 
+Thomsen et al., 2013; Martinez-Vilalta et al., 2014; Matheny et al., 2014b; Meinzer et al., 2014; 
+210 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+8 
+ 
+Anderegg 2015). In spite of these hydraulic differences, many standard PFT classifications group 
+211 
+such species into the same class. The incorporation of whole-plant hydraulic functional traits and 
+212 
+strategies into revised or expanded definitions of PFTs will improve model uncertainties due to 
+213 
+over-aggregation (Pappas et al., 2015). Coordination of hydraulic functional traits may occur 
+214 
+through tradeoffs defined within the plant economics spectrum (Wright et al., 2004; Chave et al., 
+215 
+2009; Freschet et al., 2010; Liu et al., 2010; Freschet et al., 2012; Reich 2014) and potentially 
+216 
+through the proposed hydraulic safety-efficiency tradeoff (Manzoni et al., 2013; Skelton et al., 
+217 
+2015). However, recent work from Gleason et al., (2016) suggests that there may only be a weak 
+218 
+tradeoff between xylem safety and efficiency, evincing the large number of species that employ 
+219 
+combinations of low efficiency and low safety traits. It is possible that these traits may be trading 
+220 
+off with other, non-hydraulic traits in ways that are not yet clear (Gleason et al., 2016). 
+221 
+Nonetheless, nature presents a gamut of combinations of leaf, stem, and root hydraulic functional 
+222 
+traits. The following section will focus on the key emergent hydraulic traits at each of the three 
+223 
+organ levels summarized in Table 2.  
+224 
+ 
+225 
+Leaf traits 
+226 
+At the leaf level, transpiration is dynamically regulated by the plant stomata as a response 
+227 
+to both internal and external conditions (Ball et al., 1987; Collatz et al., 1991; Tardieu 1993; 
+228 
+Leuning 1995). Stomatal conductance has been hypothesized to be optimized in order to 
+229 
+maximize the amount of carbon uptake while minimizing water loss (Cowan and Farquhar 1977; 
+230 
+Baldocchi 1994; Katul et al., 2010), yet in some circumstances, e.g. nocturnal transpiration 
+231 
+(Bucci et al., 2016), stomata appear to function in ways that are not driven by carbon uptake or 
+232 
+optimized for prevention of water loss. Two distinct schemes for the regulation of stomatal 
+233 
+conductance in response to leaf water potential are broadly recognized: (1) isohydry, a 
+234 
+cavitation-risk adverse strategy through which leaf water potential is maintained by strict control 
+235 
+of stomatal openness; (2) anisohydry, a cavitation-risk prone strategy through which high 
+236 
+stomatal openness is maintained via tolerance of highly negative leaf water potentials (Stocker 
+237 
+1956; Tardieu and Simonneau 1998; Martinez-Vilalta et al., 2014), see illustration in Figure 1. 
+238 
+The majority of plants operate stomata along a range of regulation schemes on a virtual 
+239 
+continuum between these two extremes (Klein 2014). The degree of (an)isohydry is defined 
+240 
+through the curve describing the relationship between leaf water potential and stomatal 
+241 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+9 
+ 
+conductance (Figure 1). However, as this relationship is hard to measure, it is typically 
+242 
+determined through a comparison of either the extent of change between predawn- and midday-
+243 
+leaf water potential as a function of soil water potential (Martinez-Vilalta et al., 2014), or the rate 
+244 
+of change in stomatal conductance between times when vapor pressure deficit (VPD) is low and 
+245 
+when VPD is high (Oren et al., 1999). However, it has recently been shown that the degree of 
+246 
+isohydricity can be determined through remotely sensed vegetative optical depth, a proxy for leaf 
+247 
+water potential, as measured from the AMSR-E satellite (Konings and Gentine 2016). 
+248 
+Differences between plants’ leaf hydraulic strategies are theorized to be of key importance in 
+249 
+determining species’ resilience to different types of drought (McDowell et al., 2008; Binks et al., 
+250 
+2016), although leaf traits alone may not provide a sufficiently complete picture of drought 
+251 
+mortality (Rowland et al., 2015).  
+252 
+Xylem traits 
+253 
+  
+At the branch and stem levels, plants are typically classified on the basis of xylem 
+254 
+architectures: ring porous, having a small number of large-diameter xylem vessels; diffuse 
+255 
+porous, having a large number of small-diameter xylem vessels; and conifers (also referred to as 
+256 
+“non-porous” (Phillips et al., 1996; Oren et al., 1999)) which transport water through tracheids 
+257 
+rather than vessels. In addition to vessel diameter and number, hydraulic conductance is also a 
+258 
+function of several other interconnected traits such as vessel length, pit membrane flexibility and 
+259 
+size, aquaporin activity, ionic concentrations within the sap, and the ability to refill embolized 
+260 
+vessels, among others (Tognetti et al., 1998; Wagner et al., 1998; Tyree and Zimmermann 2002; 
+261 
+Brodribb and Holbrook 2006; Olano et al., 2013; Hacke 2014; Klein et al., 2014; Lachenbruch 
+262 
+and McCulloh 2014; Anderegg 2015). The xylem architecture and physiology determine the 
+263 
+functional relationships between xylem water potential and xylem conductivity (or loss thereof) 
+264 
+(Figure 2). Several studies have demonstrated that the large conduits of ring-porous species are 
+265 
+much more vulnerable to embolism than the smaller conduits employed by diffuse-porous trees 
+266 
+(Pockman and Sperry 2000; Li et al., 2008; Taneda and Sperry 2008), nonetheless, this is not 
+267 
+always the case (Sperry et al., 1994). Following the logic of the hypothesized safety-efficiency 
+268 
+tradeoff theory, it would be expected that trees having larger xylem vessels, which are generally 
+269 
+more conductive to water but also more vulnerable to cavitation, would tend to employ an 
+270 
+isohydric stomatal regulation strategy to avoid damage to the conductive system (Bovard et al., 
+271 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+10 
+ 
+2005; Bush et al., 2008; Taneda and Sperry 2008). While xylem composed of smaller diameter 
+272 
+conduits would require less stringent stomatal regulation to maintain ‘safe’ levels of water 
+273 
+potential, they would be less conductive in ideally wet conditions. Even so, multiple examples of 
+274 
+anisohydric ring-porous species exist (Thomsen et al., 2013; Martinez-Vilalta et al., 2014). Such 
+275 
+counter-intuitive combinations of hydraulic traits among organs may be mitigated by additional 
+276 
+traits or behaviors such as large capacitance for stem water storage, deep or efficient rooting 
+277 
+systems, and drought deciduousness (Brooks et al., 2010; Hoffmann et al., 2011; Kocher et al., 
+278 
+2013; Matheny et al., 2015). Therefore, for the purpose of modeling plant water dynamics, 
+279 
+importance should be placed on the emergent functional properties of xylem hydraulic 
+280 
+conductance and capacitance, rather than contributing traits.   
+281 
+Field-measured hydraulic conductances of ring and diffuse porous species have been 
+282 
+shown to be of comparable magnitudes during moisture-limiting conditions, which have caused 
+283 
+the largest, early-wood vessels of the ring porous species to cavitate (Hacke et al., 2006). In this 
+284 
+circumstance, the much smaller late-wood vessels of ring porous trees may act as an emergency 
+285 
+“high safety, low efficiency” back-up system (Sperry and Sullivan 1992; Woodcock 1994; 
+286 
+Taneda and Sperry 2008). This seasonality of conduit sizes within ring porous wood contributes 
+287 
+to the long-term temporal variability of hydraulic conductance, while the effects of diurnal 
+288 
+embolism are reflected in shorter-term declines of conductance (Sperry et al., 1993; Chuang et 
+289 
+al., 2006; Anderegg 2015). The timing and magnitude of hydraulic trait variability has been 
+290 
+shown to fluctuate by individual, life stage and history, population, species, and geographic 
+291 
+location (Anderegg 2015). Vulnerability to embolism may be a plastic trait and can also vary by 
+292 
+underlying genetic variability among individuals of the same species and population (Pockman 
+293 
+and Sperry 2000). Differences in conductance and embolism vulnerability within each organ 
+294 
+play a key role in the avoidance/tolerance of water stress (Tyree and Ewers 1991). The hydraulic 
+295 
+segmentation hypothesis of Tyree and Zimmermann (2002), through which a plant may sacrifice 
+296 
+distal organs (i.e. leaves and roots) or conductivity within distal organs in favor of protecting the 
+297 
+larger carbon and time investment of stem xylem from embolism, may provide one of the 
+298 
+mechanisms behind behaviors such as drought deciduousness and succulent root decoupling 
+299 
+from extremely dry soil (North and Nobel 1992; Pockman and Sperry 2000).  
+300 
+ 
+301 
+Root and rhizosphere traits 
+302 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+11 
+ 
+ 
+In addition to xylem conductance within the roots, the rhizosphere holds several other 
+303 
+contributing properties, which determine plant water acquisition and use. Such traits include 
+304 
+rooting depth and vertical distribution, root length and diameter distribution, efficiency of water 
+305 
+extraction, and mycorrhizal interactions (Canadell et al., 2007; Allen 2009; Reichstein et al., 
+306 
+2014; Wullschleger et al., 2014). Rooting depth is central to a plant’s ability to acquire water, 
+307 
+and deep roots have been shown to buffer plants with vulnerable leaf and stem strategies from 
+308 
+hydraulic impairment (Miller et al., 2010). While mesic tree species tend to root at depths 
+309 
+between 1 and 5 meters (Lyford and Wilson 1964; Lyford 1980; Canadell et al., 1996; Jackson et 
+310 
+al., 1996; He et al., 2013), extreme cases in more xeric environments have evidenced root depths 
+311 
+in excess of 20 meters (Jackson et al., 1999). Varied root depths within a single ecosystem allow 
+312 
+access to distinct water storage pools with differing seasonal availabilities. This type of ‘root 
+313 
+niche separation’ has been postulated to increase the ecosystem resilience of tropical forest to 
+314 
+drought in the Amazon (Ivanov et al., 2012). Brooks et al., (2010) demonstrated that the efficient 
+315 
+rooting systems of Douglas fir trees have the ability to extract ‘tightly bound’ water from clayey 
+316 
+soils, which enables them to persist in water limited regions. Other species’ ability to reverse 
+317 
+flow in portions of the root system allows for the hydraulic lifting of deeply stored water to 
+318 
+surface soil layers to supplement the available water pool for transpiration (Dawson 1993). 
+319 
+Hydraulic lift has been shown to contribute significantly to a tree’s subsequent day’s 
+320 
+transpiration (Horton and Hart 1998), and also to fuel processes of ecological significance such 
+321 
+as maintenance of mycorrhizal hyphae and fine roots (Neumann and Cardon 2012). Symbiotic 
+322 
+interactions with mycorrhizal fungi have been shown to increase plant-water availability by 
+323 
+acting as an extension of absorptive surface area (Ruiz-Lozano and Azcón 1995; Kaya et al., 
+324 
+2003). Yet these symbioses tend to be highly species specific and may be marginal in some cases 
+325 
+(Parniske 2008; Smith and Read 2008).  
+326 
+The below-ground nature of these traits makes them difficult to study or determine from 
+327 
+remote sensing, and therefore the majority of root system traits are underrepresented in the 
+328 
+literature as well as in trait databases (Kattge et al., 2011; Wullschleger et al., 2014). Freschet et 
+329 
+al., (2010) proposed that the plant economics spectrum may allow the inference of below-ground 
+330 
+traits from leaf and stem traits, although the authors note that the root traits were the least well-
+331 
+coordinated among organs. Taneda and Sperry (2008) noted that several genera of ring porous 
+332 
+trees tended to have deeper rooting systems (Nilsen et al., 1983; Burns and Honkala 1990; Miller 
+333 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+12 
+ 
+et al., 2010). Similarly, Hoffmann et al., (2011) found that species having both dense wood and 
+334 
+anisohydric stomatal regulation were more likely to root at shallower depths. In keeping with the 
+335 
+theory of the coordination of hydraulic traits on a whole-plant scale, Franks et al., (2007) put 
+336 
+forward the concept of an ‘isohydrodynamic’ strategy, such that a virtually constant gradient of 
+337 
+water potential is maintained from roots to leaves in spite of the stomatal regulation strategy 
+338 
+(isohydric or anisohydric). Providing LSMs and DGVMs with a platform or basis for the 
+339 
+incorporation of these defining whole-tree hydraulic strategies or an integrated perspective of 
+340 
+emergent organ-specific hydraulic traits and their governing tradeoffs is a critical step forward in 
+341 
+reconsidering the PFT framework.  
+342 
+ 
+343 
+Creating a framework for the incorporation of hydraulic traits 
+344 
+ 
+Inclusion of plant-trait observations at the tissue and organism scales into LSMs and 
+345 
+DGVMs will help improve our ability to simulate ecosystem responses to land use and climate 
+346 
+change (McIntyre and Lavorel 2007; Quillet et al., 2010; Boulangeat et al., 2012). Following the 
+347 
+framework of Reichstein et al., (2014) and Musavi et al., (2015), for each trait, which is 
+348 
+represented by the model as a parameter in a function, there exists a multi-dimensional 
+349 
+continuum of potential values, as demonstrated in Figure 2. While it is overly simplistic to 
+350 
+prescribe a single set of values to represent these traits, as is done by current PFT classifications, 
+351 
+it remains impractical to allow traits to vary across such a continuum (Figure 2), as there is no 
+352 
+feasible way to measure all variation at all scales between and within individuals, species, and 
+353 
+environments in time. Therefore, practical model applications must still employ some type of 
+354 
+binning for each trait with a measure of allowable variation within each bin. These bins will 
+355 
+include relatively similar species/sizes and/or growth stages. In order for this type of binning 
+356 
+scheme to improve upon the current PFT system, bins must be established at a level across which 
+357 
+hydraulic traits are conserved. Scaling up from the bin level to the plot and ecosystem levels 
+358 
+could be done by weighting species’ properties within each bin by their relative abundance 
+359 
+and/or leaf area index (LAI) in a bottom up approach (Musavi et al., 2015) in order to aggregate 
+360 
+traits themselves to the top level. This approach combines the efficiency and practicality of the 
+361 
+original PFT classification system while providing the biophysical observational grounding and 
+362 
+flexibility that was lacking in the previous methodology.  
+363 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+13 
+ 
+The multiscale time dependence of hydraulic traits, and by extension the emergent 
+364 
+ecosystem-level 
+water-use 
+efficiency, 
+highlights 
+the 
+requirement 
+that 
+trait-based 
+365 
+parameterizations should be flexible rather than fixed, as is the case with the current PFT 
+366 
+scheme. This type of adaptability will be a critical advantage for the next generation of DGVMs 
+367 
+and LSMs (Poulter et al., 2011; Van Bodegom et al., 2012; Scheiter et al., 2013). As discussed in 
+368 
+the previous sections, hydraulic conductivity within an individual organism changes at both the 
+369 
+fast (intra-daily) and slow (monthly, seasonal, and annual) time scales (Hacke 2014; Trifilo et al., 
+370 
+2014). Surmounting these challenges may still require use of a second proposed methodology: 
+371 
+the incorporation of mechanistic process-based models (e.g.  FETCH (Bohrer et al., 2005; 
+372 
+Mirfenderesgi et al., 2016), ExpertN (Janott et al., 2011; Bittner et al., 2012), SPAC (Gentine et 
+373 
+al., 2015), root model described by Siqueira et al., (2008)), in order to capture dynamic responses 
+374 
+to these traits, which are expressed as variable parameters (Powell et al., 2013). These process-
+375 
+based plant hydraulics models simulate water flow through part or all of the plant vascular 
+376 
+system, using the Richards equation (Bohrer et al., 2005; Siqueira et al., 2008; Janott et al., 2011) 
+377 
+or Darcy’s law (Gentine et al., 2015) for porous media flow. In this type of framework, traits 
+378 
+such as hydraulic conductance and, in some models, capacitance are determined at relatively 
+379 
+short time steps (e.g. 1-30 min) as functions of water pressures within the plant vascular system. 
+380 
+Other traits, such as wood density and leaf area index can be adjusted or allowed to vary at 
+381 
+longer, i.e. annual or seasonal, time scales. These vegetation hydrodynamics sub-models have 
+382 
+the potential to operate at the bin-level and calculate vegetation soil water withdrawal, stomatal 
+383 
+conductance, and transpiration mechanistically on the basis of the whole-plant hydraulic 
+384 
+strategy. These model outputs could then be statistically scaled to the patch- or ecosystem-level 
+385 
+on the basis of leaf or basal area or other similar metrics following Matheny et al., (2014b).  
+386 
+ 
+Trait similarities such as the standard/typical shape of cavitation vulnerability curves 
+387 
+(Figure 2) across ring porous tree species (Sperry and Saliendra 1994; Hacke et al., 2006; Taneda 
+388 
+and Sperry 2008), and trait relationships, such as that between WUE and cellulose carbon isotope 
+389 
+composition (Farquhar and Richards 1984; Werner et al., 2012), will help constrain the 
+390 
+potentially infinite new parameter spaces. Furthermore, the increasing wealth of species- and 
+391 
+leaf-level trait data across broad spatial scales will help to facilitate this transition to trait based 
+392 
+modeling. Large repositories of trait data such as the BIEN database (Enquist et al., 2009), the 
+393 
+xylem water potential database (Choat et al., 2012), the wood density database (Chave et al., 
+394 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+14 
+ 
+2009), the vessel anatomy database (Zanne et al., 2010), the leaf turgor loss point database 
+395 
+(Bartlett et al., 2012; Bartlett et al., 2014; Maréchaux et al., 2016), the GLOPNET leaf trait 
+396 
+database (Wright et al., 2004; Reich et al., 2007), the GlobResp leaf respiration database (Atkin 
+397 
+et al., 2015), the light response database of Niinemets et al., (2015), and the herbivory 
+398 
+defense/response database (Moles et al., 2013) have recently been established. Many of these 
+399 
+data resources are available through the TRY global plant trait database (Kattge et al., 2011). 
+400 
+These archives, when used in tandem with the mathematical and statistical advancements of 
+401 
+model-data fusion techniques (Wang et al., 2009; Peng et al., 2011; Keenan et al., 2012; Dietze 
+402 
+et al., 2013), will provide modelers with physically realistic distributions of trait possibilities and 
+403 
+combinations for use in regional and global scale simulations.  
+404 
+In an effort to help characterize and quantify trait variability (temporally, spatially, and 
+405 
+intra- and inter-specifically) and its empirical and functional relationships with environmental 
+406 
+conditions for use in modeling scenarios, special emphasis should be placed on expanding the 
+407 
+measurement record across temporal scales and maintaining the integrity of metadata provided 
+408 
+for traits recorded in these and other databases. At present, most trait measurements are carried 
+409 
+out as snapshots during relatively few growing seasons. A more complete temporal record will 
+410 
+enhance our understanding of trait variability with time. Metadata of interest may include the 
+411 
+tissue/organ on which the measurement was made, the number of individuals sampled and the 
+412 
+variation between individuals, time of year/season, geographic location, mean annual or seasonal 
+413 
+meteorological variables (e.g. incoming solar radiation, temperature, humidity, rainfall, soil 
+414 
+moisture), and other data of interest surrounding the measurement such as if the year/season was 
+415 
+exceptionally dry or hot, or if a specific pest or blight was present. Currently, only some of the 
+416 
+trait databases provide some of the metadata needed for forming a predictive description of trait 
+417 
+variability across ecosystems and climate.     
+418 
+  
+419 
+Climate change, biodiversity, and ecosystem demography 
+420 
+ 
+The effects of climate change on global vegetation distributions are expected to be seen 
+421 
+though the shifting of geographic ranges in response to rising temperatures, changes to 
+422 
+precipitation patterns and variability, and extreme weather (Allen et al., 2010; Choat et al., 2012; 
+423 
+Soudzilovskaia et al., 2013). The realistic representation of vegetative responses to these 
+424 
+phenomena as well as to natural disturbances is necessary for modeling the outcomes of climate 
+425 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+15 
+ 
+and land use change (Shellito and Sloan 2006; Purves et al., 2008; Quillet et al., 2010; Gough et 
+426 
+al., 2013; Matheny et al., 2014a). While trait-based models will not provide solutions for all 
+427 
+scenarios, specifically those involving insect attack (Kurz et al., 2008; Herms and McCullough 
+428 
+2014; Anderegg et al., 2015) or grazing (Yu et al., 2011; Wullschleger et al., 2014), they do 
+429 
+provide a necessary step forward in simulating carbon and water fluxes (Scheiter et al., 2013; 
+430 
+Reichstein et al., 2014; Pappas et al., 2016). DGVMs and LSMs using standard PFTs and climate 
+431 
+envelopes have been criticized for their lack of ability to accurately represent the mechanisms for 
+432 
+species coexistence and biodiversity (McMahon et al., 2011; Boulangeat et al., 2012). However, 
+433 
+the recent incorporation of plant traits and coexistence mechanisms into DGVMs and, more 
+434 
+specifically, demographic models which give additional focus to the incorporation of processes 
+435 
+such as recruitment, growth, and mortality of vegetation, provides a feasible avenue for this 
+436 
+advancement as demonstrated by aDGVM2 (Scheiter et al., 2013), JeDi (Pavlick et al., 2013), 
+437 
+CLM-ED (Fisher et al., 2015), LPJmL-FIT (Sakschewski et al., 2015), and LM3-PPA (Weng et 
+438 
+al., 2015).  
+439 
+ 
+Within trait-based DGVMs and demographic models, ecosystem properties serve to 
+440 
+‘filter’ plants with different suites of traits to select for species or hypothetical proxy species 
+441 
+most fit for that environment (Sterck et al., 2011; Fisher et al., 2015). These models may be able 
+442 
+to more closely reflect trait diversity, species co-existence, and ecosystem productivity than 
+443 
+previous generations of DGVMs (Fisher et al., 2015). Driving model demographics with plant 
+444 
+traits may promote an improved understanding of trait- and bio-diversity, interactions between 
+445 
+biotic and abiotic factors, and their influence on ecosystem function (Loreau et al., 2001; Hooper 
+446 
+et al., 2005; Cadotte et al., 2009). Paleoclimatological studies reveal that vegetation responses to 
+447 
+past climate shifts have resulted from a combination of species competition and migration 
+448 
+(Thuiller et al., 2008; Huntley et al., 2010; Quillet et al., 2010). As warming continues and 
+449 
+bioclimatic limits shift (Box 1981; Harrison et al., 2010), trait-based demographic models will be 
+450 
+better suited to replicate future species distributions and abundances without the need for pre-
+451 
+parameterized climate envelopes (Fisher et al., 2015).  
+452 
+ 
+Plant functional traits, both hydraulic and otherwise, are responsible for feedbacks 
+453 
+between reproduction, growth, and success (Sterck et al., 2011). Therefore, trait-based models 
+454 
+must account for tradeoffs among traits (as reviewed in Scheiter et al., 2013; Fisher et al., 2015) 
+455 
+to prevent one or two unrealistic ‘overly optimal’ cohort species, or Darwinian demons (Law 
+456 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+16 
+ 
+1979), from out- competing all others (Scheiter et al., 2013). Angert et al., (2009) demonstrated 
+457 
+that tradeoffs between relative growth rate and intrinsic WUE are strong influencers of 
+458 
+demographic response in desert species typically classified within the same traditional PFT. 
+459 
+Tradeoffs between specific traits within the hydraulic system (e.g. storage versus strength, and 
+460 
+conductance versus hydraulic safety) have been directly related to plant height, growth, and 
+461 
+survival among various co-existing rainforest species (Poorter et al., 2010). While biological 
+462 
+mechanisms for coexistence and community assembly have been well studied (e.g. Chesson 
+463 
+2000; Clark et al., 2010), using trait tradeoffs as a means to simulate coexistence and biodiversity 
+464 
+in models is still a challenge area. Some key tradeoff surfaces may not be readily apparent or 
+465 
+easily studied (Fisher et al., 2015), while others may not be ubiquitous (Moncrieff et al., 2015). 
+466 
+Missing relevant tradeoffs may leave models unable to explain particular patterns of species 
+467 
+distributions with respect to available resources (Sterck et al., 2011). The continued study and 
+468 
+development of a global, whole-plant economics spectrum is integral for the advancement of trait 
+469 
+and tradeoff-based demographic models (Reich 2014). Within this context, the ability to account 
+470 
+for intra- and inter-specific trait variation and adaptation will be essential (Messier et al., 2010; 
+471 
+Albert 2015; Anderegg 2015). Currently, trait parameterization schemes assume that both traits 
+472 
+and tradeoffs will continue to be valid under future climate scenarios (Clark and Gelfand 2006). 
+473 
+However, the synthesis efforts of Franks et al., (2014) reveal that both genetic adaptation and 
+474 
+phenotypic plasticity are presently occurring within plant communities. Many of the present trait 
+475 
+based models also show a strong dependence on the initial parameterization or the starting 
+476 
+composition of an ecosystem, which is a representation of the consequences of past disturbances 
+477 
+and management histories on the ecosystem. Therefore, another key challenge for the use of 
+478 
+these models in the prediction of future ecosystems will be the use of smart initialization 
+479 
+methods and adequate maps of current plant trait distributions. Nonetheless, the adaptive trait 
+480 
+selection methodology developed and employed by aDGVM2  (Scheiter et al., 2013) may lay the 
+481 
+foundation for future model structures to account for trait variability.  
+482 
+ 
+483 
+Conclusions - A path forward 
+484 
+ 
+As we demonstrate above, current PFT classifications, which represent thousands of plant 
+485 
+species on the basis of relatively few, assumed-static parameters, have been identified as a 
+486 
+critical source of uncertainty in land surface and dynamic global vegetation models (Reich et al., 
+487 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+17 
+ 
+2007; Wullschleger et al., 2014; Musavi et al., 2015; Yang et al., 2015). Model characterizations 
+488 
+of vegetation affect simulations of the surface energy balance and the carbon, water, and nitrogen 
+489 
+cycles (Ostle et al., 2009; Matheny et al., 2014a; Matthes et al., 2016). Plant hydraulic traits are 
+490 
+integral to the regulation of transpiration and growth through controls on root water uptake and 
+491 
+stomatal conductance (Anderegg and Meinzer 2015). Traits at the root, stem, and leaf levels 
+492 
+interact to define the syndrome of emergent phenotypical hydraulic traits we term the whole-
+493 
+plant hydraulic strategy. The incorporation of whole-plant hydraulic strategy into new trait-based 
+494 
+representations of vegetation in models will serve to improve simulations of carbon and water 
+495 
+fluxes, particularly in cases of drought and disturbance (McDowell et al., 2013; Matheny et al., 
+496 
+2014b). Whole-plant hydraulic strategy has the potential to be incorporated into models in 
+497 
+several ways with varying degrees of complexity and computational load.  
+498 
+Here, we presented two alternatives: The first alternative centers on the integration of 
+499 
+whole-plant hydraulic strategies into bins of similar properties through the use of combined leaf-
+500 
+xylem-root hydrology strategies. Conceptually, this calls for expanding the current PFTs to 
+501 
+include the combination of hydraulic strategies as defining properties for each bin of species. 
+502 
+However, this approach may also suffer problems similar to those associated with over-
+503 
+aggregation found within existing PFT paradigms. The second approach for the incorporation of 
+504 
+whole-plant hydraulic strategy requires the use of mechanistic plant hydrodynamic sub-models 
+505 
+to simulate the functional behaviors of statistically scalable representative individuals. While this 
+506 
+method provides greater opportunity to capture behaviors resulting from long- and short-term 
+507 
+trait variability, it will require additional computational resources.  
+508 
+Both proposed incorporation schemes present ways by which observational plant trait 
+509 
+data from newly established databanks can be utilized to inform practical model 
+510 
+parameterizations grounded in reality. Models incorporating trait-based representations of plant 
+511 
+hydraulic properties may be better able to capture demographic responses to climate change if 
+512 
+modelers and ecologists can successfully identify the appropriate tradeoff surfaces within the 
+513 
+plant economics spectrum (e. g. Chave et al., 2009). To test the potential for model 
+514 
+improvements through the incorporation of the whole-plant hydraulic strategy and its practical 
+515 
+applicability at multiple temporal and spatial scales, modelers should seek to include the 
+516 
+discussed as well as other strategies within a board variety of trait-based land surface and 
+517 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+18 
+ 
+dynamic vegetation models. Recent work from Xu et al., (2016) using redefined hydraulic trait 
+518 
+specific PFTs and a mechanistic simulation of plant water dynamics, among other improvements, 
+519 
+within the Ecosystem Demography model version 2 (ED2) to replicate vegetation dynamics in a 
+520 
+tropical forest can provide an excellent starting point for future analyses.  
+521 
+ 
+522 
+Acknowledgements 
+523 
+We thank Simone Fatichi and two anonymous reviewers for their helpful insights and thoughtful 
+524 
+consideration of this work. Funding for this study was provided the U.S. National Science 
+525 
+Foundation Hydrological Science grant 1521238, and the U.S. Department of Energy's Office of 
+526 
+Science, Ameriflux Management Project. Support for A.M. Matheny was provided by The Ohio 
+527 
+State University Presidential Fellowship and the P.E.O. Scholar Award. Any opinions, findings, 
+528 
+and conclusions or recommendations expressed in this material are those of the authors and 
+529 
+do not necessarily reflect the views of the funding agencies. 
+530 
+ 
+531 
+References 
+532 
+Aemisegger, F., Pfahl, S., Sodemann, H., Lehner, I., Seneviratne, S.I. & Wernli, H. (2014) 
+533 
+Deuterium excess as a proxy for continental moisture recycling and plant transpiration. 
+534 
+Atmospheric Chemistry and Physics, 14, 4029-4054. 
+535 
+Albert, C.H. (2015) Intraspecific trait variability matters. Journal of Vegetation Science, 26, 7-8. 
+536 
+Allen, C.D., Macalady, A.K., Chenchouni, H., Bachelet, D., McDowell, N., Vennetier, M., 
+537 
+Kitzberger, T., Rigling, A., Breshears, D.D., Hogg, E.H., Gonzalez, P., Fensham, R., 
+538 
+Zhang, Z., Castro, J., Demidova, N., Lim, J.-H., Allard, G., Running, S.W., Semerci, A. 
+539 
+& Cobb, N. (2010) A global overview of drought and heat-induced tree mortality reveals 
+540 
+emerging climate change risks for forests. Forest Ecology and Management, 259, 660-
+541 
+684. 
+542 
+Allen, M.F. (2009) Water relations in the mycorrhizosphere. Progress in Botany (eds U. Luttge, 
+543 
+W. Beyschlag, B. Budel & D. Francis), pp. 257-276. Springer-Verlag, Berlin & 
+544 
+Heidelberg, Germany. 
+545 
+Anderegg, W.R.L. (2015) Spatial and temporal variation in plant hydraulic traits and their 
+546 
+relevance for climate change impacts on vegetation. New Phytologist, 205, 1008-1014. 
+547 
+Anderegg, W.R.L., Hicke, J.A., Fisher, R.A., Allen, C.D., Aukema, J., Bentz, B., Hood, S., 
+548 
+Lichstein, J.W., Macalady, A.K., McDowell, N., Pan, Y.D., Raffa, K., Sala, A., Shaw, 
+549 
+J.D., Stephenson, N.L., Tague, C. & Zeppel, M. (2015) Tree mortality from drought, 
+550 
+insects, and their interactions in a changing climate. New Phytologist, 208, 674-683. 
+551 
+Anderegg, W.R.L., Klein, T., Bartlett, M., Sack, L., Pellegrini, A.F.A., Choat, B. & Jansen, S. 
+552 
+(2016) Meta-analysis reveals that hydraulic traits explain cross-species patterns of 
+553 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+19 
+ 
+drought-induced tree mortality across the globe. Proceedings of the National Academy of 
+554 
+Sciences of the United States of America, 113, 5024-5029. 
+555 
+Anderegg, W.R.L. & Meinzer, F.C. (2015) Wood anatomy and plant hydraulics in a changing 
+556 
+climate. Functional and Ecological Xylem Anatomy (ed. U. Hacke), pp. 235-253. 
+557 
+Springer International Publishing, Switzerland. 
+558 
+Angert, A.L., Huxman, T.E., Chesson, P. & Venable, D.L. (2009) Functional tradeoffs determine 
+559 
+species coexistence via the storage effect. Proceedings of the National Academy of 
+560 
+Sciences of the United States of America, 106, 11641-11645. 
+561 
+Atkin, O.K., Bloomfield, K.J., Reich, P.B., Tjoelker, M.G., Asner, G.P., Bonal, D., Bonisch, G., 
+562 
+Bradford, M.G., Cernusak, L.A., Cosio, E.G., Creek, D., Crous, K.Y., Domingues, T.F., 
+563 
+Dukes, J.S., Egerton, J.J.G., Evans, J.R., Farquhar, G.D., Fyllas, N.M., Gauthier, P.P.G., 
+564 
+Gloor, E., Gimeno, T.E., Griffin, K.L., Guerrieri, R., Heskel, M.A., Huntingford, C., 
+565 
+Ishida, F.Y., Kattge, J., Lambers, H., Liddell, M.J., Lloyd, J., Lusk, C.H., Martin, R.E., 
+566 
+Maksimov, A.P., Maximov, T.C., Malhi, Y., Medlyn, B.E., Meir, P., Mercado, L.M., 
+567 
+Mirotchnick, N., Ng, D., Niinemets, U., O'Sullivan, O.S., Phillips, O.L., Poorter, L., Poot, 
+568 
+P., Prentice, I.C., Salinas, N., Rowland, L.M., Ryan, M.G., Sitch, S., Slot, M., Smith, 
+569 
+N.G., Turnbull, M.H., VanderWel, M.C., Valladares, F., Veneklaas, E.J., Weerasinghe, 
+570 
+L.K., Wirth, C., Wright, I.J., Wythers, K.R., Xiang, J., Xiang, S. & Zaragoza-Castells, J. 
+571 
+(2015) Global variability in leaf respiration in relation to climate, plant functional types 
+572 
+and leaf traits. New Phytologist, 206, 614-636. 
+573 
+Baldocchi, D. (1994) An analytical solution for coupled leaf photosynthesis and stomatal 
+574 
+conductance models. Tree Physiology, 14, 1069-1079. 
+575 
+Baldocchi, D. & Meyers, T. (1998) On using eco-physiological, micrometeorological and 
+576 
+biogeochemical theory to evaluate carbon dioxide, water vapor and trace gas fluxes over 
+577 
+vegetation: a perspective. Agricultural and Forest Meteorology, 90, 1-25. 
+578 
+Ball, J.T., Woodrow, I.E. & Berry, J.A. (1987) A model predicting stomatal conductance and its 
+579 
+contribution to the control of photosynthesis under different environmental conditions. 
+580 
+Progress in Photosynthesis Research, 4, 221-224. 
+581 
+Bartlett, M.K., Scoffoni, C. & Sack, L. (2012) The determinants of leaf turgor loss point and 
+582 
+prediction of drought tolerance of species and biomes: a global meta-analysis. Ecology 
+583 
+Letters, 15, 393-405. 
+584 
+Bartlett, M.K., Zhang, Y., Kreidler, N., Sun, S.W., Ardy, R., Cao, K.F. & Sack, L. (2014) Global 
+585 
+analysis of plasticity in turgor loss point, a key drought tolerance trait. Ecology Letters, 
+586 
+17, 1580-1590. 
+587 
+Binks, O., Meir, P., Rowland, L., da Costa, A.C.L., Vasconcelos, S.S., de Oliveira, A.A.R., 
+588 
+Ferreira, L., Christoffersen, B.O., Nardini, A. & Mencuccini, M. (2016) Plasticity in leaf-
+589 
+level water relations of tropical rainforest trees in response to experimental drought. New 
+590 
+Phytologist, n/a-n/a. 
+591 
+Bittner, S., Janott, M., Ritter, D., Kocher, P., Beese, F. & Priesack, E. (2012) Functional-
+592 
+structural water flow model reveals differences between diffuse- and ring-porous tree 
+593 
+species. Agricultural and Forest Meteorology, 158, 80-89. 
+594 
+Bohrer, G., Mourad, H., Laursen, T.A., Drewry, D., Avissar, R., Poggi, D., Oren, R. & Katul, 
+595 
+G.G. (2005) Finite element tree crown hydrodynamics model (FETCH) using porous 
+596 
+media flow within branching elements: A new representation of tree hydrodynamics. 
+597 
+Water Resources Research, 41. 
+598 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+20 
+ 
+Bonan, G.B. (2008) Forests and climate change: Forcings, feedbacks, and the climate benefits of 
+599 
+forests. Science, 320, 1444-1449. 
+600 
+Bonan, G.B., Levis, S., Kergoat, L. & Oleson, K.W. (2002) Landscapes as patches of plant 
+601 
+functional types: An integrating concept for climate and ecosystem models. Global 
+602 
+Biogeochemical Cycles, 16, 30. 
+603 
+Bonan, G.B., Levis, S., Sitch, S., Vertenstein, M. & Oleson, K.W. (2003) A dynamic global 
+604 
+vegetation model for use with climate models: concepts and description of simulated 
+605 
+vegetation dynamics. Global Change Biology, 9, 1543-1566. 
+606 
+Bonan, G.B., Oleson, K.W., Fisher, R.A., Lasslop, G. & Reichstein, M. (2012) Reconciling leaf 
+607 
+physiological traits and canopy flux data: Use of the TRY and FLUXNET databases in 
+608 
+the Community Land Model version 4. Journal of Geophysical Research-Biogeosciences, 
+609 
+117, 19. 
+610 
+Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., van 
+611 
+Es, J., Vittoz, P. & Thuiller, W. (2012) Improving plant functional groups for dynamic 
+612 
+models of biodiversity: at the crossroads between functional and community ecology. 
+613 
+Global Change Biology, 18, 3464-3475. 
+614 
+Bovard, B.D., Curtis, P.S., Vogel, C.S., Su, H.-B. & Schmid, H.P. (2005) Environmental 
+615 
+controls on sap flow in a northern hardwood forest. Tree Physiology, 25, 31-38. 
+616 
+Box, E.O. (1981) Macroclimate and plant forms: an introduction to predictive modelling in 
+617 
+phytogeography. Tasks for Vegetation Science, pp. Xiii-258. The Hague, Netherlands; 
+618 
+Boston, Mass., USA. 
+619 
+Box, E.O. (1995) Factors determining distributions of tree species and plant functional types. 
+620 
+Vegetatio, 121, 101-116. 
+621 
+Box, E.O. (1996) Plant functional types and climate at the global scale. Journal of Vegetation 
+622 
+Science, 7, 309-320. 
+623 
+Brodribb, T.J. & Holbrook, N.M. (2006) Declining hydraulic efficiency as transpiring leaves 
+624 
+desiccate: two types of response. Plant Cell and Environment, 29, 2205-2215. 
+625 
+Brooks, R.J., Barnard, H.R., Coulombe, R. & McDonnell, J.J. (2010) Ecohydrologic separation 
+626 
+of water between trees and streams in a Mediterranean climate. Nature Geoscience, 3, 
+627 
+100-104. 
+628 
+Bucci, S.J., Goldstein, G., Scholz, F.G. & Meinzer, F.C. (2016) Physiological Significance of 
+629 
+Hydraulic Segmentation, Nocturnal Transpiration and Capacitance in Tropical Trees: 
+630 
+Paradigms Revisited. Tropical Tree Physiology: Adaptations and Responses in a 
+631 
+Changing Environment (eds G. Goldstein & S.L. Santiago), pp. 205-225. Springer 
+632 
+International Publishing, Cham. 
+633 
+Buckley, T.N. (2005) The control of stomata by water balance. New Phytologist, 168, 275-291. 
+634 
+Burns, R.M. & Honkala, B.H. (1990) Silvics of North America: 1. Conifer; 2. Hardwoods. (ed. 
+635 
+U.S.D.o. Agriculture), pp. 877. U. S. Forest Service, Washington, D. C. 
+636 
+Bush, S.E., Pataki, D.E., Hultine, K.R., West, A.G., Sperry, J.S. & Ehleringer, J.R. (2008) Wood 
+637 
+anatomy constrains stomatal responses to atmospheric vapor pressure deficit in irrigated, 
+638 
+urban trees. Oecologia, 156, 13-20. 
+639 
+Cadotte, M.W., Cavender-Bares, J., Tilman, D. & Oakley, T.H. (2009) Using phylogenetic, 
+640 
+functional and trait diversity to understand patterns of plant community productivity. 
+641 
+PLoS ONE, 4, 9. 
+642 
+Canadell, J., Jackson, R.B., Ehleringer, J.R., Mooney, H.A., Sala, O.E. & Schulze, E.D. (1996) 
+643 
+Maximum rooting depth of vegetation types at the global scale. Oecologia, 108, 583-595. 
+644 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+21 
+ 
+Canadell, J.G., Pataki, D.E. & Pitelka, L. (2007) Terrestrial ecosystems in a changing world. 
+645 
+Springer, Berlin; New York. 
+646 
+Chapin, F.S. (2003) Effects of plant traits on ecosystem and regional processes: a conceptual 
+647 
+framework for predicting the consequences of global change. Annals of Botany, 91, 455-
+648 
+463. 
+649 
+Chave, J., Coomes, D., Jansen, S., Lewis, S.L., Swenson, N.G. & Zanne, A.E. (2009) Towards a 
+650 
+worldwide wood economics spectrum. Ecology Letters, 12, 351-366. 
+651 
+Chesson, P. (2000) Mechanisms of maintenance of species diversity. Annual Review of Ecology 
+652 
+and Systematics, 31, 343-366. 
+653 
+Choat, B., Jansen, S., Brodribb, T.J., Cochard, H., Delzon, S., Bhaskar, R., Bucci, S.J., Feild, 
+654 
+T.S., Gleason, S.M., Hacke, U.G., Jacobsen, A.L., Lens, F., Maherali, H., Martinez-
+655 
+Vilalta, J., Mayr, S., Mencuccini, M., Mitchell, P.J., Nardini, A., Pittermann, J., Pratt, 
+656 
+R.B., Sperry, J.S., Westoby, M., Wright, I.J. & Zanne, A.E. (2012) Global convergence 
+657 
+in the vulnerability of forests to drought. Nature, 491, 752-756. 
+658 
+Chuang, Y.L., Oren, R., Bertozzi, A.L., Phillips, N. & Katul, G.G. (2006) The porous media 
+659 
+model for the hydraulic system of a conifer tree: linking sap flux data to transpiration 
+660 
+rate. Ecological Modelling, 191, 447-468. 
+661 
+Clark, J.S., Bell, D., Chu, C.J., Courbaud, B., Dietze, M., Hersh, M., HilleRisLambers, J., 
+662 
+Ibanez, I., LaDeau, S., McMahon, S., Metcalf, J., Mohan, J., Moran, E., Pangle, L., 
+663 
+Pearson, S., Salk, C., Shen, Z.H., Valle, D. & Wyckoff, P. (2010) High-dimensional 
+664 
+coexistence based on individual variation: a synthesis of evidence. Ecological 
+665 
+Monographs, 80, 569-608. 
+666 
+Clark, J.S., Bell, D.M., Hersh, M.H., Kwit, M.C., Moran, E., Salk, C., Stine, A., Valle, D. & 
+667 
+Zhu, K. (2011) Individual-scale variation, species-scale differences: inference needed to 
+668 
+understand diversity. Ecology Letters, 14, 1273-1287. 
+669 
+Clark, J.S. & Gelfand, A.E. (2006) A future for models and data in environmental science. 
+670 
+Trends in Ecology & Evolution, 21, 375-380. 
+671 
+Collatz, G.J., Ball, J.T., Grivet, C. & Berry, J.A. (1991) Pysiological and environmental 
+672 
+regulation of stomatal conductance, photosyntesis and transpiration: a model that 
+673 
+includes a laminal boundary layer. Agricultural and Forest Meteorology, 54, 107-136. 
+674 
+Cowan, I.R. & Farquhar, G.D. (1977) Stomatal function in relation to leaf metabolism and 
+675 
+environment Integration of Activity in the Higher Plant (ed. D.H. Jennings), pp. 471-505. 
+676 
+Cambridge University Press, New York, NY, USA; Cambridge, England. 
+677 
+Dai, A.G. (2013) Increasing drought under global warming in observations and models. Nature 
+678 
+Climate Change, 3, 52-58. 
+679 
+Dawson, T.E. (1993) Hydraulic lift and water use by plants: implications for water-balance, 
+680 
+performance and plant-plant interactions. Oecologia, 95, 565-574. 
+681 
+de Arellano, J.V.G., Ouwersloot, H.G., Baldocchi, D. & Jacobs, C.M.J. (2014) Shallow cumulus 
+682 
+rooted in photosynthesis. Geophysical Research Letters, 41, 1796-1802. 
+683 
+DeFries, R., Hansen, M. & Townshend, J. (1995) Global discrimination of land cover types from 
+684 
+metrics derived from AVHRR pathfinder data. Remote Sensing of Environment, 54, 209-
+685 
+222. 
+686 
+DeFries, R.S., Hansen, M.C., Townshend, J.R.G., Janetos, A.C. & Loveland, T.R. (2000) A new 
+687 
+global 1-km dataset of percentage tree cover derived from remote sensing. Global 
+688 
+Change Biology, 6, 247-254. 
+689 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+22 
+ 
+Denman, K.L. & Brasseur, G. (2007) Couplings Between Changes in the Climate System and 
+690 
+Biogeochemistry. Cambridge Univ Press, New York. 
+691 
+Dietze, M.C., Lebauer, D.S. & Kooper, R.O.B. (2013) On improving the communication 
+692 
+between models and data. Plant, Cell & Environment, 36, 1575-1585. 
+693 
+Enquist, B., Condit, R., Peet, R., Schildhauer, M. & Thiers, B. (2009) The Botanical Information 
+694 
+and Ecology Network (BIEN): Cyberinfrastructure for an integrated botanical 
+695 
+information network to investigate the ecological impacts of global climate change on 
+696 
+plant biodiversity. The iPlant Collaborative. The iPlant Collaborative. Available at: 
+697 
+www. iplantcollaborative. org/sites/default/files/BIEN_White_Paper. pdf.(Last accessed 
+698 
+on 22 August 2013.). 
+699 
+Enquist, B.J., Norberg, J., Bonser, S.P., Violle, C., Webb, C.T., Henderson, A., Sloat, L.L. & 
+700 
+Savage, V.M. (2015) Scaling from Traits to Ecosystems: Developing a General Trait 
+701 
+Driver Theory via Integrating Trait-Based and Metabolic Scaling Theories. Advances in 
+702 
+Ecological Research (eds S. Pawar, G. Woodward & A.I. Dell), pp. 249-318. Academic 
+703 
+Press. 
+704 
+Euskirchen, E.S., McGuire, A.D., Chapin, F.S., Yi, S. & Thompson, C.C. (2009) Changes in 
+705 
+vegetation in northern Alaska under scenarios of climate change, 2003-2100: 
+706 
+implications for climate feedbacks. Ecological Applications, 19, 1022-1043. 
+707 
+Farquhar, G.D. & Richards, R.A. (1984) Isotopic composition of plant carbon correlates with 
+708 
+water use efficiency of wheat genotypes. Australian Journal of Plant Physiology, 11, 
+709 
+539-552. 
+710 
+Fatichi, S. & Ivanov, V.Y. (2014) Interannual variability of evapotranspiration and vegetation 
+711 
+productivity. Water Resources Research, 50, 3275-3294. 
+712 
+Fatichi, S., Pappas, C. & Ivanov, V.Y. (2016) Modeling plant–water interactions: an 
+713 
+ecohydrological overview from the cell to the global scale. Wiley Interdisciplinary 
+714 
+Reviews: Water, 3, 327–368. 
+715 
+Fisher, J.B., Huntzinger, D.N., Schwalm, C.R. & Sitch, S. (2014) Modeling the terrestrial 
+716 
+biosphere. Annual Review of Environment and Resources, Vol 39 (eds A. Gadgil & D.M. 
+717 
+Liverman), pp. 91-+. Annual Reviews, Palo Alto. 
+718 
+Fisher, R.A., Muszala, S., Verteinstein, M., Lawrence, P., Xu, C., McDowell, N.G., Knox, R.G., 
+719 
+Koven, C., Holm, J., Rogers, B.M., Spessa, A., Lawrence, D. & Bonan, G. (2015) Taking 
+720 
+off the training wheels: the properties of a dynamic vegetation model without climate 
+721 
+envelopes, CLM4.5(ED). Geoscientific Model Development, 8, 3593-3619. 
+722 
+Ford, C.R., Hubbard, R.M., Kloeppel, B.D. & Vose, J.M. (2007) A comparison of sap flux-based 
+723 
+evapotranspiration estimates with catchment-scale water balance. Agricultural and Forest 
+724 
+Meteorology, 145, 176-185. 
+725 
+Franks, P.J., Drake, P.L. & Froend, R.H. (2007) Anisohydric but isohydrodynamic: seasonally 
+726 
+constant plant water potential gradient explained by a stomatal control mechanism 
+727 
+incorporating variable plant hydraulic conductance. Plant Cell and Environment, 30, 19-
+728 
+30. 
+729 
+Franks, S.J., Weber, J.J. & Aitken, S.N. (2014) Evolutionary and plastic responses to climate 
+730 
+change in terrestrial plant populations. Evolutionary Applications, 7, 123-139. 
+731 
+Freschet, G.T., Aerts, R. & Cornelissen, J.H.C. (2012) A plant economics spectrum of litter 
+732 
+decomposability. Functional Ecology, 26, 56-65. 
+733 
+Freschet, G.T., Cornelissen, J.H.C., van Logtestijn, R.S.P. & Aerts, R. (2010) Evidence of the 
+734 
+'plant economics spectrum' in a subarctic flora. Journal of Ecology, 98, 362-373. 
+735 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+23 
+ 
+Friedlingstein, P., Cox, P., Betts, R., Bopp, L., Von Bloh, W., Brovkin, V., Cadule, P., Doney, 
+736 
+S., Eby, M., Fung, I., Bala, G., John, J., Jones, C., Joos, F., Kato, T., Kawamiya, M., 
+737 
+Knorr, W., Lindsay, K., Matthews, H.D., Raddatz, T., Rayner, P., Reick, C., Roeckner, 
+738 
+E., Schnitzler, K.G., Schnur, R., Strassmann, K., Weaver, A.J., Yoshikawa, C. & Zeng, 
+739 
+N. (2006) Climate-carbon cycle feedback analysis: Results from the (CMIP)-M-4 model 
+740 
+intercomparison. Journal of Climate, 19, 3337-3353. 
+741 
+Fyllas, N.M., Gloor, E., Mercado, L.M., Sitch, S., Quesada, C.A., Domingues, T.F., Galbraith, 
+742 
+D.R., Torre-Lezama, A., Vilanova, E., Ramirez-Angulo, H., Higuchi, N., Neill, D.A., 
+743 
+Silveira, M., Ferreira, L., Aymard, G.A., Malhi, Y., Phillips, O.L. & Lloyd, J. (2014) 
+744 
+Analysing Amazonian forest productivity using a new individual and trait-based model 
+745 
+(TFS v.1). Geoscientific Model Development, 7, 1251-1269. 
+746 
+Gaines, K.P., Stanley, J.W., Meinzer, F.C., McCulloh, K.A., Woodruff, D.R., Chen, W., Adams, 
+747 
+T.S., Lin, H.S. & Eissenstat, D.M. (2015) Reliance on shallow soil water in a mixed-
+748 
+hardwood forest in central Pennsylvania. Tree Physiology. 
+749 
+Gentine, P., Guérin, M., Uriarte, M., McDowell, N.G. & Pockman, W.T. (2015) An allometry-
+750 
+based model of the survival strategies of hydraulic failure and carbon starvation. 
+751 
+Ecohydrology. 
+752 
+Gleason, S.M., Westoby, M., Jansen, S., Choat, B., Hacke, U.G., Pratt, R.B., Bhaskar, R., 
+753 
+Brodribb, T.J., Bucci, S.J., Cao, K.F., Cochard, H., Delzon, S., Domec, J.C., Fan, Z.X., 
+754 
+Feild, T.S., Jacobsen, A.L., Johnson, D.M., Lens, F., Maherali, H., Martinez-Vilalta, J., 
+755 
+Mayr, S., McCulloh, K.A., Mencuccini, M., Mitchell, P.J., Morris, H., Nardini, A., 
+756 
+Pittermann, J., Plavcova, L., Schreiber, S.G., Sperry, J.S., Wright, I.J. & Zanne, A.E. 
+757 
+(2016) Weak tradeoff between xylem safety and xylem-specific hydraulic efficiency 
+758 
+across the world's woody plant species. New Phytologist, 209, 123-136. 
+759 
+Gough, C.M., Hardiman, B.S., Nave, L.E., Bohrer, G., Maurer, K.D., Vogel, C.S., Nadelhoffer, 
+760 
+K.J. & Curtis, P.S. (2013) Sustained carbon uptake and storage following moderate 
+761 
+disturbance in a Great Lakes forest. Ecological Applications, 23, 1202-1215. 
+762 
+Hacke, U.G. (2014) Variable plant hydraulic conductance. Tree Physiology, 34, 105-108. 
+763 
+Hacke, U.G., Sperry, J.S., Wheeler, J.K. & Castro, L. (2006) Scaling of angiosperm xylem 
+764 
+structure with safety and efficiency. Tree Physiology, 26, 689-701. 
+765 
+Harrison, S.P., Prentice, I.C., Barboni, D., Kohfeld, K.E., Ni, J. & Sutra, J.P. (2010) 
+766 
+Ecophysiological and bioclimatic foundations for a global plant functional classification. 
+767 
+Journal of Vegetation Science, 21, 300-317. 
+768 
+He, L.L., Ivanov, V.Y., Bohrer, G., Thomsen, J.E., Vogel, C.S. & Moghaddam, M. (2013) 
+769 
+Temporal dynamics of soil moisture in a northern temperate mixed successional forest 
+770 
+after a prescribed intermediate disturbance. Agricultural and Forest Meteorology, 180, 
+771 
+22-33. 
+772 
+Herms, D.A. & McCullough, D.G. (2014) Emerald Ash Borer Invasion of North America: 
+773 
+History, Biology, Ecology, Impacts, and Management. Annual Review of Entomology 
+774 
+(ed. M.R. Berenbaum), pp. 13-30. Annual Reviews, Palo Alto. 
+775 
+Hesslerova, P. & Pokorny, J. (2010) Effect of Mau Forest clear cut on temperature distribution 
+776 
+and hydrology of catchment of Lakes Nakuru and Naivasha: preliminary study. Springer, 
+777 
+New York. 
+778 
+Hoffmann, W.A., Marchin, R.M., Abit, P. & Lau, O.L. (2011) Hydraulic failure and tree dieback 
+779 
+are associated with high wood density in a temperate forest under extreme drought. 
+780 
+Global Change Biology, 17, 2731-2742. 
+781 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+24 
+ 
+Hooper, D.U., Chapin, F.S., Ewel, J.J., Hector, A., Inchausti, P., Lavorel, S., Lawton, J.H., 
+782 
+Lodge, D.M., Loreau, M., Naeem, S., Schmid, B., Setala, H., Symstad, A.J., Vandermeer, 
+783 
+J. & Wardle, D.A. (2005) Effects of biodiversity on ecosystem functioning: A consensus 
+784 
+of current knowledge. Ecological Monographs, 75, 3-35. 
+785 
+Horton, J.L. & Hart, S.C. (1998) Hydraulic lift: a potentially important ecosystem process. 
+786 
+Trends in Ecology & Evolution, 13, 232-235. 
+787 
+Huntley, B., Barnard, P., Altwegg, R., Chambers, L., Coetzee, B.W.T., Gibson, L., Hockey, 
+788 
+P.A.R., Hole, D.G., Midgley, G.F., Underhill, L.G. & Willis, S.G. (2010) Beyond 
+789 
+bioclimatic envelopes: dynamic species' range and abundance modelling in the context of 
+790 
+climatic change. Ecography, 33, 621-626. 
+791 
+Ivanov, V.Y., Hutyra, L.R., Wofsy, S.C., Munger, J.W., Saleska, S.R., de Oliveira, R.C. & de 
+792 
+Camargo, P.B. (2012) Root niche separation can explain avoidance of seasonal drought 
+793 
+stress and vulnerability of overstory trees to extended drought in a mature Amazonian 
+794 
+forest. Water Resources Research, 48, 21. 
+795 
+Jackson, R.B., Canadell, J., Ehleringer, J.R., Mooney, H.A., Sala, O.E. & Schulze, E.D. (1996) A 
+796 
+global analysis of root distributions for terrestrial biomes. Oecologia, 108, 389-411. 
+797 
+Jackson, R.B., Moore, L.A., Hoffmann, W.A., Pockman, W.T. & Linder, C.R. (1999) Ecosystem 
+798 
+rooting depth determined with caves and DNA. Proceedings of the National Academy of 
+799 
+Sciences of the United States of America, 96, 11387-11392. 
+800 
+Janott, M., Gayler, S., Gessler, A., Javaux, M., Klier, C. & Priesack, E. (2011) A one-
+801 
+dimensional model of water flow in soil-plant systems based on plant architecture. Plant 
+802 
+and Soil, 341, 233-256. 
+803 
+Jasechko, S., Sharp, Z.D., Gibson, J.J., Birks, S.J., Yi, Y. & Fawcett, P.J. (2013) Terrestrial 
+804 
+water fluxes dominated by transpiration. Nature, 496, 347-350. 
+805 
+Jung, M., Henkel, K., Herold, M. & Churkina, G. (2006) Exploiting synergies of global land 
+806 
+cover products for carbon cycle modeling. Remote Sensing of Environment, 101, 534-
+807 
+553. 
+808 
+Kattge, J., Diaz, S., Lavorel, S., Prentice, C., Leadley, P., Bonisch, G., Garnier, E., Westoby, M., 
+809 
+Reich, P.B., Wright, I.J., Cornelissen, J.H.C., Violle, C., Harrison, S.P., van Bodegom, 
+810 
+P.M., Reichstein, M., Enquist, B.J., Soudzilovskaia, N.A., Ackerly, D.D., Anand, M., 
+811 
+Atkin, O., Bahn, M., Baker, T.R., Baldocchi, D., Bekker, R., Blanco, C.C., Blonder, B., 
+812 
+Bond, W.J., Bradstock, R., Bunker, D.E., Casanoves, F., Cavender-Bares, J., Chambers, 
+813 
+J.Q., Chapin, F.S., Chave, J., Coomes, D., Cornwell, W.K., Craine, J.M., Dobrin, B.H., 
+814 
+Duarte, L., Durka, W., Elser, J., Esser, G., Estiarte, M., Fagan, W.F., Fang, J., Fernandez-
+815 
+Mendez, F., Fidelis, A., Finegan, B., Flores, O., Ford, H., Frank, D., Freschet, G.T., 
+816 
+Fyllas, N.M., Gallagher, R.V., Green, W.A., Gutierrez, A.G., Hickler, T., Higgins, S.I., 
+817 
+Hodgson, J.G., Jalili, A., Jansen, S., Joly, C.A., Kerkhoff, A.J., Kirkup, D., Kitajima, K., 
+818 
+Kleyer, M., Klotz, S., Knops, J.M.H., Kramer, K., Kuhn, I., Kurokawa, H., Laughlin, D., 
+819 
+Lee, T.D., Leishman, M., Lens, F., Lenz, T., Lewis, S.L., Lloyd, J., Llusia, J., Louault, F., 
+820 
+Ma, S., Mahecha, M.D., Manning, P., Massad, T., Medlyn, B.E., Messier, J., Moles, 
+821 
+A.T., Muller, S.C., Nadrowski, K., Naeem, S., Niinemets, U., Nollert, S., Nuske, A., 
+822 
+Ogaya, R., Oleksyn, J., Onipchenko, V.G., Onoda, Y., Ordonez, J., Overbeck, G., 
+823 
+Ozinga, W.A., Patino, S., Paula, S., Pausas, J.G., Penuelas, J., Phillips, O.L., Pillar, V., 
+824 
+Poorter, H., Poorter, L., Poschlod, P., Prinzing, A., Proulx, R., Rammig, A., Reinsch, S., 
+825 
+Reu, B., Sack, L., Salgado-Negre, B., Sardans, J., Shiodera, S., Shipley, B., Siefert, A., 
+826 
+Sosinski, E., Soussana, J.F., Swaine, E., Swenson, N., Thompson, K., Thornton, P., 
+827 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+25 
+ 
+Waldram, M., Weiher, E., White, M., White, S., Wright, S.J., Yguel, B., Zaehle, S., 
+828 
+Zanne, A.E. & Wirth, C. (2011) TRY - a global database of plant traits. Global Change 
+829 
+Biology, 17, 2905-2935. 
+830 
+Katul, G., Manzoni, S., Palmroth, S. & Oren, R. (2010) A stomatal optimization theory to 
+831 
+describe the effects of atmospheric CO2 on leaf photosynthesis and transpiration. Annals 
+832 
+of Botany, 105, 431-442. 
+833 
+Kaya, C., Higgs, D., Kirnak, H. & Tas, I. (2003) Mycorrhizal colonisation improves fruit yield 
+834 
+and water use efficiency in watermelon (Citrullus lanatus Thunb.) grown under well-
+835 
+watered and water-stressed conditions. Plant and Soil, 253, 287-292. 
+836 
+Keenan, T.F., Davidson, E., Moffat, A.M., Munger, W. & Richardson, A.D. (2012) Using 
+837 
+model-data fusion to interpret past trends, and quantify uncertainties in future projections, 
+838 
+of terrestrial ecosystem carbon cycling. Global Change Biology, 18, 2555-2569. 
+839 
+Kleidon, A., Fraedrich, K. & Low, C. (2007) Multiple steady-states in the terrestrial atmosphere-
+840 
+biosphere system: a result of a discrete vegetation classification? Biogeosciences, 4, 707-
+841 
+714. 
+842 
+Klein, T. (2014) The variability of stomatal sensitivity to leaf water potential across tree species 
+843 
+indicates a continuum between isohydric and anisohydric behaviours. Functional 
+844 
+Ecology, 28, 1313-1320. 
+845 
+Klein, T., Yakir, D., Buchmann, N. & Grünzweig, J.M. (2014) Towards an advanced assessment 
+846 
+of the hydrological vulnerability of forests to climate change-induced drought. New 
+847 
+Phytologist, 201, 712-716. 
+848 
+Kocher, P., Horna, V. & Leuschner, C. (2013) Stem water storage in five coexisting temperate 
+849 
+broad-leaved tree species: significance, temporal dynamics and dependence on tree 
+850 
+functional traits. Tree Physiology, 33, 817-832. 
+851 
+Konings, A.G. & Gentine, P. (2016) Global variations in ecosystem-scale isohydricity. Global 
+852 
+Change Biology. 
+853 
+Kottek, M., Grieser, J., Beck, C., Rudolf, B. & Rubel, F. (2006) World Map of the Köppen-
+854 
+Geiger climate classification updated. Meteorologische Zeitschrift, 15, 259-263. 
+855 
+Kucharik, C.J., Barford, C.C., El Maayar, M., Wofsy, S.C., Monson, R.K. & Baldocchi, D.D. 
+856 
+(2006) A multiyear evaluation of a Dynamic Global Vegetation Model at three 
+857 
+AmeriFlux forest sites: Vegetation structure, phenology, soil temperature, and CO2 and 
+858 
+H2O vapor exchange. Ecological Modelling, 196, 1-31. 
+859 
+Kurz, W.A., Dymond, C.C., Stinson, G., Rampley, G.J., Neilson, E.T., Carroll, A.L., Ebata, T. & 
+860 
+Safranyik, L. (2008) Mountain pine beetle and forest carbon feedback to climate change. 
+861 
+Nature, 452, 987-990. 
+862 
+Lachenbruch, B. & McCulloh, K.A. (2014) Traits, properties, and performance: how woody 
+863 
+plants combine hydraulic and mechanical functions in a cell, tissue, or whole plant. New 
+864 
+Phytologist, 204, 747-764. 
+865 
+Law, R. (1979) Optimal life histories under age-specific predation. The American Naturalist, 
+866 
+114, 399-417. 
+867 
+Lawrence, D.M., Oleson, K.W., Flanner, M.G., Thornton, P.E., Swenson, S.C., Lawrence, P.J., 
+868 
+Zeng, X.B., Yang, Z.L., Levis, S., Sakaguchi, K., Bonan, G.B. & Slater, A.G. (2011) 
+869 
+Parameterization improvements and functional and structural advances in version 4 of the 
+870 
+community land model. Journal of Advances in Modeling Earth Systems, 3, 27. 
+871 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+26 
+ 
+Lawrence, P.J. & Chase, T.N. (2007) Representing a new MODIS consistent land surface in the 
+872 
+Community Land Model (CLM 3.0). Journal of Geophysical Research-Biogeosciences, 
+873 
+112, 17. 
+874 
+Le Quere, C., Andres, R.J., Boden, T., Conway, T., Houghton, R.A., House, J.I., Marland, G., 
+875 
+Peters, G.P., van der Werf, G.R., Ahlstrom, A., Andrew, R.M., Bopp, L., Canadell, J.G., 
+876 
+Ciais, P., Doney, S.C., Enright, C., Friedlingstein, P., Huntingford, C., Jain, A.K., 
+877 
+Jourdain, C., Kato, E., Keeling, R.F., Goldewijk, K.K., Levis, S., Levy, P., Lomas, M., 
+878 
+Poulter, B., Raupach, M.R., Schwinger, J., Sitch, S., Stocker, B.D., Viovy, N., Zaehle, S. 
+879 
+& Zeng, N. (2013) The global carbon budget 1959-2011. Earth System Science Data, 5, 
+880 
+165-185. 
+881 
+Lee, J.E. & Boyce, K. (2010) Impact of the hydraulic capacity of plants on water and carbon 
+882 
+fluxes in tropical South America. Journal of Geophysical Research-Atmospheres, 115, 
+883 
+13. 
+884 
+Leuning, R. (1995) A critical appraisal of a combined stomatal-photosynthesis model for C3 
+885 
+plants. Plant Cell and Environment, 18, 339-355. 
+886 
+Li, R., Zhu, S., Chen, H.Y.H., John, R., Zhou, G., Zhang, D., Zhang, Q. & Ye, Q. (2015) Are 
+887 
+functional traits a good predictor of global change impacts on tree species abundance 
+888 
+dynamics in a subtropical forest? Ecology Letters, 18, 1181-1189. 
+889 
+Li, Y.Y., Sperry, J.S., Taneda, H., Bush, S.E. & Hacke, U.G. (2008) Evaluation of centrifugal 
+890 
+methods for measuring xylem cavitation in conifers, diffuse- and ring-porous 
+891 
+angiosperms. New Phytologist, 177, 558-568. 
+892 
+Liu, G.F., Freschet, G.T., Pan, X., Cornelissen, J.H.C., Li, Y. & Dong, M. (2010) Coordinated 
+893 
+variation in leaf and root traits across multiple spatial scales in Chinese semi-arid and arid 
+894 
+ecosystems. New Phytologist, 188, 543-553. 
+895 
+Loreau, M., Naeem, S., Inchausti, P., Bengtsson, J., Grime, J.P., Hector, A., Hooper, D.U., 
+896 
+Huston, M.A., Raffaelli, D., Schmid, B., Tilman, D. & Wardle, D.A. (2001) Biodiversity 
+897 
+and ecosystem functioning: Current knowledge and future challenges. Science, 294, 804-
+898 
+808. 
+899 
+Loveland, T.R., Reed, B.C., Brown, J.F., Ohlen, D.O., Zhu, Z., Yang, L. & Merchant, J.W. 
+900 
+(2000) Development of a global land cover characteristics database and IGBP DISCover 
+901 
+from 1 km AVHRR data. International Journal of Remote Sensing, 21, 1303-1330. 
+902 
+Lyford, W.H. (1980) Development of the root system of northern red oak Quercus rubra. 
+903 
+Harvard Forest Papers, 3-30. 
+904 
+Lyford, W.H. & Wilson, B.F. (1964) Development of the root system of Acer rubrum L. 
+905 
+Harvard Forest Papers, 10, 1-17. 
+906 
+Maherali, H., Moura, C.F., Caldeira, M.C., Willson, C.J. & Jackson, R.B. (2006) Functional 
+907 
+coordination between leaf gas exchange and vulnerability to xylem cavitation in 
+908 
+temperate forest trees. Plant Cell and Environment, 29, 571-583. 
+909 
+Manzoni, S., Vico, G., Katul, G.G., Palmroth, S., Jackson, R.B. & Porporato, A. (2013) 
+910 
+Hydraulic limits on maximum plant transpiration and the emergence of the safety-
+911 
+efficiency trade-off. New Phytologist. 
+912 
+Maréchaux, I., Bartlett, M.K., Gaucher, P., Sack, L. & Chave, J. (2016) Causes of variation in 
+913 
+leaf-level drought tolerance within an Amazonian forest. Journal of Plant Hydraulics, 3, 
+914 
+e004. 
+915 
+Martinez-Vilalta, J., Poyatos, R., Aguade, D., Retana, J. & Mencuccini, M. (2014) A new look at 
+916 
+water transport regulation in plants. New Phytologist, 204, 105-115. 
+917 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+27 
+ 
+Matheny, A.M., Bohrer, G., Garrity, S.R., Morin, T.H., Howard, C.J. & Vogel, C.S. (2015) 
+918 
+Observations of stem water storage in trees of opposing hydraulic strategies. Ecosphere, 
+919 
+6, 165. 
+920 
+Matheny, A.M., Bohrer, G., Stoy, P.C., Baker, I., Black, A.T., Desai, A.R., Dietze, M., Gough, 
+921 
+C.M., Ivanov, V.Y., Jassal, R., Novick, K., Schäfer, K. & Verbeeck, H. (2014a) 
+922 
+Characterizing the diurnal patterns of errors in the prediction of evapotranspiration by 
+923 
+several land-surface models: an NACP analysis. Journal of Geophysical Research: 
+924 
+Biogeosciences, 119, 1458-1473. 
+925 
+Matheny, A.M., Bohrer, G., Vogel, C.S., Morin, T.H., He, L., Frasson, R.P.M., Mirfenderesgi, 
+926 
+G., Schäfer, K.V.R., Gough, C.M., Ivanov, V.Y. & Curtis, P.S. (2014b) Species-specific 
+927 
+transpiration responses to intermediate disturbance in a northern hardwood forest. 
+928 
+Journal of Geophysical Research: Biogeosciences, 119, 2292-2311. 
+929 
+Matthes, J.H., Goring, S., Williams, J.W. & Dietze, M.C. (2016) Benchmarking historical 
+930 
+CMIP5 plant functional types across the Upper Midwest and Northeastern United States. 
+931 
+Journal of Geophysical Research: Biogeosciences, 2015JG003175. 
+932 
+Maurer, K.D., Bohrer, G., Kenny, W.T. & Ivanov, V.Y. (2015) Large-eddy simulations of 
+933 
+surface roughness parameter sensitivity to canopy-structure characteristics. 
+934 
+Biogeosciences, 12, 2533-2548. 
+935 
+McCulloh, K.A., Johnson, D.M., Meinzer, F.C., Voelker, S.L., Lachenbruch, B. & Domec, J.-C. 
+936 
+(2012) Hydraulic architecture of two species differing in wood density: opposing 
+937 
+strategies in co-occurring tropical pioneer trees. Plant Cell and Environment, 35, 116-
+938 
+125. 
+939 
+McDowell, N., Pockman, W.T., Allen, C.D., Breshears, D.D., Cobb, N., Kolb, T., Plaut, J., 
+940 
+Sperry, J.S., West, A., Williams, D.G. & Yepez, E.A. (2008) Mechanisms of plant 
+941 
+survival and mortality during drought: why do some plants survive while others succumb 
+942 
+to drought? New Phytologist, 178, 719-739. 
+943 
+McDowell, N.G., Fisher, R.A., Xu, C.G., Domec, J.C., Holtta, T., Mackay, D.S., Sperry, J.S., 
+944 
+Boutz, A., Dickman, L., Gehres, N., Limousin, J.M., Macalady, A., Martinez-Vilalta, J., 
+945 
+Mencuccini, M., Plaut, J.A., Ogee, J., Pangle, R.E., Rasse, D.P., Ryan, M.G., Sevanto, S., 
+946 
+Waring, R.H., Williams, A.P., Yepez, E.A. & Pockman, W.T. (2013) Evaluating theories 
+947 
+of drought-induced vegetation mortality using a multimodel-experiment framework. New 
+948 
+Phytologist, 200, 304-321. 
+949 
+McGill, B.J., Enquist, B.J., Weiher, E. & Westoby, M. (2006) Rebuilding community ecology 
+950 
+from functional traits. Trends in Ecology & Evolution, 21, 178-185. 
+951 
+McIntyre, S. & Lavorel, S. (2007) A conceptual model of land use effects on the structure and 
+952 
+function of herbaceous vegetation. Agriculture Ecosystems & Environment, 119, 11-21. 
+953 
+McMahon, S.M., Harrison, S.P., Armbruster, W.S., Bartlein, P.J., Beale, C.M., Edwards, M.E., 
+954 
+Kattge, J., Midgley, G., Morin, X. & Prentice, I.C. (2011) Improving assessment and 
+955 
+modelling of climate change impacts on global terrestrial biodiversity. Trends in Ecology 
+956 
+& Evolution, 26, 249-259. 
+957 
+Meinzer, F.C., Woodruff, D.R., Marias, D.E., McCulloh, K.A. & Sevanto, S. (2014) Dynamics 
+958 
+of leaf water relations components in co-occurring iso- and anisohydric conifer species. 
+959 
+Plant Cell and Environment, 37, 2577-2586. 
+960 
+Messier, J., McGill, B.J. & Lechowicz, M.J. (2010) How do traits vary across ecological scales? 
+961 
+A case for trait-based ecology. Ecology Letters, 13, 838-848. 
+962 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+28 
+ 
+Miller, G.R., Chen, X.Y., Rubin, Y., Ma, S.Y. & Baldocchi, D.D. (2010) Groundwater uptake by 
+963 
+woody vegetation in a semiarid oak savanna. Water Resources Research, 46, 14. 
+964 
+Mirfenderesgi, G., Bohrer, G., Matheny, A.M., Fatichi, S., Frasson, R.P.M. & Schäfer, K.V.R. 
+965 
+(2016) Tree level hydrodynamic approach for resolving aboveground water storage and 
+966 
+stomatal conductance and modeling the effects of tree hydraulic strategy. Journal of 
+967 
+Geophysical Research: Biogeosciences. 
+968 
+Moles, A.T., Peco, B., Wallis, I.R., Foley, W.J., Poore, A.G.B., Seabloom, E.W., Vesk, P.A., 
+969 
+Bisigato, A.J., Cella-Pizarro, L., Clark, C.J., Cohen, P.S., Cornwell, W.K., Edwards, W., 
+970 
+Ejrnaes, R., Gonzales-Ojeda, T., Graae, B.J., Hay, G., Lumbwe, F.C., Magana-
+971 
+Rodriguez, B., Moore, B.D., Peri, P.L., Poulsen, J.R., Stegen, J.C., Veldtman, R., Zeipel, 
+972 
+H., Andrew, N.R., Boulter, S.L., Borer, E.T., Cornelissen, J.H.C., Farji-Brener, A.G., 
+973 
+DeGabriel, J.L., Jurado, E., Kyhn, L.A., Low, B., Mulder, C.P.H., Reardon-Smith, K., 
+974 
+Rodriguez-Velazquez, J., De Fortier, A., Zheng, Z., Blendinger, P.G., Enquist, B.J., 
+975 
+Facelli, J.M., Knight, T., Majer, J.D., Martinez-Ramos, M., McQuillan, P. & Hui, F.K.C. 
+976 
+(2013) Correlations between physical and chemical defences in plants: tradeoffs, 
+977 
+syndromes, or just many different ways to skin a herbivorous cat? New Phytologist, 198, 
+978 
+252-263. 
+979 
+Moncrieff, G.R., Scheiter, S., Slingsby, J.A. & Higgins, S.I. (2015) Understanding global change 
+980 
+impacts on South African biomes using dynamic vegetation models. South African 
+981 
+Journal of Botany, 101, 16-23. 
+982 
+Moorcroft, P.R. (2006) How close are we to a predictive science of the biosphere? Trends in 
+983 
+Ecology & Evolution, 21, 400-407. 
+984 
+Musavi, T., Mahecha, M.D., Migliavacca, M., Reichstein, M., van de Weg, M.J., van Bodegom, 
+985 
+P.M., Bahn, M., Wirth, C., Reich, P.B., Schrodt, F. & Kattge, J. (2015) The imprint of 
+986 
+plants on ecosystem functioning: A data-driven approach. International Journal of 
+987 
+Applied Earth Observation and Geoinformation, 43, 119-131. 
+988 
+Neumann, R.B. & Cardon, Z.G. (2012) The magnitude of hydraulic redistribution by plant roots: 
+989 
+a review and synthesis of empirical and modeling studies. New Phytologist, 194, 337-
+990 
+352. 
+991 
+Niinemets, U., Keenan, T.F. & Hallik, L. (2015) A worldwide analysis of within-canopy 
+992 
+variations in leaf structural, chemical and physiological traits across plant functional 
+993 
+types. New Phytologist, 205, 973-993. 
+994 
+Nilsen, E.T., Sharifi, M.R., Rundel, P.W., Jarrell, W.M. & Virginia, R.A. (1983) Diurnal and 
+995 
+seasonal water relations of the desert phreatophyte Prosopis glandulosa (honey mesquite) 
+996 
+in the Sonoran Desert of California. Ecology, 64, 1381-1393. 
+997 
+North, G.B. & Nobel, P.S. (1992) Drought-induced changes in hydraulic conductivity and 
+998 
+structure in roots of Ferocactus acanthods and Opuntia ficus-indica. New Phytologist, 
+999 
+120, 9-19. 
+1000 
+Olano, J.M., Arzac, A., Garcia-Cervigon, A.I., von Arx, G. & Rozas, V. (2013) New star on the 
+1001 
+stage: amount of ray parenchyma in tree rings shows a link to climate. New Phytologist, 
+1002 
+198, 486-495. 
+1003 
+Oleson, K.W., Lawrence, D.M., Bonan, G., Drewniak, B., Koven, C., Levis, S., Li, F., Riley, W., 
+1004 
+Subin, Z.M., Swenson, S.C., Thornton, P., Bozbiyik, A., Fisher, R., Heald, C.L., Kluzek, 
+1005 
+E., Lamarque, J.-F., Lawrence, P.J., Leung, L.R., Lipscomb, W., Muszala, S., Ricciuto, 
+1006 
+D.M., Sacks, W.J., Sun, Y., Tang, J. & Yang, Z.L. (2013) Technical description of 
+1007 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+29 
+ 
+version 4.5 of the Community Land Model (CLM). NCAR Technical Note, NCAR/TN-
+1008 
+503+STR, 420. 
+1009 
+Oren, R., Sperry, J.S., Katul, G.G., Pataki, D.E., Ewers, B.E., Phillips, N. & Schafer, K.V.R. 
+1010 
+(1999) Survey and synthesis of intra- and inerspecific variation in stomatal sensitivity to 
+1011 
+vapour pressure deficit. Plant Cell and Environment, 22, 1515-1526. 
+1012 
+Ostle, N.J., Smith, P., Fisher, R., Woodward, F.I., Fisher, J.B., Smith, J.U., Galbraith, D., Levy, 
+1013 
+P., Meir, P., McNamara, N.P. & Bardgett, R.D. (2009) Integrating plant-soil interactions 
+1014 
+into global carbon cycle models. Journal of Ecology, 97, 851-863. 
+1015 
+Pappas, C., Fatichi, S. & Burlando, P. (2016) Modeling terrestrial carbon and water dynamics 
+1016 
+across climatic gradients: does plant trait diversity matter? New Phytologist. 
+1017 
+Pappas, C., Fatichi, S., Rimkus, S., Burlando, P. & Huber, M.O. (2015) The role of local-scale 
+1018 
+heterogeneities in terrestrial ecosystem modeling. Journal of Geophysical Research-
+1019 
+Biogeosciences, 120, 341-360. 
+1020 
+Parniske, M. (2008) Arbuscular mycorrhiza: the mother of plant root endosymbioses. Nature 
+1021 
+Reviews Microbiology, 6, 763-775. 
+1022 
+Pavlick, R., Drewry, D.T., Bohn, K., Reu, B. & Kleidon, A. (2013) The Jena Diversity-Dynamic 
+1023 
+Global Vegetation Model (JeDi-DGVM): a diverse approach to representing terrestrial 
+1024 
+biogeography and biogeochemistry based on plant functional trade-offs. Biogeosciences, 
+1025 
+10, 4137-4177. 
+1026 
+Peel, M.C., Finlayson, B.L. & McMahon, T.A. (2007) Updated world map of the Koppen-Geiger 
+1027 
+climate classification. Hydrology and Earth System Sciences, 11, 1633-1644. 
+1028 
+Peng, C.H., Guiot, J., Wu, H.B., Jiang, H. & Luo, Y.Q. (2011) Integrating models with data in 
+1029 
+ecology and palaeoecology: advances towards a model-data fusion approach. Ecology 
+1030 
+Letters, 14, 522-536. 
+1031 
+Peng, H.H., Zhao, C.Y., Feng, Z.D., Xu, Z.L., Wang, C. & Zhao, Y. (2014) Canopy interception 
+1032 
+by a spruce forest in the upper reach of Heihe River basin, Northwestern China. 
+1033 
+Hydrological Processes, 28, 1734-1741. 
+1034 
+Perez-Harguindeguy, N., Diaz, S., Garnier, E., Lavorel, S., Poorter, H., Jaureguiberry, P., Bret-
+1035 
+Harte, M.S., Cornwell, W.K., Craine, J.M., Gurvich, D.E., Urcelay, C., Veneklaas, E.J., 
+1036 
+Reich, P.B., Poorter, L., Wright, I.J., Ray, P., Enrico, L., Pausas, J.G., de Vos, A.C., 
+1037 
+Buchmann, N., Funes, G., Quetier, F., Hodgson, J.G., Thompson, K., Morgan, H.D., ter 
+1038 
+Steege, H., van der Heijden, M.G.A., Sack, L., Blonder, B., Poschlod, P., Vaieretti, M.V., 
+1039 
+Conti, G., Staver, A.C., Aquino, S. & Cornelissen, J.H.C. (2013) New handbook for 
+1040 
+standardised measurement of plant functional traits worldwide. Australian Journal of 
+1041 
+Botany, 61, 167-234. 
+1042 
+Phillips, N., Oren, R. & Zimmermann, R. (1996) Radial patterns of xylem sap flow in non-, 
+1043 
+diffuse- and ring-porous tree species. Plant Cell and Environment, 19, 983-990. 
+1044 
+Pitman, A.J. (2003) The evolution of, and revolution in, land surface schemes designed for 
+1045 
+climate models. International Journal of Climatology, 23, 479-510. 
+1046 
+Pockman, W.T. & Sperry, J.S. (2000) Vulnerability to xylem cavitation and the distribution of 
+1047 
+Sonoran desert vegetation. American Journal of Botany, 87, 1287-1299. 
+1048 
+Poorter, L., McDonald, I., Alarcón, A., Fichtler, E., Licona, J.-C., Peña-Claros, M., Sterck, F., 
+1049 
+Villegas, Z. & Sass-Klaassen, U. (2010) The importance of wood traits and hydraulic 
+1050 
+conductance for the performance and life history strategies of 42 rainforest tree species. 
+1051 
+New Phytologist, 185, 481-492. 
+1052 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+30 
+ 
+Poulter, B., Ciais, P., Hodson, E., Lischke, H., Maignan, F., Plummer, S. & Zimmermann, N.E. 
+1053 
+(2011) Plant functional type mapping for earth system models. Geosci. Model Dev., 4, 
+1054 
+993-1010. 
+1055 
+Powell, T.L., Galbraith, D.R., Christoffersen, B.O., Harper, A., Imbuzeiro, H.M.A., Rowland, L., 
+1056 
+Almeida, S., Brando, P.M., da Costa, A.C.L., Costa, M.H., Levine, N.M., Malhi, Y., 
+1057 
+Saleska, S.R., Sotta, E., Williams, M., Meir, P. & Moorcroft, P.R. (2013) Confronting 
+1058 
+model predictions of carbon fluxes with measurements of Amazon forests subjected to 
+1059 
+experimental drought. New Phytologist, 200, 350-365. 
+1060 
+Pratt, R.B., Jacobsen, A.L., Ewers, F.W. & Davis, S.D. (2007) Relationships among xylem 
+1061 
+transport, biomechanics and storage in stems and roots of nine Rhamnaceae species of the 
+1062 
+California chaparral. New Phytologist, 174, 787-798. 
+1063 
+Pratt, R.B., Jacobsen, A.L., Ramirez, A.R., Helms, A.M., Traugh, C.A., Tobin, M.F., Heffner, 
+1064 
+M.S. & Davis, S.D. (2014) Mortality of resprouting chaparral shrubs after a fire and 
+1065 
+during a record drought: physiological mechanisms and demographic consequences. 
+1066 
+Global Change Biology, 20, 893-907. 
+1067 
+Prentice, I.C., Bondeau, A., Cramer, W., Harrison, S.P., Hickler, T., Lucht, W., Sitch, S., Smith, 
+1068 
+B. & Sykes, M.T. (2007) Dynamic Global Vegetation Modeling: quantifying terrestrial 
+1069 
+ecosystem responses to large-scale environmental change. Terrestrial ecosystems in a 
+1070 
+changing world (eds J. Canadell, D.E. Pataki & L. Pitelka), pp. 175-192. Springer, 
+1071 
+Berlin, Germany. 
+1072 
+Purves, D.W., Lichstein, J.W., Strigul, N. & Pacala, S.W. (2008) Predicting and understanding 
+1073 
+forest dynamics using a simple tractable model. Proceedings of the National Academy of 
+1074 
+Sciences of the United States of America, 105, 17018-17022. 
+1075 
+Quillet, A., Peng, C.H. & Garneau, M. (2010) Toward dynamic global vegetation models for 
+1076 
+simulating vegetation-climate interactions and feedbacks: recent developments, 
+1077 
+limitations, and future challenges. Environmental Reviews, 18, 333-353. 
+1078 
+Reich, P.B. (2014) The world-wide 'fast-slow' plant economics spectrum: a traits manifesto. 
+1079 
+Journal of Ecology, 102, 275-301. 
+1080 
+Reich, P.B., Wright, I.J. & Lusk, C.H. (2007) Predicting leaf physiology from simple plant and 
+1081 
+climate attributes: A global GLOPNET analysis. Ecological Applications, 17, 1982-1988. 
+1082 
+Reichstein, M., Bahn, M., Mahecha, M.D., Kattge, J. & Baldocchi, D.D. (2014) Linking plant 
+1083 
+and ecosystem functional biogeography. Proceedings of the National Academy of 
+1084 
+Sciences, 111, 13697-13702. 
+1085 
+Rowland, L., da Costa, A.C.L., Galbraith, D.R., Oliveira, R.S., Binks, O.J., Oliveira, A.A.R., 
+1086 
+Pullen, A.M., Doughty, C.E., Metcalfe, D.B., Vasconcelos, S.S., Ferreira, L.V., Malhi, 
+1087 
+Y., Grace, J., Mencuccini, M. & Meir, P. (2015) Death from drought in tropical forests is 
+1088 
+triggered by hydraulics not carbon starvation. Nature, 528, 119-122. 
+1089 
+Ruiz-Lozano, J.M. & Azcón, R. (1995) Hyphal contribution to water uptake in mycorrhizal 
+1090 
+plants as affected by the fungal species and water status. Physiologia Plantarum, 95, 472-
+1091 
+478. 
+1092 
+Running, S.W., Loveland, T.R. & Pierce, L.L. (1994) A vegetation classification logic based on 
+1093 
+remote sensing for using in global biogeochemical models. Ambio, 23, 77-81. 
+1094 
+Sakschewski, B., von Bloh, W., Boit, A., Rammig, A., Kattge, J., Poorter, L., Penuelas, J. & 
+1095 
+Thonicke, K. (2015) Leaf and stem economics spectra drive diversity of functional plant 
+1096 
+traits in a dynamic global vegetation model. Global Change Biology, 21, 2711-2725. 
+1097 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+31 
+ 
+Scheiter, S., Langan, L. & Higgins, S.I. (2013) Next-generation dynamic global vegetation 
+1098 
+models: learning from community ecology. New Phytologist, 198, 957-969. 
+1099 
+Schlesinger, W.H. & Jasechko, S. (2014) Transpiration in the global water cycle. Agricultural 
+1100 
+and Forest Meteorology, 189, 115-117. 
+1101 
+Shellito, C.J. & Sloan, L.C. (2006) Reconstructing a lost Eocene Paradise, Part II: On the utility 
+1102 
+of dynamic global vegetation models in pre-Quaternary climate studies. Global and 
+1103 
+Planetary Change, 50, 18-32. 
+1104 
+Siqueira, M.B., Katul, G. & Porporato, A. (2008) Onset of water stress, hysteresis in plant 
+1105 
+conductance, and hydraulic lift: Scaling soil water dynamics from millimeters to meters. 
+1106 
+Water Resources Research, 44, W01432. 
+1107 
+Sitch, S., Smith, B., Prentice, I.C., Arneth, A., Bondeau, A., Cramer, W., Kaplan, J.O., Levis, S., 
+1108 
+Lucht, W., Sykes, M.T., Thonicke, K. & Venevsky, S. (2003) Evaluation of ecosystem 
+1109 
+dynamics, plant geography and terrestrial carbon cycling in the LPJ dynamic global 
+1110 
+vegetation model. Global Change Biology, 9, 161-185. 
+1111 
+Skelton, R.P., West, A.G. & Dawson, T.E. (2015) Predicting plant vulnerability to drought in 
+1112 
+biodiverse regions using functional traits. Proceedings of the National Academy of 
+1113 
+Sciences, 112, 5744-5749. 
+1114 
+Smith, S.E. & Read, D.J. (2008) Mycorrhizal Symbiosis, 3rd Edition edn. Elsevier Academic 
+1115 
+Press Inc, San Diego. 
+1116 
+Soudzilovskaia, N.A., Elumeeva, T.G., Onipchenko, V.G., Shidakov, II, Salpagarova, F.S., 
+1117 
+Khubiev, A.B., Tekeev, D.K. & Cornelissen, J.H.C. (2013) Functional traits predict 
+1118 
+relationship between plant abundance dynamic and long-term climate warming. 
+1119 
+Proceedings of the National Academy of Sciences of the United States of America, 110, 
+1120 
+18180-18184. 
+1121 
+Sperry, J.S. (2000) Hydraulic constraints on plant gas exchange. Agricultural and Forest 
+1122 
+Meteorology, 104, 13-23. 
+1123 
+Sperry, J.S., Alder, N.N. & Eastlack, S.E. (1993) The effect of reduced hydraulic conductance on 
+1124 
+stomatal conductance and xylem cavitation. Journal of Experimental Botany, 44, 1075-
+1125 
+1082. 
+1126 
+Sperry, J.S., Nichols, K.L., Sullivan, J.E.M. & Eastlack, S.E. (1994) Xylem embolism in ring-
+1127 
+porous, diffuse-porous and coniferous trees of northern Utah and interior Alaska. 
+1128 
+Ecology, 75, 1736-1752. 
+1129 
+Sperry, J.S. & Saliendra, N.Z. (1994) Intra- and inter-plant variation in xylem cavitation in 
+1130 
+Betula occidentalis. Plant Cell and Environment, 17, 1233-1241. 
+1131 
+Sperry, J.S. & Sullivan, J.E.M. (1992) Xylem embolism in response to freeze-thaw cycles and 
+1132 
+water stress in ring-porous, diffuse-porous, and conifer species. Plant Physiology, 100, 
+1133 
+605-613. 
+1134 
+Sterck, F., Markesteijn, L., Schieving, F. & Poorter, L. (2011) Functional traits determine trade-
+1135 
+offs and niches in a tropical forest community. Proceedings of the National Academy of 
+1136 
+Sciences of the United States of America, 108, 20627-20632. 
+1137 
+Stocker, O. (1956) Die Abhängigkeit der Transpiration von den Umweltfaktoren. Pflanze und 
+1138 
+Wasser / Water Relations of Plants (eds M.J. Adriani, H.C. Aslyng, H. Burström, R. 
+1139 
+Geiger, F. Gessner, O. Härtel, B. Huber, M. Hülsbruch, K. Kalle, H. Kern, C. Killian, 
+1140 
+J.G. Kisser, P.J. Kramer, G. Lemée, J. Levitt, B.S. Meyer, K. Mothes, A. Pisek, F. 
+1141 
+Ruttner, M.G. Stålfelt, W. Stiles, O. Stocker, C.R. Stocking, H. Straka, W.C. 
+1142 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+32 
+ 
+Thornthwaite, C. Troll, H. Ullrich & F.J. Veihmeyer), pp. 436-488. Springer Berlin 
+1143 
+Heidelberg, Berlin, Heidelberg. 
+1144 
+Strengers, B.J., Muller, C., Schaeffer, M., Haarsma, R.J., Severijns, C., Gerten, D., Schaphoff, 
+1145 
+S., van den Houdt, R. & Oostenrijk, R. (2010) Assessing 20th century climate-vegetation 
+1146 
+feedbacks of land-use change and natural vegetation dynamics in a fully coupled 
+1147 
+vegetation-climate model. International Journal of Climatology, 30, 2055-2065. 
+1148 
+Sun, W.X., Liang, S.L., Xu, G., Fang, H.L. & Dickinson, R. (2008) Mapping plant functional 
+1149 
+types from MODIS data using multisource evidential reasoning. Remote Sensing of 
+1150 
+Environment, 112, 1010-1024. 
+1151 
+Taneda, H. & Sperry, J.S. (2008) A case-study of water transport in co-occurring ring- versus 
+1152 
+diffuse-porous trees: contrasts in water-status, conducting capacity, cavitation and vessel 
+1153 
+refilling. Tree Physiology, 28, 1641-1651. 
+1154 
+Tardieu, F. (1993) Will increases in our understanding of soil-root relations and root signaling 
+1155 
+substantially alter water flux models? Philosophical Transactions of the Royal Society of 
+1156 
+London Series B-Biological Sciences, 341, 57-66. 
+1157 
+Tardieu, F. & Simonneau, T. (1998) Variability among species of stomatal control under 
+1158 
+fluctuating soil water status and evaporative demand: modelling isohydric and 
+1159 
+anisohydric behaviours. Journal of Experimental Botany, 49, 419-432. 
+1160 
+Thomsen, J., Bohrer, G., Matheny, A.M., Ivanov, V.Y., He, L., Renninger, H. & Schäfer, K. 
+1161 
+(2013) Contrasting hydraulic strategies during dry soil conditions in Quercus rubra and 
+1162 
+Acer rubrum in a sandy site in Michigan. Forests, 4, 1106-1120. 
+1163 
+Thuiller, W., Albert, C., Araujo, M.B., Berry, P.M., Cabeza, M., Guisan, A., Hickler, T., 
+1164 
+Midgely, G.F., Paterson, J., Schurr, F.M., Sykes, M.T. & Zimmermann, N.E. (2008) 
+1165 
+Predicting global change impacts on plant species' distributions: Future challenges. 
+1166 
+Perspectives in Plant Ecology Evolution and Systematics, 9, 137-152. 
+1167 
+Tognetti, R., Longobucco, A. & Raschi, A. (1998) Vulnerability of xylem to embolism in 
+1168 
+relation to plant hydraulic resistance in Quercus pubescens and Quercus ilex co-occurring 
+1169 
+in a Mediterranean coppice stand in central Italy. New Phytologist, 139, 437-447. 
+1170 
+Trifilo, P., Barbera, P.M., Raimondo, F., Nardini, A. & Lo Gullo, M.A. (2014) Coping with 
+1171 
+drought-induced xylem cavitation: coordination of embolism repair and ionic effects in 
+1172 
+three Mediterranean evergreens. Tree Physiology, 34, 109-122. 
+1173 
+Tyree, M.T. & Ewers, F.W. (1991) The hydraulic architecture of trees and other woody plants. 
+1174 
+New Phytologist, 119, 345-360. 
+1175 
+Tyree, M.T. & Zimmermann, M.H. (2002) Xylem structure and the ascent of sap. Xylem 
+1176 
+structure and the ascent of sap. Springer-Verlag New York Inc., 175 Fifth Avenue,  New 
+1177 
+York, NY. 
+1178 
+van Bodegom, P.M., Douma, J.C. & Verheijen, L.M. (2014) A fully traits-based approach to 
+1179 
+modeling global vegetation distribution. Proceedings of the National Academy of 
+1180 
+Sciences of the United States of America, 111, 13733-13738. 
+1181 
+Van Bodegom, P.M., Douma, J.C., Witte, J.P.M., Ordonez, J.C., Bartholomeus, R.P. & Aerts, R. 
+1182 
+(2012) Going beyond limitations of plant functional types when predicting global 
+1183 
+ecosystem-atmosphere fluxes: exploring the merits of traits-based approaches. Global 
+1184 
+Ecology and Biogeography, 21, 625-636. 
+1185 
+Verheijen, L.M., Brovkin, V., Aerts, R., Bonisch, G., Cornelissen, J.H.C., Kattge, J., Reich, P.B., 
+1186 
+Wright, I.J. & van Bodegom, P.M. (2013) Impacts of trait variation through observed 
+1187 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+33 
+ 
+trait-climate relationships on performance of an Earth system model: a conceptual 
+1188 
+analysis. Biogeosciences, 10, 5497-5515. 
+1189 
+Violle, C., Navas, M.L., Vile, D., Kazakou, E., Fortunel, C., Hummel, I. & Garnier, E. (2007) 
+1190 
+Let the concept of trait be functional! Oikos, 116, 882-892. 
+1191 
+von Allmen, E.I., Sperry, J.S. & Bush, S.E. (2014) Contrasting whole-tree water use, hydraulics, 
+1192 
+and growth in a co-dominant diffuse-porous vs. ring-porous species pair. Trees, 1-12. 
+1193 
+Wagner, K.R., Ewers, F.W. & Davis, S.D. (1998) Tradeoffs between hydraulic efficiency and 
+1194 
+mechanical strength in the stems of four co-occurring species of chaparral shrubs. 
+1195 
+Oecologia, 117, 53-62. 
+1196 
+Wang, Y.P., Trudinger, C.M. & Enting, I.G. (2009) A review of applications of model-data 
+1197 
+fusion to studies of terrestrial carbon fluxes at different scales. Agricultural and Forest 
+1198 
+Meteorology, 149, 1829-1842. 
+1199 
+Weng, E.S., Malyshev, S., Lichstein, J.W., Farrior, C.E., Dybzinski, R., Zhang, T., Shevliakova, 
+1200 
+E. & Pacala, S.W. (2015) Scaling from individual trees to forests in an Earth system 
+1201 
+modeling framework using a mathematically tractable model of height-structured 
+1202 
+competition. Biogeosciences, 12, 2655-2694. 
+1203 
+Werner, C., Schnyder, H., Cuntz, M., Keitel, C., Zeeman, M.J., Dawson, T.E., Badeck, F.W., 
+1204 
+Brugnoli, E., Ghashghaie, J., Grams, T.E.E., Kayler, Z.E., Lakatos, M., Lee, X., Maguas, 
+1205 
+C., Ogee, J., Rascher, K.G., Siegwolf, R.T.W., Unger, S., Welker, J., Wingate, L. & 
+1206 
+Gessler, A. (2012) Progress and challenges in using stable isotopes to trace plant carbon 
+1207 
+and water relations across scales. Biogeosciences, 9, 3083-3111. 
+1208 
+Williams, J.E., Davis, S.D. & Portwood, K. (1997) Xylem embolism in seedlings and resprouts 
+1209 
+of Adenostoma fasciculatum after fire. Australian Journal of Botany, 45, 291-300. 
+1210 
+Woodcock, D.W. (1994) Occurrence of woods with a gradation in vessel diameter across a ring. 
+1211 
+Iawa Journal, 15, 377-385. 
+1212 
+Wright, I.J., Reich, P.B., Cornelissen, J.H.C., Falster, D.S., Garnier, E., Hikosaka, K., Lamont, 
+1213 
+B.B., Lee, W., Oleksyn, J., Osada, N., Poorter, H., Villar, R., Warton, D.I. & Westoby, 
+1214 
+M. (2005) Assessing the generality of global leaf trait relationships. New Phytologist, 
+1215 
+166, 485-496. 
+1216 
+Wright, I.J., Reich, P.B., Westoby, M., Ackerly, D.D., Baruch, Z., Bongers, F., Cavender-Bares, 
+1217 
+J., Chapin, T., Cornelissen, J.H.C., Diemer, M., Flexas, J., Garnier, E., Groom, P.K., 
+1218 
+Gulias, J., Hikosaka, K., Lamont, B.B., Lee, T., Lee, W., Lusk, C., Midgley, J.J., Navas, 
+1219 
+M.L., Niinemets, U., Oleksyn, J., Osada, N., Poorter, H., Poot, P., Prior, L., Pyankov, 
+1220 
+V.I., Roumet, C., Thomas, S.C., Tjoelker, M.G., Veneklaas, E.J. & Villar, R. (2004) The 
+1221 
+worldwide leaf economics spectrum. Nature, 428, 821-827. 
+1222 
+Wullschleger, S.D., Epstein, H.E., Box, E.O., Euskirchen, E.S., Goswami, S., Iversen, C.M., 
+1223 
+Kattge, J., Norby, R.J., van Bodegom, P.M. & Xu, X.F. (2014) Plant functional types in 
+1224 
+Earth system models: past experiences and future directions for application of dynamic 
+1225 
+vegetation models in high-latitude ecosystems. Annals of Botany, 114, 1-16. 
+1226 
+Xu, X., Medvigy, D., Powers, J.S., Becknell, J.M. & Guan, K. (2016) Diversity in plant 
+1227 
+hydraulic traits explains seasonal and inter-annual variations of vegetation dynamics in 
+1228 
+seasonally dry tropical forests. New Phytologist. 
+1229 
+Yang, Y.Z., Zhu, Q.A., Peng, C.H., Wang, H. & Chen, H. (2015) From plant functional types to 
+1230 
+plant functional traits: A new paradigm in modelling global vegetation dynamics. 
+1231 
+Progress in Physical Geography, 39, 514-535. 
+1232 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+34 
+ 
+Yu, Q., Epstein, H.E., Walker, D.A., Frost, G.V. & Forbes, B.C. (2011) Modeling dynamics of 
+1233 
+tundra plant communities on the Yamal Peninsula, Russia, in response to climate change 
+1234 
+and grazing pressure. Environmental Research Letters, 6, 12. 
+1235 
+Zanne, A.E., Westoby, M., Falster, D.S., Ackerly, D.D., Loarie, S.R., Arnold, S.E. & Coomes, 
+1236 
+D.A. (2010) Angiosperm wood structure: global patterns in vessel anatomy and their 
+1237 
+relation to wood density and potential conductivity. American Journal of Botany, 97, 
+1238 
+207-215. 
+1239 
+1240 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+35 
+ 
+Table 1: International Geosphere-Biosphere Program (IGBP) land cover types (Loveland et al., 
+1241 
+2000) and basic plant functional types used by CLM4.5 (Oleson et al., 2013).  
+1242 
+IGBP Land Cover Types 
+  
+CLM 4.5 Plant Functional Types 
+Needleleaf evergreen tree 
+Needleleaf evergreen tree (temperate) 
+Broadleaf evergreen tree 
+Needleleaf evergreen tree (boreal) 
+Needlleleaf deciduous tree 
+Needleleaf deciduous tree (boreal) 
+Broadleaf deciduous tree 
+Broadleaf evergreen tree (tropical) 
+Mixed forests 
+Broadleaf evergreen tree (temperate) 
+Closed shrublands 
+Broadleaf deciduous tree (tropical) 
+Open shrublands 
+Broadleaf deciduous tree (temperate) 
+Woody savannas 
+Broadleaf deciduous tree (boreal)  
+Savannas  
+Broadleaf evergreen shrub (temperate) 
+Grasslands 
+Broadleaf deciduous shrub (temperate) 
+Persistent wetlands 
+Broadleaf deciduous shrub (boreal) 
+Croplands 
+C3 arctic grass 
+Urban/Built 
+C3 grass 
+Cropland/Vegetation mosaic 
+C4 grass 
+Snow/Ice 
+C3 unmanaged rainfed crop 
+Barren/Sparse 
+Water 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+36 
+ 
+Table 2: A non-exhaustive list of plant hydraulic traits within each axis (leaf, stem, and root) of the whole-plant hydraulic strategy, the 
+1243 
+scales at which they are typically measured and reported, and the variables that exert the most influence over each trait.  
+1244 
+Trait description 
+ 
+Measurement 
+scale 
+Potential influencing variables  
+Leaf level 
+Maximum stomatal 
+conductance 
+ 
+leaf, canopy  
+PAR, VPD, temperature, CO2 concentration, regulation 
+strategy 
+Slope of stomatal response 
+to leaf water potential 
+ 
+leaf, canopy 
+VPD, CO2 concentration, regulation strategy 
+Cuticular conductance  
+ 
+leaf, canopy 
+Leaf form, cuticle thickness 
+ 
+Stem level 
+Maximum xylem 
+conductance  
+ 
+stem, branch 
+Xylem architecture, aquaporin activity, seasonality, plant age, 
+growth history 
+Xylem vulnerability curve 
+ 
+stem, branch 
+Xylem architecture, aquaporin activity, seasonality, plant age, 
+growth history 
+Fraction of active xylem 
+ 
+stem, branch 
+Xylem architecture, seasonality, plant age, growth history 
+Saturated xylem water 
+content 
+ 
+stem, branch 
+Xylem architecture, wood density 
+Wood density 
+ 
+stem, branch 
+Xylem architecture 
+ 
+Root level 
+Maximum depth 
+ 
+root, tree 
+Plant age, soil type, soil moisture/groundwater availability, 
+nutrient environment 
+Vertical distribution of root 
+density 
+ 
+tree, stand 
+Plant age, soil type, soil moisture/groundwater availability, 
+nutrient environment 
+Maximum root xylem 
+conductance  
+ 
+root  
+Xylem architecture, aquaporin activity, seasonality, plant age, 
+growth history 
+Mycorrhizal activity 
+ 
+root, tree 
+Nutrient environment, hyphal density, soil moisture, soil 
+temperature 
+
+MANUSCRIPT
+ 
+ACCEPTED
+ACCEPTED MANUSCRIPT
+37 
+ 
+Figure captions 
+1245 
+ 
+1246 
+Figure 1: Theoretical figure demonstrating the differences between anisohydric (red) and 
+1247 
+isohydric (blue) stomatal regulation and leaf water potential. β represents the fraction of actual 
+1248 
+stomatal conductance, as a proportion of the reference stomatal conductance when soil moisture 
+1249 
+and vapor pressure deficit (VPD) are non-limiting for transpiration. Lines represent idealized 
+1250 
+curves that describe stomatal response to declining leaf water potential.  
+1251 
+ 
+1252 
+ 
+1253 
+Figure 2: An illustration of possible xylem conductance curves as defined by three traits 
+1254 
+(parameters): xylem water potentials at 50 and 88% loss conductivity and a third shape 
+1255 
+parameter. Observed conductivity response curves from Q. falcata, a ring porous species, and J. 
+1256 
+virginiana, a diffuse porous species, were reproduced on the basis of data provided in Maherali 
+1257 
+et al., (2006).    
+1258 
+ 
+1259 
+
+MANUS
+ 
+PTED
+
+MANUS
+ 
+EPTED

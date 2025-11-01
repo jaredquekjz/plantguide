@@ -1,0 +1,188 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/384635156
+Ecological Indicator Values for Europe (EIVE): recent developments and performance tests
+Poster · September 2024
+DOI: 10.13140/RG.2.2.13283.98084
+CITATIONS
+0
+READS
+417
+13 authors, including:
+Jürgen Dengler
+ZHAW Zurich University of Applied Sciences
+867 PUBLICATIONS   17,423 CITATIONS   
+SEE PROFILE
+Olha Chusova
+M.G. Kholodny Institute of Botany
+59 PUBLICATIONS   187 CITATIONS   
+SEE PROFILE
+Florian Jansen
+University of Rostock
+246 PUBLICATIONS   7,389 CITATIONS   
+SEE PROFILE
+François Gillet
+Marie and Louis Pasteur University
+252 PUBLICATIONS   10,489 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Jürgen Dengler on 04 October 2024.
+The user has requested enhancement of the downloaded file.
+
+Ecological Indicator Values for Europe (EIVE):
+recent developments and performance tests
+66th  Symposium of the International Association for Vegetation Science (IAVS), 16-20 September 2024, Funchal
+Fig. 1. Spatial coverage of source systems of EIVE 1.0.
+EIVE 1.0 vs. “Tichý”
+•
+Based on 31 (EIVE) vs. 12 (“Tichý”) source EIV 
+systems
+•
+5 niche dimensions (EIVE), additionally salinity 
+(“Tichý”)
+•
+Uniform scale of 0–10 (EIVE) vs. different scales 
+for each dimension (“Tichý”)
+•
+14,835 (EIVE) vs. 8,679 (“Tichý”) accepted taxa
+•
+Covering entire Europe (EIVE) vs. nemoral Europe 
+and Italy (“Tichý”)
+•
+Only EIVE has also indicators of niche width
+Introduction In Europe, ecological indicator values (EIVs) of plants are a
+very widely and successfully used tool for bioindication. The idea is to combine the
+expert-based assessment of the niche optima of species along certain niche
+dimensions, such as soil moisture or pH, and averaging them across all species in a
+community predicts its position in ecological space. Having been independently
+“invented” by Heinz Ellenberg and L.G. Ramensky, similar approaches were later
+implemented in many regions of Europe for various niche dimensions. Meanwhile,
+there are more than 30 such systems, varying in scaling and taxonomy, thus
+impeding analyses at a continental scale.
+This prompted two author teams in January 2023 to release supra-regional indicator
+value systems for Europe, the Ellenberg-type indicator values by Tichý et al.
+(2023: “Tichý”) and the Ecological Indicator Values for Europe (EIVE) 1.0 (Dengler
+et al. 2023; Figs. 1 and 2). While their basic idea is similar, there are many
+differences in the details (see Box).
+References
+Dengler, J., Jansen, F. et al. (2023) Ecological Indicator Values for Europe (EIVE) 1.0. Vegetation Classification and Survey 4: 
+7–29. https://doi.org/10.3897/VCS.98324.
+Tichý et al. (2023) Ellenberg-type indicator values for European vascular plant species. Journal of Vegetation Science 34: 
+e13168.
+Aicher et al. (in review) Mean ecological indicator values: use EIVE, but no cover-weighting. Vegetation Classification and 
+Survey.
+Chusova et al. (in prep.) Ecological Indicator Values for Europe (EIVE) 1.5: now with bryophytes, lichens and macro-algae.
+Jürgen Dengler1*, Olha Chusova2, Florian Jansen3, François Gillet4, Christian Berg5, Gerhard 
+Karrer6, Thomas Raus7, Torbjörn Tyler8, Severin Aicher1, Agnieszka Mankiewicz9, Grzegorz 
+Ostrowski9, Stefan Widmer1 & the EIVE Consortium
+Performance of the two systems
+We used three regional
+datasets covering long environmental gradients (one for temperature, two for pH)
+with measured environmental variables to compare the relative performance of EIVE
+1.0, Tichý et al. (2023) and the two EIV systems valid for Switzerland, “Landolt” and
+“Ellenberg”, and did this with four weighting approaches (Aicher et al. in review).
+EIVE outperformed all other systems, but particularly “Ellenberg” and “Tichý”, while
+no cover-weighting was better than cover-weighting or sqrt (cover)-weighting. Only
+inverse niche width, solely available for EIVE and “Landolt”, was minimally and non-
+significantly better than no weighting (Fig. 3).
+Future developments of EIVE
+Currently, we are preparing EIVE 1.5 (Chusova et al. in
+prep.). This version will stay with the same five niche
+dimensions, but add bryophytes, lichens and algae plus
+new and updated EIV systems of vascular plants. This
+version to be released in a few months will increase the
+EIVE coverage to approx. 20,000 valid taxa (Table 1).
+(1) Institute of Natural Resource Sciences (IUNR), Zurich University of Applied Sciences (ZHAW), Wädenswil, Switzerland; (2) National Academy of Science of 
+Ukraine, Kyiv, Ukraine; (3) University of Rostock, Germany; (4) University of Franche-Comté, Besançon, France; (5) Karl-Franzens University of Graz, Austria; (6) 
+BOKU, Vienna, Austria; (7) BGBM, Berlin, Germany; (8) University of Lund, Sweden; (9) University of Warsaw, Poland; *dr.juergen.dengler@gmail.com
+Fig. 2. Niche position (A) and niche 
+width (B) distribution of the five niche 
+dimensions in EIVE 1.0.
+Conclusions
+•
+Use
+EIVE
+both
+in
+regional
+and
+continental
+studies (at least for R and T indicators)
+•
+Don’t
+weight
+the
+species
+by
+cover,
+but
+potentially by inverse niche width
+•
+Join the EIVE consortium if you have ideas for
+further development or testing
+Fig. 3. Relative performance of four EIV systems and four weighting approaches in predicting 
+measured environmental variables, expressed by Pearson’s r in various datasets, tested with mixed-
+effect models. The points inside the boxes are the arithmetic means. NW = niche width.
+EIVE is a collaborative, community-based endeavor,
+and we envisage already future development steps:
+•
+EIVE 1.7: addition of further niche dimensions (e.g.
+salinity, humus content, CSR strategies)
+•
+EIVE 2.0: using the EVA database to recalibrate and
+expand EIVE
+•
+EIVE 3.0: release of regional/subcontinental EIVE
+editions
+Taxon group
+Vascular 
+plants
+Bryophytes
+Lichens
+Algae
+All groups
+Lines
+99,080
+12,208
+4,374
+77
+115,739
+Matched names
+16,534
+1,613
+0
+0
+18,147
+Non-matched 
+names
+824
+1,632
+1,801
+58
+4,315
+Total names
+17,358
+3,245
+1,801
+58
+22,462
+Mean sources per 
+name
+5.7
+3.8
+2.4
+1.3
+5.2
+Estimated valid 
+taxa
+16,699
+1,939
+1,441
+46
+20,125
+Mean sources per 
+taxon
+5.9
+6.3
+3.0
+1.7
+5.8
+Table 1. Work status of EIVE 1.5 (as of 10 September 2024).
+View publication stats

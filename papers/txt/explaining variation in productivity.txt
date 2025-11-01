@@ -1,0 +1,1022 @@
+Journal of
+ Plant Ecology
+JOURNAL OF PLANT ECOLOGY | https://doi.org/10.1093/jpe/rtab096
+310
+© The Author(s) 2021. Published by Oxford University Press on behalf of the Institute of Botany, Chinese Academy of Sciences and the Botanical Society of China. 
+All rights reserved. For permissions, please email: journals.permissions@oup.com
+Research Article
+Explaining variation in productivity requires intraspecific 
+variability in plant height among communities
+Li Zhang1, Xiang Liu2,
+, Shurong Zhou3,* and Bill Shipley4,
+1College of Resources and Environment, Anhui Agricultural University, Hefei 230036, China, 2State Key Laboratory of Grassland Agro-
+Ecosystem, Institute of Innovation Ecology, Lanzhou University, Lanzhou 730000, China, 3Key Laboratory of Genetics and Germplasm 
+Innovation of Tropical Special Forest Trees and Ornamental Plants, Ministry of Education, College of Forestry, Hainan University, Haikou 
+570228, China, 4Département de Biologie, Université de Sherbrooke, Sherbrooke, QC J1K 2R1, Canada
+*Corresponding author. E-mail: zhshrong@hainanu.edu.cn
+Handling Editor: Yuanhe Yang 
+Received: 16 March 2021, First Decision: 18 May 2021, Accepted: 3 August 2021, Online Publication: 25 August 2021
+Abstract
+While recent studies have shown the importance of intraspecific trait variation in the processes of community 
+assembly, we still know little about the contributions of intraspecific trait variability to ecosystem functions. Here, 
+we conducted a functional group removal experiment in an alpine meadow in Qinghai-Tibetan Plateau over 
+4 years to investigate the relative importance of inter- and intraspecific variability in plant height for productivity. 
+We split total variability in plant height within each of 75 manipulated communities into interspecific variability 
+(TVinter) and intraspecific variability within a community (ITVwithin). Community-weighted mean height among 
+communities was decomposed into fixed community-weighted mean (CWMfixed) and intraspecific variability 
+among communities (ITVamong). We constructed a series of generalized additive mixed models and piecewise 
+structural equation modeling to determine how trait variability (i.e. TVinter, ITVwithin, CWMfixed and ITVamong) 
+indirectly mediated the changes in productivity in response to functional group removal. Community productivity 
+was not only affected directly by treatment manipulations, but also increased with both inter- and intraspecific 
+variability (i.e. CWMfixed and ITVamong) in plant height indirectly. This suggests that both the ‘selection effect’ 
+and a ‘shade-avoidance syndrome’ can incur higher CWMfixed and ITVamong, and may simultaneously operate to 
+regulate productivity. Our findings provide new evidence that, besides interspecific variability, intraspecific trait 
+variability in plant height also plays a role in maintaining net primary productivity.
+Keywords   aboveground net primary productivity, alpine meadow, interspecific trait variability, intraspecific 
+trait variability, plant height
+解释生产力的变异需要考虑群落间植物高度的种内变异
+摘要：已有研究表明，种内性状变异在群落构建过程中具有重要作用，但是迄今为止关于种内性状
+变异对生态系统功能的贡献仍然知之甚少。我们在青藏高原的高寒草甸进行了为期4年的功能群去
+除实验，以研究植物高度的种间和种内变异对生产力的相对重要性。将75个控制群落内的株高总
+变异分为种间变异(TVinter)和种内变异(ITVwithin)，将群落间的群落加权平均高度分解为固定群落加权平
+均值(CWMfixed)和群落间种内变异(ITVamong)。我们通过广义加性混合模型、模型筛选和结构方程模型评估
+了性状变异(即TVinter、ITVwithin、CWMfixed和ITVamong)如何间接介导功能群去除后生产力的变化。研究结果
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+311
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+表明，功能群去除不仅会直接引起生产力变化，同时还会通过改变种间和种内株高变异间接影响生产力(
+即CWMfixed和ITVamong)。“选择效应”和“避荫综合征”都可能导致更高的CWMfixed和ITVamong，从而起到
+调节生产力的作用。该研究结果说明，只考虑种间变异可能会低估植物群落功能结构在驱动生态系统过
+程中的贡献。
+关键词：地上净初级生产力，高寒草甸，种内性状变异，种间性状变异，植物高度
+INTRODUCTION
+Variation in net primary production (NPP) at the 
+global scale is primarily controlled by climatic 
+variables like temperature, precipitation and growing 
+season length (Del Grosso et al. 2008; Nemani et al. 
+2003). At small spatial scales, in which variation in 
+both climatic and soil properties is severely reduced, 
+variation in NPP is mainly determined by variation 
+in the functional trait composition of the plant 
+community and yet the capacity to predict ecosystem 
+properties from plant traits has not been fully 
+realized (Lavorel and Garnier 2002). At the level of 
+local plant communities that differ in NPP, variation 
+in functional traits arises from both intraspecific 
+and interspecific variation (de Bello et al. 2011; Lepš 
+et al. 2011; Violle et al. 2012). Although functional 
+plant ecologists have made progress in determining 
+the relative extent of intraspecific and interspecific 
+variation for several traits (e.g. Carlucci et al. 2015; 
+Siefert et al. 2015), we do not yet know the relative 
+importance of intraspecific and interspecific trait 
+variations in determining ecosystem properties 
+like NPP.
+An increasing body of evidence has accumulated 
+in recent decades suggesting that plant functional 
+traits (particularly of dominant species) can predict 
+community assembly (Shipley 2010; Spasojevic 
+and Suding 2012) and ecosystem functions (Des 
+Roches et  al. 2018; Lavorel et  al. 2011; Maynard 
+et al. 2019; Suding et al. 2008). Currently, most such 
+studies employ community-weighted trait means 
+to explain biodiversity and ecosystem functions 
+that are maintained by a community (e.g. Liu et al. 
+2015). Such community-weighted means neglect the 
+ubiquitous intraspecific trait variability, arising from 
+intraspecific genetic variation and/or phenotypic 
+plasticity. Therefore, this mean field approach may 
+underestimate the degree of trait or niche dispersion 
+among species and the resources they exploit and 
+result in misinterpreting the mechanisms of species 
+coexistence and various ecosystem processes (Albert 
+et al. 2011; Bolnick et al. 2011; Turcotte and Levine 
+2016; Violle et al. 2012).
+While interspecific trait variation is often the most 
+important source of trait variation when comparing 
+between communities along strong environmental 
+gradients (Jung et al. 2010; Siefert et al. 2015), its 
+contribution to the overall trait variation depends 
+strongly on the spatial scale at which the study is 
+done and on the traits (Albert et  al. 2011; Auger 
+and Shipley 2013; Jung et  al. 2010). In some 
+cases, intraspecific trait variation contributes more 
+to the total trait variation in a community than 
+interspecific trait variation (de Bello et  al. 2011; 
+Messier et al. 2010; Siefert et al. 2015). Furthermore, 
+inter- and intraspecific trait variation can occur 
+both within a single local community and between 
+local communities (Supplementary Table S1). As 
+a result, intraspecific trait variation can be further 
+decomposed into variability within communities 
+(ITVwithin) and among communities (ITVamong) as 
+formalized in Lepš et al. (2011) and de Bello et al. 
+(2011). ITVwithin measures trait variation between 
+individuals of the same species growing in the same 
+community (Albert 2015; de Bello et al. 2011; Siefert 
+et  al. 2015), while ITVamong measures the spread 
+of trait values between individuals of the same 
+species growing in different communities. Several 
+studies have now quantified these components of 
+intraspecific variation under different conditions, 
+including nitrogen and water addition (Lü et  al. 
+2018), short- or long-term management (Volf 
+et  al. 2016), elevation gradients (Kichenin et  al. 
+2013) and sandy grassland restoration (Zuo et  al. 
+2017). As a meta-analysis, Siefert et  al. (2015) 
+reported that ITVwithin accounted for 25% of the 
+total trait variation within communities and 32% 
+of the total trait variation among communities on 
+average worldwide. However, the fact that a trait 
+displays substantial intraspecific variation does 
+not necessarily mean that such intraspecific trait 
+variation is an important determinant of ecosystem 
+processes. It remains unclear about how interspecific 
+and intraspecific sources of variability, both within 
+and among local communities drives ecosystem 
+functions (e.g. NPP).
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+312
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+Plant height is generally considered important for 
+light acquisition and competition (Bjorkman et al. 
+2018; Westoby 1998), and thus has an important 
+impact on aboveground net primary production 
+(ANPP). On the one hand, in light-limited habitats, 
+all individuals, especially shaded individuals under 
+reduced light would invest a large amount of energy 
+into supporting tissue (e.g. via stem elongation) 
+to reach as much light as possible, resulting in 
+increasing height of different species (i.e. ‘shade-
+avoidance syndrome’; Roscher et  al. 2015). Thus, 
+intraspecific trait variation in plant height within a 
+community (ITVwithin) may increase the utilization 
+efficiency of light resources, ultimately increasing 
+productivity by increasing niche partitioning and 
+decreasing niche overlap (i.e. complementary 
+effect) (Fahey et  al. 2015; Gough et  al. 2019). On 
+the other hand, intraspecific variation in height 
+among communities (ITVamong) and average fixed 
+height (CWMfixed) may also benefit productivity 
+because communities consisting of taller individuals 
+can access light more easily and synthesize more 
+photosynthetic compounds (i.e. intraspecific and 
+interspecific ‘selection effect’, respectively; Liu 
+et  al. 2017). These points suggest that both the 
+community-weighted mean values of height and 
+its levels of intraspecific trait variation could affect 
+variation in aboveground net primary productivity 
+but what is the relative importance of each? No 
+study to date has considered both together and, 
+since previous research has focused mostly on 
+community-weighted means, it is possible that 
+ecologists are missing an important intraspecific 
+trait effect.
+Experimental removal is a useful approach not 
+only to investigate the influences of nonrandom 
+loss of species or functional groups on ecosystem 
+functions (Díaz et al. 2003; Kardol et al. 2018; Liu 
+et al. 2015), but also to explore how plant functional 
+trait variation mediate the change of ANPP in 
+response to biodiversity loss. Compared with 
+sampling on natural communities, removal leads to 
+greater variation in not only productivity, but also 
+functional diversity (Díaz et al. 2003; e.g. changes 
+in community composition and species traits, 
+including inter- and intraspecific variation). Thus, 
+removal created a functional diversity–productivity 
+pattern along a functional group richness gradient. 
+Controlled experiments could also create that 
+pattern, however, removal can more realistically 
+mimic natural community composition with less 
+changes of external variables (Díaz et  al. 2003). 
+For example, nitrogen addition would result in 
+significant changes in various abiotic factors, e.g. soil 
+N enrichment and acidification (Zhang et al. 2020). 
+In a previous study, we found that average fixed 
+plant height caused by functional group identity is a 
+powerful functional trait predictor for productivity 
+in an alpine meadow (Liu et  al. 2015). However, 
+we did not assess the role of intraspecific variability 
+of plant height in biomass production. Here, using 
+data from this 4-year removal experiment, in 
+which we manipulated the number and identity of 
+different functional groups, we quantify the relative 
+contributions of interspecific (TVinter and CWMfixed, 
+Supplementary Table S1) and intraspecific trait 
+variation (ITVwithin and ITVamong) in plant height in 
+determining primary productivity. Specifically, 
+we test the following hypotheses: (i) productivity 
+increases with increasing levels of intraspecific trait 
+variation (including ITVwithin and ITVamong), when 
+the community has the same types of species and 
+has species with the same average fixed height (i.e. 
+besides interspecific variation); (ii) the combination 
+of intraspecific variability and interspecific variability 
+explains more variation in productivity than either 
+of these effects alone.
+MATERIALS AND METHODS
+Study site
+Our study site was located in the eastern part 
+of the Tibetan Plateau (35°58′ N, 101°53″ E) 
+at approximately 3500 m a.s.l. The average 
+annual precipitation is 620  mm, which is mainly 
+concentrated 
+in 
+the 
+summer. 
+Mean 
+annual 
+temperature is 1.2  °C, and monthly temperature 
+ranges from −10.7 to 11.7 °C. The alpine meadow 
+is rich in species diversity, having more than 30 
+species within a 50 cm × 50 cm subplot (Liu et al. 
+2017), and is dominated by perennial herbaceous 
+species of the families Poaceae, Cyperaceae, 
+Asteraceae and Fabaceae, such as Elymus nutans, 
+Kobresia myosuroides, Stipa aliena, Ligularia virgaurea, 
+Saussurea pulchra and Thermopsis lanceolala. The 
+soil is typical alpine meadow soil (Genetic Soil 
+Classification of China) with a depth of 80  cm 
+(Liu et  al. 2015), and is classified as Cambosols 
+(Chinese Soil Taxonomy) (Shi et al. 2006).
+Experimental design and data sampling
+In June 2011, we established a functional group 
+removal experiment in a 50 m × 50 m fenced area, 
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+313
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+with yak grazing permitted from September to 
+May. Seventy-five 1 m diameter circular plots were 
+arranged regularly, separated by three meters from 
+adjacent edges. All 54 species found in the study 
+site were classified into four groups (hereafter 
+functional groups because they differ functionally) 
+based on their physical, reproductive and dispersal 
+attributes: Poaceae and Cyperaceae (abbreviated 
+as ‘A’), Asteraceae (B), Fabaceae (C) and Others 
+(D), which have been described in Table A1 in 
+Liu et al. (2015). All possible combinations of the 
+four taxonomic groups consisted of 24 − 1  =  15 
+treatments (Treatment: ABCD, ABC, ABD, BCD, 
+ACD, AB, AC, AD, BC, BD, CD, A, B, C, D), 
+which were assigned randomly to plots, with five 
+replicates for each treatment. These plots were 
+maintained by removing the aboveground biomass 
+of the nonfocal functional groups of species twice a 
+year (in June and July, respectively). For example, 
+the ‘A’ treatment (only species of Poaceae and 
+Cyperaceae) was maintained by removing species 
+belonging to the Asteraceae (B), Fabaceae (C) and 
+Others (D).
+We recorded species richness and each species’ 
+abundance (i.e. number of ramets) in a circular 
+subplot of 50 cm diameter in the center of each plot 
+in August (the peaking growing season) from 2012 
+to 2014 annually. All the aboveground parts present 
+in each subplot were harvested using scissors at the 
+soil surface, dried at 65 °C for 48 h and then weighed 
+to 0.1  mg to estimate productivity (measured as 
+annual aboveground biomass production). We also 
+randomly selected and recorded the maximum 
+height (including reproductive structures) of up to 
+five individuals per species within each subplot in 
+2012, and up to 10 individuals per species in 2013 
+and 2014 for a total of 15 536 individuals’ heights 
+across 75 plots.
+Calculating ITV
+By using the variance partitioning method proposed 
+by de Bello et  al. (2011), we partitioned the total 
+variability in height within a specific community 
+into abundance-weighted interspecific (TVinter) and 
+intraspecific variability (ITVwithin):
+TVinter =
+S
+i=1 ai(xi −community-weighted mean)2
+S
+i=1 ai
+
+(1)
+Community-weighted mean =
+S
+i=1 aixi
+S
+i=1 ai
+
+(2)
+ITVwithin =
+S
+i=1 ai
+1
+Nind
+Nind
+j=1 (xji −xi)2
+S
+i=1 ai
+
+(3)
+Total variability = TVinter + ITVwithin
+
+(4)
+where S is the number of sampled species in a subplot 
+(community), ai is the abundance of the ith species 
+in the subplot and xi is the average height of the ith 
+species in the given community. The community-
+weighted mean of height is the mean of species height 
+weighted by their relative abundance in a subplot. xji 
+is the height value of the ith species at the individual 
+level, and Nind is the number of sampling individuals 
+of the ith species. TVinter, also called the community-
+weighted variance (Shipley 2010), represents the 
+difference between the height of a given species in a 
+community and the average height of all individuals 
+in that community.
+We also calculated the community-weighted mean 
+caused by species turnover alone (CWMfixed) and by 
+ITVamong alone following Lepš et al. (2011). CWMfixed 
+indicates the community expected average height 
+based on its constituent individuals. It is affected only 
+by species turnover, which can be calculated as:
+CWMf ixed =
+S
+i=1 aixf ixed
+S
+i=1 ai
+
+(5)
+where xfixed is the fixed height average of the ith 
+species over all sampling communities. ITVamong in 
+each plot is the difference between community-
+weighted mean and CWMfixed:
+ITVamong = community-weighted mean −CWMf ixed
+
+(6)
+A positive ITVamong indicates that the community 
+average height in a subplot is taller than expected 
+(CWMfixed), while a negative ITVamong means lower.
+Statistical analysis
+Our 
+hypotheses 
+concerned 
+the 
+relationship 
+between 
+community 
+productivity 
+and 
+four 
+predictor variables: TVinter, ITVwithin, ITVamong and 
+CWMfixed. However, community productivity could 
+potentially be affected directly by the treatment 
+manipulations and/or by biodiversity changes 
+induced by these treatments (the number of 
+functional groups, species richness, Shannon’s 
+evenness index, Simpson’s diversity index and 
+phylogenetic diversity), as shown in Liu et  al. 
+(2015). If so, then correlations between community 
+productivity and our four predictor variables could 
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+314
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+be spurious and reflect the common effects of 
+the treatment manipulations or the biodiversity 
+changes. We therefore tested our hypotheses in 
+two steps.
+First, we regressed community productivity in 
+each of the subplots on the categorical treatment 
+manipulation or on each of the measured biodiversity 
+changes, in order to determine how best to control 
+for such possible spurious patterns. Since we had no 
+a priori reason to assume linearity, these regressions 
+were done using generalized additive mixed models 
+via the gam function of the mgcv library of R (Wood 
+2017), in which the predictor variables were added 
+as fixed smoothed terms via penalized thin plate 
+regression splines with both random intercepts and 
+slopes over years. We used AIC (Akaike information 
+criterion) statistics (see below) to choose the best of 
+these variables as a covariate to serve as our ‘null’ 
+model for comparison. We found that the categorical 
+treatment variable itself, rather than the number of 
+functional groups, species richness, Shannon’s index, 
+Simpson’s index or phylogenetic diversity, was the 
+best single explanatory variable for community 
+productivity. Since the ΔAICc (AIC corrected for 
+small sample sizes) for all of these biodiversity indices 
+were >54.658 relative to the treatment variable, 
+‘Treatment’ defined the ‘null’ model (Supplementary 
+Table S2).
+Second, we also conducted model selection by 
+regressing community productivity on the treatment 
+factor (which we use as the ‘null’ model) plus each 
+possible combination of the four predictor variables 
+(TVinter, ITVwithin, ITVamong and CWMfixed). A  series 
+of generalized additive mixed models with year 
+as random intercepts and slopes were performed. 
+Spearman’s correlation tests were performed using 
+the cor.test function in the stats package to avoid 
+including strong correlation indices in any model if 
+Spearman’s ρ > 0.5 (Supplementary Table S3). We 
+also tested the influences of the trait variabilities (total 
+variability, TVinter, ITVwithin, community-weighted 
+mean, CWMfixed and ITVamong) on productivity after 
+controlling for Treatment in 2012, 2013 and 2014, 
+respectively, using the same approach used for 
+data across all the years combined. We calculated 
+information-theoretic Akaike’s information criterion 
+corrected for small samples sizes (AICc), the change 
+in AICc relative to the model with lowest AIC (i.e. 
+ΔAICc). Following Burnham and Anderson (2010), 
+the model with the lowest AICc has the most support, 
+models with ΔAICc >3 having considerably less 
+support and models with ΔAICc >7 having essentially 
+no support.
+Furthermore, we used piecewise structural 
+equation modeling (SEM) to test how the presence 
+of four functional groups affected plant inter- and 
+intraspecific variability indices (i.e. TVinter, ITVwithin, 
+ITVamong and CWMfixed), and then influenced 
+community productivity (see an initial causal model 
+in Supplementary Fig. S1). For example, ‘presence of 
+A’ consisted of all the treatments that included A (i.e. 
+A, AB, AC, AD, ABC, ABD, ACD and ABCD). Standard 
+path coefficients (β), corresponding significance (P 
+values) for each path and global goodness of fits of 
+the final model were evaluated using psem function 
+in piecewiseSEM package (Lefcheck 2016), which 
+based on a d-sep approach (Shipley 2016). All 
+statistical analyses were conducted in R 3.6.1 (R Core 
+Team 2019).
+RESULTS
+Across 3  years, intraspecific trait variation among 
+communities (ITVamong) was a significantly positive 
+predictor of productivity (Estimate ± SE  =  1.346  ± 
+0.322, P  <  0.05) after controlling for the effects of 
+Treatment and CWMfixed, while ITVwithin did not 
+account for a significant proportion of the remaining 
+variance (Estimate ± SE = −0.030 ± 0.037, P = 0.408) 
+after controlling for the effects of Treatment, 
+CWMfixed and ITVamong (Fig. 1). During the study 
+period, and after controlling for the Treatment effect, 
+productivity was significantly and positively related 
+to ITVamong except in 2014 (Supplementary Fig. S2). 
+In contrast, the effect of ITVwithin on productivity 
+ranged from no significant effect to a positive effect 
+after controlling for the Treatment effect from 2012 
+to 2014 (Supplementary Fig. S3). Productivity 
+was significantly and positively related to both 
+community-weighted mean and CWMfixed in each 
+year (Supplementary Fig. S2), while the effect of 
+total variation and TVinter on productivity weakened 
+from 2012 to 2014 (Supplementary Fig. S3).
+The best model, accounting for 82.6% of the 
+variance in productivity, involved the treatment 
+and linear functions of CWMfixed  +  ITVamong 
+(Table 1; Supplementary Table S2). Experimentally 
+changing the types of species in the community 
+(the treatment) affected subsequent productivity 
+(Supplementary Table S2). While the treatment 
+accounted 
+for 
+71.6% 
+of 
+the 
+variance 
+in 
+productivity, the addition of CWMfixed to the 
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+315
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+treatment accounted for an additional 3.5% of 
+variance while adding ITVamong to the treatment 
+accounted for an additional 9.1%. Adding both 
+to the treatment resulted in an additional 11% of 
+explained variance in productivity rather than an 
+additional 3.5% + 9.1% since CWMfixed and ITVamong 
+shared some common variance (Spearman’s 
+ρ = 0.234, Supplementary Table S3). Each of these 
+variables was significant predictors of productivity 
+(P < 0.05). The second-best model (ΔAICc = 1.819) 
+contained these same variables plus a linear 
+function of ITVwithin, accounting for almost the 
+same proportion of the variance in productivity. 
+All other models had ΔAICc values of >20.610 and 
+could be essentially excluded from consideration. 
+CWMfixed was a significantly positive predictor 
+of productivity (Estimate ± SE  =  0.799  ± 0.158, 
+P  <  0.05, Fig. 1) after controlling for Treatment 
+and ITVamong (P  <  0.05). TVinter did not have a 
+significant effect on productivity after controlling 
+for Treatment (Table 1).
+The final piecewise SEM explained 79% of the 
+variation in community productivity, which fitted the 
+data adequately (Fisher’s C = 4.49, df = 2, P = 0.106, 
+Fig. 2). The presence of the functional group Poaceae 
+and Cyperaceae (A, β = 0.632, P < 0.001), Asteraceae 
+(B, β = −0.160, P < 0.001) and Others (D, β = −0.225, 
+P  <  0.001) significantly affect CWMfixed, while the 
+presence of functional group Poaceae and Cyperaceae 
+(A, β = −0.272, P = 0.004) and Others (D, β = 0.179, 
+P  =  0.005) significantly affect ITVamong. From this 
+final piecewise SEM, while our treatment (i.e. the 
+presence of four functional group) had direct effect on 
+productivity, it also had indirect effect on productivity 
+via plant traits variability (including intraspecific 
+variability). The results of the final piecewise SEM 
+(Fig. 2) and generalized additive mixed model (Fig. 1) 
+were similar, further confirming CWMfixed (β = 0.309, 
+P < 0.001) and ITVamong (β = 0.303, P < 0.001) were 
+significantly positive predictors of productivity after 
+controlling for treatment.
+DISCUSSION
+In recent years, ecologists have endeavored to 
+incorporate functional traits in studies of community 
+ecology. 
+Intraspecific 
+trait 
+variability, 
+which 
+until recently has been largely overshadowed by 
+interspecific trait variability, is receiving increasing 
+interest (Albert et al. 2011; Bolnick et al. 2011; Siefert 
+et  al. 2015; Turcotte and Levine 2016; Violle et  al. 
+2012). However, until now, most studies have focused 
+on assessing the relative extent of intraspecific trait 
+variability in functional traits (e.g. leaf nitrogen 
+and phosphorus content, height, shoot biomass) 
+compared with interspecific variation under different 
+environmental conditions (Kichenin et al. 2013; Lepš 
+et al. 2011; Lü et al. 2018; Siefert et al. 2015; Volf et al. 
+2016), leaving their effects on ecosystem functions 
+largely unknown. In this paper, we partitioned 
+total variability in plant height within each of 75 
+manipulated communities into two additive parts to 
+assess their relative importance for explaining the 
+Figure 1:  Partial residual plots (i.e. deviations of 
+aboveground biomass production after controlling for other 
+variables) as a function of the three variables identified in 
+the two best-supported generalized additive mixed models 
+used to predict variation in productivity: fixed community-
+weighted mean (CWMfixed, Estimate ± SE  =  0.799  ± 
+0.158), intraspecific trait variability among communities 
+(ITVamong, Estimate ± SE = 1.346 ± 0.322) and intraspecific 
+trait variability within communities (ITVwithin, Estimate ± 
+SE = −0.030 ± 0.037). Solid lines showed variables having 
+significant effects after controlling the other variables, and 
+dashed lines showing no significant effect. Number in the 
+brackets of the y-axis showed effective degrees of freedom 
+(edf) for the model terms, and the edf equal 1 indicated 
+the model penalized the smooth term to a simple linear 
+relationship.
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+316
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+variation of productivity in response to functional 
+group removal. This allows us to answer the two 
+questions posed in this paper. First, community 
+productivity does increase with increasing levels of 
+intraspecific trait variation between communities 
+(ITVamong) but there is must less evidence for an effect 
+of intraspecific trait variation within a community 
+(ITVwithin). Second, the combination of intraspecific 
+variability and interspecific variability explains 
+more variation in productivity than either of these 
+effects alone.
+Fixed community-weighted means (CWMfixed) 
+have been widely adopted to examine the functional 
+diversity–community 
+productivity 
+relationship, 
+with traits averaged over a range of environmental 
+conditions (e.g. Liu et  al. 2015), or extracted from 
+a broad trait database (Cornelissen et  al. 2003; 
+Geng et  al. 2017; Kleyer et  al. 2008; Lepš et  al. 
+2011). The fixed community-weighted mean only 
+Table 1:  The results of two best-supported models and models with four single trait variability indices
+Model
+df
+AICc
+ΔAICc
+wAICc
+R2
+adj
+~CWMfixed + ITVamong + Treatment
+20
+1550.424
+0
+0.713
+0.826
+~CWMfixed + ITVamong + ITVwithin + Treatment
+22
+1552.242
+1.819
+0.287
+0.825
+~ITVamong + Treatment
+21
+1573.853
+23.429
+<0.001
+0.807
+~CWMfixed + Treatment
+19
+1610.265
+59.841
+<0.001
+0.751
+~ TVinter + Treatment
+20
+1622.146
+71.723
+<0.001
+0.742
+~Treatment
+18
+1648.390
+97.966
+<0.001
+0.716
+~ITVwithin + Treatment
+20
+1650.199
+99.775
+<0.001
+0. 719
+This table comes from the full table shown in Supplementary Table S2, by performing 12 generalized additive mixed models 
+(setting ‘Treatment’ as the ‘null’ model) for productivity as a function of nonlinear terms, i.e. interspecific variability 
+(TVinter), intraspecific variability with community (ITVwithin), species turnover (CWMfixed) and intraspecific variability 
+among community (ITVamong). The horizontal axis is degree of freedom (df), corrected information-theoretic Akaike’s 
+information criterion for small samples sizes (AICc), changes in AICc relative to the top-ranked model (ΔAICc), AICc weight 
+(wAICc = model probability) and the variance explained by generalized additive mixed models (R2
+adj, using gam function). 
+For performing generalized additive mixed models, we set ‘year’ as random intercepts and slopes. Variable highlighted in 
+bold shows a significant effect (P < 0.05). The model with the lowest AICc has the most support, models with ΔAICc >3 have 
+relatively little support and models with ΔAICc >7 have essentially no support.
+Figure 2:  The results of the final piecewise SEM. The final model adequately fit the data: Fisher’s C = 4.49, df = 2, P = 0.106. 
+Red arrows represent significant pathways to explain AN, and black arrows represent significant pathways to explain trait 
+variability indices, respectively. Paths without sufficient statistical evidence are not shown. Numbers on or cross arrows 
+are standardized path coefficients, and asterisks indicate statistical significance (***P < 0.001; **P < 0.01; *P < 0.05). R2 
+represents the proportion of variance explained by predictive variables in the model.
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+317
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+reflects species’ average trait values irrespective 
+of the environment (Lepš et  al. 2011; Siefert et  al. 
+2015). In our study site, species from different 
+functional groups possess different typical heights 
+(Fig. 2; Liu et  al. 2015). Hence, we expected that 
+differences between the experimental functional 
+group removal treatments would lead to different 
+impacts on light acquisition and competition of the 
+remaining plants, and thus community productivity 
+(Bjorkman et al. 2018; Westoby 1998). As found in 
+other studies (Chanteloup and Bonis 2013; Fu et al. 
+2014), our results showed that after controlling for 
+these experimental differences, increasing fixed 
+community-weighted mean height (CWMfixed) was 
+associated with increasing productivity, with an 
+increase of 1  cm in CWMfixed of height increased 
+productivity by 0.799 ± 0.158 g/subplot (i.e. 0.196 
+m2). The positive relationship between productivity 
+and 
+fixed 
+community-weighted 
+mean 
+height 
+can be explained by the ‘selection effect’. That 
+is, communities dominated by taller species will 
+tend to have higher biomass productivities. This is 
+expected both because greater height usually results 
+in greater aboveground biomass in these herbaceous 
+communities and because taller individuals can more 
+easily access light in competition, allowing them 
+to synthesize photosynthetic compounds and then 
+convert them to even more biomass (Anten and 
+Hirose 2001; Falster and Westoby 2003).
+More interestingly, the best model and SEM 
+showed that intraspecific variation in height among 
+communities having the same types of species 
+(treatment) and having species with the same 
+average fixed height (i.e. CWMfixed), also resulted 
+in higher productivity, since ITVamong was just as 
+important a predictor as the CWMfixed heights. 
+However, the presence of different functional groups 
+affected ANPP through different indirect pathways, 
+i.e. via CWMfixed and/or ITVamong (Fig. 2), suggesting 
+ANPP variation mainly caused by selecting higher 
+species and/or species who could grow higher. An 
+increase in the difference between the intraspecific 
+height of a species among subplots relative to its 
+average height (ITVamong) of 1  cm increased the 
+productivity by 1.346 ± 0.322 g/subplot (i.e. 0.196 
+m2). The occurrence of a positive effect of intraspecific 
+variability in plant height on productivity may reflect 
+a ‘shade-avoidance syndrome’. That is, all individuals, 
+especially shaded individuals would invest a large 
+amount of energy into stem elongation, resulting in 
+increasing height of different species (Roscher et al. 
+2015). This intraspecific selection is presumably 
+some 
+combination 
+of 
+genetic 
+selection 
+and 
+phenotypic plasticity although we cannot separate 
+the two sources in our study. The effect of ITVamong 
+on productivity ranged from significantly positive to 
+nonexistent after controlling for the Treatment effect 
+from 2012 to 2014, which might suggest that the 
+possibility of higher productivity caused by selecting 
+taller individuals of the same species had been used 
+up over the first 3 years.
+We found that TVinter (i.e. height variation among 
+species within a community) was not included in the 
+two best models, and ITVwithin (i.e. height variation 
+within species within a community) showed no 
+significant effects on productivity although it was 
+included in the second-best model. Increased 
+productivity with ITVwithin and TVinter may result 
+from structural complexity (e.g. canopy rugosity, 
+Gough et  al. 2019), which led to increased light 
+acquirement and light use efficiency via greater 
+space filling and higher occupy of light environment. 
+However, from 2012 to 2014, the effect of ITVwithin 
+on productivity ranged from no significant effect to 
+a positive effect, and the effect of TVinter varied from 
+significantly positive to nonexistent after controlling 
+for the Treatment effect. This may suggest that the 
+positive effect of intraspecific height difference on 
+productivity became increasingly important over 
+time. Thus, it would also be important to study the 
+response of other traits that plastically respond to 
+light intensity, and how this phenotypical plasticity 
+contributing to ecosystem functioning.
+Although 
+both 
+intraspecific 
+variability 
+and 
+interspecific variability positively contributed to 
+productivity, the combination of them explained 
+more variation in productivity than either of these 
+effects alone in our study. This suggests that both 
+selection effect and a ‘shade-avoidance syndrome’ 
+could incur higher CWMfixed or ITVamong, and even 
+niche differentiation induced structural complexity 
+that could cause higher ITVwithin, may simultaneously 
+operate to regulate productivity in this study.
+In conclusion, this study shows that the additional 
+explanatory power of intra- and interspecific trait 
+variability in height are comparable in magnitude. It 
+provides new evidence that intraspecific trait variability 
+in plant height should not be ignored when predicting 
+productivity. Future studies considering more than 
+one trait to quantify intraspecific trade-offs among life-
+history constraints between traits may largely broaden 
+our understanding of the importance of intraspecific 
+trait variability in maintaining ecosystem functions. 
+Simultaneously, disentangling and quantifying relative 
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+318
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+importance of genetic and environmental sources of 
+intraspecific trait variability may help us understand 
+evolutionary and ecological responses of species and 
+communities to climate change.
+Supplementary Material
+Supplementary material is available at Journal of 
+Plant Ecology online.
+Table S1: List of the abbrevations of trait variability 
+metrics used in the analyses, and the study.
+Table S2: Phase 1 shows the results of generalized additive 
+mixed models between productivity and functional 
+groups removal treatment (Treatment), the number 
+of functional groups, species richness, Shannon’s 
+evenness index, Simpson index, phylogenetic diversity 
+in the year of 2012–14 (year as random effects, i.e. both 
+random intecept and random slope).
+Table S3: Spearman’s correlation matrix for raw 
+input variables.
+Figure S1: Initial causal model for piecewise structural 
+equation modelling (SEM) exploring the effects the 
+presence of functional group Poaceae and Cyperaceae 
+(A), Asteraceae (B), Fabaceae (C) and Others (D), fixed 
+community-weighted mean (CWMfixed,), interspecific 
+trait variation within a community (TVinter), intraspecific 
+trait variability among communities (ITVamong) and 
+intraspecific trait variability within communities 
+(ITVwithin) on community net primary productivity 
+(ANPP) in the removal experiment from 2012 to 2014.
+Figure S2: Partial residual plots of trait variabilities among 
+communities (Specific averages (community-weighted 
+mean), species turnover (CWMfixed) and intraspecific 
+variability (ITVamong)) in the generalized additive models 
+to predict variation in productivity after controlling for 
+Treatment difference in 2012, 2013 and 2014, respectively.
+Figure S3: Partial residual plots of trait variabilities 
+within communities (total variation, interspecific 
+variability 
+(TVinter) 
+and 
+intraspecific 
+variability 
+(ITVwithin)) in the generalized additive models to predict 
+variation in productivity after controlling for Treatment 
+differences in 2012, 2013 and 2014, respectively.
+Funding
+This study was supported by the National Natural 
+Science Foundation of China (31770518 and 
+31830009), and Hainan University (RZ2000009932) 
+to Shurong Zhou, Anhui Agricultural University 
+(rc522108) and a China Scholarship Council 
+scholarship to Li Zhang.
+Acknowledgements
+This work was done in Gannan Grassland Ecosystem 
+Field Science Observation and Research Station of 
+the Ministry of Education. We thank Feifan Song, 
+Junjie Liu, Jiajia Liu, Shengman Lü and Dexin Sun 
+for help perform the experiment and collect data.
+Conflict of interest statement. The authors declare that 
+they have no conflict of interest.
+Authors’ Contributions
+S.Z.  conceived and designed the study. L.Z., 
+X.L., B.S.  and S.Z.  analyzed the data and wrote 
+the manuscript. All authors approved the final 
+manuscript.
+REFERENCES
+Albert CH (2015) Intraspecific trait variability matters. J Veg 
+Sci 26:7–8.
+Albert CH, Grassein F, Schurr FM, et al. (2011) When and 
+how should intraspecific variability be considered in 
+trait-based plant ecology? Perspect Plant Ecol Evol Syst 
+13:217–225.
+Anten NP, Hirose T (2001) Limitations on photosynthesis of 
+competing individuals in stands and the consequences for 
+canopy structure. Oecologia 129:186–196.
+Auger S, Shipley B (2013) Inter-specific and intra-specific trait 
+variation along short environmental gradients in an old-
+growth temperate forest. J Veg Sci 24:419–428.
+Bjorkman AD, Myers-Smith IH, Elmendorf SC, et al. (2018) 
+Plant functional trait change across a warming tundra 
+biome. Nature 562:57–62.
+Bolnick  DI, Amarasekare  P, Araújo  MS, et  al. (2011) Why 
+intraspecific trait variation matters in community ecology. 
+Trends Ecol Evol 26:183–192.
+Burnham  KP, Anderson  DR (2010) Model Selection and 
+Multimodel Inference, 2nd edn. New York, NY: Springer.
+Carlucci  MB, Debastiani  VJ, Pillar  VD, et  al. (2015) 
+Between- and within-species trait variability and the 
+assembly of sapling communities in forest patches. J Veg 
+Sci 26:21–31.
+Chanteloup P, Bonis A (2013) Functional diversity in root and 
+above-ground traits in a fertile grassland shows a detrimental 
+effect on productivity. Basic Appl Ecol 14:208–216.
+Cornelissen JHC, Lavorel S, Garnier E, et al. (2003) A handbook 
+of protocols for standardised and easy measurement of 
+plant functional traits worldwide. Aust J Bot 51:335–380.
+de Bello F, Lavorel S, Albert CH, et al. (2011) Quantifying the 
+relevance of intraspecific trait variability for functional 
+diversity. Methods Ecol Evol 2:163–174.
+Del  Grosso  S, Parton  W, Stohlgren  T, et  al. (2008) Global 
+potential 
+net 
+primary 
+production 
+predicted 
+from 
+vegetation class, precipitation, and temperature. Ecology 
+89:2117–2126.
+Des  Roches  S, Post  DM, Turley  NE, et  al. (2018) The 
+ecological importance of intraspecific variation. Nat Ecol 
+Evol 2:57–64.
+Díaz  S, Symstad  AJ, Chapin  FS, et  al. (2003) Functional 
+diversity revealed by removal experiments. Trends Ecol Evol 
+18:140–146.
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025
+
+319
+JOURNAL OF PLANT ECOLOGY | 2022, 15:310–319
+Fahey  RT, Fotis  AT, Woods  KD (2015) Quantifying canopy 
+complexity and effects on productivity and resilience in 
+late-successional hemlock-hardwood forests. Ecol Appl 
+25:834–847.
+Falster DS, Westoby M (2003) Plant height and evolutionary 
+games. Trends Ecol Evol 18:337–343.
+Fu  H, Zhong  J, Yuan  G, et  al. (2014) Functional traits 
+composition predict macrophytes community productivity 
+along a water depth gradient in a freshwater lake. Ecol Evol 
+4:1516–1523.
+Geng  Y, Ma  W, Wang  L, et  al. (2017) Linking above- and 
+belowground traits to soil and climate variables: an 
+integrated database on China’s grassland species. Ecology 
+98:1471.
+Gough CM, Atkins JW, Fahey RT, et al. (2019) High rates of 
+primary production in structurally complex forests. Ecology 
+100:e02864.
+Jung V, Violle C, Mondy C, et al. (2010) Intraspecific variability 
+and trait-based community assembly. J Ecol 98:1134–1140.
+Kardol  P, Fanin  N, Wardle  DA (2018) Long-term effects of 
+species loss on community properties across contrasting 
+ecosystems. Nature 557:710–713.
+Kichenin E, Wardle DA, Peltzer DA, et al. (2013) Contrasting 
+effects of plant inter- and intraspecific variation on 
+community-level trait measures along an environmental 
+gradient. Funct Ecol 27:1254–1261.
+Kleyer  M, Bekker  RM, Knevel  IC, et  al. (2008) The LEDA 
+Traitbase: a database of life-history traits of the northwest 
+European flora. J Ecol 96:1266–1274.
+Lavorel S, Garnier E (2002) Predicting changes in community 
+composition and ecosystem functioning from plant traits: 
+revisiting the Holy Grail. Funct Ecol 16:545–556.
+Lavorel S, Grigulis K, Lamarque P, et al. (2011) Using plant 
+functional traits to understand the landscape distribution of 
+multiple ecosystem services. J Ecol 99:135–147.
+Lefcheck  JS (2016) piecewiseSEM: piecewise structural 
+equation modelling in r for ecology, evolution, and 
+systematics. Methods Ecol Evol 7:573–579.
+Lepš  J, de  Bello  F, Šmilauer  P, et  al. (2011) Community 
+trait response to environment: disentangling species 
+turnover vs intraspecific trait variability effects. Ecography 
+34:856–863.
+Liu X, Lyu S, Sun D, et al. (2017) Species decline under nitrogen 
+fertilization increases community-level competence of 
+fungal diseases. Proc R Soc B Biol Sci 284:20162621.
+Liu  J, Zhang  X, Song  F, et  al. (2015) Explaining maximum 
+variation in productivity requires phylogenetic diversity 
+and single functional traits. Ecology 96:176–183.
+Lü XT, Hu YY, Zhang HY, et al. (2018) Intraspecific variation 
+drives 
+community-level 
+stoichiometric 
+responses 
+to 
+nitrogen and water enrichment in a temperate steppe. Plant 
+Soil 423:307–315.
+Maynard DS, Serván CA, Capitán JA, et al. (2019) Phenotypic 
+variability promotes diversity and stability in competitive 
+communities. Ecol Lett 22:1776–1786.
+Messier J, McGill BJ, Lechowicz MJ (2010) How do traits vary 
+across ecological scales? A case for trait-based ecology. Ecol 
+Lett 13:838–848.
+Nemani RR, Keeling CD, Hashimoto H, et al. (2003) Climate-
+driven increases in global terrestrial net primary production 
+from 1982 to 1999. Science 300:1560–1563.
+R Core Team (2019) R: A Language and Environment for Statistical 
+Computing. Vienna, Austria: R Foundation for Statistical 
+Computing. http://www.r-project.org/ (12 August 2021, 
+date last accessed).
+Roscher C, Schumacher J, Schmid B, et al. (2015) Contrasting 
+effects of intraspecific trait variation on trait-based niches 
+and performance of legumes in plant mixtures. PLoS One 
+10:e0119786.
+Shi  ZX, Yu  DS, Yang  GX, et  al. (2006) Cross-reference 
+benchmarks for translating the genetic soil classification 
+of China into the Chinese soil taxonomy. Pedosphere 
+16:147–153.
+Shipley  B (2010) From Plant Traits to Vegetation Structure: 
+Chance and Selection in the Assembly of Ecological Communities. 
+Cambridge, UK: Cambridge University Press.
+Shipley B (2016) Cause and Correlation in Biology: A User’s Guide 
+to Path Analysis, Structural Equations and Causal Inference with 
+R, 2nd edn. Cambridge, UK: Cambridge University Press.
+Siefert A, Violle C, Chalmandrier L, et al. (2015) A global meta-
+analysis of the relative extent of intraspecific trait variation 
+in plant communities. Ecol Lett 18:1406–1419.
+Spasojevic  MJ, Suding  KN (2012) Inferring community 
+assembly mechanisms from functional diversity patterns: 
+the importance of multiple assembly processes. J Ecol 
+100:652–661.
+Suding  KN, Lavorel  S, Chapin  FS III, et  al. (2008) Scaling 
+environmental change through the community-level: a 
+trait-based response-and-effect framework for plants. Glob 
+Change Biol 14:1125–1140.
+Turcotte  MM, Levine  JM (2016) Phenotypic plasticity and 
+species coexistence. Trends Ecol Evol 31:803–813.
+Violle C, Enquist BJ, McGill BJ, et al. (2012) The return of the 
+variance: intraspecific variability in community ecology. 
+Trends Ecol Evol 27:244–252.
+Volf M, Redmond C, Albert ÁJ, et al. (2016) Effects of long- 
+and short-term management on the functional structure of 
+meadows through species turnover and intraspecific trait 
+variability. Oecologia 180:941–950.
+Westoby  M (1998) A leaf-height-seed (LHS) plant ecology 
+strategy scheme. Plant Soil 199:213–227.
+Wood  SN (2017) Generalized Additive Models: An Introduction 
+with R. Boca Raton, FL: Chapman & Hall.
+Zhang L, Zhu T, Liu X, et al. (2020) Limited inorganic N niche 
+partitioning by nine alpine plant species after long-term 
+nitrogen addition. Sci Total Environ 718:137270.
+Zuo X, Yue X, Lv P, et al. (2017) Contrasting effects of plant 
+inter- and intraspecific variation on community trait 
+responses to restoration of a sandy grassland ecosystem. 
+Ecol Evol 7:1125–1134.
+Downloaded from https://academic.oup.com/jpe/article/15/2/310/6357745 by guest on 07 August 2025

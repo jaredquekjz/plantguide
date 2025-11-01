@@ -1,0 +1,4748 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/235710596
+Zeigwerte von Pﬂanzen in MittelEuropa
+Article · January 1991
+CITATIONS
+2,978
+READS
+43,256
+6 authors, including:
+H. E. Weber
+University of Vechta
+272 PUBLICATIONS   8,132 CITATIONS   
+SEE PROFILE
+Volkmar Wirth
+Staatliches Museum für Naturkunde Karlsruhe
+120 PUBLICATIONS   6,321 CITATIONS   
+SEE PROFILE
+Willy Werner
+Trier University
+68 PUBLICATIONS   5,862 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Volkmar Wirth on 14 February 2015.
+The user has requested enhancement of the downloaded file.
+
+Herzogia 23 (2), 2010: 229 –248	
+229
+Ökologische Zeigerwerte von Flechten – erweiterte 
+und aktualisierte Fassung
+Volkmar Wirth
+Zusammenfassung: Wirth, V. 2010. Ökologische Zeigerwerte von Flechten – erweiterte und aktualisierte Fassung. 
+– Herzogia 23: 229 –248.
+Eine neue Ausgabe der Liste der ökologischen Zeigerwerte von Flechten wird vorgelegt. Die Werte der bislang 
+berücksichtigten Arten wurden überprüft und gegebenenfalls korrigiert. 58 weitere Arten wurden aufgenommen. 
+Somit liegen für insgesamt 516 Arten Indikatorwerte für wichtige klimatische Faktoren (Licht = L, Temperatur = T, 
+Kontinentalität = K, Feuchte = F) und Substrateigenschaften (pH = R, Eutrophierung = N) vor. Außerdem wird ein 
+Verfahren zur Abschätzung der klimaökologischen Ozeanität (KO) anhand der Zeigerwerte vorgelegt. Da die klima-
+ökologische Ozeanität eine thermische und eine hygrische Komponente hat, lässt sich der entsprechende Zeigerwert 
+aus den Zeigerwerten für Kontinentalität und Feuchte nach der Formel KO = (10 – K + F) : 2 errechnen.
+Abstract: Wirth, V. 2010. Ecological indicator values of lichens – enlarged and updated species list. – Herzogia 23: 
+229 –248.
+A new edition of the species list of ecological indicator values of lichens is presented. Values of the hitherto consid-
+ered species have been checked and corrected where appropriate. Fifty-eight additional species have been included. 
+Overall, indicator values for important climatic factors (light = L, temperature = T, continentality = K, moisture = F) 
+and substrate properties (pH = R, eutrophication = N) are now available for 516 species. A procedure to assess the 
+eco-climatic oceanity (KO) with the help of the indicator values is presented. Since the eco-climatic oceanity has a 
+temperature and a moisture component, the indicator value of eco-climatic oceanity can be calculated with the formula 
+KO = (10 – K+F) : 2.
+Key words: lichen-forming fungi, indicator values, bioindicators, oceanity.
+Einleitung
+Die von Ellenberg (1974, 1979) formulierten ökologischen Zeigerwerte der Gefäßpflanzen 
+Mitteleuropas hatten einen überwältigenden Erfolg, der sich in der geradezu unüberschaubaren 
+Zahl an Publikationen widerspiegelt, die sich ihrer bedient haben. Diese breite Anerkennung 
+und Nutzung der Zeigerwerte veranlasste H. Ellenberg, auch für Moose und Flechten die 
+Veröffentlichung von Zeigerwerten zu planen, was mit Hilfe von Vertretern der entspre-
+chenden Fachgebiete 1991 realisiert wurde. Unter den berücksichtigten Taxa befanden sich 
+auch die Flechten.
+Es soll keineswegs verschwiegen werden, dass die Zeigerwert-Idee auch kritisiert wurde, die 
+Anwendung Risiken birgt und Diskussionen um Zeigerwert-Definitionen ihre Berechtigung 
+haben. Insgesamt jedoch kann mit Ellenberg (1992) bilanziert werden: „Trotz mancher 
+Bedenken haben sich die ‚Zeigerwerte‘ bewährt, wo man sie als das anwandte, was sie sein 
+sollten, nämlich als Hinweise auf die Größenordnung direkt wirksamer Umweltfaktoren, be-
+
+230	
+Herzogia 23 (2), 2010
+vor man die als wichtig erkannten genauer untersuchen kann, oder als ungefähre Maßstäbe für 
+zeitliche Veränderungen, für deren Beginn keine Messungen vorliegen.“
+Auch die ökologischen Zeigerwerte für Flechten (Wirth 1991) stießen auf erhebliches 
+Interesse und fanden Anwendung in zahlreichen Arbeiten und Projekten. In den folgenden 
+Auflagen (Wirth 1992, 2001), in denen unverändert jeweils 458 Arten berücksichtigt sind, 
+wurden keine oder nur unwesentliche Änderungen an den Zeigerwerten der Flechten vorge-
+nommen.
+In der vorliegenden Neubearbeitung werden ökologische Zeigerwerte für weitere 58 verhält-
+nismäßig gut bekannte Arten, also insgesamt 516 Arten (= 27 % der in Deutschland nach-
+gewiesenen Spezies, vgl. Wirth et al. 2010) formuliert und die Werte der bisherigen Arten 
+vielfach geringfügig korrigiert. Entscheidende Änderungen betreffen die Nährstoffzahl und 
+die Angaben zur Toxitoleranz. Letztere werden in dieser Auflage völlig weggelassen. Dies 
+hat seinen Grund in der sehr schwierig gewordenen Taxierung dieses Kriteriums. In den 
+1970er und 1980er Jahren dominierten saure, in erster Linie SO2-bürtige Immissionen, auf 
+die viele Flechten empfindlich und differenziert reagierten, so dass man es vertreten konnte, 
+den Flechtenarten unterschiedliche Toxitoleranzwerte als „ein Maß für die Empfindlichkeit 
+… gegenüber Luftbelastungen der in urbanen und industrialisierten Räumen ‚üblichen‘ Art“ 
+(Wirth 1991) zuzuschreiben. Inzwischen ist die SO2-Belastung drastisch zurückgegangen und 
+über weite Bereiche Mitteleuropas völlig unbedeutend geworden. Dagegen hat die Belastung 
+mit Ammonium und Stickoxiden zugenommen, so dass die lufthygienische Situation sich 
+grundlegend anders darstellt. Somit ist eine differenzierte, weitgehend an der SO2-Belastung 
+orientierte Indikation der lufthygienischen Situation mit Hilfe von Zeigerarten über den 
+Toxitoleranz-Wert wie in den 1980er Jahren heute nicht mehr sinnvoll.
+In vielen Gebieten, besonders städtischen Räumen und industriellen Revieren, haben sich 
+die Flechtenbiota nach einem drastischen Rückgang der SO2-Emissionen insofern erholt, als 
+dass die Artendiversität und die Deckungswerte stark zugenommen haben. Allerdings lassen 
+sich die Verhältnisse nicht pauschal skizzieren. Die positive Entwicklung für nitrophytische 
+Arten überlagert eine Abnahme acidophytischer sowie anitrophytischer Flechten. Ferner ist 
+der Wandel der Artenstruktur in den verschiedenen Regionen unterschiedlich weit vorange-
+schritten. Im Osten Deutschlands sind gebietsweise die Wirkungen der ehemaligen Belastung 
+mit sauren Immissionen immer noch latent vorhanden (Wirth & Hertel 2006, Otte 2007); 
+ebenso sind dort die Belastungen durch Stickstoffverbindungen wesentlich geringer als in den 
+westlichen Bundesländern. Wegen dieser komplexen Situation mit biotisch gegensinnig wir-
+kenden Komponenten ist ein genereller Toxitoleranz-Zeigerwert derzeit nicht vertretbar. Die 
+Toleranz gegenüber eutrophierenden Substanzen, also, wenn man so will, Belastungen „neuer 
+Art“, kann im Großen und Ganzen von den Werten abgelesen werden, die sich unter der neu 
+definierten „Nährstoffzahl“ finden.
+Bislang repräsentierte die Nährstoffzahl die Nährstoffversorgung der Flechte undifferenziert 
+aus autochthoner und allochthoner Quelle. Arten, die auf substratbedingt nährstoffreicher 
+Rinde, etwa an Ästen mit besonders mineralreicher Rinde von Populus tremula, vorkom-
+men, aber Eutrophierung von außen eher meiden, konnten bei diesem Verfahren in die gleiche 
+Zeigerwertklasse eingeordnet werden wie eutrophierungstolerante Flechten. Die Nährstoffzahl 
+in der vorliegenden Version der Zeigerwerte gibt das Ausmaß der Eutrophierung an den üb-
+lichen Standorten wieder, also das der Mineralversorgung, in erster Linie der Zufuhr von 
+Stickstoff-Verbindungen von außen.
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+231
+Nicht mehr berücksichtigt werden hier auch Angaben zu Wuchsform und Gefährdung. Letztere 
+geht aus den Daten der Roten Liste der Flechten (Wirth et al. 2010) hervor und muss daher 
+hier nicht erneut aufgegriffen werden. Das gleiche gilt für Änderungstendenzen der Häufigkeit 
+(Veränderung der Abundanz sowie der Zahl der Wuchsorte). Erstmals werden Zeigerwerte für 
+die für poikilohydre Organismen besonders wichtige Ozeanität in klimaökologischem Sinn 
+diskutiert. Dabei wird auf eine tabellarische Übersicht der Zeigerwerte der berücksichtigten 
+Arten verzichtet, jedoch ein Verfahren angeboten, diese Zeigerwerte zu ermitteln. 
+Nach wie vor sind die schon in der ersten Auflage geäußerten Bedenken vorhanden, Zeigerwerte 
+für Flechten zu formulieren, wenngleich sich diese Bedenken infolge der plausiblen und er-
+folgreichen Anwendungen in einer Vielzahl von Publikationen relativiert haben. Sie konzen-
+trieren sich auf die Schwierigkeit, manche der Zeigerfunktionen zu wichten und abgestuft zu 
+definieren. Auch das sicherlich begründbare und zielführende Verfahren, die Definition der 
+Zeigerwerte an diejenige der Gefäßpflanzen anzupassen, ist nicht ganz unproblematisch. Der 
+Autor arbeitet weiter an einer Verbesserung der Zeigerwerte und vor allem Erweiterung der 
+berücksichtigten Arten auf seltenere und weniger bekannte Sippen.
+Die vorliegende Version der Artenliste erscheint zugleich in elektronischer Form in Verbindung mit 
+der Neuauflage von H. Ellenbergs Vegetation Mitteleuropas (Ellenberg & Leuschner 2010).
+Definition der Zeigerwerte und Angaben zum Substrat der Flechten
+Die Zeigerwerte sind von 1 bis 9 gestuft. Indifferentes Verhalten (weite Amplitude, unter-
+schiedliches Verhalten in verschiedenen Regionen) wird durch „x“ ausgedrückt.
+L: Lichtzahl
+Die Definition der Lichtzahlen lehnt sich eng an die der Gefäßpflanzen an (Ellenberg 1992). 
+Zugrunde liegt dabei die relative Beleuchtung der Standorte während der Vegetationsperiode, 
+d. h. die an dem Wuchsort der Arten „zur Zeit der vollen Belaubung der sommergrünen 
+Pflanzen (also etwa von Juli bis September) bei diffuser Beleuchtung (d. h. bei Nebel oder 
+gleichmäßig bedecktem Himmel) herrscht“. Der Vorteil dieses Vorgehens liegt darin begrün-
+det, dass die Flechten anhand der Angaben für die Gefäßpflanzen geeicht werden können 
+und zugleich eine Vergleichbarkeit mit den Daten für höhere Pflanzen erreicht wird. Ansatz 
+zur Kritik kann dabei bieten, dass die Flechten nicht nur während der Vegetationsperiode der 
+sommergrünen Pflanzen, sondern ganzjährig aktiv sind, was bei Arten, die auf Wälder be-
+schränkt sind und durch Laubfall bzw. die Belaubung der Bäume einer Zäsur im Lichtgenuss 
+unterliegen, zu einer zu niedrigen Lichtzahl bezogen auf das ganze Jahr führt. Diese formale 
+Schwierigkeit existiert prinzipiell aber auch bei Gefäßpflanzen, bei denen die Frühjahrsblüher 
+ihre Vegetationsperiode teils im unbelaubten, lichtreichen, teils im belaubten, lichtarmen Wald 
+verbringen. Zudem dürfte bei den Wald-Flechtenarten die starke Beschattung im belaubten 
+Wald einen erheblichen Selektionscharakter haben und die Ökologie maßgebend bestimmen, 
+eine Annahme, die das weitgehende Fehlen vieler waldtypischer Flechtenepiphyten an licht 
+oder frei stehenden Bäumen trotz des zur Winterzeit ähnlichen Lichtklimas nahelegt. 
+Die Einstufung der Arten erfolgt aufgrund von Geländebeobachtungen. Vergleichende 
+Messdaten für Flechten liegen in der Literatur kaum vor und haben oft plakativen Charakter 
+insofern, als lediglich beispielhaft sehr unterschiedliche Habitate untersucht wurden. 
+1 	 Tiefschattenpflanze, noch bei < 1 %, selten > 10 % der relativen Beleuchtung (r. B.) vorkommend
+2 	 zwischen 1 und 3
+
+232	
+Herzogia 23 (2), 2010
+3 	 Schattenpflanze, meist bei < 5 % r. B. vorkommend
+4 	 zwischen 3 und 5
+5 	 Halbschattenpflanze, meist bei > 10 % r. B. vorkommend, aber selten in vollem Licht
+6 	 zwischen 5 und 7
+7 	 Halblichtpflanze, meist bei vollem Licht, aber auch im Schatten
+8 	 Lichtpflanze, nur ausnahmsweise bei < 40 % r. B.
+9 	 Volllichtpflanze, nur bei vollem Licht, selten bei < 50 % r. B.
+T: Temperaturzahl
+Wie bei der Evaluierung der Temperaturzahlen bei den Gefäßpflanzen wurde auch bei den 
+Flechten weitgehend von den Temperaturverhältnissen im Hauptverbreitungsgebiet ausge-
+gangen, weniger vom schwer typisierbaren Kleinklima an den Flechtenwuchsorten. Vielfach 
+lassen sich die Angaben zur Höhenverbreitung mit Angaben zur zonalen Verbreitung bzw. der 
+nördlichen Verbreitungsgrenze einigermaßen parallelisieren, was die Informationsbasis erwei-
+tert. Es gibt aber auch eine Reihe von Ausnahmen. So hat der deutlich montan(-hochmontan)e 
+Schwerpunkt von Thelotrema lepadinum und Arthonia leucopellaea in Süddeutschland keine 
+zonale Entsprechung im borealen Bereich; diese Arten erreichen die Verbreitungsgrenze be-
+reits im südlichen Skandinavien.
+1 	 Kältezeiger, meist in hohen Gebirgslagen, meist alpin-nival/arktisch-boreal verbreitet
+2 	 zwischen 1 und 3, alpine Arten, oft auch in die subalpine Stufe herabsteigend
+3 	 Kühlezeiger, vorwiegend subalpin und hochmontan
+4 	 zwischen 3 und 5, vorwiegend an ziemlich kühlen Orten, hauptsächlich montan verbreitet
+5 	 hauptsächlich in mäßig kühlen bis mäßig warmen Lagen, oft hauptsächlich montan-submontan 
+verbreitet, meist bis ins mittlere Fennoskandien verbreitet
+6 	 hauptsächlich in submontan/kollinen, aber auch in milden montanen Lagen, im Norden noch im 
+Laubwaldgebiet Fennoskandiens, in der Regel kaum über Südschweden und das südlichste Finnland 
+vordringend (bis Verbreitungsgrenze der Stieleiche)
+7 	 Wärmezeiger, hauptsächlich in kollinen Lagen, im Norden Verbreitungsgrenze in Norddeutschland, 
+Dänemark oder mit Vorposten die mildesten südlichen Lagen Skandinaviens erreichend
+8 	 Wärmezeiger, Schwerpunkt im submediterran/mediterranen Bereich, an tagsüber sich stark erwär-
+menden Orten, aber oft bis in montane Lagen vordringend
+9 	 extremer Wärmezeiger, nur in das südliche bis mittlere Mitteleuropa vom mediterran-submediter-
+ranen Bereich übergreifend
+K: Kontinentalitätszahl
+Die Kontinentalitätszahl bei Ellenberg (1974, 1992) bewertet das Vorkommen im Konti-
+nentalitätsgefälle von der Atlantikküste bis ins Innere Eurasiens, besonders in Hinblick auf die 
+Temperaturschwankungen. In erster Linie wird somit die Ost-West-Erstreckung der Verbreitung 
+berücksichtigt. Für die Flechtenwerte wurden die Kriterien bei den Gefäßpflanzen weitge-
+hend übernommen, jedoch das Verhalten in Mitteleuropa stärker gewichtet. Im Unterschied zu 
+den Gefäßpflanzen fehlen nur relativ wenige mitteleuropäische Flechtenarten in Westeuropa; 
+hohe Kontinentalitätswerte sind daher selten. Um verbal den klimaökologischen Aspekt 
+(siehe unten) vom rein arealgeographischen Aspekt besser zu unterscheiden, wird bei der 
+Kontinentalitätszahl anstelle des Terminus ozeanisch der Begriff atlantisch gewählt, was auch 
+hinsichtlich der mitteleuropäischen Ausrichtung der Zeigerwerte sinnvoll ist.
+1 	 euatlantisch, nur mit wenigen (östlichen) Vorposten im westlichen, südwestlichen bzw. nordwest-
+lichen Mitteleuropa
+2 	 atlantisch, mit Schwerpunkt in Westeuropa einschließlich des westlichen Mitteleuropas, in den öst-
+lichen Nachbarländern auf einzelne begünstigte Orte beschränkt 
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+233
+3 	 zwischen 2 und 4, d. h. mit zerstreuten bis vereinzelten Vorkommen an relativ milden Standorten in 
+weiten Teilen Mitteleuropas
+4 	 subatlantisch, in ganz Mitteleuropa, nach Osten ausdünnend
+5 	 intermediär, entweder weit verbreitet von Westeuropa bis Sibirien oder Schwerpunkt in Mitteleuropa, 
+aber in West- sowie Osteuropa seltener
+6 	 weit verbreitet, von Westeuropa bis Osteuropa und weit in kontinentale Bereiche (Asien) eindrin-
+gend, z. B. Arten des borealen Nadelwaldgürtels
+7 	 subkontinental, in Westeuropa (Britische Inseln, Westfrankreich) selten oder fehlend
+8 	 kontinental, Schwergewicht in Osteuropa, in Mitteleuropa nur an Sonderstandorten
+9 	 kontinental, im eigentlichen Mitteleuropa fehlend
+F: Feuchtezahl
+Flechten sind poikilohydre Organismen. Sie haben keinen Verdunstungsschutz und sind hin-
+sichtlich ihres Wasserhaushaltes weitestgehend von atmosphärischen Feuchtebedingungen ab-
+hängig. Wasser wird mit der gesamten Oberfläche des Lagers aufgenommen. Auch Tau und 
+Nebelniederschlag sind nutzbar, und zahlreiche Arten können selbst Wasserdampf aus nicht 
+wassergesättigter Luft verwerten. Bei genügender Feuchtigkeitszufuhr aktivieren sie ihren 
+Stoffwechsel, bei Trockenheit verfallen sie in einen inaktiven Zustand. Eine Wasseraufnahme 
+aus dem Untergrund spielt in der Regel keine Rolle, Organe, die funktionell mit Wurzeln 
+vergleichbar wären, existieren nicht. Die Feuchtigkeit von Böden entfällt als Kriterium der 
+Wasserversorgung – zumal auf feuchten oder nassen Böden Flechten nicht auf Dauer überle-
+ben können. Aufgrund der skizzierten völlig andersartigen Konstitution des Vegetationskörpers 
+müssen die Feuchtezahlen bei Flechten anders definiert werden als bei höheren Pflanzen.
+Auch bei der Definition der Feuchtezahlen wurden weniger die Verhältnisse des Mikroklimas 
+gewichtet als die sich in der Verbreitung bzw. dem Großklima äußernden Verhältnisse. 
+Wichtigstes Kriterium sind die Niederschläge. Die angegebenen Niederschlagsverhältnisse 
+können selbstverständlich nicht grundsätzlich gelten; sie sind aus den Verhältnissen in 
+Süddeutschland abgeleitet. In feuchten, nebelreichen Tälern sowie an oft und lange taufeuch-
+ten Standorten können relativ niedrige Regenniederschläge kompensiert werden. 
+Auf der Basis der angewandten Kriterien kann ein konkreter F-Wert bei typischen Wasserflechten 
+nicht angegeben werden; diese müssen mit x charakterisiert werden.
+1 	 auf trockenste Bereiche beschränkt
+2 	 niederschlagsarme Standorte (unter 750 mm/Jahr) deutlich bevorzugend
+3 	 niederschlagsarme Standorte tolerierend, aber oft auch in feuchten Lagen
+4 	 auch an niederschlagsarmen Standorten, aber nur bei hoher Luftfeuchte
+5 	 niederschlagsarme Gebiete gewöhnlich meidend; Niederschläge meist über 700 mm
+6 	 Niederschläge gewöhnlich über 800 mm
+7 	 gewöhnlich auf ziemlich niederschlagsreiche Gebiete beschränkt; Niederschläge meist über 
+1000 mm
+8 	 gewöhnlich in niederschlagsreichen Gebieten (über 1400 mm), aber auch Austrocknung vertragend
+9 	 gewöhnlich in niederschlagsreichen Gebieten (über 1400 mm), an sehr humiden Standorten; Flechten 
+nur kurzfristig austrocknend
+R: Reaktionszahl (pH-Wert der Rinde)
+Die pH-Verhältnisse der Flechtenstandorte können recht genau beschrieben werden. Die 
+Angaben bei Wirth (1995) beruhen weitgehend auf Messungen.
+1 	 extrem sauer, pH-Wert der Rinde unter 3,4
+2 	 sehr sauer, pH 3,4 – 4,0
+
+234	
+Herzogia 23 (2), 2010
+3 	 ziemlich sauer, pH 4,1– 4,8
+4 	 ziemlich/mäßig sauer, pH 4,5 –5,2
+5 	 mäßig sauer, pH 4,9 –5,6
+6 	 schwach sauer, pH 5,3 – 6,1
+7 	 subneutral, pH 5,7– 6,5
+8 	 neutral, pH 6,6 –7,5
+9 	 basisch, pH über 7
+N: Eutrophierungszahl (Düngungstoleranz)
+Aspekte der Definition der N-Zahl, ursprünglich „Nährstoffzahl“, wurden oben diskutiert. 
+Die hier eingesetzte „Eutrophierungszahl“ wichtet das Maß der Eutrophierung von außen, 
+nicht mehr, wie in früheren Auflagen, den Nährstoffgehalt des Substrates unabhängig von 
+der Quelle (ob allochthon oder autochthon). Dieser Aspekt ist von größerem praktischen 
+Interesse und ist angesichts der a priori unterschiedlichen Nährstoffversorgung von Flechten, 
+die anorganisches (Gestein) und organisches Substrat (z. B. Baumrinde) oder Böden besie-
+deln, stimmiger. Unter Eutrophierung wird hier das Maß der an den Flechtenstandorten be-
+obachteten „Staubbelastung“ bzw. (bei höheren N-Zahlen) Belastung mit organischen und 
+anorganischen Stickstoffverbindungen (wie sie durch anthropogene Düngung von Feldern 
+und Wiesen oder durch Ausscheidungen von Tieren verursacht wird) verstanden. Trotz fort-
+geschrittener Kenntnisse wird derzeit keine Möglichkeit gesehen, in größerem Umfang eine 
+Differenzierung der Eutrophierungsart vorzunehmen.
+1–2	keine/fast keine Eutrophierung des Habitats tolerierend (z. B. Waldbäume und überhängende 
+Felswände im Waldinnern) 
+3 – 4	 schwache/ziemlich schwache  Eutrophierung (leichte Staubbelastung der Rinde oder der Fels-
+oberfläche)
+5 – 6	 mäßige/deutliche Eutrophierung (freistehende Bäume, offene Felsen in Weiden, Mauerkronen)
+7	
+ziemlich starke Eutrophierung (staubbelastete Mauern und Dachziegel, freistehende Bäume in der 
+Feldflur und an stärker befahrenen Straßen, mäßig frequentierte Vogelsitzplätze, Mauern und 
+Dachteile unter Baumkronen)
+8	
+starke Eutrophierung (Vogelsitzplätze, stark staubbelastete Habitate)
+9	
+sehr starke Eutrophierung (z.B. extrem staubimprägnierte Baumbasis, Urinierbereich Hunde, Kuppen 
+von Vogelsitzplätzen, Mauern an Misthaufen)
+SUB: Substrat (sehr selten besiedelte Substrate sind unberücksichtigt)
+E	 Erdboden, Rohhumus
+G	 Gestein
+H	 Holz
+M	 Moose
+R	 Rinde
+Klimaökologische Ozeanität
+Degelius (1935) hat die Bedeutung der Ozeanität im klimaökologischen Sinn für die 
+Verbreitung der Flechtenarten hervorgehoben. Eine ozeanische Art in diesem Sinn besiedelt 
+Habitate, die durch hohe Feuchte und geringe Amplituden der Temperatur im Jahreslauf 
+charakterisiert sind, also durch ein mild-feuchtes Temperaturklima ohne starke Extreme der 
+Sommer- bzw. Wintertemperaturen. An solchen Standorten können in Mitteleuropa frost-
+empfindliche Arten selbst in Berglagen überleben und finden sich auch Flechten, die auch 
+noch in den feuchten Subtropen vorkommen, wie Hypotrachyna- und Parmotrema-Arten. 
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+235
+In einem kontinentalen Klima mit wärmeren Sommern und kälteren Wintern und gerin-
+geren Niederschlägen überleben ozeanische Arten nicht. Insofern hat die klimaökologische 
+Kennzeichnung „ozeanisch“ einen hohen Informationswert. Wie aus der Charakterisierung 
+der Ozeanität im klimaökologischen Sinn hervorgeht, hat sie eine thermische und eine hy-
+grische Komponente. 
+Nicht zu verwechseln ist der klimaökologische Begriff „Ozeanität“ mit der gleichlautenden 
+Bezeichnung im arealkundlichen Sinn, der sich allein auf die Verbreitung in Bezug auf die 
+Ozeane bezieht und in Europa inhaltlich weitgehend mit dem Begriff atlantisch überein-
+stimmt (Jäger 1968). Dieser rein arealkundliche Aspekt ist Inhalt der Kontinentalitätszahl 
+(vgl. dazu Ellenberg 1992). Freilich bestehen zwischen den beiden Bedeutungen des 
+Begriffes Ozeanität (bzw. Kontinentalität) Zusammenhänge (Degelius 1935). Das atlan-
+tische bzw. das kontinentale Areal einer Art ist Ergebnis zahlreicher zusammenspielender 
+Faktoren, unter denen auch das Feuchte- und das Temperaturklima eine Rolle spielen. Ohne 
+Zweifel kommt jedoch bei der Charakterisierung der klimaökologischen Ozeanität dem öko-
+physiologisch bei Flechten so wichtigen Feuchtefaktor eine wesentlich größere Bedeutung 
+zu als bei der arealkundlichen Ozeanität bzw. (wie in der Zeigerwerttabelle) Kontinentalität, 
+bei der der Einfluss der Temperaturamplitude, so die Härte des Winters erheblich sein dürf-
+te, auch wenn es selbstverständlich kaum möglich ist, diesen Einzelfaktor im Kontext der 
+Kontinentalität zu wichten. Fakt ist jedoch, dass die arealkundliche Ozeanität nicht komplett 
+mit der klimaökologischen Ozeanität parallel geht. Eine als atlantisch oder subatlantisch 
+bekannte Art muss keineswegs hochozeanisch oder ausgeprägt ozeanisch im klimaökolo-
+gischen Sinn sein; ein Beispiel hierfür ist Flavoparmelia soredians.
+Eine Zeigerwertfunktion der klimaökologischen Ozeanität von Flechten ist derzeit noch nicht 
+erarbeitet. Eine angenäherte Einstufung der klimaökologischen Ozeanität (KO) der Arten 
+ist jedoch mit Hilfe einer kombinierten Wichtung der eingeführten Kontinentalitätszahlen 
+(als mehr thermische Komponente) und Feuchtezahlen (als hygrische Komponente) 
+möglich. Allerdings darf nicht die Kontinentalität, sondern muss die Ozeanität in der 
+Kontinentalitätszahl Orientierungsmaßstab sein, folglich die Differenz 10 – K ermittelt wer-
+den. Zu dieser „Ozeanitätszahl“ wird die Feuchtezahl addiert. Um wieder zum üblichen nu-
+merischen Umfang der Zeigerwertskala von 1–9 zu gelangen, wird das Ergebnis halbiert.
+Tab. 1: Definitionen für die Bewertung der klimaökologischen Ozeanität (KO).
+Table 1: Definitions for the assessment of the eco-climatic oceanity (KO).
+Kategorie
+Definition
+KO 1–2
+sehr stark kontinental getönte Standorte besiedelnd (große Amplitude der Temperatur im Jahres-
+verlauf: warme Sommer, kalte Winter, trockenes Klima)
+KO 3
+stark kontinental getönte Standorte besiedelnd
+KO 4
+mäßig kontinental getönte Standorte besiedelnd
+KO 5
+mäßig ozeanisch getönte Standorte besiedelnd
+KO 6
+ziemlich ozeanisch getönte Standorte besiedelnd
+KO 7
+stark ozeanisch getönte Standorte besiedelnd
+KO 8 –9
+klimaökologisch extrem ozeanische Standorte besiedelnd (geringe Amplitude der Temperatur 
+im Jahresverlauf: kühle Sommer, milde Winter, feuchtes Klima) 
+
+236	
+Herzogia 23 (2), 2010
+Tab. 2: Beispiele für die Ableitung der klimaökologischen Ozeanität (KO) aus den Zeigerwerten für Kontinentalität 
+(K) und Feuchte (F).
+Table 2: Examples of the deduction of eco-climatic oceanity (KO) from the indicator values of continentality (K) 
+and moisture (F).
+Art
+KO
+K
+F
+Lobaria amplissima
+8.5
+2
+9
+Umbilicaria polyrrhiza
+7.5
+2
+7
+Menegazzia terebrata
+7
+3
+7
+Ochrolechia pallescens
+7
+3
+7
+Lecanactis abietina
+6.5
+4
+7
+Lobaria pulmonaria
+6.5
+4
+7
+Normandina pulchella
+6.5
+3
+6
+Opegrapha viridis
+6
+3
+5
+Flavoparmelia caperata
+5.5
+3
+4
+Flavoparmelia soredians
+5.5
+1
+2
+Graphis scripta
+5
+4
+5
+Gyalecta ulmi
+5
+5
+5
+Parmeliopsis ambigua
+4.5
+6
+5
+Platismatia glauca
+4.5
+6
+5
+Calicium salicinum
+4.5
+6
+5
+Pleurosticta acetabulum
+4
+5
+3
+Xanthoria parietina
+4
+x
+3
+Strangospora pinicola
+3.5
+6
+3
+Hypocenomyce scalaris
+3.5
+6
+3
+Flavopunctelia flaventior
+2.5
+7
+2
+Psora decipiens
+2.5
+7
+2
+Gyalidea asteriscus
+2
+7
+1
+Generell ausgedrückt wird der Zeigerwert für die klimaökologische Ozeanität somit wie folgt 
+ermittelt: KO = (10 – K + F) : 2. Anstelle des Zeigerwerts x (indifferent) wird der Wert 5 ein-
+gesetzt. Werte über 6 kennzeichnen Arten, die für deutlich bis sehr stark ozeanisch getönte 
+Standorte stehen, Werte unter 5 für klimaökologisch gering ozeanisch bzw. kontinental getönte 
+Habitate (Tab. 1, 2).
+Tabellarische Übersicht der Arten und ihrer ökologischen Zeigerwerte
+Die ökologischen Zeigerwerte für 516 Arten sind in Tab. 3 zusammengestellt. Die Nomenklatur 
+richtet sich nach Wirth et al. (2010).
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+237
+Tab. 3: Ökologische Zeigerwerte für 516 mitteleuropäische Flechtenarten. Lichtzahl (L), Temperaturzahl (T), 
+Kontinentalitätszahl (K), Feuchtezahl (F), Reaktionszahl (R), Eutrophierungszahl (N) sowie Angaben zum Substrat 
+(SUB).
+Table 3: Ecological indicator values of 516 Central European lichen species. Light value (L), temperature value (T), 
+continentality value (K), moisture value (F), reaction (acidity) value (R), eutrophication value (N) as well as specifica-
+tion on the substratum (SUB).
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Acarospora fuscata
+9
+x
+6
+x
+5
+6
+G
+Acarospora glaucocarpa
+7
+x
+5
+x
+9
+5
+G
+Acarospora macrospora
+7
+x
+6
+x
+9
+5
+G
+Acarospora nitrophila
+8
+x
+6
+3
+7
+7
+G
+Acarospora sinopica
+7
+4
+4
+6
+2
+2
+G
+Acrocordia conoidea
+4
+6
+3
+6
+9
+2
+G
+Acrocordia gemmata
+5
+6
+3
+6
+6
+2
+R
+Agonimia allobata
+4
+6
+2
+4
+5
+4
+R
+Alectoria ochroleuca
+8
+1
+6
+8
+2
+2
+E
+Alectoria sarmentosa
+7
+3
+3
+9
+4
+1
+R
+Amandinea punctata
+7
+x
+6
+3
+5
+7
+R
+Anaptychia ciliaris
+7
+5
+5
+5
+7
+4
+R
+Anisomeridium polypori
+4
+5
+3
+4
+7
+3
+R
+Arctoparmelia incurva
+8
+1
+5
+7
+3
+3
+G
+Arthonia byssacea
+3
+6
+5
+4
+3
+1
+R
+Arthonia cinnabarina
+4
+7
+2
+5
+6
+2
+R
+Arthonia leucopellaea
+2
+4
+2
+7
+3
+1
+R
+Arthonia radiata
+3
+5
+4
+4
+5
+4
+R
+Arthonia spadicea
+2
+6
+3
+4
+4
+3
+R
+Arthonia vinosa
+3
+5
+5
+6
+3
+1
+R
+Arthothelium ruanum
+3
+6
+2
+4
+5
+3
+R
+Arthrorhaphis citrinella
+6
+4
+5
+6
+2
+2
+EMG
+Aspicilia caesiocinerea
+8
+x
+5
+7
+5
+7
+G
+Aspicilia calcarea
+8
+x
+6
+x
+9
+7
+G
+Aspicilia cinerea
+9
+x
+5
+x
+5
+4
+G
+Aspicilia contorta
+8
+x
+6
+x
+9
+8
+G
+Aspicilia laevata
+4
+4
+3
+4
+4
+2
+G
+Bacidia arceutina
+6
+6
+3
+5
+6
+3
+R
+Bacidia bagliettoana
+7
+4
+5
+x
+9
+2
+M
+Bacidia beckhausii
+5
+4
+3
+7
+6
+2
+R
+Bacidia rubella
+6
+6
+3
+5
+7
+5
+R
+Bacidia subincompta
+5
+5
+3
+6
+5
+2
+R
+Bacidina arnoldiana
+4
+5
+3
+4
+8
+6
+G
+Bacidina chloroticula
+5
+5
+3
+5
+6
+6
+HGR
+Bacidina delicata
+5
+6
+3
+4
+7
+8
+RG
+Bacidina inundata
+5
+4
+4
+6
+7
+2
+G
+Bacidina neosquamulosa
+5
+6
+2
+5
+5
+6
+RG
+Bacidina sulphurella
+4
+6
+4
+4
+6
+6
+R
+Bactrospora dryina
+4
+6
+2
+4
+3
+1
+R
+Baeomyces placophyllus
+5
+x
+4
+6
+4
+2
+E
+Baeomyces rufus
+5
+x
+6
+5
+3
+3
+EG
+Bagliettoa calciseda
+9
+5
+5
+x
+9
+4
+G
+Bagliettoa marmorea
+8
+9
+5
+3
+9
+4
+G
+
+238	
+Herzogia 23 (2), 2010
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Bellemerea alpina
+9
+1
+6
+8
+4
+3
+G
+Biatora helvola
+4
+3
+5
+9
+5
+2
+R
+Bryophagus gloeocapsa
+5
+4
+3
+7
+2
+2
+ME
+Bryoria bicolor
+6
+4
+2
+9
+4
+1
+RG
+Bryoria capillaris
+6
+3
+5
+7
+3
+1
+RG
+Bryoria fuscescens
+7
+4
+6
+6
+3
+4
+R
+Buellia aethalea
+8
+x
+5
+x
+4
+6
+G
+Buellia badia
+8
+5
+5
+x
+4
+5
+G
+Buellia disciformis
+4
+5
+3
+4
+5
+2
+R
+Buellia griseovirens
+4
+5
+5
+4
+5
+4
+R
+Buellia ocellata
+8
+7
+2
+6
+4
+3
+G
+Calicium adspersum
+4
+6
+4
+5
+3
+2
+R
+Calicium glaucellum
+3
+4
+6
+6
+3
+1
+HR
+Calicium salicinum
+3
+4
+6
+5
+4
+2
+RH
+Calicium trabinellum
+5
+3
+6
+7
+3
+1
+HR
+Calicium viride
+3
+4
+6
+7
+2
+2
+RH
+Caloplaca albolutescens
+8
+9
+5
+2
+8
+8
+G
+Caloplaca aurantia
+9
+9
+6
+1
+9
+7
+G
+Caloplaca cerina
+7
+x
+6
+5
+7
+5
+RM
+Caloplaca cerinella
+7
+6
+5
+3
+7
+6
+R
+Caloplaca cerinelloides
+7
+6
+5
+3
+7
+6
+R
+Caloplaca cirrochroa
+6
+6
+5
+x
+9
+6
+G
+Caloplaca citrina
+7
+x
+x
+x
+9
+9
+G
+Caloplaca dalmatica
+9
+8
+5
+x
+9
+8
+G
+Caloplaca decipiens
+8
+6
+5
+3
+9
+9
+G
+Caloplaca demissa
+7
+7
+5
+3
+7
+3
+G
+Caloplaca dichroa
+9
+6
+5
+x
+9
+8
+G
+Caloplaca flavescens
+6
+7
+5
+x
+9
+7
+G
+Caloplaca flavovirescens
+8
+5
+4
+x
+9
+5
+G
+Caloplaca granulosa
+8
+9
+4
+3
+9
+7
+G
+Caloplaca herbidella
+5
+4
+3
+7
+5
+3
+R
+Caloplaca lactea
+9
+8
+5
+3
+9
+4
+G
+Caloplaca oasis
+9
+x
+x
+x
+9
+8
+G
+Caloplaca pusilla
+8
+5
+6
+x
+9
+8
+G
+Caloplaca pyracea
+7
+x
+6
+3
+7
+5
+R
+Caloplaca saxicola
+8
+4
+6
+3
+7
+6
+G
+Caloplaca sinapisperma
+8
+2
+6
+5
+8
+3
+M
+Caloplaca teicholyta
+9
+8
+5
+2
+8
+8
+G
+Caloplaca variabilis
+8
+6
+5
+x
+9
+7
+G
+Calvitimela aglaea
+8
+2
+5
+7
+4
+2
+G
+Candelaria concolor
+7
+5
+6
+3
+6
+7
+R
+Candelariella aurella
+9
+x
+6
+x
+9
+8
+G
+Candelariella coralliza
+9
+5
+5
+5
+5
+9
+G
+Candelariella medians
+9
+9
+5
+2
+9
+9
+G
+Candelariella plumbea
+9
+9
+5
+1
+8
+9
+G
+Candelariella reflexa
+6
+6
+3
+5
+5
+7
+R
+Candelariella viae-lacteae
+7
+9
+6
+2
+7
+7
+R
+Candelariella vitellina
+8
+x
+6
+x
+5
+8
+G
+Candelariella xanthostigma
+7
+5
+5
+3
+5
+5
+R
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+239
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Catillaria chalybeia
+7
+x
+5
+x
+6
+5
+G
+Catillaria lenticularis
+6
+7
+5
+x
+8
+5
+G
+Catillaria minuta
+5
+7
+3
+4
+9
+2
+G
+Catillaria nigroclavata
+7
+5
+4
+3
+7
+7
+R
+Catolechia wahlenbergii
+7
+1
+5
+9
+2
+2
+E
+Cetraria aculeata
+8
+x
+4
+3
+x
+1
+E
+Cetraria islandica
+8
+x
+6
+5
+x
+1
+E
+Cetraria muricata
+8
+4
+4
+6
+x
+1
+E
+Cetraria sepincola
+8
+3
+7
+5
+3
+1
+R
+Cetrelia cetrarioides
+5
+4
+3
+6
+5
+2
+R
+Chaenotheca brunneola
+3
+4
+6
+6
+3
+1
+HR
+Chaenotheca chrysocephala
+3
+4
+6
+6
+2
+2
+RH
+Chaenotheca ferruginea
+5
+x
+6
+3
+2
+4
+RH
+Chaenotheca furfuracea
+3
+4
+4
+4
+3
+2
+RG
+Chaenotheca gracilenta
+2
+5
+3
+4
+5
+2
+HR
+Chaenotheca phaeocephala
+5
+5
+5
+4
+3
+3
+R
+Chaenotheca trichialis
+3
+5
+5
+4
+4
+2
+R
+Chrysothrix candelaris
+4
+5
+4
+4
+3
+2
+R
+Chrysothrix chlorina
+4
+4
+4
+5
+3
+1
+G
+Cladonia arbuscula
+8
+x
+6
+x
+x
+1
+E
+Cladonia caespiticia
+6
+5
+3
+x
+5
+2
+E
+Cladonia cenotea
+6
+4
+6
+6
+2
+1
+EH
+Cladonia cervicornis subsp. verticillata
+8
+4
+6
+x
+3
+1
+E
+Cladonia ciliata
+7
+6
+3
+x
+x
+1
+E
+Cladonia coniocraea
+5
+x
+6
+x
+4
+3
+EHR
+Cladonia convoluta
+9
+9
+6
+1
+8
+2
+E
+Cladonia deformis
+7
+4
+6
+5
+2
+1
+E
+Cladonia digitata
+5
+4
+6
+x
+2
+3
+HE
+Cladonia fimbriata
+7
+5
+6
+x
+4
+3
+E
+Cladonia foliacea
+9
+6
+2
+x
+4
+1
+E
+Cladonia furcata subsp. furcata
+6
+x
+6
+x
+4
+4
+E
+Cladonia furcata subsp. subrangiformis
+8
+7
+5
+x
+8
+3
+E
+Cladonia glauca
+7
+6
+3
+x
+2
+2
+E
+Cladonia gracilis
+7
+4
+6
+5
+3
+2
+E
+Cladonia grayi
+7
+5
+5
+x
+2
+2
+E
+Cladonia incrassata
+7
+6
+3
+6
+1
+1
+E
+Cladonia macilenta
+7
+4
+6
+x
+2
+3
+EH
+Cladonia mitis
+9
+x
+7
+x
+x
+1
+E
+Cladonia parasitica
+4
+5
+4
+5
+3
+1
+H
+Cladonia pleurota
+7
+4
+6
+x
+3
+2
+E
+Cladonia polydactyla
+5
+4
+3
+7
+2
+1
+RHE
+Cladonia portentosa
+7
+6
+3
+x
+x
+1
+E
+Cladonia pyxidata
+7
+x
+6
+x
+x
+3
+E
+Cladonia rangiferina
+6
+4
+6
+5
+x
+1
+E
+Cladonia rangiformis
+8
+5
+5
+3
+x
+3
+E
+Cladonia squamosa
+6
+4
+6
+5
+2
+2
+EH
+Cladonia stellaris
+8
+2
+6
+8
+2
+1
+E
+Cladonia subulata
+8
+x
+6
+x
+3
+3
+E
+Cladonia sulphurina
+7
+3
+5
+7
+1
+1
+E
+
+240	
+Herzogia 23 (2), 2010
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Cladonia symphycarpa
+9
+x
+5
+3
+8
+2
+E
+Cladonia uncialis
+8
+4
+6
+5
+2
+1
+E
+Cliostomum corrugatum
+4
+5
+3
+4
+3
+2
+RH
+Cliostomum griffithii
+6
+5
+2
+3
+5
+6
+R
+Coenogonium pineti
+3
+5
+3
+4
+4
+4
+RH
+Collema auriforme
+4
+6
+5
+5
+8
+3
+G
+Collema crispum
+7
+6
+4
+5
+8
+6
+GE
+Collema cristatum
+8
+x
+6
+3
+9
+4
+G
+Collema fasciculare
+6
+5
+2
+9
+6
+1
+R
+Collema flaccidum
+5
+4
+4
+7
+6
+5
+GRM
+Collema fuscovirens
+8
+x
+6
+3
+9
+6
+G
+Collema nigrescens
+6
+4
+4
+9
+7
+4
+R
+Collema polycarpon
+8
+x
+5
+3
+9
+4
+G
+Collema tenax
+7
+x
+6
+x
+8
+5
+E
+Cornicularia normoerica
+9
+2
+3
+8
+4
+3
+G
+Cyphelium inquinans
+4
+4
+5
+6
+2
+3
+RH
+Cyphelium tigillare
+8
+3
+6
+5
+4
+2
+H
+Cystocoleus ebeneus
+1
+4
+3
+6
+3
+1
+G
+Degelia plumbea
+6
+5
+1
+7
+6
+1
+R
+Dermatocarpon luridum
+6
+5
+4
+5
+7
+4
+G
+Dermatocarpon miniatum
+8
+x
+6
+x
+8
+5
+G
+Dibaeis baeomyces
+8
+x
+5
+5
+2
+2
+E
+Dimelaena oreina
+9
+x
+6
+7
+6
+6
+G
+Diploicia canescens
+6
+7
+2
+5
+8
+6
+GR
+Diploschistes muscorum
+8
+x
+7
+3
+6
+2
+EM
+Diploschistes scruposus
+6
+x
+6
+x
+3
+2
+G
+Diplotomma alboatrum
+7
+x
+5
+3
+7
+7
+R
+Diplotomma epipolium
+8
+5
+5
+3
+9
+3
+G
+Dirina stenhammarii
+4
+8
+3
+3
+8
+4
+G
+Endocarpon pusillum
+8
+5
+6
+2
+8
+5
+E
+Enterographa hutchinsiae
+3
+7
+2
+5
+5
+2
+G
+Ephebe lanata
+7
+3
+3
+7
+6
+4
+G
+Evernia divaricata
+7
+4
+6
+6
+3
+2
+R
+Evernia prunastri
+7
+5
+6
+4
+3
+4
+R
+Fellhanera bouteillei
+7
+6
+2
+6
+5
+5
+R
+Flavocetraria cucullata
+9
+2
+6
+8
+2
+1
+E
+Flavocetraria nivalis
+9
+1
+6
+8
+2
+1
+E
+Flavoparmelia caperata
+6
+7
+3
+4
+5
+4
+RG
+Flavoparmelia soredians
+7
+9
+1
+2
+6
+5
+E
+Flavopunctelia flaventior
+7
+8
+7
+2
+4
+6
+R
+Fulgensia fulgens
+9
+9
+6
+1
+8
+2
+E
+Fuscidea austera
+7
+6
+3
+7
+5
+1
+G
+Fuscidea cyathoides
+5
+5
+3
+7
+5
+2
+RG
+Fuscidea kochiana
+7
+4
+3
+7
+3
+1
+G
+Fuscopannaria leucophaea
+6
+4
+3
+7
+7
+3
+G
+Graphis scripta
+3
+5
+4
+4
+5
+3
+R
+Gyalecta jenensis
+4
+4
+4
+5
+9
+3
+G
+Gyalecta ulmi
+5
+5
+5
+5
+6
+1
+R
+Gyalidea asteriscus
+8
+8
+7
+1
+8
+3
+E
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+241
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Haematomma ochroleucum
+4
+5
+2
+6
+5
+2
+GR
+Hydropunctaria rheitrophila
+5
+6
+3
+x
+7
+2
+G
+Hyperphyscia adglutinata
+7
+9
+3
+2
+7
+7
+R
+Hypocenomyce caradocensis
+5
+5
+2
+6
+2
+1
+R
+Hypocenomyce scalaris
+6
+5
+6
+3
+2
+2
+RH
+Hypogymnia farinacea
+6
+4
+6
+7
+3
+2
+R
+Hypogymnia physodes
+7
+x
+6
+3
+3
+3
+RG
+Hypogymnia tubulosa
+7
+5
+5
+3
+5
+4
+R
+Hypogymnia vittata
+6
+3
+7
+7
+3
+1
+R
+Hypotrachyna afrorevoluta
+6
+7
+2
+5
+4
+4
+RG
+Hypotrachyna laevigata
+6
+9
+1
+5
+5
+3
+RG
+Hypotrachyna revoluta
+6
+7
+2
+6
+5
+4
+G
+Hypotrachyna sinuosa
+6
+4
+2
+7
+3
+1
+R
+Icmadophila ericetorum
+x
+3
+5
+7
+1
+1
+HE
+Imshaugia aleurites
+6
+4
+6
+3
+2
+2
+R
+Ionaspis lacustris
+6
+4
+4
+x
+7
+2
+G
+Lasallia pustulata
+8
+5
+4
+3
+5
+6
+G
+Lecanactis abietina
+2
+4
+4
+7
+2
+1
+R
+Lecania cyrtella
+7
+5
+6
+3
+7
+6
+R
+Lecania erysibe
+7
+6
+5
+4
+8
+8
+G
+Lecania hyalina
+5
+5
+4
+6
+4
+2
+R
+Lecania inundata
+8
+6
+6
+2
+9
+9
+G
+Lecania naegelii
+6
+5
+6
+3
+7
+7
+R
+Lecania rabenhorstii
+7
+6
+4
+2
+8
+8
+G
+Lecanographa amylacea
+3
+7
+3
+4
+3
+1
+R
+Lecanora albella
+5
+5
+3
+4
+5
+2
+R
+Lecanora albescens
+7
+x
+6
+3
+8
+9
+G
+Lecanora allophana
+7
+4
+5
+3
+6
+5
+R
+Lecanora argentata
+5
+5
+4
+4
+5
+3
+R
+Lecanora campestris
+8
+5
+4
+x
+7
+8
+G
+Lecanora carpinea
+6
+5
+6
+3
+5
+4
+R
+Lecanora cenisia
+7
+3
+5
+7
+4
+2
+G
+Lecanora chlarotera
+6
+5
+6
+3
+6
+5
+R
+Lecanora conizaeoides
+7
+5
+5
+3
+2
+5
+RG
+Lecanora crenulata
+7
+x
+6
+x
+9
+6
+G
+Lecanora dispersa
+8
+x
+6
+x
+8
+8
+G
+Lecanora epanora
+6
+4
+3
+6
+2
+2
+G
+Lecanora expallens
+5
+6
+3
+3
+4
+5
+R
+Lecanora hagenii
+6
+x
+6
+3
+8
+7
+RHG
+Lecanora impudens
+7
+5
+4
+5
+6
+4
+R
+Lecanora intricata
+8
+3
+6
+7
+3
+3
+G
+Lecanora intumescens
+5
+4
+4
+6
+5
+2
+R
+Lecanora mughicola
+7
+3
+5
+7
+3
+3
+H
+Lecanora muralis
+9
+x
+6
+x
+8
+9
+G
+Lecanora orosthea
+5
+6
+3
+5
+4
+2
+G
+Lecanora pannonica
+7
+8
+5
+1
+6
+4
+G
+Lecanora persimilis
+7
+6
+4
+3
+7
+5
+R
+Lecanora polytropa
+8
+x
+6
+x
+4
+4
+G
+Lecanora pulicaris
+7
+4
+6
+3
+3
+4
+HR
+
+242	
+Herzogia 23 (2), 2010
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Lecanora rouxii
+5
+8
+5
+5
+9
+2
+G
+Lecanora rupicola
+9
+x
+6
+x
+5
+5
+G
+Lecanora saligna
+7
+x
+6
+3
+4
+5
+HR
+Lecanora sambuci
+7
+6
+4
+3
+7
+6
+R
+Lecanora subcarnea
+5
+5
+3
+5
+4
+1
+G
+Lecanora sulphurea
+7
+6
+5
+5
+6
+5
+G
+Lecanora symmicta
+7
+4
+6
+5
+5
+4
+HR
+Lecanora varia
+7
+4
+6
+5
+3
+3
+H
+Lecidea confluens
+8
+2
+5
+9
+5
+2
+G
+Lecidea fuscoatra
+9
+5
+6
+x
+5
+7
+G
+Lecidea lapicida
+9
+3
+6
+7
+4
+3
+G
+Lecidea lithophila
+7
+4
+3
+6
+4
+2
+G
+Lecidella carpathica
+9
+5
+6
+3
+7
+7
+G
+Lecidella elaeochroma
+6
+5
+6
+3
+6
+5
+R
+Lecidella scabra
+6
+5
+4
+4
+5
+5
+G
+Lecidella stigmatea
+8
+x
+6
+x
+9
+7
+G
+Lecidoma demissum
+8
+2
+4
+8
+3
+2
+E
+Lepraria caesioalba
+7
+5
+4
+6
+4
+3
+G
+Lepraria crassissima
+3
+5
+2
+5
+4
+2
+G
+Lepraria incana
+4
+5
+6
+3
+3
+5
+RE
+Lepraria lobificans
+4
+5
+5
+4
+6
+3
+R
+Lepraria membranacea
+7
+5
+5
+6
+4
+1
+G
+Lepraria rigidula
+4
+5
+4
+5
+4
+2
+R
+Lepraria vouauxii
+5
+5
+6
+4
+7
+6
+RGM
+Leprocaulon microscopicum
+7
+6
+3
+5
+5
+3
+GE
+Leptogium lichenoides
+4
+x
+6
+4
+7
+3
+ME
+Leptogium pulvinatum
+8
+6
+5
+3
+8
+3
+EM
+Leptogium saturninum
+6
+4
+3
+7
+6
+3
+RM
+Letharia vulpina
+7
+3
+5
+8
+2
+1
+R
+Lichenomphalia hudsoniana
+6
+3
+5
+9
+2
+1
+E
+Lichenomphalia umbellifera
+4
+4
+6
+6
+2
+1
+EM
+Lichina confinis
+8
+6
+3
+x
+7
+3
+G
+Lobaria amplissima
+6
+4
+2
+9
+6
+2
+R
+Lobaria pulmonaria
+5
+4
+4
+7
+5
+2
+R
+Lobaria scrobiculata
+7
+4
+3
+7
+5
+1
+RG
+Lobothallia radiosa
+9
+7
+6
+3
+9
+7
+G
+Lopadium disciforme
+4
+4
+5
+7
+3
+2
+R
+Loxospora cismonica
+4
+4
+5
+9
+4
+1
+R
+Loxospora elatina
+5
+4
+2
+6
+3
+2
+R
+Megaspora verrucosa
+8
+x
+6
+3
+8
+3
+EM
+Melanelia disjuncta
+8
+4
+4
+6
+3
+2
+G
+Melanelia hepatizon
+8
+2
+5
+8
+3
+2
+G
+Melanelia panniformis
+8
+4
+5
+7
+3
+2
+G
+Melanelixia fuliginosa
+5
+5
+6
+4
+3
+4
+RG
+Melanelixia glabra
+7
+4
+5
+7
+6
+5
+R
+Melanelixia subargentifera
+7
+5
+7
+5
+7
+6
+R
+Melanelixia subaurifera
+6
+5
+5
+5
+6
+5
+R
+Melanohalea elegantula
+7
+7
+3
+5
+4
+5
+R
+Melanohalea exasperata
+8
+3
+4
+6
+6
+3
+R
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+243
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Melanohalea exasperatula
+7
+5
+6
+3
+5
+6
+R
+Melanohalea laciniatula
+7
+7
+2
+6
+5
+5
+R
+Menegazzia terebrata
+5
+4
+3
+7
+4
+1
+R
+Micarea adnata
+3
+6
+2
+5
+4
+1
+HR
+Micarea bauschiana
+4
+6
+2
+5
+4
+2
+G
+Micarea denigrata
+8
+x
+6
+3
+3
+7
+H
+Micarea lignaria
+6
+4
+5
+7
+3
+2
+ME
+Micarea lutulata
+4
+4
+2
+7
+4
+2
+G
+Micarea melaena
+x
+4
+3
+6
+2
+1
+EH
+Micarea peliocarpa
+4
+5
+3
+5
+3
+2
+G
+Micarea prasina
+3
+4
+4
+4
+4
+4
+RH
+Micarea sylvicola
+4
+4
+3
+7
+4
+2
+G
+Microcalicium arenarium
+3
+5
+4
+6
+4
+1
+G
+Mycobilimbia sabuletorum
+6
+x
+6
+x
+8
+5
+ME
+Mycoblastus fucatus
+5
+4
+3
+4
+3
+3
+R
+Mycoblastus sanguinarius
+4
+3
+6
+7
+2
+1
+R
+Naetrocymbe punctiformis
+5
+x
+6
+4
+6
+4
+R
+Nephroma bellum
+5
+4
+4
+7
+6
+1
+R
+Nephroma laevigatum
+5
+5
+2
+7
+6
+2
+R
+Nephroma parile
+5
+4
+4
+7
+6
+3
+RG
+Nephroma resupinatum
+6
+4
+4
+9
+6
+4
+R
+Normandina pulchella
+6
+5
+3
+5
+5
+4
+MR
+Ochrolechia alboflavescens
+6
+3
+7
+7
+3
+1
+R
+Ochrolechia androgyna
+5
+4
+6
+7
+3
+3
+R
+Ochrolechia arborea
+6
+5
+4
+6
+4
+3
+R
+Ochrolechia microstictoides
+5
+4
+5
+6
+2
+2
+R
+Ochrolechia pallescens
+6
+4
+3
+7
+5
+2
+R
+Ochrolechia parella
+7
+7
+2
+5
+5
+3
+G
+Ochrolechia turneri
+7
+6
+4
+4
+5
+5
+R
+Opegrapha atra
+4
+6
+4
+4
+5
+3
+R
+Opegrapha gyrocarpa
+1
+3
+3
+7
+4
+1
+G
+Opegrapha ochrocheila
+4
+7
+2
+4
+6
+3
+R
+Opegrapha rufescens
+3
+6
+3
+4
+6
+5
+R
+Opegrapha varia
+4
+6
+4
+5
+6
+3
+R
+Opegrapha vermicellifera
+3
+8
+2
+4
+5
+3
+R
+Opegrapha viridis
+3
+6
+3
+5
+5
+2
+R
+Opegrapha zonata
+1
+4
+2
+6
+5
+1
+G
+Ophioparma ventosa
+9
+2
+5
+8
+4
+2
+G
+Pachyphiale fagicola
+5
+5
+4
+7
+6
+2
+R
+Pannaria conoplea
+6
+4
+2
+9
+6
+1
+RM
+Parabagliettoa cyanea
+4
+5
+3
+6
+9
+2
+G
+Parmelia omphalodes
+7
+4
+5
+7
+3
+2
+G
+Parmelia saxatilis
+6
+x
+6
+5
+3
+3
+RG
+Parmelia submontana
+6
+5
+2
+7
+5
+4
+R
+Parmelia sulcata
+7
+x
+6
+3
+5
+7
+R
+Parmeliella triptophylla
+6
+4
+2
+9
+6
+1
+R
+Parmelina pastillifera
+6
+4
+2
+7
+5
+5
+R
+Parmelina tiliacea
+7
+6
+5
+3
+5
+6
+R
+Parmeliopsis ambigua
+6
+4
+6
+5
+2
+2
+R
+
+244	
+Herzogia 23 (2), 2010
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Parmeliopsis hyperopta
+6
+3
+6
+7
+2
+2
+R
+Parmotrema perlatum
+6
+7
+2
+6
+5
+4
+R
+Parmotrema reticulatum
+7
+9
+1
+6
+5
+2
+R
+Peltigera aphthosa
+7
+2
+7
+9
+3
+2
+EM
+Peltigera canina
+6
+4
+5
+5
+6
+4
+E
+Peltigera collina
+6
+4
+4
+9
+5
+3
+R
+Peltigera degenii
+5
+4
+5
+6
+5
+4
+E
+Peltigera didactyla
+7
+x
+6
+3
+5
+6
+E
+Peltigera horizontalis
+5
+4
+4
+6
+5
+3
+E
+Peltigera hymenina
+6
+5
+3
+7
+5
+4
+E
+Peltigera leucophlebia
+5
+4
+5
+6
+7
+3
+GEM
+Peltigera malacea
+8
+4
+6
+x
+3
+3
+E
+Peltigera neckeri
+6
+4
+5
+3
+6
+4
+E
+Peltigera polydactylon
+7
+4
+6
+5
+5
+4
+E
+Peltigera praetextata
+5
+5
+5
+5
+5
+4
+ER
+Peltigera rufescens
+8
+x
+6
+3
+8
+5
+E
+Peltigera venosa
+5
+2
+5
+6
+5
+2
+E
+Pertusaria albescens
+6
+x
+6
+3
+6
+6
+R
+Pertusaria amara
+6
+x
+6
+4
+3
+2
+R
+Pertusaria aspergilla
+7
+6
+4
+6
+4
+3
+G
+Pertusaria coccodes
+6
+5
+3
+4
+5
+6
+R
+Pertusaria corallina
+8
+4
+3
+7
+4
+2
+G
+Pertusaria coronata
+5
+5
+3
+5
+4
+2
+R
+Pertusaria flavicans
+8
+8
+3
+5
+4
+2
+G
+Pertusaria flavida
+5
+6
+3
+4
+4
+3
+R
+Pertusaria hemisphaerica
+5
+6
+3
+5
+4
+3
+R
+Pertusaria hymenea
+5
+7
+2
+5
+5
+2
+R
+Pertusaria lactea
+7
+4
+4
+6
+4
+2
+G
+Pertusaria leioplaca
+4
+5
+3
+4
+5
+2
+R
+Pertusaria pertusa
+4
+6
+3
+5
+5
+3
+RG
+Pertusaria trachythallina
+6
+7
+2
+5
+5
+1
+R
+Petractis clausa
+6
+4
+3
+5
+9
+2
+G
+Phaeographis inusta
+3
+7
+1
+5
+5
+1
+R
+Phaeophysica endophoenicea
+6
+5
+4
+6
+7
+6
+R
+Phaeophysica nigricans
+8
+x
+6
+x
+8
+9
+GR
+Phaeophysica orbicularis
+7
+x
+6
+x
+7
+9
+GR
+Phaeophysica sciastra
+8
+x
+6
+x
+8
+8
+G
+Phlyctis agelaea
+5
+6
+3
+4
+6
+1
+R
+Phlyctis argena
+5
+5
+4
+3
+4
+5
+R
+Physcia adscendens
+7
+x
+6
+3
+7
+8
+R
+Physcia aipolia
+7
+x
+6
+3
+7
+5
+R
+Physcia caesia
+8
+x
+6
+x
+8
+9
+GR
+Physcia dimidiata
+7
+6
+3
+3
+7
+6
+GR
+Physcia dubia
+8
+x
+6
+x
+7
+8
+GR
+Physcia stellaris
+7
+4
+6
+3
+6
+6
+R
+Physcia tenella
+7
+x
+6
+3
+6
+7
+R
+Physciella chloantha
+7
+9
+3
+2
+7
+8
+R
+Physconia distorta
+7
+5
+6
+5
+7
+6
+R
+Physconia enteroxantha
+7
+4
+6
+5
+6
+6
+R
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+245
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Physconia grisea
+7
+7
+6
+2
+6
+8
+R
+Physconia perisidiosa
+7
+4
+6
+5
+6
+4
+R
+Placidium rufescens
+8
+5
+5
+3
+9
+4
+G
+Placidium squamulosum
+8
+6
+6
+3
+8
+7
+E
+Placocarpus schaereri
+9
+9
+5
+2
+9
+7
+G
+Placopsis gelida
+7
+3
+2
+9
+5
+2
+G
+Placynthiella icmalea
+7
+x
+6
+3
+2
+5
+EHM
+Placynthiella oligotropha
+7
+x
+6
+5
+3
+1
+E
+Placynthium nigrum
+7
+x
+5
+x
+9
+5
+G
+Platismatia glauca
+7
+4
+6
+5
+2
+2
+RG
+Pleopsidium chlorophanum
+6
+2
+6
+7
+3
+1
+G
+Pleopsidium oxytonum
+8
+2
+7
+x
+4
+2
+G
+Pleurosticta acetabulum
+7
+6
+5
+3
+7
+5
+R
+Porina aenea
+3
+6
+4
+4
+5
+4
+R
+Porina lectissima
+4
+5
+2
+5
+7
+2
+G
+Porina leptalea
+3
+7
+2
+4
+5
+4
+R
+Porpidia crustulata
+5
+x
+5
+4
+4
+2
+G
+Porpidia macrocarpa
+6
+4
+5
+6
+4
+2
+G
+Porpidia tuberculosa
+5
+4
+4
+6
+4
+2
+G
+Protoblastenia rupestris
+6
+x
+6
+3
+9
+7
+G
+Protopannaria pezizoides
+6
+2
+5
+7
+4
+2
+E
+Protoparmelia badia
+9
+3
+5
+7
+4
+5
+G
+Protoparmelia hypotremella
+6
+7
+3
+5
+4
+7
+R
+Pseudephebe pubescens
+9
+2
+5
+8
+4
+4
+G
+Pseudevernia furfuracea
+8
+4
+6
+5
+3
+2
+RG
+Psora decipiens
+9
+x
+7
+2
+8
+2
+E
+Psora testacea
+8
+9
+5
+3
+9
+4
+G
+Psoroma hypnorum
+8
+1
+6
+8
+3
+1
+ER
+Punctelia borreri
+7
+8
+2
+5
+5
+6
+R
+Punctelia jeckeri
+7
+7
+3
+3
+4
+6
+R
+Punctelia subrudecta
+7
+7
+3
+3
+4
+5
+R
+Pycnothelia papillaria
+8
+x
+5
+5
+2
+1
+E
+Pyrenula nitida
+3
+7
+3
+4
+5
+2
+R
+Pyrenula nitidella
+3
+7
+2
+4
+5
+1
+R
+Racodium rupestre
+1
+5
+3
+7
+4
+1
+G
+Ramalina calicaris
+7
+5
+3
+6
+6
+3
+R
+Ramalina farinacea
+6
+5
+6
+4
+5
+4
+R
+Ramalina fastigiata
+7
+5
+4
+6
+6
+4
+R
+Ramalina fraxinea
+7
+5
+4
+5
+6
+4
+R
+Ramalina pollinaria
+7
+x
+5
+5
+4
+5
+R
+Rhizocarpon alpicola
+8
+2
+4
+8
+3
+2
+G
+Rhizocarpon distinctum
+9
+5
+5
+x
+5
+7
+G
+Rhizocarpon geographicum
+9
+x
+6
+x
+3
+3
+G
+Rhizocarpon lecanorinum
+9
+4
+5
+5
+4
+5
+G
+Rhizocarpon reductum
+6
+4
+6
+5
+3
+3
+G
+Rhizocarpon viridiatrum
+9
+5
+3
+3
+4
+3
+G
+Rhizoplaca chrysoleuca
+9
+1
+6
+7
+6
+9
+G
+Rhizoplaca melanophthalma
+9
+1
+6
+7
+6
+9
+G
+Rimularia insularis
+9
+5
+3
+6
+5
+4
+G
+
+246	
+Herzogia 23 (2), 2010
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Rinodina bischoffii
+8
+x
+6
+3
+9
+4
+G
+Rinodina colobina
+7
+6
+7
+3
+7
+7
+R
+Rinodina exigua
+7
+5
+7
+3
+7
+7
+R
+Rinodina immersa
+8
+x
+6
+3
+9
+4
+G
+Rinodina lecanorina
+9
+8
+7
+3
+9
+6
+G
+Rinodina oleae
+8
+5
+3
+2
+8
+8
+G
+Rinodina oxydata
+7
+6
+3
+x
+7
+4
+G
+Rinodina pyrina
+7
+4
+6
+5
+7
+3
+R
+Rinodina sophodes
+7
+4
+3
+7
+6
+3
+R
+Ropalospora viridis
+4
+6
+2
+6
+4
+3
+R
+Sarcogyne pruinosa
+8
+x
+x
+x
+9
+5
+G
+Sarcopyrenia gibba
+8
+9
+5
+2
+8
+8
+G
+Schaereria fuscocinerea
+9
+3
+3
+8
+4
+2
+G
+Schismatomma decolorans
+5
+7
+2
+2
+5
+6
+R
+Schismatomma pericleum
+3
+4
+4
+6
+3
+1
+R
+Schismatomma umbrinum
+2
+6
+2
+7
+3
+1
+G
+Sclerophora pallida
+5
+6
+4
+4
+7
+2
+R
+Scoliciosporum chlorococcum
+6
+5
+3
+3
+3
+6
+R
+Scoliciosporum umbrinum
+8
+x
+4
+x
+4
+7
+G
+Solorina crocea
+8
+1
+6
+9
+3
+2
+E
+Solorina saccata
+6
+x
+6
+6
+8
+4
+EG
+Sphaerophorus fragilis
+8
+2
+5
+8
+4
+2
+G
+Sphaerophorus globosus
+5
+4
+3
+9
+3
+1
+RG
+Sporastatia testudinea
+9
+1
+6
+8
+4
+2
+G
+Squamarina cartilaginea
+9
+6
+3
+2
+9
+3
+G
+Squamarina lentigera
+9
+9
+6
+1
+8
+2
+E
+Staurothele fissa
+5
+4
+4
+6
+7
+3
+G
+Stenocybe major
+4
+4
+2
+9
+3
+1
+R
+Stenocybe pullatula
+7
+4
+6
+6
+3
+2
+R
+Stereocaulon alpinum
+8
+2
+6
+7
+3
+1
+E
+Stereocaulon dactylophyllum
+7
+4
+4
+7
+3
+2
+G
+Stereocaulon nanodes
+8
+x
+5
+x
+7
+6
+G
+Stereocaulon tomentosum
+8
+4
+6
+6
+3
+1
+E
+Stereocaulon vesuvianum
+8
+x
+6
+6
+6
+4
+G
+Sticta sylvatica
+5
+4
+2
+9
+5
+1
+RGM
+Strangospora pinicola
+7
+5
+6
+3
+3
+6
+HR
+Synalissa ramulosa
+8
+5
+4
+3
+9
+4
+G
+Tephromela atra
+8
+x
+x
+x
+6
+4
+G
+Thamnolia vermicularis
+9
+1
+6
+8
+2
+2
+E
+Thelomma ocellatum
+9
+4
+4
+6
+5
+8
+H
+Thelotrema lepadinum
+4
+6
+3
+7
+4
+1
+R
+Toninia candida
+8
+x
+7
+x
+9
+4
+EG
+Toninia physaroides
+8
+7
+5
+3
+7
+3
+E
+Toninia sedifolia
+8
+x
+6
+x
+8
+2
+EG
+Toninia toniniana
+8
+9
+7
+2
+9
+3
+G
+Trapelia coarctata
+4
+5
+4
+3
+4
+3
+G
+Trapelia glebulosa
+6
+5
+3
+3
+4
+4
+G
+Trapelia placodioides
+4
+5
+4
+4
+4
+3
+G
+Trapeliopsis flexuosa
+7
+x
+6
+3
+2
+5
+HR
+
+Wirth: Ökologische Zeigerwerte von Flechten 	
+247
+Art
+L
+T
+K
+F
+R
+N
+SUB
+Trapeliopsis granulosa
+8
+x
+6
+x
+1
+2
+EH
+Trapeliopsis pseudogranulosa
+5
+x
+5
+x
+2
+2
+E
+Tuckermannopsis chlorophylla
+6
+4
+6
+6
+3
+3
+R
+Umbilicaria cylindrica
+9
+2
+5
+7
+3
+4
+G
+Umbilicaria deusta
+9
+3
+4
+7
+5
+6
+G
+Umbilicaria grisea
+9
+6
+2
+5
+4
+4
+G
+Umbilicaria hirsuta
+8
+x
+6
+5
+5
+6
+G
+Umbilicaria polyphylla
+8
+3
+5
+7
+4
+4
+G
+Umbilicaria polyrrhiza
+8
+5
+2
+7
+4
+3
+G
+Usnea dasypoga
+7
+4
+6
+6
+3
+2
+R
+Usnea florida
+7
+6
+2
+7
+5
+2
+R
+Usnea fulvoreagens
+7
+4
+6
+6
+5
+2
+R
+Usnea hirta
+7
+4
+6
+5
+3
+4
+R
+Usnea intermedia
+7
+4
+3
+6
+5
+2
+R
+Usnea subfloridana
+7
+4
+3
+6
+5
+2
+R
+Verrucaria caerulea
+6
+4
+4
+5
+9
+3
+G
+Verrucaria muralis
+7
+x
+x
+x
+9
+7
+G
+Verrucaria nigrescens
+8
+x
+x
+x
+9
+7
+G
+Verrucaria praetermissa
+7
+6
+3
+5
+7
+4
+G
+Vulpicida pinastri
+6
+3
+6
+7
+2
+2
+R
+Vulpicida tubulosus
+9
+1
+7
+x
+8
+2
+E
+Xanthomendoza fallax
+7
+8
+5
+3
+7
+6
+RG
+Xanthomendoza fulva
+7
+6
+6
+6
+7
+7
+R
+Xanthoparmelia conspersa
+9
+x
+x
+3
+5
+7
+G
+Xanthoparmelia mougeotii
+8
+6
+2
+7
+4
+3
+G
+Xanthoparmelia pulla
+9
+5
+4
+3
+4
+5
+G
+Xanthoparmelia stenophylla
+9
+5
+6
+x
+4
+6
+G
+Xanthoparmelia verruculifera
+9
+6
+5
+3
+5
+7
+G
+Xanthoria candelaria
+7
+x
+x
+3
+6
+8
+RG
+Xanthoria elegans
+9
+x
+x
+x
+8
+8
+G
+Xanthoria parietina
+7
+x
+x
+3
+7
+8
+RG
+Xanthoria polycarpa
+7
+x
+5
+3
+7
+8
+R
+Literatur
+Degelius, G. 1935. Das ozeanische Element der Laub- und Strauchflechtenflora von Skandinavien. – Acta 
+Phytogeographica Suecica 7: 1– 411.
+Ellenberg, H. 1974. Zeigerwerte der Gefäßpflanzen Mitteleuropas. – Scripta Geobotanica 9: 1–97.
+Ellenberg, H. 1979. Zeigerwerte der Gefäßpflanzen Mitteleuropas. 2. Aufl. – Scripta Geobotanica 9: 1–122.
+Ellenberg, H. 1992. Zeigerwerte der Gefäßpflanzen (ohne Rubus). – Scripta Geobotanica 18: 9 –166.
+Ellenberg, H. & Leuschner, C. 2010. Vegetation Mitteleuropas mit den Alpen, 6. Aufl. – Stuttgart: Ulmer (im 
+Druck).
+Ellenberg, H., Weber, H. E., Düll, R., Wirth, V., Werner, W. & Paulissen, D. 1992. Zeigerwerte von Pflanzen 
+in Mitteleuropa. 2. und verbesserte Auflage. – Scripta Geobotanica 18: 1–258.
+Jäger, E. 1968. Die pflanzengeographische Oezanitätsgliederung der Holarktis und die Ozeanitätsbindung der 
+Pflanzenareale. – Feddes Repertorium 79: 157–335.
+Otte, V. 2007. Flechtenexkursion in die Kleinkrausniker und Rochauer Heide. – Biologische Studien 36: 72–75.
+Wirth, V. 1991. Zeigerwerte von Flechten. – Scripta Geobotanica 18: 215 –237.
+Wirth, V. 1992. Zeigerwerte von Flechten. – Scripta Geobotanica 18, ed.2: 215 –237
+Wirth, V. 2001. Zeigerwerte von Flechten. – Scripta Geobotanica 18, ed.3: 221–243.
+Wirth, V. & Hertel, E. 2007. Beitrag zur Kenntnis der Flechtenbiota des Fichtelgebirges. – Carolinea 65: 105 –161.. 
+
+248	
+Herzogia 23 (2), 2010
+Wirth, V., Hauck, M., Brackel, W. von, de Bruyn, U., Cezanne, R., Dürhammer, O., Eichler, M., Gnüchtel, 
+A., Litterski, B., Otte, V., Schiefelbein, U., Scholz, P., Schultz, M., Stordeur, R., Feuerer, T., Heinrich, 
+D. & John, V. 2010. Rote Liste und Artenverzeichnis der Flechten und flechtenbewohnenden Pilze Deutschlands. 
+– Naturschutz und Biologische Vielfalt (im Druck).
+Manuskript angenommen / Manuscript accepted: 05. Mai 2010.
+Anschrift des Verfassers / address of the author
+Volkmar Wirth, Staatliches Museum für Naturkunde, Erbprinzenstr. 13, 76133 Karlsruhe, 
+Deutschland. E-mail: volkmar.wirth@online.de
+View publication stats

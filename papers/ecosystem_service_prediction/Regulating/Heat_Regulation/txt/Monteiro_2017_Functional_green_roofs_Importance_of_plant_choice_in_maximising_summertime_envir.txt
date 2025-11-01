@@ -1,0 +1,2382 @@
+This is a repository copy of Functional green roofs: Importance of plant choice in 
+maximising summertime environmental cooling and substrate insulation potential.
+White Rose Research Online URL for this paper:
+http://eprints.whiterose.ac.uk/112789/
+Version: Accepted Version
+Article:
+Vaz Monteiro, M., Blanuša, T., Verhoef, A. et al. (3 more authors) (2017) Functional green 
+roofs: Importance of plant choice in maximising summertime environmental cooling and 
+substrate insulation potential. Energy and Buildings, 141. pp. 56-68. ISSN 0378-7788 
+https://doi.org/10.1016/j.enbuild.2017.02.011
+Article available under the terms of the CC-BY-NC-ND licence 
+(https://creativecommons.org/licenses/by-nc-nd/4.0/)
+eprints@whiterose.ac.uk
+https://eprints.whiterose.ac.uk/
+Reuse 
+This article is distributed under the terms of the Creative Commons Attribution-NonCommercial-NoDerivs 
+(CC BY-NC-ND) licence. This licence only allows you to download this work and share it with others as long 
+as you credit the authors, but you can’t change the article in any way or use it commercially. More 
+information and the full terms of the licence here: https://creativecommons.org/licenses/ 
+Takedown 
+If you consider content in White Rose Research Online to be in breach of UK law, please notify us by 
+emailing eprints@whiterose.ac.uk including the URL of the record and the reason for the withdrawal request. 
+
+ 
+ 
+ 
+1 
+ 
+ 
+ 
+ 
+1 
+ 
+2 
+Functional green roofs: Importance of plant choice in maximising 
+3 
+summertime environmental cooling  
+4 
+and substrate insulation potential 
+5 
+ 
+6 
+M. Vaz Monteiro1#, T. Blanuša1,2,*, A. Verhoef3, M. Richardson1, P. Hadley1 and R.W.F. Cameron4 
+7 
+ 
+8 
+1School of Agriculture, Policy and Development, University of Reading, RG6 6AS, UK 
+9 
+2Royal Horticultural Society, Plant Sciences Department, Garden Wisley, Woking GU23 6QB, UK 
+10 
+3Department of Geography and Environmental Science, School of Archaeology, Geography and 
+11 
+Environmental Science; University of Reading, Whiteknights, RG6 6AB, UK  
+12 
+4Department of Landscape, University of Sheffield, S10 2TN, UK 
+13 
+ 
+14 
+*author for correspondence: tijanablanusa@rhs.org.uk 
+15 
+#Current address: Urban Forest Research Group, Centre for Sustainable Forestry and Climate Change, 
+16 
+Forest Research, Alice Holt Lodge, Farnham, GU10 4LH, UK 
+17 
+18 
+
+ 
+ 
+ 
+2 
+ 
+ 
+ 
+Abstract 
+19 
+Green roof plants can reduce local air temperatures and heat load to a building in the summer, 
+20 
+improving thermal comfort of residents. Little is known, however, about how different plants compare 
+21 
+in their potential to provide these two ecosystem services. Consequently, this study investigated 
+22 
+whether some plants can offer more potential summertime environmental cooling and substrate 
+23 
+insulation than others. Over two summers (2012/2013), canopies of two succulent and four broad-
+24 
+leaved plant genotypes, with contrasting plant traits, were monitored alongside bare substrate in 
+25 
+Reading, UK. Plants were studied outdoors within small plots (1.5 x 1.5 x 0.1 m). Continuous 
+26 
+monitoring took place during warm days and nights and included variables (leaf surface temperatures) 
+27 
+and fluxes (long-wave radiation, sensible heat flux and transpiration) that are indicative of cooling 
+28 
+potential. The strength of substrate insulation was estimated by comparing the ground heat flux below 
+29 
+the canopies to that of the bare substrate. Plant traits (leaf colour or thickness), structural parameters 
+30 
+(height and leaf area index, LAI), radiative properties (albedo and emissivity), and stomatal 
+31 
+conductance were also measured to help explain the differences in cooling potential among the 
+32 
+species. Non-succulent canopies, in particular light-coloured ones, with high leaf stomatal 
+33 
+conductance and high LAI provided maximum potential for substrate insulation and environmental 
+34 
+cooling in hot periods, particularly compared to bare substrate and thick-leaved succulents. These 
+35 
+results suggest that succulent plants are not best suited to provide significant summertime 
+36 
+environmental cooling and substrate insulation and that others (e.g. Salvia and Stachys) might be 
+37 
+preferable where the delivery of these benefits is a priority. Our findings highlight that, in addition to 
+38 
+survival, aesthetics and cost, the plants’ ability to deliver a range of ecosystem services should be 
+39 
+considered in the plant selection/green roof planning process. 
+40 
+ 
+41 
+Keywords 
+42 
+Green roofs; Plant traits; Salvia; Sedum; Surface energy balance 
+43 
+
+ 
+ 
+ 
+3 
+ 
+ 
+ 
+Highlights 
+44 
+ 
+Plant canopy traits strongly affect cooling and insulation by roof substrates.   
+45 
+ 
+Salvia and Stachys potentially provide superior summer cooling/substrate insulation. 
+46 
+ 
+Thick-leaved succulents do not offer more summer cooling/insulation than bare soil. 
+47 
+ 
+Dark-leaved plants offered good substrate insulation, but not aerial cooling potential. 
+48 
+
+ 
+ 
+ 
+4 
+ 
+ 
+ 
+1. Introduction 
+49 
+Urban landscapes are typically warmer than adjacent rural areas [1]. This phenomenon, (the urban 
+50 
+heat island, UHI), is partly due to anthropogenic activities which generate heat that becomes trapped 
+51 
+within the urban fabric. It is also due to a widespread use of impervious materials, which alter the 
+52 
+thermal and radiative properties of the land surface, significantly influencing the surface energy 
+53 
+balance [2,3]. In urbanised areas, latent heat flux (i.e. evapotranspiration) is thus reduced compared to 
+54 
+more rural, vegetated areas, while heat storage and the resulting re-emission of heat as long-wave 
+55 
+radiation or sensible heat are increased. The heat absorbed, stored and re-released as long-wave 
+56 
+radiation by the urban fabric to the atmosphere can also be intercepted by air pollutants and redirected 
+57 
+back to the urban environment, contributing to further warming [3].  
+58 
+The UHI generally has a negative impact on human thermal comfort and health, and this impact is 
+59 
+predicted to increase due to a warming climate. For example, by the 2080s, mean summertime 
+60 
+maximum air temperatures in southern England are estimated to rise by an average of 5.4oC, 
+61 
+compared to 1961-1990 [4]. Heat wave events, which amplify human mortality rates, are also 
+62 
+expected to increase in intensity, duration and frequency [5]. Residents in urban areas will be 
+63 
+particularly susceptible to such events, owing to the already enhanced temperatures associated with 
+64 
+the UHI effect.  
+65 
+Plants in cities have an important role in reducing local summertime air temperatures and can mitigate 
+66 
+local UHI [6–9]. However, the area available in highly urbanised cities for green infrastructure 
+67 
+expansion is scarce. Roofs can occupy around 30% of the horizontal surface within a city [10], 
+68 
+making them prime spaces to be vegetated. In addition to being able to reduce local air temperatures 
+69 
+[11], plants on roofs (i.e. green roofs) can further reduce the energy load to the buildings during the 
+70 
+day in summer, thereby leading to a reduced reliance on artificial air conditioning, thus saving energy 
+71 
+[12,13].  
+72 
+Such ecosystem services (i.e. both in terms of summertime air temperature regulation and the plants’ 
+73 
+ability to reduce the summertime conductive heat load, thus increasing the insulation of the rooftop) 
+74 
+can be provided by a variety of mechanisms. Plants hold, and can subsequently release, relatively 
+75 
+
+ 
+ 
+ 
+5 
+ 
+ 
+ 
+large volumes of water. The vapourisation of liquid water consumes about 2450 J per g of water [14]. 
+76 
+This latent energy is retained in the water molecules that exit through the leaf stomata [15], allowing 
+77 
+radiation absorbed by well-watered plants to dissipate without an increase in air temperature within 
+78 
+the immediate environment. Plants on roofs may also absorb less heat than bare roof surfaces [12], 
+79 
+due to higher reflectance, at least compared to dark surface materials such as bitumen or slate. 
+80 
+Additionally, plants in urban areas partially absorb the long-wave energy re-emitted by the adjacent 
+81 
+built surfaces [16] as well as shade a built surface [17]. Thus, when placed on roofs they can reduce 
+82 
+the radiation received by the roof surface. A model simulating the thermal behaviour of green roofs 
+83 
+when several parameters, including LAI, were manipulated, found that an increase in LAI from 2 to 5 
+84 
+led to a decrease of almost 250 W m-2 in solar radiation transmitted to the roof surface [18]. When 
+85 
+combined, these features lead to green roofs (consisting of the canopy and the below-canopy rooftop) 
+86 
+being considerably cooler in the summer than their non-green counterparts. This will result in a 
+87 
+decrease in the heat conducted to the inner parts of the building, but also reduces the release of 
+88 
+sensible heat and long-wave radiation by the roof, thereby decreasing the extent of warming to the 
+89 
+wider urban environment.  
+90 
+While plants differ in their surface temperature when compared to inert roof materials, variations in 
+91 
+leaf characteristics and canopy structure, substrate factors and physiological traits can vary the 
+92 
+thermal properties of canopies associated with different species. Leaf temperature is strongly 
+93 
+influenced by substrate moisture content and leaf stomatal conductance [19,20]. Morphological traits 
+94 
+such as leaf colour, thickness and pubescence also influence leaf temperature [20,21]. 
+95 
+Many green roofs are planted with succulents such as Sedum, as they tolerate the dry conditions 
+96 
+common on extensive green roofs [22,23]. However if sustainable irrigation was possible, other low-
+97 
+growing plants with higher water requirements could survive too [24]. More water-demanding plants, 
+98 
+if possessing the ‘right’ traits, could potentially generate greater environmental cooling and substrate 
+99 
+insulation in the summer than succulents. A previous study within a Mediterranean climate, however, 
+100 
+could not justify the use of green roofs (with succulent, grass, perennial or small shrub covering) 
+101 
+solely on the basis of beneficial cooling effects, particularly taking into account the water use and 
+102 
+
+ 
+ 
+ 
+6 
+ 
+ 
+ 
+associated costs [25]. In contrast though, in climates where natural precipitation is higher and evenly 
+103 
+distributed over the seasons, the economic benefits of using more water-demanding plants (in terms of 
+104 
+reduced air conditioning, for example) may outweigh costs linked to supplementary irrigation. 
+105 
+Despite preliminary evaluations on how different roof plant communities affect the surrounding 
+106 
+environment and the thermal performance of a roof [26–29], there is still a lack of knowledge on how 
+107 
+key plant traits influence the energy balance of the combined substrate/vegetation layer and the 
+108 
+implications for using different plants to provide direct cooling or insulation services.  
+109 
+The main aim of this research was to determine the extent to which plant genotype affects the 
+110 
+thermodynamic properties of the substrate-vegetation system during summer. A range of plants 
+111 
+potential useful for green roof situations, were evaluated within the context of the UK’s temperate 
+112 
+maritime climate. This study deliberately does not account for any factors (e.g. roof/building material, 
+113 
+roof orientation, building energy efficiency etc.) that may influence the cooling attributes of green 
+114 
+roofs per se. Such an experimental set-up would struggle to be comprehensive and would be too 
+115 
+complicated from an in-depth monitoring point of view, thereby limiting the amount, and potentially 
+116 
+compromising the quality, of the micrometeorological and plant physiological data. To achieve our 
+117 
+aim, six genotypes (two succulent and four broad-leaved) with contrasting leaf stomatal conductance 
+118 
+rates and variations in leaf colour, pubescence or thickness were selected. Canopies were compared 
+119 
+over two summers with regards to their surface temperatures, outgoing long-wave radiation, and their 
+120 
+surface energy balance (net radiation and turbulent heat fluxes, as well as substrate heat flux). 
+121 
+Additional comparisons were made with bare substrate (i.e. non-vegetated plots), which acted as an 
+122 
+experimental control.  
+123 
+Improved understanding of the combined effect of these traits will allow urban planners, architects 
+124 
+and green roof professionals to base their future choice of plants not only on genotypes’ survival and 
+125 
+aesthetical value, but also on their ability to maximise important ecosystem services.  
+126 
+[Insert Nomenclature list] 
+127 
+
+ 
+ 
+ 
+7 
+ 
+ 
+ 
+2. Materials and Methods 
+128 
+2.1. Plant material 
+129 
+All plants in the experiment were herbaceous/sub-shrub forms (Figure 1) with potential to be 
+130 
+integrated in green roofs, particularly if additional irrigation is provided during times of prolonged 
+131 
+water deficit. These were (with key leaf characteristics in parenthesis): 
+132 
+ 
+Heuchera ‘Obsidian’ (non-pubescent, purple)  
+133 
+ 
+Heuchera ‘Electra’ (non-pubescent, yellow) 
+134 
+ 
+Salvia officinalis ‘Berggarten’ (pubescent with grey-green hue) 
+135 
+ 
+Stachys byzantina (pubescent with pale grey hue) 
+136 
+ 
+Sempervivum ‘Reinhard’ (non-pubescent, succulent, light to dark green hue) 
+137 
+ 
+Sedum mix (a mat of Sedum species used as an industry standard; non-pubescent, succulent 
+138 
+leaves, light-green hue).  
+139 
+Individual plants were either propagated in-house or acquired from UK nurseries, as plugs or 9 cm 
+140 
+potted plants. Sedum mix was acquired as a green roof mat from a commercial supplier (Q lawns, 
+141 
+Hockwold-cum-Wilton, UK). Non-succulent plants were replanted into 2 L containers to aid further 
+142 
+establishment, at least one month before being planted into the experimental plots.  
+143 
+[Insert Figure 1] 
+144 
+2.2. Experimental setup 
+145 
+Experiments were carried out in the summers of 2012 (24 July to 21 September) and 2013 (15 July to 
+146 
+31 August), on the outdoor experimental grounds at the University of Reading (UK). In 2012, 
+147 
+fourteen timber frames were constructed (1.5 x 1.5 x 0.1 m) and positioned 1.1 m apart. These were 
+148 
+placed in an open space at ground level rather than on top of building roofs to minimise any ancillary 
+149 
+thermal effects due to building function and infrastructure (parapets, air cooling vents, chimney flues, 
+150 
+etc.) and for ease of access. All frames were lined with polyethylene pond liner and filled with a 0.1 m 
+151 
+layer of John Innes compost No. 2. Field capacity and permanent wilting point of a similar substrate 
+152 
+were respectively measured at 0.32 and 0.07 g g-1  [30]; equivalent to 0.42 and 0.09 m3 m-3 when 
+153 
+
+ 
+ 
+ 
+8 
+ 
+ 
+ 
+assuming a substrate bulk density of 1.3 g cm-3, an average of values presented for soils and composts 
+154 
+with comparable compositions [31,32]. Each treatment was replicated twice, i.e. two ‘mono-culture’ 
+155 
+plots of each genotype. Plant genotypes were randomly allocated to the plots and planted at least 10 
+156 
+days before measurements started, to achieve 100% of coverage (or in the case of Sempervivum 80%, 
+157 
+due to the small size of the plants). The Sedum mix mat was cut to fit the plot with the underneath 
+158 
+membrane removed, to ensure direct contact with the substrate. 
+159 
+Two of the frames were left with just bare substrate so that plant canopies could be compared to an 
+160 
+unplanted ‘control’ surface. A layer of bare substrate was used instead of a rigid inert surface, as it has 
+161 
+similar hydraulic (i.e. in relation to water retention and transfer) and thermal properties to the 
+162 
+substrate layers located below the plant canopies.  
+163 
+In 2013, two additional timber frames were constructed and a new treatment was added. These vacant 
+164 
+plots were planted with shorter specimens of Salvia, where shoot tips were pinched out to promote a 
+165 
+bushier, lower habit. Consequently, in 2013, Salvias planted in that year were approximately half the 
+166 
+height of Salvias planted in 2012; these treatments were used to assess the effect of canopy height on 
+167 
+the variables studied. 
+168 
+Plots and surrounding areas were kept weed free, and any emerging flower heads removed from the 
+169 
+plants to ensure that only the leaf canopy effect was accounted for (flower heads only accounted for a 
+170 
+very small area).   
+171 
+Environmental and temperature measurements, described in Table 1, represent mean values over a 10 
+172 
+minute period (averaged from measurements made every 10 seconds). Sensors (full list in Table 1) 
+173 
+were attached to DL2e loggers (Delta-T Devices Ltd., Cambridge, UK) and a DataHog2 logger (Skye 
+174 
+Instruments Ltd., Llandrindod Wells, UK), which were covered by well-ventilated white plastic boxes 
+175 
+to protect from intense radiation. In addition, incoming long-wave radiation (Li) and wind speed (Uz,) 
+176 
+at 2 m from the ground were monitored at the University’s meteorological station, located 600 m from 
+177 
+the experimental plots. 
+178 
+Leaf temperature, Ts, was measured using thermocouples (Table 1, Figure 2) attached to the underside 
+179 
+of individual leaves mostly with a plastic paper clip [33] thus ensuring the thermocouple was located 
+180 
+
+ 
+ 
+ 
+9 
+ 
+ 
+ 
+within the leaf boundary layer (i.e. the air layer in contact with the leaf surface). For succulent and 
+181 
+Stachys leaves, which are small or easily broken, thermocouples were attached by threading [34]. In 
+182 
+all cases, selected leaves were young, exposed and fully expanded, and located in the upper layer of 
+183 
+the canopy. In 2013, plant coverage of yellow Heuchera was reduced to < 50% due to winter losses, 
+184 
+thus one of the thermocouples within each plot with yellow Heuchera was used to measure leaf 
+185 
+temperature whilst the other was used to measure substrate temperature.  
+186 
+Thermocouples and thermistors were calibrated at the start of each experimental season in a hot water 
+187 
+bath and were measuring within 0.30oC of each other.  
+188 
+The instantaneous measurements of plant and substrate parameters/variables carried out over the 
+189 
+course of the experiment (i.e. substrate moisture, SMC; leaf stomatal conductance, gs; albedo, Į; 
+190 
+spectral reflectance; leaf area index, LAI and canopy height, h) are described in Table 2 (also see 
+191 
+Figure 2). In addition to the discrete measurements (Table 2), SMC was also continuously recorded 
+192 
+hourly on four randomly selected plots, with SM200 sensors (Delta-T Devices Ltd., Cambridge, UK). 
+193 
+Both the discrete and continuous SMC measurements were used to estimate continuous SMC 
+194 
+variations in each treatment, information needed to estimate substrate heat flux and to guide irrigation 
+195 
+requirements. 
+196 
+Leaf emissivity, İ, which plays an important role in net radiation calculation via the outgoing long-
+197 
+wave radiation term, was determined in a laboratory test in 2012. Four leaves from each genotype 
+198 
+were evaluated, except for Sempervivum where the shape of its leaves prohibited the measurement. 
+199 
+For each leaf, İ was calculated based on the temperatures extracted from a thermal image, recorded 
+200 
+with an infrared imaging camera FLIR i5 (FLIR Systems UK, West Malling, UK) whilst the leaf was 
+201 
+floating in a well-stirred water bath [35]. In all cases, İ was around 0.97. The fact that all leaf 
+202 
+emissivities were similar suggests that any differences in Ts between genotypes which we 
+203 
+subsequently determined were caused by differences in Į, gs and/or leaf traits that affect aerodynamic 
+204 
+transfer.  
+205 
+[Insert Table 1, Table 2 and Figure 2] 
+206 
+
+ 
+ 
+ 
+10 
+ 
+ 
+ 
+2.3. Watering requirements 
+207 
+In both summers, all plots, including the bare ones, were manually irrigated whenever a plot’s mean 
+208 
+SMC fell below 0.15 m3 m-3. Water applied was adjusted so that mean SMC after irrigation was 
+209 
+around 0.32 m3 m-3. Salvia received the highest irrigation water quantity in both years and 
+210 
+Sempervivum the lowest. The total water received by the canopies in 2013 (quantities given are a 
+211 
+combination of both precipitation and supplementary watering) was approximately: 134 L/m2 for 
+212 
+Salvia planted in 2012, 127 L/m2 for Salvia planted in 2013, 126 L/m2 for purple Heuchera, 105 L/m2 
+213 
+for Stachys, 99 L/m2 for Sedum, 93 L/m2 for yellow Heuchera (in plots partially covered) and 77 L/m2 
+214 
+for Sempervivum. 
+215 
+When plots were irrigated, the soil around their frame was also irrigated to reduce micro-scale 
+216 
+advection typical of small-sized plot design experiments surrounded by soil with different moisture 
+217 
+concentrations [36].  
+218 
+2.4. Calculation of the outgoing long-wave radiation and surface energy balance 
+219 
+Net radiation, outgoing long-wave radiation and heat fluxes were calculated for every 10 minutes and 
+220 
+averaged hourly. Net radiation, Rn, was calculated as: 
+221 
+Rn = Si + Li - So - Lo,  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (1)  
+222 
+where Si and Li are the short-wave and long-wave radiation received by the surface, and So and Lo are 
+223 
+the short-wave and long-wave radiation reflected and emitted by the surface.  
+224 
+At night, So was assumed to be 0 W m-2.  
+225 
+Continuous daytime So values were not available, but representative estimates of albedo, Į, were 
+226 
+obtained (see Table 2) to derive So. Using these data, between 10:00-16:00 h, So was calculated as: 
+227 
+So  = Į Si  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (2) 
+228 
+Between 06:00-10:00 h and 16:00-20:00 h, Į was either assumed to be equal to the mean Į values 
+229 
+between 10:00-16:00 h (when mean Si < 200 W m2), or assumed to increase linearly with a decreasing 
+230 
+sun angle (when mean Si > 200 W m2 ) [37]. Based on values presented by Monteith and Szeicz [37], 
+231 
+during sunny periods, maximum Į (at 06:00 or 20:00 h) was set to a value that was 0.05 higher than 
+232 
+the mean Į for the period between 10:00-16:00 h for canopies, or to 0.03 for bare substrate. 
+233 
+
+ 
+ 
+ 
+11 
+ 
+ 
+ 
+Lo was calculated according to Stefan-Boltzmann’s law: 
+234 
+Lo =  İ ı (Ts)4 + (1 – İ) Li , 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  (3)                                          
+235 
+where ı is the Stefan-Boltzmann constant. Ts, the mean leaf/surface temperature of each plot, was 
+236 
+calculated as the mean of temperatures measured by the thermocouples and İ was assumed to be on 
+237 
+average 0.95 for the bare substrate (based on the ranges presented for bare soils by Rubio et al. [38]), 
+238 
+0.97 for canopies with LAI > 1, as measured, and 0.96 for canopies with LAI < 1. 
+239 
+Sensible heat flux, H, was calculated as:  
+240 
+,  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+               (4)  
+241 
+where Ta is the air temperature recorded at 2 m from the ground, ȡa is the air density, Cp is the air 
+242 
+specific heat and ra is the aerodynamic resistance, calculated as: 
+243 
+,          
+ 
+ 
+ 
+ 
+ 
+ 
+  
+  (5)                           
+244 
+where z is the height of wind and temperature measurements, d is the zero plane displacement height, 
+245 
+zom is the surface roughness length for momentum transfer, zoh is the surface roughness length for heat 
+246 
+and vapour transfer, k is the von Karman’s constant (0.41) and Uz is the wind speed. In this equation 
+247 
+the effect of atmospheric stability has been neglected as this effect is relatively small.  
+248 
+Roughness parameters d, zom and zoh were calculated as a function of surface cover height:  
+249 
+d = 2/3 h 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (6) 
+250 
+zom = 0.123 h 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (7)  
+251 
+zoh = 0.1 zom         
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ (8)   
+252 
+The height of bare substrate was set to 0.01 m, leading to a zom for bare substrate of 0.001 m [39]. 
+253 
+Substrate heat flux, G, was estimated by Fourier’s law:  
+254 
+,   
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+               (9) 
+255 
+here ∆T is the substrate temperature difference between two depths (at 0.01 m and 0.06 m) and ∆z is 
+256 
+the distance between those two depths. The substrate thermal conductivity, , was calculated based on 
+257 
+the assumed value of substrate bulk density, the quartz content and the estimated continuous SMC, as 
+258 
+
+ 
+ 
+ 
+12 
+ 
+ 
+ 
+per Lu et al. [32]. Using Eq. 9 with substrate temperatures measured at 0.01 m and 0.06 m means that 
+259 
+the heat stored in the first 0.01 m of substrate was not accounted for. Calculating this storage would 
+260 
+require an estimate of heat capacity, Ch, but SMC (required to calculate Ch) in such a thin layer cannot 
+261 
+be easily determined. Alternatively one could use substrate temperature at 0 m (i.e. the substrate 
+262 
+surface temperature) to calculate the temperature difference in Eq. 9, but this variable was only 
+263 
+measured in uncovered (bare) plots. However, this storage term was assumed to be relatively small, in 
+264 
+particular below vegetation. Furthermore, the plots, albeit lined with polyethylene membranes, were 
+265 
+not thermally insulated from the ground below them. Thermistors were placed at 0.06 m from the 
+266 
+substrate surface (and 0.04 m from the membranes) to reduce the influence that the heat flux from the 
+267 
+ground below may have had on the calculated G. We use G to assess substrate insulation potential of 
+268 
+the green roof plant species. We define substrate insulation potential as the reduction in (surface) 
+269 
+ground heat flux by vegetation cover compared to bare substrate. 
+270 
+Latent heat flux, LE, was calculated as the residual of the energy balance: 
+271 
+ LE = Rn - H - G  
+ 
+ 
+ 
+ 
+ 
+ 
+                                   (10) 
+272 
+With these calculations, any advection and storage of heat in the canopy biomass and within the 
+273 
+canopy air that might have occurred were embedded in the LE and H heat fluxes terms. 
+274 
+2.5. Statistical analysis  
+275 
+Statistical analysis was performed with GenStat 16th Edition (VSN International Ltd., Hemel 
+276 
+Hempstead, UK). Differences in gs within a season were assessed with analysis of variance 
+277 
+(ANOVA), on the basis of the least significant difference (LSD; 5% level). Two contrasting groups of 
+278 
+data (i.e. day and night) were selected for the analysis of differences in calculated Ts, Lo, Rn and heat 
+279 
+fluxes: i). ten (2012)/nine (2013) rain-free days with Tmax > 24oC and ii). ten rain-free nights with Tmin 
+280 
+> 12oC. For daytime data, the statistical analysis was only performed over intervals of four hours, 
+281 
+when differences between treatments reached their maximum: i.e. between 12:00-16:00 h for Ts and Lo 
+282 
+or 11:00-15:00 h for Rn and heat fluxes. For the night periods, differences were statistically analysed 
+283 
+between 20:00-24:00 h, when the effect of the UHI is highest [1].  
+284 
+
+ 
+ 
+ 
+13 
+ 
+ 
+ 
+Data from each selected group/period were analysed using residual maximum likelihood (REML) 
+285 
+analysis. All p-values presented in this paper were extracted from each REML analysis and an 
+286 
+estimated LSD, as per Andrist-Rangel et al. [40], was used to assess treatment differences. As means 
+287 
+considered were based on a number of days (and hours within a day), this should have mostly reduced 
+288 
+errors associated with the measurements/calculations.  
+289 
+3. Results 
+290 
+3.1. Environmental and substrate moisture content (SMC) conditions 
+291 
+For the period in which data collection coincided in both seasons (24 July to 31 August) mean daily 
+292 
+Tmax/Tmin in 2012 and 2013 were 22.5oC/12.6oC and 23.1oC/13.2oC, respectively. Temperatures for the 
+293 
+first thirteen days of the experimental season in 2013 were, however, part of heatwave-like weather 
+294 
+experienced in the UK in July 2013 (mean daily Tmax/Tmin for that period were 27.6oC/15.2oC).  
+295 
+Despite Sempervivum’s plots receiving the lowest amount of water, their SMC was generally the 
+296 
+highest (as a result of their low transpiration), particularly in 2013, where Sempervivum’s SMC was 
+297 
+mostly ≥ 0.30 m3 m-3. For the remaining treatments, mean SMC varied between 0.15-0.32 m3 m-3, in 
+298 
+both years (data not shown). 
+299 
+3.2. Plant structure 
+300 
+Of the genotypes tested, Salvia planted in 2012 was the tallest (Table 3) with a high LAI recorded in 
+301 
+both years. The specimens of this species planted in 2013 were shorter, but also had relatively high 
+302 
+LAI values. Sempervivum and Sedum had the shortest stature with relatively low LAI, although the 
+303 
+LAI of Sempervivum increased between the two years (Table 3). In contrast, both Stachys and yellow 
+304 
+Heuchera plots had lower LAI in the second year compared to the first. In plots with yellow 
+305 
+Heuchera, the LAI reduction between 2012 and 2013 was particularly dramatic; this was due to many 
+306 
+plants perishing during winter. By 2013, the yellow Heuchera plots had the lowest LAI (Table 3). 
+307 
+
+ 
+ 
+ 
+14 
+ 
+ 
+ 
+3.3.  Short-wave reflectance (albedo, Į, and spectral reflectance) 
+308 
+The Į of most plant plots remained unaltered throughout the two-year period (Table 3). There was, 
+309 
+however, a marked reduction in Į of yellow Heuchera plots, with its 2012 value of 0.27 falling to 0.14 
+310 
+in 2013. Again, this is the result of the severe reduction in plant cover, which left bare substrate, with 
+311 
+its lower Į, in particular when wet, exposed. The Į of Sempervivum plots was also slightly altered 
+312 
+from 2012 to 2013, increasing from 0.14 to 0.17 (Table 3), as in 2013 Sempervivum plants were 
+313 
+covering the substrate fully. In uncovered plots, the average Į was lower in 2012 than in 2013 (Table 
+314 
+3), probably due to small SMC differences during the days when Į was measured. 
+315 
+An evaluation of spectral reflectance (in the short-wave spectrum) in 2012 showed that the yellow 
+316 
+Heuchera plants reflected more radiation than other canopies in the visible wavelengths whilst the 
+317 
+purple Heuchera plants reflected less (400-700 nm; Figure 3). At longer wavelengths (700 to 1250 
+318 
+nm; the near infrared region), reflectance was generally greater; differences between genotypes were 
+319 
+more spread in these wavelengths than in the visible spectrum, where only Heucheras plants had 
+320 
+different reflectance (Figure 3). Bare substrate on average reflected less radiation than the plants 
+321 
+throughout most of the short-wave spectrum; however, in the visible part of the spectrum, bare 
+322 
+substrate reflected more than purple Heuchera plants.  
+323 
+[Insert Table 3 and Figure 3] 
+324 
+3.4. Leaf stomatal conductance (gs) 
+325 
+Salvia had the highest mean gs values, with the new Salvia treatment planted in 2013 having a similar 
+326 
+mean gs to that of Salvia planted in 2012. Sedum had the lowest gs (p<0.001), with mean values 
+327 
+differing by 249 mmol m-2 s-1 in 2012 and 185 mmol m-2 s-1 in 2013 from those of Salvia planted in 
+328 
+2012 (Figure 4). Due to time restrictions, the number of gs measurements executed in 2013 was 
+329 
+substantially lower than in 2012, this might have contributed (along with differences in the stages of 
+330 
+plant maturity or differences in the environmental conditions at the time of measuring) to most 
+331 
+treatments having slightly lower mean gs values in 2013 than in 2012. Despite this, the order of 
+332 
+magnitude of the mean gs for the five species has not changed between the two years (Figure 4). 
+333 
+[Insert Figure 4] 
+334 
+
+ 
+ 
+ 
+15 
+ 
+ 
+ 
+3.5. Surface temperature (Ts) and outgoing long-wave radiation (Lo) 
+335 
+Ts and related Lo in 2012 and 2013 are presented in Figure 5 (showing days with Tmax > 24oC, when 
+336 
+the differences in Ts and Lo were greatest). During the day, particularly between 12:00-16:00 h, plots 
+337 
+with Salvia or Stachys had the lowest Ts, and Lo, whereas plots with Sempervivum or bare substrate 
+338 
+had the highest (p>0.001); differences between mean values during that period reached up to 10oC 
+339 
+and 12% (or ~65 W m-2) for Ts and Lo, respectively. Values for Ts, and related values for Lo, of purple 
+340 
+Heuchera and Sedum were generally in-between the values of the other four treatments. The 
+341 
+differences between mean Ts and Lo for purple Heuchera or Sedum plots and those with Salvia 
+342 
+reached up to 5oC and 6% (or ~30 W m-2), respectively. In 2012, Ts and Lo values for yellow 
+343 
+Heuchera plots were similar to those obtained for Salvia and Stachys plots (Figures 5a and c). In 
+344 
+contrast, in 2013 after the loss of many of the yellow Heuchera plants, mean Ts and Lo in yellow 
+345 
+Heuchera plots between 12:00-16:00 h were up by 4oC and 5% (or ~25 W m-2), respectively, 
+346 
+compared to plots with Salvia and Stachys (Figures 5b and d).  
+347 
+Between 20:00-24:00 h, differences in Ts and Lo among treatments, while statistically significant in 
+348 
+2013 (p<0.001, data not shown), were within 2oC or ~10 W m-2. As expected, as a result of a lack of 
+349 
+short-wave radiation and transpiration during night-time, Ts and Lo differences between the species 
+350 
+were much smaller than during the day. Similar behaviour should be observed for these plants if they 
+351 
+were installed on green roofs. 
+352 
+3.6. Energy balance 
+353 
+3.6.1. Net radiation (Rn) 
+354 
+Differences in Rn between treatments were generally less pronounced than the Lo differences. This 
+355 
+was due to the small Į differences between most plant treatments (Table 3), which resulted in small 
+356 
+differences in So (data not shown), that counterbalanced the Lo differences. In 2012, Rn differences 
+357 
+between treatments were not significant (p=0.137, Figure 6a). In contrast, in 2013, Rn differences 
+358 
+were larger between 11:00-15:00 h, with Sempervivum plots having significantly lower mean Rn 
+359 
+(11%) than plots with Stachys and Sedum (p<0.001, Figure 6b).  
+360 
+
+ 
+ 
+ 
+16 
+ 
+ 
+ 
+3.6.2. Sensible heat flux (H) 
+361 
+Despite clear differences between most curves being visible in Figs 6c and 6d, treatments had no 
+362 
+overall significant effect on H between 11:00-15:00 h in 2012 (p=0.308, Figure 6c). However,  H 
+363 
+differences were statistically significant in 2013 (p<0.001, Figure 6d). Stachys and Salvia had lowest 
+364 
+H values during daylight hours, whereas Sempervivum and purple Heuchera had the highest. 
+365 
+3.6.3. Substrate heat flux (G) and substrate insulation potential 
+366 
+Between 11:00-15:00 h, G was significantly different between treatments for both years (p<0.001, 
+367 
+Figures 6e and f). Greatest G values were associated with the bare substrate. During 2013 (Figure 6f), 
+368 
+the plots with yellow Heuchera, Sempervivum and Sedum had high daytime G, in comparison to plots 
+369 
+covered by other canopies. Therefore, in terms of substrate insulation potential, which we defined as 
+370 
+the reduction in (surface) ground heat flux by vegetation cover compared to bare substrate, Heuchera, 
+371 
+Sempervivum and Sedum had the lowest potential and the other (non-succulent) species the highest. 
+372 
+3.6.4. Latent heat flux (LE) 
+373 
+Despite noticeable differences in LE being apparent for a number of treatments between 11:00-15:00 
+374 
+h in 2012 (p=0.071, Figure 6g), they were only statistically significant in 2013 (p<0.001, Figure 6h). 
+375 
+This is largely caused by the fact that these curves are based on hourly averages for 10 (year 2012) 
+376 
+and 9 (year 2013) days, respectively, so that there will be a relatively large standard deviation (not 
+377 
+shown in plots, but influencing the p-values) for each hour, for each treatment. In 2013 in particular, 
+378 
+the overall differences in H and G between treatments led to Salvia and Stachys plots having a 
+379 
+significantly greater LE (as derived from Eq. 10) than plots with Sempervivum, bare substrate and 
+380 
+both Heucheras.  
+381 
+[Insert Figure 5] 
+382 
+3.6.5. Overall ranking in daytime energy fluxes 
+383 
+For the most part, differences between treatments tended to be more significant in 2013, reflecting 
+384 
+increased canopy maturity and hence increased substrate coverage. The exception was yellow 
+385 
+
+ 
+ 
+ 
+17 
+ 
+ 
+ 
+Heuchera, where the winter deaths of plants increased the proportion of bare substrate in the plots, 
+386 
+with subsequent effects on the plots’ thermodynamic behaviour.  
+387 
+Overall, Salvia and Stachys had proportionally low values of H and G; and conversely, high values of 
+388 
+LE. The opposite was true for bare substrate and Sempervivum. As a consequence, the partitioning of 
+389 
+Rn into the different heat fluxes differed between treatments. In 2013, for example, the amount of Rn 
+390 
+used for H, G and LE between 11:00-15:00 h in Salvia plots planted in 2012 was respectively on 
+391 
+average 0%, 3% and 96% whilst for Sempervivum plots, those percentages were respectively 25%, 
+392 
+18% and 57% (Table 4). The percentage of Rn allocated to each of the heat fluxes was intermediate in 
+393 
+Sedum and Heuchera plots. Although plots with purple Heuchera had similar H values to those with 
+394 
+Sempervivum, purple Heuchera plots had one of the lowest diurnal G in 2013. In the second year, 
+395 
+purple Heuchera plots had on average a ~65 W m-2 reduction in G, compared to Sempervivum plots 
+396 
+(Figure 6f). Consequently, in 2013, the amount of Rn used for G in plots with purple Heuchera was on 
+397 
+average 15% lower than in those with Sempervivum, and so in purple Heuchera plots, this extra 
+398 
+amount of energy received was instead mainly released as LE (Table 4). 
+399 
+In 2012, yellow Heuchera plots showed some of the lowest H and G and highest LE between 11:00-
+400 
+15:00 h, data similar to Salvia and Stachys (Figures 6c, e, g and Table 4). However, in 2013, due to 
+401 
+plant death, yellow Heuchera plots had on average ~65 W m-2 greater H and G and ~130 W m-2 lower 
+402 
+LE than plots with Salvia planted in 2012 (Figures 6d,f,h). Therefore, in 2013 the percentage of Rn 
+403 
+used for H, G and LE in yellow Heuchera plots differed on average by +14%, +15% and -29%, 
+404 
+respectively, from the percentages allocated for H, G and LE in plots with Salvia (Table 4).   
+405 
+Sedum plots, on the other hand, had in both years H and LE values that were in-between those 
+406 
+calculated for Salvia and Stachys and for Sempervivum and purple Heuchera. However, G values in 
+407 
+Sedum plots were closer to those derived for Sempervivum plots than for Salvia and Stachys plots 
+408 
+(Figures 6e and f). For example, in 2013, G between 11:00-15:00 h was on average up to ~45 W m-2 
+409 
+greater in Sedum plots than in Salvia plots. This contributed to a 9% increase in the amount of Rn used 
+410 
+for G in plots with Sedum, compared to those with Salvia planted in 2012. Accordingly, the energy 
+411 
+
+ 
+ 
+ 
+18 
+ 
+ 
+ 
+used by Sedum plots for LE was reduced on average by 20%, compared to Salvia plots in that year 
+412 
+(Table 4).  
+413 
+3.6.6. Overall ranking in night-time energy fluxes 
+ 
+414 
+At night, (20:00-24:00 h), there were no significant treatment differences in LE (p>0.152, data not 
+415 
+shown), and the absolute differences in Rn, H and G, although significant (p<0.001, data not shown) 
+416 
+were lower than those shown during the day. For nights with Tmin > 12oC, most vegetated plots, except 
+417 
+those with Sempervivum and yellow Heuchera (in 2013), were gaining more H than plots with bare 
+418 
+substrate. Furthermore, as expected, at night the upward G (i.e. heat loss) for bare substrate was 
+419 
+significantly higher than the G calculated for plots that were completely covered by canopies (hence 
+420 
+excluding yellow Heuchera in 2013). Average differences in H and G between vegetated plots and 
+421 
+bare substrate plots from 20:00-24:00 h reached ~25 W m-2 and ~45 W m-2, respectively. Average 
+422 
+differences in H and G between vegetated plots alone within the same period were smaller: ~20 W m-2 
+423 
+and ~30 W m-2, respectively.  
+424 
+ [Insert Figure 6 and Table 4] 
+425 
+4. Discussion 
+426 
+Previous studies suggest that by extending the area covered by irrigated green roofs within a city, 
+427 
+local daytime LE in the summer can be increased. Consequently, there is a reduction in both the heat 
+428 
+that is absorbed/stored within buildings and the heat that is returned to the atmosphere (as sensible 
+429 
+heat and long-wave radiation) [41,42] and hence, local air temperatures are lower. Thus, the presence 
+430 
+of rooftop vegetation provides important air temperature reduction and building insulation during 
+431 
+summer. Despite this study not being conducted at roof top level and having plots sizes smaller than 
+432 
+typical extensive green roofs, the findings are notable in that they demonstrate that certain plants have 
+433 
+the potential to offer more environmental cooling and substrate insulation than others. This challenges 
+434 
+conventional thinking on the way most green roofs are currently designed, as plants (on extensive and 
+435 
+semi-extensive roofs, with shallow occasionally irrigated substrates) are mostly selected for their 
+436 
+survival potential and not for their ability to provide valuable ecosystem services. In essence, many 
+437 
+
+ 
+ 
+ 
+19 
+ 
+ 
+ 
+existing green roofs could be underperforming with regards to insulating against incoming solar 
+438 
+radiation, and reducing air temperatures around buildings. 
+439 
+4.1. Differences in summertime environmental cooling and substrate insulation potential between 
+440 
+treatments during the warmest period of the day 
+441 
+Canopies formed by non-succulent, light-coloured plants with high gs (Figure 3) and high LAI (e.g. 
+442 
+Salvia, regardless of its canopy height, and Stachys) showed the greatest potential for daytime 
+443 
+environmental cooling. This was evident in the lowest surface temperatures, and related lowest Lo and 
+444 
+H (Figure 5 and 6) and in the highest LE values for plots with these species (Figure 6). These canopies 
+445 
+also showed the greatest potential to offer more substrate insulation in hot periods, by having the 
+446 
+lowest G (Figure 6). In contrast, succulent plants with low gs and extremely thick leaves (e.g. 
+447 
+Sempervivum) showed the lowest substrate insulation potential, and offered no environmental cooling 
+448 
+service compared to bare substrate. A thin layer of substrate can in itself offer more thermal insulation 
+449 
+to roofs than common standard roof materials [43] and has significantly lower daytime surface 
+450 
+temperatures than materials such as concrete, gravel or black membrane [11]. As such, the use of 
+451 
+plants which offer greater reduction in substrate heat flux, heat-deflecting and evapotranspiration 
+452 
+potential than bare substrate is likely to considerably improve the cooling performance of a roof 
+453 
+surface compared to conventional roof systems during the summer months. Consequently, if 
+454 
+occasional irrigation (even in climates such as that of the UK/northern Europe where summer rainfall 
+455 
+is fairly regular) is supplied such that Salvia, Stachys and species with similar traits can thrive on a 
+456 
+roof environment, then their (and similar) canopies could be ideal candidates in helping reduce the 
+457 
+heat load to buildings and perhaps the negative effects of the UHI at a local scale. Due to the small 
+458 
+size of the plots used in this study and a number of other confounding factors, including typical air 
+459 
+movement characteristics around the building envelope, the implications of these differences cannot 
+460 
+yet be assessed at the building and urban scales. However, this could be a subject for follow-on 
+461 
+empirical evaluations, where these data could be used to provide more accurate plant-based 
+462 
+parameters within existing urban heat models (see Conclusions). 
+463 
+
+ 
+ 
+ 
+20 
+ 
+ 
+ 
+The cooling and insulating properties of other canopies (Heuchera and Sedum) were intermediate. 
+464 
+The potential of the yellow-leaved Heuchera to offer the same summertime substrate insulation and 
+465 
+environmental cooling as Salvia and Stachys was evident in 2012. This was due to this genotype 
+466 
+possessing a high Į and moderate LAI and gs. This Heuchera cultivar, however, was not as resilient as 
+467 
+Salvia and Stachys, suffering tissue damage and die-back during the winter of 2012/2013, so by the 
+468 
+summer of 2013 plots were only partially covered. During 2013, plots with yellow Heuchera had 
+469 
+therefore higher Lo, H and G and lower LE than those plots covered by Salvia and Stachys, with 
+470 
+values actually approaching those of bare substrate. Plants that are poorly adapted to harsh conditions 
+471 
+should, therefore, be avoided in unprotected spaces such as rooftops, despite having traits that would 
+472 
+in theory lead to maximum environmental cooling and substrate insulation in the summer.  
+473 
+In contrast, purple Heuchera survived well in all weather conditions in our experiment. Data here 
+474 
+suggests that purple-leaved, non-succulent plants could insulate the substrate from external heat to the 
+475 
+same extent as Salvia and Stachys. G in purple Heuchera plots was similar to that in Salvia and 
+476 
+Stachys plots once plants reached a certain height (Figure 6). This was possibly because an air gap 
+477 
+was created between the lower leaves of the canopy and the substrate in 2013 [27], thereby reducing 
+478 
+the temperature gradient between leaves, substrate surface and within the substrate, i.e. the driving 
+479 
+force for G. However, plants with dark-coloured leaves are best avoided as they do not offer 
+480 
+additional environmental cooling. Although the Į of purple and green leaves was within the same 
+481 
+range in this case, the spectral reflectance showed that purple leaves absorbed more visible radiation 
+482 
+than others. There is a large amount of energy per quantum in the visible wavelengths [44], hence 
+483 
+purple Heuchera leaves were consistently absorbing more energy than green or yellow ones. This 
+484 
+contributes to greater warming of purple leaves than other non-succulent leaf types [20]. In highly 
+485 
+urbanised regions, the effect that green roofs may have on temperatures of the surrounding 
+486 
+environment (air and urban fabric) can become important. Accordingly, cultivars that offer both 
+487 
+maximum environmental cooling and minimum substrate warming in the summer should be preferred.  
+488 
+Sedum, the most commonly used plants on extensive green roofs, was shown to be less effective than 
+489 
+other plants in its environmental cooling and substrate insulation potential, with the other succulent, 
+490 
+
+ 
+ 
+ 
+21 
+ 
+ 
+ 
+Sempervivum, performing even worse. These plants are popular due to their xerophytic traits and an 
+491 
+ability to survive on very shallow substrate on green roofs without supplementary irrigation. Not 
+492 
+surprisingly, however, their characteristic small leaves, designed to minimise water loss, compromise 
+493 
+their suitability where cooling and shading are important. Although often marketed for their 
+494 
+ecosystem service potential, the results presented here indicate that, while Sedum offers a small 
+495 
+cooling/insulation benefit over bare substrate (and most likely a modestly larger benefit compared to 
+496 
+roofing material), they do not perform as well as some other plants. Particularly in terms of substrate 
+497 
+insulation potential, Salvia outperformed Sedum, as G was reduced by up to ~45 W m-2 in plots with 
+498 
+Salvia compared to plots with Sedum. Although these findings need to be confirmed at the building 
+499 
+scale, they indicate that plants such as Salvia would be better suited than Sedum carpets to be used in 
+500 
+green roofs where reducing the building heat load in the summer is a priority. 
+501 
+4.2. Main plant traits linked to cooling of the surrounding environment and substrate insulation 
+502 
+during the day 
+503 
+Lo, H and LE are dependent on surface temperatures but also influence the surface temperatures 
+504 
+themselves. Consequently, those plant traits that contribute most to lowering leaf temperatures during 
+505 
+hot periods also play the largest role in reducing the Lo and H and increasing the LE release into their 
+506 
+surroundings, hence leading to enhanced environmental cooling. Based on our findings [see also 20], 
+507 
+it can be suggested that there are a number of specific traits that are key for the reduction of heat 
+508 
+release into the environment. They include high values of gs, high LAI, light leaf colour and low 
+509 
+values of leaf thickness. Additionally, as shown by this study and by indirect evidence from other 
+510 
+studies [e.g. 29], some of these traits also ensure the largest reduction in G, and so the highest ability 
+511 
+to potentially provide summertime substrate insulation; (i) in particular high LAI, through increased 
+512 
+shading, and (ii) high gs, by reducing the energy available for G, as a result of large LE.  
+513 
+4.3. Differences in night-time cooling/insulation potential between treatments 
+514 
+Although night-time surface temperatures and heat flux differences were less pronounced than during 
+515 
+the day, surface temperatures for Salvia, Purple Heuchera and Stachys between 20:00-24:00 h were 
+516 
+
+ 
+ 
+ 
+22 
+ 
+ 
+ 
+still significantly lower than for bare substrate or Sempervivum. This indicates that the environmental 
+517 
+cooling potentially offered by canopies such as Salvia and Stachys during the day may extend to the 
+518 
+early night period. 
+519 
+In contrast, at night during the summer, bare substrate allowed more heat to be released (Figure 6e 
+520 
+and f) from the substrate layer than the majority of vegetated plots. This inevitably suggests that if the 
+521 
+canopies studied were covering a rooftop, less heat would escape the building at night under green 
+522 
+roof vegetation, leading to reduced regulation of temperatures inside the building during hot nights. 
+523 
+However, semi-extensive roofs - for which the plants we studied would be suitable - are more likely 
+524 
+to be deployed on commercial buildings, where daytime temperatures are the main issue. We 
+525 
+therefore argue that there is an overall summer insulation benefit to using vegetation. 
+526 
+4.4. Research limitations 
+527 
+The heat fluxes calculated within this study, particularly LE which was derived from other 
+528 
+estimations, may be subject to errors linked to the data collection or the assumptions made during the 
+529 
+calculations. A potential shortcoming of the results we reported may be linked with the fact that an 
+530 
+explicit advective term (i.e. characterized by the horizontal divergence of H, when H is negative and 
+531 
+large enough that a downward H is produced at the ground during the daytime [36,45]) was not 
+532 
+included in the energy balance calculations. Instead, advection is implicitly embedded in the LE 
+533 
+estimation. To test whether the relative differences among the latent fluxes for the different plant 
+534 
+species would remain once an advective term was taken into consideration, further calculations were 
+535 
+carried out based on the (micro) advection theory and equations provided in [36] (data not shown). 
+536 
+Comparisons between both LE estimations revealed some differences in the absolute flux values but 
+537 
+not in the ranking of Salvia, Stachys and Sedum (Sempervivum and bare substrate were excluded as 
+538 
+we did not have surface resistances required to calculate the advective LE term).  
+539 
+Another point to consider is the fact that air will gradually change its properties to achieve a new 
+540 
+equilibrium when flowing over a (vegetated) surface, and so non-equilibrium conditions were likely 
+541 
+for our small experimental surfaces. Furthermore, small plots such as the ones used here are prone to 
+542 
+edge effects [46]. If the air arriving at the edge of the plot is drier and warmer than the air that would 
+543 
+
+ 
+ 
+ 
+23 
+ 
+ 
+ 
+be in equilibrium with a similarly vegetated plot of sufficient size, then the horizontal transport of heat 
+544 
+may overwhelm any local effects of evaporative cooling. Energy exchanges identified in small plots 
+545 
+may not therefore be entirely representative of those observed in real life situations [36]. 
+546 
+Other potential sources of error lay with the measurements themselves. One example is seen in the 
+547 
+wind speed measurements, used in the estimation of H via ra. Here wind speed values from the 
+548 
+University of Reading’s registered meteorological station (approx. 600 m away from the experimental 
+549 
+plots) were used, rather than the data from the somewhat less sophisticated weather station at the 
+550 
+experimental plots. The University meteorological station is located in a more exposed area than the 
+551 
+experimental plots, so although wind speeds at both sites were broadly in agreement, wind speeds at 
+552 
+the meteorological station were slightly higher. Any errors due to an overestimation of wind speed 
+553 
+were, however, equally applied to all treatments. In addition, any inaccuracies in other measurements 
+554 
+due to limited instrument precision may also have resulted in other slight under/overestimations. 
+555 
+Errors in the calculations, due to an error in the measurement of variables such as Ta, Li and Si should 
+556 
+also be similar for all treatments. The errors linked to temperature measurements made with different 
+557 
+individual thermocouples attached to leaves or substrate surface and thermistors placed within the 
+558 
+substrate layer could indeed have influenced the relative differences in fluxes found, as the 
+559 
+temperatures measured by the sensors could have differed by up to 0.3oC (based on the identified 
+560 
+precision error). However, we suggest that the overall differences in surface temperatures and fluxes 
+561 
+between treatments were large enough to indicate that different canopies will have different substrate 
+562 
+insulation and environmental cooling ability. 
+563 
+We therefore argue that although most limitations we outlined will have had some influence on the 
+564 
+absolute flux values, they did not change the relative differences between treatments on which our 
+565 
+conclusions are based.  
+566 
+5. Conclusions 
+567 
+Climate change predictions suggest that heat waves will increase in frequency and intensity in the 
+568 
+future, so the summertime temperature regulation provided by plants on green roofs, and indeed 
+569 
+elsewhere, green walls, street trees etc. [47], will become increasingly valuable. This study indicates 
+570 
+
+ 
+ 
+ 
+24 
+ 
+ 
+ 
+that different types of plants significantly differ in their cooling and insulation benefits during hot 
+571 
+periods, when it is most needed. Our results suggest that plants such as Salvia and Stachys, which 
+572 
+possess key traits required for a reduction in Lo, H and G and an increase in LE (i.e. have typically 
+573 
+high gs when sufficiently watered, high LAI, leaves with light leaf colour and reflective, and thin 
+574 
+leaves) may have an important role to play a role in cooling the surrounding environment and 
+575 
+improving the daytime thermal insulation of buildings in the summer, and thus should be given more 
+576 
+consideration when planning green roof plant communities. 
+577 
+Looking ahead, the implications for the energy consumption of buildings and for the overall 
+578 
+temperatures in the urban environment of using the studied plant species on green roofs still need to 
+579 
+be assessed. It is well known that typical green roof interventions have the potential to reduce heat 
+580 
+entering buildings and reduce the energy used to regulate internal building temperatures in the 
+581 
+summer, although recently the unequivocal thermal benefits of green roofs have been challenged, for 
+582 
+example by [13]. Notwithstanding, on the basis of our study we hypothesise that plants such as Salvia 
+583 
+and Stachys, which offer added substrate insulation potential during the day in the summer compared 
+584 
+to typical green roof cover, could lead to a considerable decrease in the heat gained by a building 
+585 
+during that period, when covering its roof. An extrapolation of these preliminary findings to total 
+586 
+savings in the energy consumed by a building would need to account also for the winter effects, the 
+587 
+local climate and the building construction, among other aspects. This hypothesis needs therefore to 
+588 
+be confirmed by a broader-scale evaluation. Models such as EnergyPlus have been developed to 
+589 
+predict energy consumptions in buildings. These models have been used to test the performance of 
+590 
+green roofs based on the parameterisation of substrate and plant characteristics, such as substrate 
+591 
+thermal properties, substrate depth, gs, h, LAI and Į [13,48]. Now that we have collected a detailed set 
+592 
+of plant parameters for a range of contrasting canopies, we propose that future research could use 
+593 
+available models to investigate the level of such savings for buildings under a range of climate 
+594 
+conditions. Furthermore, a number of models are available to study the impact of greening on the 
+595 
+microclimate within the urban environment (e.g. ENVI-met, [49]) and, using our data, these could be 
+596 
+
+ 
+ 
+ 
+25 
+ 
+ 
+ 
+used next to assess the green roof area necessary to make a significant impact on air temperatures at a 
+597 
+city scale, initially in a temperate climate.  
+598 
+Based on the evidence we collected, we argue that new urban planning policies should take much 
+599 
+greater consideration of plant choice, when attempting to maximise ecosystem services provision. Not 
+600 
+all components of green infrastructure provide the same benefits, and plant genotype choice within 
+601 
+this infrastructure, can strongly determine the type and level of benefits provided. This paper deals 
+602 
+with green roof scenarios, but we are aware of parallel work on trees which suggests that some 
+603 
+species have four times the cooling potential of others [50]. This paper challenges the notion that 
+604 
+Sedum and other succulents commonly used on green roofs are able to provide a viable summer 
+605 
+cooling and insulating benefit, and suggests that alternative species, with greater functionality, are 
+606 
+preferable. This involves providing these new genotypes with adequate ‘support’ systems (e.g. 
+607 
+supplementary irrigation) if that is what is required to ensure effective environmental cooling and 
+608 
+substrate insulation in the summer. Our ongoing research is looking into sustainable ways to provide 
+609 
+the water required by these more water-demanding plants and the added costs of such installation. 
+610 
+Indeed, through more appropriate choice of plants and by extending the scale of plantings, positive 
+611 
+impacts at a city scale may be feasible. 
+612 
+Acknowledgements 
+613 
+This study was financially supported by Fundação para a Ciência e a Tecnologia - Portugal (FCT) and 
+614 
+Programa Operacional Potencial Humano/Fundo Social Europeu (POPH-QREN/FSE) through the 
+615 
+doctoral grant SFRH/BD/69921/2010 to Madalena Vaz Monteiro. During the period of experimental 
+616 
+campaigns and related analyses, Anne Verhoef was in receipt of NERC funding on the SWELTER-21 
+617 
+project (NE/I006729/1), "Soil Water - Climate Feedbacks in Europe in the 21st Century (SWELTER-
+618 
+21)”. We thank Val Jasper, Dr Mike Dennett, Prof David Midmore, Dr Curtis Wood, Dr Bruce Main, 
+619 
+Trevor Pitman, Michael Stroud, Helen Dominick, Julia Wesley, Suvarna Punalekar and Rebeka Šiling 
+620 
+for their contributions to this study.  
+621 
+
+ 
+ 
+ 
+26 
+ 
+ 
+ 
+References 
+622 
+[1] 
+T.R. Oke, The energetic basis of the urban heat island, Q. J. R. Meteorol. Soc. 108 (1982) 1–
+623 
+24. 
+624 
+[2] 
+S. Grimmond, Urbanization and global environmental change: local effects of urban warming, 
+625 
+Geogr. J. 173 (2007) 83–88. 
+626 
+[3] 
+A.M. Rizwan, L.Y.C. Dennis, C. Liu, A review on the generation, determination and 
+627 
+mitigation of Urban Heat Island, J. Environ. Sci. 20 (2008) 120–128. 
+628 
+[4] 
+J.M. Murphy, D.M.H. Sexton, G.J. Jenkins, P.M. Boorman, B.B.B. Booth, C.C. Brown, et al., 
+629 
+UK climate projections science report: Climate change projections, Met Office Hadley Centre, 
+630 
+Exeter, 2009. 
+631 
+[5] 
+G.A. Meehl, C. Tebaldi, More intense, more frequent, and longer lasting heat waves in the 21st 
+632 
+century, Science (80-. ). 305 (2004) 994–997. 
+633 
+[6] 
+S.E. Gill, J.F. Handley, A.R. Ennos, S. Pauleit, Adapting cities for climate change: The role of 
+634 
+the green infrastructure, Built Environ. 33 (2007) 115–133. 
+635 
+[7] 
+D.E. Bowler, L. Buyung-Ali, T.M. Knight, A.S. Pullin, Urban greening to cool towns and 
+636 
+cities: A systematic review of the empirical evidence, Landsc. Urban Plan. 97 (2010) 147–155. 
+637 
+[8] 
+R.W.F. Cameron, T. Blanuša, J.E. Taylor, A. Salisbury, A.J. Halstead, B. Henricot, et al., The 
+638 
+domestic garden – Its contribution to urban green infrastructure, Urban For. Urban Green. 11 
+639 
+(2012) 129–137. 
+640 
+[9] 
+R.W.F. Cameron, T. Blanuša, Green infrastructure and ecosystem services – Is the devil in the 
+641 
+detail?, Ann. Bot. (2016) (in press). 
+642 
+[10] 
+L.L.H. Peng, C.Y. Jim, Green-roof effects on neighborhood microclimate and human thermal 
+643 
+sensation, Energies. 6 (2013) 598–618. 
+644 
+[11] 
+N.H. Wong, Y. Chen, C.L. Ong, A. Sia, Investigation of thermal benefits of rooftop garden in 
+645 
+the tropical environment, Build. Environ. 38 (2003) 261–270. 
+646 
+[12] 
+S. Saiz, C. Kennedy, B. Bass, K. Pressnail, Comparative life cycle assessment of standard and 
+647 
+green roofs, Environ. Sci. Technol. 40 (2006) 4312–4316. 
+648 
+[13] 
+S.S. Moody, D.J. Sailor, Development and application of a building energy performance 
+649 
+metric for green roof systems, Energy Build. 60 (2013) 262–269. 
+650 
+[14] 
+J.L. Monteith, Evaporation and environment, Symp. Soc. Exp. Biol. 19 (1965) 205–223. 
+651 
+[15] 
+D.M. Gates, Transpiration and energy exchange, Q. Rev. Biol. 41 (1966) 353–364. 
+652 
+[16] 
+T.R. Oke, J.M. Crowther, K.G. McNaughton, J.L. Monteith, B. Gardiner, The 
+653 
+micrometeorology of the urban forest [and discussion], Philos. Trans. R. Soc. B Biol. Sci. 324 
+654 
+(1989) 335–349. 
+655 
+[17] 
+R.W.F. Cameron, J.E. Taylor, M.R. Emmett, What’s “cool” in the world of green façades? 
+656 
+How plant choice influences the cooling properties of green walls, Build. Environ. 73 (2014) 
+657 
+198–207. 
+658 
+[18] 
+E.P. Del Barrio, Analysis of the green roofs cooling potential in buildings, Energy Build. 27 
+659 
+(1998) 179–193. 
+660 
+[19] 
+O.M. Grant, L. Tronina, H.G. Jones, M.M. Chaves, Exploring thermal imaging variables for 
+661 
+the detection of stress responses in grapevine under different irrigation regimes., J. Exp. Bot. 
+662 
+58 (2007) 815–825. 
+663 
+[20] 
+M. Vaz Monteiro, T. Blanuša, A. Verhoef, P. Hadley, R.W.F. Cameron, Relative importance 
+664 
+of transpiration rate and leaf morphological traits for the regulation of leaf temperature, Aust. 
+665 
+J. Bot. 64 (2016) 32–44. 
+666 
+[21] 
+T. Blanusa, M.M. Vaz Monteiro, F. Fantozzi, E. Vysini, Y. Li, R.W.F. Cameron, Alternatives 
+667 
+
+ 
+ 
+ 
+27 
+ 
+ 
+ 
+to Sedum on green roofs: Can broad leaf perennial plants offer better “cooling service”?, 
+668 
+Build. Environ. 59 (2013) 99–106. 
+669 
+[22] 
+M.A. Monterusso, D.B. Rowe, C.L. Rugh, Establishment and persistence of Sedum spp. and 
+670 
+native taxa for green roof applications, HortScience. 40 (2005) 391–396. 
+671 
+[23] 
+A. Nagase, N. Dunnett, Drought tolerance in different vegetation types for extensive green 
+672 
+roofs: Effects of watering and diversity, Landsc. Urban Plan. 97 (2010) 318–327. 
+673 
+[24] 
+N. Dunnett, A. Nolan, The effect of substrate depth and supplementary watering on the growth 
+674 
+of nine herbaceous perennials in a semi-extensive green roof, Acta Hortic. (2004) 305–309. 
+675 
+[25] 
+O. Schweitzer, E. Erell, Evaluation of the energy performance and irrigation requirements of 
+676 
+extensive green roofs in a water-scarce Mediterranean climate, Energy Build. 68 (2014) 25–
+677 
+32. 
+678 
+[26] 
+T.C. Liu, G.S. Shyu, W.T. Fang, S.Y. Liu, B.Y. Cheng, Drought tolerance and thermal effect 
+679 
+measurements for plants suitable for extensive green roof planting in humid subtropical 
+680 
+climates, Energy Build. 47 (2012) 180–188. 
+681 
+[27] 
+C.Y. Jim, Effect of vegetation biomass structure on thermal performance of tropical green 
+682 
+roof, Landsc. Ecol. Eng. 8 (2012) 173–187. 
+683 
+[28] 
+M. Zhao, P.C. Tabares-Velasco, J. Srebric, S. Komarneni, R. Berghage, Effects of plant and 
+684 
+substrate selection on thermal performance of green roofs during the summer, Build. Environ. 
+685 
+78 (2014) 199–211. 
+686 
+[29] 
+T. Takakura, S. Kitade, E. Goto, Cooling effect of greenery cover over a building, Energy 
+687 
+Build. 31 (2000) 1–6. 
+688 
+[30] 
+J. Zhang, F. Tardieu, Relative contribution of apices and mature tissues to ABA synthesis in 
+689 
+droughted maize root systems, Plant Cell Physiol. 37 (1996) 598–605. 
+690 
+[31] 
+J. Liang, J. Zhang, G.Y.S. Chan, M.H. Wong, Can differences in root responses to soil drying 
+691 
+and compaction explain differences in performance of trees growing on landfill sites?, Tree 
+692 
+Physiol. 19 (1999) 619–624. 
+693 
+[32] 
+S. Lu, T. Ren, Y. Gong, R. Horton, An improved model for predicting soil thermal 
+694 
+conductivity from water content at room temperature, Soil Sci. Soc. Am. J. 71 (2007) 8–14. 
+695 
+[33] 
+A.J. Brenner, P.G. Jarvis, A heated leaf replica technique for determination of leaf boundary 
+696 
+layer conductance in the field, Agric. For. Meteorol. 72 (1995) 261–275. 
+697 
+[34] 
+B.G. Drake, F.B. Salisbury, Aftereffects of low and high temperature pretreatment on leaf 
+698 
+resistance, transpiration, and leaf temperature in Xanthium, Plant Physiol. 50 (1972) 572–575. 
+699 
+[35] 
+A. López, F.D. Molina-Aiz, D.L. Valera, A. Peña, Determining the emissivity of the leaves of 
+700 
+nine horticultural crops by means of infrared thermography, Sci. Hortic. (Amsterdam). 137 
+701 
+(2012) 49–58. 
+702 
+[36] 
+A. Diaz-Espejo, A. Verhoef, R. Knight, Illustration of micro-scale advection using grid-pattern 
+703 
+mini-lysimeters, Agric. For. Meteorol. 129 (2005) 39–52. 
+704 
+[37] 
+J.L. Monteith, G. Szeicz, The radiation balance of bare soil and vegetation, Q. J. R. Meteorol. 
+705 
+Soc. 87 (1961) 159–170. 
+706 
+[38] 
+E. Rubio, V. Caselles, C. Badenas, Emissivity measurements of several soils and vegetation 
+707 
+types in the 8–14, ȝm wave band: Analysis of two field methods, Remote Sens. Environ. 59 
+708 
+(1997) 490–521. 
+709 
+[39] 
+S. Liu, G. Hu, L. Lu, D. Mao, Estimation of regional evapotranspiration by TM/ETM+ data 
+710 
+over heterogeneous surfaces, Photogramm. Eng. Remote Sens. 73 (2007) 1169–1178. 
+711 
+[40] 
+Y. Andrist-Rangel, A.C. Edwards, S. Hillier, I. Öborn, Long-term K dynamics in organic and 
+712 
+conventional mixed cropping systems as related to management and soil properties, Agric. 
+713 
+Ecosyst. Environ. 122 (2007) 413–426. 
+714 
+
+ 
+ 
+ 
+28 
+ 
+ 
+ 
+[41] 
+R.M. Lazzarin, F. Castellotti, F. Busato, Experimental measurements and numerical modelling 
+715 
+of a green roof, Energy Build. 37 (2005) 1260–1267. 
+716 
+[42] 
+A. Scherba, D.J. Sailor, T.N. Rosenstiel, C.C. Wamser, Modeling impacts of roof reflectivity, 
+717 
+integrated photovoltaic panels and green roof systems on sensible heat flux into the urban 
+718 
+environment, Build. Environ. 46 (2011) 2542–2551. 
+719 
+[43] 
+C.Y. Jim, S.W. Tsang, Biophysical properties and thermal performance of an intensive green 
+720 
+roof, Build. Environ. 46 (2011) 1263–1274. 
+721 
+[44] 
+J.L. Monteith, M.H. Unsworth, Principles of environmental physics, 3th ed., Elsevier Inc., 
+722 
+Amsterdam, 2008. 
+723 
+[45] 
+K.G. McNaughton, P.G. Jarvis, Predicting effects of vegetation changes on transpiration and 
+724 
+evaporation, in: T.T. Kozlowski (Ed.), Water Deficits Plant Growth, Vol. VII, Academic 
+725 
+Press, New York, 1983: pp. 1–47. 
+726 
+[46] 
+T.R. Oke, Boundary layer climates, 2nd ed., Methuen & Co. Ltd, London, UK, 1987. 
+727 
+[47] 
+R.W.F. Cameron, J.D. Hitchmough, Environmental horticulture: Science and management of 
+728 
+green landscapes, CAB International, Boston, MA, 2016. 
+729 
+[48] 
+D.J. Sailor, A green roof model for building energy simulation programs, Energy Build. 40 
+730 
+(2008) 1466–1478. 
+731 
+[49] 
+E. Ng, L. Chen, Y. Wang, C. Yuan, A study on the cooling effects of greening in a high-
+732 
+density city: An experience from Hong Kong, Build. Environ. 47 (2012) 256–271. 
+733 
+[50] 
+M.A. Rahman, D. Armson, A.R. Ennos, A comparison of the growth and cooling effectiveness 
+734 
+of five commonly planted urban tree species, Urban Ecosyst. 18 (2015) 371–389. 
+735 
+ 
+ 
+736 
+
+ 
+ 
+ 
+29 
+ 
+ 
+ 
+Legends of figures  
+737 
+ 
+738 
+Figure 1. Photographs of plant canopies used in the experiment, taken in the early summer of 2012. A. 
+739 
+Heuchera ‘Obsidian’, B. Heuchera ‘Electra’, C. Salvia officinalis ‘Berggarten’, D. Stachys byzantina, E. 
+740 
+Sempervivum ‘Reinhard’ and F. Sedum mix.  
+741 
+ 
+742 
+Figure 2. Schematic representation exemplifying where measurements were made within a plot. 
+743 
+ 
+744 
+Figure 3. Mean spectral reflectance within the short-wave spectrum for all treatments analysed in 2012, 
+745 
+measured during a day in August with Tmax = 18oC.  
+746 
+ 
+747 
+Figure 4. Mean leaf stomatal conductance (gs) for all treatments measured; gs is the average of thirty 
+748 
+mean gs values per treatment in 2012 (degrees of freedom (d.f.) = 149) and twelve gs values per treatment 
+749 
+(or eight for Heuchera yellow) in 2013 (d.f. = 67). LSDs are shown at the top of the figure. 
+750 
+ 
+751 
+Figure 5. Mean diurnal cycle of estimated surface temperature (Ts) and outgoing long-wave radiation (Lo) 
+752 
+for treatments evaluated in 2012 and 2013. Data presented are a mean of 10 days with Tmax > 24oC. LSDs 
+753 
+associated with the REML analysis for the periods delimited by the vertical lines were: a. 4.19 and b. 
+754 
+2.81oC, c. 25.84 and d. 17.07 W m-2.  
+755 
+ 
+756 
+Figure 6. Mean diurnal cycle of estimated net radiation (Rn) sensible heat flux (H), substrate heat flux (G) 
+757 
+and latent heat flux (LE) for treatments evaluated in 2012 and 2013. Data presented are a mean of 10 
+758 
+days (2012) and 9 days (2013) with Tmax > 24oC. LSDs associated with the REML analysis for the periods 
+759 
+delimited by the vertical lines were: a. 32.34, b. 18.20, c. 80.28, d. 45.40, e. 55.42, f. 53.64, g. 124.66 and h. 
+760 
+77.24 W m-2. 
+761 
+ 
+762 
+ 
+763 
+ 
+764 
+ 
+765 
+ 
+766 
+ 
+767 
+ 
+768 
+ 
+769 
+ 
+770 
+
+ 
+ 
+ 
+30 
+ 
+ 
+ 
+Nomenclature list and Tables 
+771 
+ 
+772 
+Nomenclature 
+ANOVA analysis of variance 
+Cp 
+air specific heat (1010 J kg−1K−1) 
+d 
+zero plane displacement height (m) 
+G 
+substrate heat flux (W m-2) 
+gs 
+leaf stomatal conductance to water  
+vapour (mmol m-2 s-1) 
+H 
+sensible heat flux (W m-2) 
+h 
+surface height (m) 
+k 
+von Karman’s constant (0.41) 
+LAI 
+leaf area index 
+LE 
+latent heat flux (W m-2) 
+Li 
+incoming long-wave radiation (W m-2)  
+Lo 
+outgoing long-wave radiation (W m-2) 
+LSD 
+least significant difference 
+ra 
+aerodynamic resistance (s m-1) 
+REML residual maximum likelihood 
+Rn 
+net radiation (W m-2) 
+Si 
+incoming short-wave radiation (W m-2) 
+So 
+outgoing short-wave radiation (W m-2) 
+SMC 
+substrate moisture content (m3 m-3) 
+T  
+substrate temperature (oC) 
+Ta 
+air temperature at 2 m (oC) 
+Tmax 
+maximum air temperature (oC) 
+Tmin 
+minimum air temperature (oC) 
+
+ 
+ 
+ 
+31 
+ 
+ 
+ 
+Ts 
+leaf/substrate surface temperature (oC) 
+Uz 
+ wind speed at 2 m (m s-1) 
+z  
+height/depth of sensors 
+zoh 
+surface roughness length for heat and vapour transfer (m) 
+zom 
+surface roughness length for momentum transfer (m) 
+ 
+Greek symbols 
+Į 
+albedo  
+İ 
+surface emissivity 
+Ȝ 
+substrate thermal conductivity (W m-1 K-1) 
+ı 
+Stefan-Boltzmann constant (5.67 x 10-8 W m-2 K-4) 
+ȡa 
+air density (1.2 kg m−3) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+32 
+ 
+ 
+ 
+Table 1. Detail of the methodology used while monitoring environmental conditions and surface and 
+substrate temperatures. 
+Type of measurement 
+Position  
+Equipment 
+Number of sensors  
+Ambient air temperature 
+(Ta) and humidity 
+2 m from ground 
+Screened RHT2n 
+sensor (Delta-T 
+Devices Ltd., 
+Cambridge, UK) 
+1 
+Incoming short-wave 
+radiation (Si) 
+0.5 m from ground 
+Pyranometer SKS 
+1110 (Skye 
+Instruments Ltd., 
+Llandrindod Wells, 
+UK) 
+1 
+Surface temperature (Ts)  
+Leaf temperature: on the 
+underside of the leaf.  
+Bare substrate 
+temperature: 0.005 m 
+below the surface  
+Copper-constantan 
+thermocouples (T 
+fine PTFE insulated 
+twin twisted wires, 
+in house 
+construction) 
+2 per plot 
+Substrate temperature 
+(T) 
+At 0.01 m and 0.06 m 
+below the substrate 
+surface 
+Thermistors (Fenwal 
+UUA32J2, in house 
+construction) 
+2 per plot 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+33 
+ 
+ 
+ 
+Table 2. Information on the methodology used to occasionally measure various plant and substrate 
+parameters/variables. 
+Type of 
+measurement 
+Equipment 
+Frequency 
+Method applied 
+Substrate moisture 
+content (SMC)  
+SM200 probe attached to 
+a HH2 Moisture Meter 
+(DeltaǦT Devices, 
+Cambridge, UK) 
+Daily, once (or twice 
+when plots were 
+irrigated)  
+4 measurements per plot 
+Leaf stomatal 
+conductance to 
+water vapour (gs) of 
+non-succulent 
+leaves and leaves of 
+Sedum spurium 
+(with flat leaves) 
+LCi infra-red gas 
+analyser with a broad 
+leaf chamber (ADC 
+Bioscientific Ltd., 
+Hoddesdon, UK). 
+Ambient CO2 
+concentration was 375 ± 
+10 mm3 dm-3 
+30 times in 2012 and 
+12 times in 2013 (or 
+8 for yellow 
+Heuchera, due to a 
+reduction of leaves 
+compared to 2012) 
+10 leaves per treatment, 
+on each sampling 
+occasion. Between 
+10:00-17:00 h 
+Albedo (Į) 
+Kipp & Zonen CNR4 
+radiometer (Campbell 
+Scientific Ltd., 
+Shepshed, UK), 
+positioned 0.1 m above 
+the surface (field of view 
+of 180o) 
+Three cloudless days 
+in each summer 
+Measurements recorded 
+every minute, for approx. 
+20 minutes, for each 
+treatment. Between 
+10:00-16:00 h 
+Spectral reflectance 
+(400 and 1250 nm) 
+GER 3700 
+spectroradiometer with 
+fibre optic lens, with 
+field of view 10o 
+(Geophysical and 
+Environmental Research 
+Corp., Millbrook, USA), 
+positioned 0.5 m above 
+the ground  
+Once in 2012 
+10 measurements per 
+treatment, around noon 
+Leaf area index 
+(LAI)  
+Leaf area meter (DeltaǦT 
+Devices, Cambridge, 
+UK) 
+Beginning and end of 
+experiment, each 
+summer 
+Leaves collected within a 
+square frame (0.15 x 0.15 
+m) in each plot 
+Canopy height (h) 
+Tape measure 
+Once half-way of 
+both experiments 
+In the centre of each plot, 
+from substrate to the tip 
+of the highest leaf 
+
+ 
+ 
+ 
+34 
+ 
+ 
+ 
+ 
+Table 3. Mean values of albedo (Į), leaf area index (LAI) and height (h) for all the treatments evaluated 
+in 2012 and 2013. The standard errors associated with Į and LAI means are also presented.  
+Treatments 
+Į 
+LAI 
+h (m) 
+2012 
+2013 
+2012 
+2013 
+2012 
+2013 
+Bare substrate 
+0.09 ± 0.003 
+0.13 ± 0.001 
+ 
+ 
+ 
+ 
+Salvia 
+(planted  2012) 
+0.21 ± 0.001 
+0.23 ± 0.001 
+5.5 ± 0.21 
+5.6 ± 0.33 
+0.35 
+0.60 
+Salvia 
+(planted  2013) 
+ 
+0.22 ± 0.002 
+ 
+5.1 ± 0.31 
+ 
+0.25 
+Stachys 
+0.20 ± 0.001 
+0.19 ± 0.001 
+5.5 ± 0.12 
+3.0 ± 0.27 
+0.25 
+0.50 
+Heuchera 
+yellow 
+0.27 ± 0.001 
+0.14 ± 0.003 
+4.5 ± 0.45 
+0.7 ± 0.21 
+0.18 
+0.12 
+Heuchera 
+purple 
+0.20 ± 0.002 
+0.20 ± 0.002 
+5.5 ± 0.25 
+5.1 ± 0.19 
+0.20 
+0.30 
+Sedum 
+0.19 ± 0.001 
+0.17 ± 0.001 
+3.0 ± 0.32 
+2.6 ± 0.23 
+0.10 
+0.15 
+Sempervivum 
+0.14 ± 0.001 
+0.17 ± 0.001 
+2.6 ± 0.17 
+3.9 ± 0.03 
+0.05 
+0.05 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+35 
+ 
+ 
+ 
+Table 4. Mean percentage of net radiation (Rn) received by each treatment allocated to the sensible (H), 
+substrate (G) and latent (LE) heat fluxes. Mean percentages were calculated based on estimated mean 
+absolute Rn, H, G and LE values for the period between 11:00-15:00 h for 10 days in 2012 and 9 days in 
+2013, all with Tmax > 24oC.  
+Treatments 
+2012 - % Rn converted into 
+2013 - % Rn converted into 
+H 
+G 
+LE 
+H 
+G 
+LE 
+Bare substrate 
+15 
+33 
+51 
+13 
+26 
+62 
+Salvia (planted 2012) 
+7 
+3 
+90 
+0 
+3 
+96 
+Salvia (planted 2013) 
+ 
+ 
+ 
+6 
+3 
+91 
+Stachys 
+12 
+2 
+86 
+1 
+6 
+93 
+Heuchera yellow 
+9 
+3 
+88 
+14 
+18 
+68 
+ Heuchera purple 
+28 
+10 
+62 
+25 
+2 
+73 
+Sedum 
+17 
+11 
+72 
+11 
+13 
+76 
+Sempervivum 
+27 
+11 
+63 
+25 
+18 
+57 
+  
+ 

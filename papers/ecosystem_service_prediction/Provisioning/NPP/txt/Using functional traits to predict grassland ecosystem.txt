@@ -1,0 +1,1782 @@
+Using functional traits to predict grassland ecosystem
+change: a mathematical test of the response-and-effect
+trait approach
+K AT J A K L U M P P and J E A N - F R A N C¸ O I S S O U S S A N A
+INRA, UR874 Grassland Ecosystem Research, 234 Avenue du Bre´zet, F-63100 Clermont-Ferrand, France
+Abstract
+The role of plant community structure and plant functional traits for above- and
+belowground carbon (C) ﬂuxes was studied for 2 years in a mesocosm experiment with
+grassland monoliths, using continuous gas exchange measurements and soil analyses.
+Here we test the response-and-effect trait hypothesis, by applying a mathematical
+framework used to predict changes in C ﬂuxes after a change in disturbance through
+the community response (R) and effect (E) traits. Monoliths were extracted from two
+contrasted long-term ﬁeld treatments (high vs. low grazing disturbance) and exposed to
+both low and high (simulated grazing) disturbance during a 2 years experiment. Carbon
+dioxide exchanges were measured continuously in an open ﬂow system. Net ecosystem
+productivity and ecosystem C balance were positively correlated at low disturbance with
+plant species richness. Aboveground net primary productivity (ANPP) and soil C
+sequestration were, however, unrelated to these variables. Community aggregated leaf
+(speciﬁc leaf area, leaf dry-matter content) and root and rhizome (speciﬁc length, tissue
+density, diameter) traits responded (R) signiﬁcantly to changes in disturbance, indicating
+an increased dominance of conservative plant growth strategies at low compared with
+high disturbance. Applying the mathematical framework, ANPP was predicted by
+distribution of leaf traits within the community (functional divergence), while mean
+root and rhizome traits had signiﬁcant effects (E) on soil C sequestration, irrespective of
+the experimental disturbance and of the year. According to highly signiﬁcant linear
+regression models, between 6% and 61% of the transient changes in soil C sequestration
+resulted from community root and rhizome (response-and-effect) traits after a change in
+disturbance.
+Keywords: biodiversity, carbon cycle, disturbance, ecosystem services
+Received 20 November 2008 and accepted 16 January 2009
+Introduction
+Predicting ecosystem responses to global change has
+become a major challenge in ecology (Chapin et al.,
+1998; Loreau et al., 2001), particularly as terrestrial
+ecosystems contribute to the mitigation of global cli-
+mate change through carbon (C) sequestration in the
+soil and vegetation (IPCC, 2007). Grasslands are one of
+the major biomes worldwide and temperate grasslands
+contribute to ca. 10% of the global organic C content in
+soils (IPCC, 2000). Changes in C ﬂuxes were suggested
+to be greatest where disturbance (e.g. ﬁre, grazing) has
+induced shifts in grassland communities, that alter the
+use and availability of key resources (Chapin et al.,
+2002). Thus, a better understanding of the coupling
+between plant diversity and C cycling is essential for
+predicting ecosystem services under global change.
+Biodiversity experiments have shown causal relation-
+ships between species number, ecosystem productivity
+(e.g. Tilman et al., 1997; Hector et al., 1999; Ro¨scher et al.,
+2005) and C sequestration (Tilman et al., 2006). Despite
+an increasing agreement on the role of plant species
+diversity for ecosystem processes and resulting ecosys-
+tem services (Hooper et al., 2005), very little is known
+about the role of plant traits which are mediated by
+plant species (Chapin et al., 2000; Lavorel & Garnier,
+2002; Diaz et al., 2007a).
+Correspondence: Jean-Francois Soussana, tel. 1 33 473 62 45 65,
+fax 1 33 473 62 44 57, e-mail: jean-francois.soussana@clermont.
+inra.fr
+Global Change Biology (2009) 15, 2921–2934, doi: 10.1111/j.1365-2486.2009.01905.x
+r 2009 Blackwell Publishing Ltd
+2921
+
+In the mass ratio hypothesis, Grime (1998) suggested
+that the extent to which the trait of a species affects
+ecosystem properties strongly depends on the relative
+contribution to the total biomass of that species. Accord-
+ingly, ecosystem processes (e.g. C cycling, De Deyn
+et al., 2008) would be determined by aggregated traits
+of dominant species. The distribution of trait values
+within the community, the functional divergence repre-
+sents the degree of overlap in trait values within a
+community (Mason et al., 2005). The role of commu-
+nity-aggregated plant functional traits and functional
+divergence (Diaz et al., 2007b; Mokany et al., 2008) has
+been shown for aboveground net primary productivity
+(Garnier et al., 2004; Da S. Pontes et al., 2007), shoot litter
+decomposability (Aerts et al., 2003; Kazakou et al., 2006;
+Diaz et al., 2007a) and C-cycling (see Wardle et al., 2004;
+Bardgett et al., 2005; De Deyn & Van der Putten, 2005),
+but has never been evidenced for soil C sequestration.
+It has been shown that ecosystem responses to en-
+vironmental changes occur as a result of (i) sorting
+processes among individuals with appropriate response
+traits (Weiher, 1998; Grime, 2006) and (ii) changes in
+ecosystem-effect-traits (Diaz & Cabido, 2001; Lavorel &
+Garnier, 2002; Diaz et al., 2007b; Violle et al., 2007).
+Suding et al. (2008) proposed a framework incorporat-
+ing functional traits to predict effects of environmental
+change on ecosystem.
+This framework differentiates between environmen-
+tal response (response traits) and effects of environ-
+mental change on ecosystem processes (effect traits)
+(e.g. Lavorel & Garnier, 2002). The relationship between
+response (R) and effect (E) traits, while a system under-
+goes a change, plays an important role in predicting
+ecosystem functioning. For example, traits that are
+co-related are presumably both predictive of response
+and effect (Gross et al., 2008). Therefore, changes in
+ecosystem functioning after environmental change will
+be partly mediated by community dynamics (Suding
+et al., 2008). Given the paucity of empirical tests to
+validate this approach, more experiments are needed
+where species contribution to ecosystem processes are
+related to environmental changes and effect traits of a
+certain species or group (e.g. Reich et al., 2001; Craine
+et al., 2002; Garnier et al., 2004).
+The impact of environmental changes on C seques-
+tration has been shown for a range of European grass-
+land sites (Soussana et al., 2007), where net ecosystem C
+storage was found to decline with disturbance by graz-
+ing and cutting. A mesocosm study with a seminatural
+grassland showed that net ecosystem productivity
+(NEP) and belowground net C storage (BNCS) did not
+vary 2 years after changes in disturbance regime, but
+were signiﬁcantly higher for monoliths acclimated for
+14 years to a low, compared with a high, pre-experi-
+mental (ﬁeld) disturbance (Klumpp et al., 2007a). More-
+over,
+the
+decay
+of
+soil
+organic
+matter
+fraction
+(40.2 mm) was slower at low compared to high pre-
+experimental disturbance (Klumpp et al., 2007b). The
+disturbance regime in the ﬁeld (before mesocosm ex-
+periment) had carry-over effects on NEP and soil
+C storage [calculated by both gas exchange balance
+and soil organic carbon analyses, Klumpp et al.,
+2007a], presumably due to plant community dynamics
+(Paterson, 2003).
+Here we analyzed the role of plant community struc-
+ture and traits for C ﬂuxes in the same mesocosm
+experiment.
+Initially
+we
+test
+the
+effects
+of
+ﬁeld
+(pre-experimental) and experimental disturbance on
+plant community structure and community-scale traits.
+We provide for the ﬁrst time a mathematical method
+to test Suding’s (Suding et al., 2008) hypothesis,
+that changes in C ﬂuxes after environmental change
+can be predicted from the community response (R) and
+effect (E) traits, and we assess the role of aggregated
+traits and of functional divergence for shoot traits,
+following the framework recently proposed by Diaz
+et al. (2007b).
+Materials and methods
+Mesocosm experiment with grassland monoliths
+The study was carried out at Clermont Ferrand, France,
+using monoliths (each 0.5 m  0.5 m  0.4 m) from an
+upland grassland site. The grassland studied (vegeta-
+tion, soil) and the procedures used to select and extract
+grassland monoliths have been previously described by
+Klumpp et al. (2007a). In June 2002, 56 pasture mono-
+liths were sampled from two permanent (14 years)
+seminatural grassland plots, of contrasting sheep graz-
+ing regimes, without fertilizer applications (Loiseau
+et al., 2005; Louault et al., 2005). Field plot 1 was cut
+once and sheep grazed 4 times yr1 and therefore re-
+presented a high disturbance regime (H). Field plot 2
+was sheep grazed once a year (low disturbance regime,
+L). Following extraction, each monolith was placed in a
+ﬁve-sided stainless-steel box with drain holes at the
+bottom. Twenty-four monoliths from each ﬁeld plot
+(pre-experimental H and L) were placed at random in
+eight transparent (polyethylene ﬁlm, 60 mm) canopy
+enclosures (1.5 m  0.5 m  0.75 m). Each canopy enclo-
+sure therefore contained three monoliths from the same
+disturbance treatment.
+The 16 canopy enclosures were exposed to natural
+light. Enclosures were part of an open-ﬂow gas-ex-
+change system (see Klumpp et al., 2007a), where tem-
+perature and humidity of enclosure inlet air was
+adjusted to outdoors conditions by a computer con-
+2922
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+trolled cooling system and air humidiﬁer, respectively.
+The experiment commenced in April 2003, whereupon
+the carbon dioxide (CO2) concentration in the enclo-
+sures was maintained, from sunrise to sunset, compar-
+able to the outdoor CO2 concentration (mean difference
+of 13.2  9.5 mmol mol1) by injection of CO2 (Klumpp
+et al., 2007a).
+Depending on season, monoliths were watered be-
+tween one and three times a week to target a soil
+volumetric water content of 33%, corresponding to a
+soil water potential of ca. 30 kPa. All enclosures re-
+ceived the same irrigation volumes.
+Management and treatments
+In September 2002, the canopy enclosures were closed
+and supplied with ambient air to adapt vegetation
+to enclosure conditions. At the start of the experiment,
+half of the enclosures per treatment (4, i.e. 12 monoliths)
+were switched to the opposite disturbance regime
+(HL and LH, crossed treatments), while half of the
+enclosures remained with the same disturbance level
+(HH and LL). Therefore, we applied a high disturbance
+(i.e. cut) to half the monoliths with pre-experimental
+low disturbance level (HL) and a low disturbance (un-
+cut) to half the monoliths previously exposed to a high
+disturbance regime (LH). Hence, changes in distur-
+bance level (HL and LH) can be compared with controls
+(HH, LL) in a fully factorial design, with four replicate
+enclosures per treatment.
+On ﬁve occasions per year the monoliths of the
+experimental high disturbance regime HH and LH
+(24 and 4 controls) were cut simultaneously at 5 cm
+stubble height. Artiﬁcial urine (in average 5 g N m2 per
+event, see Klumpp et al., 2007a) was applied evenly
+following each cut, in order to simulate N returns
+at grazing. The remaining monoliths of the experi-
+mental low disturbance regime LL and HL (24) were
+neither cut nor fertilized. The harvested phytomass
+was separated into live and dead plant parts, oven
+dried for 48 h at 60 1C and weighed. At the start and
+at the end of each growing season (in April and Sep-
+tember) the standing aboveground biomass (including
+stubbles) was measured on half a monolith, in each
+enclosure.
+C ﬂuxes
+The air ﬂow and CO2 concentration in each open-ﬂow
+canopy enclosure was monitored continuously during
+the 2 years of the experiment. The above and soil CO2
+ﬂuxes were calculated for each enclosure from these
+airﬂows and from changes in CO2 concentrations (see
+Klumpp et al., 2007a for full details). Gross primary
+productivity (GPP) was the net photosynthesis (Pn) plus
+estimated daytime canopy dark respiration (Rd, see
+Casella & Soussana, 1997). The NEP, was the net photo-
+synthesis (Pn) minus aboveground (night-time, Rp) and
+soil (Rs) respiration. The annual total net carbon storage
+(NCS) in the monoliths was Pn minus total respiration
+(Rs 1 Rp) and minus annual C yield by cut (Chapin
+et al., 2002). The aboveground net primary productivity
+(ANPP), of enclosures exposed to high disturbance
+levels (HH and LH), was the sum of the annual C yield
+by cut plus the C content of stubbles in September (date
+of peak biomass). For enclosures exposed to a low
+disturbance level (LL and HL), the ANPP was deﬁned
+as the standing dead and live aboveground phytomass
+in September, plus stubbles, in order to integrate part of
+the biomass turnover during growing season (e.g. Scur-
+lock et al., 2002). Speciﬁc aboveground net primary
+productivity (SANPP), was the difference between
+log-transformed values of ﬁnal and initial aboveground
+biomass divided by days of regrowth and growing
+season for cut and uncut monoliths. The BNCS was
+then calculated as the NEP minus the ANPP.
+Soil organic C content
+Soils were sampled once before the start of the experi-
+ment and then after 12 and 24 months. At each soil
+harvest, the 0–10 cm layer was air dried and the free
+organic matter fractions (OM) 4200mm (fast decompos-
+ing soil pool) were separated with water by wet sieving
+(Klumpp et al., 2007a, b). Their C content was then
+analysed by an elemental analyzer (Carlo Erba Instru-
+ments, CNS NA 1500, ThermoFinnigan, Milan, Italy).
+The top soil organic carbon (SOC) content 40.2 mm
+was in average 10.7 (7.5), 6.2 (5.0), 5.0 (4.3), and
+2.5 (3.3) mg C g1 soil for LL, LH, HL and HH treatment
+in the ﬁrst and second (parenthesis) year of the experi-
+ment. Year factor had no effect on SOC content, while
+SOC was signiﬁcantly higher for monoliths of low pre-
+experimental and experimental disturbance, than for
+monoliths managed with a high disturbance regime
+(data not shown).
+Plant community structure
+Point quadrat measurements of plant species composi-
+tion were carried out after monolith extraction in Sep-
+tember
+2002
+and
+then
+ﬁve
+times
+during
+the
+experimental period (May and October 2003, April
+and July 2004, April 2005). During the experiment
+(September 2002 to April 2005) the mean observation
+area for plant species community was 0.5 m2. Presence/
+absence of species was recorded at 16 points per mono-
+lith (see Klumpp et al., 2007a) by moving a pin down-
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2923
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+wards, which could hit more than one species. Shan-
+non’s diversity index (H0) was calculated as
+H0 ¼
+X
+i
+ðpi log piÞ;
+ð1Þ
+where pi is the presence of species i.
+Leaf traits
+Leaf traits, for plant species 45% presence, were mea-
+sured on four occasions (June 2003, April and July 2004,
+April 2005), 1 week after the point quadrat measure-
+ments. Measured plant traits were vegetative height,
+leaf mass ratio, speciﬁc leaf area (SLA) and leaf dry-
+matter content (LDMC) (methodologies see Garnier
+et al., 2001; Louault et al., 2005).
+For each enclosure and each sampling date, aggre-
+gated community scale trait values were calculated by
+weighing the individual trait value of species i (Ti) by its
+percentage presence (pi) in the plant community (Gar-
+nier et al., 2004). The community aggregated trait values
+(Tc) is
+Tc ¼ ð1=sÞ
+X
+s
+i¼1
+piTi;
+ð2Þ
+where s is the number of plant species in the commu-
+nity. The distribution (i.e. overlap) of trait values within
+the community, the functional divergence (FD), was
+calculated from species relative abundance and species
+leaf traits (SLA, LDMC, leaf mass ratio and mean
+height) using Rao’s index, and was either used indivi-
+dually or averaged (FDvg) across all traits (methodolo-
+gies see Mason et al., 2005; Lepsˇ et al., 2006)
+FD ¼
+X
+s
+i¼1
+X
+s
+j¼1
+dij pi pj;
+ð3Þ
+where dij is the distance between i-th and j-th species in
+a community, and pi and pj are the relative abundance of
+species i and j respectively, and s is the number of
+species in the community.
+Root and rhizome traits
+Belowground traits were measured from fresh soil
+samples of the September 2003 and April 2005 soil
+harvest. On both occasions, a vertical soil slice was
+sampled (50 cm  6 cm) from the top soil layer (10 cm)
+of a monolith per enclosure. After washing on a 1 mm
+sieve, two subsamples were taken. A ﬁrst subsample
+was sorted by hand into coarse roots (i.e. primary
+roots), ﬁne roots and rhizomes. A second subsample
+was used to determine community root and rhizome
+traits. The following traits were measured: speciﬁc
+length
+(SL,
+m g1 DM),
+tissue
+density
+(DENS,
+g DM cm3), diameter (D, mm) and nitrogen content
+(NC, g N g1 DM) (for methodology, see Roumet et al.,
+2006).
+Trait based response-and-effect framework
+An ecosystem function (Y) applied to a plant commu-
+nity at time (t1) can be broken down, according to the
+mass ratio hypothesis (Grime, 1998), in terms of the per-
+gram or per-capita effect (Ejt1) of a species j and its
+current abundance (njt1), where E is an effect trait. Using
+a trait-based prediction of the response to a changed
+environment (t2), the abundance of species j in the new
+environment (njt2) is predicted to be njt1 Rj, where R is a
+response trait. According to Suding et al. (2008), follow-
+ing a change in environment (from time 1 to time 2), the
+contribution of a given species j, to future ecosystem
+function Y2, can be assumed to be a function of the
+effect of a species on Y and its predicted abundance njt2.
+Hence as shown by Suding et al. (2008)
+Y2 ¼
+X
+j¼1
+fðnjt2EjÞ;
+Y2 ¼
+X
+j¼1
+fðnjt1Rj; EjÞ:
+ð4Þ
+In order to test this hypothesis, we now assume that f
+is a linear function with a constant slope a, and with an
+intercept (b1, b2) which varies with environmental con-
+ditions from time 1 to time 2:
+Y2 ¼
+X
+j¼1
+aðnjt1Rj; EjÞ þ b2:
+ð5Þ
+Let E be, the mean of the effect trait weighted by
+species abundance at times 1 and 2:
+E1 ¼
+X
+j¼1
+ðnjt1; EjÞ;
+E2 ¼
+X
+j¼1
+ðnjt1Rj; EjÞ:
+Hence,
+Y1 ¼ aE1 þ b1;
+Y2 ¼ aE2 þ b2:
+ð6Þ
+According to Eqn (5), the change in ecosystem func-
+tion will scale linearly with the change in mean effect
+trait (E1; E2) from time 1 to time 2:
+Y2  Y1 ¼ a E2  E1
+
+
+þ b2  b1
+ð
+Þ:
+ð7Þ
+Whenever effect and response traits are related (see
+Suding et al., 2008), E2 ¼ kE1, where k is a constant
+2924
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+reﬂecting the change in response trait between the two
+time periods. Under these circumstances
+Y2  Y1 ¼ k  1
+ð
+ÞaE1 þ b2  b1
+ð
+Þ:
+ð8Þ
+Using this reasoning, the change in C ﬂux with
+environmental conditions can be broken down into a
+direct effect of the environmental change (b2–b1) and an
+indirect
+effect
+of
+response-and-effect
+trait
+change
+ðk  1ÞaE1
+
+
+. However, effect and response traits may
+completely overlap, we would then expect to see resi-
+lience or dampened changes in ecosystem function
+(Suding et al., 2008).
+Data analysis
+As the experiment started in spring 2003 and ﬁnished in
+spring 2005, annual means of C ﬂuxes and plant traits
+were calculated from the beginning of April to the end
+of April of the next year. Repeated measure analysis of
+variance (ANOVAs) and Fisher’s LSD post hoc tests were
+performed to test effects of abiotic factors such as pre-
+experimental (H vs. L, disturbance) and experimental
+disturbance (H vs. L, disturbance level after the start of
+the experiment) and date. Effects of individual and
+combined factors on C ﬂuxes (i.e. abiotic variables,
+functional diversity and community traits) were tested
+by Spearman’s rank correlation and multiple regression
+models with a step-wise ascending procedure (see Diaz
+et al., 2007b). In the multiple regression model, ﬁnal
+combination of traits and trait distribution (FD) were
+retained according to F-value criteria. Community ag-
+gregated traits and FD’s signiﬁcantly affecting C ﬂuxes,
+were ﬁtted to Eqn (8) and slopes were compared using a
+comparison of regression-line procedure. When neces-
+sary, data were transformed by log or square root to
+satisfy tests of normality. Statistical analyses were
+performed with the
+STATISTICA 6 package (StatSoft
+Inc.,Tulsa, OK, USA).
+Results
+Plant community dynamics and C ﬂuxes
+Effects of disturbance on plant community dynamics. Over 2
+years of experiment, 41 plant species contributed to 99%
+of the total vegetation cover. Grasses had the highest
+(Po0.05) presence (%) in the transient HL treatment
+(80%), followed by the HH, LH and LL treatments (70%,
+61% and 44%, respectively, Table 1). Legumes had
+signiﬁcantly
+(Po0.05)
+lower
+contributions
+in
+monoliths of pre-experimental high disturbance (HL
+and HH), compared with monoliths adapted to low
+disturbance.
+Applying frequent cuts to monoliths previously
+adapted
+to
+low
+disturbance
+(LH)
+resulted
+in
+a
+replacement of dominant species including legumes
+(Vicia cracca, Dactylis glomerata, Holcus lanatus, Poa
+pratensis,
+Agrostis
+capillaris)
+compared
+with
+low
+disturbance controls (LL) (data not shown). In contrast,
+shifting
+high
+disturbance
+controls
+(HH)
+to
+low
+disturbance
+(HL),
+changed
+the
+balance
+between
+codominant species (Festuca arundinacea and A. capillaris).
+The Shannon diversity index (H0) and the plant
+species
+richness
+(SNb)
+were
+higher
+in
+monoliths
+extracted from low as opposed to high disturbance
+ﬁeld plots (Po0.001, repeated measure ANOVA, data not
+shown). A shift to low experimental disturbance (HL)
+alleviated the decline (Po0.05, data not shown) in SNb
+and H0, compared with high experimental disturbance
+controls (HH). FD of SLA, LDMC and total aboveground
+traits ranged from 0.23 to 0.58 (Table 1). A shift to high
+disturbance markedly (Po0.05) increased FDSLA and
+FDvg (i.e aboveground traits) of the HL-treatment.
+Effects of disturbance and species number on C ﬂuxes. In
+rank correlations, GPP correlates negatively (Po0.05)
+with SNb, while a positive correlation is found for
+SANPP (supporting information, Appendix S1). Step-
+wise ascending regressions show a direct effect of plant
+species number on top soil SOC (40.2 mm) (Table 2).
+Trait based response-and-effect framework
+Response to disturbance of community scale traits (R).
+Community-aggregated
+leaf
+traits
+and
+root
+and
+rhizome traits are shown in Table 1. High compared
+with low pre-experimental disturbance (HH vs. LL),
+increased speciﬁc leaf area (SLA) and speciﬁc length
+of roots and rhizomes (SL), but reduced leaf dry-matter
+content (LDMC) and the density (DENS) and dia-
+meter (D) of roots and rhizomes. The N contents of
+leaves (LNC) and of roots and rhizomes (NC) did not
+differ signiﬁcantly between the HH and LL treatments.
+Under transient disturbance regimes (HL and LH), a
+reduced disturbance led to an increased dominance of
+plant
+species
+with
+high
+leaf
+dry-matter
+content
+(LDMC), low speciﬁc leaf area (SLA) and low leaf N
+content. Conversely, a shift from a low to a high
+experimental
+disturbance
+(HL
+vs.
+HH)
+reduced
+LDMC and increased SLA, LNC and SL.
+The experimental disturbance signiﬁcantly affected
+leaf
+traits
+(SLA,
+LDMC
+and
+LNC),
+while
+pre-
+experimental disturbance signiﬁcantly affected root
+and rhizome traits (SL, D and DENS). All traits
+(except for LDMC) were affected by sampling date,
+indicating the successive change of traits during the
+experiment.
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2925
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Table 1
+Means (A,  SE) and statistical signiﬁcance (B) of percentage presence of functional groups and community aggregated leaf and root and rhizome traits in a repeated
+measure analysis of variance (ANOVA) with pre-experimental (Pre-exp.), experimental disturbance (Exp.) and year factors and their interactions
+Functional groups
+Aggregated leaf traits
+Root and rhizome traits
+Functional divergence
+Grasses
+Forbes
+Legumes
+SLA
+LDMC
+LNC
+SL
+DENS
+D
+NC
+FDSLA
+FDLDMC
+(A) Means ( SE)
+LL
+51a  4
+24a  10
+25a  7
+213a  29
+0.27a  0.03
+2.8a  0.4
+11a  4
+0.36a  0.04
+0.80a  0.15
+1.40a  0.17
+0.23a  0.03
+0.47ab 0.03
+LH
+65a  5
+25a  8
+10ab  1
+266b  20
+0.22b  0.02
+3.4b  0.2
+27b  9
+0.30a* 0.03
+0.69b  0.20
+1.24a  0.13
+0.34b  0.02
+0.52b  0.02
+HL
+79b  5
+22a  12
+7b  2
+203a  34
+0.27a  0.03
+2.5a  0.4
+43b  14
+0.26b  0.05
+0.57b  0.17
+1.43a  0.21
+0.28a  0.02
+0.40a  0.04
+HH
+61a  14
+42a  10
+3b  1
+258b  17
+0.21b  0.02
+3.2b  0.4
+52b  28
+0.24b  0.05
+0.59b  0.14
+1.27a  0.09
+0.28a  0.04
+0.42a  0.03
+(B) Statistical signiﬁcance
+Pre-exp. disturbance
+**
+ns
+*
+ns
+ns
+ns
+**
+**
+**
+ns
+ns
+*
+Exp. disturbance
+ns
+ns
+*
+***
+***
+***
+ns
+ns
+ns
+ns
+*
+ns
+Year
+**
+**
+ns
+*
+ns
+***
+**
+***
+***
+*
+ns
+ns
+Pre-exp.  Exp.
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+*
+ns
+Pre-exp.  Year
+***
+ns
+ns
+**
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+Exp.  Year
+ns
+ns
+*
+**
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+ns
+Different letters in the same column indicate statistical differences (Po0.05) between treatments.
+*Po0.05, **Po0.01 and ***Po0.001.
+Trait values were log-transformed before ANOVA.
+SLA, speciﬁc leaf area; LDMC, leaf dry-matter content; LNC, leaf nitrogen content; SL, speciﬁc length; DENS, tissue density; D and NC, diameter and nitrogen content of pooled
+root and rhizomes; FDSLA and FDLDMC, functional divergence of SLA and LDMC; ns, not signiﬁcant.
+2926
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Table 2
+Summary of step-wise ascending regression procedure between carbon ﬂuxes, abiotic factors (year and experimental disturbance, exD), species number (SNb),
+functional divergence of leaf traits (FDSLA, FDLDMC), and community scale speciﬁc leaf area, SLA; leaf dry matter content, LDMC and root and rhizome density, speciﬁc length,
+SL; diameter D
+Flux
+Abiotic factors
+Plant traits
+Model of signiﬁcant effects
+R2
+P-model
+Year
+Experimental
+disturbance
+SNb
+Trait
+Community
+scale mean
+FD
+NEP
+–
+–
+–
+LDMC
+–
+0.011
+NEP 5 872 1 1373 FDLDMC
+19
+0.011
+ANPP
+o0.000
+0.002
+–
+SLA
+–
+0.004
+ANPP 5 564 1 0.27year 1 0.15exD 1 0.91 FDSLA
+70
+o0.001
+o0.000
+o0.000
+–
+LDMC
+0.026
+ns
+ANPP 5 521 1 0.24year 1 0.32exD 1 1.58 LDMC
+65
+0.046
+0.002
+0.009
+ns
+Log(SL)
+0.033
+–
+ANPP 5 519 1 0.25year 1 0.15exD 1 0.16log(SL)
+64
+0.056
+0.042
+0.009
+–
+Log(D)
+0.062
+–
+ANPP 5 3170.33log(D) 1 0.18exD 1 0.15year
+64
+0.043
+SANPP
+–
+o0.000
+–
+SLA
+ns
+o0.001
+SANPP 5 4.3 1 0.04exD 1 0.05 FDSLA
+92
+0.008
+–
+o0.000
+ns
+LDMC
+–
+0.037
+SANPP 5 2.2 1 0.05exD 1 0.03 FDLDMC
+92
+0.018
+NCS
+ns
+o0.000
+–
+LDMC
+ns
+0.021
+NCS 5 3990.8exD 1 1.31 FDLDMC
+60
+0.016
+–
+o0.000
+ns
+Log(SL)
+ns
+–
+NCS 5 600.58exD0.24 log(SL)
+59
+0.021
+–
+o0.000
+–
+DENS
+0.011
+–
+NCS 5 540.53exD 1 1.5 DENS
+60
+0.011
+–
+o0.000
+–
+Log(D)
+0.034
+–
+NCS 5 590.57exD 1 0.57 log(D)
+57
+0.034
+BNCS
+0.007
+0.012
+LDMC
+ns
+0.006
+BNCS 5 6630.31year 1 1.74 FDLDMC0.39exD
+43
+0.048
+ns
+–
+–
+Log(SL)
+0.013
+–
+BNCS 5 4160.39 log(SL)
+32
+o0.001
+ns
+–
+–
+DENS
+0.002
+–
+BNCS 5 332 1 1.78 DENS
+34
+o0.001
+ns
+–
+–
+Log(D)
+0.016
+–
+BNCS 5 866 1 989 log(D)
+30
+0.001
+SOC
+0.020
+0.002
+0.023
+Log(SL)
+0.014
+–
+SOC 5 400.02 log(SL)
+29
+0.001
+0.006
+0.013
+0.009
+DENS
+0.002
+–
+SOC 5 47 1 0.13 DENS
+40
+0.001
+0.010
+o0.001
+0.017
+Log(D)
+0.051
+ns
+SOC 5 550.03 SNb
+35
+0.006
+ns, not signiﬁcant; –, variable not selected by the step-wise ascending regression. Data are means of 2003 and 2004 for four replicate enclosures per treatment (n 5 32). When
+appropriate to satisfy Shapiro–Wilks test of normality, C ﬂuxes and traits were transformed by log or square root before analysis. In bold, best model.
+ANPP (g C m2 yr1), aboveground net primary productivity; SANPP (g C kg1 day1), speciﬁc aboveground net primary productivity; NCS (g C m2 yr1), total net carbon
+storage; BNCS (g C m2 yr1), belowground net carbon storage; SOC, top soil organic carbon content (40.2 mm, g C m2).
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2927
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+The fraction of rhizomes in the total belowground
+phytomass was signiﬁcantly higher (Po0.001, ANOVA,
+data not shown) at a pre-experimental low (LL, LH)
+compared with high (HH, HL) disturbance level,
+indicating
+a
+higher
+presence
+of
+the
+stoloniferous
+grass Elytrigia repens in those treatments. Treatment
+effects on the traits of ﬁne roots, coarse roots and
+rhizomes
+are
+shown
+in
+supporting
+information
+(Appendix S2). The speciﬁc length of each of these
+belowground plant parts was signiﬁcantly reduced at
+a
+low
+compared
+with
+a
+high
+pre-experimental
+disturbance, while the diameter of coarse roots and
+rhizomes was increased.
+Effects of community scale traits on C ﬂuxes (E). Rank
+correlation coefﬁcients were used to analyse individual
+effects on C ﬂuxes (supporting information, Appendix
+S1). A step-wise ascending regression procedure was
+applied to separate direct effects of disturbance (year)
+from
+indirect
+effects
+of
+plant
+species
+diversity,
+functional
+divergence
+and
+community-aggregated
+traits (Table 2).
+Community scale leaf traits and C ﬂuxes. Total C
+storage (NCS and SOC) and productivity (NEP, ANPP
+and SANPP) were affected by three single leaf traits
+(SLA, LNC and LDMC) and their distribution (FD)
+(Appendix S1). However, the step-wise procedure did
+not conﬁrm a direct effect of community-aggregated
+leaf traits on C ﬂuxes. Apart for the signiﬁcant relation-
+ship
+between
+ANPP
+and
+community-aggregated
+LDMC, aboveground productivity and NCS were af-
+fected by disturbance and functional divergence of SLA
+and LDMC (see Table 2).
+Community scale root and rhizome traits and C
+ﬂuxes. Primary productivity (GPP, ANPP) and C sto-
+rage (NCS, BNCS, SOC) were highly correlated to the
+speciﬁc length (SL), diameter (D) and density (DENS) of
+roots and rhizomes (Appendix S1). In step-wise proce-
+dure, community-scale speciﬁc length, diameter and
+density of roots and rhizomes had marked direct effects
+on ANPP and belowground C ﬂuxes (NCS and BNCS)
+(Table 2). The distribution of traits was tested by using
+the functional divergence of shoot traits (FDvg). FDvg,
+however, did not affect C ﬂuxes.
+Mathematical test of the trait based response-and-effect
+framework. In agreement with the framework proposed
+by Suding et al. (2008), our experiment demonstrated
+that
+root and
+rhizome
+traits
+(i.e.
+SL,
+D,
+DENS)
+responded to environmental change and signiﬁcantly
+affected
+C
+ﬂuxes
+(Table
+2).
+Using
+Eqn
+(6),
+the
+framework
+was
+tested
+by
+comparison
+of
+linear
+regression between treatments. In each of the four
+disturbance
+treatments,
+slopes
+[a,
+Eqn
+(6)]
+and
+intercepts of the regressions between C ﬂuxes (Y) and
+effect traits (E) were signiﬁcant (data not shown).
+Because effect slopes (a) did not differ (P40.1, data
+not shown) among treatments, equal slopes were
+assumed and Eqn (8) was applied (Table 3).
+The corresponding linear regressions show that
+NCS, BNCS and SOC can be predicted (Po0.05),
+according to Eqn (8), from roots and rhizome effect
+traits (SL, DENS and diameter) (Table 3). Treatment
+dependent intercepts for NCS and SOC indicate a
+direct effect of disturbance on these C ﬂuxes (Table 3).
+Interestingly, intercepts do not differ among treatments
+for BNCS, showing that the change in C sequestration
+was mostly mediated by root trait changes. Applying
+the mathematical test to functional diversity of leaf
+traits (FD) shows that total C storage (NCS) and
+aboveground productivity (ANPP and SANPP) can be
+predicted (Po0.05) according to Eqn (8) from FDSLA
+and FDLDMC (Table 3). The positive slopes indicate that
+aboveground
+productivity
+and
+total
+C-storage,
+increases with functional divergence of leaf traits.
+Signiﬁcant differences in intercepts among treatments
+for NCS and SANPP underline that those C ﬂuxes are
+also controlled by disturbance.
+While important effect and response traits were
+related (see Suding et al., 2008), changes in response
+traits between the two time periods were calculated as
+the constant k [see Eqn (8)] (Table 3). The measured
+change in C ﬂux after a change in disturbance was
+thereby broken into two components [see Eqn (8)]:
+direct
+and
+indirect
+effects
+of
+disturbance
+and
+response-and-effect
+traits.
+Accordingly,
+community
+traits (log SL, DENS, log D) contributed between 6%
+and 61% to the change in C ﬂuxes after disturbance
+shift (Table 3). These effects are displayed in Fig. 1,
+showing direct disturbance effects as vertical arrows
+and indirect response-and-effect as arrows parallel to
+the slope [a, Eqn (8)]. Similarly, up to 48% of changes in
+aboveground productivity (ANPP and SANPP) and
+total C-storage (NCS) were explained by response-
+and-effect changes of functional divergence of leaf
+traits (SLA and LDMC).
+Discussion
+Insight on the role of plant community structure for
+ecosystem functioning can best be gained in ecosystems
+that allow easy manipulation, such as perennial grass-
+land communities (Loreau & Hector, 2001). Focusing on
+plant functional traits, rather than on species identities,
+allows generalizing complex community dynamics and
+predicting effects of ongoing environmental changes.
+The framework proposed by Suding et al. (2008) de-
+scribes an approach to scale up from individuals to
+2928
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+communities and ecosystems in the context of environ-
+mental change predictions. Thereby, plants are classi-
+ﬁed in terms of their response to environmental factors
+and their effects on ecosystem properties (Chapin et al.,
+2000; Lavorel & Garnier, 2002). Although this frame-
+work deals with a highly relevant topic, empirical tests
+are rare.
+In a mesocosm experiment, we were able to continu-
+ously measure C ﬂuxes during 2 years in grassland
+communities affected by contrasted disturbance re-
+gimes (Klumpp et al., 2007a, b). In a fully factorial
+design, disturbance was either intensiﬁed or reduced.
+We have shown that changes in aboveground produc-
+tivity and belowground C storage after a change
+in disturbance were neither directly related to plant
+species richness, nor to legume abundance, but were
+partly caused by response-and-effect traits and func-
+tional diversity.
+Table 3
+Linear regressions between carbon (C) ﬂuxes and roots (and rhizome) community traits, FDSLA and FDLDMC
+Flux
+Trait
+Effect
+slope (a)
+Model
+statistics (R2)
+Disturbance
+Reponse k
+% change
+Treatment
+Intercept (b)
+SANPP
+FDSLA
+LL
+4.2a  4.5
+42  17
+0.94
+L to H
+1.47
+8
+LH
+45.8b  3.7
+(P 5 0.016)
+***
+H to L
+1.01
+0.2
+HL
+7.7a  3.4
+HH
+36.4b  3.4
+ANPP
+FDSLA
+LL
+515a  160
+951  447
+0.39
+L to H
+1.47
+48
+LH
+624a  116
+(P 5 0.043)
+*
+H to L
+1.01
+0.9
+HL
+431a  103
+HH
+641a  97
+NCS
+FDLDMC
+LL
+987a  297
+1304  600
+0.33
+L to H
+1.11
+10
+LH
+266b  139
+(P 5 0.039)
+***
+H to L
+0.97
+3
+HL
+735a  142
+HH
+225b  139
+DENS
+LL
+1369a  208
+1039  519
+0.75
+L to H
+0.83
+8
+LH
+626b  127
+(P 5 0.056)
+***
+H to L
+1.13
+7
+HL
+941a  136
+HH
+518b  139
+BNCS
+Log(SL)
+LL
+1308a  194
+150  71
+0.38
+L to H
+1.39
+26
+LH
+1134a  171
+(P 5 0.045)
+*
+H to L
+0.94
+17
+HL
+1063a  184
+HH
+989a  185
+DENS
+LL
+404a  274
+1559  680
+0.39
+L to H
+0.83
+33
+LH
+204a  163
+(P 5 0.029)
+**
+H to L
+1.13
+61
+HL
+120a  171
+HH
+90a  180
+Log(D)
+LL
+1048a  114
+305  125
+0.41
+L to H
+2.17
+11
+LH
+836a  160
+(P 5 0.021)
+***
+H to L
+1.08
+6
+HL
+745a  165
+HH
+651a  163
+SOC
+DENS
+LL
+5.2a  1.1
+7.3  2.9
+0.69
+L to H
+0.83
+21
+LH
+3.5a  0.7
+(P 5 0.016)
+***
+H to L
+1.13
+27
+HL
+2.4b  0.7
+HH
+1.8b  0.8
+Response factor (k), effect slope (a, mean  SE) and direct effects of disturbance on C ﬂuxes (intercept, b) [see Eqns (6) and (8)]. The
+% change in C ﬂux resulting from changes in response-and-effect trait (and FD) were calculated from Eqn (8) (% change). Because
+slopes did not differ among disturbance treatments, a single slope was calculated. Different letters in the same column indicate
+statistical differences (Po0.05) between treatments. Except for the relations BNCS–DENS and SANPP–FDSLA all intercepts were
+signiﬁcant (Po0.05). For P values: *Po0.05, **Po0.01 and ***Po0.001.
+ANPP (g C m2 yr1), aboveground net primary productivity; SANPP (g C kg1 day1), speciﬁc aboveground net primary produc-
+tivity; BNCS (g C m2 yr1), belowground net C storage; SOC, top soil organic C content (40.2 mm, g C m2); log SL, log-
+transformed speciﬁc length; DENS, tissue density; log D, log-transformed diameter of root and rhizomes; LL, constant low
+disturbance; LH, shift to high disturbance; HH, constant high disturbance; HL, shift to low disturbance; ns, not signiﬁcant.
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2929
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Response to disturbance of community scale traits (R)
+The primary approach in identifying response traits is
+to evaluate how environmental conditions alter trait
+values. In our study, leaf and root (and rhizome) traits
+showed a common response to disturbance. In both
+steady-state (LL, HH) and transient disturbance re-
+gimes (HL and LH), a reduced disturbance led to plant
+growth strategies of resources conservation (i.e. high
+tissue density, low N content and low area per unit leaf
+mass) (e.g. Reich et al., 1995; Wright & Westoby, 1999).
+Inversely, a growth strategy inducing resource exploita-
+tion (low tissue density, high N content and high area
+per unit mass leaves) was favoured by high disturbance
+(Louault et al., 2005).
+Roots and rhizome traits were also response traits to
+the disturbance regime. In contrast to leaf traits, root
+and rhizome traits were mostly controlled by the pre-
+experimental disturbance level (see supporting infor-
+mation, Appendix S2), indicating carry-over effects
+caused by the extended life span of roots compared
+with leaves. A shift to high disturbance led to marked
+changes in root (and rhizome) morphology (increased
+speciﬁc length, reduced diameter and tissue density),
+presumably increasing root elongation (Eissenstat, 1992;
+Eissenstat et al., 2000) and soil nutrient acquisition
+(Craine et al., 2002) rates. As with leaf traits, these
+morphological changes correspond to an increased
+dominance of exploitative plant growth strategies
+(Roumet et al., 2006). Conversely, a shift from high to
+low disturbance, led to small but nevertheless consis-
+tent changes (reduced SL, increased D and DENS) in the
+morphology of belowground plant parts. As with leaf
+traits, these changes indicate an increased dominance of
+conservative plant growth strategies (Roumet et al.,
+2006).
+Relating effects of community scale traits to C ﬂuxes (E)
+Functional effect traits are deﬁned as those traits that
+have an impact on ecosystem functioning (Diaz &
+Fig. 1
+Direct and response-and-effect components of carbon (C) ﬂux changes [see Eqn (8)] after a change in disturbance. Direct effects
+are shown as vertical arrows. Response-and-effect changes mediated by tissue density of roots and rhizomes (DENS) (d) and functional
+divergence of speciﬁc leaf area (SLA) and leaf dry-matter content (LDMC) (a–c) are shown as arrows parallel to the slope (a) of the effect
+trait (dotted lines). Estimated C ﬂuxes are for constant low disturbance (black circles), constant high disturbance (black triangles), shift to
+low disturbance (HL, open triangles) and shift to high disturbance (LH, open circles). Symbols with a cross are measured C ﬂuxes. ANPP,
+aboveground net primary productivity; SANPP, speciﬁc aboveground net primary productivity; NCS, total net C storage and BNCS,
+belowground net C storage. When predicted values are invisible, they are masked by measured values (crossed symbols).
+2930
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Cabido, 2001; Lavorel & Garnier, 2002). In agreement
+with the response-and-effect framework (Suding et al.,
+2008), our community traits were classiﬁed in terms of
+their response to environmental factors (response traits)
+and their effects on ecosystem services (C ﬂuxes) (effect
+traits). As abiotic factors (i.e. disturbance, year) may
+explain a signiﬁcant amount of variation, we applied a
+step-wise ascending regression procedure to separate
+abiotic effects from effects mediated by plant species
+number, functional divergence and (effect) traits. By
+including functional divergence effects, our procedure
+allowed a formal incorporation of functional diversity
+as a driving factor in the sensitivity to disturbance
+change.
+In our experiment, the rank correlation between
+aboveground productivity (SANPP) and community
+leaf traits (SLA and LDMC) supported the mass ratio
+hypothesis in agreement with the report by Garnier
+et al. (2004). However, in a step-wise regression proce-
+dure the functional divergence (FDSLA), rather than
+the mean value of these traits, explained aboveground
+net
+primary
+productivity
+(ANPP
+and
+SANPP).
+The mass ratio hypothesis has been theoretically linked
+to a selection mechanism (i.e. selection of dominant
+species), whereas the functional divergence underlines
+a reduced overlap of trait values in a community
+(Mason et al., 2005). Effects of functional trait distribu-
+tions, can thus be related to a niche complementarity
+effect (Petchey & Gaston, 2006), suggesting functional
+diversity as the driving factor of productivity (Diaz
+et al., 2007b).
+ANPP and total belowground C storage (NCS, BNCS,
+SOC) were highly correlated to the speciﬁc length (SL),
+diameter (D) and density (DENS) of roots and rhi-
+zomes. Irrespective of current disturbance regime and
+of year, the step-wise ascending procedure conﬁrms a
+direct role of mean root and rhizome trait values
+on both above- and belowground C ﬂuxes. However,
+this effect is most consistent with BNCS, which is
+signiﬁcantly affected by SL, D and DENS. High
+tissue density and low speciﬁc length of roots has been
+shown to reduce the decomposition rate of below-
+ground litter (Personeni & Loiseau, 2005), which in turn
+explains the increase in mean residence time of C in
+coarse particulate soil organic matter (Klumpp et al.,
+2007b)
+and,
+hence,
+belowground
+C
+sequestration
+(BNCS). Root and rhizome traits would therefore pri-
+marily control soil processes such as belowground
+C sequestration, but would also have an indirect effect
+on other C ﬂuxes through N-cycling (Bardgett et al.,
+2005; De Deyn et al., 2008). In contrast our ﬁndings
+show, the functional diversity of leaf traits would have a
+direct effect on ANPP, but no signiﬁcant effect on other
+C ﬂuxes.
+Mathematical test of response-and-effect hypothesis. Can we
+incorporate
+functional
+traits
+and
+diversity
+to
+successfully predict effects of environmental change in
+a conceptual way? The work presented here, provides a
+mathematical test of the response and effect framework
+by Suding et al. (2008). Our approach was tested by (i)
+assuming (for simpliﬁcation) a linear effect of the
+response-and-effect traits on C ﬂuxes [see Eqns (4–8)],
+allowing us to quantitatively determine the role of
+disturbance and (ii) by integrating other mechanisms
+apart from the mass ratio hypothesis (i.e. FD).
+Highly signiﬁcant regressions were found with root
+and rhizome traits and functional divergence of SLA
+and
+LDMC.
+Noticeably,
+the
+response-and-effect
+changes in C ﬂux account for between 3% and 48%
+of the total C ﬂux changes (ANPP and NCS), indicating
+that some ﬂuxes are more susceptible to changes in trait
+values and their distribution than others (SANPP).
+Interestingly, the positive slope of the response of
+ANPP, SANPP and NCS to functional divergence of
+SLA and LDMC indicates that the distribution of trait
+values conditions aboveground NPP. This demonstrates
+that the prediction of ecosystem services requires data
+on functional diversity factors, which is in agreement
+with
+results of Diaz et
+al. (2007b). Nevertheless,
+differences between intercepts among treatments for
+NCS and SANPP highlight the fact that C ﬂuxes are
+also controlled by disturbance. Moreover, our study
+shows that FD does not always explain changes in C
+ﬂuxes (i.e. rejection of FDvg for BNCS) and the
+community trait values can be sufﬁcient for practical
+reasons. However, we did not measure the functional
+diversity of root traits, which might yield better
+prediction of belowground C ﬂuxes (BNCS) than
+community trait values. To overcome this limitation,
+new
+methods
+allowing
+the
+determination
+of
+belowground species traits are required.
+As with ANPP, transient effects of disturbance are
+asymmetric for soil C sequestration (NCS, BNCS and
+SOC) because increasing disturbance (LH vs. LL) has
+stronger
+effects
+(response
+factor
+k)
+than
+reducing
+disturbance (HL vs. HH). The asymmetry results from a
+stronger response of community traits to an increase as
+opposed to a decline in disturbance. For example, with
+regard to SL, k increased by 140% in response to
+disturbance increase, whereas it was reduced by 6% in
+response to disturbance decline. Our data conﬁrms that
+organic C is lost more rapidly from soil than it is gained
+(Ko¨rner, 2003; Soussana et al., 2004). Nevertheless, we
+found a common effect slope (a) for both increase and
+decline in disturbance, suggesting that asymmetry is
+mostly mediated by trait responses and not by trait effects.
+Because the disturbance induced trade-off between C
+sequestration, and herbage production (Klumpp et al.,
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2931
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+2007a) is mediated by community-scale response-and-
+effect traits and functional diversity, plant diversity is
+presumably a major driver of C cycle responses to
+disturbance in grasslands. In contrast to species-rich
+grasslands, sown grass mixtures are likely to have a
+small functional divergence of traits following changes
+in
+disturbance
+change,
+which
+may
+limit
+their
+C
+sequestration potential.
+In
+conclusion,
+we
+were
+able
+to
+show
+how
+environmental changes affect community traits and
+their distribution and how they relate to C ﬂuxes in
+grasslands. Moreover, we identiﬁed a set of community
+scale traits that predict changes in C sequestration in
+species-rich grasslands. In contrast, for herbage pro-
+duction, functional diversity of leaf traits has been
+shown to be the best predictior. Applying a set of
+statistical procedures reduced uncertainties in predict-
+ing ecosystem processes, allowing, for the ﬁrst time: (i) to
+test mathematically the response-and-effect approach, (ii) to
+scale up from individuals to communities and eco-
+systems in the context of environmental change (iii) to
+test hypothesis other than the mass ratio and to (iv) to
+determine quantitative effects of disturbances, commu-
+nity traits and functional diversity on C ﬂuxes. Further
+tests will be required with other environmental factors
+(e.g. elevated CO2, warming, etc.) in order to predict
+future changes in ecosystem services under global
+change.
+Acknowledgements
+We thank Robert Falcimagne, Patrick Pichon and the trainees
+Julie Blanchon and Re´mi Pilon for their scientiﬁc and technical
+contributions. We also thank Dr Catherine Picon-Cochard for her
+help with the techniques concerning root traits and Drs Se´bastien
+Fontaine, Juliette Bloor and Nicolas Gross for helpful comments
+on previous versions of this manuscript. This work was sup-
+ported by a Marie Curie Individual Fellowship (EVK2-CT2002-
+50026) to Katja Klumpp, by the European FP5 ‘GREENGRASS’
+project (EVK2-CT2001-00105) and was part of the French ECCO
+PNBC ‘Geotraits’ and GDR ‘UTILITERRES’.
+References
+Aerts R, De Caluwe H, Beltman B (2003) Plant community
+mediated vs. nutritional controls on litter decomposition rates
+in grasslands. Ecology, 84, 3198–3208.
+Bardgett RD, Bowmann WD, Kaufmann R, Schmidt SK (2005) A
+temporal approach to linking aboveground and belowground
+ecology. Trends in Ecology and Evolution, 20, 634–641.
+Casella EE, Soussana JF (1997) Long-term effects of CO2 and
+temperature increase on the carbon balance of a temperate
+grass sward. Journal of Experimental Botany, 48, 1309–1321.
+Chapin FS III, Matson PA, Mooney HA (2002) Principles of Terres-
+trial Ecosystems Ecology. Springer-Verlag, New York, NY, USA.
+Chapin FS III, Sala OE, Burke IC et al. (1998) Ecosystem con-
+sequences of changing biodiversity. BioScience, 48, 45–52.
+Chapin FS III, Zavaleta ES, Eviner VT et al. (2000) Consequences
+of changing biodiversity. Nature, 405, 234–242.
+Craine JM, Tilman D, Wedin D, Reich PB, Tjoelker MG,
+Knops J (2002) Functional traits, productivity and effects on
+nitrogen cycling of 33 grassland species. Functional Ecology, 16,
+563–574.
+Da S.Pontes L, Soussana JF, Louault F, Andueza D, Carrere P
+(2007) Leaf traits affect the above-ground productivity and
+quality of pasture grasses. Functional Ecology, 21, 844–853.
+De Deyn GB, Cornelissen JHC, Bardgett RD (2008) Plant func-
+tional traits and soil carbon sequestration in contrasting
+biomes. Ecology Letters, 11, 516–531.
+De Deyn GB, Van der Putten WH (2005) Linking aboveground
+and belowground diversity. Trends in Ecology and Evolution, 20,
+628–633.
+Diaz S, Cabido M (2001) Vive la difference: plant functional
+diversity matters to ecosystem processes. Trends in Ecology and
+Evolution, 16, 646–655.
+Diaz S, Lavorel S, De Bello F, Quetier F, Grigulis K, Robson TM
+(2007b) Incorporating plant functional diversity effects in
+ecosystem service assessment. Proc Natl Acad Sci USA, 52,
+20684–20689.
+Diaz S, Lavorel S, McIntyre S et al. (2007a) Plant traits responses to
+grazing – a global synthesis. Global Change Biology, 13, 313–341.
+Eissenstat DM (1992) On the relation ship between speciﬁc root
+length and the rate of root proliferation: a ﬁeld study using
+citrus rootstocks. New Phytologist, 118, 63–68.
+Eissenstat DM, Wells CE, Yania RD, Whitebeck JL (2000) Build-
+ing roots in a changing environment: implication for root
+longevity. New Phytologist, 147, 33–42.
+Garnier E, Cortez J, Billes G et al. (2004) Plant functional markers
+capture ecosystem properties during secondary succession.
+Ecology, 85, 2630–2637.
+Garnier E, Shipley B, Roumet C, Laurent G (2001) A standar-
+dized protocol for the determination of speciﬁc leaf area and
+leaf dry matter content. Functional Ecology, 15, 688–695.
+Grime JP (1998) Beneﬁts of plants diversity on ecosystems:
+immediate, ﬁlter and founder effects. Journal of Ecology, 86,
+902–910.
+Grime JP (2006) Trait convergence and trait divergence in her-
+baceous plant communities: mechanisms and consequences.
+Journal of Vegetation Science, 17, 255–260.
+Gross N, Robson TM, Lavorel S, Albert C, Le Bagousse-Pinguet
+Y, Guillemin R (2008) Plant response traits mediate the effects
+of subalpine grasslands on soil moisture. New Phytologist, 180,
+652–662.
+Hector A, Schmid B, Beierkuhnlein C et al. (1999) Plant diversity
+and productivity experiments in European grasslands. Science,
+286, 1123–1127.
+Hooper DU, Chapin FS, Ewel JJ et al. (2005) Effects of biodiver-
+sity on ecosystem functioning: a consensus of current knowl-
+edge. Ecological Monographs, 75, 3–36.
+IPCC (2000) Special Report on Land Use, Land-Use Change and
+Forestry. Cambridge University Press, Cambridge, UK.
+IPCC (2007) Climate Change 2007: The Scientiﬁc Basis (Contribution
+of Working Group I to the Fourth Assessment Report of the
+2932
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Intergovernmental Panel on Climate Change). Cambridge Uni-
+versity Press, Cambridge, UK.
+Kazakou E, Vile V, Shipley B, Gallet C, Garnier E (2006) Co-
+variation in litter decomposition, leaf traits and plant growth
+in species from a Mediterranean old-ﬁeld succession. Func-
+tional Ecology, 20, 21–30.
+Klumpp K, Soussana JF, Falcimagne R (2007a) Effects of past and
+current disturbance on carbon cycling in grassland meso-
+cosms. Agriculture, Ecosystems and Environment, 121, 59–73.
+Klumpp K, Soussana JF, Falcimagne R (2007b) Long-term steady
+state 13C labeling to investigate carbon turnover in plant soil
+systems. Biogeosciences, 4, 385–394.
+Ko¨rner C (2003) Slow in, rapid out – carbon ﬂux studies and
+Kyoto targets. Science, 300, 1242–1243.
+Lavorel S, Garnier E (2002) Predicting changes in commu-
+nity composition and ecosystem functioning from plant
+traits:
+revisiting
+the
+Holy
+Grail.
+Functional
+Ecology,
+16,
+545–556.
+Lepsˇ J, De Bello F, Lavorel S, Berman S. (2006) Quantifying and
+interpreting functional diversity of natural communities: prac-
+tical considerations matter. Preslia, 78, 481–501.
+Loiseau P, Louault F, Le Roux X, Bardy M (2005) Does extensi-
+ﬁcation of rich grasslands alter the C and N cycles, directly
+or via species composition. Basic and Applied Ecology, 6, 275–
+287.
+Loreau M, Hector A (2001) Partitioning selection and comple-
+mentarity in biodiversity experiments (vol 412, pg 72, 2001).
+Nature, 413, 72–76.
+Loreau M, Naeem S, Inchaust P et al. (2001) Biodiversity and
+ecosystem functioning: current knowledge and future chal-
+lenges. Science, 294, 804–808.
+Louault F, Pillar VD, Aufrere J, Garnier E, Soussana JF (2005)
+Plant traits and function types in response to reduced dis-
+turbance in a semi-natural grassland. Journal of Vegetation
+Science, 16, 151–160.
+Mason NWH, Mouillot D, Lee WG, Wilson JB (2005) Functional
+richness, functional evenness and functional divergence:
+the primary components of functional diversity. Oikos, 111,
+112–118.
+Mokany K, Ash J, Roxburgh S (2008) Functional identity is more
+important than diversity in inﬂuencing ecosystem processes
+in a temperate native grassland. Journal of Ecology, 96, 884–
+893.
+Paterson E (2003) Importance of rhizodeposition in the coupling
+of plant and microbial productivity. European Journal of Soil
+Science, 54, 741–750.
+Personeni E, Loiseau P (2005) Species strategy and N ﬂuxes in
+grassland soil – a question of root litter quality or rhizosphere
+activity? European Journal of Agriculture, 22, 217–229.
+Petchey OL, Gaston KJ (2006) Dendrograms and measuring
+functional diversity. Oikos, 116, 1422–1426.
+Reich PB, Ellsworth DS, Uhl C (1995) Leaf carbon and nutrient
+assimilation and conservation in species of differing succes-
+sional status in an oligotrophic Amazonian forest. Functional
+Ecology, 9, 65–76.
+Reich PB, Tilman D, Craine J et al. (2001) Do species and functional
+groups differ in acquisition and use of C, N and water under
+varying atmospheric CO2 and N availability regimes? A ﬁeld
+test with 16 grassland species. New Phytologist, 150, 435–448.
+Ro¨scher C, Temperton VM, Scherer-Lorenzen M et al. (2005) Over
+yielding in experimental grassland communities - irrespective
+of species pool or spatial scale. Ecology Letters, 8, 419–429.
+Roumet C, Urcelay C, Diaz S (2006) Suites of root traits differ
+between annual and perennial species growing in the ﬁeld.
+New Phytologist, 170, 358–368.
+Scurlock JML, Johnson K, Olson RJ (2002) Estimating productiv-
+ity from grassland biomass dynamics measurements. Global
+Change Biology, 8, 736–753.
+Soussana JF, Allard V, Pilegaard K et al. (2007) Full accounting of
+the greenhouse gas (CO2, N2O, CH4) budget of nine European
+grassland sites. Agriculture, Ecosystems and Environment, 121,
+121–135.
+Soussana JF, Loiseau P, Vuichard N, Ceschia E, Balesdent J,
+Chevallier T, Arrouays D (2004) Carbon cycling and seques-
+tration opportunities in temperate grasslands. Soil Use Manage-
+ment, 20, 219–230.
+Suding K, Lavorel S, Chapin FS et al. (2008) Scaling environ-
+mental change through the community-level: a trait-based
+response-and-effect framework for plants. Global change Biol-
+ogy, 14, 1125–1140.
+Tilman D, Knops JMH, Wedin D, Reich P, Ritchie M, Siemann E
+(1997) The inﬂuence of functional diversity and composition
+on ecosystem processes. Science, 277, 1300–1302.
+Tilman D, Reich PB, Knops JMH (2006) Carbon-negative biofuels
+from low-input high diversity grassland biomass. Science, 314,
+1598–1600.
+Violle C, Navas ML, Vile D, Kazakou E, Fortunel C, Hummel I,
+Garnier E (2007) Let the concept of trait be functional!. Oikos,
+116, 882–892.
+Wardle DA, Bardgett RD, Klironomos JN, Setala H, van der
+Putten WH, Wall DH (2004) Ecological linkages between
+aboveground and belowground biota. Science, 304, 1629–1633.
+Weiher E (1998) The combined effects of scale and productivity
+on species richness. Journal of Ecology, 87, 1005–1999.
+Wright IJ, Westoby M (1999) Differences in seedling growth
+behaviour among species: trait correlations across species,
+and trait shifts along nutrient compared to rainfall gradients.
+Journal of Ecology, 87, 85–97.
+P L A N T T R A I T S A N D C S E Q U E S T R AT I O N I N G R A S S L A N D S
+2933
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934
+
+Supporting Information
+Additional Supporting Information may be found in the online version of this article:
+Appendix S1. Spearman’s rank correlation coefﬁcients between annual means of carbon ﬂuxes (g C m2 yr1), community aggregated
+traits and indices of plant community structure, with species number (SNb), percentage legumes (%Leg), functional divergence of the
+vegetation (FDvg), speciﬁc leaf area (SLA), leaf dry matter content (LDMC), leaf nitrogen content (LNC) and speciﬁc length (SL),
+tissue density (Dens), diameter (D) and nitrogen content (NC) of pooled root and rhizomes. Functional divergence of SLA, LDMC
+(FDSLA, FDLDMC) and above-ground traits (FDvg), gross primary productivity (GPP), net ecosystem productivity (NEP), total net
+carbon storage (NCS), belowground carbon storage (BNCS), aboveground net primary productivity (ANPP), speciﬁc annual net
+primary productivity (SANPP) and of total C in soil OM 40.2 mm (SOC). Correlations marked in bold are signiﬁcant at Po0.05. Data
+correspond to means in 2003 and 2004 of four replicate enclosures per treatment (n 5 32).
+Appendix S2. Annual means (A) of coarse root, ﬁne root and rhizome aggregated trait values and statistical signiﬁcance of pre-
+experimental and experimental disturbance factors and year in an ANOVA (B). Constant low disturbance (LL), shift to high disturbance
+(LH), constant high disturbance (HH) and shift to low disturbance (HL). Speciﬁc length (SL), tissue density (DENS), diameter (D) and
+nitrogen content (NC) of pooled root and rhizomes. For P values, not signiﬁcant (–), Po0.05 (*), Po 0.01 (**) and Po0.001 (***).
+Please note: Wiley-Blackwell are not responsible for the content or functionality of any supporting materials supplied by the authors.
+Any queries (other than missing material) should be directed to the corresponding author for the article.
+2934
+K . K L U M P P & J . - F. S O U S S A N A
+r 2009 Blackwell Publishing Ltd, Global Change Biology, 15, 2921–2934

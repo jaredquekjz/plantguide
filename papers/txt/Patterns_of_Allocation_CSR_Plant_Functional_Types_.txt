@@ -1,0 +1,1973 @@
+Research Article
+Patterns of Allocation CSR Plant Functional Types in
+Northern Europe
+Alexander B. Novakovskiy, Svetlana P. Maslova, Igor V. Dalke, and Yuriy A. Dubrovskiy
+FSBSI Institute of Biology, Komi SC UB, Kommunisticheskaya Str., No. 28, Syktyvkar, Komi Republic 167928, Russia
+Correspondence should be addressed to Alexander B. Novakovskiy; novakovsky@ib.komisc.ru
+Received 17 June 2016; Revised 26 September 2016; Accepted 19 October 2016
+Academic Editor: Ram Chander Sihag
+Copyright © 2016 Alexander B. Novakovskiy et al. This is an open access article distributed under the Creative Commons
+Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is
+properly cited.
+Morphological and physiological parameters of 76 vascular plant species typical for Northern Europe were analyzed using Grime’s
+classification. 𝐶species (competitors) have high levels of canopy height, leaf dry weight, and maximal lateral spread. 𝑅species
+(ruderal) have low leaf dry weight, longer flowering period, high rate of photosynthetic capacity and respiration, and high nitrogen
+content in the leaves. Stress-tolerant (𝑆) species prevailing in habitats with limited resources are small and have low rate of
+photosynthetic activity and respiration. Principal component analysis (PCA) ordination showed a clear separation of species of
+different plant functional types according to their morphological and physiological parameters. The first PCA axis showed close
+relationship with the rate of respiration and photosynthetic activity and allowed us to differentiate 𝑆from 𝑅species. The second
+PCA axis correlated with morphological parameters associated with the size of plants and allowed us to differentiate 𝐶species from
+𝑆and 𝑅species. Using PCA ordination, we developed a model that determines plant functional types in Northern Europe and
+analyzed plant functional types of several species that are not presented in Grime’s classification. The proposed model has higher
+accuracy (84%) compared to similar models designed for other climatic zones.
+1. Introduction
+Prediction of response of individual species, communities,
+and ecosystems to the global climate changes and anthro-
+pogenic impact is one of the main problems of modern
+ecology [1, 2]. In such studies, it is expedient to consider
+the plant functional groups of assemblages of species with
+similar responses to changes in environmental conditions.
+Conception of life strategies developed by Ramenskii and
+Grime (the 𝐶𝑆𝑅theory) is an example of such generalization
+[3, 4]. According to the 𝐶𝑆𝑅theory, there are three main types
+of life strategies: competitors, ruderals, and stress-tolerators.
+Species of different plant functional types have different
+biomass structure, intensity, and duration of growth pro-
+cesses, photosynthetic capacity and respiration rate, use of
+assimilates, and features of protective, and adaptive mecha-
+nisms and reactions [5–10].
+Grime’s system of plant functional types includes many
+species of vascular plants (more than 1000 species) that
+are typical for the herbaceous flora of Great Britain [2, 11].
+The flora of the higher latitudes includes many arctic and
+alpine species that are not presented in Grime’s system.
+Thus, the 𝐶𝑆𝑅classification cannot be used effectively to
+analyze ecosystems of the northern territories. Moreover,
+many species have high plasticity and demonstrate different
+strategic features depending on the environmental conditions
+(climatic, edaphic, and eco-coenotic), especially on the bor-
+ders of their distribution areas [12].
+Currently, there are several models that identify practical
+ordination of wild plants within the 𝐶𝑆𝑅space. Such models
+were developed for meadow vegetation of England, Ireland,
+and France [13]; alpine and subalpine vegetation of Italy [14,
+15]; and flora of the Great Britain [11, 16].
+Hodgson et al.’s [11] and Pierce et al.’s [15] models are
+the most known. These models were used to determine life
+strategies in different climate zones from alpine meadows in
+Italy [17] to desert vegetation in Turkey [18]. However, there
+are no data of these models being used in northern latitudes.
+In these models, morphological predictors are used. In
+our view, morphological parameters are easier to measure
+Hindawi Publishing Corporation
+International Journal of Ecology
+Volume 2016, Article ID 1323614, 11 pages
+http://dx.doi.org/10.1155/2016/1323614
+
+2
+International Journal of Ecology
+than other parameters. However, in some cases, these cannot
+be used for allocating plant functional types. For example,
+specific leaf area (SLA) is a key element of the “world-
+wide leaf economics spectrum” [19]. SLA corresponds to
+soil fertility and marks stress-tolerant species. However, in
+Northern Europe where many of the habitats are shaded,
+the leaf economics spectrum breaks down [20]. We attempt
+to provide a methodology that gets around this problem
+using functional (physiological) along with morphological
+predictors. Functional traits such as photosynthetic capacity,
+respiration rate, and concentration of carbon and nitrogen
+in leaves reflect processes of energy transformation and are
+closely related to plant activity, growth, and productivity
+[7, 9]. Thus, these are closely linked to the plant functional
+types.
+The aim of the present study was to develop mathematical
+model allocating 𝐶𝑆𝑅functional type of vascular plants in
+Northern Europe based on morphological and functional
+parameters.
+2. Materials and Methods
+2.1. Plant Material. In our investigations, 76 species of herbs
+were used (57 have 𝐶𝑆𝑅status in Grime’s system; see
+Appendix 1 in Supplementary Material available online at
+http://dx.doi.org/10.1155/2016/1323614) from 69 genera, 30
+families. Nomenclature is given according to Cherepanov
+[21].
+2.2. Study Sites and Data Source. Investigations were carried
+out during 2013–2015 in the middle taiga subzone (near
+Syktyvkar city, 61∘34󸀠N, 50∘33󸀠E), in the northern taiga (Ilych
+River basin, 63∘13󸀠N, 58∘34󸀠E), and far northern taiga (near
+Seida village, 67∘3󸀠N, 62∘36󸀠E). Studies of morphological
+and physiological parameters were performed during the
+flowering period (July) in typical communities. Most of the
+data on physiological parameters (photosynthetic capacity
+and respiration rate) were obtained previously [10].
+In addition, we used the data from the TRY DB database
+(https://www.try-db.org/) [22] in order to eliminate differ-
+ences in species morphology related to specific habitats.
+Among all the received data, records from the territory
+of Central and Northern Europe and Great Britain (more
+than 17,000 primary records) were selected. The average
+parameters from all sources (arithmetic mean) were used in
+the succeeding analysis.
+2.3. Trait Measurement
+2.3.1. Canopy Height. Canopy height was measured from the
+ground to the top of the generative parts of plants [2].
+Measures were conducted with a 30-time replication.
+2.3.2. Leaf Dry Weight and Dry Matter Content. Leaf area
+and dry weight were measured in mature leaves from the
+middle of stems. Leaf area was measured using photo images
+by using ImageJ (https://imagej.nih.gov/ij/). Measures of leaf
+wet weight were made in the field during 1-2 h after sampling.
+Sampled leaves were placed in hermetically sealed plastic
+bags to reduce the evaporation of water. Leaf dry weight
+was measured in the laboratory after the leaves were dried
+for 24 h at a temperature of 80∘C. Dry matter content was
+calculated as percent ratio of leaf dry weight to leaf wet
+weight. Measurements of 30–120 samples were replicated
+according to size and weight of leaves.
+2.3.3. Lateral Spread and Phenological Data. Lateral spread
+of the species is determined by root system, life form, and
+distance between the ramets (vegetative individuals) of the
+plant [11]. We used Raunkiær’s life-form systems to determine
+the type of lateral spread of each species. Phenology of the
+model species was studied using http://www.plantarium.ru/
+(open atlas of vegetation of Russia and bordering countries).
+2.3.4. Functional Parameters. CO2 exchange of the leaves
+was measured using LI-7000 (LI-COR, Inc., Lincoln, NE,
+USA) and LCPro+ (ADC BioScientific Ltd., Hoddesdon,
+UK) systems based on the IR analyzer. Small leaves (smaller
+than the chamber area) were measured in groups. Large
+leaves (length or width does not fit in the chamber) were
+cut from the middle without large veins. Gas exchange of
+excised leaves was measured. Photosynthetic capacity was
+measured at saturating photosynthetically active radiation
+(800–1200 𝜇mol/m2c); respiration rate of the leaves was
+measured in the dark at a temperature of 18–20∘C. Leaves
+were sampled from 10 to 15 individual plants. The results for
+photosynthesis and respiration are presented based on the
+leaf dry weight.
+The content of total nitrogen and carbon was measured
+in dry ground biomass using elemental CHNS analyzer EA-
+1110 (Italy) in the ecoanalytical laboratory of the Institute
+of Biology of Komi SC UB, RAS. Samples were collected in
+double replication, and each sample was analyzed in double
+or triple replication.
+2.4. CSR Classification. The basis of the 𝐶𝑆𝑅classification is
+three axes that are related to competition, stress tolerance, and
+ruderality of species (Figure 1(a)). Grime allocated 19 types of
+primary, secondary, and tertiary plant functional types [2].
+It is common to use letter designations for plant functional
+types (Figure 1(b)). However, in modeling, it is easier to use
+digital coordinates of species in the three axes (Figure 1(c)).
+2.5. Model Building Scheme. In the first step, the 𝐶𝑆𝑅status
+of species (which are presented in the classification) was
+determined according to Grime’s classification [11].
+Then species were divided into four groups: species with
+domination of competitor strategy (𝐶, 𝐶/𝐶𝑅, 𝐶/𝐶𝑆, and
+𝐶/𝐶𝑆𝑅), ruderal strategy (𝑅, 𝑅/𝐶𝑅, 𝑅/𝑆𝑅, and 𝑅/𝐶𝑆𝑅), and
+stress-tolerators (𝑆, 𝑆/𝑆𝐶, 𝑆/𝑆𝑅, and 𝑆/𝐶𝑆𝑅). In addition,
+we defined a group of species as intermediate types (𝐶𝑆𝑅,
+𝐶𝑅/𝐶𝑆𝑅, 𝑆𝐶/𝐶𝑆𝑅, 𝑆𝑅/𝐶𝑆𝑅, 𝐶𝑅, 𝑆𝐶, and 𝑆𝑅) (Figure 1(b)).
+Furthermore, we used the analysis of variance to select
+traits with significant difference (𝑝< 0.05) between these
+four groups. These parameters were included in the model.
+
+International Journal of Ecology
+3
+C
+R
+S
+Axis of 
+environmental disturbance
+Axis of competition abilities
+Axis of
+environmental stress
+(a)
+C
+C/CR
+C/SC
+CR
+C/CSR
+SC
+CR/CSR
+SC/CSR
+R/CR
+CSR
+S/SC
+R/CSR
+S/CSR
+R
+SR/CSR
+S
+R/SR
+S/SR
+SR/CSR
+(b)
+2,−2, −2
+1, −2, −1
+1,−1, −2
+0, 0, −2
+1,−1, −1
+−1,−1, −1
+−2, 1, −1
+−1, 1, −2
+0, 0, −1
+−2, 2, −2
+−1, 0, 0
+−2, −1, 1
+−2, 0, 0
+−1, −1, 1
+0, 0, 0
+0, −1, 0
+−2, −2, 2
+−1, −2, 1
+0, −2, 0
+(c)
+Figure 1: The basic classification of 𝐶𝑆𝑅plant functional types [11]. (a) Main axes: 𝐶axis of competition (ability of plants to displace the
+other species under favorable environmental conditions); 𝑆axis of stress tolerance (ability to withstand long-term adverse environmental
+conditions); and 𝑅axis of ruderality (ability to grow faster in disturbed sites). (b) Primary, secondary, and tertiary functional types (a total of
+19 types). (c) Triple coordinates of the types.
+The model was based on multivariate analysis by principal
+component analysis (PCA) according to their morphological
+and physiological traits selected in the previous step. The
+obtained two-dimensional PCA coordinates for all species
+were then allocated to three axes of 𝐶𝑆𝑅space. The axes of
+𝐶𝑆𝑅space were presented using lines connecting the center of
+PCA ordination with centroids (mean values of coordinates
+of species allocated to one group) for 𝐶, 𝑆, and 𝑅groups,
+respectively.
+The projection of PCA coordinates of all species to these
+three axes was considered as new (adjusted) coordinates in
+𝐶𝑆𝑅space.
+In the last step, we identified the 𝐶𝑆𝑅strategy for each
+species as a one of 19 plant functional types that have a
+minimum distance to the 𝐶𝑆𝑅coordinates of species. The
+distance is calculated by the formula 𝑆𝑆= (𝐶𝑢−𝐶𝑚)2 + (𝑆𝑢−
+𝑆𝑚)2 + (𝑅𝑢−𝑅𝑚)2, where 𝐶𝑢, 𝑆𝑢, and 𝑅𝑢are the coordinates
+of species and 𝐶𝑚, 𝑆𝑚, and 𝑅𝑚are the possible strategies [11].
+All analyses were performed for transformed data
+(Table 1).
+The relationship between parameters was assessed using
+Spearman’s nonparametric rank correlation. Variance analy-
+sis, PCA ordination, and correlation analysis were performed
+using IBM SPSS Statistics 19. Model allocation for plant
+functional types was realized in Microsoft Excel.
+3. Results
+3.1. Morphological and Physiological Parameters of Plant
+Species of Different Functional Types. Most of the morpho-
+logical and physiological traits showed significant differences
+between species of different functional types (Table 2). Mean
+CH and LDW of 𝐶species were 2-3 times higher than
+those of 𝑅and 𝑆species. Typical competitors in our studies
+were perennial grasses (Bromopsis inermis, Calamagrostis
+
+4
+International Journal of Ecology
+Table 1: Definition (units) of the predictor variables and method for its transformation in models.
+Code
+Trait name (units)
+Transformation
+CH
+Canopy height (mm)
+Natural logarithm∗
+LDMC
+Dry matter content in the fully hydrated leaves from the middle of stem (%)
+Square root
+FS
+Flowering start ((1) first flowering in March; (2) April; (3) May; (4) June; (5) July; and (6) August)
+—
+FP
+Normal duration of flowering period (months)
+—
+LS
+Lateral spread. Six-point classification [11]
+—
+LDW
+Leaf dry weight of the fully hydrated leaves from the middle of stem (mg)
+Natural logarithm plus 3
+SLA
+Specific leaf area is area/dry weight (mm2/mg)
+Square root
+PN
+Photosynthetic capacity (mg CO2/g dry weight per hour)
+Square root
+RD
+Respiration rate in dark (mg CO2/g dry weight per hour)
+Square root
+LNC
+Leaf nitrogen concentration (mg/g)
+Square root
+LCC
+Leaf carbon concentration (mg/g)
+Square root
+∗Hodgson et al. [11] used a point system to assess height. However, we used continuous transformation of natural logarithm in order to reduce the information
+losses.
+Table 2: Morphological and physiological traits of plant species of different functional types.
+Trait
+Mean values
+ANOVA
+𝐶
+𝑆
+𝑅
+𝐶𝑆𝑅
+𝐹
+𝑝
+CH
+920.8 ± 83.9
+296.2 ± 50.4
+383.9 ± 39
+398.9 ± 49.8
+13.924
+0.000
+LDW
+379.4 ± 179.8
+76.3 ± 28.2
+109.5 ± 51.7
+100.3 ± 26.6
+3.377
+0.025
+SLA
+25.6 ± 1.3
+34.6 ± 4.4
+32.9 ± 2.3
+27.9 ± 2.4
+2.507
+0.069
+LDMC
+26.2 ± 1.5
+22.5 ± 1.9
+17.1 ± 1.1
+21.5 ± 1.8
+5.509
+0.002
+LS
+4.3 ± 0.3
+2.9 ± 0.3
+2.2 ± 0.4
+3.4 ± 0.3
+6.108
+0.001
+FS
+3.8 ± 0.1
+3.7 ± 0.2
+3.6 ± 0.2
+3.9 ± 0.2
+0.509
+0.678
+FP
+2.7 ± 0.2
+2.7 ± 0.4
+3.8 ± 0.3
+2.4 ± 0.2
+5.379
+0.003
+PN
+14.5 ± 2.3
+8.5 ± 1.8
+22.3 ± 3.2
+11.4 ± 1.6
+6.027
+0.001
+RD
+2 ± 0.2
+1.3 ± 0.3
+2.6 ± 0.2
+1.8 ± 0.2
+4.658
+0.006
+LNC
+29.4 ± 1.7
+22.9 ± 1.8
+31 ± 2.1
+28,5 ± 1.7
+3.005
+0.038
+LCC
+437.9 ± 8.2
+439 ± 7.6
+417.7 ± 4.2
+443.2 ± 4.2
+3.530
+0.021
+Traits are given like in Table 1.
+The arithmetic mean and the error of the arithmetic mean are given. 𝐶- species competitors (𝑛= 15), 𝑅: ruderals (𝑛= 10), 𝑆: stress-tolerators (𝑛= 14). 𝐶𝑆𝑅:
+intermediate species (𝑛= 18). Results of ANOVA (𝐹-test, 𝑝: significance level).
+epigejos, and Dactylis glomerata) and nitrophilous plants of
+rich habitats (Artemisia vulgaris, Urtica dioica, Arctium lappa,
+and Angelica sylvestris). These species were characterized by
+a height more than 1 m.
+SLA did not demonstrate significant differences among
+plant functional types (Table 2). The maximal SLA values
+at 50–60 mm2/mg were revealed for 𝑆species preferring
+spruce forests (Oxalis acetosella and Trientalis europaea) and
+ruderal species Stellaria media and Myosotis arvensis (40–
+50 mm2/mg). Minimal SLA values were found for species
+from the competitor group (15–30 mm2/mg). 𝑆species pre-
+ferring mire and mountain tundra communities (Rubus
+chamaemorus, Saussurea alpina, and Hedysarum arcticum)
+demonstrated low SLA levels.
+LDMC increased in the 𝑅-𝑆-𝐶species order. The highest
+LDMC (32–38%) was found for grasses from the competitor
+group (Bromopsis inermis, Calamagrostis epigejos, and Elyt-
+rigia repens). Ruderal species demonstrated minimal LDMC
+values at 9–13% (Capsella bursa-pastoris, Stellaria media, and
+Taraxacum officinale). Stress-tolerators included species with
+both low (Oxalis acetosella and Trientalis europaea) and high
+(Melica nutans and Pyrola rotundifolia) levels of LDMC.
+The functional traits (PN, RD, and LNC) also show a
+significant difference between functional types. PN and RD
+of leaves increased in the 𝑆-𝐶-𝑅species order (Table 2). The
+highest level of LNC was revealed in the leaves of species from
+𝑅and 𝐶plant functional types (3% in dry weight), and this
+was higher than in leaves of 𝑆species (Table 2).
+The group of 𝐶𝑆𝑅species according to most of the traits
+(except for FP, FS, and LCC) is in the intermediate position
+in the 𝐶𝑆𝑅system (Table 2). This fact allows us to use 𝐶𝑆𝑅
+group as the “starting point.” Differences in morphological
+and functional parameters from this “starting point” were
+interpreted as a “shift” of the species location in Grime’s
+triangle relative to the central 𝐶𝑆𝑅point.
+3.2. Allocating CSR Functional Types in Northern Europe.
+PCA ordination showed a clear separation of species from
+different plant functional types according to their morpho-
+logical and functional traits (Figure 2). PCA axis 1 and
+
+International Journal of Ecology
+5
+0
+1
+2
+3
+0
+1
+2
+3
+PCA2 (20.1%)
+PCA1 (24.1%)
+C species
+S species
+R species
+CSR species
+Group centroids
+LS
+LDMC
+LCC
+CH
+LNC
+RD
+PN
+FP
+SLA
+C
+LDW
+FS
+S
+CSR
+R
+−1
+−2
+−3
+−1
+−2
+−3
+Figure 2: Principal component analysis (PCA) ordination of species of different plant functional types. Predictors morphological and
+physiological traits that differed significantly for different groups of species (Table 2). Lines show a correlation between parameters and
+PCA axes. 𝐶, species competitors; 𝑆, stress-tolerators; 𝑅, ruderals; 𝐶𝑆𝑅, intermediate species. Squares with letters are centroids of groups of
+species.
+axis 2 accounted for 44.2% of total variation. PCA 1 was
+closely correlated with RD and PN that reflected the rate of
+metabolism (Table 3, Figure 3) and showed distinct grouping
+of 𝑆and 𝑅species. Typical 𝑆species are located in the left
+part of the PCA 1 and demonstrated low levels of PN and RD.
+Opposite positions of the PCA 1 axis are occupied by 𝑅species
+(Capsellabursa-pastoris, Lepidotheca suaveolens, and Stellaria
+media) with maximal values of PN and RD. 𝐶species are in
+intermediate position.
+PCA 2 axis was positively correlated with the following
+morphological traits: CH, LDW, LS, and LDMC (Table 3,
+Figure 2). 𝐶species of large physical size are located in
+the upper part of the PCA ordination: Angelica sylvestris,
+Elytrigia repens, Filipendula ulmaria, Urtica dioica, and Vicia
+sylvatica. Small-size 𝑅species (Myosotis arvensis, Poa annua)
+and 𝑆species are moved to the bottom part of the ordination
+diagram (Campanula rotundifolia, Oxalis acetosella).
+The next step was to convert the two-dimensional PCA
+ordination to the relevant 𝐶, 𝑆, and 𝑅axes in Grime’s triangle.
+For this purpose, we projected points to the lines connecting
+the center of PCA ordination with centroids of 𝐶, 𝑆, and
+𝑅groups. The projections of species on these lines were
+considered as new coordinates in 𝐶𝑆𝑅space. For example,
+the species Dactylis glomerata, with PCA coordinates (0.734
+and 1.257), after such projection will receive new coordinates
+(1.277, −1.360, and −0.022)in the 𝐶, 𝑆, and 𝑅axes, respectively
+(Figure 3). These values have a minimum distance to the point
+(1, −1, and −1), which corresponds to 𝐶/𝐶𝑆𝑅plant functional
+type.
+The developed model is provided in Excel spreadsheet in
+Supplementary Material Appendix 1.
+The coordinates of species in 𝐶𝑆𝑅space of our model
+were closely correlated with their coordinates in Grime’s
+classification. The 𝐶axis showed a correlation of 0.78 and 𝑆
+and 𝑅axes 0.64 (𝑝< 0.01) (Table 3).
+4. Discussion
+4.1. Analysis of Morphological and Functional Traits and
+Their Correlation with CSR Axes. Physical size of plants and
+
+6
+International Journal of Ecology
+Table 3: Correlation between species traits, PCA axes score, and species coordinates in “Grime’s triangle.”
+PCA 1
+PCA 2
+Axis 𝐶
+Axis 𝑆
+Axis 𝑅
+Traits (𝑛= 76)
+CH
+0.2 n.s.
+0.71∗∗
+0.71∗∗
+−0.59∗∗
+−0.18 n.s.
+LDW
+−0.04 n.s.
+0.56∗∗
+0.56∗∗
+−0.28∗
+−0.3∗∗
+SLA
+0.31∗∗
+−0.35∗∗
+−0.35∗∗
+−0.06 n.s.
+0.46∗∗
+LDMC
+−0.4∗∗
+0.55∗∗
+0.54∗∗
+−0.01 n.s.
+−0.64∗∗
+LS
+−0.2 n.s.
+0.61∗∗
+0.61∗∗
+−0.22 n.s.
+−0.48∗∗
+FS
+−0.17 n.s.
+0.09 n.s.
+0.09 n.s.
+0.11 n.s.
+−0.17 n.s.
+FP
+0.41∗∗
+−0.1 n.s.
+−0.1 n.s.
+−0.27∗
+0.35∗∗
+PN
+0.82∗∗
+0.04 n.s.
+0.06 n.s.
+−0.66∗∗
+0.66∗∗
+RD
+0.76∗∗
+0.14 n.s.
+0.16 n.s.
+−0.68∗∗
+0.57∗∗
+LNC
+0.38∗∗
+0.3∗∗
+0.32∗∗
+−0.51∗∗
+0.14 n.s.
+LCC
+−0.51∗∗
+0.4∗∗
+0.39∗∗
+0.14 n.s.
+−0.66∗∗
+Species coordinates in the CSR triangle (𝑛= 57)
+𝐶
+−0.14 n.s.
+0.78∗∗
+0.78∗∗
+−0.38∗∗
+−0.47∗∗
+𝑆
+−0.59∗∗
+−0.26∗
+−0.27∗
+0.64∗∗
+−0.35∗∗
+𝑅
+0.54∗∗
+−0.44∗∗
+−0.43∗∗
+−0.15 n.s.
+0.64∗∗
+∗Denote significance at the 𝑝< 0.05 level, ∗∗𝑝< 0.01, and n.s.: no significance.
+PCA 1 and 2: first two axes of PCA ordination.
+Axis 𝐶, axis 𝑆, and axis 𝑅: coordinates of species in the space of new model.
+Morphological and functional traits are given as in Table 2.
+𝐶, 𝑆, and 𝑅: coordinates of species in the space of Grime’s classification.
+0
+0.5
+1
+1.5
+2
+0
+0.5
+1
+1.5
+2
+S axis
+R axis
+C axis
+−0.5
+−1
+−1.5
+−2
+−1.5
+−1
+−0.5
+−2
+Figure 3: Converting the coordinates of Dactylis glomerata from
+principal component analysis ordination to 𝐶𝑆𝑅coordinates (pro-
+jection of the species on 𝐶, 𝑆, and 𝑅lines).
+their relative growth rate are considered as key traits in
+the classification of plant functional types [2]. Competitor
+species more often establish intact habitats with favorable
+environmental conditions [2, 11]. These plants capture most of
+the resources and invest them into its own biomass. Leaves of
+competitor plants are high and/or have large area and weight
+(Table 2). Markers of 𝐶type could be such traits (Table 3)
+as CH (correlation coefficient with the 𝐶axis in our model –
+0.71), LDW (correlation coefficient – 0.56), and high LS values
+of 0.61
+In Grime’s model, competitors are considered as fast-
+growing species with low LDMC values. On the contrary,
+according to our data, 𝐶species demonstrate the highest
+LDMC values. This observation is likely connected with the
+fact that most of the Northern 𝐶species cease active growth in
+July (the month when we take samples) and begin flowering.
+As growth ceases, cell wall thickening occurs, leading to an
+increase in the LDMC values.
+Stress-tolerators, prevailing in conditions with lim-
+ited resources, are slow-growing plants with low rate of
+metabolism [2, 5, 10, 11, 23]. Stress-tolerators are small
+plants with the lowest values of photosynthetic activity and
+respiration rate that reveal minimal content of nitrogen and
+maximal content of carbon in the leaves. The highest negative
+correlations with 𝑆axis were found for CH, PN, RD, and LNC
+(Table 3).
+It is considered that low SLA values indicate stress-
+tolerant species with relatively low growth rate [24, 25]. SLA
+indicates acquisitive economics of the leaf area development.
+Low SLA values are typical for plants of 𝑆type with low
+metabolism and growth rate [19, 26, 27]. However, the use
+of this parameter leads to several issues, called the “Oxalis”
+effect [16]. The key aspect of this effect is that a group
+of 𝑆species includes plants growing under different kinds
+of stress; therefore, they have different adaptive reactions
+[28]. In our study, species of tundra and mire communities
+(Epilobium palustre, Eriophorum vaginatum, Carex dioica,
+and Potentilla crantzii) growing in an environment with
+waterlogging and limited nutritional elements were often
+characterized by thick leathery leaves and demonstrated low
+
+International Journal of Ecology
+7
+0
+10
+20
+30
+40
+50
+60
+0
+1
+2
+3
+4
+(a)
+0
+10
+20
+30
+40
+50
+60
+0
+1
+2
+3
+4
+(b)
+0
+10
+20
+30
+40
+50
+60
+0
+1
+2
+3
+4
+(c)
+Figure 4: Frequency diagrams showing the percentage of matching model results with original Grime’s classification. On the horizontal axis
+is the deviation between positions in the original 𝐶𝑆𝑅classification and given by the model ((a), Hodgson et al.’s model; (b), Pierce et al.’s
+model; (c), our model). The percentage of species is presented on the vertical axis.
+SLA values (10–30 mm2/mg). However, species preferring
+spruce forests with limited light (Fragaria vesca, Oxalis
+acetosella, and Trientalis europaea) had high SLA values (up
+to 50–60 mm2/mg). Therefore, following Gross et al. [29], we
+considered that SLA should ideally not be used as a marker
+of 𝑆plant functional type.
+Ruderals prefer rich habitats with weak competition
+caused by certain disturbance of the vegetation cover. These
+species demonstrate high growth rate provided by increased
+metabolic activity: intensive respiration and high nitrogen
+content in leaves [8, 10, 23, 26, 30]. Usually, ruderals are
+annual and biennial species with seed reproduction, investing
+most of their resources to reproduction. They occupy dis-
+turbed habitats owing to their accelerated ontogenetic devel-
+opment (ephemeroids) and/or extended period of flowering
+and fruiting [4]. According to our data, low values of lateral
+spread (LS) and long flowering period (FP) could be markers
+of 𝑅plant functional type. Ruderals also demonstrated low
+LDMC values, high SLA values, and maximal level of PN and
+RD (Tables 2 and 3).
+4.2. Validation of the Developed Model Allocating Plant Func-
+tional Types in Northern Europe. Table 4 shows a comparison
+of Grime’s functional types [2] with plant functional types
+allocated using Hodgson et al.’s model [11], Pierce et al.’s model
+[15], and our model. The number of steps (points of tertiary
+𝐶𝑆𝑅classification, Figure 1(b)) was determined between the
+species location in our model and that in Grime’s system. If
+functional types matched, there were no steps. Maximal four
+steps were noted when the coordinates of functional types
+were in the opposite sides of Grime’s triangle.
+In Hodgson et al.’s model, only 40% of species (23
+from 57) showed high matching (distance 0 or 1) (Table 4,
+Figure 4(a)). Of the species, 35% demonstrated low matching
+(distance 2) and 21% strong deviation (distance 3). Two
+species (Melica nutans and Oxalis acetosella) demonstrated
+extremely distant locations (distance 4).
+In general, in Hodgson et al.’s model, the highest deviation
+(distances 3 and 4) was found for 𝑆species typical for spruce
+forests (Oxalis acetosella, Trientalis europaea, Fragaria vesca,
+and Geum rivale). All these species demonstrated high SLA
+and low LDMC values and, according to the modeling, were
+allocated as 𝐶𝑅, 𝑅/𝐶𝑅, or 𝐶/𝐶𝑅type (Table 4). Obtained dif-
+ference may be explained by the “Oxalis” effect. Only species
+with low SLA values (20–30 mm2/mg and lower) and high
+LDMC values (over 30%) may be potentially considered as
+stress-tolerators based on the analysis of regression equations
+of Hodgson et al.’s model. In the northern environment, there
+are species typical for tundra and mire communities, for
+example, Rubus chamaemorus. It should also be noted that
+functional types of almost all species allocated using Hodgson
+et al.’s model were moved to increasing 𝐶and 𝑅points and
+decreasing 𝑆points (Table 4).
+Comparing the model of Pierce et al. [15] with the
+reference position showed high matching (distances 0 and 1)
+for 46% of the species (Table 4, Figure 4(b)). Low similarity
+(distance 2) was revealed for 40% of the species. High
+deviation (distances 3 and 4) was noted for 14% of the species,
+including stress-tolerators (Oxalis acetosella and Trientalis
+europaea) and grass competitors (Bromopsis inermis and
+Elytrigia repens).
+The analysis of the model developed in our research
+showed the highest matching with the reference species
+positions given in Grime’s classification. Distance between
+relevant and reference position of species was 0 or 1 for 84%
+of species. Nine species (16%) demonstrated low matching
+
+8
+International Journal of Ecology
+Table 4: Comparison of reference plant functional type [2] and determined by Hodgson et al. [11], Pierce et al. [15], and our model for
+northern conditions.
+Species
+Reference plant functional type
+Hodgson et al.’s model
+Pierce et al.’s model
+Our model
+Strategy
+Distance∗
+Strategy
+Distance
+Strategy
+Distance
+Achillea millefolium
+𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+1
+𝐶𝑆𝑅
+0
+Aconitum septentrionale
+—
+𝐶/𝐶𝑅
+—
+𝐶/𝐶𝑅
+—
+𝐶/𝐶𝑅
+—
+Alisma plantago-aquatica
+𝑅/𝐶𝑅
+𝐶/𝐶𝑅
+2
+𝐶/𝐶𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+1
+Amoria repens
+𝐶𝑅/𝐶𝑆𝑅
+𝐶𝑅
+1
+𝑅/𝐶𝑆𝑅
+1
+𝐶𝑆𝑅
+1
+Angelica sylvestris
+𝐶/𝐶𝑅
+𝐶
+1
+𝐶/𝑆𝐶
+2
+𝐶/𝐶𝑆𝑅
+1
+Antennaria dioica
+𝑆𝑅/𝐶𝑆𝑅
+𝑅/𝐶𝑅
+2
+𝑅/𝑆𝑅
+1
+𝑆/𝑆𝑅
+1
+Arctium lappa
+𝐶/𝐶𝑅
+𝐶/𝐶𝑅
+0
+𝐶
+1
+𝐶𝑅
+1
+Artemisia vulgaris
+𝐶/𝐶𝑅
+𝐶𝑅
+1
+𝐶𝑅
+1
+𝐶𝑅/𝐶𝑆𝑅
+1
+Astragalus frigidus
+—
+𝐶𝑅
+—
+𝑅/𝐶𝑆𝑅
+—
+𝐶𝑅/𝐶𝑆𝑅
+—
+Bartsia alpina
+—
+𝐶𝑅
+—
+𝑅/𝐶𝑆𝑅
+—
+𝑆/𝐶𝑆𝑅
+—
+Bistorta vivipara
+—
+𝐶𝑅
+—
+𝑆𝑅/𝐶𝑆𝑅
+—
+𝑆/𝐶𝑆𝑅
+—
+Bromopsis inermis
+𝐶
+𝑆𝐶/𝐶𝑆𝑅
+2
+𝑆/𝐶𝑆𝑅
+3
+𝐶/𝐶𝑆𝑅
+1
+Calamagrostis epigeios
+𝐶/𝑆𝐶
+𝐶
+1
+𝑆/𝐶𝑆𝑅
+2
+𝐶/𝐶𝑆𝑅
+1
+Caltha palustris
+𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶/𝐶𝑅
+2
+𝐶𝑆𝑅
+0
+Campanula rotundifolia
+𝑆/𝐶𝑆𝑅
+𝐶𝑅
+3
+𝑅
+3
+𝑆/𝐶𝑆𝑅
+0
+Capsella bursa-pastoris
+𝑅
+𝑅/𝐶𝑅
+1
+𝑅/𝐶𝑅
+1
+𝑅
+0
+Centaurea jacea
+—
+𝐶𝑅
+—
+𝐶𝑆𝑅
+—
+𝐶𝑆𝑅
+—
+Chamaenerion angustifolium
+𝐶
+𝐶/𝐶𝑅
+1
+𝐶𝑅/𝐶𝑆𝑅
+2
+𝐶/𝐶𝑆𝑅
+1
+Comarum palustre
+—
+𝐶/𝐶𝑅
+—
+𝐶/𝐶𝑆𝑅
+—
+𝐶/𝐶𝑆𝑅
+—
+Cortusa matthioli
+—
+𝐶𝑅
+—
+𝐶𝑅
+—
+𝑆/𝐶𝑆𝑅
+—
+Crepis sibirica
+—
+𝐶𝑅
+—
+𝐶𝑅
+—
+𝑅/𝐶𝑆𝑅
+—
+Dactylis glomerata
+𝐶/𝐶𝑆𝑅
+𝐶
+1
+𝐶𝑆𝑅
+1
+𝐶/𝐶𝑆𝑅
+0
+Deschampsia cespitosa
+𝑆𝐶/𝐶𝑆𝑅
+𝐶/𝐶𝑆𝑅
+1
+𝑆/𝐶𝑆𝑅
+1
+𝑆𝐶/𝐶𝑆𝑅
+0
+Elytrigia repens
+𝐶/𝐶𝑅
+𝑆𝐶
+3
+𝑆/𝑆𝐶
+3
+𝐶/𝑆𝐶
+2
+Epilobium palustre
+𝑆/𝐶𝑆𝑅
+𝐶𝑅
+3
+𝑅/𝐶𝑆𝑅
+2
+𝑅/𝐶𝑆𝑅
+2
+Epipactis atrorubens
+𝑆
+𝐶/𝐶𝑆𝑅
+3
+𝐶𝑆𝑅
+2
+𝑆/𝐶𝑆𝑅
+1
+Erysimum cheiranthoides
+𝑅
+𝐶𝑅
+2
+𝑅/𝐶𝑆𝑅
+1
+𝑅/𝐶𝑆𝑅
+1
+Filipendula ulmaria
+𝐶/𝑆𝐶
+𝐶
+1
+𝐶/𝐶𝑆𝑅
+1
+𝐶/𝑆𝐶
+0
+Fragaria vesca
+𝑆/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+3
+𝐶𝑆𝑅
+1
+𝑆/𝐶𝑆𝑅
+0
+Galeopsis speciosa
+𝑅/𝐶𝑅
+𝐶𝑅
+1
+𝐶𝑆𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+1
+Geranium albiflorum
+—
+𝐶𝑅
+—
+𝐶𝑅/𝐶𝑆𝑅
+—
+𝐶𝑆𝑅
+—
+Geranium sylvaticum
+𝐶𝑆𝑅
+𝐶/𝐶𝑅
+2
+𝐶/𝐶𝑅
+2
+𝐶/𝐶𝑆𝑅
+1
+Geum rivale
+𝑆/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+3
+𝐶/𝐶𝑆𝑅
+2
+𝑆𝐶/𝐶𝑆𝑅
+1
+Gymnadenia conopsea
+𝑆𝑅
+𝐶/𝐶𝑆𝑅
+3
+𝐶𝑅
+4
+𝑆/𝐶𝑆𝑅
+2
+Hedysarum arcticum
+—
+𝐶𝑅
+—
+𝐶𝑅/𝐶𝑆𝑅
+—
+𝐶/𝐶𝑆𝑅
+—
+Hypericum maculatum
+𝐶𝑅/𝐶𝑆𝑅
+𝑆𝐶/𝐶𝑆𝑅
+2
+𝑆𝑅/𝐶𝑆𝑅
+2
+𝑆𝐶/𝐶𝑆𝑅
+2
+Lathyrus pratensis
+𝐶𝑆𝑅
+𝐶/𝐶𝑅
+2
+𝑆𝑅/𝐶𝑆𝑅
+1
+𝐶/𝐶𝑆𝑅
+1
+Lathyrus vernus
+—
+𝐶/𝐶𝑅
+—
+𝐶𝑅/𝐶𝑆𝑅
+—
+𝑆𝐶/𝐶𝑆𝑅
+—
+Leontodon autumnalis
+𝑅/𝐶𝑆𝑅
+𝑅/𝐶𝑅
+1
+𝐶𝑅
+2
+𝑅/𝐶𝑆𝑅
+0
+Lepidotheca suaveolens
+𝑅
+𝑅/𝐶𝑅
+1
+𝑅/𝐶𝑅
+1
+𝑅/𝐶𝑆𝑅
+1
+Leucanthemum vulgare
+𝐶𝑅/𝐶𝑆𝑅
+𝐶𝑅
+1
+𝐶𝑅
+1
+𝑆𝑅/𝐶𝑆𝑅
+2
+Maianthemum bifolium
+—
+𝐶𝑅
+—
+𝑅/𝐶𝑅
+—
+𝐶𝑆𝑅
+—
+Melampyrum pratense
+𝑅/𝑆𝑅
+𝑅/𝐶𝑅
+2
+𝑅/𝐶𝑆𝑅
+1
+𝑅/𝐶𝑆𝑅
+1
+Melica nutans
+𝑆/𝑆𝐶
+𝑅/𝐶𝑅
+4
+𝑆𝑅/𝐶𝑆𝑅
+2
+𝑆/𝐶𝑆𝑅
+1
+Myosotis arvensis
+𝑅
+𝐶𝑅
+2
+𝑅/𝐶𝑅
+1
+𝑅/𝐶𝑆𝑅
+1
+Oxalis acetosella
+𝑆/𝑆𝑅
+𝐶𝑅
+4
+𝑅/𝐶𝑅
+3
+𝑆/𝑆𝑅
+0
+Paeonia anomala
+—
+𝐶/𝐶𝑅
+—
+𝐶/𝐶𝑅
+—
+𝑆𝐶/𝐶𝑆𝑅
+—
+Paris quadrifolia
+𝑆𝑅/𝐶𝑆𝑅
+𝑅/𝐶𝑅
+2
+𝑅/𝐶𝑅
+2
+𝑆/𝑆𝑅
+1
+Pimpinella saxifraga
+𝑆𝑅/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+3
+𝑆𝐶/𝐶𝑆𝑅
+2
+𝑆𝐶/𝐶𝑆𝑅
+2
+
+International Journal of Ecology
+9
+Table 4: Continued.
+Species
+Reference plant functional type
+Hodgson et al.’s model
+Pierce et al.’s model
+Our model
+Strategy
+Distance∗
+Strategy
+Distance
+Strategy
+Distance
+Pinguicula vulgaris
+𝑆𝑅
+𝑅/𝐶𝑅
+3
+𝑅
+2
+𝑆/𝑆𝑅
+1
+Plantago major
+𝑅/𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶𝑅
+2
+𝑆𝑅/𝐶𝑆𝑅
+1
+Plantago media
+𝑆/𝐶𝑆𝑅
+𝐶𝑅
+3
+𝐶𝑅
+3
+𝑆𝑅/𝐶𝑆𝑅
+1
+Poa annua
+𝑅
+𝑅/𝐶𝑅
+1
+𝑆𝑅
+2
+𝑆𝑅
+2
+Polygonum aviculare
+𝑅
+𝐶𝑅
+2
+𝑆𝑅/𝐶𝑆𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+2
+Pyrola rotundifolia
+𝑆
+𝑆𝐶
+2
+𝑆/𝐶𝑆𝑅
+1
+𝑆/𝑆𝐶
+1
+Ranunculus propinquus
+—
+𝐶𝑅
+—
+𝑅/𝐶𝑅
+—
+𝑆𝑅/𝐶𝑆𝑅
+—
+Ranunculus repens
+𝐶𝑅
+𝐶/𝐶𝑅
+1
+𝐶𝑅
+0
+𝐶𝑅/𝐶𝑆𝑅
+1
+Rhodiola rosea
+—
+𝑅/𝐶𝑅
+—
+𝑅
+—
+𝑅/𝐶𝑆𝑅
+—
+Rubus chamaemorus
+𝑆𝐶/𝐶𝑆𝑅
+𝐶/𝑆𝐶
+1
+𝑆𝐶/𝐶𝑆𝑅
+0
+𝑆𝐶
+1
+Sanguisorba officinalis
+𝐶/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+1
+𝐶𝑆𝑅
+1
+𝑆𝐶/𝐶𝑆𝑅
+1
+Saussurea alpina
+—
+𝐶𝑅
+—
+𝐶𝑅/𝐶𝑆𝑅
+—
+𝑆/𝐶𝑆𝑅
+—
+Stellaria media
+𝑅
+𝐶𝑅
+2
+𝑅/𝐶𝑅
+1
+𝑅
+0
+Tanacetum bipinnatum
+—
+𝐶𝑅
+—
+𝐶𝑅
+—
+𝐶𝑆𝑅
+—
+Tanacetum vulgare
+𝐶/𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+1
+𝐶/𝐶𝑆𝑅
+0
+Taraxacum officinale
+𝑅/𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶/𝐶𝑅
+2
+𝐶𝑆𝑅
+1
+Thalictrum simplex
+—
+𝐶𝑅
+—
+𝑆𝑅/𝐶𝑆𝑅
+—
+𝑆𝐶/𝐶𝑆𝑅
+—
+Trientalis europaea
+𝑆/𝐶𝑆𝑅
+𝐶𝑅
+3
+𝑅/𝐶𝑅
+3
+𝑆𝑅/𝐶𝑆𝑅
+1
+Trifolium medium
+𝑆𝐶/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+2
+𝑆𝐶/𝐶𝑆𝑅
+0
+𝐶𝑆𝑅
+1
+Tripleurospermum perforatum
+𝑅
+𝑅/𝐶𝑅
+1
+𝐶𝑅/𝐶𝑆𝑅
+2
+𝑅/𝐶𝑆𝑅
+1
+Trollius europaeus
+𝑆𝐶/𝐶𝑆𝑅
+𝐶𝑅
+3
+𝐶𝑅
+3
+𝐶𝑆𝑅
+1
+Urtica dioica
+𝐶
+𝐶
+0
+𝑆𝐶/𝐶𝑆𝑅
+2
+𝐶/𝐶𝑅
+1
+Valeriana wolgensis
+𝐶𝑆𝑅
+𝐶𝑅
+2
+𝐶𝑅
+2
+𝐶𝑅/𝐶𝑆𝑅
+1
+Veronica longifolia
+—
+𝐶/𝐶𝑅
+—
+𝐶𝑆𝑅
+—
+𝐶/𝐶𝑆𝑅
+—
+Vicia cracca
+𝐶/𝐶𝑆𝑅
+𝐶
+1
+𝐶𝑆𝑅
+1
+𝐶/𝐶𝑆𝑅
+0
+Vicia sepium
+𝐶/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+1
+𝐶𝑆𝑅
+1
+𝐶𝑅
+2
+Vicia sylvatica
+𝐶/𝐶𝑆𝑅
+𝐶/𝐶𝑅
+1
+𝐶𝑅/𝐶𝑆𝑅
+1
+𝐶/𝐶𝑆𝑅
+0
+∗Distance: number of tertiary types between reference strategy and determined by models.
+(distance 2). Distances 3 and 4 were not revealed at all
+(Table 4, Figure 4(c)).
+Some species demonstrated high deviation between the
+reference strategy and our model (distance 2 in Table 4).
+Epilobium palustre has 𝑆/𝐶𝑆𝑅type in Grime’s classification.
+However, in our case study, it was allocated in 𝑅/𝐶𝑆𝑅type.
+Shifting the species position to the ruderal type was caused
+by relatively high values of PN (17 mg CO2/g dry weight per
+hour) and RD (3.1 mg CO2/g dry weight per hour), which is
+typical for 𝐶and 𝑅species (Table 2). Change of functional
+type of Hypericum maculatum from 𝐶𝑅/𝐶𝑆𝑅to 𝑆𝐶/𝐶𝑆𝑅was
+caused by low values of PN (6.5 mg CO2/g dry weight per
+hour) and RD (1 mg CO2/g dry weight per hour), which is
+typical for plants of 𝑆functional type.
+Some species demonstrating changes in their functional
+types (Poa annua, Polygonum aviculare, Pimpinella saxifraga,
+and Vicia sepium) have known not only the position in
+Grime’s classification but also the “area of variability” [2].
+For example, P. annua has 𝑅type in Grime’s 𝐶𝑆𝑅system.
+However, its potential “area of variability” (noted by a dotted
+line in Figure 5(a)) covers the area of 𝐶𝑅-𝐶𝑆𝑅-𝑆𝑅types. In
+our model, P. annua was allocated in 𝑆𝑅functional type,
+which is in the area of possible types. Similar results were
+found for Polygonum aviculare, P. saxifraga, and V. sepium
+(Figure 5).
+Therefore, our model allows to us consider a wide variety
+of species establishing different habitats with different ecolog-
+ical backgrounds. Averaging of morphological and functional
+traits for large variety of plants from Russia and Central
+and Northern Europe allowed us to clarify the impact of
+specific environment and to analyze the traits determined
+by genotypic specificity. It should be noted that, by using
+functional traits closely related to the rate of metabolism, we
+improved the determination accuracy for stress-tolerators.
+Comparison of the developed model against other models
+showed its higher accuracy for the species of Northern
+Europe. It was revealed that the differences between our
+model and the reference position were within the limits of
+potentially possible plant functional types in Grime’s triangle.
+Obtained data on morphological and functional parameters
+can be used as markers for allocating plant functional types
+of northern species not presented in Grime’s classification.
+
+10
+International Journal of Ecology
+C
+S
+R
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+2
+2
+4
+4
+4
+4
+3
+3
+3
+3
+3
+3
+3
+3
+5
+5
+5
+5
+7
+7
+7
+7
+8
+8
+8
+8
+8
+9
+9
+3
+2
+3
+C
+S
+R
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+2
+2
+2
+2
+2
+2
+2
+3
+3
+3
+4
+5
+6
+6
+6
+7
+7
+7
+7
+8
+8
+S
+×
+×
+—
+—
+—
+—
+—
+—
+C
+S
+R
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+×
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+— —
+—
+—
+—
+—
+—
+— —
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+C
+R
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+×
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+— —
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+—
+Poa annua (R→SR)
+Plygonum aviculare (R→CR/CSR)
+Pimpinella saxifrage (R/CSR→SC/CSR)
+Vicia sepium (C/CSR→CR)
+Figure 5: Allocation of species in Grime’s triangle. Crosses, reference plant functional type according to Grime; noughts, functional type,
+revealed by our model; dotted line, potential area of changes of the plant functional type (“area of variability”). Figures are taken from [2]
+with add-ons. Species with the largest deviation from reference position were selected (distance 2).
+Competing Interests
+The authors declare that there is no conflict of interests
+regarding the publication of this paper.
+Acknowledgments
+The authors thank John Hodgson for comments and helpful
+suggestions. We also thank Professor Svetlana V. Degteva and
+Professor Tamara K. Golovko from the Institute of Biology,
+Komi SC UB, RAS, for their interest and critical comments.
+The research was supported by the Russian Foundation for
+Basic Research and Government of Komi Republic (13-04-
+98829 and 16-44-110694) and by a program of the Ural Branch
+of RAS (15-12-4-1).
+References
+[1] S. D´ıaz and M. Cabido, “Plant functional types and ecosystem
+function in relation to global change,” Journal of Vegetation
+Science, vol. 8, no. 4, pp. 463–474, 1997.
+[2] J. P. Grime, J. G. Hodgson, and R. Hunt, Comparative Plant
+Ecology: A Functional Approach to Common British Species,
+Springer, Amsterdam, The Netherlands, 1988.
+[3] L. G. Ramenskii, “O principial’nyh ustanovkah, osnovnyh
+ponjatijah i terminah proizvodstvennoj tipologii zemel’, geob-
+otaniki i jekologi,” Sovetskaya Botanika, vol. 4, pp. 25–42, 1935
+(Russian).
+[4] J. P. Grime, Plant Strategies and Vegetation Processes, John Wiley
+& Sons, Chichester, UK, 1979.
+
+International Journal of Ecology
+11
+[5] H. Poorter, C. Remkes, and H. Lambers, “Carbon and nitrogen
+economy of 24 wild species differing in relative growth rate,”
+Plant Physiology, vol. 94, no. 2, pp. 621–627, 1990.
+[6] H. Lambers and H. Poorter, “Inherent variation in growth rate
+between higher plants: a search for physiological causes and
+ecological consequences,” Advances in Ecological Research, vol.
+23, pp. 187–261, 1992.
+[7] H. Lambers, F. S. Chapin, and T. L. Pons, Plant Physiological
+Ecology, Springer, New York, NY, USA, 1998.
+[8] V. I. P’yankov, L. A. Ivanov, and H. Lambers, “Plant construction
+cost in the boreal species differing in their ecological strategies,”
+Russian Journal of Plant Physiology, vol. 48, no. 1, pp. 67–73,
+2001.
+[9] W. Larcher, Physiological Plant Ecology, Springer, Berlin, Ger-
+many, 4th edition, 2003.
+[10] S. P. Maslova, G. N. Tabalenkova, and T. K. Golovko, “Res-
+piration and nitrogen and carbohydrate contents in perennial
+rhizome-forming plants as related to realization of different
+adaptive strategies,” Russian Journal of Plant Physiology, vol. 57,
+no. 5, pp. 631–640, 2010.
+[11] J. G. Hodgson, P. J. Wilson, R. Hunt, J. P. Grime, and K.
+Thompson, “Allocating C-S-R plant functional types: a soft
+approach to a hard problem,” Oikos, vol. 85, no. 2, pp. 282–294,
+1999.
+[12] J. M. Craine, “Reconciling plant strategy theories of Grime and
+Tilman,” Journal of Ecology, vol. 93, no. 6, pp. 1041–1052, 2005.
+[13] J. M. Hills, K. J. Murphy, I. D. Pulford, and T. H. Flowers, “A
+method for classifying European riverine wetland ecosystems
+using functional vegetation groups,” Functional Ecology, vol. 8,
+no. 2, pp. 242–252, 1994.
+[14] M. Caccianiga, A. Luzzaro, S. Pierce, R. M. Ceriani, and
+B. Cerabolini, “The functional basis of a primary succession
+resolved by CSR classification,” Oikos, vol. 112, no. 1, pp. 10–20,
+2006.
+[15] S. Pierce, G. Brusa, I. Vagge, and B. E. L. Cerabolini, “Allocating
+CSR plant functional types: The use of leaf economics and
+size traits to classify woody and herbaceous vascular plants,”
+Functional Ecology, vol. 27, no. 4, pp. 1002–1010, 2013.
+[16] P. J. Wilson, K. Thompson, and J. G. Hodgson, “Specific leaf area
+and leaf dry matter content as alternative predictors of plant
+strategies,” New Phytologist, vol. 143, no. 1, pp. 155–162, 1999.
+[17] B. E. L. Cerabolini, G. Brusa, R. M. Ceriani, R. de Andreis,
+A. Luzzaro, and S. Pierce, “Can CSR classification be generally
+applied outside Britain?” Plant Ecology, vol. 210, no. 2, pp. 253–
+261, 2010.
+[18] C. Yildirim, N. Karavin, and A. Casaran, “Classification and
+evaluation of some endemic plants from Turkey using Grime’s
+CSR strategies,” Eurasian Journal of BioSciences, vol. 6, pp. 97–
+104, 2012.
+[19] I. J. Wright, P. B. Reich, M. Westoby et al., “The worldwide leaf
+economics spectrum,” Nature, vol. 428, no. 6985, pp. 821–827,
+2004.
+[20] J. G. Hodgson, G. Montserrat-Mart´ı, M. Charles et al., “Is leaf
+dry matter content a better predictor of soil fertility than specific
+leaf area?” Annals of Botany, vol. 108, no. 7, pp. 1337–1345, 2011.
+[21] S. K. Cherepanov, Sosudistye Rastenija Rossii i Sopredel’nyh
+Gosudarstv, Sankt-Peterburg, Saint Petersburg, Russia, 1995
+(Russian).
+[22] J. S. Kattge, S. D´ıaz, S. Lavorel et al., “TRY—a global database of
+plant traits,” Global Change Biology, vol. 17, pp. 2905–2935, 2011.
+[23] V. I. P’yankov, M. Y. Yashkov, E. A. Reshetova, and A. A.
+Gangardt, “Assimilate transport and partitioning in Middle Ural
+plants differing in their ecological strategies,” Russian Journal of
+Plant Physiology, vol. 47, no. 1, pp. 1–9, 2000.
+[24] R. Hunt and J. H. C. Cornelissen, “Components of relative
+growth rate and their interrelations in 59 temperate plant
+species,” New Phytologist, vol. 135, no. 3, pp. 395–417, 1997.
+[25] B. Shipley, “Trade-offs between net assimilation rate and spe-
+cific leaf area in determining relative growth rate: relationship
+with daily irradiance,” Functional Ecology, vol. 16, no. 5, pp. 682–
+689, 2002.
+[26] J. P. Grime, K. Thompson, R. Hunt et al., “Integrated screening
+validates primary axes of specialisation in plants,” Oikos, vol. 79,
+no. 2, pp. 259–281, 1997.
+[27] S. Pierce, R. M. Ceriani, R. De Andreis, A. Luzzaro, and B.
+Cerabolini, “The leaf economics spectrum of Poaceae reflects
+variation in survival strategies,” Plant Biosystems, vol. 141, no. 3,
+pp. 337–343, 2007.
+[28] J. P. Grime, “Evidence for the existence of three primary strate-
+gies in plants and its relevance to ecological and evolutionary
+theory,” The American Naturalist, vol. 111, no. 982, pp. 1169–1194,
+1977.
+[29] N. Gross, K. N. Suding, and S. Lavorel, “Leaf dry matter content
+and lateral spread predict response to land use change for six
+subalpine grassland species,” Journal of Vegetation Science, vol.
+18, no. 2, pp. 289–300, 2007.
+[30] H. Tribouillois, F. Fort, P. Cruz et al., “A functional charac-
+terisation of a wide range of cover crop species: growth and
+nitrogen acquisition rates, leaf traits and ecological strategies,”
+PLoS ONE, vol. 10, no. 3, Article ID e0122156, 2015.

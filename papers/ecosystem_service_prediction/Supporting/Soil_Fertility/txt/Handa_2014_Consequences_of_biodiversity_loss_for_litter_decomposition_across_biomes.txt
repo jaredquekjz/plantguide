@@ -1,0 +1,901 @@
+Consequences of biodiversity loss for litter
+decomposition across biomes
+I. Tanya Handa1,2, Rien Aerts3, Frank Berendse4, Matty P. Berg3, Andreas Bruder5,6, Olaf Butenschoen7, Eric Chauvet8,9,
+Mark O. Gessner5,6,10,11, Je´re´my Jabiol8,9, Marika Makkonen3,12, Brendan G. McKie13,14, Bjo¨rn Malmqvist{,
+Edwin T. H. M. Peeters15, Stefan Scheu7, Bernhard Schmid16, Jasper van Ruijven4, Veronique C. A. Vos4 & Stephan Ha¨ttenschwiler1
+The decomposition of dead organic matter is a major determinant
+of carbon and nutrient cycling in ecosystems, and of carbon fluxes
+between the biosphere and the atmosphere1–3. Decomposition is
+driven by a vast diversity of organisms that are structured in com-
+plex food webs2,4. Identifying the mechanisms underlyingtheeffects
+of biodiversity on decomposition is critical4–6 given the rapid loss of
+species worldwide andthe effects ofthisloss onhumanwell-being7–9.
+Yet despite comprehensive syntheses of studies on how biodiversity
+affectslitterdecomposition4–6,10,keyquestionsremain,includingwhen,
+where and how biodiversity has a role and whether general patterns
+and mechanisms occur across ecosystems and different functional
+types of organism4,9–12. Here, in field experiments across five terrest-
+rial and aquatic locations, ranging from the subarctic to the tropics,
+weshowthatreducingthefunctionaldiversityofdecomposer organ-
+isms and plantlittertypesslowedthecyclingoflittercarbonandnitro-
+gen.Moreover,wefoundevidenceofnitrogentransferfromthelitter
+of nitrogen-fixing plants to that of rapidly decomposing plants, but
+not between other plant functional types, highlighting that specific
+interactions in litter mixtures control carbon and nitrogen cycling
+duringdecomposition.Theemergenceofthisgeneralmechanismand
+the coherence of patterns across contrasting terrestrial and aquatic
+ecosystemssuggestthatbiodiversitylosshasconsistentconsequences
+for litterdecomposition andthe cyclingof major elementson broad
+spatial scales.
+Biologicaldiversitythatdirectlyinfluenceslitterdecompositionexists
+at multiple trophic levels4. This diversity includes plants that produce
+litter mixtures of varying quality, microbial decomposers and inverteb-
+rate consumers of varying body size, the last two of which selectively
+use the heterogeneousresources provided bylitter mixtures4,13. General
+principlesoftheeffectsofbiodiversityonlitterdecompositionhaveproved
+elusive: both pioneering work14 and recent syntheses have highlighted
+contrasting effects of litter species richness on decomposition4–6,15,16. In
+part, this variation appears to be due to site-specific conditions, includ-
+ing contrasts between aquatic and terrestrial ecosystems, as well as bet-
+ween geographic settings. Further differences may arise from variation
+inexperimental protocols, theplantspeciesstudiedand thetypes of de-
+composersincludedinagivenexperiment.Suchmethodologicaldiscrep-
+ancieshavecomplicatedsynthesesacrossstudies,hinderingtheemergence
+of common patterns and mechanisms.
+Here we report the results of the first concerted experiments study-
+ing the effects of biodiversity on decomposition by manipulating diver-
+sity across trophic levels and distinct biomes in both forest floor and
+streamhabitats(ExtendedDataTable1).Weproposedthatthefunctional
+diversity of decomposers (variation in body size) and of leaf litter (vari-
+ationinlitterquality)promotes CandNcyclingacross contrastingloca-
+tions(subarctictotropical)andecosystemtypes(terrestrialversusaquatic).
+Bodysize encapsulatesnumerousspecies traitsthatare relevantto eco-
+system functioning, and extinction scenarios project that the larger spe-
+cieswillbepreferentiallylostfrombiologicalcommunities17,18.Similarly,
+plant functional types reflect differences in leaf quality traits that deter-
+minelitterdecompositionindependentlyofgeographicallocation19.Plant
+functional types are defined here in terms of plant C allocation strat-
+egies (deciduous versus evergreen), N acquisition strategies (N-fixing
+versus non-N-fixing) and litter recalcitrance (rapidlydecomposing ver-
+sus slowly decomposing) (Extended Data Table 2).
+Mixingleaflitterfromvariousplantfunctionaltypestogetherresulted
+inacceleratedCandNdynamics,asindicatedbytheoverallnetpositive
+effects on C and N loss (that is, increased C and N loss with increasing
+functional diversity) (Fig. 1, C loss; Extended Data Fig. 1, N loss; P ,
+0.05, C and N loss). However, C loss from litter mixtures was only
+2.9 6 0.8 mg g21 (mean 6 s.e.m.) of initial litter dry mass greater than
+the expected loss based on data from single litter functional types, in-
+dicating only a modest increase in C cycling as a result of litter mixing.
+Although also statistically significant (P , 0.01), the difference in the
+loss of N across all litter mixtures was very small (0.1 6 0.2 mg N g21
+of initial litter dry mass; mean 6 s.e.m.; Extended Data Fig. 1). The net
+litter diversity effect on C loss was strongerin terrestrial than in aquatic
+ecosystems (P , 0.001, Fig. 1 and Extended Data Table 3), supporting
+theoreticalpredictions4butcontrastingtheresults of a meta-analysis in
+whichdiversityeffectsondecompositionweresignificantonlyforstreams6.
+Sorting the litter mixtures into species at the end of the experiments
+enabled us to explore potential reasons for this discrepancy, by parti-
+tioning the net diversity effects into complementarity effects (that is,
+the effects resulting from synergistic or antagonistic interactions) and
+selection effects (that is, the effects arising when the presence of a par-
+ticular functional type with high (or low) process rates dominates a
+mixture)20.Theobservednetdiversityeffectswereclearlydrivenbycom-
+plementarity effects that were stronger than selection effects (Fig. 1).
+Overall, the complementarity effect was a similar strength to the net
+effect for C loss (3.4 6 0.9 mg C g21), and even stronger than the net
+effect for N loss (1.0 6 0.2 mg N g21). By contrast, the mean selection
+effects were not significant. The characteristics of the forest floor habitat
+that may favour complementarity effects include strong fluctuations in
+temperature and humidity and a homogenous litter cover4. Conversely,
+1Centre d’Ecologie Fonctionnelle et Evolutive (CEFE), CNRS, 1919 Route de Mende, 34293 Montpellier, France. 2De´partement des Sciences Biologiques, Universite´ du Que´bec a` Montre´al, C.P. 8888,
+succursale Centre-ville, Montre´al, Que´bec H3C 3P8, Canada. 3Department of Ecological Science, VU University Amsterdam, De Boelelaan 1085, 1081 HV Amsterdam, The Netherlands. 4Nature
+Conservation and Plant Ecology Group, Wageningen University, Droevendaalsesteeg 3a, 6708 PB Wageningen, The Netherlands. 5Department of Aquatic Ecology, Eawag: Swiss Federal Institute of Aquatic
+Science and Technology, U¨ berlandstrasse 133, 8600 Du¨bendorf, Switzerland. 6Institute of Integrative Biology (IBZ), ETH Zu¨rich, 8092 Zu¨rich, Switzerland. 7Georg August University Go¨ttingen, J.F.
+Blumenbach Institute of Zoology and Anthropology, Berliner Strasse 28, 37073 Go¨ttingen, Germany. 8Universite´ de Toulouse, INP, UPS, EcoLab (Laboratoire Ecologie Fonctionnelle et Environnement), 118
+Route de Narbonne, 31062 Toulouse Cedex, France. 9CNRS, EcoLab, 118 Route de Narbonne, 31062 Toulouse Cedex, France. 10Leibniz Institute of Freshwater Ecology and Inland Fisheries (IGB), Alte
+Fischerhu¨tte 2, 16775 Stechlin, Germany. 11Department of Ecology, Berlin Institute of Technology (TU Berlin), Ernst-Reuter-Platz 1, 10587 Berlin, Germany. 12Climate Change Programme, Finnish
+Environment Institute, PO Box 140, 00251 Helsinki, Finland. 13Department of Ecology and Environmental Science, Umea˚ University, 90187 Umea˚, Sweden. 14Department of Aquatic Sciences and
+Assessment, Swedish University of Agricultural Sciences, PO Box 7050, 75007 Uppsala, Sweden. 15Aquatic Ecology and Water Quality Management Group, Wageningen University, PO Box 47, 6700 AA
+Wageningen, The Netherlands. 16Institute of Evolutionary Biology and Environmental Studies & Zu¨rich-Basel Plant Science Center, University of Zu¨rich, Winterthurerstrasse 190, 8057 Zu¨rich, Switzerland.
+{Deceased.
+
+the observed negative complementarity effects in subarctic and tropical
+streams could reflect a low density and low taxon richness of litter con-
+sumers (Extended Data Table 4) and thus limited potential for comple-
+mentary resource use21.
+Ourexperimentsalsoshowthatcompletenessofthedecomposercom-
+munity, which is rarely considered in large-scale studies, is important
+for C and N dynamics during litter decomposition (Fig. 2, Table 1 and
+Extended Data Table 5). The presence of medium-sized invertebrates
+(#1 mmindiameter)inthedecomposercommunityincreasedtheaver-
+age C and N loss across all sites by 2.1 6 0.8% and 2.0 6 1.0%, respect-
+ively.Thecompletedecomposercommunity(whichincludedorganisms
+up to 5 mm in diameter) increased the average C loss across all sites by
+10.66 1.0%andtheaverageNlossacrossallsitesby11.16 1.2%(Fig.2).
+This effect was consistently positive across all but the Mediterranean
+terrestrial site. Thus, the presence of large fauna clearly has a major
+impact on decomposition (Table 1), as reported previously22–24; how-
+ever, in line with previous studies, the importance of large fauna varies
+amonglocationsinaquatic22andterrestrialecosystems23,24.Inourstudy,
+the strong effects of the complete decomposer community at the tem-
+perate and tropical locations correspond to high relative abundances
+of millipedes and termites at the terrestrial temperate and tropical sites,
+respectively (Extended Data Table 6). Similarly, the large effect of the
+complete decomposer community at the temperate aquatic site corre-
+spondstothehighabundanceofaparticularlyefficientamphipoddetri-
+tivore (Extended Data Table 4). Our data clearlyindicate thatthe large-
+bodiedorganismsarethemostcriticalfordecomposition.Theseanimals
+also tend to face the greatest extinction risk17.
+Littermixingandcompletenessofthedecomposercommunityinter-
+acted with each other to affect C and N loss, although this interaction
+explains less of the variance than the main effects (Table 1). C loss and,
+even more so, N loss increased in the presence of particular plant func-
+tional types and with increasing completeness of the decomposer com-
+munity (Table 1 and Extended Data Table 7). Although the type of
+decomposer community did not significantly change the net effect of
+diversityonCloss(P50.67)orNloss(P50.30)(ExtendedDataTable3),
+it emerged as a significant factor in the selection effect for both C loss
+(P , 0.05) and N loss (P , 0.05). Additionally, the interaction between
+therapidlydecomposinglittertypeandthedecomposercommunitywas
+significant inexplainingtheselectioneffectandtheoverallnetdiversity
+effect on C loss (P , 0.05) and N loss (P , 0.05), suggesting that large
+decomposers are particularly important drivers of C and N loss from
+litter mixtures that contain rapidly decomposing litter. The food pre-
+ference behaviour of decomposers could be important in accounting
+forthisresult,ashaspreviouslybeenimpliedforterrestrial25andaquatic26
+ecosystems.
+A key result of our large-scale study is that the effects of litter diver-
+sityonCandNdynamicscanbelargelyexplainedbythepresenceofpar-
+ticular functional planttypes inlittermixtures, supporting theideathat
+the range and relative abundance of plant traits in ecosystems underlie
+the effects of species richness on ecosystem processes27,28. The effects of
+thepresenceoflitterfromparticularplantfunctionaltypes,ortheinter-
+actions among these, were consistent across locations at both terrestrial
+and aquatic sites, together accounting for about 10% of the total vari-
+ance as shown in the full analysis of variance model (Table 1, P , 0.05;
+Net diversity effect (mg C g–1 litter) 
+–8
+0
+8
+16
+–16
+Overall SUB BOR TEM MED TRO
+Complementarity effect (mg C g–1 litter)
+–8
+0
+8
+16
+–16
+Selection effect (mg C g–1 litter)
+–8
+0
+8
+16
+–16
+Figure 1 | Net diversity, complementarity and selection effects of plant litter
+mixtures on C loss. The net diversity effect is the deviation from the expected
+mean based on C loss measured from litter consisting of single species. The
+blue and brown circles show the mean effects (6s.e.m.) on C loss from litter
+mixtures in forest streams and on forest floors, respectively, in subarctic (SUB),
+boreal (BOR), temperate (TEM), Mediterranean (MED) and tropical (TRO)
+locations. Each circle to the right of the dashed lines shows the mean effect per
+ecosystem type (that is, aquatic versus terrestrial), as calculated across the three
+types of decomposer community (n 5 165 litter mixtures per location and
+ecosystem type; see Extended Data Table 3 for statistical analyses). The circles
+to the left of the dashed lines show the overall mean across all locations.
+Decomposer community effect (%)
+–10
+Medium-sized decomposer community
+Complete decomposer community
+–10
+0
+10
+0
+10
+20
+30
+40
+50
+Average 
+N loss: 11%
+Average 
+C loss: 11%
+Average 
+N loss: 2%
+Average 
+C loss: 2%
+Aquatic
+SUB
+BOR
+TEM
+MED
+TRO
+SUB
+BOR
+TEM
+MED
+TRO
+SUB
+BOR
+TEM
+MED
+TRO
+SUB
+BOR
+TEM
+MED
+TRO
+Terrestrial
+60
+–20
+Aquatic
+Terrestrial
+Figure 2 | Effect of decomposer community completeness on litter C and N
+loss. C loss (left) and N loss (right) from all litter treatments (all single species
+and all mixtures) exposed to medium-sized decomposers (top; percentage
+difference comparedwiththe smallestmesh size)andthecompletedecomposer
+community (bottom; percentage difference compared with the smallest
+mesh size). The blue and brown bars show mean effects (6s.e.m.) in forest
+streams and on forest floors, respectively, in the five indicated locations (n 5 45
+litter treatments per location per ecosystem type; see Table 1 for statistical
+analyses).
+
+Extended Data Table 7). Beyond the presence or absence of particular
+plant functional types, we found no significant effect of the richness of
+plant functional types in the litter on C loss (P 5 0.93), although a
+positive effect was observed on N loss (P , 0.001) (Table 1). The effect
+on N loss was strongest when the most complete decomposer com-
+munities had access to the litter (litter richness 3 decomposer com-
+munity interaction; P , 0.05). Our results indicate that partitioning
+the diversity effects into the separate contributions of the presence or
+absenceofparticularplantfunctionaltypesinlitterandtheirinteractions
+can help move interpretations of biodiversity–ecosystem functioning
+experiments beyond the current dichotomy between broad generali-
+zations and claims of idiosyncratic compositional effects5,14,15.
+An intriguing finding in this context is that the strongest positive in-
+teractionemergedbetweentwoparticularlitterfunctionaltypes:N-fixing
+plantsandrapidlydecomposingdeciduousplants(ExtendedDataTable7).
+When these types were present together in litter mixtures, the average
+C loss was 13.5% greater than the average C loss of all litter combina-
+tions, and the Nlosswas32.5%greater.This generalpatternholds across
+terrestrialandaquaticecosystemsfromthesubarctictothetropics.More-
+over, relative to the total amount of N in the litter initially, less N re-
+mained in the litter of N-fixing plants when rapidly decomposing litter
+was present than when it decomposed alone (Fig. 3 and Extended Data
+Table 8). The rapidly decomposing litter, in turn, contained more N
+whenlitter from N-fixingplants was present thanwhenit decomposed
+alone (Fig. 3 and Extended Data Table 8). On average across all of the
+sites, the litter of N-fixing plants lost 20.6% of its initial N when it
+decomposed alone but 25.0% when it decomposed in the presence of
+litter from rapidly decomposing plants. By contrast, the litter of rapidly
+decomposing plants lost 18.1% of its N when it decomposed alone but
+13.4% when litter from N-fixing plants was present. This striking pat-
+tern across locations and ecosystems suggests, for the first time from
+field data, that N can be transferred between litter types. A plausible
+mechanism for this effect is that fungal decomposers tap the nutrient
+reservoir of the N-fixing plant litter, boosting C use and fungal growth
+in the N-deficient litter, which provide high-quality C29 (see section
+Extended discussion on litter N transfer in Methods). The average net
+differences in N fluxes between single-species litter and litter mixtures
+of these two plant functional types account for approximately 0.25 g N
+per square metre of ground area, representing up to one-tenth of the
+total annual N input from leaf litter fall. Thus, although the biodiver-
+sityeffectsthatwereporthere,inlinewithrecentsyntheses9–11,aresmaller
+than those noted for other ecosystem processes such as plant biomass
+production,thesechangesinNfluxescanhaveimportantconsequences
+for the ecosystem. Even slight differences in the N dynamics in litter
+mixtures compared withthe respectivesingle-species litter cansubstan-
+tially change the N supply to primary producers and other organisms
+over large spatial and temporal scales30.
+The implications of our results are that changes in C and N cycling
+in response to biodiversity loss are largely predictable across vastly dif-
+ferent latitudes in both terrestrial and aquaticecosystems,bytakinginto
+account relatively simple plant traits and the structural characteristics of
+decomposer communities. To provide robust projections of how eco-
+systems respond to a loss of biodiversity, it is essential to identify the
+mechanisms that result from specific interactions between the compo-
+nents of biodiversity as we describe here. With the consistent patterns
+and mechanisms of biodiversity effects that we have shown, such pro-
+jections now seem to be within reach.
+N-fixing
+Rapidly decomposing
+0.2
+0.1
+0.0
+–0.1
+–0.2
+SUB
+BOR
+TEM MED
+TRO
+SUB
+BOR
+TEM MED
+TRO
+Relative net difference in N
+Figure 3 | Relative change in the total amount of litter N. The relative net
+difference between two-species mixtures (containing litter from the N-fixing
+and the rapidly decomposing plants) and monocultures of N-fixing plant litter
+(left) or rapidly decomposing plant litter (right) is shown (mean 6 s.e.m.,
+n 5 15; see Extended Data Table 8 for statistical analyses) for litter
+decomposing in terrestrial (brown) and aquatic (blue) ecosystems at five
+locations. The relative net difference was calculated as [(Ni,m 2 Nf,m)/Ni,m] –
+[(Ni,a – Nf,a)/Nf,a], where Ni,m and Ni,a are the initial (i), and Nf,m and Nf,a are the
+final (f), amounts of N in a particular litter type in a mixture (m) or alone (a).
+Table 1 | Variance in C and N loss associated with diversity and sites
+Factor
+C loss
+N loss
+DF
+%SS
+F
+P
+%SS
+F
+P
+Variation associated with diversity
+Litter community: litter richness*
+1
+0
+0
+0.93
+1.0
+63.7
+***
+Litter community: remaining variation associated with FT composition{
+13
+10.1
+66.0
+***
+8.9
+44.4
+***
+Decomposer community (small, medium-sized or complete)
+2
+5.8
+247
+***
+4.4
+142
+***
+Litter community 3 decomposer community
+28
+0.8
+2.45
+***
+1.3
+3.1
+***
+Variation associated with sites
+Location (tropical, Mediterranean, temperate, boreal or subarctic)
+4
+12.1
+52.8
+***
+16.9
+66.5
+***
+Ecosystem (aquatic stream or terrestrial forest floor)
+1
+6.4
+113
+***
+1.4
+22.3
+***
+Location 3 ecosystem
+4
+6.3
+27.7
+***
+8.0
+31.6
+***
+Block (within location 3 ecosystem)
+40
+2.3
+4.87
+***
+2.5
+4.13
+***
+Variation associated with diversity or sites
+Decomposer community 3 location
+8
+8.6
+92.1
+***
+7.5
+61.3
+***
+Remaining variance
+388
+27.1
+5.95
+***
+21.4
+3.60
+***
+Total variance explained by the model
+489
+79.5
+13.9
+***
+73.3
+9.76
+***
+Residuals
+1,739
+20.4
+–
+–
+26.7
+–
+–
+Total
+2,228
+100.0
+–
+–
+100.0
+–
+–
+The relative contributions of variance in C and N loss associated with diversity and sites (expressed in percentage sums of squares (% SS)) in a large-scale leaf litter decomposition experiment. The main factors are
+italicized. ***, P , 0.001, analysis of variance based on sequential sums of squares (see Methods). See Extended Data Table 5 for details. DF, degrees of freedom; FT, functional type.
+* Plant species (trees or shrubs) were selected to represent the same four functional types at each location (N-fixing, evergreen, rapidly decomposing deciduous and slowly decomposing deciduous). Linear
+functional type richness was fitted before litter functional type compositions.
+{ An alternative model omitting richness and testing in detail the litter functional type compositions in a full factorial analysis with contrasts for functional type presence/absence and interactions is presented in
+Extended Data Table 7. That model highlights the importance of the interaction between the litter of the N-fixing functional type and the rapidly decomposing functional type, hinting at a N-transfer mechanism.
+
+METHODS SUMMARY
+The field experiments followed an identical protocol at ten sites, encompassing both
+aquatic(foreststream)andterrestrial(forestfloor)ecosystemsatfivelocationsacross
+a latitudinalgradientspanningfrom thesubarctic to thetropics,withintermediate
+locations in boreal, temperate and Mediterranean climates (Extended Data Table 1).
+Leaf litter from native tree or shrub species representing four common functional
+types (evergreen, deciduous with slowly decomposing litter, deciduous with rapidly
+decomposing litter, and N-fixing) that naturally occur across all locations (18 species
+intotal;ExtendedDataTable2)wasexposedtodecomposersinatotalof2,250exper-
+imentalmicrocosmssetupinthefieldwithallpossiblelocation-specificsingle-species
+andmulti-speciescombinations.Weusedarandomizedblock designwithfive blocks
+per site. Each block contained 1 replicate of 15 combinations of litter types (that is,
+all possible combinations of 4 litter species) 3 3 microcosm mesh sizes (totalling
+45 microcosms per block). The three mesh sizes used to construct the field micro-
+cosms allowed us to establish three increasingly complete decomposer communities
+(small, medium-sized and complete) in the microcosms. Small-sized decomposer
+communitiesincluded microorganisms andfaunathatpassedthrough 50-mmand
+250-mmmeshscreens(DIATEX)interrestrial and aquatic ecosystems, respectively.
+The medium-sized decomposer communities contained all organisms (including
+invertebrates) that passedthrough 1-mm mesh screens, whereasthe complete decom-
+poser communities included all organisms that passed through 5-mm mesh screens.
+Litter mass loss was allowed to proceed to the same defined decomposition stage
+(40–50% of the mass of the least recalcitrant litter type remaining at each location;
+Extended Data Table 9) to ensure the comparisons of C and N loss, as well as the
+effects of diversity, at a similar decomposition stage among sites, using analysis of
+variance models (see Methods section).
+Online Content Any additional Methods, Extended Data display items and Source
+Data are available in the online version of the paper; references unique to these
+sections appear only in the online paper.
+Received 28 November 2013; accepted 11 March 2014.
+1.
+Wardle, D. A. Communities and Ecosystems: Linking the Aboveground and
+Belowground Components (Princeton Univ. Press, 2002).
+2.
+Bardgett, R. D. The Biology of Soil: A Community and Ecoystem Approach (Oxford
+Univ. Press, 2005).
+3.
+Parton, W. et al. Global-scale similarities in nitrogen release patterns during long-
+term decomposition. Science 315, 361–364 (2007).
+4.
+Gessner, M. O. et al.Diversity meets decomposition. Trends Ecol. Evol. 25, 372–380
+(2010).
+5.
+Ha¨ttenschwiler,S., Tiunov, A. V. & Scheu, S. Biodiversity and litter decompositionin
+terrestrial ecosystems. Annu. Rev. Ecol. Evol. Syst. 36, 191–218 (2005).
+6.
+Cardinale, B. J. et al. The functional role of producer diversity in ecosystems.
+Am. J. Bot. 98, 572–592 (2011).
+7.
+May, R. M. Why should we be concerned about loss of biodiversity. C. R. Biol. 334,
+346–350 (2011).
+8.
+Naeem, S., Duffy, J. E. & Zavaleta, E. Thefunctions of biological diversity in an age of
+extinction. Science 336, 1401–1406 (2012).
+9.
+Cardinale, B. J. et al. Biodiversity loss and its impact on humanity. Nature 486,
+59–67 (2012).
+10. Hooper, D. U. et al. A global synthesis reveals biodiversity loss as a major driver of
+ecosystem change. Nature 486, 105–108 (2012).
+11. Balvanera, P. et al. Quantifying the evidence for biodiversity effects on ecosystem
+functioning and services. Ecol. Lett. 9, 1146–1156 (2006).
+12. Loreau, M. Linking biodiversity and ecosystems: towards a unifying ecological
+theory. Phil. Trans. R. Soc. B 365, 49–60 (2010).
+13. Reiss, J., Bridle, J. R., Montoya, J. M. & Woodward, G. Emerging horizons in
+biodiversity research and ecosystem functioning. Trends Ecol. Evol. 24, 505–514
+(2009).
+14. Wardle, D. A., Bonner, K. I. & Nicholson, K. S. Biodiversity and plant litter:
+experimental evidence which does not support the view that enhanced species
+richness improves ecosystem function. Oikos 79, 247–258 (1997).
+15. Gartner, T. B. & Cardon, Z. G. Decomposition dynamics in mixed-species leaf litter.
+Oikos 104, 230–246 (2004).
+16. Lecerf, A. et al. Incubation time, functional litter diversity, and habitat
+characteristics predict litter-mixing effects on decomposition. Ecology 92,
+160–169 (2011).
+17. Duffy, J. E. Biodiversity loss, trophic skew and ecosystem functioning. Ecol. Lett. 6,
+680–687 (2003).
+18. Woodward, G. et al. Body size in ecological networks. Trends Ecol. Evol. 20,
+402–409 (2005).
+19. Cornwell, W. K. et al. Plant species traits are the predominant control on
+litter decomposition rates within biomes worldwide. Ecol. Lett. 11, 1065–1071
+(2008).
+20. Loreau, M. & Hector, A. Partitioning selection and complementarity in biodiversity
+experiments. Nature 412, 72–76 (2001).
+21. Frainer, A., McKie, B. G. & Malmqvist, B. When does diversity matter? Species
+functional diversity and ecosystem functioning across habitats and seasons in a
+field experiment. J. Anim. Ecol. 83, 460–469 (2014).
+22. Woodward, G. et al. Continental-scale effects of nutrient pollution on stream
+ecosystem functioning. Science 336, 1438–1440 (2012).
+23. Wall, D. H. et al. Global decomposition experiment shows soil animal impacts
+on decomposition are climate-dependent. Glob. Chang. Biol. 14, 2661–2677
+(2008).
+24. Garcı´a-Palacios, P., Maestre, F. T., Kattge, J. & Wall, D. H. Climate and litter quality
+differently modulate the effects of soil fauna on litter decomposition across
+biomes. Ecol. Lett. 16, 1045–1053 (2013).
+25. Vos, V. C. A., van Ruijven, J., Berg, M. P., Peeters, E. T. H. M. & Berendse, F. Macro-
+detritivore identity drives leaf litter diversity effects. Oikos 120, 1092–1098
+(2011).
+26. Swan, C. M. & Palmer, M. A. Preferential feeding by an aquatic detritivore mediates
+non-additive decomposition of speciose leaf litter. Oecologia 149, 107–114
+(2006).
+27. Garnier, E. et al. Plant functional markers capture ecosystem properties during
+secondary succession. Ecology 85, 2630–2637 (2004).
+28. Cadotte, M. W., Carscadden, K. & Mirotchnick, N. Beyond species: functional
+diversity and the maintenance of ecological processes and services. J. Appl. Ecol.
+48, 1079–1087 (2011).
+29. Schimel, J. P. & Ha¨ttenschwiler, S. Nitrogen transfer between decomposing leaves
+of different N status. Soil Biol. Biochem. 39, 1428–1436 (2007).
+30. Finzi, A. C. & Canham, C. D. Non-additive effects of litter mixtures on net N
+mineralization in a southern New England forest. For. Ecol. Manage. 105, 129–136
+(1998).
+Acknowledgements We thank A. Lecerf and P. Garcı´a-Palacios for comments on the
+manuscript. We are grateful to numerous technicians in Montpellier (France) for
+building field microcosms, in Du¨bendorf (Switzerland) for water chemical analyses,
+and in Du¨bendorf and Go¨ttingen (Germany) for grinding litter samples. We also thank
+M. Schindler for assistance, B. Buatois, R. Leclerc, P. Schevin and L. Sonie´ for analyses
+performed at the Plate-Forme d’Analyses Chimiques en Ecologie, LabEx CeMEB
+(France),G.Larocquefor helpwithR codeandour manycolleaguesatthefieldsites and
+research institutes for their support in various ways. This study is part of the BioCycle
+research project funded by the European Science Foundation (ESF) as part of its
+EUROCORES programme EuroDIVERSITY. BioCycle has been endorsed by
+DIVERSITAS as contributing towards their scientific research priorities in biodiversity
+science.
+Author Contributions All authors contributed to the experimental design, data
+acquisition and revision of the final manuscript. Statistical analyses were performed by
+I.T.H., B.S., J.V.R. and B.G.M., and the manuscript was written by I.T.H., S.H. and M.O.G.
+Author Information Reprints and permissions information is available at www.
+nature.com/reprints. The authors declare no competing financial interests. Readers
+are welcome to comment on the online version of the paper. Correspondence and
+requestsformaterialsshouldbeaddressedtoS.H.(stephan.hattenschwiler@cefe.cnrs.fr).
+
+METHODS
+Experimental design. Ourfieldexperimentsfollowedanidenticalprotocolatatotal
+of tensites, representingeitheran aquatic ecosystem (foreststream) or a terrestrial
+ecosystem (forest floor). Five locations were selected across a broad latitudinal
+gradient spanning from the subarctic to the tropics, with intermediate locations in
+boreal, temperate and Mediterraneanclimates (Extended DataTable 1).Acrossall
+five locations, and in both the stream and forest ecosystems, the experiments con-
+sisted of a randomized block design in which the leaf litter from 4 common native
+plants (corresponding to the functional types shown in Extended Data Table 2)
+and 11 mixtures of these litter types (corresponding to all possible litter combina-
+tionswithinalocation)wereenclosedinnylonmeshscreens(DIATEX)andplaced
+in the field in five blocks (n 5 5 locations3 2 ecosystem types3 15 litter combi-
+nations3 3 mesh sizes3 5 blocks 5 2,250 microcosms). The four functional plant
+types represent distinct plant C allocation strategies (deciduous versus evergreen),
+Nacquisitionstrategies(NfixerversusnotaNfixer)andlitterrecalcitranceofdecid-
+uous non-N-fixers (rapidly decomposing versus slowly decomposing).
+The threemesh sizes used to constructthe microcosms enabled usto distinguish
+three increasingly complete decomposer communities (small, medium-sized and
+complete) that established themselves on the decomposing litter. Small decompo-
+sers included microorganisms and small-sized fauna that passed through 50-mm
+and250-mmmeshscreensinterrestrialandaquaticsystems,respectively.Themedium-
+sized decomposer communities contained all organisms (including invertebrates)
+that passed through 1-mm mesh screens, whereas the complete decomposer com-
+munities included all decomposers that passed through 5-mm mesh screens. Litter
+mass loss was allowedtoproceed tothe samedefineddecomposition stage (40–50%
+of the littermassof the least recalcitrantlitter type remainingateach site; Extended
+DataTable9)toensuremeaningfulcomparisonsofCandNlossamongallsites.At
+alltensites,extramicrocosms containingthe fastest decomposinglitter type served
+as benchmark indicators of decomposition rates.
+Site characterization. Thefivestreamlocationswerecharacterizedintermsoftheir
+geomorphological, physical and chemical features (Extended Data Table 1). Water
+samples were collected for chemical analyses at the time of establishing the experi-
+ments. Samples for inorganic N and phosphorus determination were filtered over
+0.45-mm pore-size cellulose acetate membrane filters and transported to the labor-
+atory in a cooler at about 5 uC, where they were frozen for later analysis at Eawag,
+Switzerland.
+At the five forest sites (Extended Data Table 1), the leaf area index was measured
+atbreastheight ona uniformly cloud-covered daywhen the forestcanopy was fully
+developed, using an LAI-2000 Plant Canopy Analyzer (LI-COR) for the subarctic
+location, anLAI-2200Plant Canopy Analyzer(LI-COR)forthe Mediterraneanand
+tropical locations, and a SunScanCanopy Analysis System (DeltaT Devices) for the
+temperatelocations.DatafortheboreallocationwereprovidedbyK.Bishop&P.-E.
+Mellander.Tocharacterizethe soilat eachof the terrestrialsites,three samplesfrom
+each experimental block were taken with a soil corer (5 cm diameter, 10 cm height),
+pooled, storedinplasticbagsat4 uC, thensent cooledtotheUniversityofGo¨ttingen
+(Germany). Sieved soil samples (,2 mm sieve pore size) were analysed for pH (2 g
+soil in 20 ml 0.01 M CaCl2) and C and N concentration (using an NA 1500 Carlo
+Erbaelementalanalyser).Themicrobialbiomassofthesoilwasestimatedusingthe
+substrate-inducedrespiration(SIR)method.Themicrobialrespiratoryresponsewas
+measured in an electrolytic O2-microcompensation apparatus at 22uC. These mea-
+surementsweremadehourlyfor24h.Themicrobialbiomasswasmeasuredafterthe
+addition of glucose (8 mg C g21 dry soil) as a substrate to saturate the catabolic
+activity of the microorganisms. The maximum initial respiratory response (MIRR;
+ml O2 g21 dry mass h21) was calculated as the mean of the lowest three readings
+within thefirst 10 h, and the microbial biomass was calculated as Cmic 5383MIRR
+(in mgCmic g21 soil dry mass).
+Dataloggers(SL52T, Signatrol)wereinstalledinsomemicrocosmsatalltensites,
+to record the temperature every 2 h. These temperature measurements were taken
+in the samelittertreatment for all threemeshsizesin threeof the fiveexperimental
+blocks.
+Leaf litter collection. A total of 20 litter types were collected at the 5 locations of
+our coordinated experiment. This litter corresponded to the same four functional
+types per location that were introduced above: N-fixing plants, rapidly decompos-
+ing deciduous plants, slowly decomposing deciduous plants and evergreen plants
+(Extended Data Table 2).Litterfrom thesefour functional types varies with respect
+to several quality traits31 (Extended Data Table 2). The selected species were com-
+mon native trees or, in two cases, native woody shrubs (Vaccinium vitis-idaea and
+Rhododendron tomentosum) occurring at each location. The litter was collected dur-
+ing location-specific leaf senescence either by hand (V. vitis-idaea and R. tomen-
+tosum)orbyusinglittertraps.Anexceptionwaslitterfromthetemperateevergreen
+speciesIlexaquifolium,whichwasobtainedbycuttingbranchesinthefieldandsim-
+ulating senescence in the laboratory for three weeks. Leaves with signs of herbivory
+or disease were discarded. The litter from multiple individual trees or shrubs of
+each species was pooled and dried at 40 uC.
+Leaf litter field incubations. Stream experiments were conducted by exposing 5 g
+litterbatchesintetrahedralmeshmicrocosms(17 cm3 25 cm)madeofoneofthree
+mesh sizes(250 mm,1 mmor5 mm) toprovideaccess todecomposercommunities
+differing in body size. The microcosms were randomly attached (about 40 cm dis-
+tancebetweenmicrocosms)tofive20-mmetalchains,eachinaseparateriffle(short,
+relatively shallow sections of streams with non-stagnating water) 20 m or farther
+apart from each other (experimental blocks). The chains were fixed in the stream
+with reinforcing bars in fairly homogeneous sand–gravel stream sections, where
+leaves accumulated naturally. All microcosms were submerged at depths sufficient
+to ensure that they were not exposed to air when water levels dropped. Care was
+takentoexposethelittertoconstantflowconditions,avoidingdeepdepositionalareas
+(that is, pools and backwaters) with slow or no flow and rocky riffles with broken
+flow.
+Terrestrial experiments on the forest floor were conducted by incubating 8 g
+location-specific litter (4 g only in the subarctic because of limited litter availability
+forsomespecies)infieldmicrocosmsmadeofpolyethylenecylinders(15cmdiam-
+eter, 10 cm height) covered with 50-mm mesh at the top and bottom to allow the
+passage of water but to prevent the entry of natural litter fall from above and the
+loss of small litter particles from the bottom. Two windows (5 cm3 18 cm) were
+cut into the cylinders and covered with 50-mm, 1-mm or 5-mm mesh to provide
+access to decomposer communities differing in body size. The windows were cut
+close to the bottom of the cylinders to ensure that decomposers had access to a
+continuous layer of litter outside and inside the microcosms. An additional 1.5-cm
+heightplasticring ofthe samediameter asthecylindricalmicrocosms was attached
+at the bottom of the microcosm, making it possible to push the microcosms gently
+into the top soil (to a depth of 1.5 cm). This ring held the terrestrial microcosms
+properlyinplacewhilethebottommeshwasinintimatecontactwiththesoilsurface.
+In cases in which pushing the microcosms into the soil was difficult (for example,
+in the tropical forest with its dense superficial tree roots), the 1.5-cm rings were
+fittedwithaseparateplasticormetalringbeforeplacingthemicrocosms.Themicro-
+cosms were separated from each other by at least 50 cm. They were randomly dis-
+tributed within blocks that were established at least 20 m apart from each other.
+Sample harvest and processing. We removed the decomposing litter of all species
+fromthefieldwhen40–50%oftheinitiallittermassofthefastestdecomposingspecies
+wasremaining.Asaconsequence,thedurationoflitterdecompositionvariedamong
+locationsandecosystemtypes(ExtendedDataTable9).Thisprocedureensuredthat
+similar decomposition stages were sampled at all sites, facilitating meaningful com-
+parisons of decomposition rates and litter diversity effects. All litter samples were
+separated into the constituent species immediately after litter retrieval. The litter
+recovered from the streams was gently washed to remove any adhering material
+and invertebrates. The litter from the terrestrial sites was cleaned by gently brush-
+ing off any dirt without using water, to prevent the leaching of nutrients. The litter
+samples were then dried at 65 uC for 48 h. A correction factor was used to convert
+the initiallitter mass (weighed after drying at 40 uC) to the finaldry mass, based on
+tenrandomlyselectedsamplesperlittertypethatweresuccessivelydriedandweighed
+in the laboratory first at 40 uC and then at 65 uC.
+Litter C and N loss. The initial C andN concentrationsof each ofthe20 individual
+litter types were determined from 5 random samples. The final C and N concen-
+trations after retrieval of the litter from the field were also measured for each indi-
+vidually sorted litter type from each microcosm. This process resulted in a total of
+5,400samplesfor whichto calculate the percentage C and N loss for each litter type
+under the various conditions. Following the determination of litter dry mass, all
+initialandfinalsamplesweregroundwithaballmill(RetschPM400)toafinehomo-
+geneous powder. Subsamples of 3 mg were analysed for C and N concentrations
+using a CHN elemental analyser (Flash EA 1112 Series, Thermo Finnigan). C and
+N loss (%) from the litter during field exposure was calculated as 100 3 [(Mi 3
+CNi) 2 (Mf 3 CNf)] / (Mi 3 CNi), where Mi and Mf are the initial and final litter
+dry mass, respectively, and CNi and CNf are the initial and final C or N concen-
+tration (% of litter dry mass). Using C loss (%) rather than total litter mass loss
+allowed us to correct for any possible inorganic contamination of the litter retrieved
+from the field.
+Analyses of diversity effects and statistical models. The net diversity effects,
+comprising complementarity and selection effects, on both C and N loss were cal-
+culated in species mixtures20. The net diversity effect was calculated as the sum of
+the complementarity and selection effects and contrasts the actual C and N loss
+observed for mixtures of plant functional types with that expected based on the C
+and N loss measured in single-species treatments. The net diversity effect repre-
+sents the sum of synergistic or antagonistic interactions (that is, complementarity
+effects)andthoseduetothepresenceofadominantspecies(thatis,selectioneffects).
+Dataweresquare-roottransformed(keepingtheoriginalnegativeandpositivesigns
+
+for the transformed values) to meet the assumptions for the analysis of variance of
+net diversity, complementarity and selection effects (see details below).
+Analysis of variance models based on sequential sums of squares (type I) were
+used to assess the effects of diversity (the richness of plant litter functional types or
+thepresenceorabsenceofagivenfunctionaltypeanditsinteractionwithotherfunc-
+tionaltypes), the completenessofthedecomposer community (small, mediumand
+large (complete)), the location across the latitudinal gradient and the ecosystem
+type (terrestrial versus aquatic) on percentage C and N loss. To ensure meaningful
+comparisons across the locations, several standardization methods were tested to
+remove any variation associated with the differences in incubation length. These
+methods included standardizing relative to the following: 1) a standard litter type
+from a non-native plant, Ailanthus altissima, that decomposed at all locations dur-
+ingthe experiments;2) the overallmean C or N loss per mesh size across locations;
+and 3) the mean C or N loss per mesh size of the rapidly decomposing functional
+typeacrosslocations. Because the resultswereconsistentirrespectiveofstandardi-
+zation, the final model is presented using the non-standardized data.
+The model terms were fitted to account for the dependency between the rich-
+ness of plant litter functional types and the functional type composition (the pres-
+ence orabsenceofagivenfunctionaltypeandinteractionsbetweenfunctionaltypes).
+First, functional type composition was partitioned into a contrast for richness and
+residualfunctionaltypecomposition(Table 1andExtendedDataTable5).Second,
+as shown in Extended Data Table 7, we omitted the richness term and instead re-
+solved the functional type composition into a full factorial analysis with contrasts
+forfunctionaltype presence or absence and interactions. In this model,the decom-
+poser community was fitted as a log–linear contrast (small to large mesh size was
+expressed as the logarithm of the mesh size of the microcosms, which produced a
+linear relationship of the three mesh sizes). We also removed all of the other non-
+significant interaction terms in multiple successive model-fitting steps. These two
+alternative analyses reflect different partitionings of the functional type composi-
+tion term into contrasts; they allowed us to compare the explanatory power of the
+richnesscontrastwiththepresence/absencecontrast.Aperfectlinearrichnesseffect
+wouldbe foundifall presence/absencecontrasts hadequalcoefficientsanddid not
+interact. In this case, the mean squares or the richness effect with only one degree
+of freedom would be much larger than that of the combined mean squares of the
+presence/absence main effects of the four litter types withfour degrees of freedom.
+In both models, the terms ‘location’ and ‘ecosystem type’ were tested at the block
+level. All other terms were tested against the residuals.
+A similar analysis of variance approach was used to test independently for the
+effects of these same factors on complementarity and selection effects, as well as on
+netdiversity effects (ExtendedDataTable 3).Ina separateanalysis of variance(Ex-
+tended Data Table 8), we also tested whether the net loss of the total amount of N
+relative to the initial amount of N differed when litter of particular plant functional
+types(forexample,rapidlydecomposing litterandlitter ofN-fixingplants)decom-
+posed together as opposed to decomposing separately, which we interpreted as an
+indication of N transfer between litter species. The location and ecosystem type
+were also included in this analysis. All statistical analyses were performed with R
+software version 2.8.0.
+Extended discussion on litter N transfer. Although our data suggest that N was
+transferred from the litter of N-fixing plants to rapidlydecomposing litter, alterna-
+tive mechanisms cannot be entirely ruled out. In particular, N incorporated into
+decomposinglittercan originatenotonly from another co-occurringlitter type but
+also from the N pool in the soil or stream water or from microbial N fixation32.
+However, N transfer from such alternative N sources does not readily explain the
+concomitantreciprocalchangesthatweobservedbetweenthelitterofN-fixingplants
+andrapidlydecomposinglitter.Moreover,theideathatNtransferoccurredbetween
+the two litter types is further supported by a positive net diversity effect on C loss
+that we observed only when these two particular litter functional types were both
+present (Extended Data Table 3). Additional support for our interpretation comes
+from 15N tracer studies in microcosms with tropical28 and temperate33 forest litter,
+which are proof of principle that active biological transfer of N through micro-
+organisms, particularly saprotrophic fungi, can occur. Our large-scale field experi-
+ment suggests that this phenomenon might be widespread across terrestrial and
+aquaticecosystemsandacrossawidevarietyofforesttypesandclimaticconditions.
+It had been proposed that N transfer is driven by a gradient in N concentration
+between litter types4,5, the rationale being that the element that limits the decom-
+positionrateisN.However,thescenarionowunfoldingfromourexperiment(Fig.3)
+and the recent isotope tracer studies under laboratory conditions28,33 is that N trans-
+fer is stoichiometrically controlled. The crucial determinant that defines the gra-
+dient along which N will be transferred in litter mixtures seems to be the demand
+forNrelativeto theavailabilityofC(andpossibly thatofother elementscriticalfor
+decomposer growth), rather than differences in the N concentration. A litter with
+high Cquality favoursrapidmicrobialgrowth, whichinturnentailsahigh demand
+for N (and other nutrients), resulting in N acquisition from neighbouring nutrient
+pools. In extreme cases, the N source litter may even have a lower N concentration
+than the N sink litter33, provided that the C quality of both litter types is sufficiently
+different. In accordance with this mechanism, the decomposition of recalcitrant
+litter types inourstudy(slowlydecomposingandevergreenplantfunctionaltypes)
+was not accelerated by the presence of litter from N-fixing plant species (Extended
+Data Table 7), although those recalcitrant litter types had similarly low or lower
+initial N concentrations than the rapidly decomposing litter species, which con-
+sistently benefited from the presence of N-fixing plant litter.
+31.
+Makkonen, M. et al. Highly consistent effects of plant litter identity and functional
+traits on decomposition across a latitudinal gradient. Ecol. Lett. 15, 1033–1041
+(2012).
+32.
+Vitousek,P.M.& Hobbie,S.Heterotrophicnitrogenfixationindecomposinglitter:
+patterns and regulation. Ecology 81, 2366–2376 (2000).
+33.
+Lummer, D., Scheu, S. & Butenschoen, O. Connecting litter quality, microbial
+community and nitrogen transfer mechanisms in decomposing litter mixtures.
+Oikos 121, 1649–1655 (2012).
+34.
+Lepori, F. & Malmqvist, B. Deterministic control on community assembly
+peaks at intermediate levels of disturbance. Oikos 118, 471–479
+(2009).
+35.
+Nijboer, R. De Springendalse Beek. Macrofaunagemeeenschappen in de Periode
+1970–1995 IBN-rapport 455 (Instituut voor Bos- en Natuuronderzoek,
+Wageningen, 1999).
+
+Extended Data Figure 1 | Net diversity, complementarity and selection
+effects of plant litter mixtures on N loss. The net diversity effect is the
+deviation from the expected mean based on N loss measured from litter
+consisting of single species. The blue and brown circles show the mean
+effects (6s.e.m.) on N loss from litter mixtures in forest streams and on forest
+floors, respectively, in subarctic (SUB), boreal (BOR), temperate (TEM),
+Mediterranean (MED) and tropical (TRO) locations. Each circle to the right
+of the dashed lines shows the mean effect per ecosystem type (that is, aquatic
+versus terrestrial), as calculated across the three types of decomposer
+communities (n 5 165 litter mixtures per location and ecosystem type; see
+Extended Data Table 3 for statistical analyses). The circles to the left of the
+dashed lines show the overall mean across all locations (n 5 825 litter
+mixtures per ecosystem type).
+
+Extended Data Table 1 | Characteristics of aquatic and terrestrial ecosystems at five widely dispersed locations
+* Means were calculated based on 10-year records between 1998 and 2008 from the closest possible meteorological station.
+{ Soluble reactive phosphorus < ortho-phosphate.
+{ Data courtesy of K. Bishop and P.-E. Mellander.
+1 Soil microbial biomass (Cmic), soil C and soil N are expressed on a dry mass basis.
+
+Extended Data Table 2 | Plant functional types, species identity and litter quality traits
+Leaf litter was sampled from location-specific native tree species corresponding to four functional types (top) varying in quality traits associated with decomposition (bottom).
+* All data are shown as percentage dry mass (mean 6 s.e.m., n 5 5). Methods are described in detail in ref. 31.
+
+Extended Data Table 3 | Results of analyses of variance testing for the net diversity effect (NE), complementarity effect (CE) and selection
+effect (SE) on C loss (top) and N loss (bottom) from decomposing leaf litter*
+* Interaction terms omitted from the final model are not significant for any of the three response variables.
+{ Location, ecosystem type and their interaction were tested against the block rather than against the residual.
+
+Extended Data Table 4 | Characteristics of stream macroinvertebrate communities at the five tested locations*
+* The mean density and total taxon richness of detritivores, their main invertebrate predators, and the mean proportion of Plecoptera, Trichoptera and Gammarus as a percentage of total detritivore abundance
+(mean 6 s.d.) are shown. All samples were collected using a 500-mm mesh net at the same time of year as the main experiment (although in different years in some cases). Specific sampling protocols differed
+between locations, with the density standardized to the number of individuals per metre squared. For the subarctic site, six replicate kick samples were taken, each from an area of 1 m 3 0.35 m for 1 min, during
+September 2006. Identification was mostly to the species level34. For the boreal site, four replicate Surber samples per year were taken for three years, during October 2010–2012, with a quadrat size of
+0.25 m 3 0.5 m. Identification was mostly to the species level (B.G.M. and P.-O. Hoffsten, unpublished observations). For the temperate site, five replicate sweep net samples were taken, each from an area of
+0.3 m 3 5 m, in October 1992. Identification was mostly to the species level35. For the Mediterranean site, five replicate Surber samples were taken, with a quadrat size of 0.33 m 3 0.31 mm, in January 2014.
+Identification was mostly to the family level (E.C. and S. Lamothe, unpublished observations). For the tropical site, ten replicate natural leaf packs (fist-sized handfuls of leaves picked from the stream bed) were
+taken from each of seven streams in May 2007. Abundances per leaf pack were converted to densities based on standardized visual estimates of stream-bed litter cover. Identification was mostly to the family level
+(A.B., M. Schindler, M. S. Moretti and M.O.G., unpublished observations).
+{ Detritivore community composition data do not sum to 100% at all locations, owing to the presence of other dipteran (Tipulidae), lepidopteran (Pyralidae) and crustacean (Asellidae) shredders at the temperate
+site, and tipulid and pyralid shredders at the tropical site.
+{ The caddisfly Micrasema (Brachycentridae) was common at the Mediterranean site but was small and was not regarded as a shredder.
+
+Extended Data Table 5 | Full model output of the relative contributions of variance associated with diversity and sites to explain C and N loss
+Variance associated with diversity and sites is expressed in percentage sums of squares (% SS); levels of significance are *P , 0.05, **P , 0.01, ***P , 0.001.
+{ Plant species were selected to represent the same four functional types (FTs) at each location (N-fixing, evergreen, rapidly decomposing deciduous trees or shrubs, or slowly decomposing deciduous trees or
+shrubs). Litter FT richness (linear contrast) and litter diversity (factorial contrast) were fitted before litter FT compositions.
+{ An alternative model omitting richness and testing in detail the litter FT compositions in a full factorial analysis with contrasts for FT presence/absence and interactions is presented in Extended Data Table 7. That
+model highlights the importance of the interaction between the litter of the N-fixing FT and the rapidly decomposing FT, hinting at a N-transfer mechanism.
+
+Extended Data Table 6 | Characteristics of soil fauna communities at the five tested locations*
+* The mean density, the total taxon richness and the proportion of dominant taxa as a percentage of total community abundance are shown (mean 6 s.d.). Communities are divided into mesofauna and
+macrofauna, reflecting an increase in body size that relates to mesh size differences in the field microcosms.
+{ Taxon richness is based on the number of observed families.
+{ Dominant taxa data are based on a lower taxonomic resolution than taxon richness, mainly order or class level. The community composition data do not always sum to 100% at all locations, owing to the presence
+of other taxa.
+1 All samples were collected at the end of the growing season in 2008 (subarctic and boreal, late September; temperate and Mediterranean, October; and tropical, early December). Eight Kempson cores (21-cm
+diameter) and eight MacFayden cores (5-cm diameter) were taken at each field site. The reported data are based on extraction of the whole soil core (9-cm height), including the litter layer. Soil arthropods were
+extracted, counted and identified to the highest possible taxonomic level (families) (O.B. and S.S., unpublished observations).
+
+Extended Data Table 7 | Analysis of variance testing for effects on total litter C loss (top) and N loss (bottom)
+All terms included in the final model shown are significant at P , 0.05.
+* The decomposer community was fitted as a log–linear contrast and not a factorial contrast (a factorial contrast is shown in Table 1).
+{ The location and ecosystem type and their interaction were tested against the block rather than against the residual.
+
+Extended Data Table 8 | Analysis of variance testing for the proportional change in total litter N content
+The test compares specific two-species combinations, including the particular functional types of N-fixing and rapidly decomposing plants, to their respective single-species treatment across location and
+ecosystem type.
+* A significant difference in the mixture 3 functional type interaction is taken as an indication of N transfer between litter species.
+{ Location and ecosystem type and their interaction were also included as factors in this analysis and were tested against the block rather than the residuals.
+
+Extended Data Table 9 | Experimental duration and richness of naturally occurring local litter species in terrestrial and aquatic ecosystems at
+each of five widely dispersed locations
+* Incubation dates differed across ecosystem types and locations to ensure that, at the time of sampling, 40–50% of the mass of the most rapidly decomposing litter remained, thus allowing comparisons at similar
+decomposition stages.
+{ The mean species richness counts of naturally occurring litter in five randomly sampled plots that were the size of microcosms (15-cm diameter) in each of the five experimental blocks.

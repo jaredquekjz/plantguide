@@ -1,0 +1,1736 @@
+See discussions, stats, and author profiles for this publication at: https://www.researchgate.net/publication/24040698
+Towards a Worldwide Wood Economics, Spectrum
+Article  in  Ecology Letters · March 2009
+DOI: 10.1111/j.1461-0248.2009.01285.x · Source: PubMed
+CITATIONS
+3,279
+READS
+3,773
+6 authors, including:
+David Coomes
+University of Cambridge
+441 PUBLICATIONS   41,343 CITATIONS   
+SEE PROFILE
+Steven Jansen
+Ulm University
+343 PUBLICATIONS   29,044 CITATIONS   
+SEE PROFILE
+Simon Lewis
+University College London and University of Leeds.
+341 PUBLICATIONS   62,643 CITATIONS   
+SEE PROFILE
+Nathan Swenson
+University of Notre Dame
+309 PUBLICATIONS   33,569 CITATIONS   
+SEE PROFILE
+All content following this page was uploaded by Nathan Swenson on 08 March 2018.
+The user has requested enhancement of the downloaded file.
+
+REVIEW AND
+SYNTHESIS
+Towards a worldwide wood economics spectrum
+Jerome Chave,1* David Coomes,2
+Steven Jansen,3 Simon L. Lewis,4
+Nathan G. Swenson5 and Amy E.
+Zanne6,7
+1Laboratoire Evolution et
+Diversite´ Biologique, UMR 5174,
+CNRS ⁄ Universite´ Paul Sabatier
+Baˆtiment 4R3 F-31062 Toulouse,
+France
+2Department of Plant Sciences,
+Cambridge University, Downing
+Street, Cambridge CB2 3EA, UK
+3Jodrell Laboratory, Royal
+Botanic Gardens, Kew,
+Richmond, Surrey TW9 3DS, UK
+4Earth and Biosphere Institute,
+School of Geography, University
+of Leeds, Leeds LS2 9JT, UK
+5Arnold Arboretum Asia
+Program, Center for Tropical
+Forest Science, Harvard
+University, 22 Divinity Avenue,
+Cambridge, MA 02138, USA
+6Department of Biology,
+University of Missouri-St. Louis,
+St. Louis, MO 63121, USA
+7National Evolutionary Synthesis
+Center, 2024 W. Main St.,
+Durham, NC 27705, USA
+*Correspondence: E-mail:
+chave@cict.fr
+Abstract
+Wood performs several essential functions in plants, including mechanically supporting
+aboveground tissue, storing water and other resources, and transporting sap. Woody
+tissues are likely to face physiological, structural and defensive trade-offs. How a plant
+optimizes among these competing functions can have major ecological implications,
+which have been under-appreciated by ecologists compared to the focus they have given
+to leaf function. To draw together our current understanding of wood function, we
+identify and collate data on the major wood functional traits, including the largest wood
+density database to date (8412 taxa), mechanical strength measures and anatomical
+features, as well as clade-speciﬁc features such as secondary chemistry. We then show
+how wood traits are related to one another, highlighting functional trade-offs, and to
+ecological and demographic plant features (growth form, growth rate, latitude, ecological
+setting). We suggest that, similar to the manifold that tree species leaf traits cluster
+around the leaf economics spectrum, a similar wood economics spectrum may be
+deﬁned. We then discuss the biogeography, evolution and biogeochemistry of the
+spectrum, and conclude by pointing out the major gaps in our current knowledge of
+wood functional traits.
+Keywords
+Evolution, functional ecology, plant economics, trade-offs, wood.
+Ecology Letters (2009) 12: 351–366
+1 . I N T R O D U C T I O N
+The arborescent life-form arose out of an evolutionary
+arms race for the capture of light. By positioning leaves
+above those of its neighbours, a tree is able to intercept a
+large proportion of solar radiation and puts itself at
+strong selective advantage (Falster & Westoby 2005).
+Jostling for a larger share of resources by locating leaves
+upwards on woody stems provided impetus for the
+evolution of trees that today dominate several terrestrial
+biomes. The woody tissues of trees and other plants
+perform three important functions. They provide biome-
+chanical support for the stems that suspend photosyn-
+thetic tissues above the ground (Rowe & Speck 2005),
+they conduct water and nutrients along the soil–plant–
+atmosphere continuum (Tyree & Zimmermann 2002;
+Sperry et al. 2008), and they act as a store for nutrients,
+carbohydrates, defensive secondary chemical compounds,
+lipids and water (Harmon et al. 1986; Kozlowski 1992).
+Because wood performs more than one task, there are
+conﬂicting
+demands
+on
+wood
+structure
+and
+these
+demands may shift depending upon the environment.
+Over the course of evolution, novel cell types have arisen,
+and
+variation
+in
+the
+size,
+form,
+arrangement
+and
+frequency of these cell types has given rise to a diversity
+of woods that perform these functions across a range of
+ecological settings (Feild et al. 2000; Carlquist 2001; Choat
+et al. 2008; Sperry et al. 2008).
+Ecology Letters, (2009) 12: 351–366
+doi: 10.1111/j.1461-0248.2009.01285.x
+ 2009 Blackwell Publishing Ltd/CNRS
+
+Impressive advances have been made in understanding
+plant ecological strategies by focusing on leaf traits, but less
+attention has been paid to wood traits. Wright et al. (2004)
+drew from a global database of leaf functional traits to show
+that these traits co-vary in a way that depends little on
+environmental features: short-lived leaves have low leaf
+mass per unit area, high nutrient concentrations and high
+photosynthetic rates per unit mass while the converse is true
+of long-lived leaves. They called the manifold of traits
+around which all species cluster the leaf economics
+spectrum, which depicts the major trade-offs plants are
+facing when they produce leaf tissue, be they defensive,
+physiological or structural. Other conceptual frameworks of
+plant ecological strategies have placed emphasis on both
+photosynthetic and reproductive traits. Westoby et al. (2002)
+argued that the leading dimensions of ecological variation
+among plants include leaf traits (leaf mass per area, leaf
+lifespan, leaf size), stem traits (leaf size–twig size ratios),
+seed traits (seed mass, seed output) and whole-plant
+morphological traits (total plant height). Wood traits were
+not explicitly considered in these earlier studies, but they
+have been discussed more recently (Westoby & Wright
+2006).
+An increased understanding of xylem function is highly
+relevant to biogeochemistry and ecosystem ecology, as
+plants make up over 90% of the living biomass stock, and
+the carbon stored in the highly ligniﬁed cells of both living
+and dead stems is a crucial component in the global carbon
+cycle (Denman et al. 2007). Knowledge of the factors
+limiting the decomposition of wood is critical to under-
+standing whether forests are net sinks or sources of carbon.
+Indeed, the reduction in woody plant cover over large
+geographical areas as the result of land-use changes, ﬁre,
+insect or pathogen outbreaks, releases globally signiﬁcant
+quantities of greenhouse gases into the atmosphere (Den-
+man et al. 2007; Kurz et al. 2008). One challenge has been to
+scale up from the dynamics of groups of interacting
+individual trees to regional carbon budgets in terrestrial
+ecosystems (Purves & Pacala 2008). Complicating this
+challenge are recent ﬁndings that suggest it is essential to
+have some basic information of wood properties, in
+particular wood density, to obtain reliable estimates of
+carbon stocks in the major terrestrial biomes (e.g. Baker
+et al. 2004). Therefore, the importance of variability in wood
+functional traits requires more scrutiny.
+In this review, we seek to identify the leading dimensions
+of ecological variation among plant traits related to wood
+structure and organization (Baas et al. 2004; Wright et al.
+2006a; Zanne et al. 2006; Wheeler et al. 2007) by reviewing
+research on wood anatomy, biomechanics, ecophysiology
+and biogeochemistry. We have collated a number of existing
+databases from the plant taxonomy and wood technology
+literature to explore the major axes of variation in wood
+traits. We use these data to explore whether there is a wood
+economics spectrum – a manifold of co-varying wood traits
+around which species cluster. Four steps are needed to
+deﬁne such a wood economics spectrum. First, we must
+identify a set of wood traits that have important inﬂuences
+on ecological processes. Second, we must check whether
+these traits co-vary, and thus point to potential trade-offs.
+Third, we must determine whether these co-variations are
+reﬂected in allocation decisions (real trade-offs), providing a
+ﬁrm basis for interpreting such a spectrum within an
+economics context (costs and beneﬁts). Fourth, studies of
+plant functional traits often focus on trade-offs and
+correlations of traits within a given plant organ, but plants
+maximize ﬁtness by making allocation decisions that
+optimize growth and survival across all tissues. Thus, it
+seems likely that wood traits should ultimately be integrated
+with other trait spectra and these combined allocations
+should lead to predictable differences in growth and
+survival.
+In the forthcoming sections, we explore the functional
+properties of wood (Section 2); we then examine correla-
+tions among wood traits and look for evidence of
+coordination and trade-offs between wood traits and other
+plant traits (Section 3). Armed with this knowledge we look
+at the extent to which wood traits are related to emergent
+demographic properties of plants: growth and mortality
+(Section 4). Finally, we explore the biogeographical, evolu-
+tionary (Section 5) and biogeochemical (Section 6) implica-
+tions of our ﬁndings.
+2 . L E A DI NG D I M E N SI ON S IN WO O D F U N C T I O N
+A. Wood density as an integrator of wood properties
+Wood density, deﬁned here, is the oven-dry mass divided by
+green volume. It has traditionally been regarded as a key
+functional trait by ecologists. The density of woody
+structures excluding open spaces in wood is c. 1.5 (Siau
+1984), hence wood density is bounded by 0 and 1.5 g cm)3.
+Wood density thus also describes the carbon investment or
+carbon storage per unit volume of stem (see Section 5).
+Wood density varies within individuals. As wood ages, the
+inward part of sapwood is converted into heartwood
+(duramen) through the polymerization of compounds such
+as lignan, stilbene and ﬂavonoid derivatives (Hillis 1987
+Schultz et al. 1995). Heartwood xylem lacks functional
+conduits and parenchyma. Foresters typically measure
+heartwood density, yet sapwood (xylem containing func-
+tional conduits and parenchyma) densities are often signif-
+icantly lower than heartwood densities (Woodcock & Shier
+2002; Patin˜o et al. 2008). This pattern has been attributed to
+the structural support required at different ontogenetic
+stages or changes in chemical deposition in heartwood.
+352 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+Furthermore, wood density varies with height within the
+plant (Swenson & Enquist 2008). The wood density of roots
+has not been measured as extensively as stems; however,
+roots tend to have lighter wood (Pratt et al. 2007).
+Given the perceived importance of wood density with
+mechanical support, water transport and storage capacity of
+woody tissues, we have assembled the largest compilation of
+wood density data to date, encompassing 8412 taxa, 1683
+genera, 191 families (for more details on database construc-
+tion, see Appendix 1 in the Supplementary Online Infor-
+mation). The dataset is available in the Dryad data repository
+(http://datadryad.org/). In the forthcoming sections, we
+will also discuss geographic, phylogenetic and ecological
+patterns related to wood density.
+B. Water transport in the xylem
+One of the major roles of xylem in land plants is to
+transport sap to the leaves and photosynthate to the plant
+organs (Kozlowski 1992). This places important constraints
+on the architecture of stems (Tyree & Zimmermann 2002;
+Sperry et al. 2008). Vessel elements represent the most
+important water conductive cell types in angiosperms
+(Glossary, see Supplementary Online Information). Vessels
+vary in length from a few millimetres up to several metres,
+and they vary in diameter from < 20 to > 500 lm, while
+cross-sectional area percentages of vessels range from 4% to
+60%. The degree to which vessels are connected to each
+other can inﬂuence both rates of water transport and ability
+to deal with xylem dysfunction, or embolism (Fig. 1, Zanne
+et al. 2006; Choat et al. 2008). In general, vessel length is
+positively correlated with vessel diameter (Ewers et al. 1997;
+Hacke et al. 2006). In conifers, which lack vessels, c. 95% of
+the constituent cells are long, fibrous tracheids, a more
+primitive cell type than vessel elements (Carlquist 2001).
+Tracheids vary in length from < 1 to > 5 mm, and from
+< 10 to > 50 lm in diameter. Water transport in conifers
+mainly occurs via wide earlywood tracheids, and mechanical
+support mainly occurs via narrow latewood tracheids. The
+relative distribution of angiosperms and conifers is likely
+related to differences in their wood properties (Sperry et al.
+2008). For instance, it has been suggested that in lowland
+tropical environments, angiosperms have out-competed
+conifers because of their innovations in hydraulic transport
+(Bond 1989).
+At the conduit level, the efﬁciency of water transport can
+be mechanistically described by the Hagen-Poiseuille equa-
+tion, which relates the theoretical hydraulic conductivity K
+of a conduit assuming a laminar flow (Appendix 2). The
+longer and wider the conduit is the lower is its resistance to
+water ﬂow. At the same time, increased conduit diameter
+greatly decreases safety, especially with respect to freezing-
+induced cavitation. This represents what some believe to be
+an important trade-off in plant function (Baas et al. 2004).
+At the whole-plant level, simple theoretical models have
+been constructed to simulate how ideal plants should work.
+Such models include the classic pipe model (Tyree &
+Zimmermann 2002), the West–Brown–Enquist theory for
+water conduction in plants (West et al. 1999), and Murrays
+law (McCulloh et al. 2004).
+The vulnerability of xylem conduits to cavitation is
+empirically assessed through a number of methods, which
+often consist of estimating the xylem tension (negative
+pressure) at which 50% of the conductivity is lost (Y50, see
+Tyree & Zimmermann 2002). Y50 varies greatly among
+species, from )0.18 MPa to )14 MPa, with larger absolute
+values in conifers than in angiosperms (Maherali et al. 2004).
+Based on empirical evidence, there is general agreement that
+the primary cause of water stress-induced embolism is
+penetration of air through pit membranes, a process known
+as air-seeding. Increasing porosity of pit membranes makes
+water transport more efﬁcient, but it also makes transport-
+ing elements more vulnerable to air-seeding. Recent studies
+have suggested that it is the total area of intervessel pit
+membranes in a vessel rather than the individual pit
+Figure 1 Xylem structure and water transport. This ﬁgure shows a
+reconstruction of the vessel network in Populus based on serial
+sectioning. A particular vessel may jump from one vessel group to
+a solitary position or to another vessel group. Modern technology
+enables a rapid analysis of the vessel network by 3D X-ray
+computed microtomographic reconstruction. Modified from Braun
+(1970) with permission from Borntraeger-Cramer.
+Review and Synthesis
+Towards a worldwide wood economics spectrum 353
+ 2009 Blackwell Publishing Ltd/CNRS
+
+structure that is most important in determining a vessels
+cavitation resistance and transport efﬁciency (Hacke et al.
+2006).
+How do conduit properties co-vary? The frequency of
+conduits mm)2 was correlated negatively with the mean
+diameter of those conduits across a wide range of conifer
+and of angiosperm species (ﬁg. 1a in Sperry et al. 2008). This
+is in agreement with the idea that fewer wide conduits than
+narrow ones can pack into a unit area of stem. Second,
+sapwood area hydraulic conductivity KS (conductivity per
+unit of cross-sectional sapwood area) also scales with
+conduit diameter in conifers and angiosperms, and the
+scaling is consistent with the Hagen-Poiseuille equation
+(Fig. 2a, see also Sperry et al. 2006). This equation places a
+ceiling on the value of KS (solid line labelled lumen
+conductivity in Fig. 2a), as in reality the laminar ﬂow of
+water in conduits has been measured at anywhere from 20%
+to 100% of theoretical conductivity. Third, typically water
+molecules must pass between many thousands of conduits
+in order to move from the roots to the canopy. Hence, in
+addition to the resistance imposed by the conduits, water
+will encounter resistance imposed by conduit end walls. The
+resistance accounted for by end walls is 50% of total
+xylem hydraulic resistance, suggesting that pit structure in
+end walls plays an important role in the overall hydraulic
+efﬁciency of plants (Choat et al. 2008). Finally, only a weak
+relationship has been found between sapwood area hydrau-
+lic conductivity KS and Y50 (Fig. 2b). In a meta-analysis of
+the literature, Maherali et al. (2004) found that the signiﬁcant
+relationship between KS and Y50 was primarily driven by the
+structural difference between conifers and angiosperms. If
+the two clades are considered separately (or a phylogenet-
+ically independent contrast analysis is performed), no
+correlation
+was
+observed.
+These
+results
+suggest
+that
+vulnerability to cavitation and hydraulic efﬁciency are largely
+independent axes of the wood economy spectrum. Such
+ﬁndings are somewhat surprising as air-seeding is thought to
+be related to vessel volume and if diameter and length scale
+then one would expect diameter and vulnerability to be
+related (Sperry et al. 2008).
+It is often believed that wood density and water transport
+efﬁciency should be correlated because tissue density is
+related to the amount of space dedicated to conduits. At
+least in angiosperms, evidence for the relationship between
+vessel anatomy and wood density is mixed (Preston et al.
+2006; Pratt et al. 2007). The proportions of non-conducting
+elements, such as ﬁbres, vary greatly among species (Gartner
+et al. 2004). For instance, some angiosperm species with
+dense wood, such as Leptospermum scoparium in New Zealand,
+contain a scattering of large conduits within a matrix of
+fibres (Meylan & Butterﬁeld 1978) so may not have
+especially low conductivity, provided that these conduits
+remain free from embolism. Additionally, ﬁbres are the
+main tissue providing mechanical strength in angiosperms.
+Fibre wall thickness can vary across species and is typically a
+strong correlate of wood density (Pratt et al. 2007). We
+computed the mean wood density for the species with very
+thin-walled ﬁbres and those with very thick-walled ﬁbres,
+and found that species with very thick-walled ﬁbres had a
+signiﬁcantly higher mean wood density than species with
+very thin-walled ﬁbres (Appendix 3). Furthermore, wood
+density is typically negatively related to capacitance, the
+ability of wood to store and release water under tension
+(Jacobsen et al. 2007; Pratt et al. 2007; Sperry et al. 2008).
+(a)
+(b)
+Figure 2 Water transport and wood anatomy. (a) Relation between
+sapwood area conductivity (mm2 kPa)1 s)1) and conduit diameter
+(lm), from Sperry et al. (2006). Closed circles are gymnosperms
+and open circles are angiosperms. The solid line across the
+plot represents the theoretical conduit conductivity. (b) Relation
+between xylem area conductivity (kg m)1 kPa)1 s)1) and vulner-
+ability to cavitation (as xylem tension at which 50% of conductivity
+is lost, MPa). The relation between these variables was negative and
+signiﬁcant
+(main
+panel,
+n = 168).
+Phylogenetic
+independent
+contrasts (PIC) of these two traits are plotted in the inset. Unlike
+the traits, the PICs were not correlated, showing that the two traits
+showed no concerted evolution. Modified from Maherali et al.
+(2004).
+354 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+Wood density then is related to transport safety if not
+transport efﬁciency.
+C. Mechanical properties
+Plant shape is limited by structural constraints of mechanical
+stability against bending and buckling (Niklas 1995). The
+ability of plants to resist bending or breakage should be
+important across different ecological settings, depending on
+the likelihood of environmental disturbances. The elasticity
+to bending is measured by Youngs modulus (modulus of
+elasticity), deﬁned as the ratio of stress over strain, in MPa.
+If too large a stress is applied to a material, it loses its
+elasticity, and eventually breaks. The stress needed to reach
+this point is called modulus of rupture (also in MPa). Other
+quantities have been routinely reported in the wood
+mechanics literature, including the dynamic resilience to
+breakage and the resistance to splitting (Appendix 4). These
+measures may also be of relevance to ecological studies.
+Additionally, denser wood is known to convey greater
+mechanical stability (Niklas 1995; Jacobsen et al. 2007; Pratt
+et al. 2007; Poorter 2008). Figure 3 reports the correlation of
+four wood mechanical traits with wood density among
+angiosperm species. A signiﬁcantly positive correlation was
+found in all four cases.
+How do these standard wood measurements relate to the
+conditions
+encountered
+by
+living
+trees
+in
+the
+ﬁeld?
+Surprisingly few publications address this topic (Niklas
+1993; Jacobsen et al. 2007; Pratt et al. 2007; Poorter 2008).
+van Gelder et al. (2006), however, reported ﬁgures for
+Youngs modulus ranging between 2000 and 8000 MPa, and
+modulus of rupture between 5 and 30 MPa, both in the low
+range (Fig. 3) compared with laboratory measurements.
+This discrepancy may be understood by the fact that ﬁeld
+samples were measured in wet condition, and Youngs
+modulus is smaller for wet than for dry samples (Mencuccini
+et al. 1997).
+D. Defence properties
+Plants must defend themselves against their predators and
+pathogens but also against natural hazards, such as ﬁre,
+snow or wind. One mechanism of defence after the
+development of an infection or wound is compartmental-
+ization of decay via a barrier zone made of non-conducting
+tissue (Shigo 1984; Pearce 1996). Other defence mecha-
+nisms, most efﬁcient against animals and pathogens, consist
+of synthesizing chemicals (Hawley et al. 1924). Over 25 000
+secondary compounds are known in plants (Croteau et al.
+2000), and these compounds are believed to be critical for
+the evolution of plant defence (Agrawal & Fishbein 2006).
+For instance, the chemical deposition that occurs during
+heartwood formation helps prevent attack from predators
+and pathogens (Hillis 1987; Schultz et al. 1995). The
+presence of secondary compounds in hardwood has long
+been thought to be related to their durability (Hawley et al.
+1924). However, to our knowledge, a database cataloguing
+the presence and amount of secondary compounds in wood,
+especially relative to wood durability is missing; as a result
+no large cross-species check of this hypothesis is available.
+A simple test of this hypothesis is whether coloured
+(brown or red) hardwoods, richer in secondary compounds,
+(a)
+(b)
+(c)
+(d)
+Figure 3 Wood mechanical traits plotted
+against wood density for 1341 samples from
+63 families, 298 genera and 520 species. (a)
+Youngs modulus (GPa, or 103 MPa). (b)
+Modulus of rupture (MPa). (c) Resistance to
+splitting of a normalized piece of wood
+along the ﬁbres (kg cm)1). (d) Resilience to
+dynamic breakage, k, where W is the work
+needed to completely break a piece of wood.
+See Appendix 4 for more details. All linear
+regressions are signiﬁcant (P < 0.01; solid
+line; r 2 coefﬁcient of correlation is reported
+in each panel).
+Review and Synthesis
+Towards a worldwide wood economics spectrum 355
+ 2009 Blackwell Publishing Ltd/CNRS
+
+are more durable than light-coloured hardwoods. Scheffer &
+Morrell (1998) reported the durability of wood of many
+species based on graveyard experiments, where pieces of
+hardwood were placed in the ground and deterioration
+status recorded. Heartwood colour is available for some of
+these species from the InsideWood database. We combined
+both datasets to show that dark-coloured hardwoods were
+signiﬁcantly more resistant to decay than light-coloured
+ones in agreement with the hypothesis (Appendix 5).
+E. The wood economics spectrum
+Baas et al. (2004) suggested the existence of a trade-off
+triangle comprised of (i) a negative trade-off between the
+resistance to embolism (Y50) and conductive efﬁciency, (ii) a
+negative
+trade-off
+between
+conductive
+efﬁciency
+and
+mechanical strength and (iii) a positive relation between
+resistance to embolism and mechanical damage. While the
+relationships suggested by Baas et al. (2004) are intuitive, we
+suggest that they do not encompass the full range of
+variation in wood properties (e.g. water and carbon storage
+and defence properties), so may be missing key components
+needed for determining the economy of stem structure and
+function. Furthermore, relationships between hydraulic
+conductivity and both resistance to embolism and mechan-
+ical strength have fairly limited empirical support. Figure 4
+summarizes the relations between major ecological func-
+tions and the above-mentioned wood traits.
+Based upon the evidence presented above, we suggest
+that a more comprehensive wood economics spectrum may
+be deﬁned, as the three following points hold. (i) A number
+of key ecologically-relevant woody stem variables are
+available (Table 1). (ii) Some of these traits co-vary. With
+respect to water transport, conduit dimensions correlate
+with hydraulic conductivity KS, and wood density correlates
+with vulnerability to embolism. Several variables describe
+mechanical properties of wood and these variables relate
+strongly to wood density. Finally, heartwood colour, a likely
+indicator of secondary compound deposition, is related to
+wood durability. (iii) The observed covariation in traits
+should reﬂect trade-offs in carbon and nutrient allocation
+patterns across species.
+As discussed above, the existence of a wood economics
+spectrum depends on a fourth condition, namely that plants
+Figure 4 The role of wood in major plant ecological functions
+(competitive ability, resistance to stress and disturbance). Wood
+properties are reported around the triangle (see also main text):
+water transport and storage, mechanical properties and defence
+properties (resistance to decay and embolism). The outer circle
+relates the main wood traits associated with these wood properties
+(see also Table 1).
+Table 1 The main wood functional traits as measured in the
+ecological literature, with units and typical ranges
+Trait
+Symbol
+Unit
+Range
+Wood density
+q
+g cm)3
+0.1–1.5
+Anatomical
+Number of conduits per
+cross-sectional area of
+the xylem
+N
+No. mm)2
+1–1000
+Mean conduit diameter
+d
+lm
+10–500
+Conduit element length
+l
+lm
+100–5000
+Total conduit length
+L
+cm
+0.1–1800
+Water ﬂow
+Hydraulic conductivity
+Kh
+mm2
+kPa)1 s)1
+0.3–200
+Resistance to cavitation
+Y50
+MPa
+)0.18 to )14
+Mechanical resistance
+Modulus of elasticity
+(MOE)
+Y
+MPa
+500–30 000
+Modulus of rupture
+(MOR)
+R
+MPa
+10–350
+Resistance to splitting
+S
+N m
+1–45
+Resilience to dynamic
+breakage
+k
+NA
+0.01–1.8
+Chemical
+Proportion of cellulose
+%
+38–53
+Proportion of lignin
+%
+16–32
+Concentration in N
+p.p.m.
+700–1200
+Concentration in P
+p.p.m.
+50–100
+Concentration in K
+p.p.m.
+500–1000
+Concentration in Ca
+p.p.m.
+700–1200
+Concentration in
+polyphenols
+(incl. Tannins)
+&
+NA
+Presence of latex ⁄
+gums ⁄ oils ⁄ mucilages
+0 ⁄ 1
+NA
+356 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+maximize ﬁtness by making allocation decisions that
+optimize growth and survival across all tissues. The next
+section presents evidence of coordination and trade-offs
+between wood traits and other plant traits. We also take the
+integrator trait of wood density and relate it to the
+demographic variables of growth and survival to determine
+how this stem trait may be affecting long-term reproductive
+success in woody plant species.
+3. WOOD TRAITS IN RELATION TO OTHER
+F U N C T I O NA L T R A I T S
+A. Wood and morphological traits
+Potential height has been related to a number of wood traits.
+Taller plants have bigger conduits in their trunks, but fewer
+conduits in total (Preston et al. 2006), because taller plants
+have longer path lengths and therefore need wider vessels to
+maintain hydraulic conductivity (Coomes et al. 2008). The
+presence of wider conduits in tall plants may also be related
+to biomechanical constraints, which are likely to be more
+limiting in taller organisms. For instance, wider conduits are
+more efﬁcient per unit of area leaving more space for
+supporting ﬁbres. Reported relationships between height
+and wood density or height and strength are mixed (Falster
+& Westoby 2005; van Gelder et al. 2006; Preston et al. 2006;
+Poorter 2008). Both Niklas (1993) and Poorter (2008) show
+the importance of density of different anatomical structures
+and how the distribution of those structures change with
+height.
+Growth form is likely related to wood traits in similar
+ways to plant height as taller trees would be expected to
+have larger vessels than shorter shrubs. Wood anatomical
+features were strongly associated with growth form in a
+study of chaparral species (Carlquist & Hoekman 1985).
+Lianas, as parasites of free standing plants, allocate fewer
+resources to mechanical support (Ewers & Fisher 1991;
+McCulloh et al. 2004). A greater proportion of the cross-
+sectional area of liana wood may be dedicated to vessels,
+with the vessels often found to be both wide and numerous
+(Baas et al. 2004). As a result, water transport efﬁciency of
+lianas is similar to that of free standing plants (Cernuzak
+et al. 2008).
+B. Wood and leaf traits
+Leaf size decreases with increasing wood density (Wright
+et al. 2007). This relationship could be driven by hydraulics
+with larger leaves demanding greater sap (Coomes et al.
+2008). Thus as conduit fraction increases wood density may
+decrease (although this relationship has been mixed at least
+for angiosperms; Preston et al. 2006; Pratt et al. 2007). The
+pattern between leaf size and wood density may instead be
+part of a whole-plant strategy with species with larger leaves
+having faster volumetric growth and lower wood density.
+Alternatively, this relationship between wood density and
+leaf size may be due to both traits being related to the
+amount of leaf area deployed per unit of stem (Wright et al.
+2007). Denser wood tends to be found in species with
+thinner branches (Sterck et al. 2006) and lower leaf area per
+stem mass or per stem area (Ackerly 2004; Wright et al.
+2006b; but see Bucci et al. 2004). Species with bigger vessels
+also typically have more leaf area per sapwood area (Preston
+et al. 2006).
+In the leaf economics spectrum, an axis of variation exists
+in leaf construction from cheap tissue investment and fast
+returns on that investment, to expensive tissue investment
+and slower returns (Wright et al. 2004). One might expect
+that leaf economics traits related to slow returns on
+investment would be tied to dense wood (Wright et al.
+2007); however, evidence for such a correlation has been
+mixed. Santiago et al. (2004) found wood density and
+photosynthetic capacity (Amass) to be negatively related.
+While two studies found that speciﬁc leaf area (leaf area⁄leaf
+mass) and wood density were negatively related (Bucci et al.
+2004; Ishida et al. 2008), another found no correlation
+(Wright et al. 2007). Ishida et al. (2008) did ﬁnd wood
+density to be positively related to leaf lifespan but not to
+photosynthetic rates. These mixed ﬁndings suggest that
+relationships between stem and leaf function are complex
+and merit further investigation.
+Minimum leaf water potential (the tension measured in
+leaves during the driest season of the year) has been put
+forward as a proxy for maximum rooting depth (Ackerly
+2004), when comparing species within a given ecosystem. It
+is assumed that species with deeper roots will have better
+access to soil water and thus less minimum leaf water
+potentials
+(McElrone
+et al.
+2004).
+Wood
+density
+has
+repeatedly been related negatively to minimum leaf water
+potential (Ackerly 2004; Bucci et al. 2004; Santiago et al.
+2004), and presumably plant rooting depth.
+C. Wood and demography
+Ultimately, if wood economics trade-offs exist, then wood
+traits should be related to long-term viability of the plant
+species, which may be measured by its growth and survival
+rates.
+Growth
+There are two reasons to expect that stem growth rates
+should decrease as wood density increases. First, a smaller
+volume of wood is, by deﬁnition, produced per unit biomass
+invested in dense wood (Enquist et al. 1999; Roderick 2000).
+Second, dense wood may have a lower conduit fraction,
+which could result in a lower rate of transpiration,
+Review and Synthesis
+Towards a worldwide wood economics spectrum 357
+ 2009 Blackwell Publishing Ltd/CNRS
+
+photosynthesis and biomass growth (but see Section 2B
+above). Several studies have reported signiﬁcant negative
+correlations between wood density and the mean diameter
+growth rate of species estimated from permanently marked
+individuals (Muller-Landau 2004; Nascimento et al. 2005;
+Fig. 5a). However, reported correlations are weak and
+disappear altogether when a few gap-demanding species
+were removed from one analysis (Nascimento et al. 2005).
+This result is not surprising given the many factors
+inﬂuencing growth and the different ways in which growth
+is measured. In comparisons among tree plots, slow growth
+in diameter was found to be associated with high wood
+density, e.g. in forests in Amazonia (Chao et al. 2008) and
+Malaysia (King et al. 2006). It should be noted that in some
+instances, having dense wood may lead to greater annual
+growth rates. Fibres and thick-walled vessels found in high-
+density wood protect vessels from implosion when water
+shortage creates strongly negative xylem potentials (Hacke
+et al. 2001a,b). If correct, such an adaptation may allow
+heavy-wooded plant species from seasonally dry climates to
+continue growing when lighter-wooded species are forced
+into shutting down their water transport systems.
+The relationship between growth and wood density has
+been of great interest to plantation foresters (Fujimoto et al.
+2006; Boufﬁer et al. 2008; Weber & Sotelo Montes 2008).
+Breeding trials involve planting genotypes of timber species
+under similar conditions and comparing their diameter
+growth and wood density. These trials reveal that intraspe-
+ciﬁc correlations between growth and density are often
+weak, or nonexistent, leading to the conclusion that fast-
+growing genotypes can be selected without compromising
+on wood quality (Weber & Sotelo Montes 2008). For
+example, the correlation is inconsistent when all the conifer
+literature was reviewed (Boufﬁer et al. 2008). A negative
+correlation between wood density and radial growth rate
+was found for young hybrid larch, but this relationship
+weakened considerably with age (Fujimoto et al. 2006).
+Factors other than wood density (e.g. plant age; Fujimoto
+et al. 2006) as well as differences in the way that growth is
+measured inﬂuence growth in these forestry and ecological
+studies, masking covariance between these two variables.
+Survival
+High-density wood is associated with low mortality rates in
+diverse tropical forests (Fig. 5b). Negative correlations
+between wood density and mortality rate of adult trees
+have been reported for species in several tropical forests in
+the Neotropics and Malaysia (e.g. Nascimento et al. 2005;
+King et al. 2006; Alvarez-Clare & Kitajima 2007; Osunkoya
+et al. 2007; Chao et al. 2008; Fig. 5b; but see Poorter et al.
+2008). As shown above, wood properties are closely related
+to mechanical stability, and this function proves critical for
+survival of trees exposed to disturbance. Curran et al. (2008)
+found that species with low density wood in Queensland
+were less able to withstand the passing of a severe tropical
+cyclone. The picture is less clear in temperate regions.
+Canham et al. (2001) reported that early-successional species
+(purportedly with low density wood) in north-eastern USA
+were more susceptible to damage than late-successional
+species, but only when they were small; larger trees were
+observed to lose many branches in storms but nevertheless
+survive.
+Several patterns emerge from the evidence presented in
+Section 3. First, free-standing plants with larger vessels are
+taller and deploy more leaf area per unit sapwood area. Thus
+plants that are larger both aboveground (and potentially
+belowground) may have a vascular network with bigger
+conduits that are able to supply greater total leaf area.
+Second, wood density correlates with important axes of
+stem function, and appears to be coordinated with traits
+across the whole plant, including leaf size, minimum leaf
+water potential and perhaps rooting depth. Third, wood
+(a)
+(b)
+Figure 5 Relationship between wood density and relative growth
+rate (log-transformed, a), and mortality rate (log-transformed, b),
+for two tropical forest sites (Barro Colorado Island, Panama, white
+circles, and Pasoh, Malaysia, black circles). All correlations were
+highly signiﬁcant (P < 0.001), and the correlation coefficients
+ranged between r2 = 0.13 and 0.19. Demographic data were
+collected from saplings 1–5 cm in diameter under the auspices of
+the Center for Tropical Forest Science (see Chave et al. 2008, and
+Appendix 6).
+358 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+density is related to measures of plant performance,
+especially survival and in some cases growth. A fast–slow
+continuum of plant performance matches wood traits, with
+slow growing and lower mortality species having denser
+wood, smaller leaves, smaller twigs and lower minimum leaf
+water potentials. It seems likely that these slow growing
+species should also have higher mechanical strength and⁄or
+better chemical defence. Overall, this evidence– albeit
+indirect – supports important differences in allocation to
+different stem and whole-plant functions and the existence
+of a wood economics spectrum.
+4 . B I O G EO G R A P H Y A ND E V O L U T I O N O F W OO D
+TR AI TS
+A. Geographical variation of major wood traits
+The distribution and diversity of organisms has seldom been
+explored on large spatial scales upon the basis of their
+function. A step towards a global scale functional ecology
+has been to search for consistencies in leaf trait correlations
+across environments (Wright et al. 2004). This step has also
+been taken for a few of the major wood traits. For instance,
+along a latitudinal and altitudinal gradient from tropical,
+subtropical, temperate to artic or alpine climates, a number
+of important wood anatomical traits vary. Vessel element
+length, vessel diameter and frequency of vestured pits
+(outgrowths from the pit chamber that surround the pit
+membrane) decrease, while the incidence of scalariform
+perforations and (ﬁbre-) tracheids increase (Carlquist 2001;
+Jansen et al. 2004; Wheeler et al. 2007). Another illustration
+of wood anatomy shifting with climates is the increasing
+frequency of growth rings and ring porosity with seasonality
+(Wheeler et al. 2007).
+Wood density has also been shown to vary with latitude:
+tropical species have similar mean wood densities as
+temperate assemblages, but with broader ranges and
+variances (Wiemann & Williamson 2002). This latitudinal
+pattern also appears to be mirrored along elevation gradients
+within tropical latitudes with a decrease in the range of
+values with elevation (Williamson 1984). Our support of
+these ﬁndings is mixed. Table 2 reports the regional cross-
+species means of wood density, showing that these means
+vary from c. 0.5 g cm)3 in temperate regions to over
+0.7 g cm)3 in subtropical environments.
+Variation in wood density has also been examined across
+climatic and soil nutrient gradients (Wiemann & Williamson
+2002; Baker et al. 2004; Swenson & Enquist 2007). Analysis
+of genus-level traits from 277 069 stems across Amazon
+Basin forests showed a consistent relationship of higher
+community-average wood density from the North-East of
+the continent to the South-West, approximately following a
+gradient in soil fertility and not climate (ter Steege et al.
+2006). Community-average wood density varied from
+0.73 g cm)3 in Guyana to just 0.56 g cm)3 in Peruvian
+and Bolivian forests (Malhi et al. 2006; ter Steege et al. 2006).
+The regional-scale pattern of species composition and
+associated wood density therefore deﬁne the broad gradient
+of carbon content of live vegetation across Amazonia (Malhi
+et al. 2006). A negative relationship between wood density
+and soil fertility appears widespread (Baker et al. 2004; ter
+Steege et al. 2006; Patin˜o et al. 2008), as does a positive but
+weaker relationship between wood density and temperature.
+There appears to be little relationship between wood density
+Table 2 Mean wood density across regions.
+Wood densities were collected from various
+sources in the literature (16 468 entries).
+This dataset has 8412 taxa worldwide (spe-
+cies can occur in more than one of the 16
+regions deﬁned below). It is available in the
+Dryad data repository (http://datadryad.
+org/)
+Region
+Sample
+size
+Wood
+density
+Standard
+deviation
+Min
+Max
+Africa (extratropical)
+351
+0.648
+0.159
+0.234
+1.076
+Africa (tropical)
+2482
+0.598
+0.160
+0.150
+1.200
+Australia
+678
+0.725
+0.173
+0.300
+1.137
+Australia ⁄ PNG (tropical)
+1560
+0.636
+0.181
+0.164
+1.227
+Central America (tropical)
+420
+0.560
+0.208
+0.120
+1.350
+China
+1010
+0.541
+0.144
+0.200
+0.996
+Europe
+77
+0.525
+0.119
+0.284
+0.840
+India
+289
+0.652
+0.186
+0.232
+1.280
+Madagascar
+244
+0.662
+0.172
+0.320
+1.164
+Mexico
+228
+0.676
+0.231
+0.160
+1.390
+North America
+216
+0.540
+0.153
+0.289
+1.250
+Oceania
+110
+0.604
+0.154
+0.270
+1.026
+South America (extratropical)
+744
+0.715
+0.210
+0.120
+1.331
+South America (tropical)
+4191
+0.632
+0.178
+0.100
+1.210
+South-East Asia
+219
+0.559
+0.154
+0.100
+0.930
+South-East Asia (tropical)
+3648
+0.574
+0.151
+0.080
+1.095
+Total
+16 468
+0.613
+0.176
+0.080
+1.390
+Review and Synthesis
+Towards a worldwide wood economics spectrum 359
+ 2009 Blackwell Publishing Ltd/CNRS
+
+and rainfall (Wiemann & Williamson 2002; Swenson &
+Enquist 2007).
+One recognized weakness is that these observations come
+from correlations using one-dimensional bi-variate plots in
+biogeographical analyses of species function. Mapping the
+distribution of species function in two or more dimensions
+should be more insightful because climate variables are
+unlikely to be independently inﬂuencing trait values. Here
+we present an example of this type of approach where we
+combine geo-referenced herbarium specimen data with the
+global dataset containing species means for wood density to
+estimate mean wood density in one-degree grid cells in
+North and South America (Fig. 6a). We then use this map
+and underlying climatic data to produce a multiple regres-
+sion model to predict a smoothed distribution of mean
+wood densities across these two continents (Fig. 6b). A key
+ﬁnding from this work is that the spatial distribution of this
+trait cannot be summarized on the basis of a single predictor
+variable (e.g. latitude). Previous work has predicted the
+spatial distribution of mean wood densities on a continental
+scale using a distance decay or inverse weighting method
+(Swenson & Enquist 2007). The predictive model summa-
+rized above explains nearly half of the variation in wood
+density (r2 = 0.49) suggesting that such an approach could
+be utilized to generate global scale maps of species function
+for investigations of biogeochemical cycling and global
+change modelling
+(see
+Section 5).
+Multiple
+regression
+methods such as the one applied here for predictive
+modelling may be preferred over a distance decay method
+because there is no a priori justification for the decay in trait
+values with geographical distance.
+B. Phylogenetic patterns
+Phylogenetic trends in wood anatomy and the systematic
+signiﬁcance of various features have been illustrated for a
+wide range of taxa (Baas et al. 2000, 2004; Carlquist 2001).
+The transformation of vessel element perforation plates
+from scalariform to simple ones in combination with a
+decrease in vessel element length is commonly regarded as
+one of the major trends of secondary xylem evolution
+established by the Baileyan school (Bailey 1944). This
+pattern was considered for a long time to be one of the
+strongest and most reliable phylogenetic trends in plant
+anatomy. More recent studies on the distribution of
+vestured pits have illustrated that this character represents
+another wood anatomical feature with a strong phylogenetic
+signal in angiosperms (Jansen et al. 2004). Although in many
+cases wood anatomical diversity patterns reﬂect their
+phylogenetic signiﬁcance, there is a considerable amount
+of homoplasy, which can partly be interpreted as a result of
+ecological adaptations for water transport and mechanical
+support (Sperry 2003). Ecological trends in turn can be
+(a)
+(b)
+Figure 6 The geographical distribution of wood density in North
+and South America. (a) Observed mean wood density value in
+1-degree grid cells. Grid cell values were calculated by joining the
+global wood density database to geo-referenced herbarium specimen
+records from publicly available databases. Each grid cell mean is
+calculated as the mean wood density value of all unique species
+occurrences in that cell (i.e. the mean is not weighted by the number
+of occurrences for each species in that cell). (b) Predicted mean wood
+density value in 1-degree grid cells on the basis of climatic variables.
+This predicted map was made using a multiple regression model
+(r2 = 0.49) where data from panel (a) was the dependent variable,
+and mean annual temperature, annual precipitation, precipitation
+seasonality and temperature seasonality were the independent
+variables (see Appendix 7 for more information on these methods).
+360 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+understood as functional adaptations when considering
+trade-offs between structure and function in different
+growth forms and environments, especially with respect
+to conductive efﬁciency, vulnerability to embolism and
+mechanical strength (Baas et al. 2004).
+Based on the current consensus of a family-level
+phylogeny in angiosperms, a strong phylogenetic signal
+has also been documented in wood density (Chave et al.
+2006; Swenson & Enquist 2007), meaning that more closely
+related species share more similar wood density values than
+less closely related species. Additionally, wood density has
+shown evolutionary coordination with other plant traits,
+including seed size (Wright et al. 2007) and resistance to
+drought-induced embolisms and capacitance (Jacobsen et al.
+2007; Pratt et al. 2007).
+5 . W O O D A N D BI O G E O C H EM I C A L P R O C E S SE S
+A. The carbon cycle
+Wood holds c. 850 Pg dry mass globally (1 Pg = 1 ·
+1015 g), equating to a stock of 425 Pg of carbon, a
+globally signiﬁcant amount, compared to the current
+atmospheric stock of 730 Pg C (Denman et al. 2007).
+This carbon stock in wood assumes that the carbon
+concentration in wood equals 50%. Some uncertainties
+remain about this ﬁgure, however. The carbon content of
+wood varies with species and possibly location, because
+species with high lignin content tend also to have higher
+carbon content (Elias & Potvin 2003; Thomas & Malczew-
+ski 2007). Thus, there may also be differences in carbon
+content depending upon the successional status of the
+species (Thomas & Malczewski 2007). Volatile organic
+compounds in wood may add up to 1.6–3.5% of the current
+estimates of C stocks in wood (Thomas & Malczewski
+2007). While these modiﬁers of the 50% rule are small, a
+change of 0.2% would be equivalent to an error of 1 Pg C
+on the total carbon ﬂux estimate.
+The carbon content of individual trees, and hence
+patches of forest, is critically dependent on knowledge of
+the tissue density of a given tree. Studies on harvested
+trees
+show
+that
+wood
+density
+is
+the
+second
+most
+important parameter necessary to accurately predict the
+mass of a tree, after its diameter, and more important than
+the
+height
+(Chave
+et al.
+2005).
+Recent
+analyses
+of
+Amazonian forests highlight the importance of regional
+variation in community-averaged wood density in deter-
+mining carbon stocks (see above). Baker et al. (2004)
+estimated that regional variation in community-averaged
+wood density accounted for 29.7% or 45.4% of the total
+variation in aboveground biomass (and therefore carbon
+content) for plots across Amazonia (depending upon the
+tree allometry assumed). The 23% decline in community-
+average wood density from East to West Amazonia (ter
+Steege et al. 2006) coincides with a threefold increase in
+wood biomass production (Malhi et al. 2004) and forest
+dynamism (Lewis et al. 2004). Such rapid dynamism and
+low residence time of stems in low community-average
+wood density forest appear to preclude the accumulation
+of high carbon stocks.
+B. Other biogeochemical cycles
+Even though angiosperm wood comprises an average of
+only 1189 p.p.m. of nitrogen (N) in temperate regions
+(Harmon et al. 1986), and 700–7200 in the tropics (e.g.
+Kauffman et al. 1995; Liu et al. 2003), this scales up to
+> 1 Pg across terrestrial ecosystems. The wood of conifers
+is less enriched in N (mean: 704 p.p.m.), while bark has up
+to a ﬁvefold greater concentration in N than wood (Harmon
+et al. 1986). The Ca concentration is comparable to that of
+N, followed by Mg, K and Mn concentrations, and S and P
+concentrations (Harmon et al. 1986). For P, which may be
+an important limiting nutrient for many tropical forests,
+concentrations in wood are lower, at 150 and 250 p.p.m. for
+four Amazonian and one Asian forest respectively (Kauff-
+man et al. 1995; Liu et al. 2003). However, surprisingly little
+data are available on P content of wood, compared to the
+extensive work on foliar concentrations (Wright et al. 2004).
+The low concentration of P and N in wood gives
+exceptionally low Redﬁeld-type molar C : N : P ratios,
+compared to classic marine Redﬁeld ratios, with wood
+having lower Redﬁeld ratios than foliage, ﬁne roots, and
+even leaf litter (McGroddy et al. 2004). The low C : N : P
+ratio of wood suggests that wood may be an important
+location of the terrestrial carbon sink of 2.6 Pg C year)1 in
+the 1990s (Denman et al. 2007). As plants increase their
+wood mass, they exert low additional nutrient demand
+compared to that expected if the same amount of carbon
+were incorporated into other biological materials. A careful
+assessment of forest inventory results, taking into account
+wood density suggest this to be the case, with signiﬁcant
+sinks in forest trees (Baker et al. 2004; Luyssaert et al. 2008;
+Lewis et al. 2009).
+C. Tissue turnover
+The oxidation of wood is a major ﬂux of carbon from
+terrestrial to atmospheric pools: tropical forest conversion
+to other land uses is the second largest anthropogenic
+source of carbon to the atmosphere after fossil fuel use
+(Denman et al. 2007). The size of the ﬂux is poorly
+quantiﬁed, largely because the amount of tropical forest that
+is cut and burnt is difﬁcult to quantify, the carbon stocks in
+a given area of forest vary considerably and the carbon
+stocks are poorly quantiﬁed in most areas (Lewis 2006). Best
+Review and Synthesis
+Towards a worldwide wood economics spectrum 361
+ 2009 Blackwell Publishing Ltd/CNRS
+
+estimates among studies range from 0.9 to 2.2 Pg C year)1,
+with a central estimate from recent studies of 1.6 (95% CI,
+0.5–2.7) Pg C year)1 for the 1990s (Denman et al. 2007;
+Ramankutty et al. 2007).
+The rate at which wood decomposes determines the
+structural complexity and turnover of resources in ecosys-
+tems. In a thorough review of the decomposition of coarse
+woody debris in temperate ecosystems, Harmon et al. (1986)
+showed that the half-life of dead wood depended on several
+environmental and species-speciﬁc factors, and varied
+between a few years to over a century. The same orders
+of magnitude were found in tropical forests (Chambers et al.
+2000). The main pathways for breakdown of wood are ﬁre,
+xylophagous creatures, microbes (fungi, bacteria) and photo
+damage, although dysfunction and decay can happen via
+viruses as well.
+Secondary chemicals have evolved as deterrents to insect
+damage (Croteau et al. 2000), and they occur in larger
+concentrations in bark, the outer defensive layer of
+functional wood and phloem. In addition, high-density
+woods decompose slower than low-density woods (Fig. 7,
+see also Chambers et al. 2000). From the data used to
+construct Fig. 7, we found that decay rate and wood density
+were
+strongly
+correlated
+in
+angiosperms
+(R2 = 0.208,
+n = 768, P < 0.001), but not in conifers (R2 = 0.020,
+n = 67, P = 0.249). The physical structure of wood, in
+addition to the tissue density and chemical composition,
+should influence fungal movement within the plant, and
+reduce the spread of fungal infections (Choat et al. 2008).
+Greater overall allocation to ﬁbres and less allocation to
+conduits and parenchyma should also make wood less
+vulnerable to fungal decay (Fengel & Wegner 1984).
+What causes differences in decomposition has been less
+well studied. In a meta-analysis, Weedon et al. (2009)
+associated decomposition rates of 102 woody species with
+chemical and anatomical wood traits. Across all species, they
+found that decomposition was faster in angiosperms than
+gymnosperms. Angiosperms had denser wood, bigger
+conduits, higher nitrogen and phosphorous content, lower
+lignin content and lignin to nitrogen ratios (Cowling &
+Merril 1966). It is typically thought that less dense wood
+should decay more quickly, so the result that the less dense
+gymnosperms decay more slowly is surprising. Whether
+differences in decomposition between the two groups are
+due to chemical differences (e.g. the higher lignin or lower
+nitrogen and phosphorous in gymnosperms) or physical
+differences (e.g. shorter and narrower conduits in gymno-
+sperms) remains unclear.
+6 . SYN T H ES I S A N D F R O N T I ER S
+Our review of wood traits, their interrelations and correla-
+tions with morphological, leaf and demographic traits and
+associated biogeographical and biogeochemical implications
+suggest that the functional ecological signiﬁcance of wood is
+high (Fig. 4). However, this ﬁrst synthesis also highlights
+some serious data deﬁciencies, and associated analyses
+needed to accurately describe functional trade-offs in wood.
+Ecologists should contribute to such a research programme.
+Perhaps the most important task is to develop an agreed
+list of traits (Table 1) for a representative geo-referenced
+sample of woody plants from the worlds biomes and
+biogeographical realms. Along with existing online databases
+(E.A. Wheelers InsideWood database http://insidewood.
+lib.ncsu.edu/, see Wheeler et al. 2007) our data compilations
+have made some progress in this respect, but much more
+data are needed. Indeed, we have not attempted to construct
+a full matrix for the 20 or so traits listed in Table 1, because
+it would have been depressingly sparse. Among the most
+poorly documented are chemical traits in wood. To date
+these data have been conﬁned to a specialized literature;
+however, it should be possible to compile datasets at a pace
+comparable to leaf chemistry datasets that have been
+assembled (e.g. Wright et al. 2004, 2007). The techniques
+of gathering N, P, K and Ca concentration from wood
+tissue are indeed now available in many laboratories across
+the world.
+One important use of new information and an improved
+understanding of a well-deﬁned wood economy spectrum
+would likely be in the development of more realistic
+dynamic global vegetation models (DGVMs). DGVMs
+model Earths vegetation and its response to changing
+atmospheric conditions such as increasing atmospheric
+carbon dioxide concentrations and increasing air tempera-
+tures. These DGVMs show that forest dynamics could
+dramatically alter the response of the global climate system
+to increased atmospheric carbon dioxide over the 21st
+century with potentially serious societal and environmental
+Figure 7 Relationship between wood density and mean wood
+decay rate classes (± 1 standard deviation, n = 816 species). Decay
+rate was scored on a scale from 1 to 4, with durable species being
+scored 1 and fast-decaying species being scored 4. Wood density
+data are from the wood database reported in the Appendix.
+Durability data are from Scheffer & Morrell (1998).
+362 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+implications (Huntingford et al. 2008). However, there is
+little agreement among different DGVMs, making forest
+dynamics a major source of uncertainty in predicting future
+climate (Cramer et al. 2004).
+Current DGVMs reduce complex forests to the total
+carbon stocks in various compartments – leaves, roots and
+trunks – with simple rules to determine how the carbon
+generated from photosynthesis is allocated to, and lost from,
+each compartment. Therefore, these models contain no
+information about wood. This absence is surprising as one
+of the key predictions of these models is the carbon storage
+per unit area at each time-step, essentially an estimate of the
+mass of wood, as > 90% of plant mass is woody.
+The incorporation of wood traits in future DGVMs is
+likely to come from scaling up individual-based models of
+tree behaviour in forests (Marks & Lechowicz 2006) to
+regional and global scales (Purves & Pacala 2008). Alloca-
+tion to wood is pivotal in such individual-based models,
+because they are based on competition for light, and
+individual plants invest in trunks to over-top others in a
+competitive struggle for light. Careful parameterization of
+global-scale individual-based models using data on patterns
+from a well-described wood economy spectrum may
+substantially reduce the uncertainty associated with current
+DGVMs. In turn, this would provide more robust predic-
+tions of future vegetation and climate as human activity
+alters the Earth system.
+AC K N O W L E D G EMENTS
+This contribution stems from a workshop held at the
+National Evolutionary Synthesis Center (NESCent), Dur-
+ham, NC, USA, in 2007, co-funded by NESCent and ARC-
+NZ Research Network for Vegetation Function. This work
+was funded in part by a NESCent postdoctoral fellowship
+(NSF #EF-0423641) and NSF grant (#OISE-0502253) to
+A.E.Z. J.C. is supported by the ANR (ACI-Jeunes Cherch-
+eurs,
+and
+ANR-Biodiversite´)
+and
+CNRS
+(programme
+AMAZONIE). S.L.L. is supported by a Royal Society
+University Research Fellowship. We gratefully acknowledge
+the help of G. Lopez-Gonzalez with the wood density
+database, and R.B. Miller, M. Wiemann and J. Ilic for
+sharing wood density data, and E. Wheeler for maintaining
+the InsideWood database, for useful conversations and for
+pointing us towards the durability dataset.
+RE FE RE N C E S
+Ackerly, D.D. (2004). Functional strategies of chaparral shrubs in
+relation to seasonal water deﬁcit and disturbance. Ecol. Monogr.,
+74, 25–44.
+Agrawal, A.A. & Fishbein, M. (2006). Plant defense syndromes.
+Ecology, 87, S132–S149.
+Alvarez-Clare, S. & Kitajima, K. (2007). Physical defence traits
+enhance seedling survival of neotropical tree species. Funct. Ecol.,
+21, 1044–1054.
+Baas, P., Wheeler, E.A. & Chase, M. (2000). Dicotyledonous wood
+anatomy and the APG system of angiosperm classiﬁcation. Bot.
+J. Linn. Soc., 134, 3–17.
+Baas, P., Ewers, F.W., Davis, S.D. & Wheeler, E.A. (2004). Evo-
+lution of xylem physiology. In: The Evolution of Plant Physiology
+(eds Hemsley, A.R. & Poole, I.). Elsevier Academic Press,
+London, San Deigo, pp. 273–295.
+Bailey, I.W. (1944). The development of vessels in angiosperms
+and its signiﬁcance in morphological research. Am. J. Bot., 31,
+421–428.
+Baker, T.R., Phillips, O.L., Malhi, Y., Almeida, S., Arroyo, L., Di
+Fiore et al. (2004). Variation in wood density determines spatial
+patterns in Amazonian forest plots. Glob. Change Biol., 10, 545–562.
+Bond, W.J. (1989). The tortoise and the hare: ecology of angio-
+sperm dominance and gymnosperm persistence. Biol. J. Linn.
+Soc., 36, 227–249.
+Boufﬁer, L., Rafﬁn, A. & Kremer, A. (2008). Evolution of genetic
+variability for selected traits in breeding populations of maritime
+pine. Heredity, 101, 156–165.
+Braun, H.J. (1970). Funktionelle Histologie der sekunda¨ren
+Sprossachse I. Das Holz. Encyclopaedia of Plant Anatomy Band IX,
+Teil 1. Gebru¨der Borntraeger, Berlin.
+Bucci, S.J., Goldstein, G., Meinzer, F.C., Scholz, F.G., Franco, A.C.
+et al. (2004). Functional convergence in hydraulic architecture
+and water relations of tropical savanna trees: from leaf to whole
+plant. Tree Physiol., 24, 891–899.
+Canham, C.D., Papaik, M.J. & Latty, E.F. (2001). Interspeciﬁc
+variation in susceptibility to windthrow as a function of tree size
+and storm severity for northern temperate tree species. Can J.
+For. Res., 31, 1.
+Carlquist, S. (2001). Comparative Wood Anatomy: Systematic, Ecological,
+and Evolutionary Aspects of Dicotyledon Wood. Springer-Verlag,
+Berlin, New York.
+Carlquist, S. & Hoekman, D.A. (1985). Ecological wood anatomy
+of the woody Southern Californian ﬂora. IAWA J., 6, 319–347.
+Cernuzak, L.A., Winter, K., Aranda, J. & Turner, B.L. (2008).
+Conifers, angiosperm trees, and lianas: growth, whole-plant
+water and nitrogen use efﬁciency, and stable isotope composi-
+tion (d13C and d18O) of seedlings grown in a tropical environ-
+ment. Plant Physiol., 148, 642–659.
+Chambers, J.Q., Higuchi, N., Schimel, J.P., Ferreira, L.V. & Melack,
+J.M. (2000). Decomposition and carbon cycling of dead trees in
+tropical forests of the central Amazon. Oecologia, 122, 380–388.
+Chao, K.-J., Phillips, O.L., Gloor, E., Monteagudo, A., Torres-
+Lezama, A. et al. (2008). Growth and wood density predict tree
+mortality in Amazon forests. J. Ecol., 96, 281–292.
+Chave, J., Andalo, C., Brown, S., Cairns, M.A., Chambers, J.Q. et al.
+(2005). Tree allometry and improved estimation of carbon
+stocks and balance in tropical forests. Oecologia, 145, 87–99.
+Chave, J., Muller-Landau, H.C., Baker, T., Easdale, T., ter Steege,
+H. & Webb, C.O. (2006). Regional and phylogenetic variation of
+wood density across 2,456 neotropical tree species. Ecol. Appl.,
+16, 2356–2367.
+Chave, J., Condit, R., Muller-Landau, H.C., Thomas, C.D., Ashton,
+P. et al. (2008). Assessing evidence for a pervasive alteration of
+tropical tree communities. PLoS Biol., 6, e45.
+Review and Synthesis
+Towards a worldwide wood economics spectrum 363
+ 2009 Blackwell Publishing Ltd/CNRS
+
+Choat, B., Cobb, A.R. & Jansen, S. (2008). Structure and function
+of bordered pits: new discoveries and impacts on whole-plant
+hydraulic function. New Phytol., 177, 608–626.
+Coomes, D.A., Heathcote, S., Godfrey, E.R., Shepherd, J.J. & Sack,
+L. (2008). Scaling of xylem vessels and veins within the leaves of
+oak species. Biol. Lett., 4, 302–306.
+Cowling, E.B. & Merril, W. (1966). Nitrogen in wood and its role
+in wood decomposition. Can. J. Bot., 44, 1539–1554.
+Cramer, W., Bondeau, A., Schaphoff, S., Lucht, W., Smith, B. &
+Sitch, S. (2004). Tropical forests and the global carbon cycle:
+impacts of atmospheric carbon dioxide, climate change and rate
+of deforestation. Phil. Trans. R. Soc. B., 359, 331–343.
+Croteau, R., Kutchan, T.M. & Lewis, N.G. (2000). Natural prod-
+ucts (secondary metabolites). In: Biochemistry & Molecular Biology
+of Plants (eds Buchanan, B., Gruissem, W., Jones, R. & Dekker,
+M.). American Society of Plant Physiologists, New York,
+pp. 1250–1318.
+Curran, T.J., Gersbach, L.N., Edwards, W. & Krockenberger, A.K.
+(2008). Wood density predicts plant damage and vegetative
+recovery rates caused by cyclone disturbance in tropical rain-
+forest tree species of north Queensland, Australia. Austr. Ecol.,
+33, 442–450.
+Denman, K.L., Brasseur, G., Chidthaisong, A., Ciais, P., Cox, P.M.
+et al. (2007) Couplings between changes in the climate system
+and biogeochemistry. In: Climate Change 2007: The Physical Science
+Basis. Contribution of Working Group I to the Fourth Assess-
+ment Report of the Intergovernmental Panel on Climate Change
+(eds Solomon, S., Qin, D., Manning, M., Chen, Z., Marquis, M.,
+Averyt, K.B., Tignor, M. & Miller, H.L.). Cambridge University
+Press, Cambridge, pp. 663–745.
+Elias, M. & Potvin, C. (2003). Assessing inter- and intra-speciﬁc
+variation in trunk carbon concentration for 32 neotropical tree
+species. Can. J. For. Res., 33, 1039–1045.
+Enquist, B.J., West, G.B., Charnov, E.L. & Brown, J.H. (1999).
+Allometric scaling of production and life-history variation in
+vascular plants. Nature, 401, 907–911.
+Ewers, F.W. & Fisher, J.B. (1991). Why vines have narrow stems:
+histological trends in Bauhinia (Fabaceae). Oecologia, 88, 233–237.
+Ewers, F.W., Carlton, M.R., Fisher, J.B., Kolb, K.J. & Tyree, M.T.
+(1997). Vessel diameters in roots versus stems of tropical lianas
+and other growth forms. IAWA J., 18, 261–279.
+Falster, D.S. & Westoby, M. (2005). Alternative height strategies
+among 45 dicot rain forest species from tropical Queensland,
+Australia. J. Ecol., 93, 521–535.
+Feild, T.S., Zweiniecki, M.A., Brodribb, T., Jaffre, T., Donoghue,
+M.J. et al. (2000). Structure and function of tracheary elements in
+Amborella trichopoda. Int. J. Plant Sci., 161, 705–712.
+Fengel, D. & Wegner, D. (1984). Wood: Chemistry, Ultrastructure,
+Reactions. Walter de Gruyter, Berlin, 613 pp.
+Fujimoto, T., Kita, K., Uchiyama, K., Kuromaru, M., Akutsu, H.
+& Oda, K. (2006). Age trends in the genetic parameters of
+wood density and the relationship with growth rates in hybrid
+larch (Larix gmelinii var. japonica · L. kaempferi) F1. J. For. Res.,
+11, 157.
+Gartner, B.L., Moore, J.R. & Gardiner, B.A. (2004). Gas in stems:
+abundance and potential consequences for tree biomechanics.
+Tree Physiol., 24, 1239–1250.
+van Gelder, H.A., Poorter, L. & Sterck, F.J. (2006). Wood
+mechanics, allometry, and life-history variation in a tropical rain
+forest tree community. New Phytol., 171, 367–378.
+Hacke, U.G., Sperry, J.S., Pockman, W.T., Davis, S.D. & McCul-
+loh, K.A. (2001a). Trends in wood density and structure are
+linked to prevention of xylem implosion by negative pressure.
+Oecologia, 126, 457–461.
+Hacke, U.G., Stiller, V., Sperry, J.S., Pittermann, J. & McCulloh,
+K.A. (2001b). Cavitation fatigue. Embolism and reﬁlling cycles
+can weaken the cavitation resistance of xylem. Plant Physiol., 125,
+779–786.
+Hacke, U.G., Sperry, J.S., Wheeler, J.K. & Castro, L. (2006). Scaling
+of angiosperm xylem structure with safety and efﬁciency. Tree
+Physiol., 26, 619–701.
+Harmon, M.E., Franklin, J.F., Swanson, F.J., Sollins, P., Gregory,
+S.V. et al. (1986). Ecology of coarse woody debris in temperate
+ecosystems. Adv. Ecol. Res., 15, 133–302.
+Hawley, L.F., Fleck, L.C. & Richards, C.A. (1924). The relation
+between durability and chemical composition in wood. Ind. Eng.
+Chem., 16, 699–700.
+Hillis, W.E. (1987). Heartwood and Tree Exudates. Springer, Berlin,
+268 pp.
+Huntingford, C., Fisher, R.A., Mercado, L., Booth, B.B., Sitch, S.,
+Harris, P.P. et al. (2008). Towards quantifying uncertainty in
+predictions of Amazon dieback. Phil. Trans. R. Soc. B., 363,
+1857–1864.
+Ishida, A., Nakano, T., Yazaki, K., Matsuki, S., Koike, N. et al.
+(2008). Coordination between leaf and stem traits related to leaf
+carbon gain and hydraulics across 32 drought-tolerant angio-
+sperms. Oecologia, 156, 193–202.
+Jacobsen, A.L., Pratt, R.B., Ewers, F.W. & Davis, S.D. (2007).
+Cavitation resistance among 26 chaparral species of Southern
+California. Ecol. Monogr., 77, 99–115.
+Jansen, S., Baas, P., Gasson, P., Lens, F. & Smets, E. (2004).
+Variation in xylem structure from tropics to tundra: evidence
+from vestured pits. Proc. Natl Acad. Sci. USA, 101, 8833–8837.
+Kauffman, J.B., Cummings, D.L., Ward, D.E. & Babbitt, R.
+(1995). Fire in the Brazilian Amazon. 1. Biomass, nutrient
+pools, and losses in slashed primary forests. Oecologia, 104,
+397–408.
+King, D.A., Davies, S.J., Tan, S., Supardi, N. & Noor, M. (2006).
+The role of wood density and stem support costs in the growth
+and mortality of tropical trees. J. Ecol., 94, 670–680.
+Kozlowski, T.T. (1992). Carbohydrate sources and sinks in woody
+plants. Bot. Rev., 58, 107–122.
+Kurz, W.A., Dymond, C.C., Stinson, G., Rampley, G.J., Neilson,
+E.T. et al. (2008). Mountain pine beetle and forest carbon
+feedback to climate change. Nature, 452, 987.
+Lewis, S.L. (2006). Tropical forests and the changing earth system.
+Philos. Trans. R. Soc. Lond. B Biol. Sci., 261, 195–210.
+Lewis, S.L., Phillips, O.L., Baker, T.R., Lloyd, J., Malhi, Y. et al.
+(2004). Concerted changes in tropical forest structure and
+dynamics: evidence from 50 South American long-term plots.
+Philos. Trans. R. Soc. Lond. B Biol. Sci., 359, 421–436.
+Lewis, S.L., Lopez-Gonzalez, G., Sonke´, B., Affum-Baffoe, K.,
+Baker, T.R. et al. (2009). Increasing carbon storage in intact
+African tropical forests. Nature, in press.
+Liu, W.Y., Fox, J.E.D. & Xu, Z.F. (2003). Litterfall and nutrient
+dynamics in a montane moist evergreen broad-leaved forest in
+Ailao Mountains, SW China. Plant Ecol., 164, 157–170.
+Luyssaert, S., Schultze, E.-D., Bo¨rner, A., Knohl, A., Hessenmo¨ller,
+D. et al. (2008). Old growth forests as global carbon sinks.
+Nature, 455, 213–215.
+364 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+
+Maherali, H., Pockman, W.T. & Jackson, R.B. (2004). Adaptive
+variation in the vulnerability of woody plants to xylem cavita-
+tion. Ecology, 85, 2184–2199.
+Malhi, Y., Baker, T.R., Phillips, O.L., Almeida, S., Alvarez, E. et al.
+(2004). The above-ground coarse wood productivity of 104
+Neotropical forest plots. Glob. Change Biol., 10, 563–591.
+Malhi, Y., Wood, D., Baker, T.R., Wright, J., Phillips, O.L. et al.
+(2006). The regional variation of aboveground live biomass in
+old-growth Amazonian forests. Glob. Change Biol., 12, 1107–
+1138.
+Marks, C.O. & Lechowicz, M.J. (2006). A holistic tree seedling
+model for the investigation of functional trait diversity. Ecol.
+Modell., 193, 141–181.
+McCulloh, K.A., Sperry, J.S. & Adler, F.R. (2004). Murrays law and
+the hydraulic vs. mechanic functioning of wood. Funct. Ecol., 18,
+931–938.
+McElrone, A.J., Pockman, W.T., Martinez-Vilalta, J. & Jackson,
+R.B. (2004). Variation in xylem structure and function in stems
+and roots of trees to 20 m depth. New Phytol., 163, 507–517.
+McGroddy, M.E., Daufresne, T. & Hedin, L.O. (2004). Scaling of
+C : N : P stoichiometry in forests worldwide: implications of
+terrestrial Redﬁeld-type ratios. Ecology, 85, 2390–2401.
+Mencuccini, M., Grace, J. & Fioravanti, M. (1997). Biomechanical
+and hydraulic determinants of tree structure in Scots pine:
+anatomical characteristics. Tree Physiol., 17, 105–113.
+Meylan, B.A. & Butterﬁeld, B.G. (1978). The Structure of New Zealand
+Woods. New Zealand Department of Scientific and Industrial
+Research Bulletin 222, Wellington, New Zealand.
+Muller-Landau, H.C. (2004). Interspeciﬁc and inter-site variation in
+wood speciﬁc gravity of tropical trees. Biotropica, 36, 20–32.
+Nascimento, H.E.M., Laurance, W.F., Condit, R., Laurance, S.G.,
+Angelo, S. et al. (2005). Demographic and life-history correlates
+for Amazonian trees. J. Veg. Sci., 16, 625–634.
+Niklas, K.J. (1993). Inﬂuence of tissue density-speciﬁc mechan-
+ical properties on the scaling of plant height. Ann. Bot., 72,
+173–179.
+Niklas, K.J. (1995). Size-dependent allometry of tree height,
+diameter and trunk taper. Ann. Bot., 75, 217–227.
+Osunkoya, O.O., Teo, K., Nor-Aziah, S. & Damit, M.N. (2007).
+Variation in wood density, wood water content, stem growth
+and mortality among twenty-seven tree species in a tropical
+rainforest on Borneo Island. Austr. Ecol., 32, 191–201.
+Patin˜o, S., Lloyd, J., Paiva, R., Quesada, C.A., Baker, T.R. et al.
+(2008). Branch xylem density variations across Amazonia. Bio-
+geosci. Discuss., 5, 2003–2047.
+Pearce, R.B. (1996). Antimicrobial defences in the wood of living
+trees. New Phytol., 132, 203–233.
+Poorter, L. (2008). The relationships of wood-, gas-, and water
+fractions of tree stems to performance and life history variation
+in tropical trees. Ann. Bot., 102, 367–375.
+Poorter, L., Paz, H., Wright, S.J., Ackerly, D.D., Condit, R., Ibarra-
+Manrı´quez, G. et al. (2008). Are functional traits good predictors
+of demographic rates? Evidence from ﬁve neotropical forests
+Ecology, 89, 1908–1920.
+Pratt, R.B., Jacobsen, A.L., Ewers, F.W. & Davis, S.D. (2007).
+Relationships among xylem transport, biomechanics and storage
+in stems and roots of nine Rhamnaceae species of the California
+chaparral. New Phytol., 174, 787–798.
+Preston, K.A., Cornwell, W.K. & Denoyer, J. (2006). Wood
+density and vessel traits as distinct correlates of ecological
+strategy in 51 California coast range angiosperms. New Phytol.,
+170, 807–818.
+Purves, D. & Pacala, S. (2008). Predictive models of forest
+dynamics. Science, 320, 1452–1453.
+Ramankutty, N., Gibbs, H.K., Achard, F., DeFries, R., Foley, J.
+et al. (2007). Challenges to estimating carbon emissions from
+tropical deforestation. Glob. Change Biol., 13, 51–66.
+Roderick, M.L. (2000). On the measurement of growth with
+applications to the modelling and analysis of plant growth. Funct.
+Ecol., 14, 244–251.
+Rowe, N. & Speck, T. (2005). Plant growth forms: an ecological
+and evolutionary perspective. New Phytol., 166, 61–72.
+Santiago, L.S., Goldstein, G., Meinzer, F.C., Fisher, J.B., Machado,
+K. et al. (2004). Leaf photosynthetic traits scale with hydraulic
+conductivity and wood density in Panamanian forest canopy
+trees. Oecologia, 140, 543–550.
+Scheffer, T.C. & Morrell, J.J. (1998). Natural Durability Of Wood:
+A Worldwide Checklist Of Species. Forest Research Laboratory,
+Oregon State University Research Contribution 22, Corvallis,
+Oregan, 58 pp.
+Schultz, T.P., Harms, W.B., Fisher, T.H., McMurtrey, K.D., Minn,
+J. & Nicholas, D.D. (1995). Durability of angiosperm heart-
+wood: the importance of extractives. Holzforschung, 49, 29–34.
+Shigo, A.L. (1984). Compartmentalization: a conceptual framework
+for understanding how trees grow and defend themselves. Ann.
+Rev. Phytopathol., 22, 189–214.
+Siau, J.F. (1984). Transport Processes in Wood. Springer-Verlag, Berlin,
+245 pp.
+Sperry, J.S. (2003). Evolution of water transport and xylem struc-
+ture. Int. J. Plant Sci., 164, S115–S127.
+Sperry, J.S., Hacke, U.G. & Pittermann, J. (2006). Size and function
+in conifer tracheids and angiosperm vessels. Am. J. Bot., 93,
+1490–1500.
+Sperry, J.S., Meinzer, F.C. & McCulloh, K.A. (2008). Safety and
+efﬁciency conﬂicts in hydraulic architecture: scaling from tissues
+to trees. Plant Cell Environ., 31, 632–645.
+ter Steege, H., Pitman, N.C.A., Phillips, O.L., Chave, J., Sabatier,
+D. et al. (2006). Continental-scale patterns of canopy tree com-
+position and function across Amazonia. Nature, 443, 444–447.
+Sterck, F.J., van Gelder, H.A. & Poorter, L. (2006). Mechanical
+branch constraints contribute to life-history variation across tree
+species in a Bolivian forest. J. Ecol., 94, 1192–1200.
+Swenson, N.G. & Enquist, B.J. (2007). Ecological and evolutionary
+determinants of a key plant functional trait: wood density and its
+community-wide variation across latitude and elevation. Am. J.
+Bot., 94, 451–459.
+Swenson, N.G. & Enquist, B.J. (2008). The relationship between
+stem and branch wood. Am. J. Bot., 95, 516–519.
+Thomas, S.C. & Malczewski, G. (2007). Wood carbon content of
+tree species in Eastern China: interspeciﬁc variability and the
+importance of the volatile fraction. J. Environ. Manage., 85, 659–
+662.
+Tyree, M.T. & Zimmermann, M.H. (2002). Xylem Structure and the
+Ascent of Sap, Spring series in wood sciences, 2nd edn (ed. Timell,
+T.E.). Springer-Verlag, Berlin, pp. 283.
+Weber, J. & Sotelo Montes, C. (2008). Geographic variation in tree
+growth and wood density of Guazuma crinita Mart. in the Peru-
+vian Amazon. New Forest., 36, 29.
+Weedon, J.T., Cornwell, W.K., Cornelissen, J.H.C., Zanne, A.E.,
+Wirth, C. et al. (2009). Global meta-analysis of wood decom-
+Review and Synthesis
+Towards a worldwide wood economics spectrum 365
+ 2009 Blackwell Publishing Ltd/CNRS
+
+position rates: a role for trait variation among tree species? Ecol.
+Lett., 12, 45–56.
+West, G.B., Brown, J.H. & Enquist, B.J. (1999). A general model
+for the structure and allometry of plant vascular systems. Nature,
+400, 664–667.
+Westoby, M. & Wright, I.J. (2006). Land-plant ecology on the basis
+of functional traits. Trends Ecol. Evol., 21, 261–268.
+Westoby, M., Falster, D.S., Moles, A.T., Vesk, P.A. & Wright, I.J.
+(2002). Plant ecological strategies: some leading dimensions of
+variation between species. Annu. Rev. Ecol. Syst., 33, 125–159.
+Wheeler, E.A., Baas, P. & Rodgers, S. (2007). Variations in wood
+anatomy: a global analysis based on the Insidewood database.
+IAWA J., 28, 229–258.
+Wiemann, M.C. & Williamson, G.B. (2002). Geographic variation
+in wood speciﬁc gravity: effects of latitude, temperature, and
+precipitation. Wood Fiber, 34, 96–107.
+Williamson, G.B. (1984). Gradients of wood gravity in trees. Bull.
+Torrey Bot. Club, 111, 51–55.
+Woodcock, D. & Shier, A. (2002). Wood speciﬁc gravity and its
+radial variations: the many ways to make a tree. Trees, 16, 432–
+443.
+Wright, I.J., Reich, P.B., Westoby, M., Ackerly, D.D., Baruch, Z.
+et al. (2004). The world-wide leaf economics spectrum. Nature,
+428, 821–827.
+Wright, I.J., Falster, D.S., Pickup, M. & Westoby, M. (2006a).
+Cross-species patterns in the coordination between leaf and
+stem traits, and their implications for plant hydraulics. Physiol.
+Plant., 127, 445–456.
+Wright, I.J., Leishman, M.R., Read, C. & Westoby, M. (2006b).
+Gradients of light availability and leaf traits with leaf age and
+canopy position in 28 Australian shrubs and trees. Funct. Plant
+Biol., 33, 407–419.
+Wright, I.J., Ackerly, D.D., Bongers, F., Harms, K., Ibarra-Man-
+riquez, G. et al. (2007). Relationships among major dimensions
+of plant trait variation in 7 Neotropical forests. Ann. Bot., 99,
+1003–1015.
+Zanne, A.E., Sweeny, K., Sharma, M. & Orians, C.M. (2006). Pat-
+terns and consequences of differential vascular sectoriality in 18
+temperate tree and shrub species. Funct. Ecol., 20, 200–206.
+S U P P O R T I N G IN F O R M A T I O N
+Additional Supporting Information may be found in the
+online version of this article:
+Appendix S1 Glossary, Appendix, Figures S1–S2 and
+References.
+Please note: Wiley-Blackwell are not responsible for the
+content or functionality of any supporting materials supplied
+by the authors. Any queries (other than missing material)
+should be directed to the corresponding author for the
+article.
+Editor, Johannes Knops
+Manuscript received 15 October 2008
+First decision made 12 November 2008
+Manuscript accepted 12 January 2009
+366 J. Chave et al.
+Review and Synthesis
+ 2009 Blackwell Publishing Ltd/CNRS
+View publication stats

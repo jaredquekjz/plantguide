@@ -1,0 +1,1767 @@
+Seasonal Variation in the Capacity
+for Plant Trait Measures to Predict
+Grassland Carbon and Water Fluxes
+Georg Everwand,1,2* Ellen L. Fry,3 Till Eggers,4,5 and Pete Manning2,6
+1Department of Crop Sciences, Agroecology, Georg-August-University Go¨ttingen, Grisebachstrasse 6, 37077 Go¨ttingen, Germany;
+2NERC Centre for Population Biology, Imperial College of Science and Technology, Silwood Park, Ascot SL5 7PY, UK; 3Department of
+Life Sciences, Imperial College of Science and Technology, Silwood Park, Ascot SL5 7PY, UK; 4Present address: BASF SE, Global
+Research Crop Protection, Data Management and Biometrics, 67117 Limburgerhof, Germany; 5Experimental Ecology Group, Department
+for Biology and Chemistry, University of Osnabru¨ ck, Barbarastr. 13, 49069 Osnabru¨ ck, Germany; 6Institute for Plant Sciences, University
+of Bern, Altenbergrain 21, 3013 Bern, Switzerland
+ABSTRACT
+There is a need for accurate predictions of ecosystem
+carbon (C) and water ﬂuxes in ﬁeld conditions.
+Previous research has shown that ecosystem prop-
+erties can be predicted from community abundance-
+weighted means (CWM) of plant functional traits
+and measures of trait variability within a community
+(FDvar). The capacity for traits to predict carbon (C)
+and water ﬂuxes, and the seasonal dependency of
+these trait-function relationships has not been fully
+explored. Here we measured daytime C and water
+ﬂuxes over four seasons in grasslands of a range of
+successional ages in southern England. In a model
+selection procedure, we related these ﬂuxes to
+environmental covariates and plant biomass mea-
+sures before adding CWM and FDvar plant trait
+measures that were scaled up from measures of
+individual plants grown in greenhouse conditions.
+Models describing ﬂuxes in periods of low biological
+activity contained few predictors, which were usu-
+ally abiotic factors. In more biologically active peri-
+ods, models contained more predictors, including
+plant trait measures. Field-based plant biomass
+measures were generally better predictors of ﬂuxes
+than CWM and FDvar traits. However, when these
+measures were used in combination traits accounted
+for additional variation. Where traits were signiﬁ-
+cant predictors their identity often reﬂected seasonal
+vegetation dynamics. These results suggest that
+database derived trait measures can improve the
+prediction of ecosystem C and water ﬂuxes. Con-
+trolled studies and those involving more detailed
+ﬂux measurements are required to validate and ex-
+plore these ﬁndings, a worthwhile effort given the
+potential for using simple vegetation measures to
+help predict landscape-scale ﬂuxes.
+Key words: biodiversity; biomass; climate; com-
+munity
+weighted
+mean;
+ecosystem
+services;
+evapotranspiration; Functional diversity; photo-
+synthesis.
+INTRODUCTION
+There is increasing interest in predicting ecosystem
+functions (for example, carbon (C) and water
+ﬂuxes) and quantifying the contribution of biodi-
+versity to these in both natural and semi-natural
+ecosystems (Diaz and others 2007; Schumacher
+and Roscher 2009; Sapijanskas and Loreau 2010;
+Received 1 November 2013; accepted 2 May 2014
+Electronic supplementary material: The online version of this article
+(doi:10.1007/s10021-014-9779-z)
+contains
+supplementary
+material,
+which is available to authorized users.
+Author Contributions
+GE and PM conceived and designed the study;
+GE and EF collected the data; GE, EF and TE performed laboratory
+analyses; GE, TE and PM analysed data, GE and PM wrote the manu-
+script; all authors discussed the results and commented on the manu-
+script.
+*Corresponding author; e-mail: georg.everwand@agr.uni-goettingen.de
+Ecosystems
+DOI: 10.1007/s10021-014-9779-z
+ 2014 Springer Science+Business Media New York
+
+Lavorel and others 2011; Verheijen and others
+2013). Unfortunately, direct measurements of eco-
+system function often require specialist techniques
+and equipment, making them time consuming and
+costly (Sala and others 2000). Therefore, some au-
+thors have suggested that functional traits could be
+substituted for direct measurements of function
+(Garnier and others 2004). This could be advanta-
+geous because plant community composition is
+simple to quantify (for example, in quadrat surveys)
+and strongly inﬂuences ecosystem functioning (for
+example, by controlling photosynthesis, respiration
+and decomposition) (Diaz and others 2007).
+To date, the most widely used approach to link
+traits to ecosystem function is to ﬁrst select plant
+traits that are closely linked with the ecosystem
+processes of interest (effects traits, sensu Lavorel
+and Garnier 2002). Next, trait values are assigned to
+each species in a community and a weighted aver-
+age is calculated using species abundances as
+weights. This is known as a ‘‘community weighted
+mean’’ (CWM) (Garnier and others 2004; Diaz and
+others 2007). CWMs are based upon the principle
+that a species’ contribution to ecosystem function is
+proportional to its biomass, a concept known as the
+biomass ratio hypothesis (Grime 1998). An addi-
+tional component of plant community composition
+that may inﬂuence ecosystem function is the
+functional diversity and variation of traits, one
+measure of which is FDvar (Mason and others
+2003), a constrained value that describes the pro-
+portion of variation of a single trait within a com-
+munity. It is calculated as the variance in traits,
+weighted by species abundances. The support for
+such a measure as a predictor of ﬂuxes comes from
+numerous experimental studies. These have dem-
+onstrated that complementary resource use by plant
+species in diverse mixtures results in higher primary
+productivity (Hector and others 1999; Cardinale
+and others 2006; Cardinale and others 2007). It was
+also shown that functional trait diversity within a
+community, such as in plant height, leaf structure
+or root to shoot ratio, may increase community light
+use efﬁciency (Vojtech and others 2008). The
+diversity of plant functional trait values has also
+explained the greater C ﬂuxes of more species
+communities in experimental mesocosms (Milcu
+and others 2014). However, the importance of this
+relationship in natural ﬁeld conditions, in which
+other environmental drivers of ecosystem function
+vary strongly, remains in question.
+Most studies that have attempted to link species
+or functional trait diversity to function in natural
+conditions have found the relationship to be weak
+or absent (Diaz and others 2007; Grace and others
+2007; Schumacher and Roscher 2009; Laughlin
+2011). In contrast, CWMs tend to be reasonable
+predictors of function in observational studies.
+When combined with abiotic predictors CWMs can
+account for up to approximately 70% of the vari-
+ation in ecosystem properties, such as biomass
+production (Lavorel and others 2011), nitrogen
+availability (Diaz and others 2007), soil bacterial
+biomass (de Vries and others 2012) and soil C
+stocks (Garnier and others 2004). To date these
+studies have focussed on integrated or snapshot
+measures of ecosystem properties. The capacity of
+functional markers to explain gas and water ﬂuxes
+from ecosystems has received less attention, despite
+indications that the traits and diversity of plant
+communities can affect ecosystem CO2 and water
+ﬂuxes (Craine and others 2001a, b; Johnson and
+others 2008; Kunert and others 2012; Michel and
+others 2012; Verheijen and others 2013). Although
+previous empirical studies have suggested that
+functional
+trait
+measures
+could
+improve
+our
+capacity to predict ﬂuxes, these typically relate time
+series C-ﬂux data from a single ﬂux tower to
+changes in few traits across time (Hui and others
+2003; Ma and others 2011). The capacity of trait
+variation to explain ﬂuxes across wider ranges of
+environmental conditions is unknown.
+Several other questions must ﬁrst be addressed if
+traits are to be used to predict ﬂuxes: which traits
+are the best predictors of which ﬂuxes, and are the
+identity of the best predictor traits consistent over
+time? It is likely for example that different traits
+explain
+different
+physiological
+processes,
+for
+example, photosynthetic efﬁciency traits will con-
+trol CO2 uptake and others, like leaf tissue chem-
+istry, will control decomposition rates (De Deyn
+and others 2008). Because growth, respiration and
+decomposition vary in their relative importance
+across the year, then the identity of trait–ﬂux
+relationships may also vary seasonally (Eviner and
+others 2006). However, a strong correlation be-
+tween tissue physiology and chemistry may mean
+that some traits, for example, speciﬁc leaf area
+(SLA), predict ﬂuxes in both growth and decom-
+position periods (Wright and others 2004). Another
+important consideration is whether trait measures
+make signiﬁcant improvements to model predic-
+tions; how useful are trait measures compared to
+measures of standing plant biomass and abiotic
+drivers, such as soil moisture, temperature and
+light availability, and can they explain additional
+variation on top of these factors?
+In this study, we aimed to address these ques-
+tions, with a particular focus on investigating the
+seasonal dependency of trait–function relationships
+G. Everwand and others
+
+in grassland ecosystems. As a principal goal of the
+study was to assess whether database and other ex-
+situ trait measures are of practical use in predicting
+ecosystem
+function,
+glasshouse-derived
+species
+trait measures were used to generate CWM and
+FDvar values rather than in situ ﬁeld-derived
+measures. The latter are more likely to accurately
+represent ﬁeld trait expression but are not practical
+in ecosystem survey and monitoring (Mokany and
+Ash 2008; Cordlandwehr and others 2013). We
+conducted this investigation by setting up ﬁxed
+sampling rings on grasslands of varying succes-
+sional age in which we measured plant species
+composition, environmental covariates and C and
+water ﬂuxes. Composition measurements were
+combined with measures of functional trait mea-
+sures to generate CWM and FDvar metrics and
+these were used alongside the environmental
+covariate data to build statistical models describing
+ﬂuxes.
+MATERIALS AND METHODS
+Study Sites
+The study was conducted in the successional
+mesotrophic grasslands of Silwood Park, Berkshire,
+in
+south
+east
+England
+(lat.
+51.406371,
+long.
+-0.648648). The ﬁve selected sites were ﬂat,
+within 1 km of each other (Appendix A in Elec-
+tronic Supplementary Material) and were all based
+upon a nutrient poor and weakly acidic sandy loam
+soil based upon Tertiary sandstone, the Bagshot
+beds. These soils have a low phosphorus sorption
+capacity (Manning and others 2006) and nutrient
+concentrations are typically 1.6–3.6 mg dissolved
+inorganic N kg-1 and 2–4 mg extractable P kg-1
+(see Table S1, Milcu and others 2011; Fry and
+others 2013 for details). Community composition
+varied greatly between the sites and seasons with
+successional age being the likely dominant cause of
+these differences. Two sites were recently ploughed
+in December 2008. The other three sites were in
+later successional states (approximately 20, 75 and
+165 months since ploughing) but all lacked woody
+plants. Communities can be summarised as forming
+a successional gradient from the OV10 type of the
+UK National Vegetation Classiﬁcation (Rodwell
+1992) after disturbance to various variants of the
+MG6, U1 and MG1 types later in succession (see
+Crawley 2005 for a detailed ecology of the site). In
+some areas herbivores, particularly rabbits (Oryc-
+tolagus cuniculus) and roe deer (Capreolus capreolus)
+graze and browse and due to this and recent
+ploughing some sites had a low standing biomass
+(Figure 1). Vegetation of the ﬁve sampling areas is
+described in further detail in Tables S2, S3 and S4
+and Appendix A in Electronic Supplementary
+Material. A full list of the 66 species found in the
+study can be found in Table S3.
+Plot Layout and Flux Measurements
+Within each of the ﬁve sites, six 1 m2 plots were
+established. In each we installed two ﬁxed rings of
+200 mm diameter PVC pipe, each 200 mm from
+the centre of the plot along a diagonal axis. The
+PVC ring was buried 50 mm belowground and
+protruded 50 mm aboveground to provide a collar
+for an air-tight seal when taking passive measure-
+ments in a closed system connected to a CIRAS 2
+Infrared Gas Analyzer (IRGA) (PP Systems, Hitchin,
+UK).
+Rings were buried in December 2008, 4 months
+prior to the start of the measurements to mini-
+mise soil disturbance effects and to allow roots
+time to recover. This combination of ﬁve sites
+with six plots within each, and two rings in each
+plot gave a total of 30 replicates for plot level
+measures and 60 for ring level measures. From
+each ring single measures of net ecosystem CO2
+exchange (NEE), evapotranspiration and ecosys-
+tem respiration were taken in four different time
+periods: 19th March–1st April 2009 (early spring,
+hereafter March), 29th May–4th June 2009 (an
+active growth period, hereafter June), 3rd–6th
+August shortly after peak biomass (hereafter Au-
+gust) and the 3–6th November 2009 (the autumn
+senescence
+phase,
+hereafter
+November).
+Mea-
+surements were taken between 11:30 and 13:30
+GMT over 3–10 days, in dry conditions when
+cloud
+cover was intermediate in density and
+unbroken. When measuring NEE, the net balance
+between photosynthetic uptake and soil and plant
+respiration, the measurement chamber was placed
+on the ring for 4 min and the ﬂux was deter-
+mined from the change in CO2 concentration. To
+measure total ecosystem respiration, we covered
+the chamber with an aluminium-coated sheet to
+exclude light and prevent heat absorbance (Kolari
+and others 2006) and another 4 min measure-
+ment was taken. Gross photosynthesis was esti-
+mated as total ecosystem respiration subtracted
+from NEE. Several abiotic covariates were also
+recorded
+during
+each
+CO2
+ﬂux
+measurement
+(Wagner and others 2009): six measures of pho-
+tosynthetic active radiation (PAR) (400–700 nm)
+were taken using a PAR metre (Skye Instruments,
+Llandrindod Wells, Wales); soil moisture measures
+Trait–Flux Relationships
+
+were taken using a Theta probe (Delta-T Devices
+Ltd, Cambridge, UK); and for soil temperature, a
+Checktemp Soil Thermometer (Hanna HI Instru-
+ments,
+Michigan,
+USA)
+was
+used.
+For
+these
+moisture and temperature measures, three mea-
+surements were taken around the ring and aver-
+aged. In each ring, the percentage cover of all
+higher plant species was recorded in the week
+after ﬂux measures were taken. Mosses were not
+recorded to species level. For more details on ﬂux
+measurement see Appendix B in Electronic Sup-
+plementary Material.
+Cover–Biomass Calibration and Plant
+Traits
+To predict plant biomass non-destructively, we
+measured plant cover and biomass in plots adjacent
+to the study plots and used these to build calibra-
+tion models that predict aboveground biomass from
+our cover measures. Separate models were con-
+structed for grasses, mosses and herbs as they dif-
+fered strongly in their biomass per unit cover (for
+details see Appendix B and Table S5 in Electronic
+Supplementary Material).
+Figure 1. A–C Ecosystem ﬂuxes; D–F Environmental measures; G–J Vegetation measures; K–P Community weighed
+means: Q–T Functional diversity data. Data used in model ﬁtting, showing seasonal changes as bar graphs with SD. A–C
+are the response variables of the three ﬂuxes, D–F are covariates measured simultaneously to the ﬂux measures, G–I are
+estimates of the plant biomass of major functional groups, J–O are community weighted means (CWM) of plant traits, P–S
+are estimates of the diversity of trait values (FDvar). All bars show the mean ± standard deviation of all measurements for
+each of the four sampling periods.
+G. Everwand and others
+
+For trait measures, 65 species of the local ﬂora
+were germinated on seedling compost (John Innes
+no. 1) in 19 ± 1C glasshouses with 8/16-h photo-
+period. Then, in January 2008, ﬁve individuals of
+each species with a height of approximately 3 cm
+were transferred into a single tube each (60 cm deep,
+12 cm diameter). Seed was sourced commercially,
+but of local origin (Herbiseed, Twyford, England).
+The tubes contained soil from a grassland within our
+study area and were covered with mesh at the bot-
+tom. See Table S1’s mature grassland column and
+the control conditions of the mid-successional site of
+Milcu and others (2011) for soil properties. Plants
+were then grown in conditions described above and
+watered when required. These conditions were
+representative in photoperiod and temperature to
+the ﬁeld sampling periods of June and August (16 h,
+20C Figure 1E) but much warmer than in the
+March and November periods. Trait measures may
+therefore be more representative for the summer
+sampling periods. After 90 days, or at ﬂowering for
+short-lived species, we took ﬂux measures on the
+plants and harvested them. For ﬂux measures, we
+used a Ciras-1 IRGA (PP Systems, Hitchin, UK), with
+an Integrated cuvette air supply unit and standard-
+ised light emitting diode, to measure the photosyn-
+thesis (lmol m-2 s-1), transpiration (mmol m-2 s-1)
+and stomatal conductance (mmol m-2 s-1) of a
+healthy leaf, on each plant. Measurements were
+taken between 10:00 and 15:00 h in full sunlight.
+After ﬂux measures were taken, plant height was
+measured and plants were harvested. We measured
+photosynthetic surface area (PSA) of all above-
+ground plant organs using a scanner and the Leaf
+Area program (Version 1.3., University of Shef-
+ﬁeld). After drying for 48 h at 60C, we measured
+aboveground biomass (AGB) (g) and belowground
+biomass (BGB) (g), the latter obtained by washing
+roots over a 1-mm sieve. Root–shoot ratio was
+calculated from AGB and BGB. We calculated
+speciﬁc leaf area by dividing PSA by AGB. This
+method can be viewed as speciﬁc plant area and
+was used as many of the species were sprawling
+herbs with very small leaves and green stems.
+Relative growth rate (g g-1 d-1) was calculated
+from total biomass of 2-week-old seedlings and that
+at harvest. Aboveground biomass C, N and P (all in
+mg kg-1) and C/N ratio were measured according
+to
+standard
+procedures
+(ball
+milling,
+Kjedahl
+digestion and colorimetric analysis). This entire
+process was repeated in January 2009 with a new
+set of ﬁve plants of each species and with soil taken
+from the same site. This resulted in ten measures
+for each trait, for each species, which was then
+averaged to give a species value. A full list of species
+and their trait values is given in Tables S3a–f.
+Species trait data were used to determine CWM
+trait values for each ring, with the weights being
+the proportion of estimated biomass for each spe-
+cies within the community (For formula, see
+Appendix B in Electronic Supplementary Material).
+Functional diversity of trait values, represented by
+functional divergence (FDvar) (Mason and others
+2003), was also calculated for each plot (for for-
+mula, see Appendix B in Electronic Supplementary
+Material). Only higher plants were used to calcu-
+late CWM and FDvar values. These calculations
+were performed using the R package F-diversity
+(Casanoves and others 2010).
+Statistical Analysis
+Statistical models describing ﬂuxes were generated
+with a modiﬁed version of the procedure of Diaz
+Table 1.
+Ecosystem Respiration Models for All Four Measurement Periods
+Variable
+RM
+2
+DAIC
+n
+Parameter value
+SE
+df
+P
+Mar. 09
+Intercept
+0.20
+59
+0.103
+0.055
+28
+CWM root–shoot ratio
+4.06
+0.192
+0.055
+29
+0.0117
+June 09
+Intercept
+0.29
+60
+0.678
+0.162
+27
+Herb biomass (g m-2)
+11.34
+0.009
+0.002
+27
+0.0003
+Grass biomass (g m-2)
+5.00
+0.003
+0.001
+27
+0.0082
+FDvar plant-N (mg N kg-1)
+2.00
+-1.070
+0.537
+27
+0.0460
+Aug. 09
+Intercept
+0.16
+60
+0.225
+0.069
+28
+Grass biomass (g m-2)
+10.17
+0.003
+0.001
+28
+0.0005
+FDvar potential above ground biomass (g)
+9.11
+0.646
+0.161
+28
+0.0009
+Nov. 09
+Intercept
+0.13
+58
+-0.024
+0.064
+27
+CWM plant-P (mg N kg-1)
+4.40
+0.591
+0.216
+27
+0.0114
+Order of variables reﬂects their order of addition in the hierarchy of controls modelling process.
+RM
+2 = proportion of variance explained by ﬁxed factors, DAIC = change in AIC upon deletion from the model, P = signiﬁcance of each term established using a likelihood ratio
+deletion test.
+Trait–Flux Relationships
+
+Table 2.
+Photosynthesis Rate Models for All Four Measurement Periods
+Variable
+RM
+2
+DAIC
+n
+Parameter value
+SE
+df
+P
+Mar. 09
+Intercept
+0.37
+59
+0.210
+0.070
+26
+Grass biomass (g m-2)
+18.74
+0.006
+0.001
+26
+<0.0001
+FDvar plant-P (mg P kg-1)
+6.78
+0.283
+0.372
+26
+0.0046
+Grass biomass 9 FDvar plant-P
+4.79
+-0.021
+0.008
+26
+0.0091
+June 09
+Intercept
+0.42
+60
+0.998
+0.793
+25
+Soil water (%)
+4.58
+0.320
+0.113
+25
+0.0091
+(Soil water)2
+5.40
+-0.016
+0.006
+25
+0.0104
+Grass biomass (g m-2)
+7.14
+0.004
+0.001
+25
+0.0025
+Herb biomass (g m-2)
+22.94
+0.021
+0.004
+25
+<0.0001
+CWM plant-N (mg N kg-1)
+4.14
+-0.816
+0.338
+25
+0.0133
+Aug. 09
+Intercept
+0.62
+60
+18.068
+3.740
+22
+Soil H2O (g g-1)
+14.61
+-0.204
+0.051
+22
+0.0001
+Soil temperature (C)
+29.32
+-1.528
+0.326
+22
+<0.0001
+(Soil temperature)2
+31.94
+0.033
+0.007
+22
+<0.0001
+Herb biomass (g m-2)
+16.39
+0.016
+0.003
+22
+<0.0001
+Grass biomass (g m-2)
+35.49
+0.008
+0.001
+22
+<0.0001
+CWM stomatal conductance (mol-1m2s-1)
+5.8
+0.003
+0.001
+22
+0.0052
+FDvar potential total biomass (g)
+15.39
+-1.828
+0.805
+22
+<0.0001
+FDvar potential total biomass 9 soil water
+3.37
+0.364
+0.114
+22
+0.0204
+Nov. 09
+Intercept
+0.37
+58
+-0.678
+0.569
+24
+PAR (lmol m-2 s-1)
+15.35
+0.0049
+0.0019
+24
+0.0001
+Soil temperature (C)
+3.43
+0.115
+0.080
+24
+0.0244
+PAR 9 soil temperature
+3.25
+-0.0006
+0.0003
+24
+0.022
+Order of variables reﬂects their order of addition in the hierarchy of controls modelling process.
+RM
+2 = proportion of variance explained by ﬁxed factors, DAIC = change in AIC upon deletion from the model, P = signiﬁcance of each term established using a likelihood ratio
+deletion test.
+Table 3.
+Evapotranspiration Rate Models for All Four Measurement Periods
+Variable
+RM
+2
+DAIC
+n
+Parameter Value
+SE
+df
+P
+Mar. 09
+Intercept
+0.25
+59
+5.22
+4.11
+26
+PAR (lmolm-2s-1)
+38.36
+0.014
+0.002
+26
+<0.0001
+Moss biomass (g m-2)
+3.55
+0.018
+0.015
+26
+0.0185
+CWM potential height (cm)
+1.74
+-0.118
+0.054
+26
+0.0529
+June 09
+Intercept
+0.64
+60
+-21.71
+36.507
+26
+PAR (lmolm-2s-1)
+12.71
+0.034
+0.009
+26
+0.0001
+Soil water (%)
+15.40
+4.856
+1.117
+26
+<0.0001
+Soil temperature (C)
+3.95
+-2.709
+1.109
+26
+0.0148
+CWM speciﬁc leaf area (mm mg-1)
+7.89
+4.319
+1.329
+26
+0.0016
+Aug. 09
+Intercept
+0.19
+60
+-937.348
+243.148
+26
+Soil temperature (C)
+10.08
+93.545
+23.046
+26
+0.0009
+(Soil temperature)2
+10.76
+-2.093
+0.536
+26
+0.0004
+Grass biomass (g m-2)
+8.25
+0.349
+0.108
+26
+0.0014
+CWM potential total biomass (g)
+6.88
+-4.313
+1.447
+26
+0.0029
+Nov. 09
+Intercept
+0.80
+55
+35.89
+14.69
+21
+Soil water (%)
+48.74
+-1.268
+0.711
+21
+<0.0001
+CWM relative growth rate (g g-1 d-1)
+25.27
+-346.54
+147.31
+21
+<0.0001
+FDvar root to shoot ratio
+3.33
+2.725
+1.208
+21
+0.0208
+CWM relative growth rate 9 soil water
+7.28
+21.64
+3.032
+21
+0.0023
+Order of variables reﬂects their order of addition in the hierarchy of controls modelling process.
+RM
+2 = proportion of variance explained by ﬁxed factors, DAIC = change in AIC upon deletion from the model, P = signiﬁcance of each term established using a likelihood ratio
+deletion test.
+G. Everwand and others
+
+and others (2007). This procedure adds terms
+according to a hypothetical hierarchy of controls,
+starting with abiotic drivers of function before
+adding terms describing species composition and
+trait distribution. In all cases, mixed-effects models
+were ﬁtted using maximum likelihood with the
+lme function of R version 2.11.1 (R-Development-
+Core-Team 2010) and a ring-within-site random
+effects structure. Separate models were ﬁtted for
+each time period and function totalling 12 models
+(Tables 1, 2, 3). An exponential variance term was
+included if it signiﬁcantly improved model likeli-
+hood (August respiration and photosynthesis, and
+March and November evapotransration).
+The ﬁrst set of variables added were abiotic fac-
+tors: photosynthetic active radiation (PAR), soil
+water content (%), temperature (C) and age of the
+plot (no. of month since ploughed). These variables
+and all possible interactions between them were
+removed systematically if found to be non-signiﬁ-
+cant (at P < 0.05) in a likelihood ratio deletion test
+(LRT) (Pinheiro and Bates 2000; Crawley 2007).
+Once abiotic terms were selected we tested for
+nonlinear effects by adding polynomial terms for
+each and removing them if non-signiﬁcant. The
+second set of terms represented biomass effects. We
+compared the likelihood of models containing
+terms for: the predicted biomass of mosses, herbs
+and grasses, the predicted biomass of vascular
+plants and mosses and total predicted biomass.
+Again, nonlinear effects were estimated by adding
+polynomial terms and removing these if not sig-
+niﬁcant. After this we added ﬁrst-order interactions
+between retained biomass variables and abiotic
+terms and removed these sequentially if non-sig-
+niﬁcant, starting with the least signiﬁcant. The
+third stage estimated plant functional trait effects.
+Given strong correlation between many traits, we
+placed the CWM for each trait in the model singly
+and then substituted with another, noting the sig-
+niﬁcance when it was removed. The most signiﬁ-
+cant trait CWM was retained. This process was
+repeated for FDvar measures in the fourth stage.
+The traits used were CWMs and FDvars of: photo-
+synthesis rate (lmol m2 s-1), stomatal conductance
+(mmol-1 m2 s-1), plant height (cm), aboveground
+biomass (g m-2), total plant biomass (g m-2), root–
+shoot ratio, plant C, N and P content (mg kg-1), C
+to N ratio and speciﬁc leaf area (mm2 mg-1). The
+ﬁnal stage sought interactions between the re-
+tained abiotic and trait variables. Initially, all pos-
+sible ﬁrst-order interactions were ﬁtted. These were
+then removed sequentially, as before, until only
+signiﬁcant parameters remained. Once this ﬁnal
+model was reached the signiﬁcance of each term
+was assessed with a LRT. When assessing the sig-
+niﬁcance of main effects any interactions contain-
+ing the term were also removed. Sometimes it was
+found that terms that were signiﬁcant earlier in the
+modelling process were no longer signiﬁcant and
+these terms were removed. For each of the ﬁnal
+models marginal R2 (RM
+2 ), a measure of ﬁt for the
+ﬁxed effects of a mixed model was calculated using
+the method of Nakagawa and Schielzeth (2013).
+AIC change on deletion from the ﬁnal model
+(DAIC) was also noted to assess the relative
+importance of each predictor.
+RESULTS
+Ecosystem Respiration
+Respiration models had a low ﬁt (RM
+2 0.13–0.29),
+and the most important descriptors were biomass
+terms
+(Table 1).
+Ecosystem
+respiration
+in
+the
+inactive late winter period (March Figure 1B) was
+best explained by CWM root–shoot ratio, with
+higher respiration under communities of plants
+with a high root allocation. In contrast, the model
+for June respiration, a period that was warm (Fig-
+ure 1E), contained terms for grass and herb bio-
+mass, both of which had a positive relationship
+with respiration (Table 1). The model also con-
+tained a marginally signiﬁcant negative term for
+the FDvar of leaf N content; communities with di-
+verse leaf N concentrations respired less. The model
+for August respiration, a period with intermediate
+ﬂuxes (Figure 1B), was similar to June in that grass
+biomass positively affected respiration. There was
+also a strong positive relationship with FDvar po-
+tential biomass; communities containing plants
+with a wide range of potential sizes respired more
+(Table 1). In November, only the CWM of leaf P
+content showed a signiﬁcant relationship with
+respiration. This relationship was positive in that
+communities
+producing
+P-rich
+tissues
+respired
+more (Table 1). No abiotic variables were retained
+in the respiration models.
+Photosynthesis
+Models describing photosynthesis had a reasonable
+ﬁt (RM
+2 = 0.37–0.62). The most important variables
+were biomass, abiotic inﬂuences (that is, PAR, soil
+water and temperature) and plant biomass, but
+trait measures were also important in periods of
+high activity (Table 2). The model for photosyn-
+thesis in March, when ﬂuxes were very low
+(Figure 1A), shows that ﬂuxes were positively
+associated with grass biomass (which accounted for
+72% (±4 SE) of AGB) and FDvar of leaf P content.
+Trait–Flux Relationships
+
+There was also a negative interaction between these
+two variables; in plots with high grass biomass the
+relationship between the FDvar of leaf P and pho-
+tosynthesis was negative (Table 2). The model for
+June photosynthesis, when C uptake was much
+higher (Figure 1A) had a positive relationship with
+grass biomass, but also a positive effect of herb bio-
+mass, which was now far more abundant (36% of
+AGB ± 4 SE) and which had a stronger per unit
+biomass effect than grasses. A signiﬁcant effect of soil
+moisture was also observed. This was quadratic, with
+photosynthesis peaking at a soil water content of
+11%. Finally, there was a weak negative relation-
+ship with CWM leaf N. Photosynthesis was slightly
+lower in communities containing N-rich leaves. The
+model for August photosynthesis, when ﬂuxes were
+still relatively high (Figure 1A) and community
+biomass was it its highest (200 g m-2 ± 12.00 SE),
+was complex and contained many highly signiﬁcant
+descriptors. Two of these were soil water, which had
+a negative relationship, and soil temperature, which
+had a quadratic relationship, with photosynthesis
+declining to near zero between 16 and 22C and
+remaining there at higher temperatures. As in June,
+photosynthesis in August was positively associated
+with herb and grass biomass, but grasses had stron-
+ger, and herbs weaker, per unit biomass effects
+compared to the June model. Two trait variables also
+had signiﬁcant relationships with August photo-
+synthesis. The ﬁrst was the CWM stomatal conduc-
+tance, a positive effect, and the second FDvar
+potential biomass, a strong negative effect repre-
+senting lower photosynthetic uptake in plots with
+species of a wide range of potential biomass. This
+effect interacted strongly with soil water (Table 2).
+The model for November photosynthesis, when
+ﬂuxes were very low (Figure 1A), was much simpler
+and contained no community effects, only positive
+effects of PAR and soil temperature, both of which
+were low in this period (Figure 1E, F). These vari-
+ables interacted so that ﬂuxes were highest where
+temperature was low and PAR was high.
+Evapotranspiration
+The models for evapotranspiration (Table 3) were
+very variable in ﬁt (RM
+2 = 0.19–0.80) and generally
+less parameterized than those of respiration and
+photosynthesis. They typically contained fewer
+biotic and more abiotic variables, which were also
+the best descriptors, with the exception of highly
+signiﬁcant trait measure terms in the November
+model. The model for March evapotranspiration, a
+period when ﬂuxes were low (Figure 1C), con-
+tained a highly signiﬁcant positive effect of PAR,
+and weak positive effects of moss biomass and
+CWM potential height. The ﬁnal term in this model
+was a positive relationship with CWM of SLA;
+evapotranspiration was higher in communities of
+thin leaved species. The highly signiﬁcant positive
+PAR effect was also present in the June evapo-
+transpiration model alongside positive effects of soil
+moisture and soil temperature. In August, a period
+of high evapotranspiration (Figure 1C), the model
+contained a quadratic relationship with soil tem-
+perature; ﬂuxes peaked around temperatures of
+22C. There was a strong positive relationship with
+grass biomass but a strong negative effect of CWM
+potential biomass that indicated lower evapo-
+transpiration ﬂuxes were potentially large species
+dominated. By November ﬂuxes were very low
+(Figure 1C) but the model was closely ﬁtting,
+containing terms for soil moisture, a negative
+relationship with CWM relative growth rate, and
+an interaction between these terms. There was also
+a weak but signiﬁcant relationship with the FDvar
+of root to shoot ratio.
+Correlations Between Traits
+To investigate why trait predictors varied between
+ﬂuxes and seasons correlations between commu-
+nity trait measures were calculated. Strongly cor-
+related traits should have similar predictive power
+but correlations between traits retained in respira-
+tion models were weak (Pearson’s r < 0.1). This
+indicates that different functional properties deter-
+mined these ﬂuxes at different times of year. In
+contrast, there was a correlation between the CWM
+of
+plant-N
+and
+CWM
+stomatal
+conductance
+(r = 0.63), which explained photosynthesis in June
+and August, respectively. Similarly, there was a
+correlation between CWM potential height and
+CWM SLA (r = -0.68), which explained evapo-
+transpiration in March and June, respectively.
+Correlations were also found between the traits that
+explained ﬂuxes at a particular time of year, thus
+indicating that in certain seasons a trait may predict
+several ﬂuxes. FDvar plant tissue P and CWM po-
+tential height, which explained photosynthesis and
+evapotranspiration in March correlated negatively
+(r = -0.69). FDvar potential aboveground biomass,
+which predicted August respiration, and FDvar total
+biomass, which predicted August photosynthesis,
+were also strongly correlated (r = 0.85).
+DISCUSSION
+By combining abiotic and biomass measures with
+community trait measures, we identiﬁed several
+G. Everwand and others
+
+variables that explained grassland C and water
+ﬂuxes. These results indicate that plant traits can
+predict ecosystem C and water ﬂuxes, but that the
+relationship between them is stronger in periods of
+high biological activity. Throughout the study
+ﬂuxes were low, most probably due to the low
+biomass of the vegetation and the nutrient poor
+status of the site (Figure 1; Table S1) and it is
+possible that in more active systems trait–ﬂux
+relationships will be stronger. In the following
+sections, we discuss each of the predictors in our
+hierarchy of controls in turn.
+Abiotic and Plant Biomass Predictors
+Strong relationships were observed between ﬂuxes
+and abiotic drivers such as light, soil water content
+and temperature. These were particularly common
+terms in evapotranspiration models. Such effects
+are reasonably well understood and are extensively
+reported in the literature (Wohlfahrt and others
+2008; Bonan and others 2012; Niu and others
+2012). These abiotic variables were often the only
+ones retained in models for periods of low biolog-
+ical activity (for example, in November) but their
+effects were seen inconsistently throughout the
+year. This may not mean that they were not
+inﬂuencing function but merely that they did not
+vary over ranges that inﬂuence function during
+data collection. Had the study been conducted over
+larger spatial scales and used continuous ﬂux
+measures then it is highly likely that these would
+emerge as more important predictors.
+The observed relationship between plant biomass
+and ﬂuxes can also be explained intuitively, and it is
+not surprising that biomass was a strong predictor of
+ecosystem photosynthesis rate. Seasonal variation
+in the plant functional groups which displayed sig-
+niﬁcant biomass–ﬂux relationships may reﬂect
+seasonal differences in phenology and activity. In
+March photosynthesis ﬂuxes did not correspond to
+herb biomass, but were higher where there was
+high grass biomass. This is probably because grasses
+(for example, Holcus mollis and Agrostis spp.) made
+up most of the winter AGB. By June this had
+changed: photosynthesis was positively associated
+with high grass and herb biomass, with herbs
+showing a much stronger per unit biomass effect,
+thus indicating that they were active in this period,
+when their biomass was also highest (Figure 1I).
+Evapotranspiration showed similar seasonal trends
+to the C ﬂuxes with March evapotranspiration
+correlating with moss biomass, presumably because
+of their relatively high biomass in this period and
+their strong water holding capacity. The importance
+of biomass terms, relative to trait and diversity
+terms, is a similar ﬁnding to that of Laughlin (2011),
+who found that biomass was a stronger predictor of
+forest N dynamics than community trait measures.
+CWM Traits
+The results support the view that measures of
+species composition can improve the ﬁt of models
+explaining ﬂuxes (Hui and others 2003; Ma and
+others 2011) and the importance of CWM mea-
+sures was high in many models. However, it should
+be noted that the high variation in species com-
+position in the site, alongside the relative stan-
+dardisation of other drivers such as soil and
+weather, may have inﬂuenced the relative impor-
+tance of vegetation measures within our models.
+The identity of the traits that explained ﬂuxes were
+highly variable, thus suggesting the absence of a
+simple general relationship between community
+traits and ecosystem C and water ﬂuxes. Instead,
+the traits driving, or at least correlating with func-
+tion varied seasonally. This conclusion is broadly
+similar to those of Eviner and others (2006) who
+found that multiple plant traits were required to
+explain seasonal patterns of soil nitrogen and
+phosphorus cycling and Ma and others (2011), who
+found the relationship between photosynthetic
+capacity and leaf N to vary between years.
+Explaining the possible mechanisms underlying
+trait–ﬂux relationships is more challenging than
+understanding abiotic and biomass effects. How-
+ever, hypotheses can be formulated as to mecha-
+nisms underlying trait–ﬂux relationships as most of
+the traits retained in the models have a hypothet-
+ical link to resource capture or loss. The March
+respiration model shows that communities with a
+high root:shoot ratio respired more in winter. This
+may be due to the activity of the high belowground
+biomass
+of
+grass-dominated
+communities.
+By
+November respiration correlated with the CWM of
+plant tissue P, this may represent faster decompo-
+sition of nutrient-rich plant litters in a low photo-
+synthesis period. The poor ﬁt of respiration models
+may be due to the lack of important soil variables
+(for example, soil chemistry and microbial com-
+munity structure) as descriptors but it is likely that
+plant traits will represent at least some of the var-
+iation in these variables, for example, CWM leaf N
+and SLA are related to the relative abundance of
+bacteria and fungi in grasslands (de Vries and oth-
+ers 2012).
+The relationship between photosynthesis rates
+and correlated CWM traits of leaf N and stomatal
+conductance (negative in June and positive in
+Trait–Flux Relationships
+
+August, respectively) can be understood in terms of
+gas exchange. We hypothesise that low conduc-
+tance low leaf N species with a conservative strat-
+egy were more active in June but the opposite, fast
+species were active in August. Similar links to the
+leaf economics spectrum (Wright and others 2004)
+may explain respiration patterns. In June, there
+was also a positive correlation between evapo-
+transpiration and the CWM of SLA. This may be
+because high SLA plants have a greater surface area
+for water loss. In August, it was the CWM of po-
+tential biomass that correlated with evapotranspi-
+ration, perhaps because these potentially large
+species were still growing and had their stomata
+open. It is difﬁcult to explain the negative rela-
+tionship between the CWM of RGR and evapo-
+transpiration in November, a period in which
+plants are largely inactive. Similarly, it is difﬁcult to
+explain the negative relationship between CWM
+plant-N and photosynthesis in June, as a positive
+relationship would be expected (Wright and others
+2004). Such relationships may reﬂect the correla-
+tion between trait measures and other unmeasured
+drivers of ﬂuxes.
+Trait Functional Diversity
+A number of signiﬁcant relationships were found
+between ﬂuxes and FDvar measures. Particularly,
+strong was the positive relationship between FDvar
+potential total biomass and respiration in August and
+its negative relationship with photosynthesis in the
+same period. This ﬁnding suggests that biodiversity
+could play an important role in driving ﬂuxes at
+certain times. However, the general ﬁnding was that
+trait means and the biomass of functional groups
+were more consistently retained as descriptors of
+grassland C ﬂuxes than diversity measures. As a re-
+sult, our ﬁndings are consistent with both experi-
+ments that found a weak or absent relationship
+between diversity measures and soil respiration (but
+also that functional group presence was a key
+descriptor of function) (De Boeck and others 2007;
+Johnson and others 2008; Fry and others 2013), and
+with biodiversity–ecosystem function experiments.
+In these the diversity of functional groups or traits is
+seen to strongly and positively affect water and CO2
+ﬂuxes (Craine and others 2001a, b; Kunert and
+others 2012; Milcu and others 2014). The results of
+such experiments contrast with many observational
+ﬁeld studies, which ﬁnd a weak relationship, if any,
+between species or functional diversity and ecosys-
+tem processes (Diaz and others 2007; Grace and
+others 2007; Schumacher and Roscher 2009; Maes-
+tre and others 2012). In this study, the relationship
+between trait diversity and ﬂuxes was sometimes
+negative. Such effects may reﬂect the correlation of
+plant trait diversity with other drivers of function.
+The discrepancy between ﬁeld and experimental
+results may result from similar causes—other drivers
+of function may dominate over biodiversity effects
+under ﬁeld conditions, making them difﬁcult to de-
+tect (Diaz and others 2007; Schumacher and Roscher
+2009; Maestre and others 2012). Evidence for such
+effects could be seen in the interaction between the
+FDvar of tissue P and grass biomass in the March
+photosynthesis model; both main terms were posi-
+tive, but the interaction was negative, suggesting
+that complementarity effects on growth (Loreau and
+Hector 2001) could only be expressed in the absence
+of highly competitive grass species. It is also possible
+that diversity effects would be stronger if ﬂuxes over
+much longer timescales were examined. Here, tem-
+poral complementarity of species may result in
+greater C ﬁxation over time (Allan and others 2011).
+Advancing Trait–Flux Research
+The results of the present study, and others in
+which
+plant
+traits
+correlate
+with
+function
+in
+observational ﬁeld studies, should be interpreted
+with caution. As mentioned above, plant traits are
+known to correlate with and respond to a wide
+range of environmental factors (for example, soil
+biological and chemical properties and climate)
+many of which also control ﬂuxes and other eco-
+system processes (de Vries and others 2012; Dou-
+ma and others 2012; Soudzilouvskia and others
+2013). We predict a stronger relationship between
+traits and ﬂuxes over longer environmental gra-
+dients and larger scales. At these larger scales, trait
+values and ﬂuxes would strongly correlate with
+abiotic environmental factors (for example, de
+Vries and others 2012) and would be harder to
+disentangle from them. An opposing problem oc-
+curs in the relatively narrow disturbance gradient
+of our study. We only sampled communities of
+grasses and herbs, which differ subtly in compar-
+ison to the full length of the leaf economics
+spectrum (Wright and others 2004). As a result,
+the importance of traits in driving ﬂuxes may be
+underestimated. Relatively small differences be-
+tween communities, alongside standardised mea-
+suring conditions, may also have contributed to
+the
+sometimes
+low
+model
+ﬁts.
+Experimental
+manipulation of trait distributions in controlled
+and if possible orthogonal, designs may be the best
+approach to teasing apart cause and correlation
+and identifying the traits that control function (Fry
+and others 2014).
+G. Everwand and others
+
+Another challenge to the incorporation of traits
+into ﬂux models and predictions is the identiﬁca-
+tion of the correct traits. Identifying traits that ex-
+plain
+function
+is
+complicated
+by
+a
+strong
+correlation between
+traits (Wright and others
+2004). In practical terms, this simpliﬁes the use of
+traits in predicting ﬂuxes but such correlations
+appear to be fairly weak in this study, probably
+due to its relatively narrow range of conditions.
+There is also difﬁculty in measuring the root traits
+that
+may
+control
+belowground
+processes
+(for
+example, rhizodeposition control over soil respi-
+ration), although consistent correlations between
+aboveground and belowground traits have been
+found (Tjoelker and others 2005; Mokany and Ash
+2008).
+Intraspeciﬁc variation in traits present a further
+challenge to the use of database trait values to
+predict ﬂuxes; trait values from databases and
+glasshouse conditions may not be representative
+across a range of ﬁeld conditions (Albert and others
+2010). The magnitude of the error this introduces
+depends upon the degree of trait plasticity, intra-
+speciﬁc variation and the difference between ﬁeld
+conditions and those where the database or glass-
+house trait value was taken (Mokany and Ash
+2008; Cordlandwehr and others 2013). Species trait
+values also vary seasonally across time, a factor that
+explained
+temporal
+ﬂux
+variation
+in
+woody
+savannah (Ma and others 2011). Such seasonal
+variation was not measured here and this may
+partly explain the stronger explanatory power of
+trait measures in summer ﬂuxes. Conversely, our
+glasshouse traits could be reasonable predictors of
+winter ﬂuxes if traits shift systematically for all
+species (for example, values decrease by 30% in the
+winter for all species) across the seasons, thus
+maintaining relative differences.
+Despite
+these
+various
+potential
+problems,
+a
+number of studies have now shown that most trait
+variation is interspeciﬁc, at both global and local
+scales (Kattge and others 2011; Kichenin and oth-
+ers 2013) and interspeciﬁc trait differences are
+consistent across a range of environments (Ordo-
+nez 2013; Kazakou and others 2014). Therefore,
+glasshouse and database measures may be reliable
+and seasonal and intraspeciﬁc trait variation may
+be a minor source of error in ecosystem level
+comparisons, at least where there are strong dif-
+ferences in species composition, as in the present
+study.
+It is clear that identifying general relationships
+between traits and function is a non-trivial task
+that requires comprehensive data. A key problem
+with a study such as this is that ﬂux measures only
+represent a snapshot of actual ﬂux activity; it is
+highly likely that a more reliable picture of how
+traits, biomass and the abiotic environment interact
+to determine ﬂuxes would be achievable with the
+comprehensive data taken from ﬂux towers that
+continuously measure ﬂuxes. However, such an
+apparatus is typically replicated only once per site
+requiring a network of sites, for example, FLUXNET
+(Baldocchi and others 2001), to be utilised to tease
+apart
+the
+inﬂuences
+of
+local
+soil
+conditions,
+weather, climate, biomass and plant traits. Data on
+how traits vary across seasons would also be useful,
+particularly if these changes follow consistent pat-
+terns that are predictable from a combination of
+climate and database trait measures. If general
+patterns could be found with such an approach
+then it might then be possible to generate maps of
+predicted
+ﬂuxes
+using
+measures
+of
+weather,
+standing plant biomass (for example, from satellite
+data) and trait maps, with the latter being gener-
+ated using data from trait databases, for example,
+TRY (Kattge and others 2011) and information
+from biodiversity surveys, for example, the UKs
+Countryside Survey (Carey and others 2008). If the
+response of plant communities to climate change is
+predictable from the same traits (for example, SLA)
+then it may also be possible to predict future
+changes to ﬂuxes by extending such an approach
+(Soudzilouvskia and others 2013). Similarly, better
+characterization of trait variation and its functional
+consequences would aid the development of dy-
+namic global vegetation models and their capacity
+to predict future ﬂuxes (Verheijen and others
+2013).
+CONCLUSIONS
+This study represents an initial attempt at explain-
+ing ecosystem ﬂuxes of C and water using trait
+measures. In many cases, the inclusion of trait data
+improved model likelihood, thus indicating that
+ﬂuxes are driven not just by the interaction of plant
+biomass and the abiotic environment but also the
+physiology and chemistry of that biomass. Our re-
+sults also indicate that an array of traits control
+ﬂuxes throughout the year. Currently, species
+composition is typically represented very simply in
+ecosystem models and global C and water ﬂux
+analyses, usually as a small number of plant func-
+tional types (Sitch and others 2003; Migliavacca
+and others 2011; Bonan and others 2012; Niu and
+others 2012; Williams and others 2012). The sig-
+niﬁcance of trait terms adds further support to calls
+(De Deyn and others 2008; Ostle and others 2009)
+that this approach may be insufﬁcient to accurately
+Trait–Flux Relationships
+
+represent and predict future ﬂuxes. This may re-
+quire the revision of ecosystem model plant func-
+tional types to a more continuous representation of
+traits (for example, Verheijen and others 2013), a
+challenge that may be necessary given the potential
+for ecosystem C and water ﬂuxes to inﬂuence fu-
+ture climate and human activities.
+ACKNOWLEDGMENTS
+This study was funded by the UK’s Natural Envi-
+ronment Research Council via the Centre for Pop-
+ulation Biology and the ERASMUS Program of the
+EU. Thanks go to Antje Mo¨hlmeyer, Sally Power,
+Nadine Prill, David Allen, Lena Everwand and Alex
+Hurst for support during data collection. Sarah
+Pierce and three anonymous reviewers provided
+advice and helpful comments on an earlier draft
+the manuscript.
+REFERENCES
+Albert CH, Thuiller W, Yoccoz NG, Douzet R, Aubert S, Lavorel
+S. 2010. A multi-trait approach reveals the structure and the
+relative importance of intra- vs. interspeciﬁc variability in
+plant traits. Funct Ecol 24:1192–201.
+Allan E, Weisser W, Weigelt A, Roscher C, Fischer M, Hillebrand
+H. 2011. More diverse plant communities have higher func-
+tioning over time due to turnover in complementary domi-
+nant species. Proc Natl Acad Sci 108:17034–9.
+Baldocchi D, Falge E, Gu L, Olson R, Hollinger D, Running S,
+Anthoni P, Bernhofer C, Davis K, Evans R, Fuentes J, Gold-
+stein A, Katul G, Law B, Lee X, Malhi Y, Meyers T, Munger W,
+Oechel W, Paw KT, Pilegaard K, Schmid HP, Valentini R,
+Verma S, Vesala T, Wilson K, Wofsy S. 2001. FLUXNET: a new
+tool to study the temporal and spatial variability of ecosystem-
+scale carbon dioxide, water vapor, and energy ﬂux densities.
+Bull Am Meteorol Soc 82:2415–34.
+Bonan GB, Oleson KW, Fisher RA, Lasslop G, Reichstein M.
+2012. Reconciling leaf physiological traits and canopy ﬂux
+data: use of the TRY and FLUXNET databases in the commu-
+nity land model version 4. J Geophys Res 117:G02026.
+Cardinale BJ, Srivastava DS, Duffy JE, Wright JP, Downing AL,
+Sankaran M, Jouseau C. 2006. Effects of biodiversity on the
+functioning of trophic groups and ecosystems. Nature 443:3–6.
+Cardinale BJ, Wright JP, Cadotte MW, Carroll IT, Hector A,
+Srivastava DS, Loreau M, Weis JJ. 2007. Impacts of plant
+diversity on biomass production increase through time be-
+cause of species complementarity. Proc Natl Acad Sci USA
+104:18123–8.
+Carey PD, Wallis S, Chamberlain PM, Cooper A, Emmett BA,
+Maskell LC, McCann T, Murphy J, Norton LR, Reynolds B,
+Scott WA, Simpson IC, Smart SM, Ullyett JM. 2008 Coun-
+tryside survey: UK results from 2007. NERC/Centre for Ecol-
+ogy and Hydrology, p. 105 (CEH Project Number: C03259).
+Casanoves F, Pla L, Di Rienzo JA, Dı´az S. 2010. FDiversity: a
+software package for the integrated analysis of functional
+diversity. Methods Ecol Evol 2:233–7.
+Cordlandwehr V, Meredith RL, Ozinga WA, Bekker RM, van
+Groenendael JM, Bakker JP. 2013. Do plant traits retrieved
+from a database accurately predict on-site measurements? J
+Ecol 101:662–70.
+Craine JM, Wedin DA, Reich PB. 2001a. Grassland species effects
+on soil CO2 ﬂux track the effects of elevated CO2 and nitrogen.
+New Phytol 150:425–34.
+Craine JM, Wedin DA, Reich PB. 2001b. The response of soil
+CO2 ﬂux to changes in atmospheric CO2, nitrogen supply and
+plant diversity. Glob Change Biol 7:947–53.
+Crawley MJ. 2005. The Flora of Berkshire. Harpenden: Bramb-
+leby Books.
+Crawley MJ. 2007. The R Book. Southern Gate: Wiley Ltd.
+De Boeck HJ, Lemmens CMHM, Vicca S, Van den Berge J, Van
+Dongen S, Janssens IA, Ceulemans R, Nijs I. 2007. How do
+climate warming and species richness affect CO2 ﬂuxes in
+experimental grasslands? New Phytol 175:512–22.
+De Deyn GB, Cornelissen JHC, Bardgett RD. 2008. Plant func-
+tional traits and soil carbon sequestration in contrasting bio-
+mes. Ecol Lett 11:516–31.
+de Vries FT, Manning P, Tallowin JRB, Mortimer SR, Pilgrim ES,
+Harrison KA, Hobbs PJ, Quirk H, Shipley B, Cornelissen JHC,
+Kattge J, Bardgett RD. 2012. Abiotic drivers and plant traits
+explain landscape-scale patterns in soil microbial communi-
+ties. Ecol Lett 15:1230–9.
+Diaz S, Lavorel S, de Bello F, Quetier F, Grigulis K, Robson M.
+2007. Incorporating plant functional diversity effects in eco-
+system
+service
+assessments.
+Proc
+Natl
+Acad
+Sci
+USA
+104:20684–9.
+Douma JC, de Haan MWA, Aerts R, Witte J-PM, van Bodegom
+PM. 2012. Succession-induced trait shifts across a wide range
+of NW European ecosystems are driven by light and modu-
+lated by initial abiotic conditions. J Ecol 100:366–80.
+Eviner VT, Iii FSC, Vaughn CE. 2006. Seasonal variations in
+plant species effects on soil N and P dynamics. Ecology
+87:974–86.
+Fry EL, Manning P, Allen DGP, Hurst A, Everwand G, Rimmler
+M, Power SA. 2013. Plant functional group composition
+modiﬁes the effects of precipitation change on grassland eco-
+system function. PLoS ONE 8:e57027.
+Fry EL, Power SA, Manning P. 2014. Trait-based classiﬁcation
+and manipulation of plant functional groups for biodiversity–
+ecosystem function experiments. J Veg Sci 25:248–61.
+Garnier E, Cortez J, Billes G, Navas ML, Roumet C, Debussche
+M, Laurent G, Blanchard A, Aubry D, Bellmann A, Neill C,
+Toussaint JP. 2004. Plant functional markers capture eco-
+system
+properties
+during
+secondary
+succession.
+Ecology
+85:2630–7.
+Grace J, Nichol C, Disney M, Lewis P, Quaife T, Bowyer P. 2007.
+Can we measure terrestrial photosynthesis from space di-
+rectly, using spectral reﬂectance and ﬂuorescence? Glob
+Change Biol 13:1484–97.
+Grime JP. 1998. Beneﬁts of plant diversity to ecosystems:
+immediate, ﬁlter and founder effects. J Ecol 86:902–10.
+Hector A, Schmid B, Beierkuhnlein C, Caldeira MC, Diemer
+M, Dimitrakopoulos PG, Finn JA, Freitas H, Giller PS,
+Good J, Harris R, Ho¨gberg P, Huss-Danell K, Joshi J,
+Jumpponen A, Ko¨rner C, Leadley PW, Loreau M, Minns
+A, Mulder CPH, O’Donovan G, Otway SJ, Pereira JS,
+Prinz
+A,
+Read
+DJ,
+Scherer-Lorenzen
+M,
+Schulze
+E-D,
+Siamantziouras A-SD, Spehn EM, Terry AC, Troumbis AY,
+Woodward FI, Yachi S, Lawton JH. 1999. Plant diversity
+and
+productivity
+experiments
+in
+European
+grasslands.
+Science 286:1123–7.
+G. Everwand and others
+
+Hui D, Luo Y, Katul G. 2003. Partitioning interannual variability
+in net ecosystem exchange between climatic variability and
+functional change. Tree Physiol 23:433–42.
+Johnson D, Phoenix GK, Grime JP. 2008. Plant community
+composition, not diversity, regulates soil respiration in grass-
+lands. Biol Lett 4:345.
+Kattge J, Diaz S, Lavorel S, Prentice C, Leadley P, Boenisch G,
+Garnier E, Westoby M, Reich PB, Wright IJ, Cornelissen JHC,
+Violle C, Harrison SP, van Bodegom PM, Reichstein M, En-
+quist BJ, Soudzilovskaia NA, Ackerly DD, Anand M, Atkin O,
+Bahn M, Baker TR, Baldocchi D, Bekker R, Blanco CC,
+Blonder B, Bond WJ, Bradstock R, Bunker DE, Casanoves F,
+Cavender-Bares J, Chambers JQ, Chapin FSIII, Chave J, Co-
+omes D, Cornwell WK, Craine JM, Dobrin BH, Duarte L,
+Durka W, Elser J, Esser G, Estiarte M, Fagan WF, Fang J,
+Fernandez-Mendez F, Fidelis A, Finegan B, Flores O, Ford H,
+Frank D, Freschet GT, Fyllas NM, Gallagher RV, Green WA,
+Gutierrez AG, Hickler T, Higgins SI, Hodgson JG, Jalili A,
+Jansen S, Joly CA, Kerkhoff AJ, Kirkup D, Kitajima K, Kleyer
+M, Klotz S, Knops JMH, Kramer K, Kuehn I, Kurokawa H,
+Laughlin D, Lee TD, Leishman M, Lens F, Lenz T, Lewis SL,
+Lloyd J, Llusia J, Louault F, Ma S, Mahecha MD, Manning P,
+Massad T, Medlyn BE, Messier J, Moles AT, Mueller SC,
+Nadrowski K, Naeem S, Niinemets U, Noellert S, Nueske A,
+Ogaya R, Oleksyn J, Onipchenko VG, Onoda Y, Ordonez J,
+Overbeck G, Ozinga WA, Patino S, Paula S, Pausas JG, Pen-
+uelas J, Phillips OL, Pillar V, Poorter H, Poorter L, Poschlod P,
+Prinzing A, Proulx R, Rammig A, Reinsch S, Reu B, Sack L,
+Salgado-Negre B, Sardans J, Shiodera S, Shipley B, Siefert A,
+Sosinski E, Soussana JF, Swaine E, Swenson N, Thompson K,
+Thornton P, Waldram M, Weiher E, White M, White S,
+Wright SJ, Yguel B, Zaehle S, Zanne AE, Wirth C. 2011.
+TRY—a global database of plant traits. Glob Change Biol
+17:2905–35.
+Kazakou E, Violle C, Roumet C, Navas ML, Vile D, Kattge J,
+Garnier E. 2014. Are trait based species rankings consistent
+across data sets and spatial scales? J Veg Sci 25:235–47.
+Kichenin E, Wardle DA, Peltzer DA, Morse CW, Freschet GT.
+2013. Contrasting effects of plant inter- and intraspeciﬁc
+variation on community-level trait measures along an envi-
+ronmental gradient. Funct Ecol 27:1254–61.
+Kolari P, Pumpanen J, Kulmala L, Ilvesniemi H, Nikinmaa E,
+Gronholm T, Hari P. 2006. Forest ﬂoor vegetation plays an
+important role in photosynthetic production of boreal forests.
+For Ecol Manag 221:241–8.
+Kunert N, Schwendenmann L, Potvin C, Ho¨lscher D. 2012. Tree
+diversity enhances tree transpiration in a Panamanian forest
+plantation. J Appl Ecol 49:135–44.
+Laughlin DC. 2011. Nitriﬁcation is linked to dominant leaf traits
+rather than functional diversity. J Ecol 99:1091–9.
+Lavorel S, Garnier E. 2002. Predicting changes in community
+composition and ecosystem functioning from plant traits:
+revisiting the Holy Grail. Funct Ecol 16:545–56.
+Lavorel S, Grigulis K, Lamarque P, Colace MP, Garden D, Girel J,
+Pellet G, Douzet R. 2011. Using plant functional traits to
+understand the landscape distribution of multiple ecosystem
+services. J Ecol 99:135–47.
+Loreau M, Hector A. 2001. Partitioning selection and comple-
+mentarity in biodiversity experiments. Nature 412:72–6.
+Ma S, Baldocchi DD, Mambelli S, Dawson TE. 2011. Are tem-
+poral variations of leaf traits responsible for seasonal and in-
+ter-annual variability in ecosystem CO2 exchange? Funct Ecol
+25:258–70.
+Maestre FT, Quero JL, Gotelli NJ, Escudero A, Ochoa V, Del-
+gado-Baquerizo M, Garcı´a-Go´mez M, Bowker MA, Soliveres
+S, Escolar C, Garcı´a-Palacios P, Berdugo M, Valencia E, Gozalo
+B, Gallardo A, Aguilera L, Arredondo T, Blones J, Boeken B,
+Bran D, Conceic¸a˜o AA, Cabrera O, Chaieb M, Derak M, El-
+dridge DJ, Espinosa CI, Florentino A, Gaita´n J, Gatica MG,
+GhilouﬁW, Go´mez-Gonza´lez S, Gutie´rrez JR, Herna´ndez RM,
+Huang X, Huber-Sannwald E, Jankju M, Miriti M, Monerris J,
+Mau RL, Morici E, Naseri K, Ospina A, Polo V, Prina A,
+Pucheta E, Ramı´rez-Collantes DA, Roma˜o R, Tighe M, Torres-
+Dı´az C, Val J, Veiga JP, Wang D, Zaady E. 2012. Plant species
+richness and ecosystem multifunctionality in global drylands.
+Science 335:214–18.
+Manning P, Putwain P, Webb N. 2006. The role of soil phos-
+phorus sorption characteristics in the functioning and stability
+of lowland heath ecosystems. Biogeochemistry 81:205–17.
+Mason NWH, MacGillivray K, Steel JB, Wilson JB. 2003. An
+index of functional diversity. J Veg Sci 14:571–8.
+Michel P, Lee WG, During HJ, Cornelissen JHC. 2012. Species
+traits and their non-additive interactions control the water
+economy of bryophyte cushions. J Ecol 100:222–31.
+Migliavacca M, Reichstein M, Richardson AD, Colombo R, Sutton
+MA,LasslopG,TomelleriE,WohlfahrtG,CarvalhaisN,CescattiA,
+Mahecha MD,Montagnani L, Papale D, Zaehle S, Arain A, Arneth
+A, Black TA, Carrara A, Dore S, Gianelle D, Helfter C, Hollinger D,
+Kutsch WL, Laﬂeur PM, Nouvellon Y, Rebmann C, Da Rocha HR,
+Rodeghiero M, Roupsard O, SebastiA` M-T, Seufert G, Soussana J-
+F, Van Der Molen MK. 2011. Semiempirical modeling of abiotic
+and biotic factors controlling ecosystem respiration across eddy
+covariance sites. Glob Change Biol 17:390–409.
+Milcu A, Heim A, Ellis R, Scheu S, Manning P. 2011. Identiﬁ-
+cation of general patterns of nutrient and labile carbon control
+on soil carbon dynamics across a successional gradient. Eco-
+systems 14:710–19.
+Milcu A, Roscher R, Gessler A, Do¨rte B, Gockele A, Gunderle M,
+Landais D, Piel C, Escape C, Devidal S, Ravel O, Buchmann N,
+Gleixner G, Hildebrandt A, Roy J. 2014. Functional diversity
+of leaf nitrogen concentrations drives grassland carbon ﬂuxes.
+Ecol Lett. doi:10.1111/ele.12243.
+Mokany K, Ash JL. 2008. Are traits measured on pot grown
+plants representative of those in natural communities? J Veg
+Sci 19:119–26.
+Nakagawa S, Schielzeth H. 2013. A general and simple method
+for obtaining R2 from generalized linear mixed-effects models.
+Methods Ecol Evol 4:133–42.
+Niu S, Luo Y, Fei S, Yuan W, Schimel D, Law BE, Ammann C,
+Altaf Arain M, Arneth A, Aubinet M, Barr A, Beringer J,
+Bernhofer C, Andrew Black T, Buchmann N, Cescatti A, Chen
+J, Davis KJ, Dellwik E, Desai AR, Etzold S, Francois L, Gianelle
+D, Gielen B, Goldstein A, Groenendijk M, Gu L, Hanan N,
+Helfter C, Hirano T, Hollinger DY, Jones MB, Kiely G, Kolb TE,
+Kutsch WL, Laﬂeur P, Lawrence DM, Li L, Lindroth A, Litvak
+M, Loustau D, Lund M, Marek M, Martin TA, Matteucci G,
+Migliavacca M, Montagnani L, Moors E, William Munger J,
+Noormets A, Oechel W, Olejnik J, Kyaw Tha Paw U, Pilegaard
+K, Rambal S, Raschi A, Scott RL, Seufert G, Spano D, Stoy P,
+Sutton MA, Varlagin A, Vesala T, Weng E, Wohlfahrt G, Yang
+B, Zhang Z, Zhou X. 2012. Thermal optimality of net ecosys-
+tem exchange of carbon dioxide and underlying mechanisms.
+New Phytol 194:775–83.
+Ordonez A. 2013. Global meta-analysis of trait consistency of
+non-native plants between their native and introduced areas.
+Glob Ecol Biogeogr 23:264–73.
+Trait–Flux Relationships
+
+Ostle NJ, Smith P, Fisher R, Ian Woodward F, Fisher JB, Smith
+JU, Galbraith D, Levy P, Meir P, McNamara NP, Bardgett RD.
+2009. Integrating plant–soil interactions into global carbon
+cycle models. J Ecol 97:851–63.
+Pinheiro JC, Bates DM. 2000. Mixed-effects models in S and S-
+PLUS. New York: Springer.
+R-Development-Core-Team. 2010. R: a language and environ-
+ment for statistical computing. Vienna, Austria: R foundation
+for statistical computing.
+Rodwell JS. 1992. British plant communities. Grasslands and
+montane communities, Vol. 3Cambridge: Cambridge Univer-
+sity Press.
+Sala OE, Chapin FS, Armesto JJ, Berlow E, Bloomﬁeld J, Dirzo
+R, Huber-Sanwald E, Huenneke LF, Jackson RB, Kinzig A,
+Leemans R, Lodge DM, Mooney HA, Oesterheld M, Poff NL,
+Sykes MT, Walker BH, Walker M, Wall DH. 2000. Biodiver-
+sity—global biodiversity scenarios for the year 2100. Science
+287:1770–4.
+Sapijanskas J, Loreau M. 2010. Cascading extinctions, functional
+complementarity, and selection in two-trophic-level model
+communities: a trait-based mechanistic approach. J Theor Biol
+267:375–87.
+Schumacher J, Roscher C. 2009. Differential effects of functional
+traits on aboveground biomass in semi-natural grasslands.
+Oikos 118:1659–68.
+Sitch S, Smith B, Prentice IC, Arneth A, Bondeau A, Cramer W,
+Kaplan JO, Levis S, Lucht W, Sykes MT, Thonicke K,
+Venevsky S. 2003. Evaluation of ecosystem dynamics, plant
+geography and terrestrial carbon cycling in the LPJ dynamic
+global vegetation model. Glob Change Biol 9:161–85.
+Soudzilouvskia NA, Elumeeva TG, Onipchenko VG, Shidakov II,
+Salpagarova FS, Khubiev AB, Tekeev DK, Cornelissen JHC.
+2013. Functional traits predict relationship between plant
+abundance dynamic and long-term climate warming. Proc
+Natl Acad Sci 110:18180–4.
+Tjoelker MG, Craine JM, Wedin D, Reich PB, Tilman D. 2005.
+Linking leaf and root trait syndromes among 39 grassland and
+savannah species. New Phytol 167:493–508.
+Verheijen LM, Brovkin V, Aerts R, Bo¨nisch G, Cornelissen JHC,
+Kattge J, Reich PB, Wright IJ, van Bodegom PM. 2013. Im-
+pacts of trait variation through observed trait–climate rela-
+tionships on performance of an Earth system model: a
+conceptual analysis. Biogeosciences 10:5497–515.
+Vojtech E, Loreau M, Yachi S, Spehn EM, Hector A. 2008. Light par-
+titioning in experimental grass communities. Oikos 117:1351–61.
+Wagner S, Madsen P, Ammer C. 2009. Evaluation of different
+approaches for modelling individual tree seedling height
+growth. Trees Struct Funct 23:701–15.
+Williams CA, Reichstein M, Buchmann N, Baldocchi D, Beer C,
+Schwalm C, Wohlfahrt G, Hasler N, Bernhofer C, Foken T,
+Papale D, Schymanski S, Schaefer K. 2012. Climate and veg-
+etation controls on the surface water balance: synthesis of
+evapotranspiration measured across a global network of ﬂux
+towers. Water Resour Res 48:W06523.
+Wohlfahrt G, Anderson-Dunn M, Bahn M, Balzarolo M, Bern-
+inger F, Campbell C, Carrara A, Cescatti A, Christensen T,
+Dore S, Eugster W, Friborg T, Furger M, Gianelle D, Gimeno
+C, Hargreaves K, Hari P, Haslwanter A, Johansson T, Marcolla
+B, Milford C, Nagy Z, Nemitz E, Rogiers N, Sanz M, Siegwolf
+R, Susiluoto S, Sutton M, Tuba Z, Ugolini F, Valentini R, Zorer
+R, Cernusca A. 2008. Biotic, abiotic, and management con-
+trols on the net ecosystem CO2 exchange of European
+mountain grassland ecosystems. Ecosystems 11:1338–51.
+Wright IJ, Reich PB, Westoby M, Ackerly DD, Baruch Z, Bongers F,
+Cavender-Bares J, Chapin T, Cornelissen JHC, Diemer M, Flexas
+J, Garnier E, Groom PK, Gulias J, Hikosaka K, Lamont BB, Lee T,
+Lee W, Lusk C, Midgley JJ, Navas M-L, Niinemets U, Oleksyn J,
+Osada N, Poorter H, Poot P, Prior L, Pyankov VI, Roumet C,
+Thomas SC, Tjoelker MG, Veneklaas EJ, Villar R. 2004. The
+worldwide leaf economics spectrum. Nature 428:821–7.
+G. Everwand and others

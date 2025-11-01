@@ -1,0 +1,929 @@
+Generalized AIC and chi-squared statistics for path models consistent with
+directed acyclic graphs
+Ecology
+Shipley, Bill; Douma, Jacob C.
+https://doi.org/10.1002/ecy.2960
+This publication is made publicly available in the institutional repository of Wageningen University and Research, under
+the terms of article 25fa of the Dutch Copyright Act, also known as the Amendment Taverne. This has been done with
+explicit consent by the author.
+Article 25fa states that the author of a short scientific work funded either wholly or partially by Dutch public funds is
+entitled to make that work publicly available for no consideration following a reasonable period of time after the work was
+first published, provided that clear reference is made to the source of the first publication of the work.
+This publication is distributed under The Association of Universities in the Netherlands (VSNU) 'Article 25fa
+implementation' project. In this project research outputs of researchers employed by Dutch Universities that comply with the
+legal requirements of Article 25fa of the Dutch Copyright Act are distributed online and free of cost or other barriers in
+institutional repositories. Research outputs are distributed six months after their first online publication in the original
+published version and with proper attribution to the source of the original publication.
+You are permitted to download and use the publication for personal purposes. All rights remain with the author(s) and / or
+copyright owner(s) of this work. Any use of the publication or parts of it other than authorised under article 25fa of the
+Dutch Copyright act is prohibited. Wageningen University & Research and the author(s) of this publication shall not be
+held responsible or liable for any damages resulting from your (re)use of this publication.
+For questions regarding the public availability of this publication please contact openscience.library@wur.nl
+
+Generalized AIC and chi-squared statistics for path models
+consistent with directed acyclic graphs
+BILL SHIPLEY
+1,3 AND JACOB C. DOUMA2
+1Departement de biologie, Universite de Sherbrooke, Sherbrooke, Quebec J1K 2R1 Canada
+2Centre for Crop Systems Analysis, Wageningen University, Droevendaalsesteeg 1, 6708 PB Wageningen, The Netherlands
+Citation: Shipley, B., and J. C., Douma. 2020. Generalized AIC and chi-squared statistics for path models
+consistent with directed acyclic graphs. Ecology 101(3):e02960. 10.1002/ecy.2960
+Abstract.
+We explain how to obtain a generalized maximum-likelihood chi-square statis-
+tic,X 2
+ML, and a full-model Akaike Information Criterion (AIC) statistic for piecewise structural
+equation modeling (SEM); that is, structural equations without latent variables whose causal
+topology can be represented as a directed acyclic graph (DAG). The full piecewise SEM is
+decomposed into submodels as a Markov network, each of which can have different distribu-
+tional assumptions or functional links and that can be modeled by any method that produces
+maximum-likelihood parameter estimates. The generalized X 2
+ML is a function of the difference
+in the maximum likelihoods of the model and its saturated equivalent and the full-model AIC
+is calculated by summing the AIC statistics of each of the submodels.
+Key words:
+Akaike Information Criterion; directed acyclic graph; d-separation; maximum likelihood;
+model selection; path analysis; piecewise SEM.
+INTRODUCTION
+Structural equations modeling (SEM) is a multivariate
+statistical method that allows one to test hypotheses con-
+cerning the causal structure believed to generate the
+observed data. Modern SEM was developed in disci-
+plines in which the variables of theoretical interest are
+primarily latent (i.e., not directly measured). By making
+certain assumptions concerning the data (multivariate
+normality, mutually independent observations, linear
+relationships between the variables), and by maximizing
+the likelihood of the data given these assumptions, one
+obtains an inferential test of the fit between the data and
+the hypothesized SEM via the maximum-likelihood chi-
+square statistic (Bollen 1989) and an Akaike Informa-
+tion statistic (AIC). Much effort has gone into relaxing
+the assumption of multivariate normality but available
+statistical SEM programs still largely require linearity of
+relationships, although nonlinearity due to binary or
+ordered categorical variables can be modeled via a link
+function. Furthermore, although some forms of nesting
+can be accommodated (e.g., Shipley 2016:Chapter 7), it
+is difficult, and sometimes impossible, to accommodate
+more complicated forms of nonindependence of obser-
+vations because of nesting, temporal, spatial or phyloge-
+netic correlations, or cross-classification.
+Some theoretical variables in ecology cannot be
+directly measured, or else contain substantial measure-
+ment error; in such cases, one should model such vari-
+ables as latent. Examples of latent variables are soil
+“fertility” (Daou and Shipley 2019) or components of
+metal bioavailability in toxicology (Beaumelle et al.
+2016). However, variables of theoretical interest in ecol-
+ogy can often be directly measured without substantial
+error. In such cases, the causal hypothesis can be repre-
+sented as a directed acyclic graph (DAG) without
+latents, that is, a path model. Unfortunately, variables in
+ecological models are often linked to other variables
+through nonlinear functions that cannot be linearized
+through transformation and that follow nonnormal dis-
+tributions. Furthermore, nonindependence of observa-
+tions because of nesting, temporal, phylogenetic or
+spatial correlations, or cross-classification, are common.
+Shipley (Shipley 2000, Kang and Shipley 2009, Shipley
+2009) developed a general inferential test (a “dsep test”)
+for DAGs without latent variables that is based on
+Pearl’s (Verma and Pearl 1988, Pearl 2009) d-separation
+claims of a DAG; a dsep test can easily include different
+distributional
+assumptions,
+nonindependence
+of
+Manuscript received 20 September 2019; revised 8 November
+2019; accepted 26 November 2019. Corresponding Editor:
+Nicholas J. Gotelli.
+3 E-mail: bill.shipley@usherbrooke.ca
+Article e02960; page 1
+Statistical Reports
+Ecology, 101(3), 2020, e02960
+© 2019 by the Ecological Society of America
+
+observations, and nonlinear functional links. This allows
+one to test the causal implications of such path models
+(i.e., the topology of the DAG) more generally than with
+classical maximum-likelihood SEM. In classical maxi-
+mum-likelihood SEM, parameter estimation and model
+testing are done simultaneously. Model testing via the
+dsep test does not estimate the free parameters of the
+path model; instead, parameter estimation is only done
+after the topology of the causal model (the DAG) has
+been judged consistent with the data by decomposing
+the full path model into a set of submodels (thus, “piece-
+wise”) consisting of each endogenous variable and its
+causal parents. The parameter estimates can be based on
+different probability distributions and the direct links
+between variables can have different functional forms. A
+version of the dsep test whose conditional independence
+claims can be tested via linear, generalized linear, or lin-
+ear mixed models has been implemented in the piece-
+wiseSEM R package (Lefcheck 2016).
+Although the dsep test, in combination with a signifi-
+cance level, allows one to decide if the causal structure
+of a path model should be rejected given the observed
+data, it does not detect errors other than in the causal
+topology. It is possible for models having different causal
+topologies to be consistent with the data based on the
+dsep test. When this occurs, we require a method of
+comparing these different models. Such a method, based
+on Akaike’s (1973) Information Criterion (AIC), was
+developed by Shipley (2013); we will call this a “dsep
+AIC” to distinguish it from the new AIC statistic devel-
+oped in this paper. The dsep AIC statistic is based solely
+on the causal topology of a DAG, as captured by its d-
+separation claims and the resulting C-statistic, and is
+appropriate when comparing path models that differ in
+their causal topology. When path models differ in
+aspects besides their causal topology, Shipley’s (2013)
+dsep AIC statistic does not reflect such differences. Here,
+we generalize the maximum-likelihood chi-square statis-
+tic to allow for the complications described above and
+then develop a new AIC statistic for piecewise SEM.
+These two statistics take into account the topology of
+the DAG, the parameter estimates of the path model,
+and the distributional assumptions of the submodels of
+the path model. We will call this new AIC statistic a
+“full-model AIC.”
+DAGS AND LOCAL MARKOV DECOMPOSITION
+A DAG (Pearl 2009) represents a multivariate causal
+hypothesis without feedback or free covariances and
+links variables with their direct causes by a directed rela-
+tionship (an arrow). An arrow from a cause (X) to its
+direct effect (Y, i.e., X ? Y) means that a change in X
+will induce a change in Y even when all other variables
+in the model are held constant. A piecewise SEM con-
+sists of (1) a set of variables, (2) a DAG representing the
+topology of the multivariate causal hypothesis specifying
+the links between these variables, and (3) a statistical
+model specifying the function (including its parameters)
+linking each effect to its direct causes. This is also called
+a Bayesian network (or belief network) in the field of
+artificial intelligence (Pearl 1988). For instance, the
+DAG in Fig. 1a is translated into a piecewise model M
+involving five submodels (Eq. 1) as follows:
+x1 ¼ p1 x1jh1
+ð
+Þ
+x2 ¼ f2ðx1; H2Þ þ p2ðx2jh2Þ
+x3 ¼ f3ðx2; H3Þ þ p3ðx3jh3Þ
+x4 ¼ f4ðx2; H4Þ þ p4ðx4jh4Þ
+x5 ¼ f5ðx3; x4; H5Þ þ p5ðx5jh5Þ
+(1)
+here, pi xijhi
+ð
+Þ is a probability distribution function for
+variable xi given a vector of parameters hi (for instance,
+theoretical means or variances) and fiðpai; HiÞ is a func-
+tion describing the expected value of xi given its direct
+causes (“parents” pai) having a vector of parameters Hi
+(for example, slopes or intercepts); pai is an empty set if
+xi has no explicit causes (an exogenous variable) like x1
+in Fig. 1. For notational simplicity, we will simply write
+hi to include both the parameters of the functional link
+(Hi) if the variable is endogenous and of its probability
+density function (hi). The full set of parameters are
+either “fixed” (their values are specified by hypothesis)
+or “free” (their values are chosen based on the data by
+maximizing the likelihood of the model). A model M
+given a DAG with v variables will have v such submodels.
+A key property of such models is that the joint probabil-
+ity distribution over the variables can be decomposed
+through local Markov decomposition into the product
+of v local univariate probability distributions (Pearl
+2000):
+pMðx1;    ; xvÞ ¼
+Y
+v
+i¼1
+piðxijpaiÞ
+(2)
+Decomposition of the likelihood of a piecewise SEM
+Our piecewise model M contains a vector of parame-
+ters h ¼
+h1;    ; hp
+
+
+. This model gives the multivariate
+x1
+x2
+x5
+x3
+x4
+x1
+x2
+x5
+x3
+x4
+(a)
+(b)
+FIG. 1.
+Two alternative directed acyclic graphs (DAGs) rep-
+resenting the causal topology of a multivariate probability dis-
+tribution over five variables (x1–x5).
+Article e02960; page 2
+BILL SHIPLEY AND JACOB C. DOUMA
+Ecology, Vol. 101, No. 3
+Statistical Reports
+
+probability distribution, or probability density function,
+pMðXjhÞ, of this set of random variables X = {x1,. . .,xv}.
+The likelihood of this model for h given the data (X) is
+LM hjX
+ð
+Þ, where LM hjX
+ð
+Þ ¼ pM Xjh
+ð
+Þ. If the values of the
+parameters h are chosen to maximize this likelihood,
+then this gives the maximum likelihood LM ^hjX
+
+
+.
+Given Eq. 2, the log likelihood of the model M is equal
+to the sum of the univariate log likelihoods of each of
+the submodels of M (Eq. 3); in this equation the nota-
+tion hi and Xi refer to all of the parameters and variables
+involved in the ith submodel:
+log LM hMjX
+ð
+Þ
+ð
+Þ ¼ log
+Y
+v
+i¼1
+Li hijXi
+ð
+Þ
+ 
+!
+¼
+X
+v
+i¼1
+log Li hijXi
+ð
+Þ
+ð
+Þ
+(3)
+GENERALIZING THE MAXIMUM-LIKELIHOOD CHI-SQUARE
+STATISTIC
+The
+well-known
+maximum-likelihood
+chi-square
+statistic
+X 2
+ML
+
+
+of SEM (Bollen 1989) compares the
+observed and model-fitted covariance matrices and tests
+the null hypothesis that these two matrices are equal
+except for random sampling variation. This statistic
+assumes a multivariate normal distribution. However,
+this statistic is a special case of a more general formula-
+tion (Bollen 1989, Haughton et al. 1997) which is the
+well-known likelihood ratio statistic between two nested
+models (Eq. 4). One model (M1) is nested within
+another (M2) if the free parameters of the nested (more
+constrained) model M1 are a subset of the free parame-
+ters of the less constrained model M2 into which it is
+nested. When testing the hypothesized causal topology
+of a model, the “missing” arrows in M1 are translated
+into path coefficients fixed to zero, and the less con-
+strained (“saturated”) model M2 will have these path
+coefficients as free parameters. Appendix S1 explains in
+more detail how to construct saturated models. If the
+additional free parameters of M2 really are equal to zero
+in the statistical population (i.e., their fixed values in
+M1) then X 2
+ML will asymptotically follow a chi-squared
+distribution with degrees of freedom equal to the differ-
+ence (f2  f1) in the number of free parameters between
+the less constrained M2 and the more constrained nested
+model M1 (Wilks 1938). Note that the minimal sample
+size required for obtaining a good approximation to a
+chi-squared distribution depends on the actual distribu-
+tional forms used in the models and does not apply if
+some of the free parameters are estimated at their theo-
+retical boundaries. If M2 is a fully saturated model (i.e.,
+there are no “missing” arrows), the endogenous vari-
+ables of which follow a multivariate normal distribution,
+then Eq. 4 reduces to the maximum-likelihood chi-
+square statistic of SEM (Haughton et al. 1997). Given
+Eq. 3, we can obtain the maximum likelihoods of both
+models M1 and M2 in Eq. 4 without assuming linearity
+or normality, as long as we can obtain the univariate
+maximum likelihoods of each of the submodels. Stan-
+dard solutions already exist to calculate univariate maxi-
+mum likelihoods of linear or nonlinear regressions,
+generalized linear models, mixed models, or generalized
+additive models:
+X 2
+ML ¼ 2 log LðM1Þ
+ð
+Þ  log LðM2Þ
+ð
+Þ
+ð
+Þ  lim
+n!1 v2
+f2f1
+ð
+Þ
+(4)
+OBTAINING A GENERALIZED AIC STATISTIC
+Akaike’s Information Criterion is given in Equation 5
+by Akaike (1973), where LM is the likelihood function
+of the model, ^h is a vector of free parameters (slopes,
+intercepts, variances, etc.) estimated at their maximum
+likelihoods given the data (X), and K is the number of
+free parameters in ^h. The AIC statistic, as applied to
+classic maximum likelihood SEM, is given in Bollen
+(1989) and Haughton et al. (1997) and is routinely given
+in common SEM programs including the popular lavaan
+package in R (Rosseel 2012). This classic maximum-like-
+lihood AIC statistic takes into account both the causal
+topology of the model and the parameter estimates, but
+assumes multivariate normality, linearity of relation-
+ships, and complete independence of observations. The
+classic maximum-likelihood AIC statistic cannot be used
+when these assumptions are violated, which renders it
+useless for the path models when nonnormal distribu-
+tions, nonlinear relationships, or partial nonindepen-
+dence because of nesting or other complications exist.
+AIC ¼ 2 log LM ^hjX
+
+
+
+
+þ 2K
+(5)
+However, given Eq. 3, the AIC statistic for a piecewise
+model M is simply the sum of the AIC statistics obtained
+from each of the i submodels (Eq. 6). Note that the AIC
+takes the sum of the likelihood of each of submodel and
+not the difference in likelihood between the hypothesized
+and saturated model. The second-order bias correction
+for small samples (AIC
+M, Eq. 7) can be used as well
+(Burnham and Anderson 2002):
+AICM ¼ 2
+X
+v
+i¼1
+log Li hijXi
+ð
+Þ
+ð
+Þ þ 2
+X
+v
+i¼1
+Ki
+ 
+!
+¼
+X
+v
+i¼1
+AICi
+(6)
+AIC
+M ¼ 2
+X
+v
+i¼1
+log Li hijXi
+ð
+Þ
+ð
+Þ þ 2
+X
+v
+i¼1
+Ki
+ 
+!
+þ 2
+X
+v
+i¼1
+Ki Ki þ 1
+ð
+Þ
+n  Ki  1 ¼
+X
+v
+i¼1
+AIC
+i
+(7)
+March 2020
+PIECEWISE STRUCTURAL EQUATION MODELING
+Article e02960; page 3
+Statistical Reports
+
+NUMERICAL EXAMPLES
+All analyses and simulations were done in the R statis-
+tical language (R_Development Core_Team 2016). The
+associated R code is given in DataS1: R code. We gener-
+ate 100 mutually independent observations following the
+DAG in Fig. 1a, using different distributional assump-
+tions. For comparison with classical SEM, we first gener-
+ate these observations using linear relationships and
+normal distributions (Table 1). We fit the classical maxi-
+mum-likelihood SEM with intercepts using the sem()
+function of the lavaan library of R (Rosseel 2012) to be
+comparable with the piecewise SEM. The four submodels
+were fit using the glm() function of R, specifying a nor-
+mal error distribution. The maximum-likelihood and
+AIC statistics were obtained via the logLik() and AIC()
+functions. Table 1 gives the results. All of the resulting
+values are identical to the values as output using the sem
+() function of lavaan. If we instead fit the incorrect model
+that follows the DAG in Fig. 1b, the results are again
+identical to values as output using the sem() function.
+Now, consider a more complicated model, whose
+topology is given in Fig. 1a, but having a mixture of chi-
+squared, Poisson, normal, and binomial distributed vari-
+ables (Table 2). Furthermore, the relationship between
+x2 and x1 is nonlinear and cannot be linearized by trans-
+formation. It is impossible to fit such a model in classical
+SEM, but it is quite easy to do this using piecewise
+SEM. We model this nonlinear relationship with a gener-
+alized additive model via the gam() function with the
+error structure modeled as a normal distribution, but
+one could replace this with a nonlinear regression if
+desired. The remaining submodels are fit via the glm()
+function in R with appropriate distributional families
+and link functions. Table 2 summarizes the results. In
+particular, the resulting X 2
+ML is 3.35 (5 df) giving a null
+probability of 0.65. Using the dsep test, we get a C-statis-
+tic of 7.68 (10 df), giving a null probability of 0.66. Note
+that this dsep test cannot be done via the piecewise SEM
+library of R because its current version does not accept
+generalized additive model objects.
+We can now compare alternative path models via the
+full-model AIC statistic. Our comparison involves four
+competing models that differ in either the causal topol-
+ogy (Fig. 1a,b) and in whether the link between x2 and
+x1 is linear or nonlinear. The values of this full-model
+AIC statistic, and its behavior relative to Shipley’s
+(2013) dsep AIC statistic, are given in Table 3. The rank-
+ing of the four models using the full-model AIC (DAIC
+relative to the best model) is: correct topology and non-
+linear link > correct topology and linear link (+10.33) >
+incorrect topology and nonlinear link (+19.39) > incor-
+rect topology and linear link (+29.73). The increase in
+the full-model AIC statistic identifies the three poorer
+models as clearly inferior given common criteria (Ander-
+son 2008). Using the dsep AIC the ranking is correct
+topology and linear link > correct topology and nonlin-
+ear link (+3.126) > incorrect topology and linear link
+(+17.24)
+>
+incorrect
+topology
+and
+nonlinear
+link
+(+20.37). The increase in the dsep AIC statistic again
+identifies the two models with the incorrect topology as
+clearly inferior, but the model with both the correct
+topology and nonlinear link is incorrectly identified as
+inferior.
+To explore the degree to which the X 2
+ML statistic
+approximates its theoretical asymptotic chi-squared dis-
+tribution, we simulated 5,000 independent data sets for
+sample sizes of 50, 100, 200, and 500 independent obser-
+vations, and following the multivariate normal and non-
+linear, nonnormal models given in Table 2. Appendix S2:
+Table S1 summarizes the results. The model with linear
+relationships and multivariate normal distributions pro-
+duced correct 5% null probabilities when sample sizes
+were at least 100 and the full tail distribution agreed with
+the asymptotic chi-square distribution at a sample size
+of 500. The model with nonnormal distributions and a
+nonlinear path had conservative null probability esti-
+mates even at a sample size of 500, although the degree
+of bias was small with an asymptotic probability esti-
+mate of 0.05 corresponding to an empirical probability
+of between 0.05 and 0.08 depending on the sample size.
+DISCUSSION
+These new generalized X 2
+ML and full-model AIC statis-
+tic
+are
+appropriate
+for
+any
+piecewise
+SEM,
+the
+TABLE 1.
+Parameter values for each of five normally distributed random variables (x1 to x5) generated following the directed
+acyclic graph shown in Fig. 1a.
+Variable
+Distribution (ei)
+Generating equation
+Statistical model
+LLi
+Ki
+AICi
+x1
+N(µ = 0, r2 = 1)
+xi = ei
+x2
+N(µ = 0, r2 = 0.75)
+x2 = 0.5x1 + ei
+glm(x2 ~ x1,. . .)
+126.839
+3
+259.678
+x3
+N(µ = 0, r2 = 0.75)
+X3 = 0.5x2 + ei
+glm(x3 ~ x2,. . .)
+112.682
+3
+231.364
+x4
+N(µ = 0, r2 = 0.75)
+X4 = 0.5x2 + ei
+glm(x4 ~ x1,. . .)
+131.711
+3
+269.422
+x5
+N(µ = 0, r2 = 0.50)
+X5 = 0.5x3 + 0.4x4 + ei
+glm(x5 ~ x3 + x4,. . .)
+102.919
+4
+213.838
+Notes: N(µ, r) is the Normal distribution of the random variable (ei), “Generating equation” gives the population values of the
+variable and “Statistical model” lists the statistical model (here, generalized linear models) used to estimate the paths. LLi is the
+maximum log likelihood of the ith submodel, given simulated data containing 100 observations, and Ki is the number of free param-
+eters in that submodel, including intercepts. Note
+the full model AIC ¼ 2 P
+i LLi þ P
+i Ki
+
+
+¼ 2ð474:151  12Þ ¼
+P
+i AICi ¼ 974:302.
+Article e02960; page 4
+BILL SHIPLEY AND JACOB C. DOUMA
+Ecology, Vol. 101, No. 3
+Statistical Reports
+
+submodels of which are fit using maximum likelihood
+estimation including linear, nonlinear, generalized linear,
+mixed, and generalized additive models. They are based
+on the local Markov decomposition, which implies that
+they cannot be applied to models involving latent vari-
+ables or having free covariances (correlated errors). The
+values of these generalized versions are identical to those
+obtained in classical SEM when using the assumptions
+of classical SEM. Although Eqs. 3 and 5 have already
+been used in the artificial intelligence literature on Baye-
+sian networks, assigning proper credit for these equa-
+tions is difficult. Koller and Friedman (2009) developed
+Eq. 3 from Eq. 2 but did not link it to an AIC statistic.
+Liu et al. (2012) used the AIC statistic given in Eq. 5 but
+did not develop it. Both Silander and Myllym€aki (2006)
+and Sullivant (2010) have independently proposed this
+method to find optimal topologies in Bayesian networks.
+To our knowledge, this paper is the first time that Eqs.
+2–4 have been combined to produce this generalized
+X 2
+ML test.
+The dsep test and the generalized X 2
+ML test are related
+but not identical. The dsep test concerns only the causal
+topology, as fixed by the d-separation claims. Depend-
+ing on how the saturated model is constructed, the gen-
+eralized X 2
+ML
+test can either test only the causal
+topology or also the distributional assumptions and
+functional links. For example, when fitting the correct
+model to the data (Table 3) the dsep test and the X 2
+ML
+test give essentially the same null probability (P = 0.66
+vs. 0.65). However, the X 2
+ML test rejects the model
+(X 2
+ML=16.81, 6.6 df, P = 0.01) with a linear path
+between x2 and x1, even though the causal topology is
+correct, when comparing it to the correct saturated
+model that includes this nonlinear path. This occurs
+because the only difference between the fitted model
+and its saturated version is the form (linear or nonlin-
+ear) of this path. When the model with an incorrect lin-
+ear path is compared to a saturated version that also
+contains this linear path, the X 2
+ML test does not reject
+the model, because, in this comparison, the only
+TABLE 2.
+A more complicated model involving five random variables (x1 to x5) generated following the directed acyclic graph
+shown in Fig. 1a.
+Variable
+Distribution (ei)
+Generating equation
+Statistical model
+LLi
+Ki
+AICi
+x1
+v2(υ = 7)
+xi = ei
+x2
+N(µ = 0, r = 1)
+x2 ¼ 10x1
+1þ5x1 þ ei
+gam(x2 ~ s(x1),. . .)
+144.511
+4.56
+298.148
+x3
+P(k = 0.5x2)
+x3 = ei
+glm(x3 ~ x2,. . .)
+185.841
+2
+375.682
+x4
+P(k = 0.5x2)
+x4 = ei
+glm(x4 ~ x1,. . .)
+196.640
+2
+397.279
+x5
+Bðg ¼ 1; q ¼
+e 0:5x3þ0:5x4
+ð
+Þ
+1þe 0:5x3þ0:5x4
+ð
+ÞÞ
+x5 = ei
+glm(x5 ~ x3+x4,. . .)
+56.820
+3
+119.640
+Notes: The probability density function of each random variable (ei): v2(υ) is a chi-squared distribution with degrees of freedom υ. P
+(k) is a Poisson distribution with rate k; B(g, q) is a binomial distribution of size g and success probability q; N(µ, r) is a normal (Gaus-
+sian) distribution with mean µ and standard deviation r. “Generating equation” gives the population values of the variable and “Statis-
+tical model” lists the statistical model (here, generalized linear or additive models) used to estimate the paths. LLi is the maximum log-
+likelihood of the ith submodel, given simulated data containing 100 observations, and Ki is the number of free parameters in that sub-
+model, including intercepts. Note the full model AIC ¼ 2 P
+i LLi þ P
+i Ki
+
+
+¼ 2ð583:812  11:56Þ ¼ P
+i AICi ¼ 1190:75.
+TABLE 3.
+Four competing models that differ in either their causal topology (correct = Fig. 1a and incorrect = Fig. 1b) and in
+whether the link between x2 and x1 is modeled as a linear (x2 ~ x1) or nonlinear function via a regression smoother (x2 ~ s(x1)).
+Hypothesized model with linear
+(x2 ~ x1) or nonlinear link (x2 ~ s(x1))
+Statistic
+Correct topology
+Incorrect topology
+x2 ~ s(x1)
+Log-likelihood
+583.812
+594.505
+x2 ~ s(x1)
+Number free parameters
+11.563
+10.563
+x2 ~ s(x1)
+X 2
+ML (df, null p)
+3.35 (5,0.65)
+24.73 (6, 4e4)
+x2 ~ s(x1)
+Model AIC (DAIC)
+1,190.75 (0)
+1,210.14 (+19.39)
+x2 ~ s(x1)
+C (df, null p)
+7.68 (10, 0.66)
+26.92 (12, 3e3)
+x2 ~ s(x1)
+dsep AIC (DAIC)
+30.806 (+3.126)
+48.046 (+20.37)
+x2 ~ x1
+Log-likelihood
+590.544
+601.238
+x2 ~ x1
+Number free parameters
+10
+9
+x2 ~ x1
+X 2
+ML (df, null p)
+16.81 (6.6, 0.01)
+38.20 (7.56, 5e6)
+x2 ~ x1
+Model AIC (DAIC)
+1201.088 (+10.33)
+1220.475 (+29.725)
+x2 ~ x1
+C (df, null p)
+7.68 (10, 0.66)
+26.92 (12, 3e3)
+x2 ~ x1
+dsep AIC (DAIC)
+27.68 (0)
+44.92 (+17.24)
+Notes: C (df, null p) is the dsep C-statistic, its degrees of freedom, and its null probability. X 2
+ML (df, null p) is the maximum-likeli-
+hood test statistic, its degrees of freedom, and its null probability. Also listed are the AIC statistics (DAIC relative to the best model)
+of the dsep method and of this paper, maximum log-likelihoods, the number of free parameters in the model.
+March 2020
+PIECEWISE STRUCTURAL EQUATION MODELING
+Article e02960; page 5
+Statistical Reports
+
+difference is in the causal topology, which is correct
+(X 2
+ML=3.35, 5 df, P = 0.65). The X 2
+ML therefore has
+some advantages over the C-statistic whenever the
+structural equations of the DAG can be expressed in a
+maximum-likelihood context: (1) model testing and
+parameter
+estimation
+are
+done
+simultaneously;
+in
+the case of mixed-effect models the calculation of P-
+values in the dsep test can be problematic; (2) it allows
+one to calculate modification indices similar to what is
+done in classical sem (Shipley 2016). However, the dsep
+test is still the only test available when the conditions
+required for maximum likelihood are not met; for
+example, when using distance matrices (Frenette-Dus-
+sault et al. 2013). Additionally, the dsep test is preferred
+with small sample sizes and exact tests of conditional
+independence. Furthermore, the individual d-separation
+claims in the basis set of the dsep test provide guidance
+for model modification when the overall model is
+rejected. The different conclusions of the full-model
+and dsep AIC statistics also require proper interpreta-
+tion. One interpretation of the AIC statistic is that it
+compares model fit (quantified by the maximum log-
+likelihood) to model simplicity (quantified by the num-
+ber of free parameters required to produce this fit)
+(Burnham and Anderson 2002, Anderson 2008). The
+dsep AIC concerns only differences in the causal topol-
+ogy of the model; it is meant only for comparing alter-
+native models that differ in their causal topologies (i.e.,
+their d-separation claims). It is for this reason that the
+dsep AIC clearly identifies the two models having the
+incorrect causal topology as inferior but, within each
+group having the same causal topology, incorrectly pre-
+fers the model with fewer free parameters, that is, the
+linear link between x2 and x1. However, the full-model
+AIC statistic incorporates both the causal topology (the
+d-separation claims) and any other assumptions con-
+cerning the fitted parameter values of the full model.
+These assumptions include different probability distri-
+butions of the endogenous variables, different func-
+tional forms of the links between a parent and its
+causal children, equality constraints on subsets of
+parameters, and any complications arising from nesting,
+cross-classification, or correlations arising from spatial,
+temporal, or phylogenetic correlations if these can be
+modeled in a way that provides a likelihood function.
+Because these other aspects of the model are included
+with our new full-model AIC statistic, the model in
+Table 3 having the correct causal topology but an incor-
+rect (i.e., linear) function linking x2 to x1 was identified
+as being clearly inferior. When one wishes to compare
+all aspects of a piecewise SEM model based on maxi-
+mum-likelihood submodels and not just the causal
+topology, we therefore recommend that the generalized
+X 2
+ML and this new full-model AIC statistic be used
+instead of the dsep test AIC statistic. However, when
+doing so, it is important to remember that these two
+generalized statistics reflect all errors in model fit, not
+just errors in the causal topology. Depending on the
+purpose of the test, this could be an advantage or a dis-
+advantage.
+ACKNOWLEDGMENTS
+We thank John Lefcheck, Marc Belisle, and one anonymous
+reviewer for helpful suggestions.
+LITERATURE CITED
+Akaike, H. 1973. Information theory and an extension of
+the maximum likelihood principle. InB. N. Petrov and F.
+Csaki, editors. Proceedings of the 2nd International Sym-
+posium on Information Theory. Akademiai Kiado, Buda-
+pest, Hungary.
+Anderson, D. R. 2008. Model based inference in the life
+sciences. A primer on evidence. Springer, New York, New
+York, USA.
+Beaumelle, L., D. Vile, I. Lamy, F. Vandenbulcke, F. Gimbert,
+and M. Hedde. 2016. A structural equation model of soil
+metal bioavailability to earthworms: confronting causal the-
+ory and observations using a laboratory exposure to field-
+contaminated soils. Science of the Total Environment 569–
+570:961–972.
+Bollen, K. A. 1989. Structural equations with latent variables.
+John Wiley and Sons, New York, New York, USA.
+Burnham, K. P., and D. R. Anderson. 2002. Model selection
+and multimodel inference: A practical information-theoretic
+approach. Springer-Verlag, New York, New York, USA.
+Daou, L., and B. Shipley. 2019. The measurement and quantifi-
+cation of generalized gradients of soil fertility relevant to
+plant community ecology. Ecology 100:e02549.
+Frenette-Dussault, C., B. Shipley, and Y. Hingrat. 2013. Linking
+plant and insect traits to understand multitrophic community
+structure in arid steppes. Functional Ecology 27:786–792.
+Haughton, D. M. A., J. H. L. Oud, and R. A. R. G. Jansen.
+1997. Information and other criteria in structural equa-
+tion model selection. Communications in Statistics—Simula-
+tion and Computation 26:1477–1516.
+Kang, C., and B. Shipley. 2009. A correction note on “A new
+inferential test for path models based on directed acyclic
+graphs.” Structural Equation Modeling: A Multidisciplinary
+Journal 16:537–538.
+Koller, D., and N. Friedman. 2009. Probabilistic graphical mod-
+els. Principles and techniques. MIT Press, Cambridge, Mas-
+sachusetts, USA.
+Lefcheck, J. S. 2016. piecewiseSEM: Piecewise structural equa-
+tion modelling in r for ecology, evolution, and systematics.
+Methods in Ecology and Evolution 7:573–579.
+Liu, Z., B. Malone, and C. Yuan. 2012. Empirical evaluation of
+scoring functions for Bayesian network model selection.
+BMC Bioinformatics 13(Suppl):15.
+Pearl, J. 1988. Probabilistic reasoning in intelligent systems:
+Networks of plausible inference. Morgan Kaufmann, San
+Mateo, California, USA.
+Pearl, J. 2000. Causality. Cambridge University Press, Cam-
+bridge, UK.
+Pearl, J. 2009. Causality: models, reasoning, and inference. Sec-
+ond edition. Cambridge University Press, Cambridge, UK.
+R Development Core Team. 2016. R: a language and environ-
+ment for statistical computing. R Foundation for Statistical
+Computing, Vienna, Austria. www.r-project.org
+Rosseel, Y. 2012. lavaan: An R package for structural equa-
+tion modeling. Journal of Statistical Software 48:1–36.
+Shipley, B. 2000. A new inferential test for path models based
+on directed acyclic graphs. Structural Equation Modeling
+7:206–218.
+Article e02960; page 6
+BILL SHIPLEY AND JACOB C. DOUMA
+Ecology, Vol. 101, No. 3
+Statistical Reports
+
+Shipley, B. 2009. Confirmatory path analysis in a generalized
+multilevel context. Ecology 90:363–368.
+Shipley, B. 2013. The AIC model selection method applied to
+path analytic models compared using a d-separation test.
+Ecology 94:560–564.
+Shipley, B. 2016. Cause and correlation in biology: a user’s
+guide to path analysis, structural equations and causal infer-
+ence with R. Second edition. Cambridge University Press,
+Cambridge, UK.
+Silander, T., and P. Myllym€aki. 2006. A simple approach for
+finding the globally optimal Bayesian network structure.
+Pages 445–452 in Proceedings of the 22nd Conference on
+Uncertainty in Artificial Intelligence, UAI 2006. Cambridge,
+Massachusetts, USA.
+Sullivant, S. 2010. Algebraic statistics. American Mathematical
+Society, Providence, Rhode Island, USA.
+Verma, T., and J. Pearl. 1988. Causal networks: Semantics and
+expressiveness. Pages 352–359 in Proceedings of the 4th Work-
+shop on Uncertainty in Artificial Intelligence, Mountain View.
+UAI, Mountain View, CA.
+Wilks, S. S. 1938. The large-sample distribution of the likeli-
+hood ratio for testing composite hypotheses. Annals of Math-
+ematical Statistics 9:60–62.
+SUPPORTING INFORMATION
+Additional supporting information may be found in the online version of this article at http://onlinelibrary.wiley.com/doi/
+10.1002/ecy.2960/suppinfo
+March 2020
+PIECEWISE STRUCTURAL EQUATION MODELING
+Article e02960; page 7
+Statistical Reports

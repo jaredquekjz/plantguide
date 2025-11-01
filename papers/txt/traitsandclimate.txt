@@ -1,0 +1,2201 @@
+communications biology
+Article
+https://doi.org/10.1038/s42003-024-06777-3
+Global patterns of plant functional traits
+and their relationships to climate
+Check for updates
+Jiaze Li
+1
+& Iain Colin Prentice
+1,2
+Plant functional traits (FTs) determine growth, reproduction and survival strategies of plants adapted
+to their growth environment. Exploring global geographic patterns of FTs, their covariation and their
+relationships to climate are necessary steps towards better-founded predictions of how global
+environmental change will affect ecosystem composition. We compile an extensive global dataset for
+16 FTs and characterise trait-trait and trait-climate relationships separately within non-woody, woody
+deciduous and woody evergreen plant groups, using multivariate analysis and generalised additive
+models (GAMs). Among the six major FTs considered, two dominant trait dimensions—representing
+plant size and the leaf economics spectrum (LES) respectively—are identiﬁed within all three groups.
+Size traits (plant height, diaspore mass) however are generally higher in warmer climates, while LES
+traits (leaf mass and nitrogen per area) are higher in drier climates. Larger leaves are associated
+principally with warmer winters in woody evergreens, but with wetter climates in non-woody plants.
+GAM-simulated global patterns for all 16 FTs explain up to three-quarters of global trait variation.
+Global maps obtained by upscaling GAMs are broadly in agreement with iNaturalist citizen-science FT
+data. This analysis contributes to the foundations for global trait-based ecosystem modelling by
+demonstrating universal relationships between FTs and climate.
+As primary producers, land plants regulate carbon and nitrogen cycling in
+ecosystems and determine their productivity1–3. Functional traits (FTs)—
+morphological, physiological, and phenological characteristics of individual
+plants4—determine plant growth, reproduction, and survival strategies by
+inﬂuencing life-history processes (e.g., seed traits), resource uptake and
+utilisation (e.g., leaf nutrient contents), and responses to environmental
+changeanddisturbances (e.g.,leaftraitsand plantheight)4–6.FTsthusreﬂect
+the diverse ecological strategies of plants, which inﬂuence plant community
+assembly and thereby biodiversity and function5,7–9.
+FTs have been found to covary along a limited number of
+dimensions4,10. FTs that vary together at species level might, in principle,
+share genetic controls, or depend on trade-offs representing alternative
+ecological strategies10. The leaf economics spectrum (LES) is one well-
+known axis of trait covariation that embodies a trade-off between resource
+acquisitionandconservation11.Díazandcolleagues12 summarised the global
+spectrum of plant form and function based on six major FTs that are critical
+for the growth, survival, and reproduction of species. They identiﬁed two
+orthogonal dimensions of trait covariation: one corresponding to the size of
+whole plants and plant organs, the other to the LES12. These two trait
+dimensionsareuniversal,existingeveninecosystemswithextremeclimates,
+such as tundra13; at both species and community scales9,14; and within
+plant groups, e.g., trees15. Different ecological strategies can facilitate the
+coexistence of species (and their FTs) within communities9. At the com-
+munity level, covarying FTs tend to perform interrelated functions2,16–18.
+Wright et al.16 observed that wood density and leaf size are negatively
+correlated in neotropical forests. Lower wood density related to
+higher water conductivity per unit sapwood area and larger leaf area
+associated with potentially higher photosynthetic rate but also higher
+evapotranspiration. These two traits are thus interconnected through the
+hydraulic system governing water transport and its trade-off with photo-
+synthetic efﬁciency16. Quantifying the covariation of FTs and their controls
+is necessary for a full understanding of how the diversity of plants translates
+into
+community
+composition,
+productivity,
+and
+adaptations
+to
+environment10.
+Although the two dimensions of trait variation identiﬁed in ref. 12
+are universal, the prevalence of speciﬁc FTs varies along environmental
+gradients2,19: different combinations of FTs are selected for by environ-
+mental conditions5,14,20, so climate change is expected to bring about shifts
+in species composition determined by their FTs, such as migration and
+extinction of needle-leaved trees in part of North America since the last
+1Georgina Mace Centre for the Living Planet, Department of Life Sciences, Imperial College London, Silwood Park Campus, Buckhurst Road, Ascot, SL5 7PY, UK.
+2Department of Earth System Science, Ministry of Education Key Laboratory for Earth System Modeling, Institute for Global Change Studies, Tsinghua University,
+Beijing, 100084, China.
+e-mail: jiaze.li19@imperial.ac.uk
+Communications Biology |  (2024) 7:1136 
+1
+1234567890():,;
+1234567890():,;
+
+glacial maximum21. In order to predict such shifts, it is essential to
+understand global trait-climate relationships2,21. But there is no
+comprehensive global map of trait measurements22. The models used
+most widely to investigate climate change effects on ecosystems are
+Dynamic Global Vegetation Models (DGVMs). These typically
+compress functional diversity into a small (about 5–15) number of
+plant functional types (PFTs)22,23, which are assigned ﬁxed trait
+values. Substantial, observed variability within PFTs is thereby
+lost24,25. Moreover, as past and future climates may have no analogues
+in present climate conditions, it is likely that this approach misses
+potential trait variation and trait combinations within PFTs24,26,27. A
+better approach to estimating trait values on a global scale is needed
+to overcome the limitations of PFT-based modelling. Although
+satellite remote-sensing offers potential to directly map plant traits at
+large scales28–30, this approach can only retrieve a limited set of traits
+from leaves and upper canopies, with moderate accuracy28. In addi-
+tion, statistical upscaling and machine learning approaches based on
+relationships between FTs and environmental factors have recently
+been used to produce global maps for a few (mainly leaf)
+FTs2,3,25,29,31–34. A recently published work simulated global maps of
+three leaf traits via optimality models based on eco-evolutionary
+optimality theory35. However, the various published global trait maps
+do not always show consistent global patterns, reﬂecting differences
+in data sources and upscaling methods35,36.
+Newly published data and computational resources should facilitate
+global-scaleresearchonFTs.ThesPlotOpendataset37,38,acuratedsubsetofa
+large globally distributed set of vegetation plots,provides plot-level trait data
+(as community-weighted means, CWMs) for 18 FTs. These CWMs were
+calculated from trait data in the TRY database39 and the relative abundances
+of each taxon within each plot38. Díaz et al.40 recentlypublished an enhanced
+species-level trait dataset containing the species-mean values of the six
+major FTs deﬁning the primary axes of trait covariation in the global
+spectrum of plant form and function as deﬁned in ref. 12 Global trait
+patterns have also beenmapped bycomplementing plantobservations from
+the
+global
+citizen-science
+project
+iNaturalist
+with
+measurements
+from TRY41.
+A study of the geographical patterns of six FTs across North and South
+America found that trait-climate relationships differ overall between woody
+and herbaceous plants, including different climate predictors and different
+response shapes of FTs along climatic gradients42. Previous studies have also
+found that woody evergreen plants tend to have thicker and longer-lived
+leavespoleward,whilewoodydeciduousplantsshowtheoppositepattern43,44.
+A recently developed theory explains this divergence of latitudinal trends45.
+According to the theory, leaves maximise the average net carbon gain over
+their life cycle. The different relationships between leaf mass per area (LMA)
+and environmental factors in deciduous and evergreen woody plants then
+arise because the life cycle of deciduous leaves, unlike that of evergreen leaves,
+is tied to the annual cycle45. It is, therefore, appropriate to analyze non-woody
+plants, woody deciduous plants, and woody evergreen plants as separate
+groups with potentially distinct trait-environment relationships.
+We compiled a global dataset for 16 FTs (Table 1), including
+42,676 plant taxa from 77,074 natural vegetation plots based on the
+sPlotOpen dataset38 and the enhanced species-level trait dataset of
+ref. 40. All FTs in our dataset have plot-level means for each plot; six
+also have species-level means. We refer to these six as ‘major FTs’ as
+they also form the global spectrum of plant form and function. Plant
+taxa were grouped into non-woody, woody deciduous and woody
+evergreen categories according to their life form and leaf phenology.
+We analysed trait covariation and characterised trait-climate corre-
+lations within each category for the six major FTs. For all FTs, we
+ﬁtted generalised additive models (GAMs) for their relationships to
+three bioclimatic variables. Then we simulated global patterns for
+each FT at 0.1° spatial resolution, based on climate data and remotely
+sensed global fractional cover of the three plant groups. Finally, we
+compared our global maps for the 16 FTs against the iNaturalist
+maps41 at 2° spatial resolution.
+Results
+Trait combinations
+We calculated CWMs of each of the three plant groups within each vege-
+tation plot for the six major FTs. CWMs were natural-log transformedprior
+to further analysis. We then used the CWMs to evaluate covariation among
+Table 1 | Plant functional traits used in this study
+Traita
+Abbreviationb
+Unitc
+Functionsd
+Availabilitye
+Leaf area
+LA
+mm2
+Leaf size; related to leaf energy and water balance10
+Plot-level trait means38 and
+species-level trait means40
+Leaf mass per unit area
+LMA
+kg/m2
+Key traits in the leaf economic spectrum (LES); reﬂecting investment
+strategy11
+Leaf nitrogen content per
+unit area
+Narea
+g/m2
+Stem speciﬁc density
+SSD
+g/cm3
+Trait in wood economics spectrum; reﬂecting drought-tolerance70
+Plant height
+H
+m
+Whole plant size; reﬂecting the ability to compete for light12,54
+Diaspore mass
+DM
+mg
+Seed size; reﬂecting dispersal and establishment ability12,55
+Leaf fresh mass
+LFM
+g
+Related to energy transfer, plant growth and productivity9
+Plot-level trait means38
+Leaf phosphorus content per
+unit area
+Parea
+g/m2
+Leaf carbon content
+Cmass
+mg/g
+Leaf dry matter content
+LDMC
+g/g
+Stem conduit (vessel and
+tracheid) element length
+WVL
+μm
+Related to water transport: safety versus efﬁciency9
+Stem conduit density
+SCD
+mm-2
+Seed number per
+reproductive unit
+SN
+NA
+Reﬂecting dispersal, regeneration and reproduction ability9. Here, SL is
+the length of a seed, while DUL is the length of the dispersal unit, which
+may include many seeds.
+Seed length
+SL
+mm
+Dispersal unit length
+DUL
+mm
+Leaf nitrogen isotope ratio
+δ15N
+per million
+Reﬂecting nitrogen source, loss pathways, and root symbionts9,94
+aPlant functional traits used in this study. bAbbreviation and cunit of each of the 16 traits. dBrief description of functions for each of the 16 traits. eData availability for each trait. All 16 plant functional traits have
+plot-level trait means (community-weighted means, CWMs)38, while the ﬁrst six traits also have species-level mean trait values40.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+2
+
+FTs within the non-woody, woody deciduous and woody evergreen groups.
+Patterns of covariation were summarised by Principal Component Analysis
+(PCA). The ﬁrst three PCA axes together captured 76% of trait variation in
+non-woody taxa, 88% in woody deciduous taxa and 84% in woody ever-
+greentaxa (Fig. 1a–c,Table S6).Two orthogonaldimensionsemerged forall
+groups. One dimension, represented by height (H) and diaspore mass
+(DM), represents overall plant size—from short plants with light diaspores
+to tall plants with heavy diaspores. The other, represented by LMA and leaf
+nitrogen per unit area (Narea), reﬂects the LES11 and the predominant
+inﬂuence of LMA on Narea
+46,47. Leaf area (LA) tended to covary with plant
+size,whilebeingapproximatelyorthogonaltotheLES.Stem-speciﬁcdensity
+(SSD) showed the opposite direction to the other traits along axis 3 of PCA.
+SSD in non-woody plants was strongly correlated with LMA and Narea
+(Fig.1a). SSDinwoodyevergreenplants wasmore correlated with plantsize
+(Fig. 1c), while SSD in woody deciduous plants showed an intermediate
+pattern (Fig. 1b).
+Relationships between traits and climate
+We calculated three bioclimatic variables for each plot (Fig. S2), which
+represent the three major independent climatic controls on the global
+geographic distribution of vegetation physiognomy48.49,50 and therefore
+likely also the global distribution of key plant traits48 (see Methods).
+The three bioclimatic variables are: mean growing-season temperature
+(MGST, °C, representing summer warmth), mean temperature of the
+coldest month (MTCO, °C, representing winter cold), and the log-
+transformed moisture index (ln MI, unitless, representing plant-available
+moisture: see Methods). We subsequently conducted a Redundancy Ana-
+lysis (RDA) to describe the extent to which the six major FTs covary with
+these bioclimatic variables. The ﬁrst three constrained RDA axes accounted
+for9%,20%and32%oftotaltraitvariationinnon-woody,woodydeciduous
+and woody evergreen plants, respectively (Fig. 1d–f, Table S7). These three
+axes revealed substantially the same combinations of plant size and LES
+traits as were shown in the PCA, but further illustrated their relationships
+with bioclimate. Along the three axes (Fig. 1d–f), plant height and diaspore
+mass increased with the growing-season temperature (MGST) within all
+groups, and LMA and Narea decreased with increasing moisture (ln MI)
+within all groups. Plant size traits were positively correlated with winter cold
+(MTCO) on the ﬁrst two axes, but they were negatively correlated on the
+third axis. However, LA behaved differently, covarying with ln MI in non-
+woody plants but with temperature variables in woody plants. The residual
+or unconstrained RDA axes (Fig. S6) approximately replicate the PCA axes,
+indicating that much trait variation along the main axes identiﬁed in ref. 12
+persists even after climatic inﬂuences have been taken into account. How-
+ever, a strong correlation between SSD and plant size traits in woody
+evergreen plants disappeared (Fig. S6c).
+We used GAMs to quantify relationships between each major FT and
+bioclimatic variables in more detail, which allowed us to ﬁt more complex
+surfaces and to distinguish growing season from cold-month temperature
+effects (Figs. 2–3). We calculated the relative importance values of expla-
+natory variables (Fig. 2) in GAMs to quantify the individual contribution of
+three bioclimatic variables to the major FTs. These values measure the
+average percentage contribution of each variable in turn to the ﬁt of the
+models based on all three variables. Across all plant groups H variation was
+dominated by growing-season temperature, and LMA and Narea variation
+by moisture availability (with an additional inﬂuence of growing-season
+temperature on LMA in non-woody plants). DM variation was dominated
+by moisture availability in non-woody plants but by growing-season tem-
+perature (with an additional inﬂuence of winter temperature) in woody
+deciduous plants. By contrast, variation in SSD and LA showed similar
+controls in non-woody and woody deciduous plants (dominated by
+LA
+LMA
+Narea
+SSD
+H
+DM
+ɝ
+ɝ
+
+
+
+ɝ
+ɝ
+
+
+
+PC1 (38.98%)
+PC2 (22.83%)
+ɝ
+
+
+PC3
+
+Non−woody
+a
+LA
+LMA
+Narea
+SSD
+H
+DM
+ɝ
+
+
+ɝ
+
+
+PC1 (41.62%)
+PC2 (34%)
+ɝ
+ɝ
+
+
+PC3
+
+Woody deciduous
+b
+LA
+LMA
+Narea
+SSD
+H
+DM
+ɝ
+ɝ
+
+
+
+ɝ
+ɝ
+
+
+
+PC1 (39.71%)
+PC2 (29.7%)
+ɝ
+ɝ
+
+
+PC3
+
+Woody evergreen
+c
+LA
+LMA
+Narea
+SSD
+H
+DM
+MTCO
+MGST
+ɝ
+ɝ
+
+
+
+ɝ
+
+
+
+RDA1 (6.05%)
+RDA2 (2.54%)
+ɝ
+ɝ
+ɝ
+
+
+RDA3
+
+Non−woody
+d
+H
+LA
+LMA
+Narea
+SSD
+DM
+MTCOMGST
+ln MI
+ɝ
+ɝ
+
+
+
+ɝ
+ɝ
+
+
+
+RDA1 (14.58%)
+RDA2 (5.08%)
+ɝ
+ɝ
+
+
+RDA3
+
+Woody deciduous
+e
+LA
+LMA Narea
+SSD
+H
+DM
+MTCO
+MGST
+ln MI
+ɝ
+ɝ
+ɝ
+
+
+
+ɝ
+
+
+RDA1 (18.74%)
+RDA2 (12.23%)
+ɝ
+
+
+
+RDA3
+
+Woody evergreen
+f
+ln MI
+Fig. 1 | Trait-trait and trait-climate correlations. Principal component analysis
+(PCA) (a–c) and redundancy analysis (RDA) (d–f) for six major plant functional
+traits of non-woody (a, d), woody deciduous (b, e) and woody evergreen (c, f) plants.
+Six major traits are leaf area (LA, mm2), leaf mass per unit area (LMA, kg/m2), leaf
+nitrogen content per unit area (Narea, g/m2), stem speciﬁc density (SSD, g/cm3), plant
+height (H, m) and diaspore mass (DM, mg). The orientation of axes has been rotated
+according to the Fig. 2 in ref. 12. Grey scales indicate the loadings on the third axis.
+Solid arrows (with blue labels in RDA) represent traits, and dashed arrows (with red
+labels in RDA) represent bioclimatic variables. All six traits were natural-log
+transformed before analysis. Both log-transformed traits and bioclimatic variables
+were rescaled to a mean of 0 and a standard deviation of 1 before analysis. ln MI, log-
+transformed moisture index; MTCO mean temperature of the coldest month,
+MGST mean growing-season temperature (see Methods for deﬁnition). All ele-
+ments of the ﬁgure were created by the authors using R v4.2.2 (https://www.r-
+project.org/)81.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+3
+
+moistureavailabilityandgrowing-seasontemperatureforSSDandmoisture
+availability for LA), but a different type of control—dominated by growing-
+season and winter temperatures—for woody evergreen plants.
+We visualised the trait distributions in the global climate space
+deﬁned by three bioclimatic variables for each of the six major FTs
+(Fig. 3, S8). This allowed for a more intuitive comparison of trait-
+climate relationships among the FTs and three plant groups. FTs
+related to the same principal axis of trait variation presented similar
+distribution patterns in the global climate space. However, the
+GAMs reveal many more subtle distinctions. For example, among
+FTs related to the LES, Fig. 3b, e, h shows that LMA in all plant
+groups increases towards drier climates—but LMA in non-woody
+plants tends to decrease with growing-season temperature in climates
+with cold winters (MTCO ≤−2 °C in Fig. 3b). LMA in woody
+plants is less sensitive to temperature (Fig. 3e, h); however woody
+deciduous plants show highest LMA in climates with warmer winters
+(MTCO ≥10 °C in Fig. 3e), while woody evergreen plants show
+highest LMA in climates with colder winters (MTCO ≤−2 °C in
+Fig. 3h). Among FTs representing plant size (Fig. 3c, f, i), H is
+greatest in climates that are both wet (ln MI > 1) and warm
+(MGST > 15 °C, MTCO ≥10 °C) within all groups.
+LA showed a general pattern of increase with moisture within all three
+plant groups (Fig. 3a, d, g), but LA was less sensitive to moisture in woody
+plants(Fig.3d,g)comparedtonon-woodyplants(Fig.3a;alsoconﬁrmedby
+Fig.1d–f).Amongwoodyevergreens(Fig.3g),thelargestleavesarefound in
+wet climates with warm winters (MTCO > 10 °C) as well as warm summers
+(MGST > 15 °C). Consistent with their habit, woody deciduous (Fig. 3d)
+and non-woody plants (Fig. 3a) do not show the same strong sensitivity of
+LA to cold winters.
+Global maps for the six major traits
+For each of the three plant groups, we upscaled the GAMs based on three
+bioclimatic variables to generate global distribution maps for the six major
+FTs at 0.1° spatial resolution, separately. The separate trait maps for each
+plant group are shown in Fig. S9.
+Global maps for all traits
+In order to predict global patterns for all 16 FTs having plot-level mean
+values (CWMs) in the sPlotOpen dataset38, we ﬁtted new GAMs based on
+the same three bioclimatic variables, combined with the (remotely sensed)
+fractional cover of the three plant groups as additional predictors. All FTs
+were natural-log transformed prior to the analyses. These GAMs explained
+up to 77% of the global variation of plot-level mean trait values, with a
+median adjusted R2 of 52% (average median calculated from 54% and 49%)
+over all 16 FTs. Best ﬁts (Radj
+2 ≥49%) were obtained for the following nine
+FTs: H (77%), SSD (68%), DM (64%), SCD (61%), LMA (57%), LA (56%),
+LFM(55%),Cmass(54%)andNarea(49%)(seeTableS11forasummary).We
+created global trait maps for all 16 FTs based on these GAMs at 0.1° spatial
+resolution (Fig. 4; see Fig. S12 for all 16 FTs). H, LA, and LFM (Fig. 4a–c)
+were predicted to be higher in tropical regions and warm and humid
+environments,withlowervaluesfound incoldhigh-latituderegionsanddry
+temperate environments. The global distribution of LMA (Fig. 4d) might be
+related to the joint effects of global patterns of LA (Fig. 4b) and LFM
+(Fig. 4c). Plants with higher LMA were predicted to inhabit tropical regions
+and drier environments, while plants with lower LMA mainly appeared in
+humid northern temperate regions. Tropical zones subject to high
+moisture stress harbour species with higher SSD but lower SCD (Fig. 4e–f).
+However, plants in humid northern temperate regions and boreal forests
+had relatively higher valuesof SCD and lowerSSD (Fig. 4e–f). Although FTs
+within the same trait dimension did not show identical global patterns, their
+maximum values tended to occur under similar environmental conditions.
+Like high-LMA plants (Fig. 4d), plants with higher Narea (Fig. 4g) were
+generally favoured in hot and dry environments, supporting earlier
+ﬁndings51–53. DM (Fig. 4h) was predicted to be notably high in equatorial
+regions and warm and humid temperate regions with hot summers, coin-
+ciding with H (Fig. 4a). Cmass showed little variation across the globe
+(Fig. 4i). It was found to be slightly lower in deserts and arid temperate
+regions.
+Comparison to iNaturalist data
+Independent global trait maps41 generated by linking plant observations
+from the iNaturalist citizen-science project to trait measurements from the
+TRYdatabase were usedasa benchmarkforourGAM-based predictions,as
+the iNaturalist data included all 16 FTs considered in our study. We eval-
+uated the pixel-by-pixel agreement between our GAM-predicted maps with
+the iNaturalist maps at 2° resolution, chosen because some FTs presented
+the highest correlations between sPlotOpen and iNaturalist at this
+spatial scale41.
+Fig. 2 | Relative importance of three bioclimatic variables. Relative importance of
+each bioclimatic variable in predicting six major plant functional traits of non-
+woody (a), woody deciduous (b) and woody evergreen (c) plants derived from
+Generalised Additive Models (GAMs). Six major traits are leaf area (LA, mm2), leaf
+mass per unit area (LMA, kg/m2), leaf nitrogen content per unit area (Narea, g/m2),
+stem speciﬁc density (SSD, g/cm3), plant height (H, m) and diaspore mass (DM, mg).
+All six traits were natural-log transformed before the analysis. Moisture availability,
+log-transformed moisture index (ln MI, unitless); winter temperature, mean tem-
+perature of the coldest month (MTCO, °C); growing-season temperature, mean
+growing-season temperature (MGST, °C) (see Methods for deﬁnition). All elements
+of the ﬁgure were created by the authors using R v4.2.2 (https://www.r-project.
+org/)81.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+4
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+a 
+Non−woody: ln LA (mm
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+
+
+
+
+
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+b 
+Non−woody: ln LMA (kg/m
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+c 
+Non−woody: ln H (m)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+d 
+Woody deciduous: ln LA (mm
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+
+
+
+
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+e 
+Woody deciduous: ln LMA (kg/m
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+Fig. 3 | Examples of climate space diagrams. Climate space diagrams of non-woody
+(a–c),woodydeciduous(d–f)andwoodyevergreen(g–i)plants:showingdistributionsof
+natural-log transformed leaf area (LA, mm2) (a, d, and g), leaf mass per unit area (LMA,
+kg/m2)(b,e,andh)andplantheight(H,m)(c,f,andi)intheglobalclimatespacedeﬁned
+by three bioclimatic variables. Fitted trait values are presented as contours, with darker
+coloursintherightcolourbarrepresentinghighertraitvalues.ValuesoflnMIandMGST
+varycontinuouslyalongthehorizontalandverticalaxes,respectively.Eachsliceiscreated
+at an exact MTCO value. Abbreviations and units of traits are shown in Table 1. ln MI,
+log-transformedmoistureindex;MTCOmeantemperatureofthecoldestmonth,MGST
+mean growing-season temperature (see Methods for deﬁnition). Climate space diagrams
+for all six major FTs are shown in Fig. S8. All elements of the ﬁgure were created by the
+authors using R v4.2.2 (https://www.r-project.org/)81.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+5
+
+The highest R2 and median R2 of linear regressions between our GAM-
+derived maps and the iNaturalist maps, overall 16 FTs, were 64% and 15%.
+Figure 5 shows nine FTs that present better agreement than the remaining
+FTs (R2 ≥13% and slope >0.5 and <2): SCD, LA, LFM, SSD, δ15N, H, Narea,
+LMA, and DM (see Table S13 for more information).
+The slope of the linear regression also indicates the direction in which
+the GAM-predicted values deviate from the iNaturalist gridded values.
+According to Fig. 5, GAMs tended to estimate higher LMA and lower LA
+and Narea in comparison to the iNaturalist data. GAM tended to over-
+estimate SSD at lower values and underestimate SSD at higher values
+compared with the iNaturalist data. For larger values, GAMs predicted
+higher H and DM but predicted lower LFM, SCD and δ15N than the iNa-
+turalist data.
+Discussion
+Ecological strategies reﬂected by trait-trait and trait-climate
+relationships
+Analysing six major FTs in non-woody, woody deciduous and woody
+evergreenplantsseparately,wefoundthatthetwoorthogonaldimensionsof
+covariation in plant size traits (H–DM) and LES traits (LMA–Narea), ﬁrst
+identiﬁed by Díaz and colleagues12, also apply within each of the three plant
+groups (Fig. 1a–c). Although Díaz et al.12 showed that non-woody and
+woodyplantsformtwoalmostdisjuncthotspotsalongtheH–DMaxis42,our
+study shows nonetheless that the covariation of H and DM follows almost
+the same pattern within the non-woody and woody taxon groups
+(Fig. 1a–c). FTs from the same dimensions of trait covariation tended to be
+inﬂuenced by climate in similar ways (Figs. 1–3 and S8). H relates to light
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+f 
+Woody deciduous: ln H (m)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+ɝ
+
+
+
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+g 
+Woody evergreen: ln LA (mm
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+
+
+
+
+
+
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+h 
+Woody evergreen: ln LMA (kg/m
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+ɝ
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −26 (°C)
+MGST (°C)
+i 
+Woody evergreen: ln H (m)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −14 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = −2 (°C)
+ln MI (unitless)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+MTCO = 10 (°C)
+ɝ
+ɝ
+
+
+
+
+
+
+
+
+
+MTCO = 22 (°C)
+ɝ
+ɝ
+ɝ
+
+
+
+Fig. 3 | continued.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+6
+
+competition and DM to dispersal54,55. In resource-rich environments (wet-
+ter,warmerandmoreproductivesites),plantsmakemorecarbonproﬁtthat
+can be invested in stems and also used for seed production. Consequently,
+they can grow taller to have greater access to light, and produce larger seeds,
+promoting both a strong competitive status and a high survival
+probability2,54–57.
+LMA
+and
+Narea
+represents
+resource
+acquisition
+strategies11,12. LMA reﬂects a trade-off between the amount of carbon
+invested in leaves and their lifespan58. Narea has been considered as the sum
+of a metabolic component and a structural component, the former pro-
+portional to photosynthetic capacity, the latterto LMA46,47. Leaves with high
+LMA and Narea are favoured in hot and dry climates because this combi-
+nation can conserve water to allow the plants to maintain a relatively high
+photosynthetic rate in the face of increased evapotranspiration51–53.
+Our analysis also revealed a differentiation in trait combinations
+among the three plant groups, speciﬁcally in the covariation of SSD with
+other FTs. SSD in non-woody plants was strongly correlated with LES traits
+(Fig. 1a). SSD in woody deciduous plants was relatively independent
+(Fig. 1b), while SSD in woody evergreen plants was more correlated with
+plant size traits (Fig. 1c). This novel ﬁnding is explicable in adaptive terms.
+In dry climates, some herbaceous and succulent plants (typically with low
+SSD) can ﬁx CO2 though their green stems, reducing water loss from the
+leaves and providing an extra source of carbon59–61. The variation of SSD did
+notshowstrongercorrelationwithasingleofthetwomajortraitdimensions
+in the global spectrum of plant form and function12. Previous studies were
+either conducted on global vascular plants12 or analysed trait data at the
+communitylevelbyusingcommunity-weightedmeans9,14.Thesestudiesdid
+not identify the functional differences among the non-woody, woody
+deciduous and woody evergreen plants, consequently failing to detect the
+distinctive trait combinations associated with SSD. We also extracted pixel
+values from the GAM-basedglobal maps of the six major traits in each plant
+group and performed PCA and RDA on them to test these observed trait
+combinations were still present in the predicted trait values (Fig. S16). The
+distinct patterns of SSD among the three plant groups were not evident in
+the predicted trait values—particularly in non-woody plants, where the
+previously strong correlation between SSD and LES traits was now absent
+(Fig. S16a). Trait data used in original PCA and RDA were calculated from
+thedatabaseofDíazetal.40(seeMethods)inwhichobservedrecordsforSSD
+are available only for a few non-woody species; missing values of SSD were
+imputed via leaf dry matter content (LDMC)40, which was found to be
+closely related to both LMA and Narea
+9: perhaps accounting for the strong
+correlation between (LDMC-derived) SSD and the LES traits.
+Correlations between the six major FTs and the three bioclimatic
+variablesvariedamongnon-woody,woodydeciduousandwoodyevergreen
+plants. The relative importance of predictors was different among the
+groups, as were patterns of trait distribution in climate space (Figs. 1–3 and
+S8).Bioclimaticvariablesexplainedmoretraitvarianceforwoodythannon-
+woody plants (Fig. 1d–f, Table S7). One explanation is that woody plants
+have permanent organs that must endure climatic conditions year-round
+over the years. In addition, short-stature non-woody plants are closer to the
+ground and experience different physical conditions compared with tall-
+statured woodyplants42; therefore, the microclimate of non-woody plants in
+the understorey cannot be directly represented by macroclimate variables42.
+Different trait-climate correlations among the three plant groups are
+associatedwiththeirlife-historystrategies.Fornon-woodyplants,LMAwas
+less constrained by plant-available moisture (represented by ln MI) than
+woody plants (Fig. 2), and their DM showed little correlation with all three
+bioclimatic variables (Figs. 2–3 and S8). Such discrepancies may arise
+because non-woody species tend to occupy smaller, more specialised and
+diverse niches than woody species42,62. Once climatic conditions are outside
+their tolerance, they undergo dieback63. Therefore, they must grow quickly
+and reproduce efﬁciently within the favourable portion of a short lifespan.
+Such a strategy precludes tall stature64, supports lower LMA leaves (thus
+lower leaf Narea) even in drier climates in order to maintain high photo-
+synthetic and respiration rates63, and supports the production of copious
+small seeds to maximise ﬁtness under high resource availability57,65,66. The
+short lifespan of many non-woody plants also represents an adaptive
+Fig. 4 | Examples of global trait maps. Global patterns of plant height (a), leaf area
+(b), leaf fresh mass (c), leaf mass per unit area (d), stem speciﬁc density (e), stem
+conduit density (f), leaf nitrogen content per unit area (g), diaspore mass (h) and leaf
+carbon content (i), produced by the best-ﬁt generalised additive models (R2 ≥49%)
+based on three bioclimatic variables combined with remotely sensed fractional cover
+data for the three plant groups (see Methods for details). The best-ﬁt model here
+refers to the model with adjusted R2 above the median level of the adjusted R2 over all
+16 FTs. Colour gradients from blue to red indicate the increase in trait values. All
+traits are natural-log transformed. All maps are at 0.1° resolution. Global trait maps
+of all 16 functional traits are shown in Fig. S12. For maps in GeoTiff format, refer to
+the Data availability statement. All elements of the ﬁgure were created by the authors
+using R v4.2.2 (https://www.r-project.org/)81.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+7
+
+strategy that facilitates their survival in demanding environments. They can
+livetheirshortlivesbetweenﬁres,physicaldisturbances,droughts,orannual
+freezes64.
+Tall woody plants, on the other hand, are successful competitors for
+light, persisting across years in changing environments64,65. However,
+deciduous and evergreen woody plants also adopt different ecological
+strategies.WefoundthatLEStraits(LMA–Narea)ofwoodydeciduousplants
+were insensitive to growing-season temperature (MGST) but were strongly
+affected by plant-available moisture (ln MI) and winter temperature
+(MTCO) (Fig. 3 and S8). This distinction corresponds to the fact that
+deciduous plants shed their leaves in response to dry or cold conditions67,68.
+As a result, the leaf life cycle of woody deciduous species is tied to the
+growing season45; their lower LMA (and thus lower Narea) represents an
+adaptationtoashortlifespan42,45.Incontrast,woodyevergreenplants,which
+need to maintain leaves and vascular networks over successive seasons64,
+typically adopt more conservative nutrient-use strategies (higher LMA and
+3
+6
+9
+3
+6
+9
+Predicted ln LA (mm2)
+iNaturalist ln LA (mm2)
+R2  0.36 RRMSE  0.177 bias  −0.0892 slope  1.1
+a
+−3
+−2
+−1
+0
+−3
+−2
+−1
+0
+Predicted ln LMA (kg/m2)
+iNaturalist ln LMA (kg/m2)
+R2  0.17 RRMSE  −0.249 bias  −0.101 slope  1
+b
+−1
+0
+1
+2
+3
+−1
+0
+1
+2
+3
+Predicted ln Narea (g/m2)
+iNaturalist ln Narea (g/m2)
+R2  0.2 RRMSE  0.81 bias  −0.325 slope  1.45
+c
+−3
+−2
+−1
+0
+−3
+−2
+−1
+0
+Predicted ln SSD (g/cm3)
+iNaturalist ln SSD (g/cm3)
+R2  0.27 RRMSE  −0.487 bias  −0.245 slope  2.06
+d
+−4
+−2
+0
+2
+4
+−4
+−2
+0
+2
+4
+Predicted ln H (m)
+iNaturalist ln H (m)
+R2  0.23 RRMSE  6.1 bias  −0.151 slope  0.565
+e
+0
+5
+10
+0
+5
+10
+Predicted ln DM (mg)
+iNaturalist ln DM (mg)
+R2  0.13 RRMSE  1.3 bias  −0.622 slope  0.674
+f
+−6
+−4
+−2
+0
+2
+4
+−6
+−4
+−2
+0
+2
+4
+Predicted ln LFM (g)
+iNaturalist ln LFM (g)
+R2  0.36 RRMSE  −0.876 bias  0.419 slope  1.4
+g
+2
+4
+6
+8
+2
+4
+6
+8
+Predicted ln SCD (mm2)
+iNaturalist ln SCD (mm2)
+R2  0.64 RRMSE  0.234 bias  −0.0566 slope  1.78
+h
+−4
+−2
+0
+2
+−4
+−2
+0
+2
+Predicted ln  15N (per million)
+iNaturalist ln  15N (per million)
+R2  0.24 RRMSE  0.985 bias  −0.268 slope  1.36
+i
+Fig. 5 | Comparison between predicted trait values and the iNaturalist estimated
+trait values. a leaf area (LA); b leaf mass per unit area (LMA); c leaf nitrogen content
+per unit area (Narea); d, stem speciﬁc density (SSD); e plant height (H); f diaspore
+mass (DM); g leaf fresh mass (LFM); h stem conduit density (SCD); i leaf nitrogen
+isotope ratio (δ15N). Red lines visualise the linear regression between model-
+predicted map pixel values and the iNaturalist map pixel values estimated at a 2°
+spatial resolution. The dotted line isthe 1:1 line. R2 is the coefﬁcient of determination;
+RRMSE is the root-mean-square error expressed as a proportion of the observed
+mean trait value (here observations are represented by iNaturalist trait values); bias is
+the difference between observed and model-predicted mean values, as a proportion
+of the observed mean trait value (here observed values are iNaturalist trait values);
+slope is the slope of the linear regression of iNaturalist estimations against model
+predictions. The nine traits displayed here showed higher agreement between
+model-predicted maps and the iNaturalist maps compared to the remaining traits
+(R2 ≥13% and slope >0.5 and <2). All traits are natural-log transformed. Scatter plots
+of model-predicted trait values versus iNaturalist estimated trait values for all 16
+traits are shown in Figure S13 and parameters for evaluating linear regressions for all
+16 traits are shown in Table S13. Abbreviations and units of traits are shown in
+Table 1. All elements of the ﬁgure were created by the authors using R v4.2.2 (https://
+www.r-project.org/)81.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+8
+
+Narea) and may require greater protection against drought and/or frost
+damage11,13,14.
+LA in woody plants was positively correlated with winter temperature
+(MTCO) (Fig. 3), but the relative importance of winter cold for LA in
+evergreenplantswashigherthanthatindeciduousplants(Fig.2).Evergreen
+woodyplants with smallleaves (low LA) are better adaptedto harsh winters.
+Larger leaves are more prone to frost damage because of their thicker
+insulating boundary layers of still air that slow sensible heat exchanges with
+their surroundings69. This means that their ability of heat uptake from their
+surroundings to compensate for the energy lost to the night-time sky is
+diminished, leaving them vulnerable to frost69. Although all three plant
+groups showed the highest SSD at the same moisture level, the SSD in
+evergreen plants was higher (Fig. S8) and was less controlled by moisture
+(Fig. 2) than that of the other two groups. SSD reﬂects wood density and is
+related to drought-tolerance of plants70. Evergreen trees with higher wood
+density are less vulnerable to drought-induced embolism than co-existing
+drought-deciduous trees with lower wood density in arid environments71.
+The hydraulic architecture of high-SSD evergreen woody plants, including
+ﬁbres and thick-walled vessels, allows them to maintain water transport to
+the canopy under greater xylem pressure caused by water shortage and to
+continue growing in seasonally dry climates70,71.
+Evaluations of global trait maps
+Mindful of potential differences in trait-climate correlations among non-
+woody, woody deciduous and woody evergreen plants, as shown for the six
+major FTs, we ﬁtted a set of GAMs that included fractional abundances of
+these groups to simulate global patterns of all 16 FTs. These GAMs predicted
+up to 77% of variation in our global data sample correctly (Table S11). We
+evaluated the agreement of our GAM-predicted maps with the iNaturalist
+maps41. The iNaturalist41 data represents a large and independent trait dataset
+based on citizen-science plant observations and trait measurements from the
+TRY database39. The data included all 16 FTs considered in our study. Pre-
+viously published global trait maps generated by statistical modelling or
+machine learning methods2,3,25,29,31–34 have only simulated global patterns for a
+subset of FTs we studied here; moreover, these maps show large differences in
+data sources, methodology and results35,36. We also compared the general
+patternsofglobaltraitmapsgeneratedhereinwiththosefromotherpublished
+products for six major traits and LDMC. The predictability of our GAMs for
+the common six major traits was signiﬁcantly stronger than models of other
+products (Table S12). Almost all six major traits presented similar global
+spatial patterns to that of previous studies. Nevertheless, regional differences
+emerged between our results and other products. For example, Narea values in
+CentralAfricawereatintermediatelevelinourGAM-predictedmap(Fig.4g),
+contrastingwiththerelativelylowestvaluesobservedinthetheory-basedmap
+by Dong et al.35; plant height (H) was predicted to be higher in Europe in this
+study compared to Schiller et al.’s predictions33. The predictability of GAM of
+this study for LDMC was relatively weaker (Radj
+2 = 0.39, Table S12) and the
+global pattern of LDMC simulated in this study suggested signiﬁcant devia-
+tion from the previous remote-sensing-based projections29.
+Overall,ourGAM-predictedmapsshowedvariablystrongcorrelations
+withtheiNaturalistmaps,withthehighest R2of64%butamedianR2ofonly
+15% (Table S13). They showed varying degrees of overestimation or
+underestimation compared to the iNaturalist maps (Fig. S13). We ﬁrst
+checked which regions across the globe showed overestimation and
+underestimation of our predicted FTs compared to iNaturalist data
+(Fig. S14). Our GAMs tended to predict higher LMA, DM and SSD and
+lower SCD than iNaturalist data in the northern temperate regions, but
+lower Narea, SSD and LFM than iNaturalist data in southern tropical and
+temperate regions. H was overestimated globally by the GAM compared to
+iNaturalist, especially in the northern high latitudes.
+Plot-level mean values of 16 FTs in our study were obtained from the
+sPlotOpendataset. In principle, the above disagreements may arise from the
+respective sampling biases of iNaturalist and sPlotOpen. The iNaturalist
+contributors are by no means evenly sampled across growth forms (tree/
+shrub/herb)41, while the sPlotOpen data cover a relatively small portion of
+the global climate space. The coverage of growth formin each grid cell of the
+iNaturalist maps indicated a bias towards herbaceous plants in the northern
+regions, and towards woody plants further south. This is because plant
+observations in iNaturalist are largely governed by individual decisions33,41
+and are a priori likely to underrepresent grasses41, for example. The data are
+nonetheless of value because of their independence from other data sources.
+The sPlotOpen dataset has both commonalities and disagreements with the
+iNaturalist data41. sPlotOpen is an aggregation of vegetation plots from
+various studies with speciﬁc and distinct research aims across global eco-
+systems that do not share the same criteria in the sampling approach, which
+may also lead to biases in this dataset37,38. Large areas of the globe, including
+Canada,Central South America,CentralAfrica,CentralAsia, East Asia,and
+Siberia, are undersampled (Fig. S4). This sampling bias affects the robust-
+ness of prediction of trait distribution for large areas. Furthermore, while
+sPlotOpen provides plot-level means for each trait, not all species within
+every vegetation plot have been recorded. 16.5% of plots have all vascular
+plant records, plant records of 72.1% plots are not speciﬁed, and the
+remaining 11.4% of plots have only certain species records (e.g., only woody
+plants or dominant plants) in the ﬁnal plot-level mean trait dataset used in
+this study (Table S2). As a result, plot-level trait means sampled for speciﬁc
+target plant in a vegetation plot cannot accurately reﬂectthe CWMs of traits
+within the corresponding regions.
+The selection of predictor variables in GAMs might contribute to the
+disagreement between the two set of global trait maps. Our study applied a
+consistent set of three bioclimatic variables to each FT, thereby preserving
+model simplicity and providing a consistent baseline for comparison. The
+three selected variables reﬂect three most important aspects of climate that
+govern plant distributions, i.e., winter cold, summer warmth and moisture
+availability48,49,50. These three variables effectively explained global patterns
+of different FTs and sufﬁciently distinguished the main differences in trait-
+climate relationships among three plant groups. However, some FTs can be
+inﬂuenced by other factors in addition to the bioclimatic variables used in
+this study. Soil fertility factors and soil age have been indicated to correlate
+with leaf nutrient traits3,14,72–74. Land use and disturbance regimes can also
+affect trait-environment relationships25,32,75. Disturbance by ﬁre or grazing
+and browsing by megaherbivores have strong effects on traits of seed dis-
+persal and plant regeneration25. Atmospheric CO2 concentration is also an
+important driver of some FTs, directly affecting the growth rates and pro-
+ductivity of plants25,76. Evolutionary history effects (represented by phylo-
+geny) were reported to explain on average more than two-thirds of the
+variability of the foliar concentrations of N, P and K3.
+The scale at which trait variation occurs may be another reason for
+the lower correlations between GAM maps and the iNaturalist data for
+some FTs. Some FTs lack macroecological patterns, such as Cmass, which
+showed little variation on a global scale (Fig. 4i). In addition, our
+community-level prediction ignores intraspeciﬁc trait variation. A global
+meta-analysis based on 36 plant traits indicated that traits can vary sub-
+stantially among individuals within species, and that the relative amount of
+intraspeciﬁc trait variation does not vary with plant growth forms or
+climate77.
+This study has characterised universal relationships among FTs and
+between FTs and climates within non-woody, woody deciduous and woody
+evergreen plants, and simulated global patterns of FTs based on these
+relationships. It has highlighted certain key differences between the three
+plant groups in their ecological strategies as represented by trait-climate
+correlations, indicating that it is useful to differentiate between non-woody,
+woody deciduous and woody evergreen plants in large-scale, trait-based
+studies.Based onthreebioclimaticvariablesand global vegetationcoverand
+their interaction effects, we can explain up to three-quarters (on average
+about a half) of global variation of community-weighted means for all
+16 FTs. By generating global maps for all 16 FTs at 0.1° resolution, we have
+provided the most comprehensive set of trait maps based on statistical
+upscaling approach to date.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+9
+
+Methods
+Plant functional traits and three plant groups
+The FT data were collected from the sPlotOpen dataset38 and the enhanced
+species-level trait dataset of Díaz et al.40 (see Table 1).
+The sPlotOpen dataset provides plot-level trait means (as community-
+weighted means, CWMs) of 18 FTs, as well as plant taxa within each
+vegetation plot and their relative abundances38. We calculated the LMA and
+area-based leaf phosphorus content (Parea) from speciﬁc leaf area (SLA) and
+mass-based leaf phosphorus content (Pmass) in the sPlotOpen dataset
+according to Eqs. (1) and (2). After removing some redundant traits, such as
+SLA, Pmass, mass-based leaf nitrogen content (Nmass) and leaf N:P ratio
+(which can be directly calculated from Narea and Parea), 16 FTs were selected
+for analysis (Table 1). All 16 FTs were natural-log transformed before
+analysis. Here we focus on Narea and Parea, because Osnas etal.78 showed that
+leaf nitrogen and phosphorus contents are approximately distributed pro-
+portional to leaf area rather than mass. Narea and Parea were found to be
+proportionaltoLMAandphotosyntheticcapacityofplants46,47,79.BothLMA
+and photosynthetic capacity are quantitatively predictable from climate45,79,
+which may lead to potentially high predictability of Narea and Parea from
+climates. In contrast, values of Nmass and Pmass may be more conservative
+under climate change. We also conducted the following analyses on Nmass
+and Pmass (see Supplementary Information SI 2 for details) and found that
+climate is not good predictor of their distributions.
+LMA kg=m2
+
+
+¼
+1
+SLA m2=kg
+
+
+ð1Þ
+Parea g=m2
+
+
+¼ Pmass mg=g
+
+
+SLA m2=kg
+
+
+ð2Þ
+All plant taxa within each vegetation plot in the sPlotOpen data were
+extracted. We collected plant information including woodiness, plant
+growth form and leaf phenology for each taxon from public databases,
+regional ﬂoras, and published papers (see Data availability for relevant
+references of plant information). Each plant taxon was then assigned to a
+growth form according to the collected plant information to create a plant
+growth form dataset. There are 42,676 unique taxa in the dataset. Table S3
+presents16 growth forms intotal and the proportionofeach growth formin
+the plant growth form dataset.
+We classiﬁed all taxa as non-woody, woody deciduous or woody
+evergreen according to their growth forms. Some minority growth forms,
+including ferns, palms, cycads, bamboos, cacti and succulents, were omitted
+from subsequent analyses. We then used the relative coverage of each taxon
+within a vegetation plot provided by the sPlotOpen data and the assigned
+probability of each taxon being in each plant group (Table S4) to calculate
+the relative coverage of each of the three plant groups within a plot. The
+calculation followed Eqs. (3) and (4).
+RA group
+
+
+¼
+X
+RC taxon
+ð
+Þ × P group
+
+
+
+
+ð3Þ
+RC group
+
+
+¼
+RA group
+
+
+P RA group
+
+
+
+
+ð4Þ
+where RAðgroupÞ is the relative abundance of each plant group within a
+vegetation plot; RC taxon
+ð
+Þ is the relative coverage of each taxon within a
+vegetation plot provided by the sPlotOpen dataset; PðgroupÞ is the prob-
+ability of each taxon being in each plant group, which is derived from the
+probabilityofeachgrowthformbeingineachplantgroup;RC group
+
+
+isthe
+relative coverage of each plant group within a vegetation plot.
+The species-level trait dataset from Díaz et al.40 provides species-
+mean values of six major FTs that constitute the global spectrum of plant
+form and function12. We converted Nmass to area-based leaf nitrogen
+content (Narea) based on the raw data, according to the Eq. (5). After
+merging this species-level trait dataset with the sPlotOpen dataset and the
+plant growth form dataset, a total of 35,773 common species were
+explicitly classiﬁed into non-woody, woody deciduous and woody ever-
+green groups. The scientiﬁc names of all taxa from different datasets were
+aligned before integration by using Taxonomic Name Resolution Service
+V5.2 (TNRS, https://tnrs.biendata.org/)80. We then calculated CWMs for
+the six major FTs of each of the three plant groups within each vegetation
+plot based on their species-level means and the relative coverage of each
+plant group. These CWMs were then natural-log transformed prior to
+further analyses. All data manipulations and following analyses were
+conducted in R v4.2.2 (https://www.r-project.org/)81.
+Narea g=m2
+
+
+¼ Nmass mg=g
+
+
+SLA m2=kg
+
+
+ð5Þ
+Bioclimatic variables
+Three bioclimatic variables were selected48,49,50 (Fig. S2): (i) moisture index
+(MI, unitless) representing plant-available moisture—the natural-log
+transformed MI (ln MI) was used in the analysis to emphasise differences
+at the dry end of the moisture range82; (ii) mean temperature of the coldest
+month (MTCO, °C) representing winter cold; (iii) mean growing-season
+temperature (MGST, °C) representing summer warmth. The three selected
+variables correspond to the three recognised climatic dimensions that reg-
+ulate global geographic distribution of vegetation48,49,50. They control the
+plant distribution limits by affecting the plant attributes that determine
+physiological processes and adaptive strategies, such as life form, leaf phe-
+nology, leaf size and stomatal conductance48,49,50. Hence, the distribution of
+some key plant traits is likely to be a function of these bioclimatic variables,
+and thus may be quantitatively predicted by these variables48.
+We collected gridded climatological data for further calculations,
+with a spatial resolution of 30 arc-second (ca 0.01°). Growing degree days
+(heat sum) above 0 °C (GDD0, °C), number of growing degree days above
+a base level of 0 °C (NGD0, number of days), monthly averaged mean
+daily air temperature (tas, K/10) and mean monthly precipitation
+amount (pr, kg m–2 month–1/100) were obtained from CHELSA V2.1
+(https://chelsa-climate.org/)83,84, covering the period from 1981 to 2010.
+Downward total shortwave solar radiation data accumulated over the
+month (srad, kJ m–2) were downloaded from the CHELSA V1.2 (https://
+chelsa-climate.org/)83,84, covering the period from 1979 to 2013. Global
+elevation derived from the SRTM elevation data (elev, m) was acquired
+from WorldClim v.2.1 (https://www.worldclim.org/)85.
+We used the Simple Process-Led Algorithms for Simulating Habitats
+(SPLASH) model86,87 with climatic variables as inputs to calculate the mean
+monthly potential evapotranspiration (PET, mm). We extracted the cli-
+matic values for each vegetation plot according to its longitude and latitude.
+The ‘splash.point()’ function in R rsplash package86,87 was applied to cal-
+culatethePETofeachplot.Wethendecreasedtheresolutionofrawclimatic
+raster data from 0.01° to 0.1° and ﬁtted them into the SPLASH model by
+‘splash.grid()’ function in R rsplash package86,87 to calculate the global PET.
+Three bioclimatic variables (Fig. S2) were then calculated as follows:
+MI unitless
+ð
+Þ ¼
+P12
+k¼1 prk
+P12
+k¼1PETk
+ð6Þ
+MTCO ð°CÞ ¼ min
+1 ≤k ≤12 task
+ð7Þ
+MGST ð°CÞ ¼ GDD0
+NGD0
+ð8Þ
+where prk (mm) is mean monthly precipitation; PETk (mm) is mean
+monthly potential evapotranspiration calculated from the SPLASH model;
+task (°C) is monthly average temperature; GDD0 (°C) are growing degree
+days heat sum above 0 °C; and NGD0 (number of days) is number of
+growing degree days above a base level of 0 °C.
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+10
+
+Vegetation coverage
+We checked the ‘naturalness’ of each vegetation plot in our trait dataset
+against the global map of land cover provided by the ESA CCI-LC database
+(https://www.esa-landcover-cci.org/?q=node/164)88 at 300 m spatial reso-
+lutionin2010.Forplotsbelongingtoalltypesofcroplands,urbanareas,bare
+areas, water bodies and permanent snow and ice in the ESA CCI-LC
+database, we deﬁned them as ‘unnatural vegetation’ and removed those
+plots from the trait dataset used for data analysis. After matching the trait
+datasetwithbioclimatedata,77,074naturalvegetationplotsremainedinthe
+ﬁnal dataset for our study.
+The ESA CCI-LC global land cover data were also used to calculate
+the global fractional cover of three plant groups. The spatial resolution of
+therawlandcoverrasterwasdecreasedfrom300 mto0.1°tomatchwiththe
+resolution of bioclimate raster for further analyses. This ESA CCI-LC
+dataset contains 23 classes including 38 sub-classes of global land cover
+(Table S5). We ﬁrst selected the vegetation plots that contained records of
+‘all vascular plants’ in our trait dataset (12,743 plots in total). We then
+identiﬁed the land cover class and sub-class of each of these vegetation plots
+according to the ESA CCI-LC maps at original 300 m resolution and
+accordinglycalculatedthemedianrelativecoverofthethreeplantgroupsfor
+each sub-class. The coverages of three plant groups of artiﬁcial ecosystems
+and non-natural and non-terrestrial vegetations were set to be NA. We then
+replaced grid values representing sub-classes of global land cover in the ESA
+CCI-LC maps with the median relative cover of the three plant groups
+within each sub-class and calculated the average values at 0.1° resolution to
+produce the global fractional cover of the three plant groups.
+Multivariate analysis
+The natural-log transformed CWMs of six major FTs of each plant group
+wererescaledtoameanof0andastandarddeviationof1andthensubjected
+to a PCA and a Redundancy Analysis (RDA), conducted by ‘prcomp()’
+functionand‘rda()’functionintheRveganpackage89,respectively.PCAwas
+used to evaluate the covariation of trait combinations among six FTs in
+different plant groups. RDA was applied to describe the extent to which the
+variation of trait combinations (response variables) can be explained by
+bioclimatic variables (explanatory variables).
+Generalised additive models
+Correlations between FTs and three bioclimatic variables were char-
+acterised and visualised by GAMs. GAMs were ﬁtted for natural-log
+transformed CWMs of six major FTs in each of the three plant groups with
+three bioclimatic variables as explanatory variables, without interaction
+terms, using the ‘gam()’ function in R mgcv package90. We used the RMEL
+(restricted maximum likelihood) as smoothing parameter to control the
+smoothness of the predictive functions. We then calculated the relative
+importance of each bioclimatic variable in the GAMs to determine which
+of the predictors is moresigniﬁcantly related to the distribution of each FT.
+The concurvity of three bioclimatic variables in GAMs was checked before
+ﬁtting models (mean values: ln MI = 0.487 ± 0.06, MTCO = 0.651 ± 0.07,
+MGST = 0.867 ± 0.02). MGST presented relatively high concurvity, which
+makes it challenging to interpret the individual importance of variables in
+trait prediction. Nonetheless, the overall predictive performance of the
+GAMs remains robust, with the combined effect of the predictors effec-
+tively capturing the variation in FTs.
+We sampled the bioclimates at regular intervals from minimum to
+maximum over the globe, e.g., sampling at increments of 0.05 (unitless) for
+ln MI, 0.25 °C for MTCO, and 0.25 °C for MGST, to generate three sample
+datasets simulating the global climate space. The sample data and GAMs
+werethenusedtopredictthedistributionoftraitvaluesintheglobalclimate
+spaceforeachplantgroup.Theresponsesurfacesoftraitvalues(natural-log
+transformed) resulting from GAMs were presented as contours in the
+three-variable climate space in the form of two-dimensional slices. Convex
+hulls generated by ‘convhulln()’ function in the R geometry package91 were
+usedtoavoidrepresentingpartsoftheﬁttedsurfacethatarenotconstrained
+by data. For each plantgroup separately, we alsopredicted and mapped the
+global distribution of natural-log transformed values of six major FTs, as
+predictedbytheGAMs,basedonglobalrasterdataforthethreebioclimatic
+variables at 0.1° spatial resolution.
+Global trait maps and evaluation
+In order to simulate global trait patterns for all plant taxa, we ﬁtted new
+GAMs for all 16 FTs with natural-log transformed plot-level means
+(CWMs). In the new GAMs, trait values were predicted by not only three
+bioclimatic variables, but also global fractional cover of plant groups, and
+interactions between each bioclimatic variable with the cover fraction of
+eachplantgroup.Asthesumoftheglobalfractionalcoverforthethreeplant
+groups is 1, we only considered the coverage of two of these groups (woody
+deciduous and woody evergreen) when ﬁtting the new GAMs. The new
+GAMs also used the RMEL as smoothing parameter and were ﬁtted using
+the ‘gam()’ function in the R mgcv package90. We then generated global trait
+maps for all 16 FTs at 0.1° spatial resolution.
+Although using a weighted average of three maps from different plant
+groups should be a more straightforward way to generate global maps, we
+did not adopt this approach. This is becausesimulatingseparateglobal trait
+patterns for each of the three plant groups and calculating weighted
+averages of them with fractional cover of plant groups as weights would
+only be applicable where traits possess species-level values. In this study,
+only the six major traits are provided with species-level mean values. The
+remaining traits have plot-level mean values, which are weighted averages
+of trait values for all plant taxa within the plot. It is almost impossible to
+predict global trait patterns for each plant group from such community-
+weightedmeantraitvalues.However,usingtheGAMs,includingfractional
+covers of plant groups, provides a more universal alternative approach,
+which is directly applicable to plot-level means.
+We tested our global trait maps based on GAMs predictions against
+another set of global trait maps41 based on the combinations of citizen-
+science plant observations from the iNaturalist project and trait measure-
+ments from the TRY database. The iNaturalist-based maps provided all FTs
+availableforthecalculationofthesame16FTsasinourstudy.Theplot-level
+means of all 16 FTs in our study were taken from the sPlotOpen, and the
+global trait patterns estimated by the iNaturalist tend to most strongly
+resemble that of the sPlotOpen at 2° resolution41. Therefore, we aggregated
+and reprojected our global trait maps according to the iNaturalist maps (2°
+spatial resolution) using bilinear interpolation by ‘projectRaster()’ function
+in the R raster package92. Then, we assessed the pixel-by-pixel agreement
+between our trait maps and the iNaturalist trait maps by linear regression
+using the ‘lm()’ function in the R stats package.
+Statistics and reproducibility
+All of the above statistical analyses are reproducible by following the pro-
+cedures in Methods. All data and R scripts for carrying out all the above
+analyses are provided in the Data availability and Code availability sections.
+Data availability
+The plant functional traits are collected from openly accessible databases:
+the sPlotOpen dataset38 and the enhanced species-level trait dataset of Díaz
+et al.40. Raw climate data are obtained from CHELSA V2.1 (https://chelsa-
+climate.org/)83,84. Global land cover maps are from the ESA CCI-LC data-
+base (https://www.esa-landcover-cci.org/?q=node/164)88. Plant growth
+form dataset, global maps of three bioclimatic variables (GeoTiff format),
+global trait maps for 16 plant functional traits and separate maps of 6 major
+traits for non-woody, woody deciduous and evergreen plants (GeoTiff
+format),globalfractionalcoverofnon-woody,woodydeciduousandwoody
+evergreen plants (GeoTiff format), as well as compiled datasets used for all
+analyses in this study are openly available at: https://doi.org/10.5281/
+zenodo.13325275 (ref. 93).
+Code availability
+The reproducible R Scripts used to conduct all data manipulations and
+analyses are available at: https://doi.org/10.5281/zenodo.13325275 (ref. 93).
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+11
+
+Received: 14 July 2023; Accepted: 26 August 2024;
+References
+1.
+Reich, P. B. Key canopy traits drive forest productivity. Proc. R. Soc. B
+Biol. Sci. 279, 2128–2134 (2012).
+2.
+Madani, N. et al. Future global productivity will be affected by plant
+trait response to climate. Sci. Rep. 8, 1–10 (2018).
+3.
+Vallicrosa, H. et al. Global maps and factors driving forest foliar
+elemental composition: the importance of evolutionary history. New
+Phytol. 23, 169–181 (2021).
+4.
+Violle, C. et al. Let the concept of trait be functional! Oikos 116,
+882–892 (2007).
+5.
+Lavorel, S. & Garnier, É. Predicting changes in community
+composition and ecosystem functioning from plant traits: revisiting
+the Holy Grail. Funct. Ecol. 16, 545–556 (2002).
+6.
+Funk,J. L. et al. RevisitingtheHoly Grail: usingplant functionaltraits to
+understand ecological processes. Biol. Rev. 92, 1156–1173 (2017).
+7.
+McGill, B. J., Enquist, B. J., Weiher, E. & Westoby, M. Rebuilding
+community ecology from functional traits. Trends Ecol. Evol. 21,
+178–185 (2006).
+8.
+Kraft, N. J. B. et al. Community assembly, coexistence and the
+environmental ﬁltering metaphor. Funct. Ecol. 29, 592–599 (2015).
+9.
+Bruelheide, H. et al. Global trait–environment relationships of plant
+communities. Nat. Ecol. Evol. 2, 1906–1917 (2018).
+10. Yang, Y. et al. Quantifying leaf‐trait covariation and its controls across
+climates and biomes. N. Phytol. 221, 155–168 (2019).
+11. Wright,I. J. et al. The worldwide leaf economics spectrum. Nature428,
+821–827 (2004).
+12. Díaz, S. et al. The global spectrum of plant form and function. Nature
+529, 167–171 (2016).
+13. Thomas, H. J. D. et al. Global plant trait relationships extend to the
+climatic extremes of the tundra biome. Nat. Commun. 11, 1351 (2020).
+14. Joswig, J. S. et al. Climatic and soil factors explain the two-
+dimensional spectrum of global plant trait variation. Nat. Ecol. Evol. 6,
+36–50 (2022).
+15. Maynard, D. S. et al. Global relationships in tree functional traits. Nat.
+Commun. 13, 3185 (2022).
+16. Wright, I. J. et al. Relationships among ecologically important
+dimensions of plant trait variation in seven Neotropical forests. Ann.
+Bot. 99, 1003–1015 (2007).
+17. Swenson, N. G. The assembly of tropical tree communities–the
+advances and shortcomings of phylogenetic and functional trait
+analyses. Ecography 36, 264–276 (2013).
+18. Kraft, N. J. B., Godoy, O. & Levine, J. M. Plant functional traits and the
+multidimensionalnature of speciescoexistence. Proc.Natl.Acad. Sci.
+112, 797–802 (2015).
+19. Moritz, C. & Agudo, R. The future of species under climate change:
+resilience or decline? Science 341, 504–508 (2013).
+20. Diaz, S., Cabido, M. & Casanoves, F. Plant functional traits and
+environmental ﬁlters at a regional scale. J. Veg. Sci. 9, 113–122 (1998).
+21. Dawson,T. P., Jackson,S. T., House, J. I., Prentice, I. C. & Mace, G. M.
+Beyond predictions: biodiversity conservation in a changing climate.
+Science 332, 53–58 (2011).
+22. Butler, E. E. et al. Increasing functional diversity in a global land
+surface model illustrates uncertainties related to parameter
+simpliﬁcation. J. Geophys. Res. Biogeosci. 127, e2021JG006606
+(2022).
+23. Prentice, I. C. et al. Dynamic global vegetation modeling: quantifying
+terrestrial ecosystem responses to large-scale environmental
+change. In: Terrestrial ecosystems in a changing world 175–192
+(Springer, 2007).
+24. Van Bodegom, P. M. et al. Going beyond limitations of plant functional
+types when predicting global ecosystem–atmosphere ﬂuxes:
+exploring the merits of traits‐based approaches. Glob. Ecol.
+Biogeogr. 21, 625–636 (2012).
+25. Van Bodegom, P. M., Douma, J. C. & Verheijen, L. M. A fully traits-
+based approach to modeling global vegetation distribution. Proc. Natl
+Acad. Sci. 111, 13733–13738 (2014).
+26. Williams, J. W., Jackson, S. T. & Kutzbach, J. E. Projected
+distributions of novel and disappearing climates by 2100 AD. Proc.
+Natl Acad. Sci. 104, 5738–5742 (2007).
+27. Yang, Y. et al. A novel approach for modelling vegetation distributions
+and analysing vegetation sensitivity through trait-climate
+relationships in China. Sci. Rep. 6, 24110 (2016).
+28. Homolová, L., Malenovský, Z., Clevers, J. G. P. W., García-Santos, G.
+& Schaepman, M. E. Review of optical-based remote sensing for plant
+trait mapping. Ecol. Complex. 15, 1–16 (2013).
+29. Moreno-Martínez,Á. etal.A methodology toderiveglobalmapsofleaf
+traits using remote sensing and climate data. Remote Sens. Environ.
+218, 69–88 (2018).
+30. Aguirre-Gutiérrez, J. et al. Pantropical modelling of canopy functional
+traits using Sentinel-2 remote sensing data. Remote Sens. Environ.
+252, 112122 (2021).
+31. Butler, E. E. et al. Mapping local and global variability in plant trait
+distributions. Proc. Natl Acad. Sci. 114, E10937–E10946 (2017).
+32. Boonman, C. C. F. et al. Assessing the reliability of predicted plant trait
+distributions at the global scale. Glob. Ecol. Biogeogr. 29,
+1034–1051 (2020).
+33. Schiller, C., Schmidtlein, S., Boonman, C., Moreno-Martínez, A. &
+Kattenborn, T. Deep learning and citizen science enable automated
+plant trait predictions from photographs. Sci. Rep. 11, 16395 (2021).
+34. Vallicrosa, H., Sardans, J., Maspons, J. & Peñuelas, J. Global
+distribution and drivers of forest biome foliar nitrogen to phosphorus
+ratios (N:P). Glob. Ecol. Biogeogr. 31, 861–871 (2022).
+35. Dong, N., Dechant, B., Wang, H., Wright, I. J. & Prentice, I. C. Global
+leaf‐trait mapping based on optimality theory. Glob. Ecol. Biogeogr.
+32, 1152–1162 (2023).
+36. Dechant, B. et al. Intercomparison of global foliar trait maps reveals
+fundamental differences and limitations of upscaling approaches.
+Remote Sens. Environ. 311, 114276 (2024).
+37. Bruelheide, H. et al. sPlot–A new tool for global vegetation analyses.J.
+Veg. Sci. 30, 161–186 (2019).
+38. Sabatini, F. M. et al. sPlotOpen-An environmentally balanced, open‐
+access, global dataset of vegetation plots. Glob. Ecol. Biogeogr. 30,
+1740–1764 (2021).
+39. Kattge, J. et al. TRY plant trait database-enhanced coverage and
+open access. Glob. Chang. Biol. 26, 119–188 (2020).
+40. Díaz, S. et al. The global spectrum of plant form and function:
+enhanced species-level trait dataset. Sci. Data 9, 755 (2022).
+41. Wolf, S. et al. Citizen science plant observations encode global trait
+patterns. Nat. Ecol. Evol. 6, 1850–1859 (2022).
+42. Šímová, I. et al. Spatial patterns and climate relationships of major
+plant traits in the New World differ between woody and herbaceous
+species. J. Biogeogr. 45, 895–916 (2018).
+43. Kikuzawa, K., Onoda, Y., Wright, I. J. & Reich, P. B. Mechanisms
+underlying global temperature‐related patterns in leaf longevity. Glob.
+Ecol. Biogeogr. 22, 982–993 (2013).
+44. Reich, P. B., Rich, R. L., Lu, X., Wang, Y.-P. & Oleksyn, J.
+Biogeographic variation in evergreen conifer needle longevity and
+impacts on boreal forest carbon cycle projections. Proc. Natl Acad.
+Sci. 111, 13703–13708 (2014).
+45. Wang, H. et al. Leaf economics fundamentals explained by optimality
+principles. Sci. Adv. 9, eadd5667 (2023).
+46. Dong, N. et al. Leaf nitrogen from the perspective of optimal plant
+function. J. Ecol. 110, 2585–2602 (2022).
+47. Dong, N. et al. Leaf nitrogen from ﬁrst principles: ﬁeld evidence for
+adaptive variation with climate. Biogeosciences 14, 481–495 (2017).
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+12
+
+48. Harrison, S. P. et al. Ecophysiological and bioclimatic foundations
+for a global plant functional classiﬁcation. J. Veg. Sci. 21,
+300–317 (2010).
+49. Woodward, F. I. Climate and plant distribution. (Cambridge University
+Press, 1987).
+50. Prentice, I. C. et al. Special paper: a global biome model based on
+plant physiology and dominance, soil properties and climate. J.
+Biogeogr. 19, 117–134 (1992).
+51. Wright, I. J. et al. Modulation of leaf economic traits and trait
+relationships by climate. Glob. Ecol. Biogeogr. 14, 411–421 (2005).
+52. Wieczynski, D. J. et al. Climate shapes and shifts functional
+biodiversity in forests worldwide. Proc. Natl Acad. Sci. 116,
+587–592 (2019).
+53. Dong, N. et al. Components of leaf‐trait variation along environmental
+gradients. N. Phytol. 228, 82–94 (2020).
+54. Moles, A. T. et al. Global patterns in plant height. J. Ecol. 97,
+923–932 (2009).
+55. Moles, A. T. et al. Global patterns in seed size. Glob. Ecol. Biogeogr.
+16, 109–116 (2007).
+56. Thomson, F. J., Moles, A. T., Auld, T. D. & Kingsford, R. T. Seed
+dispersal distance is more strongly correlated with plant height than
+with seed mass. J. Ecol. 99, 1299–1307 (2011).
+57. Adler, P. B. et al. Functional traits explain variation in plant life history
+strategies. Proc. Natl Acad. Sci. 111, 740–745 (2014).
+58. Poorter, H., Niinemets, Ü., Poorter, L., Wright, I. J. & Villar, R. Causes
+and consequences of variation in leaf mass per area (LMA): a meta‐
+analysis. N. Phytol. 182, 565–588 (2009).
+59. Osmond, C. B., Smith, S. D., Gui-Ying, B. & Sharkey, T. D. Stem
+photosynthesis in a desert ephemeral, Eriogonum inﬂatum.
+characterization of leaf and stem CO2 ﬁxation and H2O vapor
+exchange under controlled conditions. Oecologia 72, 542–549 (1987).
+60. Ávila, E., Herrera, A. & Tezara, W. Contribution of stem CO 2 ﬁxation to
+whole-plant carbon balance in nonsucculent species.
+Photosynthetica 52, 3–15 (2014).
+61. Ávila‐Lovera, E., Zerpa, A. J. & Santiago, L. S. Stem photosynthesis
+and hydraulics are coordinated in desert plant species. N. Phytol. 216,
+1119–1129 (2017).
+62. Ricklefs, R. E. & Latham, R. E. Intercontinental correlation of
+geographical ranges suggests stasis in ecological traits of relict
+genera of temperate perennial herbs. Am. Nat. 139, 1305–1321
+(1992).
+63. Reich, P. B. The world‐wide ‘fast–slow’plant economics spectrum: a
+traits manifesto. J. Ecol. 102, 275–301 (2014).
+64. Zanne, A. E. et al. Functional biogeography of angiosperms: life at the
+extremes. N. Phytol. 218, 1697–1709 (2018).
+65. Westoby,M., Falster, D. S., Moles,A. T., Vesk, P. A. & Wright, I. J. Plant
+ecological strategies: some leading dimensions of variation between
+species. Annu. Rev. Ecol. Syst. 33, 125–159 (2002).
+66. Coomes,D. A. & Grubb, P. J. Colonization, tolerance, competition and
+seed-size variation within functional groups. Trends Ecol. Evol. 18,
+283–291 (2003).
+67. Cavender‐Bares, J. & Holbrook, N. M. Hydraulic properties and
+freezing‐induced cavitation in sympatric evergreen and deciduous
+oaks with contrasting habitats. Plant. Cell Environ. 24,
+1243–1256 (2001).
+68. Mota-Gutiérrez, D. et al. Seasonal variation in native hydraulic
+conductivity between two deciduous oak species. J. Plant Ecol. 13,
+78–86 (2020).
+69. Wright, I. J. et al. Global climatic drivers of leaf size. Science 357,
+917–921 (2017).
+70. Chave, J. et al. Towards a worldwide wood economics spectrum.
+Ecol. Lett. 12, 351–366 (2009).
+71. Choat, B., Ball, M. C., Luly, J. G. & Holtum, J. A. M. Hydraulic
+architecture of deciduous and evergreen dry rainforest tree species
+from north-eastern Australia. Trees 19, 305–311 (2005).
+72. Ordoñez, J. C. et al. A global study of relationships between leaf traits,
+climate and soil measuresof nutrient fertility. Glob. Ecol. Biogeogr. 18,
+137–149 (2009).
+73. Maire, V. et al. Global effects of soil and climate on leaf photosynthetic
+traits and rates. Glob. Ecol. Biogeogr. 24, 706–717 (2015).
+74. Simpson, A. H., Richardson, S. J. & Laughlin, D. C. Soil–climate
+interactions explain variation in foliar, stem, root and reproductive
+traits across temperate forests. Glob. Ecol. Biogeogr. 25,
+964–978 (2016).
+75. Chen, S. et al. Plant diversity enhances productivity and soil carbon
+storage. Proc. Natl Acad. Sci. 115, 4027–4032 (2018).
+76. Scheiter, S. et al. Climate change promotes transitions to tall
+evergreen vegetation in tropical Asia. Glob. Chang. Biol. 26,
+5106–5124 (2020).
+77. Siefert, A. et al. A global meta‐analysis of the relative extent of
+intraspeciﬁc trait variation in plant communities. Ecol. Lett. 18,
+1406–1419 (2015).
+78. Osnas, J. L. D., Lichstein, J. W., Reich, P. B. & Pacala, S. W. Global leaf
+trait relationships: mass, area, and the leaf economics spectrum.
+Science 340, 741–744 (2013).
+79. Peng, Y., Bloomﬁeld, K. J., Cernusak, L. A., Domingues, T. F. & Colin
+Prentice, I. Global climate and nutrient controls of photosynthetic
+capacity. Commun. Biol. 4, 462 (2021).
+80. Boyle, B. L. et al. Taxonomic name resolution service, version 5.2,
+Botanical Information and Ecology Network. https://tnrs.biendata.org/
+(2021).
+81. R Core Team. R: a language and environment for statistical
+computing. (2022).
+82. Prentice, I. C., Cleator, S. F., Huang, Y. H., Harrison, S. P. & Roulstone,
+I. Reconstructing ice-age palaeoclimates: quantifying low-CO2
+effects on plants. Glob. Planet. Change 149, 166–176 (2017).
+83. Karger, D. N. et al. Climatologies at high resolution for the earth’s land
+surface areas. https://doi.org/10.16904/envidat.228 (2021).
+84. Karger, D. N. et al. Climatologies at high resolution for the earth’s land
+surface areas. Sci. Data 4, 1–20 (2017).
+85. Fick, S. E. & Hijmans, R. J. WorldClim 2: new 1-km spatial resolution
+climate surfaces for global land areas. Int. J. Climatol. 37,
+4302–4315 (2017).
+86. Davis, T. W. et al. Simple process-led algorithms for simulating
+habitats (SPLASH v. 1.0): robust indices of radiation,
+evapotranspiration and plant-available moisture. Geosci. Model Dev.
+10, 689–708 (2017).
+87. Sandoval, D., Prentice, I. C. & Nóbrega, R. L. B. Simple process-led
+algorithms for simulating habitats (SPLASH v. 2.0): robust
+calculations of water and energy ﬂuxes in complex terrain. Geosci.
+Model Dev. 17, 4229–4309 (2024).
+88. Defourny, P. et al. Observed annual global land-usechange from 1992
+to 2020 three times more dynamic than reported by inventory-based
+statistics. In Prep. (2023).
+89. Oksanen, J. et al. Package ‘vegan’. R. package 2, 1–295 (2013).
+90. Wood, S. & Wood, M. S. Package ‘mgcv’. R. package 1, 729 (2015).
+91. Roussel, J.-R. et al. Package ‘geometry’. R package (2023).
+92. Hijmans, R. J. et al. Package ‘raster’. R. package 734, 473 (2015).
+93. Li, J. & Prentice, I. C. Global patterns of plant functional traits and their
+relationships to climate. https://doi.org/10.5281/zenodo.
+13325275. (2024).
+94. Craine, J. M. et al. Ecological interpretations of nitrogen isotope ratios
+of terrestrial plants and soils. Plant Soil 396, 1–26 (2015).
+Acknowledgements
+J.L. is funded by the scholarship granted by the China Scholarship Council
+(CSC No. 202108060263). I.C.P. acknowledges funding from the European
+Research Council (ERC) under the European Union’s Horizon 2020 research
+and innovation programme (grant no. 787203 REALM). I.C.P. also
+acknowledges support from the Land Ecosystem Models based On New
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+13
+
+Theory, obseRvations and ExperimEnts (LEMONTREE) project funded
+through the generosity of Eric and Wendy Schmidt by recommendation of
+the Schmidt Futures programme. J.L. and I.C.P. also acknowledge funding
+from the Imperial College London Open Access Fund.
+Author contributions
+J.L. and I.C.P. conceived the project and developed the methods. J.L.
+carried out all analyses and drafted the manuscript. J.L. and I.C.P. revised
+the manuscript.
+Competing interests
+The authors declare no competing interests.
+Additional information
+Supplementary information The online version contains
+supplementary material available at
+https://doi.org/10.1038/s42003-024-06777-3.
+Correspondence and requests for materials should be addressed to
+Jiaze Li.
+Peer review information Communications Biology thanks Martha Paola
+BarajasBarbosa and the other,anonymous, reviewer(s) for their contribution
+to the peer review of this work. Primary Handling Editor: Johannes Stortz. A
+peer review ﬁle is available.
+Reprints and permissions information is available at
+http://www.nature.com/reprints
+Publisher’s note Springer Nature remains neutral with regard to
+jurisdictional claims in published maps and institutional afﬁliations.
+Open Access This article is licensed under a Creative Commons
+Attribution 4.0 International License, which permits use, sharing,
+adaptation, distribution and reproduction in any medium or format, as long
+as you give appropriate credit to the original author(s) and the source,
+provide a link to the Creative Commons licence, and indicate if changes
+were made. The images or other third party material in this article are
+included in the article’s Creative Commons licence, unless indicated
+otherwise in a credit line to the material. If material is not included in the
+article’s Creative Commons licence and your intended use is not permitted
+by statutory regulation or exceeds the permitted use, you will need to
+obtain permission directly from the copyright holder. To view a copy of this
+licence, visit http://creativecommons.org/licenses/by/4.0/.
+© The Author(s) 2024
+https://doi.org/10.1038/s42003-024-06777-3
+Article
+Communications Biology |  (2024) 7:1136 
+14

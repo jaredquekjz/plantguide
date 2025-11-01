@@ -1,0 +1,2677 @@
+Articles
+https://doi.org/10.1038/s41559-021-01616-8
+A full list of affiliations appears at the end of the paper.
+P
+lant functional traits have proved useful in identifying life his-
+tory strategies1,2 for predicting plant community assembly3,4 
+and for assessing the impact of vegetation composition and 
+diversity on ecosystem functioning5,6. Consequently, vegetation 
+models including coupled climate–vegetation models benefit from 
+a better representation of plant trait variation to adequately anal-
+yse terrestrial biosphere dynamics under global change6,7. Today, 
+in combination with advanced gap-filling techniques8, databases of 
+plant traits have sufficient coverage to allow quantitative analyses of 
+plant form and function at the global scale9. Analysing six funda-
+mental traits, Díaz and colleagues10 revealed that essential patterns 
+of form and function across the plant kingdom can be captured by 
+two main axes. The first reflects the size spectrum of whole plants 
+and plant organs. The second axis corresponds to the ‘leaf econom-
+ics spectrum’11 emerging from the necessity for plants to balance leaf 
+persistence against plant growth potential. The concept of a global 
+spectrum of plant form and function has since been investigated 
+from various perspectives12–14. It has been shown, for instance, that 
+orthogonal axes of variation in size and economics traits emerge 
+even in the extreme tundra biome13 or at the scale of plant commu-
+nities12. However, it remains unclear whether the two axes remain 
+dominant for extended sets of traits or when differentiating among 
+growth forms. A particular knowledge gap is what environmental 
+controls determine these two axes of plant form and function.
+There is ample evidence that large-scale variation of individual 
+plant traits is related to environmental gradients. Early plant bio-
+geographers suggested that climate and soils together shape plant 
+form and function15–17 but could not propose a more precise the-
+oretical framework describing these fundamental relationships. 
+Over the last decades, examples have thus accumulated without 
+an overall framework in which to place them13,18,19. For instance, 
+tree height depends on water availability20,21 while leaf economics 
+traits depend on soil properties, especially soil nutrient supply, as 
+well as on climatic conditions reflected in precipitation18,22,23. Leaf 
+size, leaf dark respiration rate, specific leaf area (SLA), leaf N and 
+P concentration, seed size and wood density, all show broad-scale 
+correlations with climate or soil22,24–27. It has also been reported 
+that many of these traits show latitudinal patterns24–27. Generalizing 
+such insights is, however, not trivial, as soil properties partly mir-
+ror climate gradients, as a consequence of long-term soil formation 
+through weathering, leaching and accumulation of organic mat-
+ter—processes related to temperature and precipitation28; however, 
+Climatic and soil factors explain the 
+two-dimensional spectrum of global plant  
+trait variation
+Julia S. Joswig   1,2 ✉, Christian Wirth   1,3,4, Meredith C. Schuman   2,5, Jens Kattge   1,3, Björn Reu6,  
+Ian J. Wright   7, Sebastian D. Sippel   8,9, Nadja Rüger   3,10,11, Ronny Richter   3,4,12,  
+Michael E. Schaepman   2, Peter M. van Bodegom   13, J. H. C. Cornelissen14, Sandra Díaz   15,  
+Wesley N. Hattingh   16, Koen Kramer   17,18, Frederic Lens   19,20, Ülo Niinemets   21,  
+Peter B. Reich   22,23,24, Markus Reichstein   1,3, Christine Römermann   3,25, Franziska Schrodt   26,  
+Madhur Anand27, Michael Bahn   28, Chaeho Byun   29, Giandiego Campetella   30, 
+Bruno E. L. Cerabolini   31, Joseph M. Craine   32, Andres Gonzalez-Melo33, Alvaro G. Gutiérrez   34, 
+Tianhua He35,36, Pedro Higuchi   37, Hervé Jactel38, Nathan J. B. Kraft39, Vanessa Minden40,41, 
+Vladimir Onipchenko   42, Josep Peñuelas   43,44, Valério D. Pillar   45, Ênio Sosinski   46, 
+Nadejda A. Soudzilovskaia47,48, Evan Weiher   49 and Miguel D. Mahecha3,50,51
+Plant functional traits can predict community assembly and ecosystem functioning and are thus widely used in global models 
+of vegetation dynamics and land–climate feedbacks. Still, we lack a global understanding of how land and climate affect plant 
+traits. A previous global analysis of six traits observed two main axes of variation: (1) size variation at the organ and plant level 
+and (2) leaf economics balancing leaf persistence against plant growth potential. The orthogonality of these two axes suggests 
+they are differently influenced by environmental drivers. We find that these axes persist in a global dataset of 17 traits across 
+more than 20,000 species. We find a dominant joint effect of climate and soil on trait variation. Additional independent climate 
+effects are also observed across most traits, whereas independent soil effects are almost exclusively observed for economics 
+traits. Variation in size traits correlates well with a latitudinal gradient related to water or energy limitation. In contrast, varia-
+tion in economics traits is better explained by interactions of climate with soil fertility. These findings have the potential to 
+improve our understanding of biodiversity patterns and our predictions of climate change impacts on biogeochemical cycles.
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+36
+
+Articles
+NATurE Ecology & EVoluTIon
+climate-independent features reflecting geology and surface mor-
+phology also contribute to soil fertility28. Soil may furthermore 
+buffer climate stresses; for example, by alleviating water deficit in 
+periods of low precipitation29.
+Combining the insights suggests that the global spectrum of 
+plant traits reveals two internally correlated orthogonal groups and 
+that many plant traits are individually linked to environmental gra-
+dients, we expect that both trait groups should closely follow gra-
+dients of climate and soil properties. Here, we investigate to what 
+extent the major dimensions underpinning the global spectrum of 
+plant form and function can be attributed to global gradients of cli-
+mate and soil conditions; and to what extent these factors can jointly 
+or independently explain the global spectrum of form and function.
+We compiled and analysed a dataset of 17 functional traits with 
+a sufficient number of records in the TRY database9 to character-
+ize the main ecoregions of the world30, that is, environmentally 
+homogeneous areas with distinct biota (Extended Data Fig. 1). The 
+dataset is based on 225,206 georeferenced observations comprising 
+records of 20,655 species. The trait data were complemented with 21 
+climate variables and 107 soil variables (Methods; Supplementary 
+Tables 1 and 2). Trait–environment relationships were analysed for 
+species medians aggregated to ecoregions using ridge regression31, 
+a robust method (Supplementary Figs. 1–3) suitable to deal with 
+high-dimensional, unbalanced and collinear predictors in combina-
+tion with hierarchical partitioning32 (Methods).
+Results
+Our main analysis is based on median trait values of plant spe-
+cies per ecoregion. The rationale is that species presence indicates 
+how the trait space can be realized in a given environment. Spatial 
+aggregation is a suitable means to increase the detectability of global 
+trait patterns (Supplementary Fig. 3), as described in earlier studies, 
+where traits have been binned by temperature classes33 or for differ-
+ent altitudinal ranges22. Extreme outliers, for instance towering trees 
+such as the Californian Sequoia (Sequoiadendron sempervirens), 
+may still exist far away from the equator, where precipitation is suf-
+ficiently high20 but their influence is outweighed in our approach 
+by an increasing fraction of small-statured herbaceous species from 
+tropical to temperate and boreal regions.
+Orthogonal axes and trait clusters. To understand whether the 
+axes of variation identified for the grouping of six traits10 also hold 
+for the extended set of 17 traits, we cluster their trait–trait corre-
+lations (Fig. 1a and Supplementary Fig. 4) and further represent 
+these relations on the basis of their principal components (PCA; 
+Methods). This analysis supports the clear distinction of size versus 
+economics traits identified by Díaz and colleagues10. The group of 
+size traits contains two subclusters. The first includes height and 
+seed size traits: plant height (height), seed mass, seed length and 
+dispersal unit length (dispersal length). The second subset con-
+tains traits that are linked through plant hydraulic scaling rela-
+tionships34 and contrasts high conduit density (that is, number of 
+conduits per sapwood cross-sectional area) with high leaf area and 
+leaf fresh mass (leaf f mass). Economics traits represent dry mass 
+and nutrient investments in plant tissues, and the rate and dura-
+tion of returns on those investments11. They are represented by leaf 
+nitrogen content per leaf area (leaf N area), leaf nitrogen (leaf N), 
+phosphorus (leaf P) and carbon (leaf C) content per dry mass, leaf 
+N to P ratio (leaf N:P) and SLA. Stem specific density (stem density) 
+takes an intermediate position (Fig. 1b) but more closely clusters 
+a
+Seeds U
+Leaf d15N
+Vessel len
+Leaf N
+SLA
+Leaf N area
+Leaf P
+Leaf N:P
+Leaf C
+Stem dens
+Conduit dens
+Leaf area
+Leaf f mass
+Height
+Seed mass
+Dispersal len
+Seed len
+Seeds U
+Leaf d15N
+Vessel len
+Leaf N
+SLA
+Leaf N area
+Leaf P
+Leaf N:P
+Leaf C
+Stem dens
+Conduit dens
+Leaf area
+Leaf f mass
+Height
+Seed mass
+Dispersal len
+Seed len
+0.01 0.15 0.03 0.06 0.04 0.13 0.18 0.07 0.17 0.16 0.14 0.15 0.14 0.41 0.37 0.32
+0.01
+0.03 0.08 0.02 0.08 0.02 0.09 0.03
+0.2
+0.1
+0.08 0.09
+0.1
+0.1
+0
+0.02
+0.15 0.03
+0.22 0.05 0.26 0.26 0.16 0.06 0.08
+0.1
+0.04 0.06 0.07 0.03 0.12 0.07
+0.03 0.08 0.22
+0.58 0.12 0.55 0.06 0.16 0.18 0.22 0.11 0.06 0.12
+0
+0.01 0.04
+0.06 0.02 0.05 0.58
+0.69 0.56 0.27 0.28 0.33 0.07 0.09 0.07 0.27 0.26
+0.2
+0.24
+0.04 0.08 0.26 0.12 0.69
+0.23 0.36 0.23 0.28 0.12 0.02 0.15 0.21
+0.3
+0.21 0.22
+0.13 0.02 0.26 0.55 0.56 0.23
+0.7
+0.32 0.41 0.17 0.07 0.16 0.34
+0.3
+0.17 0.22
+0.18 0.09 0.16 0.06 0.27 0.36
+0.7
+0.24 0.41 0.37 0.21 0.29
+0.4
+0.43
+0.3
+0.32
+0.07 0.03 0.06 0.16 0.28 0.23 0.32 0.24
+0.29 0.09 0.14 0.17 0.38 0.36 0.34 0.34
+0.17
+0.2
+0.08 0.18 0.33 0.28 0.41 0.41 0.29
+0.17 0.12 0.18
+0.4
+0.43 0.31 0.34
+0.16
+0.1
+0.1
+0.22 0.07 0.12 0.17 0.37 0.09 0.17
+0.47 0.51 0.39 0.46 0.26 0.31
+0.14 0.08 0.04 0.11 0.09 0.02 0.07 0.21 0.14 0.12 0.47
+0.92 0.56 0.49 0.39 0.43
+0.15 0.09 0.06 0.06 0.07 0.15 0.16 0.29 0.17 0.18 0.51 0.92
+0.61 0.56 0.43 0.47
+0.14
+0.1
+0.07 0.12 0.27 0.21 0.34
+0.4
+0.38
+0.4
+0.39 0.56 0.61
+0.66 0.53 0.55
+0.41
+0.1
+0.03
+0
+0.26
+0.3
+0.3
+0.43 0.36 0.43 0.46 0.49 0.56 0.66
+0.84 0.89
+0.37
+0
+0.12 0.01
+0.2
+0.21 0.17
+0.3
+0.34 0.31 0.26 0.39 0.43 0.53 0.84
+0.92
+0.32 0.02 0.07 0.04 0.24 0.22 0.22 0.32 0.34 0.34 0.31 0.43 0.47 0.55 0.89 0.92
+b
+−10
+−5
+0
+5
+10
+PC1 (33%)
+−10
+−5
+0
+5
+10
+PC2 (15%)
+0.2
+0.2
+0.5
+0.95
+0.99
+Leaf area
+Stem dens
+SLA
+Leaf C
+Leaf N
+Leaf P
+Height
+Seed mass
+Seed len
+Leaf N area
+Leaf N:P
+Leaf d15N
+Seeds U
+Leaf f mass
+Conduit dens
+Dispersal len
+Vessel len
+Leaf d15N
+Seeds U
+Vessel len
+Colour key
+0
+0.2
+0.4
+0.6
+0.8
+1.0
+Value
+Fig. 1 | Previously identified global axes of variation in size and economics traits hold for an extended trait set (n = 36,197 species per ecoregion 
+median). The set of 17 investigated traits (Supplementary Table 5) can be primarily divided into size and economics traits, which load differently onto the 
+two PC axes describing their global distribution. a, Heatmap of covariation. Trait correlations are indicated using absolute Pearson correlation coefficients, 
+with green shades indicating high absolute correlation and yellow shades indicating low absolute correlation. On the left, the distance tree of traits derived 
+from hierarchical clustering is illustrated. Three resulting groups are: (1) size-related traits (blue) consisting of conduit density (conduit dens), leaf area, 
+leaf fresh mass (leaf f mass), plant height (height), seed mass, dispersal unit length (dispersal len) and seed length (seed len); (2) economics traits (red) 
+comprising SLA, leaf N content per area (leaf N area), leaf N, P and C concentrations, leaf N/P ratio (leaf N:P) and stem specific density (stem dens); and 
+(3) a third (yellow) consisting of the number of seeds per reproduction unit (seeds U), leaf δ15N (leaf d15N) and vessel element length (vessel len). b, The 
+first two PCs of the PCA. Arrow tips refer to the loading of the traits (Supplementary Fig. 6). Contour lines delineate the colour scale that corresponds to 
+the kernel density of species (dense, red to sparse, light yellow; 20%, 50%, 95% and 99% of all species). PC1 explains 33% of trait variation and PC2 15% 
+(Supplementary Fig. 5).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+37
+
+Articles
+NATurE Ecology & EVoluTIon
+with this set of economics traits (Fig. 1a), suggesting a syndrome 
+of traits promoting slow to fast nutrient and carbon processing at 
+the whole-plant level35–37. Furthermore, we identify a third group 
+of traits that appear to be only weakly correlated with any other 
+trait. This third group contains seed number per reproduction unit 
+(seeds U), leaf δ15N (leaf d15N) and vessel element length (vessel 
+length). The first two principal components (PC) of the PCA on 
+the trait data represent 48% of the overall variation (Supplementary 
+Fig. 5). PC1 is determined by size traits and accounts for 33% of the 
+variance; PC2 is determined by economics traits and accounts for 
+15% of the variance (Fig. 1b and Supplementary Fig. 6). These two 
+main axes remain clearly identifiable when the analysis is conducted 
+separately for woody and non-woody species (Supplementary  
+Figs. 7 and 8). The remaining PCs each account for less than 10% 
+of variance (PC3 = 9.36%). In the following, we focus on the two 
+groups of size and economics traits (Supplementary Fig. 5).
+Latitudinal trait variation. As an investigation of broad-scale gra-
+dients among size and economics traits, we analyse latitudinal gra-
+dients of the first (PC1) and second (PC2) principal components. 
+PC1—representing primarily size-related traits—shows a strong 
+linear latitudinal signal (on the basis of species: r2(PC1) = 0.37, 
+at the ecoregion level r2(PC1aggregated) = 0.84; Fig. 2a). By contrast, 
+the axis representing primarily economic traits, PC2, shows little 
+response to latitude (on the basis of species: r2(PC2) = 0.01, at the 
+ecoregion level r2(PC2aggregated) = 0.08; Fig. 2b, for woody non-woody 
+species Supplementary Fig. 9), except for a dip at 35° and declin-
+ing sharply at 60° where the species density also drops (but see 
+Supplementary Fig. 10 for comparison to an independent dataset 
+from arctic latitudes which shows the same pattern). Latitudinal 
+gradients are known to be strongly related to climate, due to the 
+distribution of solar energy and general atmospheric circula-
+tion patterns. Therefore, we propose that those climate (and soil) 
+aspects that co-vary with latitude consistently determine size traits, 
+while they have little effect on economics traits, which are more 
+strongly affected by latitude-independent soil (and climate) effects 
+(Supplementary Fig. 11).
+Climate and soil: joint and independent effects. The differ-
+ences in latitudinal relationships between the two PC axes support 
+the hypothesis that different environmental factors should drive  
+variation within the separate groups of size versus economics traits. 
+We assess the joint and independent effects of climate and soil on 
+trait variability (ridge regression, RR; Table 1 and Fig. 3). Overall, size 
+traits are better explained (RR; r2 = 0.55; maximum r2 = 0.78 for con-
+duit density; Table 1) than are economics traits (RR; r2 = 0.40; maxi-
+mum r2 = 0.55 for leaf N:P ratio; Table 1). We find a substantial joint 
+effect of climate and soil variables—in every case larger than either 
+unique effect—which reflects strong interactions between specific 
+climate and soil predictors (RR with hierarchical partitioning (HP); 
+Fig. 3b and Supplementary Fig. 12). However, we also observe inde-
+pendent effects of climate and soil (RR with HP; Fig. 3 and Table 1).  
+The independent climate effects are observed across traits but size 
+traits tend to be better explained by the independent climate effects 
+than are economics traits. In contrast, independent soil predictors 
+are relevant for all economics traits but not size traits (apart from a 
+small contribution to leaf area). We interpret these results as evidence 
+for the importance of both joint and independent effects of climate 
+and soil variables for whole-plant strategies2,37,38 which we show here 
+at the global scale along with a dichotomous tendency of a stronger 
+imprint of climate factors on size traits and of soil conditions on eco-
+nomics traits (Fig. 3, Supplementary Figs. 13–38 and Supplementary 
+Table 3). We propose that the dominance of joint effects implies 
+that interactions between soil and climate properties are of primary 
+importance in plant trait ecology; as opposed to trait syndromes 
+being defined by single environmental variables in isolation.
+We next ask how the climate and soil datasets are interdependent 
+and which predictors add the most relevant information. For this 
+purpose, we related all traits to environmental variables in a redun-
+dancy analysis (RDA; Methods; Fig. 4). The RDA again identifies 
+two main axes of size and economics traits (Fig. 4a), which are now 
+shown together with the environmental variables that co-vary lin-
+early with those traits (Fig. 4b and Supplementary Fig. 39). The first 
+RDA axis corresponds to size traits (Fig. 4a) and represents an axis 
+of water and energy (for example, precipitation, vapour pressure 
+and temperature; Fig. 4b). Two attributes of soil texture important 
+for water retention—the fraction of gravel and clay—also vary along 
+this axis. The second RDA axis corresponds to economics traits 
+(Fig. 4a) co-varying with an axis of soil variables generally associ-
+ated with soil fertility (that is, soil texture (silt versus sand), water 
+holding capacity, carbon concentration and stocks), as well as the 
+climate variable mean solar radiation (Fig. 4b).
+a
+−8
+−6
+−4
+−2
+0
+2
+4
+6
+PCA axis 1
+Absolute latitude
+0.5
+0.5
+0.5
+0.5
+0.8
+0.8
+0.95
+●●
+●●
+●
+●
+●
+●
+●
+●●
+●
+●
+●
+●
+●
+●●●●
+●
+●●●
+●
+●●
+●
+●●
+●
+●
+●●●
+●
+●
+●
+●
+●
+●●●●●
+●●●●●
+●
+●
+●
+●
+●●
+●
+●
+●
+●
+●
+●●
+●
+●
+●
+●
+●
+●
+●
+r 2 = 0.39
+r 2 = 0.8
+b
+−8
+−6
+−4
+−2
+0
+2
+4
+6
+PCA axis 2
+0
+20
+40
+60
+0
+20
+40
+60
+Absolute latitude
+0.5
+0.5
+0.5
+0.8
+0.95
+●
+●
+●●●●
+●●●●●●●●
+●
+●
+●●
+●●
+●
+●
+●●
+●
+●
+●
+●
+●●●
+●●
+●
+●
+●●
+●●
+●
+●
+●●●
+●●●●●●
+●
+●●●
+●
+●
+●●●●●
+●
+●
+●●
+●
+●
+●
+●
+●
+r 2 = 0.01
+r 2 = 0.08
+Fig. 2 | Size traits, not economics traits vary with latitude: the PC1 of the PCA on 17 plant traits shows a clear latitudinal gradient while PC2 does not 
+(n = 36,197 species per ecoregion median). Contour lines delineate the colour scale that corresponds to the kernel density of species (dense, red to 
+sparse, light yellow; 5%, 95%, 99% quantiles). Mean estimates aggregated at 1° absolute latitude are indicated as black dots. The line refers to a linear 
+model (ordinary least squares). a, PC1 representing mainly size traits (conduit density, leaf area, leaf fresh mass, plant height, seed mass, dispersal 
+unit length, seed length) regressed against absolute latitude. Linear model: r2 = 0.38 without bins; r2 = 0.84 aggregated at 1° absolute latitude. b, PC2 
+representing mainly economics traits (leaf N, leaf N per area, leaf P, leaf N:P ratio, SLA, leaf C, stem density) regressed against absolute latitude. Linear 
+model: r2 = 0.01 without bins; r2 = 0.08 aggregated at 1° absolute latitude.
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+38
+
+Articles
+NATurE Ecology & EVoluTIon
+Discussion
+This study shows that the proposed global spectrum of plant form 
+and function fits well to a substantially extended trait space com-
+pared to the original study10, with seven traits that capture the 
+whole-plant size spectrum and seven traits that capture the leaf 
+economic spectrum and only three traits that do not fall along 
+these dimensions (Fig. 1b). One explanation could be that the vary-
+ing fraction of woody and non-woody species would drive these 
+patterns. However, we showed that these two main trait groups 
+remain clearly identifiable when the analysis is conducted sepa-
+rately, yet with fewer samples, for woody and non-woody species 
+(Supplementary Fig. 8).
+However, we cannot discard the possibility that additional traits 
+may add relevant axes of trait variation. For example, our study 
+does not include carbon fixation rates39 or fire adaptation traits40, 
+nor does it include any root traits—representing an essential gap to 
+be filled at the global scale41. The respective data are too scarce to yet 
+be integrated with global datasets. If such data were available they 
+would have the potential to fundamentally change our perception 
+of global plant form and function, and their relation to ecosystem 
+functioning.
+Variation in size traits, represented by PC1 in Fig. 1b, shows a 
+clear latitudinal gradient (Fig. 2b). In contrast, variation in econom-
+ics traits (represented by PC2) does not show a latitudinal trend. 
+Only a dip is apparent at around 35° (absolute), in addition to a 
+decrease at high latitudes above 60° (absolute) where available data 
+become increasingly limited. However, comparison to a recent arc-
+tic dataset indicates that this decrease in variation at high latitudes 
+reflects available observations (see Supplementary Fig. 10 for a 
+comparison to independent data). These patterns might represent a 
+response to nutrient limitation and drought42,43 in water-scarce and 
+nutrient-scarce deserts and Mediterranean regions (Supplementary 
+Fig. 40) or boreal and arctic areas characterized by short growing 
+periods slowing down mineralization. The dip at ~35° indeed can 
+be related to low water availability (Supplementary Fig. 41). At high 
+latitudes, cold winters and short growing seasons constrain plant 
+height13 and require on average more conservative nutrient-use 
+strategies (like evergreen leaves) and protection against frost dam-
+age than the global mean, despite the high functional diversity in 
+economics traits observed at these latitudes13. Additional datas-
+ets may shed more light on specific conditions, for example see 
+Bjorkman et al.19. Future studies should quantify how individual 
+stressors, for example radiative stress or water stress, relate to global 
+patterns of trait variation.
+The climate and soil factors used in this analysis explain up to 
+77% of observed trait variation—a high fraction given that trait 
+variation is widely known to be determined also by other factors 
+such as biotic interactions (for example, soil biota) and anthro-
+pogenic effects or disturbances and local effects such as those of 
+microclimate12,44–46. Recent findings on how different trait groups 
+vary with the environment indicate that size and economics traits 
+vary differently13 and in particular respond differently to climate 
+and soil19.
+Our analyses reveal a dominant joint effect of climate and soil 
+drivers on trait variation—as already suggested by a number of ear-
+lier studies18,19,22 but not yet quantified globally.
+The orthogonality of the two main dimensions of plant trait 
+variation suggests that different aspects of climate and soil vari-
+ables are relevant to explain plant trait patterns at the global scale 
+(Supplementary Figs. 11–39). While latitude-related variables 
+(mainly climate) explain size traits, variables that share less explana-
+tory power with latitude (mainly soil) explain economics traits 
+(Supplementary Table 4 and Supplementary Fig. 11). The RDA 
+presented in Fig. 4 (Supplementary Fig. 39) provides some insight 
+Table 1 | Showing for each trait the variance explained (r2) by ridge regression models for 220 ecoregions and the independent 
+effects for climate and soil listed from hierarchical partitioning that, respectively, add up with the joint effect to the variance 
+explained by climate or soil
+Traita
+Group
+Explained varianceb by soil 
+and climate (r2)
+Soil (independent effectb) 
+(r2)
+Climate (independent 
+effectb) (r2)
+Joint effectb (r2)
+Ridge regression model
+Hierarchical partitioning
+Hierarchical partitioning
+Hierarchical 
+partitioning
+Seed length
+Size
+0.4
+–0.01
+0.08
+0.33
+Dispersal length
+Size
+0.26
+–0.01
+0.03
+0.24
+Seed mass
+Size
+0.57
+–0.01
+0.09
+0.49
+Height
+Size
+0.52
+0.01
+0.1
+0.41
+Leaf f mass
+Size
+0.72
+0
+0.15
+0.56
+Leaf area
+Size
+0.63
+0.03
+0.13
+0.47
+Conduit density
+Size
+0.77
+–0.01
+0.22
+0.56
+Stem density
+Economics
+0.41
+0.03
+0.02
+0.36
+Leaf C
+Economics
+0.29
+0.08
+0.05
+0.17
+Leaf N:P
+Economics
+0.55
+0.06
+0.12
+0.38
+Leaf P
+Economics
+0.45
+0.15
+0.05
+0.25
+Leaf N area
+Economics
+0.39
+0.03
+0.02
+0.33
+SLA
+Economics
+0.41
+0.09
+0.13
+0.19
+Leaf N
+Economics
+0.26
+0.06
+0.16
+0.05
+Vessel length
+Other
+0.4
+0
+–0.03
+0.42
+Leaf d15N
+Other
+0.51
+0.05
+0.1
+0.35
+Seeds U
+Other
+0.1
+–0.02
+0.02
+0.1
+aFor full versions of traits, see main text. Mean values; minimum and maximum values from different cross-validation runs in Supplementary Table 8. Negative values indicate a reduction of explained 
+variance when respective variables are added to the ridge regression model.
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+39
+
+Articles
+NATurE Ecology & EVoluTIon
+a
+0
+0.2
+0.4
+0.6
+0.8
+1.0
+0
+0.2
+0.4
+0.6
+0.8
+1.0
+Climate effect (independent and joint/2)
+Soil effect (independent and joint/2)
+Leaf area
+Leaf area
+Leaf area
+Leaf area
+Leaf area
+Stem dens
+Stem dens
+Stem dens
+Stem dens
+Stem dens
+SLA
+SLA
+SLA
+SLA
+SLA
+Leaf C
+Leaf C
+Leaf C
+Leaf C
+Leaf C
+Leaf N
+Leaf N
+Leaf N
+Leaf N
+Leaf N
+Leaf P
+Leaf P
+Leaf P
+Leaf P
+Leaf P
+Height
+Height
+Height
+Height
+Height
+Seed mass
+Seed mass
+Seed mass
+Seed mass
+Seed mass
+Seed len
+Seed len
+Seed len
+Seed len
+Seed len
+Leaf N area
+Leaf N area
+Leaf N area
+Leaf N area
+Leaf N area
+Leaf N:P
+Leaf N:P
+Leaf N:P
+Leaf N:P
+Leaf N:P
+Leaf d15N
+Leaf d15N
+Leaf d15N
+Leaf d15N
+Leaf d15N
+Seeds U
+Seeds U
+Seeds U
+Seeds U
+Seeds U
+Leaf f mass
+Leaf f mass
+Leaf f mass
+Leaf f mass
+Leaf f mass
+Conduit dens
+Conduit dens
+Conduit dens
+Conduit dens
+Conduit dens
+Dispersal len
+Dispersal len
+Dispersal len
+Dispersal len
+Dispersal len
+Vessel len
+Vessel len
+Vessel len
+Vessel len
+Vessel len
+Size trait
+Economics trait
+Other trait
+b
+8%
+3%
+9%
+10%
+15%
+13%
+22%
+2%
+5%
+12%
+5%
+2%
+13%
+16%
+0%
+10%
+2%
+0%
+0%
+0%
+1%
+0%
+3%
+0%
+3%
+8%
+6%
+15%
+3%
+9%
+6%
+0%
+5%
+0%
+33%
+24%
+49%
+41%
+56%
+47%
+56%
+36%
+17%
+38%
+25%
+33%
+19%
+5%
+42%
+35%
+10%
+Seeds U
+Leaf d15N
+Vessel len
+Leaf N
+SLA
+Leaf N area
+Leaf P
+Leaf N:P
+Leaf C
+Stem dens
+Conduit dens
+Leaf area
+Leaf f mass
+Height
+Seed mass
+Dispersal len
+Seed len
+100
+50
+0
+50
+100
+Percentage of trait variance explained by
+climate and/or soil
+Variable
+Independent_climate
+Independent_soil
+Joint
+Fig. 3 | Climate and soil variables explain up to 77% of variance in size and economics traits. Hierarchical partitioning32 identifies the contribution 
+of climate and soil variables to explain each trait (n = 220, ecoregional median trait: blue, size; red, economics; yellow, other). The joint effect is the 
+fraction explained by both climate and soil together, and is split equally among them. The independent effect is the fraction of r2 explained exclusively 
+by either soil or climate variables. a, Tilted x–y plot of the soil versus climate variables to explain a trait. The axes show the sum of the respective joint 
+and independent effect (hierarchical partitioning). The colours reflect the strength of: the independent effect of climate plus its share of the joint effect 
+(r2; purple); and soils' independent effect plus its share of the joint effect (peach). The sum of both axes equals the total r2 explained by climate and soil; 
+in cases where soil showed a negative independent effect only the climate-independent effect is shown (and vice versa but see Table 1). b, Percentage 
+variation explained by climate (purple, percentages on the left), soil (peach, percentages on the right) and jointly (grey, percentages in the middle) for trait 
+groups— size, economics and other. Total bar length = total r2 explained by climate and soil; in cases where soil showed a negative independent effect only 
+the climate-independent effect is shown (and vice versa but see Table 1). For leaf area, climate and soil jointly explain 47%, the independent climate effect 
+explains an additional 13% of the variance, while soil explains 3%, totalling 63% of variance explained. For trait abbreviations see Fig. 1.
+a
+−1.0
+−0.5
+1.0
+−1.0
+−0.5
+1.0
+RDA1
+RDA2
+Leaf area
+Stem dens
+SLA
+Leaf C
+Leaf N
+Leaf P
+Height
+Seed mass
+Seed len
+Leaf N area
+Leaf N:P
+Leaf d15N
+Seeds U
+Leaf f mass
+Conduit dens
+Dispersal len
+Vessel len
+b
+−1.0
+−0.5
+0
+0.5
+0
+0.5
+1.0
+−1.0
+−0.5
+0
+0.5
+0
+0.5
+1.0
+RDA1
+RDA2
+WaterPot10
+WaterPot20
+WaterPot32
+WaterSat
+Density
+CEC
+Clay
+Gravel
+C_density
+C_stocki_1m
+C_stocki_2m
+C_stocki_0.3m
+C_stock
+C_concentration
+pH
+Silt
+Sand
+WaterWilt
+Temp
+Temp_max
+Temp_min
+Temp_sd
+Temp_d
+Precipitation
+Precipitation_max
+Precipitation_min
+Precipitation_sd
+Vapour.pressure
+Vapour.pressure_ma
+Vapour.pressure_min
+Vapour.pressure_sd
+Solar.rad
+Solar.rad_max
+Solar.rad_min
+Solar.rad_sd
+Wind
+Wind_max
+Wind_min
+Wind_sd
+Fig. 4 | RDA of traits reveals the relationships of climate and soil factors associated with trait distributions (n = 220, ecoregion median, only topsoil 
+layer variables included; variance explained: RDA1 = 63%, RDA2 = 18%). a,b, The output of the RDA is split into two plots: traits (a), where arrows are 
+coloured according to trait groups (blue, size traits; red, economics traits; yellow, other traits; arrow length and point positions scaled to fit the plot); and 
+environmental factors (b), where arrows are coloured according to predictor group (climate, blue and soil, red variables; arrow length and point positions 
+scaled to fit the plot). In a and b, points represent ecoregions and are coloured according to biome (red, tropics; green, temperate; yellow, desert; orange, 
+Mediterranean; dark blue, tundra). Climate variable abbreviations are composed of the variable (average if not stated differently) and a suffix. Variables 
+are: Solar.rad, solar radiation; Vapour.pressure, vapour pressure; Wind, average wind speed; Temp, temperature; Precipitation, precipitation. Suffixes 
+are: no suffix, mean of respective variable; d, diurnal range; min, annual minimum of the respective variable; sd, seasonality of respective variable. Soil 
+variable abbreviations (all topsoil) are: Density, soil density (kg/m3); pH, pH value; Sand, sand fraction (vol%); Silt, silt fraction (vol%); Clay, clay fraction 
+(vol%); C_concentration, organic carbon concentration; C_density, organic carbon density; CEC, cation exchange capacity; C_stock, soil organic carbon 
+stock at depth 0.00 m; C_stocki, organic carbon stock for depth intervals—0.3m (0–0.30 m), 1m (0–1 m), 2m (0–2 m); WaterWilt, available soil water 
+capacity (volumetric fraction) until wilting point; WaterSat, saturated water content; WaterPot, available soil water capacity for moisture potentials—10 
+(–10 kPa;pF 2.0), 20 (–20 kPa;pF 2.3), 32 (–31.6 kPa;pF 2.5). For trait abbreviations see Fig. 1.
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+40
+
+Articles
+NATurE Ecology & EVoluTIon
+on the nature of these climate–soil interactions. The first RDA axis, 
+which describes variation in size traits, resembles a latitudinal gra-
+dient. On one extreme end, ample water supply from high and fre-
+quent precipitation, abundant water vapour and constant rates of 
+high solar radiation meet the fundamental requirements of plant 
+physiology—water, sunlight and warm temperatures. Additionally, 
+these conditions promote weathering of soil minerals but also 
+microbial activity, contributing to fast turnover rates of organic 
+matter supporting nutrient provisioning28,47; in brief, they represent 
+conditions that allow plants to grow fast and tall in the race for light. 
+Large vessels supporting large leaves promote high rates of water 
+transport and thus growth, which is only possible because of the 
+small risk of embolism under these benign water conditions43. The 
+high carbon gains can be invested in large fruits and seeds (seed 
+mass, seed length and dispersal unit length). Further along this 
+gradient, the above-mentioned plant requirements become limited: 
+water supply and temperatures are reduced and slow metabolic 
+rates aboveground and belowground. In ecoregions of the boreal 
+and desert biomes, conduit diameter is constrained by the risk of 
+cavitation during freeze–thaw cycles43 and water scarcity, amplified 
+by little water holding capacity of gravel-rich soils. Our analysis thus 
+indicates that size traits appear to be related to a latitudinal gradient 
+of climatic favorability for plant growth determined by water and 
+light availability.
+Important correlates of water and nutrient availability are associ-
+ated with the second RDA axis, describing variation in economics 
+traits. Traits associated with an acquisitive strategy are related to 
+indicators of soil fertility, most importantly silt and organic mat-
+ter concentration as well as pH (refs. 18,28). Soil pH is intermediate 
+between the two axes, as might be expected given that pH reflects 
+both broad-scale climate variation (especially aridity47) and a variety 
+of processes related to nutrient availability and soil microbial com-
+munities18,48–50. Silt forms the substrate of our most fertile soils as its 
+structure is able to retain water against gravitation (unlike sand) but 
+renders it accessible to plants under drought conditions28,51 (unlike 
+clay). The high fertility is associated with a high concentration of 
+organic matter, which has a high cation exchange capacity espe-
+cially under high pH (ref. 47). On the opposite end of the gradient, 
+sandy soils require adaptations to both water and nutrient limita-
+tion. The trait configuration at the conservative end of the econom-
+ics traits (low SLA, high tissue density and high organ longevity) 
+represents an adaptation to both11,37. Various processes exist that 
+lead to variation in the soil characteristics underlying the second 
+RDA axis independent of latitude18—for example, sandstone as a 
+geological substrate giving rise to sandy soils exists from the tropics 
+to the arctic28,51. However, different climate variables related to solar 
+radiation, temperature and precipitation, which influence long- 
+and short-term soil development processes directly and indirectly 
+via soil biology28,51,52, are related to this axis. Variation in economic 
+traits is most probably the evolutionary response to exploiting this 
+partly climate-independent edaphic niche axis.
+Size traits are on average explained better than economics traits 
+by the environmental variables considered in this study. The lower 
+fraction of explained variance for economics traits could have sev-
+eral causes. Firstly, data on soil factors that are likely to be very 
+important, such as soil nitrogen and phosphorus availability18,23, 
+are not yet available at a global scale. Secondly, economics traits 
+show relatively more within-site variation than across-site varia-
+tion in comparison to size traits (Supplementary Fig. 42), prob-
+ably because economics traits vary more than size traits within one 
+plant; for example, leaf N per area and SLA vary with age and light 
+availability53. Thirdly, soil heterogeneity within ecoregions—both 
+abiotic and biotic—may weaken the relationship between econom-
+ics traits and environmental variables12,54,55. Reasons for small-scale 
+soil variation are, for example, topography, soil age and thus fertil-
+ity56 but also abundance of microbial communities and mycorrhiza 
+that interact with climate, pH, soil properties and also plant traits50. 
+Trait–environment relationships due to smaller scale variation 
+require well-resolved soil data. However, we note that soil physics 
+and chemistry explain a large portion of variance along the trait PC 
+axis three (which itself explains slightly less than 10% of variance 
+in the PCA (9.36%); Supplementary Figs. 5, 6 and 38). We expect 
+that with improved soil datasets and a higher resolution, the joint 
+control of climate and soil on trait variation will probably appear 
+even stronger and more evenly distributed between the two groups 
+of driver variables.
+Our analysis can serve as reference for model developments that 
+increasingly consider plant functional traits as part of vegetation 
+dynamics under climate change44.
+Individual plants and their trait syndromes are considered to be 
+viable only within specific environmental conditions2. Therefore 
+trait–environment relationships should be scale-independent. 
+However, different plant strategies can be successful under given 
+environmental conditions, which in addition are often confounded 
+by small-scale variation. In analyses to date, trait–environment rela-
+tionships become more apparent for aggregations higher than the 
+community scale12, where most of the small-scale variation is aver-
+aged out. In addition the difference between potential and actual 
+vegetation is suggested to explain some of this gap13. Dynamic 
+global vegetation models predict individual plant processes well 
+but fail to produce reliable forecasts with a changing environ-
+ment44. Deciphering at which spatial and temporal scale, or condi-
+tions, actual vegetation is representative of potential vegetation may 
+advance our understanding of community assembly and necessary 
+model complexity.
+Trait–environment correlations identified in our study should 
+not be confounded with causality. Yet, the ubiquitous importance 
+of climate variables for explaining current differences in trait 
+expression at ecoregion scale, suggests that trait shifts will occur 
+with climate change. Trait shifts are constrained by available trait 
+combinations in addition to other constraints such as species dis-
+persal. For example, our results indicate that plant size increases 
+with temperature so long as sufficient water is available (Fig. 4 and 
+Supplementary Figs. 19, 20 and 21), in line with the finding that spe-
+cies become larger and large species are more prevalent at warmer 
+and wetter sites in the tundra19. Global change is also reflected by 
+soil degradation. Changes in soil parameters can be considered to 
+also correspond with trait shifts, especially for economics traits. 
+Human-induced soil degradation has many facets: often fertile top-
+soil is lost or toxic substances accumulate; rooting is impeded and 
+altered by artificial fertilizers; while soil formation takes millenia57. 
+The trait shifts may thus be similarly complex and depend on the 
+extent and type of soil degradation. For example, in areas of wind 
+and water erosion, species that tolerate lower nutrient availability 
+may be more successful and this may be reflected in lower leaf nutri-
+ent contents (Fig. 4 and Supplementary Fig. 30). The fertilization 
+of nutrient-poor grasslands, for example resulting from agricultural 
+run-off, may shift these areas from more conservative to more com-
+petitive species with higher leaf nutrient contents.
+Plants as a whole need to balance both size and economics traits. 
+To sustain human livelihoods, it may be important to understand 
+the local expression of trait shifts and their global consequences for 
+biodiversity when viable trait combinations change.
+In conclusion, the insights extracted here advance our under-
+standing of broad-scale plant functional patterns. In particular, we 
+highlight the combination of independent and particularly joint 
+effects of climate and soil on trait variation, an interaction that has 
+to date been neglected because few studies include both in a single 
+analysis, at the global scale as we have done here. In doing so, we 
+identify an important gap in knowledge: what is the nature of cli-
+mate–soil interactions that drive whole-plant trait variation and 
+what distinguishes the majority of climate and soil factors having 
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+41
+
+Articles
+NATurE Ecology & EVoluTIon
+joint effects on plant traits from those with independent effects? 
+These are the sorts of questions that require answers to increase our 
+capacity to predict plant functional diversity in a changing envi-
+ronment. Such predictive power would contribute to a sound basis 
+for assessing long-term feedbacks between global environmental 
+change and the terrestrial biosphere, helping to constrain param-
+eters of global coupled climate–vegetation models. Humans are cur-
+rently modifying both climatic and edaphic conditions at the global 
+scale. Climate envelope models used to predict vegetation shifts 
+must be complemented by drivers related to large-scale anthro-
+pogenic alterations of soil conditions resulting, for example, from 
+land-use change, atmospheric nitrogen deposition, fertilization, 
+liming and salinization. Our global analysis provides an essential 
+context for finer-scale studies to directly tackle questions of biologi-
+cal processes and mechanisms at landscape and community scales.
+Methods
+We extracted data on 17 plant functional traits from a gap-filled version of TRY 
+database9 (Supplementary Table 5; www.try-db.org, accession date July 2017, 
+request no. 3282) which includes published literature11,58–101,101–310. Quality control 
+was conducted according to the published protocol of TRY.9, 311 Traits with 
+z-score > 4 were excluded and those with z-score > 3 were checked for plausibility. 
+Before this, missing data were imputed using a Bayesian hierarchical probabilistic 
+matrix factorization (BHPMF) algorithm8,312 for an extended dataset, derived 
+from TRY (Supplementary Table 6). Imputation was done to be able to include 
+the maximum number of species in our analyses. Then the 17 traits were selected 
+among the traits with the largest total number of entries. The data were attributed 
+to ecoregions30 (Supplementary Table 7 and Extended Data Fig. 1) and aggregated 
+to species median values. The imputed values were calculated using the whole 
+dataset at the individual record level. BHPMF calculates the imputations from 
+1,000 Gibbs sampler (Markov chain Monte Carlo) imputations by taking the 
+mean of every twentieth imputation of these 1,000 ‘versions’, after the first 200 
+are removed. Then the species median was calculated at the ecoregion level. We 
+excluded observations that were not georeferenced because we could not attribute 
+them to ecoregions. According to TRY regulations, data from experimental 
+treatments (for example, fertilization) or from botanic gardens were also excluded. 
+In total, we included 225,206 observations from 20,655 global unique species 
+(36,197 unique species to ecoregion combinations). Throughout this study we used 
+one of two aggregation levels: either species median per ecoregion (ER)30 resulting 
+in unique species values per ecoregion (termed A1, n = 36,197 with n = 20,655 
+globally unique species) or the aggregation to median ecoregions calculated from 
+median species per ecoregion (termed A2, n = 220). R was used for all analyses and 
+figures313.
+Hierarchical probabilistic matrix factorization. Description. BHPMF decomposes 
+or factorizes probabilistically a matrix (probabilistic matrix factorization, PMF314) 
+using information contained within different hierarchical levels (here, taxonomy) 
+within a Bayesian framework8. The underlying premise of BHPMF is to gap-fill 
+(or more accurately, to predict) traits of an individual plant using trait–trait 
+correlations as well as intraspecific and interspecific trait variability.8. Using a 
+Gibbs sampler (a Markov Chain Monte Carlo algorithm), BHPMF also provides 
+a prediction confidence in the form of standard deviations which is a per-value 
+estimate of uncertainty in trait predictions8. BHPMF can fill gaps if there is at least 
+one value per row (species) and column (trait).
+Implementation. The largest possible dataset was retrieved at the time when study 
+was conducted, including 172 traits of 652,957 individuals (Supplementary  
+Table 6). For data preparation before BHPMF, all individual-level trait data 
+were firstly log-transformed and secondly normalized via zlog transformation 
+(z = x−¯x
+s.d. ). Log transformation was chosen to achieve a closer-to-normal 
+distribution of values per trait311,313. This transformation is considered necessary 
+because a given difference for small trait values (absolute value) is likely to be 
+physiologically more relevant than the same difference (absolute value) for large 
+trait values.
+BHPMF internally splits the datasets randomly into a training dataset (80%), a 
+test dataset (10%) and a validation dataset (10%).
+The training dataset is used during training of latent vectors, while the test data 
+are tested against to improve the latent vectors, and finally the validation dataset 
+serves as the basis for calculation of the root mean square error (RMSE) and 
+stopping the optimization of latent vectors within BHPMF8. The validation dataset 
+ensures ongoing amelioration of the model performance during the training 
+process and stops the process after five consecutive iterations with stable RMSE. 
+The test dataset is used only on the lowest taxonomic level (individuals × traits). 
+BHPMF was run with a maximum of 1,000 iterations, whereas the first 200 
+were discarded during the ‘burn-in’ phase, as predictions of these iterations 
+are likely to be influenced by the initialization of BHPMF rather than being 
+part of the probability density distribution to be sampled by BHPMF. To avoid 
+autocorrelation, only every twentieth iteration was used to calculate the resulting 
+trait values. The mean of these predictions result in the final trait values used as the 
+output. Compared to the original data, the imputed values are similar in terms of 
+trait–trait correlation, according to the Procrustes test provided in ref. 10.
+Trait clustering. To define groups of correlated traits, we clustered species’ traits 
+(species median per ecoregion, A1) on the basis of absolute pairwise Pearson 
+correlation coefficients using a hierarchical clustering algorithm (‘complete linkage 
+clustering’). Variables were transformed into distances previous to the clustering. 
+Hierarchical clustering then attributes variables (here, traits) to groups of least 
+distance and highest similarity. Traits were more like each other if they exhibited 
+similar correlation patterns with all other traits. We set a distance between traits of 
+1 as the threshold for defining trait clusters. We used the R package ‘stats’ function 
+‘hclust’ included in R (ref. 315).
+PCA. Values for all 17 traits (unique species per ecoregion, A1) were natural 
+log-transformed and then projected onto components (PCA). We used the R 
+package FactoMineR316 that scales data internally. After the PCA (A1), we extracted 
+the variance explained (Fig. 1b and Supplementary Fig. 5) and respective loadings 
+for the first five principle components (Fig. 1b and Supplementary Fig. 6), which 
+are significant according to the number of axes to keep estimated using a sequential 
+Bonferroni procedure (R package ade4 (refs. 317–321), function testdim). For the 
+analysis (ridge regression package ‘glmnet’322,323) for Fig. 3, all environmental 
+variables (climate and soil) were first reduced with this package to 20 PCs.
+Environmental variables. To represent climate conditions we used 21 variables 
+derived from WorldClim at a resolution of 1 km for temperature, precipitation, 
+vapour pressure, solar radiation and wind (Supplementary Table 1). To characterize 
+soil conditions we used 107 variables derived from the ISRIC data product 
+‘SoilGrids’324–326 (https://soilgrids.org/ through ISRIC—WDC Soils). ‘SoilGrids’ 
+provides global predictions of 17 fundamentally different soil characteristics (some 
+for seven depths, that is 0, 5, 15, 30, 60, 100, 200 cm; Supplementary Table 2) at a 
+resolution of 1 km. SoilGrids are publicly accessible environmental data (Creative 
+Commons Attribution 4.0 International), with a collection of georeferenced soil 
+profile data and are managed in World Soil Information Service324.
+Aggregation of traits and environmental variables to ecoregions. To determine 
+trait–environment relationships, we aggregated trait as well as environmental 
+data to regions, here ecoregions30 (ecoregion aggregation A2, see also above; 
+Supplementary Table 7). Ecoregions are environmentally homogeneous areas, 
+nested within biogeographic realms (defined by refs. 327,328) and biomes (modified 
+after refs. 329,330 but see ref. 30). As a first estimate, ecoregions are distinct biotas328,331 
+defined by the physiognomy of the prevailing climatic climax vegetation30. These 
+areas of distinct biotas, areas of relatively uniform flora or fauna, are next subset 
+into provinces with substantial differences of vegetation on the basis of a selection 
+of plants and animals, maps and expert knowledge30,331. At global scale Olson 
+et al.30 defined 867 ecoregions. Ecoregions were chosen as the scale of aggregation 
+for their high signal-to-noise ratio and the ability to correct for sampling bias. 
+While the grid scale has higher spatial resolution, it lacks estimates of species 
+richness (equivalent of Kier species richness174) and is not as well explained by 
+the climate and soil (Supplementary Fig. 3) and distribution of grids is globally 
+uneven (Extended Data Fig. 1) in comparison to ecoregions. The global sampling 
+distribution is recognized to show a bias towards Europe9, which is even more 
+pronounced in the lower level data (grid scale) than in the more aggregated 
+one (Extended Data Fig. 1). Our method accounts for this oversampling and 
+reproduces a stable pattern, even when species in oversampled ecoregions are 
+deleted (Supplementary Fig. 2).
+For each of the 867 ecoregions, we calculated the median ecoregion aggregate 
+trait value from the median trait values of all species identified in each region. 
+For further analyses, we only used regions with >20 species and a representation 
+of >1% of the estimated species richness of the ecoregion30. Preliminary tests 
+with different selection criteria (for example, number of species and inclusion or 
+exclusion of 1% of species richness estimate by Kier et al.174) showed that lower 
+numbers of species per ecoregion result in weaker explained variance, while 
+stricter rules reduced the number of ecoregions. These selection criteria serve as 
+a quality control because ecoregions with poor representation of species richness 
+are excluded, as we can expect the regression to the mean to be stronger with 
+more species data. A total of 220 ecoregions met these criteria and were included 
+in the analysis. On average, these ecoregion-level trait values were based on 164 
+species-level trait medians (with a maximum of 1,245 species in Tapajós-Xingu 
+moist forests; Supplementary Table 7). In total, we aggregated 36,197 median 
+species trait values to ecoregions. These ecoregions cover the global latitudinal 
+gradient (Fig. 2) as well as a substantial fraction of the geographic space (Extended 
+Data Fig. 1). To aggregate environmental variables to ecoregions, we associated 
+each trait observation with its corresponding values of climate and soil variables. 
+Then, we averaged over all values within one ecoregion. Thus, the selected 
+environmental variables represent averages that are weighted by the number and 
+locations of trait observations within ecoregions.
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+42
+
+Articles
+NATurE Ecology & EVoluTIon
+Model building. Ecoregion trait values (natural log-transformed, A2) were related 
+to all environmental variables using ridge regression31, which is a well-established 
+linear regression method that is suitable to deal with a large number of collinear 
+predictors and uneven numbers of predictors for climate and soil. We used the 
+R package ‘glmnet’322,323. From aggregating trait values to ecoregion medians we 
+obtain 220 samples for each trait. The environmental predictors of climate and 
+soil were reduced to 20 each by means of a PCA. In addition, the environmental 
+predictors show relatively high collinearity, thus duplicated information. Ridge 
+regression addresses collinearity among predictors by shrinking (regularizing) 
+regression coefficients according to a penalty on the L2 norm of the vector of 
+regression coefficients. The regularization parameter lambda was obtained via 
+tenfold cross validation. The variance explained was derived from an iterative 
+holdout set (tenfold cross validation), that is, prediction of 90% of randomly 
+sampled ecoregions for inclusion in model building and then predicting the 
+remaining 10% of the data to evaluate the quality of the models. The final model 
+predicts the remaining 10% of unused ecoregions. This prediction-loop was 
+repeated until all ER trait values are predicted, that is, resulting in different linear 
+models. Repeated r2: the r2 is the squared correlation of predicted versus original 
+ER trait values. This procedure was repeated 50 times and the explained variances’ 
+(r2) mean, minimum and maximum were calculated. For the purpose of defining 
+how much of the explained variance is due to independent and joint information 
+in the data streams, we used hierarchical partitioning32. Model outputs (r2) of 
+all repetitions (n = 50, if not indicated differently) were used as input (ridge 
+regression, partial least squares (PLS) with and without PCA, random forest).
+Redundancy analysis. To relate trait–trait covariation to trait–environment 
+covariation, we performed a redundancy analysis (R package ‘vegan’). 
+Ecoregion-aggregated traits (A2) were normalized and natural log-transformed. 
+Scaled climate and soil variables were used as predictors. To decrease the factor 
+that quantifies collinearity (variance inflation factor, vif), only the topsoil layer was 
+selected (Fig. 4). For Supplementary Fig. 39, additional model tuning based on vif, 
+with the exclusion of two variables with vif > 20, led to a model with vif < 10, which 
+can be considered low cocorrelation.
+Reporting Summary. Further information on research design is available in the 
+Nature Research Reporting Summary linked to this article.
+Data availability
+Plant trait data were accessed from the TRY database (https://try-db.org, request no. 
+3282, date accessed July 2017, see also Extended Data Fig. 1). All TRY data required 
+to reproduce this analysis, and the corresponding R scripts, are provided in an 
+open TRY File Archive (https://www.try-db.org/TryWeb/Data.php). Climate data 
+WorldClim are publicly available via https://www.worldclim.org/ (accessed May 
+2018). Soil data, namely SoilGrids (https://soilgrids.org/, accessed June 2018) are 
+publicly available. Ecoregion information30 shapefiles are publicly available (accessed 
+January 2014, Sciencebase.gov), The estimate of species richness per ecoregion174 
+is publicly available (accessed January 2014, databasin.org. Data for this study 
+can be accessed on Github (https://github.com/juliajoswig/ Repo_ClimateSoil_
+TraitSpectrum). For Extended Data Fig. 1 and Supplementary Fig. 7, the Geodata 
+product of the Missions Database ‘ArcWorld Supplement’ (GMI) was used.
+Code availability
+The code is available on Github (https://github.com/juliajoswig/
+Repo_ClimateSoil_TraitSpectrum).
+Received: 21 January 2021; Accepted: 10 November 2021;  
+Published online: 23 December 2021
+References
+	1.	
+Westoby, M. A leaf–height–seed (LHS) plant ecology strategy scheme. Plant 
+Soil 199, 213–227 (1998).
+	2.	
+Kraft, N. J. B. et al. Community assembly, coexistence and the 
+environmental filtering metaphor. Funct. Ecol. 29, 592–599 (2015).
+	3.	
+McGill, B. J., Enquist, B. J., Weiher, E. & Westoby, M. Rebuilding community 
+ecology from functional traits. Trends Ecol. Evol. 21, 178–185 (2006).
+	4.	
+Lavorel, S. & Garnier, E. Predicting changes in community composition and 
+ecosystem functioning from plant traits: revisiting the Holy Grail. Funct. 
+Ecol. 16, 545–556 (2002).
+	5.	
+Musavi, T. et al. Potential and limitations of inferring ecosystem 
+photosynthetic capacity from leaf functional traits. Ecol. Evol. 6,  
+7352–7366 (2016).
+	6.	
+Scheiter, S., Langan, L. & Higgins, S. I. Next-generation dynamic global 
+vegetation models: learning from community ecology. New Phytol. 198, 
+957–969 (2013).
+	7.	
+Van Bodegom, P. M., Douma, J. C. & Verheijen, L. M. A fully traits-based 
+approach to modeling global vegetation distribution. Proc. Natl Acad. Sci. 
+USA 111, 13733–13738 (2014).
+	8.	
+Schrodt, F. et al. BHPMF—a hierarchical Bayesian approach to gap-filling 
+and trait prediction for macroecology and functional biogeography.  
+Glob. Ecol. Biogeogr. 24, 1510–1521 (2015).
+	9.	
+Kattge, J. et al. TRY plant trait database—enhanced coverage and open 
+access. Glob. Change Biol. 26, 119–188 (2020).
+	10.	
+Díaz, S. et al. The global spectrum of plant form and function. Nature 
+529,167–171 (2015).
+	11.	
+Wright, I. J. et al. The worldwide leaf economics spectrum. Nature 428, 
+821–827 (2004).
+	12.	
+Bruelheide, H. et al. Global trait–environment relationships of plant 
+communities. Nat. Ecol. Evol. 2, 1906–1917 (2018).
+	13.	
+Thomas, H. J. et al. Global plant trait relationships extend to the climatic 
+extremes of the tundra biome. Nat. Commun. 11, 1351 (2020).
+	14.	
+Kong, D. et al. Nonlinearity of root trait relationships and the root 
+economics spectrum. Nat. Commun. 10, 2203 (2019).
+	15.	
+Schimper, A. Plant-Geography Upon A Physiological Basis (Clarendon Press, 
+1903).
+	16.	
+Warming, E. Oecology Of Plants (Oxford, 1909).
+	17.	
+Raunkiær, C. in Life Forms of Plants and Statistical Plant Geography, 4-16 
+(Clarendon Press, 1934).
+	18.	
+Maire, V. et al. Global effects of soil and climate on leaf photosynthetic 
+traits and rates. Glob. Ecol. Biogeogr. 24, 706–717 (2015).
+	19.	
+Bjorkman, A. D. et al. Plant functional trait change across a warming 
+tundra biome. Nature 562, 57–62 (2018).
+	20.	
+Olson, M. E. et al. Plant height and hydraulic vulnerability to drought and 
+cold. Proc. Natl Acad. Sci. USA 115, 7551–7556 (2018).
+	21.	
+Moles, A. T. et al. Global patterns in plant height. J. Ecol. 97, 923–932 (2009).
+	22.	
+Ordoñez, J. C. et al. A global study of relationships between leaf traits, 
+climate and soil measures of nutrient fertility. Glob. Ecol. Biogeogr. 18, 
+137–149 (2009).
+	23.	
+Simpson, A. H., Richardson, S. J. & Laughlin, D. C. Soil–climate 
+interactions explain variation in foliar, stem, root and reproductive traits 
+across temperate forests. Glob. Ecol. Biogeogr. 25, 964–978 (2016).
+	24.	
+Wright, I. J. et al. Global climatic drivers of leaf size. Science 357, 917–921 
+(2017).
+	25.	
+Atkin, O. K. et al. Global variability in leaf respiration in relation to climate, 
+plant functional types and leaf traits. New Phytol. 206, 614–636 (2015).
+	26.	
+Asner, G. P., Knapp, D. E., Anderson, C. B., Martin, R. E. & Vaughn, N. 
+Large-scale climatic and geophysical controls on the leaf economics 
+spectrum. Proc. Natl Acad. Sci. USA 113, E4043–E4051 (2016).
+	27.	
+Moles, A. T. et al. Global patterns in seed size. Glob. Ecol. Biogeogr. 16, 
+109–116 (2007).
+	28.	
+Blume, H.-P. et al. Soil Science 1st edn.(Springer, Berlin-Heidelberg, 2016).
+	29.	
+Seneviratne, S. I. et al. Investigating soil moisture–climate interactions in a 
+changing climate: a review. Earth-Sci. Rev. 99, 125–161 (2010).
+	30.	
+Olson, D. M. et al. Terrestrial ecoregions of the world: a new map of life on 
+Earth. BioScience 51, 933–938 (2001).
+	31.	
+Hastie, T., Tibshirani, R. & Friedman, J. The Elements of Statistical Learning 
+(Springer, 2008).
+	32.	
+Chevan, A. & Sutherland, M. Hierarchical partitioning. Am. Stat. 45, 90–96 
+(1991).
+	33.	
+Reich, P. B. & Oleksyn, J. Global patterns of plant leaf N and P in relation 
+to temperature and latitude. Proc. Natl Acad. Sci. USA 101, 11001–11006 
+(2004).
+	34.	
+Corner, E. J. H. The Durian theory or the origin of the modern tree. Ann. 
+Bot. XIII, 367–414 (1949).
+	35.	
+Pietsch, K. A. et al. Global relationship of wood and leaf litter 
+decomposability: the role of functional traits within and across plant 
+organs. Glob. Ecol. Biogeogr. 23, 1046–1057 (2014).
+	36.	
+FloresâMoreno, H. et al. Robustness of trait connections across environmental 
+gradients and growth forms. Glob. Ecol. Biogeogr. 28, 1806–1826 (2019).
+	37.	
+Chapin, F. S. The mineral nutrition of wild plants. Annu. Rev. Ecol. Syst. 11, 
+233–260 (1980).
+	38.	
+Vitousek, P. Nutrient Cycling and Limitation: Hawai’i as a Model System 
+(Princeton Univ. Press, 2004).
+	39.	
+Shipley, B., Vile, D., Garnier, E., Wright, I. J. & Poorter, H. Functional 
+linkages between leaf traits and net photosynthetic rate: reconciling 
+empirical and mechanistic models. Funct. Ecol. 19, 602–615 (2005).
+	40.	
+He, T., Belcher, C. M., Lamont, B. B. & Lim, S. L. A 350-million-year legacy 
+of fire adaptation among conifers. J. Ecol. 104, 352–363 (2016).
+	41.	
+Bergmann, J., Ryo, M., Prati, D., Hempel, S. & Rillig, M. C. Root traits are 
+more than analogues of leaf traits: the case for diaspore mass. New Phytol. 
+216, 1130–1139 (2017).
+	42.	
+Aerts, R. The advantages of being evergreen. Trends Ecol. Evol. 10, 402–407 
+(1995).
+	43.	
+Zanne, A. E. et al. Functional biogeography of angiosperms: life at the 
+extremes. New Phytol. 218, 1697–1709 (2018).
+	44.	
+Franklin, O. et al. Organizing principles for vegetation dynamics.  
+Nat. Plants 6, 444–453 (2020).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+43
+
+Articles
+NATurE Ecology & EVoluTIon
+	45.	
+Legay, N. et al. Contribution of above- and below-ground plant traits to the 
+structure and function of grassland soil microbial communities. Ann. Bot 
+114, 1011–1021 (2014).
+	46.	
+Grime, J. P. Vegetation classification by reference to strategies. Nature 250, 
+26–31 (1974).
+	47.	
+Slessarev, E. W. et al. Water balance creates a threshold in soil pH at the 
+global scale. Nature 540, 567–569 (2016).
+	48.	
+Fierer, N. & Jackson, R. B. The diversity and biogeography of soil bacterial 
+communities. Proc. Natl Acad. Sci. USA 103, 626–631 (2006).
+	49.	
+Sinsabaugh, R. L. & Follstad Shah, J. J. Ecoenzymatic stoichiometry and 
+ecological theory. Annu. Rev. Ecol. Evol. Syst. 43, 313–343 (2012).
+	50.	
+de Vries, F. T. et al. Abiotic drivers and plant traits explain landscape-scale 
+patterns in soil microbial communities. Ecol. Lett. 15, 1230–1239 (2012).
+	51.	
+Zech, W., Schad, P. & Hintermaier-Erhard, G. Böden der Welt—Ein Bildatlas 
+(Springer Spectrum, 2014).
+	52.	
+Rosenberg, E. et al. (eds) The Prokaryotes: Prokaryotic Communities and 
+Ecophysiology 4th edn. (Springer-Verlag, 2013).
+	53.	
+Niinemets, Ã. Leaf age dependent changes in within-canopy variation in 
+leaf functional traits: a meta-analysis. J. Plant Res. 129, 313–338 (2016).
+	54.	
+Butler, E. E. et al. Mapping local and global variability in plant trait 
+distributions. Proc. Natl Acad. Sci. USA 114, E10937–E10946 (2017).
+	55.	
+Freschet, G. T. et al. Global to community scale differences in the 
+prevalence of convergent over divergent leaf trait distributions in plant 
+assemblages. Global Ecol. Biogeogr. 20, 755–765 (2011).
+	56.	
+Yemefack, M., Rossiter, D. G. & Njomgang, R. Multi-scale characterization 
+of soil variability within an agricultural landscape mosaic system in 
+southern Cameroon. Geoderma 125, 117–143 (2005).
+	57.	
+Oldeman, L., Hakkeling, R. & Sombroek, W. Global Assessment of Soil 
+Degradation (GLASOD): World Map of the Status of Human-induced Soil 
+Degradation (United Nations Environment Programme, 1991).
+	58.	
+Ackerly, D. D. & Cornwell, W. K. A trait-based approach to community 
+assembly: partitioning of species trait values into within- and 
+among-community components. Ecol. Lett. 10, 135–145 (2007).
+	59.	
+Adler, P. B. A Comparison of Livestock Grazing Effects on Sagebrush Steppe, 
+USA, and Patagonian Steppe, Argentina. PhD thesis (Colorado State 
+University, 2003).
+	60.	
+Adler, P. B., Milchunas, D. G., Lauenroth, W. K., Sala, O. E. & Burke, I. C. 
+Functional traits of graminoids in semi-arid steppes: a test of grazing 
+histories. J. Appl. Ecol. 41, 653–663 (2004).
+	61.	
+Adriaenssens, S. Dry deposition and canopy exchange for temperate tree 
+species under high nitrogen deposition. PhD thesis, Ghent Univ. (2012).
+	62.	
+Atkin, O. K., Schortemeyer, M., McFarlane, N. & Evans, J. R. The response 
+of fast- and slow-growing Acacia species to elevated atmospheric CO2: an 
+analysis of the underlying components of relative growth rate. Oecologia 
+120, 544–554 (1999).
+	63.	
+Atkin, O. K., Westbeek, M., Cambridge, M. L., Lambers, H. & Pons, T. L. 
+Leaf respiration in light and darkness (a comparison of slow- and 
+fast-growing Poa species). Plant Physiol. 113, 961–965 (1997).
+	64.	
+Auger, S. L’Importance de la Variabilité Interspécifique des Traits Fonctionnels 
+par Rapport à la Variabilité Intraspécifique Chez les Jeunes Arbres en Forêt 
+Mature. MSc thesis (Université de Sherbrooke, 2012).
+	65.	
+Bahn, M. et al. in Land-Use Changes in European Mountain Ecosystems. 
+ECOMONT—Concept and Results (eds Cernusca, A. et al.) 247–255 
+(Blackwell Wissenschaft, 1999).
+	66.	
+Baker, T. R. et al. Do species traits determine patterns of wood production 
+in Amazonian forests? Biogeosciences 6, 297–307 (2009).
+	67.	
+Bakker, C., Van Bodegom, P. M., Nelissen, H. J. M., Ernst, W. H. O. & 
+Aerts, R. Plant responses to rising water table and nutrient management in 
+calcareous dune slacks. Plant Ecol. 185, 19–28 (2006).
+	68.	
+Bakker, C., Rodenburg, J. & van Bodegom, P. M. Effects of Ca- and Fe-rich 
+seepage on P availability and plant performance in calcareous dune soils. 
+Plant Soil 275, 111–122 (2005).
+	69.	
+Baraloto, C. et al. Decoupled leaf and stem economics in rainforest trees. 
+Ecol. Lett. 13, 1338–1347 (2010).
+	70.	
+Baraloto, C. et al. Functional trait variation and sampling strategies in 
+species-rich plant communities. Funct. Ecol. 24, 208–216 (2010).
+	71.	
+Beckmann, M., Hock, M., Bruelheide, H. & Erfmeier, A. The role of UV-B 
+radiation in the invasion of Hieracium pilosella—a comparison of German 
+and New Zealand plants. Environ. Exp. Bot. 75, 173–180 (2012).
+	72.	
+Blanco, C. C., Sosinski, E. E., dos Santos, B. R. C., da Silva, M. A. & Pillar, 
+V. D. On the overlap between effect and response plant functional types 
+linked to grazing. Community Ecol. 8, 57–65 (2007).
+	73.	
+Blonder, B. et al. The shrinkage effect biases estimates of paleoclimate.  
+Am. J. Bot. 99, 1756–1763 (2012).
+	74.	
+Blonder, B., Violle, C. & Enquist, B. J. Assessing the causes and scales of the 
+leaf economics spectrum using venation networks in Populus tremuloides.  
+J. Ecol. 101, 981–989 (2013).
+	75.	
+Blonder, B. et al. Testing models for the leaf economics spectrum with leaf 
+and whole-plant traits in Arabidopsis thaliana. AoB Plants 7, plv049 (2015).
+	76.	
+Blonder, B., Violle, C., Bentley, L. P. & Enquist, B. J. Venation networks and 
+the origin of the leaf economics spectrum. Ecol. Lett. 14, 91–100 (2011).
+	77.	
+Bocanegra-González K.T., Fernández-Méndez, F. & David Galvis-Jiménez, J. 
+Funtional groups of tres in secondary forests of the bajo calima region 
+(Buenaventura, Colombia) Boletín CientífiCo Centro de Museos Museo de 
+Historia natura 19, (2015).
+	78.	
+Bodegom, P. M. V., Kanter, M. D. & Aerts, C. B. R. Radial oxygen loss, a 
+plastic property of dune slack plant species. Plant Soil 271, 351–364 (2005).
+	79.	
+Bond-Lamberty, C. W. B. & Gower, S. T. Above- and belowground biomass 
+and sapwood area allometric equations for six boreal tree species of 
+northern Manitoba. Can. J. For. Res. 32, 1441–1450 (2002).
+	80.	
+Bond-Lamberty, C. W. B. & Gower, S. T. Leaf area dynamics of a boreal 
+black spruce fire chronosequence. Tree Physiol. 22, 993–1001 (2002).
+	81.	
+Bond-Lamberty, C. W. B. & Gower, S. T. The use of multiple measurement 
+techniques to refine estimates of conifer needle geometry. Can. J. For. Res. 
+33, 101–105 (2003).
+	82.	
+Bond-Lamberty, C. W. B. & Gower, S. Net primary production and net 
+ecosystem production of a boreal black spruce fire chronosequence.  
+Glob. Change Biol. 10, 473–487 (2004).
+	83.	
+Bragazza, L. Conservation priority of Italian alpine habitats: a floristic 
+approach based on potential distribution of vascular plant species. Biodivers. 
+Conserv. 18, 2823–2835 (2009).
+	84.	
+Choat, B. et al. Global convergence in the vulnerability of forests to 
+drought. Nature 491, 752–755 (2012).
+	85.	
+Briemle, G., Nitsche, S. & Nitsche, L. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 203–225 (Bundesamt für Naturschutz, 2002).
+	86.	
+Brown, K. et al. Assessing natural resource use by forest-reliant communities 
+in Madagascar using functional diversity and functional redundancy 
+metrics. PLoS ONE https://doi.org/10.1371/journal.pone.0024107 (2011).
+	87.	
+Burrascano, S. et al. Wild boar rooting intensity determines shifts in 
+understorey composition and functional traits. Community Ecol. 16, 
+244–253 (2015).
+	88.	
+Butterfield, B. J. & Briggs, J. M. Regeneration niche differentiates functional 
+strategies of desert woody plant species. Oecologia 165, 477–487 (2011).
+	89.	
+Byun, C., de Blois, S. & Brisson, J. Plant functional group identity and 
+diversity determine biotic resistance to invasion by an exotic grass. J. Ecol. 
+101, 128–139 (2013).
+	90.	
+Campbell, C. et al. Acclimation of photosynthesis and respiration is 
+asynchronous in response to changes in temperature regardless of plant 
+functional group. New Phytol. 176, 375–389 (2007).
+	91.	
+Campetella, G. et al. Patterns of plant trait–environment relationships along a 
+forest succession chronosequence. Agric. Ecosyst. Environ. 145, 38–48 (2011).
+	92.	
+Carswell, F. E. et al. Photosynthetic capacity in a central Amazonian rain 
+forest. Tree Physiol. 20, 179–186 (2000).
+	93.	
+Castro-Diez, P., Puyravaud, J. P., Cornelissen, J. H. C. & Villar-Salvador., P. 
+Stem anatomy and relative growth rate in seedlings of a wide range of 
+woody plant species and types. Oecologia 116, 57–66 (1998).
+	94.	
+Castro-Diez, P., Puyravaud, J. P. & Cornelissen, J. H. C. Leaf structure and 
+anatomy as related to leaf mass per area variation in seedlings of a wide 
+range of woody plant species and types. Oecologia 124, 476–486 (2000).
+	95.	
+Cavender-Bares, A. K. J. & Miles, B. Phylogenetic structure of Floridian 
+plant communities depends on taxonomic and spatial scale. Ecology 87, 
+109–122 (2006).
+	96.	
+Cavender-Bares, L. S. J. & Savage, J. Atmospheric and soil drought reduce 
+nocturnal conductance in live oaks. Tree Physiol. 27, 522–620 (2007).
+	97.	
+Cerabolini, B. E. L. et al. Can CSR classification be generally applied outside 
+Britain? Plant Ecol. 210, 253–261 (2010).
+	98.	
+Chave, J. et al. Towards a worldwide wood economics spectrum. Ecol. Lett. 
+12, 351–366 (2009).
+	99.	
+Chen, Y., Han, W., Tang, L., Tang, Z. & Fang, J. Leaf nitrogen and 
+phosphorus concentrations of woody plants differ in responses to climate, 
+soil and plant growth form. Ecography 36, 178–184 (2011).
+	100.	 Choat, B. et al. Global convergence in the vulnerability of forests to 
+drought. Nature 491, 752–755 (2012).
+	101.	 Choat, B., Sack, L. & Holbrook, N. M. Diversity of hydraulic traits in nine 
+Cordia species growing in tropical forests with contrasting precipitation. 
+New Phytol. 175, 686–698 (2007).
+	102.	 Coomes, D. A., Heathcote, S., Godfrey, E. R. & Shepherd, J. J. Scaling of xylem 
+vessels and veins within the leaves of oak species. Biol. Lett. 4, 302–306 (2008).
+	103.	 Cornelissen, J., Aerts, R., Cerabolini, B., Werger, M. & van der Heijden, M. 
+Carbon cycling traits of plant species are linked with mycorrhizal strategy. 
+Oecologia 129, 611–619 (2001).
+	104.	 Cornelissen, J. H. C. An experimental comparison of leaf decomposition 
+rates in a wide range of temperate plant species and types. J. Ecol. 84, 
+573–582 (1996).
+	105.	 Cornelissen, J. H. C., Diez, P. C. & Hunt., R. Seedling growth, allocation 
+and leaf attributes in a wide range of woody plant species and types. J. Ecol. 
+84, 755–765 (1996).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+44
+
+Articles
+NATurE Ecology & EVoluTIon
+	106.	 Cornelissen, J. H. C., Werger, M. J. A., Castro-Diez, P., van Rheenen, J. W. 
+A., & Rowland, A. P. Foliar nutrients in relation to growth, allocation and 
+leaf traits in seedlings of a wide range of woody plant species and types. 
+Oecologia 111, 460–469 (1997).
+	107.	 Cornelissen, J. H. C. et al. Leaf structure and defence control litter 
+decomposition rate across species and life forms in regional floras on two 
+continents. New Phytol. 143, 191–200 (1999).
+	108.	 Cornelissen, J. H. C. A triangular relationship between leaf size and seed 
+size among woody species: allometry, ontogeny, ecology and taxonomy. 
+Oecologia 118, 248–255 (1999).
+	109.	 Cornelissen, J. H. C., Aerts, R., Cerabolini, B., Werger, M. J. A. & van der 
+Heijden., M. G. A. Carbon cycling traits of plant species are linked with 
+mycorrhizal strategy. Oecologia 129, 611–619 (2001).
+	110.	 Cornelissen, J. H. C. et al. Leaf digestibility and litter decomposability are 
+related in a wide range of subarctic plant species and types. Funct. Ecol. 18, 
+779–786 (2004).
+	111.	 Cornelissen, J. H. C. et al. Functional traits of woody plants: correspondence 
+of species rankings between field adults and laboratory-grown seedlings?  
+J. Veg. Sci. 14, 311–322 (2003).
+	112.	 Cornelissen, J. H. C., Diez, P. C. & Hunt, R. Seedling growth, allocation and 
+leaf attributes in a wide range of woody plant species and types. J. Ecol. 84, 
+755 (1996).
+	113.	 Cornelissen, J. H. C. et al. Leaf structure and defence control litter 
+decomposition rate across species and life forms in regional floras on two 
+continents. New Phytol. 143, 191–200 (1999).
+	114.	 Schwilk, D. W., Cornwell, W. K. & Ackerly., D. D. A trait-based test for 
+habitat filtering: convex hull volume. Ecology 87, 1465–1471 (2006).
+	115.	 Cornwell, W. K. & Ackerly, D. D. Community assembly and shifts in plant 
+trait distributions across an environmental gradient in coastal California. 
+Ecol. Monogr. 79, 109–126 (2009).
+	116.	 Cornwell, W. K., Bhaskar, R., Sack, L., Cordell, S. & Lunch, C. K. 
+Adjustment of structure and function of Hawaiian Metrosideros polymorpha 
+at high vs. low precipitation. Funct. Ecol. 21, 1063–1071 (2007).
+	117.	 Cornwell, W. K. et al. Plant species traits are the predominant control on 
+litter decomposition rates within biomes worldwide. Ecol. Lett. 11, 
+1065–1071 (2008).
+	118.	 Craine, J. M. et al. Global patterns of foliar nitrogen isotopes and their 
+relationships with climate, mycorrhizal fungi, foliar nutrient concentrations, 
+and nitrogen availability. New Phytol. 183, 980–992 (2009).
+	119.	 Craine, J. M., Lee, W. G., Bond, W. J., Williams, R. J. & Johnson, L. C. 
+Environmental constraints on a global relationship among leaf and root 
+traits of grasses. Ecology 86, 12–19 (2005).
+	120.	 Craine, J. M. et al. Functional consequences of climate change-induced 
+plant species loss in a tallgrass prairie. Oecologia 165, 1109–1117 (2011).
+	121.	 Craine, J. M. et al. Global diversity of drought tolerance and grassland 
+climate-change resilience. Nat. Clim. Change 3, 63–67 (2012).
+	122.	 Craven, D. et al. Between and within-site comparisons of structural and 
+physiological characteristics and foliar nutrient content of 14 tree species at 
+a wet, fertile site and a dry, infertile site in Panama. For. Ecol. Manag. 238, 
+335–346 (2007).
+	123.	 Craven, D. et al. Seasonal variability of photosynthetic characteristics 
+influences growth of eight tropical tree species at two sites with contrasting 
+precipitation in Panama. For. Ecol. Manag. 261, 1643–1653 (2011).
+	124.	 Dainese, M. & Bragazza, L. Plant traits across different habitats of the 
+Italian alps: a comparative analysis between native and alien species. Alpine 
+Bot. 122, 11–21 (2012).
+	125.	 de Araujo, A. et al. LBA-ECO CD-02 C and N Isotopes in Leaves and 
+Atmospheric CO2, Amazonas, Brazil (ORNL DAAC, 2012); http://daac. 
+ornl.gov
+	126.	 de Vries, F. T. & Bardgett, R. D. Plant community controls on short-term 
+ecosystem nitrogen retention. New Phytol. 210, 861–874 (2016).
+	127.	 Demey, A. et al. Nutrient input from hemiparasitic litter favors plant species 
+with a fast-growth strategy. Plant Soil 371, 53–66 (2013).
+	128.	 Diaz, S. et al. The plant traits that drive ecosystems: evidence from three 
+continents. J. Veg. Sci. 15, 295–304 (2004).
+	129.	 Domingues, T. F., Berry, J. A., Martinelli, L. A., Ometto, J. P. H. B. & 
+Ehleringer, J. R. Parameterization of canopy structure and leaf-level  
+gas exchange for an eastern Amazonian tropical rain forest (Tapajós 
+National Forest, Pará, Brazil). Earth Interact. https://doi.org/10.1175/EI149.1 
+(2005).
+	130.	 Domingues, T. F., Martinelli, L. A. & Ehleringer, J. R. Ecophysiological traits 
+of plant functional groups in forest and pasture ecosystems from eastern 
+Amazônia, Brazil. Plant Ecol. 193, 101–112 (2007).
+	131.	 Domingues, T. F. et al. Co-limitation of photosynthetic capacity by  
+nitrogen and phosphorus in West Africa woodlands. Plant Cell Environ. 33, 
+959–980 (2010).
+	132.	 Duarte, Ld. S., Carlucci, M. B., Hartz, S. M. & Pillar, V. D. Plant dispersal 
+strategies and the colonization of Araucaria forest patches in a grassland–
+forest mosaic. J. Veg. Sci. 18, 847–858 (2007).
+	133.	 DunbarâCo, S., Sporck, M. J. & Sack, L. Leaf trait diversification and design 
+in seven rare taxa of the Hawaiian Plantago radiation. Int. J. Plant Sci. 170, 
+61–75 (2009).
+	134.	 Durka, W. In BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 75–91 
+(Bundesamt für Naturschutz, 2002).
+	135.	 Durka, W. In BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 57–74 
+(Bundesamt für Naturschutz, 2002).
+	136.	 Durka, W. In BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 133–175 
+(Bundesamt für Naturschutz, 2002).
+	137.	 Medlyn, B. E. & Jarvis, P. G. Design and use of a database of model 
+parameters from elevated [CO2] experiments. Ecol. Model. 124, 69–83 (1999).
+	138.	 Everwand, G., Fry, E. L., Eggers, T. & Manning, P. Seasonal variation in the 
+capacity for plant trait measures to predict grassland carbon and water 
+fluxes. Ecosystems 17, 1095–1108 (2014).
+	139.	 Fazayeli, F., Banerjee, A., Kattge, J., Schrodt, F. & Reich, P. B. Uncertainty 
+quantified matrix completion using Bayesian Hierarchical Matrix 
+factorization. In Proc. 13th International Conference on Machine Learning 
+and Applications (eds Ferri, C. et al.) 312–317 (International Conference on 
+Machine Learning and Applications (ICMLA), 2014).
+	140.	 Fagúndez, J. & Izco, J. Seed morphology of the European species of Erica L. 
+sect. Arsace Salisb. ex Benth. (Ericaceae). Acta Bot. Gall. 157, 45–54 (2010).
+	141.	 Fonseca, C. R., Overton, J. M., Collins, B. & Westoby, M. Shifts in 
+trait-combinations along rainfall and phosphorus gradients. J. Ecol. 88, 
+964–977 (2000).
+	142.	 Fortunel, C. et al. Leaf traits capture the effects of land use changes and 
+climate on litter decomposability of grasslands across Europe. Ecology 90, 
+598–611 (2009).
+	143.	 Frainer, A. & McKie, B. G. Shifts in the diversity and composition of 
+consumer traits constrain the effects of land use on stream ecosystem 
+functioning. Adv. Ecol. Res. 52, 169–200 (2015).
+	144.	 Frenette-Dussault, C., Shipley, B., Léger, J.-F., Meziane, D. & Hingrat, Y. 
+Functional structure of an arid steppe plant community reveals similarities 
+with Grime’s C-S-R theory. J. Veg. Sci. 23, 208–222 (2011).
+	145.	 Freschet, G. T., Cornelissen, J. H. C., van Logtestijn, R. S. P. & Aerts, R. 
+Evidence of the plant economics spectrum in a subarctic flora. J. Ecol. 98, 
+362–373 (2010).
+	146.	 Freschet, G. T., Cornelissen, J. H. C., van Logtestijn, R. S. P. & Aerts, R. 
+Substantial nutrient resorption from leaves, stems and roots in a subarctic 
+flora: what is the link with other resource economics traits? New Phytol. 
+186, 879–889 (2010).
+	147.	 Fry, E. L., Power, S. A. & Manning, P. Trait-based classification and 
+manipulation of plant functional groups for biodiversity–ecosystem 
+function experiments. J. Veg. Sci. 25, 248–261 (2013).
+	148.	 Fyllas, N. M. et al. Basin-wide variations in foliar properties of Amazonian 
+forest: phylogeny, soils and climate. Biogeosciences 6, 2677–2708 (2009).
+	149.	 Gachet, S., Véla, E. & Tatoni, T. BASECO: a floristic and ecological database 
+of Mediterranean French flora. Biodivers. Conserv. 14, 1023–1034 (2005).
+	150.	 Gallagher, R. V. & Leishman, M. R. A global analysis of trait variation and 
+evolution in climbing plants. J. Biogeogr. 39, 1757–1771 (2012).
+	151.	 Garnier, E. et al. Assessing the effects of land-use change on plant traits, 
+communities and ecosystem functioning in grasslands: a standardized 
+methodology and lessons from an application to 11 European sites. Ann. 
+Bot. 99, 967–985 (2007).
+	152.	 Givnish, T. J., Montgomery, R. A. & Goldstein, G. Adaptive radiation of 
+photosynthetic physiology in the Hawaiian lobeliads: light regimes, static 
+light responses, and whole-plant compensation points. Am. J. Bot. 91, 
+228–246 (2004).
+	153.	 Guerin, G. R., Wen, H. & Lowe, A. J. Leaf morphology shift linked to 
+climate change. Biol. Lett. 8, 882–886 (2012).
+	154.	 Gutiérrez, A. G. & Huth, A. Successional stages of primary temperate 
+rainforests of Chiloé Island, Chile. Perspect. Plant Ecol. Evol. Syst. 14, 
+243–256 (2012).
+	155.	 Guy, A. L., Mischkolz, J. M. & Lamb, E. G. Limited effects of simulated 
+acidic deposition on seedling survivorship and root morphology of endemic 
+plant taxa of the Athabasca sand dunes in well-watered greenhouse trials. 
+Botany 91, 176–181 (2013).
+	156.	 Han, W. et al. Floral, climatic and soil pH controls on leaf ash content in 
+China’s terrestrial plants. Glob. Ecol. Biogeogr. 21, 376–382 (2011).
+	157.	 Han, W., Fang, J., Guo, D. & Zhang, Y. Leaf nitrogen and phosphorus 
+stoichiometry across 753 terrestrial plant species in China. New Phytol. 168, 
+377–385 (2005).
+	158.	 Hao, G.-Y., Sack, L., Wang, A.-Y., Cao, K.-F. & Goldstein, G. Differentiation 
+of leaf water flux and drought tolerance traits in hemiepiphytic and 
+non-hemiepiphytic Ficus tree species. Funct. Ecol. 24, 731–740 (2010).
+	159.	 He, J.-S. et al. A test of the generality of leaf trait relationships on the 
+Tibetan plateau. New Phytol. 170, 835–848 (2006).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+45
+
+Articles
+NATurE Ecology & EVoluTIon
+	160.	 Hickler, T. Plant Functional Types and Community Characteristics along 
+Environmental Gradients on Öland’s Great Alvar (Sweden). Masters thesis 
+(University of Lund, 1999).
+	161.	 Hoof, J., Sack, L., Webb, D. T. & Nilsen, E. T. Contrasting structure and 
+function of pubescent and glabrous varieties of Hawaiian Metrosideros 
+polymorpha (Myrtaceae) at high elevation. Biotropica 40, 113–118 (2008).
+	162.	 Husson, A. F., Josse, J., Le, S., Mazet, J. & Husson, M. F. Package 
+‘FactoMineR’ (CRAN, 2017).
+	163.	 Jacobs, B. et al. Unraveling the Phylogeny of Heptacodium and  
+Zabelia (Caprifoliaceae): An Interdisciplinary Approach. Syst. Bot. 36, 
+231–252 (2011).
+	164.	 Jansen, S., Decraene, L. P. R. & Smets, E. On the wood and stem anatomy 
+of Monococcus echinophorus (Phytolaccaceae s.l.). Syst. Geogr. Plants 70,  
+171 (2000).
+	165.	 Jansen, S. et al. Contributions to the wood anatomy of the Rubioideae 
+(Rubiaceae). J. Plant Res. 114, 269–289 (2001).
+	166.	 Jansen, S., Piesschaert, F. & Smets, E. Wood anatomy of Elaeagnaceae, with 
+comments on vestured pits, helical thickenings, and systematic 
+relationships. Am. J. Bot. 87, 20 (2000).
+	167.	 Jansen, S., Robbrecht, E., Beeckman, H. & Smets, E. Gaertnera and 
+Pagamea: genera within the Psychotrieae or constituting the tribe 
+Gaertnereae? A wood anatomical and palynological approach. Bot. Acta 
+109, 466–476 (1996).
+	168.	 S., J., E., R., H., B. & Smets, E. Comparative wood anatomy of African 
+Coffeae (Rubiaceae-Rubioideae). Belg. J. Bot. 130, 47–58 (1997).
+	169.	 Kattge, J., Knorr, W., Raddatz, T. & Wirth, C. Quantifying photosynthetic 
+capacity and its relationship to leaf nitrogen content for global-scale 
+terrestrial biosphere models. Glob. Change Biol. 15, 976–991 (2009).
+	170.	 Kazakou, E., Vile, D., Shipley, B., Gallet, C. & Garnier, E. Co-variations in 
+litter decomposition, leaf traits and plant growth in species from a 
+Mediterranean old-field succession. Funct. Ecol. 20, 21–30 (2006).
+	171.	 Kerkhoff, A. J., Fagan, W. F., Elser, J. J. & Enquist, B. J. Phylogenetic and 
+growth form variation in the scaling of nitrogen and phosphorus in the 
+seed plants. Am. Nat. 168, E103–E122 (2006).
+	172.	 Kew, R. B. G. Seed Information Database—SID (Kew, 2008); http://data.kew.
+org/sid/
+	173.	 Kichenin, E., Wardle, D. A., Peltzer, D. A., Morse, C. W. & Freschet, G. T. 
+Contrasting effects of plant inter- and intraspecific variation on 
+community-level trait measures along an environmental gradient. Funct. 
+Ecol. 27, 1254–1261 (2013).
+	174.	 Kier, G. et al. Global patterns of plant diversity and floristic knowledge.  
+J. Biogeogr. 32, 1107–1116 (2005).
+	175.	 Kirkup, D., Malcolm, P., Christian, G. & Paton, A. Towards a digital African 
+flora. Taxon 54, 457 (2005).
+	176.	 Kleyer, M. et al. The LEDA traitbase: a database of life-history traits of the 
+northwest European flora. J. Ecol. 96, 1266–1274 (2008).
+	177.	 Klotz, S. & Kühn, I. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 119-126 (Bundesamt für Naturschutz, 2002).
+	178.	 Klotz, S. & Kühn, I. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 241–246 (Bundesamt für Naturschutz,2002).
+	179.	 Klotz, S. & Kühn, I. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 273–281 (Bundesamt für Naturschutz, 2002).
+	180.	 Klotz, S. & Kühn, I. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 197–201 (Bundesamt für Naturschutz, 2002).
+	181.	 Koike, F. Plant traits as predictors of woody species dominance in climax 
+forest communities. J. Veg. Sci. 12, 327–336 (2001).
+	182.	 Kraft, N. J. B. & Ackerly, D. D. Functional trait and phylogenetic tests of 
+community assembly across spatial scales in an Amazonian forest. Ecol. 
+Monogr. 80, 401–422 (2010).
+	183.	 Kraft, N. J. B., Valencia, R. & Ackerly, D. D. Functional traits and 
+niche-based tree community assembly in an Amazonian forest. Science 322, 
+580–582 (2008).
+	184.	 Krumbiegel, A. in BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 93–118 
+(Bundesamt für Naturschutz, 2002).
+	185.	 Kühn, I. in BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 47–56 
+(Bundesamt für Naturschutz, 2002).
+	186.	 Kuhn, I., Durka, W. & Klotz, S. Biolflor—a new plant-trait database as a 
+tool for plant invasion ecology. Divers. Distrib. 10, 363–365 (2004).
+	187.	 Kühn, I. & Klotz, S. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 227–239 (Bundesamt für Naturschutz, 2002).
+	188.	 Kurokawa, H. & Nakashizuka, T. Leaf herbivory and decomposability in a 
+Malaysian tropical rain forest. Ecology 89, 2645–2656 (2008).
+	189.	 Laughlin, D. C., Fulé, P. Z., Huffman, D. W., Crouse, J. & Laliberté, E. Climatic 
+constraints on trait-based forest assembly. J. Ecol. 99, 1489–1499 (2011).
+	190.	 Laughlin, D. C., Leppert, J. J., Moore, M. M. & Sieg, C. H. A multi-trait test 
+of the leaf-height-seed plant strategy scheme with 133 species from a pine 
+forest flora. Funct. Ecol. 24, 493–501 (2009).
+	191.	 Lens, F. Comparative wood anatomy of Epacrids (Styphelioideae,  
+Ericaceae s.l.). Ann. Bot. 91, 835–856 (2003).
+	192.	 Lens, F., Baas, P., Jansen, S. & Smets, E. A search for phylogenetically 
+informative wood characters within Lecythidaceae s.l. Am. J. Bot. 94, 
+483–502 (2007).
+	193.	 Lens, F., Dressler, S., Jansen, S., van Evelghem, L. & Smets, E. Relationships 
+within balsaminoid Ericales: a wood anatomical approach. Am. J. Bot. 92, 
+941–953 (2005).
+	194.	 Lens, F., Eeckhout, S., Zwartjes, R., Smets, E. & Janssens, S. B. The multiple 
+fuzzy origins of woodiness within Balsaminaceae using an integrated 
+approach: where do we draw the line? Ann. Bot. 109, 783–799 (2011).
+	195.	 Lens, F., Endress, M. E., Baas, P., Jansen, S. & Smets, E. Vessel grouping 
+patterns in subfamilies Apocynoideae and Periplocoideae confirm 
+phylogenetic value of wood structure within Apocynaceae. Am. J. Bot. 96, 
+2168–2183 (2009).
+	196.	 Lens, F., Groeninckx, I., Smets, E. & Dessein, S. Woodiness within the 
+Spermacoceae–Knoxieae alliance (Rubiaceae): retention of the basal  
+woody condition in Rubiaceae or recent innovation? Ann. Bot. 103, 
+1049–1064 (2009).
+	197.	 Lens, F., Jansen, S., Caris, P., Serlet, L. & Smets, E. Comparative wood 
+anatomy of the primuloid clade (Ericales s.l.). Syst. Bot. 30, 163–183 (2005).
+	198.	 Lens, F., Jansen, S., Robbrecht, E. & Smets, E. Wood anatomy of the 
+Vangueriaea (Ixoroideae-Rubuaceae), with special emphasis on some 
+geofrutices. IAWA J. 21, 443–455 (2000).
+	199.	 Lens, F. et al. The wood anatomy of the polyphyletic Icacinaceae s.l., and 
+their relationships within asterids. Taxon 57, 525–552 (2008).
+	200.	 Lens, F., Kron, K. A., Luteyn, J. L., Smets, E. & Jansen, S. Comparative 
+wood anatomy of the blueberry tribe (Vaccinieae, Ericaceae s.l). Ann. 
+Missouri Bot. Gard. 91, 566–592 (2004).
+	201.	 Lens, F., Smets, E. & Jansen, S. Comparative wood anatomy of 
+Andromedeae s.s., Gaultherieae, Lyonieae and Oxydendreae (Vaccinioideae, 
+Ericaceae s.l.). Bot. J. Linn. Soc. 144, 161–179 (2004).
+	202.	 Lens, F., Smets, E. & Melzer, S. Stem anatomy supports Arabidopsis thaliana 
+as a model for insular woodiness. New Phytol. 193, 12–17 (2011).
+	203.	 Lens, F. et al. Testing hypotheses that link wood anatomy to cavitation 
+resistance and hydraulic conductivity in the genus Acer. New Phytol. 190, 
+709–723 (2010).
+	204.	 Li, H., Liang, Y., Xu, Q. & Cao, D. Key wavelengths screening using 
+competitive adaptive reweighted sampling method for multivariate 
+calibration. Anal. Chim. Acta 648, 77–84 (2009).
+	205.	 Louault, F., Pillar, V. D., Aufrèère, J., Garnier, E. & Soussana, J. F. Plant 
+traits and functional types in response to reduced disturbance in a 
+semi-natural grassland. J. Veg. Sci. 16, 151–160 (2005).
+	206.	 Loveys, B. R. et al. Thermal acclimation of leaf and root respiration: an 
+investigation comparing inherently fast- and slow-growing plant species. 
+Glob. Change Biol. 9, 895–910 (2003).
+	207.	 Malhado, A. C. M. et al. Drip-tips are associated with intensity of 
+precipitation in the Amazon rain forest. Biotropica 44, 728–737 (2012).
+	208.	 Malhado, A. C. M. et al. Spatial trends in leaf size of Amazonian rainforest 
+trees. Biogeosciences 6, 1563–1576 (2009).
+	209.	 Malhado, A. C. M. et al. Spatial distribution and functional significance of leaf 
+lamina shape in Amazonian forest trees. Biogeosciences 6, 1577–1590 (2009).
+	210.	 Malhado, A. C. M. et al. Are compound leaves an adaptation to seasonal 
+drought or to rapid growth? Evidence from the Amazon rain forest. Glob. 
+Ecol. Biogeogr. 19, 852–862 (2010).
+	211.	 Manning, P., Houston, K. & Evans, T. Shifts in seed size across experimental 
+nitrogen enrichment and plant density gradients. Basic Appl. Ecol. 10, 
+300–308 (2009).
+	212.	 Markesteijn, L., Poorter, L., Paz, H., Sack, L. & Bongers, F. Ecological 
+differentiation in xylem cavitation resistance is associated with stem and 
+leaf structural traits. Plant Cell Environ. 34, 137–148 (2011).
+	213.	 Martin, R. E., Asner, G. P. & Sack, L. Genetic variation in leaf pigment, 
+optical and photosynthetic function among diverse phenotypes of 
+Metrosideros polymorpha grown in a common garden. Oecologia 151, 
+387–400 (2007).
+	214.	 McDonald, P. G., Fonseca, C. R., Overton, J. M. & Westoby, M. Leaf-size 
+divergence along rainfall and soil-nutrient gradients: is the method of size 
+reduction common among clades? Funct. Ecol. 17, 50–57 (2003).
+	215.	 McKenna, M. F. & Shipley, B. Interacting determinants of interspecific 
+relative growth: empirical patterns and a theoretical explanation. Écoscience 
+6, 286–296 (1999).
+	216.	 Medlyn, B. E. et al. Effects of elevated [CO2] on photosynthesis in European 
+forest species: a meta-analysis of model parameters. Plant Cell Environ. 22, 
+1475–1495 (1999).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+46
+
+Articles
+NATurE Ecology & EVoluTIon
+	217.	 Medlyn, B. E. et al. Stomatal conductance of forest species after long-term 
+exposure to elevated CO2 concentration: a synthesis. New Phytol. 149, 
+247–264 (2001).
+	218.	 Meir, P. et al. Acclimation of photosynthetic capacity to irradiance in tree 
+canopies in relation to leaf nitrogen concentration and leaf mass per unit 
+area. Plant Cell Environ. 25, 343–357 (2002).
+	219.	 Meir, P., Levy, P. E., Grace, J. & Jarvis, P. G. Photosynthetic parameters from 
+two contrasting woody vegetation types in West Africa. Plant Ecol. 192, 
+277–287 (2007).
+	220.	 Mencuccini, M. The ecological significance of long-distance water transport: 
+short-term regulation, long-term acclimation and the hydraulic costs of 
+stature across plant life forms. Plant Cell Environ. 26, 163–182 (2003).
+	221.	 Meng, T.-T. et al. Responses of leaf traits to climatic gradients: Adaptive 
+variation versus compositional shifts. Biogeosciences 12, 5339–5352 (2015).
+	222.	 Messier, J., McGill, B. J., Enquist, B. J. & Lechowicz, M. J. Trait variation 
+and integration across scales: is the leaf economic spectrum present at local 
+scales? Ecography 40, 685–697 (2016).
+	223.	 Messier, J., McGill, B. J. & Lechowicz, M. J. How do traits vary across 
+ecological scales? A case for trait-based ecology. Ecol. Lett. 13,  
+838–848 (2010).
+	224.	 Meziane, D. & Shipley, B. Interacting components of interspecific relative 
+growth rate: constancy and change under differing conditions of light and 
+nutrient supply. Funct. Ecol. 13, 611–622 (1999).
+	225.	 Milla, R. & Reich, P. B. Multi-trait interactions, not phylogeny,  
+fine-tune leaf size reduction with increasing altitude. Ann. Bot. 107, 
+455–465 (2011).
+	226.	 Minden, V., Andratschke, S., Spalke, J., Timmermann, H. & Kleyer, M. 
+Plant trait–environment relationships in salt marshes: deviations from 
+predictions by ecological concepts. Perspect. Plant Ecol. Evol. Syst. 14, 
+183–192 (2012).
+	227.	 Minden, V. & Kleyer, M. Testing the effect–response framework: key 
+response and effect traits determining above-ground biomass of salt 
+marshes. J. Veg. Sci. 22, 387–401 (2011).
+	228.	 Mischkolz, J. M. Selecting and Evaluating Native Forage Mixtures for the 
+Mixed Grass Prairie. Msc thesis (University of Saskatchewan, 2013).
+	229.	 Moretti, M. & Legg, C. Combining plant and animal traits to assess 
+community functional responses to disturbance. Ecography 32,  
+299–309 (2009).
+	230.	 Müller, S. C., Overbeck, G. E., Pfadenhauer, J. & Pillar, V. D. Plant 
+functional types of woody species related to fire disturbance in forest–
+grassland ecotones. Plant Ecol. 189, 1–14 (2006).
+	231.	 Nakahashi, C. D., Frole, K. & Sack, L. Bacterial leaf nodule symbiosis in 
+Ardisia (Myrsinaceae): does it contribute to seedling growth capacity?  
+Plant Biol. 7, 495–500 (2005).
+	232.	 Niinemets, U. Components of leaf dry mass per area—thickness and 
+density—alter leaf photosynthetic capacity in reverse directions in woody 
+plants. New Phytol. 144, 35–47 (1999).
+	233.	 Niinemets, U. Global-scale climatic controls of leaf dry mass per area, 
+density, and thickness in trees and shrubs. Ecology 82, 453–469 (2001).
+	234.	 Ogaya, R. & Peñuelas, J. Comparative field study of Quercus ilex and 
+Phillyrea latifolia: photosynthetic response to experimental drought 
+conditions. Environ. Exp. Bot. 50, 137–148 (2003).
+	235.	 Ogaya, R. & Penuelas, J. Contrasting foliar responses to drought in Quercus 
+ilex and Phillyrea latifolia. Biol. Plant. 50, 373–382 (2006).
+	236.	 Ogaya, R. & Peñuelas, J. Tree growth, mortality, and above-ground biomass 
+accumulation in a holm oak forest under a five-year experimental field 
+drought. Plant Ecol. 189, 291–299 (2006).
+	237.	 Ogaya, R. & Peñuelas, J. Changes in leaf δ13C and δ15N for three 
+Mediterranean tree species in relation to soil water availability. Acta Oecol. 
+34, 331–338 (2008).
+	238.	 Onoda, Y. et al. Global patterns of leaf mechanical properties. Ecol. Lett. 14, 
+301–312 (2011).
+	239.	 Ordoñez, J. C. et al. Leaf habit and woodiness regulate different leaf 
+economy traits at a given nutrient supply. Ecology 91, 3218–3228 (2010).
+	240.	 Otto, B. in BIOLFLOR—Eine Datenbank mit Biologisch-ökologischen 
+Merkmalen zur Flora von Deutschland (eds Klotz, S. et al.) 177–196 
+(Bundesamt für Naturschutz, 2002).
+	241.	 Overbeck, G. E., Müller, S. C., Pillar, V. D. & Pfadenhauer, J. Fine-scale 
+post-fire dynamics in southern Brazilian subtropical grassland. J. Veg. Sci. 
+16, 655–664 (2005).
+	242.	 Overbeck, G. E. & Pfadenhauer, J. Adaptive strategies in burned subtropical 
+grassland in southern Brazil. Flora 202, 27–49 (2007).
+	243.	 Baas, P., Smets, E. & Jansen, S. Vegetative anatomy and effinities of 
+Dirachma socotrana (Dirachmaceae). Syst. Bot. 26, 231–241 (2001).
+	244.	 Pakeman, R. J. et al. Impact of abundance weighting on the response of 
+seed traits to climate and land use. J. Ecol. 96, 355–366 (2008).
+	245.	 Pakeman, R. J., Lep, J., Kleyer, M., Lavorel, S. & Garnie, E. Relative climatic, 
+edaphic and management controls of plant functional trait signatures.  
+J. Veg. Sci. 20, 148–159 (2009).
+	246.	 Papanastasis, M. et al. Leaf traits capture the effects of land use changes and 
+climate on litter decomposability of grasslands across Europe. Ecology 90, 
+598–611 (2009).
+	247.	 Patiño, S. et al. Branch xylem density variations across the Amazon basin. 
+Biogeosciences 6, 545–568 (2009).
+	248.	 Paula, S. et al. Fire-related traits for plant species of the Mediterranean 
+basin. Ecology 90, 1420–1420 (2009).
+	249.	 Paula, S. & Pausas, J. G. Burning seeds: germinative response to heat 
+treatments in relation to resprouting ability. J. Ecol. 96, 543–552 (2008).
+	250.	 Peco, B., de Pablos, I., Traba, J. & Levassor, C. The effect of grazing 
+abandonment on species composition and functional traits: the case of 
+Dehesa grasslands. Basic Appl. Ecol. 6, 175–183 (2005).
+	251.	 Peñuelas, J. et al. Faster returns on ‘leaf economics’ and different 
+biogeochemical niche in invasive compared with native plant species.  
+Glob. Change Biol. 16, 2171–2185 (2009).
+	252.	 Peñuelas, J. et al. Higher allocation to low cost chemical defenses in 
+invasive species of Hawaii. J. Chem. Ecol. 36, 1255–1270 (2010).
+	253.	 Petter, G. et al. Functional leaf traits of vascular epiphytes: vertical trends 
+within the forest, intra- and interspecific trait variability, and taxonomic 
+signals. Funct. Ecol. 30, 188–198 (2015).
+	254.	 Pierce, S., Brusa, G., Sartori, M. & Cerabolini, B. E. L. Combined use of leaf 
+size and economics traits allows direct comparison of hydrophyte and 
+terrestrial herbaceous adaptive strategies. Ann. Bot. 109, 1047–1053 (2012).
+	255.	 Pierce, S., Brusa, G., Vagge, I. & Cerabolini, B. E. L. Allocating CSR plant 
+functional types: the use of leaf economics and size traits to classify woody 
+and herbaceous vascular plants. Funct. Ecol. 27, 1002–1010 (2013).
+	256.	 Pierce, S., Ceriani, R. M., De Andreis, R., Luzzaro, A. & Cerabolini, B. The 
+leaf economics spectrum of Poaceae reflects variation in survival strategies. 
+Plant Biosyst. 141, 337–343 (2007).
+	257.	 Pierce, S., Luzzaro, A., Caccianiga, M., Ceriani, R. M. & Cerabolini, B. 
+Disturbance is the principal α-scale filter determining niche differentiation, 
+coexistence and biodiversity in an alpine community. J. Ecol. 95,  
+698–706 (2007).
+	258.	 Pillar, V. D. & Sosinski, E. E. An improved method for searching plant 
+functional types by numerical analysis. J. Veg. Sci. 14, 323–332 (2003).
+	259.	 Powers, J. S. & Tiffin, P. Plant functional type classifications in tropical dry 
+forests in Costa Rica: leaf habit versus taxonomic approaches. Funct. Ecol. 
+24, 927–936 (2010).
+	260.	 Prentice, I. C. et al. Evidence of a universal scaling relationship for leaf CO2 
+drawdown along an aridity gradient. New Phytol. 190, 169–180 (2010).
+	261.	 Preston, K. A., Cornwell, W. K. & DeNoyer, J. L. Wood density and vessel 
+traits as distinct correlates of ecological strategy in 51 California coast range 
+angiosperms. New Phytol. 170, 807–818 (2006).
+	262.	 Price, C. A. & Enquist, B. J. Scaling mass and morphology in leaves: an 
+extention of the WBE model. Ecology 88, 1132–1141 (2007).
+	263.	 Price, C. A., Enquist, B. J. & Savage, V. M. A general model for allometric 
+covariation in botanical form and function. Proc. Natl Acad. Sci. USA 104, 
+13204–13209 (2007).
+	264.	 Pyankov, V. I., Kondratchuk, A. V. & Shipley, B. Leaf structure and specific 
+leaf mass: the alpine desert plants of the Eastern Pamirs, Tadjikistan. New 
+Phytol. 143, 131–142 (1999).
+	265.	 Quero, J. L. et al. Relating leaf photosynthetic rate to whole-plant growth: 
+drought and shade effects on seedlings of four Quercus species. Funct. Plant 
+Biol. 35, 725 (2008).
+	266.	 Quested, H. M. et al. Decomposition of sub-arctic plants with differing 
+nitrogen economies: a functional role for hemiparasites. Ecology 84, 
+3209–3221 (2003).
+	267.	 Reich, P. B., Oleksyn, J. & Wright, I. J. Leaf phosphorus influences the 
+photosynthesis–nitrogen relation: a cross-biome analysis of 314 species. 
+Oecologia 160, 207–212 (2009).
+	268.	 Reich, P. B. et al. Scaling of respiration to nitrogen in leaves, stems and 
+roots of higher land plants. Ecol. Lett. 11, 793–801 (2008).
+	269.	 Auger, S. & Shipley, B. Inter-specific and intra-specific trait variation along 
+short environmental gradients in an old-growth temperate forest. J. Veg. Sci. 
+24, 419–428 (2012).
+	270.	 Sack, L., Cowan, P. D., Jaikumar, N. & Holbrook, N. M. The ’hydrology’ of 
+leaves: co-ordination of structure and function in temperate woody species. 
+Plant Cell Environ. 26, 1343–1356 (2003).
+	271.	 Sack, L. & Frole, K. Leaf structural diversity is related to hydraulic capacity 
+in tropical rain forest trees. Ecology 87, 483–491 (2006).
+	272.	 Sack, L., Melcher, P. J., Liu, W. H., Middleton, E. & Pardee, T. How strong is 
+intracanopy leaf plasticity in temperate deciduous trees? Am. J. Bot. 93, 
+829–839 (2006).
+	273.	 Sack, L., Tyree, M. T. & Holbrook, N. M. Leaf hydraulic architecture 
+correlates with regeneration irradiance in tropical rainforest trees. New 
+Phytol. 167, 403–413 (2005).
+	274.	 Sanda V., Bita-Nicolae, C. D. & Barabas, N. The Flora of Spontaneous and 
+Cultivated Cormophytes from Romania (in Romanian) (Editura Ion  
+Bacău, 2003).
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+47
+
+Articles
+NATurE Ecology & EVoluTIon
+	275.	 Sandel, B., Corbin, J. D. & Krupa, M. Using plant functional traits to  
+guide restoration: a case study in California coastal grassland. Ecosphere 2, 
+art23 (2011).
+	276.	 Sardans, J., Penuelas, J. & Ogaya, R. Drought-induced changes in C  
+and N stoichiometry in a Quercus ilex Mediterranean forest. For. Sci. 54, 
+513–522 (2008).
+	277.	 Sardans, J., Peñuelas, J., Prieto, P. & Estiarte, M. Changes in Ca, Fe, Mg, 
+Mo, Na, and S content in a Mediterranean shrubland under warming and 
+drought. J. Geophys. Res. https://doi.org/10.1029/2008jg000795 (2008).
+	278.	 Scherer-Lorenzen, M., Schulze, E., Don, A., Schumacher, J. & Weller, E. 
+Exploring the functional significance of forest diversity: a new long-term 
+experiment with temperate tree species (biotree). Perspect. Plant Ecol. Evol. 
+Syst. 9, 53–70 (2007).
+	279.	 Schurr, F. M. et al. Colonization and persistence ability explain the extent to 
+which plant species fill their potential range. Global Ecol. Biogeogr. 16, 
+449–459 (2007).
+	280.	 Schwallier, R. et al. Evolution of wood anatomical characters in Nepenthes 
+and close relatives of Caryophyllales. Ann. Bot. 119, 1179–1193 (2017).
+	281.	 Schweingruber, F. H., & Poschlod, P. Growth rings in herbs and shrubs: life 
+span, age determination and stem anatomy. Forest Snow Landsc. Res. 79, 
+195–415 (2005).
+	282.	 Scoffoni, C., Pou, A., Aasamaa, K. & Sack, L. The rapid light response of 
+leaf hydraulic conductance: new evidence from two experimental methods. 
+Plant Cell Environ. 31, 1803–1812 (2008).
+	283.	 Shiodera, S., Rahajoe, J. S. & Kohyama, T. Variation in longevity and traits 
+of leaves among co-occurring understorey plants in a tropical montane 
+forest. J. Trop. Ecol. 24, 121–133 (2008).
+	284.	 Shipley, B. The use of above-ground maximum relative growth rate as an 
+accurate predictor of whole-plant maximum relative growth rate. Funct. 
+Ecol. 3, 771 (1989).
+	285.	 Shipley, B. Trade-offs between net assimilation rate and specific leaf area in 
+determining relative growth rate: relationship with daily irradiance. Funct. 
+Ecol. 16, 682–689 (2002).
+	286.	 Shipley, B. & Lechowicz, M. J. The functional co-ordination of leaf 
+morphology, nitrogen concentration, and gas exchange in 40 wetland 
+species. Écoscience 7, 183–194 (2000).
+	287.	 Shipley, B. & Parent, M. Germination responses of 64 wetland species in 
+relation to seed size, minimum time to reproduction and seedling relative 
+growth rate. Funct. Ecol. 5, 111 (1991).
+	288.	 Shipley, B. & Vu, T.-T. Dry matter content as a measure of dry matter 
+concentration in plants and their parts. New Phytol. 153, 359–364 (2002).
+	289.	 Spasojevic, M. J. & Suding, K. N. Inferring community assembly 
+mechanisms from functional diversity patterns: the importance of multiple 
+assembly processes. J. Ecol. 100, 652–661 (2012).
+	290.	 Swaine, E. K. Ecological and Evolutionary Drivers of Plant Community 
+Assembly in a Bornean Rain Forest. PhD Thesis (University of Aberdeen, 
+2007).
+	291.	 Trefflich, A., Klotz, S. & Kuhn, I. in BIOLFLOR—Eine Datenbank mit 
+Biologisch-ökologischen Merkmalen zur Flora von Deutschland (eds Klotz, S. 
+et al.) 127–131 (Bundesamt für Naturschutz, 2002).
+	292.	 Tucker, S. S., Craine, J. M. & Nippert, J. B. Physiological drought tolerance 
+and the structuring of tallgrass prairie assemblages. Ecosphere 2, art48 (2011).
+	293.	 Ciocarlan, V. The Illustrated Flora of Romania. Pteridophyta et Spermatopyta 
+(in Romanian) (Editura Ceres, 2009).
+	294.	 van Bodegom, P. M., Sorrell, B. K., Oosthoek, A., Bakker, C. & Aerts, R. 
+Separating the effects of partial submergence and soil oxygen demand on 
+plant physiology. Ecology 89, 193–204 (2008).
+	295.	 Vergutz, L. et al. A Global Database of Carbon and Nutrient Concentrations 
+of Green and Senesced Leaves (ORNL DAAC, 2012); https://doi.org/10.3334/
+ORNLDAAC/1106
+	296.	 Vergutz, L., Manzoni, S., Porporato, A., Novais, R. F. & Jackson, R. B. 
+Global resorption efficiencies and concentrations of carbon and nutrients in 
+leaves of terrestrial plants. Ecol. Monogr. 82, 205–220 (2012).
+	297.	 Vile, D. Significations Fonctionnelle et Ecologique des Traits des Especes 
+Vegetales: Exemple dans une Succession Post-cultural Méditerranéenne et 
+Generalisations. PhD thesis (University of Montpellier II, 2005).
+	298.	 Von Holle, B. & Simberloff, D. Testing Fox’s assembly rule: does plant invasion 
+depend on recipient community structure? Oikos 105, 551–563 (2004).
+	299.	 Williams, M., Shimabukuro, Y. E. & Rastetter, E.B. LBA-ECO CD-09 Soil 
+and Vegetation Characteristics, Tapajos National Forest, Brazil (ORNL 
+DAAC, 2012); https://doi.org/10.3334/ORNLDAAC/1104
+	300.	 Willis, C. G. et al. Phylogenetic community structure in Minnesota oak 
+savanna is influenced by spatial extent and environmental variation. 
+Ecography 33, 565–577 (2010).
+	301.	 Wilson, K. B., Baldocchi, D. D. & Hanson, P. J. Spatial and seasonal 
+variability of photosynthetic parameters and their relationship to leaf 
+nitrogen in a deciduous forest. Tree Physiol. 20, 565–578 (2000).
+	302.	 Wirth, C. & Lichstein, J. W. in Old-Growth Forests: Function, Fate and Value 
+(eds Wirth, C. et al.) 81–113 (Springer, 2009).
+	303.	 Wohlfahrt, G. et al. Inter-specific variation of the biochemical limitation to 
+photosynthesis and related leaf traits of 30 species from mountain grassland 
+ecosystems under different land use. Plant Cell Environ. 22, 1281–1296 
+(1999).
+	304.	 Wright, I. J. et al. Relationships among ecologically important dimensions 
+of plant trait variation in seven neotropical forests. Ann. Bot. 99, 1003–1015 
+(2007).
+	305.	 Wright, J. P. & Sutton-Grier, A. Does the leaf economic spectrum hold 
+within local species pools across varying environmental conditions? Funct. 
+Ecol. 26, 1390–1398 (2012).
+	306.	 Wright, S. J. et al. Functional traits and the growth–mortality trade-off in 
+tropical trees. Ecology 91, 3664–3674 (2010).
+	307.	 Xu, L. & Baldocchi, D. D. Seasonal trends in photosynthetic parameters and 
+stomatal conductance of blue oak (Quercus douglasii) under prolonged 
+summer drought and high temperature. Tree Physiol. 23, 865–877 (2003).
+	308.	 Yguel, B. et al. Phytophagy on phylogenetically isolated trees: why hosts 
+should escape their relatives. Ecol. Lett. 14, 1117–1124 (2011).
+	309.	 Zanne, A. E. et al. Global Wood Density Database (EOL, 2009); https://
+opendata.eol.org/dataset/dde86ffb-7741-44a1-acf2-808b3dd6bc97/resource/
+d1e2b018-a7ce-444b-ac8a-ac43b2355cc9/download/archive
+	310.	 Zanne, A. E. et al. Angiosperm wood structure: global patterns in vessel 
+anatomy and their relation to wood density and potential conductivity. Am. 
+J. Bot. 97, 207–215 (2010).
+	311.	 Kattge, V. et al. TRY - a global database of plant traits. Global Change Biol 
+9, 2905–2935 (2011).
+	312.	 Shan, H. et al. Gap Filling in the Plant Kingdom—Trait Prediction Using 
+Hierarchical Probabilistic Matrix Factorization (ICML, 2012); http://arxiv.
+org/abs/1206.6439
+	313.	 R Core Team. R: A Language and Environment for Statistical Computing (R 
+Foundation for Statistical Computing, 2021).
+	314.	 Salakhutdinov, R. & Mnih, A. Probabilistic matrix factorization. In Proc. 
+20th International Conference on Neural Information Processing Systems (eds 
+Platt, J. C. et al.) 1257–1264 (Curran Associates Inc., 2007).
+	315.	 R Core Team. R: A Language and Environment for Statistical Computing (R 
+Foundation for Statistical Computing, 2013).
+	316.	 Lê, S., Josse, J. & Husson, F. FactoMineR: a package for multivariate 
+analysis. J. Stat. Softw. 25, 1–18 (2008).
+	317.	 Dray, S. & Dufour, A.-B. The ade4 package: implementing the duality 
+diagram for ecologists. J. Stat. Softw. 22, 1–20 (2007).
+	318.	 Bougeard, S. & Dray, S. Supervised multiblock analysis in R with the ade4 
+package. J. Stat. Softw. 86, 1–17 (2018).
+	319.	 Chessel, D., Dufour, A.-B. & Thioulouse, J. The ade4 package—I: one-table 
+methods. R News 4, 5–10 (2004).
+	320.	 Dray, S., Dufour, A.-B. & Chessel, D. The ade4 package—II: two-table and 
+K-table methods. R News 7, 47–52 (2007).
+	321.	 Thioulouse, J. et al. Multivariate Analysis of Ecological Data with ade4 
+(Springer, 2018).
+	322.	 Friedman, J., Hastie, T. & Tibshirani, R. Regularization paths for generalized 
+linear models via coordinate descent. J. Stat. Softw. 33, 1–22 (2010).
+	323.	 Simon, N., Friedman, J., Hastie, T. & Tibshirani, R. Regularization paths for 
+Cox’s proportional hazards model via coordinate descent. J. Stat. Softw. 39, 
+1–13 (2011).
+	324.	 Batjes, N. H., Ribeiro, E. & van Oostrum, A. Standardised soil profile data 
+to support global mapping and modelling (WoSIS snapshot 2019). Earth 
+Syst. Sci. Data 12, 299–320 (2020).
+	325.	 Hengl, T. et al. SoilGrids1km—global soil information based on automated 
+mapping. PLoS ONE 9, e105992 (2014).
+	326.	 Arrouays, D. et al. Soil legacy data rescue via GlobalSoilMap and other 
+international and national initiatives. GeoResJ 14, 1–19 (2017).
+	327.	 Richard, P. & Pielou, E. C. Biogeography (John Wiley & Sons, 1979).
+	328.	 Udvardy, M. D. F. A Classification of the Biogeographical Provinces of the 
+World (International Union for Conservation of Nature and Natural 
+Resources, 1975).
+	329.	 Dinerstein, E. et al. A Conservation Assessment of the Terrestrial Ecoregions 
+of Latin America and the Caribbean (The World Bank, 1995).
+	330.	 Ricketts, T. H. et al. Terrestrial Ecoregions of North America: A Conservation 
+Assessment (Island Press, 1999).
+	331.	 Dasmann, R. F. A System for Defining and Classifying Natural Regions for 
+Purposes of Conservation: A Progress Report (IUCN, 1973).
+Acknowledgements
+The study was supported by the TRY initiative on plant traits (http://www.try-db.
+org). The TRY database is hosted at the Max Planck Institute for Biogeochemistry 
+(MPI BGC, Germany) and supported by Future Earth and the German Centre for 
+Integrative Biodiversity Research (iDiv) Halle-Jena-Leipzig. We would like to thank all 
+PIs contributing to the TRY database, whose efforts allowed this analysis. In detail, we 
+thank: J.H.C. Cornelissen, R. Milla, W. Cornwell, K. Kramer, S. Gachet, Ingolf Kühn, P. 
+Poschlod, M. Scherer, J. Pausas, B. Sandal, K. Verheyen, J. Penuelas, N. Soudzilovskaia, 
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+48
+
+Articles
+NATurE Ecology & EVoluTIon
+P. Reich, J. Fang, S. Harrison, R. Gallagher, B. Hawkins, B. Finegan, J. Powers, F. Lenti, 
+S. Higgins, B. Medlyn, H. Ford, V. Pillar, M. Bahn, E. Sosinski, T. He, B. Cerabolini, 
+J. Cavender-Bares, I. J. Wright, F. Louault, B. Amiaud, G. Gonzalez-Melo, P. Adler, 
+F. Schurr, J. Craine, Y. Niinemets, A. Zanne, H. Jactel, M. Harze, R. Montgomery, C. 
+Römermann, T. Hickler, A. Pahl, M. Dainese, D. Kirkup, J. Dickie, W. Hattingh, P. 
+Higuchi, T. Domingues, A. Araujo, M. Williams, C. Price, B. Shipley, L. Sack, B. Schamp, 
+W. Han, Y. Onoda, K. Fleischer, J.P. Wright, G. Guerin, F. de Vries, D.D. Baldocchi, J. 
+Kattge, B. Blonder, K. Brown, D. Campetella, G. Frechet, Q. Read, N. G. Swenson, V. 
+Lanta, E. Weiher, M. Leishman, A. Siefert, M. Spasojevic, R. Jackson, J. Messier, S. J. 
+Wright, D. Craven, J. Molofsky, P. Meir, E. Forey, A. Totte, C. Frenette Dussault, O. Atkin, 
+F. Koike, D. Laughlin, S. Burrascano, K. Ollerer, N. Gross, A. Madhur, P. Begonna, B. 
+Bond-Lamberty, B. von Holle, W. Green, B. Yguel, A. C. Malhado, P. Manning, G. Zotz, 
+E. Lamb, J. Fagundez, Z. Wang, S. Diaz, C. Byun, W. Bond, B. Enquist, C. Baraloto, 
+P. Manning, M. Kleyer, W. Ozinga, J. Ordonez, J. Lloyd, H. Poorter, E. Garnier, F. 
+Valladares, C. Pladevall, G. Freschet, M. Moretti, H. Kurokawa, V. Minden, A. Demey, 
+F. Férnandez-Méndez, J. Butterfield, T. Domingu, E. Swaine, L. Poorter, S. Shiodera, 
+T. Chapin, M. Beckmann, J.A. Gutierrez, M. Mencuccini, S. Jansen, and N. J. B. Kraft. 
+We appreciate the discussions at the MPI BGC. We thank F. Fazayeli for preparing the 
+gap-filled trait data. We thank F. Gans and U. Weber for preparing ancillary data and 
+B. Ahrens for pointing out some soil data availability. We acknowledge Environmental 
+Systems Research Institute (ESRI) and its licensor(s) for the Geodata product of the 
+Missions Database ‘ArcWorld Supplement’ (GMI), published by Global Mapping 
+International and originated from Global Mapping International for producing Extended 
+Data Fig. 1 and Supplementary Fig. 7 and available in ArcGIS software by ESRI. ArcGIS 
+and ArcMap are the intellectual property of ESRI and are used herein under license. For 
+more information about ESRI software, please visit www.esri.com. The authors affiliated 
+with the MPI BGC acknowledge funding by the European Union’s Horizon 2020 
+project BACI under grant agreement no. 640176. We are thankful to the data providers 
+for the SoilGrids, hosted by ISRIC. J.S.J. acknowledges the International Max Planck 
+Research School for global biogeochemical cycles. J.S.J., M.E.S. and M.C.S. acknowledge 
+support from the University of Zurich University Research Priority Program on Global 
+Change and Biodiversity. P.B.R., M.E.S. and M.C.S. acknowledge membership in the 
+US NSF 20-508 BII-Implementation project, ‘The causes and consequences of plant 
+biodiversity across scales in a rapidly changing world’. M.E.S. acknowledges the NOMIS 
+grant of Remotely Sensing Ecological Genomics that funds J.S.J. and M.C.S. C.W. 
+acknowledges the support of the Max Planck Society via its fellowship programme. 
+N.R. was funded by a research grant from Deutsche Forschungsgemeinschaft DFG (RU 
+1536/3-1). K.K. was supported by the project Resilient Forests (KB-29-009-003) of the 
+Dutch Ministry of Economic Affairs. The trait data supplied were co-funded by the 
+EU-FP7-KBBE project: BACCARA—Biodiversity and climate change, a risk analysis 
+(project ID 226299). I.W. acknowledges support from the Australian Research Council 
+(DP170103410). J.P. acknowledges financial support from the European Research 
+Council Synergy grant ERC-SyG-2013-610028 IMBALANCE-P. N.A.S. is financed 
+by a VIDI grant (016.161.318) issued by the Netherlands Organization of Scientific 
+Research. The data V.M. provided were funded by II. Oldenburgischer Deichband and 
+the Wasserverbandstag e.V. (NWS 10/05). We thank M. Kleyer for his critical input. P.H. 
+and V.D.P. have been supported by CNPq (grant nos 369617/2017-2 and 307689/2014-0, 
+respectively). C.B. was supported by the National Research Foundation of Korea (NRF) 
+grant funded by the Korea government (MSIT) (2018R1C1B6005351). A.G.G. was 
+funded by FONDECYT grant nos 11150835 and 1200468. V.O. thanks Russian science 
+foundation (RSF, 19-14-00038) for financial support.
+Author contributions
+B.R., C.W., J.K., J.S.J. and M.D.M. were responsible for conceptualization. B.R., C.W., J.S.J. 
+and M.D.M. developed the methodology. J.S.J. undertook the formal analysis, validation, 
+visualization, investigation and project administration. B.R., C.R., C.W., F.L., F.S., I.W., 
+J.H.C.C., J.K., J.S.J., K.K., M.D.M., M.R., N.R., P.B.R., P.v.B., R.R., S.D., S.D.S., Ü.N. and 
+W.N.H. wrote the original draft. J.K. and J.S.J. carried out data curation. A.G.M., A.G.G., 
+B.E.L.C., C.B., C.R., C.W., E.S., E.R.W., F.L., G.C., H.J., I.W., J.M.C., J.H.C.C., J.P., K.K., 
+M.A., M.B., N.K., N.A.S., P.H., P.B.R., P.v.B., S.D., T.H., Ü.N., V.M., V.O., V.D.P. and 
+W.N.H. obtained resources. A.G.M., A.G.G., B.E.L.C., B.R., C.B., C.R., C.W., E.S., E.R.W., 
+F.L., F.S., G.C., H.J., I.W., J.M.C., J.S.J., J.H.C.C., J.P., K.K., M.A., M.B., M.C.S., M.D.M., 
+M.R., M.E.S., N.K., N.R., N.A.S., P.H., P.B.R., P.v.B., S.D., S.D.S., T.H., Ü.N., V.M., V.O., 
+V.D.P. and W.N.H. wrote, reviewed and edited the manuscript. B.R., C.W., J.K., M.C.S., 
+M.D.M., M.E.S. and N.R. undertook supervision. C.W., J.K., M.R. and M.E.S. were 
+involved in project administration and funding. B.R., J.S.J., S.D.S. and R.R. ran the 
+software.
+Competing interests
+The authors declare no competing interests.
+Additional information
+Extended data is available for this paper at https://doi.org/10.1038/s41559-021-01616-8.
+Supplementary information The online version contains supplementary material 
+available at https://doi.org/10.1038/s41559-021-01616-8.
+Correspondence and requests for materials should be addressed to Julia S. Joswig.
+Peer review information Nature Ecology & Evolution thanks Haydn J.D. Thomas, 
+Vanessa Buzzard and the other, anonymous, reviewer(s) for their contribution to the peer 
+review of this work. Peer reviewer reports are available.
+Reprints and permissions information is available at www.nature.com/reprints.
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in 
+published maps and institutional affiliations.
+Open Access This article is licensed under a Creative Commons 
+Attribution 4.0 International License, which permits use, sharing, adap-
+tation, distribution and reproduction in any medium or format, as long 
+as you give appropriate credit to the original author(s) and the source, provide a link to 
+the Creative Commons license, and indicate if changes were made. The images or other 
+third party material in this article are included in the article’s Creative Commons license, 
+unless indicated otherwise in a credit line to the material. If material is not included in 
+the article’s Creative Commons license and your intended use is not permitted by statu-
+tory regulation or exceeds the permitted use, you will need to obtain permission directly 
+from the copyright holder. To view a copy of this license, visit http://creativecommons.
+org/licenses/by/4.0/.
+© The Author(s) 2021
+1Max-Planck-Institute for Biogeochemistry, Jena, Germany. 2Remote Sensing Laboratories, Department of Geography, University of Zurich, Zurich, 
+Switzerland. 3German Centre for Integrative Biodiversity Research (iDiv), Leipzig, Germany. 4Institute of Systematic Botany and Functional Biodiversity, 
+University of Leipzig, Leipzig, Germany. 5Department of Chemistry, University of Zurich, Zurich, Switzerland. 6Escuela de Biología, Universidad Industrial 
+de Santander, Bucaramanga, Colombia. 7Department of Biological Sciences, Macquarie University, Sydney, New South Wales, Australia. 8Institute for 
+Atmospheric and Climate Science, ETH Zurich, Zurich, Switzerland. 9Norwegian Institute of Bioeconomy Research, Oslo, Norway. 10Department of 
+Economics, University of Leipzig, Leipzig, Germany. 11Smithsonian Tropical Research Institute, Ancón, Panama. 12Geoinformatics and Remote Sensing, 
+Institute for Geography, University of Leipzig, Leipzig, Germany. 13Environmental Biology Department, Institute of Environmental Sciences, CML, Leiden 
+University, Leiden, the Netherlands. 14Systems Ecology, Department of Ecological Science, Faculty of Science, Vrije Universiteit Amsterdam, Amsterdam, 
+the Netherlands. 15Instituto Multidisciplinario de Biología Vegetal (IMBIV), CONICET and FCEFyN, Universidad Nacional de Córdoba, Córdoba, Argentina. 
+16Global Systems and Analytics, Nova Pioneer, Johannesburg, South Africa. 17Chairgroup Forest Ecology and Forest Management, Wageningen University, 
+Wageningen, the Netherlands. 18Land Life Company, Amsterdam, the Netherlands. 19Research Group Functional Traits, Naturalis Biodiversity Center, 
+Leiden, the Netherlands. 20Plant Sciences, Institute of Biology Leiden, Leiden University, Leiden, the Netherlands. 21Estonian University of Life Sciences, 
+Tartu, Estonia. 22Department of Forest Resources, University of Minnesota, St Paul, MN, USA. 23Hawkesbury Institute for the Environment, Western 
+Sydney University, Penrith, New South Wales, Australia. 24Institute for Global Change Biology and School for Environment and Sustainability, University of 
+Michigan, Ann Arbor, MI, USA. 25Department of Plant Biodiversity, Institute of Ecology and Evolution, Friedrich-Schiller University, Jena, Germany. 26School 
+of Geography, University of Nottingham, Nottingham, UK. 27School of Environmental Sciences, University of Guelph, Guelph, Canada. 28Department of 
+Ecology, University of Innsbruck, Innsbruck, Austria. 29Department of Biological Sciences and Biotechnology, Andong National University, Andong, Korea. 
+30Plant Diversity and Ecosystems Management Unit, School of Biosciences and Veterinary Medicine, University of Camerino, Camerino, Italy. 31Department 
+of Biotechnologies and Life Sciences (DBSV), University of Insubria, Varese, Italy. 32Jonah Ventures LLC, Boulder, CO, USA. 33Facultad de Ciencias 
+Naturales y Matemáticas, Universidad del Rosario, Bogotá, Colombia. 34Departamento de Ciencias Ambientales y Recursos Naturales Renovables, 
+Facultad de Ciencias Agronómicas, Universidad de Chile, Santiago, Chile. 35School of Molecular and Life Sciences, Curtin University, Perth, Western 
+Australia, Australia. 36College of Science, Health, Engineering and Education, Murdoch University, Murdoch, Western Australia, Australia. 37Department of 
+Forestry, Universidade do Estado de Santa, Catarina, Lages, Brazil. 38INRAE University Bordeaux, BIOGECO, Cestas, France. 39Department of Ecology and 
+Evolutionary Biology, University of California, Los Angeles, CA, USA. 40Department of Biology, Vrije Universiteit Brussel, Brussels, Belgium. 41Landscape 
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+49
+
+Articles
+NATurE Ecology & EVoluTIon
+Ecology Group, Institute of Biology and Environmental Sciences, University of Oldenburg, Oldenburg, Germany. 42Department of Ecology and Plant 
+Geography, Moscow State Lomonosov University, Moscow, Russia. 43CSIC, Global Ecology Unit CREAF-CSIC-UAB, Bellaterra, Spain. 44CREAF, Cerdanyola 
+del Vallés, Spain. 45Department of Ecology, Universidade Federal do Rio Grande do Sul, Porto Alegre, Brazil. 46Embrapa Recursos Genéticos e Biotecnologia, 
+Brasília, Brazil. 47Centre for Environmental Sciences, Hasselt University, Diepenbeek, Belgium. 48Institute of Environmental Sciences, Leiden University, 
+Leiden, the Netherlands. 49Department of Biology, University of Wisconsin, Eau Claire, WI, USA. 50Remote Sensing Centre for Earth System Research, 
+University of Leipzig, Leipzig, Germany. 51Helmholtz Centre for Environmental Research, Leipzig, Germany. ✉e-mail: juliajoswigjj@gmail.com
+Nature Ecology & Evolution | VOL 6 | January 2022 | 36–50 | www.nature.com/natecolevol
+50
+
+Articles
+NATurE Ecology & EVoluTIon
+Articles
+NATurE Ecology & EVoluTIon
+Extended Data Fig. 1 | Map of Ecoregion data. Map of ecoregions (30) included in this study (n=220).
+Nature Ecology & Evolution | www.nature.com/natecolevol
+
+1
+nature portfolio  |  reporting summary
+March 2021
+Corresponding author(s):
+Julia Joswig
+Last updated by author(s): Nov 1, 2021
+Reporting Summary
+Nature Portfolio wishes to improve the reproducibility of the work that we publish. This form provides structure for consistency and transparency 
+in reporting. For further information on Nature Portfolio policies, see our Editorial Policies and the Editorial Policy Checklist.
+Statistics
+For all statistical analyses, confirm that the following items are present in the figure legend, table legend, main text, or Methods section.
+n/a Confirmed
+The exact sample size (n) for each experimental group/condition, given as a discrete number and unit of measurement
+A statement on whether measurements were taken from distinct samples or whether the same sample was measured repeatedly
+The statistical test(s) used AND whether they are one- or two-sided 
+Only common tests should be described solely by name; describe more complex techniques in the Methods section.
+A description of all covariates tested
+A description of any assumptions or corrections, such as tests of normality and adjustment for multiple comparisons
+A full description of the statistical parameters including central tendency (e.g. means) or other basic estimates (e.g. regression coefficient) 
+AND variation (e.g. standard deviation) or associated estimates of uncertainty (e.g. confidence intervals)
+For null hypothesis testing, the test statistic (e.g. F, t, r) with confidence intervals, effect sizes, degrees of freedom and P value noted 
+Give P values as exact values whenever suitable.
+For Bayesian analysis, information on the choice of priors and Markov chain Monte Carlo settings
+For hierarchical and complex designs, identification of the appropriate level for tests and full reporting of outcomes
+Estimates of effect sizes (e.g. Cohen's d, Pearson's r), indicating how they were calculated
+Our web collection on statistics for biologists contains articles on many of the points above.
+Software and code
+Policy information about availability of computer code
+Data collection
+Trait data: TRY (www.try-db.org, accession date July 2017, request nb.3282) 
+Climate data: WorldClim is publicly available via https://www.worldclim.org/ (accession date: May 2018),  
+Soil data: SoilGrids (soilgrids.org, accession date: June 2018) is publicly available 
+Ecoregions: of Olson et al. 2001 Shapefiles are publicly available (accession date January 2014, https://www.sciencebase.gov/catalog/
+item/508fece8e4b0a1b43c29ca22) 
+Estimate of species richness per ecoregion: Kier species richness (accession date January 2014, https://databasin.org/
+datasets/43478f840ac84173979b22631c2ed672/) 
+Spatial data (licenced, see third party rights form)
+Data analysis
+R, R-Studio, Microsoft Excel
+For manuscripts utilizing custom algorithms or software that are central to the research but not yet described in published literature, software must be made available to editors and 
+reviewers. We strongly encourage code deposition in a community repository (e.g. GitHub). See the Nature Portfolio guidelines for submitting code & software for further information.
+
+2
+nature portfolio  |  reporting summary
+March 2021
+Data
+Policy information about availability of data
+All manuscripts must include a data availability statement. This statement should provide the following information, where applicable: 
+- Accession codes, unique identifiers, or web links for publicly available datasets 
+- A description of any restrictions on data availability 
+- For clinical datasets or third party data, please ensure that the statement adheres to our policy 
+ 
+Plant trait data were accessed from the TRY data base (try-db.org, request number: 3282, accession date: July 2017, see also Figure \ref{fig_extDat}). All TRY data 
+required to reproduce this analysis, and the corresponding R-scripts, are provided in an open TRY File Archive (https://www.try-db.org/TryWeb/Data.php). Climate 
+data WorldClim is publicly available via https://www.worldclim.org/ (accession date: May 2018), Soil data, namely SoilGrids (soilgrids.org, accession date: June 2018) 
+is publicly available. Ecoregion information \cite{Olson2001} shapefiles are publicly available (accession date January 2014, https://www.sciencebase.gov/catalog/
+item/508fece8e4b0a1b43c29ca22), The estimate of species richness per ecoregion (Kier et al. 2005) is publicly available (accession date January 2014, https://
+databasin.org/datasets/43478f840ac84173979b22631c2ed672/. Data for this study can be accessed on Github  (https://github.com/juliajoswig/ Repo\ClimateSoil
+\TraitSpectrum). 
+For the extended data figure 1,  Supplementary Fig.7 , the Geodata product of the Missions Database “ArcWorld Supplement” (GMI) was used, published by Global 
+Mapping International and originated from Global Mapping International for producing and available in ArcGIS  software by Esri. ArcGIS  and ArcMapTM are the 
+intellectual property of Esri and are used herein under license. Copyright  Esri. All rights reserved. For more information about Esri software, please visit 
+www.esri.com. 
+Field-specific reporting
+Please select the one below that is the best fit for your research. If you are not sure, read the appropriate sections before making your selection.
+Life sciences
+Behavioural & social sciences
+ Ecological, evolutionary & environmental sciences
+For a reference copy of the document with all sections, see nature.com/documents/nr-reporting-summary-flat.pdf
+Ecological, evolutionary & environmental sciences study design
+All studies must disclose on these points even when the disclosure is negative.
+Study description
+The overarching objective of this study is to test whether the major dimensions underpinning the global spectrum of plant variation, 
+such as the size and leaf economics spectra, are the result of joint and/or independent variation of climate and soil.  
+For this study, we compiled and analyze a dataset of 17 functional traits for 225,206 geo-referenced observations comprising records 
+of 20,655 global unique species (36,197 unique species to ecoregion combinations) covering the main worlds’ ecoregions – 
+environmentally homogeneous areas characterized by distinct plant assemblages (Methods, Extended Data Figure 1). The trait data 
+were complemented with 21 climate variables (Supplementary Tab. 1) as well as 107 soil variables (Supplementary Tab. 2). Trait-
+environment relationships were analyzed on the basis of ecoregions using a combination of a regression technique and hierarchical 
+partitioning (for details see Methods).
+Research sample
+We extracted data of 17 plant functional traits from the TRY data base1 (Supplementary Tab. 5, Supplementary Tab. 6, www.try-
+db.org, accession date July 2017, request nb.3282) including published literature (see manuscript). To be able to include the 
+maximum number of species in our analyses, we used the gap-filled version of TRY, with missing data were imputed using a Bayesian 
+Hierarchical Probabilistic Matrix Factorization (BHPMF) algorithm, but observed values were kept. We excluded observations that 
+were not geo-referenced. In total, we included 225,206 observations from 20,655 global unique species (36,197 unique species to 
+ecoregion combinations). The data were stratified by ecoregions (see below), aggregated to species median values per ecoregion and 
+log-transformed. 
+ 
+To represent climate conditions we used 21 variables derived from the WorldClim reanalysis product at a resolution of 1 km 
+(accession date May 2018). We extracted values for temperature  (annual average, diurnal range, max of warmest month, min of 
+coldest month, sd), precipitation (annual average, min, max, sd), vapour pressure (annual average, min, max, sd), solar radiation 
+(annual average, min, max, sd) and wind (annual average, min, max, sd; see Supplementary Tab. 1). 
+ 
+To characterise soil conditions we used 107 variables derived from the ISRIC data product ‘SoilGrids’  (soilgrids.org through ISRIC - 
+WDC Soils, Supplementary Tab. 2). ‘SoilGrids’ provides global predictions of soil characteristics for seven depths, i.e. 0, 5, 15, 30, 60, 
+100, 200 cm at a resolution of 1 km.  
+In total, we included 128 environmental variables. Before performing the ridge regression, climate and soil variables were reduced to 
+20 variables each by means of a principle component analysis (PCA). 
+ 
+Sampling strategy
+The data were stratified by ecoregions, aggregated to species median values per ecoregion and log-transformed. To determine trait-
+environment relationships, we aggregated trait as well as environmental data to ecoregions (Supplementary Tab.7)  Ecoregions are 
+environmentally homogeneous areas characterized by distinct plant assemblages. At global scale Olson et al. defined 867 ecoregions. 
+For each of the 867 ecoregions, we calculated the median of all species median trait values. For further analyses we only included 
+regions with >20 species and a representation of >1% of the estimated species richness of the ecoregion.  
+To aggregate environmental variables to ecoregion level, we associated each geo-referenced trait observation with its corresponding 
+values of climate and soil variables. Then, we averaged over all values within one ecoregion. Thus, the selected environmental 
+
+3
+nature portfolio  |  reporting summary
+March 2021
+variables represent averages that are weighted by the number and location of trait observations within ecoregions. 
+Data collection
+Trait data was collected in the framework of TRY (Kattge et al. 2011). 
+Timing and spatial scale
+Trait-data: geo-referenced global point data 
+Climate- data: gridded data (1km resolution) 
+Soil: gridded data of up to 7 different depths (1km resolution) 
+Data exclusions
+For trait observations, we only included geo-referenced data.  
+For environmental data, we only included the grid-level information if a trait data point was located there. 
+For ecoregions we only included regions with >20 species and a representation of >1% of the estimated species richness of the 
+ecoregion.  
+Reproducibility
+All attempts to repeat the results were successful. 
+Per default, the ridge regression was repeated 50 times for each trait. The mean, minimum and maximum of r2 and independent 
+effect give an estimate of model spreads (Table 1, Supplementary Tab. 9). 
+All TRY data required to reproduce this analysis, and the corresponding R-scripts, are provided in an open TRY File Archive (https://
+www.try-db.org/TryWeb/Data.php).  
+Randomization
+ 
+To estimate how much of the ecoregion trait variation (r2) is explained by random environmental variables, we performed the ridge 
+regression followed by hierarchical partitioning (see methods „ridge regression“ and “hierarchical partitioning”) and paired climate or 
+soil with noise. The noise data set comprised randomly sampled values for a variable set, as large as the soil variable set (n=107). We 
+performed ridge regression analysis with noise data, together with climate or soil. Then we calculated the independent effect of 
+noise from climate or soil data. 
+The independent effect of randomized data (noise) is never above 0 (negative values due to large difference between r2_total and 
+r2_noise and model variabiliy; Supplement Fig 2). 
+ 
+Moreover, we sampled for each ecoregion the minimum requirement for selection (Kier species richness of 1% and 20 species) and 
+erased randomly (n=3) the rest of the species observations. See Supplement Fig. 2. 
+Blinding
+Describe the extent of blinding used during data acquisition and analysis. If blinding was not possible, describe why OR explain why 
+blinding was not relevant to your study.
+Did the study involve field work?
+Yes
+No
+Reporting for specific materials, systems and methods
+We require information from authors about some types of materials, experimental systems and methods used in many studies. Here, indicate whether each material, 
+system or method listed is relevant to your study. If you are not sure if a list item applies to your research, read the appropriate section before selecting a response. 
+Materials & experimental systems
+n/a Involved in the study
+Antibodies
+Eukaryotic cell lines
+Palaeontology and archaeology
+Animals and other organisms
+Human research participants
+Clinical data
+Dual use research of concern
+Methods
+n/a Involved in the study
+ChIP-seq
+Flow cytometry
+MRI-based neuroimaging
