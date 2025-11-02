@@ -1,7 +1,7 @@
 # Stage 4: Guild Builder Documentation
 
-**Updated**: 2025-11-01
-**Status**: Design Phase - Guild Scoring Framework
+**Updated**: 2025-11-02
+**Status**: Production - Guild Scorer Calibrated & Tested
 
 ---
 
@@ -17,6 +17,15 @@
 - Second-order trophic effects (predator-prey, antagonist-pathogen)
 - Equal reachability of +1 and -1 extremes
 - DuckDB implementation architecture with complete pseudocode
+
+**[4.3 Original Dataset Integration](4.3_Original_Dataset_Integration.md)** 🆕 **EXPANSION PLAN**
+- Strategy for incorporating Stage 3 indicators into guild scoring
+- Environmental compatibility filters (climate, soil, EIVE)
+- Functional complementarity (CSR diversity, trait niche partitioning, vertical stratification)
+- Ecosystem service synergies (decomposition-NPP, nitrogen fixation, carbon storage)
+- Fungal-service linkages (saprotrophs supporting decomposition)
+- Proposed v2 framework with 13 positive components + 3 negative components
+- Implementation roadmap (6 phases)
 
 **[4.5 Fungal Guild Classification - FINAL](4.5_Fungal_Guild_Classification_Final.md)**
 - Research-validated hybrid approach (FungalTraits + FunGuild)
@@ -146,8 +155,9 @@ See [4.2 Guild Compatibility Framework](4.2_Guild_Compatibility_Framework.md) fo
 **Compatibility Matrix** (Legacy):
 - `src/Stage_4/04_compute_compatibility_matrix.py` (Pairwise only)
 
-**Guild Scorer** (Planned):
-- `src/Stage_4/05_compute_guild_compatibility.py` (Not yet implemented)
+**Guild Scorer** (Production):
+- `src/Stage_4/05_compute_guild_compatibility.py` ✓ (Calibrated & tested)
+- `src/Stage_4/05b_explain_guild_score.py` ✓ (User-friendly explanations)
 
 ---
 
@@ -186,23 +196,28 @@ See [4.2 Guild Compatibility Framework](4.2_Guild_Compatibility_Framework.md) fo
 - [x] Organism profiles (pollinators, herbivores, pathogens)
 - [x] Fungal guilds (hybrid FungalTraits + FunGuild)
 - [x] Multi-trophic networks (predator-prey relationships)
-- [x] Cross-plant benefits (biological control)
+- [x] Cross-plant benefits (biological control - optimized with DuckDB)
+- [x] Insect-fungal parasite relationships (1,212 insects)
 
-### Phase 2: Guild Scoring Framework ⏳ In Progress
+### Phase 2: Guild Scoring Framework ✓ Complete
 
 - [x] Identify pairwise averaging failure
-- [x] Design guild-level prevalence approach
+- [x] Design guild-level overlap approach
 - [x] Normalized [-1, +1] scoring architecture
-- [ ] Implement `05_compute_guild_compatibility.py`
-- [ ] Test on bad/good guilds
-- [ ] Validate discrimination improvement
+- [x] Implement `05_compute_guild_compatibility.py`
+- [x] Test on bad/good guilds (3 test guilds validated)
+- [x] Calibrate weights (BAD: -0.159, GOOD#1: +0.322, GOOD#2: +0.028)
+- [x] Create explanation generator (`05b_explain_guild_score.py`)
 
-### Phase 3: Calibration & Production 📋 Planned
+### Phase 3: Stage 3 Integration 📋 Planned
 
-- [ ] Collect ground truth guilds (Three Sisters, All-Solanaceae, etc.)
-- [ ] Optimize component weights via regression
-- [ ] Cross-validate on test set
-- [ ] Production deployment
+- [x] Design integration framework (Document 4.3)
+- [ ] Implement Phase 1: Data preparation (extract Stage 3 indicators)
+- [ ] Implement Phase 2: Compatibility matrices (climate, soil, EIVE, CSR, traits)
+- [ ] Implement Phase 3: Scorer v2 with 13 positive + 3 negative components
+- [ ] Implement Phase 4: Enhanced explanations with CSR/service info
+- [ ] Implement Phase 5: Testing on new test guilds (climate mismatch, service synergy, etc.)
+- [ ] Implement Phase 6: Documentation update
 
 ---
 
@@ -283,26 +298,42 @@ Characteristics:
 
 ## Next Steps
 
-### Immediate: Implement Guild Scorer
+### Immediate: Stage 3 Integration (Document 4.3)
 
-1. Create `src/Stage_4/05_compute_guild_compatibility.py`
-2. Implement prevalence counting with DuckDB
-3. Test on bad/good guilds above
-4. Validate 38× discrimination improvement
+1. **Phase 1: Data Preparation**
+   - Extract climate, soil, EIVE, CSR, traits, ecosystem services from Stage 3
+   - Convert categorical ratings to numeric scores
+   - Save processed profiles as parquet files
 
-### Short-term: Calibration
+2. **Phase 2: Compatibility Matrices**
+   - Compute pairwise climate compatibility (11,680 × 11,680)
+   - Compute soil compatibility
+   - Compute EIVE compatibility
+   - Compute CSR distance matrix
+   - Compute functional trait distance matrix
 
-1. Collect 50+ ground truth guilds
-2. Optimize component weights
-3. Cross-validate
-4. Document final weights
+3. **Phase 3: Scorer v2 Implementation**
+   - Add environmental filters (F1: climate, F2: soil)
+   - Add positive components P5-P13 (climate, EIVE, CSR, traits, services)
+   - Add negative component N3 (environmental stress overlap)
+   - Implement fungal-service linkages (saprotrophs ↔ decomposition)
+   - Update weighting scheme
 
-### Long-term: Production Integration
+### Short-term: Testing & Calibration
 
-1. Replace `guild_builder_prototype.py` with new scorer
-2. Add guild score to frontend
-3. Performance optimization
-4. User documentation
+1. Test on existing guilds (BAD, GOOD#1, GOOD#2) with v2 scorer
+2. Create new test guilds (climate mismatch, service synergy, etc.)
+3. Validate that v2 maintains discrimination while adding ecological realism
+4. Calibrate weights if needed
+5. Document v2 test results
+
+### Long-term: Production Deployment
+
+1. Update frontend to use v2 scorer
+2. Add CSR/service/climate explanations to output
+3. Create user guide for v2 framework
+4. Performance optimization (cache compatibility matrices)
+5. Multi-level explanations (child, gardener, designer, scientist)
 
 ---
 
@@ -320,5 +351,37 @@ Characteristics:
 
 ---
 
-**Last Updated**: 2025-11-01
-**Status**: Guild scoring framework designed, implementation pending
+## Current Production System (v1)
+
+**Scorer**: Framework 4.2 - Guild-level overlap scoring
+**Components**: 4 positive (biocontrol, pathogen control, beneficial fungi, diversity) + 2 negative (pathogen fungi, herbivores)
+**Test Results**: BAD=-0.159, GOOD#1=+0.322, GOOD#2=+0.028
+**Discrimination**: Successfully distinguishes bad from good guilds
+
+**Data Coverage**:
+- 11,680 plant species
+- 8,000+ with full GloBI interaction data
+- 3,680+ with FungalTraits + CSR + ecosystem services
+
+**Production Files**:
+- `data/stage4/plant_fungal_guilds_hybrid.parquet` (437K)
+- `data/stage4/plant_organism_profiles.parquet` (925K)
+- `data/stage4/cross_plant_benefits.parquet` (1.7M, 602,180 beneficial pairs)
+
+---
+
+## Planned v2 System (Document 4.3)
+
+**Enhancements**:
+- Environmental compatibility filters (climate, soil)
+- Functional complementarity (CSR diversity, trait niche partitioning)
+- Ecosystem service synergies (decomposition-NPP, nitrogen fixation, carbon storage)
+- Fungal-service linkages (saprotrophs supporting decomposition)
+
+**New Components**: 13 positive + 3 negative (vs current 4 positive + 2 negative)
+**Implementation**: 6-phase roadmap outlined in Document 4.3
+
+---
+
+**Last Updated**: 2025-11-02
+**Status**: v1 production ready, v2 integration framework designed
