@@ -173,10 +173,11 @@ def compute_guild_score(plant_ids, con, verbose=True):
         print()
 
     # Aggregate negative factors
+    # NOTE: N3 (other pathogens) removed due to data sparsity - reweighted to N1/N2
     negative_risk_score = (
-        0.40 * pathogen_fungi_norm +
-        0.30 * herbivore_norm +
-        0.30 * pathogen_other_norm
+        0.50 * pathogen_fungi_norm +   # Increased from 40% (N3 at 0%)
+        0.50 * herbivore_norm           # Increased from 30%
+        # 0.00 * pathogen_other_norm    # Removed (always 0 in current data)
     )
 
     if verbose:
@@ -205,7 +206,8 @@ def compute_guild_score(plant_ids, con, verbose=True):
 
     herbivore_control_raw = cross_benefits[1] if cross_benefits[1] is not None else 0
     max_pairs = total_plants * (total_plants - 1)
-    herbivore_control_norm = tanh(herbivore_control_raw / max_pairs * 10) if max_pairs > 0 else 0
+    # Stricter normalization: changed from *10 to *5 (require more predators for high scores)
+    herbivore_control_norm = tanh(herbivore_control_raw / max_pairs * 5) if max_pairs > 0 else 0
 
     if verbose:
         print(f"P1: Herbivore Control Benefits")
@@ -232,7 +234,8 @@ def compute_guild_score(plant_ids, con, verbose=True):
     if mycoparasites is not None and mycoparasites > 0:
         pathogen_control_raw = mycoparasites * 0.3  # General benefit weight
 
-    pathogen_control_norm = tanh(pathogen_control_raw / max_pairs * 10) if max_pairs > 0 else 0
+    # Stricter normalization: changed from *10 to *5
+    pathogen_control_norm = tanh(pathogen_control_raw / max_pairs * 5) if max_pairs > 0 else 0
 
     if verbose:
         print(f"P2: Pathogen Control Benefits")
@@ -287,11 +290,18 @@ def compute_guild_score(plant_ids, con, verbose=True):
     beneficial_fungi_raw = network_raw * 0.6 + coverage_ratio * 0.4
     beneficial_fungi_norm = tanh(beneficial_fungi_raw / 3.0)
 
+    # PENALTY: Reduce beneficial fungi score when high pathogen overlap
+    # Rationale: Beneficial fungi don't matter if all plants die from same disease
+    if pathogen_fungi_norm > 0.5:
+        beneficial_fungi_norm *= 0.5  # Halve benefit when high pathogen risk
+
     if verbose:
         print(f"P3: Shared Beneficial Fungi")
         print(f"  - Shared beneficial fungi: {len(beneficial_overlap)}")
         print(f"  - Plants with beneficial fungi: {plants_with_beneficial} / {total_plants}")
         print(f"  - Raw score: {beneficial_fungi_raw:.3f}")
+        if pathogen_fungi_norm > 0.5:
+            print(f"  - PENALTY APPLIED: High pathogen load (N1={pathogen_fungi_norm:.3f}) → 50% reduction")
         print(f"  - Normalized: {beneficial_fungi_norm:.3f}")
         print()
 
@@ -322,11 +332,12 @@ def compute_guild_score(plant_ids, con, verbose=True):
         print()
 
     # Aggregate positive factors
+    # CALIBRATED WEIGHTS: Prioritize biocontrol and diversity over beneficial fungi
     positive_benefit_score = (
-        0.30 * herbivore_control_norm +
-        0.30 * pathogen_control_norm +
-        0.25 * beneficial_fungi_norm +
-        0.15 * diversity_norm
+        0.35 * herbivore_control_norm +  # Increased from 30% (biocontrol more important)
+        0.30 * pathogen_control_norm +   # Kept at 30%
+        0.15 * beneficial_fungi_norm +   # Decreased from 25% (less critical)
+        0.20 * diversity_norm             # Increased from 15% (diversity critical)
     )
 
     if verbose:
