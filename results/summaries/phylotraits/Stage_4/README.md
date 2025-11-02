@@ -140,6 +140,7 @@ See [4.2 Guild Compatibility Framework](4.2_Guild_Compatibility_Framework.md) fo
 **Organism Profiles:**
 - `src/Stage_4/01_extract_organism_profiles.py` ✓
 - `src/Stage_4/02_build_multitrophic_network.py` ✓
+- `src/Stage_4/02b_extract_insect_fungal_parasites.py` ✓
 - `src/Stage_4/03_compute_cross_plant_benefits.py` ✓
 
 **Compatibility Matrix** (Legacy):
