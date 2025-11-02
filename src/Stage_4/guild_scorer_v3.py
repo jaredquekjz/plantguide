@@ -19,6 +19,7 @@ import duckdb
 import numpy as np
 import pandas as pd
 import math
+import json
 from pathlib import Path
 from collections import Counter
 from typing import Dict, List, Any
@@ -48,12 +49,56 @@ class GuildScorerV3:
         self.insect_parasites_path = self.data_dir / 'insect_fungal_parasites.parquet'
         self.pathogen_antagonists_path = self.data_dir / 'pathogen_antagonists.parquet'
 
-        print("Guild Scorer V3 initialized")
+        # Load normalization parameters
+        norm_params_path = self.data_dir / 'normalization_params_v3.json'
+        if norm_params_path.exists():
+            with open(norm_params_path, 'r') as f:
+                self.norm_params = json.load(f)
+            print("Guild Scorer V3 initialized with calibrated normalization")
+        else:
+            self.norm_params = None
+            print("Guild Scorer V3 initialized (normalization params not found, using fallback)")
+
         print(f"Using: {self.plants_path.name}")
 
     # ============================================
     # HELPER FUNCTIONS
     # ============================================
+
+    def _normalize_percentile(self, raw_value, component_key):
+        """
+        Percentile-based normalization using calibrated parameters.
+
+        Uses piecewise linear interpolation between percentile points:
+        - [p5, p50] → [0.0, 0.5]
+        - [p50, p95] → [0.5, 1.0]
+        - Below p5 → 0.0
+        - Above p95 → 1.0
+
+        Args:
+            raw_value: Raw score value
+            component_key: Key in norm_params (e.g., 'n1', 'p4')
+
+        Returns:
+            Normalized value ∈ [0, 1]
+        """
+        if self.norm_params is None or component_key not in self.norm_params:
+            # Fallback: simple tanh normalization
+            return np.tanh(raw_value / 3.0)
+
+        params = self.norm_params[component_key]
+        p5, p50, p95 = params['p5'], params['p50'], params['p95']
+
+        if raw_value <= p5:
+            return 0.0
+        elif raw_value <= p50:
+            # Linear interpolation [p5, p50] → [0.0, 0.5]
+            return 0.5 * (raw_value - p5) / (p50 - p5) if (p50 - p5) > 0 else 0.0
+        elif raw_value <= p95:
+            # Linear interpolation [p50, p95] → [0.5, 1.0]
+            return 0.5 + 0.5 * (raw_value - p50) / (p95 - p50) if (p95 - p50) > 0 else 0.5
+        else:
+            return 1.0
 
     def _count_shared_organisms(self, df, *columns):
         """
@@ -180,6 +225,10 @@ class GuildScorerV3:
 
     def _load_plants_data(self, plant_ids):
         """Load plant traits, climate, CSR, phylo data."""
+
+        # Generate all 92 phylogenetic eigenvector column names
+        phylo_ev_cols = ', '.join([f'phylo_ev{i}' for i in range(1, 93)])
+
         query = f"""
         SELECT
             wfo_taxon_id as plant_wfo_id,
@@ -204,11 +253,10 @@ class GuildScorerV3:
             height_m,
             try_growth_form as growth_form,
             -- Nitrogen fixation (rating 0-5, where 5 = N-fixer)
-            nitrogen_fixation_rating as n_fixation
+            nitrogen_fixation_rating as n_fixation,
             -- Note: No pH column in dataset, N6 will return 0 penalty
-            -- Phylogenetic eigenvectors (first 10)
-            , phylo_ev1, phylo_ev2, phylo_ev3, phylo_ev4, phylo_ev5
-            , phylo_ev6, phylo_ev7, phylo_ev8, phylo_ev9, phylo_ev10
+            -- Phylogenetic eigenvectors (all 92)
+            {phylo_ev_cols}
         FROM read_parquet('{self.plants_path}')
         WHERE wfo_taxon_id IN ({','.join([f"'{x}'" for x in plant_ids])})
         """
@@ -429,7 +477,7 @@ class GuildScorerV3:
                 severity = 1.0 if fungus in host_specific_fungi else 0.6
                 pathogen_fungi_raw += overlap_penalty * severity
 
-            pathogen_fungi_norm = math.tanh(pathogen_fungi_raw / 8.0)
+            pathogen_fungi_norm = self._normalize_percentile(pathogen_fungi_raw, 'n1')
 
         return {
             'norm': pathogen_fungi_norm,
@@ -464,7 +512,7 @@ class GuildScorerV3:
                 overlap_penalty = overlap_ratio ** 2
                 herbivore_raw += overlap_penalty * 0.5
 
-            herbivore_norm = math.tanh(herbivore_raw / 4.0)
+            herbivore_norm = self._normalize_percentile(herbivore_raw, 'n2')
 
         return {
             'norm': herbivore_norm,
@@ -582,15 +630,13 @@ class GuildScorerV3:
                     conflict = 0.3  # Low - short-lived annuals
                     conflicts += conflict
 
-        # Normalize
-        max_conflicts = n_plants * (n_plants - 1) / 2
-        csr_conflict_norm = min(conflicts / max_conflicts, 1.0) if max_conflicts > 0 else 0
+        # Normalize using calibrated percentiles
+        csr_conflict_norm = self._normalize_percentile(conflicts, 'n4')
 
         return {
             'norm': csr_conflict_norm,
             'conflicts': conflict_details,
-            'raw_conflicts': conflicts,
-            'max_possible': max_conflicts
+            'raw_conflicts': conflicts
         }
 
     def _compute_n5_nitrogen_fixation(self, plants_data, n_plants):
@@ -688,24 +734,152 @@ class GuildScorerV3:
             'diversity_score': p4_result['norm'],  # Note: now phylo, not family counting
             'shared_pollinator_score': p6_result['norm'],
             'shared_beneficial_fungi': p3_result['shared'],
-            'shared_pollinators': p6_result['shared'],
-            'n_families': len(set(plants_data['family'].dropna())),
-            'family_diversity': len(set(plants_data['family'].dropna())) / n_plants
+            'shared_pollinators': p6_result['shared']
         }
 
     def _compute_p1_biocontrol(self, plants_data, organisms_data, fungi_data, n_plants):
-        """P1: Cross-plant biocontrol (25% of positive)."""
+        """P1: Cross-plant biocontrol (25% of positive) - Document 4.2."""
 
-        # Simplified implementation (full version requires relationship tables)
-        # TODO: Implement pairwise biocontrol matching when relationship tables available
-        return {'norm': 0.0, 'mechanisms': []}
+        biocontrol_raw = 0
+        mechanisms = []
+
+        if organisms_data is None or fungi_data is None or len(organisms_data) == 0:
+            return {'norm': 0.0, 'mechanisms': []}
+
+        # Load relationship tables
+        herbivore_predators = {}
+        if self.herbivore_predators_path.exists():
+            pred_df = self.con.execute(f"""
+                SELECT herbivore, predators
+                FROM read_parquet('{self.herbivore_predators_path}')
+            """).fetchdf()
+            for _, row in pred_df.iterrows():
+                herbivore_predators[row['herbivore']] = set(row['predators']) if row['predators'] is not None else set()
+
+        insect_parasites = {}
+        if self.insect_parasites_path.exists():
+            para_df = self.con.execute(f"""
+                SELECT herbivore, entomopathogenic_fungi
+                FROM read_parquet('{self.insect_parasites_path}')
+            """).fetchdf()
+            for _, row in para_df.iterrows():
+                insect_parasites[row['herbivore']] = set(row['entomopathogenic_fungi']) if row['entomopathogenic_fungi'] is not None else set()
+
+        # Pairwise analysis
+        for i, row_a in organisms_data.iterrows():
+            plant_a_id = row_a['plant_wfo_id']
+            herbivores_a = set(row_a['herbivores']) if row_a['herbivores'] is not None and len(row_a['herbivores']) > 0 else set()
+
+            for j, row_b in organisms_data.iterrows():
+                if i == j:
+                    continue
+
+                plant_b_id = row_b['plant_wfo_id']
+                visitors_b = set(row_b['flower_visitors']) if row_b['flower_visitors'] is not None and len(row_b['flower_visitors']) > 0 else set()
+
+                # Mechanism 1: Specific animal predators (weight 1.0)
+                for herbivore in herbivores_a:
+                    if herbivore in herbivore_predators:
+                        predators = herbivore_predators[herbivore]
+                        matching = visitors_b.intersection(predators)
+                        if len(matching) > 0:
+                            biocontrol_raw += len(matching) * 1.0
+                            mechanisms.append({
+                                'type': 'animal_predator',
+                                'herbivore': herbivore,
+                                'predator_plant': plant_b_id,
+                                'predators': list(matching)[:3]
+                            })
+
+                # Mechanism 2: Specific entomopathogenic fungi (weight 1.0)
+                if fungi_data is not None and len(fungi_data) > 0:
+                    fungi_b = fungi_data[fungi_data['plant_wfo_id'] == plant_b_id]
+                    if len(fungi_b) > 0:
+                        entomo_b = set(fungi_b.iloc[0]['entomopathogenic_fungi']) if fungi_b.iloc[0]['entomopathogenic_fungi'] is not None else set()
+
+                        for herbivore in herbivores_a:
+                            if herbivore in insect_parasites:
+                                parasites = insect_parasites[herbivore]
+                                matching = entomo_b.intersection(parasites)
+                                if len(matching) > 0:
+                                    biocontrol_raw += len(matching) * 1.0
+                                    mechanisms.append({
+                                        'type': 'fungal_parasite',
+                                        'herbivore': herbivore,
+                                        'fungi_plant': plant_b_id,
+                                        'fungi': list(matching)[:3]
+                                    })
+
+                        # Mechanism 3: General entomopathogenic fungi (weight 0.2)
+                        if len(herbivores_a) > 0 and len(entomo_b) > 0:
+                            biocontrol_raw += len(entomo_b) * 0.2
+
+        # Normalize by guild size
+        max_pairs = n_plants * (n_plants - 1)
+        herbivore_control_norm = math.tanh(biocontrol_raw / max_pairs * 20) if max_pairs > 0 else 0
+
+        return {
+            'norm': herbivore_control_norm,
+            'mechanisms': mechanisms[:10]  # Keep top 10 for reporting
+        }
 
     def _compute_p2_pathogen_control(self, plants_data, organisms_data, fungi_data, n_plants):
-        """P2: Pathogen antagonists (20% of positive)."""
+        """P2: Pathogen antagonists (20% of positive) - Document 4.2."""
 
-        # Simplified implementation (full version requires pathogen_antagonists.parquet)
-        # TODO: Implement pairwise antagonist matching when relationship table available
-        return {'norm': 0.0, 'mechanisms': []}
+        pathogen_control_raw = 0
+        mechanisms = []
+
+        if fungi_data is None or len(fungi_data) == 0:
+            return {'norm': 0.0, 'mechanisms': []}
+
+        # Load pathogen antagonist relationships
+        pathogen_antagonists = {}
+        if self.pathogen_antagonists_path.exists():
+            antag_df = self.con.execute(f"""
+                SELECT pathogen, antagonists
+                FROM read_parquet('{self.pathogen_antagonists_path}')
+            """).fetchdf()
+            for _, row in antag_df.iterrows():
+                pathogen_antagonists[row['pathogen']] = set(row['antagonists']) if row['antagonists'] is not None else set()
+
+        # Pairwise analysis
+        for i, row_a in fungi_data.iterrows():
+            plant_a_id = row_a['plant_wfo_id']
+            pathogens_a = set(row_a['pathogenic_fungi']) if row_a['pathogenic_fungi'] is not None and len(row_a['pathogenic_fungi']) > 0 else set()
+
+            for j, row_b in fungi_data.iterrows():
+                if i == j:
+                    continue
+
+                plant_b_id = row_b['plant_wfo_id']
+                mycoparasites_b = set(row_b['mycoparasite_fungi']) if row_b['mycoparasite_fungi'] is not None and len(row_b['mycoparasite_fungi']) > 0 else set()
+
+                # Mechanism 1: Specific antagonist matches (weight 1.0)
+                for pathogen in pathogens_a:
+                    if pathogen in pathogen_antagonists:
+                        antagonists = pathogen_antagonists[pathogen]
+                        matching = mycoparasites_b.intersection(antagonists)
+                        if len(matching) > 0:
+                            pathogen_control_raw += len(matching) * 1.0
+                            mechanisms.append({
+                                'type': 'specific_antagonist',
+                                'pathogen': pathogen,
+                                'control_plant': plant_b_id,
+                                'antagonists': list(matching)[:3]
+                            })
+
+                # Mechanism 2: General mycoparasites (weight 0.3)
+                if len(pathogens_a) > 0 and len(mycoparasites_b) > 0:
+                    pathogen_control_raw += len(mycoparasites_b) * 0.3
+
+        # Normalize by guild size
+        max_pairs = n_plants * (n_plants - 1)
+        pathogen_control_norm = math.tanh(pathogen_control_raw / max_pairs * 10) if max_pairs > 0 else 0
+
+        return {
+            'norm': pathogen_control_norm,
+            'mechanisms': mechanisms[:10]  # Keep top 10 for reporting
+        }
 
     def _compute_p3_beneficial_fungi(self, fungi_data, n_plants):
         """P3: Beneficial fungal networks (15% of positive)."""
@@ -742,7 +916,7 @@ class GuildScorerV3:
             coverage_ratio = plants_with_beneficial / n_plants
 
             beneficial_fungi_raw = network_raw * 0.6 + coverage_ratio * 0.4
-            beneficial_fungi_norm = math.tanh(beneficial_fungi_raw / 3.0)
+            beneficial_fungi_norm = self._normalize_percentile(beneficial_fungi_raw, 'p3')
 
         return {
             'norm': beneficial_fungi_norm,
@@ -753,9 +927,10 @@ class GuildScorerV3:
         """P4: Phylogenetic diversity via eigenvectors (20% of positive)."""
 
         phylo_diversity_norm = 0.0
+        mean_distance = 0.0
 
-        # Get first 10 eigenvectors
-        ev_cols = [f'phylo_ev{i}' for i in range(1, 11)]
+        # Get all 92 eigenvectors
+        ev_cols = [f'phylo_ev{i}' for i in range(1, 93)]
 
         # Check if all eigenvector columns exist
         if all(col in plants_data.columns for col in ev_cols):
@@ -768,12 +943,12 @@ class GuildScorerV3:
                 # Mean pairwise distance
                 mean_distance = np.mean(distances) if len(distances) > 0 else 0
 
-                # Normalize (typical range: 0-5 for 10 eigenvectors)
-                phylo_diversity_norm = np.tanh(mean_distance / 3)
+                # Normalize using calibrated percentiles (range ~0.065-0.163 for 92 EVs)
+                phylo_diversity_norm = self._normalize_percentile(mean_distance, 'p4')
 
         return {
             'norm': phylo_diversity_norm,
-            'mean_distance': mean_distance if 'mean_distance' in locals() else 0
+            'mean_distance': mean_distance
         }
 
     def _compute_p5_stratification(self, plants_data, n_plants):
@@ -802,7 +977,7 @@ class GuildScorerV3:
         height_diversity = (n_height_layers - 1) / 4 if n_height_layers > 0 else 0  # 5 layers max
 
         height_range = plants_data_copy['height_m'].max() - plants_data_copy['height_m'].min()
-        height_range_norm = np.tanh(height_range / 10)
+        height_range_norm = self._normalize_percentile(height_range, 'p5')
 
         height_score = 0.6 * height_diversity + 0.4 * height_range_norm
 
@@ -840,7 +1015,7 @@ class GuildScorerV3:
                     overlap_ratio = plant_count / n_plants
                     pollinator_overlap_score += overlap_ratio ** 2  # Quadratic BENEFIT
 
-            shared_pollinator_norm = math.tanh(pollinator_overlap_score / 5.0)
+            shared_pollinator_norm = self._normalize_percentile(pollinator_overlap_score, 'p6')
 
         return {
             'norm': shared_pollinator_norm,
