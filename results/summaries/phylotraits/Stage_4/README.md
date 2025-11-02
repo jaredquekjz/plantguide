@@ -9,6 +9,12 @@
 
 ### Core Framework
 
+**[4.1b Fungal Guild Classification - FINAL](4.1b_Fungal_Guild_Classification_Final.md)** 📊 **DATA FOUNDATION**
+- Research-validated hybrid approach (FungalTraits + FunGuild)
+- Complete implementation details
+- Production results (11,680 plants)
+- Data quality and coverage analysis
+
 **[4.2 Guild Compatibility Framework](4.2_Guild_Compatibility_Framework.md)** ⭐ **START HERE**
 - **CRITICAL**: Pairwise averaging is insufficient for guild scoring
 - New guild-level overlap scoring approach (not prevalence - focus on shared vulnerabilities)
@@ -20,18 +26,13 @@
 
 **[4.3 Original Dataset Integration](4.3_Original_Dataset_Integration.md)** 🆕 **EXPANSION PLAN**
 - Strategy for incorporating Stage 3 indicators into guild scoring
-- Environmental compatibility filters (climate, soil, EIVE)
-- Functional complementarity (CSR diversity, trait niche partitioning, vertical stratification)
-- Ecosystem service synergies (decomposition-NPP, nitrogen fixation, carbon storage)
-- Fungal-service linkages (saprotrophs supporting decomposition)
+- Sophisticated 3-level climate compatibility (tolerance envelopes, winter cold, extreme vulnerabilities)
+- CSR conflict framework modulated by EIVE light preference, height, and growth form
+- Phylogenetic diversity via eigenvector distances
+- Vertical stratification scoring (height layers + growth forms)
+- Pre-calculated climate sensitivity ratings (drought, frost, heat)
 - Proposed v2 framework with 13 positive components + 3 negative components
 - Implementation roadmap (6 phases)
-
-**[4.5 Fungal Guild Classification - FINAL](4.5_Fungal_Guild_Classification_Final.md)**
-- Research-validated hybrid approach (FungalTraits + FunGuild)
-- Complete implementation details
-- Production results (11,680 plants)
-- Data quality and coverage analysis
 
 ### Foundation & Analysis
 
