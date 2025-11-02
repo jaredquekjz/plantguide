@@ -340,32 +340,8 @@ def _explain_benefits(positive_result: Dict, n_plants: int, phylo_bonus: float =
 
     benefits = []
 
-    # Taxonomic diversity
-    n_families = positive_result.get('n_families', 0)
-    family_diversity = positive_result.get('family_diversity', 0)
-
-    if family_diversity >= 0.8:  # 80%+ different families
-        benefits.append({
-            'type': 'diversity',
-            'strength': 'high',
-            'icon': '✓',
-            'title': f'High Taxonomic Diversity ({n_families} families)',
-            'message': 'Plants from different botanical families',
-            'detail': 'Family diversity means diseases and pests that attack one plant are less likely to spread to others. Think of it like a safety buffer - a fungus that loves tomatoes (Solanaceae) won\'t easily jump to a bean (Fabaceae).',
-            'evidence': []
-        })
-    elif family_diversity >= 0.5:
-        benefits.append({
-            'type': 'diversity',
-            'strength': 'medium',
-            'icon': '✓',
-            'title': f'Moderate Taxonomic Diversity ({n_families} families)',
-            'message': 'Balanced mix of related and unrelated species',
-            'detail': 'Some plants share family relationships (which can mean shared pests), but enough diversity exists to reduce disease spread',
-            'evidence': []
-        })
-
-    # Phylogenetic divergence
+    # Phylogenetic diversity (P4 - 20% of positive score)
+    # Based on eigenvector distances, not family counting
     if phylo_bonus > 0.05:  # Only show if significant (5%+)
         benefits.append({
             'type': 'phylo_divergence',
@@ -697,8 +673,11 @@ if __name__ == '__main__':
             }
         },
         'positive': {
-            'n_families': 3,
-            'family_diversity': 0.3,
+            'p4_phylo_diversity': {
+                'norm': 0.3,
+                'mean_distance': 1.2,
+                'n_comparisons': 45
+            },
             'shared_beneficial_fungi': {
                 'Glomus intraradices': 6
             }
