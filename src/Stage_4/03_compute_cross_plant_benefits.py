@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
-Stage 4.3: Compute Cross-Plant Biological Control Benefits
+Stage 4.3: Compute Cross-Plant Biological Control Benefits (DuckDB-Optimized)
 
 Identifies indirect benefits: Plant A attracts organisms that are predators of Plant B's pests.
 
 Example: Marigold attracts hoverflies → hoverflies eat aphids → aphids attack lettuce
         Therefore: Marigold provides biological control benefit to lettuce
+
+PERFORMANCE: Pure DuckDB SQL implementation - processes 11,680² pairs in minutes, not hours.
 
 Usage:
     python src/Stage_4/03_compute_cross_plant_benefits.py
@@ -14,7 +16,6 @@ Usage:
 
 import argparse
 import duckdb
-import pandas as pd
 from pathlib import Path
 from datetime import datetime
 
@@ -25,7 +26,7 @@ def compute_cross_plant_benefits(test_mode=False):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("="*80)
-    print("STAGE 4.3: Compute Cross-Plant Biological Control Benefits")
+    print("STAGE 4.3: Compute Cross-Plant Biological Control Benefits (DuckDB)")
     print("="*80)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     if test_mode:
@@ -52,128 +53,90 @@ def compute_cross_plant_benefits(test_mode=False):
     print(f"  - Herbivore predators: {predators_file}")
     print()
 
-    # Step 1: Build mapping of flower visitors to herbivores they prey upon
-    print("Step 1: Building visitor → prey(herbivore) mapping...")
+    print("Computing cross-plant benefits with DuckDB SQL...")
+    print("  (Processing all plant pairs with single query)")
+    print()
 
-    # Get all visitor-herbivore pairs where visitor eats herbivore
-    visitor_prey_map = con.execute("""
-        WITH all_visitors AS (
-            -- Get all unique flower visitors from plants
-            SELECT DISTINCT UNNEST(flower_visitors) as visitor
-            FROM read_parquet(?)
+    # Pure DuckDB SQL approach - much faster than pandas loops
+    benefits = con.execute(f"""
+        WITH
+        -- Step 1: Unnest visitors from each plant (Plant A has visitors)
+        plant_visitors AS (
+            SELECT
+                plant_wfo_id as plant_a,
+                UNNEST(flower_visitors) as visitor
+            FROM read_parquet('{profiles_file}')
             WHERE visitor_count > 0
         ),
-        all_herbivores AS (
-            -- Get all herbivores from plants
-            SELECT DISTINCT UNNEST(herbivores) as herbivore
-            FROM read_parquet(?)
+
+        -- Step 2: Unnest herbivores from each plant (Plant B has herbivores)
+        plant_herbivores AS (
+            SELECT
+                plant_wfo_id as plant_b,
+                UNNEST(herbivores) as herbivore
+            FROM read_parquet('{profiles_file}')
             WHERE herbivore_count > 0
+        ),
+
+        -- Step 3: Unnest predator relationships (visitor → herbivore)
+        visitor_prey_relationships AS (
+            SELECT
+                herbivore,
+                UNNEST(predators) as visitor
+            FROM read_parquet('{predators_file}')
+        ),
+
+        -- Step 4: Join to find beneficial relationships
+        -- Plant A has visitor X → Visitor X eats herbivore Y → Herbivore Y attacks Plant B
+        -- Therefore: Plant A provides biocontrol benefit to Plant B
+        beneficial_pairs AS (
+            SELECT
+                pv.plant_a,
+                ph.plant_b,
+                pv.visitor,
+                ph.herbivore
+            FROM plant_visitors pv
+            INNER JOIN visitor_prey_relationships vpr ON pv.visitor = vpr.visitor
+            INNER JOIN plant_herbivores ph ON vpr.herbivore = ph.herbivore
+            WHERE pv.plant_a != ph.plant_b  -- Exclude self-pairs
+        ),
+
+        -- Step 5: Count beneficial predators per plant pair
+        benefits_aggregated AS (
+            SELECT
+                plant_a,
+                plant_b,
+                COUNT(DISTINCT visitor) as beneficial_predator_count,
+                -- Store up to 3 example relationships for details
+                LIST(DISTINCT visitor || ' eats ' || herbivore)[1:3] as example_relationships
+            FROM beneficial_pairs
+            GROUP BY plant_a, plant_b
+            HAVING beneficial_predator_count > 0
         )
-        SELECT
-            av.visitor,
-            ah.herbivore
-        FROM all_visitors av
-        CROSS JOIN all_herbivores ah
-        WHERE av.visitor IN (
-            -- Visitor eats this herbivore (from predator network)
-            SELECT UNNEST(predators) as predator
-            FROM read_parquet(?)
-            WHERE herbivore = ah.herbivore
-        )
-    """, [str(profiles_file), str(profiles_file), str(predators_file)]).fetchdf()
 
-    print(f"  - Found {len(visitor_prey_map):,} visitor-herbivore predation relationships")
-    print()
-
-    # Step 2: For each plant pair, count beneficial relationships
-    print("Step 2: Computing cross-plant benefits...")
-    print("  (This may take some time for large datasets)")
-
-    # Get all plant profiles
-    profiles = con.execute(f"""
-        SELECT plant_wfo_id, flower_visitors, herbivores
-        FROM read_parquet('{profiles_file}')
+        SELECT * FROM benefits_aggregated
+        ORDER BY beneficial_predator_count DESC
     """).fetchdf()
 
-    plant_ids = profiles['plant_wfo_id'].tolist()
-    print(f"  - Processing {len(plant_ids):,} plants")
-
-    # Build benefit matrix
-    # For each pair (A, B): count how many of A's visitors eat B's herbivores
-    benefits = []
-    benefit_details = []  # Store specific predator names for explanations
-
-    for i, (idx_a, row_a) in enumerate(profiles.iterrows()):
-        if i % 50 == 0:
-            print(f"    Progress: {i:,}/{len(profiles):,} plants...")
-
-        plant_a = row_a['plant_wfo_id']
-        visitors_a_raw = row_a['flower_visitors']
-        visitors_a = set(visitors_a_raw) if visitors_a_raw is not None and len(visitors_a_raw) > 0 else set()
-
-        for idx_b, row_b in profiles.iterrows():
-            plant_b = row_b['plant_wfo_id']
-
-            if plant_a == plant_b:
-                continue  # Skip self-pairs
-
-            herbivores_b_raw = row_b['herbivores']
-            herbivores_b = set(herbivores_b_raw) if herbivores_b_raw is not None and len(herbivores_b_raw) > 0 else set()
-
-            if not visitors_a or not herbivores_b:
-                continue  # Skip if no visitors or herbivores
-
-            # Find which visitors of A eat herbivores of B
-            beneficial_count = 0
-            beneficial_details = []
-
-            for visitor in visitors_a:
-                # Check if this visitor preys on any of B's herbivores
-                preys_on = visitor_prey_map[
-                    (visitor_prey_map['visitor'] == visitor) &
-                    (visitor_prey_map['herbivore'].isin(herbivores_b))
-                ]
-
-                if len(preys_on) > 0:
-                    beneficial_count += 1
-                    # Store up to 3 examples
-                    if len(beneficial_details) < 3:
-                        for _, prey_rel in preys_on.iterrows():
-                            beneficial_details.append(
-                                f"{visitor} eats {prey_rel['herbivore']}"
-                            )
-                            if len(beneficial_details) >= 3:
-                                break
-
-            if beneficial_count > 0:
-                benefits.append({
-                    'plant_a': plant_a,
-                    'plant_b': plant_b,
-                    'beneficial_predator_count': beneficial_count
-                })
-
-                benefit_details.append({
-                    'plant_a': plant_a,
-                    'plant_b': plant_b,
-                    'beneficial_details': beneficial_details
-                })
-
-    print(f"  - Found {len(benefits):,} plant pairs with beneficial relationships")
+    print(f"  ✓ Found {len(benefits):,} plant pairs with beneficial relationships")
     print()
-
-    # Convert to DataFrames
-    benefits_df = pd.DataFrame(benefits)
-    details_df = pd.DataFrame(benefit_details)
 
     # Step 3: Save results
     output_benefits = output_dir / f'cross_plant_benefits{suffix}.parquet'
     output_details = output_dir / f'cross_plant_benefit_details{suffix}.parquet'
 
-    print("Step 3: Saving results...")
-    benefits_df.to_parquet(output_benefits, compression='zstd', index=False)
+    print("Saving results...")
+
+    # Main benefits file (plant_a, plant_b, count)
+    benefits_main = benefits[['plant_a', 'plant_b', 'beneficial_predator_count']]
+    benefits_main.to_parquet(output_benefits, compression='zstd', index=False)
     print(f"  - Saved benefits: {output_benefits}")
 
-    details_df.to_parquet(output_details, compression='zstd', index=False)
+    # Details file (plant_a, plant_b, examples)
+    benefits_details = benefits[['plant_a', 'plant_b', 'example_relationships']].rename(
+        columns={'example_relationships': 'beneficial_details'}
+    )
+    benefits_details.to_parquet(output_details, compression='zstd', index=False)
     print(f"  - Saved details: {output_details}")
     print()
 
@@ -182,28 +145,35 @@ def compute_cross_plant_benefits(test_mode=False):
     print("SUMMARY STATISTICS")
     print("="*80)
 
+    # Count total plants
+    total_plants = con.execute(f"""
+        SELECT COUNT(*) FROM read_parquet('{profiles_file}')
+    """).fetchone()[0]
+
     print(f"Cross-Plant Benefits:")
-    print(f"  - Total plant pairs: {len(profiles) * (len(profiles) - 1):,}")
-    print(f"  - Pairs with benefits: {len(benefits_df):,} ({100*len(benefits_df)/(len(profiles)*(len(profiles)-1)):.2f}%)")
-    print(f"  - Avg benefits per pair: {benefits_df['beneficial_predator_count'].mean():.2f}")
-    print(f"  - Max benefits: {benefits_df['beneficial_predator_count'].max()}")
+    print(f"  - Total plants: {total_plants:,}")
+    print(f"  - Total possible pairs: {total_plants * (total_plants - 1):,}")
+    print(f"  - Pairs with benefits: {len(benefits):,} ({100*len(benefits)/(total_plants*(total_plants-1)):.2f}%)")
+    print(f"  - Avg benefits per pair: {benefits['beneficial_predator_count'].mean():.2f}")
+    print(f"  - Max benefits: {benefits['beneficial_predator_count'].max()}")
     print()
 
     # Show examples
-    print("Top 5 Beneficial Relationships:")
+    print("Top 10 Beneficial Relationships:")
     top = con.execute("""
         SELECT plant_a, plant_b, beneficial_predator_count
-        FROM benefits_df
+        FROM benefits
         ORDER BY beneficial_predator_count DESC
-        LIMIT 5
+        LIMIT 10
     """).fetchdf()
     print(top.to_string(index=False))
     print()
 
-    print("Example Benefit Details:")
+    print("Example Benefit Details (Top 3):")
     examples = con.execute("""
-        SELECT plant_a, plant_b, beneficial_details[1:3] as examples
-        FROM details_df
+        SELECT plant_a, plant_b, beneficial_details[1:2] as examples
+        FROM benefits_details
+        ORDER BY LENGTH(beneficial_details) DESC
         LIMIT 3
     """).fetchdf()
     print(examples.to_string(index=False))
@@ -216,7 +186,7 @@ def compute_cross_plant_benefits(test_mode=False):
     con.close()
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Compute cross-plant biological control benefits')
+    parser = argparse.ArgumentParser(description='Compute cross-plant biological control benefits (DuckDB-optimized)')
     parser.add_argument('--test', action='store_true', help='Run in test mode')
 
     args = parser.parse_args()
