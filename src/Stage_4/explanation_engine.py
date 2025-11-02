@@ -64,7 +64,9 @@ def generate_explanation(guild_result: Dict) -> Dict[str, Any]:
     risks = _explain_risks(guild_result['negative'], guild_result['n_plants'])
 
     # Beneficial factors (positive)
-    benefits = _explain_benefits(guild_result['positive'], guild_result['n_plants'], guild_result.get('phylo_bonus', 0))
+    # V3: phylo is now p4_phylo_diversity inside positive
+    phylo_score = guild_result['positive'].get('p4_phylo_diversity', {}).get('norm', 0) if 'p4_phylo_diversity' in guild_result['positive'] else 0
+    benefits = _explain_benefits(guild_result['positive'], guild_result['n_plants'], phylo_score)
 
     # Warnings (actionable advice)
     warnings = _generate_warnings(guild_result)
@@ -210,8 +212,10 @@ def _assess_overall_score(score: float) -> Dict:
 def _explain_climate(climate_result: Dict) -> Dict:
     """Explain climate compatibility."""
 
-    temp_range = climate_result['temp_range']
-    winter_range = climate_result['winter_range']
+    # V3: ranges are inside shared_zone as tuples
+    shared_zone = climate_result.get('shared_zone', {})
+    temp_range = shared_zone.get('temp_range', (0, 0))
+    winter_range = shared_zone.get('hardiness_range', (0, 0))
     warnings = climate_result.get('warnings', [])
 
     explanation = {
@@ -424,39 +428,45 @@ def _generate_warnings(guild_result: Dict) -> List[Dict]:
     warnings = []
 
     # CSR conflict warning
-    if guild_result['csr_penalty'] > 0.2:
-        conflict_type = guild_result['csr'].get('conflict_type', 'strategy mismatch')
+    # V3: CSR is now n4_csr_conflicts inside negative
+    csr_data = guild_result.get('negative', {}).get('n4_csr_conflicts', {})
+    csr_norm = csr_data.get('norm', 0)
 
-        # Explain CSR strategies in user-friendly terms
-        csr_explanation = ""
-        if 'C-S' in conflict_type or 'competitive' in conflict_type.lower():
-            csr_explanation = "You're mixing Competitive plants (fast-growing, resource-hungry) with Stress-tolerant plants (slow-growing, resource-conserving). Competitive plants may overwhelm stress-tolerators by hogging water and nutrients."
-        elif 'C-R' in conflict_type:
-            csr_explanation = "You're mixing Competitive plants (perennials that dominate space) with Ruderal plants (annuals that need open space to establish quickly). The competitive plants may shade out or crowd the ruderals."
-        elif 'S-R' in conflict_type:
-            csr_explanation = "You're mixing Stress-tolerant plants (adapted to harsh conditions) with Ruderal plants (fast-growing annuals). These have opposite strategies that may not work well together."
-        else:
-            csr_explanation = "Plants have conflicting growth strategies that may lead to resource competition."
+    if csr_norm > 0.2:  # Significant conflicts
+        conflicts = csr_data.get('conflicts', [])
+        if conflicts:
+            # Get most severe conflict type
+            conflict_types = [c['type'] for c in conflicts]
+            if 'C-S' in conflict_types:
+                conflict_type = 'C-S conflict (competitive + stress-tolerator)'
+                csr_explanation = "You're mixing Competitive plants (fast-growing, resource-hungry) with Stress-tolerant plants (slow-growing, resource-conserving). Competitive plants may overwhelm stress-tolerators by hogging water and nutrients."
+            elif 'C-R' in conflict_types:
+                conflict_type = 'C-R conflict (competitive + ruderal)'
+                csr_explanation = "You're mixing Competitive plants (perennials that dominate space) with Ruderal plants (annuals that need open space to establish quickly). The competitive plants may shade out or crowd the ruderals."
+            elif 'C-C' in conflict_types:
+                conflict_type = 'C-C conflict (multiple competitive plants)'
+                csr_explanation = "Multiple fast-growing, competitive plants will fight for dominance. This can work but requires ample spacing and resources."
+            else:
+                conflict_type = 'strategy mismatch'
+                csr_explanation = "Plants have conflicting growth strategies that may lead to resource competition."
 
+            warnings.append({
+                'type': 'csr_conflict',
+                'severity': 'medium',
+                'message': f'⚠ Growth Strategy Conflict: {conflict_type}',
+                'explanation': csr_explanation,
+                'advice': 'Give plants plenty of space, ensure adequate water/nutrients, or choose plants with similar growth strategies'
+            })
+
+    # Climate warnings (from v3 climate section)
+    climate_warnings = guild_result.get('climate', {}).get('warnings', [])
+    for w in climate_warnings:
         warnings.append({
-            'type': 'csr_conflict',
+            'type': w['type'],
             'severity': 'medium',
-            'message': f'⚠ Growth Strategy Conflict: {conflict_type}',
-            'explanation': csr_explanation,
-            'advice': 'Give plants plenty of space, ensure adequate water/nutrients, or choose plants with similar growth strategies'
-        })
-
-    # Height layer saturation
-    layer_counts = guild_result['csr'].get('layer_counts', {})
-    max_layer_count = max(layer_counts.values()) if layer_counts else 0
-    if max_layer_count > 4:
-        dominant_layer = max(layer_counts.items(), key=lambda x: x[1])[0]
-        warnings.append({
-            'type': 'height_saturation',
-            'severity': 'medium',
-            'message': f'⚠ Crowding Risk: {max_layer_count} plants competing at {dominant_layer} height',
-            'explanation': f'Too many plants growing at the same height will compete for sunlight, potentially shading each other out.',
-            'advice': 'Add vertical diversity - mix tall trees, medium shrubs, and low groundcovers to use different light layers'
+            'message': w['message'],
+            'explanation': w.get('detail', ''),
+            'advice': w.get('advice', 'Provide appropriate irrigation or frost protection')
         })
 
     return warnings

@@ -61,7 +61,7 @@ class GuildScorerV3:
 
         Args:
             df: DataFrame with organism columns
-            *columns: Column names containing lists of organisms
+            *columns: Column names containing lists/arrays of organisms
 
         Returns:
             Counter of {organism: plant_count}
@@ -72,8 +72,10 @@ class GuildScorerV3:
             plant_organisms = set()
             for col in columns:
                 if row[col] is not None:
-                    if isinstance(row[col], (list, set)):
-                        plant_organisms.update(row[col])
+                    # Handle lists, sets, and numpy arrays
+                    if isinstance(row[col], (list, set, np.ndarray)):
+                        if len(row[col]) > 0:  # Only process non-empty
+                            plant_organisms.update(row[col])
 
             # Count each unique organism per plant (not duplicates within plant)
             for org in plant_organisms:
