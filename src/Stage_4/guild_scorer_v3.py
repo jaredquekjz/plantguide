@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 """
-Guild Scorer V3 - Document 4.3 Implementation
+Guild Scorer V3 - Document 4.4 Unified Percentile Framework
 
-Implements the EXACT framework from Document 4.3:
-- F1: Climate compatibility filter (3 levels)
-- N1-N6: Negative factors (35%, 35%, 20%, 5%, 5%)
-- P1-P6: Positive factors (25%, 20%, 15%, 20%, 10%, 10%)
-- Final: guild_score = positive - negative ∈ [-1, +1]
+Implements the tier-stratified percentile framework from Document 4.4:
+- F1: Köppen tier-based climate compatibility filter
+- 9 CALIBRATED METRICS (all 0-100 scale, HIGH = GOOD):
+  1. Pathogen Independence (100 - N1_percentile)
+  2. Pest Independence (100 - N2_percentile)
+  3. Growth Strategy Compatibility (100 - N4_percentile)
+  4. Insect Pest Control (P1_percentile)
+  5. Fungal Disease Control (P2_percentile)
+  6. Beneficial Fungi Networks (P3_percentile)
+  7. Phylogenetic Diversity (P4_percentile)
+  8. Structural Diversity (P5_percentile)
+  9. Pollinator Support (P6_percentile)
+- 2 FLAGS (not percentile-ranked):
+  - N5: Nitrogen self-sufficiency ('Present' or 'Missing')
+  - N6: Soil pH compatibility ('5.5-7.0' or 'Incompatible')
+- Final: overall_score = mean(1-9) ∈ [0, 100]  (NO WEIGHTS)
 
-CRITICAL DIFFERENCES FROM V2:
-- CSR is N4 (20% of negative), not separate penalty
-- Phylo is P4 (20% of positive), not separate bonus
-- Drought is WARNING only, not score penalty
-- All weights match Document 4.3 exactly
+KEY IMPROVEMENTS OVER DEPRECATED 4.3:
+- No arbitrary weights - simple mean of 9 metrics
+- Clear interpretation: "56.7th percentile"
+- All metrics on same 0-100 scale
+- Full profile visibility of strengths/weaknesses
 """
 
 import duckdb
@@ -146,6 +157,57 @@ class GuildScorerV3:
         # Fallback (should not reach here)
         return 0.5
 
+    def _raw_to_percentile(self, raw_value, component_key):
+        """
+        Convert raw score to percentile rank (0-100 scale) using linear interpolation.
+
+        This is the core normalization method for Document 4.4 framework.
+        Maps raw component scores to their percentile rank in the calibration distribution.
+
+        Args:
+            raw_value: Raw component score
+            component_key: Key in norm_params (e.g., 'n1', 'p4')
+
+        Returns:
+            Percentile rank ∈ [0, 100]
+            - 0 = worse than all calibrated guilds
+            - 50 = median guild
+            - 100 = better than all calibrated guilds
+
+        Example:
+            If raw_value is at 89.7th percentile → returns 89.7
+        """
+        if self.norm_params is None or component_key not in self.norm_params:
+            # Fallback: use tanh normalization scaled to percentile
+            return np.tanh(raw_value / 3.0) * 50 + 50
+
+        params = self.norm_params[component_key]
+
+        # Extract percentile points from calibration
+        percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
+        values = [params[f'p{p}'] for p in percentiles]
+
+        # Handle edge cases
+        if raw_value <= values[0]:  # Below p1
+            return 0.0
+        elif raw_value >= values[-1]:  # Above p99
+            return 100.0
+
+        # Find bracketing percentiles and interpolate
+        for i in range(len(values) - 1):
+            if values[i] <= raw_value <= values[i + 1]:
+                # Linear interpolation
+                if values[i + 1] - values[i] > 0:
+                    fraction = (raw_value - values[i]) / (values[i + 1] - values[i])
+                    percentile = percentiles[i] + fraction * (percentiles[i + 1] - percentiles[i])
+                else:
+                    percentile = percentiles[i]
+
+                return percentile
+
+        # Fallback (should not reach here)
+        return 50.0
+
     def _count_shared_organisms(self, df, *columns):
         """
         Count organisms shared across plants in guild.
@@ -238,31 +300,65 @@ class GuildScorerV3:
         )
 
         # ============================================
-        # STEP 5: FINAL SCORE
+        # STEP 5: DOCUMENT 4.4 UNIFIED PERCENTILE FRAMEWORK
         # ============================================
 
-        # Document 4.3 formula: score = positive - negative
-        guild_score = (
-            positive_result['positive_benefit_score'] -
-            negative_result['negative_risk_score']
-        )
+        # Extract raw scores from all 9 calibrated metrics
+        raw_scores = {
+            'n1': negative_result['n1_pathogen_fungi']['raw'],
+            'n2': negative_result['n2_herbivores']['raw'],
+            'n4': negative_result['n4_csr_conflicts']['raw'],
+            'p1': positive_result['p1_biocontrol']['raw'],
+            'p2': positive_result['p2_pathogen_control']['raw'],
+            'p3': positive_result['p3_beneficial_fungi']['raw'],
+            'p4': positive_result['p4_phylo_diversity']['raw'],
+            'p5': positive_result['p5_stratification']['raw'],
+            'p6': positive_result['p6_pollinators']['raw'],
+        }
 
-        # Clamp to [-1, +1] (should already be in range)
-        guild_score = max(-1.0, min(1.0, guild_score))
+        # Convert all raw scores to percentiles (0-100 scale)
+        percentiles = {}
+        for metric, raw_value in raw_scores.items():
+            percentiles[metric] = self._raw_to_percentile(raw_value, metric)
+
+        # Build metrics dict (invert negatives: high raw = bad → low display = good)
+        metrics = {
+            'pathogen_independence': 100 - percentiles['n1'],      # Low pathogens = good
+            'pest_independence': 100 - percentiles['n2'],          # Low herbivores = good
+            'growth_compatibility': 100 - percentiles['n4'],       # Low CSR conflicts = good
+            'insect_control': percentiles['p1'],                   # High biocontrol = good
+            'disease_control': percentiles['p2'],                  # High pathogen control = good
+            'beneficial_fungi': percentiles['p3'],                 # High beneficial fungi = good
+            'phylo_diversity': percentiles['p4'],                  # High diversity = good
+            'structural_diversity': percentiles['p5'],             # High stratification = good
+            'pollinator_support': percentiles['p6'],               # High pollinators = good
+        }
+
+        # Simple mean (NO WEIGHTS)
+        overall_score = np.mean(list(metrics.values()))
+
+        # N5 and N6 as flags (not percentile-ranked)
+        flags = {
+            'nitrogen': negative_result['n5_n_fixation']['flag'],
+            'soil_ph': negative_result['n6_ph']['flag']
+        }
 
         return {
-            'guild_score': guild_score,
+            'overall_score': overall_score,  # ∈ [0, 100]
+            'metrics': metrics,              # Dict of 9 metrics (all 0-100)
+            'flags': flags,                  # N5, N6 as text
             'veto': False,
             'n_plants': n_plants,
 
-            # Component scores
-            'negative_risk_score': negative_result['negative_risk_score'],
-            'positive_benefit_score': positive_result['positive_benefit_score'],
-
-            # Details
+            # Detailed component breakdowns (for debugging/explanation)
             'negative': negative_result,
             'positive': positive_result,
-            'climate': climate_result
+            'climate': climate_result,
+
+            # Backwards compatibility (DEPRECATED - will be removed)
+            'guild_score': (overall_score - 50) / 50,  # Map [0,100] → [-1,+1]
+            'negative_risk_score': negative_result.get('negative_risk_score', 0),
+            'positive_benefit_score': positive_result.get('positive_benefit_score', 0),
         }
 
     # ============================================
@@ -436,45 +532,47 @@ class GuildScorerV3:
     def _compute_negative_factors(self, plants_data, organisms_data, fungi_data, n_plants):
         """
         Compute all negative factors (N1-N6).
-        Returns dict with negative_risk_score ∈ [0, 1].
+
+        Document 4.4: Raw scores returned, percentile conversion happens in score_guild().
+        N5 and N6 are returned as flags, not scores.
         """
 
-        # N1: Pathogen fungi overlap (35%)
+        # N1: Pathogen fungi overlap
         n1_result = self._compute_n1_pathogen_fungi(fungi_data, n_plants)
 
-        # N2: Herbivore overlap (35%)
+        # N2: Herbivore overlap
         n2_result = self._compute_n2_herbivore_overlap(organisms_data, n_plants)
 
-        # N4: CSR conflicts (20%)
+        # N4: CSR conflicts
         n4_result = self._compute_n4_csr_conflicts(plants_data, n_plants)
 
-        # N5: Nitrogen fixation absence (5%)
+        # N5: Nitrogen fixation (FLAG)
         n5_result = self._compute_n5_nitrogen_fixation(plants_data, n_plants)
 
-        # N6: Soil pH incompatibility (5%)
+        # N6: Soil pH compatibility (FLAG)
         n6_result = self._compute_n6_ph_incompatibility(plants_data, n_plants)
 
-        # Aggregate (Document 4.3 weights)
+        # For 4.4: No weighted aggregation here (done in score_guild via percentiles)
+        # Keep backwards compatibility field for legacy code
         negative_risk_score = (
-            0.35 * n1_result['norm'] +
-            0.35 * n2_result['norm'] +
-            0.20 * n4_result['norm'] +
-            0.05 * n5_result['norm'] +
-            0.05 * n6_result['norm']
+            0.35 * n1_result.get('norm', 0) +
+            0.35 * n2_result.get('norm', 0) +
+            0.20 * n4_result.get('norm', 0)
+            # N5 and N6 no longer contribute to weighted score in 4.4
         )
 
         return {
-            'negative_risk_score': negative_risk_score,
+            'negative_risk_score': negative_risk_score,  # DEPRECATED in 4.4
             'n1_pathogen_fungi': n1_result,
             'n2_herbivores': n2_result,
             'n4_csr_conflicts': n4_result,
             'n5_n_fixation': n5_result,
             'n6_ph': n6_result,
             # For backwards compatibility with explanation engine
-            'pathogen_fungi_score': n1_result['norm'],
-            'herbivore_score': n2_result['norm'],
-            'shared_pathogenic_fungi': n1_result['shared'],
-            'shared_herbivores': n2_result['shared']
+            'pathogen_fungi_score': n1_result.get('norm', 0),
+            'herbivore_score': n2_result.get('norm', 0),
+            'shared_pathogenic_fungi': n1_result.get('shared', {}),
+            'shared_herbivores': n2_result.get('shared', {})
         }
 
     def _compute_n1_pathogen_fungi(self, fungi_data, n_plants):
@@ -507,7 +605,8 @@ class GuildScorerV3:
             pathogen_fungi_norm = self._normalize_percentile(pathogen_fungi_raw, 'n1')
 
         return {
-            'norm': pathogen_fungi_norm,
+            'raw': pathogen_fungi_raw,
+            'norm': pathogen_fungi_norm,  # For backwards compatibility
             'shared': {k: v for k, v in shared_path_fungi.items() if v >= 2}
         }
 
@@ -542,7 +641,8 @@ class GuildScorerV3:
             herbivore_norm = self._normalize_percentile(herbivore_raw, 'n2')
 
         return {
-            'norm': herbivore_norm,
+            'raw': herbivore_raw,
+            'norm': herbivore_norm,  # For backwards compatibility
             'shared': {k: v for k, v in shared_herbivores.items() if v >= 2}
         }
 
@@ -670,52 +770,50 @@ class GuildScorerV3:
         csr_conflict_norm = self._normalize_percentile(conflict_density, 'n4')
 
         return {
-            'norm': csr_conflict_norm,
+            'raw': conflict_density,  # Raw metric used for percentile conversion
+            'norm': csr_conflict_norm,  # For backwards compatibility
             'conflicts': conflict_details,
             'raw_conflicts': conflicts,
-            'conflict_density': conflict_density  # For calibration
+            'conflict_density': conflict_density  # For calibration (same as raw)
         }
 
     def _compute_n5_nitrogen_fixation(self, plants_data, n_plants):
-        """N5: Absence of nitrogen fixation (5% of negative)."""
+        """N5: Nitrogen self-sufficiency (FLAG - not percentile-ranked)."""
 
         if 'n_fixation' not in plants_data.columns:
-            return {'norm': 0.0, 'n_fixers': 0}
+            return {'n_fixers': 0, 'flag': 'Missing'}
 
         # nitrogen_fixation_rating is categorical: 'Low', 'Moderate-Low', 'Moderate-High', 'High'
         # Consider 'High' and 'Moderate-High' as N-fixers
         n_fixers = plants_data['n_fixation'].isin(['High', 'Moderate-High']).sum()
 
-        if n_fixers == 0:
-            n_fix_penalty = 1.0  # No N-fixers = maximum penalty
-        elif n_fixers >= 2:
-            n_fix_penalty = 0.0  # 2+ N-fixers = no penalty
-        else:
-            n_fix_penalty = 0.5  # 1 N-fixer = partial penalty
-
         return {
-            'norm': n_fix_penalty,
-            'n_fixers': int(n_fixers)
+            'n_fixers': int(n_fixers),
+            'flag': 'Present' if n_fixers > 0 else 'Missing'
         }
 
     def _compute_n6_ph_incompatibility(self, plants_data, n_plants):
-        """N6: Soil pH incompatibility (5% of negative)."""
+        """N6: Soil pH compatibility (FLAG - not percentile-ranked)."""
 
         if 'pH_mean' not in plants_data.columns:
-            return {'norm': 0.0, 'pH_range': 0.0}
+            return {
+                'min_ph': 0.0,
+                'max_ph': 0.0,
+                'compatible': True,
+                'flag': 'No pH data'
+            }
 
-        pH_range = plants_data['pH_mean'].max() - plants_data['pH_mean'].min()
+        min_ph = plants_data['pH_mean'].min()
+        max_ph = plants_data['pH_mean'].max()
+        pH_range = max_ph - min_ph
 
-        if pH_range > 2.5:
-            pH_penalty = 1.0  # Extreme incompatibility
-        elif pH_range > 1.5:
-            pH_penalty = 0.5  # Moderate incompatibility
-        else:
-            pH_penalty = 0.0  # Compatible
+        compatible = pH_range <= 1.5
 
         return {
-            'norm': pH_penalty,
-            'pH_range': pH_range
+            'min_ph': min_ph,
+            'max_ph': max_ph,
+            'compatible': compatible,
+            'flag': f'{min_ph:.1f}-{max_ph:.1f}' if compatible else f'{min_ph:.1f}-{max_ph:.1f} (Incompatible)'
         }
 
     # ============================================
@@ -725,39 +823,41 @@ class GuildScorerV3:
     def _compute_positive_factors(self, plants_data, organisms_data, fungi_data, n_plants):
         """
         Compute all positive factors (P1-P6).
-        Returns dict with positive_benefit_score ∈ [0, 1].
+
+        Document 4.4: Raw scores returned, percentile conversion happens in score_guild().
         """
 
-        # P1: Cross-plant biocontrol (25%)
+        # P1: Cross-plant biocontrol
         p1_result = self._compute_p1_biocontrol(plants_data, organisms_data, fungi_data, n_plants)
 
-        # P2: Pathogen antagonists (20%)
+        # P2: Pathogen antagonists
         p2_result = self._compute_p2_pathogen_control(plants_data, organisms_data, fungi_data, n_plants)
 
-        # P3: Beneficial fungal networks (15%)
+        # P3: Beneficial fungal networks
         p3_result = self._compute_p3_beneficial_fungi(fungi_data, n_plants)
 
-        # P4: Phylogenetic diversity (20%)
+        # P4: Phylogenetic diversity
         p4_result = self._compute_p4_phylogenetic_diversity(plants_data, n_plants)
 
-        # P5: Vertical and form stratification (10%)
+        # P5: Vertical and form stratification
         p5_result = self._compute_p5_stratification(plants_data, n_plants)
 
-        # P6: Shared pollinators (10%)
+        # P6: Shared pollinators
         p6_result = self._compute_p6_shared_pollinators(organisms_data, n_plants)
 
-        # Aggregate (Document 4.3 weights)
+        # For 4.4: No weighted aggregation here (done in score_guild via percentiles)
+        # Keep backwards compatibility field for legacy code
         positive_benefit_score = (
-            0.25 * p1_result['norm'] +
-            0.20 * p2_result['norm'] +
-            0.15 * p3_result['norm'] +
-            0.20 * p4_result['norm'] +
-            0.10 * p5_result['norm'] +
-            0.10 * p6_result['norm']
+            0.25 * p1_result.get('norm', 0) +
+            0.20 * p2_result.get('norm', 0) +
+            0.15 * p3_result.get('norm', 0) +
+            0.20 * p4_result.get('norm', 0) +
+            0.10 * p5_result.get('norm', 0) +
+            0.10 * p6_result.get('norm', 0)
         )
 
         return {
-            'positive_benefit_score': positive_benefit_score,
+            'positive_benefit_score': positive_benefit_score,  # DEPRECATED in 4.4
             'p1_biocontrol': p1_result,
             'p2_pathogen_control': p2_result,
             'p3_beneficial_fungi': p3_result,
@@ -765,13 +865,13 @@ class GuildScorerV3:
             'p5_stratification': p5_result,
             'p6_pollinators': p6_result,
             # For backwards compatibility
-            'herbivore_control_score': p1_result['norm'],
-            'pathogen_control_score': p2_result['norm'],
-            'beneficial_fungi_score': p3_result['norm'],
-            'diversity_score': p4_result['norm'],  # Note: now phylo, not family counting
-            'shared_pollinator_score': p6_result['norm'],
-            'shared_beneficial_fungi': p3_result['shared'],
-            'shared_pollinators': p6_result['shared']
+            'herbivore_control_score': p1_result.get('norm', 0),
+            'pathogen_control_score': p2_result.get('norm', 0),
+            'beneficial_fungi_score': p3_result.get('norm', 0),
+            'diversity_score': p4_result.get('norm', 0),  # Note: now phylo, not family counting
+            'shared_pollinator_score': p6_result.get('norm', 0),
+            'shared_beneficial_fungi': p3_result.get('shared', {}),
+            'shared_pollinators': p6_result.get('shared', {})
         }
 
     def _compute_p1_biocontrol(self, plants_data, organisms_data, fungi_data, n_plants):
@@ -853,10 +953,12 @@ class GuildScorerV3:
 
         # Normalize by guild size
         max_pairs = n_plants * (n_plants - 1)
-        herbivore_control_norm = math.tanh(biocontrol_raw / max_pairs * 20) if max_pairs > 0 else 0
+        biocontrol_normalized = biocontrol_raw / max_pairs * 20 if max_pairs > 0 else 0
+        herbivore_control_norm = math.tanh(biocontrol_normalized)
 
         return {
-            'norm': herbivore_control_norm,
+            'raw': biocontrol_normalized,  # Value before tanh (for percentile conversion)
+            'norm': herbivore_control_norm,  # For backwards compatibility
             'mechanisms': mechanisms[:10]  # Keep top 10 for reporting
         }
 
@@ -911,10 +1013,12 @@ class GuildScorerV3:
 
         # Normalize by guild size
         max_pairs = n_plants * (n_plants - 1)
-        pathogen_control_norm = math.tanh(pathogen_control_raw / max_pairs * 10) if max_pairs > 0 else 0
+        pathogen_control_normalized = pathogen_control_raw / max_pairs * 10 if max_pairs > 0 else 0
+        pathogen_control_norm = math.tanh(pathogen_control_normalized)
 
         return {
-            'norm': pathogen_control_norm,
+            'raw': pathogen_control_normalized,  # Value before tanh (for percentile conversion)
+            'norm': pathogen_control_norm,  # For backwards compatibility
             'mechanisms': mechanisms[:10]  # Keep top 10 for reporting
         }
 
@@ -956,7 +1060,8 @@ class GuildScorerV3:
             beneficial_fungi_norm = self._normalize_percentile(beneficial_fungi_raw, 'p3')
 
         return {
-            'norm': beneficial_fungi_norm,
+            'raw': beneficial_fungi_raw,
+            'norm': beneficial_fungi_norm,  # For backwards compatibility
             'shared': {k: v for k, v in shared_beneficial.items() if v >= 2}
         }
 
@@ -984,8 +1089,9 @@ class GuildScorerV3:
                 phylo_diversity_norm = self._normalize_percentile(mean_distance, 'p4')
 
         return {
-            'norm': phylo_diversity_norm,
-            'mean_distance': mean_distance
+            'raw': mean_distance,
+            'norm': phylo_diversity_norm,  # For backwards compatibility
+            'mean_distance': mean_distance  # For reporting
         }
 
     def _compute_p5_stratification(self, plants_data, n_plants):
@@ -1040,7 +1146,8 @@ class GuildScorerV3:
         p5_norm = self._normalize_percentile(p5_raw, 'p5')
 
         return {
-            'norm': p5_norm,
+            'raw': p5_raw,
+            'norm': p5_norm,  # For backwards compatibility
             'valid_stratification': valid_stratification,
             'invalid_stratification': invalid_stratification,
             'stratification_quality': stratification_quality,
@@ -1070,7 +1177,8 @@ class GuildScorerV3:
             shared_pollinator_norm = self._normalize_percentile(pollinator_overlap_score, 'p6')
 
         return {
-            'norm': shared_pollinator_norm,
+            'raw': pollinator_overlap_score,
+            'norm': shared_pollinator_norm,  # For backwards compatibility
             'shared': {k: v for k, v in shared_pollinators.items() if v >= 2}
         }
 

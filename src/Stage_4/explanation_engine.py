@@ -52,10 +52,16 @@ def generate_explanation(guild_result: Dict) -> Dict[str, Any]:
     # SUCCESSFUL GUILD - GENERATE FULL EXPLANATION
     # ============================================
 
-    score = guild_result['guild_score']
+    # Support both 4.4 (overall_score ∈ [0,100]) and legacy 4.3 (guild_score ∈ [-1,+1])
+    if 'overall_score' in guild_result:
+        score = guild_result['overall_score']  # 4.4 framework: 0-100
+        is_4_4 = True
+    else:
+        score = guild_result['guild_score']  # Legacy 4.3: -1 to +1
+        is_4_4 = False
 
     # Overall assessment
-    overall = _assess_overall_score(score)
+    overall = _assess_overall_score(score, is_4_4=is_4_4)
 
     # Climate explanation
     climate = _explain_climate(guild_result['climate'])
@@ -178,54 +184,110 @@ def _generate_veto_explanation(guild_result: Dict) -> Dict:
 # OVERALL ASSESSMENT
 # ============================================
 
-def _assess_overall_score(score: float) -> Dict:
-    """Convert numeric score to user-friendly assessment."""
+def _assess_overall_score(score: float, is_4_4: bool = True) -> Dict:
+    """
+    Convert numeric score to user-friendly assessment.
 
-    if score >= 0.7:
-        return {
-            'rating': 5,
-            'stars': '★★★★★',
-            'label': 'Excellent Guild',
-            'message': 'Strong beneficial interactions with minimal disease/pest risks',
-            'color': 'green',
-            'emoji': '🌟'
-        }
-    elif score >= 0.3:
-        return {
-            'rating': 4,
-            'stars': '★★★★☆',
-            'label': 'Good Guild',
-            'message': 'Beneficial interactions outweigh risks - recommended pairing',
-            'color': 'lightgreen',
-            'emoji': '✓'
-        }
-    elif score >= -0.3:
-        return {
-            'rating': 3,
-            'stars': '★★★☆☆',
-            'label': 'Neutral Guild',
-            'message': 'Balanced risks and benefits - manageable with good practices',
-            'color': 'yellow',
-            'emoji': '⚖'
-        }
-    elif score >= -0.7:
-        return {
-            'rating': 2,
-            'stars': '★★☆☆☆',
-            'label': 'Risky Guild',
-            'message': 'Shared disease/pest vulnerabilities - requires careful management',
-            'color': 'orange',
-            'emoji': '⚠'
-        }
+    Args:
+        score: Overall compatibility score
+        is_4_4: True if using 4.4 framework (0-100), False if legacy 4.3 (-1 to +1)
+    """
+
+    # Document 4.4: score ∈ [0, 100]
+    if is_4_4:
+        if score >= 80:
+            return {
+                'rating': 5,
+                'stars': '★★★★★',
+                'label': 'Excellent Guild',
+                'message': f'This guild ranks at the {score:.1f}th percentile - strong beneficial interactions with minimal risks',
+                'color': 'green',
+                'emoji': '🌟'
+            }
+        elif score >= 60:
+            return {
+                'rating': 4,
+                'stars': '★★★★☆',
+                'label': 'Good Guild',
+                'message': f'{score:.1f}th percentile - beneficial interactions outweigh risks',
+                'color': 'lightgreen',
+                'emoji': '✓'
+            }
+        elif score >= 40:
+            return {
+                'rating': 3,
+                'stars': '★★★☆☆',
+                'label': 'Neutral Guild',
+                'message': f'{score:.1f}th percentile - balanced risks and benefits',
+                'color': 'yellow',
+                'emoji': '⚖'
+            }
+        elif score >= 20:
+            return {
+                'rating': 2,
+                'stars': '★★☆☆☆',
+                'label': 'Below Average Guild',
+                'message': f'{score:.1f}th percentile - requires careful management',
+                'color': 'orange',
+                'emoji': '⚠'
+            }
+        else:
+            return {
+                'rating': 1,
+                'stars': '★☆☆☆☆',
+                'label': 'Poor Guild',
+                'message': f'{score:.1f}th percentile - high risk without intervention',
+                'color': 'red',
+                'emoji': '❌'
+            }
+
+    # Legacy Document 4.3: score ∈ [-1, +1]
     else:
-        return {
-            'rating': 1,
-            'stars': '★☆☆☆☆',
-            'label': 'Poor Guild',
-            'message': 'High disease outbreak risk - not recommended without intervention',
-            'color': 'red',
-            'emoji': '❌'
-        }
+        if score >= 0.7:
+            return {
+                'rating': 5,
+                'stars': '★★★★★',
+                'label': 'Excellent Guild',
+                'message': 'Strong beneficial interactions with minimal disease/pest risks',
+                'color': 'green',
+                'emoji': '🌟'
+            }
+        elif score >= 0.3:
+            return {
+                'rating': 4,
+                'stars': '★★★★☆',
+                'label': 'Good Guild',
+                'message': 'Beneficial interactions outweigh risks - recommended pairing',
+                'color': 'lightgreen',
+                'emoji': '✓'
+            }
+        elif score >= -0.3:
+            return {
+                'rating': 3,
+                'stars': '★★★☆☆',
+                'label': 'Neutral Guild',
+                'message': 'Balanced risks and benefits - manageable with good practices',
+                'color': 'yellow',
+                'emoji': '⚖'
+            }
+        elif score >= -0.7:
+            return {
+                'rating': 2,
+                'stars': '★★☆☆☆',
+                'label': 'Risky Guild',
+                'message': 'Shared disease/pest vulnerabilities - requires careful management',
+                'color': 'orange',
+                'emoji': '⚠'
+            }
+        else:
+            return {
+                'rating': 1,
+                'stars': '★☆☆☆☆',
+                'label': 'Poor Guild',
+                'message': 'High disease outbreak risk - not recommended without intervention',
+                'color': 'red',
+                'emoji': '❌'
+            }
 
 
 # ============================================
