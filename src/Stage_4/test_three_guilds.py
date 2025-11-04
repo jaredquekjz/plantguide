@@ -15,8 +15,10 @@ sys.path.insert(0, 'src/Stage_4')
 
 from guild_scorer_v3 import GuildScorerV3
 from explanation_engine import generate_explanation
+from export_explanation_md import export_to_markdown
 import json
 from datetime import datetime
+from pathlib import Path
 
 
 def test_guild(scorer, name, plant_ids, expected_profile, description):
@@ -85,9 +87,16 @@ def test_guild(scorer, name, plant_ids, expected_profile, description):
             for warning in warnings:
                 print(f"   {warning['type']:20} | {warning['message']}")
 
-    # Save results
-    output_file = f"test_results_{name.lower().replace(' ', '_').replace(':', '').replace('#', '')}.json"
-    with open(output_file, 'w') as f:
+    # Save results to test_results/
+    test_dir = Path('test_results')
+    test_dir.mkdir(exist_ok=True)
+
+    base_name = name.lower().replace(' ', '_').replace(':', '').replace('#', '').replace('guild_', '')
+    json_file = test_dir / f"{base_name}.json"
+    md_file = test_dir / f"{base_name}.md"
+
+    # Save JSON
+    with open(json_file, 'w') as f:
         json.dump({
             'guild_name': name,
             'plant_ids': plant_ids,
@@ -98,7 +107,12 @@ def test_guild(scorer, name, plant_ids, expected_profile, description):
             'explanation': explanation
         }, f, indent=2)
 
-    print(f"\n📁 Results saved to: {output_file}")
+    # Export markdown
+    export_to_markdown(str(json_file), str(md_file))
+
+    print(f"\n📁 Results saved:")
+    print(f"   JSON: {json_file}")
+    print(f"   MD:   {md_file}")
 
     return result
 

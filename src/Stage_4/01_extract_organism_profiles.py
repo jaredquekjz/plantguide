@@ -64,11 +64,13 @@ def extract_organism_profiles(limit=None):
     """).fetchdf()
     print(f"  - Found pollinators for {len(pollinators):,} plants")
 
-    # Step 2: Extract herbivores (PEST INVERTEBRATES ONLY)
-    # ONLY garden pests: insects, mites, slugs/snails, etc.
-    # EXCLUDE vertebrates (birds/mammals eating berries are beneficial seed dispersers, not pests)
-    # EXCLUDE pollinators/flower visitors (they eat nectar/pollen as part of beneficial service)
-    print("Step 2: Extracting herbivores (pest invertebrates)...")
+    # Step 2: Extract herbivores (INVERTEBRATE pests only)
+    # ARCHITECTURAL DECISION (2025-11-04): Exclude vertebrates due to GloBI data quality
+    # - Birds/mammals ARE herbivores ecologically, BUT GloBI has poor vertebrate predator data
+    # - "Diptera eats Turdus philomelos", "Vespula eats Meles meles" = nonsensical
+    # - Trade-off: Accept that bird/mammal herbivory won't appear in pest risk scoring
+    # - Birds still captured for biocontrol via interactsWith relationships
+    print("Step 2: Extracting herbivores (invertebrate pests only)...")
     herbivores = con.execute("""
         WITH pollinator_organisms AS (
             -- Get all organisms that are pollinators/visitors (beneficial)
@@ -85,13 +87,18 @@ def extract_organism_profiles(limit=None):
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName IN ('eats', 'preysOn')
           AND sourceTaxonName != 'no name'
-          -- ONLY pest invertebrates (garden pests)
-          AND sourceTaxonClassName IN (
-              'Insecta',      -- Insects (aphids, caterpillars, beetles, etc.)
-              'Arachnida',    -- Spiders, mites
-              'Gastropoda',   -- Snails, slugs
-              'Chilopoda',    -- Centipedes
-              'Diplopoda'     -- Millipedes
+          -- ONLY animals (exclude plants, fungi, bacteria)
+          AND sourceTaxonKingdomName IN ('Animalia', 'Metazoa')
+          -- EXCLUDE vertebrates (GloBI has poor predator data for them)
+          AND sourceTaxonClassName NOT IN (
+              'Aves',           -- Birds (bad predator data in GloBI)
+              'Mammalia',       -- Mammals (bad predator data in GloBI)
+              'Reptilia',       -- Reptiles
+              'Amphibia',       -- Amphibians
+              'Actinopterygii', -- Fish
+              'Chondrichthyes', -- Sharks/rays
+              'Myxini',         -- Hagfish
+              'Petromyzontida'  -- Lampreys
           )
           -- EXCLUDE flower visitors/pollinators (beneficial service)
           AND sourceTaxonName NOT IN (SELECT * FROM pollinator_organisms)
