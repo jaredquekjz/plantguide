@@ -143,9 +143,9 @@ class GuildScorerV3:
 
         params = self.norm_params[component_key]
 
-        # Extract percentile points (use p01, p05 format for guild metrics)
+        # Extract percentile points (use p1, p5, p10 format from calibration file)
         percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
-        values = [params[f'p{p:02d}'] for p in percentiles]
+        values = [params[f'p{p}'] for p in percentiles]
 
         # Handle edge cases
         if raw_value <= values[0]:  # Below p1
@@ -194,9 +194,9 @@ class GuildScorerV3:
 
         params = self.norm_params[component_key]
 
-        # Extract percentile points from calibration (use p01, p05 format for guild metrics)
+        # Extract percentile points from calibration (use p1, p5, p10 format from calibration file)
         percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
-        values = [params[f'p{p:02d}'] for p in percentiles]
+        values = [params[f'p{p}'] for p in percentiles]
 
         # Handle edge cases
         if raw_value <= values[0]:  # Below p1
