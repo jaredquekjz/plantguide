@@ -102,6 +102,17 @@ class GuildScorerV3:
             self.norm_params = None
             print(f"Guild Scorer V3 initialized (normalization params {norm_file} not found, using fallback)")
 
+        # Load CSR percentile calibration (global, not tier-specific)
+        # Used for N4 conflict detection with consistent thresholds
+        self.csr_calibration_path = self.data_dir / 'csr_percentile_calibration_global.json'
+        if self.csr_calibration_path.exists():
+            with open(self.csr_calibration_path) as f:
+                self.csr_percentiles = json.load(f)
+            print(f"Loaded CSR percentile calibration (global)")
+        else:
+            self.csr_percentiles = None
+            print(f"CSR percentile calibration not found - using fixed thresholds for N4")
+
         print(f"Using: {self.plants_path.name}")
 
     # ============================================
@@ -132,9 +143,9 @@ class GuildScorerV3:
 
         params = self.norm_params[component_key]
 
-        # Extract percentile points
+        # Extract percentile points (use p01, p05 format for guild metrics)
         percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
-        values = [params[f'p{p}'] for p in percentiles]
+        values = [params[f'p{p:02d}'] for p in percentiles]
 
         # Handle edge cases
         if raw_value <= values[0]:  # Below p1
@@ -183,8 +194,56 @@ class GuildScorerV3:
 
         params = self.norm_params[component_key]
 
-        # Extract percentile points from calibration
+        # Extract percentile points from calibration (use p01, p05 format for guild metrics)
         percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
+        values = [params[f'p{p:02d}'] for p in percentiles]
+
+        # Handle edge cases
+        if raw_value <= values[0]:  # Below p1
+            return 0.0
+        elif raw_value >= values[-1]:  # Above p99
+            return 100.0
+
+        # Find bracketing percentiles and interpolate
+        for i in range(len(values) - 1):
+            if values[i] <= raw_value <= values[i + 1]:
+                # Linear interpolation
+                if values[i + 1] - values[i] > 0:
+                    fraction = (raw_value - values[i]) / (values[i + 1] - values[i])
+                    percentile = percentiles[i] + fraction * (percentiles[i + 1] - percentiles[i])
+                else:
+                    percentile = percentiles[i]
+
+                return percentile
+
+        # Fallback (should not reach here)
+        return 50.0
+
+    def _csr_to_percentile(self, raw_value, strategy):
+        """
+        Convert raw CSR score to percentile using global calibration.
+
+        Unlike guild metrics (tier-stratified), CSR uses GLOBAL percentiles
+        because conflicts are within-guild comparisons, not cross-guild.
+
+        Args:
+            raw_value: Raw C, S, or R score (0-100)
+            strategy: 'c', 's', or 'r'
+
+        Returns:
+            percentile: 0-100 (e.g., 87.3 = 87.3rd percentile)
+        """
+        if self.csr_percentiles is None:
+            # Fallback to fixed threshold behavior
+            if strategy == 'c':
+                return 100 if raw_value >= 60 else 50
+            elif strategy == 's':
+                return 100 if raw_value >= 60 else 50
+            else:  # 'r'
+                return 100 if raw_value >= 50 else 50
+
+        params = self.csr_percentiles[strategy]
+        percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 99]
         values = [params[f'p{p}'] for p in percentiles]
 
         # Handle edge cases
@@ -647,17 +706,35 @@ class GuildScorerV3:
         }
 
     def _compute_n4_csr_conflicts(self, plants_data, n_plants):
-        """N4: CSR conflicts with EIVE+height+form modulation (20% of negative)."""
+        """
+        N4: CSR conflicts with EIVE+height+form modulation.
+
+        Uses GLOBAL CSR percentiles (not tier-specific) because conflicts
+        are within-guild comparisons, not cross-guild comparisons.
+
+        Threshold: 75th percentile = "High" (consistent across C, S, R)
+        """
 
         conflicts = 0
         conflict_details = []
 
-        HIGH_C = 60
-        HIGH_S = 60
-        HIGH_R = 50
+        # Use percentile-based classification (CONSISTENT across C, S, R)
+        PERCENTILE_THRESHOLD = 75  # Top quartile
+
+        # Convert CSR scores to percentiles
+        plants_data = plants_data.copy()
+        plants_data['C_percentile'] = plants_data['CSR_C'].apply(
+            lambda x: self._csr_to_percentile(x, 'c')
+        )
+        plants_data['S_percentile'] = plants_data['CSR_S'].apply(
+            lambda x: self._csr_to_percentile(x, 's')
+        )
+        plants_data['R_percentile'] = plants_data['CSR_R'].apply(
+            lambda x: self._csr_to_percentile(x, 'r')
+        )
 
         # CONFLICT 1: High-C + High-C
-        high_c_plants = plants_data[plants_data['CSR_C'] > HIGH_C]
+        high_c_plants = plants_data[plants_data['C_percentile'] > PERCENTILE_THRESHOLD]
 
         if len(high_c_plants) >= 2:
             for i in range(len(high_c_plants)):
@@ -697,9 +774,9 @@ class GuildScorerV3:
                         })
 
         # CONFLICT 2: High-C + High-S
-        high_s_plants = plants_data[plants_data['CSR_S'] > HIGH_S]
+        high_s_plants = plants_data[plants_data['S_percentile'] > PERCENTILE_THRESHOLD]
 
-        for idx_c, plant_c in plants_data[plants_data['CSR_C'] > HIGH_C].iterrows():
+        for idx_c, plant_c in plants_data[plants_data['C_percentile'] > PERCENTILE_THRESHOLD].iterrows():
             for idx_s, plant_s in high_s_plants.iterrows():
                 if idx_c != idx_s:
                     conflict = 0.6  # Base
@@ -733,9 +810,9 @@ class GuildScorerV3:
                         })
 
         # CONFLICT 3: High-C + High-R
-        high_r_plants = plants_data[plants_data['CSR_R'] > HIGH_R]
+        high_r_plants = plants_data[plants_data['R_percentile'] > PERCENTILE_THRESHOLD]
 
-        for idx_c, plant_c in plants_data[plants_data['CSR_C'] > HIGH_C].iterrows():
+        for idx_c, plant_c in plants_data[plants_data['C_percentile'] > PERCENTILE_THRESHOLD].iterrows():
             for idx_r, plant_r in high_r_plants.iterrows():
                 if idx_c != idx_r:
                     conflict = 0.8  # Base
