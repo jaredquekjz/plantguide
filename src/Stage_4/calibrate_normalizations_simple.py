@@ -409,7 +409,7 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, herbivore_p
     return scores
 
 
-def main(guild_size=7):
+def main(guild_size=7, n_guilds_per_tier=20000):
     """Main calibration workflow - tier-stratified approach."""
 
     print("="*80)
@@ -454,12 +454,12 @@ def main(guild_size=7):
     # Process each tier independently
     for tier_col, tier_name in tier_columns.items():
         print("\n" + "="*80)
-        print(f"{tier_name.upper()} - GENERATING 20,000 {guild_size}-PLANT GUILDS")
+        print(f"{tier_name.upper()} - GENERATING {n_guilds_per_tier:,} {guild_size}-PLANT GUILDS")
         print("="*80)
 
         # Sample guilds from this tier
         guilds = []
-        n_target = 20000
+        n_target = n_guilds_per_tier
 
         print(f"\nSampling {n_target:,} guilds from {tier_name}...")
         for _ in tqdm(range(n_target), desc=f"{tier_name}"):
@@ -520,10 +520,11 @@ def main(guild_size=7):
     with open(output_path, 'w') as f:
         json.dump(all_tier_params, f, indent=2)
 
+    total_guilds = n_guilds_per_tier * 6
     print("\n" + "="*80)
     print(f"TIER-STRATIFIED CALIBRATION COMPLETE ({guild_size}-PLANT)")
     print("="*80)
-    print(f"✓ Calibration based on 6 Köppen tiers × 20,000 guilds = 120,000 total guilds")
+    print(f"✓ Calibration based on 6 Köppen tiers × {n_guilds_per_tier:,} guilds = {total_guilds:,} total guilds")
     print(f"✓ Components calibrated: N1, N2, N4, N5, N6, P1, P2, P3, P4, P5, P6 (ALL 11)")
     print(f"✓ P1/P2 optimization: Dictionary-based lookups")
     print(f"✓ Output: {output_path}")
@@ -534,6 +535,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Calibrate normalization parameters for guild scoring')
     parser.add_argument('--guild-size', type=int, default=7, choices=[2, 7],
                         help='Guild size: 2 for Plant Doctor, 7 for Guild Builder (default: 7)')
+    parser.add_argument('--n-guilds', type=int, default=20000,
+                        help='Number of guilds to generate per tier (default: 20000)')
     args = parser.parse_args()
 
-    main(guild_size=args.guild_size)
+    main(guild_size=args.guild_size, n_guilds_per_tier=args.n_guilds)
