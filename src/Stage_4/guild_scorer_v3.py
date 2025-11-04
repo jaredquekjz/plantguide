@@ -31,14 +31,21 @@ class GuildScorerV3:
     Guild compatibility scorer implementing Document 4.3 framework.
     """
 
-    def __init__(self, data_dir='data/stage4'):
-        """Initialize with paths to all required data files."""
+    def __init__(self, data_dir='data/stage4', calibration_type='7plant'):
+        """
+        Initialize with paths to all required data files.
+
+        Args:
+            data_dir: Directory containing Stage 4 data files
+            calibration_type: '2plant' for Plant Doctor, '7plant' for Guild Builder
+        """
 
         self.data_dir = Path(data_dir)
         self.con = duckdb.connect()
+        self.calibration_type = calibration_type
 
-        # Main dataset
-        self.plants_path = Path('model_data/outputs/perm2_production/perm2_11680_with_climate_sensitivity_20251102.parquet')
+        # Main dataset with Köppen tiers
+        self.plants_path = Path('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
 
         # Stage 4 data
         self.organisms_path = self.data_dir / 'plant_organism_profiles.parquet'
@@ -49,15 +56,24 @@ class GuildScorerV3:
         self.insect_parasites_path = self.data_dir / 'insect_fungal_parasites.parquet'
         self.pathogen_antagonists_path = self.data_dir / 'pathogen_antagonists.parquet'
 
-        # Load normalization parameters
-        norm_params_path = self.data_dir / 'normalization_params_v3.json'
+        # Load normalization parameters based on calibration type
+        if calibration_type == '2plant':
+            norm_file = 'normalization_params_2plant.json'
+        elif calibration_type == '7plant':
+            norm_file = 'normalization_params_7plant.json'
+        else:
+            # Fallback to old v3 file for backwards compatibility
+            norm_file = 'normalization_params_v3.json'
+
+        norm_params_path = self.data_dir / norm_file
+
         if norm_params_path.exists():
             with open(norm_params_path, 'r') as f:
                 self.norm_params = json.load(f)
-            print("Guild Scorer V3 initialized with calibrated normalization")
+            print(f"Guild Scorer V3 initialized with {calibration_type} calibration")
         else:
             self.norm_params = None
-            print("Guild Scorer V3 initialized (normalization params not found, using fallback)")
+            print(f"Guild Scorer V3 initialized (normalization params {norm_file} not found, using fallback)")
 
         print(f"Using: {self.plants_path.name}")
 
@@ -67,38 +83,52 @@ class GuildScorerV3:
 
     def _normalize_percentile(self, raw_value, component_key):
         """
-        Percentile-based normalization using calibrated parameters.
+        Direct percentile-based normalization using calibrated parameters.
 
-        Uses piecewise linear interpolation between percentile points:
-        - [p5, p50] → [0.0, 0.5]
-        - [p50, p95] → [0.5, 1.0]
-        - Below p5 → 0.0
-        - Above p95 → 1.0
+        Converts raw value to its percentile rank in the calibration distribution,
+        then normalizes to [0, 1]. Uses linear interpolation between calibrated
+        percentile points (p1, p5, p10, ..., p95, p99).
 
         Args:
             raw_value: Raw score value
             component_key: Key in norm_params (e.g., 'n1', 'p4')
 
         Returns:
-            Normalized value ∈ [0, 1]
+            Normalized value ∈ [0, 1] representing percentile / 100
+
+        Example:
+            If raw_value maps to 89.7th percentile → returns 0.897
         """
         if self.norm_params is None or component_key not in self.norm_params:
             # Fallback: simple tanh normalization
             return np.tanh(raw_value / 3.0)
 
         params = self.norm_params[component_key]
-        p5, p50, p95 = params['p5'], params['p50'], params['p95']
 
-        if raw_value <= p5:
+        # Extract percentile points
+        percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
+        values = [params[f'p{p}'] for p in percentiles]
+
+        # Handle edge cases
+        if raw_value <= values[0]:  # Below p1
             return 0.0
-        elif raw_value <= p50:
-            # Linear interpolation [p5, p50] → [0.0, 0.5]
-            return 0.5 * (raw_value - p5) / (p50 - p5) if (p50 - p5) > 0 else 0.0
-        elif raw_value <= p95:
-            # Linear interpolation [p50, p95] → [0.5, 1.0]
-            return 0.5 + 0.5 * (raw_value - p50) / (p95 - p50) if (p95 - p50) > 0 else 0.5
-        else:
+        elif raw_value >= values[-1]:  # Above p99
             return 1.0
+
+        # Find bracketing percentiles and interpolate
+        for i in range(len(values) - 1):
+            if values[i] <= raw_value <= values[i + 1]:
+                # Linear interpolation
+                if values[i + 1] - values[i] > 0:
+                    fraction = (raw_value - values[i]) / (values[i + 1] - values[i])
+                    percentile = percentiles[i] + fraction * (percentiles[i + 1] - percentiles[i])
+                else:
+                    percentile = percentiles[i]
+
+                return percentile / 100.0
+
+        # Fallback (should not reach here)
+        return 0.5
 
     def _count_shared_organisms(self, df, *columns):
         """
@@ -578,15 +608,19 @@ class GuildScorerV3:
                     conflict = 0.6  # Base
 
                     # MODULATION: Light Preference (CRITICAL!)
+                    # EIVEres-L is on 0-10 scale (EIVE semantic binning)
                     s_light = plant_s['light_pref']
 
-                    if s_light < -0.5:
-                        # S is SHADE-ADAPTED - wants to be under C!
+                    if s_light < 3.2:
+                        # S is SHADE-ADAPTED (L=1-3: deep shade to moderate shade)
+                        # Wants to be under C!
                         conflict = 0.0
-                    elif s_light > 0.5:
-                        # S is SUN-LOVING - C will shade it!
+                    elif s_light > 7.47:
+                        # S is SUN-LOVING (L=8-9: full-light plant)
+                        # C will shade it out!
                         conflict = 0.9
                     else:
+                        # S is FLEXIBLE (L=4-7: semi-shade to half-light)
                         # MODULATION: Height
                         height_diff = abs(plant_c['height_m'] - plant_s['height_m'])
                         if height_diff > 8.0:
@@ -630,13 +664,19 @@ class GuildScorerV3:
                     conflict = 0.3  # Low - short-lived annuals
                     conflicts += conflict
 
-        # Normalize using calibrated percentiles
-        csr_conflict_norm = self._normalize_percentile(conflicts, 'n4')
+        # Normalize by number of possible pairs (conflict density)
+        # This makes scores comparable across guild sizes (2-7 plants)
+        max_pairs = n_plants * (n_plants - 1) if n_plants > 1 else 1
+        conflict_density = conflicts / max_pairs
+
+        # Normalize using calibrated percentiles on density metric
+        csr_conflict_norm = self._normalize_percentile(conflict_density, 'n4')
 
         return {
             'norm': csr_conflict_norm,
             'conflicts': conflict_details,
-            'raw_conflicts': conflicts
+            'raw_conflicts': conflicts,
+            'conflict_density': conflict_density  # For calibration
         }
 
     def _compute_n5_nitrogen_fixation(self, plants_data, n_plants):
@@ -952,46 +992,61 @@ class GuildScorerV3:
         }
 
     def _compute_p5_stratification(self, plants_data, n_plants):
-        """P5: Vertical and form stratification (10% of positive)."""
+        """P5: Vertical stratification validated by light compatibility (10% of positive)."""
 
-        # Assign height layers
-        def assign_height_layer(height):
-            if pd.isna(height):
-                return None
-            if height < 0.5:
-                return 'ground_cover'
-            elif height < 2.0:
-                return 'low_herb'
-            elif height < 5.0:
-                return 'shrub'
-            elif height < 15.0:
-                return 'small_tree'
-            else:
-                return 'large_tree'
+        # Sort by height for stratification analysis
+        guild = plants_data.sort_values('height_m').reset_index(drop=True)
 
-        plants_data_copy = plants_data.copy()
-        plants_data_copy['height_layer'] = plants_data_copy['height_m'].apply(assign_height_layer)
+        valid_stratification = 0.0
+        invalid_stratification = 0.0
 
-        # COMPONENT 1: Height diversity (60%)
-        n_height_layers = plants_data_copy['height_layer'].nunique()
-        height_diversity = (n_height_layers - 1) / 4 if n_height_layers > 0 else 0  # 5 layers max
+        # Analyze all tall-short plant pairs
+        for i in range(len(guild)):
+            for j in range(i + 1, len(guild)):
+                short = guild.iloc[i]
+                tall = guild.iloc[j]
 
-        height_range = plants_data_copy['height_m'].max() - plants_data_copy['height_m'].min()
-        height_range_norm = self._normalize_percentile(height_range, 'p5')
+                height_diff = tall['height_m'] - short['height_m']
 
-        height_score = 0.6 * height_diversity + 0.4 * height_range_norm
+                # Only consider significant height differences (>2m = different canopy layers)
+                if height_diff > 2.0:
+                    short_light = short['light_pref']
 
-        # COMPONENT 2: Form diversity (40%)
-        n_forms = plants_data_copy['growth_form'].nunique()
+                    if pd.isna(short_light):
+                        # Conservative assumption: neutral/flexible (missing data)
+                        valid_stratification += height_diff * 0.5
+                    elif short_light < 3.2:
+                        # Shade-tolerant (EIVE-L 1-3): Can thrive under canopy
+                        valid_stratification += height_diff
+                    elif short_light > 7.47:
+                        # Sun-loving (EIVE-L 8-9): Will be shaded out
+                        invalid_stratification += height_diff
+                    else:
+                        # Flexible (EIVE-L 4-7): Partial compatibility
+                        valid_stratification += height_diff * 0.6
+
+        # Stratification quality: valid / total
+        total_height_diffs = valid_stratification + invalid_stratification
+        if total_height_diffs == 0:
+            stratification_quality = 0.0  # No vertical diversity
+        else:
+            stratification_quality = valid_stratification / total_height_diffs
+
+        # COMPONENT 2: Form diversity (30%)
+        n_forms = plants_data['growth_form'].nunique()
         form_diversity = (n_forms - 1) / 5 if n_forms > 0 else 0  # 6 forms max
 
-        # Combined
-        stratification_norm = 0.6 * height_score + 0.4 * form_diversity
+        # Combined (70% light-validated height, 30% form)
+        p5_raw = 0.7 * stratification_quality + 0.3 * form_diversity
+
+        # Normalize using calibrated percentiles
+        p5_norm = self._normalize_percentile(p5_raw, 'p5')
 
         return {
-            'norm': stratification_norm,
-            'n_height_layers': n_height_layers,
-            'height_range': height_range,
+            'norm': p5_norm,
+            'valid_stratification': valid_stratification,
+            'invalid_stratification': invalid_stratification,
+            'stratification_quality': stratification_quality,
             'n_forms': n_forms
         }
 
