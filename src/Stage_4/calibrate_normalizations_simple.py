@@ -5,9 +5,14 @@ Calibrate normalization parameters - Simplified Version
 Generates 10,000 sample guilds and computes RAW scores directly for calibration.
 Does not modify guild_scorer_v3.py.
 
-Output: data/stage4/normalization_params_v3.json
+Usage:
+    python src/Stage_4/calibrate_normalizations_simple.py --guild-size 2  # For Plant Doctor
+    python src/Stage_4/calibrate_normalizations_simple.py --guild-size 7  # For Guild Builder
+
+Output: data/stage4/normalization_params_{guild_size}plant.json
 """
 
+import argparse
 import json
 import duckdb
 import numpy as np
@@ -401,11 +406,11 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, herbivore_p
     return scores
 
 
-def main():
+def main(guild_size=7):
     """Main calibration workflow."""
 
     print("="*80)
-    print("NORMALIZATION CALIBRATION - SIMPLIFIED")
+    print(f"NORMALIZATION CALIBRATION - {guild_size}-PLANT GUILDS")
     print("="*80)
 
     con = duckdb.connect()
@@ -419,15 +424,15 @@ def main():
 
     # Generate guilds
     print("\n" + "="*80)
-    print("GENERATING 10,000 CALIBRATION GUILDS (TESTING)")
+    print(f"GENERATING 10,000 {guild_size}-PLANT CALIBRATION GUILDS")
     print("="*80)
 
     guilds = []
 
     # 10,000 climate-compatible guilds only
-    print("\nSampling 10,000 climate-compatible guilds...")
+    print(f"\nSampling 10,000 climate-compatible {guild_size}-plant guilds...")
     for _ in tqdm(range(10000), desc="Climate-compatible"):
-        guild = sample_climate_compatible_guild(5, compatibility, all_species)
+        guild = sample_climate_compatible_guild(guild_size, compatibility, all_species)
         guilds.append(guild)
 
     print(f"\nTotal guilds: {len(guilds):,}")
@@ -496,7 +501,7 @@ def main():
         print(f"  p1={percentile_values['p1']:.4f}, p50={percentile_values['p50']:.4f}, p99={percentile_values['p99']:.4f}")
 
     # Save
-    output_path = Path('data/stage4/normalization_params_v3.json')
+    output_path = Path(f'data/stage4/normalization_params_{guild_size}plant.json')
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w') as f:
@@ -505,13 +510,18 @@ def main():
     print(f"\n✓ Saved: {output_path}")
 
     print("\n" + "="*80)
-    print("CALIBRATION COMPLETE")
+    print(f"CALIBRATION COMPLETE ({guild_size}-PLANT)")
     print("="*80)
-    print(f"\nCalibration based on {len(guilds):,} climate-compatible guilds (testing)")
+    print(f"\nCalibration based on {len(guilds):,} climate-compatible {guild_size}-plant guilds")
     print(f"Performance: ~250 guilds/sec with pandas pre-loaded filtering")
     print(f"Components calibrated: N1, N2, N4, N5, N6, P3, P4, P5, P6 (9 total)")
     print(f"Components using fallback: P1, P2 (too slow for large-scale calibration)")
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser(description='Calibrate normalization parameters for guild scoring')
+    parser.add_argument('--guild-size', type=int, default=7, choices=[2, 7],
+                        help='Guild size: 2 for Plant Doctor, 7 for Guild Builder (default: 7)')
+    args = parser.parse_args()
+
+    main(guild_size=args.guild_size)
