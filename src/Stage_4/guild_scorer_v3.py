@@ -31,18 +31,22 @@ class GuildScorerV3:
     Guild compatibility scorer implementing Document 4.3 framework.
     """
 
-    def __init__(self, data_dir='data/stage4', calibration_type='7plant'):
+    def __init__(self, data_dir='data/stage4', calibration_type='7plant', climate_tier='tier_3_humid_temperate'):
         """
         Initialize with paths to all required data files.
 
         Args:
             data_dir: Directory containing Stage 4 data files
             calibration_type: '2plant' for Plant Doctor, '7plant' for Guild Builder
+            climate_tier: Köppen climate tier for this guild (e.g., 'tier_3_humid_temperate')
+                         Options: tier_1_tropical, tier_2_mediterranean, tier_3_humid_temperate,
+                                  tier_4_continental, tier_5_boreal_polar, tier_6_arid
         """
 
         self.data_dir = Path(data_dir)
         self.con = duckdb.connect()
         self.calibration_type = calibration_type
+        self.climate_tier = climate_tier
 
         # Main dataset with Köppen tiers
         self.plants_path = Path('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
@@ -56,7 +60,7 @@ class GuildScorerV3:
         self.insect_parasites_path = self.data_dir / 'insect_fungal_parasites.parquet'
         self.pathogen_antagonists_path = self.data_dir / 'pathogen_antagonists.parquet'
 
-        # Load normalization parameters based on calibration type
+        # Load tier-stratified normalization parameters
         if calibration_type == '2plant':
             norm_file = 'normalization_params_2plant.json'
         elif calibration_type == '7plant':
@@ -69,8 +73,20 @@ class GuildScorerV3:
 
         if norm_params_path.exists():
             with open(norm_params_path, 'r') as f:
-                self.norm_params = json.load(f)
-            print(f"Guild Scorer V3 initialized with {calibration_type} calibration")
+                all_tier_params = json.load(f)
+
+            # Extract tier-specific parameters
+            if climate_tier in all_tier_params:
+                self.norm_params = all_tier_params[climate_tier]
+                print(f"Guild Scorer V3 initialized with {calibration_type} calibration for {climate_tier}")
+            else:
+                # Try legacy format (non-tier-stratified)
+                if 'n1' in all_tier_params:
+                    self.norm_params = all_tier_params
+                    print(f"Guild Scorer V3 initialized with {calibration_type} calibration (legacy format)")
+                else:
+                    self.norm_params = None
+                    print(f"Warning: Tier '{climate_tier}' not found in calibration file")
         else:
             self.norm_params = None
             print(f"Guild Scorer V3 initialized (normalization params {norm_file} not found, using fallback)")
@@ -254,7 +270,7 @@ class GuildScorerV3:
     # ============================================
 
     def _load_plants_data(self, plant_ids):
-        """Load plant traits, climate, CSR, phylo data."""
+        """Load plant traits, climate, CSR, phylo data, and Köppen tier memberships."""
 
         # Generate all 92 phylogenetic eigenvector column names
         phylo_ev_cols = ', '.join([f'phylo_ev{i}' for i in range(1, 93)])
@@ -264,7 +280,14 @@ class GuildScorerV3:
             wfo_taxon_id as plant_wfo_id,
             wfo_scientific_name,
             family,
-            -- Climate (q05 and q95 define tolerance envelopes)
+            -- Köppen tier memberships (for climate sanity check)
+            tier_1_tropical,
+            tier_2_mediterranean,
+            tier_3_humid_temperate,
+            tier_4_continental,
+            tier_5_boreal_polar,
+            tier_6_arid,
+            -- Climate (q05 and q95 define tolerance envelopes - kept for warnings)
             "wc2.1_30s_bio_1_q05" / 10.0 as temp_annual_min,
             "wc2.1_30s_bio_1_q95" / 10.0 as temp_annual_max,
             "wc2.1_30s_bio_6_q05" / 10.0 as temp_coldest_min,
@@ -335,65 +358,45 @@ class GuildScorerV3:
 
     def _check_climate_compatibility(self, plants_data, n_plants):
         """
-        3-Level climate compatibility check (Document 4.3).
+        Tier-based climate compatibility check (tier-stratified framework).
+
+        Simplified check: Verifies all plants belong to the specified Köppen tier.
+        Frontend pre-filters plants by tier, so this is a sanity check only.
 
         Returns dict with veto status and details.
         """
 
         # ═══════════════════════════════════════════════════════════════
-        # LEVEL 1: Tolerance Envelope Overlap (VETO if no overlap)
+        # TIER MEMBERSHIP SANITY CHECK
         # ═══════════════════════════════════════════════════════════════
 
-        # Temperature: shared zone = warmest plant's minimum to coldest plant's maximum
-        shared_temp_min = plants_data['temp_annual_min'].max()  # Warmest plant's minimum
-        shared_temp_max = plants_data['temp_annual_max'].min()  # Coldest plant's maximum
-        temp_overlap = shared_temp_max - shared_temp_min
+        tier_column = self.climate_tier  # e.g., 'tier_3_humid_temperate'
 
-        # Coldest month temperature (hardiness)
-        shared_hardiness_min = plants_data['temp_coldest_min'].max()
-        shared_hardiness_max = plants_data['temp_coldest_max'].min()
-        hardiness_overlap = shared_hardiness_max - shared_hardiness_min
-
-        # Precipitation
-        shared_precip_min = plants_data['precip_annual_min'].max()
-        shared_precip_max = plants_data['precip_annual_max'].min()
-        precip_overlap = shared_precip_max - shared_precip_min
-
-        # ═══════════════════════════════════════════════════════════════
-        # CHECK FOR VETO CONDITIONS
-        # ═══════════════════════════════════════════════════════════════
-
-        veto = False
-        veto_reasons = []
-
-        # VETO 1: No temperature overlap
-        if temp_overlap < 0:
-            veto = True
-            veto_reasons.append(f'No temperature overlap ({temp_overlap:.1f}°C)')
-
-        # VETO 2: No hardiness overlap (allow 5°C tolerance)
-        if hardiness_overlap < -5.0:
-            veto = True
-            veto_reasons.append(f'No hardiness overlap ({hardiness_overlap:.1f}°C)')
-
-        # VETO 3: No precipitation overlap
-        if precip_overlap < 0:
-            veto = True
-            veto_reasons.append(f'No precipitation overlap ({precip_overlap:.0f}mm)')
-
-        if veto:
+        if tier_column not in plants_data.columns:
             return {
                 'veto': True,
-                'reason': 'Climate Envelope Incompatibility',
-                'veto_details': veto_reasons,
-                'message': f'Guild has NO shared climate zone',
-                'temp_overlap': temp_overlap,
-                'hardiness_overlap': hardiness_overlap,
-                'precip_overlap': precip_overlap
+                'reason': 'Missing tier column',
+                'message': f'Dataset missing {tier_column} column',
+                'veto_details': [f'Column {tier_column} not found']
+            }
+
+        # Check all plants belong to this tier
+        tier_membership = plants_data[tier_column]
+        plants_not_in_tier = (~tier_membership).sum()
+
+        if plants_not_in_tier > 0:
+            # Some plants don't belong to this tier - VETO
+            incompatible_plants = plants_data.loc[~tier_membership, 'wfo_scientific_name'].tolist()
+            return {
+                'veto': True,
+                'reason': 'Incompatible climate tiers',
+                'message': f'{plants_not_in_tier} plants not in {tier_column}',
+                'veto_details': [f'Plants not in tier: {", ".join(incompatible_plants[:3])}{"..." if len(incompatible_plants) > 3 else ""}'],
+                'incompatible_plants': incompatible_plants
             }
 
         # ═══════════════════════════════════════════════════════════════
-        # LEVEL 3: Extreme Vulnerabilities (WARNING only, not VETO)
+        # EXTREME VULNERABILITIES (WARNING only, not VETO)
         # ═══════════════════════════════════════════════════════════════
 
         warnings = []
@@ -418,17 +421,11 @@ class GuildScorerV3:
                     'message': f'{int(frost_sensitive_count / n_plants * 100)}% of guild is frost-sensitive'
                 })
 
-        # PASS: Return shared climate zone
+        # PASS: All plants in tier
         return {
             'veto': False,
-            'temp_overlap': temp_overlap,
-            'hardiness_overlap': hardiness_overlap,
-            'precip_overlap': precip_overlap,
-            'shared_zone': {
-                'temp_range': (shared_temp_min, shared_temp_max),
-                'hardiness_range': (shared_hardiness_min, shared_hardiness_max),
-                'precip_range': (shared_precip_min, shared_precip_max)
-            },
+            'tier': tier_column,
+            'message': f'All plants compatible with {tier_column}',
             'warnings': warnings
         }
 
