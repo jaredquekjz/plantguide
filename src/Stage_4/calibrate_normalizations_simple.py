@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Calibrate normalization parameters - Simplified Version
+Calibrate normalization parameters - Tier-Based Version
 
-Generates 10,000 sample guilds and computes RAW scores directly for calibration.
-Does not modify guild_scorer_v3.py.
+Generates 20,000 sample guilds PER CLIMATE TIER (6 tiers × 20K = 120K guilds total).
+Computes RAW scores directly for calibration. Does not modify guild_scorer_v3.py.
 
 Usage:
     python src/Stage_4/calibrate_normalizations_simple.py --guild-size 2  # For Plant Doctor
     python src/Stage_4/calibrate_normalizations_simple.py --guild-size 7  # For Guild Builder
 
 Output: data/stage4/normalization_params_{guild_size}plant.json
+        (tier-stratified structure with separate calibrations per tier)
 """
 
 import argparse
@@ -29,7 +30,7 @@ def load_all_data(con):
 
     print("Loading datasets...")
 
-    # Plants
+    # Plants (include Köppen tier memberships)
     plants_query = f'''
     SELECT
         wfo_taxon_id,
@@ -40,12 +41,14 @@ def load_all_data(con):
         try_growth_form as growth_form,
         C as CSR_C, S as CSR_S, R as CSR_R,
         "EIVEres-L" as light_pref,
-        "wc2.1_30s_bio_1_q05" / 10.0 as temp_min,
-        "wc2.1_30s_bio_1_q95" / 10.0 as temp_max,
-        "wc2.1_30s_bio_12_q05" as precip_min,
-        "wc2.1_30s_bio_12_q95" as precip_max,
         nitrogen_fixation_rating as n_fixation,
         "EIVEres-R" as pH_mean,
+        tier_1_tropical,
+        tier_2_mediterranean,
+        tier_3_humid_temperate,
+        tier_4_continental,
+        tier_5_boreal_polar,
+        tier_6_arid,
         {', '.join([f'phylo_ev{i}' for i in range(1, 93)])}
     FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
     WHERE phylo_ev1 IS NOT NULL
@@ -92,63 +95,29 @@ def load_all_data(con):
     return plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df
 
 
-def build_climate_compatibility(plants_df):
-    """Build climate compatibility matrix."""
-
-    print("\nBuilding climate compatibility matrix...")
-
-    compatibility = {}
-
-    for idx, plant_a in tqdm(plants_df.iterrows(), total=len(plants_df), desc="Computing compatibility"):
-        # Vectorized compatibility check
-        temp_overlap = (
-            np.maximum(plant_a['temp_min'], plants_df['temp_min']) <
-            np.minimum(plant_a['temp_max'], plants_df['temp_max'])
-        )
-
-        precip_overlap = (
-            np.maximum(plant_a['precip_min'], plants_df['precip_min']) <
-            np.minimum(plant_a['precip_max'], plants_df['precip_max'])
-        )
-
-        compatible = temp_overlap & precip_overlap & (plants_df.index != idx)
-        compatible_ids = plants_df.loc[compatible, 'wfo_taxon_id'].tolist()
-        compatibility[plant_a['wfo_taxon_id']] = compatible_ids
-
-    # Stats
-    compat_counts = [len(v) for v in compatibility.values()]
-    print(f"  Mean compatible: {np.mean(compat_counts):.0f}")
-    print(f"  Median compatible: {np.median(compat_counts):.0f}")
-
-    return compatibility
+def get_tier_columns():
+    """Return list of Köppen tier columns and their display names."""
+    return {
+        'tier_1_tropical': 'Tier 1: Tropical',
+        'tier_2_mediterranean': 'Tier 2: Mediterranean',
+        'tier_3_humid_temperate': 'Tier 3: Humid Temperate',
+        'tier_4_continental': 'Tier 4: Continental',
+        'tier_5_boreal_polar': 'Tier 5: Boreal/Polar',
+        'tier_6_arid': 'Tier 6: Arid'
+    }
 
 
-def sample_climate_compatible_guild(n_plants, compatibility, all_species):
-    """Sample climate-compatible guild."""
+def sample_tier_guild(tier_column, plants_df, guild_size):
+    """Sample a guild from plants in the specified Köppen tier."""
 
-    for _ in range(50):  # Max attempts
-        anchor_id = np.random.choice(all_species)
-        compatible = compatibility.get(anchor_id, [])
+    # Filter to plants in this tier
+    tier_plants = plants_df[plants_df[tier_column] == True]['wfo_taxon_id'].values
 
-        if len(compatible) >= n_plants - 1:
-            others = np.random.choice(compatible, size=n_plants-1, replace=False)
-            return [anchor_id] + list(others)
+    if len(tier_plants) < guild_size:
+        raise ValueError(f"Not enough plants in {tier_column}: {len(tier_plants)} < {guild_size}")
 
-    # Fallback
-    return list(np.random.choice(all_species, size=n_plants, replace=False))
-
-
-def sample_phylo_low_diversity(plants_df, n_plants=5):
-    """Sample same-family guild."""
-    family_counts = plants_df['family'].value_counts()
-    eligible = family_counts[family_counts >= n_plants].index
-
-    if len(eligible) > 0:
-        family = np.random.choice(eligible)
-        species = plants_df[plants_df['family'] == family]['wfo_taxon_id'].values
-        return list(np.random.choice(species, size=n_plants, replace=False))
-
-    return list(np.random.choice(plants_df['wfo_taxon_id'].values, size=n_plants, replace=False))
+    # Simple random sampling from tier
+    return list(np.random.choice(tier_plants, size=guild_size, replace=False))
 
 
 def count_shared_organisms(df, plant_ids, *columns):
@@ -441,61 +410,30 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, herbivore_p
 
 
 def main(guild_size=7):
-    """Main calibration workflow."""
+    """Main calibration workflow - tier-stratified approach."""
 
     print("="*80)
-    print(f"NORMALIZATION CALIBRATION - {guild_size}-PLANT GUILDS")
+    print(f"TIER-STRATIFIED NORMALIZATION CALIBRATION - {guild_size}-PLANT GUILDS")
     print("="*80)
 
     con = duckdb.connect()
 
     # Load data
     plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df = load_all_data(con)
-    all_species = plants_df['wfo_taxon_id'].values
 
-    # Build compatibility
-    compatibility = build_climate_compatibility(plants_df)
+    # Get Köppen tier definitions
+    tier_columns = get_tier_columns()
 
-    # Generate guilds
+    # Print tier statistics
     print("\n" + "="*80)
-    print(f"GENERATING 10,000 {guild_size}-PLANT CALIBRATION GUILDS")
+    print("KÖPPEN CLIMATE TIER COVERAGE")
     print("="*80)
+    for tier_col, tier_name in tier_columns.items():
+        n_plants = plants_df[plants_df[tier_col] == True].shape[0]
+        print(f"{tier_name}: {n_plants:,} plants")
 
-    guilds = []
-
-    # 10,000 climate-compatible guilds only
-    print(f"\nSampling 10,000 climate-compatible {guild_size}-plant guilds...")
-    for _ in tqdm(range(10000), desc="Climate-compatible"):
-        guild = sample_climate_compatible_guild(guild_size, compatibility, all_species)
-        guilds.append(guild)
-
-    print(f"\nTotal guilds: {len(guilds):,}")
-
-    # Compute raw scores
-    print("\n" + "="*80)
-    print("COMPUTING RAW SCORES (ALL 11 COMPONENTS)")
-    print("="*80)
-
-    # P1/P2 optimized with dictionary lookups - included in calibration
-    raw_scores = {
-        'n1_raw': [], 'n2_raw': [], 'n4_raw': [], 'n5_raw': [], 'n6_raw': [],
-        'p1_raw': [], 'p2_raw': [], 'p3_raw': [], 'p4_raw': [], 'p5_raw': [], 'p6_raw': []
-    }
-
-    for guild in tqdm(guilds, desc="Computing scores"):
-        try:
-            scores = compute_raw_scores(guild, plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df)
-            for key in raw_scores:
-                raw_scores[key].append(scores[key])
-        except Exception as e:
-            print(f"\nError scoring guild: {e}")
-
-    # Compute percentiles
-    print("\n" + "="*80)
-    print("COMPUTING NORMALIZATION PARAMETERS")
-    print("="*80)
-
-    params = {}
+    # Tier-stratified calibration
+    all_tier_params = {}
 
     component_names = {
         'n1_raw': 'N1: Pathogen Fungi',
@@ -511,43 +449,85 @@ def main(guild_size=7):
         'p6_raw': 'P6: Shared Pollinators'
     }
 
-    # Full percentile range for interpolation
     percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
 
-    for key, name in component_names.items():
-        scores_array = np.array(raw_scores[key])
+    # Process each tier independently
+    for tier_col, tier_name in tier_columns.items():
+        print("\n" + "="*80)
+        print(f"{tier_name.upper()} - GENERATING 20,000 {guild_size}-PLANT GUILDS")
+        print("="*80)
 
-        # Compute all percentiles
-        percentile_values = {}
-        for p in percentiles:
-            percentile_values[f'p{p}'] = float(np.percentile(scores_array, p))
+        # Sample guilds from this tier
+        guilds = []
+        n_target = 20000
 
-        params[key.replace('_raw', '')] = {
-            'method': 'percentile',
-            **percentile_values,
-            'mean': float(np.mean(scores_array)),
-            'std': float(np.std(scores_array)),
-            'n_samples': len(scores_array)
+        print(f"\nSampling {n_target:,} guilds from {tier_name}...")
+        for _ in tqdm(range(n_target), desc=f"{tier_name}"):
+            try:
+                guild = sample_tier_guild(tier_col, plants_df, guild_size)
+                guilds.append(guild)
+            except ValueError as e:
+                print(f"\nError: {e}")
+                break
+
+        print(f"✓ Sampled {len(guilds):,} guilds")
+
+        # Compute raw scores
+        print(f"\nComputing raw scores for {tier_name}...")
+        raw_scores = {
+            'n1_raw': [], 'n2_raw': [], 'n4_raw': [], 'n5_raw': [], 'n6_raw': [],
+            'p1_raw': [], 'p2_raw': [], 'p3_raw': [], 'p4_raw': [], 'p5_raw': [], 'p6_raw': []
         }
 
-        print(f"\n{name}:")
-        print(f"  p1={percentile_values['p1']:.4f}, p50={percentile_values['p50']:.4f}, p99={percentile_values['p99']:.4f}")
+        for guild in tqdm(guilds, desc=f"Scoring {tier_name}"):
+            try:
+                scores = compute_raw_scores(guild, plants_df, organisms_df, fungi_df,
+                                           herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df)
+                for key in raw_scores:
+                    raw_scores[key].append(scores[key])
+            except Exception as e:
+                print(f"\nError scoring guild: {e}")
 
-    # Save
+        # Compute percentile parameters for this tier
+        print(f"\nComputing normalization parameters for {tier_name}...")
+        tier_params = {}
+
+        for key, name in component_names.items():
+            scores_array = np.array(raw_scores[key])
+
+            # Compute all percentiles
+            percentile_values = {}
+            for p in percentiles:
+                percentile_values[f'p{p}'] = float(np.percentile(scores_array, p))
+
+            tier_params[key.replace('_raw', '')] = {
+                'method': 'percentile',
+                **percentile_values,
+                'mean': float(np.mean(scores_array)),
+                'std': float(np.std(scores_array)),
+                'n_samples': len(scores_array)
+            }
+
+            print(f"  {name}: p1={percentile_values['p1']:.4f}, p50={percentile_values['p50']:.4f}, p99={percentile_values['p99']:.4f}")
+
+        # Store tier-specific parameters
+        all_tier_params[tier_col] = tier_params
+
+    # Save tier-stratified parameters
     output_path = Path(f'data/stage4/normalization_params_{guild_size}plant.json')
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_path, 'w') as f:
-        json.dump(params, f, indent=2)
-
-    print(f"\n✓ Saved: {output_path}")
+        json.dump(all_tier_params, f, indent=2)
 
     print("\n" + "="*80)
-    print(f"CALIBRATION COMPLETE ({guild_size}-PLANT)")
+    print(f"TIER-STRATIFIED CALIBRATION COMPLETE ({guild_size}-PLANT)")
     print("="*80)
-    print(f"\nCalibration based on {len(guilds):,} climate-compatible {guild_size}-plant guilds")
-    print(f"Components calibrated: N1, N2, N4, N5, N6, P1, P2, P3, P4, P5, P6 (ALL 11)")
-    print(f"P1/P2 optimization: Dictionary-based lookups (no nested DataFrame filtering)")
+    print(f"✓ Calibration based on 6 Köppen tiers × 20,000 guilds = 120,000 total guilds")
+    print(f"✓ Components calibrated: N1, N2, N4, N5, N6, P1, P2, P3, P4, P5, P6 (ALL 11)")
+    print(f"✓ P1/P2 optimization: Dictionary-based lookups")
+    print(f"✓ Output: {output_path}")
+    print(f"✓ Structure: Tier-stratified JSON with separate calibrations per Köppen zone")
 
 
 if __name__ == '__main__':
