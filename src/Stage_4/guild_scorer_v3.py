@@ -1117,24 +1117,29 @@ class GuildScorerV3:
 
                 plant_b_id = row_b['plant_wfo_id']
 
-                # Aggregate potential predators from plant B
-                # Based on analysis: only flower_visitors and interactsWith are meaningful for biocontrol
-                # - flower_visitors: includes predatory insects (hoverflies, beetles)
-                # - interactsWith: includes birds that eat berries + insects (dual-purpose biocontrol)
-                # - hasHost: organisms hosted BY plant (herbivores, not predators) - EXCLUDED
-                # - adjacentTo: too sparse to be meaningful - EXCLUDED
+                # Aggregate ALL animals from plant B across all relationship types
+                # The herbivore_predators lookup table does the actual filtering to predators
+                # If an animal isn't a predator of any guild herbivore, it contributes zero to biocontrol
                 predators_b = set()
 
-                # Add flower visitors (pollinators, some are also predators)
+                # Add flower visitors (original column)
                 if row_b['flower_visitors'] is not None and len(row_b['flower_visitors']) > 0:
                     predators_b.update(row_b['flower_visitors'])
 
-                # Add interactsWith animals (especially fruit-eating birds that hunt insects)
+                # Add hasHost animals
+                if 'predators_hasHost' in row_b.index and row_b['predators_hasHost'] is not None and len(row_b['predators_hasHost']) > 0:
+                    predators_b.update(row_b['predators_hasHost'])
+
+                # Add interactsWith animals
                 if 'predators_interactsWith' in row_b.index and row_b['predators_interactsWith'] is not None and len(row_b['predators_interactsWith']) > 0:
                     predators_b.update(row_b['predators_interactsWith'])
 
+                # Add adjacentTo animals
+                if 'predators_adjacentTo' in row_b.index and row_b['predators_adjacentTo'] is not None and len(row_b['predators_adjacentTo']) > 0:
+                    predators_b.update(row_b['predators_adjacentTo'])
+
                 # Mechanism 1: Specific animal predators (weight 1.0)
-                # Searches flower_visitors + interactsWith animals via herbivore_predators lookup
+                # Searches ALL animals via herbivore_predators lookup (lookup does the filtering)
                 for herbivore in herbivores_a:
                     if herbivore in herbivore_predators:
                         predators = herbivore_predators[herbivore]

@@ -28,7 +28,7 @@ Deployment to Cloud Run:
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-from guild_scorer_v2 import GuildScorer
+from guild_scorer_v3 import GuildScorerV3
 from explanation_engine import generate_explanation
 import duckdb
 from pathlib import Path
@@ -37,11 +37,11 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
 
 # Initialize scorer (shared instance)
-scorer = GuildScorer()
+scorer = GuildScorerV3(calibration_type='7plant')
 
 # Database connection for plant search
 con = duckdb.connect()
-PLANTS_PATH = Path('model_data/outputs/perm2_production/perm2_11680_with_climate_sensitivity_20251102.parquet')
+PLANTS_PATH = Path('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
 
 
 # ============================================
@@ -110,9 +110,10 @@ def score_guild():
         # Return response
         return jsonify({
             'success': True,
-            'score': guild_result.get('guild_score', -1.0),
+            'score': guild_result.get('overall_score', 0.0),
             'veto': guild_result.get('veto', False),
             'explanation': explanation,
+            'metrics': guild_result.get('metrics', {}),
             'plant_names': guild_result.get('plant_names', []),
             'n_plants': len(plant_ids)
         })

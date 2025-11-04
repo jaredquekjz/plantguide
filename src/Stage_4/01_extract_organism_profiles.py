@@ -64,10 +64,11 @@ def extract_organism_profiles(limit=None):
     """).fetchdf()
     print(f"  - Found pollinators for {len(pollinators):,} plants")
 
-    # Step 2: Extract herbivores (pests that eat plants)
-    # ONLY Animalia kingdom (exclude plants, fungi, bacteria)
+    # Step 2: Extract herbivores (PEST INVERTEBRATES ONLY)
+    # ONLY garden pests: insects, mites, slugs/snails, etc.
+    # EXCLUDE vertebrates (birds/mammals eating berries are beneficial seed dispersers, not pests)
     # EXCLUDE pollinators/flower visitors (they eat nectar/pollen as part of beneficial service)
-    print("Step 2: Extracting herbivores (pests)...")
+    print("Step 2: Extracting herbivores (pest invertebrates)...")
     herbivores = con.execute("""
         WITH pollinator_organisms AS (
             -- Get all organisms that are pollinators/visitors (beneficial)
@@ -84,8 +85,14 @@ def extract_organism_profiles(limit=None):
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName IN ('eats', 'preysOn')
           AND sourceTaxonName != 'no name'
-          -- ONLY animals (exclude plants eating plants, fungi, bacteria)
-          AND sourceTaxonKingdomName IN ('Animalia', 'Metazoa')
+          -- ONLY pest invertebrates (garden pests)
+          AND sourceTaxonClassName IN (
+              'Insecta',      -- Insects (aphids, caterpillars, beetles, etc.)
+              'Arachnida',    -- Spiders, mites
+              'Gastropoda',   -- Snails, slugs
+              'Chilopoda',    -- Centipedes
+              'Diplopoda'     -- Millipedes
+          )
           -- EXCLUDE flower visitors/pollinators (beneficial service)
           AND sourceTaxonName NOT IN (SELECT * FROM pollinator_organisms)
         GROUP BY target_wfo_taxon_id
