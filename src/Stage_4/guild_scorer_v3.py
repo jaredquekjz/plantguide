@@ -1040,7 +1040,19 @@ class GuildScorerV3:
         }
 
     def _compute_p2_pathogen_control(self, plants_data, organisms_data, fungi_data, n_plants):
-        """P2: Pathogen antagonists (20% of positive) - Document 4.2."""
+        """
+        P2: Pathogen antagonists - mycoparasite fungi biocontrol.
+
+        NOTE: GloBI fungi-fungi host/parasite data is SPARSE and mostly unusable
+        (contains lichen parasites, misclassified insects/plants as "pathogens").
+        We rely ENTIRELY on mycoparasite guild labels from FungalTraits.
+
+        EXPECTED BEHAVIOR: Most guilds (97.4%) will have ZERO mycoparasites.
+        Only 2.6% of plants (305/11,680) have mycoparasites in dataset.
+        This is not a bug - mycoparasites are naturally rare in plant communities.
+
+        We keep this metric because the data IS useful when present.
+        """
 
         pathogen_control_raw = 0
         mechanisms = []
@@ -1048,7 +1060,9 @@ class GuildScorerV3:
         if fungi_data is None or len(fungi_data) == 0:
             return {'norm': 0.0, 'mechanisms': []}
 
-        # Load pathogen antagonist relationships
+        # Load pathogen antagonist relationships (GloBI - mostly unusable)
+        # NOTE: pathogen_antagonists.parquet contains many non-fungal "pathogens"
+        # (insects, plants, bacteria). Kept for rare valid matches but expect ~zero hits.
         pathogen_antagonists = {}
         if self.pathogen_antagonists_path.exists():
             antag_df = self.con.execute(f"""
@@ -1070,7 +1084,8 @@ class GuildScorerV3:
                 plant_b_id = row_b['plant_wfo_id']
                 mycoparasites_b = set(row_b['mycoparasite_fungi']) if row_b['mycoparasite_fungi'] is not None and len(row_b['mycoparasite_fungi']) > 0 else set()
 
-                # Mechanism 1: Specific antagonist matches (weight 1.0)
+                # Mechanism 1: Specific antagonist matches (weight 1.0) - RARELY FIRES
+                # GloBI data quality issue: most "pathogens" are insects/plants, not fungi
                 for pathogen in pathogens_a:
                     if pathogen in pathogen_antagonists:
                         antagonists = pathogen_antagonists[pathogen]
@@ -1084,7 +1099,8 @@ class GuildScorerV3:
                                 'antagonists': list(matching)[:3]
                             })
 
-                # Mechanism 2: General mycoparasites (weight 0.3)
+                # Mechanism 2: General mycoparasites (weight 0.3) - PRIMARY MECHANISM
+                # Relies on FungalTraits guild labels for mycoparasites
                 if len(pathogens_a) > 0 and len(mycoparasites_b) > 0:
                     pathogen_control_raw += len(mycoparasites_b) * 0.3
 
