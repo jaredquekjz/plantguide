@@ -59,6 +59,7 @@ def extract_organism_profiles(limit=None):
         FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'pollinates'
+          AND sourceTaxonName != 'no name'
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
     print(f"  - Found pollinators for {len(pollinators):,} plants")
@@ -71,6 +72,7 @@ def extract_organism_profiles(limit=None):
             SELECT DISTINCT sourceTaxonName
             FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
             WHERE interactionTypeName IN ('pollinates', 'visitsFlowersOf', 'visits')
+              AND sourceTaxonName != 'no name'
         )
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
@@ -79,6 +81,7 @@ def extract_organism_profiles(limit=None):
         FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName IN ('eats', 'preysOn')
+          AND sourceTaxonName != 'no name'
           AND sourceTaxonName NOT IN (SELECT * FROM pollinator_organisms)
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
@@ -94,6 +97,7 @@ def extract_organism_profiles(limit=None):
         FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName IN ('pathogenOf', 'parasiteOf')
+          AND sourceTaxonName != 'no name'
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
     print(f"  - Found pathogens for {len(pathogens):,} plants")
@@ -108,6 +112,7 @@ def extract_organism_profiles(limit=None):
         FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName IN ('pollinates', 'visitsFlowersOf', 'visits')
+          AND sourceTaxonName != 'no name'
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
     print(f"  - Found flower visitors for {len(visitors):,} plants")
