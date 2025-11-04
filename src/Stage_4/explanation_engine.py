@@ -94,7 +94,8 @@ def _generate_veto_explanation(guild_result: Dict) -> Dict:
     """Generate explanation for climate-vetoed guild."""
 
     reason = guild_result['veto_reason']
-    climate = guild_result['climate_details']
+    # Handle both 'climate_details' (legacy) and 'climate' (new format)
+    climate = guild_result.get('climate_details') or guild_result.get('climate', {})
 
     # Tier-based veto (new framework)
     if reason == 'Incompatible climate tiers':

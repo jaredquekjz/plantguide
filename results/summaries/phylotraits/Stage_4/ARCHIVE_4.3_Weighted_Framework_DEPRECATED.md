@@ -1,8 +1,15 @@
-# Incorporating Stage 3 Indicators into Guild Compatibility Scoring
+# ARCHIVED: Stage 4.3 Weighted Framework
 
-**Document:** 4.3 Original Dataset Integration (FINAL REVISION)
+**⚠️ DEPRECATED - DO NOT USE ⚠️**
+
+This document represents the old weighted framework that has been superseded.
+The current active framework is **Document 4.4** (unified percentile).
+
+**Document:** 4.3 Original Dataset Integration (DEPRECATED)
 **Date:** 2025-11-02
-**Purpose:** Strategy for integrating climate, CSR, phylogeny, and functional traits into guild compatibility framework
+**Status:** ARCHIVED - Superseded by 4.4
+**Purpose:** Old strategy for integrating climate, CSR, phylogeny using weighted aggregation
+**Superseded by:** Document 4.4 (Unified Percentile Framework)
 
 ---
 
