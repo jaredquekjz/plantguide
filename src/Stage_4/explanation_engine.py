@@ -64,15 +64,15 @@ def generate_explanation(guild_result: Dict) -> Dict[str, Any]:
     overall = _assess_overall_score(score, is_4_4=is_4_4)
 
     # Climate explanation
-    climate = _explain_climate(guild_result['climate'])
+    climate = _explain_climate(guild_result['climate'], guild_result)
 
     # Risk factors (negative)
-    risks = _explain_risks(guild_result['negative'], guild_result['n_plants'])
+    risks = _explain_risks(guild_result)
 
     # Beneficial factors (positive)
     # V3: phylo is now p4_phylo_diversity inside positive
     phylo_score = guild_result['positive'].get('p4_phylo_diversity', {}).get('norm', 0) if 'p4_phylo_diversity' in guild_result['positive'] else 0
-    benefits = _explain_benefits(guild_result['positive'], guild_result['n_plants'], phylo_score)
+    benefits = _explain_benefits(guild_result['positive'], guild_result['n_plants'], phylo_score, guild_result)
 
     # Warnings (actionable advice)
     warnings = _generate_warnings(guild_result)
@@ -294,22 +294,44 @@ def _assess_overall_score(score: float, is_4_4: bool = True) -> Dict:
 # CLIMATE EXPLANATION
 # ============================================
 
-def _explain_climate(climate_result: Dict) -> Dict:
-    """Explain climate compatibility."""
+def _explain_climate(climate_result: Dict, guild_result: Dict = None) -> Dict:
+    """Explain climate compatibility with Köppen basket info."""
 
-    # V3: ranges are inside shared_zone as tuples
-    shared_zone = climate_result.get('shared_zone', {})
-    temp_range = shared_zone.get('temp_range', (0, 0))
-    winter_range = shared_zone.get('hardiness_range', (0, 0))
-    warnings = climate_result.get('warnings', [])
+    # Get Köppen tier information
+    tier = climate_result.get('tier', 'unknown')
+    tier_display_map = {
+        'tier_1_tropical': 'Tropical',
+        'tier_2_mediterranean': 'Mediterranean',
+        'tier_3_humid_temperate': 'Humid Temperate',
+        'tier_4_continental': 'Continental',
+        'tier_5_boreal_polar': 'Boreal/Polar',
+        'tier_6_arid': 'Arid'
+    }
+    tier_display = tier_display_map.get(tier, tier.replace('tier_', '').replace('_', ' ').title())
+
+    # Count plants in each tier (to show which baskets plants come from)
+    plant_details = guild_result.get('plant_details', []) if guild_result else []
+    tier_counts = {}
+    for plant in plant_details:
+        for pt in plant.get('tiers', []):
+            tier_counts[pt] = tier_counts.get(pt, 0) + 1
+
+    # Format tier basket info
+    basket_msg = f'Guild calibrated for: {tier_display}'
+    if tier_counts:
+        basket_details = []
+        for t, count in sorted(tier_counts.items(), key=lambda x: x[1], reverse=True):
+            t_name = tier_display_map.get(t, t)
+            basket_details.append(f'{count} plants from {t_name}')
+        basket_msg += f' | Plants drawn from: {", ".join(basket_details[:3])}'
 
     explanation = {
         'compatible': True,
-        'temp_range': f'{temp_range[0]:.1f}°C to {temp_range[1]:.1f}°C',
-        'winter_range': f'{winter_range[0]:.1f}°C to {winter_range[1]:.1f}°C',
+        'tier': tier_display,
+        'tier_raw': tier,
         'messages': [
-            f'✓ All plants can grow in temperature range: {temp_range[0]:.1f}-{temp_range[1]:.1f}°C',
-            f'✓ All plants tolerate winter temperatures: {winter_range[0]:.1f}-{winter_range[1]:.1f}°C'
+            f'✓ {basket_msg}',
+            f'✓ Percentile rankings calibrated against other {tier_display} guilds'
         ],
         'warnings': []
     }
@@ -342,19 +364,28 @@ def _explain_climate(climate_result: Dict) -> Dict:
 # RISK EXPLANATIONS
 # ============================================
 
-def _explain_risks(negative_result: Dict, n_plants: int) -> List[Dict]:
+def _explain_risks(guild_result: Dict) -> List[Dict]:
     """Explain shared vulnerabilities (negative factors)."""
 
     risks = []
+    negative_result = guild_result['negative']
+    n_plants = guild_result['n_plants']
+    plant_details = guild_result.get('plant_details', [])
+    organism_to_plants = guild_result.get('organism_to_plants', {})
 
-    # Shared pathogenic fungi (CRITICAL RISK)
-    shared_fungi = negative_result.get('shared_pathogenic_fungi', {})
-    if shared_fungi:
+    # Helper to get plant names from IDs
+    def get_plant_names(plant_ids):
+        id_to_name = {p['wfo_id']: p['scientific_name'] for p in plant_details}
+        return [id_to_name.get(pid, pid[:20]) for pid in plant_ids]
+
+    # N1: Shared pathogenic fungi (CRITICAL RISK)
+    pathogen_map = organism_to_plants.get('pathogens', {})
+    if pathogen_map:
         # Sort by plant count (highest coverage first)
-        top_fungi = sorted(shared_fungi.items(), key=lambda x: x[1], reverse=True)[:5]
+        top_pathogens = sorted(pathogen_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
 
         # Calculate severity
-        max_coverage = max(count for _, count in top_fungi)
+        max_coverage = max(len(plant_ids) for _, plant_ids in top_pathogens)
         coverage_pct = int(max_coverage / n_plants * 100)
 
         if max_coverage >= n_plants * 0.8:  # 80%+ coverage
@@ -367,33 +398,47 @@ def _explain_risks(negative_result: Dict, n_plants: int) -> List[Dict]:
             severity = 'medium'
             icon = '🟡'
 
-        fungi_list = [f'{name} ({count}/{n_plants} plants)' for name, count in top_fungi]
+        # Format: organism (count plants): Plant A, Plant B, Plant C
+        pathogen_list = []
+        for pathogen, plant_ids in top_pathogens:
+            plant_names = get_plant_names(plant_ids)
+            plant_str = ', '.join(plant_names[:3])
+            if len(plant_names) > 3:
+                plant_str += f' (+ {len(plant_names) - 3} more)'
+            pathogen_list.append(f'{pathogen} ({len(plant_ids)} plants): {plant_str}')
 
         risks.append({
             'type': 'shared_pathogens',
             'severity': severity,
             'icon': icon,
-            'title': f'Shared Pathogenic Fungi ({len(shared_fungi)} total)',
+            'title': f'Shared Pathogenic Fungi ({len(pathogen_map)} total)',
             'message': f'Up to {coverage_pct}% of plants share disease vulnerabilities',
             'detail': 'One outbreak can spread rapidly across multiple plants in the guild',
-            'evidence': fungi_list,
+            'evidence': pathogen_list,
             'advice': 'Space plants apart, ensure good air circulation, monitor for early symptoms'
         })
 
-    # Shared herbivores
-    shared_herbivores = negative_result.get('shared_herbivores', {})
-    if shared_herbivores:
-        top_herbivores = sorted(shared_herbivores.items(), key=lambda x: x[1], reverse=True)[:3]
-        max_coverage = max(count for _, count in top_herbivores)
+    # N2: Shared herbivores
+    herbivore_map = organism_to_plants.get('herbivores', {})
+    if herbivore_map:
+        top_herbivores = sorted(herbivore_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
+        max_coverage = max(len(plant_ids) for _, plant_ids in top_herbivores)
         coverage_pct = int(max_coverage / n_plants * 100)
 
-        herbivore_list = [f'{name} ({count}/{n_plants} plants)' for name, count in top_herbivores]
+        # Format: organism (count plants): Plant A, Plant B, Plant C
+        herbivore_list = []
+        for herbivore, plant_ids in top_herbivores:
+            plant_names = get_plant_names(plant_ids)
+            plant_str = ', '.join(plant_names[:3])
+            if len(plant_names) > 3:
+                plant_str += f' (+ {len(plant_names) - 3} more)'
+            herbivore_list.append(f'{herbivore} ({len(plant_ids)} plants): {plant_str}')
 
         risks.append({
             'type': 'shared_herbivores',
             'severity': 'medium',
             'icon': '🟡',
-            'title': f'Shared Pest Vulnerabilities ({len(shared_herbivores)} total)',
+            'title': f'Shared Pest Vulnerabilities ({len(herbivore_map)} total)',
             'message': f'Up to {coverage_pct}% of plants attract the same pests',
             'detail': 'Pest populations can build up and spread easily between plants',
             'evidence': herbivore_list,
@@ -420,14 +465,40 @@ def _explain_risks(negative_result: Dict, n_plants: int) -> List[Dict]:
 # BENEFIT EXPLANATIONS
 # ============================================
 
-def _explain_benefits(positive_result: Dict, n_plants: int, phylo_bonus: float = 0) -> List[Dict]:
+def _explain_benefits(positive_result: Dict, n_plants: int, phylo_bonus: float = 0, guild_result: Dict = None) -> List[Dict]:
     """Explain beneficial interactions (positive factors)."""
 
     benefits = []
 
-    # Phylogenetic diversity (P4 - 20% of positive score)
+    # Get plant details and organism mappings
+    plant_details = guild_result.get('plant_details', []) if guild_result else []
+    organism_to_plants = guild_result.get('organism_to_plants', {}) if guild_result else {}
+
+    # Helper to get plant names from IDs
+    def get_plant_names(plant_ids):
+        id_to_name = {p['wfo_id']: p['scientific_name'] for p in plant_details}
+        return [id_to_name.get(pid, pid[:20]) for pid in plant_ids]
+
+    # Phylogenetic diversity (P4 - 20% of positive score) with family list
     # Based on eigenvector distances, not family counting
     if phylo_bonus > 0.05:  # Only show if significant (5%+)
+        # List unique families
+        families = {}
+        for plant in plant_details:
+            family = plant['family']
+            if family not in families:
+                families[family] = []
+            name = plant['scientific_name'][:30] + "..." if len(plant['scientific_name']) > 30 else plant['scientific_name']
+            families[family].append(name)
+
+        # Format family list
+        family_list = []
+        for family, plants in sorted(families.items()):
+            plant_str = ', '.join(plants[:2])
+            if len(plants) > 2:
+                plant_str += f' (+ {len(plants) - 2} more)'
+            family_list.append(f"{family}: {plant_str}")
+
         benefits.append({
             'type': 'phylo_divergence',
             'strength': 'high',
@@ -435,45 +506,219 @@ def _explain_benefits(positive_result: Dict, n_plants: int, phylo_bonus: float =
             'title': 'Evolutionary Distance Benefits',
             'message': 'Plants are evolutionarily distant from each other',
             'detail': 'Distantly related plants have evolved different chemical defenses and pest vulnerabilities over millions of years. This natural separation makes your guild more resilient to disease outbreaks.',
-            'evidence': []
+            'evidence': family_list if len(families) > 1 else []
         })
 
-    # Shared beneficial fungi
-    shared_beneficial = positive_result.get('shared_beneficial_fungi', {})
-    if shared_beneficial:
-        top_beneficial = sorted(shared_beneficial.items(), key=lambda x: x[1], reverse=True)[:3]
-        max_coverage = max(count for _, count in top_beneficial)
+    # P3: Shared beneficial fungi with types
+    beneficial_fungi_map = organism_to_plants.get('beneficial_fungi', {})
+    beneficial_fungi_types = organism_to_plants.get('beneficial_fungi_types', {})
+    if beneficial_fungi_map:
+        top_beneficial = sorted(beneficial_fungi_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
+        max_coverage = max(len(plant_ids) for _, plant_ids in top_beneficial)
         coverage_pct = int(max_coverage / n_plants * 100)
 
-        fungi_list = [f'{name} ({count}/{n_plants} plants)' for name, count in top_beneficial]
+        # Format: organism [TYPE] (count plants): Plant A, Plant B, Plant C
+        fungi_list = []
+        for fungus, plant_ids in top_beneficial:
+            plant_names = get_plant_names(plant_ids)
+            plant_str = ', '.join(plant_names[:3])
+            if len(plant_names) > 3:
+                plant_str += f' (+ {len(plant_names) - 3} more)'
+            # Add type if available
+            ftype = beneficial_fungi_types.get(fungus, '')
+            type_str = f' [{ftype}]' if ftype else ''
+            fungi_list.append(f'{fungus}{type_str} ({len(plant_ids)} plants): {plant_str}')
 
         benefits.append({
             'type': 'beneficial_fungi',
             'strength': 'high',
             'icon': '✓',
-            'title': f'Shared Beneficial Fungi ({len(shared_beneficial)} total)',
+            'title': f'Shared Beneficial Fungi ({len(beneficial_fungi_map)} total)',
             'message': f'Up to {coverage_pct}% of plants connect through beneficial fungi',
             'detail': 'These fungi form underground networks (like nature\'s internet) that allow plants to share nutrients and water. Think of mycorrhizal fungi as a nutrient delivery service between plant roots.',
             'evidence': fungi_list
         })
 
-    # Shared pollinators
-    shared_pollinators = positive_result.get('shared_pollinators', {})
-    if shared_pollinators:
-        top_pollinators = sorted(shared_pollinators.items(), key=lambda x: x[1], reverse=True)[:3]
-        max_coverage = max(count for _, count in top_pollinators)
+    # P6: Shared pollinators
+    pollinator_map = organism_to_plants.get('pollinators', {})
+    if pollinator_map:
+        top_pollinators = sorted(pollinator_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
+        max_coverage = max(len(plant_ids) for _, plant_ids in top_pollinators)
         coverage_pct = int(max_coverage / n_plants * 100)
 
-        pollinator_list = [f'{name} ({count}/{n_plants} plants)' for name, count in top_pollinators]
+        # Format: organism (count plants): Plant A, Plant B, Plant C
+        pollinator_list = []
+        for pollinator, plant_ids in top_pollinators:
+            plant_names = get_plant_names(plant_ids)
+            plant_str = ', '.join(plant_names[:3])
+            if len(plant_names) > 3:
+                plant_str += f' (+ {len(plant_names) - 3} more)'
+            pollinator_list.append(f'{pollinator} ({len(plant_ids)} plants): {plant_str}')
 
         benefits.append({
             'type': 'shared_pollinators',
             'strength': 'high',
             'icon': '✓',
-            'title': f'Shared Pollinator Network ({len(shared_pollinators)} species)',
+            'title': f'Shared Pollinator Network ({len(pollinator_map)} species)',
             'message': f'Up to {coverage_pct}% of plants attract the same beneficial pollinators',
             'detail': 'Bees, butterflies, and other pollinators will visit multiple plants in your guild, creating a pollination network. More diverse flowers = more pollinator species = better fruit/seed production.',
             'evidence': pollinator_list
+        })
+
+    # P1: Insect biocontrol (predator-herbivore relationships)
+    p1_data = positive_result.get('p1_biocontrol', {})
+    p1_norm = p1_data.get('norm', 0)
+    mechanisms = p1_data.get('mechanisms', [])
+
+    if p1_norm > 0.1 and mechanisms:  # Significant biocontrol present
+        # Aggregate by predator plant to show which plants attract beneficial predators
+        from collections import defaultdict
+        plant_predators = defaultdict(lambda: {'animal_predators': set(), 'fungal_parasites': set(), 'targets': set()})
+
+        for m in mechanisms:
+            if m.get('type') == 'animal_predator':
+                predator_plant = m.get('predator_plant', 'Unknown')
+                predators = m.get('predators', [])
+                herbivore = m.get('herbivore', 'Unknown')
+                for pred in predators:
+                    plant_predators[predator_plant]['animal_predators'].add(pred)
+                plant_predators[predator_plant]['targets'].add(herbivore)
+            elif m.get('type') == 'fungal_parasite':
+                fungi_plant = m.get('fungi_plant', 'Unknown')
+                fungi = m.get('fungi', [])
+                herbivore = m.get('herbivore', 'Unknown')
+                for fungus in fungi:
+                    plant_predators[fungi_plant]['fungal_parasites'].add(fungus)
+                plant_predators[fungi_plant]['targets'].add(herbivore)
+
+        # Format top 5 plants with biocontrol agents
+        biocontrol_details = []
+        for i, (plant_id, agents) in enumerate(sorted(plant_predators.items(),
+                                                       key=lambda x: len(x[1]['animal_predators']) + len(x[1]['fungal_parasites']),
+                                                       reverse=True)[:5], 1):
+            agent_parts = []
+            if agents['animal_predators']:
+                animal_list = ', '.join(sorted(agents['animal_predators'])[:3])
+                if len(agents['animal_predators']) > 3:
+                    animal_list += f' (+ {len(agents["animal_predators"]) - 3} more)'
+                agent_parts.append(f"{len(agents['animal_predators'])} predators: {animal_list}")
+            if agents['fungal_parasites']:
+                fungal_list = ', '.join(sorted(agents['fungal_parasites'])[:3])
+                if len(agents['fungal_parasites']) > 3:
+                    fungal_list += f' (+ {len(agents["fungal_parasites"]) - 3} more)'
+                agent_parts.append(f"{len(agents['fungal_parasites'])} fungi: {fungal_list}")
+
+            target_list = ', '.join(sorted(agents['targets'])[:3])
+            if len(agents['targets']) > 3:
+                target_list += f' (+ {len(agents["targets"]) - 3} more)'
+
+            # Get plant name if available (use WFO ID since we don't have names mapped)
+            plant_name = plant_id[:20] if len(plant_id) > 20 else plant_id
+
+            biocontrol_details.append(f"• {plant_name}: {', '.join(agent_parts)} → controls {target_list}")
+
+        benefits.append({
+            'type': 'insect_biocontrol',
+            'strength': 'high',
+            'icon': '✓',
+            'title': 'Natural Pest Control System',
+            'message': f'{len(plant_predators)} plants attract beneficial predators',
+            'detail': 'Your guild attracts predators (birds, beetles, spiders) that naturally control pest insects. This reduces the need for insecticides and creates a balanced mini-ecosystem.',
+            'evidence': biocontrol_details
+        })
+
+    # P2: Disease control (mycoparasite fungi)
+    p2_data = positive_result.get('p2_pathogen_control', {})
+    p2_norm = p2_data.get('norm', 0)
+    p2_mechanisms = p2_data.get('mechanisms', [])
+
+    if p2_norm > 0.1 and p2_mechanisms:  # Significant disease control present
+        # Aggregate by control plant to show which plants have protective mycoparasites
+        from collections import defaultdict
+        plant_mycoparasites = defaultdict(set)
+
+        for m in p2_mechanisms:
+            if m.get('type') == 'specific_antagonist':
+                control_plant = m.get('control_plant', 'Unknown')
+                antagonists = m.get('antagonists', [])
+                for ant in antagonists:
+                    plant_mycoparasites[control_plant].add(ant)
+            elif m.get('type') == 'general_mycoparasite':
+                control_plant = m.get('control_plant', 'Unknown')
+                mycoparasites = m.get('mycoparasites', [])
+                for myco in mycoparasites:
+                    plant_mycoparasites[control_plant].add(myco)
+
+        # Format top 5 plants with mycoparasites
+        disease_control_details = []
+        for i, (plant_id, mycoparasites) in enumerate(sorted(plant_mycoparasites.items(), key=lambda x: len(x[1]), reverse=True)[:5], 1):
+            myco_list = sorted(mycoparasites)[:5]
+            myco_str = ', '.join(myco_list)
+            if len(mycoparasites) > 5:
+                myco_str += f' (+ {len(mycoparasites) - 5} more)'
+
+            # Get plant name if available (use WFO ID since we don't have names mapped)
+            plant_name = plant_id[:20] if len(plant_id) > 20 else plant_id
+
+            disease_control_details.append(f"• {plant_name}: {len(mycoparasites)} mycoparasites ({myco_str})")
+
+        benefits.append({
+            'type': 'disease_control',
+            'strength': 'high',
+            'icon': '✓',
+            'title': 'Biological Disease Suppression',
+            'message': f'{len(plant_mycoparasites)} plants with protective mycoparasites',
+            'detail': 'Beneficial fungi in your guild (mycoparasites) naturally attack and suppress pathogenic fungi. These "good fungi" act like biological fungicides, protecting your plants from disease.',
+            'evidence': disease_control_details
+        })
+
+    # P5: Vertical stratification (height layers) with plant-level detail
+    p5_data = positive_result.get('p5_stratification', {})
+    p5_norm = p5_data.get('norm', 0)
+    n_forms = p5_data.get('n_forms', 1)
+
+    if p5_norm > 0.2 and n_forms >= 2:  # Significant stratification
+        # Group plants by height layers
+        from collections import defaultdict
+        layers = defaultdict(list)
+
+        for plant in plant_details:
+            height = plant['height_max']
+            light = plant['light']
+            name = plant['scientific_name'][:30] + "..." if len(plant['scientific_name']) > 30 else plant['scientific_name']
+
+            # Classify into layers
+            if height >= 15:
+                layer = 'Canopy (15-100m)'
+            elif height >= 5:
+                layer = 'Midstory (5-15m)'
+            elif height >= 2:
+                layer = 'Understory (2-5m)'
+            elif height >= 0.5:
+                layer = 'Shrub (0.5-2m)'
+            else:
+                layer = 'Ground (0-0.5m)'
+
+            layers[layer].append(f"{name} (H={height:.1f}m, L={light:.1f})")
+
+        # Format layer details
+        layer_details = []
+        layer_order = ['Canopy (15-100m)', 'Midstory (5-15m)', 'Understory (2-5m)', 'Shrub (0.5-2m)', 'Ground (0-0.5m)']
+
+        for layer_name in layer_order:
+            if layer_name in layers:
+                plants_in_layer = layers[layer_name]
+                layer_details.append(f"{layer_name}: {', '.join(plants_in_layer[:3])}" +
+                                   (f" (+ {len(plants_in_layer) - 3} more)" if len(plants_in_layer) > 3 else ""))
+
+        benefits.append({
+            'type': 'vertical_layers',
+            'strength': 'medium',
+            'icon': '✓',
+            'title': f'Vertical Space Utilization ({n_forms} growth forms)',
+            'message': 'Plants occupy different height layers for efficient space use',
+            'detail': 'Your guild includes plants of different heights (groundcovers, mid-height plants, tall plants), creating vertical layers that maximize growing space and light capture. Like a forest with understory and canopy.',
+            'evidence': layer_details
         })
 
     return benefits
@@ -488,10 +733,18 @@ def _generate_warnings(guild_result: Dict) -> List[Dict]:
 
     warnings = []
 
-    # CSR conflict warning
+    # CSR conflict warning with plant-level detail
     # V3: CSR is now n4_csr_conflicts inside negative
     csr_data = guild_result.get('negative', {}).get('n4_csr_conflicts', {})
     csr_norm = csr_data.get('norm', 0)
+    plant_details = guild_result.get('plant_details', [])
+
+    # Helper to get plant details by name
+    def get_plant_by_name(name):
+        for p in plant_details:
+            if p['scientific_name'] == name:
+                return p
+        return None
 
     if csr_norm > 0.2:  # Significant conflicts
         conflicts = csr_data.get('conflicts', [])
@@ -511,13 +764,88 @@ def _generate_warnings(guild_result: Dict) -> List[Dict]:
                 conflict_type = 'strategy mismatch'
                 csr_explanation = "Plants have conflicting growth strategies that may lead to resource competition."
 
+            # Show top 5 most severe conflicts with plant details
+            conflict_details = []
+            sorted_conflicts = sorted(conflicts, key=lambda x: x.get('severity', 0), reverse=True)[:5]
+
+            for conflict in sorted_conflicts:
+                plant_names = conflict.get('plants', [])
+                if len(plant_names) >= 2:
+                    plant_a = get_plant_by_name(plant_names[0])
+                    plant_b = get_plant_by_name(plant_names[1])
+
+                    if plant_a and plant_b:
+                        # Format CSR and light values
+                        a_csr = f"C={plant_a['csr_c']:.0f}, S={plant_a['csr_s']:.0f}, R={plant_a['csr_r']:.0f}"
+                        b_csr = f"C={plant_b['csr_c']:.0f}, S={plant_b['csr_s']:.0f}, R={plant_b['csr_r']:.0f}"
+
+                        # Assess light compatibility (0-10 scale)
+                        light_diff = abs(plant_a['light'] - plant_b['light'])
+                        if light_diff < 2:
+                            light_status = "Compatible ✓"
+                        elif light_diff < 4:
+                            light_status = "Marginal ~"
+                        else:
+                            light_status = "Incompatible ✗"
+
+                        # Short plant names (first 25 chars)
+                        name_a = plant_names[0][:25] + "..." if len(plant_names[0]) > 25 else plant_names[0]
+                        name_b = plant_names[1][:25] + "..." if len(plant_names[1]) > 25 else plant_names[1]
+
+                        conflict_details.append(
+                            f"{name_a} ({a_csr}, L={plant_a['light']:.1f}) ⚔️ {name_b} ({b_csr}, L={plant_b['light']:.1f}) → Light: {light_status}"
+                        )
+
             warnings.append({
                 'type': 'csr_conflict',
                 'severity': 'medium',
                 'message': f'⚠ Growth Strategy Conflict: {conflict_type}',
                 'explanation': csr_explanation,
-                'advice': 'Give plants plenty of space, ensure adequate water/nutrients, or choose plants with similar growth strategies'
+                'advice': 'Give plants plenty of space, ensure adequate water/nutrients, or choose plants with similar growth strategies',
+                'evidence': conflict_details if conflict_details else []
             })
+
+    # N5: Nitrogen fixation advisory with plant list
+    n5_data = guild_result.get('negative', {}).get('n5_n_fixation', {})
+    n_fixers = n5_data.get('n_fixers', 0)
+
+    if n_fixers > 0:
+        # List N-fixing plants
+        n_fixer_list = []
+        for plant in plant_details:
+            if plant['n_fixer']:
+                name = plant['scientific_name'][:35] + "..." if len(plant['scientific_name']) > 35 else plant['scientific_name']
+                n_fixer_list.append(f"{name} (Family: {plant['family']})")
+
+        warnings.append({
+            'type': 'nitrogen_fixation',
+            'severity': 'info',
+            'message': f'✓ Nitrogen-Fixing Plants: {n_fixers} legumes present',
+            'explanation': 'Legumes (beans, peas, clover) fix atmospheric nitrogen through root bacteria, naturally enriching the soil. This is a BENEFIT for surrounding plants.',
+            'advice': 'Reduce nitrogen fertilizer application - these plants provide natural fertilization. Cut and mulch legume foliage to return nitrogen to soil.',
+            'evidence': n_fixer_list
+        })
+
+    # N6: pH incompatibility warning with plant groups
+    n6_data = guild_result.get('negative', {}).get('n6_ph', {})
+    ph_compatible = n6_data.get('compatible', True)
+
+    if not ph_compatible:
+        min_ph = n6_data.get('min_ph', 0)
+        max_ph = n6_data.get('max_ph', 0)
+
+        # Group plants by pH preference (if we have pH data in plant_details)
+        # For now, we'll just show the overall warning since plant_details doesn't have individual pH values
+        # This would need pH data added to plant_details in guild_scorer_v3.py to show individual plants
+
+        warnings.append({
+            'type': 'ph_incompatible',
+            'severity': 'high',
+            'message': '⚠ Conflicting Soil pH Requirements',
+            'explanation': f'Some plants prefer acidic soil (pH < {min_ph:.1f}) while others need alkaline soil (pH > {max_ph:.1f}). Growing them together requires compromising on soil pH, which may stress some plants.',
+            'advice': 'Test your soil pH and choose plants that all tolerate your native pH range, or create separate planting zones with amended soil.',
+            'evidence': []  # Would show acid-lovers vs alkaline-lovers if pH data added to plant_details
+        })
 
     # Climate warnings (from v3 climate section)
     climate_warnings = guild_result.get('climate', {}).get('warnings', [])

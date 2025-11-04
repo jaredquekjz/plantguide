@@ -402,6 +402,105 @@ class GuildScorerV3:
             'soil_ph': negative_result['n6_ph']['flag']
         }
 
+        # ============================================
+        # STEP 6: EXTRACT PLANT DETAILS FOR FRONTEND
+        # ============================================
+
+        plant_details = []
+        plant_names = []
+        for _, plant in plants_data.iterrows():
+            # Determine which tiers this plant belongs to
+            plant_tiers = []
+            for tier_col in ['tier_1_tropical', 'tier_2_mediterranean', 'tier_3_humid_temperate',
+                           'tier_4_continental', 'tier_5_boreal_polar', 'tier_6_arid']:
+                if plant.get(tier_col, False):
+                    plant_tiers.append(tier_col)
+
+            plant_details.append({
+                'wfo_id': plant['plant_wfo_id'],
+                'scientific_name': plant['wfo_scientific_name'],
+                'family': plant['family'],
+                'genus': plant.get('genus', ''),
+                'height_max': plant.get('height_m', 0),
+                'life_form': plant.get('growth_form', ''),
+                'csr_c': plant.get('CSR_C', 33),
+                'csr_s': plant.get('CSR_S', 33),
+                'csr_r': plant.get('CSR_R', 33),
+                'light': plant.get('light_pref', 5),
+                'n_fixer': plant.get('family', '') in ['Fabaceae', 'Leguminosae'],  # Legume families
+                'tiers': plant_tiers  # Köppen climate tier memberships
+            })
+            plant_names.append(plant['wfo_scientific_name'])
+
+        # ============================================
+        # STEP 7: BUILD PLANT-ORGANISM MAPPINGS
+        # ============================================
+
+        # N1: Which plants have which pathogens
+        plant_pathogens = {}
+        if fungi_data is not None and len(fungi_data) > 0:
+            for _, row in fungi_data.iterrows():
+                plant_id = row['plant_wfo_id']
+                pathogens = row['pathogenic_fungi']
+                if pathogens is not None and len(pathogens) > 0:
+                    plant_pathogens[plant_id] = list(pathogens)
+                else:
+                    plant_pathogens[plant_id] = []
+
+        # N2: Which plants have which herbivores
+        plant_herbivores = {}
+        if organisms_data is not None and len(organisms_data) > 0:
+            for _, row in organisms_data.iterrows():
+                plant_id = row['plant_wfo_id']
+                herbivores = row['herbivores']
+                if herbivores is not None and len(herbivores) > 0:
+                    plant_herbivores[plant_id] = list(herbivores)
+                else:
+                    plant_herbivores[plant_id] = []
+
+        # P3: Which plants have which beneficial fungi (with types)
+        plant_beneficial_fungi = {}
+        plant_beneficial_fungi_typed = {}  # Maps organism → type (AM, EMF, endophyte)
+        if fungi_data is not None and len(fungi_data) > 0:
+            for _, row in fungi_data.iterrows():
+                plant_id = row['plant_wfo_id']
+                beneficial = []
+                # Track fungal types
+                fungal_type_map = {}
+                for col, ftype in [('amf_fungi', 'AM'), ('emf_fungi', 'EMF'),
+                                  ('endophytic_fungi', 'Endophyte'), ('saprotrophic_fungi', 'Saprotroph')]:
+                    val = row.get(col)
+                    if val is not None and len(val) > 0:
+                        beneficial.extend(val)
+                        for fungus in val:
+                            if fungus not in fungal_type_map:  # First type wins
+                                fungal_type_map[fungus] = ftype
+                plant_beneficial_fungi[plant_id] = list(set(beneficial))
+                # Merge into global type map
+                for fungus, ftype in fungal_type_map.items():
+                    if fungus not in plant_beneficial_fungi_typed:
+                        plant_beneficial_fungi_typed[fungus] = ftype
+
+        # P6: Which plants have which pollinators
+        plant_pollinators = {}
+        if organisms_data is not None and len(organisms_data) > 0:
+            for _, row in organisms_data.iterrows():
+                plant_id = row['plant_wfo_id']
+                pollinators = row['flower_visitors']
+                if pollinators is not None and len(pollinators) > 0:
+                    plant_pollinators[plant_id] = list(pollinators)
+                else:
+                    plant_pollinators[plant_id] = []
+
+        # Invert to organism → [plants]
+        organism_to_plants = {
+            'pathogens': self._invert_mapping(plant_pathogens),
+            'herbivores': self._invert_mapping(plant_herbivores),
+            'beneficial_fungi': self._invert_mapping(plant_beneficial_fungi),
+            'beneficial_fungi_types': plant_beneficial_fungi_typed,  # Maps fungus → type (AM/EMF/Endophyte)
+            'pollinators': self._invert_mapping(plant_pollinators)
+        }
+
         return {
             'overall_score': overall_score,  # ∈ [0, 100]
             'metrics': metrics,              # Dict of 9 metrics (all 0-100)
@@ -414,11 +513,38 @@ class GuildScorerV3:
             'positive': positive_result,
             'climate': climate_result,
 
+            # Frontend enhancement data (Stage 4.5)
+            'plant_details': plant_details,
+            'plant_names': plant_names,
+            'organism_to_plants': organism_to_plants,
+
             # Backwards compatibility (DEPRECATED - will be removed)
             'guild_score': (overall_score - 50) / 50,  # Map [0,100] → [-1,+1]
             'negative_risk_score': negative_result.get('negative_risk_score', 0),
             'positive_benefit_score': positive_result.get('positive_benefit_score', 0),
         }
+
+    # ============================================
+    # HELPER METHODS
+    # ============================================
+
+    def _invert_mapping(self, plant_to_organisms):
+        """
+        Invert {plant_id: [organism1, organism2]} to {organism: [plant_id1, plant_id2]}.
+
+        Args:
+            plant_to_organisms: Dict mapping plant IDs to lists of organisms
+
+        Returns:
+            Dict mapping organisms to lists of plant IDs
+        """
+        organism_to_plants = {}
+        for plant_id, organisms in plant_to_organisms.items():
+            for organism in organisms:
+                if organism not in organism_to_plants:
+                    organism_to_plants[organism] = []
+                organism_to_plants[organism].append(plant_id)
+        return organism_to_plants
 
     # ============================================
     # DATA LOADING
@@ -435,6 +561,7 @@ class GuildScorerV3:
             wfo_taxon_id as plant_wfo_id,
             wfo_scientific_name,
             family,
+            genus,
             -- Köppen tier memberships (for climate sanity check)
             tier_1_tropical,
             tier_2_mediterranean,
@@ -989,13 +1116,29 @@ class GuildScorerV3:
                     continue
 
                 plant_b_id = row_b['plant_wfo_id']
-                visitors_b = set(row_b['flower_visitors']) if row_b['flower_visitors'] is not None and len(row_b['flower_visitors']) > 0 else set()
+
+                # Aggregate potential predators from plant B
+                # Based on analysis: only flower_visitors and interactsWith are meaningful for biocontrol
+                # - flower_visitors: includes predatory insects (hoverflies, beetles)
+                # - interactsWith: includes birds that eat berries + insects (dual-purpose biocontrol)
+                # - hasHost: organisms hosted BY plant (herbivores, not predators) - EXCLUDED
+                # - adjacentTo: too sparse to be meaningful - EXCLUDED
+                predators_b = set()
+
+                # Add flower visitors (pollinators, some are also predators)
+                if row_b['flower_visitors'] is not None and len(row_b['flower_visitors']) > 0:
+                    predators_b.update(row_b['flower_visitors'])
+
+                # Add interactsWith animals (especially fruit-eating birds that hunt insects)
+                if 'predators_interactsWith' in row_b.index and row_b['predators_interactsWith'] is not None and len(row_b['predators_interactsWith']) > 0:
+                    predators_b.update(row_b['predators_interactsWith'])
 
                 # Mechanism 1: Specific animal predators (weight 1.0)
+                # Searches flower_visitors + interactsWith animals via herbivore_predators lookup
                 for herbivore in herbivores_a:
                     if herbivore in herbivore_predators:
                         predators = herbivore_predators[herbivore]
-                        matching = visitors_b.intersection(predators)
+                        matching = predators_b.intersection(predators)
                         if len(matching) > 0:
                             biocontrol_raw += len(matching) * 1.0
                             mechanisms.append({
@@ -1104,6 +1247,14 @@ class GuildScorerV3:
                 # Weight = 1.0 because this is the ONLY reliable mechanism (GloBI data unusable)
                 if len(pathogens_a) > 0 and len(mycoparasites_b) > 0:
                     pathogen_control_raw += len(mycoparasites_b) * 1.0
+                    # Track general mycoparasite relationships for frontend display
+                    mechanisms.append({
+                        'type': 'general_mycoparasite',
+                        'vulnerable_plant': plant_a_id,
+                        'n_pathogens': len(pathogens_a),
+                        'control_plant': plant_b_id,
+                        'mycoparasites': list(mycoparasites_b)[:5]  # Top 5 for display
+                    })
 
         # Normalize by guild size
         max_pairs = n_plants * (n_plants - 1)
@@ -1113,7 +1264,7 @@ class GuildScorerV3:
         return {
             'raw': pathogen_control_normalized,  # Value before tanh (for percentile conversion)
             'norm': pathogen_control_norm,  # For backwards compatibility
-            'mechanisms': mechanisms[:10]  # Keep top 10 for reporting
+            'mechanisms': mechanisms  # All mechanisms for detailed frontend display
         }
 
     def _compute_p3_beneficial_fungi(self, fungi_data, n_plants):
