@@ -1099,10 +1099,11 @@ class GuildScorerV3:
                                 'antagonists': list(matching)[:3]
                             })
 
-                # Mechanism 2: General mycoparasites (weight 0.3) - PRIMARY MECHANISM
+                # Mechanism 2: General mycoparasites (weight 1.0) - PRIMARY MECHANISM
                 # Relies on FungalTraits guild labels for mycoparasites
+                # Weight = 1.0 because this is the ONLY reliable mechanism (GloBI data unusable)
                 if len(pathogens_a) > 0 and len(mycoparasites_b) > 0:
-                    pathogen_control_raw += len(mycoparasites_b) * 0.3
+                    pathogen_control_raw += len(mycoparasites_b) * 1.0
 
         # Normalize by guild size
         max_pairs = n_plants * (n_plants - 1)
