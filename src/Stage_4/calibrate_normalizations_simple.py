@@ -39,8 +39,10 @@ def load_all_data(con):
         "wc2.1_30s_bio_1_q95" / 10.0 as temp_max,
         "wc2.1_30s_bio_12_q05" as precip_min,
         "wc2.1_30s_bio_12_q95" as precip_max,
+        nitrogen_fixation_rating as n_fixation,
+        "EIVEres-R" as pH_mean,
         {', '.join([f'phylo_ev{i}' for i in range(1, 93)])}
-    FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_climate_sensitivity_20251102.parquet')
+    FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
     WHERE phylo_ev1 IS NOT NULL
     '''
     plants_df = con.execute(plants_query).fetchdf()
@@ -54,15 +56,35 @@ def load_all_data(con):
     # Fungi
     fungi_df = con.execute('''
         SELECT plant_wfo_id, pathogenic_fungi, pathogenic_fungi_host_specific,
-               amf_fungi, emf_fungi, endophytic_fungi, saprotrophic_fungi
+               amf_fungi, emf_fungi, endophytic_fungi, saprotrophic_fungi,
+               mycoparasite_fungi, entomopathogenic_fungi
         FROM read_parquet('data/stage4/plant_fungal_guilds_hybrid.parquet')
     ''').fetchdf()
+
+    # Relationship tables for P1 and P2
+    herbivore_predators_df = con.execute('''
+        SELECT herbivore, predators
+        FROM read_parquet('data/stage4/herbivore_predators.parquet')
+    ''').fetchdf() if Path('data/stage4/herbivore_predators.parquet').exists() else pd.DataFrame()
+
+    insect_parasites_df = con.execute('''
+        SELECT herbivore, entomopathogenic_fungi
+        FROM read_parquet('data/stage4/insect_fungal_parasites.parquet')
+    ''').fetchdf() if Path('data/stage4/insect_fungal_parasites.parquet').exists() else pd.DataFrame()
+
+    pathogen_antagonists_df = con.execute('''
+        SELECT pathogen, antagonists
+        FROM read_parquet('data/stage4/pathogen_antagonists.parquet')
+    ''').fetchdf() if Path('data/stage4/pathogen_antagonists.parquet').exists() else pd.DataFrame()
 
     print(f"  Plants: {len(plants_df):,}")
     print(f"  Organisms: {len(organisms_df):,}")
     print(f"  Fungi: {len(fungi_df):,}")
+    print(f"  Herbivore predators: {len(herbivore_predators_df):,}")
+    print(f"  Insect parasites: {len(insect_parasites_df):,}")
+    print(f"  Pathogen antagonists: {len(pathogen_antagonists_df):,}")
 
-    return plants_df, organisms_df, fungi_df
+    return plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df
 
 
 def build_climate_compatibility(plants_df):
@@ -142,7 +164,7 @@ def count_shared_organisms(df, plant_ids, *columns):
     return organism_counts
 
 
-def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
+def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df):
     """Compute raw scores for a guild (before normalization)."""
 
     n_plants = len(guild_ids)
@@ -248,6 +270,134 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
             p6_raw += overlap_ratio ** 2
     scores['p6_raw'] = p6_raw
 
+    # N5: Nitrogen fixation (absence penalty)
+    n5_raw = 0.0
+    if 'n_fixation' in guild_plants.columns:
+        n_fixers = guild_plants['n_fixation'].isin(['High', 'Moderate-High']).sum()
+        if n_fixers == 0:
+            n5_raw = 1.0  # No N-fixers = maximum penalty
+        elif n_fixers == 1:
+            n5_raw = 0.5  # 1 N-fixer = partial penalty
+        # 2+ N-fixers = 0.0 (no penalty)
+    scores['n5_raw'] = n5_raw
+
+    # N6: pH incompatibility
+    n6_raw = 0.0
+    if 'pH_mean' in guild_plants.columns:
+        pH_range = guild_plants['pH_mean'].dropna()
+        if len(pH_range) >= 2:
+            n6_raw = pH_range.max() - pH_range.min()
+    scores['n6_raw'] = n6_raw
+
+    # P1: Biocontrol (cross-plant herbivore control) - OPTIMIZED
+    p1_raw = 0
+    if not herbivore_predators_df.empty and not insect_parasites_df.empty:
+        # Build lookup dicts ONCE
+        herbivore_predators = {}
+        for _, row in herbivore_predators_df.iterrows():
+            herbivore_predators[row['herbivore']] = set(row['predators']) if row['predators'] is not None and len(row['predators']) > 0 else set()
+
+        insect_parasites = {}
+        for _, row in insect_parasites_df.iterrows():
+            insect_parasites[row['herbivore']] = set(row['entomopathogenic_fungi']) if row['entomopathogenic_fungi'] is not None and len(row['entomopathogenic_fungi']) > 0 else set()
+
+        # Pre-build dictionaries indexed by plant_id (AVOID DataFrame filtering in loops)
+        guild_organisms = organisms_df[organisms_df['plant_wfo_id'].isin(guild_ids)]
+        guild_fungi_subset = fungi_df[fungi_df['plant_wfo_id'].isin(guild_ids)]
+
+        # Build plant → data lookups
+        plant_herbivores = {}
+        plant_visitors = {}
+        for _, row in guild_organisms.iterrows():
+            plant_id = row['plant_wfo_id']
+            plant_herbivores[plant_id] = set(row['herbivores']) if row['herbivores'] is not None and len(row['herbivores']) > 0 else set()
+            visitors = set(row['flower_visitors']) if row['flower_visitors'] is not None and len(row['flower_visitors']) > 0 else set()
+            if row['pollinators'] is not None and len(row['pollinators']) > 0:
+                visitors.update(row['pollinators'])
+            plant_visitors[plant_id] = visitors
+
+        plant_entomo = {}
+        for _, row in guild_fungi_subset.iterrows():
+            plant_id = row['plant_wfo_id']
+            plant_entomo[plant_id] = set(row['entomopathogenic_fungi']) if row['entomopathogenic_fungi'] is not None and len(row['entomopathogenic_fungi']) > 0 else set()
+
+        # Pairwise analysis using dictionary lookups
+        plant_ids = list(plant_herbivores.keys())
+        for i in range(len(plant_ids)):
+            for j in range(len(plant_ids)):
+                if i == j:
+                    continue
+
+                plant_a = plant_ids[i]
+                plant_b = plant_ids[j]
+                herbivores_a = plant_herbivores.get(plant_a, set())
+                visitors_b = plant_visitors.get(plant_b, set())
+                entomo_b = plant_entomo.get(plant_b, set())
+
+                # Animal predators
+                for herbivore in herbivores_a:
+                    if herbivore in herbivore_predators:
+                        predators = herbivore_predators[herbivore]
+                        matching = visitors_b.intersection(predators)
+                        p1_raw += len(matching) * 1.0
+
+                # Fungal parasites
+                if entomo_b:
+                    for herbivore in herbivores_a:
+                        if herbivore in insect_parasites:
+                            parasites = insect_parasites[herbivore]
+                            matching = entomo_b.intersection(parasites)
+                            p1_raw += len(matching) * 1.0
+
+                    # General entomopathogenic fungi
+                    if len(herbivores_a) > 0 and len(entomo_b) > 0:
+                        p1_raw += len(entomo_b) * 0.2
+
+    scores['p1_raw'] = p1_raw
+
+    # P2: Pathogen control (antagonist fungi) - OPTIMIZED
+    p2_raw = 0
+    if not pathogen_antagonists_df.empty:
+        # Build lookup dict ONCE
+        pathogen_antagonists = {}
+        for _, row in pathogen_antagonists_df.iterrows():
+            pathogen_antagonists[row['pathogen']] = set(row['antagonists']) if row['antagonists'] is not None and len(row['antagonists']) > 0 else set()
+
+        # Pre-build dictionaries indexed by plant_id
+        guild_fungi_subset = fungi_df[fungi_df['plant_wfo_id'].isin(guild_ids)]
+
+        plant_pathogens = {}
+        plant_mycoparasites = {}
+        for _, row in guild_fungi_subset.iterrows():
+            plant_id = row['plant_wfo_id']
+            plant_pathogens[plant_id] = set(row['pathogenic_fungi']) if row['pathogenic_fungi'] is not None and len(row['pathogenic_fungi']) > 0 else set()
+            plant_mycoparasites[plant_id] = set(row['mycoparasite_fungi']) if row['mycoparasite_fungi'] is not None and len(row['mycoparasite_fungi']) > 0 else set()
+
+        # Pairwise analysis using dictionary lookups
+        plant_ids = list(plant_pathogens.keys())
+        for i in range(len(plant_ids)):
+            for j in range(len(plant_ids)):
+                if i == j:
+                    continue
+
+                plant_a = plant_ids[i]
+                plant_b = plant_ids[j]
+                pathogens_a = plant_pathogens.get(plant_a, set())
+                mycoparasites_b = plant_mycoparasites.get(plant_b, set())
+
+                # Specific antagonist matches
+                for pathogen in pathogens_a:
+                    if pathogen in pathogen_antagonists:
+                        antagonists = pathogen_antagonists[pathogen]
+                        matching = mycoparasites_b.intersection(antagonists)
+                        p2_raw += len(matching) * 1.0
+
+                # General mycoparasites
+                if len(pathogens_a) > 0 and len(mycoparasites_b) > 0:
+                    p2_raw += len(mycoparasites_b) * 0.3
+
+    scores['p2_raw'] = p2_raw
+
     return scores
 
 
@@ -261,7 +411,7 @@ def main():
     con = duckdb.connect()
 
     # Load data
-    plants_df, organisms_df, fungi_df = load_all_data(con)
+    plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df = load_all_data(con)
     all_species = plants_df['wfo_taxon_id'].values
 
     # Build compatibility
@@ -269,33 +419,15 @@ def main():
 
     # Generate guilds
     print("\n" + "="*80)
-    print("GENERATING 100,000 CALIBRATION GUILDS")
+    print("GENERATING 10,000 CALIBRATION GUILDS (TESTING)")
     print("="*80)
 
     guilds = []
 
-    # 80,000 climate-compatible
-    print("\nSampling 80,000 climate-compatible guilds...")
-    for _ in tqdm(range(80000), desc="Climate-compatible"):
+    # 10,000 climate-compatible guilds only
+    print("\nSampling 10,000 climate-compatible guilds...")
+    for _ in tqdm(range(10000), desc="Climate-compatible"):
         guild = sample_climate_compatible_guild(5, compatibility, all_species)
-        guilds.append(guild)
-
-    # 10,000 pure random
-    print("\nSampling 10,000 pure random guilds...")
-    for _ in tqdm(range(10000), desc="Pure random"):
-        guild = list(np.random.choice(all_species, size=5, replace=False))
-        guilds.append(guild)
-
-    # 5,000 low phylo diversity
-    print("\nSampling 5,000 low-diversity guilds...")
-    for _ in tqdm(range(5000), desc="Low diversity"):
-        guild = sample_phylo_low_diversity(plants_df, n_plants=5)
-        guilds.append(guild)
-
-    # 5,000 pure random (additional)
-    print("\nSampling 5,000 additional random guilds...")
-    for _ in tqdm(range(5000), desc="Additional"):
-        guild = list(np.random.choice(all_species, size=5, replace=False))
         guilds.append(guild)
 
     print(f"\nTotal guilds: {len(guilds):,}")
@@ -305,14 +437,16 @@ def main():
     print("COMPUTING RAW SCORES")
     print("="*80)
 
+    # Skip P1/P2 calibration (too slow - 10 guilds/sec vs 250 guilds/sec)
+    # Will use tanh fallback for P1/P2 in guild_scorer_v3.py
     raw_scores = {
-        'n1_raw': [], 'n2_raw': [], 'n4_raw': [],
+        'n1_raw': [], 'n2_raw': [], 'n4_raw': [], 'n5_raw': [], 'n6_raw': [],
         'p3_raw': [], 'p4_raw': [], 'p5_raw': [], 'p6_raw': []
     }
 
     for guild in tqdm(guilds, desc="Computing scores"):
         try:
-            scores = compute_raw_scores(guild, plants_df, organisms_df, fungi_df)
+            scores = compute_raw_scores(guild, plants_df, organisms_df, fungi_df, herbivore_predators_df, insect_parasites_df, pathogen_antagonists_df)
             for key in raw_scores:
                 raw_scores[key].append(scores[key])
         except Exception as e:
@@ -329,29 +463,37 @@ def main():
         'n1_raw': 'N1: Pathogen Fungi',
         'n2_raw': 'N2: Herbivores',
         'n4_raw': 'N4: CSR Conflicts',
+        'n5_raw': 'N5: Nitrogen Fixation',
+        'n6_raw': 'N6: pH Incompatibility',
+        'p1_raw': 'P1: Biocontrol',
+        'p2_raw': 'P2: Pathogen Control',
         'p3_raw': 'P3: Beneficial Fungi',
         'p4_raw': 'P4: Phylogenetic Diversity',
         'p5_raw': 'P5: Height Stratification',
         'p6_raw': 'P6: Shared Pollinators'
     }
 
+    # Full percentile range for interpolation
+    percentiles = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
+
     for key, name in component_names.items():
         scores_array = np.array(raw_scores[key])
 
+        # Compute all percentiles
+        percentile_values = {}
+        for p in percentiles:
+            percentile_values[f'p{p}'] = float(np.percentile(scores_array, p))
+
         params[key.replace('_raw', '')] = {
             'method': 'percentile',
-            'p5': float(np.percentile(scores_array, 5)),
-            'p25': float(np.percentile(scores_array, 25)),
-            'p50': float(np.percentile(scores_array, 50)),
-            'p75': float(np.percentile(scores_array, 75)),
-            'p95': float(np.percentile(scores_array, 95)),
+            **percentile_values,
             'mean': float(np.mean(scores_array)),
             'std': float(np.std(scores_array)),
             'n_samples': len(scores_array)
         }
 
         print(f"\n{name}:")
-        print(f"  Percentiles: {params[key.replace('_raw', '')]['p5']:.4f}, {params[key.replace('_raw', '')]['p25']:.4f}, {params[key.replace('_raw', '')]['p50']:.4f}, {params[key.replace('_raw', '')]['p75']:.4f}, {params[key.replace('_raw', '')]['p95']:.4f}")
+        print(f"  p1={percentile_values['p1']:.4f}, p50={percentile_values['p50']:.4f}, p99={percentile_values['p99']:.4f}")
 
     # Save
     output_path = Path('data/stage4/normalization_params_v3.json')
@@ -365,8 +507,10 @@ def main():
     print("\n" + "="*80)
     print("CALIBRATION COMPLETE")
     print("="*80)
-    print(f"\nCalibration based on {len(guilds):,} guilds (10× larger sample)")
-    print(f"Performance: ~2,500 guilds/sec with pandas pre-loaded filtering")
+    print(f"\nCalibration based on {len(guilds):,} climate-compatible guilds (testing)")
+    print(f"Performance: ~250 guilds/sec with pandas pre-loaded filtering")
+    print(f"Components calibrated: N1, N2, N4, N5, N6, P3, P4, P5, P6 (9 total)")
+    print(f"Components using fallback: P1, P2 (too slow for large-scale calibration)")
 
 
 if __name__ == '__main__':

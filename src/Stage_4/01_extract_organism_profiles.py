@@ -35,14 +35,14 @@ def extract_organism_profiles(limit=None):
     if limit:
         plant_query = f"""
             SELECT DISTINCT wfo_taxon_id, wfo_scientific_name
-            FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet')
+            FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
             ORDER BY wfo_scientific_name
             LIMIT {limit}
         """
     else:
         plant_query = """
             SELECT DISTINCT wfo_taxon_id, wfo_scientific_name
-            FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet')
+            FROM read_parquet('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
         """
 
     plants = con.execute(plant_query).fetchdf()
