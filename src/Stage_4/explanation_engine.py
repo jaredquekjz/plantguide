@@ -96,7 +96,29 @@ def _generate_veto_explanation(guild_result: Dict) -> Dict:
     reason = guild_result['veto_reason']
     climate = guild_result['climate_details']
 
-    if reason == 'No temperature overlap':
+    # Tier-based veto (new framework)
+    if reason == 'Incompatible climate tiers':
+        tier_name = climate.get('tier', 'unknown')
+        # Convert tier_3_humid_temperate → "Humid Temperate"
+        tier_display = tier_name.replace('tier_', '').replace('_', ' ').title().replace('Boreal Polar', 'Boreal/Polar')
+
+        incompatible_plants = climate.get('incompatible_plants', [])
+        explanation = {
+            'veto': True,
+            'veto_type': 'tier_incompatible',
+            'title': '❌ Incompatible Climate Zones',
+            'message': f'Some plants are not suitable for the selected {tier_display} climate.',
+            'details': [
+                f'Guild requires: {tier_display}',
+                f'Incompatible plants: {", ".join(incompatible_plants[:3])}{"..." if len(incompatible_plants) > 3 else ""}',
+                f'These plants occur in different Köppen climate zones'
+            ],
+            'advice': f'Choose only plants that occur in {tier_display} regions',
+            'severity': 'critical'
+        }
+
+    # Legacy envelope-based vetos (backwards compatibility)
+    elif reason == 'No temperature overlap':
         temp_range = climate['temp_range']
         explanation = {
             'veto': True,
