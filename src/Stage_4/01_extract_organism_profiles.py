@@ -101,6 +101,10 @@ def extract_organism_profiles(limit=None):
               OR (interactionTypeName = 'hasHost' AND sourceTaxonKingdomName = 'Fungi')
           )
           AND sourceTaxonName != 'no name'
+          -- EXCLUDE generic taxonomic names (too broad to be useful)
+          AND sourceTaxonName NOT IN ('Fungi', 'Bacteria', 'Insecta', 'Plantae', 'Animalia', 'Viruses')
+          -- EXCLUDE misclassified kingdoms (plants/animals should not be pathogens of plants)
+          AND sourceTaxonKingdomName NOT IN ('Plantae', 'Animalia')
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
     print(f"  - Found pathogens for {len(pathogens):,} plants")
