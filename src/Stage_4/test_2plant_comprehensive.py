@@ -111,11 +111,43 @@ def test_2plant_guild(scorer, plant_a_id, plant_b_id, tier_name, description="")
 
         return result
 
-    # Show summary scores
-    print(f"\n🎯 FINAL GUILD SCORE: {result['guild_score']:.4f}")
-    print(f"   Positive Benefits: +{result['positive_benefit_score']:.4f}")
-    print(f"   Negative Risks:    -{result['negative_risk_score']:.4f}")
-    print(f"   Net Score:         {result['guild_score']:.4f}")
+    # Show summary scores (4.4 framework)
+    print(f"\n🎯 OVERALL COMPATIBILITY: {result['overall_score']:.1f}/100")
+    print(f"   Percentile Ranking: {result['overall_score']:.1f}th percentile")
+    print(f"   (Better than {result['overall_score']:.1f}% of tier-stratified guilds)")
+
+    # Show 9 calibrated metrics
+    print(f"\n📊 METRIC BREAKDOWN (all 0-100 scale, HIGH = GOOD):")
+    print(f"   {'='*90}")
+    metrics = result['metrics']
+    for name, score in metrics.items():
+        if score >= 80:
+            icon = '✓✓'
+            label = 'EXCELLENT'
+        elif score >= 60:
+            icon = '✓ '
+            label = 'GOOD'
+        elif score >= 40:
+            icon = '~ '
+            label = 'NEUTRAL'
+        elif score >= 20:
+            icon = '⚠ '
+            label = 'BELOW AVG'
+        else:
+            icon = '✗ '
+            label = 'POOR'
+
+        display_name = name.replace('_', ' ').title()
+        print(f"   {icon} {display_name:30s}: {score:5.1f}  ({label})")
+
+    # Show flags
+    print(f"\n🏷️  FLAGS (not percentile-ranked):")
+    print(f"   {'='*90}")
+    flags = result['flags']
+    for name, value in flags.items():
+        display_name = name.replace('_', ' ').title()
+        icon = '✓' if 'Present' in str(value) or ('Missing' not in str(value) and 'Incompatible' not in str(value)) else '⚠'
+        print(f"   {icon} {display_name:30s}: {value}")
 
     # Show climate info
     climate = result['climate']
@@ -133,87 +165,79 @@ def test_2plant_guild(scorer, plant_a_id, plant_b_id, tier_name, description="")
         for warning in climate['warnings']:
             print(f"   - {warning['message']}")
 
-    # Detailed component breakdown
+    # Detailed component breakdown (4.4: raw scores → percentiles → display)
     print("\n" + "-"*100)
-    print("NEGATIVE FACTORS (Risks)")
+    print("DETAILED COMPONENT BREAKDOWN (4.4 Framework)")
     print("-"*100)
 
     neg = result['negative']
 
-    print(f"\n❌ N1: Pathogen Fungi (Weight: 35%)")
-    print(f"   Normalized: {neg['n1_pathogen_fungi']['norm']:.4f}")
-    print(f"   Weighted: {neg['n1_pathogen_fungi']['norm']*0.35:.4f}")
+    print(f"\n❌ N1: Pathogen Fungi → Pathogen Independence")
+    print(f"   Raw Score: {neg['n1_pathogen_fungi']['raw']:.4f}")
+    print(f"   Percentile (inverted → display): {metrics['pathogen_independence']:.1f}/100")
     shared_fungi = neg['n1_pathogen_fungi'].get('shared', {})
     print(f"   Shared Species: {len(shared_fungi)} fungi")
     if shared_fungi:
         print(f"   Top Shared: {', '.join(list(shared_fungi.keys())[:5])}")
 
-    print(f"\n❌ N2: Herbivores (Weight: 35%)")
-    print(f"   Normalized: {neg['n2_herbivores']['norm']:.4f}")
-    print(f"   Weighted: {neg['n2_herbivores']['norm']*0.35:.4f}")
+    print(f"\n❌ N2: Herbivores → Pest Independence")
+    print(f"   Raw Score: {neg['n2_herbivores']['raw']:.4f}")
+    print(f"   Percentile (inverted → display): {metrics['pest_independence']:.1f}/100")
     shared_herbs = neg['n2_herbivores'].get('shared', {})
     print(f"   Shared Species: {len(shared_herbs)} herbivores")
     if shared_herbs:
         print(f"   Top Shared: {', '.join(list(shared_herbs.keys())[:5])}")
 
-    print(f"\n❌ N4: CSR Strategy Conflicts (Weight: 20%)")
-    print(f"   Normalized: {neg['n4_csr_conflicts']['norm']:.4f}")
-    print(f"   Weighted: {neg['n4_csr_conflicts']['norm']*0.20:.4f}")
+    print(f"\n❌ N4: CSR Strategy Conflicts → Growth Compatibility")
+    print(f"   Raw Score (conflict density): {neg['n4_csr_conflicts']['raw']:.4f}")
+    print(f"   Percentile (inverted → display): {metrics['growth_compatibility']:.1f}/100")
     conflicts = neg['n4_csr_conflicts'].get('conflicts', [])
     print(f"   Conflicts: {len(conflicts)}")
-    for conflict in conflicts:
+    for conflict in conflicts[:3]:
         print(f"     - {conflict}")
 
-    print(f"\n❌ N5: Nitrogen Fixation Gap (Weight: 5%)")
-    print(f"   Normalized: {neg['n5_n_fixation']['norm']:.4f}")
-    print(f"   Weighted: {neg['n5_n_fixation']['norm']*0.05:.4f}")
+    print(f"\n🏷️  N5: Nitrogen Self-Sufficiency (FLAG)")
+    print(f"   Flag: {flags['nitrogen']}")
     print(f"   N-Fixers: {neg['n5_n_fixation'].get('n_fixers', 0)}")
 
-    print(f"\n❌ N6: pH Incompatibility (Weight: 5%)")
-    print(f"   Normalized: {neg['n6_ph']['norm']:.4f}")
-    print(f"   Weighted: {neg['n6_ph']['norm']*0.05:.4f}")
+    print(f"\n🏷️  N6: Soil pH Compatibility (FLAG)")
+    print(f"   Flag: {flags['soil_ph']}")
 
     # Positive factors
-    print("\n" + "-"*100)
-    print("POSITIVE FACTORS (Benefits)")
-    print("-"*100)
-
     pos = result['positive']
 
-    print(f"\n✓ P1: Biocontrol (Weight: 25%)")
-    print(f"   Normalized: {pos['p1_biocontrol']['norm']:.4f}")
-    print(f"   Weighted: {pos['p1_biocontrol']['norm']*0.25:.4f}")
-    print(f"   Herbivore/Predator Matches: {pos['p1_biocontrol'].get('herbivore_predator_matches', 0)}")
-    print(f"   Fungal Parasite Matches: {pos['p1_biocontrol'].get('fungal_parasite_matches', 0)}")
+    print(f"\n✓ P1: Biocontrol → Insect Control")
+    print(f"   Raw Score: {pos['p1_biocontrol']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['insect_control']:.1f}/100")
+    mechanisms = pos['p1_biocontrol'].get('mechanisms', [])
+    print(f"   Biocontrol Mechanisms: {len(mechanisms)}")
 
-    print(f"\n✓ P2: Pathogen Control (Weight: 20%)")
-    print(f"   Normalized: {pos['p2_pathogen_control']['norm']:.4f}")
-    print(f"   Weighted: {pos['p2_pathogen_control']['norm']*0.20:.4f}")
-    print(f"   Specific Antagonist Matches: {pos['p2_pathogen_control'].get('specific_antagonist_matches', 0)}")
-    print(f"   General Mycoparasite Matches: {pos['p2_pathogen_control'].get('general_mycoparasite_matches', 0)}")
+    print(f"\n✓ P2: Pathogen Antagonists → Disease Control")
+    print(f"   Raw Score: {pos['p2_pathogen_control']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['disease_control']:.1f}/100")
+    mechanisms_p2 = pos['p2_pathogen_control'].get('mechanisms', [])
+    print(f"   Antagonist Mechanisms: {len(mechanisms_p2)}")
 
-    print(f"\n✓ P3: Beneficial Fungi (Weight: 15%)")
-    print(f"   Normalized: {pos['p3_beneficial_fungi']['norm']:.4f}")
-    print(f"   Weighted: {pos['p3_beneficial_fungi']['norm']*0.15:.4f}")
+    print(f"\n✓ P3: Beneficial Fungi Networks")
+    print(f"   Raw Score: {pos['p3_beneficial_fungi']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['beneficial_fungi']:.1f}/100")
     shared_ben = pos['p3_beneficial_fungi'].get('shared', {})
     print(f"   Shared Species: {len(shared_ben)} fungi")
     if shared_ben:
         print(f"   Top Shared: {', '.join(list(shared_ben.keys())[:5])}")
 
-    print(f"\n✓ P4: Phylogenetic Diversity (Weight: 20%)")
-    print(f"   Normalized: {pos['p4_phylo_diversity']['norm']:.4f}")
-    print(f"   Weighted: {pos['p4_phylo_diversity']['norm']*0.20:.4f}")
-    print(f"   Phylogenetic Distance: {pos['p4_phylo_diversity'].get('mean_distance', 0):.2f}")
+    print(f"\n✓ P4: Phylogenetic Diversity")
+    print(f"   Raw Score (mean distance): {pos['p4_phylo_diversity']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['phylo_diversity']:.1f}/100")
 
-    print(f"\n✓ P5: Vertical Stratification (Weight: 10%)")
-    print(f"   Normalized: {pos['p5_stratification']['norm']:.4f}")
-    print(f"   Weighted: {pos['p5_stratification']['norm']*0.10:.4f}")
-    print(f"   Height Layers: {pos['p5_stratification'].get('n_height_layers', 0)}")
+    print(f"\n✓ P5: Structural Diversity (vertical stratification)")
+    print(f"   Raw Score: {pos['p5_stratification']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['structural_diversity']:.1f}/100")
     print(f"   Growth Forms: {pos['p5_stratification'].get('n_forms', 0)}")
 
-    print(f"\n✓ P6: Shared Pollinators (Weight: 10%)")
-    print(f"   Normalized: {pos['p6_pollinators']['norm']:.4f}")
-    print(f"   Weighted: {pos['p6_pollinators']['norm']*0.10:.4f}")
+    print(f"\n✓ P6: Pollinator Support")
+    print(f"   Raw Score: {pos['p6_pollinators']['raw']:.4f}")
+    print(f"   Percentile (display): {metrics['pollinator_support']:.1f}/100")
     shared_poll = pos['p6_pollinators'].get('shared', {})
     print(f"   Shared Species: {len(shared_poll)} pollinators")
     if shared_poll:
