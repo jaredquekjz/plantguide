@@ -87,7 +87,7 @@ def extract_organism_profiles(limit=None):
     """).fetchdf()
     print(f"  - Found herbivores for {len(herbivores):,} plants")
 
-    # Step 3: Extract pathogens
+    # Step 3: Extract pathogens (including fungi via hasHost relationship)
     print("Step 3: Extracting pathogens...")
     pathogens = con.execute("""
         SELECT
@@ -96,7 +96,10 @@ def extract_organism_profiles(limit=None):
             COUNT(DISTINCT sourceTaxonName) as pathogen_count
         FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
-          AND interactionTypeName IN ('pathogenOf', 'parasiteOf')
+          AND (
+              interactionTypeName IN ('pathogenOf', 'parasiteOf')
+              OR (interactionTypeName = 'hasHost' AND sourceTaxonKingdomName = 'Fungi')
+          )
           AND sourceTaxonName != 'no name'
         GROUP BY target_wfo_taxon_id
     """).fetchdf()

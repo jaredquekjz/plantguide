@@ -257,12 +257,46 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, herbivore_p
         p4_raw = 0.0
     scores['p4_raw'] = p4_raw
 
-    # P5: Height stratification
-    heights = guild_plants['height_m'].dropna().values
-    if len(heights) >= 2:
-        p5_raw = np.max(heights) - np.min(heights)
+    # P5: Vertical stratification validated by light compatibility
+    guild_sorted = guild_plants.sort_values('height_m').reset_index(drop=True)
+    valid_stratification = 0.0
+    invalid_stratification = 0.0
+
+    for i in range(len(guild_sorted)):
+        for j in range(i + 1, len(guild_sorted)):
+            short = guild_sorted.iloc[i]
+            tall = guild_sorted.iloc[j]
+            height_diff = tall['height_m'] - short['height_m']
+
+            if height_diff > 2.0:  # Significant height difference
+                short_light = short['light_pref']
+
+                if pd.isna(short_light):
+                    # Conservative assumption: neutral/flexible
+                    valid_stratification += height_diff * 0.5
+                elif short_light < 3.2:
+                    # Shade-tolerant (EIVE-L 1-3)
+                    valid_stratification += height_diff
+                elif short_light > 7.47:
+                    # Sun-loving (EIVE-L 8-9)
+                    invalid_stratification += height_diff
+                else:
+                    # Flexible (EIVE-L 4-7)
+                    valid_stratification += height_diff * 0.6
+
+    # Stratification quality
+    total_height_diffs = valid_stratification + invalid_stratification
+    if total_height_diffs == 0:
+        stratification_quality = 0.0
     else:
-        p5_raw = 0.0
+        stratification_quality = valid_stratification / total_height_diffs
+
+    # Form diversity
+    n_forms = guild_plants['growth_form'].nunique()
+    form_diversity = (n_forms - 1) / 5 if n_forms > 0 else 0
+
+    # Combined (70% light-validated height, 30% form)
+    p5_raw = 0.7 * stratification_quality + 0.3 * form_diversity
     scores['p5_raw'] = p5_raw
 
     # P6: Shared pollinators
@@ -439,14 +473,13 @@ def main(guild_size=7):
 
     # Compute raw scores
     print("\n" + "="*80)
-    print("COMPUTING RAW SCORES")
+    print("COMPUTING RAW SCORES (ALL 11 COMPONENTS)")
     print("="*80)
 
-    # Skip P1/P2 calibration (too slow - 10 guilds/sec vs 250 guilds/sec)
-    # Will use tanh fallback for P1/P2 in guild_scorer_v3.py
+    # P1/P2 optimized with dictionary lookups - included in calibration
     raw_scores = {
         'n1_raw': [], 'n2_raw': [], 'n4_raw': [], 'n5_raw': [], 'n6_raw': [],
-        'p3_raw': [], 'p4_raw': [], 'p5_raw': [], 'p6_raw': []
+        'p1_raw': [], 'p2_raw': [], 'p3_raw': [], 'p4_raw': [], 'p5_raw': [], 'p6_raw': []
     }
 
     for guild in tqdm(guilds, desc="Computing scores"):
@@ -513,9 +546,8 @@ def main(guild_size=7):
     print(f"CALIBRATION COMPLETE ({guild_size}-PLANT)")
     print("="*80)
     print(f"\nCalibration based on {len(guilds):,} climate-compatible {guild_size}-plant guilds")
-    print(f"Performance: ~250 guilds/sec with pandas pre-loaded filtering")
-    print(f"Components calibrated: N1, N2, N4, N5, N6, P3, P4, P5, P6 (9 total)")
-    print(f"Components using fallback: P1, P2 (too slow for large-scale calibration)")
+    print(f"Components calibrated: N1, N2, N4, N5, N6, P1, P2, P3, P4, P5, P6 (ALL 11)")
+    print(f"P1/P2 optimization: Dictionary-based lookups (no nested DataFrame filtering)")
 
 
 if __name__ == '__main__':
