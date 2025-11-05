@@ -5,7 +5,10 @@
 Stage 1: 2-Plant Pairs (20K per tier × 6 tiers = 120K pairs)
 Stage 2: 7-Plant Guilds (20K per tier × 6 tiers = 120K guilds)
 
-Based on Document 4.4: Unified Percentile Framework (2025-11-03)
+Based on Document 4.2c: 7-Metric Framework (2025-11-05)
+- N1 (Pathogen Fungi) and N2 (Herbivore Overlap) REMOVED
+- P4 (Phylogenetic Diversity) → M1 (Pathogen & Pest Independence)
+- M1 applies exponential transformation: exp(-3.0 × distance)
 """
 
 import json
@@ -29,7 +32,7 @@ TIERS = {
     'tier_6_arid': ['BWh', 'BWk', 'BSh', 'BSk']
 }
 
-COMPONENTS = ['n1', 'n2', 'n4', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6']
+COMPONENTS = ['m1', 'n4', 'p1', 'p2', 'p3', 'p5', 'p6']
 PERCENTILES = [1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99]
 
 
@@ -112,7 +115,11 @@ def count_shared_organisms(df, plant_ids, *columns):
 
 
 def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
-    """Compute raw component scores for a guild."""
+    """
+    Compute raw component scores for a guild.
+
+    Document 4.2c: N1 and N2 removed, P4 → M1 with exponential transformation.
+    """
 
     n_plants = len(guild_ids)
     guild_plants = plants_df[plants_df['wfo_taxon_id'].isin(guild_ids)]
@@ -122,31 +129,7 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
 
     scores = {}
 
-    # N1: Pathogen fungi
-    shared_pathogens = count_shared_organisms(fungi_df, guild_ids, 'pathogenic_fungi')
-    host_specific = set()
-    for _, row in fungi_df[fungi_df['plant_wfo_id'].isin(guild_ids)].iterrows():
-        if row['pathogenic_fungi_host_specific'] is not None and isinstance(row['pathogenic_fungi_host_specific'], (list, np.ndarray)):
-            host_specific.update(row['pathogenic_fungi_host_specific'])
-
-    n1_raw = 0
-    for fungus, count in shared_pathogens.items():
-        if count >= 2:
-            overlap_ratio = count / n_plants
-            severity = 1.0 if fungus in host_specific else 0.6
-            n1_raw += (overlap_ratio ** 2) * severity
-    scores['n1'] = n1_raw
-
-    # N2: Herbivores
-    all_herbivores = count_shared_organisms(organisms_df, guild_ids, 'herbivores')
-    all_visitors = count_shared_organisms(organisms_df, guild_ids, 'flower_visitors', 'pollinators')
-
-    n2_raw = 0
-    for herbivore, count in all_herbivores.items():
-        if count >= 2 and herbivore not in all_visitors:
-            overlap_ratio = count / n_plants
-            n2_raw += (overlap_ratio ** 2) * 0.5
-    scores['n2'] = n2_raw
+    # N1 and N2: REMOVED (replaced by M1 phylogenetic metric)
 
     # N4: CSR conflicts (conflict_density)
     HIGH_C, HIGH_S, HIGH_R = 60, 60, 50
@@ -193,15 +176,26 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
     coverage_ratio = plants_with_beneficial / n_plants
     scores['p3'] = network_raw * 0.6 + coverage_ratio * 0.4
 
-    # P4: Phylogenetic diversity
+    # M1: Pathogen & Pest Independence (formerly P4, now with exponential transform)
+    # Literature: Phylopathogen 2013, Gougherty-Davies 2021
+    # Pest sharing decays exponentially with phylogenetic distance
     phylo_cols = [f'phylo_ev{i}' for i in range(1, 93)]
     phylo_matrix = guild_plants[phylo_cols].values
 
     if len(phylo_matrix) >= 2 and not np.any(np.isnan(phylo_matrix)):
+        # Step 1: Calculate mean pairwise phylogenetic distance
         distances = pdist(phylo_matrix, metric='euclidean')
-        scores['p4'] = np.mean(distances)
+        mean_distance = np.mean(distances)
+
+        # Step 2: EXPONENTIAL TRANSFORMATION (k=3.0 from literature)
+        # Close relatives (low distance) → high pest_risk_raw (bad)
+        # Distant relatives (high distance) → low pest_risk_raw (good)
+        k = 3.0  # Decay constant from Phylopathogen β₁=1.5944, Gougherty-Davies β₁=0.748-0.998
+        pest_risk_raw = np.exp(-k * mean_distance)
+        scores['m1'] = pest_risk_raw  # Store TRANSFORMED value (0-1 scale)
     else:
-        scores['p4'] = 0.0
+        # Single plant = maximum pest risk
+        scores['m1'] = 1.0  # exp(-k × 0) = 1.0
 
     # P5: Structural diversity
     heights = guild_plants['height_m'].dropna().values

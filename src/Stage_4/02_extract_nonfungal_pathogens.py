@@ -1,25 +1,24 @@
 #!/usr/bin/env python3
 """
-Stage 4.2: Extract All Pathogens from GloBI - COMPREHENSIVE BROAD MINING
+Stage 4.2: Extract Non-Fungal Pathogens from GloBI
 
-Purpose: Extract ALL potential pathogen interactions for qualitative display
-Strategy: BROAD mining using multiple GloBI relationships, since:
-  - Fungi: FungalTraits will validate which genera are pathogenic
-  - Bacteria/Viruses: Limited data, need broad net
-  - Oomycetes/Nematodes: Treated like fungi
+Purpose: Extract bacteria, viruses, oomycetes, and nematodes for qualitative display
+Strategy: BROAD mining for all types (no validation databases exist)
+Note: Fungi are handled separately by fungal guild extraction (01_extract_fungal_guilds_hybrid.py)
 
-Relationships Used (by pathogen type):
-  FUNGI: hasHost (7,211 plants), parasiteOf, pathogenOf, interactsWith
+Relationships Used:
   BACTERIA: hasHost, pathogenOf, parasiteOf, interactsWith
   VIRUSES: pathogenOf, hasHost, interactsWith
-  OOMYCETES: Same as fungi (Chromista/Protista kingdoms)
+  OOMYCETES: hasHost, parasiteOf, pathogenOf, interactsWith
   NEMATODES: parasiteOf, pathogenOf, livesInsideOf
 
-Output: data/stage4/plant_all_pathogens.parquet (qualitative display only)
+Assumption: All extracted organisms are assumed pathogenic (no validation database)
+
+Output: data/stage4/plant_nonfungal_pathogens.parquet (qualitative display only)
 
 Usage:
-    python src/Stage_4/02_extract_all_pathogens.py
-    python src/Stage_4/02_extract_all_pathogens.py --test --limit 100
+    python src/Stage_4/02_extract_nonfungal_pathogens.py
+    python src/Stage_4/02_extract_nonfungal_pathogens.py --test --limit 100
 """
 
 import argparse
@@ -30,18 +29,16 @@ from datetime import datetime
 
 def classify_pathogen_type(kingdom, phylum):
     """
-    Classify pathogen into display category.
+    Classify non-fungal pathogen into display category.
 
     Args:
         kingdom: Taxonomic kingdom
         phylum: Taxonomic phylum
 
     Returns:
-        Pathogen type: 'fungi', 'oomycetes', 'bacteria', 'viruses', 'nematodes', 'other'
+        Pathogen type: 'oomycetes', 'bacteria', 'viruses', 'nematodes', 'other'
     """
-    if kingdom == 'Fungi':
-        return 'fungi'
-    elif kingdom in ['Chromista', 'Protista'] and phylum in ['Oomycota', 'Heterokontophyta']:
+    if kingdom in ['Chromista', 'Protista'] and phylum in ['Oomycota', 'Heterokontophyta']:
         return 'oomycetes'
     elif kingdom in ['Bacteria', 'Bacillati', 'Pseudomonadati']:
         return 'bacteria'
@@ -53,14 +50,14 @@ def classify_pathogen_type(kingdom, phylum):
         return 'other'
 
 
-def extract_all_pathogens(limit=None):
-    """Extract all pathogen types from GloBI using comprehensive broad mining."""
+def extract_nonfungal_pathogens(limit=None):
+    """Extract non-fungal pathogens from GloBI using broad mining."""
 
     output_dir = Path('data/stage4')
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("="*80)
-    print("STAGE 4.2: All Pathogen Extraction - COMPREHENSIVE BROAD MINING")
+    print("STAGE 4.2: Non-Fungal Pathogen Extraction - BROAD MINING")
     print("="*80)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print()
@@ -69,18 +66,17 @@ def extract_all_pathogens(limit=None):
         print(f"TEST MODE: Processing first {limit} plants only")
         print()
 
-    print("Extraction Strategy: BROAD MINING with multiple GloBI relationships")
+    print("Extraction Strategy: BROAD MINING (no validation databases available)")
     print()
-    print("Pathogen Type | Primary Relationships")
+    print("Pathogen Type | Relationships Used")
     print("-" * 60)
-    print("FUNGI         | hasHost, parasiteOf, pathogenOf, interactsWith")
     print("BACTERIA      | hasHost, pathogenOf, parasiteOf, interactsWith")
     print("VIRUSES       | pathogenOf, hasHost, interactsWith")
-    print("OOMYCETES     | hasHost, parasiteOf, pathogenOf (like fungi)")
+    print("OOMYCETES     | hasHost, parasiteOf, pathogenOf, interactsWith")
     print("NEMATODES     | parasiteOf, pathogenOf, livesInsideOf")
     print()
-    print("Rationale: FungalTraits will validate fungi pathogenicity")
-    print("           Bacteria/viruses have limited data, need broad net")
+    print("Note: Fungi handled separately by fungal guild extraction")
+    print("      All extracted organisms assumed pathogenic")
     print()
 
     con = duckdb.connect()
@@ -95,9 +91,9 @@ def extract_all_pathogens(limit=None):
     else:
         limit_clause = ""
 
-    print("Step 1: Extracting ALL plausible pathogen interactions from GloBI...")
+    print("Step 1: Extracting non-fungal pathogen interactions from GloBI...")
 
-    # Extract using COMPREHENSIVE relationship set
+    # Extract NON-FUNGAL pathogens using BROAD relationship set
     result = con.execute(f"""
         WITH
         -- Target plants
@@ -108,8 +104,8 @@ def extract_all_pathogens(limit=None):
             {limit_clause}
         ),
 
-        -- Extract ALL plausible pathogen relationships
-        all_pathogen_interactions AS (
+        -- Extract ALL non-fungal pathogen relationships
+        nonfungal_pathogen_interactions AS (
             SELECT
                 g.target_wfo_taxon_id as plant_wfo_id,
                 g.sourceTaxonName as pathogen_name,
@@ -121,16 +117,14 @@ def extract_all_pathogens(limit=None):
             WHERE g.target_wfo_taxon_id IN (SELECT wfo_taxon_id FROM target_plants)
               AND g.sourceTaxonName IS NOT NULL
               AND g.sourceTaxonName != ''
-              -- BROAD relationship set for comprehensive mining
+              -- EXCLUDE FUNGI (handled separately)
+              AND g.sourceTaxonKingdomName != 'Fungi'
+              -- Extract non-fungal pathogens with BROAD relationships
               AND (
-                  -- Fungi: VERY BROAD (FungalTraits will validate)
-                  (g.sourceTaxonKingdomName = 'Fungi'
-                   AND g.interactionTypeName IN ('hasHost', 'parasiteOf', 'pathogenOf', 'interactsWith'))
-
                   -- Oomycetes: Like fungi (Phytophthora, etc.)
-                  OR ((g.sourceTaxonKingdomName IN ('Chromista', 'Protista')
-                       AND g.sourceTaxonPhylumName IN ('Oomycota', 'Heterokontophyta'))
-                      AND g.interactionTypeName IN ('hasHost', 'parasiteOf', 'pathogenOf', 'interactsWith'))
+                  ((g.sourceTaxonKingdomName IN ('Chromista', 'Protista')
+                    AND g.sourceTaxonPhylumName IN ('Oomycota', 'Heterokontophyta'))
+                   AND g.interactionTypeName IN ('hasHost', 'parasiteOf', 'pathogenOf', 'interactsWith'))
 
                   -- Bacteria: Broad (limited data)
                   OR (g.sourceTaxonKingdomName IN ('Bacteria', 'Bacillati', 'Pseudomonadati')
@@ -145,7 +139,7 @@ def extract_all_pathogens(limit=None):
                       AND g.interactionTypeName IN ('parasiteOf', 'pathogenOf', 'livesInsideOf'))
               )
               -- Exclude generic/placeholder names
-              AND g.sourceTaxonName NOT IN ('Fungi', 'Bacteria', 'Virus', 'Viruses', 'Nematoda',
+              AND g.sourceTaxonName NOT IN ('Bacteria', 'Virus', 'Viruses', 'Nematoda',
                                             'Insecta', 'Animalia', 'Plantae', 'Chromista', 'Protista')
               -- Exclude misclassified kingdoms
               AND g.sourceTaxonKingdomName NOT IN ('Plantae', 'Viridiplantae', 'Archaeplastida')
@@ -154,11 +148,11 @@ def extract_all_pathogens(limit=None):
                        AND COALESCE(g.sourceTaxonPhylumName, '') != 'Nematoda')
         )
 
-        SELECT * FROM all_pathogen_interactions
+        SELECT * FROM nonfungal_pathogen_interactions
         ORDER BY plant_wfo_id, pathogen_name
     """).fetchdf()
 
-    print(f"✓ Extracted {len(result):,} pathogen interactions")
+    print(f"✓ Extracted {len(result):,} non-fungal pathogen interactions")
     print()
 
     # Classify pathogen types using Python function
@@ -183,7 +177,7 @@ def extract_all_pathogens(limit=None):
     print()
 
     # Save to parquet using DuckDB
-    output_file = output_dir / 'plant_all_pathogens.parquet'
+    output_file = output_dir / 'plant_nonfungal_pathogens.parquet'
 
     # Register dataframe and export via DuckDB
     con.register('result_df', result)
@@ -210,12 +204,12 @@ def extract_all_pathogens(limit=None):
     coverage_pct = n_plants_with_pathogens / n_plants_total * 100
 
     print(f"Total plants: {n_plants_total:,}")
-    print(f"Plants with pathogens: {n_plants_with_pathogens:,} ({coverage_pct:.1f}%)")
+    print(f"Plants with non-fungal pathogens: {n_plants_with_pathogens:,} ({coverage_pct:.1f}%)")
     print()
 
     # Per-type coverage
     print("Coverage by pathogen type:")
-    for ptype in ['fungi', 'oomycetes', 'bacteria', 'viruses', 'nematodes', 'other']:
+    for ptype in ['oomycetes', 'bacteria', 'viruses', 'nematodes', 'other']:
         subset = result[result['pathogen_type'] == ptype]
         n_plants_with_type = subset['plant_wfo_id'].nunique()
         n_pathogens = subset['pathogen_name'].nunique()
@@ -225,7 +219,7 @@ def extract_all_pathogens(limit=None):
 
     # Sample pathogens by type
     print("Sample pathogens by type (first 5):")
-    for ptype in ['fungi', 'oomycetes', 'bacteria', 'viruses', 'nematodes']:
+    for ptype in ['oomycetes', 'bacteria', 'viruses', 'nematodes']:
         subset = result[result['pathogen_type'] == ptype]
         if len(subset) > 0:
             sample_names = subset['pathogen_name'].unique()[:5]
@@ -234,7 +228,7 @@ def extract_all_pathogens(limit=None):
 
     # Comparison with relationships
     print("Plants covered by relationship type:")
-    for rel in ['hasHost', 'pathogenOf', 'parasiteOf', 'interactsWith']:
+    for rel in ['hasHost', 'pathogenOf', 'parasiteOf', 'interactsWith', 'livesInsideOf']:
         subset = result[result['relationship'] == rel]
         if len(subset) > 0:
             n_plants = subset['plant_wfo_id'].nunique()
@@ -250,13 +244,13 @@ def extract_all_pathogens(limit=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Extract all pathogen types from GloBI using broad mining')
+    parser = argparse.ArgumentParser(description='Extract non-fungal pathogens from GloBI using broad mining')
     parser.add_argument('--test', action='store_true', help='Test mode (process limited plants)')
     parser.add_argument('--limit', type=int, default=100, help='Number of plants to process in test mode')
     args = parser.parse_args()
 
     limit = args.limit if args.test else None
-    extract_all_pathogens(limit=limit)
+    extract_nonfungal_pathogens(limit=limit)
 
 
 if __name__ == '__main__':

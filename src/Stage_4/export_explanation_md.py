@@ -10,6 +10,140 @@ from pathlib import Path
 from datetime import datetime
 
 
+def _add_organism_profiles_section(md, result, plant_ids):
+    """
+    Add pest & pathogen organism profiles to markdown.
+
+    Displays top 5 organisms per category per plant with:
+    - Shared organisms highlighted with severity indicators
+    - Count indicators (showing X of Y)
+    - Qualitative display only (not used for scoring)
+    """
+
+    profiles = result['plant_organism_profiles']
+    plant_details = result.get('plant_details', [])
+    n_plants = len(plant_ids)
+
+    # Create mapping from wfo_id to scientific_name
+    plant_name_map = {p['wfo_id']: p['scientific_name'] for p in plant_details}
+
+    md.append("## Observed Organisms (GloBI Data)\n")
+    md.append("*This is qualitative information only (not used for scoring). Shows top 5 organisms per plant with shared organisms highlighted.*\n")
+    md.append("")
+
+    for plant_id in plant_ids:
+        if plant_id not in profiles:
+            continue
+
+        profile = profiles[plant_id]
+        plant_name = plant_name_map.get(plant_id, plant_id)
+        md.append(f"### {plant_name}\n")
+
+        # Helper function for severity indicator
+        def get_severity(n_plants_affected, total_plants):
+            pct = (n_plants_affected / total_plants) * 100
+            if pct >= 50:
+                return '🔴'  # Critical (affects ≥50% of guild)
+            elif n_plants_affected >= 2:
+                return '🟠'  # High (affects multiple plants)
+            else:
+                return '⚪'  # Low (affects only this plant)
+
+        # Herbivores
+        if profile.get('herbivores') and len(profile['herbivores']) > 0:
+            total = profile.get('herbivores_total', len(profile['herbivores']))
+            md.append(f"**Herbivores** (showing {len(profile['herbivores'])} of {total}):")
+            for org in profile['herbivores']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Pathogenic Fungi (FungalTraits validated)
+        if profile.get('pathogenic_fungi') and len(profile['pathogenic_fungi']) > 0:
+            total = profile.get('pathogenic_fungi_total', len(profile['pathogenic_fungi']))
+            md.append(f"**Pathogenic Fungi** (FungalTraits validated, showing {len(profile['pathogenic_fungi'])} of {total}):")
+            for org in profile['pathogenic_fungi']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Host-specific Pathogenic Fungi
+        if profile.get('pathogenic_fungi_host_specific') and len(profile['pathogenic_fungi_host_specific']) > 0:
+            total = profile.get('pathogenic_fungi_host_specific_total', len(profile['pathogenic_fungi_host_specific']))
+            md.append(f"**Host-Specific Pathogenic Fungi** (showing {len(profile['pathogenic_fungi_host_specific'])} of {total}):")
+            for org in profile['pathogenic_fungi_host_specific']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Oomycetes
+        if profile.get('oomycetes') and len(profile['oomycetes']) > 0:
+            total = profile.get('oomycetes_total', len(profile['oomycetes']))
+            md.append(f"**Oomycetes** (water molds, showing {len(profile['oomycetes'])} of {total}):")
+            for org in profile['oomycetes']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Bacteria
+        if profile.get('bacteria') and len(profile['bacteria']) > 0:
+            total = profile.get('bacteria_total', len(profile['bacteria']))
+            md.append(f"**Bacterial Pathogens** (showing {len(profile['bacteria'])} of {total}):")
+            for org in profile['bacteria']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Viruses
+        if profile.get('viruses') and len(profile['viruses']) > 0:
+            total = profile.get('viruses_total', len(profile['viruses']))
+            md.append(f"**Viral Pathogens** (showing {len(profile['viruses'])} of {total}):")
+            for org in profile['viruses']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Nematodes
+        if profile.get('nematodes') and len(profile['nematodes']) > 0:
+            total = profile.get('nematodes_total', len(profile['nematodes']))
+            md.append(f"**Plant-Parasitic Nematodes** (showing {len(profile['nematodes'])} of {total}):")
+            for org in profile['nematodes']:
+                severity = get_severity(org['n_plants'], n_plants)
+                shared_txt = f" ({org['n_plants']} plants)" if org['n_plants'] > 1 else ""
+                md.append(f"- {severity} *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Pollinators
+        if profile.get('pollinators') and len(profile['pollinators']) > 0:
+            total = profile.get('pollinators_total', len(profile['pollinators']))
+            md.append(f"**Pollinators** (showing {len(profile['pollinators'])} of {total}):")
+            for org in profile['pollinators']:
+                shared_txt = f" (shared with {org['n_plants']-1} others)" if org['n_plants'] > 1 else ""
+                md.append(f"- *{org['name']}*{shared_txt}")
+            md.append("")
+
+        # Flower Visitors
+        if profile.get('flower_visitors') and len(profile['flower_visitors']) > 0:
+            total = profile.get('flower_visitors_total', len(profile['flower_visitors']))
+            md.append(f"**Flower Visitors** (showing {len(profile['flower_visitors'])} of {total}):")
+            for org in profile['flower_visitors']:
+                shared_txt = f" (shared with {org['n_plants']-1} others)" if org['n_plants'] > 1 else ""
+                md.append(f"- *{org['name']}*{shared_txt}")
+            md.append("")
+
+        md.append("")  # Extra space between plants
+
+    md.append("---\n")
+    md.append("**Legend:** 🔴 Critical (≥50% of guild) | 🟠 High (multiple plants) | ⚪ Low (single plant)\n")
+    md.append("")
+
+
 def export_to_markdown(explanation_json, output_path='explanation_output.md'):
     """
     Export explanation to markdown format.
@@ -58,6 +192,10 @@ def export_to_markdown(explanation_json, output_path='explanation_output.md'):
         for i, pid in enumerate(plant_ids, 1):
             md.append(f"{i}. `{pid}`")
         md.append("")
+
+    # Pest & Pathogen Display (Qualitative)
+    if result.get('plant_organism_profiles'):
+        _add_organism_profiles_section(md, result, plant_ids)
 
     # Climate
     climate = explanation.get('climate', {})

@@ -2,10 +2,12 @@
 """
 Stage 4.1: Extract Fungal Guilds - HYBRID APPROACH (Research-Validated)
 
-Strategy: FungalTraits PRIMARY + FunGuild FALLBACK
-- FungalTraits: Expert-curated, superior for biocontrol
+Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION
+- Extraction: Use broad relationships (hasHost, parasiteOf, pathogenOf, interactsWith)
+- Validation: FungalTraits PRIMARY + FunGuild FALLBACK
+- FungalTraits: Expert-curated (128 mycologists), sorts into 8 guilds
 - FunGuild: Fills gaps for unmatched genera (confidence-filtered)
-- Expected gain: ~6% additional coverage
+- Rationale: Cast wide net, let validation databases sort fungi into guilds
 
 Reference: Tanunchai et al. (2022) Microbial Ecology
 
@@ -35,9 +37,11 @@ def extract_hybrid_guilds(limit=None):
         print(f"TEST MODE: Processing first {limit} plants only")
         print()
 
-    print("Strategy: FungalTraits PRIMARY + FunGuild FALLBACK")
-    print("  - FungalTraits: Expert-curated (128 mycologists)")
-    print("  - FunGuild: Fills gaps (confidence-filtered: Probable + Highly Probable)")
+    print("Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION")
+    print("  - Extraction: hasHost, parasiteOf, pathogenOf, interactsWith")
+    print("  - FungalTraits: Expert-curated (128 mycologists) - PRIMARY")
+    print("  - FunGuild: Fills gaps (confidence-filtered) - FALLBACK")
+    print("  - Rationale: Cast wide net, let validation sort into guilds")
     print()
 
     con = duckdb.connect()
@@ -45,7 +49,7 @@ def extract_hybrid_guilds(limit=None):
     # Paths
     FUNGALTRAITS_PATH = "data/fungaltraits/fungaltraits.parquet"
     FUNGUILD_PATH = "data/funguild/funguild.parquet"
-    PLANT_DATASET_PATH = "model_data/outputs/perm2_production/perm2_11680_with_ecoservices_20251030.parquet"
+    PLANT_DATASET_PATH = "model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet"
     GLOBI_PATH = "data/stage4/globi_interactions_final_dataset_11680.parquet"
 
     # Limit clause for test mode
@@ -67,14 +71,15 @@ def extract_hybrid_guilds(limit=None):
             {limit_clause}
         ),
 
-        -- Step 2: Get all hasHost fungi from GloBI
+        -- Step 2: Get all fungi from GloBI using BROAD relationship mining
+        -- Strategy: Cast wide net, let FungalTraits validate and sort into guilds
         hashost_fungi AS (
             SELECT
                 g.target_wfo_taxon_id,
                 LOWER(COALESCE(g.sourceTaxonGenusName, SPLIT_PART(g.sourceTaxonName, ' ', 1))) as genus,
                 g.sourceTaxonPhylumName as phylum
             FROM read_parquet('{GLOBI_PATH}') g
-            WHERE g.interactionTypeName = 'hasHost'
+            WHERE g.interactionTypeName IN ('hasHost', 'parasiteOf', 'pathogenOf', 'interactsWith')
               AND g.sourceTaxonKingdomName = 'Fungi'
               AND g.target_wfo_taxon_id IN (SELECT wfo_taxon_id FROM target_plants)
         ),
