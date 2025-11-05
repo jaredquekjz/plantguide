@@ -378,84 +378,26 @@ def _explain_risks(guild_result: Dict) -> List[Dict]:
         id_to_name = {p['wfo_id']: p['scientific_name'] for p in plant_details}
         return [id_to_name.get(pid, pid[:20]) for pid in plant_ids]
 
-    # N1: Shared pathogenic fungi (CRITICAL RISK)
-    pathogen_map = organism_to_plants.get('pathogens', {})
-    if pathogen_map:
-        # Sort by plant count (highest coverage first)
-        top_pathogens = sorted(pathogen_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
+    # N1 and N2 REMOVED in 7-metric framework (2025-11-05)
+    # Rationale:
+    # - Pest/pathogen sharing now measured by M1 (phylogenetic distance with exponential transformation)
+    # - M1 provides 100% coverage vs N1/N2's sparse 28% coverage
+    # - Literature validates phylogenetic distance as PRIMARY predictor of pest/pathogen sharing
+    # - Observed pest/pathogen data shown qualitatively in "Observed Organisms" section only
+    # Reference: /home/olier/ellenberg/results/summaries/phylotraits/Stage_4/4.2c_7_Metric_Framework_Implementation_Plan.md
 
-        # Calculate severity
-        max_coverage = max(len(plant_ids) for _, plant_ids in top_pathogens)
-        coverage_pct = int(max_coverage / n_plants * 100)
-
-        if max_coverage >= n_plants * 0.8:  # 80%+ coverage
-            severity = 'critical'
-            icon = '🔴'
-        elif max_coverage >= n_plants * 0.5:  # 50%+ coverage
-            severity = 'high'
-            icon = '🟠'
-        else:
-            severity = 'medium'
-            icon = '🟡'
-
-        # Format: organism (count plants): Plant A, Plant B, Plant C
-        pathogen_list = []
-        for pathogen, plant_ids in top_pathogens:
-            plant_names = get_plant_names(plant_ids)
-            plant_str = ', '.join(plant_names[:3])
-            if len(plant_names) > 3:
-                plant_str += f' (+ {len(plant_names) - 3} more)'
-            pathogen_list.append(f'{pathogen} ({len(plant_ids)} plants): {plant_str}')
-
-        risks.append({
-            'type': 'shared_pathogens',
-            'severity': severity,
-            'icon': icon,
-            'title': f'Shared Pathogenic Fungi ({len(pathogen_map)} total)',
-            'message': f'Up to {coverage_pct}% of plants share disease vulnerabilities',
-            'detail': 'One outbreak can spread rapidly across multiple plants in the guild',
-            'evidence': pathogen_list,
-            'advice': 'Space plants apart, ensure good air circulation, monitor for early symptoms'
-        })
-
-    # N2: Shared herbivores
-    herbivore_map = organism_to_plants.get('herbivores', {})
-    if herbivore_map:
-        top_herbivores = sorted(herbivore_map.items(), key=lambda x: len(x[1]), reverse=True)[:5]
-        max_coverage = max(len(plant_ids) for _, plant_ids in top_herbivores)
-        coverage_pct = int(max_coverage / n_plants * 100)
-
-        # Format: organism (count plants): Plant A, Plant B, Plant C
-        herbivore_list = []
-        for herbivore, plant_ids in top_herbivores:
-            plant_names = get_plant_names(plant_ids)
-            plant_str = ', '.join(plant_names[:3])
-            if len(plant_names) > 3:
-                plant_str += f' (+ {len(plant_names) - 3} more)'
-            herbivore_list.append(f'{herbivore} ({len(plant_ids)} plants): {plant_str}')
-
-        risks.append({
-            'type': 'shared_herbivores',
-            'severity': 'medium',
-            'icon': '🟡',
-            'title': f'Shared Pest Vulnerabilities ({len(herbivore_map)} total)',
-            'message': f'Up to {coverage_pct}% of plants attract the same pests',
-            'detail': 'Pest populations can build up and spread easily between plants',
-            'evidence': herbivore_list,
-            'advice': 'Use companion planting with pest-repelling plants or biological controls'
-        })
-
-    # No risks detected
+    # No risks currently detected from negative metrics
+    # (N4 conflicts shown in warnings section, not risks)
     if not risks:
         risks.append({
             'type': 'none',
             'severity': 'none',
             'icon': '✓',
-            'title': 'Minimal Shared Vulnerabilities',
-            'message': 'Low disease/pest outbreak risk - plants have diverse attackers',
-            'detail': 'Diseases and pests are unlikely to spread easily between guild members',
+            'title': 'No Specific Risk Factors Detected',
+            'message': 'Guild metrics show generally compatible plants',
+            'detail': 'Review individual metrics and observed organisms for optimization opportunities',
             'evidence': [],
-            'advice': 'Maintain good plant health practices'
+            'advice': 'Check metric breakdown and qualitative organism data for specific guidance'
         })
 
     return risks
