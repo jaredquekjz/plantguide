@@ -284,11 +284,38 @@ def export_to_markdown(explanation_json, output_path='explanation_output.md'):
     if result.get('metrics'):
         md.append("## 📊 Detailed Metrics\n")
         metrics = result['metrics']
+
+        # Custom order: Universal metrics first, then bonus indicators
+        metric_order = [
+            # Universal (available for all plants)
+            'pest_pathogen_indep',
+            'structural_diversity',
+            'growth_compatibility',
+            # Bonus indicators (not all plants have data)
+            'beneficial_fungi',
+            'disease_control',
+            'insect_control',
+            'pollinator_support'
+        ]
+
+        md.append("**Universal Indicators** (available for all plants):\n")
         md.append("| Metric | Score |")
         md.append("|--------|-------|")
-        for key, value in sorted(metrics.items()):
-            bar = '█' * int(value / 5) + '░' * (20 - int(value / 5))
-            md.append(f"| {key.replace('_', ' ').title()} | {bar} {value:.1f} |")
+        for key in metric_order[:3]:  # First 3 are universal
+            if key in metrics:
+                value = metrics[key]
+                bar = '█' * int(value / 5) + '░' * (20 - int(value / 5))
+                md.append(f"| {key.replace('_', ' ').title()} | {bar} {value:.1f} |")
+        md.append("")
+
+        md.append("**Bonus Indicators** (dependent on available data):\n")
+        md.append("| Metric | Score |")
+        md.append("|--------|-------|")
+        for key in metric_order[3:]:  # Remaining are bonus
+            if key in metrics:
+                value = metrics[key]
+                bar = '█' * int(value / 5) + '░' * (20 - int(value / 5))
+                md.append(f"| {key.replace('_', ' ').title()} | {bar} {value:.1f} |")
         md.append("")
 
     # Write to file
