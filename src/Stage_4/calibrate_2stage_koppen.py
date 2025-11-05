@@ -21,6 +21,7 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from scipy.spatial.distance import pdist
+from phylo_pd_calculator import PhyloPDCalculator
 
 # Köppen tier structure
 TIERS = {
@@ -114,11 +115,11 @@ def count_shared_organisms(df, plant_ids, *columns):
     return organism_counts
 
 
-def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
+def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, phylo_calculator):
     """
     Compute raw component scores for a guild.
 
-    Document 4.2c: N1 and N2 removed, P4 → M1 with exponential transformation.
+    Document 4.2c: N1 and N2 removed, P4 → M1 with Faith's PD and exponential transformation.
     """
 
     n_plants = len(guild_ids)
@@ -176,26 +177,23 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
     coverage_ratio = plants_with_beneficial / n_plants
     scores['p3'] = network_raw * 0.6 + coverage_ratio * 0.4
 
-    # M1: Pathogen & Pest Independence (formerly P4, now with exponential transform)
-    # Literature: Phylopathogen 2013, Gougherty-Davies 2021
-    # Pest sharing decays exponentially with phylogenetic distance
-    phylo_cols = [f'phylo_ev{i}' for i in range(1, 93)]
-    phylo_matrix = guild_plants[phylo_cols].values
+    # M1: Pathogen & Pest Independence using Faith's PD
+    # Literature: Faith 1992, Phylopathogen 2013, Gougherty-Davies 2021, Keesing et al. 2006
+    # Faith's PD increases with richness + divergence → captures dilution effect
+    plant_ids = guild_plants['wfo_taxon_id'].tolist()
 
-    if len(phylo_matrix) >= 2 and not np.any(np.isnan(phylo_matrix)):
-        # Step 1: Calculate mean pairwise phylogenetic distance
-        distances = pdist(phylo_matrix, metric='euclidean')
-        mean_distance = np.mean(distances)
+    if len(plant_ids) >= 2:
+        # Calculate Faith's PD using phylogenetic tree
+        faiths_pd = phylo_calculator.calculate_pd(plant_ids, use_wfo_ids=True)
 
-        # Step 2: EXPONENTIAL TRANSFORMATION (k=3.0 from literature)
-        # Close relatives (low distance) → high pest_risk_raw (bad)
-        # Distant relatives (high distance) → low pest_risk_raw (good)
-        k = 3.0  # Decay constant from Phylopathogen β₁=1.5944, Gougherty-Davies β₁=0.748-0.998
-        pest_risk_raw = np.exp(-k * mean_distance)
+        # Apply EXPONENTIAL TRANSFORMATION
+        # Decay constant k calibrated for Faith's PD scale (hundreds)
+        k = 0.001  # Much smaller than old k=3.0 (Faith's PD >> eigenvector distances)
+        pest_risk_raw = np.exp(-k * faiths_pd)
         scores['m1'] = pest_risk_raw  # Store TRANSFORMED value (0-1 scale)
     else:
         # Single plant = maximum pest risk
-        scores['m1'] = 1.0  # exp(-k × 0) = 1.0
+        scores['m1'] = 1.0  # No diversity = highest pest risk
 
     # P5: Structural diversity
     heights = guild_plants['height_m'].dropna().values
@@ -223,7 +221,7 @@ def compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df):
     return scores
 
 
-def calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, guild_size, n_guilds_per_tier, stage_name):
+def calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, phylo_calculator, guild_size, n_guilds_per_tier, stage_name):
     """Run calibration for one stage."""
 
     print(f"\n{'='*80}")
@@ -245,7 +243,7 @@ def calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, guild_size, 
 
         while successful < n_guilds_per_tier:
             guild_ids = np.random.choice(plant_ids, size=guild_size, replace=False).tolist()
-            raw_scores = compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df)
+            raw_scores = compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, phylo_calculator)
 
             if raw_scores is not None:
                 for comp in COMPONENTS:
@@ -278,8 +276,13 @@ def main():
     plants_df, organisms_df, fungi_df = load_all_data(con)
     tier_plants = organize_by_tier(plants_df)
 
+    # Initialize Faith's PD calculator (once for all calibrations)
+    print("\nInitializing Faith's PD calculator...")
+    phylo_calculator = PhyloPDCalculator()
+    print("✓ Faith's PD calculator loaded")
+
     if args.stage in ['1', 'both']:
-        results = calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, 2, args.n_guilds, 'Stage 1: 2-Plant')
+        results = calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, phylo_calculator, 2, args.n_guilds, 'Stage 1: 2-Plant')
         output_file = Path('data/stage4/normalization_params_2plant.json')
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, 'w') as f:
@@ -287,7 +290,7 @@ def main():
         print(f"\n✓ Saved: {output_file}")
 
     if args.stage in ['2', 'both']:
-        results = calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, 7, args.n_guilds, 'Stage 2: 7-Plant')
+        results = calibrate_stage(tier_plants, plants_df, organisms_df, fungi_df, phylo_calculator, 7, args.n_guilds, 'Stage 2: 7-Plant')
         output_file = Path('data/stage4/normalization_params_7plant.json')
         output_file.parent.mkdir(parents=True, exist_ok=True)
         with open(output_file, 'w') as f:

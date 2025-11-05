@@ -35,6 +35,7 @@ from pathlib import Path
 from collections import Counter
 from typing import Dict, List, Any
 from scipy.spatial.distance import pdist
+from phylo_pd_calculator import PhyloPDCalculator
 
 
 class GuildScorerV3:
@@ -116,9 +117,19 @@ class GuildScorerV3:
 
         print(f"Using: {self.plants_path.name}")
 
+        # Initialize Faith's PD calculator (lazy loading)
+        self._phylo_pd_calculator = None
+
     # ============================================
     # HELPER FUNCTIONS
     # ============================================
+
+    def _get_phylo_pd_calculator(self):
+        """Get or create PhyloPDCalculator instance (lazy loading)."""
+        if self._phylo_pd_calculator is None:
+            print("Initializing Faith's PD calculator...")
+            self._phylo_pd_calculator = PhyloPDCalculator()
+        return self._phylo_pd_calculator
 
     def _normalize_percentile(self, raw_value, component_key):
         """
@@ -1517,64 +1528,65 @@ class GuildScorerV3:
 
     def _compute_metric1_pest_pathogen_independence(self, plants_data, n_plants):
         """
-        Metric 1: Pathogen & Pest Independence via phylogenetic diversity.
+        Metric 1: Pathogen & Pest Independence via Faith's Phylogenetic Diversity.
 
         HIGH diversity → LOW shared pests/pathogens (exponential decay)
 
-        Literature basis:
+        Uses Faith's PD (gold standard in community ecology):
+        - Faith (1992): Sum of branch lengths connecting species
+        - Increases with richness: More species = more branch lengths
+        - Increases with divergence: Distant species = longer paths
+        - Captures dilution effect + cumulative diversity barriers
+
+        Literature basis for exponential transformation:
         - Phylopathogen 2013: logit(S) = 2.9113 - 1.5944 × log₁₀(distance + 1)
           → 66.7% congeneric, 43.6% confamilial, 29.9% distant pest sharing
         - Gougherty-Davies 2021: severity = β₀ - β₁ × log₁₀(distance + 1)
           → Exponential decay across all pest types
+        - Keesing et al. 2006: Dilution effect requires community-level diversity
 
-        EXPONENTIAL TRANSFORMATION APPLIED (aligns with literature):
-        - Pest sharing decays exponentially with phylogenetic distance
-        - NOT linear: exp(-k × distance), not just distance
+        CRITICAL FIX (2025-11-05):
+        - OLD: Used mean pairwise distance (MPD) → guild-size independent
+        - NEW: Uses Faith's PD → increases with guild size and diversity
         """
 
-        # Get all 92 eigenvectors
-        ev_cols = [f'phylo_ev{i}' for i in range(1, 93)]
+        if len(plants_data) == 0:
+            return {'raw': 1.0, 'norm': 0.0, 'faiths_pd': 0.0}
 
-        if not all(col in plants_data.columns for col in ev_cols):
-            return {'raw': 0.0, 'norm': 0.0, 'mean_phylo_distance': 0.0}
+        # Get WFO IDs for this guild
+        plant_ids = plants_data['wfo_taxon_id'].tolist()
 
-        ev_matrix = plants_data[ev_cols].values
-
-        if len(ev_matrix) > 1:
-            # Step 1: Calculate pairwise phylogenetic distances (Euclidean in 92-D space)
-            distances = pdist(ev_matrix, metric='euclidean')
-            mean_distance = np.mean(distances)
-
-            # Step 2: EXPONENTIAL TRANSFORMATION (KEY CHANGE!)
-            # Literature shows pest sharing decays exponentially with distance:
-            #   logit(S) = β₀ - β₁ × log(distance)
-            #   → S ∝ exp(-k × distance) in real space
-            #
-            # Decay constant k calibrated to literature:
-            # - Phylopathogen: β₁ = 1.5944 suggests k ≈ 2.5-3.5
-            # - Gougherty-Davies: β₁ = 0.748-0.998 suggests k ≈ 2.0-3.0
-            # - Use k = 3.0 (middle of range)
-            k = 3.0  # Exponential decay constant
-
-            # Transform to PEST RISK (high = bad, low = good)
-            # Close relatives (low distance) → high pest_risk_raw
-            # Distant relatives (high distance) → low pest_risk_raw
-            pest_risk_raw = np.exp(-k * mean_distance)
-
-            # Step 3: Normalize TRANSFORMED value using tier-stratified 120K calibration
-            # HIGH pest_risk_raw = HIGH clustering = BAD (low percentile)
-            # LOW pest_risk_raw = HIGH diversity = GOOD (high percentile)
-            m1_norm = self._normalize_percentile(pest_risk_raw, 'm1')
-        else:
+        if len(plant_ids) == 1:
             # Single plant guild = no diversity, maximum pest risk
-            mean_distance = 0.0
-            pest_risk_raw = 1.0  # exp(-k × 0) = 1.0
-            m1_norm = 0.0  # Lowest possible percentile
+            return {'raw': 1.0, 'norm': 0.0, 'faiths_pd': 0.0}
+
+        # Calculate Faith's PD using phylogenetic tree
+        calculator = self._get_phylo_pd_calculator()
+        faiths_pd = calculator.calculate_pd(plant_ids, use_wfo_ids=True)
+
+        # Apply EXPONENTIAL TRANSFORMATION
+        # Literature shows pest sharing decays exponentially with phylogenetic distance
+        #
+        # Decay constant k calibrated for Faith's PD scale:
+        # - Faith's PD measured in evolutionary time (hundreds)
+        # - Use k ≈ 0.001-0.005 (much smaller than old k=3.0 for eigenvector distances)
+        # - Will be tuned during calibration
+        k = 0.001  # Exponential decay constant (initial value)
+
+        # Transform to PEST RISK (high = bad, low = good)
+        # Low PD (closely related) → high pest_risk_raw (BAD)
+        # High PD (distant relatives) → low pest_risk_raw (GOOD)
+        pest_risk_raw = np.exp(-k * faiths_pd)
+
+        # Normalize using tier-stratified calibration
+        # HIGH pest_risk_raw = LOW diversity = BAD (low percentile)
+        # LOW pest_risk_raw = HIGH diversity = GOOD (high percentile)
+        m1_norm = self._normalize_percentile(pest_risk_raw, 'm1')
 
         return {
-            'raw': pest_risk_raw,           # Exponentially transformed (0-1 scale)
-            'norm': m1_norm,                # Percentile rank (0-100) - For backwards compatibility
-            'mean_phylo_distance': mean_distance  # Original distance (for diagnostics)
+            'raw': pest_risk_raw,     # Exponentially transformed (0-1 scale)
+            'norm': m1_norm,          # Percentile rank (0-100)
+            'faiths_pd': faiths_pd    # Faith's PD value (for diagnostics)
         }
 
     def _compute_p5_stratification(self, plants_data, n_plants):
