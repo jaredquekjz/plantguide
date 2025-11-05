@@ -64,47 +64,21 @@ def extract_organism_profiles(limit=None):
     """).fetchdf()
     print(f"  - Found pollinators for {len(pollinators):,} plants")
 
-    # Step 2: Extract herbivores (INVERTEBRATE pests only)
-    # ARCHITECTURAL DECISION (2025-11-04): Exclude vertebrates due to GloBI data quality
-    # - Birds/mammals ARE herbivores ecologically, BUT GloBI has poor vertebrate predator data
-    # - "Diptera eats Turdus philomelos", "Vespula eats Meles meles" = nonsensical
-    # - Trade-off: Accept that bird/mammal herbivory won't appear in pest risk scoring
-    # - Birds still captured for biocontrol via interactsWith relationships
-    print("Step 2: Extracting herbivores (invertebrate pests only)...")
+    # Step 2: Load matched herbivores from comprehensive lookup
+    # ARCHITECTURAL DECISION (2025-11-05): Use comprehensive herbivore matching
+    # - Extracted ALL insects/arthropods that eat plants from full GloBI (20.3M rows)
+    # - Created definitive lookup of 14,345 known herbivore species
+    # - Match these wherever they appear in our dataset (eats, hasHost, interactsWith, etc.)
+    # - Automatically excludes pollinators and nonsensical plant→insect relations
+    print("Step 2: Loading matched herbivores from comprehensive lookup...")
     herbivores = con.execute("""
-        WITH pollinator_organisms AS (
-            -- Get all organisms that are pollinators/visitors (beneficial)
-            SELECT DISTINCT sourceTaxonName
-            FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
-            WHERE interactionTypeName IN ('pollinates', 'visitsFlowersOf', 'visits')
-              AND sourceTaxonName != 'no name'
-        )
         SELECT
-            target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as herbivores,
-            COUNT(DISTINCT sourceTaxonName) as herbivore_count
-        FROM read_parquet('data/stage4/globi_interactions_final_dataset_11680.parquet')
-        WHERE target_wfo_taxon_id IS NOT NULL
-          AND interactionTypeName IN ('eats', 'preysOn')
-          AND sourceTaxonName != 'no name'
-          -- ONLY animals (exclude plants, fungi, bacteria)
-          AND sourceTaxonKingdomName IN ('Animalia', 'Metazoa')
-          -- EXCLUDE vertebrates (GloBI has poor predator data for them)
-          AND sourceTaxonClassName NOT IN (
-              'Aves',           -- Birds (bad predator data in GloBI)
-              'Mammalia',       -- Mammals (bad predator data in GloBI)
-              'Reptilia',       -- Reptiles
-              'Amphibia',       -- Amphibians
-              'Actinopterygii', -- Fish
-              'Chondrichthyes', -- Sharks/rays
-              'Myxini',         -- Hagfish
-              'Petromyzontida'  -- Lampreys
-          )
-          -- EXCLUDE flower visitors/pollinators (beneficial service)
-          AND sourceTaxonName NOT IN (SELECT * FROM pollinator_organisms)
-        GROUP BY target_wfo_taxon_id
+            plant_wfo_id,
+            herbivores,
+            herbivore_count
+        FROM read_parquet('data/stage4/matched_herbivores_per_plant.parquet')
     """).fetchdf()
-    print(f"  - Found herbivores for {len(herbivores):,} plants")
+    print(f"  - Found herbivores for {len(herbivores):,} plants (from 14,345 known herbivore species)")
 
     # Step 3: Extract pathogens (including fungi via hasHost relationship)
     print("Step 3: Extracting pathogens...")

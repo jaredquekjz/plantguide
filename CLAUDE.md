@@ -126,6 +126,28 @@ result = con.execute("""
 
 **Reference**: See `/home/olier/ellenberg/results/summaries/phylotraits/Stage_1/1.1_Raw_Data_Preparation.md` for canon parquet conversion process.
 
+## Utility Scripts
+
+### PDF to Markdown Conversion
+
+For converting research papers and PDFs to markdown format, use the Mathpix-based converter:
+
+```bash
+python src/Stage_1/convert_to_mmd.py papers/input.pdf [optional_output.mmd]
+```
+
+**Features:**
+- Uses Mathpix API for high-quality PDF to MMD (markdown) conversion
+- Preserves mathematical notation, tables, and figures
+- Requires `MATHPIX_APP_KEY` environment variable
+- Output defaults to same directory with `.mmd` extension
+- Processing typically takes 30-60 seconds per paper
+
+**Use cases:**
+- Converting research papers for analysis and citation
+- Extracting methodology from scientific literature
+- Building literature review documentation
+
 ## Style
 
 - Always plan your work systematically, based on thorough checks of context, before executing. Always propose industry best practices for code - no short cuts.
