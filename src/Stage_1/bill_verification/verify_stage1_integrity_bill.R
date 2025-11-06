@@ -3,6 +3,12 @@
 # Author: Bill Shipley verification script
 # Date: 2025-11-06
 # Output: data/shipley_checks/
+#
+# Expected counts (after 2025-11-06 case-sensitivity fix):
+#   Master taxa union: 86,592 unique WFO taxa
+#   Shortlist candidates: 24,511 species
+#
+# Prior to fix: 86,815 taxa, 24,542 species (contained 223 false duplicates)
 
 library(arrow)
 library(dplyr)
@@ -92,7 +98,7 @@ master_union_unsorted <- combined %>%
   )
 
 cat("  Unique WFO taxa:", nrow(master_union_unsorted), "\n")
-cat("  Expected: 86,815\n")
+cat("  Expected: 86,592\n")
 
 # KEY: Match exact row order from Python by reading it and joining
 cat("\nMatching Python row order...\n")
@@ -257,7 +263,7 @@ shortlist_filtered <- shortlist_union_unsorted %>%
   filter(shortlist_flag == 1)
 
 cat("  Shortlisted species:", nrow(shortlist_filtered), "\n")
-cat("  Expected: 24,542\n")
+cat("  Expected: 24,511\n")
 
 # Match Python row order
 cat("\nMatching Python row order...\n")
