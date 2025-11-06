@@ -25,7 +25,7 @@ cat("PART 1: Building Master Taxa Union\n")
 cat("Reading raw parquet files...\n")
 
 # Read Duke ethnobotany
-duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enriched_bill.parquet") %>%
+duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -34,7 +34,7 @@ duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enric
 cat("  Duke:", nrow(duke), "records\n")
 
 # Read EIVE
-eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched_bill.parquet") %>%
+eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -43,7 +43,7 @@ eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enric
 cat("  EIVE:", nrow(eive), "records\n")
 
 # Read Mabberly
-mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflora_enriched_bill.parquet") %>%
+mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -52,7 +52,7 @@ mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflo
 cat("  Mabberly:", nrow(mabberly), "records\n")
 
 # Read TRY Enhanced
-try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched_bill.parquet") %>%
+try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -61,7 +61,7 @@ try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_w
 cat("  TRY Enhanced:", nrow(try_enhanced), "records\n")
 
 # Read AusTraits
-austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_worldflora_enriched_bill.parquet") %>%
+austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_taxa_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -138,7 +138,7 @@ cat("\n\nPART 2: Building Shortlist Candidates\n")
 cat("Applying trait-richness filters...\n")
 
 # Read EIVE with trait counts
-eive_full <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched_bill.parquet") %>%
+eive_full <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric EIVE indices per species
@@ -158,7 +158,7 @@ eive_counts <- eive_full %>%
 cat("  Species with >=3 EIVE indices:", sum(eive_counts$eive_numeric_count >= 3), "\n")
 
 # Read TRY Enhanced with trait counts
-try_full <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched_bill.parquet") %>%
+try_full <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric TRY traits per species
@@ -184,7 +184,7 @@ cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\
 # Read AusTraits overlap traits
 cat("Counting AusTraits overlap numeric traits...\n")
 austraits_traits <- read_parquet("data/stage1/austraits/traits_try_overlap.parquet")
-austraits_taxa <- read_parquet("data/shipley_checks/wfo_verification/austraits_worldflora_enriched_bill.parquet")
+austraits_taxa <- read_parquet("data/shipley_checks/wfo_verification/austraits_taxa_worldflora_enriched.parquet")
 
 # Join and filter
 target_traits <- c('leaf_area', 'leaf_N_per_dry_mass', 'leaf_mass_per_area',

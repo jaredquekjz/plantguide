@@ -51,10 +51,12 @@ duke_wfo$scientific_genus <- sapply(strsplit(duke_wfo$scientific_norm, " "), fun
 duke_wfo$genus_rank <- as.integer(duke_wfo$scientific_genus != duke_wfo$src_genus)
 
 duke_wfo$new_accepted_rank <- as.integer(!tolower(trimws(duke_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
+# IMPORTANT: Duke uses pandas - case-INSENSITIVE comparison (canonical line 153)
 duke_wfo$status_rank <- as.integer(tolower(trimws(duke_wfo$taxonomicStatus)) != "accepted")
 duke_wfo$subseq_rank <- suppressWarnings(as.numeric(duke_wfo$Subseq))
 duke_wfo$subseq_rank[is.na(duke_wfo$subseq_rank)] <- 9999999
 
+# Note: plant_key is already a unique ID, no normalization needed for Duke
 duke_wfo_sorted <- duke_wfo %>%
   arrange(plant_key, matched_rank, taxonid_rank, exact_rank, genus_rank,
           new_accepted_rank, status_rank, subseq_rank) %>%
@@ -118,21 +120,26 @@ eive_wfo$scientific_genus <- sapply(strsplit(eive_wfo$scientific_norm, " "), fun
 eive_wfo$genus_rank <- as.integer(eive_wfo$scientific_genus != eive_wfo$src_genus)
 
 eive_wfo$new_accepted_rank <- as.integer(!tolower(trimws(eive_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
-eive_wfo$status_rank <- as.integer(tolower(trimws(eive_wfo$taxonomicStatus)) != "accepted")
+# IMPORTANT: EIVE uses DuckDB - case-SENSITIVE comparison (canonical line 331)
+eive_wfo$status_rank <- as.integer(trimws(eive_wfo$taxonomicStatus) != "accepted")
 eive_wfo$subseq_rank <- suppressWarnings(as.numeric(eive_wfo$Subseq))
 eive_wfo$subseq_rank[is.na(eive_wfo$subseq_rank)] <- 9999999
 
+# Create normalized join key BEFORE deduplication
+eive_wfo$join_key_normalized <- tolower(trimws(eive_wfo$TaxonConcept))
+
 eive_wfo_sorted <- eive_wfo %>%
-  arrange(TaxonConcept, matched_rank, taxonid_rank, exact_rank, genus_rank,
+  arrange(join_key_normalized, matched_rank, taxonid_rank, exact_rank, genus_rank,
           new_accepted_rank, status_rank, subseq_rank) %>%
-  group_by(TaxonConcept) %>%
+  group_by(join_key_normalized) %>%
   slice(1) %>%
   ungroup()
 
-# Rename columns
+# Rename columns (keep join_key_normalized for merging)
 eive_wfo_clean <- eive_wfo_sorted %>%
   select(
     TaxonConcept,
+    join_key_normalized,
     wf_spec_name = spec.name,
     wfo_taxon_id = taxonID,
     wfo_scientific_name = scientificName,
@@ -148,9 +155,12 @@ eive_wfo_clean <- eive_wfo_sorted %>%
     wfo_fuzzy_distance = Fuzzy.dist
   )
 
-# Merge
+# Merge with normalized keys (case-insensitive, whitespace-trimmed)
+eive_orig$join_key_normalized <- tolower(trimws(eive_orig$TaxonConcept))
+
 eive_enriched <- eive_orig %>%
-  left_join(eive_wfo_clean, by = "TaxonConcept")
+  left_join(eive_wfo_clean %>% select(-TaxonConcept), by = "join_key_normalized") %>%
+  select(-join_key_normalized)
 
 log_msg("Writing EIVE enriched parquet...")
 write_parquet(eive_enriched, file.path(output_dir, "eive_worldflora_enriched.parquet"), compression = "snappy")
@@ -185,21 +195,26 @@ mab_wfo$scientific_genus <- sapply(strsplit(mab_wfo$scientific_norm, " "), funct
 mab_wfo$genus_rank <- as.integer(mab_wfo$scientific_genus != mab_wfo$src_norm)
 
 mab_wfo$new_accepted_rank <- as.integer(!tolower(trimws(mab_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
+# IMPORTANT: Mabberly uses pandas - case-INSENSITIVE comparison (canonical line 471)
 mab_wfo$status_rank <- as.integer(tolower(trimws(mab_wfo$taxonomicStatus)) != "accepted")
 mab_wfo$subseq_rank <- suppressWarnings(as.numeric(mab_wfo$Subseq))
 mab_wfo$subseq_rank[is.na(mab_wfo$subseq_rank)] <- 9999999
 
+# Create normalized join key BEFORE deduplication
+mab_wfo$join_key_normalized <- tolower(trimws(mab_wfo$Genus))
+
 mab_wfo_sorted <- mab_wfo %>%
-  arrange(Genus, matched_rank, taxonid_rank, exact_rank, genus_rank,
+  arrange(join_key_normalized, matched_rank, taxonid_rank, exact_rank, genus_rank,
           new_accepted_rank, status_rank, subseq_rank) %>%
-  group_by(Genus) %>%
+  group_by(join_key_normalized) %>%
   slice(1) %>%
   ungroup()
 
-# Rename columns
+# Rename columns (keep join_key_normalized for merging)
 mab_wfo_clean <- mab_wfo_sorted %>%
   select(
     Genus,
+    join_key_normalized,
     wf_spec_name = spec.name,
     wfo_taxon_id = taxonID,
     wfo_scientific_name = scientificName,
@@ -215,9 +230,12 @@ mab_wfo_clean <- mab_wfo_sorted %>%
     wfo_fuzzy_distance = Fuzzy.dist
   )
 
-# Merge
+# Merge with normalized keys (case-insensitive, whitespace-trimmed)
+mab_orig$join_key_normalized <- tolower(trimws(mab_orig$Genus))
+
 mab_enriched <- mab_orig %>%
-  left_join(mab_wfo_clean, by = "Genus")
+  left_join(mab_wfo_clean %>% select(-Genus), by = "join_key_normalized") %>%
+  select(-join_key_normalized)
 
 log_msg("Writing Mabberly enriched parquet...")
 write_parquet(mab_enriched, file.path(output_dir, "mabberly_worldflora_enriched.parquet"), compression = "uncompressed")
@@ -252,21 +270,26 @@ try_wfo$scientific_genus <- sapply(strsplit(try_wfo$scientific_norm, " "), funct
 try_wfo$genus_rank <- as.integer(try_wfo$scientific_genus != try_wfo$src_genus)
 
 try_wfo$new_accepted_rank <- as.integer(!tolower(trimws(try_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
-try_wfo$status_rank <- as.integer(tolower(trimws(try_wfo$taxonomicStatus)) != "accepted")
+# IMPORTANT: TRY Enhanced uses DuckDB - case-SENSITIVE comparison (canonical line 849)
+try_wfo$status_rank <- as.integer(trimws(try_wfo$taxonomicStatus) != "accepted")
 try_wfo$subseq_rank <- suppressWarnings(as.numeric(try_wfo$Subseq))
 try_wfo$subseq_rank[is.na(try_wfo$subseq_rank)] <- 9999999
 
+# Create normalized join key BEFORE deduplication
+try_wfo$join_key_normalized <- tolower(trimws(try_wfo$SpeciesName))
+
 try_wfo_sorted <- try_wfo %>%
-  arrange(SpeciesName, matched_rank, taxonid_rank, exact_rank, genus_rank,
+  arrange(join_key_normalized, matched_rank, taxonid_rank, exact_rank, genus_rank,
           new_accepted_rank, status_rank, subseq_rank) %>%
-  group_by(SpeciesName) %>%
+  group_by(join_key_normalized) %>%
   slice(1) %>%
   ungroup()
 
-# Rename columns
+# Rename columns (keep join_key_normalized for merging)
 try_wfo_clean <- try_wfo_sorted %>%
   select(
     SpeciesName,
+    join_key_normalized,
     wf_spec_name = spec.name,
     wfo_taxon_id = taxonID,
     wfo_scientific_name = scientificName,
@@ -282,11 +305,12 @@ try_wfo_clean <- try_wfo_sorted %>%
     wfo_fuzzy_distance = Fuzzy.dist
   )
 
-# Merge (join on the standardized species name column in TRY Enhanced)
+# Merge with normalized keys (case-insensitive, whitespace-trimmed)
+try_orig$join_key_normalized <- tolower(trimws(try_orig$`Species name standardized against TPL`))
+
 try_enriched <- try_orig %>%
-  mutate(SpeciesName = `Species name standardized against TPL`) %>%
-  left_join(try_wfo_clean, by = "SpeciesName") %>%
-  select(-SpeciesName)
+  left_join(try_wfo_clean %>% select(-SpeciesName), by = "join_key_normalized") %>%
+  select(-join_key_normalized)
 
 log_msg("Writing TRY Enhanced enriched parquet...")
 write_parquet(try_enriched, file.path(output_dir, "tryenhanced_worldflora_enriched.parquet"), compression = "snappy")
@@ -321,21 +345,26 @@ aus_wfo$scientific_genus <- sapply(strsplit(aus_wfo$scientific_norm, " "), funct
 aus_wfo$genus_rank <- as.integer(aus_wfo$scientific_genus != aus_wfo$src_genus)
 
 aus_wfo$new_accepted_rank <- as.integer(!tolower(trimws(aus_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
+# IMPORTANT: AusTraits uses pandas - case-INSENSITIVE comparison (canonical line 640)
 aus_wfo$status_rank <- as.integer(tolower(trimws(aus_wfo$taxonomicStatus)) != "accepted")
 aus_wfo$subseq_rank <- suppressWarnings(as.numeric(aus_wfo$Subseq))
 aus_wfo$subseq_rank[is.na(aus_wfo$subseq_rank)] <- 9999999
 
+# Create normalized join key BEFORE deduplication
+aus_wfo$join_key_normalized <- tolower(trimws(aus_wfo$taxon_name))
+
 aus_wfo_sorted <- aus_wfo %>%
-  arrange(taxon_name, matched_rank, taxonid_rank, exact_rank, genus_rank,
+  arrange(join_key_normalized, matched_rank, taxonid_rank, exact_rank, genus_rank,
           new_accepted_rank, status_rank, subseq_rank) %>%
-  group_by(taxon_name) %>%
+  group_by(join_key_normalized) %>%
   slice(1) %>%
   ungroup()
 
-# Rename columns
+# Rename columns (keep join_key_normalized for merging)
 aus_wfo_clean <- aus_wfo_sorted %>%
   select(
     taxon_name,
+    join_key_normalized,
     wf_spec_name = spec.name,
     wfo_taxon_id = taxonID,
     wfo_scientific_name = scientificName,
@@ -351,9 +380,12 @@ aus_wfo_clean <- aus_wfo_sorted %>%
     wfo_fuzzy_distance = Fuzzy.dist
   )
 
-# Merge
+# Merge with normalized keys (case-insensitive, whitespace-trimmed)
+aus_taxa_orig$join_key_normalized <- tolower(trimws(aus_taxa_orig$taxon_name))
+
 aus_taxa_enriched <- aus_taxa_orig %>%
-  left_join(aus_wfo_clean, by = "taxon_name")
+  left_join(aus_wfo_clean %>% select(-taxon_name), by = "join_key_normalized") %>%
+  select(-join_key_normalized)
 
 log_msg("Writing AusTraits taxa enriched parquet...")
 write_parquet(aus_taxa_enriched, file.path(output_dir, "austraits_taxa_worldflora_enriched.parquet"), compression = "snappy")

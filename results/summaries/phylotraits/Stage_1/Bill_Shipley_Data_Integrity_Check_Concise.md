@@ -57,9 +57,6 @@ Bill's verification scripts read from these **9 canonical files only**. All outp
 
 ### Step 1: Extract Names from Datasets
 
-```bash
-cd /home/olier/ellenberg
-
 # Extract distinct names from all 8 datasets (~1-2 minutes)
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/extract_all_names_bill.R
 ```
@@ -76,20 +73,16 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/extract_all_nam
 
 ### Step 2: Run WorldFlora Matching
 
-```bash
-cd /home/olier/ellenberg
 
 # Run 8 WorldFlora matching scripts (~3-4 hours total)
 # Tip: Run in parallel using nohup for efficiency
 
-# Core datasets (5):
+# Core datasets (8):
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_duke_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_eive_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_mabberly_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_tryenhanced_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_austraits_match_bill.R
-
-# Extended datasets (3, larger):
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_gbif_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_globi_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_try_traits_match_bill.R
@@ -115,7 +108,7 @@ Duke            ✓ PASS (MD5: 9361d55e)
 EIVE            ✓ PASS (MD5: dbf7651f)
 TRY Enhanced    ✓ PASS (MD5: 86b87648)
 AusTraits       ✓ PASS (MD5: 5a1bdb71)
-GBIF            ✓ PASS (MD5: xxxxxxxx)
+GBIF            ✓ PASS (MD5: c81d6452)
 GloBI           ✓ PASS (MD5: f573ed29)
 TRY traits      ✓ PASS (MD5: 49af4604)
 
@@ -176,23 +169,7 @@ Shortlisted species: 24,542 ✓
 
 ---
 
-## Round 1 Results (Development Testing)
-
-**Date**: 2025-11-06
-**System**: Ubuntu 22.04, R 4.x
-
-| Phase | Component | Status | Details |
-|-------|-----------|--------|---------|
-| **Phase 0** | WorldFlora CSVs | ✓ PASS | All 5 datasets: byte-for-byte identical |
-| **Phase 1** | Enriched parquets | ✓ PASS | Match counts: 11,822 / 14,141 / 13,420 / 45,194 / 31,580 |
-| **Phase 1** | Master union | ✓ PASS | 86,815 taxa, CSV checksum identical |
-| **Phase 1** | Shortlist | ✓ PASS | 24,542 species, CSV checksum identical |
-
-**Conclusion**: Pipeline 100% reproducible in R. All checksums match.
-
----
-
-## Round 2 Success Criteria (Bill's Independent Run)
+## Success Criteria 
 
 ### Phase 0: WFO Normalization
 - [ ] All 5 WorldFlora scripts run without errors
