@@ -8,20 +8,18 @@
 
 ## Bill's Verification Role
 
-**Not just script execution** - Bill must independently assess:
+Bill should independently assess:
 
-1. **Code logic review**: Examine R scripts in `src/Stage_1/bill_verification/` for methodological soundness
+1. **Code logic review**: Examine R scripts in `src/Stage_1/bill_verification/` for methodological soundness, e.g.:
    - WorldFlora matching parameters (exact matching, no fuzzy)
    - Deduplication logic (rank-based tie-breaking)
    - Trait-richness filters (≥3 numeric traits per dataset)
 
-2. **Ecological sanity checks**: Sample datasets to verify biological plausibility
+2. **Ecological sanity checks**: Sample datasets to verify biological plausibility, e.g.:
    - EIVE index ranges (e.g., Nitrogen 1-9, Moisture 1-12)
    - TRY trait ranges (e.g., Plant height 0.01-100m, LMA 20-500 g/m²)
    - Taxonomic distribution (expect common genera: *Carex*, *Solanum*, *Eucalyptus*)
    - Match rates (Duke ~84%, EIVE ~95%, Mabberly ~99%)
-
-**Deliverable**: Report methodology concerns or ecological anomalies found during review.
 
 ---
 
@@ -143,11 +141,9 @@ Shortlisted species: 24,542 ✓
 - [ ] Both verification checksums show **✓ PASS**
 
 ### Deliverable
-- [ ] Log file: `logs/bill_phase1_verification.log`
 - [ ] Report any ✗ FAIL messages or row count mismatches
-- [ ] Code review notes: methodology concerns or improvements
+- [ ] Code and methodology review notes: scripting or methodology concerns and improvements
 - [ ] Ecological sanity check results: any biological anomalies
-- [ ] Confirm system info (OS, R version)
 
 **If all checkboxes pass**: Stage 1 pipeline is independently verified. ✓
 
