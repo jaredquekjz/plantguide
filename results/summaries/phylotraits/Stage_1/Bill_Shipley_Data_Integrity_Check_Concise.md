@@ -25,8 +25,31 @@ Bill should independently assess:
 
 ## Workflow Overview
 
-**Phase 0**: Run WorldFlora normalization (5 scripts) → Verify CSV checksums
+**Phase 0**: Run WorldFlora normalization (8 scripts) → Verify CSV checksums
 **Phase 1**: Build enriched parquets → Verify data integrity → Compare checksums
+
+---
+
+## Required Source Data (Read-Only)
+
+Bill's verification scripts read from these **9 canonical files only**. All outputs write to `data/shipley_checks/` (isolated verification universe).
+
+### 8 Dataset Parquets (Original Data)
+
+1. **Duke Ethnobotany**: `data/stage1/duke_original.parquet` (58K rows, 1.2 MB)
+2. **EIVE Ecological Indicators**: `data/stage1/eive_original.parquet` (21K rows, 1.5 MB)
+3. **Mabberly Genera**: `data/stage1/mabberly_original.parquet` (13K rows, 531 KB)
+4. **TRY Enhanced Traits**: `data/stage1/tryenhanced_species_original.parquet` (46K rows, 3.1 MB)
+5. **AusTraits Taxa**: `data/stage1/austraits/taxa.parquet` (33K rows, 1.4 MB)
+6. **GBIF Plant Occurrences**: `data/gbif/occurrence_plantae.parquet` (161K rows, 5.4 GB)
+7. **GloBI Plant Interactions**: `data/stage1/globi_interactions_plants.parquet` (4.6M rows, 444 MB)
+8. **TRY Selected Traits**: `data/stage1/try_selected_traits.parquet` (81K rows, 20 MB)
+
+### 1 WFO Taxonomy Backbone
+
+9. **World Flora Online Backbone**: `data/classification.csv` (1.6M taxa, 570 MB, tab-separated, Latin-1 encoding)
+
+**All scripts are read-only**: Canonical data is never modified. All Bill's outputs write to `data/shipley_checks/wfo_verification/`.
 
 ---
 
