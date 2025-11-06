@@ -23,7 +23,7 @@ if (length(file_arg_idx) == 0) {
 }
 repo_root <- normalizePath(file.path(script_dir, "..", "..", ".."), winslash = "/", mustWork = TRUE)
 
-input_path <- file.path(repo_root, "data/stage1/austraits/austraits_names_for_r.csv")
+input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/austraits_names_for_r.csv")
 output_dir <- file.path(repo_root, "data/shipley_checks/wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 output_path <- file.path(output_dir, "austraits_wfo_worldflora.csv")

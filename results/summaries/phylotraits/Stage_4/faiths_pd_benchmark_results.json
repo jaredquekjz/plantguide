@@ -1,0 +1,87 @@
+{
+  "benchmark_date": "2025-11-05",
+  "tree_info": {
+    "file": "mixgb_tree_11676_species_20251027.nwk",
+    "num_species": 11676,
+    "num_nodes": 25000
+  },
+  "test_configuration": {
+    "iterations": 1000,
+    "compiler": "g++ -O3 -std=c++11 -march=native",
+    "library": "CompactTree header-only C++",
+    "hardware": "AMD/Intel x86_64"
+  },
+  "visited_tracking_comparison": {
+    "guild_7_species": {
+      "faiths_pd": 654.649,
+      "unordered_set_ms": 0.00243731,
+      "vector_bool_ms": 0.00225805,
+      "vector_uint8_ms": 0.00247169,
+      "winner": "vector<bool>",
+      "speedup_vs_original": 1.079
+    },
+    "guild_19_species": {
+      "faiths_pd": 916.453,
+      "unordered_set_ms": 0.00670824,
+      "vector_bool_ms": 0.00601423,
+      "vector_uint8_ms": 0.00548023,
+      "winner": "vector<uint8_t>",
+      "speedup_vs_original": 1.224
+    },
+    "guild_40_species": {
+      "faiths_pd": 1215.89,
+      "unordered_set_ms": 0.0130538,
+      "vector_bool_ms": 0.00974875,
+      "vector_uint8_ms": 0.00922502,
+      "winner": "vector<uint8_t>",
+      "speedup_vs_original": 1.415
+    }
+  },
+  "optimization_insights": {
+    "key_finding": "vector<uint8_t> provides best performance for realistic guild sizes (10-40 species)",
+    "speedup_trend": "Speedup increases with guild size: 8% (7 sp) → 22% (19 sp) → 42% (40 sp)",
+    "memory_cost": "Negligible (25KB for 25K node tree)",
+    "why_vector_uint8_wins": [
+      "Nodes are contiguous integers 0..N-1 (perfect for array indexing)",
+      "No hash function overhead (direct array access)",
+      "No bit-packing overhead (unlike vector<bool>)",
+      "Better cache locality than unordered_set"
+    ],
+    "why_vector_bool_loses": [
+      "Bit-packing overhead increases with more accesses",
+      "Special proxy objects for element access",
+      "Performance degrades for larger guilds"
+    ]
+  },
+  "production_recommendation": {
+    "data_structure": "vector<uint8_t>",
+    "strategy": "Load tree once at server startup, reuse for all guild calculations",
+    "expected_performance": {
+      "tree_loading_one_time": "2.94 ms",
+      "guild_calculation_cold": "25 microseconds",
+      "guild_calculation_warm": "9.2 microseconds",
+      "throughput_single_core": "108,000 guilds/second",
+      "throughput_8_cores": "864,000 guilds/second"
+    }
+  },
+  "cost_analysis": {
+    "python_treeswift": {
+      "time_per_guild_ms": 8.56,
+      "guilds_per_second": 117,
+      "cores_for_10k_concurrent": 86,
+      "aws_m7i_instances": 11,
+      "monthly_cost_usd": 2537,
+      "annual_cost_usd": 30444
+    },
+    "compactree_cpp_optimized": {
+      "time_per_guild_ms": 0.0092,
+      "guilds_per_second": 108695,
+      "cores_for_10k_concurrent": 0.092,
+      "aws_m7i_instances": 1,
+      "monthly_cost_usd": 58,
+      "annual_cost_usd": 696
+    },
+    "annual_savings_usd": 29748,
+    "speedup_factor": 930
+  }
+}

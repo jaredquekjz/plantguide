@@ -26,7 +26,7 @@ log_msg("=== Processing Duke dataset ===")
 duke_orig <- read_parquet("data/stage1/duke_original.parquet")
 log_msg("Loaded Duke original: ", nrow(duke_orig), " rows")
 
-duke_wfo <- fread("data/shipley_checks/wfo_verification/duke_wfo_worldflora_bill.csv", data.table = FALSE)
+duke_wfo <- fread("data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded Duke WFO matches: ", nrow(duke_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -86,7 +86,7 @@ duke_enriched <- duke_orig %>%
   left_join(duke_wfo_clean, by = "plant_key")
 
 log_msg("Writing Duke enriched parquet...")
-write_parquet(duke_enriched, file.path(output_dir, "duke_worldflora_enriched_bill.parquet"), compression = "zstd")
+write_parquet(duke_enriched, file.path(output_dir, "duke_worldflora_enriched.parquet"), compression = "snappy")
 log_msg("Duke complete: ", nrow(duke_enriched), " rows\n")
 
 # ==============================================================================
@@ -97,7 +97,7 @@ log_msg("=== Processing EIVE dataset ===")
 eive_orig <- read_parquet("data/stage1/eive_original.parquet")
 log_msg("Loaded EIVE original: ", nrow(eive_orig), " rows")
 
-eive_wfo <- fread("data/shipley_checks/wfo_verification/eive_wfo_worldflora_bill.csv", data.table = FALSE)
+eive_wfo <- fread("data/shipley_checks/wfo_verification/eive_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded EIVE WFO matches: ", nrow(eive_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -153,7 +153,7 @@ eive_enriched <- eive_orig %>%
   left_join(eive_wfo_clean, by = "TaxonConcept")
 
 log_msg("Writing EIVE enriched parquet...")
-write_parquet(eive_enriched, file.path(output_dir, "eive_worldflora_enriched_bill.parquet"), compression = "zstd")
+write_parquet(eive_enriched, file.path(output_dir, "eive_worldflora_enriched.parquet"), compression = "snappy")
 log_msg("EIVE complete: ", nrow(eive_enriched), " rows\n")
 
 # ==============================================================================
@@ -164,7 +164,7 @@ log_msg("=== Processing Mabberly dataset ===")
 mab_orig <- read_parquet("data/stage1/mabberly_original.parquet")
 log_msg("Loaded Mabberly original: ", nrow(mab_orig), " rows")
 
-mab_wfo <- fread("data/shipley_checks/wfo_verification/mabberly_wfo_worldflora_bill.csv", data.table = FALSE)
+mab_wfo <- fread("data/shipley_checks/wfo_verification/mabberly_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded Mabberly WFO matches: ", nrow(mab_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -220,7 +220,7 @@ mab_enriched <- mab_orig %>%
   left_join(mab_wfo_clean, by = "Genus")
 
 log_msg("Writing Mabberly enriched parquet...")
-write_parquet(mab_enriched, file.path(output_dir, "mabberly_worldflora_enriched_bill.parquet"), compression = "zstd")
+write_parquet(mab_enriched, file.path(output_dir, "mabberly_worldflora_enriched.parquet"), compression = "uncompressed")
 log_msg("Mabberly complete: ", nrow(mab_enriched), " rows\n")
 
 # ==============================================================================
@@ -231,7 +231,7 @@ log_msg("=== Processing TRY Enhanced dataset ===")
 try_orig <- read_parquet("data/stage1/tryenhanced_species_original.parquet")
 log_msg("Loaded TRY Enhanced original: ", nrow(try_orig), " rows")
 
-try_wfo <- fread("data/shipley_checks/wfo_verification/tryenhanced_wfo_worldflora_bill.csv", data.table = FALSE)
+try_wfo <- fread("data/shipley_checks/wfo_verification/tryenhanced_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded TRY Enhanced WFO matches: ", nrow(try_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -289,7 +289,7 @@ try_enriched <- try_orig %>%
   select(-SpeciesName)
 
 log_msg("Writing TRY Enhanced enriched parquet...")
-write_parquet(try_enriched, file.path(output_dir, "tryenhanced_worldflora_enriched_bill.parquet"), compression = "zstd")
+write_parquet(try_enriched, file.path(output_dir, "tryenhanced_worldflora_enriched.parquet"), compression = "snappy")
 log_msg("TRY Enhanced complete: ", nrow(try_enriched), " rows\n")
 
 # ==============================================================================
@@ -300,7 +300,7 @@ log_msg("=== Processing AusTraits dataset ===")
 aus_taxa_orig <- read_parquet("data/stage1/austraits/taxa.parquet")
 log_msg("Loaded AusTraits taxa original: ", nrow(aus_taxa_orig), " rows")
 
-aus_wfo <- fread("data/shipley_checks/wfo_verification/austraits_wfo_worldflora_bill.csv", data.table = FALSE)
+aus_wfo <- fread("data/shipley_checks/wfo_verification/austraits_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded AusTraits WFO matches: ", nrow(aus_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -356,7 +356,7 @@ aus_taxa_enriched <- aus_taxa_orig %>%
   left_join(aus_wfo_clean, by = "taxon_name")
 
 log_msg("Writing AusTraits taxa enriched parquet...")
-write_parquet(aus_taxa_enriched, file.path(output_dir, "austraits_taxa_worldflora_enriched_bill.parquet"), compression = "zstd")
+write_parquet(aus_taxa_enriched, file.path(output_dir, "austraits_taxa_worldflora_enriched.parquet"), compression = "snappy")
 log_msg("AusTraits complete: ", nrow(aus_taxa_enriched), " rows\n")
 
 log_msg("=== All enriched parquets created successfully ===")

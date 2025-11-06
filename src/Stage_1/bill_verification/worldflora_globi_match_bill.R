@@ -1,12 +1,11 @@
 #!/usr/bin/env Rscript
 
-cat("Starting WorldFlora matching for EIVE dataset\n")
+cat("Starting WorldFlora matching for GloBI interactions dataset\n")
 flush.console()
 
 suppressPackageStartupMessages({
   library(data.table)
   library(WorldFlora)
-  
 })
 
 log_msg <- function(...) {
@@ -24,23 +23,23 @@ if (length(file_arg_idx) == 0) {
 }
 repo_root <- normalizePath(file.path(script_dir, "..", "..", ".."), winslash = "/", mustWork = TRUE)
 
-input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/eive_names_for_r.csv")
+input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/globi_interactions_names_for_r.tsv")
 output_dir <- file.path(repo_root, "data/shipley_checks/wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-output_path <- file.path(output_dir, "eive_wfo_worldflora.csv")
+output_path <- file.path(output_dir, "globi_interactions_wfo_worldflora.csv")
 wfo_path <- file.path(repo_root, "data/classification.csv")
 
-log_msg("Reading EIVE names from: ", input_path)
-eive <- fread(input_path, encoding = "UTF-8", data.table = FALSE)
-log_msg("Loaded ", nrow(eive), " name rows")
+log_msg("Reading GloBI names from: ", input_path)
+globi <- fread(input_path, encoding = "UTF-8", data.table = FALSE, sep = "\t")
+log_msg("Loaded ", nrow(globi), " name rows")
 
-eive$name_raw <- trimws(eive$TaxonConcept)
-eive <- eive[!is.na(eive$name_raw) & nchar(eive$name_raw) > 0, ]
-log_msg("Retained ", nrow(eive), " rows with non-empty raw names")
+globi$name_raw <- trimws(globi$SpeciesName)
+globi <- globi[!is.na(globi$name_raw) & nchar(globi$name_raw) > 0, ]
+log_msg("Retained ", nrow(globi), " rows with non-empty raw names")
 
 log_msg("Preparing names with WFO.prepare()")
 prep <- WFO.prepare(
-  spec.data = eive,
+  spec.data = globi,
   spec.full = "name_raw",
   squish = TRUE,
   spec.name.nonumber = TRUE,
@@ -69,10 +68,10 @@ matches <- WFO.match(
   Fuzzy.two = TRUE,
   Fuzzy.one = TRUE,
   verbose = TRUE,
-  counter = 1000
+  counter = 2000
 )
 log_msg("Matched rows: ", nrow(matches))
 
 log_msg("Writing results to: ", output_path)
 fwrite(matches, output_path)
-log_msg("Completed WorldFlora matching for EIVE dataset")
+log_msg("Completed WorldFlora matching for GloBI dataset")

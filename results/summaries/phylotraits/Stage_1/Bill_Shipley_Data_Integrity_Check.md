@@ -525,9 +525,4 @@ Bill should report:
 2. The complete Stage 1 pipeline is independently reproducible (Phase 1)
 3. Ecologists can verify the pipeline using only R, without Python or SQL expertise
 
-## Contact
 
-Questions about this verification:
-- Methodology: oliver@example.com
-- R implementation: Bill Shipley can email questions
-- Repository issues: https://github.com/anthropics/claude-code/issues

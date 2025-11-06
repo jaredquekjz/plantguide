@@ -1,12 +1,11 @@
 #!/usr/bin/env Rscript
 
-cat("Starting WorldFlora matching for EIVE dataset\n")
+cat("Starting WorldFlora matching for TRY selected traits dataset\n")
 flush.console()
 
 suppressPackageStartupMessages({
   library(data.table)
   library(WorldFlora)
-  
 })
 
 log_msg <- function(...) {
@@ -24,23 +23,38 @@ if (length(file_arg_idx) == 0) {
 }
 repo_root <- normalizePath(file.path(script_dir, "..", "..", ".."), winslash = "/", mustWork = TRUE)
 
-input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/eive_names_for_r.csv")
+input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/try_selected_traits_names_for_r.csv")
 output_dir <- file.path(repo_root, "data/shipley_checks/wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-output_path <- file.path(output_dir, "eive_wfo_worldflora.csv")
+output_path <- file.path(output_dir, "try_selected_traits_wfo_worldflora.csv")
 wfo_path <- file.path(repo_root, "data/classification.csv")
 
-log_msg("Reading EIVE names from: ", input_path)
-eive <- fread(input_path, encoding = "UTF-8", data.table = FALSE)
-log_msg("Loaded ", nrow(eive), " name rows")
+log_msg("Reading TRY trait names from: ", input_path)
+try_names <- fread(input_path, encoding = "UTF-8", data.table = FALSE)
+log_msg("Loaded ", nrow(try_names), " name rows")
 
-eive$name_raw <- trimws(eive$TaxonConcept)
-eive <- eive[!is.na(eive$name_raw) & nchar(eive$name_raw) > 0, ]
-log_msg("Retained ", nrow(eive), " rows with non-empty raw names")
+if ("AccSpeciesName" %in% names(try_names)) {
+  log_msg("Using AccSpeciesName as primary raw name")
+  try_names$name_raw <- trimws(try_names$AccSpeciesName)
+} else if ("SpeciesName" %in% names(try_names)) {
+  log_msg("AccSpeciesName missing, defaulting to SpeciesName")
+  try_names$name_raw <- trimws(try_names$SpeciesName)
+} else {
+  stop("Input file must contain AccSpeciesName or SpeciesName column.")
+}
+
+if ("SpeciesName" %in% names(try_names)) {
+  fallback <- trimws(try_names$SpeciesName)
+  need_fallback <- is.na(try_names$name_raw) | nchar(try_names$name_raw) == 0
+  try_names$name_raw[need_fallback] <- fallback[need_fallback]
+}
+
+try_names <- try_names[!is.na(try_names$name_raw) & nchar(try_names$name_raw) > 0, ]
+log_msg("Retained ", nrow(try_names), " rows with non-empty raw names")
 
 log_msg("Preparing names with WFO.prepare()")
 prep <- WFO.prepare(
-  spec.data = eive,
+  spec.data = try_names,
   spec.full = "name_raw",
   squish = TRUE,
   spec.name.nonumber = TRUE,
@@ -75,4 +89,4 @@ log_msg("Matched rows: ", nrow(matches))
 
 log_msg("Writing results to: ", output_path)
 fwrite(matches, output_path)
-log_msg("Completed WorldFlora matching for EIVE dataset")
+log_msg("Completed WorldFlora matching for TRY selected traits dataset")

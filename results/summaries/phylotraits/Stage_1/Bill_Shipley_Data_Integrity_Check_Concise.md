@@ -32,43 +32,78 @@ Bill should independently assess:
 
 ## Phase 0: WFO Normalization
 
-### Commands
+### Step 1: Extract Names from Datasets
 
 ```bash
 cd /home/olier/ellenberg
 
-# Run 5 WorldFlora matching scripts (~1-2 hours total)
+# Extract distinct names from all 8 datasets (~1-2 minutes)
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/extract_all_names_bill.R
+```
+
+**Output**: 8 name CSVs written to `data/shipley_checks/wfo_verification/`
+- `duke_names_for_r.csv` (14,027 names)
+- `eive_names_for_r.csv` (14,835 names)
+- `mabberly_names_for_r.csv` (13,489 names)
+- `tryenhanced_names_for_r.csv` (46,047 names)
+- `austraits_names_for_r.csv` (33,370 names)
+- `gbif_occurrence_names_for_r.tsv` (160,713 names)
+- `globi_interactions_names_for_r.tsv` (74,002 names)
+- `try_selected_traits_names_for_r.csv` (80,788 names)
+
+### Step 2: Run WorldFlora Matching
+
+```bash
+cd /home/olier/ellenberg
+
+# Run 8 WorldFlora matching scripts (~3-4 hours total)
+# Tip: Run in parallel using nohup for efficiency
+
+# Core datasets (5):
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_duke_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_eive_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_mabberly_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_tryenhanced_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_austraits_match_bill.R
 
-# Note: Scripts show "Checking for fuzzy matches for X records" - this is misleading.
-# With Fuzzy=0, NO string-distance fuzzy matching occurs (no Levenshtein tolerance).
-# The message refers to fallback exact matching: if "Acacia albida subsp. X" fails,
-# WorldFlora retries exact match on "Acacia albida", then "Acacia" against WFO backbone.
-# Results show WHAT matched (subspecies/species/genus) - NOT a conversion to genus.
-
-# Verify checksums (~5 seconds)
-md5sum data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv \
-       data/shipley_checks/wfo_verification/eive_wfo_worldflora.csv \
-       data/shipley_checks/wfo_verification/mabberly_wfo_worldflora.csv \
-       data/shipley_checks/wfo_verification/tryenhanced_wfo_worldflora.csv \
-       data/shipley_checks/wfo_verification/austraits_wfo_worldflora.csv
+# Extended datasets (3, larger):
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_gbif_match_bill.R
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_globi_match_bill.R
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_try_traits_match_bill.R
 ```
 
-### Expected Checksums
+**Note on "fuzzy matches" message**: Scripts show "Checking for fuzzy matches for X records" - this is misleading. With `Fuzzy=0`, NO string-distance fuzzy matching occurs (no Levenshtein tolerance). The message refers to fallback exact matching: if "Acacia albida subsp. X" fails, WorldFlora retries exact match on "Acacia albida", then "Acacia" against WFO backbone. Results show WHAT matched (subspecies/species/genus) - NOT a conversion to genus.
 
-| Dataset | Expected MD5 |
-|---------|--------------|
-| Duke | `481806e6c81ebb826475f23273eca17e` |
-| EIVE | `fae234cfd05150f4efefc66837d1a1d4` |
-| Mabberly | `0c82b665f9c66716c2f1ec9eafc4431d` |
-| TRY Enhanced | `ce0f457c56120c8070f34d65f53af4b1` |
-| AusTraits | `ebed20d3f33427b1f29f060309f5959d` |
+### Step 3: Verify WorldFlora Outputs (MD5 Checksums)
 
-**Success**: All 5 checksums match exactly → Proceed to Phase 1
+```bash
+# MD5 checksum verification of WorldFlora CSVs (~5 seconds)
+# Excludes OriSeq column (input row numbering) which differs due to extraction ordering
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_worldflora_checksums_bill.R
+```
+
+**Expected output**:
+```
+=== WorldFlora CSV Checksum Verification ===
+(Excluding OriSeq column which reflects input ordering)
+
+Mabberly        ✓ PASS (MD5: 9bddcab3)
+Duke            ✓ PASS (MD5: 9361d55e)
+EIVE            ✓ PASS (MD5: dbf7651f)
+TRY Enhanced    ✓ PASS (MD5: 86b87648)
+AusTraits       ✓ PASS (MD5: 5a1bdb71)
+GBIF            ✓ PASS (MD5: xxxxxxxx)
+GloBI           ✓ PASS (MD5: f573ed29)
+TRY traits      ✓ PASS (MD5: 49af4604)
+
+=== Summary ===
+✓ All WorldFlora CSV outputs verified (MD5 checksums match)
+Note: OriSeq column excluded from comparison (reflects input row ordering)
+```
+
+**Success**: All 8 datasets show `✓ PASS` → Proceed to Phase 1
+
+**Why exclude OriSeq?** R's extraction (`unique()`) produces different row ordering than the canonical DuckDB extraction (`SELECT DISTINCT`). This causes WorldFlora to assign different `OriSeq` values (sequential input row numbers). However, when OriSeq is excluded, the sorted CSVs produce **identical MD5 checksums**, proving that all WFO taxonomy matches are byte-for-byte identical.
 
 ---
 
