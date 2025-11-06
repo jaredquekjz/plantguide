@@ -59,9 +59,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_aust
 
 ### Verifying WFO Normalization Outputs
 
-**Step 3: Verify CSV checksums match canonical versions**
-
-After copying the files, verify Bill's outputs match the canonical checksums:
+After running Bill's WorldFlora scripts, verify the CSV outputs match the canonical checksums:
 
 ```bash
 cd /home/olier/ellenberg
@@ -141,9 +139,9 @@ These match rates align with the canonical pipeline documentation (see `1.2_WFO_
 
 ### Purpose
 
-Independently reconstruct the master taxa union and trait-rich shortlist from the WFO-enriched parquets, then verify results match the Python-generated versions.
+Independently build WFO-enriched parquets, then reconstruct the master taxa union and trait-rich shortlist. Verify results match the Python-generated versions.
 
-## System Requirements
+### System Requirements
 
 ```r
 # Install required packages (run once)
@@ -153,390 +151,111 @@ install.packages("digest")     # MD5 checksums
 install.packages("data.table") # Fast joins and aggregation
 ```
 
-## Input Files (WFO-enriched Parquet)
+### Step 1: Build WFO-Enriched Parquets
 
-**Note**: These are outputs from Phase 0 (WFO normalization). After Phase 0 verification passes, these files should be present:
+After Phase 0 WorldFlora CSV verification passes, Bill needs to merge the WorldFlora results back into the original parquets to create enriched versions.
+
+**Run the enriched parquet builder:**
+
+```bash
+cd /home/olier/ellenberg
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/build_bill_enriched_parquets.R
+```
+
+**Expected runtime**: ~30 seconds
+
+This script will create Bill's WFO-enriched parquets:
 
 ```
-data/stage1/duke_worldflora_enriched.parquet          # 14,030 species
-data/stage1/eive_worldflora_enriched.parquet          # 14,835 species
-data/stage1/mabberly_worldflora_enriched.parquet      # 13,489 genera
-data/stage1/tryenhanced_worldflora_enriched.parquet   # 46,047 species
-data/stage1/austraits/austraits_taxa_worldflora_enriched.parquet  # 33,370 taxa
+data/shipley_checks/wfo_verification/duke_worldflora_enriched_bill.parquet          # 14,030 species
+data/shipley_checks/wfo_verification/eive_worldflora_enriched_bill.parquet          # 14,835 species
+data/shipley_checks/wfo_verification/mabberly_worldflora_enriched_bill.parquet      # 13,489 genera
+data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched_bill.parquet   # 46,047 species
+data/shipley_checks/wfo_verification/austraits_worldflora_enriched_bill.parquet     # 33,370 taxa
 ```
 
-All files are WorldFlora-enriched (WFO taxonomy backbone) with standardized `wfo_taxon_id` identifiers.
+All files will be WorldFlora-enriched (WFO taxonomy backbone) with standardized `wfo_taxon_id` identifiers.
 
-## Output Target
+### Step 2: Verify Data Integrity
 
-We will reconstruct:
+Bill will reconstruct:
 - `master_taxa_union.parquet` (86,815 unique WFO taxa from 5 sources)
 - `stage1_shortlist_candidates.parquet` (24,542 trait-rich species)
 
 And verify these match the Python-generated versions using MD5 checksums.
 
-## R Script: Data Integrity Check
-
-Save this as `src/Stage_1/verify_stage1_integrity.R`:
-
-```r
-#!/usr/bin/env Rscript
-# Stage 1 Data Integrity Verification (R implementation)
-# Author: Bill Shipley verification script
-# Date: 2025-11-06
-
-library(arrow)
-library(dplyr)
-library(digest)
-library(data.table)
-
-# Set working directory to repository root
-setwd("/home/olier/ellenberg")
-
-cat("=== Stage 1 Data Integrity Check ===\n")
-cat("Starting:", format(Sys.time()), "\n\n")
-
-# ============================================================================
-# PART 1: Master Taxa Union (5 sources)
-# ============================================================================
-
-cat("PART 1: Building Master Taxa Union\n")
-cat("Reading raw parquet files...\n")
-
-# Read Duke ethnobotany
-duke <- read_parquet("data/stage1/duke_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id)) %>%
-  select(wfo_taxon_id, wfo_scientific_name) %>%
-  mutate(source_name = "duke")
-
-cat("  Duke:", nrow(duke), "records\n")
-
-# Read EIVE
-eive <- read_parquet("data/stage1/eive_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id)) %>%
-  select(wfo_taxon_id, wfo_scientific_name) %>%
-  mutate(source_name = "eive")
-
-cat("  EIVE:", nrow(eive), "records\n")
-
-# Read Mabberly
-mabberly <- read_parquet("data/stage1/mabberly_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id)) %>%
-  select(wfo_taxon_id, wfo_scientific_name) %>%
-  mutate(source_name = "mabberly")
-
-cat("  Mabberly:", nrow(mabberly), "records\n")
-
-# Read TRY Enhanced
-try_enhanced <- read_parquet("data/stage1/tryenhanced_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id)) %>%
-  select(wfo_taxon_id, wfo_scientific_name) %>%
-  mutate(source_name = "try_enhanced")
-
-cat("  TRY Enhanced:", nrow(try_enhanced), "records\n")
-
-# Read AusTraits
-austraits <- read_parquet("data/stage1/austraits/austraits_taxa_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id)) %>%
-  select(wfo_taxon_id, wfo_scientific_name) %>%
-  mutate(source_name = "austraits_taxa")
-
-cat("  AusTraits:", nrow(austraits), "records\n")
-
-# Combine all sources
-cat("\nCombining sources...\n")
-combined <- bind_rows(duke, eive, mabberly, try_enhanced, austraits)
-cat("  Total records before deduplication:", nrow(combined), "\n")
-
-# Aggregate by wfo_taxon_id (equivalent to DuckDB GROUP BY)
-cat("Aggregating by wfo_taxon_id...\n")
-master_union <- combined %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(
-    wfo_scientific_name = first(wfo_scientific_name[!is.na(wfo_scientific_name)]),
-    sources = paste(sort(unique(source_name)), collapse = ","),
-    source_count = n_distinct(source_name),
-    in_duke = as.integer(any(source_name == "duke")),
-    in_eive = as.integer(any(source_name == "eive")),
-    in_mabberly = as.integer(any(source_name == "mabberly")),
-    in_try_enhanced = as.integer(any(source_name == "try_enhanced")),
-    in_austraits = as.integer(any(source_name == "austraits_taxa")),
-    .groups = "drop"
-  ) %>%
-  arrange(wfo_scientific_name)
-
-cat("  Unique WFO taxa:", nrow(master_union), "\n")
-cat("  Expected: 86,815\n")
-
-# Coverage summary
-cat("\nSource coverage:\n")
-cat("  Duke:", sum(master_union$in_duke), "\n")
-cat("  EIVE:", sum(master_union$in_eive), "\n")
-cat("  Mabberly:", sum(master_union$in_mabberly), "\n")
-cat("  TRY Enhanced:", sum(master_union$in_try_enhanced), "\n")
-cat("  AusTraits:", sum(master_union$in_austraits), "\n")
-
-# Write output
-cat("\nWriting master_taxa_union_R.parquet...\n")
-write_parquet(master_union, "data/stage1/master_taxa_union_R.parquet", compression = "zstd")
-
-# Calculate checksum
-checksum_r <- digest(master_union, algo = "md5")
-cat("  MD5 checksum:", checksum_r, "\n")
-
-# ============================================================================
-# PART 2: Shortlist Candidates (Trait-rich species)
-# ============================================================================
-
-cat("\n\nPART 2: Building Shortlist Candidates\n")
-cat("Applying trait-richness filters...\n")
-
-# Read EIVE with trait counts
-eive_full <- read_parquet("data/stage1/eive_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
-
-# Count numeric EIVE indices per species
-cat("Counting EIVE numeric traits...\n")
-eive_counts <- eive_full %>%
-  mutate(
-    eive_numeric_count =
-      as.integer(!is.na(as.numeric(`EIVEres-M`))) +
-      as.integer(!is.na(as.numeric(`EIVEres-N`))) +
-      as.integer(!is.na(as.numeric(`EIVEres-R`))) +
-      as.integer(!is.na(as.numeric(`EIVEres-L`))) +
-      as.integer(!is.na(as.numeric(`EIVEres-T`)))
-  ) %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(eive_numeric_count = max(eive_numeric_count), .groups = "drop")
-
-cat("  Species with >=3 EIVE indices:", sum(eive_counts$eive_numeric_count >= 3), "\n")
-
-# Read TRY Enhanced with trait counts
-try_full <- read_parquet("data/stage1/tryenhanced_worldflora_enriched.parquet") %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
-
-# Count numeric TRY traits per species
-cat("Counting TRY Enhanced numeric traits...\n")
-try_counts <- try_full %>%
-  mutate(
-    try_numeric_count =
-      as.integer(!is.na(as.numeric(`Leaf area (mm2)`))) +
-      as.integer(!is.na(as.numeric(`Nmass (mg/g)`))) +
-      as.integer(!is.na(as.numeric(`LMA (g/m2)`))) +
-      as.integer(!is.na(as.numeric(`Plant height (m)`))) +
-      as.integer(!is.na(as.numeric(`Diaspore mass (mg)`))) +
-      as.integer(!is.na(as.numeric(`SSD observed (mg/mm3)`))) +
-      as.integer(!is.na(as.numeric(`SSD imputed (mg/mm3)`))) +
-      as.integer(!is.na(as.numeric(`SSD combined (mg/mm3)`))) +
-      as.integer(!is.na(as.numeric(`LDMC (g/g)`)))
-  ) %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(try_numeric_count = max(try_numeric_count), .groups = "drop")
-
-cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\n")
-
-# Read AusTraits overlap traits
-cat("Counting AusTraits overlap numeric traits...\n")
-austraits_traits <- read_parquet("data/stage1/austraits/traits_try_overlap.parquet")
-austraits_taxa <- read_parquet("data/stage1/austraits/austraits_taxa_worldflora_enriched.parquet")
-
-# Join and filter
-target_traits <- c('leaf_area', 'leaf_N_per_dry_mass', 'leaf_mass_per_area',
-                   'plant_height', 'diaspore_dry_mass', 'wood_density',
-                   'leaf_dry_matter_content', 'leaf_thickness')
-
-austraits_enriched <- austraits_traits %>%
-  filter(trait_name %in% target_traits) %>%
-  inner_join(
-    austraits_taxa %>% select(taxon_name, wfo_taxon_id, wfo_scientific_name),
-    by = "taxon_name"
-  ) %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
-
-austraits_counts <- austraits_enriched %>%
-  mutate(value_numeric = suppressWarnings(as.numeric(trimws(value)))) %>%
-  filter(!is.na(value_numeric)) %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(austraits_numeric_count = n_distinct(trait_name), .groups = "drop")
-
-cat("  Species with >=3 AusTraits traits:", sum(austraits_counts$austraits_numeric_count >= 3), "\n")
-
-# Build presence flags
-cat("\nBuilding dataset presence flags...\n")
-presence <- bind_rows(
-  eive_full %>% select(wfo_taxon_id, wfo_scientific_name) %>%
-    distinct() %>% mutate(dataset = "eive"),
-  try_full %>% select(wfo_taxon_id, wfo_scientific_name) %>%
-    distinct() %>% mutate(dataset = "try_enhanced"),
-  duke %>% select(wfo_taxon_id, wfo_scientific_name) %>%
-    distinct() %>% mutate(dataset = "duke"),
-  austraits %>% select(wfo_taxon_id, wfo_scientific_name) %>%
-    distinct() %>% mutate(dataset = "austraits")
-) %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(
-    canonical_name = first(wfo_scientific_name[!is.na(wfo_scientific_name)]),
-    in_eive = as.integer(any(dataset == "eive")),
-    in_try_enhanced = as.integer(any(dataset == "try_enhanced")),
-    in_duke = as.integer(any(dataset == "duke")),
-    in_austraits = as.integer(any(dataset == "austraits")),
-    .groups = "drop"
-  )
-
-# Join all counts
-cat("Merging trait counts...\n")
-shortlist_union <- presence %>%
-  left_join(eive_counts, by = "wfo_taxon_id") %>%
-  left_join(try_counts, by = "wfo_taxon_id") %>%
-  left_join(austraits_counts, by = "wfo_taxon_id") %>%
-  mutate(
-    eive_numeric_count = coalesce(eive_numeric_count, 0L),
-    try_numeric_count = coalesce(try_numeric_count, 0L),
-    austraits_numeric_count = coalesce(austraits_numeric_count, 0L)
-  )
-
-# Apply shortlist filters
-cat("Applying shortlist criteria...\n")
-shortlist_final <- shortlist_union %>%
-  mutate(
-    qualifies_via_eive = as.integer(eive_numeric_count >= 3),
-    qualifies_via_try = as.integer(try_numeric_count >= 3),
-    qualifies_via_austraits = as.integer(austraits_numeric_count >= 3),
-    shortlist_flag = as.integer(
-      (eive_numeric_count >= 3) |
-      (try_numeric_count >= 3) |
-      (austraits_numeric_count >= 3)
-    )
-  ) %>%
-  filter(shortlist_flag == 1) %>%
-  arrange(canonical_name)
-
-cat("  Shortlisted species:", nrow(shortlist_final), "\n")
-cat("  Expected: 24,542\n")
-
-# Coverage breakdown
-cat("\nQualification breakdown:\n")
-cat("  Via EIVE (>=3 indices):", sum(shortlist_final$qualifies_via_eive), "\n")
-cat("  Via TRY (>=3 traits):", sum(shortlist_final$qualifies_via_try), "\n")
-cat("  Via AusTraits (>=3 traits):", sum(shortlist_final$qualifies_via_austraits), "\n")
-
-# Write output
-cat("\nWriting stage1_shortlist_candidates_R.parquet...\n")
-write_parquet(shortlist_final, "data/stage1/stage1_shortlist_candidates_R.parquet",
-              compression = "zstd")
-
-# Calculate checksum
-checksum_shortlist_r <- digest(shortlist_final, algo = "md5")
-cat("  MD5 checksum:", checksum_shortlist_r, "\n")
-
-# ============================================================================
-# PART 3: Checksum Verification
-# ============================================================================
-
-cat("\n\n=== CHECKSUM VERIFICATION ===\n")
-
-# Load Python-generated files for comparison
-cat("Loading Python-generated master_taxa_union...\n")
-master_union_py <- read_parquet("data/stage1/master_taxa_union.parquet")
-checksum_py <- digest(master_union_py, algo = "md5")
-
-cat("  Python MD5:", checksum_py, "\n")
-cat("  R MD5:     ", checksum_r, "\n")
-
-if (checksum_r == checksum_py) {
-  cat("  ✓ PASS: Master union checksums match\n")
-} else {
-  cat("  ✗ FAIL: Master union checksums differ\n")
-  cat("    Investigating differences...\n")
-  cat("    Python rows:", nrow(master_union_py), "\n")
-  cat("    R rows:     ", nrow(master_union), "\n")
-}
-
-cat("\nLoading Python-generated stage1_shortlist_candidates...\n")
-shortlist_py <- read_parquet("data/stage1/stage1_shortlist_candidates.parquet")
-checksum_shortlist_py <- digest(shortlist_py, algo = "md5")
-
-cat("  Python MD5:", checksum_shortlist_py, "\n")
-cat("  R MD5:     ", checksum_shortlist_r, "\n")
-
-if (checksum_shortlist_r == checksum_shortlist_py) {
-  cat("  ✓ PASS: Shortlist checksums match\n")
-} else {
-  cat("  ✗ FAIL: Shortlist checksums differ\n")
-  cat("    Investigating differences...\n")
-  cat("    Python rows:", nrow(shortlist_py), "\n")
-  cat("    R rows:     ", nrow(shortlist_final), "\n")
-}
-
-cat("\n=== Integrity Check Complete ===\n")
-cat("Finished:", format(Sys.time()), "\n")
-```
-
-## Running the Check
-
-After cloning the repository, Bill should run:
+**Run Bill's integrity verification script:**
 
 ```bash
-cd /path/to/ellenberg
-R_LIBS_USER=.Rlib Rscript src/Stage_1/verify_stage1_integrity.R | tee logs/bill_shipley_integrity_check.log
+cd /home/olier/ellenberg
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_stage1_integrity_bill.R | tee logs/bill_phase1_verification.log
 ```
 
-**Environment setup** (if packages not already installed):
-```r
-# Install required packages (run once)
-install.packages(c("arrow", "dplyr", "tools", "data.table"))
+**Expected runtime**: ~15-20 seconds
+
+The Bill-specific verification script reads enriched parquets from `data/shipley_checks/wfo_verification/` and compares results against the canonical Python-generated outputs.
+
+**What the script does:**
+1. Builds master taxa union from Bill's 5 WFO-enriched parquets
+2. Applies trait-richness filters to create shortlist candidates
+3. Compares Bill's outputs against canonical versions via MD5 checksums
+4. Writes verification results to `data/shipley_checks/`
+
+**Expected console output:**
+```
+=== Stage 1 Data Integrity Check ===
+Starting: 2025-11-06 11:30:00
+
+PART 1: Building Master Taxa Union
+Reading raw parquet files...
+  Duke: 10640 records
+  EIVE: 12879 records
+  Mabberly: 12664 records
+  TRY Enhanced: 44286 records
+  AusTraits: 28072 records
+
+Unique WFO taxa: 86,815
+Expected: 86,815
+
+PART 2: Building Shortlist Candidates
+Shortlisted species: 24,542
+Expected: 24,542
+
+=== CHECKSUM VERIFICATION ===
+  ✓ PASS: Master union checksums match
+  ✓ PASS: Shortlist checksums match
+
+=== Integrity Check Complete ===
 ```
 
-**Execution notes**:
-- Set `R_LIBS_USER=.Rlib` to use the custom R library
-- Expected runtime: 15-20 seconds on a standard workstation
-- Output saved to: `data/shipley_checks/` directory
-- Log file: `logs/bill_shipley_integrity_check.log`
+### Phase 1 Success Criteria
 
-The script will automatically:
-1. Read 5 raw WorldFlora-enriched parquet files
-2. Reconstruct master taxa union (86,815 taxa)
-3. Build trait-rich shortlist (24,542 species)
-4. Compare results to Python-generated versions
-5. Report detailed verification results including CSV checksums
+- ✓ Enriched parquets created successfully from Bill's WorldFlora CSVs
+- ✓ Master taxa union: 86,815 unique WFO taxa
+- ✓ Shortlist candidates: 24,542 trait-rich species
+- ✓ CSV checksums match canonical versions exactly
+- ✓ All column values show 100% match in verification output
 
-## Expected Results
+**If all checksums match**, Phase 1 is COMPLETE and the entire Stage 1 pipeline has been independently verified.
 
-### Master Taxa Union
-- Unique WFO taxa: 86,815
-- Duke: 10,640 species
-- EIVE: 12,879 species
-- Mabberly: 12,664 genera
-- TRY Enhanced: 44,286 species
-- AusTraits: 28,072 taxa
+---
 
-### Shortlist Candidates
-- Total shortlisted: 24,542 species
-- Qualified via EIVE: ~12,610 species
-- Qualified via TRY: ~12,658 species
-- Qualified via AusTraits: ~3,849 species
+## Data Sanity Checks (Optional)
 
-### Checksum Status
-Both checksums should report: **✓ PASS**
-
-If checksums differ, the script will report row count differences for investigation.
-
-## Data Sanity Checks
-
-After running the script, perform these ecological sanity checks in R:
+After running the verification script, Bill can perform optional ecological sanity checks in R:
 
 ```r
-# Load your R-generated shortlist
-shortlist <- read_parquet("data/stage1/stage1_shortlist_candidates_R.parquet")
+# Load Bill's generated shortlist
+shortlist <- read_parquet("data/shipley_checks/master_taxa_union_R.parquet")
 
 # 1. Check EIVE index ranges (should be 1-9 or 1-12 depending on indicator)
-eive <- read_parquet("data/stage1/eive_worldflora_enriched.parquet")
+eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched_bill.parquet")
 summary(as.numeric(eive$`EIVEres-M`))  # Moisture: expect 1-12
 summary(as.numeric(eive$`EIVEres-N`))  # Nitrogen: expect 1-9
 summary(as.numeric(eive$`EIVEres-L`))  # Light: expect 1-9
 
 # 2. Check TRY trait value ranges
-try_data <- read_parquet("data/stage1/tryenhanced_worldflora_enriched.parquet")
+try_data <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched_bill.parquet")
 summary(as.numeric(try_data$`Plant height (m)`))        # Expect: 0.01-100 m
 summary(as.numeric(try_data$`Leaf area (mm2)`))         # Expect: 1-500,000 mm²
 summary(as.numeric(try_data$`LMA (g/m2)`))              # Expect: 20-500 g/m²
@@ -545,9 +264,11 @@ summary(as.numeric(try_data$`LMA (g/m2)`))              # Expect: 20-500 g/m²
 sum(duplicated(shortlist$wfo_taxon_id))  # Should be 0
 
 # 4. Check taxonomic distribution
-head(sort(table(gsub(" .*", "", shortlist$canonical_name)), decreasing = TRUE), 20)
+head(sort(table(gsub(" .*", "", shortlist$wfo_scientific_name)), decreasing = TRUE), 20)
 # Should see common genera: Carex, Solanum, Eucalyptus, Acacia, etc.
 ```
+
+---
 
 ## Methodological Notes
 
