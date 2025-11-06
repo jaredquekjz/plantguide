@@ -270,13 +270,10 @@ shortlist_final <- shortlist_filtered %>%
   inner_join(py_order_shortlist, by = "wfo_taxon_id") %>%
   arrange(row_order) %>%
   select(-row_order) %>%
-  # Add legacy_wfo_ids from Python version
-  left_join(py_shortlist %>% select(wfo_taxon_id, legacy_wfo_ids), by = "wfo_taxon_id") %>%
   # Ensure exact column order to match Python
-  select(wfo_taxon_id, canonical_name, legacy_wfo_ids, in_eive, in_try_enhanced,
-         in_duke, in_austraits, eive_numeric_count, try_numeric_count,
-         austraits_numeric_count, qualifies_via_eive, qualifies_via_try,
-         qualifies_via_austraits, shortlist_flag)
+  select(wfo_taxon_id, canonical_name, eive_numeric_count, try_numeric_count,
+         austraits_numeric_count, in_eive, in_try_enhanced, in_duke, in_austraits,
+         qualifies_via_eive, qualifies_via_try, qualifies_via_austraits, shortlist_flag)
 
 # Coverage breakdown
 cat("\nQualification breakdown:\n")

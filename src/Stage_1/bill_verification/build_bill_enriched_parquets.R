@@ -120,8 +120,8 @@ eive_wfo$scientific_genus <- sapply(strsplit(eive_wfo$scientific_norm, " "), fun
 eive_wfo$genus_rank <- as.integer(eive_wfo$scientific_genus != eive_wfo$src_genus)
 
 eive_wfo$new_accepted_rank <- as.integer(!tolower(trimws(eive_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
-# IMPORTANT: EIVE uses DuckDB - case-SENSITIVE comparison (canonical line 331)
-eive_wfo$status_rank <- as.integer(trimws(eive_wfo$taxonomicStatus) != "accepted")
+# IMPORTANT: EIVE canonical fixed to case-INSENSITIVE (2025-11-06 bug fix)
+eive_wfo$status_rank <- as.integer(tolower(trimws(eive_wfo$taxonomicStatus)) != "accepted")
 eive_wfo$subseq_rank <- suppressWarnings(as.numeric(eive_wfo$Subseq))
 eive_wfo$subseq_rank[is.na(eive_wfo$subseq_rank)] <- 9999999
 
@@ -270,8 +270,8 @@ try_wfo$scientific_genus <- sapply(strsplit(try_wfo$scientific_norm, " "), funct
 try_wfo$genus_rank <- as.integer(try_wfo$scientific_genus != try_wfo$src_genus)
 
 try_wfo$new_accepted_rank <- as.integer(!tolower(trimws(try_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
-# IMPORTANT: TRY Enhanced uses DuckDB - case-SENSITIVE comparison (canonical line 849)
-try_wfo$status_rank <- as.integer(trimws(try_wfo$taxonomicStatus) != "accepted")
+# IMPORTANT: TRY Enhanced canonical fixed to case-INSENSITIVE (2025-11-06 bug fix)
+try_wfo$status_rank <- as.integer(tolower(trimws(try_wfo$taxonomicStatus)) != "accepted")
 try_wfo$subseq_rank <- suppressWarnings(as.numeric(try_wfo$Subseq))
 try_wfo$subseq_rank[is.na(try_wfo$subseq_rank)] <- 9999999
 
