@@ -45,8 +45,10 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_trye
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_austraits_match_bill.R
 
 # Note: Scripts show "Checking for fuzzy matches for X records" - this is misleading.
-# With Fuzzy=0, NO distance-based fuzzy matching occurs. Message refers to fallback
-# exact matching strategies (genus+species, then genus only) for unmatched names.
+# With Fuzzy=0, NO string-distance fuzzy matching occurs (no Levenshtein tolerance).
+# The message refers to fallback exact matching: if "Acacia albida subsp. X" fails,
+# WorldFlora retries exact match on "Acacia albida", then "Acacia" against WFO backbone.
+# Results show WHAT matched (subspecies/species/genus) - NOT a conversion to genus.
 
 # Verify checksums (~5 seconds)
 md5sum data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv \
