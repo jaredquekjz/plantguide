@@ -208,7 +208,7 @@ Applying shortlist criteria...
 
 ---
 
-### Step 3: Add GBIF Occurrence Counts (Optional)
+### Step 3: Add GBIF Occurrence Counts 
 
 ```bash
 # Add GBIF counts and create ≥30 subset (~30 seconds, uses Arrow streaming)
@@ -259,7 +259,7 @@ Step 3: Filtering to >=30 GBIF occurrences...
 - [ ] All 8 WorldFlora scripts run without errors
 - [ ] All 8 CSV checksums show `✓ PASS`
 
-### Phase 1: Data Integrity Checks
+### Phase 1: Data Integrity Checks (Core)
 - [ ] Enriched parquets script completes successfully (Step 1)
 - [ ] Verification script shows all TRUE in sections 1 & 2 (Step 2)
 - [ ] Master union: 86,592 taxa
@@ -268,16 +268,29 @@ Step 3: Filtering to >=30 GBIF occurrences...
 
 **Note**: Section 3 binary checksums will show ✗ FAIL (expected - different binary encodings)
 
+### Phase 1: GBIF Integration (Optional - Step 3)
+- [ ] GBIF script completes successfully using Arrow streaming
+- [ ] Species count: 11,711 with ≥30 GBIF occurrences
+- [ ] WFO IDs match: TRUE (set equality - same species exist in both files)
+- [ ] GBIF occurrence counts: 100% match per species (after joining by wfo_taxon_id)
+- [ ] GBIF georeferenced counts: 100% match per species
+
+**What "WFO IDs match" means**:
+- ✓ Same 11,711 species (wfo_taxon_id) exist in both Bill's and canonical files
+- ✓ For each species, GBIF counts match exactly (verified via inner join by wfo_taxon_id)
+- ≠ Row-by-row positional matching (different SQL ORDER BY vs R arrange() may produce different row orders)
+- **Verification approach**: Set equality + per-species count matching (sufficient for data integrity)
+
 ### Bill's Independent Assessment
 - [ ] Code logic review: Examine deduplication, trait filters, WorldFlora parameters
 - [ ] Ecological sanity checks: Sample datasets for biological plausibility
 - [ ] Report findings: Any ✗ FAIL messages, row count mismatches, or methodological concerns
 
-**If all data verification checks pass**: Stage 1 pipeline is independently verified ✓
+**If all core data verification checks pass**: Stage 1 pipeline is independently verified ✓
 
 ---
 
-## Optional: Perfect Binary Checksum Parity
+## ANNEX: Optional: Perfect Binary Checksum Parity
 
 **Context**: All data verification shows TRUE (data is identical), but binary parquet checksums differ due to R vs Python encoding. To achieve byte-for-byte binary parity:
 
