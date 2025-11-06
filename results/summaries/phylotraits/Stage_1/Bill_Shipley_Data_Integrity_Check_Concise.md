@@ -44,6 +44,10 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_mabb
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_tryenhanced_match_bill.R
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_austraits_match_bill.R
 
+# Note: Scripts show "Checking for fuzzy matches for X records" - this is misleading.
+# With Fuzzy=0, NO distance-based fuzzy matching occurs. Message refers to fallback
+# exact matching strategies (genus+species, then genus only) for unmatched names.
+
 # Verify checksums (~5 seconds)
 md5sum data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv \
        data/shipley_checks/wfo_verification/eive_wfo_worldflora.csv \
