@@ -153,10 +153,10 @@ PART 1: Building Master Taxa Union
   TRY Enhanced: 44286 records
   AusTraits: 28072 records
 
-Unique WFO taxa: 86,815 ✓
+Unique WFO taxa: 86,592 ✓
 
 PART 2: Building Shortlist Candidates
-Shortlisted species: 24,542 ✓
+Shortlisted species: 24,511 ✓
 
 === CHECKSUM VERIFICATION ===
   ✓ PASS: Master union checksums match
@@ -177,8 +177,8 @@ Shortlisted species: 24,542 ✓
 
 ### Phase 1: Data Integrity
 - [ ] Enriched parquets script completes successfully
-- [ ] Master union: 86,815 taxa
-- [ ] Shortlist: 24,542 species
+- [ ] Master union: 86,592 taxa
+- [ ] Shortlist: 24,511 species
 - [ ] Both verification checksums show **✓ PASS**
 
 ### Deliverable
@@ -187,6 +187,35 @@ Shortlisted species: 24,542 ✓
 - [ ] Ecological sanity check results: any biological anomalies
 
 **If all checkboxes pass**: Stage 1 pipeline is independently verified. ✓
+
+---
+
+## Optional: Perfect Parquet Checksum Parity
+
+**Note**: CSV checksums already match (data is identical). Parquet binary checksums differ because R's `arrow` and Python's `pyarrow` produce different binary encodings. To achieve byte-for-byte parquet parity:
+
+### Example: EIVE Dataset
+
+```python
+# Use DuckDB to re-export Bill's parquet with canonical format
+import duckdb
+con = duckdb.connect()
+
+# Read Bill's R-generated parquet and write to canonical location
+con.execute("""
+    COPY (SELECT * FROM read_parquet('data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet'))
+    TO 'data/stage1/eive_worldflora_enriched_bill_canonical.parquet'
+    (FORMAT PARQUET, COMPRESSION SNAPPY)
+""")
+```
+
+```bash
+# Verify parquet checksums now match
+md5sum data/stage1/eive_worldflora_enriched.parquet \
+       data/stage1/eive_worldflora_enriched_bill_canonical.parquet
+```
+
+**Expected**: Both parquets produce identical MD5 checksums
 
 ---
 
