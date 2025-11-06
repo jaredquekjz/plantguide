@@ -160,7 +160,9 @@ eive_orig$join_key_normalized <- tolower(trimws(eive_orig$TaxonConcept))
 
 eive_enriched <- eive_orig %>%
   left_join(eive_wfo_clean %>% select(-TaxonConcept), by = "join_key_normalized") %>%
-  select(-join_key_normalized)
+  select(-join_key_normalized) %>%
+  # Convert empty strings to NA to match canonical NULL behavior
+  mutate(across(where(is.character), ~na_if(., "")))
 
 log_msg("Writing EIVE enriched parquet...")
 write_parquet(eive_enriched, file.path(output_dir, "eive_worldflora_enriched.parquet"), compression = "snappy")
@@ -310,7 +312,9 @@ try_orig$join_key_normalized <- tolower(trimws(try_orig$`Species name standardiz
 
 try_enriched <- try_orig %>%
   left_join(try_wfo_clean %>% select(-SpeciesName), by = "join_key_normalized") %>%
-  select(-join_key_normalized)
+  select(-join_key_normalized) %>%
+  # Convert empty strings to NA to match canonical NULL behavior
+  mutate(across(where(is.character), ~na_if(., "")))
 
 log_msg("Writing TRY Enhanced enriched parquet...")
 write_parquet(try_enriched, file.path(output_dir, "tryenhanced_worldflora_enriched.parquet"), compression = "snappy")
