@@ -253,6 +253,117 @@ Step 3: Filtering to >=30 GBIF occurrences...
 
 ---
 
+## Phase 2: Environmental Data Verification (Optional)
+
+**Purpose**: Independently verify that Bill's R-based environmental aggregations match canonical Python/DuckDB outputs.
+
+**Prerequisites**:
+- Phase 0 and Phase 1 must be complete
+- Canonical environmental sampling must be complete (see `1.5_Environmental_Sampling_Workflows.md`)
+- Requires 3 occurrence sample files: `worldclim_occ_samples.parquet`, `soilgrids_occ_samples.parquet`, `agroclime_occ_samples.parquet`
+
+### Step 1: Aggregate Summary Statistics
+
+```bash
+# Compute per-species mean, stddev, min, max (pure R, ~5-10 minutes per dataset)
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_summaries_bill.R all
+```
+
+**What it does**: Reads canonical occurrence samples and computes species-level aggregations using pure R (`arrow` + `dplyr`). Equivalent to `aggregate_stage1_env_summaries.py`.
+
+**Expected output**:
+```
+=== Environmental Summary Aggregation (Pure R) ===
+
+=== Aggregating worldclim ===
+  Found 44 environmental variables
+  Reading occurrence samples...
+  Computing per-species aggregations...
+  Aggregated to 11,711 species
+  ✓ Complete: worldclim_species_summary_R.parquet
+
+=== Aggregating soilgrids ===
+  Found 42 environmental variables
+  Aggregated to 11,711 species
+  ✓ Complete: soilgrids_species_summary_R.parquet
+
+=== Aggregating agroclime ===
+  Found 52 environmental variables
+  Aggregated to 11,711 species
+  ✓ Complete: agroclime_species_summary_R.parquet
+```
+
+### Step 2: Aggregate Quantile Statistics
+
+```bash
+# Compute per-species quantiles: q05, q50, q95, IQR (pure R, ~10-15 minutes per dataset)
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_quantiles_bill.R all
+```
+
+**What it does**: Computes species-level quantiles (5th, 50th, 95th percentiles, IQR) using R's `quantile()` and `IQR()` functions. Equivalent to DuckDB quantile script in `1.5_Environmental_Sampling_Workflows.md`.
+
+**Expected output**:
+```
+=== Environmental Quantile Aggregation (Pure R) ===
+
+=== Computing quantiles for worldclim ===
+  Found 44 environmental variables
+  Computing per-species quantiles...
+  Computed quantiles for 11,711 species
+  ✓ Complete: worldclim_species_quantiles_R.parquet
+
+[Similar output for soilgrids and agroclime]
+```
+
+### Step 3: Verify Against Canonical Outputs
+
+```bash
+# Compare Bill's R aggregations vs canonical Python/DuckDB outputs (~30 seconds)
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_env_integrity_bill.R
+```
+
+**What it does**: Compares Bill's R-generated summaries and quantiles against canonical outputs:
+- Row counts, WFO IDs, column schemas
+- Numeric value matching (tolerance: 1e-6 for summaries, 1e-5 for quantiles)
+
+**Expected output**:
+```
+=== Environmental Data Integrity Verification ===
+
+PART 1: Summary Statistics (mean, stddev, min, max)
+
+=== Verifying worldclim summaries ===
+  Bill taxa:      11,711
+  Canonical taxa: 11,711
+  Row counts match: TRUE
+  WFO IDs match: TRUE
+  Column names match: TRUE
+  Numeric values match: TRUE
+
+[Similar for soilgrids and agroclime]
+
+PART 2: Quantile Statistics (q05, q50, q95, iqr)
+
+=== Verifying worldclim quantiles ===
+  Bill taxa:      11,711
+  Canonical taxa: 11,711
+  Row counts match: TRUE
+  WFO IDs match: TRUE
+  Column names match: TRUE
+  Numeric values match: TRUE
+
+[Similar for soilgrids and agroclime]
+
+=== SUMMARY ===
+
+✓ ALL CHECKS PASSED
+  Bill's R-generated environmental aggregations match canonical outputs
+```
+
+**Note on quantile algorithms**: Minor numeric differences may occur between R's `quantile()` (Type 7 default) and DuckDB's quantile implementation. Verification uses tolerance of 1e-5 for quantiles to account for this.
+
+---
+
 ## Success Criteria
 
 ### Phase 0: WFO Normalization
@@ -280,6 +391,16 @@ Step 3: Filtering to >=30 GBIF occurrences...
 - ✓ For each species, GBIF counts match exactly (verified via inner join by wfo_taxon_id)
 - ≠ Row-by-row positional matching (different SQL ORDER BY vs R arrange() may produce different row orders)
 - **Verification approach**: Set equality + per-species count matching (sufficient for data integrity)
+
+### Phase 2: Environmental Data (Optional)
+- [ ] Summary aggregation script completes (Step 1)
+- [ ] Quantile aggregation script completes (Step 2)
+- [ ] Verification shows all TRUE for all 3 datasets (Step 3)
+- [ ] All datasets: 11,711 species
+- [ ] WorldClim: 44 variables | SoilGrids: 42 variables | Agroclim: 52 variables
+- [ ] Row counts, WFO IDs, column schemas, and numeric values match canonical outputs
+
+**Note**: Phase 2 verifies that Bill's pure R environmental aggregations match canonical Python/DuckDB outputs. Minor quantile differences (< 1e-5) expected due to algorithm differences.
 
 ### Bill's Independent Assessment
 - [ ] Code logic review: Examine deduplication, trait filters, WorldFlora parameters
@@ -322,9 +443,18 @@ md5sum data/stage1/eive_worldflora_enriched.parquet \
 ## File Locations
 
 **Bill's scripts**: `src/Stage_1/bill_verification/`
-**Bill's outputs**: `data/shipley_checks/wfo_verification/`
-**Canonical inputs** (read-only): `data/stage1/*_original.parquet`, `data/classification.csv`
-**Canonical outputs** (for comparison): `data/stage1/master_taxa_union.parquet`, `data/stage1/stage1_shortlist_candidates.parquet`
+**Bill's outputs**:
+- WFO verification: `data/shipley_checks/wfo_verification/`
+- Environmental verification: `data/shipley_checks/*_species_{summary,quantiles}_R.parquet`
+
+**Canonical inputs** (read-only):
+- Dataset parquets: `data/stage1/*_original.parquet`
+- WFO backbone: `data/classification.csv`
+- Environmental samples: `data/stage1/{worldclim,soilgrids,agroclime}_occ_samples.parquet`
+
+**Canonical outputs** (for comparison):
+- Shortlists: `data/stage1/master_taxa_union.parquet`, `data/stage1/stage1_shortlist_candidates.parquet`
+- Environmental: `data/stage1/{worldclim,soilgrids,agroclime}_species_{summary,quantiles}.parquet`
 
 ---
 
