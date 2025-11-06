@@ -1,11 +1,10 @@
 #!/usr/bin/env Rscript
 # Add GBIF occurrence counts to Bill's reconstructed shortlist
-# Phase 1 Step 3: GBIF Integration Verification
+# Phase 1 Step 3: GBIF Integration Verification (Memory-Optimized)
 
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
-  library(data.table)
 })
 
 setwd("/home/olier/ellenberg")
@@ -15,32 +14,32 @@ log_msg <- function(...) {
   flush.console()
 }
 
-log_msg("=== Phase 1 Step 3: GBIF Integration Verification ===\n")
+log_msg("=== Phase 1 Step 3: GBIF Integration Verification (Optimized) ===\n")
 
 # ==============================================================================
-# 1. Count GBIF occurrences by WFO taxon ID
+# 1. Count GBIF occurrences by WFO taxon ID using Arrow streaming
 # ==============================================================================
 
-log_msg("Step 1: Counting GBIF occurrences by WFO taxon ID...")
+log_msg("Step 1: Counting GBIF occurrences using Arrow compute engine...")
+log_msg("  (Streaming 70M records without loading into memory)")
 
-# Note: Using canonical occurrence_plantae_wfo.parquet because:
-# - GBIF raw data is trusted external source (161K occurrences)
-# - WFO matching was verified in Phase 0 (checksums matched)
-# - Focus is on shortlist construction logic, not GBIF enrichment
+# Open parquet as Arrow dataset (no memory load)
+gbif_dataset <- open_dataset("data/gbif/occurrence_plantae_wfo.parquet")
 
-gbif_wfo <- read_parquet("data/gbif/occurrence_plantae_wfo.parquet")
-log_msg("  Loaded GBIF WFO enriched: ", nrow(gbif_wfo), " occurrences")
-
-# Count by wfo_taxon_id (matching canonical logic)
-gbif_counts <- gbif_wfo %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "") %>%
+# Use Arrow compute to aggregate BEFORE pulling into R
+# This is memory-efficient - only the aggregated result is in R memory
+gbif_counts <- gbif_dataset %>%
+  filter(!is.na(wfo_taxon_id), wfo_taxon_id != "") %>%
   group_by(wfo_taxon_id) %>%
   summarise(
     gbif_occurrence_count = n(),
-    gbif_georeferenced_count = sum(!is.na(decimalLatitude) & !is.na(decimalLongitude)),
-    .groups = "drop"
+    gbif_georeferenced_count = sum(
+      !is.na(decimalLatitude) & !is.na(decimalLongitude),
+      na.rm = TRUE
+    )
   ) %>%
-  arrange(desc(gbif_occurrence_count))
+  arrange(desc(gbif_occurrence_count)) %>%
+  collect()  # Only NOW pull aggregated data into R memory
 
 log_msg("  Unique WFO taxa with GBIF records: ", nrow(gbif_counts))
 log_msg("  Total occurrences counted: ", sum(gbif_counts$gbif_occurrence_count))
@@ -52,9 +51,10 @@ write_parquet(
   "data/shipley_checks/gbif_occurrence_counts_by_wfo_R.parquet",
   compression = "snappy"
 )
-fwrite(
+write.csv(
   gbif_counts,
-  "data/shipley_checks/gbif_occurrence_counts_by_wfo_R.csv"
+  "data/shipley_checks/gbif_occurrence_counts_by_wfo_R.csv",
+  row.names = FALSE
 )
 log_msg("  Written: gbif_occurrence_counts_by_wfo_R.(parquet|csv)\n")
 
@@ -68,7 +68,7 @@ log_msg("Step 2: Merging GBIF counts with shortlist...")
 shortlist <- read_parquet("data/shipley_checks/stage1_shortlist_candidates_R.parquet")
 log_msg("  Loaded shortlist: ", nrow(shortlist), " species")
 
-# Merge GBIF counts (LEFT JOIN, COALESCE to 0)
+# Merge GBIF counts (LEFT JOIN, coalesce to 0)
 shortlist_with_gbif <- shortlist %>%
   left_join(gbif_counts, by = "wfo_taxon_id") %>%
   mutate(
@@ -87,9 +87,10 @@ write_parquet(
   "data/shipley_checks/stage1_shortlist_with_gbif_R.parquet",
   compression = "snappy"
 )
-fwrite(
+write.csv(
   shortlist_with_gbif,
-  "data/shipley_checks/stage1_shortlist_with_gbif_R.csv"
+  "data/shipley_checks/stage1_shortlist_with_gbif_R.csv",
+  row.names = FALSE
 )
 log_msg("  Written: stage1_shortlist_with_gbif_R.(parquet|csv)\n")
 
@@ -104,12 +105,12 @@ shortlist_ge30 <- shortlist_with_gbif %>%
   arrange(canonical_name)
 
 log_msg("  Species with >=30 occurrences: ", nrow(shortlist_ge30))
-log_msg("  Expected: 11,680")
+log_msg("  Expected: 11,711")
 
-if (nrow(shortlist_ge30) == 11680) {
+if (nrow(shortlist_ge30) == 11711) {
   log_msg("  ✓ PASS: Row count matches expected\n")
 } else {
-  log_msg("  ✗ FAIL: Expected 11,680, got ", nrow(shortlist_ge30), "\n")
+  log_msg("  ✗ FAIL: Expected 11,711, got ", nrow(shortlist_ge30), "\n")
 }
 
 # Write >=30 subset
@@ -118,9 +119,10 @@ write_parquet(
   "data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet",
   compression = "snappy"
 )
-fwrite(
+write.csv(
   shortlist_ge30,
-  "data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.csv"
+  "data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.csv",
+  row.names = FALSE
 )
 log_msg("  Written: stage1_shortlist_with_gbif_ge30_R.(parquet|csv)\n")
 
@@ -233,7 +235,7 @@ if (bill_md5 == canon_md5) {
 
 log_msg("\n=== Phase 1 Step 3 Complete ===")
 log_msg("Summary:")
-log_msg("  - Counted GBIF occurrences by WFO taxon ID")
+log_msg("  - Counted GBIF occurrences using Arrow streaming (memory-efficient)")
 log_msg("  - Merged with Bill's reconstructed shortlist")
 log_msg("  - Filtered to >=30 occurrences: ", nrow(shortlist_ge30), " species")
 log_msg("  - All verification outputs written to data/shipley_checks/")

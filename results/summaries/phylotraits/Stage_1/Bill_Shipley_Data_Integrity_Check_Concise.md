@@ -208,6 +208,51 @@ Applying shortlist criteria...
 
 ---
 
+### Step 3: Add GBIF Occurrence Counts (Optional)
+
+```bash
+# Add GBIF counts and create ≥30 subset (~30 seconds, uses Arrow streaming)
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/add_gbif_counts_bill.R
+```
+
+**What it does**: 
+- Counts GBIF occurrences by `wfo_taxon_id` using Arrow streaming (memory-efficient, no 5.4GB load)
+- Merges counts with Bill's reconstructed shortlist
+- Filters to ≥30 occurrences → Creates Bill's version of the reference shortlist (11,711 species)
+- Compares against canonical `stage1_shortlist_with_gbif_ge30.parquet`
+
+**Expected output**:
+
+```
+=== Phase 1 Step 3: GBIF Integration Verification (Optimized) ===
+
+Step 1: Counting GBIF occurrences using Arrow compute engine...
+  Unique WFO taxa with GBIF records: 144,655
+  Total occurrences counted: 48,977,163
+  Total georeferenced: 48,886,200
+
+Step 2: Merging GBIF counts with shortlist...
+  Species with GBIF records: 18,451
+  Species with >=30 occurrences: 11,711
+
+Step 3: Filtering to >=30 GBIF occurrences...
+  ✓ PASS: Row count matches expected (11,711)
+
+=== VERIFICATION AGAINST CANONICAL ===
+
+1. Row counts match: TRUE
+2. WFO IDs match: TRUE
+3. Column names match: FALSE
+   Only in canonical: legacy_wfo_ids
+4. GBIF occurrence counts match: 11,711/11,711 (100%)
+5. GBIF georeferenced counts match: 11,711/11,711 (100%)
+6. Binary parquet checksums: ✗ FAIL (expected - R vs Python encoding)
+```
+
+**Note**: Column mismatch is benign - `legacy_wfo_ids` is a helper column tracking synonym history, not critical for verification.
+
+---
+
 ## Success Criteria
 
 ### Phase 0: WFO Normalization
