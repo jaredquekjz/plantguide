@@ -320,17 +320,80 @@ Analysis of imputation targets reveals phylo predictors (p_phylo) are **not usab
 
 ---
 
-### Step 4: XGBoost EIVE Prediction (FUTURE)
+### Step 4: Build No-EIVE Feature Tables
 
-**Status:** ⏸ PENDING (requires Step 3 completion)
+**Script:** `src/Stage_2/bill_verification/build_tier2_no_eive_features_bill.R`
 
-**Purpose:** Train XGBoost models to predict each EIVE axis separately
+**Purpose:** Create per-axis feature tables for EIVE prediction by removing EIVE columns to prevent data leakage
 
-**Approach:** Follow canonical no-EIVE model structure:
-- Training: ~6,200 species per axis (with observed EIVE for that axis)
-- Features: Log traits + phylo eigenvectors + environmental quantiles + categorical traits
-- Target: EIVEres-{L,T,M,N,R} (one model per axis)
-- Validation: 10-fold CV to assess performance
+**What it does:**
+1. Load Bill's complete 736-column dataset (100% trait completeness)
+2. For each axis (L, T, M, N, R):
+   - Filter to species with observed EIVE for that axis (~6,200 species)
+   - Remove all other EIVE columns (cross-axis leakage prevention)
+   - Rename target EIVE to 'y' for consistency
+   - Save axis-specific feature table
+
+**Run:**
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_2/bill_verification/build_tier2_no_eive_features_bill.R
+```
+
+**Output:** 5 feature tables (one per axis)
+- `data/shipley_checks/stage2_features/L_features_11711_bill_20251107.csv`
+- `data/shipley_checks/stage2_features/T_features_11711_bill_20251107.csv`
+- `data/shipley_checks/stage2_features/M_features_11711_bill_20251107.csv`
+- `data/shipley_checks/stage2_features/N_features_11711_bill_20251107.csv`
+- `data/shipley_checks/stage2_features/R_features_11711_bill_20251107.csv`
+
+Each table: ~6,200 species × ~732 columns (2 IDs + 6 traits + 92 eigenvectors + 624 env + 7 categorical + 1 target)
+
+---
+
+### Step 5: Train XGBoost Models with k-Fold CV
+
+**Script:** `src/Stage_2/bill_verification/xgb_kfold_bill.R`
+
+**Purpose:** Train XGBoost models to predict each EIVE axis separately with cross-validation
+
+**What it does:**
+1. Load per-axis feature table
+2. Standardize features (z-score on training set)
+3. Run 10-fold cross-validation:
+   - Report R², RMSE, MAE per fold
+   - Compute mean and standard deviation across folds
+4. Train production model on all observed data
+5. Compute feature importance (SHAP values)
+6. Export model, scaler parameters, and metrics
+
+**Run single axis:**
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
+  /home/olier/miniconda3/envs/AI/bin/Rscript \
+  src/Stage_2/bill_verification/xgb_kfold_bill.R \
+  --axis=L \
+  --features_csv=data/shipley_checks/stage2_features/L_features_11711_bill_20251107.csv \
+  --out_dir=data/shipley_checks/stage2_models \
+  --n_estimators=600 \
+  --learning_rate=0.05 \
+  --max_depth=6 \
+  --subsample=0.8 \
+  --colsample_bytree=0.8 \
+  --cv_folds=10
+```
+
+**Run all axes:**
+```bash
+bash src/Stage_2/bill_verification/run_all_axes_bill.sh
+```
+
+**Outputs per axis:**
+- `xgb_{axis}_model.json` - Trained XGBoost model
+- `xgb_{axis}_scaler.json` - Standardization parameters
+- `xgb_{axis}_importance.csv` - Feature importance (SHAP)
+- `xgb_{axis}_cv_metrics.json` - Cross-validation metrics
 
 **Expected performance (from canonical no-EIVE models):**
 
@@ -344,9 +407,76 @@ Analysis of imputation targets reveals phylo predictors (p_phylo) are **not usab
 
 **Phylogenetic signal:** Eigenvectors provide weak phylogenetic signal (SHAP ≈ 0.03-0.07) compared to p_phylo (SHAP ≈ 0.15-0.35), but sufficient for biologically plausible predictions.
 
-**Scripts to create (future work):**
-- `src/Stage_1/bill_verification/run_xgboost_eive_bill.R` - Train 5 axis models with CV
-- `src/Stage_1/bill_verification/predict_missing_eive_bill.R` - Apply models to imputation targets
+---
+
+### Step 6: Predict Missing EIVE Values (Production Imputation)
+
+**Script:** `src/Stage_2/bill_verification/impute_eive_no_eive_bill.R`
+
+**Purpose:** Apply trained models to predict missing EIVE values for 5,756 species
+
+**What it does:**
+1. Load complete dataset (11,711 species)
+2. Analyze EIVE missingness patterns:
+   - Complete (5/5): ~5,952 species (50.8%)
+   - None (0/5): ~5,434 species (46.4%)
+   - Partial (1-4): ~325 species (2.8%)
+3. Load all 5 trained models and scalers
+4. For each axis:
+   - Identify species with missing EIVE
+   - Build feature matrix (exclude EIVE columns)
+   - Apply standardization
+   - Predict missing values
+5. Merge predictions with observed EIVE
+6. Save complete dataset with all EIVE values filled
+
+**Run:**
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
+  /home/olier/miniconda3/envs/AI/bin/Rscript \
+  src/Stage_2/bill_verification/impute_eive_no_eive_bill.R
+```
+
+**Outputs:**
+- Per-axis predictions: `data/shipley_checks/stage2_predictions/{L,T,M,N,R}_predictions_bill_20251107.csv`
+- Combined predictions: `data/shipley_checks/stage2_predictions/all_predictions_bill_20251107.csv`
+- Complete dataset: `data/shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
+
+**Final dataset:** 11,711 species with 100% EIVE coverage (observed + imputed)
+
+---
+
+### Step 7: SHAP Analysis (Optional)
+
+**Script:** `src/Stage_2/bill_verification/analyze_shap_bill.R`
+
+**Purpose:** Analyze SHAP values to understand feature contributions to EIVE predictions
+
+**What it does:**
+1. Load trained model and feature table
+2. Compute SHAP values for all features
+3. Calculate global importance (mean |SHAP|)
+4. Categorize features: log traits, phylo eigenvectors, environmental, categorical
+5. Generate importance plots and category summaries
+
+**Run:**
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
+  /home/olier/miniconda3/envs/AI/bin/Rscript \
+  src/Stage_2/bill_verification/analyze_shap_bill.R \
+  --axis=L \
+  --model_dir=data/shipley_checks/stage2_models \
+  --out_dir=data/shipley_checks/stage2_shap
+```
+
+**Outputs:**
+- `{axis}_shap_importance.csv` - Full feature importance table
+- `{axis}_shap_by_category.csv` - Importance grouped by feature category
+- `{axis}_shap_values_top20.csv` - Raw SHAP values for top 20 features
+- `{axis}_shap_importance_top20.png` - Bar plot
+- `{axis}_shap_by_category.png` - Pie chart
 
 ---
 
@@ -462,15 +592,30 @@ Independent R imputation achieves strong agreement with Python canonical.
 - [x] NO phylo predictors (p_phylo unusable for 94.1% of imputation targets) ✓
 - [x] Output: `data/shipley_checks/imputation/bill_complete_11711_20251107.csv` ✓
 
-### Stage 2: EIVE Prediction (Next Step)
+### Stage 2: EIVE Prediction
 
-**Ready for Stage 2 modeling:**
-- [x] Final dataset: 11,711 × 736 features ✓
-- [x] All log traits: 100% complete ✓
-- [x] Phylogenetic signal: Eigenvectors (SHAP ≈ 0.03-0.07) ✓
-- [x] Environmental features: Full quantiles (624 columns) ✓
-- [ ] EIVE prediction: Per-axis XGBoost models to predict missing EIVE values
-- [ ] Final output: EIVE predictions for 5,756 species with missing indicators
+**Feature preparation:**
+- [x] Build no-EIVE feature tables (Step 4) ✓
+- [x] 5 per-axis tables created (~6,200 species each) ✓
+- [x] Cross-axis EIVE leakage prevented ✓
+
+**Model training:**
+- [ ] Train XGBoost with 10-fold CV (Step 5)
+- [ ] L-axis: Train + evaluate
+- [ ] T-axis: Train + evaluate
+- [ ] M-axis: Train + evaluate
+- [ ] N-axis: Train + evaluate
+- [ ] R-axis: Train + evaluate
+
+**Production imputation:**
+- [ ] Predict missing EIVE for 5,756 species (Step 6)
+- [ ] Merge predictions with observed EIVE
+- [ ] Final output: 11,711 species with 100% EIVE coverage
+
+**Model interpretation:**
+- [ ] SHAP analysis per axis (Step 7)
+- [ ] Feature importance rankings
+- [ ] Category-level contributions
 
 ### Verification
 
