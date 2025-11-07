@@ -1,7 +1,7 @@
-# Stage 1 Data Integrity Check for Bill Shipley
+# Data Preparation Verification (Bill Shipley)
 
-**Purpose**: Independent R-based verification of Stage 1 pipeline integrity
-**Date**: 2025-11-06
+**Purpose**: Independent R-based verification of Stage 1 data preparation pipeline
+**Date**: 2025-11-07 (Updated)
 **Environment**: Pure R, no Python/SQL required
 
 ---
@@ -32,7 +32,7 @@ Bill should independently assess:
 
 ## Required Source Data (Read-Only)
 
-Bill's verification scripts read from these **9 canonical files only**. All outputs write to `data/shipley_checks/` (isolated verification universe).
+Bill's verification scripts read from these **13 canonical files**. All outputs write to `data/shipley_checks/` (isolated verification universe).
 
 ### 8 Dataset Parquets (Original Data)
 
@@ -45,11 +45,66 @@ Bill's verification scripts read from these **9 canonical files only**. All outp
 7. **GloBI Plant Interactions**: `data/stage1/globi_interactions_plants.parquet` (4.6M rows, 444 MB)
 8. **TRY Selected Traits**: `data/stage1/try_selected_traits.parquet` (81K rows, 20 MB)
 
+### 3 Environmental Occurrence Samples (Phase 2)
+
+9. **WorldClim Occurrence Samples**: `data/stage1/worldclim_occ_samples.parquet` (31.5M rows, 3.6 GB, 63 variables)
+10. **SoilGrids Occurrence Samples**: `data/stage1/soilgrids_occ_samples.parquet` (31.5M rows, 1.7 GB, 42 variables)
+11. **Agroclim Occurrence Samples**: `data/stage1/agroclime_occ_samples.parquet` (31.5M rows, 3.0 GB, 51 variables)
+
 ### 1 WFO Taxonomy Backbone
 
-9. **World Flora Online Backbone**: `data/classification.csv` (1.6M taxa, 570 MB, tab-separated, Latin-1 encoding)
+12. **World Flora Online Backbone**: `data/classification.csv` (1.6M taxa, 570 MB, tab-separated, Latin-1 encoding)
 
-**All scripts are read-only**: Canonical data is never modified. All Bill's outputs write to `data/shipley_checks/wfo_verification/`.
+### 1 GBIF WFO-Enriched File (Phase 1 Optional)
+
+13. **GBIF with WFO IDs**: `data/gbif/occurrence_plantae_wfo.parquet` (49.7M rows, 5.4 GB)
+
+**All scripts are read-only**: Canonical data is never modified. Bill's outputs write to `data/shipley_checks/`.
+
+---
+
+## Verification Scripts Overview
+
+All scripts located in: `src/Stage_1/bill_verification/`
+
+### Phase 0: Name Extraction (4 scripts)
+
+1. **extract_all_names_bill.R** - Extract names from all 8 datasets
+2. **extract_gbif_names_bill.R** - Extract GBIF occurrence names
+3. **extract_globi_names_bill.R** - Extract GloBI interaction names
+4. **extract_try_traits_names_bill.R** - Extract TRY traits names
+
+### Phase 0: WorldFlora Matching (8 scripts)
+
+5. **worldflora_duke_match_bill.R** - Match Duke ethnobotany names
+6. **worldflora_eive_match_bill.R** - Match EIVE indicator names
+7. **worldflora_mabberly_match_bill.R** - Match Mabberly genera names
+8. **worldflora_tryenhanced_match_bill.R** - Match TRY Enhanced names
+9. **worldflora_austraits_match_bill.R** - Match AusTraits names
+10. **worldflora_gbif_match_bill.R** - Match GBIF occurrence names
+11. **worldflora_globi_match_bill.R** - Match GloBI interaction names
+12. **worldflora_try_traits_match_bill.R** - Match TRY traits names
+
+### Phase 0: Checksum Verification (3 scripts)
+
+13. **verify_worldflora_checksums_bill.R** - Verify CSV checksums
+14. **compare_worldflora_csvs_bill.R** - Compare CSVs row-by-row
+15. **compare_worldflora_checksums_bill.R** - Compare checksum files
+
+### Phase 1: Core Data Integration (3 scripts)
+
+16. **build_bill_enriched_parquets.R** - Build WFO-enriched parquets
+17. **verify_stage1_integrity_bill.R** - Verify shortlist integrity
+18. **add_gbif_counts_bill.R** - Add GBIF counts (optional)
+
+### Phase 2: Environmental Aggregation (3 scripts)
+
+19. **aggregate_env_summaries_bill.R** - Compute mean/stddev/min/max per species
+20. **aggregate_env_quantiles_bill.R** - Compute q05/q50/q95/iqr per species (Type 1)
+21. **verify_env_integrity_bill.R** - Verify against canonical outputs
+22. **verify_env_quantiles_detailed.R** - Detailed quantile difference analysis
+
+**Total**: 22 R scripts for complete independent verification
 
 ---
 
