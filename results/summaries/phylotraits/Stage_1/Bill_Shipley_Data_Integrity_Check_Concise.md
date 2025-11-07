@@ -276,7 +276,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_s
 === Environmental Summary Aggregation (Pure R) ===
 
 === Aggregating worldclim ===
-  Found 44 environmental variables
+  Found 63 environmental variables
   Reading occurrence samples...
   Computing per-species aggregations...
   Aggregated to 11,711 species
@@ -288,7 +288,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_s
   ✓ Complete: soilgrids_species_summary_R.parquet
 
 === Aggregating agroclime ===
-  Found 52 environmental variables
+  Found 51 environmental variables
   Aggregated to 11,711 species
   ✓ Complete: agroclime_species_summary_R.parquet
 ```
@@ -307,7 +307,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_q
 === Environmental Quantile Aggregation (Pure R) ===
 
 === Computing quantiles for worldclim ===
-  Found 44 environmental variables
+  Found 63 environmental variables
   Computing per-species quantiles...
   Computed quantiles for 11,711 species
   ✓ Complete: worldclim_species_quantiles_R.parquet
@@ -360,7 +360,7 @@ PART 2: Quantile Statistics (q05, q50, q95, iqr)
   Bill's R-generated environmental aggregations match canonical outputs
 ```
 
-**Note on quantile algorithms**: Minor numeric differences may occur between R's `quantile()` (Type 7 default) and DuckDB's quantile implementation. Verification uses tolerance of 1e-5 for quantiles to account for this.
+**Note on quantile algorithms**: Bill's R scripts use `quantile(..., type=1)` to match DuckDB's quantile method exactly (inverted empirical CDF). This achieves **perfect agreement** (0.000000 difference) across all species and variables. See `Quantile_Algorithm_Matching_Report.md` for technical details on why Type 1 was chosen over R's default Type 7.
 
 ---
 
@@ -397,10 +397,12 @@ PART 2: Quantile Statistics (q05, q50, q95, iqr)
 - [ ] Quantile aggregation script completes (Step 2)
 - [ ] Verification shows all TRUE for all 3 datasets (Step 3)
 - [ ] All datasets: 11,711 species
-- [ ] WorldClim: 44 variables | SoilGrids: 42 variables | Agroclim: 52 variables
-- [ ] Row counts, WFO IDs, column schemas, and numeric values match canonical outputs
+- [ ] WorldClim: 63 variables | SoilGrids: 42 variables | Agroclim: 51 variables
+- [ ] Row counts, WFO IDs, column schemas match: TRUE
+- [ ] Summary statistics (mean/stddev/min/max) match: 0.000000 difference
+- [ ] Quantile statistics (q05/q50/q95/iqr) match: 0.000000 difference
 
-**Note**: Phase 2 verifies that Bill's pure R environmental aggregations match canonical Python/DuckDB outputs. Minor quantile differences (< 1e-5) expected due to algorithm differences.
+**Note**: Phase 2 verifies that Bill's pure R environmental aggregations match canonical Python/DuckDB outputs. R scripts use `type=1` quantiles to match DuckDB exactly, achieving **perfect 0.000000 agreement** (no tolerance needed).
 
 ### Bill's Independent Assessment
 - [ ] Code logic review: Examine deduplication, trait filters, WorldFlora parameters
