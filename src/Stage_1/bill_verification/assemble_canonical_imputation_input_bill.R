@@ -228,7 +228,7 @@ try_selected <- read_parquet("data/shipley_checks/wfo_verification/try_selected_
 # TraitID 37: Leaf phenology
 phenology <- try_selected %>%
   filter(TraitID == 37) %>%
-  mutate(StdValue_std = tolower(trimws(StdValue))) %>%
+  mutate(StdValue_std = tolower(trimws(OrigValueStr))) %>%
   mutate(phenology_std = case_when(
     grepl("evergreen", StdValue_std) ~ "evergreen",
     grepl("deciduous", StdValue_std) ~ "deciduous",
@@ -242,12 +242,13 @@ phenology <- try_selected %>%
 # TraitID 22: Photosynthesis pathway
 photosynthesis <- try_selected %>%
   filter(TraitID == 22) %>%
-  mutate(StdValue_std = toupper(trimws(StdValue))) %>%
+  mutate(StdValue_std = toupper(trimws(OrigValueStr))) %>%
   mutate(photo_std = case_when(
-    StdValue_std %in% c("C3", "3") ~ "C3",
-    StdValue_std %in% c("C4", "4") ~ "C4",
+    StdValue_std %in% c("C3", "3", "C3?") ~ "C3",
+    StdValue_std %in% c("C4", "4", "C4?") ~ "C4",
     StdValue_std == "CAM" ~ "CAM",
     StdValue_std %in% c("C3/C4", "C3-C4") ~ "C3_C4",
+    StdValue_std %in% c("C3/CAM", "C3-CAM") ~ "C3_CAM",
     TRUE ~ NA_character_
   )) %>%
   filter(!is.na(photo_std)) %>%
@@ -257,7 +258,7 @@ photosynthesis <- try_selected %>%
 # TraitID 7: Mycorrhiza type
 mycorrhiza <- try_selected %>%
   filter(TraitID == 7) %>%
-  mutate(StdValue_std = toupper(trimws(StdValue))) %>%
+  mutate(StdValue_std = toupper(trimws(OrigValueStr))) %>%
   mutate(myc_std = case_when(
     grepl("AM|ARBUSCULAR", StdValue_std) & !grepl("EM|ECTO", StdValue_std) ~ "AM",
     grepl("EM|ECTO", StdValue_std) & !grepl("AM|ARBUSCULAR", StdValue_std) ~ "EM",

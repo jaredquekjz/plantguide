@@ -16,22 +16,40 @@ AXES=("L" "T" "M" "N" "R")
 FEATURE_DIR="data/shipley_checks/stage2_features"
 MODEL_DIR="data/shipley_checks/stage2_models"
 
-# XGBoost parameters
-N_ESTIMATORS=600
-LEARNING_RATE=0.05
+# Tier 1 optimal hyperparameters (canonical from Python implementation)
+declare -A BEST_LR
+BEST_LR["L"]=0.03
+BEST_LR["T"]=0.03
+BEST_LR["M"]=0.03
+BEST_LR["N"]=0.03
+BEST_LR["R"]=0.05
+
+declare -A BEST_N
+BEST_N["L"]=1500
+BEST_N["T"]=1500
+BEST_N["M"]=5000
+BEST_N["N"]=1500
+BEST_N["R"]=1500
+
+# Fixed parameters (all axes)
 MAX_DEPTH=6
 SUBSAMPLE=0.8
 COLSAMPLE=0.8
 CV_FOLDS=10
-GPU=false
+GPU=true
 
 echo "================================================================================"
 echo "XGBoost Training - All Axes (Bill's Verification)"
 echo "================================================================================"
 echo ""
-echo "Configuration:"
-echo "  n_estimators: ${N_ESTIMATORS}"
-echo "  learning_rate: ${LEARNING_RATE}"
+echo "Configuration (Tier 1 Optimal Hyperparameters):"
+echo "  L-axis: lr=0.03, trees=1500"
+echo "  T-axis: lr=0.03, trees=1500"
+echo "  M-axis: lr=0.03, trees=5000"
+echo "  N-axis: lr=0.03, trees=1500"
+echo "  R-axis: lr=0.05, trees=1500"
+echo ""
+echo "Fixed parameters (all axes):"
 echo "  max_depth: ${MAX_DEPTH}"
 echo "  subsample: ${SUBSAMPLE}"
 echo "  colsample_bytree: ${COLSAMPLE}"
@@ -48,13 +66,13 @@ SUCCESS_COUNT=0
 
 for axis in "${AXES[@]}"; do
     echo "================================================================================"
-    echo -e "${BLUE}Training ${axis}-axis${NC}"
+    echo -e "${BLUE}Training ${axis}-axis (lr=${BEST_LR[$axis]}, trees=${BEST_N[$axis]})${NC}"
     echo "================================================================================"
     echo ""
 
     AXIS_START=$(date +%s)
 
-    FEATURES_CSV="${FEATURE_DIR}/${axis}_features_11711_bill_20251107.csv"
+    FEATURES_CSV="${FEATURE_DIR}/${axis}_features_11711_bill_onehot_20251107.csv"
     OUT_DIR="${MODEL_DIR}"
 
     if [ ! -f "${FEATURES_CSV}" ]; then
@@ -63,7 +81,7 @@ for axis in "${AXES[@]}"; do
         exit 1
     fi
 
-    # Run training
+    # Run training with axis-specific optimal hyperparameters
     env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
         PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
         /home/olier/miniconda3/envs/AI/bin/Rscript \
@@ -71,8 +89,8 @@ for axis in "${AXES[@]}"; do
         --axis="${axis}" \
         --features_csv="${FEATURES_CSV}" \
         --out_dir="${OUT_DIR}" \
-        --n_estimators="${N_ESTIMATORS}" \
-        --learning_rate="${LEARNING_RATE}" \
+        --n_estimators="${BEST_N[$axis]}" \
+        --learning_rate="${BEST_LR[$axis]}" \
         --max_depth="${MAX_DEPTH}" \
         --subsample="${SUBSAMPLE}" \
         --colsample_bytree="${COLSAMPLE}" \

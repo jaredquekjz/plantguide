@@ -83,7 +83,8 @@ drop_predictors <- c('leaf_area_source', 'nmass_source', 'ldmc_source', 'lma_sou
                      'genus', 'family', 'try_genus', 'try_family')
 
 keep_cats <- c('try_woodiness', 'try_growth_form', 'try_habitat_adaptation',
-               'try_leaf_type')
+               'try_leaf_type', 'try_leaf_phenology', 'try_photosynthesis_pathway',
+               'try_mycorrhiza_type')
 
 for (col in intersect(keep_cats, names(mix_data))) {
   mix_data[[col]] <- as.factor(mix_data[[col]])

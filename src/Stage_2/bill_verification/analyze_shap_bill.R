@@ -167,32 +167,90 @@ cat('\n')
 cat('[4/5] Analyzing SHAP by feature category...\n')
 cat(strrep('-', 80), '\n')
 
-# Categorize features
-importance_df <- importance_df %>%
-  mutate(
-    category = case_when(
-      grepl('^log[A-Z]', feature) ~ 'Log traits',
-      grepl('^phylo_ev[0-9]+$', feature) ~ 'Phylo eigenvectors',
-      grepl('^EIVEres-', feature) ~ 'EIVE',
-      grepl('^try_', feature) ~ 'Categorical',
-      grepl('_q05$|_q50$|_q95$|_iqr$', feature) ~ 'Environmental',
-      TRUE ~ 'Other'
-    )
-  )
+# Categorize features (matching Python implementation)
+categorize_feature <- function(feature) {
+  feature_lower <- tolower(feature)
 
-# Summary by category
+  # Log traits (6 features)
+  log_traits <- c('logla', 'logsla', 'logh', 'lognmass', 'logldmc', 'logsm')
+  if (feature_lower %in% log_traits) return('Log traits')
+
+  # Cross-axis EIVE (excluded in NO-EIVE models, but check anyway)
+  if (grepl('^EIVEres-', feature)) return('Cross-axis EIVE')
+
+  # Cross-axis phylo (excluded in NO-EIVE models, but check anyway)
+  if (grepl('^p_phylo_', feature)) return('Cross-axis phylo')
+
+  # Phylo eigenvectors
+  if (grepl('^phylo_ev', feature)) return('Phylo eigenvectors')
+
+  # Climate variables (WorldClim + Agroclim)
+  climate_prefixes <- c('wc2.1_', 'bio_', 'bedd', 'tx', 'tn', 'csu', 'csdi',
+                       'dtr', 'fd', 'gdd', 'gsl', 'id', 'su', 'tr')
+  if (any(sapply(climate_prefixes, function(p) grepl(paste0('^', p), feature_lower)))) {
+    return('Climate')
+  }
+
+  # Soil variables (SoilGrids + derived)
+  soil_keywords <- c('clay', 'sand', 'silt', 'nitrogen', 'soc', 'phh2o',
+                     'bdod', 'cec', 'cfvo', 'ocd', 'ocs')
+  if (any(sapply(soil_keywords, function(k) grepl(k, feature_lower)))) {
+    return('Soil')
+  }
+
+  # Categorical traits
+  if (grepl('^try_', feature)) return('Categorical traits')
+
+  # Unknown
+  return('Other')
+}
+
+importance_df <- importance_df %>%
+  mutate(category = sapply(feature, categorize_feature))
+
+# Summary by category (matching Python implementation)
 category_summary <- importance_df %>%
   group_by(category) %>%
   summarise(
     n_features = n(),
-    total_importance = sum(importance),
-    mean_importance = mean(importance),
+    total_shap = sum(importance),
+    avg_shap = mean(importance),
     .groups = 'drop'
   ) %>%
-  arrange(desc(total_importance))
+  arrange(desc(total_shap)) %>%
+  mutate(
+    pct_importance = 100 * total_shap / sum(total_shap)
+  )
 
 cat('SHAP importance by feature category:\n')
-print(category_summary, row.names = FALSE)
+cat(sprintf('%-25s %10s %10s %10s %10s\n',
+            'Category', 'Total SHAP', '% Import', '# Feats', 'Avg SHAP'))
+cat(strrep('-', 80), '\n')
+for (i in 1:nrow(category_summary)) {
+  row <- category_summary[i, ]
+  cat(sprintf('%-25s %10.4f %9.1f%% %10d %10.5f\n',
+              row$category, row$total_shap, row$pct_importance,
+              row$n_features, row$avg_shap))
+}
+cat('\n')
+
+# Show top features per category (top 3 categories)
+cat('Top 5 features per category (top 3 categories):\n')
+cat(strrep('-', 80), '\n')
+for (i in 1:min(3, nrow(category_summary))) {
+  cat_name <- category_summary$category[i]
+  cat_pct <- category_summary$pct_importance[i]
+  cat(sprintf('\n%s (%.1f%% of total importance):\n', cat_name, cat_pct))
+
+  top_features <- importance_df %>%
+    filter(category == cat_name) %>%
+    arrange(desc(importance)) %>%
+    head(5)
+
+  for (j in 1:nrow(top_features)) {
+    cat(sprintf('  %d. %s: %.4f\n', j, top_features$feature[j], top_features$importance[j]))
+  }
+}
 cat('\n')
 
 # ============================================================================
@@ -249,18 +307,19 @@ plot_path_1 <- file.path(opts$out_dir, sprintf('%s_shap_importance_top%d.png', o
 ggsave(plot_path_1, p1, width = 10, height = 8, dpi = 300)
 cat(sprintf('✓ Importance plot: %s\n', plot_path_1))
 
-# Plot 2: Category pie chart
-p2 <- ggplot(category_summary, aes(x = '', y = total_importance, fill = category)) +
-  geom_col(width = 1) +
-  coord_polar('y', start = 0) +
+# Plot 2: Category bar chart (percentage)
+p2 <- ggplot(category_summary, aes(x = reorder(category, pct_importance), y = pct_importance)) +
+  geom_col(fill = 'steelblue') +
+  coord_flip() +
   labs(
     title = sprintf('SHAP Importance by Category (%s-axis)', opts$axis),
-    fill = 'Category'
+    x = 'Category',
+    y = '% of Total SHAP Importance'
   ) +
-  theme_void() +
+  theme_minimal() +
   theme(
-    plot.title = element_text(size = 12, face = 'bold', hjust = 0.5),
-    legend.position = 'right'
+    plot.title = element_text(size = 12, face = 'bold'),
+    axis.text.y = element_text(size = 9)
   )
 
 plot_path_2 <- file.path(opts$out_dir, sprintf('%s_shap_by_category.png', opts$axis))
@@ -288,7 +347,7 @@ for (i in 1:min(3, nrow(importance_df))) {
 cat('\nTop category:\n')
 cat(sprintf('  %s: %.1f%% of total importance (%d features)\n',
             category_summary$category[1],
-            100 * category_summary$total_importance[1] / sum(category_summary$total_importance),
+            category_summary$pct_importance[1],
             category_summary$n_features[1]))
 
 cat(sprintf('\nOutputs saved to: %s\n\n', opts$out_dir))

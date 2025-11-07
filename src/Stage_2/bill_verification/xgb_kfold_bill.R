@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
 #
-# Stage 2 XGBoost Training Driver (Bill's Verification)
+# XGBoost Training Driver (Bill's Verification)
 #
-# Purpose: Train XGBoost models with k-fold CV for EIVE prediction
+# Purpose: Train XGBoost models with k-fold CV for Stage 1 (imputation) or Stage 2 (EIVE)
 # - Fits XGBRegressor, reports k-fold CV metrics
-# - Exports model, scaler params, and feature importance
-# - NO phylo predictors (using eigenvectors only)
+# - Exports model, scaler params, and SHAP feature importance
+# - Supports both observed trait data (Stage 1) and complete feature tables (Stage 2)
 #
 
 suppressPackageStartupMessages({
@@ -21,7 +21,8 @@ suppressPackageStartupMessages({
 
 parse_args <- function(args) {
   out <- list(
-    axis = 'L',
+    mode = 'stage2',  # 'stage1' or 'stage2'
+    axis = 'L',       # For stage2: L/T/M/N/R; For stage1: trait name (logLA, logNmass, etc.)
     features_csv = NA,
     out_dir = NA,
     target_column = 'y',
@@ -43,7 +44,9 @@ parse_args <- function(args) {
     key <- sub('=.*$', '', kv)
     val <- sub('^[^=]*=', '', kv)
 
-    if (key == 'axis') out$axis <- val
+    if (key == 'mode') out$mode <- tolower(val)
+    else if (key == 'axis') out$axis <- val
+    else if (key == 'trait') out$axis <- val  # Alias for stage1
     else if (key == 'features_csv') out$features_csv <- val
     else if (key == 'out_dir') out$out_dir <- val
     else if (key == 'target_column') out$target_column <- val
@@ -74,13 +77,18 @@ opts <- parse_args(args)
 # ============================================================================
 
 cat(strrep('=', 80), '\n')
-cat(sprintf('XGBOOST TRAINING: %s-axis (Bill Verification)\n', opts$axis))
+if (opts$mode == 'stage1') {
+  cat(sprintf('XGBOOST TRAINING: Stage 1 Imputation - %s (Bill Verification)\n', opts$axis))
+} else {
+  cat(sprintf('XGBOOST TRAINING: Stage 2 EIVE - %s-axis (Bill Verification)\n', opts$axis))
+}
 cat(strrep('=', 80), '\n\n')
 
 cat('Configuration:\n')
+cat(sprintf('  Mode: %s\n', opts$mode))
 cat(sprintf('  Features CSV: %s\n', opts$features_csv))
 cat(sprintf('  Output dir: %s\n', opts$out_dir))
-cat(sprintf('  Target: %s\n', opts$target_column))
+cat(sprintf('  Target: %s\n', ifelse(opts$mode == 'stage1', opts$axis, opts$target_column)))
 cat(sprintf('  GPU: %s\n', ifelse(opts$gpu, 'TRUE', 'FALSE')))
 cat(sprintf('  Seed: %d\n', opts$seed))
 cat(sprintf('  n_estimators: %d\n', opts$n_estimators))
@@ -104,30 +112,123 @@ if (!file.exists(opts$features_csv)) {
 df <- read_csv(opts$features_csv, show_col_types = FALSE)
 cat(sprintf('✓ Loaded %d species × %d columns\n', nrow(df), ncol(df)))
 
-# Verify target column exists
-if (!opts$target_column %in% names(df)) {
-  stop('Target column not found: ', opts$target_column)
+# Mode-specific data preparation
+if (opts$mode == 'stage1') {
+  # Stage 1: Imputation analysis
+  # Target is a trait column (logLA, logNmass, etc.)
+  target_trait <- opts$axis
+
+  if (!target_trait %in% names(df)) {
+    stop('Target trait not found: ', target_trait)
+  }
+
+  # Extract target
+  y_full <- df[[target_trait]]
+  n_total <- nrow(df)
+  n_obs <- sum(!is.na(y_full))
+
+  if (n_obs == 0) {
+    stop('No observed values for trait: ', target_trait)
+  }
+
+  cat(sprintf('✓ Target trait: %s\n', target_trait))
+  cat(sprintf('✓ Observed: %d/%d (%.1f%%)\n', n_obs, n_total, 100 * n_obs / n_total))
+
+  # Filter to observed cases only
+  obs_idx <- which(!is.na(y_full))
+  df <- df[obs_idx, ]
+  y <- y_full[obs_idx]
+
+  cat(sprintf('✓ Filtered to %d observed cases\n', nrow(df)))
+
+  # Exclude ALL target traits from features
+  all_target_traits <- c('logLA', 'logNmass', 'logLDMC', 'logSLA', 'logH', 'logSM')
+  drop_cols <- c('leaf_area_source', 'nmass_source', 'ldmc_source', 'lma_source',
+                 'height_source', 'seed_mass_source', 'sla_source',
+                 'try_parasitism', 'try_carnivory', 'try_succulence',
+                 'accepted_name', 'accepted_norm', 'accepted_wfo_id',
+                 'duke_files', 'duke_original_names', 'duke_matched_names', 'duke_scientific_names',
+                 'eive_taxon_concepts', 'try_source_species',
+                 'genus', 'family', 'try_genus', 'try_family')
+
+  id_cols <- c('wfo_taxon_id', 'wfo_scientific_name', opts$species_column)
+  exclude_cols <- c(id_cols, all_target_traits, drop_cols)
+  feature_cols <- setdiff(names(df), exclude_cols)
+
+} else {
+  # Stage 2: EIVE prediction
+  # Target is 'y' column, features are already prepared
+  if (!opts$target_column %in% names(df)) {
+    stop('Target column not found: ', opts$target_column)
+  }
+
+  y <- df[[opts$target_column]]
+  n_obs <- sum(!is.na(y))
+
+  if (n_obs == 0) {
+    stop('No observed values for target: ', opts$target_column)
+  }
+
+  cat(sprintf('✓ Target (%s): %d observed (%.1f%%)\n',
+              opts$target_column, n_obs, 100 * n_obs / nrow(df)))
+
+  # Remove non-feature columns
+  id_cols <- c('wfo_taxon_id', 'wfo_scientific_name', opts$species_column, opts$target_column)
+  feature_cols <- setdiff(names(df), id_cols)
 }
 
-# Extract target
-y <- df[[opts$target_column]]
-n_obs <- sum(!is.na(y))
-
-if (n_obs == 0) {
-  stop('No observed values for target: ', opts$target_column)
-}
-
-cat(sprintf('✓ Target (%s): %d observed (%.1f%%)\n',
-            opts$target_column, n_obs, 100 * n_obs / nrow(df)))
-
-# Remove non-feature columns
-id_cols <- c('wfo_taxon_id', 'wfo_scientific_name', opts$species_column, opts$target_column)
-feature_cols <- setdiff(names(df), id_cols)
-
+# Prepare feature matrix
 X_df <- df %>% select(all_of(feature_cols))
-X <- as.matrix(X_df)
 
-cat(sprintf('✓ Features: %d columns\n', ncol(X)))
+# Handle categorical features for Stage 1
+if (opts$mode == 'stage1') {
+  # Convert categorical traits to factors
+  keep_cats <- c('try_woodiness', 'try_growth_form', 'try_habitat_adaptation',
+                 'try_leaf_type', 'try_leaf_phenology', 'try_photosynthesis_pathway',
+                 'try_mycorrhiza_type')
+
+  for (col in intersect(keep_cats, names(X_df))) {
+    if (!is.factor(X_df[[col]])) {
+      X_df[[col]] <- as.factor(X_df[[col]])
+    }
+  }
+
+  # Convert any remaining character columns to factors
+  char_cols <- sapply(X_df, is.character)
+  if (any(char_cols)) {
+    X_df[char_cols] <- lapply(X_df[char_cols], factor)
+  }
+
+  # Remove high-cardinality categoricals (>50 levels)
+  high_card <- names(X_df)[sapply(X_df, function(col) {
+    if (is.factor(col)) nlevels(col) > 50 else FALSE
+  })]
+  if (length(high_card) > 0) {
+    cat(sprintf('  Removing %d high-cardinality features: %s\n',
+                length(high_card), paste(high_card, collapse=', ')))
+    X_df <- X_df[, !names(X_df) %in% high_card, drop = FALSE]
+  }
+
+  # One-hot encode categorical features
+  cat('  One-hot encoding categorical features...\n')
+  X_encoded <- model.matrix(~ . - 1, data = X_df, na.action = na.pass)
+  X <- X_encoded
+  feature_cols <- colnames(X)
+
+  cat(sprintf('✓ Features after encoding: %d columns\n', ncol(X)))
+} else {
+  # Stage 2: Features should already be numeric
+  non_numeric <- names(X_df)[!sapply(X_df, is.numeric)]
+  if (length(non_numeric) > 0) {
+    warning(sprintf('Non-numeric columns found: %s', paste(non_numeric, collapse=', ')))
+    X_df <- X_df %>% select(where(is.numeric))
+    feature_cols <- names(X_df)
+  }
+
+  X <- as.matrix(X_df)
+  cat(sprintf('✓ Features: %d columns\n', ncol(X)))
+}
+
 cat(sprintf('✓ Data shape: %d × %d\n\n', nrow(X), ncol(X)))
 
 # ============================================================================
@@ -144,6 +245,11 @@ if (opts$compute_cv) {
   r2s <- numeric(opts$cv_folds)
   rmses <- numeric(opts$cv_folds)
   maes <- numeric(opts$cv_folds)
+  acc_rank1 <- numeric(opts$cv_folds)
+  acc_rank2 <- numeric(opts$cv_folds)
+
+  # Store per-fold predictions
+  cv_predictions <- list()
 
   for (fold in 1:opts$cv_folds) {
     cat(sprintf('  Fold %d/%d... ', fold, opts$cv_folds))
@@ -181,7 +287,7 @@ if (opts$compute_cv) {
       colsample_bytree = opts$colsample_bytree,
       lambda = 1.0,
       min_child_weight = 1.0,
-      seed = opts$seed
+      seed = opts$seed + fold  # Different seed per fold
     )
 
     if (opts$gpu) {
@@ -208,18 +314,50 @@ if (opts$compute_cv) {
     rmse <- sqrt(mean((y_test - y_pred)^2))
     mae <- mean(abs(y_test - y_pred))
 
+    # Rank-based accuracy (matching Python implementation)
+    y_rank_true <- round(y_test)
+    y_rank_pred <- round(y_pred)
+    rank_diff <- abs(y_rank_true - y_rank_pred)
+    acc_r1 <- mean(rank_diff <= 1)
+    acc_r2 <- mean(rank_diff <= 2)
+
     r2s[fold] <- r2
     rmses[fold] <- rmse
     maes[fold] <- mae
+    acc_rank1[fold] <- acc_r1
+    acc_rank2[fold] <- acc_r2
 
-    cat(sprintf('R²=%.4f, RMSE=%.4f, MAE=%.4f\n', r2, rmse, mae))
+    # Store predictions
+    if (opts$species_column %in% names(df)) {
+      species_ids <- df[[opts$species_column]][test_idx]
+    } else {
+      species_ids <- test_idx
+    }
+
+    cv_predictions[[fold]] <- data.frame(
+      fold = fold,
+      row = test_idx,
+      species = species_ids,
+      y_true = y_test,
+      y_pred = y_pred,
+      residual = y_test - y_pred,
+      stringsAsFactors = FALSE
+    )
+
+    cat(sprintf('R²=%.4f, RMSE=%.4f, MAE=%.4f, Acc±1=%.3f\n',
+                r2, rmse, mae, acc_r1))
   }
+
+  # Combine all fold predictions
+  cv_preds_df <- bind_rows(cv_predictions)
 
   cat('\n')
   cat('Cross-validation summary:\n')
   cat(sprintf('  R²:   %.4f ± %.4f\n', mean(r2s), sd(r2s)))
   cat(sprintf('  RMSE: %.4f ± %.4f\n', mean(rmses), sd(rmses)))
-  cat(sprintf('  MAE:  %.4f ± %.4f\n\n', mean(maes), sd(maes)))
+  cat(sprintf('  MAE:  %.4f ± %.4f\n', mean(maes), sd(maes)))
+  cat(sprintf('  Acc±1: %.3f ± %.3f\n', mean(acc_rank1), sd(acc_rank1)))
+  cat(sprintf('  Acc±2: %.3f ± %.3f\n\n', mean(acc_rank2), sd(acc_rank2)))
 
 } else {
   cat('[2/5] Skipping cross-validation (compute_cv=FALSE)\n\n')
@@ -331,7 +469,7 @@ importance_path <- file.path(opts$out_dir, sprintf('xgb_%s_importance.csv', opts
 write_csv(importance_df, importance_path)
 cat(sprintf('✓ Saved importance: %s\n', importance_path))
 
-# Save CV metrics if computed
+# Save CV metrics and predictions if computed
 if (opts$compute_cv) {
   cv_metrics <- list(
     axis = opts$axis,
@@ -342,12 +480,21 @@ if (opts$compute_cv) {
     rmse_mean = mean(rmses),
     rmse_sd = sd(rmses),
     mae_mean = mean(maes),
-    mae_sd = sd(maes)
+    mae_sd = sd(maes),
+    accuracy_rank1_mean = mean(acc_rank1),
+    accuracy_rank1_sd = sd(acc_rank1),
+    accuracy_rank2_mean = mean(acc_rank2),
+    accuracy_rank2_sd = sd(acc_rank2)
   )
 
   metrics_path <- file.path(opts$out_dir, sprintf('xgb_%s_cv_metrics.json', opts$axis))
   write_json(cv_metrics, metrics_path, auto_unbox = TRUE, pretty = TRUE)
   cat(sprintf('✓ Saved CV metrics: %s\n', metrics_path))
+
+  # Save per-fold predictions
+  cv_preds_path <- file.path(opts$out_dir, sprintf('xgb_%s_cv_predictions.csv', opts$axis))
+  write_csv(cv_preds_df, cv_preds_path)
+  cat(sprintf('✓ Saved CV predictions: %s\n', cv_preds_path))
 }
 
 # ============================================================================
@@ -366,6 +513,8 @@ cat(sprintf('Features: %d\n', length(feature_cols)))
 if (opts$compute_cv) {
   cat(sprintf('CV R²: %.4f ± %.4f\n', mean(r2s), sd(r2s)))
   cat(sprintf('CV RMSE: %.4f ± %.4f\n', mean(rmses), sd(rmses)))
+  cat(sprintf('CV Acc±1: %.3f ± %.3f\n', mean(acc_rank1), sd(acc_rank1)))
+  cat(sprintf('CV Acc±2: %.3f ± %.3f\n', mean(acc_rank2), sd(acc_rank2)))
 }
 
 cat(sprintf('\nModel saved: %s\n', model_path))
