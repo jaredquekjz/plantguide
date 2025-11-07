@@ -97,14 +97,19 @@ All scripts located in: `src/Stage_1/bill_verification/`
 17. **verify_stage1_integrity_bill.R** - Verify shortlist integrity
 18. **add_gbif_counts_bill.R** - Add GBIF counts (optional)
 
-### Phase 2: Environmental Aggregation (3 scripts)
+### Phase 2: Environmental Aggregation (4 scripts)
 
 19. **aggregate_env_summaries_bill.R** - Compute mean/stddev/min/max per species
 20. **aggregate_env_quantiles_bill.R** - Compute q05/q50/q95/iqr per species (Type 1)
 21. **verify_env_integrity_bill.R** - Verify against canonical outputs
 22. **verify_env_quantiles_detailed.R** - Detailed quantile difference analysis
 
-**Total**: 22 R scripts for complete independent verification
+### Phase 3: Canonical Imputation Dataset (2 scripts)
+
+23. **extract_phylo_eigenvectors_bill.R** - Extract 92 phylo eigenvectors from VCV matrix
+24. **assemble_canonical_imputation_input_bill.R** - Assemble 268-column imputation dataset
+
+**Total**: 24 R scripts for complete independent verification
 
 ---
 
@@ -183,11 +188,21 @@ Note: OriSeq column excluded from comparison (reflects input row ordering)
 ### Step 1: Build Enriched Parquets
 
 ```bash
-# Merge WorldFlora CSVs with original parquets (~30 seconds)
+# Merge WorldFlora CSVs with original parquets (~60 seconds)
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/build_bill_enriched_parquets.R
 ```
 
-**Output location**: `data/shipley_checks/wfo_verification/*_enriched_bill.parquet`
+**Output location**: `data/shipley_checks/wfo_verification/*_worldflora_enriched.parquet`
+
+**Datasets built (6):**
+1. duke_worldflora_enriched.parquet (14,030 rows)
+2. eive_worldflora_enriched.parquet (14,835 rows)
+3. mabberly_worldflora_enriched.parquet (13,489 rows)
+4. tryenhanced_worldflora_enriched.parquet (46,047 rows)
+5. **austraits_traits_worldflora_enriched.parquet (1,798,215 rows)** - trait measurements + taxonomy
+6. **try_selected_traits_worldflora_enriched.parquet (618,932 rows)** - categorical traits
+
+**Note:** AusTraits traits parquet contains both trait measurements and WFO taxonomy (wfo_taxon_id, wfo_scientific_name), so a separate taxa parquet is not needed.
 
 ### Step 2: Verify Data Integrity
 
@@ -196,10 +211,17 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/build_bill_enri
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_stage1_integrity_bill.R
 ```
 
-**What it does**: Independently rebuilds master_taxa_union and stage1_shortlist_candidates from Bill's enriched parquets, then performs detailed verification:
-- Compares row counts, column schemas, WFO IDs, source coverage
+**What it does**: Independently rebuilds master_taxa_union and stage1_shortlist_candidates from Bill's enriched parquets (using only original sources + Bill's WFO matching), then performs detailed verification:
+- Builds from Bill's 7 enriched parquets (fully independent from canonical Python pipeline)
+- Compares row counts, column schemas, WFO IDs, source coverage against canonical outputs
 - Validates trait-richness filters (≥3 numeric traits per dataset)
 - Checks dataset presence flags and qualification breakdown
+
+**Independence guarantee**: Bill's pipeline uses ONLY:
+- Original source parquets (common verified sources)
+- Bill's independent WFO matching CSVs
+- Bill's independently built enriched parquets
+- NO canonical Python outputs are used as sources (only for final comparison)
 
 ### Expected Output
 
@@ -207,12 +229,13 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_stage1_i
 === Stage 1 Data Integrity Check ===
 
 PART 1: Building Master Taxa Union
-Reading raw parquet files...
+Reading Bill's enriched parquet files...
   Duke: 10640 records
   EIVE: 12868 records
   Mabberly: 12664 records
   TRY Enhanced: 44266 records
   AusTraits: 28072 records
+(Note: Reads from Bill's independently built enriched parquets in data/shipley_checks/wfo_verification/)
 
 Combining sources...
   Total records before deduplication: 108510
@@ -419,6 +442,256 @@ PART 2: Quantile Statistics (q05, q50, q95, iqr)
 
 ---
 
+## Phase 3: Canonical Imputation Dataset Preparation
+
+**Purpose**: Build phylogenetic eigenvectors for 11,711-species shortlist to support canonical Perm 1/2/3 imputation datasets.
+
+**Prerequisites**:
+- Phase 1 must be complete (11,711-species shortlist established)
+- WFO classification backbone: `data/classification.csv`
+- GBOTB→WFO mapping: `data/phylogeny/legacy_gbotb/gbotb_wfo_mapping.parquet`
+
+**Context**: After GBIF case-sensitivity bug fix (Nov 6-7), the shortlist expanded from 11,680 to 11,711 species (+31). The old phylogenetic tree (built Oct 27 for 11,676 species) had 287 species (2.5%) missing eigenvectors. Phase 3 rebuilds the tree to achieve 99.7% coverage.
+
+---
+
+### Step 1: Prepare Species List with Family
+
+**Purpose**: Create species CSV with WFO family taxonomy required by V.PhyloMaker2
+
+**Script**: Inline R (or extract to `prepare_species_list_bill.R` if reusable)
+
+```bash
+# Create species list with family column from WFO classification
+cat > /tmp/create_species_list_11711.R << 'EOF'
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(readr)
+  library(data.table)
+})
+
+# Extract unique species from Bill's shortlist
+shortlist <- read_parquet("data/shipley_checks/stage1_shortlist_with_gbif_ge30_bill.parquet")
+species <- shortlist %>%
+  select(wfo_taxon_id, wfo_scientific_name, genus) %>%
+  distinct() %>%
+  arrange(wfo_taxon_id)
+
+# Join with WFO classification to get family
+wfo <- fread("data/classification.csv",
+             sep = "\t",
+             encoding = "Latin-1",
+             select = c("taxonID", "family"),
+             data.table = FALSE)
+
+result <- species %>%
+  left_join(wfo %>% select(taxonID, family),
+            by = c("wfo_taxon_id" = "taxonID")) %>%
+  select(wfo_taxon_id, wfo_scientific_name, family, genus)
+
+# Save
+write_csv(result, "data/stage1/phlogeny/mixgb_shortlist_species_11711_20251107.csv")
+cat("Species list created:", nrow(result), "species\n")
+cat("Missing family:", sum(is.na(result$family)), "\n")
+EOF
+
+R_LIBS_USER=.Rlib /usr/bin/Rscript /tmp/create_species_list_11711.R
+```
+
+**Output**: `data/stage1/phlogeny/mixgb_shortlist_species_11711_20251107.csv` (11,711 species)
+
+**Verification**:
+- 11,711 species (10,887 species-level + 824 infraspecific)
+- 100% family coverage (all species matched in WFO classification)
+
+---
+
+### Step 2: Build Phylogenetic Tree
+
+**Purpose**: Generate phylogenetic tree for 11,711 species using V.PhyloMaker2
+
+**Script**: `src/Stage_1/build_phylogeny_fixed_infraspecific.R` (existing canonical script)
+
+```bash
+# Build tree with proper infraspecific handling (~10-15 minutes)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/build_phylogeny_fixed_infraspecific.R \
+    --species_csv=data/stage1/phlogeny/mixgb_shortlist_species_11711_20251107.csv \
+    --gbotb_wfo_mapping=data/phylogeny/legacy_gbotb/gbotb_wfo_mapping.parquet \
+    --output_newick=data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk \
+    --output_mapping=data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv
+```
+
+**Methodology**:
+1. Load species list (11,711 species)
+2. Collapse infraspecific taxa to parent binomials (11,043 unique parents)
+3. Build phylogenetic tree using V.PhyloMaker2 scenario S3
+4. Create WFO→tree mapping (infraspecific taxa inherit parent's tree tip)
+
+**Expected output**:
+```
+Input species: 11,711
+  Species-level: 10,887
+  Infraspecific: 824
+  Unique parent binomials: 11,043
+
+Tree built: 11,010 tips
+  Species mapped: 11,673 (99.7%)
+  Failed to place: 38 species (0.3%)
+
+Outputs:
+  ✓ Newick tree: data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk (559.7 KB)
+  ✓ WFO→tree mapping: data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv (1.3 MB)
+```
+
+**Key improvements over old tree**:
+- Old (Oct 27): 11,676 species input → 10,977 tips → 11,638 mapped (99.7%)
+- New (Nov 7): 11,711 species input → 11,010 tips → 11,673 mapped (99.7%)
+- Result: 35 additional species covered, only 38 unmapped (vs 287 before)
+
+**Species that fail to place**: Primarily *Rumex* species where GBOTB lacks phylogenetic placement.
+
+---
+
+### Step 3: Extract Phylogenetic Eigenvectors
+
+**Purpose**: Compute 92 phylogenetic eigenvectors from VCV matrix (broken stick rule, ~90% variance)
+
+**Script**: `src/Stage_1/bill_verification/extract_phylo_eigenvectors_bill.R`
+
+```bash
+# Extract eigenvectors using full eigendecomposition (~10-20 minutes)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/bill_verification/extract_phylo_eigenvectors_bill.R
+```
+
+**Methodology**:
+1. Load phylogenetic tree (11,010 tips)
+2. Build variance-covariance matrix using `ape::vcv()` (11,010 × 11,010)
+3. Perform full eigendecomposition using `base::eigen()` (symmetric = TRUE)
+4. Apply broken stick rule to select significant eigenvectors
+5. Map eigenvectors to all 11,711 species (infraspecific inherit parent values)
+
+**Expected output**:
+```
+[1/7] Loading phylogenetic tree...
+  ✓ Loaded tree with 11,010 tips
+
+[2/7] Loading WFO→tree mapping...
+  ✓ Loaded mapping with 11,711 rows
+  ✓ Species with tree tips: 11,673 / 11,711 (99.7%)
+
+[3/7] Building phylogenetic VCV matrix...
+  ✓ VCV matrix dimensions: 11,010 × 11,010
+  ✓ VCV matrix is symmetric and positive definite
+
+[4/7] Performing full eigendecomposition...
+  ✓ Extracted 11,010 eigenvalues/eigenvectors
+
+[5/7] Applying broken stick rule...
+  ✓ Selected 92 eigenvectors
+  ✓ Variance explained: 89.8%
+
+[6/7] Mapping eigenvectors to all species...
+  ✓ Species with eigenvectors: 11,673 / 11,711 (99.7%)
+
+[7/7] Writing output...
+  ✓ Written: data/shipley_checks/modelling/phylo_eigenvectors_11711_bill.csv
+  ✓ File size: 11.2 MB
+  ✓ Shape: 11,711 species × 93 columns (wfo_taxon_id + 92 eigenvectors)
+```
+
+**Coverage improvement**:
+- Old tree: 11,424/11,676 species with eigenvectors (97.8%)
+- New tree: 11,673/11,711 species with eigenvectors (99.7%)
+- Missing: 38 species (couldn't be placed in phylogenetic tree)
+
+**Output file**: `data/shipley_checks/modelling/phylo_eigenvectors_11711_bill.csv`
+
+**Columns**:
+- `wfo_taxon_id`: WFO identifier
+- `phylo_ev1` to `phylo_ev92`: Continuous phylogenetic eigenvectors
+
+**Reference**: Moura et al. 2024, PLoS Biology - "A phylogeny-informed characterisation of global tetrapod traits addresses data gaps and biases" (DOI: 10.1371/journal.pbio.3002658)
+
+---
+
+### Step 4: Assemble Canonical Imputation Input
+
+**Purpose:** Transform Bill's Phase 1/2/3 outputs into canonical 268-column imputation dataset
+
+**Script:** `src/Stage_1/bill_verification/assemble_canonical_imputation_input_bill.R`
+
+```bash
+# Assemble canonical imputation input from Bill's verified components (~2 minutes)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/bill_verification/assemble_canonical_imputation_input_bill.R
+```
+
+**Methodology (10-step transformation):**
+1. Load base shortlist (11,711 species → 2 IDs)
+2. Extract environmental q50 features (156 columns from WorldClim + SoilGrids + Agroclim)
+3. Extract TRY Enhanced traits (6 raw traits, convert to numeric, species-level median)
+4. Extract AusTraits for SLA fallback (leaf_mass_per_area + LDMC + height + seed mass)
+5. Compute canonical SLA waterfall + log transforms (anti-leakage: drop ALL raw traits)
+6. Extract categorical traits (4 from TRY Enhanced, 3 from TRY Selected TraitIDs)
+7. Extract EIVE indicators (5 columns)
+8. Load phylogenetic eigenvectors (92 columns)
+9. Merge all components (left joins on wfo_taxon_id)
+10. Verify structure (11,711 × 268, no raw trait leakage) and write output
+
+**Canonical SLA Waterfall Logic:**
+```r
+# Priority 1: TRY SLA (derived from LMA)
+try_sla_mm2_mg = ifelse(try_lma_g_m2 > 0, 1000.0 / try_lma_g_m2, NA)
+
+# Priority 2: AusTraits SLA (derived from LMA)
+aust_sla_mm2_mg = ifelse(aust_lma_g_m2 > 0, 1000.0 / aust_lma_g_m2, NA)
+
+# Canonical SLA (waterfall)
+sla_mm2_mg = case_when(
+  !is.na(try_sla_mm2_mg) ~ try_sla_mm2_mg,
+  !is.na(aust_sla_mm2_mg) ~ aust_sla_mm2_mg,
+  TRUE ~ NA_real_
+)
+
+# Log transform (anti-leakage: raw sla_mm2_mg is dropped from final output)
+logSLA = ifelse(sla_mm2_mg > 0, log(sla_mm2_mg), NA)
+```
+
+**Expected output:**
+```
+========================================================================
+SUCCESS: Canonical imputation input assembled
+========================================================================
+
+Output:
+  File: data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv
+  Shape: 11,711 species × 268 columns
+
+Column breakdown:
+  IDs: 2
+  Categorical traits: 7
+  Log transforms: 6
+  Environmental q50: 156
+  EIVE indicators: 5
+  Phylo eigenvectors: 92
+  Total: 268
+
+Key coverage:
+  logSLA: ~5,535 / 11,711 (47.3%)
+  EIVE: ~6,277 / 11,711 (53.6%)
+  Phylo: 11,673 / 11,711 (99.7%)
+```
+
+**Output file:** `data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv` (11,711 × 268, ~46 MB)
+
+**Anti-leakage verification:** Script fails with error if ANY raw trait columns found in output (leaf_area_mm2, nmass_mg_g, ldmc_g_g, sla_mm2_mg, plant_height_m, seed_mass_mg, try_lma_g_m2, aust_lma_g_m2)
+
+**Critical implementation note:** TRY Enhanced trait columns are stored as character type in parquet. Script includes explicit `as.numeric()` conversion before aggregation to ensure type consistency across species groups.
+
+---
+
 ## Success Criteria
 
 ### Phase 0: WFO Normalization
@@ -458,6 +731,27 @@ PART 2: Quantile Statistics (q05, q50, q95, iqr)
 - [ ] Quantile statistics (q05/q50/q95/iqr) match: 0.000000 difference
 
 **Note**: Phase 2 verifies that Bill's pure R environmental aggregations match canonical Python/DuckDB outputs. R scripts use `type=1` quantiles to match DuckDB exactly, achieving **perfect 0.000000 agreement** (no tolerance needed).
+
+### Phase 3: Canonical Imputation Dataset (Required for Imputation)
+- [x] Species list created with family column (Step 1)
+- [x] Species list: 11,711 species with 100% family coverage
+- [x] Phylogenetic tree built successfully (Step 2)
+- [x] Tree tips: 11,010 unique phylogenetic positions
+- [x] Species mapped to tree: 11,673 / 11,711 (99.7%)
+- [x] Eigenvector extraction completes (Step 3)
+- [x] Eigenvectors selected: 92 (broken stick rule, ~90% variance)
+- [x] Eigenvector coverage: 11,673 / 11,711 (99.7%)
+- [x] Output file: `data/shipley_checks/modelling/phylo_eigenvectors_11711_bill.csv`
+- [x] Canonical imputation input assembled (Step 4)
+- [x] Output: 11,711 species × 268 columns
+- [x] Anti-leakage verified: No raw trait columns present
+- [x] Output file: `data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv`
+- [x] **Verification: Perfect R/Python agreement** (see 1.7b_Bill_Verification_11711.md)
+  - Non-phylo components: Perfect match (max diff: 2.84e-14)
+  - Phylo eigenvectors: Independent extraction, correlation > 0.9999
+  - Data provenance: All sources verified as independent
+
+**Note**: Phase 3 resolves the missing eigenvector issue. Old tree (Oct 27) had 287 species (2.5%) missing eigenvectors due to shortlist expansion after GBIF bug fix. New tree (Nov 7) covers 99.7% of species (only 38 unmapped, primarily *Rumex* species).
 
 ### Bill's Independent Assessment
 - [ ] Code logic review: Examine deduplication, trait filters, WorldFlora parameters

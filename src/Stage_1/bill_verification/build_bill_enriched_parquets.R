@@ -321,12 +321,12 @@ write_parquet(try_enriched, file.path(output_dir, "tryenhanced_worldflora_enrich
 log_msg("TRY Enhanced complete: ", nrow(try_enriched), " rows\n")
 
 # ==============================================================================
-# 5. AUSTRAITS
+# 5. AUSTRAITS TRAITS
 # ==============================================================================
 
-log_msg("=== Processing AusTraits dataset ===")
-aus_taxa_orig <- read_parquet("data/stage1/austraits/taxa.parquet")
-log_msg("Loaded AusTraits taxa original: ", nrow(aus_taxa_orig), " rows")
+log_msg("=== Processing AusTraits Traits dataset ===")
+aus_traits_orig <- read_parquet("data/stage1/austraits/traits.parquet")
+log_msg("Loaded AusTraits traits original: ", nrow(aus_traits_orig), " rows")
 
 aus_wfo <- fread("data/shipley_checks/wfo_verification/austraits_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded AusTraits WFO matches: ", nrow(aus_wfo), " rows")
@@ -385,15 +385,92 @@ aus_wfo_clean <- aus_wfo_sorted %>%
   )
 
 # Merge with normalized keys (case-insensitive, whitespace-trimmed)
-aus_taxa_orig$join_key_normalized <- tolower(trimws(aus_taxa_orig$taxon_name))
+aus_traits_orig$join_key_normalized <- tolower(trimws(aus_traits_orig$taxon_name))
 
-aus_taxa_enriched <- aus_taxa_orig %>%
+aus_traits_enriched <- aus_traits_orig %>%
   left_join(aus_wfo_clean %>% select(-taxon_name), by = "join_key_normalized") %>%
   select(-join_key_normalized)
 
-log_msg("Writing AusTraits taxa enriched parquet...")
-write_parquet(aus_taxa_enriched, file.path(output_dir, "austraits_taxa_worldflora_enriched.parquet"), compression = "snappy")
-log_msg("AusTraits complete: ", nrow(aus_taxa_enriched), " rows\n")
+log_msg("Writing AusTraits traits enriched parquet...")
+write_parquet(aus_traits_enriched, file.path(output_dir, "austraits_traits_worldflora_enriched.parquet"), compression = "snappy")
+log_msg("AusTraits traits complete: ", nrow(aus_traits_enriched), " rows")
+log_msg("  (Note: Contains both trait measurements and WFO taxonomy for all AusTraits species)\n")
+
+# ==============================================================================
+# 7. TRY SELECTED TRAITS
+# ==============================================================================
+
+log_msg("=== Processing TRY Selected Traits dataset ===")
+try_sel_orig <- read_parquet("data/stage1/try_selected_traits.parquet")
+log_msg("Loaded TRY Selected Traits original: ", nrow(try_sel_orig), " rows")
+
+try_sel_wfo <- fread("data/shipley_checks/wfo_verification/try_selected_traits_wfo_worldflora.csv", data.table = FALSE)
+log_msg("Loaded TRY Selected Traits WFO matches: ", nrow(try_sel_wfo), " rows")
+
+# Convert empty string taxonID to NA (match Python behavior)
+try_sel_wfo$taxonID[trimws(try_sel_wfo$taxonID) == ""] <- NA
+
+# Build source name (use AccSpeciesName)
+try_sel_wfo$src_name <- try_sel_wfo$AccSpeciesName
+
+# Ranking logic
+try_sel_wfo$scientific_norm <- tolower(trimws(try_sel_wfo$scientificName))
+try_sel_wfo$src_norm <- tolower(trimws(try_sel_wfo$src_name))
+try_sel_wfo$matched_rank <- as.integer(!tolower(trimws(try_sel_wfo$Matched)) %in% c("true", "t", "1", "yes"))
+try_sel_wfo$taxonid_rank <- as.integer(trimws(try_sel_wfo$taxonID) == "" | is.na(try_sel_wfo$taxonID))
+try_sel_wfo$exact_rank <- as.integer(try_sel_wfo$scientific_norm != try_sel_wfo$src_norm)
+
+try_sel_wfo$src_genus <- sapply(strsplit(try_sel_wfo$src_norm, " "), function(x) x[1])
+try_sel_wfo$scientific_genus <- sapply(strsplit(try_sel_wfo$scientific_norm, " "), function(x) x[1])
+try_sel_wfo$genus_rank <- as.integer(try_sel_wfo$scientific_genus != try_sel_wfo$src_genus)
+
+try_sel_wfo$new_accepted_rank <- as.integer(!tolower(trimws(try_sel_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
+try_sel_wfo$status_rank <- as.integer(tolower(trimws(try_sel_wfo$taxonomicStatus)) != "accepted")
+try_sel_wfo$subseq_rank <- suppressWarnings(as.numeric(try_sel_wfo$Subseq))
+try_sel_wfo$subseq_rank[is.na(try_sel_wfo$subseq_rank)] <- 9999999
+
+# Create normalized join key BEFORE deduplication
+try_sel_wfo$join_key_normalized <- tolower(trimws(try_sel_wfo$AccSpeciesName))
+
+try_sel_wfo_sorted <- try_sel_wfo %>%
+  arrange(join_key_normalized, matched_rank, taxonid_rank, exact_rank, genus_rank,
+          new_accepted_rank, status_rank, subseq_rank) %>%
+  group_by(join_key_normalized) %>%
+  slice(1) %>%
+  ungroup()
+
+# Rename columns (keep join_key_normalized for merging)
+try_sel_wfo_clean <- try_sel_wfo_sorted %>%
+  select(
+    AccSpeciesName,
+    join_key_normalized,
+    wf_spec_name = spec.name,
+    wfo_taxon_id = taxonID,
+    wfo_scientific_name = scientificName,
+    wfo_taxonomic_status = taxonomicStatus,
+    wfo_accepted_nameusage_id = acceptedNameUsageID,
+    wfo_new_accepted = New.accepted,
+    wfo_original_status = Old.status,
+    wfo_original_id = Old.ID,
+    wfo_original_name = Old.name,
+    wfo_matched = Matched,
+    wfo_unique = Unique,
+    wfo_fuzzy = Fuzzy,
+    wfo_fuzzy_distance = Fuzzy.dist
+  )
+
+# Merge with normalized keys (case-insensitive, whitespace-trimmed)
+try_sel_orig$join_key_normalized <- tolower(trimws(try_sel_orig$AccSpeciesName))
+
+try_sel_enriched <- try_sel_orig %>%
+  left_join(try_sel_wfo_clean %>% select(-AccSpeciesName), by = "join_key_normalized") %>%
+  select(-join_key_normalized) %>%
+  # Convert empty strings to NA to match canonical NULL behavior
+  mutate(across(where(is.character), ~na_if(., "")))
+
+log_msg("Writing TRY Selected Traits enriched parquet...")
+write_parquet(try_sel_enriched, file.path(output_dir, "try_selected_traits_worldflora_enriched.parquet"), compression = "snappy")
+log_msg("TRY Selected Traits complete: ", nrow(try_sel_enriched), " rows\n")
 
 log_msg("=== All enriched parquets created successfully ===")
 log_msg("Output directory: ", output_dir)

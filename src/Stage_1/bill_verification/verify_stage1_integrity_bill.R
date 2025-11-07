@@ -66,12 +66,12 @@ try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_w
 
 cat("  TRY Enhanced:", nrow(try_enhanced), "records\n")
 
-# Read AusTraits
-austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_taxa_worldflora_enriched.parquet") %>%
+# Read AusTraits (from traits parquet - contains both taxonomy and measurements)
+austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
-  mutate(source_name = "austraits_taxa")
+  mutate(source_name = "austraits")
 
 cat("  AusTraits:", nrow(austraits), "records\n")
 
@@ -93,7 +93,7 @@ master_union_unsorted <- combined %>%
     in_eive = as.integer(any(source_name == "eive")),
     in_mabberly = as.integer(any(source_name == "mabberly")),
     in_try_enhanced = as.integer(any(source_name == "try_enhanced")),
-    in_austraits = as.integer(any(source_name == "austraits_taxa")),
+    in_austraits = as.integer(any(source_name == "austraits")),
     .groups = "drop"
   )
 
@@ -187,23 +187,18 @@ try_counts <- try_full %>%
 
 cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\n")
 
-# Read AusTraits overlap traits
+# Read AusTraits overlap traits (use Bill's enriched parquet)
 cat("Counting AusTraits overlap numeric traits...\n")
-austraits_traits <- read_parquet("data/stage1/austraits/traits_try_overlap.parquet")
-austraits_taxa <- read_parquet("data/shipley_checks/wfo_verification/austraits_taxa_worldflora_enriched.parquet")
+austraits_enriched_full <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
-# Join and filter
+# Filter for TRY-overlap numeric traits
 target_traits <- c('leaf_area', 'leaf_N_per_dry_mass', 'leaf_mass_per_area',
                    'plant_height', 'diaspore_dry_mass', 'wood_density',
                    'leaf_dry_matter_content', 'leaf_thickness')
 
-austraits_enriched <- austraits_traits %>%
-  filter(trait_name %in% target_traits) %>%
-  inner_join(
-    austraits_taxa %>% select(taxon_name, wfo_taxon_id, wfo_scientific_name),
-    by = "taxon_name"
-  ) %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
+austraits_enriched <- austraits_enriched_full %>%
+  filter(trait_name %in% target_traits)
 
 austraits_counts <- austraits_enriched %>%
   mutate(value_numeric = suppressWarnings(as.numeric(trimws(value)))) %>%
