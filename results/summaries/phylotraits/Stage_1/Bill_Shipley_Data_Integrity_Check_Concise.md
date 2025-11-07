@@ -253,7 +253,7 @@ Step 3: Filtering to >=30 GBIF occurrences...
 
 ---
 
-## Phase 2: Environmental Data Verification (Optional)
+## Phase 2: Environmental Data Verification 
 
 **Purpose**: Independently verify that Bill's R-based environmental aggregations match canonical Python/DuckDB outputs.
 

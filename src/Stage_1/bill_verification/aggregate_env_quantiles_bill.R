@@ -51,16 +51,21 @@ aggregate_quantiles <- function(dataset) {
   log_msg("  Computing per-species quantiles...")
 
   # Compute quantiles by species
+  # IMPORTANT: Match DuckDB's quantile methods exactly:
+  # - q05, q95: Type 1 (inverted empirical CDF - returns actual data points)
+  # - q50 (median): Use median() which averages middle two values for even n
+  # - IQR: Type 1 for q25 and q75
   quantile_data <- occ_data %>%
     group_by(wfo_taxon_id) %>%
     summarise(
       across(
         all_of(env_cols),
         list(
-          q05 = ~quantile(.x, probs = 0.05, na.rm = TRUE, names = FALSE),
-          q50 = ~quantile(.x, probs = 0.50, na.rm = TRUE, names = FALSE),
-          q95 = ~quantile(.x, probs = 0.95, na.rm = TRUE, names = FALSE),
-          iqr = ~IQR(.x, na.rm = TRUE)
+          q05 = ~quantile(.x, probs = 0.05, na.rm = TRUE, names = FALSE, type = 1),
+          q50 = ~median(.x, na.rm = TRUE),
+          q95 = ~quantile(.x, probs = 0.95, na.rm = TRUE, names = FALSE, type = 1),
+          iqr = ~(quantile(.x, probs = 0.75, na.rm = TRUE, names = FALSE, type = 1) -
+                  quantile(.x, probs = 0.25, na.rm = TRUE, names = FALSE, type = 1))
         ),
         .names = "{.col}_{.fn}"
       ),
