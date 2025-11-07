@@ -21,10 +21,12 @@ Bill should independently assess:
 
 All scripts located in: `src/Stage_1/bill_verification/` and `src/Stage_2/bill_verification/`
 
-### Stage 1: Trait Imputation (4 scripts)
+### Stage 1: Trait Imputation (7 scripts)
 **Training:**
 - `run_mixgb_cv_bill.R` - 10-fold cross-validation (validation only)
+- `verify_mixgb_cv_bill.R` - Verify CV completeness, R² ranges
 - `run_mixgb_production_bill.R` - Production imputation (10 runs)
+- `verify_production_imputation_bill.R` - **CRITICAL**: 100% completeness, PMM validity
 
 **Assembly & Verification:**
 - `assemble_complete_imputed_bill.R` - Merge imputed traits with features
@@ -33,12 +35,18 @@ All scripts located in: `src/Stage_1/bill_verification/` and `src/Stage_2/bill_v
 **Analysis:**
 - `xgb_kfold_bill.R --mode=stage1` - Unified SHAP analysis framework
 
-### Stage 2: EIVE Prediction (6 scripts)
+### Stage 2: EIVE Prediction (9 scripts)
 **Feature Preparation:**
 - `build_tier2_no_eive_features_onehot_bill.R` - Create per-axis feature tables with one-hot encoding
+- `verify_stage2_features_bill.R` - **CRITICAL**: Anti-leakage (cross-axis EIVE), one-hot validation
 
 **Training:**
 - `xgb_kfold_bill.R --mode=stage2` - Train XGBoost with 10-fold CV (unified framework)
+- `verify_stage2_training_bill.R` - Verify all axes trained, R² ranges, Acc±1 ≥80%
+
+**Imputation & Verification:**
+- `impute_eive_no_eive_bill.R` - Predict missing EIVE (5,756 species)
+- `verify_eive_imputation_bill.R` - **CRITICAL**: 100% EIVE coverage, value ranges
 
 **Analysis:**
 - `analyze_shap_bill.R` - SHAP feature importance analysis
@@ -48,7 +56,7 @@ All scripts located in: `src/Stage_1/bill_verification/` and `src/Stage_2/bill_v
 - `run_all_axes_bill.sh` - Train all 5 axes sequentially
 - `run_shap_analysis_bill.sh` - Run SHAP for all axes
 
-**Total: 10 scripts** (3 core training, 3 feature prep, 4 analysis/verification)
+**Total: 16 scripts** (7 core, 4 verification (CRITICAL), 5 analysis/orchestration)
 
 ---
 
@@ -156,6 +164,15 @@ After CV completes:
 ```
 
 **Note**: CV validates approach but does NOT fill actual missing values. Uses trial hyperparameters for speed.
+
+**Verify CV Results:**
+```bash
+# Quick check (~2 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/bill_verification/verify_mixgb_cv_bill.R
+```
+
+**Expected**: ✓ All 6 traits present, R² > 0, values within 0.4-0.8 range
 
 ---
 
@@ -281,6 +298,21 @@ After production completes:
 
 [5] Ensemble Stability:
     ✓ CV across 10 runs < 15% for all traits
+```
+
+**Verify Production Imputation (CRITICAL):**
+```bash
+# Verify 100% completeness and PMM validity (~15 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/bill_verification/verify_production_imputation_bill.R
+```
+
+**Expected**:
+```
+✓ VERIFICATION PASSED
+✓ All 6 traits: 100% complete (0 missing)
+✓ PMM validity: All imputed values within observed ranges
+✓ Ensemble stability: CV < 15% for all traits
 ```
 
 ---
@@ -416,6 +448,15 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
     ✓ No raw trait columns present
 ```
 
+**Verify Feature Tables (CRITICAL):**
+```bash
+# Verify all axes, anti-leakage, one-hot encoding (~10 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_2/bill_verification/verify_stage2_features_bill.R
+```
+
+**Expected**: ✓ All 5 axes verified, no cross-axis EIVE leakage, one-hot encoding correct
+
 ---
 
 ### Step 5: Train XGBoost Models with 10-Fold CV
@@ -481,6 +522,15 @@ After training:
 - Baseline used numeric-only filtering, accidentally excluded all 7 categorical traits
 - One-hot encoding properly integrates categorical information
 
+**Verify Stage 2 Training:**
+```bash
+# Quick check of model quality (~5 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_2/bill_verification/verify_stage2_training_bill.R
+```
+
+**Expected**: ✓ All 5 axes trained, R² within expected ranges, Acc±1 ≥ 80%
+
 ---
 
 ### Step 6: Predict Missing EIVE Values
@@ -533,6 +583,21 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
       - L/T/M/R: 1-9
       - N: 1-12
     ✓ All predictions are reasonable (no extreme outliers)
+```
+
+**Verify EIVE Imputation (CRITICAL):**
+```bash
+# Verify 100% EIVE coverage and value ranges (~10 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_2/bill_verification/verify_eive_imputation_bill.R
+```
+
+**Expected**:
+```
+✓ VERIFICATION PASSED
+✓ All 5 EIVE axes: 100% complete (0 missing)
+✓ All values within valid ranges (L/T/M/R: 1-9, N: 1-12)
+✓ 5,756 species received predictions
 ```
 
 ---

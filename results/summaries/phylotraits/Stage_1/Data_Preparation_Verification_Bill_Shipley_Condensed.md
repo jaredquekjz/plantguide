@@ -39,26 +39,29 @@ All scripts located in: `src/Stage_1/bill_verification/`
 - `worldflora_{duke,eive,mabberly,tryenhanced,austraits,gbif,globi,try_traits}_match_bill.R`
 
 **Verification (3):**
-- `verify_worldflora_checksums_bill.R` - Verify output integrity
-- `compare_worldflora_csvs_bill.R` - Row-by-row comparison
-- `compare_worldflora_checksums_bill.R` - Checksum comparison
+- `verify_wfo_matching_bill.R` - Row counts, no duplicates, match rates
+- `verify_enriched_parquets_bill.R` - WFO merge integrity (6 parquets)
+- `verify_master_shortlist_bill.R` - Master union (86,592), shortlist (24,511)
 
-### Phase 1: Core Integration (3 scripts)
+### Phase 1: Core Integration (5 scripts)
 - `build_bill_enriched_parquets.R` - Merge WFO with original data
-- `verify_stage1_integrity_bill.R` - Verify shortlist integrity
+- `verify_enriched_parquets_bill.R` - Verify WFO merge (match rates 80-99%)
+- `verify_master_shortlist_bill.R` - Master union + shortlist integrity
 - `add_gbif_counts_bill.R` - Add GBIF counts
+- `verify_gbif_integration_bill.R` - Verify ≥30 occurrences filter (11,711)
 
-### Phase 2: Environmental Aggregation (4 scripts)
+### Phase 2: Environmental Aggregation (5 scripts)
 - `aggregate_env_summaries_bill.R` - Per-species mean/stddev/min/max
 - `aggregate_env_quantiles_bill.R` - Per-species q05/q50/q95/IQR
-- `verify_env_integrity_bill.R` - Verify aggregation validity
-- `verify_env_quantiles_detailed.R` - Detailed quantile checks
+- `verify_env_aggregation_bill.R` - Verify quantile ordering, completeness
 
-### Phase 3: Imputation Dataset (2 scripts)
+### Phase 3: Imputation Dataset (4 scripts)
 - `extract_phylo_eigenvectors_bill.R` - Extract 92 eigenvectors (broken stick)
+- `verify_phylo_eigenvectors_bill.R` - Verify tree (11,010 tips), 92 EVs, 99.7% coverage
 - `assemble_canonical_imputation_input_bill.R` - Assemble 736-column dataset
+- `verify_canonical_assembly_bill.R` - **CRITICAL**: Anti-leakage, dimensions, coverage
 
-**Total: 24 scripts** (12 for processing, 12 for verification)
+**Total: 27 scripts** (15 for processing, 12 for verification)
 
 ---
 
@@ -139,7 +142,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/worldflora_try_
 
 ```bash
 # Verify internal consistency (~5 seconds)
-R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_worldflora_checksums_bill.R
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_wfo_matching_bill.R
 ```
 
 **Expected internal verification checks**:
@@ -260,7 +263,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_q
 
 ```bash
 # Verify aggregation validity (~30 seconds)
-R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_env_integrity_bill.R
+R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_env_aggregation_bill.R
 ```
 
 **Expected internal verification checks**:
@@ -384,6 +387,23 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 **Output**: `data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv` (11,711 × 736, ~46 MB)
 
 **Critical fix applied**: TraitID 37, 22, 7 extraction changed from `StdValue` (numeric, all NA) to `OrigValueStr` (text values), restoring 3 categorical traits from 0% coverage.
+
+### Step 3: Verify Canonical Assembly (CRITICAL)
+
+```bash
+# Verify anti-leakage, dimensions, coverage (~30 seconds)
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_1/bill_verification/verify_canonical_assembly_bill.R
+```
+
+**Expected output**:
+```
+✓ VERIFICATION PASSED
+✓ 11,711 × 736 dimensions
+✓ CRITICAL: Anti-leakage check passed - no raw trait columns present
+✓ All feature groups present and within expected coverage
+✓ 3 fixed categorical traits confirmed (from 0% to 24-70%)
+```
 
 ---
 
