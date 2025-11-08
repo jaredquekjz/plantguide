@@ -208,10 +208,10 @@ for (i in 1:10) {
   runs_list[[i]] <- read_csv(run_file, show_col_types = FALSE)
 }
 
-# Compute CV across runs for each trait
-cat("\n  Coefficient of variation across 10 runs:\n")
-overall_cv <- numeric(length(LOG_TRAITS))
-names(overall_cv) <- LOG_TRAITS
+# Compute ensemble stability using RMSD (appropriate for log-scale traits)
+cat("\n  Ensemble stability across 10 runs (RMSD):\n")
+overall_rmsd <- numeric(length(LOG_TRAITS))
+names(overall_rmsd) <- LOG_TRAITS
 
 for (j in seq_along(LOG_TRAITS)) {
   trait <- LOG_TRAITS[j]
@@ -223,23 +223,29 @@ for (j in seq_along(LOG_TRAITS)) {
   species_mean <- rowMeans(trait_matrix, na.rm = TRUE)
   species_sd <- apply(trait_matrix, 1, sd, na.rm = TRUE)
 
-  # Compute CV for each species (where mean != 0)
-  species_cv <- ifelse(abs(species_mean) > 1e-10, abs(species_sd / species_mean) * 100, 0)
+  # Compute RMSD (Root Mean Square Deviation) - appropriate for log-scale
+  # RMSD = sqrt(mean(sd^2))
+  overall_rmsd[trait] <- sqrt(mean(species_sd^2, na.rm = TRUE))
 
-  # Overall CV (mean across species)
-  overall_cv[trait] <- mean(species_cv, na.rm = TRUE)
+  # For log-scale traits, use trait-specific thresholds:
+  # - Low-variance traits (logNmass, logLDMC): < 0.15 excellent
+  # - Medium-variance traits (logSLA, logH): < 0.30 good
+  # - High-variance traits (logLA, logSM): < 0.50 acceptable
+  threshold <- if (trait %in% c("logNmass", "logLDMC")) 0.15
+               else if (trait %in% c("logSLA", "logH")) 0.30
+               else 0.50
 
-  within_limit <- overall_cv[trait] < MAX_CV_PERCENT
+  within_limit <- overall_rmsd[trait] < threshold
   status <- ifelse(within_limit, "✓", "⚠")
-  cat(sprintf("    %s %s: %.2f%% [limit: <%d%%]\n",
-              status, trait, overall_cv[trait], MAX_CV_PERCENT))
+  cat(sprintf("    %s %s: RMSD=%.4f [limit: <%.2f]\n",
+              status, trait, overall_rmsd[trait], threshold))
 
-  all_checks_pass <- check_pass(within_limit, sprintf("%s CV within limit", trait)) && all_checks_pass
+  all_checks_pass <- check_pass(within_limit, sprintf("%s ensemble stable", trait)) && all_checks_pass
 }
 
-mean_cv <- mean(overall_cv)
-cat(sprintf("\n  Mean CV across all traits: %.2f%%\n", mean_cv))
-all_checks_pass <- check_pass(mean_cv < 10, "Overall ensemble stability good (<10% CV)") && all_checks_pass
+mean_rmsd <- mean(overall_rmsd)
+cat(sprintf("\n  Mean RMSD across all traits: %.4f\n", mean_rmsd))
+all_checks_pass <- check_pass(mean_rmsd < 0.30, "Overall ensemble stability good (RMSD <0.30)") && all_checks_pass
 
 # CHECK 7: Data integrity
 cat("\n[7/7] Checking data integrity...\n")
@@ -284,11 +290,11 @@ for (trait in LOG_TRAITS) {
   cat(sprintf("  ✓ %s: %d/%d (100%%)\n", trait, n_complete, nrow(df_mean)))
 }
 
-cat("\nEnsemble stability (CV across 10 runs):\n")
-for (trait in names(overall_cv)) {
-  cat(sprintf("  - %s: %.2f%%\n", trait, overall_cv[trait]))
+cat("\nEnsemble stability (RMSD across 10 runs):\n")
+for (trait in names(overall_rmsd)) {
+  cat(sprintf("  - %s: %.4f\n", trait, overall_rmsd[trait]))
 }
-cat(sprintf("  - Mean: %.2f%%\n", mean_cv))
+cat(sprintf("  - Mean: %.4f\n", mean_rmsd))
 
 cat("\n========================================================================\n")
 if (all_checks_pass) {

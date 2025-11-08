@@ -24,7 +24,7 @@ All scripts located in: `src/Stage_1/bill_verification/` and `src/Stage_2/bill_v
 ### Stage 1: Trait Imputation (7 scripts)
 **Training:**
 - `run_mixgb_cv_bill.R` - 10-fold cross-validation (validation only)
-- `verify_mixgb_cv_bill.R` - Verify CV completeness, R² ranges
+- `verify_mixgb_cv_bill.R` - Verify CV completeness, R² ranges (for optional use -- xgb_kfold_bill.R serves the same approximate function)
 - `run_mixgb_production_bill.R` - Production imputation (10 runs)
 - `verify_production_imputation_bill.R` - **CRITICAL**: 100% completeness, PMM validity
 
