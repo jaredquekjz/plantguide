@@ -73,7 +73,7 @@ cat('BUILD NO-EIVE FEATURE TABLES WITH ONE-HOT ENCODING (Bill Verification)\n')
 cat(strrep('=', 80), '\n')
 cat('Processing:\n')
 cat('  - Removing ALL EIVE predictors (5 features)\n')
-cat('  - One-hot encoding categorical traits (4 traits)\n')
+cat('  - One-hot encoding categorical traits (7 traits)\n')
 cat('  - Filtering to species with observed EIVE per axis\n\n')
 
 # ============================================================================
@@ -86,12 +86,15 @@ OUTPUT_DIR <- 'data/shipley_checks/stage2_features'
 AXES <- c('L', 'T', 'M', 'N', 'R')
 EIVE_COLS <- paste0('EIVEres-', AXES)
 
-# Categorical traits to one-hot encode
+# Categorical traits to one-hot encode (all 7)
 CATEGORICAL_TRAITS <- c(
   'try_woodiness',
   'try_growth_form',
   'try_habitat_adaptation',
-  'try_leaf_type'
+  'try_leaf_type',
+  'try_leaf_phenology',
+  'try_photosynthesis_pathway',
+  'try_mycorrhiza_type'
 )
 
 # ============================================================================
@@ -177,7 +180,7 @@ for (axis in AXES) {
     rename(y = all_of(target_col))
 
   # Save feature table
-  output_path <- file.path(OUTPUT_DIR, sprintf('%s_features_11711_bill_onehot_20251107.csv', axis))
+  output_path <- file.path(OUTPUT_DIR, sprintf('%s_features_11711_bill_20251107.csv', axis))
   write_csv(axis_data, output_path)
 
   cat(sprintf('  ✓ Saved: %s\n', output_path))
@@ -201,10 +204,10 @@ cat('Feature table structure per axis:\n')
 cat('  - IDs: 2 (wfo_taxon_id, wfo_scientific_name)\n')
 cat('  - Log traits: 6 (100% complete from imputation)\n')
 cat('  - Phylo eigenvectors: 92 (99.7% coverage)\n')
-cat('  - Environmental quantiles: 624 (q05/q50/q95/iqr)\n')
-cat('  - Categorical dummies: ~17 (one-hot encoded from 4 traits)\n')
+cat('  - Environmental quantiles: 624 (q05/q05/q95/iqr)\n')
+cat('  - Categorical dummies: ~24 (one-hot encoded from 7 traits)\n')
 cat('  - Target: 1 (y = EIVEres-{axis})\n')
-cat('  - Total: ~742 columns per axis\n\n')
+cat('  - Total: ~749 columns per axis\n\n')
 
 cat('Next step: Train models with categorical features included\n')
 cat('  bash src/Stage_2/bill_verification/run_all_axes_bill.sh\n\n')

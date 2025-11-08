@@ -314,7 +314,7 @@ Ensemble variation arises from stochastic elements (different random seeds, PMM 
 - `logLA` (SD=1.87): <0.56
 - `logSM` (SD=3.16): <0.95 — seed mass spans 12 orders of magnitude
 
-Higher absolute RMSD for logSM/logLA/logH reflects their larger natural scales, not instability. Verification uses RMSD (Root Mean Square Deviation) instead of CV (Coefficient of Variation) because CV is inappropriate for log-scale traits with near-zero means.
+Higher absolute RMSD for logSM/logLA/logH reflects their larger natural scales, not instability. 
 
 **Verify Production Imputation (CRITICAL):**
 ```bash
