@@ -25,8 +25,9 @@ AXES <- c("L", "T", "M", "N", "R")
 
 EXPECTED_ROWS <- 11711
 
-# EIVE column names in final dataset
-EIVE_COLS <- c("EIVEres-L", "EIVEres-T", "EIVEres-M", "EIVEres-N", "EIVEres-R")
+# EIVE column names in final dataset (use _complete columns which combine observed + imputed)
+EIVE_COLS <- c("EIVEres-L_complete", "EIVEres-T_complete", "EIVEres-M_complete",
+               "EIVEres-N_complete", "EIVEres-R_complete")
 
 # Valid ranges
 EIVE_RANGES <- list(
