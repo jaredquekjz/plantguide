@@ -6,6 +6,45 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This R-based scientific pipeline predicts European plant ecological indicator values (EIVE) from functional traits, then converts predictions to gardening recommendations. The pipeline combines structural equation modeling (SEM), phylogenetic analysis, and copula-based uncertainty quantification.
 
+## Git Branch Structure
+
+### Main Branch (`main`)
+- Contains complete pipeline: src/, results/, data/, shipley_checks/
+- Production-ready code and canonical pipeline
+- All development work happens here
+
+### Shipley Review Branch (`shipley-review`)
+- **SPECIAL PURPOSE**: Clean branch for Bill Shipley's independent verification
+- Contains ONLY `shipley_checks/` directory with:
+  - `shipley_checks/docs/` - Verification documentation (tracked in git)
+  - `shipley_checks/src/` - Bill's verification scripts (tracked in git)
+  - `shipley_checks/data/` - Generated datasets (ignored by git)
+- Root-level folders (src/, results/, papers/) removed to avoid confusion
+- **CRITICAL**: No diffs should exist in `shipley_checks/docs/` and `shipley_checks/src/` between main and shipley-review
+- When updating these folders, cherry-pick or manually apply changes to both branches
+
+### Working with shipley_checks/
+
+**Canonical path**: `shipley_checks/` at repository root (NOT `data/shipley_checks/`)
+
+**File structure**:
+```
+shipley_checks/
+├── docs/               # Tracked: Verification documentation (.md, .docx)
+├── src/                # Tracked: Bill's R verification scripts
+├── stage1_models/      # Ignored: Model artifacts
+├── stage2_models/      # Ignored: Model artifacts
+├── stage3/             # Ignored: Final datasets
+├── imputation/         # Ignored: Imputation outputs
+└── wfo_verification/   # Ignored: WFO enriched parquets
+```
+
+**Final production dataset**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
+- 11,711 species × 782 columns
+- 100% complete traits + EIVE, 99.88% valid CSR scores
+- 10 ecosystem services with confidence levels
+- Nitrogen fixation from TRY database (40.3% coverage)
+
 ## Environment Setup
 
 ### Python Environment (Conda)
