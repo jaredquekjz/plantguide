@@ -119,7 +119,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 
 **Output**: `data/shipley_checks/stage3/bill_enriched_stage3_11711.csv`
 
-**Actual Results** (2025-11-08):
+**Actual Results** (2025-11-09):
 ```
 [1] Taxonomy coverage:
     ✓ family: 80.7% (9456/11711)
@@ -128,10 +128,66 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 [2] Enrichment completeness:
     ✓ height_m: 100.0% (11711/11711)
     ✓ life_form_simple: 78.8% (9224/11711)
+    ✓ nitrogen_fixation_rating: 40.3% (4723/11711) from TRY
 
 [3] Dimensions:
-    ✓ 11711 species × 750 columns
+    ✓ 11711 species × 756 columns
 ```
+
+---
+
+### Step 0a: Extract Nitrogen Fixation from TRY (Optional Prerequisite)
+
+**Purpose**: Extract TraitID 8 (nitrogen fixation capacity) from TRY database for ecosystem services calculation
+
+**Script**: `src/Stage_3/bill_verification/extract_try_nitrogen_fixation_bill.R`
+
+**Run** (only needed once, or when TRY database updates):
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript src/Stage_3/bill_verification/extract_try_nitrogen_fixation_bill.R
+```
+
+**What it does**:
+1. Load master species list (11,711 from Stage 2)
+2. Load TRY-WFO mapping from WorldFlora parquets
+3. Extract all TraitID=8 records from 8 TRY text files (~40M records)
+4. Classify each value as YES (1), NO (0), or ambiguous (skip):
+   - YES patterns: "yes", "rhizobia", "frankia", "nostocaceae", etc.
+   - NO patterns: "no", "not", "none", "unlikely", etc.
+   - Ambiguous: numeric values, unclear text → skipped
+5. Calculate weighted score per species: proportion of YES reports
+6. Assign ordinal rating based on evidence:
+   - **High** (≥75% yes): Strong N-fixer
+   - **Moderate-High** (50-74% yes): Likely fixer, some conflicting data
+   - **Moderate-Low** (25-49% yes): Unclear evidence
+   - **Low** (<25% yes): Strong evidence against N-fixation
+
+**Output**: `data/shipley_checks/stage3/try_nitrogen_fixation_bill.csv`
+
+**Actual Results** (2025-11-09):
+```
+TRY TraitID 8 records: 37,971 across 8 files
+Mapped to master species: 12,158 records
+  YES (N-fixer): 3,499
+  NO (non-fixer): 8,501
+  Ambiguous (skipped): 158
+
+Species coverage: 4,723/11,711 (40.3%)
+
+Rating distribution (TRY data only):
+  High:          592 (12.5%) - Strong N-fixer evidence (≥75% yes)
+  Moderate-High: 292 ( 6.2%) - Likely fixer (50-74% yes)
+  Moderate-Low: 1045 (22.1%) - Unclear evidence (25-49% yes)
+  Low:          2794 (59.2%) - Strong non-fixer evidence (<25% yes)
+
+Sanity check: ✓ PASSED
+  - High-rated species: 92.7% Legumes (Fabaceae/Leguminosae)
+  - Remaining 7.3%: Known actinorhizal N-fixers
+    (Betulaceae, Casuarinaceae, Elaeagnaceae, Rhamnaceae, etc.)
+```
+
+**Note**: Enrichment script (Step 0) will merge this data if available, otherwise use "No Information" for missing species. This distinguishes **absence of evidence** (no data) from **evidence of absence** (empirical "Low" rating from TRY).
 
 ---
 
@@ -171,13 +227,13 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
    - **Carbon Storage - Recalcitrant**: S dominant
    - **Carbon Storage - Total**: C ≈ S > R
    - **Soil Erosion Protection**: C > S > R
-   - **Nitrogen Fixation**: Fallback "Low" (no TRY data)
-6. Assign confidence levels (Very High, High, Moderate, Low)
+   - **Nitrogen Fixation**: TRY TraitID 8 ratings (40.3%) or "No Information" (59.7%)
+6. Assign confidence levels: "High" for TRY data, "No Information" for missing data
 7. Mark species without valid CSR as "Unable to Classify"
 
 **Output**: `data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
 
-**Actual Results** (2025-11-08):
+**Actual Results** (2025-11-09):
 ```
 [1] Trait back-transformation:
     ✓ LA: 0.80 - 2,796,250 mm²
@@ -196,8 +252,15 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 
 [4] Ecosystem services:
     ✓ 10 services computed
-    ✓ Confidence levels assigned
-    ⚠ Nitrogen fixation: fallback 'Low' (no TRY data)
+    ✓ Nitrogen fixation: 4,723 from TRY data (40.3%), 6,988 "No Information" (59.7%)
+    ✓ Confidence tracking: "High" for TRY data, "No Information" for missing
+
+    Final nitrogen fixation distribution:
+      - No Information: 6,988 (59.7%) - no TRY data available
+      - Low (empirical): 2,794 (23.9%) - TRY evidence of non-fixing
+      - Moderate-Low:    1,045 ( 8.9%) - unclear TRY evidence
+      - High:              592 ( 5.1%) - strong N-fixer evidence
+      - Moderate-High:     292 ( 2.5%) - likely fixer evidence
 ```
 
 ---
