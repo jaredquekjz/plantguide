@@ -101,7 +101,7 @@ All scripts located in: `src/Stage_1/bill_verification/` and `src/Stage_2/bill_v
 ### Required Data (from Phase 3)
 
 **Canonical imputation input**:
-- File: `data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv`
+- File: `shipley_checks/modelling/canonical_imputation_input_11711_bill.csv`
 - Dimensions: 11,711 × 736 columns
 - Source: Bill's Phase 3 assembly (full quantiles: q05/q50/q95/iqr)
 
@@ -157,7 +157,7 @@ R_LIBS_USER="/home/olier/ellenberg/.Rlib"
 nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
   /home/olier/miniconda3/envs/AI/bin/Rscript src/Stage_1/bill_verification/run_mixgb_cv_bill.R \
-  > data/shipley_checks/imputation/mixgb_cv_bill.log 2>&1 &
+  > shipley_checks/imputation/mixgb_cv_bill.log 2>&1 &
 ```
 
 **Expected internal verification**:
@@ -272,9 +272,9 @@ bash src/Stage_1/bill_verification/run_all_traits_shap_bill.sh
 ```
 
 **Completed outputs**:
-- Per-trait: `data/shipley_checks/stage1_models/xgb_{trait}_importance.csv`
-- Collated: `data/shipley_checks/stage1_models/stage1_shap_by_category.csv`
-- Summary: `data/shipley_checks/stage1_models/STAGE1_SHAP_SUMMARY.md`
+- Per-trait: `shipley_checks/stage1_models/xgb_{trait}_importance.csv`
+- Collated: `shipley_checks/stage1_models/stage1_shap_by_category.csv`
+- Summary: `shipley_checks/stage1_models/STAGE1_SHAP_SUMMARY.md`
 
 **Results** (Category contributions, % of total SHAP):
 
@@ -316,8 +316,8 @@ nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
   /home/olier/miniconda3/envs/AI/bin/Rscript \
   src/Stage_1/bill_verification/run_mixgb_production_bill.R \
-  --input_csv=data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv \
-  --output_dir=data/shipley_checks/imputation \
+  --input_csv=shipley_checks/modelling/canonical_imputation_input_11711_bill.csv \
+  --output_dir=shipley_checks/imputation \
   --output_prefix=mixgb_imputed_bill_7cats \
   --nrounds=3000 \
   --eta=0.025 \
@@ -432,7 +432,7 @@ Phylo predictors require observed EIVE values to calculate (weighted average of 
 
 **Key issue**: 94.1% of imputation targets (5,419 species) have NO EIVE → cannot calculate p_phylo. Solution: Use phylogenetic eigenvectors instead (available for 99.7% species, provide weaker but meaningful phylogenetic signal).
 
-**Output**: `data/shipley_checks/imputation/bill_complete_11711_20251107.csv`
+**Output**: `shipley_checks/imputation/bill_complete_11711_20251107.csv`
 
 **Final dataset structure**:
 | Feature Group | Count | Coverage |
@@ -504,7 +504,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 6. Save axis-specific feature table
 
 **Output**: 5 feature tables
-- `data/shipley_checks/stage2_features/L_features_11711_bill_20251107.csv`
+- `shipley_checks/stage2_features/L_features_11711_bill_20251107.csv`
 - `T_features_11711_bill_20251107.csv`
 - `M_features_11711_bill_20251107.csv`
 - `N_features_11711_bill_20251107.csv`
@@ -569,8 +569,8 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   src/Stage_2/bill_verification/xgb_kfold_bill.R \
   --mode=stage2 \
   --axis=L \
-  --features_csv=data/shipley_checks/stage2_features/L_features_11711_bill_20251107.csv \
-  --out_dir=data/shipley_checks/stage2_models \
+  --features_csv=shipley_checks/stage2_features/L_features_11711_bill_20251107.csv \
+  --out_dir=shipley_checks/stage2_models \
   --n_estimators=1500 \
   --learning_rate=0.03 \
   --max_depth=6 \
@@ -656,8 +656,8 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 5. Verify completeness and write output
 
 **Outputs**:
-- Per-axis predictions: `data/shipley_checks/stage2_predictions/{L,T,M,N,R}_predictions_bill_20251107.csv`
-- **FINAL DATASET**: `data/shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
+- Per-axis predictions: `shipley_checks/stage2_predictions/{L,T,M,N,R}_predictions_bill_20251107.csv`
+- **FINAL DATASET**: `shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
 
 **FINAL Dataset Structure** (11,711 species × 751 columns):
 
@@ -827,7 +827,7 @@ Top 3: clay_0_5cm_q50 (5.5%), bio_19_q95 (1.6%), clay_5_15cm_q50 (1.6%)
 
 ### Bill's R Outputs
 
-**Stage 1 imputation**: `data/shipley_checks/imputation/`
+**Stage 1 imputation**: `shipley_checks/imputation/`
 ```
 ✓ mixgb_cv_rmse_bill.csv (CV metrics)
 ⏳ mixgb_imputed_bill_7cats_m1-m10.csv (10 runs)
@@ -835,14 +835,14 @@ Top 3: clay_0_5cm_q50 (5.5%), bio_19_q95 (1.6%), clay_5_15cm_q50 (1.6%)
 ✓ bill_complete_11711_20251107.csv (complete dataset, 736 columns)
 ```
 
-**Stage 2 models**: `data/shipley_checks/stage2_models/`
+**Stage 2 models**: `shipley_checks/stage2_models/`
 ```
 ✓ xgb_{L,T,M,N,R}_model.json (trained models)
 ✓ xgb_{L,T,M,N,R}_cv_metrics.json (CV results)
 ✓ xgb_{L,T,M,N,R}_importance.csv (SHAP importance)
 ```
 
-**Stage 2 predictions**: `data/shipley_checks/stage2_predictions/`
+**Stage 2 predictions**: `shipley_checks/stage2_predictions/`
 ```
 ⏸ {L,T,M,N,R}_predictions_bill_20251107.csv (per-axis)
 ⏸ all_predictions_bill_20251107.csv (combined)

@@ -535,7 +535,7 @@ nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   PATH="/home/olier/miniconda3/envs/AI/bin:/usr/bin:/bin" \
   /home/olier/miniconda3/envs/AI/bin/Rscript \
   src/Stage_1/bill_verification/run_mixgb_cv_bill.R \
-  > data/shipley_checks/imputation/mixgb_cv_bill.log 2>&1 &
+  > shipley_checks/imputation/mixgb_cv_bill.log 2>&1 &
 
 # Stage 2: EIVE Prediction
 bash src/Stage_2/bill_verification/run_all_axes_bill.sh
