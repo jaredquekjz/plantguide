@@ -68,14 +68,27 @@ load_taxonomy_from_worldflora <- function(master_ids) {
 
     cat(sprintf('Loading %s...\n', basename(source_path)))
 
-    wfo <- arrow::read_parquet(source_path, col_select = c('taxonID', 'family', 'genus'))
+    # Read all columns first to check availability
+    wfo_all <- arrow::read_parquet(source_path)
+
+    # Check which taxonomy columns exist
+    has_family <- 'Family' %in% names(wfo_all)
+    has_genus <- 'Genus' %in% names(wfo_all)
+
+    if (!has_family || !has_genus) {
+      cat(sprintf('  ⚠ Skipping %s (missing Family/Genus columns)\n', basename(source_path)))
+      next
+    }
+
+    wfo <- wfo_all %>%
+      select(wfo_taxon_id, Family, Genus)
 
     # Filter to master IDs and remove duplicates
     wfo_filtered <- wfo %>%
-      filter(taxonID %in% master_ids) %>%
-      filter(!is.na(family)) %>%
-      distinct(taxonID, .keep_all = TRUE) %>%
-      rename(wfo_taxon_id = taxonID)
+      filter(wfo_taxon_id %in% master_ids) %>%
+      filter(!is.na(Family)) %>%
+      distinct(wfo_taxon_id, .keep_all = TRUE) %>%
+      rename(family = Family, genus = Genus)
 
     # Merge with existing taxonomy (first source wins)
     taxonomy <- bind_rows(taxonomy, wfo_filtered) %>%
