@@ -412,7 +412,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 
 **What it does**:
 1. Load base shortlist (11,711 species)
-2. Extract environmental q50 features (156 columns: WorldClim + SoilGrids + Agroclim)
+2. Extract environmental quantile features (624 columns: 156 vars × 4 stats = q05, q50, q95, iqr)
 3. Extract TRY Enhanced traits (6 raw, convert to numeric, species-level median)
 4. Extract AusTraits for SLA fallback
 5. Compute canonical SLA waterfall + log transforms
@@ -433,8 +433,8 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
     ✓ Categorical: 7 (woodiness, growth_form, habitat, leaf_type, phenology, photosynthesis, mycorrhiza)
     ✓ EIVE: 5 (EIVEres-L/T/M/N/R)
     ✓ Phylo eigenvectors: 92 (phylo_ev1...phylo_ev92)
-    ✓ Environmental q50: 156
-    ✓ Environmental quantiles: 468 (q05/q95/iqr for 156 vars)
+    ✓ Environmental features: 624 (156 vars × 4 stats)
+      - q05: 156, q50: 156, q95: 156, iqr: 156
 
 [3] Anti-Leakage Verification:
     ✓ NO raw trait columns present (leaf_area_mm2, nmass_mg_g, ldmc_g_g, sla_mm2_mg, plant_height_m, seed_mass_mg)
