@@ -59,7 +59,7 @@ All scripts located in: `src/Stage_1/bill_verification/`
 
 ## Required Source Data (Read-Only)
 
-Bill's scripts read from these **15 canonical files**. All outputs write to `data/shipley_checks/`.
+Bill's scripts read from these **15 canonical files**. All outputs write to `shipley_checks/`.
 
 ### 8 Dataset Parquets
 1. `data/stage1/duke_original.parquet` (58K rows)
@@ -97,7 +97,7 @@ Bill's scripts read from these **15 canonical files**. All outputs write to `dat
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/extract_all_names_bill.R
 ```
 
-**Output**: 8 name CSVs in `data/shipley_checks/wfo_verification/`
+**Output**: 8 name CSVs in `shipley_checks/wfo_verification/`
 - `duke_names_for_r.csv` (14,027 names)
 - `eive_names_for_r.csv` (14,835 names)
 - `mabberly_names_for_r.csv` (13,489 names)
@@ -155,7 +155,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/verify_wfo_matc
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/build_bill_enriched_parquets.R
 ```
 
-**Output**: 6 enriched parquets in `data/shipley_checks/wfo_verification/`:
+**Output**: 6 enriched parquets in `shipley_checks/wfo_verification/`:
 - `duke_worldflora_enriched.parquet` (14,030 rows)
 - `eive_worldflora_enriched.parquet` (14,835 rows)
 - `mabberly_worldflora_enriched.parquet` (13,489 rows)
@@ -216,7 +216,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/add_gbif_counts
     ✓ All species have ≥30 occurrences (filter verified)
 ```
 
-**Output**: `data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet` (11,711 species)
+**Output**: `shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet` (11,711 species)
 
 **Critical**: This shortlist is the input for Phase 3 tree building and all subsequent analyses
 
@@ -231,7 +231,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/add_gbif_counts
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_summaries_bill.R all
 ```
 
-**Output**: 3 summary parquets in `data/shipley_checks/`:
+**Output**: 3 summary parquets in `shipley_checks/`:
 - `worldclim_species_summary_R.parquet` (11,711 species, 63 vars)
 - `soilgrids_species_summary_R.parquet` (11,711 species, 42 vars)
 - `agroclime_species_summary_R.parquet` (11,711 species, 51 vars)
@@ -243,7 +243,7 @@ R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_s
 R_LIBS_USER=.Rlib /usr/bin/Rscript src/Stage_1/bill_verification/aggregate_env_quantiles_bill.R all
 ```
 
-**Output**: 3 quantile parquets in `data/shipley_checks/`:
+**Output**: 3 quantile parquets in `shipley_checks/`:
 - `worldclim_species_quantiles_R.parquet` (11,711 species)
 - `soilgrids_species_quantiles_R.parquet` (11,711 species)
 - `agroclime_species_quantiles_R.parquet` (11,711 species)
@@ -307,7 +307,7 @@ suppressPackageStartupMessages({
 })
 
 # Load Bill's verified shortlist
-shortlist <- read_parquet("data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet")
+shortlist <- read_parquet("shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet")
 species <- shortlist %>%
   select(wfo_taxon_id, wfo_scientific_name, genus) %>%
   distinct() %>%
@@ -326,8 +326,8 @@ result <- species %>%
   select(wfo_taxon_id, wfo_scientific_name, family, genus)
 
 # Save to Bill's directory
-dir.create("data/shipley_checks/phylogeny", showWarnings = FALSE, recursive = TRUE)
-write_csv(result, "data/shipley_checks/phylogeny/species_list_11711_bill.csv")
+dir.create("shipley_checks/phylogeny", showWarnings = FALSE, recursive = TRUE)
+write_csv(result, "shipley_checks/phylogeny/species_list_11711_bill.csv")
 cat("Species list created:", nrow(result), "species\n")
 cat("Missing family:", sum(is.na(result$family)), "\n")
 EOF
@@ -336,7 +336,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript /tmp/create_species_list_bill.R
 ```
 
-**Output**: `data/shipley_checks/phylogeny/species_list_11711_bill.csv` (11,711 species with family)
+**Output**: `shipley_checks/phylogeny/species_list_11711_bill.csv` (11,711 species with family)
 
 **Note**: This creates Bill's own species CSV from his independently verified shortlist parquet. The canonical CSV at `data/stage1/phlogeny/mixgb_shortlist_species_11711_20251107.csv` already exists and was used to build the pre-generated tree, but Bill can create his own for full reproducibility.
 
@@ -346,10 +346,10 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 # Build tree with proper infraspecific handling (~10-15 minutes)
 env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript src/Stage_1/bill_verification/build_phylogeny_bill.R \
-    --species_csv=data/shipley_checks/phylogeny/species_list_11711_bill.csv \
+    --species_csv=shipley_checks/phylogeny/species_list_11711_bill.csv \
     --gbotb_wfo_mapping=shipley_checks/data/phylogeny/legacy_gbotb/gbotb_wfo_mapping.parquet \
-    --output_newick=data/shipley_checks/phylogeny/tree_11711_bill.nwk \
-    --output_mapping=data/shipley_checks/phylogeny/tree_mapping_11711_bill.csv
+    --output_newick=shipley_checks/phylogeny/tree_11711_bill.nwk \
+    --output_mapping=shipley_checks/phylogeny/tree_mapping_11711_bill.csv
 ```
 
 **Note**: This would create Bill's own tree from his verified species list. However, since the canonical tree at `data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk` is already built and used throughout the pipeline, Bill can reference it directly as a canonical input (similar to the WFO classification file).
@@ -472,7 +472,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
     ✓ 100% coverage for all quantiles (468 vars: q05/q95/iqr)
 ```
 
-**Output**: `data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv` (11,711 × 736, ~46 MB)
+**Output**: `shipley_checks/modelling/canonical_imputation_input_11711_bill.csv` (11,711 × 736, ~46 MB)
 
 **Critical fix applied**: TraitID 37, 22, 7 extraction changed from `StdValue` (numeric, all NA) to `OrigValueStr` (text values), restoring 3 categorical traits from 0% coverage.
 

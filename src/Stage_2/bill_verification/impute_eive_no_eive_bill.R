@@ -148,7 +148,7 @@ for (i in seq_along(AXES)) {
   n_observed <- sum(observed)
   n_missing <- nrow(missing_species)
 
-  cat(sprintf('  Observed: %d | Missing: %d\n', n_observed, n_missing))
+  cat(sprintf('  Observed: %,d | Missing: %,d\n', n_observed, n_missing))
 
   if (n_missing == 0) {
     cat('  ✓ No missing values - skipping\n\n')

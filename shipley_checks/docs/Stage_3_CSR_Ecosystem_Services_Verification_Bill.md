@@ -64,7 +64,7 @@ All scripts located in: `src/Stage_3/bill_verification/`
 ### Required Data (from Stage 2)
 
 **Complete EIVE dataset** (after Stage 2 imputation):
-- File: `data/shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
+- File: `shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
 - Dimensions: 11,711 species with 100% complete traits and EIVE
 - Required columns:
   - `wfo_taxon_id`, `wfo_scientific_name`
@@ -73,7 +73,7 @@ All scripts located in: `src/Stage_3/bill_verification/`
   - `EIVEres-L`, `EIVEres-T`, `EIVEres-M`, `EIVEres-N`, `EIVEres-R` (100% complete from Stage 2)
 
 **WorldFlora taxonomy** (from Phase 0):
-- Files: `data/shipley_checks/wfo_verification/*_worldflora_enriched.parquet`
+- Files: `shipley_checks/wfo_verification/*_worldflora_enriched.parquet`
 - Provides: family, genus for ≥99% species
 
 ### R Environment Setup
@@ -101,8 +101,8 @@ R_LIBS_USER="/home/olier/ellenberg/.Rlib"
 ```bash
 env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript src/Stage_3/bill_verification/enrich_bill_with_taxonomy.R \
-    --input data/shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv \
-    --output data/shipley_checks/stage3/bill_enriched_stage3_11711.csv
+    --input shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv \
+    --output shipley_checks/stage3/bill_enriched_stage3_11711.csv
 ```
 
 **What it does**:
@@ -117,7 +117,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
    - Mixed/unknown → NA
 6. Save enriched dataset
 
-**Output**: `data/shipley_checks/stage3/bill_enriched_stage3_11711.csv`
+**Output**: `shipley_checks/stage3/bill_enriched_stage3_11711.csv`
 
 **Actual Results** (2025-11-09):
 ```
@@ -163,7 +163,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
    - **Moderate-Low** (25-49% yes): Unclear evidence
    - **Low** (<25% yes): Strong evidence against N-fixation
 
-**Output**: `data/shipley_checks/stage3/try_nitrogen_fixation_bill.csv`
+**Output**: `shipley_checks/stage3/try_nitrogen_fixation_bill.csv`
 
 **Actual Results** (2025-11-09):
 ```
@@ -201,8 +201,8 @@ Sanity check: ✓ PASSED
 ```bash
 env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript src/Stage_3/bill_verification/calculate_csr_bill.R \
-    --input data/shipley_checks/stage3/bill_enriched_stage3_11711.csv \
-    --output data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
+    --input shipley_checks/stage3/bill_enriched_stage3_11711.csv \
+    --output shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
 ```
 
 **What it does**:
@@ -231,7 +231,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 6. Assign confidence levels: "High" for TRY data, "No Information" for missing data
 7. Mark species without valid CSR as "Unable to Classify"
 
-**Output**: `data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
+**Output**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
 
 **Actual Results** (2025-11-09):
 ```
@@ -275,7 +275,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 ```bash
 env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript src/Stage_3/bill_verification/verify_csr_calculation_bill.R \
-    --input data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
+    --input shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
 ```
 
 **Checks**:
@@ -426,7 +426,7 @@ All verification checks passed.
 ### Data Files
 
 ```
-data/shipley_checks/stage3/
+shipley_checks/stage3/
 ├── bill_enriched_stage3_11711.csv              # Step 0 output
 └── bill_with_csr_ecoservices_11711.csv         # Step 1 output (FINAL)
 ```
@@ -512,7 +512,7 @@ R_LIBS_USER="/home/olier/ellenberg/.Rlib"
 - `verify_lifeform_stratification_bill.R` ✓
 - `verify_stage3_complete_bill.R` ✓ (master orchestrator)
 
-**Data**: `data/shipley_checks/stage3/`
+**Data**: `shipley_checks/stage3/`
 - Input: `../stage2_predictions/bill_complete_with_eive_20251107.csv`
 - Enriched: `bill_enriched_stage3_11711.csv`
 - Final: `bill_with_csr_ecoservices_11711.csv`
