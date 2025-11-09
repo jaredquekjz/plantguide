@@ -25,7 +25,7 @@ STAGE 2: EIVE Prediction (XGBoost)
     ↓
 STAGE 3: CSR + Ecosystem Services
     ↓
-FINAL OUTPUT: 11,711 species × 776 columns
+FINAL OUTPUT: 11,711 species × 782 columns
 ```
 
 ---
@@ -411,18 +411,32 @@ FINAL OUTPUT: 11,711 species × 776 columns
 
 ## STAGE 3: CSR + Ecosystem Services
 
-**Scripts**: 6
+**Scripts**: 7 (1 nitrogen extraction + 2 processing + 4 verification)
 
-### Step 3.1: Enrich with Taxonomy
+### Step 3.0a: Extract Nitrogen Fixation from TRY (Optional Prerequisite)
+**Script**: `extract_try_nitrogen_fixation_bill.R`
+
+**Input**:
+- `shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
+- TRY raw files (TraitID 8)
+- TRY-WFO mapping
+
+**Output**: `shipley_checks/stage3/try_nitrogen_fixation_bill.csv`
+- **Coverage**: 4,723 species (40.3%) with TRY nitrogen fixation data
+- **Ratings**: High, Moderate-High, Moderate-Low, Low (based on weighted evidence)
+- **Note**: Remaining 59.7% species will be marked "No Information"
+
+### Step 3.1: Enrich with Taxonomy and Nitrogen Fixation
 **Script**: `enrich_bill_with_taxonomy.R`
 
 **Input**:
 - `shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
 - WorldFlora enriched parquets (from Phase 1)
+- `shipley_checks/stage3/try_nitrogen_fixation_bill.csv` (from Step 3.0a, optional)
 
 **Output**: `shipley_checks/stage3/bill_enriched_stage3_11711.csv`
-- **Additions**: family (80.7%), genus (80.7%), height_m (100%), life_form_simple (78.8%)
-- **Dimensions**: 11,711 × 750 columns
+- **Additions**: family (80.7%), genus (80.7%), height_m (100%), life_form_simple (78.8%), nitrogen_fixation_rating (40.3%)
+- **Dimensions**: 11,711 × 756 columns
 
 ### Step 3.2: Calculate CSR + Ecosystem Services
 **Script**: `calculate_csr_bill.R`
@@ -431,8 +445,9 @@ FINAL OUTPUT: 11,711 species × 776 columns
 
 **Output**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
 - **CSR**: C, S, R percentages (99.88% valid, sum to 100)
-- **Services**: 10 ecosystem service ratings (Very High/High/Moderate/Low)
-- **Dimensions**: 11,711 × 776 columns
+- **Services**: 10 ecosystem service ratings
+- **Nitrogen Fixation**: Distinguishes empirical "Low" (23.9% with TRY evidence) from "No Information" (59.7% with no data)
+- **Dimensions**: 11,711 × 782 columns
 
 **FINAL DATASET**: Complete pipeline output
 
@@ -486,14 +501,14 @@ FINAL OUTPUT: 11,711 species × 776 columns
 
 ### Execution Requirements
 
-**Total Scripts**: 66 (63 R + 3 shell)
+**Total Scripts**: 67 (64 R + 3 shell)
 - Phase 0: 15 scripts
 - Phase 1: 6 scripts
 - Phase 2: 3 scripts
 - Phase 3: 6 scripts (2 optional tree building + 4 assembly/verification)
 - Stage 1: 7 core + 1 SHAP
 - Stage 2: 10 core + 2 shell
-- Stage 3: 6 scripts
+- Stage 3: 7 scripts (1 nitrogen extraction + 2 processing + 4 verification)
 
 **Estimated Runtime** (with GPU):
 - Phase 0-3: ~4 hours
@@ -540,6 +555,6 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 
 ---
 
-**Last Updated**: 2025-11-08
+**Last Updated**: 2025-11-09
 **Pipeline Status**: ✓ Verified seamless assembly line flow
-**Final Output**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv` (11,711 × 776)
+**Final Output**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv` (11,711 × 782)
