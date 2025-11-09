@@ -169,6 +169,63 @@ After CV completes:
 
 **Note**: CV validates approach but does NOT fill actual missing values. Uses canonical production hyperparameters (nrounds=3000, eta=0.025).
 
+**Actual CV Results** (Completed 2025-11-08, 14.75 hours):
+
+| Trait | RMSE | R² | Within ±25% | MdAPE | n_obs | Status |
+|-------|------|-----|-------------|-------|-------|--------|
+| logNmass | 0.300 | 0.548 | **64.2%** | 18.2% | 4,005 | ✓ |
+| logLDMC | 0.356 | 0.575 | **66.6%** | 17.1% | 2,567 | ✓ |
+| logSLA | 0.497 | 0.541 | **42.3%** | 30.1% | 6,846 | ✓ |
+| logLA | 1.412 | 0.552 | **15.5%** | 73.7% | 5,226 | ✓ |
+| logH | 0.906 | 0.757 | **24.6%** | 50.0% | 9,029 | ✓ |
+| logSM | 1.602 | 0.757 | **15.1%** | 77.5% | 7,700 | ✓ |
+
+**Comparison: Bill vs Canon XGBoost vs BHPMF (all 11,680 species)**
+
+**Tolerance Bands (% within ±25%):**
+
+| Trait | Bill | Canon XGBoost | BHPMF | Bill vs Canon | Bill vs BHPMF |
+|-------|------|---------------|-------|---------------|---------------|
+| logNmass | **64.2%** | 60.0% | 46.7% | **+4.2%** ✓ | **+17.5%** ✓ |
+| logLDMC | **66.6%** | 55.4% | 13.4% | **+11.2%** ✓ | **+53.2%** ✓ |
+| logSLA | 42.3% | **42.8%** | 37.5% | -0.5% | **+4.8%** ✓ |
+| logLA | 15.5% | **15.8%** | 10.7% | -0.3% | **+4.8%** ✓ |
+| logH | 24.6% | **24.9%** | 15.4% | -0.3% | **+9.2%** ✓ |
+| logSM | **15.1%** | 14.8% | 8.9% | **+0.3%** | **+6.2%** ✓ |
+| **Mean** | **38.1%** | **35.6%** | **22.1%** | **+2.5%** | **+16.0%** ✓ |
+
+**RMSE (log scale):**
+
+| Trait | Bill | Canon XGBoost | BHPMF | Bill vs Canon | Bill vs BHPMF |
+|-------|------|---------------|-------|---------------|---------------|
+| logNmass | **0.300** | 0.328 | 0.411 | **-8.5%** ✓ | **-27.0%** ✓ |
+| logLDMC | **0.356** | 0.461 | 1.548 | **-22.8%** ✓ | **-77.0%** ✓ |
+| logSLA | 0.497 | **0.480** | 0.588 | +3.5% | **-15.5%** ✓ |
+| logLA | **1.412** | 1.449 | 1.896 | **-2.6%** ✓ | **-25.5%** ✓ |
+| logH | **0.906** | 0.962 | 1.479 | **-5.8%** ✓ | **-38.7%** ✓ |
+| logSM | **1.602** | 1.629 | 3.006 | **-1.7%** ✓ | **-46.7%** ✓ |
+
+**R² (variance explained):**
+
+| Trait | Bill | Canon XGBoost | BHPMF | Bill vs Canon | Bill vs BHPMF |
+|-------|------|---------------|-------|---------------|---------------|
+| logNmass | **0.548** | 0.473 | 0.171 | **+15.8%** ✓ | **+220%** ✓ |
+| logLDMC | **0.575** | 0.374 | -6.019 | **+53.7%** ✓ | - (BHPMF failed) |
+| logSLA | **0.541** | 0.522 | 0.285 | **+3.6%** ✓ | **+89.8%** ✓ |
+| logLA | **0.552** | 0.532 | 0.200 | **+3.8%** ✓ | **+176%** ✓ |
+| logH | **0.757** | 0.729 | 0.359 | **+3.8%** ✓ | **+111%** ✓ |
+| logSM | **0.757** | 0.749 | 0.145 | **+1.1%** | **+422%** ✓ |
+
+**Key findings:**
+- **Bill vs Canon XGBoost**: Enriched dataset (736 features, 11,711 species) outperforms on 5/6 traits
+  - Improvements: logLDMC (+11.2% tolerance, -22.8% RMSE), logNmass (+4.2% tolerance, -8.5% RMSE)
+  - Differences mostly minimal (within ±1% except logLDMC)
+- **Bill vs BHPMF**: XGBoost dramatically superior across all metrics
+  - Tolerance: +16% average (38.1% vs 22.1%)
+  - RMSE: -38.4% average improvement
+  - R²: 2-4× better variance explained
+  - BHPMF catastrophic failure on logLDMC (R² = -6.02)
+
 **Verify CV Results:**
 ```bash
 # Quick check (~2 seconds)
