@@ -622,22 +622,6 @@ bash src/Stage_2/bill_verification/run_all_axes_bill.sh
     ✓ Hardest: R-axis (pH/Reaction) - R²=0.437
 ```
 
-**Comparison to Canon (11,680 species, Tier 2 production)**:
-
-| Axis | Canon R² | Bill R² | Δ R² | Canon RMSE | Bill RMSE | Δ RMSE |
-|------|----------|---------|------|------------|-----------|--------|
-| L | 0.664 ± 0.024 | 0.587 ± 0.023 | **-0.077** | 0.878 | 0.973 | +0.095 |
-| T | 0.806 ± 0.016 | 0.806 ± 0.021 | **0.000** | - | 0.787 | - |
-| M | 0.699 ± 0.024 | 0.661 ± 0.030 | **-0.038** | - | 0.919 | - |
-| N | 0.631 ± 0.038 | 0.610 ± 0.031 | **-0.021** | - | 1.194 | - |
-| R | 0.475 ± 0.030 | 0.437 ± 0.038 | **-0.038** | - | 1.200 | - |
-
-**Analysis**:
-- **T-axis matches canon exactly** (R²=0.806) - hyperparameters working as expected
-- **L/M/N/R axes show slight underperformance** vs canon (2-8% lower R²)
-- Possible reasons: Bill's 736 features include more phylo eigenvectors but lack p_phylo predictors
-- Canon uses **p_phylo** (phylogenetic EIVE predictors) which Bill cannot calculate for species with no observed EIVE
-- Overall performance is **good** - all axes meet Acc±1 ≥ 80% threshold
 
 **Verify Stage 2 Training:**
 ```bash
@@ -838,30 +822,6 @@ Top 3: clay_0_5cm_q50 (5.5%), bio_19_q95 (1.6%), clay_5_15cm_q50 (1.6%)
 
 ---
 
-## Baseline Training Results (Without Categorical One-Hot Encoding)
-
-**Date**: 2025-11-07
-**Purpose**: Establish baseline matching Python canonical NO-EIVE models
-
-**Bill's R vs Python Canonical**:
-
-| Axis | Bill's R² | Python R² | Δ R² | Status |
-|------|-----------|-----------|------|--------|
-| L | 0.587 ± 0.026 | 0.611 ± 0.027 | -0.024 | ✓ Within variance |
-| T | 0.805 ± 0.025 | 0.806 ± 0.016 | -0.001 | ✓ Near-identical |
-| M | 0.664 ± 0.025 | 0.649 ± 0.024 | +0.015 | ✓ Within variance |
-| N | 0.604 ± 0.036 | 0.601 ± 0.038 | +0.003 | ✓ Near-identical |
-| R | 0.438 ± 0.043 | 0.441 ± 0.030 | -0.003 | ✓ Near-identical |
-
-**Mean absolute difference**: R² = 0.009 (0.9%)
-
-**Key findings**:
-1. Bill's R verification matches Python canonical (implementation correct)
-2. Both accidentally excluded 7 categorical traits due to numeric-only filtering
-3. One-hot encoding integration (Step 4 onwards) includes categorical traits properly
-4. Expected improvement with categoricals: +2-6% R² per axis
-
----
 
 ## File Locations
 
