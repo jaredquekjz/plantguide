@@ -29,13 +29,13 @@ EXPECTED_ROWS <- 11711
 EIVE_COLS <- c("EIVEres-L_complete", "EIVEres-T_complete", "EIVEres-M_complete",
                "EIVEres-N_complete", "EIVEres-R_complete")
 
-# Valid ranges
+# Valid ranges (EIVE scale is 0-10 for all axes)
 EIVE_RANGES <- list(
-  L = c(1, 9),
-  T = c(1, 9),
-  M = c(1, 9),
-  N = c(1, 12),
-  R = c(1, 9)
+  L = c(0, 10),
+  T = c(0, 10),
+  M = c(0, 10),
+  N = c(0, 10),
+  R = c(0, 10)
 )
 
 # Expected prediction counts (approximate)
