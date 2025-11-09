@@ -431,23 +431,21 @@ shipley_checks/stage3/
 └── bill_with_csr_ecoservices_11711.csv         # Step 1 output (FINAL)
 ```
 
-**Final dataset structure**:
-- 11,711 species × ~[770] columns
-- Original features + enrichment (family, genus, height_m, life_form_simple)
-- CSR scores (C, S, R) - 3 columns
-- 10 ecosystem service ratings - 10 columns
-- 10 ecosystem service confidence levels - 10 columns
+**FINAL DATASET**: `shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
+- **Dimensions**: 11,711 species × 782 columns
+- **Status**: Production-ready for Bill Shipley's review
 
-**New columns added**:
-| Column Group | Count | Description |
-|--------------|-------|-------------|
-| Taxonomy | 2 | family, genus |
-| Back-transformed | 1 | height_m = exp(logH) |
-| Life form | 1 | life_form_simple (woody/non-woody/semi-woody) |
-| CSR scores | 3 | C, S, R (sum to 100) |
-| Service ratings | 10 | NPP, decomposition, nutrient cycling, retention, loss, carbon (3 types), erosion, N-fixation |
-| Service confidence | 10 | Very High, High, Moderate, Low, Not Applicable |
-| **Total added** | **27** | |
+**Column structure**:
+- Stage 2 output (751 columns): Complete traits, EIVE, phylo, environmental features
+- Enrichment additions (5 columns): family, genus, height_m, life_form_simple, nitrogen_fixation_rating
+- CSR + services (26 columns): LA, LDMC, SLA, C, S, R, nitrogen_fixation_has_try, 9 service ratings, 10 confidence levels
+
+**Columns added by Stage 3 pipeline** (from Stage 2 → Final):
+| Pipeline Step | Columns Added | Description |
+|--------------|---------------|-------------|
+| **Enrichment** (Step 0) | 5 | family, genus, height_m, life_form_simple, nitrogen_fixation_rating |
+| **CSR + Services** (Step 1) | 26 | LA, LDMC, SLA (back-transformed), C/S/R scores, nitrogen_fixation_has_try, 9 service ratings, 10 confidence levels |
+| **Total Stage 3 additions** | **31** | 751 → 782 columns |
 
 ---
 

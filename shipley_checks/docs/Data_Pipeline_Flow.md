@@ -386,8 +386,8 @@ FINAL OUTPUT: 11,711 species × 782 columns
 - Trained models (from Step 2.3)
 
 **Output**: `shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv`
-- **Dimensions**: 11,711 × 746 columns
-- **EIVE**: 100% complete (all 5 axes)
+- **Dimensions**: 11,711 × 751 columns
+- **EIVE**: 100% complete (all 5 axes, with _imputed, _complete, _source columns)
 - **Predictions**: 5,759 species (27,757 total predictions)
 
 ### Step 2.6: Verify EIVE Imputation
@@ -484,8 +484,8 @@ FINAL OUTPUT: 11,711 species × 782 columns
 3. **Phase 2 → Phase 3**: ✓ Environmental quantiles → Imputation input
 4. **Phase 3 → Stage 1**: ✓ Canonical input (736 cols) → Trait imputation
 5. **Stage 1 → Stage 2**: ✓ Complete traits (100%) → EIVE prediction
-6. **Stage 2 → Stage 3**: ✓ Complete EIVE (100%) → CSR calculation
-7. **Stage 3 → Final**: ✓ CSR + services (776 cols)
+6. **Stage 2 → Stage 3**: ✓ Complete EIVE (751 cols) → CSR calculation
+7. **Stage 3 → Final**: ✓ CSR + services (782 cols)
 
 ### Critical Checkpoints
 
