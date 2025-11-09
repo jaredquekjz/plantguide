@@ -9,6 +9,7 @@
 !/scripts/
 !/artifacts/
 !/papers/
+!/shipley_checks/
 
 # Keep artifacts ignored by default; selectively unignore small repro files
 artifacts/**
@@ -42,3 +43,11 @@ __pycache__/
 # Ignore experimental results and feature importance outputs
 /results/experiments/
 /results/feature_importance/
+
+# Bill Shipley verification: track docs and src, ignore data
+!/shipley_checks/docs/
+!/shipley_checks/src/
+shipley_checks/**/*.parquet
+shipley_checks/**/*.csv
+shipley_checks/**/*.nwk
+shipley_checks/**/*.rds
