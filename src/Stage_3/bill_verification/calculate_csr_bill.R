@@ -101,10 +101,23 @@ calculate_stratefy_csr <- function(LA, LDMC, SLA) {
 ################################################################################
 
 compute_ecosystem_services <- function(df) {
-  # Initialize nitrogen fixation if not present
-  if (!"nitrogen_fixation_rating" %in% names(df)) {
-    cat("  ⚠ nitrogen_fixation_rating not found, using 'Low' fallback for all species\n")
-    df$nitrogen_fixation_rating <- "Low"
+  # Handle nitrogen fixation rating and confidence
+  if ("nitrogen_fixation_rating" %in% names(df)) {
+    # Track original values to distinguish TRY data from fallback
+    df$nitrogen_fixation_has_try <- !is.na(df$nitrogen_fixation_rating)
+
+    # Fill NAs with "No Information" (distinguish from empirical "Low" rating)
+    n_try <- sum(df$nitrogen_fixation_has_try, na.rm = TRUE)
+    n_fallback <- sum(!df$nitrogen_fixation_has_try | is.na(df$nitrogen_fixation_has_try))
+
+    df$nitrogen_fixation_rating[is.na(df$nitrogen_fixation_rating)] <- "No Information"
+
+    cat(sprintf("  Nitrogen fixation: %d from TRY data, %d with no information\n", n_try, n_fallback))
+  } else {
+    # Column missing entirely - no information available
+    cat("  ⚠ nitrogen_fixation_rating not found, using 'No Information' for all species\n")
+    df$nitrogen_fixation_rating <- "No Information"
+    df$nitrogen_fixation_has_try <- FALSE
   }
 
   # Ensure required columns exist
@@ -263,9 +276,13 @@ compute_ecosystem_services <- function(df) {
     }
   }
 
-  # Nitrogen Fixation - simplified for Bill's verification (no TRY data)
-  # All species get "Low" confidence since we're using fallback
-  df$nitrogen_fixation_confidence <- "Low"
+  # Nitrogen Fixation - use TRY data where available
+  # Confidence: "High" for TRY data, "No Information" when no data available
+  df$nitrogen_fixation_confidence <- ifelse(
+    df$nitrogen_fixation_has_try,
+    "High",           # TRY data available (any rating including "Low")
+    "No Information"  # No TRY data - we don't know
+  )
 
   # Mark species without valid CSR as "Unable to Classify"
   invalid_idx <- !valid_idx
@@ -358,7 +375,7 @@ main <- function() {
   cat("    7. Carbon Storage - Recalcitrant\n")
   cat("    8. Carbon Storage - Total\n")
   cat("    9. Soil Erosion Protection\n")
-  cat("   10. Nitrogen Fixation (fallback: all Low)\n")
+  cat("   10. Nitrogen Fixation (TRY TraitID 8 + fallback)\n")
 
   cat("\nWriting output...\n")
   write_csv(df, opt$output)

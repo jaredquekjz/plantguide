@@ -173,8 +173,32 @@ master <- master %>%
 tax_coverage <- sum(!is.na(master$family)) / nrow(master) * 100
 cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
 
+# Load nitrogen fixation data if available
+cat('[3/5] Loading nitrogen fixation data from TRY...\n')
+NFIX_PATH <- 'data/shipley_checks/stage3/try_nitrogen_fixation_bill.csv'
+
+if (file.exists(NFIX_PATH)) {
+  nfix_data <- read_csv(NFIX_PATH, show_col_types = FALSE)
+
+  master <- master %>%
+    left_join(nfix_data %>% select(wfo_taxon_id, nitrogen_fixation_rating),
+              by = 'wfo_taxon_id')
+
+  n_try <- sum(!is.na(master$nitrogen_fixation_rating))
+  n_total <- nrow(master)
+  cat(sprintf('  ✓ Nitrogen fixation: %.1f%% coverage (%d/%d from TRY)\n',
+              100 * n_try / n_total, n_try, n_total))
+  cat(sprintf('  ✓ Remaining %d species will use "Low" fallback\n\n',
+              n_total - n_try))
+} else {
+  cat(sprintf('  ⚠ Nitrogen fixation data not found: %s\n', NFIX_PATH))
+  cat('  → Run extract_try_nitrogen_fixation_bill.R to generate TRY data\n')
+  cat('  → Will use "Low" fallback for all species in CSR calculation\n\n')
+  master$nitrogen_fixation_rating <- NA_character_
+}
+
 # Back-transform height
-cat('[3/4] Back-transforming height and simplifying life form...\n')
+cat('[4/5] Back-transforming height and simplifying life form...\n')
 
 if ('logH' %in% names(master)) {
   master <- master %>%
@@ -196,7 +220,7 @@ if ('try_woodiness' %in% names(master)) {
 }
 
 # Save enriched dataset
-cat('[4/4] Saving enriched dataset...\n')
+cat('[5/5] Saving enriched dataset...\n')
 write_csv(master, OUTPUT_PATH)
 
 file_info <- file.info(OUTPUT_PATH)
@@ -225,5 +249,8 @@ cat(sprintf('  height_m: %.1f%% (%d/%d)\n',
 cat(sprintf('  life_form_simple: %.1f%% (%d/%d)\n',
             100 * sum(!is.na(master$life_form_simple)) / nrow(master),
             sum(!is.na(master$life_form_simple)), nrow(master)))
+cat(sprintf('  nitrogen_fixation_rating: %.1f%% (%d/%d)\n',
+            100 * sum(!is.na(master$nitrogen_fixation_rating)) / nrow(master),
+            sum(!is.na(master$nitrogen_fixation_rating)), nrow(master)))
 
 cat('\n✓ Enrichment complete - ready for CSR calculation\n')
