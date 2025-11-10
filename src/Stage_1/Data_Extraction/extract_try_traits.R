@@ -1,73 +1,133 @@
-# Extract multiple traits from TRY data
-# Traits: 7 (Mycorrhiza type), 46 (Leaf thickness), 37 (Leaf phenology type),
-#         22 (Photosynthesis pathway), 31 (Species tolerance to frost),
-#         47 (Leaf dry matter content, LDMC),
-#         3115 (Specific leaf area, leaf area per leaf dry mass)
+# ================================================================================
+# TRY Database Trait Extraction Script
+# ================================================================================
+# Purpose: Extract 7 functional plant traits from TRY database (v5.0)
+#
+# TRY (Plant Trait Database) provides standardized measurements of functional
+# traits across ~280K plant species. This script extracts a focused set of
+# traits for ecological indicator value prediction.
+#
+# Target Traits:
+#   TraitID 7:    Mycorrhiza type (AM, EM, ERM, NM)
+#   TraitID 46:   Leaf thickness (mm)
+#   TraitID 37:   Leaf phenology type (deciduous, evergreen, etc.)
+#   TraitID 22:   Photosynthesis pathway (C3, C4, CAM)
+#   TraitID 31:   Species tolerance to frost (categorical)
+#   TraitID 47:   Leaf dry matter content - LDMC (mg/g, lamina only)
+#   TraitID 3115: Specific leaf area - SLA (mm²/mg, petiole excluded)
+#
+# IMPORTANT: TraitID 47 (LDMC) follows Bill Shipley's advice to use lamina-only
+# measurements, avoiding petiole/cotyledon/rachis LDMC (TraitIDs 1010/3055/3081)
+#
+# Data Flow:
+# Input:  data/TRY/*.txt (TRY text dumps, Latin-1 encoded)
+# Output: data/stage1/try_selected_traits.parquet (618,932 records)
+#         artifacts/stage1_data_extraction/*.rds (per-trait intermediate files)
+#
+# Execution Time: ~20-30 minutes for full TRY database
+# ================================================================================
 
-# Specify the library path
+# ================================================================================
+# Environment Configuration
+# ================================================================================
+# Set custom library path for R packages
 .libPaths("/home/olier/ellenberg/.Rlib")
 
-# Load necessary libraries
-# Ensure rtry is installed. If not, run: install.packages("rtry")
+# Load required libraries
+# rtry: Specialized package for TRY database handling (rtry_import, rtry_select_col)
+# dplyr: Data manipulation (filter)
+# data.table: High-performance aggregation (rbindlist, fwrite)
 library(rtry)
 library(dplyr)
 library(data.table)
 
-# Define traits to extract
+# ================================================================================
+# Trait Selection Configuration
+# ================================================================================
+# Define the 7 functional traits to extract from TRY database
+# Each trait includes: TraitID (TRY database identifier), name (slug), description
 target_traits <- list(
   list(id = 7, name = "mycorrhiza_type", desc = "Mycorrhiza type"),
   list(id = 46, name = "leaf_thickness", desc = "Leaf thickness"),
   list(id = 37, name = "leaf_phenology_type", desc = "Leaf phenology type"),
   list(id = 22, name = "photosynthesis_pathway", desc = "Photosynthesis pathway"),
   list(id = 31, name = "species_tolerance_to_frost", desc = "Species tolerance to frost"),
+
   # Canonical LDMC for lamina: TraitID 47 (leaf dry mass per leaf fresh mass)
-  # Avoid petiole/cotyledon/rachis LDMC (1010/3055/3081) for Bill Shipley’s lamina advice
+  # IMPORTANT: Bill Shipley advised using lamina-only LDMC measurements
+  # Avoid petiole/cotyledon/rachis LDMC (TraitIDs 1010/3055/3081) which measure
+  # different plant parts and are not comparable
   list(id = 47, name = "leaf_dry_matter_content", desc = "Leaf dry mass per leaf fresh mass (LDMC)"),
+
+  # SLA with petiole excluded (TraitID 3115) for consistency with literature
   list(id = 3115, name = "specific_leaf_area", desc = "Leaf area per leaf dry mass (SLA, petiole excluded)")
 )
 
-# Define file paths
+# ================================================================================
+# File Path Configuration
+# ================================================================================
+# Scan TRY data directory for all .txt files (TRY database exports)
+# TRY data is typically split across multiple text files due to size
 input_files <- sort(list.files(
   "/home/olier/ellenberg/data/TRY",
   pattern = "\\.txt$",
   full.names = TRUE
 ))
 
+# Output directory for intermediate RDS files (per-trait, per-file extracts)
 output_dir <- "/home/olier/ellenberg/artifacts/stage1_data_extraction"
 
-# Create output directory if it doesn't exist
+# Create output directory if it doesn't exist (idempotent)
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = TRUE)
 }
 
-# Process each file
+# ================================================================================
+# MAIN PROCESSING LOOP: Iterate Over TRY Input Files
+# ================================================================================
+# TRY database is split across multiple .txt files
+# Each file contains a subset of species and measurements
 for (input_file in input_files) {
   if (!file.exists(input_file)) {
     message("File not found, skipping: ", input_file)
     next
   }
-  
+
   message("\n===================================")
   message("Processing file: ", basename(input_file))
   message("===================================")
-  
-  # 1. Import the TRY data file
-  # The rtry_import function is designed for TRY text files, using tab as a separator
-  # and Latin-1 encoding by default.
+
+  # ==============================================================================
+  # STEP 1: Import TRY Text File (Latin-1 Encoding)
+  # ==============================================================================
+  # rtry_import handles TRY-specific format:
+  # - Tab-delimited text
+  # - Latin-1 encoding (for accented botanical names)
+  # - TRY-specific column structure (ObservationID, TraitID, etc.)
   message("Importing data from: ", input_file)
   try_data <- rtry_import(input_file)
-  
-  # Process each trait
+
+  # ==============================================================================
+  # STEP 2: Extract Each Target Trait from Current File
+  # ==============================================================================
   for (trait in target_traits) {
     message("\n-----------------------------------")
     message("Extracting Trait ", trait$id, " (", trait$desc, ")...")
-    
-    # 2. Select rows with the specific TraitID
+
+    # Filter to rows matching the target TraitID
+    # TRY data contains hundreds of traits; we filter to our 7 target traits
     trait_data <- dplyr::filter(try_data, TraitID == trait$id)
-    
+
     if (nrow(trait_data) > 0) {
-      # 3. Select relevant columns
-      # We are interested in the species name and the trait value.
+      # ============================================================================
+      # STEP 3: Select Relevant Columns for Downstream Analysis
+      # ============================================================================
+      # Keep only columns needed for trait analysis:
+      # - AccSpeciesID/AccSpeciesName: Standardized species identifiers
+      # - OrigValueStr: Original trait value as recorded (categorical traits)
+      # - StdValue: Standardized numeric value (continuous traits)
+      # - ValueKindName: Measurement type (mean, single, etc.)
+      # - UnitName: Standardized units (mm, mg/g, etc.)
       trait_data_selected <- rtry_select_col(trait_data,
                                             AccSpeciesID,
                                             AccSpeciesName,
@@ -81,22 +141,29 @@ for (input_file in input_files) {
                                             ValueKindName,
                                             OrigUnitStr,
                                             UnitName)
-      
-      # 4. Create output file name based on input file
+
+      # ============================================================================
+      # STEP 4: Save Per-File Per-Trait Extract to RDS
+      # ============================================================================
+      # Create unique filename: trait_<ID>_<name>_<source_file>.rds
+      # Example: trait_47_leaf_dry_matter_content_try_data_1.rds
       file_suffix <- gsub(".txt", "", basename(input_file))
-      output_file <- file.path(output_dir, 
+      output_file <- file.path(output_dir,
                               paste0("trait_", trait$id, "_", trait$name, "_", file_suffix, ".rds"))
-      
-      # 5. Save the resulting data frame to an .rds file
+
+      # RDS format preserves R data types (factors, NAs) better than CSV
       message("Saving extracted data to: ", output_file)
       saveRDS(trait_data_selected, file = output_file)
-      
-      # Report summary
+
+      # ============================================================================
+      # STEP 5: Report Extraction Statistics
+      # ============================================================================
       n_records <- nrow(trait_data_selected)
       n_species <- length(unique(trait_data_selected$AccSpeciesName))
       message(paste("Extracted", n_records, "records for", n_species, "unique species"))
-      
-      # Show sample values for categorical traits
+
+      # For categorical traits (mycorrhiza, phenology, photosynthesis),
+      # show sample values to verify extraction quality
       if (trait$id %in% c(7, 37, 22)) {
         unique_vals <- unique(trait_data_selected$OrigValueStr[!is.na(trait_data_selected$OrigValueStr)])
         message("Sample values: ", paste(head(unique_vals, 10), collapse = ", "))
@@ -105,37 +172,57 @@ for (input_file in input_files) {
       message("No data found for Trait ", trait$id, " in this file")
     }
   }
-  
-  # Clean up memory after processing each file
+
+  # ==============================================================================
+  # STEP 6: Memory Cleanup After Each File
+  # ==============================================================================
+  # TRY files can be large (>1GB in memory)
+  # Explicitly remove and garbage collect after each file
   rm(try_data)
   gc(verbose = FALSE)
 }
 
-# Combine results from multiple files for each trait
+# ================================================================================
+# AGGREGATION PHASE: Combine Per-File Extracts for Each Trait
+# ================================================================================
 message("\n===================================")
 message("Combining results from multiple files...")
 message("===================================")
 
 for (trait in target_traits) {
-  # Find all files for this trait
+  # ==============================================================================
+  # STEP 1: Find All RDS Files for Current Trait
+  # ==============================================================================
+  # Pattern matches: trait_<ID>_<name>_<any_source_file>.rds
+  # Example: trait_47_leaf_dry_matter_content_*.rds
   pattern <- paste0("trait_", trait$id, "_", trait$name, "_.*\\.rds$")
   trait_files <- list.files(output_dir, pattern = pattern, full.names = TRUE)
-  
+
   if (length(trait_files) > 0) {
     message("\nCombining Trait ", trait$id, " (", trait$desc, ")...")
-    
-    # Read and combine all files
+
+    # ============================================================================
+    # STEP 2: Load and Row-Bind All Per-File Extracts
+    # ============================================================================
+    # Combine extracts from multiple TRY source files
+    # Example: trait_47 may appear in try_data_1.txt AND try_data_2.txt
     combined_data <- NULL
     for (file in trait_files) {
       data <- readRDS(file)
       if (is.null(combined_data)) {
         combined_data <- data
       } else {
+        # Note: Using rbind in loop (not optimal for performance)
+        # For large datasets, consider data.table::rbindlist upfront
         combined_data <- rbind(combined_data, data)
       }
     }
-    
-    # Remove duplicates
+
+    # ============================================================================
+    # STEP 3: Remove Duplicate Records
+    # ============================================================================
+    # TRY data may have overlapping records across source files
+    # unique() removes exact row duplicates
     combined_data <- unique(combined_data)
     
     # Save combined file (full name) and canonical simplified name when required
