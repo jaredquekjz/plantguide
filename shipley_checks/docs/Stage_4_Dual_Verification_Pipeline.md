@@ -25,25 +25,35 @@ shipley_checks/
 ├── src/Stage_4/
 │   ├── python_sql_verification/          # Python DuckDB extraction (verified)
 │   │   ├── 01_extract_organism_profiles_VERIFIED.py
-│   │   ├── 01_extract_fungal_guilds_hybrid_VERIFIED.py  (COUNT DISTINCT fix)
+│   │   ├── 01_extract_fungal_guilds_hybrid_VERIFIED.py
 │   │   ├── 02_build_multitrophic_network_VERIFIED.py
 │   │   └── 02b_extract_insect_fungal_parasites_VERIFIED.py
 │   │
-│   ├── EXPERIMENT_extract_fungal_guilds_pure_r.R     # Pure R (arrow+dplyr)
-│   └── EXPERIMENT_validate_r_vs_python.R             # Checksum validator
+│   ├── python_baseline/                  # Python calibration (reference)
+│   │   ├── calibrate_2stage_koppen.py
+│   │   ├── phylo_pd_calculator.py
+│   │   └── guild_scorer_v3.py
+│   │
+│   ├── faiths_pd_benchmark/              # Faith's PD validation
+│   │   ├── generate_random_guilds.py
+│   │   ├── benchmark_picante_1000_guilds.R
+│   │   ├── benchmark_compacttree_1000_guilds.cpp
+│   │   └── compare_faiths_pd_results.py
+│   │
+│   ├── extract_fungal_guilds_pure_r.R    # Pure R extraction (arrow+dplyr)
+│   ├── extract_organism_profiles_pure_r.R
+│   ├── faiths_pd_calculator.R            # R wrapper for C++ Faith's PD
+│   └── validate_r_vs_python.R            # Checksum validator
 │
-├── stage4/                               # Python outputs
-│   ├── plant_fungal_guilds_hybrid_11711_VERIFIED.parquet
-│   ├── plant_organism_profiles_11711_VERIFIED.parquet
-│   ├── multitrophic_network_11711_VERIFIED.parquet
-│   └── insect_fungal_parasites_11711_VERIFIED.parquet
+├── stage4/                               # Outputs
+│   ├── plant_fungal_guilds_hybrid_11711.parquet
+│   ├── plant_organism_profiles_11711.parquet
+│   └── normalization_params_{2,7}plant.json (calibration outputs)
 │
 └── validation/                           # Checksum validation artifacts
     ├── fungal_guilds_python_baseline.csv
-    ├── fungal_guilds_python_baseline.checksums.txt
     ├── fungal_guilds_pure_r.csv
-    ├── fungal_guilds_pure_r.checksums.txt
-    └── differing_rows_analysis.csv
+    └── *.checksums.txt
 ```
 
 ## Verification Workflow
@@ -654,83 +664,51 @@ Köppen tiers enable:
 
 ## Next Steps: Guild Scoring Pipeline
 
-### Phase 2: Calibration (Not Yet Implemented)
+### Phase 2: Calibration
 
-**Goal**: Port tier-stratified Monte Carlo calibration to R
+**Status**: ✅ **C++ Faith's PD validated** (100% accuracy, 708× speedup)
+**Status**: ✅ **Python baseline scripts ready** (`python_baseline/`)
+**Status**: ⏳ **R implementation pending**
 
-#### Challenge: Faith's Phylogenetic Diversity (M1)
+**Goal**: Port tier-stratified Monte Carlo calibration to R for dual verification
 
-**Current**: Python wrapper → C++ CompactTree binary
-**R Solution**: Keep C++ binary, call via `system()` wrapper
+#### Faith's Phylogenetic Diversity - Validation Complete
 
-**Decision Rationale**: Pure R phylogenetic calculations (picante package) are ~1000× slower than C++
+**C++ CompactTree vs R picante**: ✅ **100% validated** (2025-11-10)
+- 1000 random guilds tested (sizes 2-40)
+- Pearson correlation: 1.0000000000 (perfect)
+- All guilds within 0.01% tolerance
+- **708× performance improvement** (11.668 ms → 0.016433 ms per guild)
 
-#### Scripts to Create
+**Validation scripts**: `src/Stage_4/faiths_pd_benchmark/`
 
-**2.1: R Wrapper for Faith's PD**
-```r
-# shipley_checks/src/Stage_4/calculate_faiths_pd_wrapper.R
-calculate_faiths_pd <- function(wfo_ids, tree_path, mapping_path, cpp_binary_path) {
-  # 1. Write WFO IDs to temp file
-  # 2. Call C++ binary via system()
-  # 3. Parse output (Faith's PD value)
-  # 4. Return numeric value
-}
+**R Wrapper**: ✅ **Ready** - `faiths_pd_calculator.R` calls C++ binary via `system()`
+
+**Decision Rationale**: C++ CompactTree is production-ready with perfect accuracy and 708× speedup vs R picante
+
+#### Python Baseline (Reference Implementation)
+
+**Location**: `src/Stage_4/python_baseline/`
+
+**Scripts**:
+- `calibrate_2stage_koppen.py` - Main calibration (adapted for shipley_checks data)
+- `phylo_pd_calculator.py` - TreeSwift Faith's PD wrapper (slower than C++)
+- `guild_scorer_v3.py` - 7-metric scoring framework (reference)
+
+**Usage**:
+```bash
+# Quick test (100 guilds/tier)
+conda run -n AI python shipley_checks/src/Stage_4/python_baseline/calibrate_2stage_koppen.py \
+  --stage 1 --n-guilds 100
+
+# Full production (20K guilds/tier = 120K total, ~2-4 hours)
+nohup /home/olier/miniconda3/envs/AI/bin/python \
+  shipley_checks/src/Stage_4/python_baseline/calibrate_2stage_koppen.py \
+  --stage both --n-guilds 20000 \
+  > shipley_checks/logs/calibrate_koppen_$(date +%Y%m%d).log 2>&1 &
 ```
 
-**Dependencies**:
-- C++ binary: `src/Stage_4/calculate_faiths_pd` (already compiled)
-- Tree: `data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk`
-- Mapping: `data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11676.csv`
-
-**2.2: Generate Random Guilds (Per Tier)**
-```r
-# shipley_checks/src/Stage_4/generate_random_guilds_tier.R
-# For each Köppen tier (6 tiers):
-# - Generate 20,000 guilds of size N (2 or 7)
-# - Only sample plants that occur in that tier
-# Total: 6 tiers × 20,000 guilds = 120,000 guilds
-```
-
-**Output**: `shipley_checks/stage4/random_guilds_{2,7}plant_tier_stratified.parquet`
-
-**2.3: Calculate Raw Scores**
-```r
-# shipley_checks/src/Stage_4/calculate_raw_scores.R
-# For all 120,000 guilds, compute raw scores for 7 metrics:
-# M1: Faith's PD (pathogen/pest independence)
-# M2: CSR conflict score (growth strategy compatibility)
-# M3: Insect pest biocontrol
-# M4: Fungal disease control
-# M5: Beneficial fungi networks
-# M6: Vertical stratification
-# M7: Shared pollinator support
-```
-
-**Output**: `shipley_checks/stage4/guild_raw_scores_{2,7}plant_tier_stratified.parquet`
-
-**2.4: Calculate Percentile Calibration**
-```r
-# shipley_checks/src/Stage_4/calibrate_percentiles.R
-# For each tier and each metric:
-# - Calculate percentile distributions (1, 5, 10, ..., 95, 99)
-# - Store calibration parameters per tier
-```
-
-**Output**: `shipley_checks/stage4/normalization_params_{2,7}plant_tier_stratified.json`
-
-**Structure**:
-```json
-{
-  "tier_1_tropical": {
-    "m1": {"p01": 0.001, "p05": 0.002, ..., "p99": 0.456},
-    "m2": {"p01": 0.123, "p05": 0.234, ..., "p99": 0.789},
-    ...
-  },
-  "tier_2_mediterranean": { ... },
-  ...
-}
-```
+**Output Format**: 6 Köppen tiers × 7 metrics × 13 percentiles (p01-p99)
 
 ---
 
