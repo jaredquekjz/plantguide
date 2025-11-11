@@ -37,6 +37,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
     calibration_type = NULL,
     climate_tier = NULL,
     calibration_params = NULL,
+    csr_percentiles = NULL,
     phylo_calculator = NULL,
     plants_df = NULL,
     organisms_df = NULL,
@@ -59,6 +60,17 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         stop(glue("Calibration file not found: {cal_file}"))
       }
       self$calibration_params <- fromJSON(cal_file)
+
+      # Load CSR percentile calibration (global, not tier-specific)
+      # Used for M2 conflict detection with consistent thresholds
+      csr_cal_file <- "shipley_checks/stage4/csr_percentile_calibration_global.json"
+      if (file.exists(csr_cal_file)) {
+        self$csr_percentiles <- fromJSON(csr_cal_file)
+        cat("Loaded CSR percentile calibration (global)\n")
+      } else {
+        self$csr_percentiles <- NULL
+        cat("CSR percentile calibration not found - using fixed thresholds for M2\n")
+      }
 
       # Initialize Faith's PD calculator
       cat("Initializing Faith's PD calculator...\n")
@@ -227,24 +239,48 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
       # Calculate flags
       flags <- self$calculate_flags(guild_plants)
 
-      # Overall score (simple average for now)
-      overall_score <- mean(c(
-        m1_result$norm, m2_result$norm, m3_result$norm,
-        m4_result$norm, m5_result$norm, m6_result$norm, m7_result$norm
-      ))
+      # Build metrics dict (7 metrics, all HIGH = GOOD)
+      # M1 and M2 are already inverted by percentile_normalize(..., invert = TRUE/FALSE)
+      # But for display, we need to apply the final transformation
+      # Python line 406: 'pest_pathogen_indep': 100 - percentiles['m1']
+      # Python line 407: 'growth_compatibility': 100 - percentiles['n4']
+      # M1 is inverted during normalization (invert = TRUE), so we flip back: 100 - (100 - x) = x
+      # Actually wait, let me check the Python logic again...
+      # Python: percentiles['m1'] is already inverted (high PD = low risk = high percentile)
+      # Then: pest_pathogen_indep = 100 - percentiles['m1']... that's double inversion!
+      # No wait, that's wrong. Let me re-read the Python code.
+      #
+      # Actually the Python is:
+      # Line 400: percentiles[metric] = self._raw_to_percentile(raw_value, metric)
+      # Line 406: 'pest_pathogen_indep': 100 - percentiles['m1']
+      #
+      # And _raw_to_percentile for m1 returns percentile WITHOUT inversion
+      # So if pest_risk_raw is LOW (good), it maps to LOW percentile
+      # Then 100 - LOW = HIGH score (correct!)
+      #
+      # For M2:
+      # conflict_density is HIGH (bad), maps to HIGH percentile
+      # Then 100 - HIGH = LOW score (correct!)
+      #
+      # So in R, I'm using invert = TRUE for M1 which is WRONG
+      # I should use invert = FALSE for both, then do 100 - norm for display
+      metrics <- list(
+        m1 = 100 - m1_result$norm,  # Matches Python line 406
+        m2 = 100 - m2_result$norm,  # Matches Python line 407
+        m3 = m3_result$norm,        # Matches Python line 408
+        m4 = m4_result$norm,        # Matches Python line 409
+        m5 = m5_result$norm,        # Matches Python line 410
+        m6 = m6_result$norm,        # Matches Python line 411
+        m7 = m7_result$norm         # Matches Python line 412
+      )
+
+      # Overall score (simple average) - matches Python line 416
+      overall_score <- mean(unlist(metrics))
 
       # Return result
       list(
         overall_score = overall_score,
-        metrics = list(
-          m1 = m1_result$norm,
-          m2 = m2_result$norm,
-          m3 = m3_result$norm,
-          m4 = m4_result$norm,
-          m5 = m5_result$norm,
-          m6 = m6_result$norm,
-          m7 = m7_result$norm
-        ),
+        metrics = metrics,
         raw_scores = list(
           m1 = m1_result$raw,
           m2 = m2_result$raw,
@@ -288,8 +324,11 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
       k <- 0.001
       pest_risk_raw <- exp(-k * faiths_pd)
 
-      # Percentile normalization (inverted - low risk = high score)
-      m1_norm <- self$percentile_normalize(pest_risk_raw, 'm1', invert = TRUE)
+      # Percentile normalization (matches Python line 1626)
+      # LOW pest_risk_raw (high diversity, good) -> LOW percentile
+      # HIGH pest_risk_raw (low diversity, bad) -> HIGH percentile
+      # Then score_guild does: 100 - percentile to get display score
+      m1_norm <- self$percentile_normalize(pest_risk_raw, 'm1', invert = FALSE)
 
       list(
         raw = pest_risk_raw,
@@ -304,64 +343,179 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
     #' M2: Growth Compatibility (CSR conflicts inverted)
     calculate_m2 = function(guild_plants) {
-      HIGH_C <- 60
-      HIGH_S <- 60
-      HIGH_R <- 50
       n_plants <- nrow(guild_plants)
       conflicts <- 0
+      conflict_details <- list()
 
-      # C-C conflicts
-      high_c <- guild_plants %>% filter(CSR_C > HIGH_C)
-      if (nrow(high_c) >= 2) {
-        conflicts <- conflicts + choose(nrow(high_c), 2)
-      }
+      # Use percentile-based classification (CONSISTENT across C, S, R)
+      PERCENTILE_THRESHOLD <- 75  # Top quartile
 
-      # C-S conflicts
-      high_s <- guild_plants %>% filter(CSR_S > HIGH_S)
-      if (nrow(high_c) > 0 && nrow(high_s) > 0) {
-        for (i in seq_len(nrow(high_c))) {
-          for (j in seq_len(nrow(high_s))) {
-            if (high_c$wfo_taxon_id[i] != high_s$wfo_taxon_id[j]) {
-              s_light <- ifelse(is.na(high_s$light_pref[j]), 5.0, high_s$light_pref[j])
-              conflict <- if (s_light < 3.2) 0.0 else if (s_light > 7.47) 0.9 else 0.6
-              conflicts <- conflicts + conflict
+      # Convert CSR scores to percentiles (matches Python lines 1093-1101)
+      guild_plants_copy <- guild_plants
+      guild_plants_copy$C_percentile <- sapply(guild_plants_copy$CSR_C, function(x) {
+        self$csr_to_percentile(x, 'c')
+      })
+      guild_plants_copy$S_percentile <- sapply(guild_plants_copy$CSR_S, function(x) {
+        self$csr_to_percentile(x, 's')
+      })
+      guild_plants_copy$R_percentile <- sapply(guild_plants_copy$CSR_R, function(x) {
+        self$csr_to_percentile(x, 'r')
+      })
+
+      # CONFLICT 1: High-C + High-C (matches Python lines 1104-1141)
+      high_c_plants <- guild_plants_copy %>% filter(C_percentile > PERCENTILE_THRESHOLD)
+
+      if (nrow(high_c_plants) >= 2) {
+        for (i in 1:(nrow(high_c_plants) - 1)) {
+          for (j in (i + 1):nrow(high_c_plants)) {
+            plant_a <- high_c_plants[i, ]
+            plant_b <- high_c_plants[j, ]
+
+            conflict <- 1.0  # Base
+
+            # MODULATION: Growth Form
+            form_a <- tolower(as.character(plant_a$try_growth_form))
+            form_b <- tolower(as.character(plant_b$try_growth_form))
+            form_a <- ifelse(is.na(plant_a$try_growth_form), '', form_a)
+            form_b <- ifelse(is.na(plant_b$try_growth_form), '', form_b)
+
+            if ((grepl('vine', form_a) || grepl('liana', form_a)) && grepl('tree', form_b)) {
+              conflict <- conflict * 0.2
+            } else if ((grepl('vine', form_b) || grepl('liana', form_b)) && grepl('tree', form_a)) {
+              conflict <- conflict * 0.2
+            } else if ((grepl('tree', form_a) && grepl('herb', form_b)) || (grepl('tree', form_b) && grepl('herb', form_a))) {
+              conflict <- conflict * 0.4
+            } else {
+              # MODULATION: Height
+              height_diff <- abs(plant_a$height_m - plant_b$height_m)
+              if (height_diff < 2.0) {
+                conflict <- conflict * 1.0
+              } else if (height_diff < 5.0) {
+                conflict <- conflict * 0.6
+              } else {
+                conflict <- conflict * 0.3
+              }
+            }
+
+            conflicts <- conflicts + conflict
+
+            if (conflict > 0.2) {
+              conflict_details[[length(conflict_details) + 1]] <- list(
+                type = 'C-C',
+                severity = conflict,
+                plants = c(plant_a$wfo_scientific_name, plant_b$wfo_scientific_name)
+              )
             }
           }
         }
       }
 
-      # C-R conflicts
-      high_r <- guild_plants %>% filter(CSR_R > HIGH_R)
-      if (nrow(high_c) > 0 && nrow(high_r) > 0) {
-        for (i in seq_len(nrow(high_c))) {
-          for (j in seq_len(nrow(high_r))) {
-            if (high_c$wfo_taxon_id[i] != high_r$wfo_taxon_id[j]) {
-              conflicts <- conflicts + 0.8
+      # CONFLICT 2: High-C + High-S (matches Python lines 1143-1177)
+      high_s_plants <- guild_plants_copy %>% filter(S_percentile > PERCENTILE_THRESHOLD)
+
+      for (idx_c in which(guild_plants_copy$C_percentile > PERCENTILE_THRESHOLD)) {
+        plant_c <- guild_plants_copy[idx_c, ]
+        for (idx_s in which(guild_plants_copy$S_percentile > PERCENTILE_THRESHOLD)) {
+          if (idx_c != idx_s) {
+            plant_s <- guild_plants_copy[idx_s, ]
+
+            conflict <- 0.6  # Base
+
+            # MODULATION: Light Preference (CRITICAL!)
+            s_light <- plant_s$light_pref
+
+            if (is.na(s_light)) {
+              s_light <- 5.0  # Default flexible
+            }
+
+            if (s_light < 3.2) {
+              # S is SHADE-ADAPTED (L=1-3: deep shade to moderate shade)
+              # Wants to be under C!
+              conflict <- 0.0
+            } else if (s_light > 7.47) {
+              # S is SUN-LOVING (L=8-9: full-light plant)
+              # C will shade it out!
+              conflict <- 0.9
+            } else {
+              # S is FLEXIBLE (L=4-7: semi-shade to half-light)
+              # MODULATION: Height
+              height_diff <- abs(plant_c$height_m - plant_s$height_m)
+              if (height_diff > 8.0) {
+                conflict <- conflict * 0.3
+              }
+            }
+
+            conflicts <- conflicts + conflict
+
+            if (conflict > 0.2) {
+              conflict_details[[length(conflict_details) + 1]] <- list(
+                type = 'C-S',
+                severity = conflict,
+                plants = c(plant_c$wfo_scientific_name, plant_s$wfo_scientific_name)
+              )
             }
           }
         }
       }
 
-      # R-R conflicts
-      if (nrow(high_r) >= 2) {
-        conflicts <- conflicts + choose(nrow(high_r), 2) * 0.3
+      # CONFLICT 3: High-C + High-R (matches Python lines 1179-1199)
+      high_r_plants <- guild_plants_copy %>% filter(R_percentile > PERCENTILE_THRESHOLD)
+
+      for (idx_c in which(guild_plants_copy$C_percentile > PERCENTILE_THRESHOLD)) {
+        plant_c <- guild_plants_copy[idx_c, ]
+        for (idx_r in which(guild_plants_copy$R_percentile > PERCENTILE_THRESHOLD)) {
+          if (idx_c != idx_r) {
+            plant_r <- guild_plants_copy[idx_r, ]
+
+            conflict <- 0.8  # Base
+
+            # MODULATION: Height
+            height_diff <- abs(plant_c$height_m - plant_r$height_m)
+            if (height_diff > 5.0) {
+              conflict <- conflict * 0.3
+            }
+
+            conflicts <- conflicts + conflict
+
+            if (conflict > 0.2) {
+              conflict_details[[length(conflict_details) + 1]] <- list(
+                type = 'C-R',
+                severity = conflict,
+                plants = c(plant_c$wfo_scientific_name, plant_r$wfo_scientific_name)
+              )
+            }
+          }
+        }
       }
 
+      # CONFLICT 4: High-R + High-R (matches Python lines 1201-1206)
+      if (nrow(high_r_plants) >= 2) {
+        for (i in 1:(nrow(high_r_plants) - 1)) {
+          for (j in (i + 1):nrow(high_r_plants)) {
+            conflict <- 0.3  # Low - short-lived annuals
+            conflicts <- conflicts + conflict
+          }
+        }
+      }
+
+      # Normalize by number of possible pairs (conflict density)
+      # This makes scores comparable across guild sizes (2-7 plants)
       max_pairs <- if (n_plants > 1) n_plants * (n_plants - 1) else 1
       conflict_density <- conflicts / max_pairs
 
-      # Percentile normalize (inverted - low conflicts = high score)
-      m2_norm <- self$percentile_normalize(conflict_density, 'n4', invert = TRUE)
+      # Normalize using calibrated percentiles on density metric
+      m2_norm <- self$percentile_normalize(conflict_density, 'n4', invert = FALSE)
 
       list(
         raw = conflict_density,
         norm = m2_norm,
         details = list(
-          n_conflicts = conflicts,
+          raw_conflicts = conflicts,
           conflict_density = conflict_density,
-          high_c = nrow(high_c),
-          high_s = nrow(high_s),
-          high_r = nrow(high_r)
+          conflicts = conflict_details,
+          high_c = nrow(high_c_plants),
+          high_s = nrow(high_s_plants),
+          high_r = nrow(high_r_plants)
         )
       )
     },
@@ -877,6 +1031,71 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
             percentile <- 100.0 - percentile
           }
 
+          return(percentile)
+        }
+      }
+
+      # Fallback (should not reach here)
+      return(50.0)
+    },
+
+    #' Convert raw CSR score to percentile using global calibration
+    #' Unlike guild metrics (tier-stratified), CSR uses GLOBAL percentiles
+    #' because conflicts are within-guild comparisons, not cross-guild
+    csr_to_percentile = function(raw_value, strategy) {
+      # Check if we have CSR percentile calibration data
+      if (is.null(self$csr_percentiles)) {
+        # Fallback to fixed threshold behavior (matches Python lines 251-257)
+        if (strategy == 'c') {
+          return(if (raw_value >= 60) 100 else 50)
+        } else if (strategy == 's') {
+          return(if (raw_value >= 60) 100 else 50)
+        } else {  # 'r'
+          return(if (raw_value >= 50) 100 else 50)
+        }
+      }
+
+      params <- self$csr_percentiles[[strategy]]
+      if (is.null(params)) {
+        warning(glue("No CSR calibration params for strategy: {strategy}"))
+        return(50.0)
+      }
+
+      # Percentiles for CSR (matches Python line 260)
+      percentiles <- c(1, 5, 10, 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 99)
+      values <- sapply(percentiles, function(p) {
+        val <- params[[paste0('p', p)]]
+        if (is.null(val)) return(NA)
+        return(as.numeric(val))
+      })
+
+      # Remove NAs
+      valid_idx <- !is.na(values)
+      percentiles <- percentiles[valid_idx]
+      values <- values[valid_idx]
+
+      if (length(values) == 0) {
+        return(50.0)
+      }
+
+      # Handle edge cases (matches Python lines 264-267)
+      if (raw_value <= values[1]) {
+        return(0.0)
+      }
+      if (raw_value >= values[length(values)]) {
+        return(100.0)
+      }
+
+      # Find bracketing percentiles and interpolate (matches Python lines 270-279)
+      for (i in 1:(length(values) - 1)) {
+        if (values[i] <= raw_value && raw_value <= values[i + 1]) {
+          # Linear interpolation
+          if (values[i + 1] - values[i] > 0) {
+            fraction <- (raw_value - values[i]) / (values[i + 1] - values[i])
+            percentile <- percentiles[i] + fraction * (percentiles[i + 1] - percentiles[i])
+          } else {
+            percentile <- percentiles[i]
+          }
           return(percentile)
         }
       }
