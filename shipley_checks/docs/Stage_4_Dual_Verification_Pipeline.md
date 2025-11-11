@@ -974,11 +974,59 @@ After achieving checksum parity for all 10 data extraction datasets, the next st
 
 | Guild | Python | R | Difference | Status |
 |-------|--------|---|------------|--------|
-| Forest Garden | 90.5 | 90.5 | 0.0 | ✅ PERFECT |
-| Competitive Clash | 55.4 | 55.2 | 0.3 | ✅ PERFECT |
-| Stress-Tolerant | 45.4 | 45.4 | 0.0 | ✅ PERFECT |
+| Forest Garden | 90.467737 | 90.467710 | 0.000027 | ✅ PERFECT |
+| Competitive Clash | 55.441622 | 55.441621 | 0.000001 | ✅ PERFECT |
+| Stress-Tolerant | 45.442368 | 45.442341 | 0.000027 | ✅ PERFECT |
 
-**Tolerance**: ±0.3 points on 0-100 scale (< 0.3%)
+**Status**: ✅ **100% PARITY ACHIEVED**
+**Maximum Difference:** 0.000027 points (0.00003%)
+**Threshold:** < 0.0001 (0.01%)
+**Date:** 2025-11-11
+**Commit:** 3cd0d0d
+
+**Test Scripts:**
+- Python: `test_parity_3guilds.py`
+- R: Command-line test (see reproduction commands below)
+
+**Reproduction Commands:**
+
+Python Test:
+```bash
+/home/olier/miniconda3/envs/AI/bin/python test_parity_3guilds.py
+```
+
+R Test:
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" /usr/bin/Rscript -e "
+suppressMessages({library(R6); library(jsonlite); library(arrow); library(dplyr)})
+source('shipley_checks/src/Stage_4/guild_scorer_v3_shipley.R')
+guilds <- list(
+  c('wfo-0000832453', 'wfo-0000649136', 'wfo-0000642673', 'wfo-0000984977', 'wfo-0000241769', 'wfo-0000092746', 'wfo-0000690499'),
+  c('wfo-0000757278', 'wfo-0000944034', 'wfo-0000186915', 'wfo-0000421791', 'wfo-0000418518', 'wfo-0000841021', 'wfo-0000394258'),
+  c('wfo-0000721951', 'wfo-0000955348', 'wfo-0000901050', 'wfo-0000956222', 'wfo-0000777518', 'wfo-0000349035', 'wfo-0000209726')
+)
+scorer <- GuildScorerV3Shipley\$new('7plant', 'tier_3_humid_temperate')
+for (i in 1:3) {
+  result <- scorer\$score_guild(guilds[[i]])
+  cat(sprintf('Guild %d: %.6f\n', i, result\$overall_score))
+}
+"
+```
+
+**Critical Fix Applied (2025-11-11):**
+
+**Issue:** Python was using wrong calibration file
+- **Before:** `data/stage4/normalization_params_7plant.json` (Nov 5 version)
+- **After:** `shipley_checks/stage4/normalization_params_7plant.json` (Nov 10 version - matches R)
+
+**Fix in test script:**
+```python
+scorer = GuildScorerV3(
+    data_dir='shipley_checks/stage4',  # Changed from 'data/stage4'
+    calibration_type='7plant',
+    climate_tier='tier_3_humid_temperate'
+)
+```
 
 #### Metric-by-Metric Comparison
 
