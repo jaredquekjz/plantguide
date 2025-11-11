@@ -1,0 +1,244 @@
+//! METRIC 3: BENEFICIAL INSECT NETWORKS (BIOCONTROL)
+//!
+//! Scores natural pest control provided by predators and entomopathogenic
+//! fungi. Uses pairwise analysis to identify protective relationships
+//! between vulnerable and protective plants.
+//!
+//! R reference: shipley_checks/src/Stage_4/metrics/m3_insect_control.R
+
+use polars::prelude::*;
+use rustc_hash::{FxHashMap, FxHashSet};
+use anyhow::Result;
+use crate::utils::{Calibration, percentile_normalize};
+
+/// Result of M3 calculation
+#[derive(Debug)]
+pub struct M3Result {
+    /// Normalized biocontrol score (scaled by guild size)
+    pub raw: f64,
+    /// Percentile score (0-100, HIGH = GOOD)
+    pub norm: f64,
+    /// Total biocontrol before normalization
+    pub biocontrol_raw: f64,
+    /// Number of mechanisms detected
+    pub n_mechanisms: usize,
+}
+
+/// Calculate M3: Beneficial Insect Networks (Biocontrol)
+///
+/// R reference: m3_insect_control.R::calculate_m3_insect_control
+pub fn calculate_m3(
+    plant_ids: &[String],
+    organisms_df: &DataFrame,
+    fungi_df: &DataFrame,
+    herbivore_predators: &FxHashMap<String, Vec<String>>,
+    insect_parasites: &FxHashMap<String, Vec<String>>,
+    calibration: &Calibration,
+) -> Result<M3Result> {
+    let n_plants = plant_ids.len();
+    let mut biocontrol_raw = 0.0;
+    let mut n_mechanisms = 0;
+
+    // Extract guild organism and fungi data
+    let guild_organisms = filter_to_guild(organisms_df, plant_ids, "plant_wfo_id")?;
+    let guild_fungi = filter_to_guild(fungi_df, plant_ids, "plant_wfo_id")?;
+
+    if guild_organisms.height() == 0 {
+        return Ok(M3Result {
+            raw: 0.0,
+            norm: 0.0,
+            biocontrol_raw: 0.0,
+            n_mechanisms: 0,
+        });
+    }
+
+    // Extract organism data into structured format
+    let plant_organisms = extract_organism_data(&guild_organisms)?;
+    let plant_fungi = extract_fungi_data(&guild_fungi)?;
+
+    // Pairwise analysis: vulnerable plant A vs protective plant B
+    for (plant_a_id, herbivores_a) in &plant_organisms {
+        if herbivores_a.is_empty() {
+            continue; // Skip plants with no herbivores
+        }
+
+        for (plant_b_id, _) in &plant_organisms {
+            if plant_a_id == plant_b_id {
+                continue; // Skip self-comparison
+            }
+
+            // Get predators from plant B (aggregate all animal columns)
+            let predators_b = plant_organisms
+                .get(plant_b_id)
+                .map(|v| v.as_slice())
+                .unwrap_or(&[]);
+
+            // MECHANISM 1: Specific animal predators (weight 1.0)
+            for herbivore in herbivores_a {
+                if let Some(known_predators) = herbivore_predators.get(herbivore) {
+                    let matches = count_matches(predators_b, known_predators);
+                    if matches > 0 {
+                        biocontrol_raw += matches as f64 * 1.0;
+                        n_mechanisms += 1;
+                    }
+                }
+            }
+
+            // MECHANISMS 2 & 3: Entomopathogenic fungi
+            if let Some(entomo_b) = plant_fungi.get(plant_b_id) {
+                if !entomo_b.is_empty() {
+                    // MECHANISM 2: Specific entomopathogenic fungi (weight 1.0)
+                    for herbivore in herbivores_a {
+                        if let Some(known_parasites) = insect_parasites.get(herbivore) {
+                            let matches = count_matches(entomo_b, known_parasites);
+                            if matches > 0 {
+                                biocontrol_raw += matches as f64 * 1.0;
+                                n_mechanisms += 1;
+                            }
+                        }
+                    }
+
+                    // MECHANISM 3: General entomopathogenic fungi (weight 0.2)
+                    biocontrol_raw += entomo_b.len() as f64 * 0.2;
+                }
+            }
+        }
+    }
+
+    // Normalize by guild size
+    let max_pairs = n_plants * (n_plants - 1);
+    let biocontrol_normalized = if max_pairs > 0 {
+        biocontrol_raw / max_pairs as f64 * 20.0
+    } else {
+        0.0
+    };
+
+    // Percentile normalization
+    let m3_norm = percentile_normalize(biocontrol_normalized, "p1", calibration, false)?;
+
+    Ok(M3Result {
+        raw: biocontrol_normalized,
+        norm: m3_norm,
+        biocontrol_raw,
+        n_mechanisms,
+    })
+}
+
+/// Filter DataFrame to guild plants
+fn filter_to_guild(df: &DataFrame, plant_ids: &[String], col: &str) -> Result<DataFrame> {
+    let plant_id_set: FxHashSet<&String> = plant_ids.iter().collect();
+    let plant_col = df.column(col)?.str()?;
+    let mask: BooleanChunked = plant_col
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| plant_id_set.contains(&s.to_string())))
+        .collect();
+    Ok(df.filter(&mask)?)
+}
+
+/// Extract organism data: plant_id → list of all animals
+/// Aggregates herbivores, flower_visitors, and all predator types
+fn extract_organism_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> {
+    let mut map: FxHashMap<String, Vec<String>> = FxHashMap::default();
+    let plant_ids = df.column("plant_wfo_id")?.str()?;
+
+    // Columns to aggregate for each plant
+    let columns = [
+        "herbivores",
+        "flower_visitors",
+        "predators_hasHost",
+        "predators_interactsWith",
+        "predators_adjacentTo",
+    ];
+
+    for idx in 0..df.height() {
+        if let Some(plant_id) = plant_ids.get(idx) {
+            let mut organisms = Vec::new();
+
+            for col_name in &columns {
+                if let Ok(col) = df.column(col_name) {
+                    if let Ok(str_col) = col.str() {
+                        if let Some(value) = str_col.get(idx) {
+                            for org in value.split('|').filter(|s| !s.is_empty()) {
+                                organisms.push(org.to_string());
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Deduplicate
+            organisms.sort_unstable();
+            organisms.dedup();
+
+            map.insert(plant_id.to_string(), organisms);
+        }
+    }
+
+    Ok(map)
+}
+
+/// Extract fungi data: plant_id → entomopathogenic fungi list
+fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> {
+    let mut map: FxHashMap<String, Vec<String>> = FxHashMap::default();
+
+    if df.height() == 0 {
+        return Ok(map);
+    }
+
+    let plant_ids = df.column("plant_wfo_id")?.str()?;
+
+    if let Ok(entomo_col) = df.column("entomopathogenic_fungi") {
+        if let Ok(str_col) = entomo_col.str() {
+            for idx in 0..df.height() {
+                if let (Some(plant_id), Some(fungi_str)) = (plant_ids.get(idx), str_col.get(idx)) {
+                    let fungi: Vec<String> = fungi_str
+                        .split('|')
+                        .filter(|s| !s.is_empty())
+                        .map(|s| s.to_string())
+                        .collect();
+
+                    if !fungi.is_empty() {
+                        map.insert(plant_id.to_string(), fungi);
+                    }
+                }
+            }
+        }
+    }
+
+    Ok(map)
+}
+
+/// Count how many elements from list_a are in list_b
+fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+    let set_b: FxHashSet<&String> = list_b.iter().collect();
+    list_a.iter().filter(|item| set_b.contains(item)).count()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_count_matches() {
+        let list_a = vec!["pred1".to_string(), "pred2".to_string(), "pred3".to_string()];
+        let list_b = vec!["pred2".to_string(), "pred4".to_string()];
+
+        assert_eq!(count_matches(&list_a, &list_b), 1); // Only pred2 matches
+    }
+
+    #[test]
+    fn test_count_matches_multiple() {
+        let list_a = vec!["pred1".to_string(), "pred2".to_string()];
+        let list_b = vec!["pred1".to_string(), "pred2".to_string(), "pred3".to_string()];
+
+        assert_eq!(count_matches(&list_a, &list_b), 2); // Both match
+    }
+
+    #[test]
+    fn test_count_matches_none() {
+        let list_a = vec!["pred1".to_string()];
+        let list_b = vec!["pred2".to_string()];
+
+        assert_eq!(count_matches(&list_a, &list_b), 0); // No matches
+    }
+}
