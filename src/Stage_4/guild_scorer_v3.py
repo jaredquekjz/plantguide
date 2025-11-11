@@ -60,18 +60,20 @@ class GuildScorerV3:
         self.calibration_type = calibration_type
         self.climate_tier = climate_tier
 
-        # Main dataset with Köppen tiers
-        self.plants_path = Path('model_data/outputs/perm2_production/perm2_11680_with_koppen_tiers_20251103.parquet')
+        # Main dataset with Köppen tiers (11,711 plant canonical dataset)
+        self.plants_path = Path('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet')
 
-        # Stage 4 data
-        self.organisms_path = self.data_dir / 'plant_organism_profiles.parquet'
-        self.fungi_path = self.data_dir / 'plant_fungal_guilds_hybrid.parquet'
+        # Stage 4 data - USE PARITY-CHECKED CSV FILES (identical to R pipeline)
+        # These CSVs achieved MD5 checksum parity with R implementation
+        verified_csv_dir = Path('shipley_checks/validation')
+        self.organisms_path = verified_csv_dir / 'organism_profiles_python_VERIFIED.csv'
+        self.fungi_path = verified_csv_dir / 'fungal_guilds_python_VERIFIED.csv'
         self.nonfungal_pathogens_path = self.data_dir / 'plant_nonfungal_pathogens.parquet'
 
-        # Relationship tables (for P1, P2)
-        self.herbivore_predators_path = self.data_dir / 'herbivore_predators.parquet'
-        self.insect_parasites_path = self.data_dir / 'insect_fungal_parasites.parquet'
-        self.pathogen_antagonists_path = self.data_dir / 'pathogen_antagonists.parquet'
+        # Relationship tables (for P1, P2) - use parity-checked CSV files
+        self.herbivore_predators_path = verified_csv_dir / 'herbivore_predators_python_VERIFIED.csv'
+        self.insect_parasites_path = verified_csv_dir / 'insect_fungal_parasites_python_VERIFIED.csv'
+        self.pathogen_antagonists_path = verified_csv_dir / 'pathogen_antagonists_python_VERIFIED.csv'
 
         # Load tier-stratified normalization parameters
         if calibration_type == '2plant':
@@ -620,22 +622,38 @@ class GuildScorerV3:
         if not self.organisms_path.exists():
             return None
 
+        # Load from CSV with pipe-separated list columns
         query = f"""
         SELECT
             plant_wfo_id,
             herbivores,
             flower_visitors,
-            pollinators
-        FROM read_parquet('{self.organisms_path}')
+            pollinators,
+            predators_hasHost,
+            predators_interactsWith,
+            predators_adjacentTo
+        FROM read_csv_auto('{self.organisms_path}')
         WHERE plant_wfo_id IN ({','.join([f"'{x}'" for x in plant_ids])})
         """
-        return self.con.execute(query).fetchdf()
+        df = self.con.execute(query).fetchdf()
+
+        # Convert pipe-separated strings back to lists
+        list_cols = ['herbivores', 'flower_visitors', 'pollinators',
+                     'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo']
+        for col in list_cols:
+            if col in df.columns:
+                df[col] = df[col].apply(
+                    lambda x: x.split('|') if isinstance(x, str) and x != '' else []
+                )
+
+        return df
 
     def _load_fungi_data(self, plant_ids):
         """Load fungal guild data."""
         if not self.fungi_path.exists():
             return None
 
+        # Load from CSV with pipe-separated list columns
         query = f"""
         SELECT
             plant_wfo_id,
@@ -647,10 +665,22 @@ class GuildScorerV3:
             saprotrophic_fungi,
             mycoparasite_fungi,
             entomopathogenic_fungi
-        FROM read_parquet('{self.fungi_path}')
+        FROM read_csv_auto('{self.fungi_path}')
         WHERE plant_wfo_id IN ({','.join([f"'{x}'" for x in plant_ids])})
         """
-        return self.con.execute(query).fetchdf()
+        df = self.con.execute(query).fetchdf()
+
+        # Convert pipe-separated strings back to lists
+        list_cols = ['pathogenic_fungi', 'pathogenic_fungi_host_specific',
+                     'amf_fungi', 'emf_fungi', 'endophytic_fungi', 'saprotrophic_fungi',
+                     'mycoparasite_fungi', 'entomopathogenic_fungi']
+        for col in list_cols:
+            if col in df.columns:
+                df[col] = df[col].apply(
+                    lambda x: x.split('|') if isinstance(x, str) and x != '' else []
+                )
+
+        return df
 
     def _load_nonfungal_pathogens_data(self, plant_ids):
         """Load non-fungal pathogen data (bacteria, viruses, oomycetes, nematodes)."""
@@ -1298,24 +1328,32 @@ class GuildScorerV3:
         if organisms_data is None or fungi_data is None or len(organisms_data) == 0:
             return {'norm': 0.0, 'mechanisms': []}
 
-        # Load relationship tables
+        # Load relationship tables from CSV
         herbivore_predators = {}
         if self.herbivore_predators_path.exists():
             pred_df = self.con.execute(f"""
                 SELECT herbivore, predators
-                FROM read_parquet('{self.herbivore_predators_path}')
+                FROM read_csv_auto('{self.herbivore_predators_path}')
             """).fetchdf()
             for _, row in pred_df.iterrows():
-                herbivore_predators[row['herbivore']] = set(row['predators']) if row['predators'] is not None else set()
+                # Convert pipe-separated string to set
+                if isinstance(row['predators'], str) and row['predators'] != '':
+                    herbivore_predators[row['herbivore']] = set(row['predators'].split('|'))
+                else:
+                    herbivore_predators[row['herbivore']] = set()
 
         insect_parasites = {}
         if self.insect_parasites_path.exists():
             para_df = self.con.execute(f"""
                 SELECT herbivore, entomopathogenic_fungi
-                FROM read_parquet('{self.insect_parasites_path}')
+                FROM read_csv_auto('{self.insect_parasites_path}')
             """).fetchdf()
             for _, row in para_df.iterrows():
-                insect_parasites[row['herbivore']] = set(row['entomopathogenic_fungi']) if row['entomopathogenic_fungi'] is not None else set()
+                # Convert pipe-separated string to set
+                if isinstance(row['entomopathogenic_fungi'], str) and row['entomopathogenic_fungi'] != '':
+                    insect_parasites[row['herbivore']] = set(row['entomopathogenic_fungi'].split('|'))
+                else:
+                    insect_parasites[row['herbivore']] = set()
 
         # Pairwise analysis
         for i, row_a in organisms_data.iterrows():
@@ -1419,17 +1457,21 @@ class GuildScorerV3:
         if fungi_data is None or len(fungi_data) == 0:
             return {'norm': 0.0, 'mechanisms': []}
 
-        # Load pathogen antagonist relationships (GloBI - mostly unusable)
-        # NOTE: pathogen_antagonists.parquet contains many non-fungal "pathogens"
+        # Load pathogen antagonist relationships from CSV (GloBI - mostly unusable)
+        # NOTE: pathogen_antagonists.csv contains many non-fungal "pathogens"
         # (insects, plants, bacteria). Kept for rare valid matches but expect ~zero hits.
         pathogen_antagonists = {}
         if self.pathogen_antagonists_path.exists():
             antag_df = self.con.execute(f"""
                 SELECT pathogen, antagonists
-                FROM read_parquet('{self.pathogen_antagonists_path}')
+                FROM read_csv_auto('{self.pathogen_antagonists_path}')
             """).fetchdf()
             for _, row in antag_df.iterrows():
-                pathogen_antagonists[row['pathogen']] = set(row['antagonists']) if row['antagonists'] is not None else set()
+                # Convert pipe-separated string to set
+                if isinstance(row['antagonists'], str) and row['antagonists'] != '':
+                    pathogen_antagonists[row['pathogen']] = set(row['antagonists'].split('|'))
+                else:
+                    pathogen_antagonists[row['pathogen']] = set()
 
         # Pairwise analysis
         for i, row_a in fungi_data.iterrows():
