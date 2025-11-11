@@ -53,8 +53,8 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
       self$calibration_type <- calibration_type
       self$climate_tier <- climate_tier
 
-      # Load calibration parameters
-      cal_file <- glue("shipley_checks/stage4/normalization_params_{calibration_type}_R.json")
+      # Load calibration parameters (use Python calibration for parity testing)
+      cal_file <- glue("shipley_checks/stage4/normalization_params_{calibration_type}.json")
       if (!file.exists(cal_file)) {
         stop(glue("Calibration file not found: {cal_file}"))
       }
@@ -667,7 +667,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
             # Only significant height differences (>2m = different canopy layers)
             if (!is.na(height_diff) && height_diff > 2.0) {
-              short_light <- short$light_l
+              short_light <- short$light_pref
 
               if (length(short_light) == 0 || is.na(short_light)) {
                 # Conservative: neutral/flexible (missing data)
