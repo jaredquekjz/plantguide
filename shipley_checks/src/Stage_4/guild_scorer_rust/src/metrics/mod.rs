@@ -2,6 +2,7 @@
 //!
 //! Each metric is implemented in its own module following the R architecture.
 
+pub mod m1_pest_pathogen_indep;
 pub mod m2_growth_compatibility;
 pub mod m3_insect_control;
 pub mod m4_disease_control;
@@ -10,6 +11,7 @@ pub mod m6_structural_diversity;
 pub mod m7_pollinator_support;
 
 // Re-export metric functions
+pub use m1_pest_pathogen_indep::{calculate_m1, PhyloPDCalculator, M1Result};
 pub use m2_growth_compatibility::{calculate_m2, M2Result};
 pub use m3_insect_control::{calculate_m3, M3Result};
 pub use m4_disease_control::{calculate_m4, M4Result};
