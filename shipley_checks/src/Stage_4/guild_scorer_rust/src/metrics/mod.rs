@@ -5,8 +5,10 @@
 pub mod m2_growth_compatibility;
 pub mod m3_insect_control;
 pub mod m4_disease_control;
+pub mod m5_beneficial_fungi;
 
 // Re-export metric functions
 pub use m2_growth_compatibility::{calculate_m2, M2Result};
 pub use m3_insect_control::{calculate_m3, M3Result};
 pub use m4_disease_control::{calculate_m4, M4Result};
+pub use m5_beneficial_fungi::{calculate_m5, M5Result};
