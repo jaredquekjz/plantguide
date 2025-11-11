@@ -13,10 +13,12 @@
 
 pub mod utils;
 pub mod data;
+pub mod metrics;
 
 // Re-export commonly used types
 pub use utils::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::GuildData;
+pub use metrics::*;
 
 #[cfg(test)]
 mod tests {
