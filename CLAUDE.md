@@ -103,6 +103,32 @@ nohup env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /home/olier/miniconda3/envs/AI/bin/Rscript script.R > log.txt 2>&1 &
 ```
 
+### Rust Environment
+**Rust compilation for guild scorer development**
+
+- **Default**: Use debug builds for faster iteration during development
+- **Release builds**: ONLY when explicitly instructed by user
+
+**Debug build (default)**:
+```bash
+cd shipley_checks/src/Stage_4/guild_scorer_rust
+cargo build
+cargo run --bin test_3_guilds_parallel
+```
+
+**Release build (only when requested)**:
+```bash
+cd shipley_checks/src/Stage_4/guild_scorer_rust
+cargo build --release
+cargo run --release --bin test_3_guilds_parallel
+```
+
+**Why debug by default:**
+- Faster compilation (5-10 seconds vs 2+ minutes)
+- Faster iteration for development
+- Sufficient for testing correctness and parity
+- Release builds only needed for final performance validation
+
 ## Data Loading and Processing
 
 ### MANDATORY: DuckDB for All Dataset Operations

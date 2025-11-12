@@ -16,12 +16,14 @@ pub mod utils;
 pub mod data;
 pub mod metrics;
 pub mod scorer;
+pub mod compact_tree;
 
 // Re-export commonly used types
 pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::GuildData;
 pub use metrics::*;
 pub use scorer::{GuildScorer, GuildScore};
+pub use compact_tree::CompactTree;
 
 #[cfg(test)]
 mod tests {
