@@ -108,6 +108,7 @@ impl GuildData {
                 col("S").alias("CSR_S"),
                 col("R").alias("CSR_R"),
                 col("EIVEres-L").alias("light_pref"),
+                col("EIVEres-R").alias("soil_reaction_eive"),
                 col("tier_1_tropical"),
                 col("tier_2_mediterranean"),
                 col("tier_3_humid_temperate"),
@@ -115,6 +116,7 @@ impl GuildData {
                 col("tier_5_boreal_polar"),
                 col("tier_6_arid"),
             ])
+            .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
             .collect()
             .with_context(|| "Failed to select plant columns")?;
 

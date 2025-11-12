@@ -1,45 +1,161 @@
 use crate::explanation::types::{Severity, WarningCard};
 use anyhow::Result;
 use polars::prelude::*;
+use serde::{Deserialize, Serialize};
 
-/// Check soil pH compatibility of guild
+/// EIVE R semantic binning from Dengler et al. 2023, Hill et al. 1999
+/// Source: src/Stage_3/generate_100_plants_evaluation.py EIVE_SCALES['R']
+const PH_BINS: [(f64, f64, &str); 6] = [
+    (0.0, 2.0, "Strongly Acidic (pH 3-4)"),
+    (2.0, 4.0, "Acidic (pH 4-5)"),
+    (4.0, 5.5, "Slightly Acidic (pH 5-6)"),
+    (5.5, 7.0, "Neutral (pH 6-7)"),
+    (7.0, 8.5, "Alkaline (pH 7-8)"),
+    (8.5, 10.0, "Strongly Alkaline (pH >8)"),
+];
+
+/// pH category for a plant
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PhCategory {
+    pub plant_name: String,
+    pub r_value: f64,
+    pub category: String,
+}
+
+/// pH compatibility warning with EIVE semantic binning
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PhCompatibilityWarning {
+    pub severity: Severity,
+    pub r_range: f64,
+    pub min_r: f64,
+    pub max_r: f64,
+    pub plant_categories: Vec<PhCategory>,
+    pub recommendation: String,
+}
+
+/// Get pH category from EIVE R value
+fn get_ph_category(r_value: f64) -> &'static str {
+    for (lower, upper, label) in PH_BINS.iter() {
+        if r_value >= *lower && r_value < *upper {
+            return label;
+        }
+    }
+    // Handle edge case: values >= 10.0 fall into last bin
+    PH_BINS.last().unwrap().2
+}
+
+/// Check soil pH compatibility using EIVE semantic binning
 ///
-/// Returns warning if pH preferences differ by >2 units (incompatible)
+/// Returns warning if pH preferences differ by >1 EIVE unit
 pub fn check_soil_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<WarningCard>> {
-    // Check if soil_reaction_eive column exists
-    if let Ok(col) = guild_plants.column("soil_reaction_eive") {
-        let ph_prefs: Vec<f64> = col
-            .f64()?
-            .into_iter()
-            .flatten()
+    let detailed = check_ph_compatibility(guild_plants)?;
+
+    if let Some(warning_data) = detailed {
+        // Convert to WarningCard format
+        let severity_icon = match warning_data.severity {
+            Severity::High => "🚨",
+            Severity::Medium => "⚠️",
+            Severity::Low => "⚡",
+            _ => "ℹ️",
+        };
+
+        let categories_list: Vec<String> = warning_data.plant_categories
+            .iter()
+            .map(|p| format!("{}: {}", p.plant_name, p.category))
             .collect();
 
-        if ph_prefs.is_empty() {
+        let detail = format!(
+            "EIVE R range: {:.1}-{:.1} (difference: {:.1} units)\n\nPlant pH preferences:\n{}",
+            warning_data.min_r,
+            warning_data.max_r,
+            warning_data.r_range,
+            categories_list.join("\n")
+        );
+
+        Ok(Some(WarningCard {
+            warning_type: "ph_incompatible".to_string(),
+            severity: warning_data.severity,
+            icon: severity_icon.to_string(),
+            message: "Soil pH incompatibility detected".to_string(),
+            detail,
+            advice: warning_data.recommendation,
+        }))
+    } else {
+        Ok(None)
+    }
+}
+
+/// Check pH compatibility and return detailed information
+pub fn check_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<PhCompatibilityWarning>> {
+    // Check if soil_reaction_eive column exists
+    if let Ok(r_col) = guild_plants.column("soil_reaction_eive") {
+        let r_values = r_col.f64()?;
+
+        // Get plant names
+        let names = if let Ok(name_col) = guild_plants.column("wfo_taxon_name") {
+            name_col.str()?
+        } else if let Ok(id_col) = guild_plants.column("wfo_taxon_id") {
+            id_col.str()?
+        } else {
+            return Ok(None);
+        };
+
+        // Build plant categories
+        let mut plant_categories = Vec::new();
+        for (name_opt, r_opt) in names.into_iter().zip(r_values.into_iter()) {
+            if let (Some(name), Some(r)) = (name_opt, r_opt) {
+                plant_categories.push(PhCategory {
+                    plant_name: name.to_string(),
+                    r_value: r,
+                    category: get_ph_category(r).to_string(),
+                });
+            }
+        }
+
+        if plant_categories.is_empty() {
             return Ok(None);
         }
 
-        let min_ph = ph_prefs.iter().copied().fold(f64::INFINITY, f64::min);
-        let max_ph = ph_prefs.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-        let ph_range = max_ph - min_ph;
+        // Calculate range
+        let min_r = plant_categories.iter().map(|p| p.r_value).fold(f64::INFINITY, f64::min);
+        let max_r = plant_categories.iter().map(|p| p.r_value).fold(f64::NEG_INFINITY, f64::max);
+        let r_range = max_r - min_r;
 
-        // pH range > 2 units = incompatible (e.g., acid-loving vs alkaline-preferring)
-        if ph_range > 2.0 {
-            Ok(Some(WarningCard {
-                warning_type: "ph_incompatible".to_string(),
-                severity: Severity::High,
-                icon: "🚨".to_string(),
-                message: "Incompatible soil pH preferences detected".to_string(),
-                detail: format!(
-                    "pH range: {:.1}-{:.1} (difference: {:.1} units)",
-                    min_ph, max_ph, ph_range
-                ),
-                advice: "Group acid-loving and alkaline-preferring plants separately".to_string(),
+        // Check if range > 1.0 EIVE unit
+        if r_range > 1.0 {
+            let severity = if r_range > 3.0 {
+                Severity::High
+            } else if r_range > 2.0 {
+                Severity::Medium
+            } else {
+                Severity::Low
+            };
+
+            let recommendation = match severity {
+                Severity::High => {
+                    "Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments.".to_string()
+                },
+                Severity::Medium => {
+                    "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.".to_string()
+                },
+                Severity::Low => {
+                    "Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.".to_string()
+                },
+                _ => "Monitor pH levels.".to_string(),
+            };
+
+            Ok(Some(PhCompatibilityWarning {
+                severity,
+                r_range,
+                min_r,
+                max_r,
+                plant_categories,
+                recommendation,
             }))
         } else {
             Ok(None)
         }
     } else {
-        // Column doesn't exist - no pH data available
         Ok(None)
     }
 }
@@ -50,10 +166,21 @@ mod tests {
     use polars::prelude::*;
 
     #[test]
-    fn test_incompatible_ph() {
+    fn test_get_ph_category() {
+        assert_eq!(get_ph_category(1.5), "Strongly Acidic (pH 3-4)");
+        assert_eq!(get_ph_category(3.0), "Acidic (pH 4-5)");
+        assert_eq!(get_ph_category(5.0), "Slightly Acidic (pH 5-6)");
+        assert_eq!(get_ph_category(6.0), "Neutral (pH 6-7)");
+        assert_eq!(get_ph_category(7.5), "Alkaline (pH 7-8)");
+        assert_eq!(get_ph_category(9.0), "Strongly Alkaline (pH >8)");
+    }
+
+    #[test]
+    fn test_incompatible_ph_high_severity() {
         let df = df! {
             "wfo_taxon_id" => &["plant1", "plant2", "plant3"],
-            "soil_reaction_eive" => &[4.5, 7.8, 5.2]  // Range: 3.3 > 2.0
+            "wfo_taxon_name" => &["Acidic Plant", "Alkaline Plant", "Neutral Plant"],
+            "soil_reaction_eive" => &[2.5, 7.8, 5.2]  // Range: 5.3 > 3.0
         }
         .unwrap();
 
@@ -63,14 +190,48 @@ mod tests {
         let w = warning.unwrap();
         assert_eq!(w.warning_type, "ph_incompatible");
         assert_eq!(w.severity as u8, Severity::High as u8);
-        assert!(w.detail.contains("4.5-7.8"));
+        assert!(w.detail.contains("2.5-7.8"));
+        assert!(w.detail.contains("Acidic (pH 4-5)"));
+        assert!(w.detail.contains("Alkaline (pH 7-8)"));
+    }
+
+    #[test]
+    fn test_incompatible_ph_medium_severity() {
+        let df = df! {
+            "wfo_taxon_id" => &["plant1", "plant2"],
+            "wfo_taxon_name" => &["Plant A", "Plant B"],
+            "soil_reaction_eive" => &[4.0, 6.5]  // Range: 2.5 (Medium)
+        }
+        .unwrap();
+
+        let warning = check_soil_ph_compatibility(&df).unwrap();
+        assert!(warning.is_some());
+
+        let w = warning.unwrap();
+        assert_eq!(w.severity as u8, Severity::Medium as u8);
+    }
+
+    #[test]
+    fn test_incompatible_ph_low_severity() {
+        let df = df! {
+            "wfo_taxon_id" => &["plant1", "plant2"],
+            "wfo_taxon_name" => &["Plant A", "Plant B"],
+            "soil_reaction_eive" => &[5.5, 7.0]  // Range: 1.5 (Low)
+        }
+        .unwrap();
+
+        let warning = check_soil_ph_compatibility(&df).unwrap();
+        assert!(warning.is_some());
+
+        let w = warning.unwrap();
+        assert_eq!(w.severity as u8, Severity::Low as u8);
     }
 
     #[test]
     fn test_compatible_ph() {
         let df = df! {
             "wfo_taxon_id" => &["plant1", "plant2", "plant3"],
-            "soil_reaction_eive" => &[6.0, 6.5, 7.5]  // Range: 1.5 < 2.0
+            "soil_reaction_eive" => &[6.0, 6.5, 6.8]  // Range: 0.8 < 1.0
         }
         .unwrap();
 
