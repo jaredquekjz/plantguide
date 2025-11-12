@@ -114,7 +114,8 @@ for (guild in guilds) {
 
   # Write output
   safe_name <- tolower(gsub(" ", "_", guild$name))
-  writeLines(markdown, sprintf("/tmp/r_explanation_%s.md", safe_name))
+  output_dir <- "shipley_checks/reports/explanations"
+  writeLines(markdown, sprintf("%s/r_explanation_%s.md", output_dir, safe_name))
 
   # Print results
   cat("\nScores:\n")
@@ -136,7 +137,7 @@ for (guild in guilds) {
   cat(sprintf("  Total:           %8.3f ms\n", total_time))
 
   cat(sprintf("\nOutput written:\n"))
-  cat(sprintf("  /tmp/r_explanation_%s.md\n", safe_name))
+  cat(sprintf("  %s/r_explanation_%s.md\n", output_dir, safe_name))
 
   all_times[[length(all_times) + 1]] <- total_time
 }

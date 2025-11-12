@@ -1,0 +1,114 @@
+{
+  "overall": {
+    "score": 55.441622065452215,
+    "stars": "★☆☆☆☆",
+    "label": "Poor",
+    "message": "Overall guild compatibility: 55.4/100"
+  },
+  "climate": {
+    "compatible": true,
+    "tier": "tier_3_humid_temperate",
+    "tier_display": "Tier 3 (Humid Temperate)",
+    "message": "All plants compatible with Tier 3 (Humid Temperate)"
+  },
+  "benefits": [
+    {
+      "benefit_type": "phylogenetic_diversity",
+      "metric_code": "M1",
+      "title": "High Phylogenetic Diversity",
+      "message": "Plants are distantly related (Faith's PD: 885.18)",
+      "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
+      "evidence": "Phylogenetic diversity score: 70.4/100"
+    },
+    {
+      "benefit_type": "insect_control",
+      "metric_code": "M3",
+      "title": "Natural Insect Pest Control",
+      "message": "Guild provides insect pest control via 0 biocontrol mechanisms",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
+      "evidence": "Biocontrol score: 100.0/100, covering 0 mechanisms"
+    },
+    {
+      "benefit_type": "disease_control",
+      "metric_code": "M4",
+      "title": "Natural Disease Suppression",
+      "message": "Guild provides disease suppression via 8 antagonistic fungal mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
+      "evidence": "Pathogen control score: 100.0/100, covering 8 mechanisms"
+    },
+    {
+      "benefit_type": "mycorrhizal_network",
+      "metric_code": "M5",
+      "title": "Beneficial Mycorrhizal Network",
+      "message": "279 shared mycorrhizal fungal species connect 4 plants",
+      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "evidence": "Network score: 97.1/100, coverage: 57.1%"
+    }
+  ],
+  "warnings": [
+    {
+      "warning_type": "csr_conflict",
+      "severity": "High",
+      "icon": "⚠️",
+      "message": "8.4 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 5 Competitive, 1 Stress-tolerant",
+      "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
+    }
+  ],
+  "risks": [],
+  "metrics_display": {
+    "universal": [
+      {
+        "code": "M1",
+        "name": "Pest & Pathogen Independence",
+        "score": 70.37997922274383,
+        "raw": 0.4126401547150537,
+        "interpretation": "Good"
+      },
+      {
+        "code": "M2",
+        "name": "Growth Compatibility",
+        "score": 1.9768976897690038,
+        "raw": 0.19904761904761903,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M3",
+        "name": "Insect Pest Control",
+        "score": 100.0,
+        "raw": 5.333333333333334,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M4",
+        "name": "Disease Suppression",
+        "score": 100.0,
+        "raw": 4.761904761904762,
+        "interpretation": "Excellent"
+      }
+    ],
+    "bonus": [
+      {
+        "code": "M5",
+        "name": "Beneficial Fungi",
+        "score": 97.08419449581203,
+        "raw": 4.257142857142856,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M6",
+        "name": "Structural Diversity",
+        "score": 18.650283049840667,
+        "raw": 0.4195003464082383,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M7",
+        "name": "Pollinator Support",
+        "score": 0.0,
+        "raw": 0.0,
+        "interpretation": "Poor"
+      }
+    ]
+  }
+}

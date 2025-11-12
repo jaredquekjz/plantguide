@@ -140,8 +140,8 @@ Implemented a zero-overhead explanation engine that generates user-friendly expl
 - `src/explanation/formatters/` (3 files, 395 lines): Markdown, JSON, HTML formatters
 
 **Output Paths**:
-- **Rust**: `/tmp/rust_explanation_{guild_name}.{md,json,html}`
-- **R**: `/tmp/r_explanation_{guild_name}.md`
+- **Rust**: `shipley_checks/reports/explanations/rust_explanation_{guild_name}.{md,json,html}`
+- **R**: `shipley_checks/reports/explanations/r_explanation_{guild_name}.md`
 
 ### Key Architectural Features
 
@@ -216,7 +216,7 @@ Competitive Clash:   76.923 ms (scoring:  70.667 ms, explanation:  6.160 ms)
 Stress-Tolerant:     29.378 ms (scoring:  29.017 ms, explanation:  0.286 ms)
 ```
 
-**Outputs**: `/tmp/r_explanation_{guild_name}.md`
+**Outputs**: `shipley_checks/reports/explanations/r_explanation_{guild_name}.md`
 
 **Reliability**: 100% (3/3 guilds) after bug fix
 
@@ -231,9 +231,9 @@ Stress-Tolerant:     3.617 ms (scoring: 3.538 ms, explanation: 0.030 ms, 3 forma
 ```
 
 **Outputs**:
-- `/tmp/rust_explanation_{guild_name}.md` (markdown)
-- `/tmp/rust_explanation_{guild_name}.json` (JSON)
-- `/tmp/rust_explanation_{guild_name}.html` (HTML with embedded CSS)
+- `shipley_checks/reports/explanations/rust_explanation_{guild_name}.md` (markdown)
+- `shipley_checks/reports/explanations/rust_explanation_{guild_name}.json` (JSON)
+- `shipley_checks/reports/explanations/rust_explanation_{guild_name}.html` (HTML with embedded CSS)
 
 **Reliability**: 100% (3/3 guilds)
 
@@ -359,7 +359,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
   /usr/bin/Rscript shipley_checks/src/Stage_4/test_r_explanation_3guilds.R
 ```
 
-**Outputs**: `/tmp/r_explanation_{forest_garden,competitive_clash,stress-tolerant}.md`
+**Outputs**: `shipley_checks/reports/explanations/r_explanation_{forest_garden,competitive_clash,stress-tolerant}.md`
 
 #### Rust Test (3 guilds with explanations, release build)
 ```bash
@@ -368,9 +368,9 @@ cd /home/olier/ellenberg
 ```
 
 **Outputs**:
-- `/tmp/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.md`
-- `/tmp/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.json`
-- `/tmp/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.html`
+- `shipley_checks/reports/explanations/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.md`
+- `shipley_checks/reports/explanations/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.json`
+- `shipley_checks/reports/explanations/rust_explanation_{forest_garden,competitive_clash,stress-tolerant}.html`
 
 ## Parity Verification
 
@@ -910,8 +910,8 @@ cd /home/olier/ellenberg
 - R: `shipley_checks/src/Stage_4/test_r_explanation_3guilds.R`
 
 **Output Paths**:
-- **R explanations**: `/tmp/r_explanation_{guild_name}.md`
-- **Rust explanations**: `/tmp/rust_explanation_{guild_name}.{md,json,html}`
+- **R explanations**: `shipley_checks/reports/explanations/r_explanation_{guild_name}.md`
+- **Rust explanations**: `shipley_checks/reports/explanations/rust_explanation_{guild_name}.{md,json,html}`
 
 ---
 

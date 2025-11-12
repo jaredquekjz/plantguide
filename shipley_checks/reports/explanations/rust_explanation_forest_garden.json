@@ -1,0 +1,121 @@
+{
+  "overall": {
+    "score": 90.46773665372322,
+    "stars": "★★★★★",
+    "label": "Exceptional",
+    "message": "Overall guild compatibility: 90.5/100"
+  },
+  "climate": {
+    "compatible": true,
+    "tier": "tier_3_humid_temperate",
+    "tier_display": "Tier 3 (Humid Temperate)",
+    "message": "All plants compatible with Tier 3 (Humid Temperate)"
+  },
+  "benefits": [
+    {
+      "benefit_type": "phylogenetic_diversity",
+      "metric_code": "M1",
+      "title": "High Phylogenetic Diversity",
+      "message": "Plants are distantly related (Faith's PD: 844.68)",
+      "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
+      "evidence": "Phylogenetic diversity score: 58.6/100"
+    },
+    {
+      "benefit_type": "insect_control",
+      "metric_code": "M3",
+      "title": "Natural Insect Pest Control",
+      "message": "Guild provides insect pest control via 5 biocontrol mechanisms",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
+      "evidence": "Biocontrol score: 100.0/100, covering 5 mechanisms"
+    },
+    {
+      "benefit_type": "disease_control",
+      "metric_code": "M4",
+      "title": "Natural Disease Suppression",
+      "message": "Guild provides disease suppression via 6 antagonistic fungal mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
+      "evidence": "Pathogen control score: 100.0/100, covering 6 mechanisms"
+    },
+    {
+      "benefit_type": "mycorrhizal_network",
+      "metric_code": "M5",
+      "title": "Beneficial Mycorrhizal Network",
+      "message": "147 shared mycorrhizal fungal species connect 5 plants",
+      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "evidence": "Network score: 97.7/100, coverage: 71.4%"
+    },
+    {
+      "benefit_type": "structural_diversity",
+      "metric_code": "M6",
+      "title": "High Structural Diversity",
+      "message": "4 growth forms spanning 22.8m height range",
+      "detail": "Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.",
+      "evidence": "Structural diversity score: 85.0/100, stratification quality: 1.00"
+    },
+    {
+      "benefit_type": "pollinator_support",
+      "metric_code": "M7",
+      "title": "Robust Pollinator Support",
+      "message": "170 shared pollinator species",
+      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.",
+      "evidence": "Pollinator support score: 92.0/100"
+    }
+  ],
+  "warnings": [],
+  "risks": [],
+  "metrics_display": {
+    "universal": [
+      {
+        "code": "M1",
+        "name": "Pest & Pathogen Independence",
+        "score": 58.5892711994949,
+        "raw": 0.42969296142743135,
+        "interpretation": "Fair"
+      },
+      {
+        "code": "M2",
+        "name": "Growth Compatibility",
+        "score": 100.0,
+        "raw": 0.0,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M3",
+        "name": "Insect Pest Control",
+        "score": 100.0,
+        "raw": 6.380952380952381,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M4",
+        "name": "Disease Suppression",
+        "score": 100.0,
+        "raw": 2.8571428571428568,
+        "interpretation": "Excellent"
+      }
+    ],
+    "bonus": [
+      {
+        "code": "M5",
+        "name": "Beneficial Fungi",
+        "score": 97.71510932231044,
+        "raw": 5.0857142857142845,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M6",
+        "name": "Structural Diversity",
+        "score": 84.99999999999999,
+        "raw": 0.8799999999999999,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M7",
+        "name": "Pollinator Support",
+        "score": 91.96977605425721,
+        "raw": 0.4081632653061224,
+        "interpretation": "Excellent"
+      }
+    ]
+  }
+}

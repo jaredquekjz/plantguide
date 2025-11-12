@@ -1,0 +1,89 @@
+{
+  "overall": {
+    "score": 45.442368380422124,
+    "stars": "☆☆☆☆☆",
+    "label": "Unsuitable",
+    "message": "Overall guild compatibility: 45.4/100"
+  },
+  "climate": {
+    "compatible": true,
+    "tier": "tier_3_humid_temperate",
+    "tier_display": "Tier 3 (Humid Temperate)",
+    "message": "All plants compatible with Tier 3 (Humid Temperate)"
+  },
+  "benefits": [
+    {
+      "benefit_type": "disease_control",
+      "metric_code": "M4",
+      "title": "Natural Disease Suppression",
+      "message": "Guild provides disease suppression via 4 antagonistic fungal mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
+      "evidence": "Pathogen control score: 100.0/100, covering 4 mechanisms"
+    },
+    {
+      "benefit_type": "mycorrhizal_network",
+      "metric_code": "M5",
+      "title": "Beneficial Mycorrhizal Network",
+      "message": "16 shared mycorrhizal fungal species connect 4 plants",
+      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "evidence": "Network score: 45.0/100, coverage: 57.1%"
+    }
+  ],
+  "warnings": [],
+  "risks": [],
+  "metrics_display": {
+    "universal": [
+      {
+        "code": "M1",
+        "name": "Pest & Pathogen Independence",
+        "score": 36.72431821100335,
+        "raw": 0.4559407172659578,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M2",
+        "name": "Growth Compatibility",
+        "score": 100.0,
+        "raw": 0.0,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M3",
+        "name": "Insect Pest Control",
+        "score": 0.0,
+        "raw": 0.0,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M4",
+        "name": "Disease Suppression",
+        "score": 100.0,
+        "raw": 0.9523809523809523,
+        "interpretation": "Excellent"
+      }
+    ],
+    "bonus": [
+      {
+        "code": "M5",
+        "name": "Beneficial Fungi",
+        "score": 45.0,
+        "raw": 0.22857142857142856,
+        "interpretation": "Fair"
+      },
+      {
+        "code": "M6",
+        "name": "Structural Diversity",
+        "score": 36.3722604519515,
+        "raw": 0.5854222002025606,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M7",
+        "name": "Pollinator Support",
+        "score": 0.0,
+        "raw": 0.0,
+        "interpretation": "Poor"
+      }
+    ]
+  }
+}

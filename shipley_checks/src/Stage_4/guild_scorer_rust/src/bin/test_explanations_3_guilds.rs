@@ -93,17 +93,18 @@ fn main() -> anyhow::Result<()> {
 
         // Write outputs
         let safe_name = guild_name.replace(" ", "_").to_lowercase();
+        let output_dir = "shipley_checks/reports/explanations";
 
         fs::write(
-            format!("/tmp/rust_explanation_{}.md", safe_name),
+            format!("{}/rust_explanation_{}.md", output_dir, safe_name),
             markdown,
         )?;
         fs::write(
-            format!("/tmp/rust_explanation_{}.json", safe_name),
+            format!("{}/rust_explanation_{}.json", output_dir, safe_name),
             json,
         )?;
         fs::write(
-            format!("/tmp/rust_explanation_{}.html", safe_name),
+            format!("{}/rust_explanation_{}.html", output_dir, safe_name),
             html,
         )?;
 
@@ -135,9 +136,9 @@ fn main() -> anyhow::Result<()> {
         println!("  Total:                {:>8.3} ms", total_time.as_secs_f64() * 1000.0);
 
         println!("\nOutputs written:");
-        println!("  /tmp/rust_explanation_{}.md", safe_name);
-        println!("  /tmp/rust_explanation_{}.json", safe_name);
-        println!("  /tmp/rust_explanation_{}.html", safe_name);
+        println!("  {}/rust_explanation_{}.md", output_dir, safe_name);
+        println!("  {}/rust_explanation_{}.json", output_dir, safe_name);
+        println!("  {}/rust_explanation_{}.html", output_dir, safe_name);
     }
 
     let total_time = start_time.elapsed();
