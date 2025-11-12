@@ -35,9 +35,8 @@ pub fn calculate_m6(
     calibration: &Calibration,
 ) -> Result<M6Result> {
     // Extract plant data
-    let heights = guild_plants.column("height_m")?.f64()?;
-    let light_prefs = guild_plants.column("light_pref")?.f64()?;
     let growth_forms = guild_plants.column("try_growth_form")?.str()?;
+    let orig_heights = guild_plants.column("height_m")?.f64()?;  // For height range calculation
 
     // COMPONENT 1: Light-validated height stratification (70%)
     let mut valid_stratification = 0.0;
@@ -45,7 +44,15 @@ pub fn calculate_m6(
 
     let n = guild_plants.height();
     if n >= 2 {
-        // Analyze all tall-short pairs
+        // CRITICAL: Sort by height (R line 127: sorted_guild <- guild_plants[order(guild_plants$height_m), ])
+        let sorted = guild_plants.clone().lazy()
+            .sort(["height_m"], Default::default())
+            .collect()?;
+
+        let heights = sorted.column("height_m")?.f64()?;
+        let light_prefs = sorted.column("light_pref")?.f64()?;
+
+        // Analyze all tall-short pairs (R lines 130-156)
         for i in 0..n - 1 {
             for j in i + 1..n {
                 let short_height = heights.get(i).unwrap_or(1.0);
@@ -113,7 +120,7 @@ pub fn calculate_m6(
     // Calculate height range for details
     let mut valid_heights = Vec::new();
     for idx in 0..n {
-        if let Some(h) = heights.get(idx) {
+        if let Some(h) = orig_heights.get(idx) {
             valid_heights.push(h);
         }
     }
