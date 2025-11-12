@@ -1,7 +1,7 @@
 //! Data Loading and Management
 //!
 //! Handles loading plant, organism, and fungi datasets using Polars.
-//! Mimics R implementation with parity-checked CSV/Parquet sources.
+//! Uses Rust-generated Parquet files for performance (10-100× faster than CSV).
 //!
 //! R reference: shipley_checks/src/Stage_4/guild_scorer_v3_modular.R (lines 123-179)
 
@@ -37,38 +37,38 @@ impl GuildData {
     ///
     /// R reference: guild_scorer_v3_modular.R::load_datasets()
     pub fn load() -> Result<Self> {
-        println!("Loading datasets (parity-checked CSV/Parquet files)...");
+        println!("Loading datasets (Rust-generated Parquet files)...");
 
-        // Plants - from CSV (converted from parquet to avoid R arrow metadata issues)
-        let plants = Self::load_plants_csv(
-            "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.csv"
+        // Plants - from Rust-generated parquet
+        let plants = Self::load_plants_parquet(
+            "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711_rust.parquet"
         )?;
 
-        // Organisms - from R-generated CSV
+        // Organisms - from Rust-generated Parquet
         let organisms = Self::load_organisms(
-            "shipley_checks/validation/organism_profiles_pure_r.csv"
+            "shipley_checks/validation/organism_profiles_pure_rust.parquet"
         )?;
 
-        // Fungi - from R-generated CSV
+        // Fungi - from Rust-generated Parquet
         let fungi = Self::load_fungi(
-            "shipley_checks/validation/fungal_guilds_pure_r.csv"
+            "shipley_checks/validation/fungal_guilds_pure_rust.parquet"
         )?;
 
         // Biocontrol lookup tables
         let herbivore_predators = Self::load_lookup_table(
-            "shipley_checks/validation/herbivore_predators_pure_r.csv",
+            "shipley_checks/validation/herbivore_predators_pure_rust.parquet",
             "herbivore",
             "predators",
         )?;
 
         let insect_parasites = Self::load_lookup_table(
-            "shipley_checks/validation/insect_fungal_parasites_pure_r.csv",
+            "shipley_checks/validation/insect_fungal_parasites_pure_rust.parquet",
             "herbivore",
             "entomopathogenic_fungi",
         )?;
 
         let pathogen_antagonists = Self::load_lookup_table(
-            "shipley_checks/validation/pathogen_antagonists_pure_r.csv",
+            "shipley_checks/validation/pathogen_antagonists_pure_rust.parquet",
             "pathogen",
             "antagonists",
         )?;
@@ -90,25 +90,13 @@ impl GuildData {
         })
     }
 
-    /// Load plant metadata from CSV
+    /// Load plant metadata from Parquet
     ///
     /// R reference: guild_scorer_v3_modular.R lines 127-135
-    fn load_plants_csv(path: &str) -> Result<DataFrame> {
-        // Configure CSV parsing with NA handling
-        let parse_options = CsvParseOptions::default()
-            .with_null_values(Some(NullValues::AllColumnsSingle("NA".into())));
-
-        let df = CsvReadOptions::default()
-            .with_has_header(true)
-            .with_infer_schema_length(None)  // Scan entire file for accurate schema
-            .with_parse_options(parse_options)
-            .try_into_reader_with_file_path(Some(path.into()))
-            .with_context(|| format!("Failed to create CSV reader: {}", path))?
-            .finish()
-            .with_context(|| "Failed to load plants CSV")?;
-
-        // Select and rename columns to match R
-        let df = df.lazy()
+    fn load_plants_parquet(path: &str) -> Result<DataFrame> {
+        // Load Parquet file
+        let df = LazyFrame::scan_parquet(path, Default::default())
+            .with_context(|| format!("Failed to scan parquet: {}", path))?
             .select(&[
                 col("wfo_taxon_id"),
                 col("wfo_scientific_name"),
@@ -133,31 +121,27 @@ impl GuildData {
         Ok(df)
     }
 
-    /// Load organism associations from CSV
+    /// Load organism associations from Parquet
     ///
     /// Columns with pipe-separated lists are kept as strings for now.
     /// Parsing happens in count_shared_organisms utility.
     ///
     /// R reference: guild_scorer_v3_modular.R lines 151-153
     fn load_organisms(path: &str) -> Result<DataFrame> {
-        CsvReadOptions::default()
-            .with_has_header(true)
-            .try_into_reader_with_file_path(Some(path.into()))
-            .with_context(|| format!("Failed to create CSV reader: {}", path))?
-            .finish()
-            .with_context(|| "Failed to load organisms CSV")
+        LazyFrame::scan_parquet(path, Default::default())
+            .with_context(|| format!("Failed to scan parquet: {}", path))?
+            .collect()
+            .with_context(|| "Failed to load organisms Parquet")
     }
 
-    /// Load fungi associations from CSV
+    /// Load fungi associations from Parquet
     ///
     /// R reference: guild_scorer_v3_modular.R lines 156-159
     fn load_fungi(path: &str) -> Result<DataFrame> {
-        CsvReadOptions::default()
-            .with_has_header(true)
-            .try_into_reader_with_file_path(Some(path.into()))
-            .with_context(|| format!("Failed to create CSV reader: {}", path))?
-            .finish()
-            .with_context(|| "Failed to load fungi CSV")
+        LazyFrame::scan_parquet(path, Default::default())
+            .with_context(|| format!("Failed to scan parquet: {}", path))?
+            .collect()
+            .with_context(|| "Failed to load fungi Parquet")
     }
 
     /// Load lookup table: Key → Pipe-separated values
@@ -170,11 +154,9 @@ impl GuildData {
         key_col: &str,
         value_col: &str,
     ) -> Result<FxHashMap<String, Vec<String>>> {
-        let df = CsvReadOptions::default()
-            .with_has_header(true)
-            .try_into_reader_with_file_path(Some(path.into()))
-            .with_context(|| format!("Failed to create CSV reader: {}", path))?
-            .finish()
+        let df = LazyFrame::scan_parquet(path, Default::default())
+            .with_context(|| format!("Failed to scan parquet: {}", path))?
+            .collect()
             .with_context(|| format!("Failed to load lookup table: {}", path))?;
 
         let mut map = FxHashMap::default();

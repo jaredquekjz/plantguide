@@ -121,10 +121,10 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
     #' Lookup tables: Biocontrol, parasites, antagonists
     #'
     load_datasets = function() {
-      cat("Loading datasets (R-generated CSV files for independence)...\n")
+      cat("Loading datasets (R-generated Parquet files for independence)...\n")
 
-      # Plants - from shared parquet (stage 3 output)
-      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet') %>%
+      # Plants - from R-generated parquet
+      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711_r.parquet') %>%
         select(
           wfo_taxon_id, wfo_scientific_name, family, genus,
           height_m, try_growth_form,
@@ -147,27 +147,27 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
         df
       }
 
-      # Organisms - from R-generated CSV (complete independence from Python)
-      self$organisms_df <- read_csv('shipley_checks/validation/organism_profiles_pure_r.csv', show_col_types = FALSE) %>%
+      # Organisms - from R-generated Parquet (complete independence from Python)
+      self$organisms_df <- read_parquet('shipley_checks/validation/organism_profiles_pure_r.parquet') %>%
         csv_to_lists(c('herbivores', 'flower_visitors', 'pollinators',
                        'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo'))
 
-      # Fungi - from R-generated CSV
-      self$fungi_df <- read_csv('shipley_checks/validation/fungal_guilds_pure_r.csv', show_col_types = FALSE) %>%
+      # Fungi - from R-generated Parquet
+      self$fungi_df <- read_parquet('shipley_checks/validation/fungal_guilds_pure_r.parquet') %>%
         csv_to_lists(c('pathogenic_fungi', 'pathogenic_fungi_host_specific',
                        'amf_fungi', 'emf_fungi', 'mycoparasite_fungi',
                        'entomopathogenic_fungi', 'endophytic_fungi', 'saprotrophic_fungi'))
 
-      # Biocontrol lookup tables - from R-generated CSV
-      pred_df <- read_csv('shipley_checks/validation/herbivore_predators_pure_r.csv', show_col_types = FALSE) %>%
+      # Biocontrol lookup tables - from R-generated Parquet
+      pred_df <- read_parquet('shipley_checks/validation/herbivore_predators_pure_r.parquet') %>%
         csv_to_lists('predators')
       self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
 
-      para_df <- read_csv('shipley_checks/validation/insect_fungal_parasites_pure_r.csv', show_col_types = FALSE) %>%
+      para_df <- read_parquet('shipley_checks/validation/insect_fungal_parasites_pure_r.parquet') %>%
         csv_to_lists('entomopathogenic_fungi')
       self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
 
-      antag_df <- read_csv('shipley_checks/validation/pathogen_antagonists_pure_r.csv', show_col_types = FALSE) %>%
+      antag_df <- read_parquet('shipley_checks/validation/pathogen_antagonists_pure_r.parquet') %>%
         csv_to_lists('antagonists')
       self$pathogen_antagonists <- setNames(antag_df$antagonists, antag_df$pathogen)
 
