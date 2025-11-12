@@ -6,9 +6,24 @@
 //! R reference: shipley_checks/src/Stage_4/metrics/m6_structural_diversity.R
 
 use polars::prelude::*;
-use rustc_hash::FxHashSet;
+use rustc_hash::{FxHashSet, FxHashMap};
 use anyhow::Result;
 use crate::utils::{Calibration, percentile_normalize};
+
+/// Plant with height information
+#[derive(Debug, Clone)]
+pub struct PlantHeight {
+    pub name: String,
+    pub height_m: f64,
+}
+
+/// Growth form group with plants
+#[derive(Debug, Clone)]
+pub struct GrowthFormGroup {
+    pub form_name: String,
+    pub plants: Vec<PlantHeight>,
+    pub height_range: (f64, f64),
+}
 
 /// Result of M6 calculation
 #[derive(Debug)]
@@ -25,6 +40,8 @@ pub struct M6Result {
     pub stratification_quality: f64,
     /// Form diversity score (0-1)
     pub form_diversity: f64,
+    /// Growth form groups with plant details
+    pub growth_form_groups: Vec<GrowthFormGroup>,
 }
 
 /// Calculate M6: Structural Diversity
@@ -131,6 +148,49 @@ pub fn calculate_m6(
         0.0
     };
 
+    // Group plants by growth form with heights
+    let plant_names = guild_plants.column("wfo_taxon_name")?.str()?;
+    let mut form_groups: FxHashMap<String, Vec<PlantHeight>> = FxHashMap::default();
+
+    for idx in 0..n {
+        if let (Some(form), Some(name), Some(height)) = (
+            growth_forms.get(idx),
+            plant_names.get(idx),
+            orig_heights.get(idx),
+        ) {
+            if !form.is_empty() {
+                form_groups
+                    .entry(form.to_string())
+                    .or_insert_with(Vec::new)
+                    .push(PlantHeight {
+                        name: name.to_string(),
+                        height_m: height,
+                    });
+            }
+        }
+    }
+
+    // Convert to GrowthFormGroup vec
+    let mut growth_form_groups: Vec<GrowthFormGroup> = form_groups
+        .into_iter()
+        .map(|(form_name, plants)| {
+            let heights: Vec<f64> = plants.iter().map(|p| p.height_m).collect();
+            let min_height = heights.iter().copied().fold(f64::INFINITY, f64::min);
+            let max_height = heights.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+
+            GrowthFormGroup {
+                form_name,
+                plants,
+                height_range: (min_height, max_height),
+            }
+        })
+        .collect();
+
+    // Sort by min height for consistent display
+    growth_form_groups.sort_by(|a, b| {
+        a.height_range.0.partial_cmp(&b.height_range.0).unwrap_or(std::cmp::Ordering::Equal)
+    });
+
     Ok(M6Result {
         raw: p6_raw,
         norm: m6_norm,
@@ -138,6 +198,7 @@ pub fn calculate_m6(
         n_forms,
         stratification_quality,
         form_diversity,
+        growth_form_groups,
     })
 }
 

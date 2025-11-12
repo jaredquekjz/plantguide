@@ -13,6 +13,42 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
             "forms".to_string()
         };
 
+        // Build detailed growth form distribution
+        let mut detail = format!(
+            "Vertical stratification across {} growth {} ({:.1}m range):\n\n",
+            m6.n_forms, forms_text, m6.height_range
+        );
+
+        if !m6.growth_form_groups.is_empty() {
+            detail.push_str("**Growth Form Distribution**:\n\n");
+            for group in &m6.growth_form_groups {
+                let (min_h, max_h) = group.height_range;
+                let height_str = if (max_h - min_h).abs() < 0.1 {
+                    format!("{:.1}m", min_h)
+                } else {
+                    format!("{:.1}m-{:.1}m", min_h, max_h)
+                };
+
+                detail.push_str(&format!("- **{}** ({}): ", group.form_name, height_str));
+
+                let plant_list: Vec<String> = group
+                    .plants
+                    .iter()
+                    .map(|p| format!("{} ({:.1}m)", p.name, p.height_m))
+                    .collect();
+
+                detail.push_str(&plant_list.join(", "));
+                detail.push_str("\n\n");
+            }
+        } else {
+            detail.push_str("Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.\n\n");
+        }
+
+        detail.push_str(&format!(
+            "*Evidence:* Structural diversity score: {:.1}/100, stratification quality: {:.2}",
+            display_score, m6.stratification_quality
+        ));
+
         MetricFragment::with_benefit(BenefitCard {
             benefit_type: "structural_diversity".to_string(),
             metric_code: "M6".to_string(),
@@ -21,10 +57,10 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
                 "{} growth {} spanning {:.1}m height range",
                 m6.n_forms, forms_text, m6.height_range
             ),
-            detail: "Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.".to_string(),
+            detail,
             evidence: Some(format!(
-                "Structural diversity score: {:.1}/100, stratification quality: {:.2}",
-                display_score, m6.stratification_quality
+                "Stratification quality: {:.2}",
+                m6.stratification_quality
             )),
         })
     } else {
@@ -38,6 +74,8 @@ mod tests {
 
     #[test]
     fn test_high_structural_diversity() {
+        use crate::metrics::m6_structural_diversity::{GrowthFormGroup, PlantHeight};
+
         let m6 = M6Result {
             raw: 0.85,
             norm: 15.0,
@@ -45,6 +83,16 @@ mod tests {
             n_forms: 5,
             stratification_quality: 0.82,
             form_diversity: 0.78,
+            growth_form_groups: vec![
+                GrowthFormGroup {
+                    form_name: "Tree".to_string(),
+                    plants: vec![PlantHeight {
+                        name: "Oak".to_string(),
+                        height_m: 15.0,
+                    }],
+                    height_range: (15.0, 15.0),
+                },
+            ],
         };
         let display_score = 85.0;
 
@@ -66,6 +114,7 @@ mod tests {
             n_forms: 1,
             stratification_quality: 0.55,
             form_diversity: 0.0,
+            growth_form_groups: vec![],
         };
         let display_score = 60.0;
 
@@ -86,6 +135,7 @@ mod tests {
             n_forms: 2,
             stratification_quality: 0.25,
             form_diversity: 0.3,
+            growth_form_groups: vec![],
         };
         let display_score = 30.0;
 
