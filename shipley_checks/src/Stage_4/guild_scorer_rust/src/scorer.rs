@@ -381,7 +381,7 @@ impl GuildScorer {
     pub fn score_guild_with_explanation_parallel(
         &self,
         plant_ids: &[String],
-    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M5Result, DataFrame)> {
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M5Result, DataFrame, M7Result, DataFrame)> {
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
@@ -562,7 +562,15 @@ impl GuildScorer {
             fungi_counts: m5.fungi_counts.clone(),
         };
 
-        Ok((guild_score, fragments, guild_plants_with_organisms, m5_cloned, self.data.fungi.clone()))
+        // Clone M7Result for pollinator network analysis
+        let m7_cloned = M7Result {
+            raw: m7.raw,
+            norm: m7.norm,
+            n_shared_pollinators: m7.n_shared_pollinators,
+            pollinator_counts: m7.pollinator_counts.clone(),
+        };
+
+        Ok((guild_score, fragments, guild_plants_with_organisms, m5_cloned, self.data.fungi.clone(), m7_cloned, self.data.organisms.clone()))
     }
 }
 

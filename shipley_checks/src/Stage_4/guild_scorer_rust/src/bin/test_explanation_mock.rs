@@ -2,7 +2,7 @@ use guild_scorer_rust::{
     GuildScore, ExplanationGenerator, MarkdownFormatter, JsonFormatter, HtmlFormatter,
     MetricFragment, BenefitCard, WarningCard, RiskCard, Severity,
 };
-use guild_scorer_rust::metrics::M5Result;
+use guild_scorer_rust::metrics::{M5Result, M7Result};
 use rustc_hash::FxHashMap;
 use polars::prelude::*;
 use std::fs;
@@ -31,6 +31,25 @@ fn create_mock_fungi_df() -> anyhow::Result<DataFrame> {
         "emf_fungi" => &[""],
         "endophytic_fungi" => &[""],
         "saprotrophic_fungi" => &[""],
+    }?)
+}
+
+/// Create mock M7Result for testing
+fn create_mock_m7_result() -> M7Result {
+    M7Result {
+        raw: 0.3,
+        norm: 30.0,
+        n_shared_pollinators: 3,
+        pollinator_counts: FxHashMap::default(),
+    }
+}
+
+/// Create mock organisms DataFrame for testing
+fn create_mock_organisms_df() -> anyhow::Result<DataFrame> {
+    Ok(df! {
+        "plant_wfo_id" => &["plant1"],
+        "pollinators" => &[""],
+        "flower_visitors" => &[""],
     }?)
 }
 
@@ -132,6 +151,8 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
 
     let m5_result = create_mock_m5_result();
     let fungi_df = create_mock_fungi_df()?;
+    let m7_result = create_mock_m7_result();
+    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -141,6 +162,8 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
         fragments,
         &m5_result,
         &fungi_df,
+        &m7_result,
+        &organisms_df,
     )?;
 
     // Print summary
@@ -212,6 +235,8 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
 
     let m5_result = create_mock_m5_result();
     let fungi_df = create_mock_fungi_df()?;
+    let m7_result = create_mock_m7_result();
+    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -221,6 +246,8 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
         fragments,
         &m5_result,
         &fungi_df,
+        &m7_result,
+        &organisms_df,
     )?;
 
     // Print summary
@@ -281,6 +308,8 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
 
     let m5_result = create_mock_m5_result();
     let fungi_df = create_mock_fungi_df()?;
+    let m7_result = create_mock_m7_result();
+    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -290,6 +319,8 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
         fragments,
         &m5_result,
         &fungi_df,
+        &m7_result,
+        &organisms_df,
     )?;
 
     // Print summary

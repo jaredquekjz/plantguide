@@ -1,7 +1,7 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network};
 use crate::scorer::GuildScore;
-use crate::metrics::M5Result;
+use crate::metrics::{M5Result, M7Result};
 use anyhow::Result;
 use polars::prelude::*;
 
@@ -18,6 +18,8 @@ impl ExplanationGenerator {
     /// - fragments: Pre-generated metric fragments from parallel scoring
     /// - m5_result: M5 result with fungi counts (for network analysis)
     /// - fungi_df: Fungi DataFrame (for categorization)
+    /// - m7_result: M7 result with pollinator counts (for network analysis)
+    /// - organisms_df: Organisms DataFrame (for pollinator categorization)
     ///
     /// Returns: Complete Explanation with all cards
     pub fn generate(
@@ -27,6 +29,8 @@ impl ExplanationGenerator {
         fragments: Vec<MetricFragment>,
         m5_result: &M5Result,
         fungi_df: &DataFrame,
+        m7_result: &M7Result,
+        organisms_df: &DataFrame,
     ) -> Result<Explanation> {
         // Overall score with stars
         let overall = Self::generate_overall(guild_score.overall_score);
@@ -73,6 +77,11 @@ impl ExplanationGenerator {
             .ok()
             .flatten();
 
+        // Pollinator network profile (qualitative information)
+        let pollinator_network_profile = analyze_pollinator_network(m7_result, guild_plants, organisms_df)
+            .ok()
+            .flatten();
+
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
 
@@ -85,6 +94,7 @@ impl ExplanationGenerator {
             metrics_display,
             pest_profile,
             fungi_network_profile,
+            pollinator_network_profile,
         })
     }
 

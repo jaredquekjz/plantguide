@@ -7,6 +7,7 @@
 
 use polars::prelude::*;
 use anyhow::Result;
+use rustc_hash::FxHashMap;
 use crate::utils::{Calibration, percentile_normalize, count_shared_organisms};
 
 /// Result of M7 calculation
@@ -18,6 +19,8 @@ pub struct M7Result {
     pub norm: f64,
     /// Number of shared pollinators
     pub n_shared_pollinators: usize,
+    /// Map of pollinator_name → plant_count for detailed analysis
+    pub pollinator_counts: FxHashMap<String, usize>,
 }
 
 /// Calculate M7: Pollinator Support
@@ -55,6 +58,7 @@ pub fn calculate_m7(
         raw: p7_raw,
         norm: m7_norm,
         n_shared_pollinators: shared_pollinators.len(),
+        pollinator_counts: shared_pollinators,
     })
 }
 

@@ -132,6 +132,121 @@ impl MarkdownFormatter {
             }
         }
 
+        // Pollinator Network Profile (qualitative information)
+        if let Some(pollinator_profile) = &explanation.pollinator_network_profile {
+            md.push_str("## Pollinator Network Profile\n\n");
+            md.push_str("*Qualitative information about pollinator networks (100% of M7 scoring)*\n\n");
+
+            md.push_str(&format!(
+                "**Total unique pollinator species:** {}\n\n",
+                pollinator_profile.total_unique_pollinators
+            ));
+
+            // Pollinator diversity by category
+            md.push_str("**Pollinator Community Composition:**\n\n");
+            let total = pollinator_profile.total_unique_pollinators as f64;
+            if total > 0.0 {
+                let bees_pct = pollinator_profile.pollinators_by_category.bees_count as f64 / total * 100.0;
+                let butterflies_pct = pollinator_profile.pollinators_by_category.butterflies_count as f64 / total * 100.0;
+                let moths_pct = pollinator_profile.pollinators_by_category.moths_count as f64 / total * 100.0;
+                let flies_pct = pollinator_profile.pollinators_by_category.flies_count as f64 / total * 100.0;
+                let beetles_pct = pollinator_profile.pollinators_by_category.beetles_count as f64 / total * 100.0;
+                let wasps_pct = pollinator_profile.pollinators_by_category.wasps_count as f64 / total * 100.0;
+                let birds_pct = pollinator_profile.pollinators_by_category.birds_count as f64 / total * 100.0;
+                let bats_pct = pollinator_profile.pollinators_by_category.bats_count as f64 / total * 100.0;
+                let other_pct = pollinator_profile.pollinators_by_category.other_count as f64 / total * 100.0;
+
+                if pollinator_profile.pollinators_by_category.bees_count > 0 {
+                    md.push_str(&format!("- {} Bees - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.bees_count, bees_pct));
+                }
+                if pollinator_profile.pollinators_by_category.butterflies_count > 0 {
+                    md.push_str(&format!("- {} Butterflies - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.butterflies_count, butterflies_pct));
+                }
+                if pollinator_profile.pollinators_by_category.moths_count > 0 {
+                    md.push_str(&format!("- {} Moths - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.moths_count, moths_pct));
+                }
+                if pollinator_profile.pollinators_by_category.flies_count > 0 {
+                    md.push_str(&format!("- {} Flies - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.flies_count, flies_pct));
+                }
+                if pollinator_profile.pollinators_by_category.beetles_count > 0 {
+                    md.push_str(&format!("- {} Beetles - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.beetles_count, beetles_pct));
+                }
+                if pollinator_profile.pollinators_by_category.wasps_count > 0 {
+                    md.push_str(&format!("- {} Wasps - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.wasps_count, wasps_pct));
+                }
+                if pollinator_profile.pollinators_by_category.birds_count > 0 {
+                    md.push_str(&format!("- {} Birds - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.birds_count, birds_pct));
+                }
+                if pollinator_profile.pollinators_by_category.bats_count > 0 {
+                    md.push_str(&format!("- {} Bats - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.bats_count, bats_pct));
+                }
+                if pollinator_profile.pollinators_by_category.other_count > 0 {
+                    md.push_str(&format!("- {} Other - {:.1}%\n",
+                        pollinator_profile.pollinators_by_category.other_count, other_pct));
+                }
+                md.push_str("\n");
+            }
+
+            // Shared pollinators
+            if !pollinator_profile.shared_pollinators.is_empty() {
+                md.push_str("**Shared Pollinators (visiting ≥2 plants):**\n\n");
+                md.push_str(&format!("{} pollinator species are shared across multiple plants in this guild.\n\n",
+                    pollinator_profile.shared_pollinators.len()));
+            } else {
+                md.push_str("**No shared pollinators detected** - Each pollinator visits only one plant species in this guild.\n\n");
+            }
+
+            // Top network pollinators
+            if !pollinator_profile.top_pollinators.is_empty() {
+                md.push_str("**Top Network Pollinators (by connectivity):**\n\n");
+                md.push_str("| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |\n");
+                md.push_str("|------|-------------------|----------|------------------|----------------------|\n");
+                for (i, pollinator) in pollinator_profile.top_pollinators.iter().enumerate() {
+                    md.push_str(&format!(
+                        "| {} | {} | {} | {} plants | {:.1}% |\n",
+                        i + 1,
+                        pollinator.pollinator_name,
+                        pollinator.category.display_name(),
+                        pollinator.plant_count,
+                        pollinator.network_contribution * 100.0
+                    ));
+                }
+                md.push_str("\n");
+            }
+
+            // Network hubs
+            if !pollinator_profile.hub_plants.is_empty() {
+                md.push_str("**Network Hubs (most connected plants):**\n\n");
+                md.push_str("| Plant | Total | Bees | Butterflies | Moths | Flies | Beetles | Wasps | Birds | Bats | Other |\n");
+                md.push_str("|-------|-------|------|-------------|-------|-------|---------|-------|-------|------|-------|\n");
+                for hub in pollinator_profile.hub_plants.iter().take(10) {
+                    md.push_str(&format!(
+                        "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",
+                        hub.plant_name,
+                        hub.pollinator_count,
+                        hub.bees_count,
+                        hub.butterflies_count,
+                        hub.moths_count,
+                        hub.flies_count,
+                        hub.beetles_count,
+                        hub.wasps_count,
+                        hub.birds_count,
+                        hub.bats_count,
+                        hub.other_count
+                    ));
+                }
+                md.push_str("\n");
+            }
+        }
+
         // Pest Profile (qualitative information)
         if let Some(pest_profile) = &explanation.pest_profile {
             md.push_str("## Pest Vulnerability Profile\n\n");

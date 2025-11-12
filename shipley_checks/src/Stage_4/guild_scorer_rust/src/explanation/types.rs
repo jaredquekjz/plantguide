@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use crate::explanation::pest_analysis::PestProfile;
 use crate::explanation::fungi_network_analysis::FungiNetworkProfile;
+use crate::explanation::pollinator_network_analysis::PollinatorNetworkProfile;
 
 /// Complete explanation for a guild
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -13,6 +14,7 @@ pub struct Explanation {
     pub metrics_display: MetricsDisplay,
     pub pest_profile: Option<PestProfile>,
     pub fungi_network_profile: Option<FungiNetworkProfile>,
+    pub pollinator_network_profile: Option<PollinatorNetworkProfile>,
 }
 
 /// Overall score interpretation with stars
