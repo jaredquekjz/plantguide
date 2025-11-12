@@ -24,6 +24,7 @@ pub struct CompactTree {
     label: Vec<String>,         // label[i] = taxon label of node i
     length: Vec<f32>,           // length[i] = edge length from parent to node i
     num_leaves: usize,          // Total number of leaf nodes (tips)
+    label_to_node: HashMap<String, u32>, // Pre-built label lookup (OPTIMIZATION)
 }
 
 impl CompactTree {
@@ -35,6 +36,7 @@ impl CompactTree {
             label: Vec::new(),
             length: Vec::new(),
             num_leaves: 0,
+            label_to_node: HashMap::new(),
         }
     }
 
@@ -102,12 +104,22 @@ impl CompactTree {
         // Count leaves
         let num_leaves = children.iter().filter(|c| c.is_empty()).count();
 
+        // Build label -> node lookup map (OPTIMIZATION)
+        let mut label_to_node = HashMap::with_capacity(num_leaves);
+        for (idx, node_children) in children.iter().enumerate() {
+            if node_children.is_empty() {
+                // This is a leaf node
+                label_to_node.insert(label[idx].clone(), idx as u32);
+            }
+        }
+
         Ok(CompactTree {
             parent,
             children,
             label,
             length,
             num_leaves,
+            label_to_node,
         })
     }
 
@@ -161,12 +173,22 @@ impl CompactTree {
             length.push(Self::read_f32(&mut reader)?);
         }
 
+        // Build label -> node lookup map (OPTIMIZATION)
+        let mut label_to_node = HashMap::with_capacity(num_leaves_file as usize);
+        for (idx, node_children) in children.iter().enumerate() {
+            if node_children.is_empty() {
+                // This is a leaf node
+                label_to_node.insert(label[idx].clone(), idx as u32);
+            }
+        }
+
         Ok(CompactTree {
             parent,
             children,
             label,
             length,
             num_leaves: num_leaves_file as usize,
+            label_to_node,
         })
     }
 
@@ -198,19 +220,13 @@ impl CompactTree {
     ///
     /// Returns a vector of node indices matching the given labels.
     /// Only returns leaf nodes (tips).
+    ///
+    /// OPTIMIZATION: Uses pre-built label_to_node map (built once at load time)
     pub fn find_leaf_nodes(&self, labels: &[String]) -> Vec<u32> {
-        // Build label -> node index map for O(1) lookup
-        let mut label_map: HashMap<&str, u32> = HashMap::new();
-        for (idx, label) in self.label.iter().enumerate() {
-            if self.is_leaf(idx as u32) {
-                label_map.insert(label.as_str(), idx as u32);
-            }
-        }
-
-        // Find matching nodes
+        // Use pre-built map for O(1) lookup (no rebuilding!)
         labels
             .iter()
-            .filter_map(|label| label_map.get(label.as_str()).copied())
+            .filter_map(|label| self.label_to_node.get(label).copied())
             .collect()
     }
 
@@ -220,6 +236,7 @@ impl CompactTree {
     /// First node visited N times (where N = leaf count) is the MRCA.
     ///
     /// C++ reference: compact_tree.h lines 520-537
+    /// OPTIMIZATION: Uses Vec<u32> instead of HashMap for visit counting
     pub fn find_mrca(&self, leaf_nodes: &HashSet<u32>) -> Result<u32> {
         if leaf_nodes.is_empty() {
             anyhow::bail!("Cannot find MRCA of empty leaf set");
@@ -231,16 +248,16 @@ impl CompactTree {
         // BFS queue: start with all leaf nodes
         let mut queue: VecDeque<u32> = leaf_nodes.iter().copied().collect();
 
-        // Count how many times each node is visited
-        let mut visit_count: HashMap<u32, u32> = HashMap::new();
+        // OPTIMIZATION: Use Vec<u32> instead of HashMap (direct array access)
+        let mut visit_count = vec![0u32; self.get_num_nodes()];
         let total_leaves = leaf_nodes.len() as u32;
 
         while let Some(node) = queue.pop_front() {
-            // Increment visit count
-            *visit_count.entry(node).or_insert(0) += 1;
+            // Increment visit count (O(1) array access)
+            visit_count[node as usize] += 1;
 
             // If this node has been visited by all leaves, it's the MRCA
-            if visit_count[&node] == total_leaves {
+            if visit_count[node as usize] == total_leaves {
                 return Ok(node);
             }
 
@@ -264,6 +281,7 @@ impl CompactTree {
     /// 3. Use visited array for O(1) duplicate detection
     ///
     /// C++ reference: calculate_faiths_pd_optimized.cpp lines 36-71
+    /// OPTIMIZATION: Uses Vec<u8> instead of Vec<bool> (avoids bit-packing overhead)
     pub fn calculate_faiths_pd(&self, leaf_nodes: &[u32]) -> f64 {
         // Edge case: need at least 2 species
         if leaf_nodes.len() < 2 {
@@ -277,17 +295,19 @@ impl CompactTree {
             Err(_) => return 0.0,
         };
 
-        // Track visited nodes for O(1) duplicate detection
-        let mut visited = vec![false; self.get_num_nodes()];
+        // OPTIMIZATION: Use Vec<u8> instead of Vec<bool>
+        // Vec<bool> uses bit-packing which is slower than direct u8 access
+        // Matches C++ vector<uint8_t> optimization
+        let mut visited = vec![0u8; self.get_num_nodes()];
         let mut total_pd = 0.0_f64;
 
         // Walk from each leaf to MRCA, summing unique branch lengths
         for &leaf in leaf_nodes {
             let mut current = leaf;
             while current != mrca {
-                if !visited[current as usize] {
+                if visited[current as usize] == 0 {
                     total_pd += self.get_edge_length(current) as f64;
-                    visited[current as usize] = true;
+                    visited[current as usize] = 1;
                 }
                 current = self.get_parent(current);
             }
