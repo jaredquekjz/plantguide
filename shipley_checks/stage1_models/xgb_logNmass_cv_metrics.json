@@ -1,0 +1,15 @@
+{
+  "axis": "logNmass",
+  "n_folds": 10,
+  "n_obs": 4005,
+  "r2_mean": 0.55,
+  "r2_sd": 0.0614,
+  "rmse_mean": 0.2983,
+  "rmse_sd": 0.0212,
+  "mae_mean": 0.2306,
+  "mae_sd": 0.0163,
+  "within_10pct": 29.637,
+  "within_10pct_sd": 3.1147,
+  "within_25pct": 63.8181,
+  "within_25pct_sd": 4.1939
+}

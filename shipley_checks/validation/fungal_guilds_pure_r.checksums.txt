@@ -1,0 +1,6 @@
+MD5:    7f1519ce931dab09451f62f90641b7d6
+SHA256: 335d132cd7e57b973c315672f3bc29675129428a5d7c34f751b0a252f2cceec8
+
+File: shipley_checks/validation/fungal_guilds_pure_r.csv
+Size: 2,194,887 bytes
+Generated: 2025-11-10 09:28:05

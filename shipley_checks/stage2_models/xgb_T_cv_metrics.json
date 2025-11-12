@@ -1,0 +1,15 @@
+{
+  "axis": "T",
+  "n_folds": 10,
+  "n_obs": 6238,
+  "r2_mean": 0.806,
+  "r2_sd": 0.0214,
+  "rmse_mean": 0.7867,
+  "rmse_sd": 0.0392,
+  "mae_mean": 0.5463,
+  "mae_sd": 0.0159,
+  "accuracy_rank1_mean": 0.9348,
+  "accuracy_rank1_sd": 0.0081,
+  "accuracy_rank2_mean": 0.9843,
+  "accuracy_rank2_sd": 0.0063
+}

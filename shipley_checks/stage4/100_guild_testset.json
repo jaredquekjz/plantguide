@@ -1,0 +1,512 @@
+[
+  {
+    "guild_id": "guild_001",
+    "name": "edge_same_genus_quercus_2plant",
+    "size": 2,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000292300", "wfo-0000293817"],
+    "expected_behavior": "Low Faith's PD - same genus",
+    "tags": [
+      "edge_case",
+      "m1_low_pd"
+    ]
+  },
+  {
+    "guild_id": "guild_002",
+    "name": "edge_max_diversity_7plant",
+    "size": 7,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000448413", "wfo-0000516684", "wfo-0000310790", "wfo-0001083258", "wfo-0000801450", "wfo-0000364015", "wfo-0000679880"],
+    "expected_behavior": "High Faith's PD - different families",
+    "tags": [
+      "edge_case",
+      "m1_high_pd"
+    ]
+  },
+  {
+    "guild_id": "guild_003",
+    "name": "edge_all_stress_tolerant_5plant",
+    "size": 5,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000231956", "wfo-0000451836", "wfo-0000639120", "wfo-0000213911", "wfo-0000182122"],
+    "expected_behavior": "Zero CSR conflicts - all High-S",
+    "tags": [
+      "edge_case",
+      "m2_zero_conflict"
+    ]
+  },
+  {
+    "guild_id": "guild_004",
+    "name": "edge_all_competitive_5plant",
+    "size": 5,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000937758", "wfo-0000929073", "wfo-0000755500", "wfo-0000134371", "wfo-0000593651"],
+    "expected_behavior": "Maximum CSR conflicts - all High-C",
+    "tags": [
+      "edge_case",
+      "m2_max_conflict"
+    ]
+  },
+  {
+    "guild_id": "guild_005",
+    "name": "edge_monoform_herbaceous_5plant",
+    "size": 5,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": [],
+    "expected_behavior": "Low structural diversity - all herbs",
+    "tags": [
+      "edge_case",
+      "m6_low_diversity"
+    ]
+  },
+  {
+    "guild_id": "guild_006",
+    "name": "edge_max_structure_7plant",
+    "size": 7,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000685812", "wfo-0001113307", "wfo-0000553858", "wfo-0000419536", "wfo-0000192486", "wfo-0000366779", "wfo-0001249508"],
+    "expected_behavior": "High structural diversity - mixed forms",
+    "tags": [
+      "edge_case",
+      "m6_high_diversity"
+    ]
+  },
+  {
+    "guild_id": "guild_007",
+    "name": "edge_minimal_size_2plant",
+    "size": 2,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000434282", "wfo-0000332964"],
+    "expected_behavior": "Edge case - minimum guild size",
+    "tags": [
+      "edge_case",
+      "size_minimum"
+    ]
+  },
+  {
+    "guild_id": "guild_008",
+    "name": "edge_large_size_10plant",
+    "size": 10,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000478980", "wfo-0000585183", "wfo-0000123419", "wfo-0000129246", "wfo-0000349422", "wfo-0000539365", "wfo-0000143495", "wfo-0001136527", "wfo-0000647340", "wfo-0000990421"],
+    "expected_behavior": "Large guild for network effects",
+    "tags": [
+      "edge_case",
+      "size_large"
+    ]
+  },
+  {
+    "guild_id": "guild_009",
+    "name": "edge_mixed_csr_5plant",
+    "size": 5,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000777922", "wfo-0000288862", "wfo-0000212743", "wfo-0000652298"],
+    "expected_behavior": "Mixed CSR strategies",
+    "tags": [
+      "edge_case",
+      "m2_mixed"
+    ]
+  },
+  {
+    "guild_id": "guild_010",
+    "name": "edge_tropical_7plant",
+    "size": 7,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0000478980", "wfo-0001423854", "wfo-0001065169", "wfo-0000471231", "wfo-0000214576", "wfo-0000171442", "wfo-0000291421"],
+    "expected_behavior": "Tropical climate specialization",
+    "tags": [
+      "edge_case",
+      "climate_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_011",
+    "name": "systematic_2plant_tier_1_tropical",
+    "size": 2,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0000752064", "wfo-0000920704"],
+    "expected_behavior": "2-plant guild in tier_1_tropical",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_1_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_012",
+    "name": "systematic_2plant_tier_2_mediterranean",
+    "size": 2,
+    "climate_tier": "tier_2_mediterranean",
+    "plant_ids": ["wfo-0000604347", "wfo-0000367849"],
+    "expected_behavior": "2-plant guild in tier_2_mediterranean",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_2_mediterranean"
+    ]
+  },
+  {
+    "guild_id": "guild_013",
+    "name": "systematic_2plant_tier_3_humid_temperate",
+    "size": 2,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000686018", "wfo-0000680430"],
+    "expected_behavior": "2-plant guild in tier_3_humid_temperate",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_3_humid_temperate"
+    ]
+  },
+  {
+    "guild_id": "guild_014",
+    "name": "systematic_2plant_tier_4_continental",
+    "size": 2,
+    "climate_tier": "tier_4_continental",
+    "plant_ids": ["wfo-0000344675", "wfo-0001290595"],
+    "expected_behavior": "2-plant guild in tier_4_continental",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_4_continental"
+    ]
+  },
+  {
+    "guild_id": "guild_015",
+    "name": "systematic_2plant_tier_5_boreal_polar",
+    "size": 2,
+    "climate_tier": "tier_5_boreal_polar",
+    "plant_ids": ["wfo-0000346074", "wfo-0000222683"],
+    "expected_behavior": "2-plant guild in tier_5_boreal_polar",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_5_boreal_polar"
+    ]
+  },
+  {
+    "guild_id": "guild_016",
+    "name": "systematic_2plant_tier_6_arid",
+    "size": 2,
+    "climate_tier": "tier_6_arid",
+    "plant_ids": ["wfo-0001336881", "wfo-0000038238"],
+    "expected_behavior": "2-plant guild in tier_6_arid",
+    "tags": [
+      "systematic",
+      "size_2",
+      "climate_tier_6_arid"
+    ]
+  },
+  {
+    "guild_id": "guild_017",
+    "name": "systematic_3plant_tier_1_tropical",
+    "size": 3,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0000290094", "wfo-0000663323", "wfo-0001079605"],
+    "expected_behavior": "3-plant guild in tier_1_tropical",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_1_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_018",
+    "name": "systematic_3plant_tier_2_mediterranean",
+    "size": 3,
+    "climate_tier": "tier_2_mediterranean",
+    "plant_ids": ["wfo-0000477643", "wfo-0000624768", "wfo-0000559830"],
+    "expected_behavior": "3-plant guild in tier_2_mediterranean",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_2_mediterranean"
+    ]
+  },
+  {
+    "guild_id": "guild_019",
+    "name": "systematic_3plant_tier_3_humid_temperate",
+    "size": 3,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000359656", "wfo-0000668738", "wfo-0000769491"],
+    "expected_behavior": "3-plant guild in tier_3_humid_temperate",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_3_humid_temperate"
+    ]
+  },
+  {
+    "guild_id": "guild_020",
+    "name": "systematic_3plant_tier_4_continental",
+    "size": 3,
+    "climate_tier": "tier_4_continental",
+    "plant_ids": ["wfo-0000121527", "wfo-0000406316", "wfo-0000388524"],
+    "expected_behavior": "3-plant guild in tier_4_continental",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_4_continental"
+    ]
+  },
+  {
+    "guild_id": "guild_021",
+    "name": "systematic_3plant_tier_5_boreal_polar",
+    "size": 3,
+    "climate_tier": "tier_5_boreal_polar",
+    "plant_ids": ["wfo-1000000019", "wfo-0000455274", "wfo-0000126120"],
+    "expected_behavior": "3-plant guild in tier_5_boreal_polar",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_5_boreal_polar"
+    ]
+  },
+  {
+    "guild_id": "guild_022",
+    "name": "systematic_3plant_tier_6_arid",
+    "size": 3,
+    "climate_tier": "tier_6_arid",
+    "plant_ids": ["wfo-0001130939", "wfo-0000332390", "wfo-0001110850"],
+    "expected_behavior": "3-plant guild in tier_6_arid",
+    "tags": [
+      "systematic",
+      "size_3",
+      "climate_tier_6_arid"
+    ]
+  },
+  {
+    "guild_id": "guild_023",
+    "name": "systematic_5plant_tier_1_tropical",
+    "size": 5,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0000567124", "wfo-0000971141", "wfo-0000924251", "wfo-0001043056", "wfo-0000875889"],
+    "expected_behavior": "5-plant guild in tier_1_tropical",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_1_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_024",
+    "name": "systematic_5plant_tier_2_mediterranean",
+    "size": 5,
+    "climate_tier": "tier_2_mediterranean",
+    "plant_ids": ["wfo-0000257479", "wfo-0000426831", "wfo-0000495164", "wfo-0000066428", "wfo-0000463744"],
+    "expected_behavior": "5-plant guild in tier_2_mediterranean",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_2_mediterranean"
+    ]
+  },
+  {
+    "guild_id": "guild_025",
+    "name": "systematic_5plant_tier_3_humid_temperate",
+    "size": 5,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000210930", "wfo-0000481474", "wfo-0000211392", "wfo-0000720133", "wfo-0000187921"],
+    "expected_behavior": "5-plant guild in tier_3_humid_temperate",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_3_humid_temperate"
+    ]
+  },
+  {
+    "guild_id": "guild_026",
+    "name": "systematic_5plant_tier_4_continental",
+    "size": 5,
+    "climate_tier": "tier_4_continental",
+    "plant_ids": ["wfo-0001017561", "wfo-0001015888", "wfo-0000028123", "wfo-0000438697", "wfo-0001407557"],
+    "expected_behavior": "5-plant guild in tier_4_continental",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_4_continental"
+    ]
+  },
+  {
+    "guild_id": "guild_027",
+    "name": "systematic_5plant_tier_5_boreal_polar",
+    "size": 5,
+    "climate_tier": "tier_5_boreal_polar",
+    "plant_ids": ["wfo-0000064074", "wfo-1000057696", "wfo-0000713386", "wfo-0000069222", "wfo-0001040402"],
+    "expected_behavior": "5-plant guild in tier_5_boreal_polar",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_5_boreal_polar"
+    ]
+  },
+  {
+    "guild_id": "guild_028",
+    "name": "systematic_5plant_tier_6_arid",
+    "size": 5,
+    "climate_tier": "tier_6_arid",
+    "plant_ids": ["wfo-0000714326", "wfo-0001106841", "wfo-0000129366", "wfo-0001044664", "wfo-0000817038"],
+    "expected_behavior": "5-plant guild in tier_6_arid",
+    "tags": [
+      "systematic",
+      "size_5",
+      "climate_tier_6_arid"
+    ]
+  },
+  {
+    "guild_id": "guild_029",
+    "name": "systematic_7plant_tier_1_tropical",
+    "size": 7,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0001267164", "wfo-0000868222", "wfo-4000035688", "wfo-0000012549", "wfo-0000458710", "wfo-0000528787", "wfo-0000332038"],
+    "expected_behavior": "7-plant guild in tier_1_tropical",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_1_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_030",
+    "name": "systematic_7plant_tier_2_mediterranean",
+    "size": 7,
+    "climate_tier": "tier_2_mediterranean",
+    "plant_ids": ["wfo-0000607281", "wfo-0000186611", "wfo-0000535960", "wfo-0000222554", "wfo-0001090276", "wfo-0000244138", "wfo-0000785119"],
+    "expected_behavior": "7-plant guild in tier_2_mediterranean",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_2_mediterranean"
+    ]
+  },
+  {
+    "guild_id": "guild_031",
+    "name": "systematic_7plant_tier_3_humid_temperate",
+    "size": 7,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000781866", "wfo-0000280103", "wfo-0000224424", "wfo-0000425877", "wfo-0000439880", "wfo-0000385103", "wfo-0000353058"],
+    "expected_behavior": "7-plant guild in tier_3_humid_temperate",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_3_humid_temperate"
+    ]
+  },
+  {
+    "guild_id": "guild_032",
+    "name": "systematic_7plant_tier_4_continental",
+    "size": 7,
+    "climate_tier": "tier_4_continental",
+    "plant_ids": ["wfo-0000023753", "wfo-0000359869", "wfo-0000186249", "wfo-0000213789", "wfo-0000004762", "wfo-0000174689", "wfo-0000359413"],
+    "expected_behavior": "7-plant guild in tier_4_continental",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_4_continental"
+    ]
+  },
+  {
+    "guild_id": "guild_033",
+    "name": "systematic_7plant_tier_5_boreal_polar",
+    "size": 7,
+    "climate_tier": "tier_5_boreal_polar",
+    "plant_ids": ["wfo-0000858176", "wfo-0001427013", "wfo-0000581628", "wfo-0000924382", "wfo-0001135819", "wfo-0000020195", "wfo-0000426850"],
+    "expected_behavior": "7-plant guild in tier_5_boreal_polar",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_5_boreal_polar"
+    ]
+  },
+  {
+    "guild_id": "guild_034",
+    "name": "systematic_7plant_tier_6_arid",
+    "size": 7,
+    "climate_tier": "tier_6_arid",
+    "plant_ids": ["wfo-0000691989", "wfo-0000458771", "wfo-0000904664", "wfo-0000165078", "wfo-0000706950", "wfo-0000954846", "wfo-0000707616"],
+    "expected_behavior": "7-plant guild in tier_6_arid",
+    "tags": [
+      "systematic",
+      "size_7",
+      "climate_tier_6_arid"
+    ]
+  },
+  {
+    "guild_id": "guild_035",
+    "name": "systematic_10plant_tier_1_tropical",
+    "size": 10,
+    "climate_tier": "tier_1_tropical",
+    "plant_ids": ["wfo-0000176231", "wfo-0001109083", "wfo-0000710683", "wfo-0000457782", "wfo-0000899442", "wfo-0000410062", "wfo-0000262848", "wfo-0001141713", "wfo-0000428249", "wfo-0001423766"],
+    "expected_behavior": "10-plant guild in tier_1_tropical",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_1_tropical"
+    ]
+  },
+  {
+    "guild_id": "guild_036",
+    "name": "systematic_10plant_tier_2_mediterranean",
+    "size": 10,
+    "climate_tier": "tier_2_mediterranean",
+    "plant_ids": ["wfo-0001363472", "wfo-0000714388", "wfo-0000487165", "wfo-0000854603", "wfo-0000775706", "wfo-0000387729", "wfo-0000903590", "wfo-0000214049", "wfo-0000631375", "wfo-0000444400"],
+    "expected_behavior": "10-plant guild in tier_2_mediterranean",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_2_mediterranean"
+    ]
+  },
+  {
+    "guild_id": "guild_037",
+    "name": "systematic_10plant_tier_3_humid_temperate",
+    "size": 10,
+    "climate_tier": "tier_3_humid_temperate",
+    "plant_ids": ["wfo-0000179103", "wfo-0000752281", "wfo-0000551883", "wfo-0000952160", "wfo-0000212708", "wfo-0000890633", "wfo-0000542862", "wfo-0001016575", "wfo-0000644338", "wfo-0000700066"],
+    "expected_behavior": "10-plant guild in tier_3_humid_temperate",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_3_humid_temperate"
+    ]
+  },
+  {
+    "guild_id": "guild_038",
+    "name": "systematic_10plant_tier_4_continental",
+    "size": 10,
+    "climate_tier": "tier_4_continental",
+    "plant_ids": ["wfo-0000403540", "wfo-0000813862", "wfo-0000250516", "wfo-0001135392", "wfo-0000424245", "wfo-0000452192", "wfo-0000349422", "wfo-0001099797", "wfo-0000836548", "wfo-0000631741"],
+    "expected_behavior": "10-plant guild in tier_4_continental",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_4_continental"
+    ]
+  },
+  {
+    "guild_id": "guild_039",
+    "name": "systematic_10plant_tier_5_boreal_polar",
+    "size": 10,
+    "climate_tier": "tier_5_boreal_polar",
+    "plant_ids": ["wfo-0000159035", "wfo-0000421096", "wfo-0000374651", "wfo-0000137336", "wfo-0000599013", "wfo-0000213559", "wfo-0000614324", "wfo-0000191843", "wfo-0000494799", "wfo-0000356850"],
+    "expected_behavior": "10-plant guild in tier_5_boreal_polar",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_5_boreal_polar"
+    ]
+  },
+  {
+    "guild_id": "guild_040",
+    "name": "systematic_10plant_tier_6_arid",
+    "size": 10,
+    "climate_tier": "tier_6_arid",
+    "plant_ids": ["wfo-0000596343", "wfo-0000658883", "wfo-0000419633", "wfo-0000224153", "wfo-0000038658", "wfo-0000982782", "wfo-0000665018", "wfo-0001296467", "wfo-0000241796", "wfo-0000619477"],
+    "expected_behavior": "10-plant guild in tier_6_arid",
+    "tags": [
+      "systematic",
+      "size_10",
+      "climate_tier_6_arid"
+    ]
+  }
+]

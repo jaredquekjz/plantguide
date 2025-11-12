@@ -1,0 +1,17 @@
+Loading traits from: data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv
+Loading EIVE residuals from: data/shipley_checks/modelling/canonical_imputation_input_11711_bill.csv
+Using period EIVE column names (EIVEres.L, etc.) - R read.csv default
+Loading WFO-to-tree mapping from: data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv
+Loading phylogeny from: data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk
+Tree has 11010 tips
+Found 11673 / 11711 species in phylogeny
+Pruned tree to 11010 tips
+Axis T: computed p_phylo for 11010 / 11711 species
+Axis M: computed p_phylo for 11010 / 11711 species
+Axis L: computed p_phylo for 11010 / 11711 species
+Axis N: computed p_phylo for 11010 / 11711 species
+Axis R: computed p_phylo for 11010 / 11711 species
+Writing output to: data/shipley_checks/imputation/p_phylo_11711_bill.csv
+Done!
+p_phylo_T p_phylo_M p_phylo_L p_phylo_N p_phylo_R 
+    11010     11010     11010     11010     11010 

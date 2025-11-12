@@ -1,0 +1,136 @@
+================================================================================
+STAGE 4 VERIFICATION: Multitrophic Networks
+================================================================================
+2025-11-09 20:42:27 
+
+================================================================================
+PART 1: HERBIVORE-PREDATOR NETWORK
+================================================================================
+
+Test 1.1: File Existence
+  Checking: shipley_checks/stage4/herbivore_predators_11711.parquet 
+  ✓ PASS: File exists (86.7 KB)
+
+Loading herbivore-predator network...
+  - Loaded 934 herbivore species
+
+Test 1.2: Column Structure
+  ✓ PASS: All expected columns present
+
+Test 1.3: Predator Count Matches List Length
+  ✓ PASS: All counts match list lengths
+
+Test 1.4: Coverage Statistics
+  Total herbivores: 934
+  Total predator relationships: 14,282
+  Avg predators per herbivore: 15.3
+  Median: 2, Max: 1416
+
+  ✓ PASS: Coverage statistics look reasonable
+
+================================================================================
+PART 2: PATHOGEN-ANTAGONIST NETWORK
+================================================================================
+
+Test 2.1: File Existence
+  Checking: shipley_checks/stage4/pathogen_antagonists_11711.parquet 
+  ✓ PASS: File exists (67.8 KB)
+
+Loading pathogen-antagonist network...
+  - Loaded 942 pathogen species
+
+Test 2.2: Column Structure
+  ✓ PASS: All expected columns present
+
+Test 2.3: Antagonist Count Matches List Length
+  ✓ PASS: All counts match list lengths
+
+Test 2.4: Coverage Statistics
+  Total pathogens: 942
+  Total antagonist relationships: 5,873
+  Avg antagonists per pathogen: 6.2
+  Median: 2, Max: 742
+
+  ✓ PASS: Coverage statistics look reasonable
+
+Test 2.5: Known Data Quality Issue
+  ⚠️  DOCUMENTED ISSUE: Pathogen-antagonist relationships inverted in ~95%% of data
+  This is a known GloBI data quality issue documented in 4.3b_Data_Extraction_Verification.md
+  Relationships are still used but interpreted with caution in scoring.
+
+================================================================================
+PART 3: INSECT-FUNGAL PARASITE NETWORK
+================================================================================
+
+Test 3.1: File Existence
+  Checking: shipley_checks/stage4/insect_fungal_parasites_11711.parquet 
+  ✓ PASS: File exists (75.7 KB)
+
+Loading insect-fungal parasite network...
+  - Loaded 1,212 insect/mite species
+
+Test 3.2: Column Structure
+  ✓ PASS: All expected columns present
+
+Test 3.3: Fungal Parasite Count Matches List Length
+  ✓ PASS: All counts match list lengths
+
+Test 3.4: Coverage Statistics
+  Total insects/mites: 1,212
+  Total fungus-insect relationships: 6,724
+  Avg fungi per insect: 5.5
+  Median: 1, Max: 911
+
+  ✓ PASS: Coverage statistics look reasonable
+
+Test 3.5: Taxonomic Breakdown
+# A tibble: 2 × 3
+  herbivore_class count   pct
+  <chr>           <int> <dbl>
+1 Insecta          1165 96.1 
+2 Arachnida          47  3.88
+
+  ✓ PASS: Insecta dominates as expected (>90%)
+
+================================================================================
+PART 4: CROSS-REFERENCE CHECKS
+================================================================================
+
+Loading organism profiles for cross-reference...
+  - Loaded 11,711 plant profiles
+
+Test 4.1: Herbivore Network Coverage
+  Unique herbivores in profiles: 5,910
+  Herbivores with predators in network: 934
+  Coverage: 15.8%
+  ✓ Reasonable coverage given GloBI data limitations
+
+Test 4.2: Pathogen Network Coverage
+  Unique pathogens in profiles: 35,196
+  Pathogens with antagonists in network: 942
+  Coverage: 2.7%
+  ⚠️  WARNING: Low coverage (<3%) - most pathogens lack antagonist data
+  (This is expected due to GloBI data sparsity)
+
+Test 4.3: Insect-Fungal Network Overlap
+  Insects in fungal network: 1,212
+  Also appear in plant profiles: 116 (9.6%)
+  ✓ Some overlap exists for biocontrol calculations
+
+================================================================================
+VERIFICATION SUMMARY
+================================================================================
+
+✓ ALL CRITICAL TESTS PASSED
+
+Summary:
+  - Herbivore-predator network: 934 herbivores, 14,282 relationships
+  - Pathogen-antagonist network: 942 pathogens, 5,873 relationships
+  - Insect-fungal parasite network: 1,212 insects, 6,724 relationships
+
+✓ Datasets are ready for guild calibration
+
+================================================================================
+Completed: 2025-11-09 20:42:27 
+Report saved to: shipley_checks/reports/verify_multitrophic_networks_bill.txt 
+================================================================================

@@ -8,6 +8,9 @@
 use crate::data::GuildData;
 use crate::metrics::*;
 use crate::utils::normalization::{Calibration, CsrCalibration};
+use crate::explanation::{generate_m1_fragment, generate_m2_fragment, generate_m3_fragment,
+    generate_m4_fragment, generate_m5_fragment, generate_m6_fragment, generate_m7_fragment,
+    MetricFragment};
 use anyhow::{Result};
 use polars::prelude::*;
 use rayon::prelude::*;
@@ -367,6 +370,172 @@ impl GuildScorer {
             raw_scores,
             normalized,
         })
+    }
+
+    /// Score a guild WITH explanation generation (parallel)
+    ///
+    /// Generates both scores and explanation fragments in a single parallel pass.
+    /// Each metric calculates its score and generates its explanation fragment inline.
+    ///
+    /// Returns: (GuildScore, Vec<MetricFragment>, DataFrame of guild_plants)
+    pub fn score_guild_with_explanation_parallel(
+        &self,
+        plant_ids: &[String],
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame)> {
+        let n_plants = plant_ids.len();
+
+        // Filter to guild plants (sequential - fast operation)
+        let id_set: std::collections::HashSet<_> = plant_ids.iter().collect();
+        let plant_col = self.data.plants.column("wfo_taxon_id")?.str()?;
+        let mask: BooleanChunked = plant_col
+            .into_iter()
+            .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+            .collect();
+        let guild_plants = self.data.plants.filter(&mask)?;
+
+        if guild_plants.height() != n_plants {
+            anyhow::bail!("Missing plant data for some IDs");
+        }
+
+        // Check climate compatibility (sequential - fast operation)
+        self.check_climate_compatibility(&guild_plants)?;
+
+        // Compute all 7 metrics + explanations IN PARALLEL using Rayon
+        // Each metric is independent and can run on a separate thread
+        type MetricResultWithFragment = (Box<dyn std::any::Any + Send>, MetricFragment);
+
+        let metric_results: Vec<Result<MetricResultWithFragment>> = (0..7)
+            .into_par_iter()
+            .map(|i| -> Result<MetricResultWithFragment> {
+                match i {
+                    0 => {
+                        let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
+                        let display_score = 100.0 - m1.normalized;
+                        let fragment = generate_m1_fragment(&m1, display_score);
+                        Ok((Box::new(m1), fragment))
+                    }
+                    1 => {
+                        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+                        let display_score = 100.0 - m2.norm;
+                        let fragment = generate_m2_fragment(&m2, display_score);
+                        Ok((Box::new(m2), fragment))
+                    }
+                    2 => {
+                        let m3 = calculate_m3(
+                            plant_ids,
+                            &self.data.organisms,
+                            &self.data.fungi,
+                            &self.data.herbivore_predators,
+                            &self.data.insect_parasites,
+                            &self.calibration,
+                        )?;
+                        let display_score = m3.norm;
+                        let fragment = generate_m3_fragment(&m3, display_score);
+                        Ok((Box::new(m3), fragment))
+                    }
+                    3 => {
+                        let m4 = calculate_m4(
+                            plant_ids,
+                            &self.data.fungi,
+                            &self.data.pathogen_antagonists,
+                            &self.calibration,
+                        )?;
+                        let display_score = m4.norm;
+                        let fragment = generate_m4_fragment(&m4, display_score);
+                        Ok((Box::new(m4), fragment))
+                    }
+                    4 => {
+                        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+                        let display_score = m5.norm;
+                        let fragment = generate_m5_fragment(&m5, display_score);
+                        Ok((Box::new(m5), fragment))
+                    }
+                    5 => {
+                        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+                        let display_score = m6.norm;
+                        let fragment = generate_m6_fragment(&m6, display_score);
+                        Ok((Box::new(m6), fragment))
+                    }
+                    6 => {
+                        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+                        let display_score = m7.norm;
+                        let fragment = generate_m7_fragment(&m7, display_score);
+                        Ok((Box::new(m7), fragment))
+                    }
+                    _ => unreachable!(),
+                }
+            })
+            .collect();
+
+        // Unwrap results and separate metrics from fragments
+        let mut unwrapped_results = Vec::new();
+        let mut fragments = Vec::new();
+
+        for result in metric_results {
+            let (metric_result, fragment) = result?;
+            unwrapped_results.push(metric_result);
+            fragments.push(fragment);
+        }
+
+        // Downcast back to concrete types
+        let m1 = unwrapped_results[0]
+            .downcast_ref::<M1Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M1"))?;
+        let m2 = unwrapped_results[1]
+            .downcast_ref::<M2Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M2"))?;
+        let m3 = unwrapped_results[2]
+            .downcast_ref::<M3Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M3"))?;
+        let m4 = unwrapped_results[3]
+            .downcast_ref::<M4Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M4"))?;
+        let m5 = unwrapped_results[4]
+            .downcast_ref::<M5Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M5"))?;
+        let m6 = unwrapped_results[5]
+            .downcast_ref::<M6Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M6"))?;
+        let m7 = unwrapped_results[6]
+            .downcast_ref::<M7Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M7"))?;
+
+        // Raw scores
+        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+
+        // Normalized percentiles (before display inversion)
+        let normalized = [
+            m1.normalized,
+            m2.norm,
+            m3.norm,
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Display scores (invert M1 and M2)
+        let metrics = [
+            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
+            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
+            m3.norm,                // M3-M7: direct percentile
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Overall score: simple average
+        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+
+        let guild_score = GuildScore {
+            overall_score,
+            metrics,
+            raw_scores,
+            normalized,
+        };
+
+        Ok((guild_score, fragments, guild_plants))
     }
 }
 

@@ -54,3 +54,5 @@ shipley_checks/**/*.parquet
 shipley_checks/**/*.csv
 shipley_checks/**/*.nwk
 shipley_checks/**/*.rds
+shipley_checks/**/*.tar.xz
+shipley_checks/**/*.tar.gz

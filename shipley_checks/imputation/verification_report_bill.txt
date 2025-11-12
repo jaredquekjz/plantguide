@@ -1,0 +1,8 @@
+BILL'S VERIFICATION REPORT
+Generated: 2025-11-07 19:36:09 
+
+Dataset: data/shipley_checks/imputation/bill_complete_11711_20251107.csv 
+Species: 11711 
+Features: 736 
+
+Status: PASS 

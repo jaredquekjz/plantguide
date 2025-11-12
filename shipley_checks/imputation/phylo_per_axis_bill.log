@@ -1,0 +1,35 @@
+======================================================================
+BILL'S VERIFICATION: PER-AXIS PHYLO PREDICTOR CALCULATOR
+======================================================================
+Calculating context-matched p_phylo for each axis from Bill's pipeline
+
+[tree] Loading full tree: data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk 
+[tree] Loaded 11010 tips
+
+[tree] Loading WFO-to-tree mapping
+[tree] Loaded mapping for 11711 species
+
+[data] Loading Bill's canonical input for EIVE values
+[data] Loaded 11711 species
+
+======================================================================
+Processing L axis
+======================================================================
+Error in `filter()`:
+ℹ In argument: `!is.na(EIVEres.L)`.
+Caused by error:
+! object 'EIVEres.L' not found
+Backtrace:
+     ▆
+  1. ├─bill_data %>% ...
+  2. ├─dplyr::filter(., !is.na(!!sym(eive_col)), !is.na(tree_tip))
+  3. ├─dplyr:::filter.data.frame(., !is.na(!!sym(eive_col)), !is.na(tree_tip))
+  4. │ └─dplyr:::filter_rows(.data, dots, by)
+  5. │   └─dplyr:::filter_eval(...)
+  6. │     ├─base::withCallingHandlers(...)
+  7. │     └─mask$eval_all_filter(dots, env_filter)
+  8. │       └─dplyr (local) eval()
+  9. └─base::.handleSimpleError(...)
+ 10.   └─dplyr (local) h(simpleError(msg, call))
+ 11.     └─rlang::abort(message, class = error_class, parent = parent, call = error_call)
+Execution halted
