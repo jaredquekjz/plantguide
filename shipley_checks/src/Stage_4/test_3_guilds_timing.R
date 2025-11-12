@@ -32,14 +32,14 @@ guilds <- list(
     plant_ids = c("wfo-0000757278", "wfo-0000944034", "wfo-0000186915",
                   "wfo-0000421791", "wfo-0000418518", "wfo-0000841021",
                   "wfo-0000394258"),
-    expected = 55.441621
+    expected = 53.011553
   ),
   list(
     name = "Stress-Tolerant",
     plant_ids = c("wfo-0000721951", "wfo-0000955348", "wfo-0000901050",
                   "wfo-0000956222", "wfo-0000777518", "wfo-0000349035",
                   "wfo-0000209726"),
-    expected = 45.442341
+    expected = 42.380873
   )
 )
 

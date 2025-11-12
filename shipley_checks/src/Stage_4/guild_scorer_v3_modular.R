@@ -129,7 +129,7 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
           wfo_taxon_id, wfo_scientific_name, family, genus,
           height_m, try_growth_form,
           CSR_C = C, CSR_S = S, CSR_R = R,
-          light_pref = `EIVEres-L`,
+          light_pref = `EIVEres-L_complete`,
           tier_1_tropical, tier_2_mediterranean, tier_3_humid_temperate,
           tier_4_continental, tier_5_boreal_polar, tier_6_arid
         )
