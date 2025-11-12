@@ -34,7 +34,15 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
                 let plant_list: Vec<String> = group
                     .plants
                     .iter()
-                    .map(|p| format!("{} ({:.1}m)", p.name, p.height_m))
+                    .map(|p| {
+                        let light_label = match p.light_pref {
+                            Some(l) if l < 3.2 => " [shade-tolerant]",
+                            Some(l) if l > 7.47 => " [sun-loving]",
+                            Some(_) => " [flexible]",
+                            None => "",
+                        };
+                        format!("{} ({:.1}m{})", p.name, p.height_m, light_label)
+                    })
                     .collect();
 
                 detail.push_str(&plant_list.join(", "));
@@ -86,11 +94,19 @@ mod tests {
             growth_form_groups: vec![
                 GrowthFormGroup {
                     form_name: "Tree".to_string(),
-                    plants: vec![PlantHeight {
-                        name: "Oak".to_string(),
-                        height_m: 15.0,
-                    }],
-                    height_range: (15.0, 15.0),
+                    plants: vec![
+                        PlantHeight {
+                            name: "Oak".to_string(),
+                            height_m: 15.0,
+                            light_pref: Some(6.5),  // flexible
+                        },
+                        PlantHeight {
+                            name: "Beech".to_string(),
+                            height_m: 12.0,
+                            light_pref: Some(2.5),  // shade-tolerant
+                        },
+                    ],
+                    height_range: (12.0, 15.0),
                 },
             ],
         };
@@ -103,6 +119,8 @@ mod tests {
         assert_eq!(benefit.metric_code, "M6");
         assert!(benefit.message.contains("5 growth forms"));
         assert!(benefit.message.contains("8.5m height range"));
+        assert!(benefit.detail.contains("[flexible]"));
+        assert!(benefit.detail.contains("[shade-tolerant]"));
     }
 
     #[test]

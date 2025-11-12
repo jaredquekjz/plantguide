@@ -10,11 +10,12 @@ use rustc_hash::{FxHashSet, FxHashMap};
 use anyhow::Result;
 use crate::utils::{Calibration, percentile_normalize};
 
-/// Plant with height information
+/// Plant with height and light preference information
 #[derive(Debug, Clone)]
 pub struct PlantHeight {
     pub name: String,
     pub height_m: f64,
+    pub light_pref: Option<f64>,  // EIVE-L value (1-9)
 }
 
 /// Growth form group with plants
@@ -148,8 +149,9 @@ pub fn calculate_m6(
         0.0
     };
 
-    // Group plants by growth form with heights
+    // Group plants by growth form with heights and light preferences
     let plant_names = guild_plants.column("wfo_taxon_name")?.str()?;
+    let light_prefs = guild_plants.column("light_pref")?.f64()?;
     let mut form_groups: FxHashMap<String, Vec<PlantHeight>> = FxHashMap::default();
 
     for idx in 0..n {
@@ -159,12 +161,14 @@ pub fn calculate_m6(
             orig_heights.get(idx),
         ) {
             if !form.is_empty() {
+                let light_pref = light_prefs.get(idx);
                 form_groups
                     .entry(form.to_string())
                     .or_insert_with(Vec::new)
                     .push(PlantHeight {
                         name: name.to_string(),
                         height_m: height,
+                        light_pref,
                     });
             }
         }
