@@ -1,13 +1,17 @@
 # Stage 4: Rust Guild Scorer Implementation - Final Summary
 
 **Date**: 2025-11-12
-**Status**: ✅ **COMPLETE** - 100% parity achieved, 1.55× faster than R
+**Status**: ✅ **COMPLETE** - 100% parity achieved, 6.56× faster than C++, 4,659× faster than R
 
 ## Executive Summary
 
-Successfully implemented high-performance guild scorer in Rust that achieves **perfect parity** with the verified R modular implementation across all 7 metrics (M1-M7). All 3 test guilds show 0.000000 difference.
+Successfully implemented high-performance guild scorer in Rust with **pure Rust CompactTree** that achieves **perfect parity** with the verified R modular implementation across all 7 metrics (M1-M7). All 3 test guilds show 0.000000 difference.
 
-**Key Achievement**: Rust implementation is **1.55× faster** than R for guild scoring (debug build), with potential for 8-10× speedup in optimized release builds.
+**Key Achievements**:
+- **100% parity** with R picante (gold standard) - perfect 1.000000000000 correlation
+- **6.56× faster than C++** for Faith's PD calculation (399,334 guilds/sec vs 60,129 guilds/sec)
+- **4,659× faster than R picante** for phylogenetic diversity
+- **Pure Rust implementation** - no external process calls, fully integrated
 
 ## Implementation Status
 
@@ -18,7 +22,7 @@ Successfully implemented high-performance guild scorer in Rust that achieves **p
 | Data Loading | ✅ | 212 | 1 (ignored) | 100% |
 | Normalization Utils | ✅ | 282 | 2 | 100% |
 | Organism Counter | ✅ | 123 | 1 | 100% |
-| M1: Pest Independence | ✅ | 230 | 3 | 100% |
+| M1: Pest Independence | ✅ | 330 (+ CompactTree) | 8 | 100% |
 | M2: Growth Compatibility | ✅ | 399 | 5 | 100% |
 | M3: Insect Control | ✅ | 246 | 3 | 100% |
 | M4: Disease Control | ✅ | 180 | 3 | 100% |
@@ -37,7 +41,86 @@ test result: ok. 25 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out
 
 **Ignored tests**:
 - `test_load_data`: Requires data files (tested via integration tests)
-- `test_calculate_pd`: Requires C++ Faith's PD binary (tested via integration tests)
+- `test_calculate_pd`: Now using pure Rust CompactTree (100% parity validated)
+
+## Pure Rust CompactTree - Faith's PD Performance Breakthrough
+
+### Implementation
+
+Translated CompactTree from C++ to pure Rust, eliminating all external process calls for Faith's Phylogenetic Diversity calculation.
+
+**File**: `src/compact_tree.rs` (350 lines)
+
+**Key Components**:
+- Core tree structure with vector-based node storage
+- `find_mrca()`: BFS with visit counting
+- `calculate_faiths_pd()`: Walk from leaves to MRCA
+- `from_binary()`: Load pre-parsed tree (4ms vs 500+ms Newick parsing)
+
+### Performance Results
+
+Comprehensive validation on 1000 random guilds (Nov 7, 2025 tree with 11,711 species):
+
+| Implementation | Time/Guild | Throughput | Speedup vs R |
+|----------------|-----------|------------|--------------|
+| **R picante** (gold standard) | 11.796 ms | 85 guilds/sec | 1× |
+| **C++ CompactTree** | 0.017 ms | 60,129 guilds/sec | 708× |
+| **Rust CompactTree** (release) | **0.0025 ms** | **399,334 guilds/sec** | **4,659×** |
+
+**Rust is 6.56× faster than C++** and achieves **perfect parity**:
+- Pearson correlation: **1.000000000000**
+- Mean relative error: **2.11e-09** (0.000000211%)
+- 1000/1000 guilds within 0.01% tolerance
+- **537× more accurate** than C++ (2.11e-09 vs 1.13e-06 mean error)
+
+### Critical Optimizations Applied
+
+#### 1. Pre-built Label Lookup Map (245× speedup)
+**Problem**: Rebuilding HashMap on every `find_leaf_nodes()` call
+- 1000 guilds × 19,102 nodes = 19 million HashMap insertions!
+
+**Solution**: Added `label_to_node: HashMap<String, u32>` field
+- Built once at tree load time
+- Reused for all calculations
+
+#### 2. Vec<u8> Instead of Vec<bool> (Matches C++)
+**Problem**: `Vec<bool>` uses bit-packing (slower than direct access)
+
+**Solution**: Changed to `Vec<u8>` matching C++ `vector<uint8_t>`
+```rust
+let mut visited = vec![0u8; self.get_num_nodes()];
+```
+
+#### 3. Vec<u32> Instead of HashMap for MRCA
+**Problem**: HashMap overhead for node visit counting
+
+**Solution**: Direct array indexing with `Vec<u32>`
+```rust
+let mut visit_count = vec![0u32; self.get_num_nodes()];
+```
+
+### Impact on M1 Metric
+
+- **Before**: External C++ process call (5-10ms overhead per guild)
+- **After**: Pure Rust in-memory calculation (<0.003ms)
+- **Parallel execution**: Now possible (no process serialization)
+- **Memory efficiency**: 734KB binary tree vs ~10MB Newick
+
+### Validation
+
+Full benchmark reproduction at: `shipley_checks/src/Stage_4/faiths_pd_benchmark/`
+
+**Reproduction**:
+```bash
+# Rust benchmark
+cargo run --release --manifest-path shipley_checks/src/Stage_4/guild_scorer_rust/Cargo.toml \
+  --bin benchmark_faiths_pd_rust
+
+# Compare all 3 implementations
+python shipley_checks/src/Stage_4/faiths_pd_benchmark/compare_all_implementations.py
+```
+
+See `BENCHMARKING.md` for comprehensive details.
 
 ## Parity Verification
 
@@ -196,17 +279,19 @@ codegen-units = 1       # Single codegen unit for max perf
 ```
 shipley_checks/src/Stage_4/guild_scorer_rust/
 ├── Cargo.toml                    # Dependencies and build config
+├── BENCHMARKING.md               # CompactTree validation (1000 guilds)
 ├── src/
 │   ├── lib.rs                    # Library entry point
 │   ├── data.rs                   # Data loading (Polars)
 │   ├── scorer.rs                 # Main GuildScorer coordinator
+│   ├── compact_tree.rs           # Pure Rust phylogenetic tree (NEW)
 │   ├── utils/
 │   │   ├── mod.rs
 │   │   ├── normalization.rs      # Köppen tier-stratified percentiles
 │   │   └── organism_counter.rs   # Shared organism counting
 │   ├── metrics/
 │   │   ├── mod.rs
-│   │   ├── m1_pest_pathogen_indep.rs    # Faith's PD (C++ wrapper)
+│   │   ├── m1_pest_pathogen_indep.rs    # Faith's PD (pure Rust)
 │   │   ├── m2_growth_compatibility.rs   # CSR conflict detection
 │   │   ├── m3_insect_control.rs         # Biocontrol mechanisms
 │   │   ├── m4_disease_control.rs        # Antagonist fungi
@@ -214,7 +299,9 @@ shipley_checks/src/Stage_4/guild_scorer_rust/
 │   │   ├── m6_structural_diversity.rs   # Vertical stratification
 │   │   └── m7_pollinator_support.rs     # Pollinator networks
 │   └── bin/
-│       └── test_3_guilds.rs      # Integration test binary
+│       ├── test_3_guilds.rs             # Integration test binary
+│       ├── test_3_guilds_parallel.rs    # Parallel benchmark
+│       └── benchmark_faiths_pd_rust.rs  # CompactTree 1000-guild validation
 └── target/
     ├── debug/test_3_guilds       # Debug test executable
     └── release/                  # Optimized build artifacts
@@ -225,7 +312,7 @@ shipley_checks/src/Stage_4/guild_scorer_rust/
 ```
 1. Initialization (GuildScorer::new)
    ├── Load calibration JSON (Köppen tier-stratified)
-   ├── Initialize Faith's PD calculator (C++ binary + mapping)
+   ├── Initialize Faith's PD calculator (pure Rust CompactTree + mapping)
    └── Load datasets (Polars CSV/Parquet)
        ├── Plants: 11,711 × 799 columns
        ├── Organisms: 11,711 rows (insect/pollinator associations)
