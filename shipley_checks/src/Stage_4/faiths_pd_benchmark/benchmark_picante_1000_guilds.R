@@ -4,14 +4,14 @@
 library(ape)
 library(picante)
 
-# Load tree
+# Load tree (UPDATED: Nov 7, 2025 tree with 11,711 species)
 cat("Loading tree...\n")
-tree <- read.tree("data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk")
+tree <- read.tree("data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk")
 cat("Tree loaded:", length(tree$tip.label), "tips\n")
 
 # Load guilds
 cat("Loading guilds...\n")
-guilds_df <- read.csv("data/stage4/test_guilds_1000.csv", stringsAsFactors = FALSE)
+guilds_df <- read.csv("shipley_checks/stage4/test_guilds_1000.csv", stringsAsFactors = FALSE)
 cat("Loaded", nrow(guilds_df), "guilds\n")
 
 # Function to calculate Faith's PD for one guild
@@ -55,7 +55,7 @@ results_df <- data.frame(
     guild_size = guilds_df$guild_size,
     faiths_pd = results
 )
-write.csv(results_df, "data/stage4/picante_results_1000.csv", row.names = FALSE)
+write.csv(results_df, "shipley_checks/stage4/picante_results_1000.csv", row.names = FALSE)
 
 # Print summary
 cat("\n=== R PICANTE BENCHMARK (GOLD STANDARD) ===\n")
@@ -63,4 +63,4 @@ cat("Guilds processed:", length(results), "\n")
 cat("Total time:", round(total_time_sec, 2), "seconds\n")
 cat("Mean time per guild:", round(mean_time_ms, 3), "ms\n")
 cat("Throughput:", round(length(results) / total_time_sec, 1), "guilds/second\n")
-cat("\nResults saved to: data/stage4/picante_results_1000.csv\n")
+cat("\nResults saved to: shipley_checks/stage4/picante_results_1000.csv\n")

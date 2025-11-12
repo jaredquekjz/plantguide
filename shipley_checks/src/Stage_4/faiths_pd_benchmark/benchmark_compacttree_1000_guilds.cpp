@@ -45,9 +45,10 @@ double calculate_faiths_pd_optimized(const compact_tree& tree,
 
 // Parse guild CSV and calculate Faith's PD for all
 int main() {
-    string tree_path = "data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk";
-    string guilds_path = "data/stage4/test_guilds_1000.csv";
-    string output_path = "data/stage4/compacttree_results_1000.csv";
+    // UPDATED: Nov 7, 2025 tree with 11,711 species
+    string tree_path = "data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk";
+    string guilds_path = "shipley_checks/stage4/test_guilds_1000.csv";
+    string output_path = "shipley_checks/stage4/compacttree_results_1000.csv";
 
     // Load tree ONCE
     cout << "Loading tree..." << endl;
