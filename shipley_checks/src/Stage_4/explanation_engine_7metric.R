@@ -107,34 +107,41 @@ generate_benefits_explanation <- function(guild_result) {
   details <- guild_result$details
 
   # M1: Evolutionary Distance Benefits
-  if (metrics$m1 > 50) {
+  m1_score <- if (is.null(metrics$m1)) NA else metrics$m1
+  if (!is.na(m1_score) && m1_score > 50) {
+    faiths_pd <- if (is.null(details$m1$faiths_pd)) 0 else details$m1$faiths_pd
     benefits[[length(benefits) + 1]] <- list(
       type = "evolutionary_distance",
       title = "Evolutionary Distance Benefits",
-      message = glue("M1 Score: {round(metrics$m1, 1)}/100"),
+      message = glue("M1 Score: {round(m1_score, 1)}/100"),
       detail = "Phylogenetically distant plants reduce shared pest/pathogen risk",
-      evidence = glue("Faith's PD: {round(details$m1$faiths_pd, 2)}")
+      evidence = glue("Faith's PD: {round(faiths_pd, 2)}")
     )
   }
 
   # M5: Beneficial Fungi Networks
-  if (metrics$m5 > 30) {
+  m5_score <- if (is.null(metrics$m5)) NA else metrics$m5
+  if (!is.na(m5_score) && m5_score > 30) {
+    plants_with_fungi <- if (is.null(details$m5$plants_with_fungi)) 0 else details$m5$plants_with_fungi
+    n_shared_fungi <- if (is.null(details$m5$n_shared_fungi)) 0 else details$m5$n_shared_fungi
     benefits[[length(benefits) + 1]] <- list(
       type = "beneficial_fungi",
       title = "Shared Beneficial Fungi Networks",
-      message = glue("M5 Score: {round(metrics$m5, 1)}/100"),
-      detail = glue("{details$m5$plants_with_fungi} plants connected through beneficial fungi"),
-      evidence = glue("{details$m5$n_shared_fungi} shared fungal species")
+      message = glue("M5 Score: {round(m5_score, 1)}/100"),
+      detail = glue("{plants_with_fungi} plants connected through beneficial fungi"),
+      evidence = glue("{n_shared_fungi} shared fungal species")
     )
   }
 
   # M6: Structural Diversity
-  if (metrics$m6 > 50) {
+  m6_score <- if (is.null(metrics$m6)) NA else metrics$m6
+  if (!is.na(m6_score) && m6_score > 50) {
+    n_forms <- if (is.null(details$m6$n_forms)) 0 else details$m6$n_forms
     benefits[[length(benefits) + 1]] <- list(
       type = "structural_diversity",
       title = "Vertical Space Utilization",
-      message = glue("M6 Score: {round(metrics$m6, 1)}/100"),
-      detail = glue("{details$m6$n_forms} growth forms utilize different height layers"),
+      message = glue("M6 Score: {round(m6_score, 1)}/100"),
+      detail = glue("{n_forms} growth forms utilize different height layers"),
       evidence = if (!is.null(details$m6$forms) && length(details$m6$forms) > 0) {
         paste(details$m6$forms, collapse = ", ")
       } else {
@@ -144,14 +151,17 @@ generate_benefits_explanation <- function(guild_result) {
   }
 
   # M7: Pollinator Support
-  if (metrics$m7 > 30) {
+  m7_score <- if (is.null(metrics$m7)) NA else metrics$m7
+  if (!is.na(m7_score) && m7_score > 30) {
+    n_shared_pollinators <- if (is.null(details$m7$n_shared_pollinators)) 0 else details$m7$n_shared_pollinators
+    pollinators <- if (is.null(details$m7$pollinators)) character(0) else details$m7$pollinators
     benefits[[length(benefits) + 1]] <- list(
       type = "pollinator_support",
       title = "Shared Pollinator Network",
-      message = glue("M7 Score: {round(metrics$m7, 1)}/100"),
-      detail = glue("{details$m7$n_shared_pollinators} pollinator species serve multiple plants"),
-      evidence = if (length(details$m7$pollinators) > 0) {
-        paste(details$m7$pollinators, collapse = ", ")
+      message = glue("M7 Score: {round(m7_score, 1)}/100"),
+      detail = glue("{n_shared_pollinators} pollinator species serve multiple plants"),
+      evidence = if (length(pollinators) > 0) {
+        paste(pollinators, collapse = ", ")
       } else {
         "Multiple pollinators"
       }
@@ -179,48 +189,59 @@ generate_warnings_explanation <- function(guild_result) {
   flags <- guild_result$flags
 
   # M2: CSR conflicts
-  if (guild_result$metrics$m2 < 60 && details$m2$n_conflicts > 0) {
+  m2_score <- if (is.null(guild_result$metrics$m2)) NA else guild_result$metrics$m2
+  m2_conflicts <- if (is.null(details$m2$n_conflicts)) 0 else details$m2$n_conflicts
+
+  if (!is.na(m2_score) && !is.na(m2_conflicts) && m2_score < 60 && m2_conflicts > 0) {
     conflict_types <- c()
-    if (details$m2$high_c >= 2) {
-      conflict_types <- c(conflict_types, glue("{details$m2$high_c} Competitive plants (C-C conflicts)"))
+    high_c <- if (is.null(details$m2$high_c)) 0 else details$m2$high_c
+    high_s <- if (is.null(details$m2$high_s)) 0 else details$m2$high_s
+    high_r <- if (is.null(details$m2$high_r)) 0 else details$m2$high_r
+
+    if (high_c >= 2) {
+      conflict_types <- c(conflict_types, glue("{high_c} Competitive plants (C-C conflicts)"))
     }
-    if (details$m2$high_c > 0 && details$m2$high_s > 0) {
+    if (high_c > 0 && high_s > 0) {
       conflict_types <- c(conflict_types, "C-S conflicts detected")
     }
-    if (details$m2$high_c > 0 && details$m2$high_r > 0) {
+    if (high_c > 0 && high_r > 0) {
       conflict_types <- c(conflict_types, "C-R conflicts detected")
     }
 
-    warnings[[length(warnings) + 1]] <- list(
-      type = "csr_conflict",
-      severity = "medium",
-      icon = "⚠",
-      message = "CSR Strategy Conflicts Detected",
-      detail = paste(conflict_types, collapse = "; "),
-      advice = "Plants may compete for resources - monitor growth patterns"
-    )
+    if (length(conflict_types) > 0) {
+      warnings[[length(warnings) + 1]] <- list(
+        type = "csr_conflict",
+        severity = "medium",
+        icon = "⚠",
+        message = "CSR Strategy Conflicts Detected",
+        detail = paste(conflict_types, collapse = "; "),
+        advice = "Plants may compete for resources - monitor growth patterns"
+      )
+    }
   }
 
   # N5: Nitrogen fixation
-  if (flags$nitrogen != "None") {
+  nitrogen_flag <- if (is.null(flags$nitrogen)) "None" else flags$nitrogen
+  if (!is.na(nitrogen_flag) && nitrogen_flag != "None") {
     warnings[[length(warnings) + 1]] <- list(
       type = "nitrogen_fixation",
       severity = "info",
       icon = "ℹ",
-      message = glue("Nitrogen-Fixing Plants Present: {flags$nitrogen}"),
+      message = glue("Nitrogen-Fixing Plants Present: {nitrogen_flag}"),
       detail = "These plants can enrich soil nitrogen",
       advice = "Consider reducing nitrogen fertilizer for this guild"
     )
   }
 
   # N6: pH compatibility
-  if (flags$soil_ph != "Compatible") {
+  ph_flag <- if (is.null(flags$soil_ph)) "Compatible" else flags$soil_ph
+  if (!is.na(ph_flag) && ph_flag != "Compatible") {
     warnings[[length(warnings) + 1]] <- list(
       type = "ph_incompatible",
       severity = "high",
       icon = "⚠",
       message = "pH Incompatibility Detected",
-      detail = glue("Plants have conflicting pH requirements: {flags$soil_ph}"),
+      detail = glue("Plants have conflicting pH requirements: {ph_flag}"),
       advice = "Some plants may struggle - check soil pH and amend accordingly"
     )
   }
