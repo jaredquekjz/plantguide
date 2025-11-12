@@ -6,6 +6,7 @@
 //! - `utils/`: Normalization and organism counting utilities
 //! - `data/`: Data loading with Polars
 //! - `metrics/`: Individual metric implementations (M1-M7)
+//! - `scorer/`: Main guild scorer coordinator
 //!
 //! Expected performance: 20-25× faster than Python, 8-10× faster than R
 //!
@@ -14,11 +15,13 @@
 pub mod utils;
 pub mod data;
 pub mod metrics;
+pub mod scorer;
 
 // Re-export commonly used types
-pub use utils::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
+pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::GuildData;
 pub use metrics::*;
+pub use scorer::{GuildScorer, GuildScore};
 
 #[cfg(test)]
 mod tests {

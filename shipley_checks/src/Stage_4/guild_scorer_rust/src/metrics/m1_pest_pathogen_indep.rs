@@ -28,8 +28,9 @@ impl PhyloPDCalculator {
     ///
     /// R reference: faiths_pd_calculator.R::initialize
     pub fn new() -> Result<Self> {
-        let tree_path = "data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk".to_string();
-        let mapping_path = "data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11676.csv".to_string();
+        // CORRECT tree for 11,711 species dataset (Nov 7, 2025)
+        let tree_path = "data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk".to_string();
+        let mapping_path = "data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv".to_string();
         let cpp_binary = "src/Stage_4/calculate_faiths_pd_optimized".to_string();
 
         // Verify C++ binary exists
@@ -62,12 +63,12 @@ impl PhyloPDCalculator {
         let mut mapping = HashMap::new();
         for (idx, line) in contents.lines().enumerate() {
             if idx == 0 {
-                continue; // Skip header
+                continue; // Skip header: wfo_taxon_id,wfo_scientific_name,is_infraspecific,parent_binomial,parent_label,tree_tip
             }
             let parts: Vec<&str> = line.split(',').collect();
-            if parts.len() >= 2 {
+            if parts.len() >= 6 {
                 let wfo_id = parts[0].to_string();
-                let tree_tip = parts[1].to_string();
+                let tree_tip = parts[5].to_string();  // Column 5 is tree_tip (e.g., wfo-0000832453|Fraxinus_excelsior)
                 if !tree_tip.is_empty() && tree_tip != "NA" {
                     mapping.insert(wfo_id, tree_tip);
                 }
@@ -89,8 +90,14 @@ impl PhyloPDCalculator {
 
         // Edge cases
         if tree_tips.is_empty() || tree_tips.len() < 2 {
+            eprintln!("DEBUG: Not enough tree tips: {}/{} WFO IDs", tree_tips.len(), wfo_ids.len());
             return Ok(0.0); // No diversity
         }
+
+        // DEBUG: Show what we're passing
+        eprintln!("DEBUG: Calling Faith's PD with {} tree tips (from {} WFO IDs)", tree_tips.len(), wfo_ids.len());
+        eprintln!("DEBUG: First tree tip: {:?}", tree_tips.get(0));
+        eprintln!("DEBUG: Sample WFO ID: {:?}", wfo_ids.get(0));
 
         // Call C++ binary: ./calculate_faiths_pd_optimized <tree.nwk> <species1> <species2> ...
         let output = Command::new(&self.cpp_binary)
@@ -100,6 +107,8 @@ impl PhyloPDCalculator {
             .with_context(|| format!("Failed to execute C++ binary: {}", self.cpp_binary))?;
 
         if !output.status.success() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            eprintln!("DEBUG: C++ binary stderr: {}", stderr);
             anyhow::bail!("C++ binary failed with status: {}", output.status);
         }
 

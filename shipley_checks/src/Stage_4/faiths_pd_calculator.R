@@ -41,12 +41,12 @@ PhyloPDCalculator <- R6::R6Class("PhyloPDCalculator",
     #' @param mapping_path Path to WFO mapping CSV (default: canonical location)
     #' @param cpp_binary Path to C++ binary (default: canonical location)
     initialize = function(tree_path = NULL, mapping_path = NULL, cpp_binary = NULL) {
-      # Set default paths
+      # Set default paths (CORRECTED for 11,711 species dataset - Nov 7, 2025)
       if (is.null(tree_path)) {
-        tree_path <- 'data/stage1/phlogeny/mixgb_tree_11676_species_20251027.nwk'
+        tree_path <- 'data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk'
       }
       if (is.null(mapping_path)) {
-        mapping_path <- 'data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11676.csv'
+        mapping_path <- 'data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv'
       }
       if (is.null(cpp_binary)) {
         cpp_binary <- 'src/Stage_4/calculate_faiths_pd_optimized'

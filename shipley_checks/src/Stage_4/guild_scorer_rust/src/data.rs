@@ -39,9 +39,9 @@ impl GuildData {
     pub fn load() -> Result<Self> {
         println!("Loading datasets (parity-checked CSV/Parquet files)...");
 
-        // Plants - from shared parquet (stage 3 output)
-        let plants = Self::load_plants(
-            "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet"
+        // Plants - from CSV (converted from parquet to avoid R arrow metadata issues)
+        let plants = Self::load_plants_csv(
+            "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.csv"
         )?;
 
         // Organisms - from R-generated CSV
@@ -90,12 +90,25 @@ impl GuildData {
         })
     }
 
-    /// Load plant metadata from parquet
+    /// Load plant metadata from CSV
     ///
     /// R reference: guild_scorer_v3_modular.R lines 127-135
-    fn load_plants(path: &str) -> Result<DataFrame> {
-        let df = LazyFrame::scan_parquet(path, Default::default())
-            .with_context(|| format!("Failed to scan parquet: {}", path))?
+    fn load_plants_csv(path: &str) -> Result<DataFrame> {
+        // Configure CSV parsing with NA handling
+        let parse_options = CsvParseOptions::default()
+            .with_null_values(Some(NullValues::AllColumnsSingle("NA".into())));
+
+        let df = CsvReadOptions::default()
+            .with_has_header(true)
+            .with_infer_schema_length(None)  // Scan entire file for accurate schema
+            .with_parse_options(parse_options)
+            .try_into_reader_with_file_path(Some(path.into()))
+            .with_context(|| format!("Failed to create CSV reader: {}", path))?
+            .finish()
+            .with_context(|| "Failed to load plants CSV")?;
+
+        // Select and rename columns to match R
+        let df = df.lazy()
             .select(&[
                 col("wfo_taxon_id"),
                 col("wfo_scientific_name"),
@@ -115,7 +128,7 @@ impl GuildData {
                 col("tier_6_arid"),
             ])
             .collect()
-            .with_context(|| "Failed to load plants parquet")?;
+            .with_context(|| "Failed to select plant columns")?;
 
         Ok(df)
     }

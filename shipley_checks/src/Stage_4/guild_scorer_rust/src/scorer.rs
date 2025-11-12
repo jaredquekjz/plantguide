@@ -1,0 +1,255 @@
+//! Guild Scorer - Main coordinator for scoring plant guilds
+//!
+//! This module integrates all 7 metrics and provides the main guild scoring interface.
+//!
+//! R reference: shipley_checks/src/Stage_4/guild_scorer_v3_modular.R
+
+use crate::data::GuildData;
+use crate::metrics::*;
+use crate::utils::normalization::{Calibration, CsrCalibration};
+use anyhow::{Context, Result};
+use polars::prelude::*;
+use std::path::Path;
+
+/// Main guild scorer
+pub struct GuildScorer {
+    data: GuildData,
+    calibration: Calibration,
+    csr_calibration: Option<CsrCalibration>,
+    phylo_calculator: PhyloPDCalculator,
+    climate_tier: String,
+}
+
+/// Guild score result
+#[derive(Debug)]
+pub struct GuildScore {
+    pub overall_score: f64,
+    pub metrics: [f64; 7],  // Display scores (M1-M7)
+    pub raw_scores: [f64; 7],
+    pub normalized: [f64; 7],  // Before display inversion
+}
+
+impl GuildScorer {
+    /// Initialize guild scorer
+    ///
+    /// R reference: guild_scorer_v3_modular.R::initialize
+    pub fn new(calibration_type: &str, climate_tier: &str) -> Result<Self> {
+        println!("\nInitializing Guild Scorer (Rust)...");
+
+        // Load calibration parameters
+        let cal_path_str = format!(
+            "shipley_checks/stage4/normalization_params_{}.json",
+            calibration_type
+        );
+        let cal_path = Path::new(&cal_path_str);
+        println!("Loading calibration: {:?}", cal_path);
+        let calibration = Calibration::load(cal_path, climate_tier)?;
+
+        // Load CSR calibration (global, not tier-specific)
+        let csr_path_str = "shipley_checks/stage4/csr_percentile_calibration_global.json";
+        let csr_path = Path::new(csr_path_str);
+        let csr_calibration = if csr_path.exists() {
+            println!("Loading CSR calibration: {:?}", csr_path);
+            Some(CsrCalibration::load(csr_path)?)
+        } else {
+            println!("CSR calibration not found - using fixed thresholds");
+            None
+        };
+
+        // Initialize Faith's PD calculator
+        println!("Initializing Faith's PD calculator...");
+        let phylo_calculator = PhyloPDCalculator::new()?;
+
+        // Load datasets
+        let data = GuildData::load()?;
+
+        println!("\nGuild Scorer initialized:");
+        println!("  Calibration: {}", calibration_type);
+        println!("  Climate tier: {}", climate_tier);
+        println!("  Plants: {}", data.plants.height());
+        println!();
+
+        Ok(Self {
+            data,
+            calibration,
+            csr_calibration,
+            phylo_calculator,
+            climate_tier: climate_tier.to_string(),
+        })
+    }
+
+    /// Check climate compatibility (Köppen tier overlap)
+    ///
+    /// R reference: guild_scorer_v3_modular.R::check_climate_compatibility
+    fn check_climate_compatibility(&self, guild_plants: &DataFrame) -> Result<()> {
+        let tier_columns = [
+            "tier_1_tropical",
+            "tier_2_mediterranean",
+            "tier_3_humid_temperate",
+            "tier_4_continental",
+            "tier_5_boreal_polar",
+            "tier_6_arid",
+        ];
+
+        // Find tiers for each plant
+        let mut all_plant_tiers: Vec<Vec<String>> = Vec::new();
+
+        for idx in 0..guild_plants.height() {
+            let mut plant_tiers = Vec::new();
+
+            for tier_col in &tier_columns {
+                if let Ok(col) = guild_plants.column(tier_col) {
+                    // Handle both boolean and integer columns
+                    let is_true = if let Ok(bool_series) = col.bool() {
+                        bool_series.get(idx).unwrap_or(false)
+                    } else if let Ok(int_series) = col.i32() {
+                        int_series.get(idx).unwrap_or(0) == 1
+                    } else {
+                        false
+                    };
+
+                    if is_true {
+                        plant_tiers.push(tier_col.to_string());
+                    }
+                }
+            }
+
+            all_plant_tiers.push(plant_tiers);
+        }
+
+        if all_plant_tiers.is_empty() {
+            anyhow::bail!("Plants missing Köppen tier membership data");
+        }
+
+        // Find intersection of all plant tiers
+        let mut shared_tiers = all_plant_tiers[0].clone();
+        for plant_tiers in &all_plant_tiers[1..] {
+            shared_tiers.retain(|tier| plant_tiers.contains(tier));
+        }
+
+        if shared_tiers.is_empty() {
+            anyhow::bail!("Plants have no overlapping climate zones");
+        }
+
+        Ok(())
+    }
+
+    /// Score a guild of plants using all 7 metrics
+    ///
+    /// R reference: guild_scorer_v3_modular.R::score_guild
+    pub fn score_guild(&self, plant_ids: &[String]) -> Result<GuildScore> {
+        let n_plants = plant_ids.len();
+
+        // Filter to guild plants
+        let id_set: std::collections::HashSet<_> = plant_ids.iter().collect();
+        let plant_col = self.data.plants.column("wfo_taxon_id")?.str()?;
+        let mask: BooleanChunked = plant_col
+            .into_iter()
+            .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+            .collect();
+        let guild_plants = self.data.plants.filter(&mask)?;
+
+        if guild_plants.height() != n_plants {
+            anyhow::bail!("Missing plant data for some IDs");
+        }
+
+        // Check climate compatibility
+        self.check_climate_compatibility(&guild_plants)?;
+
+        // Calculate M1: Pest & Pathogen Independence
+        let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
+
+        // Calculate M2: Growth Compatibility
+        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+
+        // Calculate M3: Insect Control
+        let m3 = calculate_m3(
+            plant_ids,
+            &self.data.organisms,
+            &self.data.fungi,
+            &self.data.herbivore_predators,
+            &self.data.insect_parasites,
+            &self.calibration,
+        )?;
+
+        // Calculate M4: Disease Control
+        let m4 = calculate_m4(
+            plant_ids,
+            &self.data.fungi,
+            &self.data.pathogen_antagonists,
+            &self.calibration,
+        )?;
+
+        // Calculate M5: Beneficial Fungi
+        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+
+        // Calculate M6: Structural Diversity
+        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+
+        // Calculate M7: Pollinator Support
+        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+
+        // Raw scores
+        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+
+        // Normalized percentiles (before display inversion)
+        let normalized = [
+            m1.normalized,
+            m2.norm,
+            m3.norm,
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Display scores (invert M1 and M2)
+        // R reference: guild_scorer_v3_modular.R lines 338-339
+        let metrics = [
+            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
+            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
+            m3.norm,                // M3-M7: direct percentile
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Overall score: simple average (matches R line 342)
+        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+
+        Ok(GuildScore {
+            overall_score,
+            metrics,
+            raw_scores,
+            normalized,
+        })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use approx::assert_relative_eq;
+
+    #[test]
+    #[ignore] // Requires data files and C++ binary
+    fn test_score_forest_garden() {
+        let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate").unwrap();
+
+        let plant_ids = vec![
+            "wfo-0000832453".to_string(),
+            "wfo-0000649136".to_string(),
+            "wfo-0000642673".to_string(),
+            "wfo-0000984977".to_string(),
+            "wfo-0000241769".to_string(),
+            "wfo-0000092746".to_string(),
+            "wfo-0000690499".to_string(),
+        ];
+
+        let result = scorer.score_guild(&plant_ids).unwrap();
+
+        // Expected from R: 90.467710
+        assert_relative_eq!(result.overall_score, 90.467710, epsilon = 0.0001);
+    }
+}
