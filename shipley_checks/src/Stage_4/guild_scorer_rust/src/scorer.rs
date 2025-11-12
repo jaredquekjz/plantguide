@@ -377,11 +377,11 @@ impl GuildScorer {
     /// Generates both scores and explanation fragments in a single parallel pass.
     /// Each metric calculates its score and generates its explanation fragment inline.
     ///
-    /// Returns: (GuildScore, Vec<MetricFragment>, DataFrame of guild_plants)
+    /// Returns: (GuildScore, Vec<MetricFragment>, DataFrame of guild_plants, M5Result, fungi_df)
     pub fn score_guild_with_explanation_parallel(
         &self,
         plant_ids: &[String],
-    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame)> {
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M5Result, DataFrame)> {
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
@@ -551,7 +551,18 @@ impl GuildScorer {
                 JoinArgs::new(JoinType::Left),
             )?;
 
-        Ok((guild_score, fragments, guild_plants_with_organisms))
+        // Clone M5Result for fungi network analysis
+        let m5_cloned = M5Result {
+            raw: m5.raw,
+            norm: m5.norm,
+            network_score: m5.network_score,
+            coverage_ratio: m5.coverage_ratio,
+            n_shared_fungi: m5.n_shared_fungi,
+            plants_with_fungi: m5.plants_with_fungi,
+            fungi_counts: m5.fungi_counts.clone(),
+        };
+
+        Ok((guild_score, fragments, guild_plants_with_organisms, m5_cloned, self.data.fungi.clone()))
     }
 }
 

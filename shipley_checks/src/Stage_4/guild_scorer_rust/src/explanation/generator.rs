@@ -1,6 +1,7 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network};
 use crate::scorer::GuildScore;
+use crate::metrics::M5Result;
 use anyhow::Result;
 use polars::prelude::*;
 
@@ -15,6 +16,8 @@ impl ExplanationGenerator {
     /// - guild_plants: DataFrame of guild plants (for nitrogen/pH checks)
     /// - climate_tier: Köppen tier string
     /// - fragments: Pre-generated metric fragments from parallel scoring
+    /// - m5_result: M5 result with fungi counts (for network analysis)
+    /// - fungi_df: Fungi DataFrame (for categorization)
     ///
     /// Returns: Complete Explanation with all cards
     pub fn generate(
@@ -22,6 +25,8 @@ impl ExplanationGenerator {
         guild_plants: &DataFrame,
         climate_tier: &str,
         fragments: Vec<MetricFragment>,
+        m5_result: &M5Result,
+        fungi_df: &DataFrame,
     ) -> Result<Explanation> {
         // Overall score with stars
         let overall = Self::generate_overall(guild_score.overall_score);
@@ -63,6 +68,11 @@ impl ExplanationGenerator {
             .ok()
             .flatten();
 
+        // Fungi network profile (qualitative information)
+        let fungi_network_profile = analyze_fungi_network(m5_result, guild_plants, fungi_df)
+            .ok()
+            .flatten();
+
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
 
@@ -74,6 +84,7 @@ impl ExplanationGenerator {
             risks,
             metrics_display,
             pest_profile,
+            fungi_network_profile,
         })
     }
 

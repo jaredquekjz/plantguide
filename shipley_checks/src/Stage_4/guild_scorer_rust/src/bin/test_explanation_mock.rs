@@ -2,11 +2,37 @@ use guild_scorer_rust::{
     GuildScore, ExplanationGenerator, MarkdownFormatter, JsonFormatter, HtmlFormatter,
     MetricFragment, BenefitCard, WarningCard, RiskCard, Severity,
 };
+use guild_scorer_rust::metrics::M5Result;
+use rustc_hash::FxHashMap;
 use polars::prelude::*;
 use std::fs;
 
 #[allow(unused)]
 use guild_scorer_rust::GuildScorer;
+
+/// Create mock M5Result for testing
+fn create_mock_m5_result() -> M5Result {
+    M5Result {
+        raw: 0.5,
+        norm: 50.0,
+        network_score: 0.4,
+        coverage_ratio: 0.6,
+        n_shared_fungi: 5,
+        plants_with_fungi: 4,
+        fungi_counts: FxHashMap::default(),
+    }
+}
+
+/// Create mock fungi DataFrame for testing
+fn create_mock_fungi_df() -> anyhow::Result<DataFrame> {
+    Ok(df! {
+        "plant_wfo_id" => &["plant1"],
+        "amf_fungi" => &[""],
+        "emf_fungi" => &[""],
+        "endophytic_fungi" => &[""],
+        "saprotrophic_fungi" => &[""],
+    }?)
+}
 
 fn main() -> anyhow::Result<()> {
     println!("==================================================================");
@@ -101,7 +127,11 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
     // Mock guild plants (no nitrogen/pH issues)
     let guild_plants = df! {
         "wfo_taxon_id" => &["plant1", "plant2", "plant3", "plant4", "plant5", "plant6", "plant7"],
+        "wfo_taxon_name" => &["Plant 1", "Plant 2", "Plant 3", "Plant 4", "Plant 5", "Plant 6", "Plant 7"],
     }?;
+
+    let m5_result = create_mock_m5_result();
+    let fungi_df = create_mock_fungi_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -109,6 +139,8 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m5_result,
+        &fungi_df,
     )?;
 
     // Print summary
@@ -174,8 +206,12 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
     // Mock guild plants (with nitrogen excess)
     let guild_plants = df! {
         "wfo_taxon_id" => &["plant1", "plant2", "plant3", "plant4", "plant5", "plant6", "plant7"],
+        "wfo_taxon_name" => &["Plant 1", "Plant 2", "Plant 3", "Plant 4", "Plant 5", "Plant 6", "Plant 7"],
         "nitrogen_fixation" => &["Yes", "Yes", "Yes", "No", "No", "No", "No"],
     }?;
+
+    let m5_result = create_mock_m5_result();
+    let fungi_df = create_mock_fungi_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -183,6 +219,8 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m5_result,
+        &fungi_df,
     )?;
 
     // Print summary
@@ -237,8 +275,12 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
     // Mock guild plants (with pH incompatibility)
     let guild_plants = df! {
         "wfo_taxon_id" => &["plant1", "plant2", "plant3", "plant4", "plant5", "plant6", "plant7"],
+        "wfo_taxon_name" => &["Plant 1", "Plant 2", "Plant 3", "Plant 4", "Plant 5", "Plant 6", "Plant 7"],
         "soil_reaction_eive" => &[4.2, 7.8, 5.1, 4.8, 7.2, 6.5, 7.9],
     }?;
+
+    let m5_result = create_mock_m5_result();
+    let fungi_df = create_mock_fungi_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -246,6 +288,8 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m5_result,
+        &fungi_df,
     )?;
 
     // Print summary

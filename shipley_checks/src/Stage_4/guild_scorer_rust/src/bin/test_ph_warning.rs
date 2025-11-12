@@ -53,7 +53,7 @@ fn main() -> Result<()> {
         println!("{}", "-".repeat(60));
 
         // Score guild to get guild_plants DataFrame
-        let (_guild_score, _fragments, guild_plants) = scorer.score_guild_with_explanation_parallel(&plant_ids)?;
+        let (_guild_score, _fragments, guild_plants, _m5_result, _fungi_df) = scorer.score_guild_with_explanation_parallel(&plant_ids)?;
 
         println!("Plants: {}", guild_plants.height());
 

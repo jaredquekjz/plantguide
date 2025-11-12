@@ -3,6 +3,7 @@ pub mod fragments;
 pub mod nitrogen;
 pub mod soil_ph;
 pub mod pest_analysis;
+pub mod fungi_network_analysis;
 pub mod generator;
 pub mod formatters;
 
@@ -19,6 +20,7 @@ pub use fragments::{
 pub use nitrogen::check_nitrogen_fixation;
 pub use soil_ph::check_soil_ph_compatibility;
 pub use pest_analysis::{analyze_guild_pests, PestProfile};
+pub use fungi_network_analysis::{analyze_fungi_network, FungiNetworkProfile};
 
 pub use generator::ExplanationGenerator;
 pub use formatters::{HtmlFormatter, JsonFormatter, MarkdownFormatter};

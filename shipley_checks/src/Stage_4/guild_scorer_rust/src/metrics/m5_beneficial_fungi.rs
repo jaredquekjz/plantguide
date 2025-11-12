@@ -7,6 +7,7 @@
 
 use polars::prelude::*;
 use anyhow::Result;
+use rustc_hash::FxHashMap;
 use crate::utils::{Calibration, percentile_normalize, count_shared_organisms};
 
 /// Result of M5 calculation
@@ -24,6 +25,8 @@ pub struct M5Result {
     pub n_shared_fungi: usize,
     /// Number of plants with beneficial fungi
     pub plants_with_fungi: usize,
+    /// Map of fungus_name → plant_count for detailed analysis
+    pub fungi_counts: FxHashMap<String, usize>,
 }
 
 /// Calculate M5: Beneficial Fungi Networks
@@ -69,6 +72,7 @@ pub fn calculate_m5(
         coverage_ratio,
         n_shared_fungi: beneficial_counts.len(),
         plants_with_fungi: plants_with_beneficial,
+        fungi_counts: beneficial_counts,
     })
 }
 
