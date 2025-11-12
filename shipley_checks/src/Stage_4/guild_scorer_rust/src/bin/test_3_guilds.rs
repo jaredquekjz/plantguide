@@ -6,12 +6,15 @@
 //! - Stress-Tolerant: 45.442341
 
 use guild_scorer_rust::GuildScorer;
+use std::time::Instant;
 
 fn main() {
     // Initialize scorer
     println!("Initializing Guild Scorer (Rust)...\n");
+    let init_start = Instant::now();
     let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")
         .expect("Failed to initialize scorer");
+    let init_time = init_start.elapsed();
 
     // Define 3 test guilds from Stage_4_Dual_Verification_Pipeline.md
     let guilds = vec![
@@ -62,8 +65,11 @@ fn main() {
 
     let mut max_diff = 0.0_f64;
     let mut all_passed = true;
+    let mut guild_times = Vec::new();
 
+    let scoring_start = Instant::now();
     for (name, plant_ids, expected) in &guilds {
+        let guild_start = Instant::now();
         match scorer.score_guild(plant_ids) {
             Ok(result) => {
                 let diff = (result.overall_score - expected).abs();
@@ -93,6 +99,9 @@ fn main() {
                 println!("    M5: Beneficial Fungi      {:.1}", result.metrics[4]);
                 println!("    M6: Structural Diversity  {:.1}", result.metrics[5]);
                 println!("    M7: Pollinator Support    {:.1}", result.metrics[6]);
+
+                let guild_time = guild_start.elapsed();
+                guild_times.push(guild_time);
             }
             Err(e) => {
                 println!("\n{}", name);
@@ -101,12 +110,23 @@ fn main() {
             }
         }
     }
+    let total_scoring_time = scoring_start.elapsed();
 
     println!("\n{}", "=".repeat(70));
     println!("SUMMARY");
     println!("{}", "=".repeat(70));
     println!("Maximum difference: {:.6}", max_diff);
     println!("Threshold: < 0.0001 (0.01%)");
+
+    println!("\n{}", "=".repeat(70));
+    println!("PERFORMANCE (Rust - Debug Build)");
+    println!("{}", "=".repeat(70));
+    println!("Initialization: {:.3} ms", init_time.as_secs_f64() * 1000.0);
+    println!("3 Guild Scoring: {:.3} ms total", total_scoring_time.as_secs_f64() * 1000.0);
+    for (i, time) in guild_times.iter().enumerate() {
+        println!("  Guild {}: {:.3} ms", i + 1, time.as_secs_f64() * 1000.0);
+    }
+    println!("Average per guild: {:.3} ms", total_scoring_time.as_secs_f64() * 1000.0 / 3.0);
 
     if all_passed && max_diff < 0.0001 {
         println!("\n✅ PARITY ACHIEVED: 100% match with R implementation");
