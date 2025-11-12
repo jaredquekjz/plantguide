@@ -1,14 +1,16 @@
 //! Guild Scorer - Main coordinator for scoring plant guilds
 //!
 //! This module integrates all 7 metrics and provides the main guild scoring interface.
+//! Includes both sequential and parallel (Rayon) implementations.
 //!
 //! R reference: shipley_checks/src/Stage_4/guild_scorer_v3_modular.R
 
 use crate::data::GuildData;
 use crate::metrics::*;
 use crate::utils::normalization::{Calibration, CsrCalibration};
-use anyhow::{Context, Result};
+use anyhow::{Result};
 use polars::prelude::*;
+use rayon::prelude::*;
 use std::path::Path;
 
 /// Main guild scorer
@@ -216,6 +218,147 @@ impl GuildScorer {
         ];
 
         // Overall score: simple average (matches R line 342)
+        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+
+        Ok(GuildScore {
+            overall_score,
+            metrics,
+            raw_scores,
+            normalized,
+        })
+    }
+
+    /// Score a guild of plants using all 7 metrics IN PARALLEL
+    ///
+    /// Uses Rayon to compute all 7 metrics concurrently across CPU cores.
+    /// Expected speedup: 3-5× vs sequential on modern CPUs.
+    ///
+    /// All metrics are thread-safe (immutable data access only).
+    pub fn score_guild_parallel(&self, plant_ids: &[String]) -> Result<GuildScore> {
+        let n_plants = plant_ids.len();
+
+        // Filter to guild plants (sequential - fast operation)
+        let id_set: std::collections::HashSet<_> = plant_ids.iter().collect();
+        let plant_col = self.data.plants.column("wfo_taxon_id")?.str()?;
+        let mask: BooleanChunked = plant_col
+            .into_iter()
+            .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+            .collect();
+        let guild_plants = self.data.plants.filter(&mask)?;
+
+        if guild_plants.height() != n_plants {
+            anyhow::bail!("Missing plant data for some IDs");
+        }
+
+        // Check climate compatibility (sequential - fast operation)
+        self.check_climate_compatibility(&guild_plants)?;
+
+        // Compute all 7 metrics IN PARALLEL using Rayon
+        // Each metric is independent and can run on a separate thread
+        let metric_results: Vec<Result<Box<dyn std::any::Any + Send>>> = (0..7)
+            .into_par_iter()
+            .map(|i| -> Result<Box<dyn std::any::Any + Send>> {
+                match i {
+                    0 => {
+                        let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
+                        Ok(Box::new(m1))
+                    }
+                    1 => {
+                        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+                        Ok(Box::new(m2))
+                    }
+                    2 => {
+                        let m3 = calculate_m3(
+                            plant_ids,
+                            &self.data.organisms,
+                            &self.data.fungi,
+                            &self.data.herbivore_predators,
+                            &self.data.insect_parasites,
+                            &self.calibration,
+                        )?;
+                        Ok(Box::new(m3))
+                    }
+                    3 => {
+                        let m4 = calculate_m4(
+                            plant_ids,
+                            &self.data.fungi,
+                            &self.data.pathogen_antagonists,
+                            &self.calibration,
+                        )?;
+                        Ok(Box::new(m4))
+                    }
+                    4 => {
+                        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+                        Ok(Box::new(m5))
+                    }
+                    5 => {
+                        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+                        Ok(Box::new(m6))
+                    }
+                    6 => {
+                        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+                        Ok(Box::new(m7))
+                    }
+                    _ => unreachable!(),
+                }
+            })
+            .collect();
+
+        // Unwrap results (propagate any errors)
+        let mut unwrapped_results = Vec::new();
+        for result in metric_results {
+            unwrapped_results.push(result?);
+        }
+
+        // Downcast back to concrete types
+        let m1 = unwrapped_results[0]
+            .downcast_ref::<M1Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M1"))?;
+        let m2 = unwrapped_results[1]
+            .downcast_ref::<M2Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M2"))?;
+        let m3 = unwrapped_results[2]
+            .downcast_ref::<M3Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M3"))?;
+        let m4 = unwrapped_results[3]
+            .downcast_ref::<M4Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M4"))?;
+        let m5 = unwrapped_results[4]
+            .downcast_ref::<M5Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M5"))?;
+        let m6 = unwrapped_results[5]
+            .downcast_ref::<M6Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M6"))?;
+        let m7 = unwrapped_results[6]
+            .downcast_ref::<M7Result>()
+            .ok_or_else(|| anyhow::anyhow!("Failed to downcast M7"))?;
+
+        // Raw scores
+        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+
+        // Normalized percentiles (before display inversion)
+        let normalized = [
+            m1.normalized,
+            m2.norm,
+            m3.norm,
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Display scores (invert M1 and M2)
+        let metrics = [
+            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
+            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
+            m3.norm,                // M3-M7: direct percentile
+            m4.norm,
+            m5.norm,
+            m6.norm,
+            m7.norm,
+        ];
+
+        // Overall score: simple average
         let overall_score = metrics.iter().sum::<f64>() / 7.0;
 
         Ok(GuildScore {
