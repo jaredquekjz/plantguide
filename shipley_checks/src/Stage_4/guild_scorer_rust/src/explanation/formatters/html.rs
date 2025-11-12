@@ -157,6 +157,7 @@ mod tests {
                 ],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let html = HtmlFormatter::format(&explanation);
@@ -205,6 +206,7 @@ mod tests {
                 universal: vec![],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let html = HtmlFormatter::format(&explanation);

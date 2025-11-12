@@ -535,7 +535,23 @@ impl GuildScorer {
             normalized,
         };
 
-        Ok((guild_score, fragments, guild_plants))
+        // Join herbivores column from organisms DataFrame for pest profile analysis
+        // Note: organisms DataFrame uses "wfo_scientific_name", not "wfo_taxon_name"
+        let organisms_subset = self.data.organisms
+            .clone()
+            .lazy()
+            .select(&[col("wfo_scientific_name"), col("herbivores")])
+            .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
+            .collect()?;
+        let guild_plants_with_organisms = guild_plants
+            .join(
+                &organisms_subset,
+                ["wfo_taxon_name"],
+                ["wfo_taxon_name"],
+                JoinArgs::new(JoinType::Left),
+            )?;
+
+        Ok((guild_score, fragments, guild_plants_with_organisms))
     }
 }
 

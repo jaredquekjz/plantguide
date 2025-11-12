@@ -60,6 +60,71 @@ impl MarkdownFormatter {
             }
         }
 
+        // Pest Profile (qualitative information)
+        if let Some(pest_profile) = &explanation.pest_profile {
+            md.push_str("## Pest Vulnerability Profile\n\n");
+            md.push_str("*Qualitative information about herbivore pests (not used in scoring)*\n\n");
+
+            md.push_str(&format!(
+                "**Total unique herbivore species:** {}\n\n",
+                pest_profile.total_unique_pests
+            ));
+
+            // Shared pests (generalists)
+            if !pest_profile.shared_pests.is_empty() {
+                md.push_str("### Shared Pests (Generalists)\n\n");
+                md.push_str("These pests attack multiple plants in the guild:\n\n");
+                for (i, pest) in pest_profile.shared_pests.iter().enumerate().take(10) {
+                    md.push_str(&format!(
+                        "{}. **{}**: attacks {} plant(s) ({})\n",
+                        i + 1,
+                        pest.pest_name,
+                        pest.plant_count,
+                        pest.plants.join(", ")
+                    ));
+                }
+                md.push_str("\n");
+            } else {
+                md.push_str("**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.\n\n");
+            }
+
+            // Top pests by interaction count
+            if !pest_profile.top_pests.is_empty() {
+                md.push_str("### Top 10 Herbivore Pests\n\n");
+                md.push_str("| Rank | Pest Species | Plants Attacked |\n");
+                md.push_str("|------|--------------|------------------|\n");
+                for (i, pest) in pest_profile.top_pests.iter().enumerate().take(10) {
+                    let plant_list = if pest.plants.len() > 3 {
+                        format!("{} plants", pest.plants.len())
+                    } else {
+                        pest.plants.join(", ")
+                    };
+                    md.push_str(&format!(
+                        "| {} | {} | {} |\n",
+                        i + 1,
+                        pest.pest_name,
+                        plant_list
+                    ));
+                }
+                md.push_str("\n");
+            }
+
+            // Most vulnerable plants
+            if !pest_profile.vulnerable_plants.is_empty() {
+                md.push_str("### Most Vulnerable Plants\n\n");
+                md.push_str("| Plant | Herbivore Count |\n");
+                md.push_str("|-------|------------------|\n");
+                for plant in pest_profile.vulnerable_plants.iter().take(5) {
+                    md.push_str(&format!(
+                        "| {} | {} |\n",
+                        plant.plant_name,
+                        plant.pest_count
+                    ));
+                }
+                md.push_str("\n");
+            }
+        }
+
         // Metrics Breakdown
         md.push_str("## Metrics Breakdown\n\n");
 
@@ -123,6 +188,7 @@ mod tests {
                 ],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let md = MarkdownFormatter::format(&explanation);
@@ -163,6 +229,7 @@ mod tests {
                 universal: vec![],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let md = MarkdownFormatter::format(&explanation);

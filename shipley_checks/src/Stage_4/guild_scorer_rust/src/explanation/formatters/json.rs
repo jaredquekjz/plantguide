@@ -43,6 +43,7 @@ mod tests {
                 universal: vec![],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let json = JsonFormatter::format(&explanation).unwrap();
@@ -74,6 +75,7 @@ mod tests {
                 universal: vec![],
                 bonus: vec![],
             },
+            pest_profile: None,
         };
 
         let json = JsonFormatter::format_compact(&explanation).unwrap();

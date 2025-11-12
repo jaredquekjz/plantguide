@@ -58,6 +58,11 @@ impl ExplanationGenerator {
             warnings.push(w);
         }
 
+        // Pest profile (qualitative information)
+        let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(guild_plants)
+            .ok()
+            .flatten();
+
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
 
@@ -68,6 +73,7 @@ impl ExplanationGenerator {
             warnings,
             risks,
             metrics_display,
+            pest_profile,
         })
     }
 

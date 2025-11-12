@@ -193,8 +193,8 @@ mod tests {
         assert_eq!(benefit.metric_code, "M6");
         assert!(benefit.message.contains("5 growth forms"));
         assert!(benefit.message.contains("8.5m height range"));
-        assert!(benefit.detail.contains("[flexible]"));
-        assert!(benefit.detail.contains("[shade-tolerant]"));
+        assert!(benefit.detail.contains("(flexible)"));
+        assert!(benefit.detail.contains("(shade-tolerant"));
     }
 
     #[test]
