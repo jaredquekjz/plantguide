@@ -43,7 +43,6 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 
-setwd("/home/olier/ellenberg")
 
 log_msg <- function(...) {
   cat(..., "\n", sep = "")
@@ -60,7 +59,7 @@ log_msg("Step 1: Counting GBIF occurrences using Arrow compute engine...")
 log_msg("  (Streaming 70M records without loading into memory)")
 
 # Open parquet as Arrow dataset (no memory load)
-gbif_dataset <- open_dataset("data/gbif/occurrence_plantae_wfo.parquet")
+gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae_wfo.parquet"))
 
 # Use Arrow compute to aggregate BEFORE pulling into R
 # This is memory-efficient - only the aggregated result is in R memory
@@ -169,7 +168,7 @@ log_msg("  Written: stage1_shortlist_with_gbif_ge30_R.(parquet|csv)\n")
 log_msg("=== VERIFICATION AGAINST CANONICAL ===\n")
 
 # Load canonical >=30 shortlist
-canon_ge30 <- read_parquet("data/stage1/stage1_shortlist_with_gbif_ge30.parquet")
+canon_ge30 <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet")
 log_msg("Canonical >=30 shortlist: ", nrow(canon_ge30), " species")
 log_msg("Bill's >=30 shortlist:     ", nrow(shortlist_ge30), " species\n")
 
@@ -255,7 +254,7 @@ if (wfo_match && nrow(shortlist_ge30) == nrow(canon_ge30)) {
 
 # Binary checksum comparison
 log_msg("\n6. Binary parquet checksums:")
-bill_md5 <- system("md5sum data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet | awk '{print $1}'",
+bill_md5 <- system("md5sum file.path(OUTPUT_DIR, "shipley_checks", "stage1_shortlist_with_gbif_ge30_R.parquet | awk '{print $1}'",
                    intern = TRUE)
 canon_md5 <- system("md5sum data/stage1/stage1_shortlist_with_gbif_ge30.parquet | awk '{print $1}'",
                     intern = TRUE)
@@ -274,4 +273,4 @@ log_msg("Summary:")
 log_msg("  - Counted GBIF occurrences using Arrow streaming (memory-efficient)")
 log_msg("  - Merged with Bill's reconstructed shortlist")
 log_msg("  - Filtered to >=30 occurrences: ", nrow(shortlist_ge30), " species")
-log_msg("  - All verification outputs written to data/shipley_checks/")
+log_msg("  - All verification outputs written to file.path(OUTPUT_DIR, "shipley_checks", "")

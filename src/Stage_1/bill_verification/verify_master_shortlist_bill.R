@@ -266,7 +266,7 @@ if (all(qual_flags %in% names(df_shortlist))) {
   all_qualified <- all(has_qualification)
   all_checks_pass <- check_pass(
     all_qualified,
-    sprintf("All species have ≥1 qualification (%d/% d)", sum(has_qualification), nrow(df_shortlist))
+    sprintf("All species have ≥1 qualification (%d/%d)", sum(has_qualification), nrow(df_shortlist))
   ) && all_checks_pass
 }
 

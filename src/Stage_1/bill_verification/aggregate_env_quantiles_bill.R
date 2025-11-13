@@ -49,7 +49,6 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 
-setwd("/home/olier/ellenberg")
 
 log_msg <- function(...) {
   cat(..., "\n", sep = "")
@@ -61,7 +60,7 @@ aggregate_quantiles <- function(dataset) {
 
   # Paths
   occ_path <- file.path("data/stage1", paste0(dataset, "_occ_samples.parquet"))
-  output_path <- file.path("data/shipley_checks", paste0(dataset, "_species_quantiles_R.parquet"))
+  output_path <- file.path(file.path(OUTPUT_DIR, "shipley_checks"), paste0(dataset, "_species_quantiles_R.parquet"))
 
   if (!file.exists(occ_path)) {
     stop("Missing occurrence parquet: ", occ_path)
@@ -142,7 +141,7 @@ if ("all" %in% args) {
 }
 
 # Create output directory
-dir.create("data/shipley_checks", recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "shipley_checks"), recursive = TRUE, showWarnings = FALSE)
 
 # Process each dataset
 log_msg("=== Environmental Quantile Aggregation (Pure R) ===\n")

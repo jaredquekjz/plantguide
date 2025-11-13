@@ -1,6 +1,43 @@
 #!/usr/bin/env Rscript
-# Bill Shipley Verification: Extract names from all 8 datasets for WorldFlora matching
-# Reads from canonical parquets, writes name CSVs to shipley_checks
+################################################################################
+# Bill Shipley Verification: Extract Plant Names from All 8 Datasets
+################################################################################
+# PURPOSE:
+#   Extracts unique plant names from 8 source datasets (Duke, EIVE, Mabberly,
+#   TRY Enhanced, AusTraits, GBIF, GloBI, TRY traits) for WorldFlora matching.
+#   This is Phase 0 Step 1 of the verification pipeline.
+#
+# INPUTS:
+#   - Duke ethnobotany parquet (input/duke_original.parquet)
+#   - EIVE indicators parquet (input/eive_original.parquet)
+#   - Mabberly genera parquet (input/mabberly_original.parquet)
+#   - TRY Enhanced species parquet (input/tryenhanced_species_original.parquet)
+#   - AusTraits taxa parquet (input/austraits_taxa.parquet)
+#   - GBIF occurrences parquet (input/gbif_occurrence_plantae.parquet) - 5.4GB, streamed
+#   - GloBI interactions parquet (input/globi_interactions_plants.parquet) - streamed
+#   - TRY selected traits parquet (input/try_selected_traits.parquet)
+#
+# OUTPUTS:
+#   - output/wfo_verification/duke_names_for_r.csv
+#   - output/wfo_verification/eive_names_for_r.csv
+#   - output/wfo_verification/mabberly_names_for_r.csv
+#   - output/wfo_verification/tryenhanced_names_for_r.csv
+#   - output/wfo_verification/austraits_names_for_r.csv
+#   - output/wfo_verification/gbif_occurrence_names_for_r.tsv
+#   - output/wfo_verification/globi_interactions_names_for_r.tsv
+#   - output/wfo_verification/try_selected_traits_names_for_r.csv
+#
+# KEY OPERATIONS:
+#   1. Extract distinct name columns from each dataset
+#   2. Handle dataset-specific column structures (e.g., scientific_name vs TaxonConcept)
+#   3. Stream large files (GBIF 5.4GB, GloBI) using Arrow to avoid memory issues
+#   4. Deduplicate names within each dataset
+#   5. Write CSV/TSV files for downstream WorldFlora matching
+#
+# MEMORY OPTIMIZATION:
+#   - Uses Arrow streaming for GBIF (5.4GB) and GloBI datasets
+#   - Filters and deduplicates before collecting to R memory
+################################################################################
 
 # ========================================================================
 # AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)

@@ -81,11 +81,11 @@ OUTPUT_PATH <- get_opt('output', 'data/shipley_checks/stage3/bill_enriched_stage
 ################################################################################
 
 load_taxonomy_from_worldflora <- function(master_ids) {
-  # Bill's verification uses enriched parquet files from INTERMEDIATE_DIR
+  # Bill's verification uses enriched parquet files from wfo_verification output
   sources <- c(
-    file.path(INTERMEDIATE_DIR, 'tryenhanced_worldflora_enriched.parquet'),
-    file.path(INTERMEDIATE_DIR, 'eive_worldflora_enriched.parquet'),
-    file.path(INTERMEDIATE_DIR, 'mabberly_worldflora_enriched.parquet')
+    file.path(OUTPUT_DIR, 'wfo_verification', 'tryenhanced_worldflora_enriched.parquet'),
+    file.path(OUTPUT_DIR, 'wfo_verification', 'eive_worldflora_enriched.parquet'),
+    file.path(OUTPUT_DIR, 'wfo_verification', 'mabberly_worldflora_enriched.parquet')
   )
 
   taxonomy <- data.frame(
