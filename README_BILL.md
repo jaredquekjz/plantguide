@@ -14,7 +14,7 @@
 
 2. **This Repository** (clone from GitHub)
    - Contains all verification scripts
-   - Contains pre-computed XGBoost results (included)
+   - Contains `bill_intermediate_data.zip` (64 MB - already included!)
 
 3. **R Software** (already installed on your computer)
    - You're using R for your analyses
@@ -47,11 +47,11 @@ C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\
 
 ## Step 2: Extract Foundational Data
 
-You have a file called `bill_foundational_data.zip` (20 GB).
+You have a file called `bill_foundational_data.zip` (20 GB) - this can be anywhere on your computer (desktop, downloads, etc.).
 
 ### Using Windows Explorer:
 
-1. **Right-click** on `bill_foundational_data.zip`
+1. **Right-click** on `bill_foundational_data.zip` (wherever you have it saved)
 2. Choose "Extract All..."
 3. **IMPORTANT**: Extract to this exact location:
    ```
@@ -80,7 +80,7 @@ You have a file called `bill_foundational_data.zip` (20 GB).
 
 ## Step 3: Run Setup Script
 
-This extracts the pre-computed XGBoost results (Stage 1-2) that you cannot run yourself.
+This extracts `bill_intermediate_data.zip` (already in the repo) containing pre-computed XGBoost results (Stage 1-2) that you cannot run yourself.
 
 ### Open Command Prompt:
 
@@ -394,7 +394,7 @@ shipley_checks\                   # This IS your cloned repository
 ├── docs\                         # Documentation
 ├── setup_bill.R                  # RUN THIS FIRST
 ├── run_all_bill.R                # RUN THIS SECOND
-└── bill_intermediate_data.zip    # Pre-computed XGBoost results
+└── bill_intermediate_data.zip    # Pre-computed XGBoost results (already in repo!)
 ```
 
 ---

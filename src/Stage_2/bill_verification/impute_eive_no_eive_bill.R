@@ -8,6 +8,42 @@
 # XGBoost handles missing values natively via learned default directions.
 #
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 suppressPackageStartupMessages({
   library(xgboost)
   library(readr)
@@ -46,7 +82,7 @@ if (!file.exists(MASTER_PATH)) {
 }
 
 df_master <- read_csv(MASTER_PATH, show_col_types = FALSE)
-cat(sprintf('✓ Loaded %d species\n', nrow(df_master)))
+cat(sprintf('✓ Loaded %,d species\n', nrow(df_master)))
 cat(sprintf('✓ Features: %d columns\n\n', ncol(df_master)))
 
 # ============================================================================
@@ -63,13 +99,13 @@ complete <- sum(eive_count == 5)
 none <- sum(eive_count == 0)
 partial <- nrow(df_master) - complete - none
 
-cat(sprintf('  Complete (5/5 axes): %d (%.1f%%)\n',
+cat(sprintf('  Complete (5/5 axes): %,d (%.1f%%)\n',
             complete, 100 * complete / nrow(df_master)))
-cat(sprintf('  None (0/5 axes):     %d (%.1f%%)\n',
+cat(sprintf('  None (0/5 axes):     %,d (%.1f%%)\n',
             none, 100 * none / nrow(df_master)))
-cat(sprintf('  Partial (1-4 axes):  %d (%.1f%%)\n',
+cat(sprintf('  Partial (1-4 axes):  %,d (%.1f%%)\n',
             partial, 100 * partial / nrow(df_master)))
-cat(sprintf('  → Total to impute:   %d species\n\n', partial + none))
+cat(sprintf('  → Total to impute:   %,d species\n\n', partial + none))
 
 # ============================================================================
 # LOAD MODELS AND SCALERS
@@ -98,7 +134,6 @@ for (axis in AXES) {
 
   # Load scaler
   scaler <- read_json(scaler_path)
-  scaler$features <- unlist(scaler$features)  # Convert list to character vector
   no_eive_scalers[[axis]] <- scaler
 
   cat(sprintf('  ✓ %s-axis: model + scaler loaded\n', axis))
@@ -183,7 +218,7 @@ for (i in seq_along(AXES)) {
   cat('✓\n')
 
   # Predict
-  cat(sprintf('  Predicting %d species... ', n_missing))
+  cat(sprintf('  Predicting %,d species... ', n_missing))
   dmatrix <- xgb.DMatrix(data = as.matrix(X_scaled))
   predictions <- predict(no_eive_models[[axis]], dmatrix)
 
@@ -282,11 +317,12 @@ cat('IMPUTATION COMPLETE\n')
 cat(strrep('=', 80), '\n\n')
 
 cat('Statistics:\n')
-cat(sprintf('  Total species: %d\n', nrow(df_master)))
-cat(sprintf('  Species with complete observed EIVE: %d (%.1f%%)\n',
+cat(sprintf('  Total species: %,d\n', nrow(df_master)))
+cat(sprintf('  Species with complete observed EIVE: %,d (%.1f%%)\n',
             complete, 100 * complete / nrow(df_master)))
-cat(sprintf('  Species needing imputation: %d (%.1f%%)\n',
+cat(sprintf('  Species needing imputation: %,d (%.1f%%)\n',
             partial + none, 100 * (partial + none) / nrow(df_master)))
+cat(sprintf('  Predictions generated: %,d\n', nrow(all_predictions)))
 
 cat('\nOutputs:\n')
 cat(sprintf('  Per-axis predictions: %s/{L,T,M,N,R}_predictions_bill_20251107.csv\n', OUTPUT_DIR))

@@ -16,6 +16,41 @@
 #     --output data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
 ################################################################################
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
 suppressPackageStartupMessages({
   library(readr)
   library(dplyr)
@@ -101,23 +136,10 @@ calculate_stratefy_csr <- function(LA, LDMC, SLA) {
 ################################################################################
 
 compute_ecosystem_services <- function(df) {
-  # Handle nitrogen fixation rating and confidence
-  if ("nitrogen_fixation_rating" %in% names(df)) {
-    # Track original values to distinguish TRY data from fallback
-    df$nitrogen_fixation_has_try <- !is.na(df$nitrogen_fixation_rating)
-
-    # Fill NAs with "No Information" (distinguish from empirical "Low" rating)
-    n_try <- sum(df$nitrogen_fixation_has_try, na.rm = TRUE)
-    n_fallback <- sum(!df$nitrogen_fixation_has_try | is.na(df$nitrogen_fixation_has_try))
-
-    df$nitrogen_fixation_rating[is.na(df$nitrogen_fixation_rating)] <- "No Information"
-
-    cat(sprintf("  Nitrogen fixation: %d from TRY data, %d with no information\n", n_try, n_fallback))
-  } else {
-    # Column missing entirely - no information available
-    cat("  ⚠ nitrogen_fixation_rating not found, using 'No Information' for all species\n")
-    df$nitrogen_fixation_rating <- "No Information"
-    df$nitrogen_fixation_has_try <- FALSE
+  # Initialize nitrogen fixation if not present
+  if (!"nitrogen_fixation_rating" %in% names(df)) {
+    cat("  ⚠ nitrogen_fixation_rating not found, using 'Low' fallback for all species\n")
+    df$nitrogen_fixation_rating <- "Low"
   }
 
   # Ensure required columns exist
@@ -276,13 +298,9 @@ compute_ecosystem_services <- function(df) {
     }
   }
 
-  # Nitrogen Fixation - use TRY data where available
-  # Confidence: "High" for TRY data, "No Information" when no data available
-  df$nitrogen_fixation_confidence <- ifelse(
-    df$nitrogen_fixation_has_try,
-    "High",           # TRY data available (any rating including "Low")
-    "No Information"  # No TRY data - we don't know
-  )
+  # Nitrogen Fixation - simplified for Bill's verification (no TRY data)
+  # All species get "Low" confidence since we're using fallback
+  df$nitrogen_fixation_confidence <- "Low"
 
   # Mark species without valid CSR as "Unable to Classify"
   invalid_idx <- !valid_idx
@@ -315,10 +333,10 @@ compute_ecosystem_services <- function(df) {
 main <- function() {
   option_list <- list(
     make_option(c("--input"), type = "character",
-                default = "data/shipley_checks/stage3/bill_enriched_stage3_11711.csv",
+                default = file.path(OUTPUT_DIR, "stage3/bill_enriched_stage3_11711.csv"),
                 help = "Input CSV file with enriched traits"),
     make_option(c("--output"), type = "character",
-                default = "data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv",
+                default = file.path(OUTPUT_DIR, "stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"),
                 help = "Output CSV file with CSR and ecosystem services")
   )
 
@@ -375,7 +393,7 @@ main <- function() {
   cat("    7. Carbon Storage - Recalcitrant\n")
   cat("    8. Carbon Storage - Total\n")
   cat("    9. Soil Erosion Protection\n")
-  cat("   10. Nitrogen Fixation (TRY TraitID 8 + fallback)\n")
+  cat("   10. Nitrogen Fixation (fallback: all Low)\n")
 
   cat("\nWriting output...\n")
   write_csv(df, opt$output)

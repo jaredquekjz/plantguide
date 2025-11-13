@@ -23,7 +23,7 @@ get_repo_root <- function() {
   file_arg <- grep("^--file=", args, value = TRUE)
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
-    # This script is in shipley_checks/
+    # This script is at repo root
     repo_root <- normalizePath(dirname(script_path))
   } else {
     # Fallback: assume current directory is repo root
@@ -33,10 +33,8 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-repo_root <- file.path(repo_root, "shipley_checks")
 
-cat("Detected repository root: ", repo_root, "\n")
-cat("Shipley checks directory: ", repo_root, "\n\n")
+cat("Detected repository root: ", repo_root, "\n\n")
 
 ################################################################################
 # Step 1: Extract Intermediate Data

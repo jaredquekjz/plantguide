@@ -9,6 +9,41 @@
 # Adapted from: src/Stage_3/enrich_master_with_taxonomy.py
 ################################################################################
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
 suppressPackageStartupMessages({
   library(readr)
   library(dplyr)
@@ -46,11 +81,11 @@ OUTPUT_PATH <- get_opt('output', 'data/shipley_checks/stage3/bill_enriched_stage
 ################################################################################
 
 load_taxonomy_from_worldflora <- function(master_ids) {
-  # Bill's verification uses enriched parquet files from WFO matching
+  # Bill's verification uses enriched parquet files from INTERMEDIATE_DIR
   sources <- c(
-    'data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet'
+    file.path(INTERMEDIATE_DIR, 'tryenhanced_worldflora_enriched.parquet'),
+    file.path(INTERMEDIATE_DIR, 'eive_worldflora_enriched.parquet'),
+    file.path(INTERMEDIATE_DIR, 'mabberly_worldflora_enriched.parquet')
   )
 
   taxonomy <- data.frame(
@@ -68,27 +103,14 @@ load_taxonomy_from_worldflora <- function(master_ids) {
 
     cat(sprintf('Loading %s...\n', basename(source_path)))
 
-    # Read all columns first to check availability
-    wfo_all <- arrow::read_parquet(source_path)
-
-    # Check which taxonomy columns exist
-    has_family <- 'Family' %in% names(wfo_all)
-    has_genus <- 'Genus' %in% names(wfo_all)
-
-    if (!has_family || !has_genus) {
-      cat(sprintf('  ⚠ Skipping %s (missing Family/Genus columns)\n', basename(source_path)))
-      next
-    }
-
-    wfo <- wfo_all %>%
-      select(wfo_taxon_id, Family, Genus)
+    wfo <- arrow::read_parquet(source_path, col_select = c('taxonID', 'family', 'genus'))
 
     # Filter to master IDs and remove duplicates
     wfo_filtered <- wfo %>%
-      filter(wfo_taxon_id %in% master_ids) %>%
-      filter(!is.na(Family)) %>%
-      distinct(wfo_taxon_id, .keep_all = TRUE) %>%
-      rename(family = Family, genus = Genus)
+      filter(taxonID %in% master_ids) %>%
+      filter(!is.na(family)) %>%
+      distinct(taxonID, .keep_all = TRUE) %>%
+      rename(wfo_taxon_id = taxonID)
 
     # Merge with existing taxonomy (first source wins)
     taxonomy <- bind_rows(taxonomy, wfo_filtered) %>%
@@ -173,32 +195,8 @@ master <- master %>%
 tax_coverage <- sum(!is.na(master$family)) / nrow(master) * 100
 cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
 
-# Load nitrogen fixation data if available
-cat('[3/5] Loading nitrogen fixation data from TRY...\n')
-NFIX_PATH <- 'data/shipley_checks/stage3/try_nitrogen_fixation_bill.csv'
-
-if (file.exists(NFIX_PATH)) {
-  nfix_data <- read_csv(NFIX_PATH, show_col_types = FALSE)
-
-  master <- master %>%
-    left_join(nfix_data %>% select(wfo_taxon_id, nitrogen_fixation_rating),
-              by = 'wfo_taxon_id')
-
-  n_try <- sum(!is.na(master$nitrogen_fixation_rating))
-  n_total <- nrow(master)
-  cat(sprintf('  ✓ Nitrogen fixation: %.1f%% coverage (%d/%d from TRY)\n',
-              100 * n_try / n_total, n_try, n_total))
-  cat(sprintf('  ✓ Remaining %d species will use "Low" fallback\n\n',
-              n_total - n_try))
-} else {
-  cat(sprintf('  ⚠ Nitrogen fixation data not found: %s\n', NFIX_PATH))
-  cat('  → Run extract_try_nitrogen_fixation_bill.R to generate TRY data\n')
-  cat('  → Will use "Low" fallback for all species in CSR calculation\n\n')
-  master$nitrogen_fixation_rating <- NA_character_
-}
-
 # Back-transform height
-cat('[4/5] Back-transforming height and simplifying life form...\n')
+cat('[3/4] Back-transforming height and simplifying life form...\n')
 
 if ('logH' %in% names(master)) {
   master <- master %>%
@@ -220,7 +218,7 @@ if ('try_woodiness' %in% names(master)) {
 }
 
 # Save enriched dataset
-cat('[5/5] Saving enriched dataset...\n')
+cat('[4/4] Saving enriched dataset...\n')
 write_csv(master, OUTPUT_PATH)
 
 file_info <- file.info(OUTPUT_PATH)
@@ -249,8 +247,5 @@ cat(sprintf('  height_m: %.1f%% (%d/%d)\n',
 cat(sprintf('  life_form_simple: %.1f%% (%d/%d)\n',
             100 * sum(!is.na(master$life_form_simple)) / nrow(master),
             sum(!is.na(master$life_form_simple)), nrow(master)))
-cat(sprintf('  nitrogen_fixation_rating: %.1f%% (%d/%d)\n',
-            100 * sum(!is.na(master$nitrogen_fixation_rating)) / nrow(master),
-            sum(!is.na(master$nitrogen_fixation_rating)), nrow(master)))
 
 cat('\n✓ Enrichment complete - ready for CSR calculation\n')
