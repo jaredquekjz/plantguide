@@ -1,7 +1,20 @@
 //! METRIC 6: STRUCTURAL DIVERSITY (VERTICAL STRATIFICATION)
 //!
+//! **PHASE 4 OPTIMIZATION**: Pre-filtered LazyFrame with column projection
+//!
 //! Scores vertical stratification quality and growth form diversity.
 //! Validates that height differences are compatible with light preferences.
+//!
+//! **Memory optimization**:
+//!   - Old: Receives full guild_plants (7 rows × 782 columns)
+//!   - New: Receives plants_lazy, selects only 4 needed columns
+//!   - Savings per metric call: 778 columns not loaded
+//!
+//! **Columns needed** (M6 selects these 4):
+//!   1. wfo_scientific_name - Plant name for grouping
+//!   2. height_m - Plant height for stratification analysis
+//!   3. light_pref - EIVE-L value for light compatibility validation
+//!   4. try_growth_form - Growth form category for diversity scoring
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m6_structural_diversity.R
 
@@ -47,12 +60,37 @@ pub struct M6Result {
 
 /// Calculate M6: Structural Diversity
 ///
+/// **PHASE 4 OPTIMIZATION**: Uses LazyFrame with column projection
+///
 /// R reference: m6_structural_diversity.R::calculate_m6_structural_diversity
 pub fn calculate_m6(
-    guild_plants: &DataFrame,
+    plant_ids: &[String],        // Guild plant IDs for filtering
+    plants_lazy: &LazyFrame,     // Schema-only scan (from scorer)
     calibration: &Calibration,
 ) -> Result<M6Result> {
-    // Extract plant data
+    // STEP 1: Materialize only the 4 columns M6 needs
+    let plants_selected = plants_lazy
+        .clone()
+        .select(&[
+            col("wfo_taxon_id"),
+            col("wfo_scientific_name"),
+            col("height_m"),
+            col("EIVEres-L_complete").alias("light_pref"),  // Light preference (original name in Parquet)
+            col("try_growth_form"),
+        ])
+        .collect()?;  // Execute: loads only 5 columns × 11,711 rows
+
+    // STEP 2: Filter to guild plants (fast - only 5 columns)
+    use std::collections::HashSet;
+    let id_set: HashSet<_> = plant_ids.iter().collect();
+    let id_col = plants_selected.column("wfo_taxon_id")?.str()?;
+    let mask: BooleanChunked = id_col
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .collect();
+    let guild_plants = plants_selected.filter(&mask)?;  // Result: 5 columns × 7 rows
+
+    // Extract plant data from filtered DataFrame
     let growth_forms = guild_plants.column("try_growth_form")?.str()?;
     let orig_heights = guild_plants.column("height_m")?.f64()?;  // For height range calculation
 
@@ -150,7 +188,7 @@ pub fn calculate_m6(
     };
 
     // Group plants by growth form with heights and light preferences
-    let plant_names = guild_plants.column("wfo_taxon_name")?.str()?;
+    let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
     let light_prefs = guild_plants.column("light_pref")?.f64()?;
     let mut form_groups: FxHashMap<String, Vec<PlantHeight>> = FxHashMap::default();
 

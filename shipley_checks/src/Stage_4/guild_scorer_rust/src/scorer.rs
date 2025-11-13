@@ -239,8 +239,10 @@ impl GuildScorer {
         let m5 = calculate_m5(plant_ids, fungi_lazy, &self.calibration)?;
 
         // Calculate M6: Structural Diversity
-        // Will be optimized in Phase 4
-        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+        // PHASE 4 OPTIMIZATION: Use LazyFrame with column projection
+        // Old: Pass &guild_plants (all 782 columns)
+        // New: Pass &plants_lazy + plant_ids (loads only 5 columns)
+        let m6 = calculate_m6(plant_ids, &self.data.plants_lazy, &self.calibration)?;
 
         // Calculate M7: Pollinator Support
         // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
@@ -355,7 +357,8 @@ impl GuildScorer {
                         Ok(Box::new(m5))
                     }
                     5 => {
-                        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+                        // PHASE 4 OPTIMIZATION: Use LazyFrame with column projection
+                        let m6 = calculate_m6(plant_ids, &self.data.plants_lazy, &self.calibration)?;
                         Ok(Box::new(m6))
                     }
                     6 => {
@@ -519,7 +522,8 @@ impl GuildScorer {
                         Ok((Box::new(m5), fragment))
                     }
                     5 => {
-                        let m6 = calculate_m6(&guild_plants, &self.calibration)?;
+                        // PHASE 4 OPTIMIZATION: Use LazyFrame with column projection
+                        let m6 = calculate_m6(plant_ids, &self.data.plants_lazy, &self.calibration)?;
                         let display_score = m6.norm;
                         let fragment = generate_m6_fragment(&m6, display_score);
                         Ok((Box::new(m6), fragment))
