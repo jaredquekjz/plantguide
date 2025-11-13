@@ -2,24 +2,42 @@
 # Bill Shipley Verification: Extract GloBI plant names for WorldFlora matching
 # Reads from canonical GloBI interactions parquet, outputs to shipley_checks
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
+INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
+OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 library(arrow)
 
-args <- commandArgs(trailingOnly = FALSE)
-file_arg_idx <- grep("^--file=", args)
-if (length(file_arg_idx) == 0) {
-  script_dir <- getwd()
-} else {
-  script_path <- sub("^--file=", "", args[file_arg_idx[length(file_arg_idx)]])
-  script_dir <- dirname(normalizePath(script_path))
-}
-repo_root <- normalizePath(file.path(script_dir, "..", "..", ".."), winslash = "/", mustWork = TRUE)
-setwd(repo_root)
-
 cat("Bill verification: Extracting GloBI plant names\n")
-cat("Reading from canonical:", file.path(repo_root, "data/stage1/globi_interactions_plants.parquet"), "\n")
+cat("Reading from canonical:", file.path(OUTPUT_DIR, file.path(INPUT_DIR, "globi_interactions_plants.parquet")), "\n")
 
 # Read GloBI plant interactions parquet
-globi <- read_parquet("data/stage1/globi_interactions_plants.parquet")
+globi <- read_parquet(file.path(INPUT_DIR, "globi_interactions_plants.parquet"))
 cat("Loaded", nrow(globi), "GloBI plant interaction rows\n")
 
 # Extract distinct plant names from both source and target
@@ -39,7 +57,7 @@ all_names <- unique(rbind(source_names, target_names))
 cat("Extracted", nrow(all_names), "unique plant names (source + target)\n")
 
 # Output to Bill's verification folder
-output_dir <- file.path(repo_root, "data/shipley_checks/wfo_verification")
+output_dir <- file.path(OUTPUT_DIR, "wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 output_path <- file.path(output_dir, "globi_interactions_names_for_r.tsv")
 

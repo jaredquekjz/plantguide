@@ -1,5 +1,34 @@
 #!/usr/bin/env Rscript
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
+INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
+OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 cat("Starting WorldFlora matching for TRY enhanced dataset\n")
 flush.console()
 
@@ -13,21 +42,12 @@ log_msg <- function(...) {
   flush.console()
 }
 
-args <- commandArgs(trailingOnly = FALSE)
-file_arg_idx <- grep("^--file=", args)
-if (length(file_arg_idx) == 0) {
-  script_dir <- getwd()
-} else {
-  script_path <- sub("^--file=", "", args[file_arg_idx[length(file_arg_idx)]])
-  script_dir <- dirname(normalizePath(script_path))
-}
-repo_root <- normalizePath(file.path(script_dir, "..", "..", ".."), winslash = "/", mustWork = TRUE)
 
-input_path <- file.path(repo_root, "data/shipley_checks/wfo_verification/tryenhanced_names_for_r.csv")
-output_dir <- file.path(repo_root, "data/shipley_checks/wfo_verification")
+input_path <- file.path(OUTPUT_DIR, "data/shipley_checks/wfo_verification/tryenhanced_names_for_r.csv")
+output_dir <- file.path(OUTPUT_DIR, "wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 output_path <- file.path(output_dir, "tryenhanced_wfo_worldflora.csv")
-wfo_path <- file.path(repo_root, "data/classification.csv")
+wfo_path <- file.path(OUTPUT_DIR, file.path(INPUT_DIR, "classification.csv"))
 
 log_msg("Reading TRY names from: ", input_path)
 try_names <- fread(input_path, encoding = "UTF-8", data.table = FALSE)

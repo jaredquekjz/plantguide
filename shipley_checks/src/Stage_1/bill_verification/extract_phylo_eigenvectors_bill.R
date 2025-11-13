@@ -26,6 +26,35 @@
 #   env R_LIBS_USER=/home/olier/ellenberg/.Rlib \
 #     /usr/bin/Rscript src/Stage_1/bill_verification/extract_phylo_eigenvectors_bill.R
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
+INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
+OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 suppressPackageStartupMessages({
   library(ape)
   library(dplyr)
@@ -43,7 +72,7 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 # Step 1: Load phylogenetic tree
 cat("[1/7] Loading phylogenetic tree...\n")
-tree_path <- "data/stage1/phlogeny/mixgb_tree_11711_species_20251107.nwk"
+tree_path <- file.path(INPUT_DIR, "mixgb_tree_11711_species_20251107.nwk")
 if (!file.exists(tree_path)) {
   stop("ERROR: Phylogenetic tree not found: ", tree_path)
 }
@@ -61,7 +90,7 @@ if (any(tree$edge.length < 0)) {
 
 # Step 2: Load WFO→tree mapping
 cat("\n[2/7] Loading WFO→tree mapping...\n")
-mapping_path <- "data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv"
+mapping_path <- file.path(INPUT_DIR, "mixgb_wfo_to_tree_mapping_11711.csv")
 if (!file.exists(mapping_path)) {
   stop("ERROR: WFO→tree mapping not found: ", mapping_path)
 }

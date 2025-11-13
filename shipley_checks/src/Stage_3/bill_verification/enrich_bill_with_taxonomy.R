@@ -9,6 +9,34 @@
 # Adapted from: src/Stage_3/enrich_master_with_taxonomy.py
 ################################################################################
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
+INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
+OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
 suppressPackageStartupMessages({
   library(readr)
   library(dplyr)
@@ -46,11 +74,11 @@ OUTPUT_PATH <- get_opt('output', 'data/shipley_checks/stage3/bill_enriched_stage
 ################################################################################
 
 load_taxonomy_from_worldflora <- function(master_ids) {
-  # Bill's verification uses enriched parquet files from WFO matching
+  # Bill's verification uses enriched parquet files from INTERMEDIATE_DIR
   sources <- c(
-    'data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet'
+    file.path(INTERMEDIATE_DIR, 'tryenhanced_worldflora_enriched.parquet'),
+    file.path(INTERMEDIATE_DIR, 'eive_worldflora_enriched.parquet'),
+    file.path(INTERMEDIATE_DIR, 'mabberly_worldflora_enriched.parquet')
   )
 
   taxonomy <- data.frame(

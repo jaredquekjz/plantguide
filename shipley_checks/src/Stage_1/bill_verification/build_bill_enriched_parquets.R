@@ -2,6 +2,35 @@
 # Build WorldFlora-enriched parquets for Bill's verification
 # Outputs to data/shipley_checks/wfo_verification/ to avoid contaminating canonical data
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
+INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
+OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 suppressPackageStartupMessages({
   library(arrow)
   library(dplyr)
@@ -15,7 +44,7 @@ log_msg <- function(...) {
   flush.console()
 }
 
-output_dir <- "data/shipley_checks/wfo_verification"
+output_dir <- file.path(OUTPUT_DIR, "wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 
 # ==============================================================================
@@ -23,7 +52,7 @@ dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 # ==============================================================================
 
 log_msg("=== Processing Duke dataset ===")
-duke_orig <- read_parquet("data/stage1/duke_original.parquet")
+duke_orig <- read_parquet(file.path(INPUT_DIR, "duke_original.parquet"))
 log_msg("Loaded Duke original: ", nrow(duke_orig), " rows")
 
 duke_wfo <- fread("data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv", data.table = FALSE)
@@ -96,7 +125,7 @@ log_msg("Duke complete: ", nrow(duke_enriched), " rows\n")
 # ==============================================================================
 
 log_msg("=== Processing EIVE dataset ===")
-eive_orig <- read_parquet("data/stage1/eive_original.parquet")
+eive_orig <- read_parquet(file.path(INPUT_DIR, "eive_original.parquet"))
 log_msg("Loaded EIVE original: ", nrow(eive_orig), " rows")
 
 eive_wfo <- fread("data/shipley_checks/wfo_verification/eive_wfo_worldflora.csv", data.table = FALSE)
@@ -173,7 +202,7 @@ log_msg("EIVE complete: ", nrow(eive_enriched), " rows\n")
 # ==============================================================================
 
 log_msg("=== Processing Mabberly dataset ===")
-mab_orig <- read_parquet("data/stage1/mabberly_original.parquet")
+mab_orig <- read_parquet(file.path(INPUT_DIR, "mabberly_original.parquet"))
 log_msg("Loaded Mabberly original: ", nrow(mab_orig), " rows")
 
 mab_wfo <- fread("data/shipley_checks/wfo_verification/mabberly_wfo_worldflora.csv", data.table = FALSE)
@@ -248,7 +277,7 @@ log_msg("Mabberly complete: ", nrow(mab_enriched), " rows\n")
 # ==============================================================================
 
 log_msg("=== Processing TRY Enhanced dataset ===")
-try_orig <- read_parquet("data/stage1/tryenhanced_species_original.parquet")
+try_orig <- read_parquet(file.path(INPUT_DIR, "tryenhanced_species_original.parquet"))
 log_msg("Loaded TRY Enhanced original: ", nrow(try_orig), " rows")
 
 try_wfo <- fread("data/shipley_checks/wfo_verification/tryenhanced_wfo_worldflora.csv", data.table = FALSE)
@@ -401,7 +430,7 @@ log_msg("  (Note: Contains both trait measurements and WFO taxonomy for all AusT
 # ==============================================================================
 
 log_msg("=== Processing TRY Selected Traits dataset ===")
-try_sel_orig <- read_parquet("data/stage1/try_selected_traits.parquet")
+try_sel_orig <- read_parquet(file.path(INPUT_DIR, "try_selected_traits.parquet"))
 log_msg("Loaded TRY Selected Traits original: ", nrow(try_sel_orig), " rows")
 
 try_sel_wfo <- fread("data/shipley_checks/wfo_verification/try_selected_traits_wfo_worldflora.csv", data.table = FALSE)

@@ -47,6 +47,12 @@ __pycache__/
 # Bill Shipley verification: track docs and src, ignore data
 !/shipley_checks/docs/
 !/shipley_checks/src/
+!/shipley_checks/run_all_bill.R
+!/shipley_checks/setup_bill.R
+!/shipley_checks/bill_intermediate_data.zip
+shipley_checks/input/
+shipley_checks/intermediate/
+shipley_checks/output/
 shipley_checks/**/*.parquet
 shipley_checks/**/*.csv
 shipley_checks/**/*.nwk
