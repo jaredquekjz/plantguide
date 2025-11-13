@@ -23,7 +23,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -33,9 +33,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -52,8 +52,8 @@ suppressPackageStartupMessages({
 # CONFIGURATION
 # ==============================================================================
 
-MASTER_UNION_FILE <- "data/shipley_checks/master_taxa_union_bill.parquet"
-SHORTLIST_FILE <- "data/shipley_checks/stage1_shortlist_candidates_bill.parquet"
+MASTER_UNION_FILE <- "master_taxa_union_bill.parquet"
+SHORTLIST_FILE <- "stage1_shortlist_candidates_bill.parquet"
 
 EXPECTED_MASTER_ROWS <- c(86550, 86650)  # 86,592 ± 50
 EXPECTED_SHORTLIST_ROWS <- c(24460, 24560)  # 24,511 ± 50

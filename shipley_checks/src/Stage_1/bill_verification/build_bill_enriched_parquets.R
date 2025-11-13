@@ -18,7 +18,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -28,9 +28,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -62,7 +62,7 @@ log_msg("=== Processing Duke dataset ===")
 duke_orig <- read_parquet(file.path(INPUT_DIR, "duke_original.parquet"))
 log_msg("Loaded Duke original: ", nrow(duke_orig), " rows")
 
-duke_wfo <- fread("data/shipley_checks/wfo_verification/duke_wfo_worldflora.csv", data.table = FALSE)
+duke_wfo <- fread("wfo_verification/duke_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded Duke WFO matches: ", nrow(duke_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -135,7 +135,7 @@ log_msg("=== Processing EIVE dataset ===")
 eive_orig <- read_parquet(file.path(INPUT_DIR, "eive_original.parquet"))
 log_msg("Loaded EIVE original: ", nrow(eive_orig), " rows")
 
-eive_wfo <- fread("data/shipley_checks/wfo_verification/eive_wfo_worldflora.csv", data.table = FALSE)
+eive_wfo <- fread("wfo_verification/eive_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded EIVE WFO matches: ", nrow(eive_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -212,7 +212,7 @@ log_msg("=== Processing Mabberly dataset ===")
 mab_orig <- read_parquet(file.path(INPUT_DIR, "mabberly_original.parquet"))
 log_msg("Loaded Mabberly original: ", nrow(mab_orig), " rows")
 
-mab_wfo <- fread("data/shipley_checks/wfo_verification/mabberly_wfo_worldflora.csv", data.table = FALSE)
+mab_wfo <- fread("wfo_verification/mabberly_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded Mabberly WFO matches: ", nrow(mab_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -287,7 +287,7 @@ log_msg("=== Processing TRY Enhanced dataset ===")
 try_orig <- read_parquet(file.path(INPUT_DIR, "tryenhanced_species_original.parquet"))
 log_msg("Loaded TRY Enhanced original: ", nrow(try_orig), " rows")
 
-try_wfo <- fread("data/shipley_checks/wfo_verification/tryenhanced_wfo_worldflora.csv", data.table = FALSE)
+try_wfo <- fread("wfo_verification/tryenhanced_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded TRY Enhanced WFO matches: ", nrow(try_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -364,7 +364,7 @@ log_msg("=== Processing AusTraits Traits dataset ===")
 aus_traits_orig <- read_parquet("data/stage1/austraits/traits.parquet")
 log_msg("Loaded AusTraits traits original: ", nrow(aus_traits_orig), " rows")
 
-aus_wfo <- fread("data/shipley_checks/wfo_verification/austraits_wfo_worldflora.csv", data.table = FALSE)
+aus_wfo <- fread("wfo_verification/austraits_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded AusTraits WFO matches: ", nrow(aus_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)
@@ -440,7 +440,7 @@ log_msg("=== Processing TRY Selected Traits dataset ===")
 try_sel_orig <- read_parquet(file.path(INPUT_DIR, "try_selected_traits.parquet"))
 log_msg("Loaded TRY Selected Traits original: ", nrow(try_sel_orig), " rows")
 
-try_sel_wfo <- fread("data/shipley_checks/wfo_verification/try_selected_traits_wfo_worldflora.csv", data.table = FALSE)
+try_sel_wfo <- fread("wfo_verification/try_selected_traits_wfo_worldflora.csv", data.table = FALSE)
 log_msg("Loaded TRY Selected Traits WFO matches: ", nrow(try_sel_wfo), " rows")
 
 # Convert empty string taxonID to NA (match Python behavior)

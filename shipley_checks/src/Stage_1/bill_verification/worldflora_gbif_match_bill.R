@@ -16,7 +16,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -26,9 +26,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -50,11 +50,11 @@ log_msg <- function(...) {
 }
 
 
-input_path <- file.path(OUTPUT_DIR, "data/shipley_checks/wfo_verification/gbif_occurrence_names_for_r.tsv")
+input_path <- file.path(OUTPUT_DIR, "wfo_verification/gbif_occurrence_names_for_r.tsv")
 output_dir <- file.path(OUTPUT_DIR, "wfo_verification")
 dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
 output_path <- file.path(output_dir, "gbif_occurrence_wfo_worldflora.csv")
-wfo_path <- file.path(OUTPUT_DIR, file.path(INPUT_DIR, "classification.csv"))
+wfo_path <- file.path(INPUT_DIR, "classification.csv")
 
 log_msg("Reading GBIF names from: ", input_path)
 gbif_names <- fread(input_path, encoding = "UTF-8", data.table = FALSE, sep = "\t")

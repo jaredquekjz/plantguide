@@ -27,30 +27,21 @@
 
 ## Step 1: Clone This Repository
 
-### Option A: Using Command Line (Recommended)
+### Using Command Line (Simple!)
 
-Open Command Prompt and type:
+Open Command Prompt (press **Windows Key + R**, type `cmd`, press Enter) and paste this command:
 
 ```cmd
 cd C:\Users\shij1401\OneDrive - USherbrooke
-git clone <REPOSITORY_URL>
-cd ellenberg
-git checkout shipley-review
+git clone -b shipley-review --single-branch <REPOSITORY_URL> shipley_checks
 ```
 
-### Option B: Using GitHub Desktop
-
-1. Open GitHub Desktop
-2. File → Clone Repository
-3. Select the repository
-4. Choose location: `C:\Users\shij1401\OneDrive - USherbrooke`
-5. Clone it
-6. Switch to branch: `shipley-review`
-
-**After cloning, you should have:**
+This creates:
 ```
-C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\
+C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\
 ```
+
+**That's it!** You've cloned just the verification branch into a simple `shipley_checks\` folder.
 
 ---
 
@@ -64,7 +55,7 @@ You have a file called `bill_foundational_data.zip` (20 GB).
 2. Choose "Extract All..."
 3. **IMPORTANT**: Extract to this exact location:
    ```
-   C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\shipley_checks\input
+   C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\input
    ```
 
 4. After extraction, you should see these files in `input\`:
@@ -98,7 +89,7 @@ This extracts the pre-computed XGBoost results (Stage 1-2) that you cannot run y
 3. Copy and paste this command:
 
 ```cmd
-cd C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\shipley_checks
+cd C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks
 Rscript setup_bill.R
 ```
 
@@ -117,7 +108,7 @@ Rscript setup_bill.R
 BILL SHIPLEY VERIFICATION SETUP
 ========================================================================
 
-Detected repository root:  C:/Users/shij1401/OneDrive - USherbrooke/ellenberg
+Detected repository root:  C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks
 ...
 Step 1: Extracting intermediate data...
   ✓ Extracted 7 intermediate files
@@ -209,7 +200,7 @@ Cross-Platform Edition - Phases 0-3 + Stage 3
 ========================================================================
 
 Detected paths:
-  Repo root:     C:/Users/shij1401/OneDrive - USherbrooke/ellenberg
+  Repo root:     C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks
   Input:         ...shipley_checks/input
   Intermediate:  ...shipley_checks/intermediate
   Output:        ...shipley_checks/output
@@ -242,10 +233,10 @@ When the pipeline completes, you'll see:
 ========================================================================
 
 Final output location:
-  C:/Users/shij1401/OneDrive - USherbrooke/ellenberg/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
+  C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
 
 Compare with reference dataset:
-  C:/Users/shij1401/OneDrive - USherbrooke/ellenberg/shipley_checks/bill_with_csr_ecoservices_11711.csv
+  C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks/bill_with_csr_ecoservices_11711.csv
 ```
 
 ### Your Results File:
@@ -253,7 +244,7 @@ Compare with reference dataset:
 **Location (using Windows Explorer)**:
 
 1. Open File Explorer
-2. Navigate to: `OneDrive - USherbrooke\ellenberg\shipley_checks\output\stage3\`
+2. Navigate to: `OneDrive - USherbrooke\shipley_checks\output\stage3\`
 3. Look for: `bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv`
 
 This file contains:
@@ -276,10 +267,10 @@ This file contains:
 library(readr)
 
 # Your reproduced dataset
-bill_verified <- read_csv("C:/Users/shij1401/OneDrive - USherbrooke/ellenberg/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv")
+bill_verified <- read_csv("C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv")
 
 # Reference dataset (provided by Jared)
-reference <- read_csv("C:/Users/shij1401/OneDrive - USherbrooke/ellenberg/shipley_checks/bill_with_csr_ecoservices_11711.csv")
+reference <- read_csv("C:/Users/shij1401/OneDrive - USherbrooke/shipley_checks/bill_with_csr_ecoservices_11711.csv")
 
 # Check dimensions
 dim(bill_verified)  # Should be: 11711 × 782
@@ -321,7 +312,7 @@ Any numerical differences should be **< 0.000001** (one millionth).
 
 **Solution**: Make sure you extracted `bill_foundational_data.zip` to the correct location:
 ```
-C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\shipley_checks\input\
+C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\input\
 ```
 
 Use Windows Explorer to verify all 14 files are there.
@@ -347,7 +338,7 @@ install.packages(c("arrow", "data.table", "dplyr", "readr", "WorldFlora", "ape",
 
 **Solution**: Restart from where it stopped:
 ```cmd
-cd C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\shipley_checks
+cd C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks
 Rscript run_all_bill.R
 ```
 
@@ -382,29 +373,28 @@ Be patient and let it run!
 ## What Each File/Folder Does
 
 ```
-ellenberg\
-└── shipley_checks\
-    ├── input\                    # YOU extract foundational data here
-    │   ├── classification.csv    # WFO taxonomy backbone (904 MB)
-    │   ├── duke_original.parquet # Duke trait database
-    │   ├── gbif_occurrence_plantae.parquet  # 5.4 GB occurrence data
-    │   └── ... (14 files total)
-    │
-    ├── intermediate\             # Auto-extracted by setup_bill.R
-    │   ├── bill_complete_with_eive_20251107.csv  # Pre-computed Stage 2
-    │   ├── duke_worldflora_enriched.parquet      # WFO-enriched data
-    │   └── ... (7 files total - these are XGBoost results you can't compute)
-    │
-    ├── output\                   # Created by run_all_bill.R
-    │   ├── wfo_verification\     # Phase 0 outputs
-    │   ├── stage3\               # Your final results HERE!
-    │   └── ...
-    │
-    ├── src\                      # All R scripts (don't modify)
-    ├── docs\                     # Documentation
-    ├── setup_bill.R              # RUN THIS FIRST
-    ├── run_all_bill.R            # RUN THIS SECOND
-    └── bill_intermediate_data.zip  # Pre-computed XGBoost results
+shipley_checks\                   # This IS your cloned repository
+├── input\                        # YOU extract foundational data here
+│   ├── classification.csv        # WFO taxonomy backbone (904 MB)
+│   ├── duke_original.parquet     # Duke trait database
+│   ├── gbif_occurrence_plantae.parquet  # 5.4 GB occurrence data
+│   └── ... (14 files total)
+│
+├── intermediate\                 # Auto-extracted by setup_bill.R
+│   ├── bill_complete_with_eive_20251107.csv  # Pre-computed Stage 2
+│   ├── duke_worldflora_enriched.parquet      # WFO-enriched data
+│   └── ... (7 files total - these are XGBoost results you can't compute)
+│
+├── output\                       # Created by run_all_bill.R
+│   ├── wfo_verification\         # Phase 0 outputs
+│   ├── stage3\                   # Your final results HERE!
+│   └── ...
+│
+├── src\                          # All R scripts (don't modify)
+├── docs\                         # Documentation
+├── setup_bill.R                  # RUN THIS FIRST
+├── run_all_bill.R                # RUN THIS SECOND
+└── bill_intermediate_data.zip    # Pre-computed XGBoost results
 ```
 
 ---
@@ -413,7 +403,7 @@ ellenberg\
 
 ### Setup (run once):
 ```cmd
-cd C:\Users\shij1401\OneDrive - USherbrooke\ellenberg\shipley_checks
+cd C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks
 Rscript setup_bill.R
 ```
 
@@ -446,9 +436,8 @@ Contact Jared Olier with:
 
 Before running the pipeline, verify:
 
-- [ ] Repository cloned to: `C:\Users\shij1401\OneDrive - USherbrooke\ellenberg`
-- [ ] Checked out `shipley-review` branch
-- [ ] Extracted `bill_foundational_data.zip` to `shipley_checks\input\`
+- [ ] Repository cloned to: `C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks`
+- [ ] Extracted `bill_foundational_data.zip` to `input\` folder inside shipley_checks
 - [ ] All 14 input files present in `input\` folder
 - [ ] Ran `Rscript setup_bill.R` successfully
 - [ ] All 7 intermediate files extracted to `intermediate\` folder

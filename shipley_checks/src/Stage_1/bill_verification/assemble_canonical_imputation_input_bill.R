@@ -38,7 +38,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -48,9 +48,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -69,7 +69,7 @@ cat("Bill's Verification: Assemble Canonical Imputation Input (736 columns)\n")
 cat("========================================================================\n\n")
 
 # Output directory
-output_dir <- "data/shipley_checks/modelling"
+output_dir <- "modelling"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ==============================================================================
@@ -77,7 +77,7 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 # ==============================================================================
 
 cat("[1/10] Loading base shortlist...\n")
-shortlist <- read_parquet("data/shipley_checks/stage1_shortlist_with_gbif_ge30_R.parquet")
+shortlist <- read_parquet("stage1_shortlist_with_gbif_ge30_R.parquet")
 base <- shortlist %>%
   select(wfo_taxon_id, wfo_scientific_name = canonical_name)
 
@@ -90,19 +90,19 @@ cat("  ✓ Base: ", nrow(base), " species × ", ncol(base), " columns\n", sep=""
 cat("\n[2/10] Extracting environmental quantiles (q05/q50/q95/iqr)...\n")
 
 # WorldClim ALL quantiles
-wc_all <- read_parquet("data/shipley_checks/worldclim_species_quantiles_R.parquet") %>%
+wc_all <- read_parquet("worldclim_species_quantiles_R.parquet") %>%
   select(wfo_taxon_id, ends_with("_q05"), ends_with("_q50"),
          ends_with("_q95"), ends_with("_iqr"))
 cat("  ✓ WorldClim: ", ncol(wc_all) - 1, " quantile columns (63 vars × 4)\n", sep="")
 
 # SoilGrids ALL quantiles
-sg_all <- read_parquet("data/shipley_checks/soilgrids_species_quantiles_R.parquet") %>%
+sg_all <- read_parquet("soilgrids_species_quantiles_R.parquet") %>%
   select(wfo_taxon_id, ends_with("_q05"), ends_with("_q50"),
          ends_with("_q95"), ends_with("_iqr"))
 cat("  ✓ SoilGrids: ", ncol(sg_all) - 1, " quantile columns (42 vars × 4)\n", sep="")
 
 # Agroclim ALL quantiles
-ac_all <- read_parquet("data/shipley_checks/agroclime_species_quantiles_R.parquet") %>%
+ac_all <- read_parquet("agroclime_species_quantiles_R.parquet") %>%
   select(wfo_taxon_id, ends_with("_q05"), ends_with("_q50"),
          ends_with("_q95"), ends_with("_iqr"))
 cat("  ✓ Agroclim: ", ncol(ac_all) - 1, " quantile columns (51 vars × 4)\n", sep="")
@@ -119,7 +119,7 @@ cat("  ✓ Total env quantiles: ", ncol(env_quantiles) - 1, " columns\n", sep=""
 # ==============================================================================
 
 cat("\n[3/10] Extracting TRY Enhanced traits...\n")
-try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
+try_enhanced <- read_parquet("wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id))
 
 # Aggregate to species level (median) - convert to numeric first
@@ -146,7 +146,7 @@ cat("  ✓ TRY traits: ", nrow(try_traits), " species\n", sep="")
 # ==============================================================================
 
 cat("\n[4/10] Extracting AusTraits for SLA fallback...\n")
-austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+austraits <- read_parquet("wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id))
 
 # leaf_mass_per_area for SLA
@@ -258,7 +258,7 @@ try_cat <- try_enhanced %>%
 cat("  ✓ TRY Enhanced categorical: 4 traits\n")
 
 # From TRY Selected Traits (3 categorical)
-try_selected <- read_parquet("data/shipley_checks/wfo_verification/try_selected_traits_worldflora_enriched.parquet") %>%
+try_selected <- read_parquet("wfo_verification/try_selected_traits_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id))
 
 # TraitID 37: Leaf phenology
@@ -323,7 +323,7 @@ cat("  ✓ Total categorical: ", ncol(categorical_7) - 1, " traits\n", sep="")
 # ==============================================================================
 
 cat("\n[7/10] Extracting EIVE indicators...\n")
-eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
+eive <- read_parquet("wfo_verification/eive_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   group_by(wfo_taxon_id) %>%
   summarise(
@@ -343,7 +343,7 @@ cat("  ✓ EIVE coverage: ", eive_coverage, " species with at least one indicato
 # ==============================================================================
 
 cat("\n[8/10] Loading phylogenetic eigenvectors...\n")
-phylo <- read_csv("data/shipley_checks/modelling/phylo_eigenvectors_11711_bill.csv",
+phylo <- read_csv("modelling/phylo_eigenvectors_11711_bill.csv",
                   show_col_types = FALSE) %>%
   select(wfo_taxon_id, starts_with("phylo_ev"))
 

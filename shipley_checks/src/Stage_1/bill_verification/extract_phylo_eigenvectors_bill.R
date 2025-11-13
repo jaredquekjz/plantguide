@@ -42,7 +42,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -52,9 +52,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -74,7 +74,7 @@ cat("Bill's Verification: Extract Phylogenetic Eigenvectors\n")
 cat("=", rep("=", 70), "=\n\n", sep="")
 
 # Output directory
-output_dir <- "data/shipley_checks/modelling"
+output_dir <- "modelling"
 dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 # Step 1: Load phylogenetic tree

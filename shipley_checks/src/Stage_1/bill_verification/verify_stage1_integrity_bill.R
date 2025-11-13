@@ -26,7 +26,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # Navigate up from script to repo root
-    # Scripts are in shipley_checks/src/Stage_X/bill_verification/
+    # Scripts are in src/Stage_X/bill_verification/
     repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
   } else {
     # Fallback: assume current directory is repo root
@@ -36,9 +36,9 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-INPUT_DIR <- file.path(repo_root, "shipley_checks/input")
-INTERMEDIATE_DIR <- file.path(repo_root, "shipley_checks/intermediate")
-OUTPUT_DIR <- file.path(repo_root, "shipley_checks/output")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
 
 # Create output directories
 dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
@@ -67,7 +67,7 @@ cat("PART 1: Building Master Taxa Union\n")
 cat("Reading raw parquet files...\n")
 
 # Read Duke ethnobotany
-duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enriched.parquet") %>%
+duke <- read_parquet("wfo_verification/duke_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -76,7 +76,7 @@ duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enric
 cat("  Duke:", nrow(duke), "records\n")
 
 # Read EIVE
-eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
+eive <- read_parquet("wfo_verification/eive_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -85,7 +85,7 @@ eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enric
 cat("  EIVE:", nrow(eive), "records\n")
 
 # Read Mabberly
-mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet") %>%
+mabberly <- read_parquet("wfo_verification/mabberly_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -94,7 +94,7 @@ mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflo
 cat("  Mabberly:", nrow(mabberly), "records\n")
 
 # Read TRY Enhanced
-try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
+try_enhanced <- read_parquet("wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -103,7 +103,7 @@ try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_w
 cat("  TRY Enhanced:", nrow(try_enhanced), "records\n")
 
 # Read AusTraits (from traits parquet - contains both taxonomy and measurements)
-austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+austraits <- read_parquet("wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -163,11 +163,11 @@ cat("  AusTraits:", sum(master_union$in_austraits), "\n")
 
 # Write output
 cat("\nWriting master_taxa_union_R.parquet...\n")
-write_parquet(master_union, "data/shipley_checks/master_taxa_union_R.parquet",
+write_parquet(master_union, "master_taxa_union_R.parquet",
               compression = "zstd")
 
 # Calculate file MD5 checksum (binary comparison)
-checksum_r_file <- md5sum("data/shipley_checks/master_taxa_union_R.parquet")
+checksum_r_file <- md5sum("master_taxa_union_R.parquet")
 checksum_py_file <- md5sum("data/stage1/master_taxa_union.parquet")
 cat("  R parquet MD5:     ", checksum_r_file, "\n")
 cat("  Python parquet MD5:", checksum_py_file, "\n")
@@ -180,7 +180,7 @@ cat("\n\nPART 2: Building Shortlist Candidates\n")
 cat("Applying trait-richness filters...\n")
 
 # Read EIVE with trait counts
-eive_full <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
+eive_full <- read_parquet("wfo_verification/eive_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric EIVE indices per species
@@ -200,7 +200,7 @@ eive_counts <- eive_full %>%
 cat("  Species with >=3 EIVE indices:", sum(eive_counts$eive_numeric_count >= 3), "\n")
 
 # Read TRY Enhanced with trait counts
-try_full <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
+try_full <- read_parquet("wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric TRY traits per species
@@ -225,7 +225,7 @@ cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\
 
 # Read AusTraits overlap traits (use Bill's enriched parquet)
 cat("Counting AusTraits overlap numeric traits...\n")
-austraits_enriched_full <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+austraits_enriched_full <- read_parquet("wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Filter for TRY-overlap numeric traits
@@ -320,11 +320,11 @@ cat("  Via AusTraits (>=3 traits):", sum(shortlist_final$qualifies_via_austraits
 
 # Write output
 cat("\nWriting stage1_shortlist_candidates_R.parquet...\n")
-write_parquet(shortlist_final, "data/shipley_checks/stage1_shortlist_candidates_R.parquet",
+write_parquet(shortlist_final, "stage1_shortlist_candidates_R.parquet",
               compression = "zstd")
 
 # Calculate file MD5 checksums
-checksum_shortlist_r_file <- md5sum("data/shipley_checks/stage1_shortlist_candidates_R.parquet")
+checksum_shortlist_r_file <- md5sum("stage1_shortlist_candidates_R.parquet")
 checksum_shortlist_py_file <- md5sum("data/stage1/stage1_shortlist_candidates.parquet")
 cat("  R parquet MD5:     ", checksum_shortlist_r_file, "\n")
 cat("  Python parquet MD5:", checksum_shortlist_py_file, "\n")

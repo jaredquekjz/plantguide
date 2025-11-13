@@ -22,8 +22,8 @@ get_repo_root <- function() {
   file_arg <- grep("^--file=", args, value = TRUE)
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
-    # This script is in shipley_checks/
-    repo_root <- normalizePath(file.path(dirname(script_path), ".."))
+    # This script is at repo root
+    repo_root <- normalizePath(dirname(script_path))
   } else {
     # Fallback: assume current directory is repo root
     repo_root <- normalizePath(getwd())
@@ -32,11 +32,10 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-shipley_dir <- file.path(repo_root, "shipley_checks")
-INPUT_DIR <- file.path(shipley_dir, "input")
-INTERMEDIATE_DIR <- file.path(shipley_dir, "intermediate")
-OUTPUT_DIR <- file.path(shipley_dir, "output")
-SCRIPT_DIR <- file.path(shipley_dir, "src")
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+SCRIPT_DIR <- file.path(repo_root, "src")
 
 # Set environment variable for sourced scripts to use
 Sys.setenv(BILL_REPO_ROOT = repo_root)
@@ -273,7 +272,7 @@ cat("Final output location:\n")
 cat("  ", file.path(OUTPUT_DIR, "stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"), "\n\n")
 
 cat("Compare with reference dataset:\n")
-cat("  ", file.path(shipley_dir, "bill_with_csr_ecoservices_11711.csv"), "\n\n")
+cat("  ", file.path(repo_root, "bill_with_csr_ecoservices_11711.csv"), "\n\n")
 
 cat("Next steps:\n")
 cat("  1. Compare your output with the reference dataset\n")

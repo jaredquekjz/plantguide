@@ -24,7 +24,7 @@ get_repo_root <- function() {
   if (length(file_arg) > 0) {
     script_path <- sub("^--file=", "", file_arg[1])
     # This script is in shipley_checks/
-    repo_root <- normalizePath(file.path(dirname(script_path), ".."))
+    repo_root <- normalizePath(dirname(script_path))
   } else {
     # Fallback: assume current directory is repo root
     repo_root <- normalizePath(getwd())
@@ -33,17 +33,17 @@ get_repo_root <- function() {
 }
 
 repo_root <- get_repo_root()
-shipley_dir <- file.path(repo_root, "shipley_checks")
+repo_root <- file.path(repo_root, "shipley_checks")
 
 cat("Detected repository root: ", repo_root, "\n")
-cat("Shipley checks directory: ", shipley_dir, "\n\n")
+cat("Shipley checks directory: ", repo_root, "\n\n")
 
 ################################################################################
 # Step 1: Extract Intermediate Data
 ################################################################################
 
 cat("Step 1: Extracting intermediate data...\n")
-zip_path <- file.path(shipley_dir, "bill_intermediate_data.zip")
+zip_path <- file.path(repo_root, "bill_intermediate_data.zip")
 
 if (!file.exists(zip_path)) {
   stop("ERROR: bill_intermediate_data.zip not found at: ", zip_path)
@@ -54,10 +54,10 @@ cat("  Size: ", round(file.size(zip_path) / 1024^2, 1), " MB\n")
 
 # Extract to shipley_checks/ (creates intermediate/ folder)
 cat("  Extracting...\n")
-unzip(zip_path, exdir = shipley_dir, overwrite = TRUE)
+unzip(zip_path, exdir = repo_root, overwrite = TRUE)
 
 # Verify extraction
-intermediate_dir <- file.path(shipley_dir, "intermediate")
+intermediate_dir <- file.path(repo_root, "intermediate")
 if (!dir.exists(intermediate_dir)) {
   stop("ERROR: Extraction failed - intermediate/ directory not created")
 }
@@ -94,12 +94,12 @@ cat("  ✓ Extracted ", length(expected_files), " intermediate files\n\n")
 cat("Step 2: Creating directory structure...\n")
 
 # Create input directory
-input_dir <- file.path(shipley_dir, "input")
+input_dir <- file.path(repo_root, "input")
 dir.create(input_dir, recursive = TRUE, showWarnings = FALSE)
 cat("  Created: ", input_dir, "\n")
 
 # Create output directory tree
-output_dir <- file.path(shipley_dir, "output")
+output_dir <- file.path(repo_root, "output")
 dir.create(file.path(output_dir, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
 dir.create(file.path(output_dir, "stage3"), recursive = TRUE, showWarnings = FALSE)
 cat("  Created: ", output_dir, "\n")
@@ -188,7 +188,7 @@ cat("SETUP COMPLETE\n")
 cat("========================================================================\n\n")
 
 cat("Directory structure:\n")
-cat("  ", shipley_dir, "/\n")
+cat("  ", repo_root, "/\n")
 cat("    ├── input/           # Place bill_foundational_data.zip contents here\n")
 cat("    ├── intermediate/    # ✓ Pre-computed XGBoost results (extracted)\n")
 cat("    ├── output/          # ✓ Pipeline outputs go here\n")
@@ -197,15 +197,15 @@ cat("    └── src/             # Verification scripts\n\n")
 if (length(missing_input) > 0) {
   cat("NEXT STEPS:\n")
   cat("  1. Extract bill_foundational_data.zip to: ", input_dir, "\n")
-  cat("  2. Run: Rscript ", file.path(shipley_dir, "run_all_bill.R"), "\n\n")
+  cat("  2. Run: Rscript ", file.path(repo_root, "run_all_bill.R"), "\n\n")
 } else if (length(missing_packages) > 0) {
   cat("NEXT STEPS:\n")
   cat("  1. Install missing R packages (see above)\n")
-  cat("  2. Run: Rscript ", file.path(shipley_dir, "run_all_bill.R"), "\n\n")
+  cat("  2. Run: Rscript ", file.path(repo_root, "run_all_bill.R"), "\n\n")
 } else {
   cat("✓ All prerequisites met!\n\n")
   cat("NEXT STEP:\n")
-  cat("  Run: Rscript ", file.path(shipley_dir, "run_all_bill.R"), "\n\n")
+  cat("  Run: Rscript ", file.path(repo_root, "run_all_bill.R"), "\n\n")
 }
 
 cat("Estimated runtime: ~8 hours on standard laptop\n\n")
