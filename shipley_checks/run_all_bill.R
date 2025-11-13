@@ -38,6 +38,9 @@ INTERMEDIATE_DIR <- file.path(shipley_dir, "intermediate")
 OUTPUT_DIR <- file.path(shipley_dir, "output")
 SCRIPT_DIR <- file.path(shipley_dir, "src")
 
+# Set environment variable for sourced scripts to use
+Sys.setenv(BILL_REPO_ROOT = repo_root)
+
 cat("========================================================================\n")
 cat("BILL SHIPLEY VERIFICATION PIPELINE\n")
 cat("Cross-Platform Edition - Phases 0-3 + Stage 3\n")

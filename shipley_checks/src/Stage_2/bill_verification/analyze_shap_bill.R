@@ -12,6 +12,13 @@
 # AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
 # ========================================================================
 get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
   args <- commandArgs(trailingOnly = FALSE)
   file_arg <- grep("^--file=", args, value = TRUE)
   if (length(file_arg) > 0) {
