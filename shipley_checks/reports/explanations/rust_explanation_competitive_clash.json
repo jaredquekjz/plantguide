@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 55.441622065452215,
+    "score": 53.0115542799606,
     "stars": "★☆☆☆☆",
     "label": "Poor",
-    "message": "Overall guild compatibility: 55.4/100"
+    "message": "Overall guild compatibility: 53.0/100"
   },
   "climate": {
     "compatible": true,
@@ -53,6 +53,14 @@
       "message": "8.4 CSR strategy conflicts detected",
       "detail": "Growth strategy incompatibility: 5 Competitive, 1 Stress-tolerant",
       "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
+    },
+    {
+      "warning_type": "ph_incompatible",
+      "severity": "Medium",
+      "icon": "⚠️",
+      "message": "Soil pH incompatibility detected",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nErythrina sandwicensis: Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera: Alkaline (pH 7-8)\nAllium schoenoprasum: Alkaline (pH 7-8)\nCheirodendron trigynum: Neutral (pH 6-7)\nAlnus acuminata: Neutral (pH 6-7)",
+      "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
   "risks": [],
@@ -98,8 +106,8 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 18.650283049840667,
-        "raw": 0.4195003464082383,
+        "score": 1.639808551399346,
+        "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },
       {
@@ -108,6 +116,709 @@
         "score": 0.0,
         "raw": 0.0,
         "interpretation": "Poor"
+      }
+    ]
+  },
+  "pest_profile": {
+    "total_unique_pests": 71,
+    "shared_pests": [],
+    "top_pests": [
+      {
+        "pest_name": "Achaea janata",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Achatia distincta",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Acrolepiopsis assectella",
+        "plant_count": 1,
+        "plants": [
+          "Allium schoenoprasum"
+        ]
+      },
+      {
+        "pest_name": "Agrotis segetum",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Ambastus villosus",
+        "plant_count": 1,
+        "plants": [
+          "Alnus acuminata"
+        ]
+      },
+      {
+        "pest_name": "Amphipyra pyramidoides",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Antheraea polyphemus",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aonidiella aurantii",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aonidiella orientalis",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aphis spiraecola",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      }
+    ],
+    "vulnerable_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "pest_count": 65
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "pest_count": 4
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "pest_count": 1
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "pest_count": 1
+      }
+    ]
+  },
+  "fungi_network_profile": {
+    "total_unique_fungi": 279,
+    "shared_fungi": [
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acremonium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "athelia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aureobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "botrytis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "coniochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "funneliformis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "fusarium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "geotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mucor",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mycosphaerella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "nodulisporium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "paecilomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "penicillium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "periconia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "preussia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pyrenochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "rhinocladiella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stemphylium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "trichoderma",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "top_fungi": [
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acremonium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "athelia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aureobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "botrytis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "coniochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "funneliformis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "fungi_by_category": {
+      "amf_count": 6,
+      "emf_count": 2,
+      "endophytic_count": 33,
+      "saprotrophic_count": 238,
+      "top_per_category": [
+        {
+          "category": "AMF",
+          "fungus_name": "funneliformis",
+          "plant_count": 2
+        },
+        {
+          "category": "EMF",
+          "fungus_name": "thelephora",
+          "plant_count": 1
+        },
+        {
+          "category": "Endophytic",
+          "fungus_name": "coniochaeta",
+          "plant_count": 2
+        },
+        {
+          "category": "Saprotrophic",
+          "fungus_name": "cladosporium",
+          "plant_count": 3
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "fungus_count": 279,
+        "amf_count": 4,
+        "emf_count": 2,
+        "endophytic_count": 51,
+        "saprotrophic_count": 222
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "fungus_count": 32,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 14,
+        "saprotrophic_count": 18
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "fungus_count": 15,
+        "amf_count": 3,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 12
+      },
+      {
+        "plant_name": "Erythrina sandwicensis",
+        "fungus_count": 2,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 2
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Pfaffia gnaphalioides",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Virola bicuhyba",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      }
+    ]
+  },
+  "pollinator_network_profile": {
+    "total_unique_pollinators": 68,
+    "shared_pollinators": [],
+    "top_pollinators": [
+      {
+        "pollinator_name": "Aglais milberti",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Aglais urticae",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena dorsata",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena labialis",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena nitida",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Anthocharis cardamines",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Apis mellifera",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Apoidea",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Aves",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      }
+    ],
+    "pollinators_by_category": {
+      "bees_count": 2,
+      "butterflies_count": 0,
+      "moths_count": 0,
+      "flies_count": 0,
+      "beetles_count": 0,
+      "wasps_count": 1,
+      "birds_count": 0,
+      "bats_count": 0,
+      "other_count": 2,
+      "top_per_category": [
+        {
+          "pollinator_name": "Aglais milberti",
+          "plant_count": 1,
+          "category": "Other",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Aglais urticae",
+          "plant_count": 1,
+          "category": "Other",
+          "network_contribution": 0.14285714285714285
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Allium schoenoprasum",
+        "pollinator_count": 2,
+        "bees_count": 2,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Vitis vinifera",
+        "pollinator_count": 2,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 1,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 1
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "pollinator_count": 1,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 1
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Erythrina sandwicensis",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Pfaffia gnaphalioides",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Virola bicuhyba",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
       }
     ]
   }

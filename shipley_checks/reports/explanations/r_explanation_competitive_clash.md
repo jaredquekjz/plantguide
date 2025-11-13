@@ -1,6 +1,6 @@
 # ★★★☆☆ - Neutral Guild
 
-**Overall Score:** 55.4/100
+**Overall Score:** 53/100
 
 ## Climate Compatibility
 

@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 45.442368380422124,
+    "score": 42.380900224775914,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 45.4/100"
+    "message": "Overall guild compatibility: 42.4/100"
   },
   "climate": {
     "compatible": true,
@@ -29,7 +29,16 @@
       "evidence": "Network score: 45.0/100, coverage: 57.1%"
     }
   ],
-  "warnings": [],
+  "warnings": [
+    {
+      "warning_type": "ph_incompatible",
+      "severity": "High",
+      "icon": "🚨",
+      "message": "Soil pH incompatibility detected",
+      "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nSenna artemisioides: Neutral (pH 6-7)\nCarex mucronata: Strongly Alkaline (pH >8)\nHibbertia diffusa: Slightly Acidic (pH 5-6)\nJuncus usitatus: Neutral (pH 6-7)\nSporobolus compositus: Neutral (pH 6-7)\nEucalyptus melanophloia: Neutral (pH 6-7)\nAlyxia ruscifolia: Neutral (pH 6-7)",
+      "advice": "Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments."
+    }
+  ],
   "risks": [],
   "metrics_display": {
     "universal": [
@@ -73,8 +82,8 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 36.3722604519515,
-        "raw": 0.5854222002025606,
+        "score": 14.941983362428015,
+        "raw": 0.3691127953935177,
         "interpretation": "Poor"
       },
       {
@@ -83,6 +92,431 @@
         "score": 0.0,
         "raw": 0.0,
         "interpretation": "Poor"
+      }
+    ]
+  },
+  "pest_profile": {
+    "total_unique_pests": 7,
+    "shared_pests": [],
+    "top_pests": [
+      {
+        "pest_name": "Castiarina parallelipennis",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Eurema smilax",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Glycaspis collina",
+        "plant_count": 1,
+        "plants": [
+          "Eucalyptus melanophloia"
+        ]
+      },
+      {
+        "pest_name": "Jalmenus daemeli",
+        "plant_count": 1,
+        "plants": [
+          "Eucalyptus melanophloia"
+        ]
+      },
+      {
+        "pest_name": "Jalmenus icilius",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Myzus ornatus",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Pseudodendrothrips gillespiei",
+        "plant_count": 1,
+        "plants": [
+          "Alyxia ruscifolia"
+        ]
+      }
+    ],
+    "vulnerable_plants": [
+      {
+        "plant_name": "Senna artemisioides",
+        "pest_count": 4
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "pest_count": 2
+      },
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "pest_count": 1
+      }
+    ]
+  },
+  "fungi_network_profile": {
+    "total_unique_fungi": 16,
+    "shared_fungi": [],
+    "top_fungi": [
+      {
+        "fungus_name": "ciferrioxyphium",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000956222"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "clathrospora",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000349035"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000901050"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "cosmospora",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000956222"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "fusarium",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000901050"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "graphyllium",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000901050"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "hendersonia",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000901050"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "hysterographium",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000901050"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "lasiodiplodia",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000209726"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "fungus_name": "phyllosticta",
+        "plant_count": 1,
+        "plants": [
+          "wfo-0000956222"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.14285714285714285
+      }
+    ],
+    "fungi_by_category": {
+      "amf_count": 0,
+      "emf_count": 0,
+      "endophytic_count": 2,
+      "saprotrophic_count": 14,
+      "top_per_category": [
+        {
+          "category": "Endophytic",
+          "fungus_name": "lasiodiplodia",
+          "plant_count": 1
+        },
+        {
+          "category": "Saprotrophic",
+          "fungus_name": "fusarium",
+          "plant_count": 1
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Sporobolus compositus",
+        "fungus_count": 10,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 10
+      },
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "fungus_count": 3,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 3
+      },
+      {
+        "plant_name": "Carex mucronata",
+        "fungus_count": 2,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 1,
+        "saprotrophic_count": 1
+      },
+      {
+        "plant_name": "Senna artemisioides",
+        "fungus_count": 1,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 1,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Hibbertia diffusa",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Juncus usitatus",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      }
+    ]
+  },
+  "pollinator_network_profile": {
+    "total_unique_pollinators": 12,
+    "shared_pollinators": [],
+    "top_pollinators": [
+      {
+        "pollinator_name": "Alycaeus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Apiomorpha ovicola",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Chilalictus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Cuspicona carneola",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Paropsis aegrota",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Paropsisterna m-fuscum",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Paropsisterna purpureoviridis",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Petalaspis tescorum",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Pteropus alecto",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Pteropus conspicillatus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      }
+    ],
+    "pollinators_by_category": {
+      "bees_count": 0,
+      "butterflies_count": 0,
+      "moths_count": 0,
+      "flies_count": 0,
+      "beetles_count": 0,
+      "wasps_count": 0,
+      "birds_count": 0,
+      "bats_count": 0,
+      "other_count": 2,
+      "top_per_category": [
+        {
+          "pollinator_name": "Alycaeus",
+          "plant_count": 1,
+          "category": "Other",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Apiomorpha ovicola",
+          "plant_count": 1,
+          "category": "Other",
+          "network_contribution": 0.14285714285714285
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "pollinator_count": 1,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 1
+      },
+      {
+        "plant_name": "Hibbertia diffusa",
+        "pollinator_count": 1,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 1
+      },
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Carex mucronata",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Juncus usitatus",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Senna artemisioides",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Sporobolus compositus",
+        "pollinator_count": 0,
+        "bees_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "flies_count": 0,
+        "beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
       }
     ]
   }
