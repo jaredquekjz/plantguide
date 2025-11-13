@@ -162,10 +162,14 @@ impl GuildScorer {
         self.check_climate_compatibility(&guild_plants)?;
 
         // Calculate M1: Pest & Pathogen Independence
+        // M1 already optimal: Only uses plant_ids, no DataFrame access
         let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
 
         // Calculate M2: Growth Compatibility
-        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+        // PHASE 2 OPTIMIZATION: Use LazyFrame instead of materialized DataFrame
+        // Old: Pass &guild_plants (all 782 columns)
+        // New: Pass &plants_lazy + plant_ids (loads only 7 columns)
+        let m2 = calculate_m2(&self.data.plants_lazy, plant_ids, self.csr_calibration.as_ref(), &self.calibration)?;
 
         // Calculate M3: Insect Control
         let m3 = calculate_m3(
@@ -267,7 +271,8 @@ impl GuildScorer {
                         Ok(Box::new(m1))
                     }
                     1 => {
-                        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+                        // PHASE 2 OPTIMIZATION: Use LazyFrame
+                        let m2 = calculate_m2(&self.data.plants_lazy, plant_ids, self.csr_calibration.as_ref(), &self.calibration)?;
                         Ok(Box::new(m2))
                     }
                     2 => {
@@ -415,7 +420,8 @@ impl GuildScorer {
                         Ok((Box::new(m1), fragment))
                     }
                     1 => {
-                        let m2 = calculate_m2(&guild_plants, self.csr_calibration.as_ref(), &self.calibration)?;
+                        // PHASE 2 OPTIMIZATION: Use LazyFrame (explanation engine path)
+                        let m2 = calculate_m2(&self.data.plants_lazy, plant_ids, self.csr_calibration.as_ref(), &self.calibration)?;
                         let display_score = 100.0 - m2.norm;
                         let fragment = generate_m2_fragment(&m2, display_score);
                         Ok((Box::new(m2), fragment))

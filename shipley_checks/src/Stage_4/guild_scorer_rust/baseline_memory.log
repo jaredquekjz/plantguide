@@ -1,0 +1,88 @@
+======================================================================
+BASELINE MEMORY PROFILING TEST (Before Optimization)
+======================================================================
+
+Starting initialization...
+(Check memory usage in another terminal with: ps aux | grep test_memory_baseline)
+
+
+Initializing Guild Scorer (Rust)...
+Loading calibration: "shipley_checks/stage4/normalization_params_7plant.json"
+CSR calibration not found - using fixed thresholds
+Initializing Faith's PD calculator...
+Loading phylogenetic tree from: data/stage1/phlogeny/compact_tree_11711.bin
+  Nodes: 19102
+  Leaves: 11010
+Loading mapping from: data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv
+  WFO mappings: 11673
+PhyloPDCalculator initialized (pure Rust CompactTree).
+Loading datasets (Rust-generated Parquet files)...
+  Plants: 11711
+  Organisms: 11711
+  Fungi: 11711
+  Herbivore predators: 934
+  Insect parasites: 1203
+  Pathogen antagonists: 942
+
+Guild Scorer initialized:
+  Calibration: 7plant
+  Climate tier: tier_3_humid_temperate
+  Plants: 11711
+
+Initialization complete: 25.709383ms
+
+>>> Press Enter to continue (this allows you to check memory usage now)...
+
+----------------------------------------------------------------------
+Scoring guild: Forest Garden
+Number of plants: 7
+----------------------------------------------------------------------
+
+Overall score: 90.467737
+Scoring time: 10.864142ms
+
+Individual metrics:
+  M1 (Pest Independence):    58.6
+  M2 (Growth Compatibility): 100.0
+  M3 (Insect Control):       100.0
+  M4 (Disease Control):      100.0
+  M5 (Beneficial Fungi):     97.7
+  M6 (Structural Diversity): 85.0
+  M7 (Pollinator Support):   92.0
+
+>>> Press Enter to finish (check final memory usage)...
+
+======================================================================
+BASELINE MEASUREMENT COMPLETE
+======================================================================
+
+Record these values in OPTIMIZATION_METRICS.md:
+  - Initialization time: 25.709383ms
+  - Scoring time: 10.864142ms
+  - Peak RSS: (from /usr/bin/time -v output)
+  - Max resident set size: (from ps output)
+
+
+	Command being timed: "./shipley_checks/src/Stage_4/guild_scorer_rust/target/release/test_memory_baseline"
+	User time (seconds): 0.08
+	System time (seconds): 0.05
+	Percent of CPU this job got: 315%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.04
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 40560
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 10057
+	Voluntary context switches: 648
+	Involuntary context switches: 184
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
