@@ -130,6 +130,8 @@ calculate_m4_disease_control <- function(plant_ids,
   n_plants <- length(plant_ids)
   pathogen_control_raw <- 0.0
   mechanisms <- list()
+  specific_antagonist_matches <- 0
+  matched_antagonist_pairs <- list()
 
   # -------------------------------------------------------------------------
   # STEP 1: Extract guild fungi data
@@ -141,9 +143,16 @@ calculate_m4_disease_control <- function(plant_ids,
     return(list(
       raw = 0.0,
       norm = 0.0,
+      mycoparasite_counts = list(),
+      pathogen_counts = list(),
+      specific_antagonist_matches = 0,
+      matched_antagonist_pairs = data.frame(pathogen = character(), antagonist = character()),
       details = list(note = "No fungi data available")
     ))
   }
+
+  # Build set of ALL known mycoparasites (from pathogen_antagonists lookup values)
+  known_mycoparasites <- unique(unlist(pathogen_antagonists, use.names = FALSE))
 
   # -------------------------------------------------------------------------
   # STEP 2: Pairwise analysis - vulnerable plant A vs protective plant B
@@ -200,12 +209,20 @@ calculate_m4_disease_control <- function(plant_ids,
             matching <- intersect(mycoparasites_b, known_antagonists)
             if (length(matching) > 0) {
               pathogen_control_raw <- pathogen_control_raw + length(matching) * 1.0
+              specific_antagonist_matches <- specific_antagonist_matches + 1
               mechanisms[[length(mechanisms) + 1]] <- list(
                 type = 'specific_antagonist',
                 pathogen = pathogen,
                 control_plant = plant_b_id,
                 antagonists = head(matching, 3)
               )
+              # Track matched pairs
+              for (antagonist in matching) {
+                matched_antagonist_pairs[[length(matched_antagonist_pairs) + 1]] <- list(
+                  pathogen = pathogen,
+                  antagonist = antagonist
+                )
+              }
             }
           }
         }
@@ -275,12 +292,62 @@ calculate_m4_disease_control <- function(plant_ids,
   m4_norm <- percentile_normalize_fn(pathogen_control_normalized, 'p2')
 
   # -------------------------------------------------------------------------
-  # RETURN: Normalized score, percentile, and mechanism diagnostics
+  # STEP 6: Build agent counts (FILTERED to known mycoparasites)
+  # -------------------------------------------------------------------------
+
+  # Build mycoparasite_counts: mycoparasite_name → number of plants hosting it
+  # ONLY count if this agent is a known mycoparasite in the lookup table
+  mycoparasite_counts <- list()
+  for (i in seq_len(nrow(guild_fungi))) {
+    row <- guild_fungi[i, ]
+    mycoparasites <- row$mycoparasite_fungi[[1]]
+    if (!is.null(mycoparasites) && length(mycoparasites) > 0) {
+      # ONLY count known mycoparasites
+      mycoparasites_filtered <- intersect(mycoparasites, known_mycoparasites)
+      for (myco in mycoparasites_filtered) {
+        if (is.null(mycoparasite_counts[[myco]])) {
+          mycoparasite_counts[[myco]] <- 0
+        }
+        mycoparasite_counts[[myco]] <- mycoparasite_counts[[myco]] + 1
+      }
+    }
+  }
+
+  # Build pathogen_counts: pathogen_name → number of plants affected
+  pathogen_counts <- list()
+  for (i in seq_len(nrow(guild_fungi))) {
+    row <- guild_fungi[i, ]
+    pathogens <- row$pathogenic_fungi[[1]]
+    if (!is.null(pathogens) && length(pathogens) > 0) {
+      for (pathogen in pathogens) {
+        if (is.null(pathogen_counts[[pathogen]])) {
+          pathogen_counts[[pathogen]] <- 0
+        }
+        pathogen_counts[[pathogen]] <- pathogen_counts[[pathogen]] + 1
+      }
+    }
+  }
+
+  # Convert matched pairs from list to data.frame and deduplicate
+  if (length(matched_antagonist_pairs) > 0) {
+    matched_antagonist_pairs_df <- do.call(rbind, lapply(matched_antagonist_pairs, as.data.frame, stringsAsFactors = FALSE))
+    matched_antagonist_pairs_df <- unique(matched_antagonist_pairs_df)
+    matched_antagonist_pairs_df <- matched_antagonist_pairs_df[order(matched_antagonist_pairs_df$pathogen, matched_antagonist_pairs_df$antagonist), ]
+  } else {
+    matched_antagonist_pairs_df <- data.frame(pathogen = character(), antagonist = character())
+  }
+
+  # -------------------------------------------------------------------------
+  # RETURN: Normalized score, percentile, counts, and diagnostics
   # -------------------------------------------------------------------------
 
   list(
     raw = pathogen_control_normalized,
     norm = m4_norm,
+    mycoparasite_counts = mycoparasite_counts,
+    pathogen_counts = pathogen_counts,
+    specific_antagonist_matches = specific_antagonist_matches,
+    matched_antagonist_pairs = matched_antagonist_pairs_df,
     details = list(
       pathogen_control_raw = pathogen_control_raw,
       max_pairs = max_pairs,

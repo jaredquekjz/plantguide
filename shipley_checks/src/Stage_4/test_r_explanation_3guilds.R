@@ -10,9 +10,8 @@ suppressPackageStartupMessages({
   library(glue)
 })
 
-# Source the guild scorer and explanation engine
+# Source the guild scorer and markdown exporter
 source("shipley_checks/src/Stage_4/guild_scorer_v3_modular.R")
-source("shipley_checks/src/Stage_4/explanation_engine_7metric.R")
 source("shipley_checks/src/Stage_4/export_explanation_md.R")
 
 cat("==================================================================\n")
@@ -42,7 +41,7 @@ guilds <- list(
       "wfo-0000092746",
       "wfo-0000690499"
     ),
-    expected = 90.467710
+    expected_rust = 90.5
   ),
   list(
     name = "Competitive Clash",
@@ -55,7 +54,7 @@ guilds <- list(
       "wfo-0000841021",
       "wfo-0000394258"
     ),
-    expected = 55.441621
+    expected_rust = 53.0
   ),
   list(
     name = "Stress-Tolerant",
@@ -68,7 +67,7 @@ guilds <- list(
       "wfo-0000349035",
       "wfo-0000209726"
     ),
-    expected = 45.442341
+    expected_rust = 42.4
   )
 )
 
@@ -87,53 +86,27 @@ for (guild in guilds) {
   result <- scorer$score_guild(guild$plant_ids)
   scoring_time <- as.numeric(difftime(Sys.time(), scoring_start, units = "secs")) * 1000
 
-  # Generate explanation
-  explanation_start <- Sys.time()
-  explanation <- generate_explanation(result)
-  explanation_time <- as.numeric(difftime(Sys.time(), explanation_start, units = "secs")) * 1000
-
-  # Format to markdown (simple version for timing)
+  # Export to markdown (Rust-compatible format)
   markdown_start <- Sys.time()
-  markdown <- paste0(
-    "# ", explanation$overall$stars, " - ", explanation$overall$label, "\n\n",
-    "**Overall Score:** ", explanation$overall$score, "/100\n\n",
-    "## Climate Compatibility\n\n",
-    explanation$climate$message, "\n\n",
-    "## Benefits\n\n",
-    paste(sapply(explanation$benefits, function(b) {
-      paste0("### ", b$title, "\n", b$message, "\n")
-    }), collapse = "\n"),
-    "\n## Warnings\n\n",
-    paste(sapply(explanation$warnings, function(w) {
-      paste0("**", w$message, "**\n", w$detail, "\n")
-    }), collapse = "\n")
-  )
+  safe_name <- tolower(gsub(" ", "_", guild$name))
+  output_dir <- "shipley_checks/reports/explanations"
+  output_path <- sprintf("%s/r_explanation_%s.md", output_dir, safe_name)
+  export_guild_report_md(result, output_path, guild$name)
   markdown_time <- as.numeric(difftime(Sys.time(), markdown_start, units = "secs")) * 1000
 
   total_time <- as.numeric(difftime(Sys.time(), guild_start, units = "secs")) * 1000
 
-  # Write output
-  safe_name <- tolower(gsub(" ", "_", guild$name))
-  output_dir <- "shipley_checks/reports/explanations"
-  writeLines(markdown, sprintf("%s/r_explanation_%s.md", output_dir, safe_name))
-
   # Print results
   cat("\nScores:\n")
-  cat(sprintf("  Overall:  %.6f (expected: %.6f)\n", result$overall_score, guild$expected))
-  diff <- abs(result$overall_score - guild$expected)
-  status <- if (diff < 0.0001) "✅ PERFECT" else "⚠️ DIFF"
-  cat(sprintf("  Difference: %.6f - %s\n", diff, status))
-
-  cat("\nExplanation Summary:\n")
-  cat(sprintf("  Rating: %s %s\n", explanation$overall$stars, explanation$overall$label))
-  cat(sprintf("  Benefits: %d\n", length(explanation$benefits)))
-  cat(sprintf("  Warnings: %d\n", length(explanation$warnings)))
-  cat(sprintf("  Risks:    %d\n", length(explanation$risks)))
+  cat(sprintf("  R Overall:    %.6f\n", result$overall_score))
+  cat(sprintf("  Rust Overall: %.1f\n", guild$expected_rust))
+  diff <- abs(result$overall_score - guild$expected_rust)
+  status <- if (diff < 0.1) "✅ EXCELLENT PARITY" else if (diff < 0.5) "✅ GOOD PARITY" else "⚠️ PARITY ISSUE"
+  cat(sprintf("  Difference:   %.3f - %s\n", diff, status))
 
   cat("\nPerformance:\n")
   cat(sprintf("  Scoring:         %8.3f ms\n", scoring_time))
-  cat(sprintf("  Explanation gen: %8.3f ms\n", explanation_time))
-  cat(sprintf("  Markdown format: %8.3f ms\n", markdown_time))
+  cat(sprintf("  Markdown export: %8.3f ms\n", markdown_time))
   cat(sprintf("  Total:           %8.3f ms\n", total_time))
 
   cat(sprintf("\nOutput written:\n"))

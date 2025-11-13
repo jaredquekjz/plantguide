@@ -147,6 +147,10 @@ calculate_m3_insect_control <- function(plant_ids,
   n_plants <- length(plant_ids)
   biocontrol_raw <- 0.0
   mechanisms <- list()
+  specific_predator_matches <- 0
+  specific_fungi_matches <- 0
+  matched_predator_pairs <- list()
+  matched_fungi_pairs <- list()
 
   # -------------------------------------------------------------------------
   # STEP 1: Extract guild organism and fungi data
@@ -159,9 +163,21 @@ calculate_m3_insect_control <- function(plant_ids,
     return(list(
       raw = 0.0,
       norm = 0.0,
+      predator_counts = list(),
+      entomo_fungi_counts = list(),
+      specific_predator_matches = 0,
+      specific_fungi_matches = 0,
+      matched_predator_pairs = data.frame(herbivore = character(), predator = character()),
+      matched_fungi_pairs = data.frame(herbivore = character(), fungus = character()),
       details = list(note = "No organism data available")
     ))
   }
+
+  # Build set of ALL known predators (from herbivore_predators lookup values)
+  known_predators <- unique(unlist(herbivore_predators, use.names = FALSE))
+
+  # Build set of ALL known entomopathogenic fungi (from insect_parasites lookup values)
+  known_entomo_fungi <- unique(unlist(insect_parasites, use.names = FALSE))
 
   # -------------------------------------------------------------------------
   # STEP 2: Pairwise analysis - vulnerable plant A vs protective plant B
@@ -232,17 +248,25 @@ calculate_m3_insect_control <- function(plant_ids,
 
       for (herbivore in herbivores_a) {
         if (herbivore %in% names(herbivore_predators)) {
-          known_predators <- herbivore_predators[[herbivore]]
-          if (!is.null(known_predators) && length(known_predators) > 0) {
-            matching <- intersect(predators_b, known_predators)
+          known_predators_for_herb <- herbivore_predators[[herbivore]]
+          if (!is.null(known_predators_for_herb) && length(known_predators_for_herb) > 0) {
+            matching <- intersect(predators_b, known_predators_for_herb)
             if (length(matching) > 0) {
               biocontrol_raw <- biocontrol_raw + length(matching) * 1.0
+              specific_predator_matches <- specific_predator_matches + 1
               mechanisms[[length(mechanisms) + 1]] <- list(
                 type = 'animal_predator',
                 herbivore = herbivore,
                 predator_plant = plant_b_id,
                 predators = head(matching, 3)  # Record up to 3 for diagnostics
               )
+              # Track matched pairs
+              for (pred in matching) {
+                matched_predator_pairs[[length(matched_predator_pairs) + 1]] <- list(
+                  herbivore = herbivore,
+                  predator = pred
+                )
+              }
             }
           }
         }
@@ -276,12 +300,20 @@ calculate_m3_insect_control <- function(plant_ids,
                 matching <- intersect(entomo_b, known_parasites)
                 if (length(matching) > 0) {
                   biocontrol_raw <- biocontrol_raw + length(matching) * 1.0
+                  specific_fungi_matches <- specific_fungi_matches + 1
                   mechanisms[[length(mechanisms) + 1]] <- list(
                     type = 'fungal_parasite',
                     herbivore = herbivore,
                     fungi_plant = plant_b_id,
                     fungi = head(matching, 3)
                   )
+                  # Track matched pairs
+                  for (fungus in matching) {
+                    matched_fungi_pairs[[length(matched_fungi_pairs) + 1]] <- list(
+                      herbivore = herbivore,
+                      fungus = fungus
+                    )
+                  }
                 }
               }
             }
@@ -337,12 +369,87 @@ calculate_m3_insect_control <- function(plant_ids,
   m3_norm <- percentile_normalize_fn(biocontrol_normalized, 'p1')
 
   # -------------------------------------------------------------------------
-  # RETURN: Normalized score, percentile, and mechanism diagnostics
+  # STEP 6: Build agent counts (FILTERED to known biocontrol agents)
+  # -------------------------------------------------------------------------
+
+  # Build predator_counts: predator_name → number of plants it visits
+  # ONLY count if this agent is a known predator in the lookup table
+  predator_counts <- list()
+  for (i in seq_len(nrow(guild_organisms))) {
+    row <- guild_organisms[i, ]
+    predators <- c()
+    if (!is.null(row$flower_visitors[[1]])) {
+      predators <- c(predators, row$flower_visitors[[1]])
+    }
+    if ("predators_hasHost" %in% names(row) && !is.null(row$predators_hasHost[[1]])) {
+      predators <- c(predators, row$predators_hasHost[[1]])
+    }
+    if ("predators_interactsWith" %in% names(row) && !is.null(row$predators_interactsWith[[1]])) {
+      predators <- c(predators, row$predators_interactsWith[[1]])
+    }
+    if ("predators_adjacentTo" %in% names(row) && !is.null(row$predators_adjacentTo[[1]])) {
+      predators <- c(predators, row$predators_adjacentTo[[1]])
+    }
+    predators <- unique(predators)
+
+    # ONLY count known predators
+    predators_filtered <- intersect(predators, known_predators)
+    for (pred in predators_filtered) {
+      if (is.null(predator_counts[[pred]])) {
+        predator_counts[[pred]] <- 0
+      }
+      predator_counts[[pred]] <- predator_counts[[pred]] + 1
+    }
+  }
+
+  # Build entomo_fungi_counts: fungus_name → number of plants hosting it
+  # ONLY count if this fungus is a known entomopathogenic fungus in the lookup table
+  entomo_fungi_counts <- list()
+  for (i in seq_len(nrow(guild_fungi))) {
+    row <- guild_fungi[i, ]
+    entomo <- row$entomopathogenic_fungi[[1]]
+    if (!is.null(entomo) && length(entomo) > 0) {
+      # ONLY count known entomopathogenic fungi
+      entomo_filtered <- intersect(entomo, known_entomo_fungi)
+      for (fungus in entomo_filtered) {
+        if (is.null(entomo_fungi_counts[[fungus]])) {
+          entomo_fungi_counts[[fungus]] <- 0
+        }
+        entomo_fungi_counts[[fungus]] <- entomo_fungi_counts[[fungus]] + 1
+      }
+    }
+  }
+
+  # Convert matched pairs from list to data.frame and deduplicate
+  if (length(matched_predator_pairs) > 0) {
+    matched_predator_pairs_df <- do.call(rbind, lapply(matched_predator_pairs, as.data.frame, stringsAsFactors = FALSE))
+    matched_predator_pairs_df <- unique(matched_predator_pairs_df)
+    matched_predator_pairs_df <- matched_predator_pairs_df[order(matched_predator_pairs_df$herbivore, matched_predator_pairs_df$predator), ]
+  } else {
+    matched_predator_pairs_df <- data.frame(herbivore = character(), predator = character())
+  }
+
+  if (length(matched_fungi_pairs) > 0) {
+    matched_fungi_pairs_df <- do.call(rbind, lapply(matched_fungi_pairs, as.data.frame, stringsAsFactors = FALSE))
+    matched_fungi_pairs_df <- unique(matched_fungi_pairs_df)
+    matched_fungi_pairs_df <- matched_fungi_pairs_df[order(matched_fungi_pairs_df$herbivore, matched_fungi_pairs_df$fungus), ]
+  } else {
+    matched_fungi_pairs_df <- data.frame(herbivore = character(), fungus = character())
+  }
+
+  # -------------------------------------------------------------------------
+  # RETURN: Normalized score, percentile, counts, and diagnostics
   # -------------------------------------------------------------------------
 
   list(
     raw = biocontrol_normalized,
     norm = m3_norm,
+    predator_counts = predator_counts,
+    entomo_fungi_counts = entomo_fungi_counts,
+    specific_predator_matches = specific_predator_matches,
+    specific_fungi_matches = specific_fungi_matches,
+    matched_predator_pairs = matched_predator_pairs_df,
+    matched_fungi_pairs = matched_fungi_pairs_df,
     details = list(
       biocontrol_raw = biocontrol_raw,
       max_pairs = max_pairs,

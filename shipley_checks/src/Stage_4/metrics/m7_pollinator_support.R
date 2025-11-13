@@ -131,9 +131,81 @@ calculate_m7_pollinator_support <- function(plant_ids,
   # Percentile normalize
   m7_norm <- percentile_normalize_fn(p7_raw, 'p6')
 
+  # -------------------------------------------------------------------------
+  # STEP 4: Build pollinator counts and categorization (for network profile)
+  # -------------------------------------------------------------------------
+  # Build pollinator_counts: pollinator_name → number of plants it visits
+  # Also categorize each pollinator by taxonomic group
+
+  categorize_pollinator <- function(name) {
+    # Convert to lowercase for case-insensitive matching
+    name_lower <- tolower(name)
+
+    # Bees (Apoidea)
+    if (grepl("apis|bombus|anthophora|xylocopa|osmia|megachile|andrena|halictus|lasioglossum|bee", name_lower)) {
+      return("Bees")
+    }
+    # Butterflies (Lepidoptera - Rhopalocera)
+    if (grepl("papilio|pieris|vanessa|danaus|colias|lycaena|polyommatus|butterfly", name_lower)) {
+      return("Butterflies")
+    }
+    # Moths (Lepidoptera - Heterocera)
+    if (grepl("moth|sphinx|manduca|hyles", name_lower)) {
+      return("Moths")
+    }
+    # Flies (Diptera)
+    if (grepl("fly|syrphus|eristalis|musca|calliphora|drosophila|diptera", name_lower)) {
+      return("Flies")
+    }
+    # Beetles (Coleoptera)
+    if (grepl("beetle|cetonia|meligethes|coleoptera", name_lower)) {
+      return("Beetles")
+    }
+    # Wasps (Hymenoptera - non-Apoidea)
+    if (grepl("wasp|vespula|vespa|polistes", name_lower)) {
+      return("Wasps")
+    }
+    # Birds
+    if (grepl("bird|hummingbird|trochilidae", name_lower)) {
+      return("Birds")
+    }
+    # Bats
+    if (grepl("bat|chiroptera", name_lower)) {
+      return("Bats")
+    }
+
+    return("Other")
+  }
+
+  # Build pollinator counts from organisms_df
+  guild_organisms <- organisms_df %>% dplyr::filter(plant_wfo_id %in% plant_ids)
+  pollinator_counts <- list()
+  pollinator_category_map <- list()
+
+  for (i in seq_len(nrow(guild_organisms))) {
+    row <- guild_organisms[i, ]
+
+    # Aggregate from both pollinators and flower_visitors columns
+    for (col in c('pollinators', 'flower_visitors')) {
+      col_val <- row[[col]]
+      if (is.list(col_val)) col_val <- col_val[[1]]
+      if (!is.null(col_val) && length(col_val) > 0) {
+        for (pollinator in col_val) {
+          if (is.null(pollinator_counts[[pollinator]])) {
+            pollinator_counts[[pollinator]] <- 0
+            pollinator_category_map[[pollinator]] <- categorize_pollinator(pollinator)
+          }
+          pollinator_counts[[pollinator]] <- pollinator_counts[[pollinator]] + 1
+        }
+      }
+    }
+  }
+
   list(
     raw = p7_raw,
     norm = m7_norm,
+    pollinator_counts = pollinator_counts,
+    pollinator_category_map = pollinator_category_map,
     details = list(
       n_shared_pollinators = length(shared_pollinators),
       pollinators = names(shared_pollinators)[1:min(5, length(shared_pollinators))]

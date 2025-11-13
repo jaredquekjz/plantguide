@@ -41,6 +41,13 @@ source("shipley_checks/src/Stage_4/metrics/m5_beneficial_fungi.R")
 source("shipley_checks/src/Stage_4/metrics/m6_structural_diversity.R")
 source("shipley_checks/src/Stage_4/metrics/m7_pollinator_support.R")
 
+# Source network analysis modules (explanation components)
+source("shipley_checks/src/Stage_4/explanation/pest_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/biocontrol_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/pathogen_control_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/fungi_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/pollinator_network_analysis.R")
+
 
 #' Guild Scorer V3 Class (Modular)
 #'
@@ -343,6 +350,13 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
       # Overall score (simple average) - matches Python line 416
       overall_score <- mean(unlist(metrics))
 
+      # Generate network profiles for explanation (qualitative information)
+      pest_profile <- analyze_guild_pests(guild_plants, self$organisms_df)
+      biocontrol_profile <- analyze_biocontrol_network(m3_result, guild_plants, self$organisms_df, self$fungi_df)
+      pathogen_control_profile <- analyze_pathogen_control_network(m4_result, guild_plants, self$fungi_df)
+      fungi_network_profile <- analyze_fungi_network(m5_result, guild_plants, self$fungi_df)
+      pollinator_network_profile <- analyze_pollinator_network(m7_result, guild_plants, self$organisms_df)
+
       # Return result
       list(
         overall_score = overall_score,
@@ -364,6 +378,23 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
           m5 = m5_result$details,
           m6 = m6_result$details,
           m7 = m7_result$details
+        ),
+        # Network profiles for explanation generation
+        network_profiles = list(
+          pest_profile = pest_profile,
+          biocontrol_profile = biocontrol_profile,
+          pathogen_control_profile = pathogen_control_profile,
+          fungi_network_profile = fungi_network_profile,
+          pollinator_network_profile = pollinator_network_profile
+        ),
+        # Counts from metrics (for explanation access)
+        counts = list(
+          predator_counts = m3_result$predator_counts,
+          entomo_fungi_counts = m3_result$entomo_fungi_counts,
+          mycoparasite_counts = m4_result$mycoparasite_counts,
+          pathogen_counts = m4_result$pathogen_counts,
+          fungi_counts = m5_result$fungi_counts,
+          pollinator_counts = m7_result$pollinator_counts
         ),
         flags = flags,
         n_plants = n_plants,

@@ -168,9 +168,72 @@ calculate_m5_beneficial_fungi <- function(plant_ids,
   # Percentile normalize
   m5_norm <- percentile_normalize_fn(p5_raw, 'p3')
 
+  # -------------------------------------------------------------------------
+  # STEP 6: Build fungi counts by category (for network profile generation)
+  # -------------------------------------------------------------------------
+  # Build fungi_counts: fungus_name → number of plants hosting it
+  # Also track category for each fungus (AMF, EMF, Endophytic, Saprotrophic)
+
+  fungi_counts <- list()
+  fungus_category_map <- list()  # fungus_name → category string
+
+  for (i in seq_len(nrow(guild_fungi))) {
+    row <- guild_fungi[i, ]
+
+    # AMF fungi
+    amf <- row$amf_fungi[[1]]
+    if (!is.null(amf) && length(amf) > 0) {
+      for (fungus in amf) {
+        if (is.null(fungi_counts[[fungus]])) {
+          fungi_counts[[fungus]] <- 0
+          fungus_category_map[[fungus]] <- "AMF"
+        }
+        fungi_counts[[fungus]] <- fungi_counts[[fungus]] + 1
+      }
+    }
+
+    # EMF fungi
+    emf <- row$emf_fungi[[1]]
+    if (!is.null(emf) && length(emf) > 0) {
+      for (fungus in emf) {
+        if (is.null(fungi_counts[[fungus]])) {
+          fungi_counts[[fungus]] <- 0
+          fungus_category_map[[fungus]] <- "EMF"
+        }
+        fungi_counts[[fungus]] <- fungi_counts[[fungus]] + 1
+      }
+    }
+
+    # Endophytic fungi
+    endo <- row$endophytic_fungi[[1]]
+    if (!is.null(endo) && length(endo) > 0) {
+      for (fungus in endo) {
+        if (is.null(fungi_counts[[fungus]])) {
+          fungi_counts[[fungus]] <- 0
+          fungus_category_map[[fungus]] <- "Endophytic"
+        }
+        fungi_counts[[fungus]] <- fungi_counts[[fungus]] + 1
+      }
+    }
+
+    # Saprotrophic fungi
+    sapro <- row$saprotrophic_fungi[[1]]
+    if (!is.null(sapro) && length(sapro) > 0) {
+      for (fungus in sapro) {
+        if (is.null(fungi_counts[[fungus]])) {
+          fungi_counts[[fungus]] <- 0
+          fungus_category_map[[fungus]] <- "Saprotrophic"
+        }
+        fungi_counts[[fungus]] <- fungi_counts[[fungus]] + 1
+      }
+    }
+  }
+
   list(
     raw = p5_raw,
     norm = m5_norm,
+    fungi_counts = fungi_counts,
+    fungus_category_map = fungus_category_map,
     details = list(
       network_score = network_raw,
       coverage_ratio = coverage_ratio,
