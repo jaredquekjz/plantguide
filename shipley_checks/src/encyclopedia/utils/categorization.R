@@ -52,6 +52,13 @@ get_csr_category <- function(C, S, R) {
     return(NA_character_)
   }
 
+  # STEP 1.5: Normalize to 0-1 scale if in percentage form (0-100)
+  if (C > 1 || S > 1 || R > 1) {
+    C <- C / 100
+    S <- S / 100
+    R <- R / 100
+  }
+
   # STEP 2: Check for single-strategy dominance
   # RATIONALE: Clear dominance when score > 0.6 and others minimal
   if (C > 0.6 && S < 0.3 && R < 0.3) return("C")
