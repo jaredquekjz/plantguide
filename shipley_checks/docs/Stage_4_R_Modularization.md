@@ -194,12 +194,344 @@ cat(sprintf("M2 (Growth compatibility): %.2f\n", result$metrics$m2))
 # ... etc
 ```
 
+## Enhanced Explanation Engine
+
+**Date:** 2025-11-13
+**Status:** ✅ **COMPLETE - RUST PARITY VERIFIED**
+
+The R explanation engine has been enhanced with comprehensive network analysis modules that generate detailed qualitative reports matching the Rust implementation. This extends the modular scorer to provide human-readable insights about ecological mechanisms.
+
+### Architecture
+
+```
+shipley_checks/src/Stage_4/
+├── explanation/                         # NEW: Network analysis modules
+│   ├── pest_analysis.R                  # M1: Pest vulnerability profiles
+│   ├── biocontrol_network_analysis.R    # M3: Predator/parasitoid networks
+│   ├── pathogen_control_network_analysis.R  # M4: Mycoparasite networks
+│   ├── fungi_network_analysis.R         # M5: Mycorrhizal fungi profiles
+│   └── pollinator_network_analysis.R    # M7: Pollinator community analysis
+├── export_explanation_md.R              # ENHANCED: Rust-compatible markdown formatter
+└── test_r_explanation_3guilds.R         # Parity verification test
+```
+
+### Key Enhancements
+
+#### 1. Metrics Return Agent Counts and Matched Pairs
+
+Updated 4 metrics to return additional network data:
+
+**M3 (Insect Pest Control):**
+```r
+list(
+  raw = biocontrol_normalized,
+  norm = m3_norm,
+  predator_counts = list("predator_name" = plant_count, ...),
+  entomo_fungi_counts = list("fungi_name" = plant_count, ...),
+  specific_predator_matches = count,
+  matched_predator_pairs = data.frame(herbivore, predator),
+  matched_fungi_pairs = data.frame(herbivore, fungus),
+  details = list(...)
+)
+```
+
+**M4 (Disease Suppression):**
+```r
+list(
+  raw = pathogen_control_normalized,
+  norm = m4_norm,
+  mycoparasite_counts = list("mycoparasite_name" = plant_count, ...),
+  pathogen_counts = list("pathogen_name" = plant_count, ...),
+  matched_antagonist_pairs = data.frame(pathogen, antagonist),
+  details = list(...)
+)
+```
+
+**M5 (Beneficial Fungi):**
+```r
+list(
+  raw = p5_raw,
+  norm = m5_norm,
+  fungi_counts = list("fungus_name" = plant_count, ...),
+  fungus_category_map = list("fungus_name" = "AMF|EMF|Endophytic|Saprotrophic"),
+  details = list(...)
+)
+```
+
+**M7 (Pollinator Support):**
+```r
+list(
+  raw = p7_raw,
+  norm = m7_norm,
+  pollinator_counts = list("pollinator_name" = plant_count, ...),
+  pollinator_category_map = list("pollinator_name" = "Bees|Butterflies|Moths|..."),
+  details = list(...)
+)
+```
+
+#### 2. Network Analysis Modules
+
+Five new modules generate detailed network profiles:
+
+**pest_analysis.R:**
+- Total unique herbivore pests
+- Shared pests (attacking 2+ plants)
+- Top 10 most common pests
+- Most vulnerable plants (by pest count)
+
+**biocontrol_network_analysis.R:**
+- Total unique predators and entomopathogenic fungi
+- Mechanism summary (specific matches vs general)
+- Matched herbivore → predator pairs
+- Network hubs (plants attracting most biocontrol agents)
+- **Critical feature:** Filters to only show known biocontrol agents from lookup tables
+
+**pathogen_control_network_analysis.R:**
+- Total unique mycoparasites and pathogens
+- Mechanism counts
+- Matched pathogen → antagonist pairs
+- Network hubs
+
+**fungi_network_analysis.R:**
+- Fungal community composition (AMF, EMF, Endophytic, Saprotrophic percentages)
+- Top network fungi by connectivity
+- Network hubs with category breakdown per plant
+
+**pollinator_network_analysis.R:**
+- Pollinator community composition (Bees, Butterflies, Moths, Flies, etc.)
+- Top network pollinators by connectivity
+- Network hubs with taxonomic breakdown per plant
+
+#### 3. Agent Filtering Logic
+
+**Critical Pattern:** Exhaustive extraction, filtered display
+
+All network profiles filter agents to only show documented biocontrol/beneficial organisms:
+
+```r
+# Build filter set from lookup table VALUES
+known_predators <- unique(unlist(herbivore_predators, use.names = FALSE))
+
+# Filter all displays
+predators_filtered <- intersect(all_predators, known_predators)
+
+# Apply filtering consistently:
+# - Agent counts: only increment for known agents
+# - Top agents: only show agents in filter set
+# - Network hubs: only count known agents per plant
+```
+
+This ensures honey bees are correctly shown as pollinators, not predators.
+
+#### 4. Markdown Formatter Rewrite
+
+Complete rewrite of `export_explanation_md.R` to match Rust output format:
+
+**New Structure:**
+- Star rating (★★★★★) based on overall score
+- Overall score prominent display
+- Climate compatibility section
+- Benefits section with interleaved profiles:
+  - M1 + Pest Vulnerability Profile (tables for shared pests, top pests, vulnerable plants)
+  - M3 + Biocontrol Network Profile (mechanism summary, matched pairs, network hubs)
+  - M4 + Pathogen Control Profile (mechanisms, network hubs)
+  - M5 + Beneficial Fungi Network Profile (composition %, top fungi, network hubs)
+  - M6 + Structural Diversity (simplified)
+  - M7 + Pollinator Network Profile (composition %, top pollinators, network hubs)
+- Warnings section (pH alerts, critical conflicts)
+- Metrics breakdown table (Universal + Bonus indicators)
+
+**Key formatting functions:**
+- `format_m1_section()` - M1 + Pest profile
+- `format_m3_section()` - M3 + Biocontrol profile
+- `format_m4_section()` - M4 + Pathogen control profile
+- `format_m5_section()` - M5 + Fungi profile with composition percentages
+- `format_m6_section()` - M6 + Structural diversity
+- `format_m7_section()` - M7 + Pollinator profile with composition percentages
+
+#### 5. Guild Scorer Integration
+
+Updated `guild_scorer_v3_modular.R`:
+
+```r
+# Source explanation modules
+source("shipley_checks/src/Stage_4/explanation/pest_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/biocontrol_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/pathogen_control_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/fungi_network_analysis.R")
+source("shipley_checks/src/Stage_4/explanation/pollinator_network_analysis.R")
+
+# In score_guild():
+pest_profile <- analyze_guild_pests(guild_plants, self$organisms_df)
+biocontrol_profile <- analyze_biocontrol_network(m3_result, guild_plants,
+                                                  self$organisms_df, self$fungi_df)
+pathogen_control_profile <- analyze_pathogen_control_network(m4_result,
+                                                              guild_plants, self$fungi_df)
+fungi_network_profile <- analyze_fungi_network(m5_result, guild_plants, self$fungi_df)
+pollinator_network_profile <- analyze_pollinator_network(m7_result,
+                                                          guild_plants, self$organisms_df)
+
+# Return with network_profiles
+list(
+  overall_score = overall_score,
+  metrics = metrics,
+  network_profiles = list(
+    pest_profile = pest_profile,
+    biocontrol_profile = biocontrol_profile,
+    pathogen_control_profile = pathogen_control_profile,
+    fungi_network_profile = fungi_network_profile,
+    pollinator_network_profile = pollinator_network_profile
+  ),
+  counts = list(
+    predator_counts = m3_result$predator_counts,
+    entomo_fungi_counts = m3_result$entomo_fungi_counts,
+    mycoparasite_counts = m4_result$mycoparasite_counts,
+    pathogen_counts = m4_result$pathogen_counts,
+    fungi_counts = m5_result$fungi_counts,
+    pollinator_counts = m7_result$pollinator_counts
+  ),
+  # ... other fields
+)
+```
+
+### Parity Verification with Rust
+
+**Test Configuration:**
+- 3 test guilds (Forest Garden, Competitive Clash, Stress-Tolerant)
+- Full explanation engine pipeline
+- Comparison of overall scores with Rust implementation
+
+**Results:**
+```
+FOREST GARDEN:
+  R Overall:    90.467710
+  Rust Overall: 90.5
+  Difference:   0.032 ✅ EXCELLENT PARITY
+
+COMPETITIVE CLASH:
+  R Overall:    53.011553
+  Rust Overall: 53.0
+  Difference:   0.012 ✅ EXCELLENT PARITY
+
+STRESS-TOLERANT:
+  R Overall:    42.380873
+  Rust Overall: 42.4
+  Difference:   0.019 ✅ EXCELLENT PARITY
+```
+
+**Maximum difference across all tests:** 0.032 points
+**Status:** ✅ **EXCELLENT PARITY ACHIEVED**
+
+### Performance Characteristics
+
+**R Implementation (Sequential):**
+- Average per guild: 12.7 seconds
+- Breakdown: ~12.6s scoring, ~0.1s markdown export
+- Total for 3 guilds: ~38 seconds
+
+**Rust Implementation (Parallel):**
+- Average per guild: 200-500 milliseconds
+- Uses rayon for parallel metric calculation
+- **20-60× faster than R**
+
+**Why R Parallelism Not Worthwhile:**
+- R uses process-based parallelism (fork + serialize data)
+- Must copy 11,711-row dataframes to each worker
+- Must serialize C++ PhyloPDCalculator (complex)
+- Expected speedup: ~3-4× (12s → 3-4s)
+- Overhead cost: Code complexity, harder debugging
+- **Conclusion:** R for development/verification, Rust for production
+
+### Output Examples
+
+**Pest Vulnerability Profile (M1):**
+```markdown
+#### Pest Vulnerability Profile
+
+*Qualitative information about herbivore pests (not used in scoring)*
+
+**Total unique herbivore species:** 140
+
+**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.
+
+**Top 10 Herbivore Pests**
+
+| Rank | Pest Species | Plants Attacked |
+|------|--------------|-----------------|
+| 1 | Aceria fraxini | Fraxinus excelsior |
+...
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|-----------------|
+| Fraxinus excelsior | 106 |
+...
+```
+
+**Biocontrol Network Profile (M3):**
+```markdown
+#### Biocontrol Network Profile
+
+**Total unique biocontrol agents:** 26
+- 26 Animal predators
+- 0 Entomopathogenic fungi
+
+**Mechanism Summary:**
+- 5 Specific predator matches (herbivore → known predator)
+- 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
+- 0 General entomopathogenic fungi interactions (weight 0.2 each)
+
+**Matched Herbivore → Predator Pairs:**
+
+| Herbivore (Pest) | Known Predator | Match Type |
+|------------------|----------------|------------|
+| Adoxophyes orana | Eptesicus serotinus | Specific (weight 1.0) |
+| Aphis | Adalia bipunctata | Specific (weight 1.0) |
+...
+
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Fraxinus excelsior | 13 | 0 | 13 |
+...
+```
+
+### Key Design Principles
+
+1. **Separation of Scoring and Explanation:**
+   - Scoring: Fast, numerical, used for optimization
+   - Explanation: Comprehensive, qualitative, used for user understanding
+
+2. **Filter Sets from Lookup Values:**
+   - Build `known_agents` from lookup table VALUES
+   - Filter all displays consistently
+   - Ensures only documented biocontrol agents shown
+
+3. **R Data Structure Patterns:**
+   - Named lists for counts: `list("agent" = plant_count)`
+   - Data frames for matched pairs: `data.frame(herbivore, predator)`
+   - Category maps: `list("agent" = "category_string")`
+
+4. **Parity Requirements:**
+   - Overall scores must match within 0.1 points
+   - Markdown structure must match Rust format
+   - Network profiles must show same agents/counts
+
+5. **Markdown Formatting:**
+   - Italics for qualitative disclaimers
+   - Bold for key numbers and headings
+   - Tables for structured data (pests, agents, hubs)
+   - Consistent spacing and section hierarchy
+
 ## Next Steps
 
 1. ✅ Modularize R scorer with comprehensive comments
-2. ⏳ Use modular R as blueprint for high-performance Rust implementation
-3. ⏳ Benchmark Rust vs Python/R for speedup verification
-4. ⏳ Achieve parity: Rust ↔ R ↔ Python
+2. ✅ Enhance R explanation engine with network profiles
+3. ✅ Achieve computational parity: Rust ↔ R (< 0.05 point difference)
+4. ✅ Match Rust markdown output format
+5. ⏳ Use R as reference for additional Rust metric development
 
 ## Files to Maintain
 
