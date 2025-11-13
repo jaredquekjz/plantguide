@@ -83,6 +83,36 @@ impl GuildScorer {
         })
     }
 
+    /// Provide LazyFrames for organisms and fungi (metrics will filter during collect)
+    ///
+    /// **PHASE 3 OPTIMIZATION**: Share LazyFrames across M3/M4/M5/M7
+    ///
+    /// **Problem being solved:**
+    ///   - M3 filters organisms_df to guild plants
+    ///   - M4 filters fungi_df to guild plants
+    ///   - M5 filters fungi_df to guild plants (again!)
+    ///   - M7 filters organisms_df to guild plants (again!)
+    ///   Total: 2 organisms filters + 2 fungi filters = 4 redundant DataFrame operations
+    ///
+    /// **Solution:**
+    ///   Each metric receives the same LazyFrame references
+    ///   They materialize different column projections as needed
+    ///   Polars optimizes each .select().collect() call independently
+    ///
+    /// **Memory savings:**
+    ///   Instead of: Each metric receiving full DataFrames (11,711 rows each)
+    ///   Now: Each metric loads only needed columns for guild plants
+    ///   - M3: 5 organism cols + 2 fungi cols
+    ///   - M4: 3 fungi cols
+    ///   - M5: 5 fungi cols
+    ///   - M7: 3 organism cols
+    ///   All filtered to 7 rows during their individual .collect() calls
+    ///
+    /// Returns: References to organisms_lazy and fungi_lazy (not filtered yet)
+    fn get_lazy_frames(&self) -> (&LazyFrame, &LazyFrame) {
+        (&self.data.organisms_lazy, &self.data.fungi_lazy)
+    }
+
     /// Check climate compatibility (Köppen tier overlap)
     ///
     /// R reference: guild_scorer_v3_modular.R::check_climate_compatibility
@@ -161,6 +191,15 @@ impl GuildScorer {
         // Check climate compatibility
         self.check_climate_compatibility(&guild_plants)?;
 
+        // ====================================================================
+        // PHASE 3 OPTIMIZATION: Share LazyFrames across M3/M4/M5/M7
+        // ====================================================================
+        //
+        // Each metric receives the same LazyFrame references (unfiltered)
+        // They materialize only their needed columns, then filter in memory
+        // This eliminates redundant filtering and minimizes data loading
+        let (organisms_lazy, fungi_lazy) = self.get_lazy_frames();
+
         // Calculate M1: Pest & Pathogen Independence
         // M1 already optimal: Only uses plant_ids, no DataFrame access
         let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
@@ -172,31 +211,41 @@ impl GuildScorer {
         let m2 = calculate_m2(&self.data.plants_lazy, plant_ids, self.csr_calibration.as_ref(), &self.calibration)?;
 
         // Calculate M3: Insect Control
+        // PHASE 3 OPTIMIZATION: Use LazyFrames with column projection
+        // Old: Pass full organisms/fungi DataFrames (11,711 rows each)
+        // New: Pass LazyFrames + plant_ids (M3 selects 5 organism + 2 fungi columns, then filters)
         let m3 = calculate_m3(
             plant_ids,
-            &self.data.organisms,
-            &self.data.fungi,
+            organisms_lazy,
+            fungi_lazy,
             &self.data.herbivore_predators,
             &self.data.insect_parasites,
             &self.calibration,
         )?;
 
         // Calculate M4: Disease Control
+        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+        // Reuses same fungi_lazy as M3 (no redundant full-DataFrame passing!)
         let m4 = calculate_m4(
             plant_ids,
-            &self.data.fungi,
+            fungi_lazy,
             &self.data.pathogen_antagonists,
             &self.calibration,
         )?;
 
         // Calculate M5: Beneficial Fungi
-        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+        // Reuses same fungi_lazy as M3/M4 (triple reuse!)
+        let m5 = calculate_m5(plant_ids, fungi_lazy, &self.calibration)?;
 
         // Calculate M6: Structural Diversity
+        // Will be optimized in Phase 4
         let m6 = calculate_m6(&guild_plants, &self.calibration)?;
 
         // Calculate M7: Pollinator Support
-        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+        // Reuses same organisms_lazy as M3 (no redundant filtering!)
+        let m7 = calculate_m7(plant_ids, organisms_lazy, &self.calibration)?;
 
         // Raw scores
         let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
@@ -260,6 +309,9 @@ impl GuildScorer {
         // Check climate compatibility (sequential - fast operation)
         self.check_climate_compatibility(&guild_plants)?;
 
+        // Get LazyFrame references for M3/M4/M5/M7
+        let (organisms_lazy, fungi_lazy) = self.get_lazy_frames();
+
         // Compute all 7 metrics IN PARALLEL using Rayon
         // Each metric is independent and can run on a separate thread
         let metric_results: Vec<Result<Box<dyn std::any::Any + Send>>> = (0..7)
@@ -276,10 +328,11 @@ impl GuildScorer {
                         Ok(Box::new(m2))
                     }
                     2 => {
+                        // PHASE 3 OPTIMIZATION: Use LazyFrames with column projection
                         let m3 = calculate_m3(
                             plant_ids,
-                            &self.data.organisms,
-                            &self.data.fungi,
+                            organisms_lazy,
+                            fungi_lazy,
                             &self.data.herbivore_predators,
                             &self.data.insect_parasites,
                             &self.calibration,
@@ -287,16 +340,18 @@ impl GuildScorer {
                         Ok(Box::new(m3))
                     }
                     3 => {
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
                         let m4 = calculate_m4(
                             plant_ids,
-                            &self.data.fungi,
+                            fungi_lazy,
                             &self.data.pathogen_antagonists,
                             &self.calibration,
                         )?;
                         Ok(Box::new(m4))
                     }
                     4 => {
-                        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+                        let m5 = calculate_m5(plant_ids, fungi_lazy, &self.calibration)?;
                         Ok(Box::new(m5))
                     }
                     5 => {
@@ -304,7 +359,8 @@ impl GuildScorer {
                         Ok(Box::new(m6))
                     }
                     6 => {
-                        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+                        let m7 = calculate_m7(plant_ids, organisms_lazy, &self.calibration)?;
                         Ok(Box::new(m7))
                     }
                     _ => unreachable!(),
@@ -405,6 +461,9 @@ impl GuildScorer {
         // Check climate compatibility (sequential - fast operation)
         self.check_climate_compatibility(&guild_plants)?;
 
+        // Get LazyFrame references for M3/M4/M5/M7
+        let (organisms_lazy, fungi_lazy) = self.get_lazy_frames();
+
         // Compute all 7 metrics + explanations IN PARALLEL using Rayon
         // Each metric is independent and can run on a separate thread
         type MetricResultWithFragment = (Box<dyn std::any::Any + Send>, MetricFragment);
@@ -427,10 +486,11 @@ impl GuildScorer {
                         Ok((Box::new(m2), fragment))
                     }
                     2 => {
+                        // PHASE 3 OPTIMIZATION: Use LazyFrames with column projection
                         let m3 = calculate_m3(
                             plant_ids,
-                            &self.data.organisms,
-                            &self.data.fungi,
+                            organisms_lazy,
+                            fungi_lazy,
                             &self.data.herbivore_predators,
                             &self.data.insect_parasites,
                             &self.calibration,
@@ -440,9 +500,10 @@ impl GuildScorer {
                         Ok((Box::new(m3), fragment))
                     }
                     3 => {
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
                         let m4 = calculate_m4(
                             plant_ids,
-                            &self.data.fungi,
+                            fungi_lazy,
                             &self.data.pathogen_antagonists,
                             &self.calibration,
                         )?;
@@ -451,7 +512,8 @@ impl GuildScorer {
                         Ok((Box::new(m4), fragment))
                     }
                     4 => {
-                        let m5 = calculate_m5(plant_ids, &self.data.fungi, &self.calibration)?;
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+                        let m5 = calculate_m5(plant_ids, fungi_lazy, &self.calibration)?;
                         let display_score = m5.norm;
                         let fragment = generate_m5_fragment(&m5, display_score);
                         Ok((Box::new(m5), fragment))
@@ -463,7 +525,8 @@ impl GuildScorer {
                         Ok((Box::new(m6), fragment))
                     }
                     6 => {
-                        let m7 = calculate_m7(plant_ids, &self.data.organisms, &self.calibration)?;
+                        // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
+                        let m7 = calculate_m7(plant_ids, organisms_lazy, &self.calibration)?;
                         let display_score = m7.norm;
                         let fragment = generate_m7_fragment(&m7, display_score);
                         Ok((Box::new(m7), fragment))

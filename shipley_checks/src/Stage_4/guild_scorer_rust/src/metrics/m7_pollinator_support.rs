@@ -1,7 +1,19 @@
 //! METRIC 7: POLLINATOR SUPPORT (SHARED POLLINATORS)
 //!
+//! **PHASE 3 OPTIMIZATION**: Pre-filtered LazyFrame with column projection
+//!
 //! Scores shared pollinator networks using quadratic weighting to reflect
 //! non-linear benefits of high-overlap pollinator communities.
+//!
+//! **Memory optimization**:
+//!   - Old: Receives full organisms_df (11,711 rows), filters inside count_shared_organisms
+//!   - New: Receives pre-filtered organisms_lazy (7 rows), selects only 3 needed columns
+//!   - Reuses same organisms_lazy as M3 (no redundant filtering!)
+//!
+//! **Columns needed** (M7 selects these 3):
+//!   1. plant_wfo_id - Plant identification (for filtering)
+//!   2. pollinators - Pipe-separated pollinator IDs
+//!   3. flower_visitors - Pipe-separated flower visitor IDs
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m7_pollinator_support.R
 
@@ -25,19 +37,49 @@ pub struct M7Result {
 
 /// Calculate M7: Pollinator Support
 ///
+/// **PHASE 3 OPTIMIZATION**: Reuses organisms LazyFrame from scorer, filters after column projection
+///
 /// R reference: m7_pollinator_support.R::calculate_m7_pollinator_support
 pub fn calculate_m7(
-    plant_ids: &[String],
-    organisms_df: &DataFrame,
+    plant_ids: &[String],        // Guild plant IDs for filtering
+    organisms_lazy: &LazyFrame,  // Schema-only scan (from scorer, reused from M3!)
     calibration: &Calibration,
 ) -> Result<M7Result> {
-    let n_plants = plant_ids.len();
+    // STEP 1: Materialize only the pollinator columns
+    let organisms_selected = organisms_lazy
+        .clone()
+        .select(&[
+            col("plant_wfo_id"),
+            col("pollinators"),
+            col("flower_visitors"),
+        ])
+        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
+
+    // STEP 2: Filter to guild plants (fast - only 3 columns)
+    use std::collections::HashSet;
+    let id_set: HashSet<_> = plant_ids.iter().collect();
+    let id_col = organisms_selected.column("plant_wfo_id")?.str()?;
+    let mask: BooleanChunked = id_col
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .collect();
+    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
+
+    let n_plants = guild_organisms.height();
+
+    // Get plant IDs from the filtered DataFrame (now local to this function)
+    let guild_plant_ids: Vec<String> = guild_organisms
+        .column("plant_wfo_id")?
+        .str()?
+        .into_iter()
+        .filter_map(|opt| opt.map(|s| s.to_string()))
+        .collect();
 
     // Count shared pollinators (pollinators hosted by ≥2 plants)
     // Includes both strict pollinators AND flower visitors
     let shared_pollinators = count_shared_organisms(
-        organisms_df,
-        plant_ids,
+        &guild_organisms,
+        &guild_plant_ids,
         &["pollinators", "flower_visitors"],
     )?;
 

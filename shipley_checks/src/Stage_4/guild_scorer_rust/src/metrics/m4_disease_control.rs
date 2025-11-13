@@ -1,8 +1,20 @@
 //! METRIC 4: DISEASE SUPPRESSION (ANTAGONIST FUNGI)
 //!
+//! **PHASE 3 OPTIMIZATION**: Pre-filtered LazyFrame with column projection
+//!
 //! Scores fungal disease control provided by mycoparasitic fungi.
 //! Uses pairwise analysis to identify protective relationships
 //! between vulnerable (disease-prone) and protective (mycoparasite-hosting) plants.
+//!
+//! **Memory optimization**:
+//!   - Old: Receives full fungi_df (11,711 rows), filters to guild
+//!   - New: Receives pre-filtered fungi_lazy (7 rows), selects only 2 needed columns
+//!   - Reuses same fungi_lazy as M3 and M5 (no redundant filtering!)
+//!
+//! **Columns needed** (M4 selects these 2):
+//!   1. plant_wfo_id - Plant identification
+//!   2. pathogen_fungi - Pipe-separated pathogen IDs
+//!   3. mycoparasite_fungi - Pipe-separated mycoparasite IDs
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m4_disease_control.R
 
@@ -34,21 +46,41 @@ pub struct M4Result {
 
 /// Calculate M4: Disease Suppression (Antagonist Fungi)
 ///
+/// **PHASE 3 OPTIMIZATION**: Reuses fungi LazyFrame from scorer, filters after column projection
+///
 /// R reference: m4_disease_control.R::calculate_m4_disease_control
 pub fn calculate_m4(
-    plant_ids: &[String],
-    fungi_df: &DataFrame,
+    plant_ids: &[String],        // Guild plant IDs for filtering
+    fungi_lazy: &LazyFrame,      // Schema-only scan (from scorer, reused from M3!)
     pathogen_antagonists: &FxHashMap<String, Vec<String>>,
     calibration: &Calibration,
 ) -> Result<M4Result> {
-    let n_plants = plant_ids.len();
     let mut pathogen_control_raw = 0.0;
     let mut n_mechanisms = 0;
     let mut specific_antagonist_matches = 0;
     let mut matched_antagonist_pairs: Vec<(String, String)> = Vec::new();
 
-    // Extract guild fungi data
-    let guild_fungi = filter_to_guild(fungi_df, plant_ids, "plant_wfo_id")?;
+    // STEP 1: Materialize only the 3 columns M4 needs
+    let fungi_selected = fungi_lazy
+        .clone()
+        .select(&[
+            col("plant_wfo_id"),
+            col("pathogenic_fungi"),
+            col("mycoparasite_fungi"),
+        ])
+        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
+
+    // STEP 2: Filter to guild plants (fast - only 3 columns)
+    use std::collections::HashSet;
+    let id_set: HashSet<_> = plant_ids.iter().collect();
+    let id_col = fungi_selected.column("plant_wfo_id")?.str()?;
+    let mask: BooleanChunked = id_col
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .collect();
+    let guild_fungi = fungi_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
+
+    let n_plants = guild_fungi.height();
 
     if guild_fungi.height() == 0 {
         return Ok(M4Result {

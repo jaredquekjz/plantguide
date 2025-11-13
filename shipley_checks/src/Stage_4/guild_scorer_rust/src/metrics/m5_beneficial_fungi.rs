@@ -1,7 +1,21 @@
 //! METRIC 5: BENEFICIAL FUNGI NETWORKS (MYCORRHIZAE & ENDOPHYTES)
 //!
+//! **PHASE 3 OPTIMIZATION**: Pre-filtered LazyFrame with column projection
+//!
 //! Scores Common Mycorrhizal Networks and individual fungal associations
 //! using shared organism counting and coverage analysis.
+//!
+//! **Memory optimization**:
+//!   - Old: Receives full fungi_df (11,711 rows), filters inside count_shared_organisms
+//!   - New: Receives pre-filtered fungi_lazy (7 rows), selects only 5 needed columns
+//!   - Reuses same fungi_lazy as M3 and M4 (triple reuse!)
+//!
+//! **Columns needed** (M5 selects these 5):
+//!   1. plant_wfo_id - Plant identification (for filtering)
+//!   2. amf_fungi - Arbuscular mycorrhizal fungi
+//!   3. emf_fungi - Ectomycorrhizal fungi
+//!   4. endophytic_fungi - Endophytic fungi
+//!   5. saprotrophic_fungi - Saprotrophic fungi
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m5_beneficial_fungi.R
 
@@ -31,19 +45,52 @@ pub struct M5Result {
 
 /// Calculate M5: Beneficial Fungi Networks
 ///
+/// **PHASE 3 OPTIMIZATION**: Reuses fungi LazyFrame from scorer, filters after column projection
+///
 /// R reference: m5_beneficial_fungi.R::calculate_m5_beneficial_fungi
 pub fn calculate_m5(
-    plant_ids: &[String],
-    fungi_df: &DataFrame,
+    plant_ids: &[String],        // Guild plant IDs for filtering
+    fungi_lazy: &LazyFrame,      // Schema-only scan (from scorer, reused from M3/M4!)
     calibration: &Calibration,
 ) -> Result<M5Result> {
-    let n_plants = plant_ids.len();
+    // STEP 1: Materialize only the beneficial fungi columns
+    let fungi_selected = fungi_lazy
+        .clone()
+        .select(&[
+            col("plant_wfo_id"),
+            col("amf_fungi"),
+            col("emf_fungi"),
+            col("endophytic_fungi"),
+            col("saprotrophic_fungi"),
+        ])
+        .collect()?;  // Execute: loads only 5 columns × 11,711 rows
 
-    // Beneficial fungi columns
+    // STEP 2: Filter to guild plants (fast - only 5 columns)
+    use std::collections::HashSet;
+    let id_set: HashSet<_> = plant_ids.iter().collect();
+    let id_col = fungi_selected.column("plant_wfo_id")?.str()?;
+    let mask: BooleanChunked = id_col
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .collect();
+    let guild_fungi = fungi_selected.filter(&mask)?;  // Result: 5 columns × 7 rows = 35 cells
+
+    let n_plants = guild_fungi.height();
+
+    // Beneficial fungi columns for counting
     let columns = &["amf_fungi", "emf_fungi", "endophytic_fungi", "saprotrophic_fungi"];
 
+    // Get plant IDs from the filtered DataFrame (now local to this function)
+    let guild_plant_ids: Vec<String> = guild_fungi
+        .column("plant_wfo_id")?
+        .str()?
+        .into_iter()
+        .filter_map(|opt| opt.map(|s| s.to_string()))
+        .collect();
+
     // Count shared beneficial fungi (fungi hosted by ≥2 plants)
-    let beneficial_counts = count_shared_organisms(fungi_df, plant_ids, columns)?;
+    // guild_fungi is already filtered (7 rows), so this just analyzes the guild
+    let beneficial_counts = count_shared_organisms(&guild_fungi, &guild_plant_ids, columns)?;
 
     // COMPONENT 1: Network score (weight 0.6)
     // For each shared fungus, calculate network connectivity
@@ -56,7 +103,7 @@ pub fn calculate_m5(
 
     // COMPONENT 2: Coverage ratio (weight 0.4)
     // What fraction of plants have ANY beneficial fungi?
-    let plants_with_beneficial = count_plants_with_beneficial_fungi(fungi_df, plant_ids, columns)?;
+    let plants_with_beneficial = count_plants_with_beneficial_fungi(&guild_fungi, &guild_plant_ids, columns)?;
     let coverage_ratio = plants_with_beneficial as f64 / n_plants as f64;
 
     // Combined score: 60% network, 40% coverage
