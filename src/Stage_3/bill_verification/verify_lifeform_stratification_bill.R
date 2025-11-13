@@ -48,7 +48,7 @@ suppressPackageStartupMessages({
 })
 
 # Configuration
-INPUT_FILE <- 'data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv'
+INPUT_FILE <- file.path(OUTPUT_DIR, 'stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
 
 cat(strrep('=', 80), '\n')
 cat('VERIFICATION: Life Form Stratification (Shipley Part II)\n')

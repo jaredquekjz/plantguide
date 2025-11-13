@@ -77,7 +77,7 @@ get_opt <- function(name, default) {
 }
 
 # Paths
-INPUT_PATH <- get_opt('input', 'data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv')
+INPUT_PATH <- get_opt('input', file.path(OUTPUT_DIR, 'stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv'))
 
 check_pass <- function(condition, description) {
   if (condition) {
