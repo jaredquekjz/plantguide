@@ -2,6 +2,8 @@ use crate::explanation::types::Explanation;
 use crate::explanation::pest_analysis::PestProfile;
 use crate::explanation::fungi_network_analysis::FungiNetworkProfile;
 use crate::explanation::pollinator_network_analysis::PollinatorNetworkProfile;
+use crate::explanation::biocontrol_network_analysis::BiocontrolNetworkProfile;
+use crate::explanation::pathogen_control_network_analysis::PathogenControlNetworkProfile;
 
 /// Markdown formatter for explanations
 pub struct MarkdownFormatter;
@@ -44,6 +46,20 @@ impl MarkdownFormatter {
                 if benefit.metric_code == "M1" {
                     if let Some(pest_profile) = &explanation.pest_profile {
                         Self::format_pest_profile(&mut md, pest_profile);
+                    }
+                }
+
+                // Insert biocontrol profile after M3 (Insect Pest Control)
+                if benefit.metric_code == "M3" {
+                    if let Some(biocontrol_profile) = &explanation.biocontrol_network_profile {
+                        Self::format_biocontrol_profile(&mut md, biocontrol_profile);
+                    }
+                }
+
+                // Insert pathogen control profile after M4 (Disease Suppression)
+                if benefit.metric_code == "M4" {
+                    if let Some(pathogen_profile) = &explanation.pathogen_control_profile {
+                        Self::format_pathogen_control_profile(&mut md, pathogen_profile);
                     }
                 }
 
@@ -357,6 +373,182 @@ impl MarkdownFormatter {
                     hub.birds_count,
                     hub.bats_count,
                     hub.other_count
+                ));
+            }
+            md.push_str("\n");
+        }
+    }
+
+    /// Format biocontrol network profile section
+    fn format_biocontrol_profile(md: &mut String, biocontrol_profile: &BiocontrolNetworkProfile) {
+        md.push_str("#### Biocontrol Network Profile\n\n");
+        md.push_str("*Qualitative information about insect pest control (influences M3 scoring)*\n\n");
+
+        md.push_str(&format!(
+            "**Total unique biocontrol agents:** {}\n",
+            biocontrol_profile.total_unique_predators + biocontrol_profile.total_unique_entomo_fungi
+        ));
+        md.push_str(&format!("- {} Animal predators\n", biocontrol_profile.total_unique_predators));
+        md.push_str(&format!("- {} Entomopathogenic fungi\n\n", biocontrol_profile.total_unique_entomo_fungi));
+
+        md.push_str("**Mechanism Summary:**\n");
+        md.push_str(&format!("- {} Specific predator matches (herbivore → known predator)\n", biocontrol_profile.specific_predator_matches));
+        md.push_str(&format!("- {} Specific fungi matches (herbivore → known entomopathogenic fungus)\n", biocontrol_profile.specific_fungi_matches));
+        md.push_str(&format!("- {} General entomopathogenic fungi interactions (weight 0.2 each)\n\n", biocontrol_profile.general_entomo_fungi_count));
+
+        // Show matched predator pairs
+        if !biocontrol_profile.matched_predator_pairs.is_empty() {
+            md.push_str("**Matched Herbivore → Predator Pairs:**\n\n");
+            md.push_str("| Herbivore (Pest) | Known Predator | Match Type |\n");
+            md.push_str("|------------------|----------------|------------|\n");
+            for (herbivore, predator) in biocontrol_profile.matched_predator_pairs.iter().take(20) {
+                md.push_str(&format!(
+                    "| {} | {} | Specific (weight 1.0) |\n",
+                    herbivore, predator
+                ));
+            }
+            if biocontrol_profile.matched_predator_pairs.len() > 20 {
+                md.push_str(&format!(
+                    "\n*Showing 20 of {} total matches*\n",
+                    biocontrol_profile.matched_predator_pairs.len()
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Show matched fungi pairs
+        if !biocontrol_profile.matched_fungi_pairs.is_empty() {
+            md.push_str("**Matched Herbivore → Entomopathogenic Fungus Pairs:**\n\n");
+            md.push_str("| Herbivore (Pest) | Entomopathogenic Fungus | Match Type |\n");
+            md.push_str("|------------------|------------------------|------------|\n");
+            for (herbivore, fungus) in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
+                md.push_str(&format!(
+                    "| {} | {} | Specific (weight 1.0) |\n",
+                    herbivore, fungus
+                ));
+            }
+            if biocontrol_profile.matched_fungi_pairs.len() > 20 {
+                md.push_str(&format!(
+                    "\n*Showing 20 of {} total matches*\n",
+                    biocontrol_profile.matched_fungi_pairs.len()
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Top predators
+        if !biocontrol_profile.top_predators.is_empty() {
+            md.push_str("**Top Animal Predators (by connectivity):**\n\n");
+            md.push_str("| Rank | Predator Species | Plants Visited | Network Contribution |\n");
+            md.push_str("|------|------------------|----------------|----------------------|\n");
+            for (i, agent) in biocontrol_profile.top_predators.iter().enumerate() {
+                md.push_str(&format!(
+                    "| {} | {} | {} plants | {:.1}% |\n",
+                    i + 1,
+                    agent.agent_name,
+                    agent.plant_count,
+                    agent.network_contribution * 100.0
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Top entomopathogenic fungi
+        if !biocontrol_profile.top_entomo_fungi.is_empty() {
+            md.push_str("**Top Entomopathogenic Fungi (by connectivity):**\n\n");
+            md.push_str("| Rank | Fungus Species | Plants Hosting | Network Contribution |\n");
+            md.push_str("|------|----------------|----------------|----------------------|\n");
+            for (i, agent) in biocontrol_profile.top_entomo_fungi.iter().enumerate() {
+                md.push_str(&format!(
+                    "| {} | {} | {} plants | {:.1}% |\n",
+                    i + 1,
+                    agent.agent_name,
+                    agent.plant_count,
+                    agent.network_contribution * 100.0
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Network hubs
+        if !biocontrol_profile.hub_plants.is_empty() {
+            md.push_str("**Network Hubs (plants attracting most biocontrol):**\n\n");
+            md.push_str("| Plant | Total Predators | Total Fungi | Combined |\n");
+            md.push_str("|-------|----------------|-------------|----------|\n");
+            for hub in biocontrol_profile.hub_plants.iter().take(10) {
+                md.push_str(&format!(
+                    "| {} | {} | {} | {} |\n",
+                    hub.plant_name,
+                    hub.total_predators,
+                    hub.total_entomo_fungi,
+                    hub.total_biocontrol_agents
+                ));
+            }
+            md.push_str("\n");
+        }
+    }
+
+    /// Format pathogen control network profile section
+    fn format_pathogen_control_profile(md: &mut String, pathogen_profile: &PathogenControlNetworkProfile) {
+        md.push_str("#### Pathogen Control Network Profile\n\n");
+        md.push_str("*Qualitative information about disease suppression (influences M4 scoring)*\n\n");
+
+        md.push_str("**Summary:**\n");
+        md.push_str(&format!("- {} unique mycoparasite species (fungi that parasitize other fungi)\n", pathogen_profile.total_unique_mycoparasites));
+        md.push_str(&format!("- {} unique pathogen species in guild\n\n", pathogen_profile.total_unique_pathogens));
+
+        md.push_str("**Mechanism Summary:**\n");
+        md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite, weight 1.0, rarely fires)\n", pathogen_profile.specific_antagonist_matches));
+        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism, weight 1.0)\n\n", pathogen_profile.general_mycoparasite_count));
+
+        // Show matched antagonist pairs
+        if !pathogen_profile.matched_antagonist_pairs.is_empty() {
+            md.push_str("**Matched Pathogen → Mycoparasite Pairs:**\n\n");
+            md.push_str("| Pathogen | Known Antagonist (Mycoparasite) | Match Type |\n");
+            md.push_str("|----------|----------------------------------|------------|\n");
+            for (pathogen, antagonist) in pathogen_profile.matched_antagonist_pairs.iter().take(20) {
+                md.push_str(&format!(
+                    "| {} | {} | Specific (weight 1.0) |\n",
+                    pathogen, antagonist
+                ));
+            }
+            if pathogen_profile.matched_antagonist_pairs.len() > 20 {
+                md.push_str(&format!(
+                    "\n*Showing 20 of {} total matches*\n",
+                    pathogen_profile.matched_antagonist_pairs.len()
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Top mycoparasites
+        if !pathogen_profile.top_mycoparasites.is_empty() {
+            md.push_str("**Top Mycoparasites (by connectivity):**\n\n");
+            md.push_str("| Rank | Mycoparasite Species | Plants Hosting | Network Contribution |\n");
+            md.push_str("|------|---------------------|----------------|----------------------|\n");
+            for (i, agent) in pathogen_profile.top_mycoparasites.iter().enumerate() {
+                md.push_str(&format!(
+                    "| {} | {} | {} plants | {:.1}% |\n",
+                    i + 1,
+                    agent.mycoparasite_name,
+                    agent.plant_count,
+                    agent.network_contribution * 100.0
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Network hubs
+        if !pathogen_profile.hub_plants.is_empty() {
+            md.push_str("**Network Hubs (plants harboring most mycoparasites):**\n\n");
+            md.push_str("| Plant | Mycoparasites | Pathogens |\n");
+            md.push_str("|-------|---------------|-----------||\n");
+            for hub in pathogen_profile.hub_plants.iter().take(10) {
+                md.push_str(&format!(
+                    "| {} | {} | {} |\n",
+                    hub.plant_name,
+                    hub.mycoparasite_count,
+                    hub.pathogen_count
                 ));
             }
             md.push_str("\n");

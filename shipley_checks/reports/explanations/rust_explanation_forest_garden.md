@@ -57,12 +57,73 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 *Evidence:* Biocontrol score: 100.0/100, covering 5 mechanisms
 
+#### Biocontrol Network Profile
+
+*Qualitative information about insect pest control (influences M3 scoring)*
+
+**Total unique biocontrol agents:** 17
+- 17 Animal predators
+- 0 Entomopathogenic fungi
+
+**Mechanism Summary:**
+- 5 Specific predator matches (herbivore → known predator)
+- 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
+- 0 General entomopathogenic fungi interactions (weight 0.2 each)
+
+**Matched Herbivore → Predator Pairs:**
+
+| Herbivore (Pest) | Known Predator | Match Type |
+|------------------|----------------|------------|
+| Adoxophyes orana | Eptesicus serotinus | Specific (weight 1.0) |
+| Adoxophyes orana | Myotis daubentonii | Specific (weight 1.0) |
+| Adoxophyes orana | Myotis mystacinus | Specific (weight 1.0) |
+| Aphis | Adalia bipunctata | Specific (weight 1.0) |
+| Aphis | Cyanistes caeruleus | Specific (weight 1.0) |
+| Aphis | Fringilla coelebs | Specific (weight 1.0) |
+| Aphis | Platycheirus scutatus | Specific (weight 1.0) |
+| Aphis | Syrphus vitripennis | Specific (weight 1.0) |
+| Cnephasia stephensiana | Myotis daubentonii | Specific (weight 1.0) |
+| Cnephasia stephensiana | Myotis mystacinus | Specific (weight 1.0) |
+| Myzus persicae | Adalia bipunctata | Specific (weight 1.0) |
+
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Fraxinus excelsior | 13 | 0 | 13 |
+| Diospyros kaki | 3 | 0 | 3 |
+| Anaphalis margaritacea | 1 | 0 | 1 |
+
 ### Natural Disease Suppression [M4]
 
 Guild provides disease suppression via 6 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
 *Evidence:* Pathogen control score: 100.0/100, covering 6 mechanisms
+
+#### Pathogen Control Network Profile
+
+*Qualitative information about disease suppression (influences M4 scoring)*
+
+**Summary:**
+- 2 unique mycoparasite species (fungi that parasitize other fungi)
+- 112 unique pathogen species in guild
+
+**Mechanism Summary:**
+- 0 Specific antagonist matches (pathogen → known mycoparasite, weight 1.0, rarely fires)
+- 2 General mycoparasite fungi (primary mechanism, weight 1.0)
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Fraxinus excelsior | 2 | 49 |
+| Anaphalis margaritacea | 0 | 14 |
+| Deutzia scabra | 0 | 1 |
+| Diospyros kaki | 0 | 56 |
+| Maianthemum racemosum | 0 | 18 |
+| Mercurialis perennis | 0 | 20 |
+| Rubus moorei | 0 | 1 |
 
 ### Beneficial Mycorrhizal Network [M5]
 

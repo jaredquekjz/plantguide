@@ -17,6 +17,28 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 *Evidence:* Pathogen control score: 100.0/100, covering 4 mechanisms
 
+#### Pathogen Control Network Profile
+
+*Qualitative information about disease suppression (influences M4 scoring)*
+
+**Summary:**
+- 1 unique mycoparasite species (fungi that parasitize other fungi)
+- 22 unique pathogen species in guild
+
+**Mechanism Summary:**
+- 0 Specific antagonist matches (pathogen → known mycoparasite, weight 1.0, rarely fires)
+- 1 General mycoparasite fungi (primary mechanism, weight 1.0)
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Alyxia ruscifolia | 1 | 2 |
+| Carex mucronata | 0 | 4 |
+| Eucalyptus melanophloia | 0 | 1 |
+| Senna artemisioides | 0 | 1 |
+| Sporobolus compositus | 0 | 15 |
+
 ### Beneficial Mycorrhizal Network [M5]
 
 16 shared mycorrhizal fungal species connect 4 plants  

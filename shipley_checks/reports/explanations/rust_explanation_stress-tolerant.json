@@ -519,5 +519,41 @@
         "other_count": 0
       }
     ]
+  },
+  "biocontrol_network_profile": null,
+  "pathogen_control_profile": {
+    "total_unique_mycoparasites": 1,
+    "total_unique_pathogens": 22,
+    "specific_antagonist_matches": 0,
+    "general_mycoparasite_count": 1,
+    "matched_antagonist_pairs": [],
+    "top_mycoparasites": [],
+    "hub_plants": [
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "mycoparasite_count": 1,
+        "pathogen_count": 2
+      },
+      {
+        "plant_name": "Carex mucronata",
+        "mycoparasite_count": 0,
+        "pathogen_count": 4
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1
+      },
+      {
+        "plant_name": "Senna artemisioides",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1
+      },
+      {
+        "plant_name": "Sporobolus compositus",
+        "mycoparasite_count": 0,
+        "pathogen_count": 15
+      }
+    ]
   }
 }

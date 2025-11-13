@@ -22,6 +22,14 @@ pub struct M4Result {
     pub pathogen_control_raw: f64,
     /// Number of mechanisms detected
     pub n_mechanisms: usize,
+    /// Map of mycoparasite_name → plant_count for network analysis
+    pub mycoparasite_counts: FxHashMap<String, usize>,
+    /// Map of pathogen_name → plant_count for network analysis
+    pub pathogen_counts: FxHashMap<String, usize>,
+    /// Count of specific antagonist matches (pathogen → known mycoparasite)
+    pub specific_antagonist_matches: usize,
+    /// List of matched (pathogen, antagonist) pairs
+    pub matched_antagonist_pairs: Vec<(String, String)>,
 }
 
 /// Calculate M4: Disease Suppression (Antagonist Fungi)
@@ -36,6 +44,8 @@ pub fn calculate_m4(
     let n_plants = plant_ids.len();
     let mut pathogen_control_raw = 0.0;
     let mut n_mechanisms = 0;
+    let mut specific_antagonist_matches = 0;
+    let mut matched_antagonist_pairs: Vec<(String, String)> = Vec::new();
 
     // Extract guild fungi data
     let guild_fungi = filter_to_guild(fungi_df, plant_ids, "plant_wfo_id")?;
@@ -46,12 +56,20 @@ pub fn calculate_m4(
             norm: 0.0,
             pathogen_control_raw: 0.0,
             n_mechanisms: 0,
+            mycoparasite_counts: FxHashMap::default(),
+            pathogen_counts: FxHashMap::default(),
+            specific_antagonist_matches: 0,
+            matched_antagonist_pairs: Vec::new(),
         });
     }
 
     // Extract fungi data into structured format
     let plant_pathogens = extract_column_data(&guild_fungi, "pathogenic_fungi")?;
     let plant_mycoparasites = extract_column_data(&guild_fungi, "mycoparasite_fungi")?;
+
+    // Build agent counts: agent_name → number of plants
+    let mycoparasite_counts = build_agent_counts(&plant_mycoparasites)?;
+    let pathogen_counts = build_agent_counts(&plant_pathogens)?;
 
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, pathogens_a) in &plant_pathogens {
@@ -67,10 +85,15 @@ pub fn calculate_m4(
             // MECHANISM 1: Specific antagonist matches (weight 1.0) - RARELY FIRES
             for pathogen in pathogens_a {
                 if let Some(known_antagonists) = pathogen_antagonists.get(pathogen) {
-                    let matches = count_matches(mycoparasites_b, known_antagonists);
-                    if matches > 0 {
-                        pathogen_control_raw += matches as f64 * 1.0;
+                    let matched_ants = find_matches(mycoparasites_b, known_antagonists);
+                    if !matched_ants.is_empty() {
+                        pathogen_control_raw += matched_ants.len() as f64 * 1.0;
                         n_mechanisms += 1;
+                        specific_antagonist_matches += 1;
+                        // Track matched pairs
+                        for antagonist in matched_ants {
+                            matched_antagonist_pairs.push((pathogen.clone(), antagonist));
+                        }
                     }
                 }
             }
@@ -93,11 +116,19 @@ pub fn calculate_m4(
     // Percentile normalization
     let m4_norm = percentile_normalize(pathogen_control_normalized, "p2", calibration, false)?;
 
+    // Deduplicate matched pairs
+    matched_antagonist_pairs.sort_unstable();
+    matched_antagonist_pairs.dedup();
+
     Ok(M4Result {
         raw: pathogen_control_normalized,
         norm: m4_norm,
         pathogen_control_raw,
         n_mechanisms,
+        mycoparasite_counts,
+        pathogen_counts,
+        specific_antagonist_matches,
+        matched_antagonist_pairs,
     })
 }
 
@@ -142,10 +173,31 @@ fn extract_column_data(
     Ok(map)
 }
 
-/// Count how many elements from list_a are in list_b
-fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+/// Build agent_name → plant_count mapping
+fn build_agent_counts(plant_agents: &FxHashMap<String, Vec<String>>) -> Result<FxHashMap<String, usize>> {
+    let mut counts: FxHashMap<String, usize> = FxHashMap::default();
+
+    for agents in plant_agents.values() {
+        for agent in agents {
+            *counts.entry(agent.clone()).or_insert(0) += 1;
+        }
+    }
+
+    Ok(counts)
+}
+
+/// Find which elements from list_a are in list_b and return them
+fn find_matches(list_a: &[String], list_b: &[String]) -> Vec<String> {
     let set_b: FxHashSet<&String> = list_b.iter().collect();
-    list_a.iter().filter(|item| set_b.contains(item)).count()
+    list_a.iter()
+        .filter(|item| set_b.contains(item))
+        .map(|s| s.clone())
+        .collect()
+}
+
+/// Count how many elements from list_a are in list_b (kept for backward compatibility)
+fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+    find_matches(list_a, list_b).len()
 }
 
 #[cfg(test)]

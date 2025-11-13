@@ -381,7 +381,7 @@ impl GuildScorer {
     pub fn score_guild_with_explanation_parallel(
         &self,
         plant_ids: &[String],
-    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M5Result, DataFrame, M7Result, DataFrame)> {
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M3Result, DataFrame, M4Result, M5Result, DataFrame, M7Result)> {
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
@@ -551,6 +551,32 @@ impl GuildScorer {
                 JoinArgs::new(JoinType::Left),
             )?;
 
+        // Clone M3Result for biocontrol network analysis
+        let m3_cloned = M3Result {
+            raw: m3.raw,
+            norm: m3.norm,
+            biocontrol_raw: m3.biocontrol_raw,
+            n_mechanisms: m3.n_mechanisms,
+            predator_counts: m3.predator_counts.clone(),
+            entomo_fungi_counts: m3.entomo_fungi_counts.clone(),
+            specific_predator_matches: m3.specific_predator_matches,
+            specific_fungi_matches: m3.specific_fungi_matches,
+            matched_predator_pairs: m3.matched_predator_pairs.clone(),
+            matched_fungi_pairs: m3.matched_fungi_pairs.clone(),
+        };
+
+        // Clone M4Result for pathogen control network analysis
+        let m4_cloned = M4Result {
+            raw: m4.raw,
+            norm: m4.norm,
+            pathogen_control_raw: m4.pathogen_control_raw,
+            n_mechanisms: m4.n_mechanisms,
+            mycoparasite_counts: m4.mycoparasite_counts.clone(),
+            pathogen_counts: m4.pathogen_counts.clone(),
+            specific_antagonist_matches: m4.specific_antagonist_matches,
+            matched_antagonist_pairs: m4.matched_antagonist_pairs.clone(),
+        };
+
         // Clone M5Result for fungi network analysis
         let m5_cloned = M5Result {
             raw: m5.raw,
@@ -570,7 +596,7 @@ impl GuildScorer {
             pollinator_counts: m7.pollinator_counts.clone(),
         };
 
-        Ok((guild_score, fragments, guild_plants_with_organisms, m5_cloned, self.data.fungi.clone(), m7_cloned, self.data.organisms.clone()))
+        Ok((guild_score, fragments, guild_plants_with_organisms, m3_cloned, self.data.organisms.clone(), m4_cloned, m5_cloned, self.data.fungi.clone(), m7_cloned))
     }
 }
 

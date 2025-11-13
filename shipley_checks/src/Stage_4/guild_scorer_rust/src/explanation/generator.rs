@@ -1,7 +1,7 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network};
 use crate::scorer::GuildScore;
-use crate::metrics::{M5Result, M7Result};
+use crate::metrics::{M3Result, M4Result, M5Result, M7Result};
 use anyhow::Result;
 use polars::prelude::*;
 
@@ -16,10 +16,12 @@ impl ExplanationGenerator {
     /// - guild_plants: DataFrame of guild plants (for nitrogen/pH checks)
     /// - climate_tier: Köppen tier string
     /// - fragments: Pre-generated metric fragments from parallel scoring
+    /// - m3_result: M3 result with biocontrol agent counts (for network analysis)
+    /// - m4_result: M4 result with mycoparasite counts (for network analysis)
     /// - m5_result: M5 result with fungi counts (for network analysis)
     /// - fungi_df: Fungi DataFrame (for categorization)
     /// - m7_result: M7 result with pollinator counts (for network analysis)
-    /// - organisms_df: Organisms DataFrame (for pollinator categorization)
+    /// - organisms_df: Organisms DataFrame (for categorization)
     ///
     /// Returns: Complete Explanation with all cards
     pub fn generate(
@@ -27,10 +29,12 @@ impl ExplanationGenerator {
         guild_plants: &DataFrame,
         climate_tier: &str,
         fragments: Vec<MetricFragment>,
+        m3_result: &M3Result,
+        organisms_df: &DataFrame,
+        m4_result: &M4Result,
         m5_result: &M5Result,
         fungi_df: &DataFrame,
         m7_result: &M7Result,
-        organisms_df: &DataFrame,
     ) -> Result<Explanation> {
         // Overall score with stars
         let overall = Self::generate_overall(guild_score.overall_score);
@@ -72,12 +76,39 @@ impl ExplanationGenerator {
             .ok()
             .flatten();
 
-        // Fungi network profile (qualitative information)
+        // Biocontrol network profile (M3 - qualitative information)
+        let biocontrol_network_profile = analyze_biocontrol_network(
+            &m3_result.predator_counts,
+            &m3_result.entomo_fungi_counts,
+            m3_result.specific_predator_matches,
+            m3_result.specific_fungi_matches,
+            &m3_result.matched_predator_pairs,
+            &m3_result.matched_fungi_pairs,
+            guild_plants,
+            organisms_df,
+            fungi_df,
+        )
+        .ok()
+        .flatten();
+
+        // Pathogen control network profile (M4 - qualitative information)
+        let pathogen_control_profile = analyze_pathogen_control_network(
+            &m4_result.mycoparasite_counts,
+            &m4_result.pathogen_counts,
+            m4_result.specific_antagonist_matches,
+            &m4_result.matched_antagonist_pairs,
+            guild_plants,
+            fungi_df,
+        )
+        .ok()
+        .flatten();
+
+        // Fungi network profile (M5 - qualitative information)
         let fungi_network_profile = analyze_fungi_network(m5_result, guild_plants, fungi_df)
             .ok()
             .flatten();
 
-        // Pollinator network profile (qualitative information)
+        // Pollinator network profile (M7 - qualitative information)
         let pollinator_network_profile = analyze_pollinator_network(m7_result, guild_plants, organisms_df)
             .ok()
             .flatten();
@@ -95,6 +126,8 @@ impl ExplanationGenerator {
             pest_profile,
             fungi_network_profile,
             pollinator_network_profile,
+            biocontrol_network_profile,
+            pathogen_control_profile,
         })
     }
 

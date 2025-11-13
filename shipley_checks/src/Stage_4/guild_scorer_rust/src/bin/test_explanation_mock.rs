@@ -2,13 +2,43 @@ use guild_scorer_rust::{
     GuildScore, ExplanationGenerator, MarkdownFormatter, JsonFormatter, HtmlFormatter,
     MetricFragment, BenefitCard, WarningCard, RiskCard, Severity,
 };
-use guild_scorer_rust::metrics::{M5Result, M7Result};
+use guild_scorer_rust::metrics::{M3Result, M4Result, M5Result, M7Result};
 use rustc_hash::FxHashMap;
 use polars::prelude::*;
 use std::fs;
 
 #[allow(unused)]
 use guild_scorer_rust::GuildScorer;
+
+/// Create mock M3Result for testing
+fn create_mock_m3_result() -> M3Result {
+    M3Result {
+        raw: 0.4,
+        norm: 40.0,
+        biocontrol_raw: 0.35,
+        n_mechanisms: 2,
+        predator_counts: FxHashMap::default(),
+        entomo_fungi_counts: FxHashMap::default(),
+        specific_predator_matches: 0,
+        specific_fungi_matches: 0,
+        matched_predator_pairs: Vec::new(),
+        matched_fungi_pairs: Vec::new(),
+    }
+}
+
+/// Create mock M4Result for testing
+fn create_mock_m4_result() -> M4Result {
+    M4Result {
+        raw: 0.45,
+        norm: 45.0,
+        pathogen_control_raw: 0.4,
+        n_mechanisms: 3,
+        mycoparasite_counts: FxHashMap::default(),
+        pathogen_counts: FxHashMap::default(),
+        specific_antagonist_matches: 0,
+        matched_antagonist_pairs: Vec::new(),
+    }
+}
 
 /// Create mock M5Result for testing
 fn create_mock_m5_result() -> M5Result {
@@ -150,9 +180,11 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
     }?;
 
     let m5_result = create_mock_m5_result();
+    let m3_result = create_mock_m3_result();
+    let organisms_df = create_mock_organisms_df()?;
+    let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
-    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -160,10 +192,12 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m3_result,
+        &organisms_df,
+        &m4_result,
         &m5_result,
         &fungi_df,
         &m7_result,
-        &organisms_df,
     )?;
 
     // Print summary
@@ -234,9 +268,11 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
     }?;
 
     let m5_result = create_mock_m5_result();
+    let m3_result = create_mock_m3_result();
+    let organisms_df = create_mock_organisms_df()?;
+    let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
-    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -244,10 +280,12 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m3_result,
+        &organisms_df,
+        &m4_result,
         &m5_result,
         &fungi_df,
         &m7_result,
-        &organisms_df,
     )?;
 
     // Print summary
@@ -307,9 +345,11 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
     }?;
 
     let m5_result = create_mock_m5_result();
+    let m3_result = create_mock_m3_result();
+    let organisms_df = create_mock_organisms_df()?;
+    let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
-    let organisms_df = create_mock_organisms_df()?;
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -317,10 +357,12 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
         &guild_plants,
         "tier_3_humid_temperate",
         fragments,
+        &m3_result,
+        &organisms_df,
+        &m4_result,
         &m5_result,
         &fungi_df,
         &m7_result,
-        &organisms_df,
     )?;
 
     // Print summary

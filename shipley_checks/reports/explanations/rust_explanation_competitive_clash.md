@@ -56,12 +56,59 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 *Evidence:* Biocontrol score: 100.0/100, covering 0 mechanisms
 
+#### Biocontrol Network Profile
+
+*Qualitative information about insect pest control (influences M3 scoring)*
+
+**Total unique biocontrol agents:** 8
+- 8 Animal predators
+- 0 Entomopathogenic fungi
+
+**Mechanism Summary:**
+- 0 Specific predator matches (herbivore → known predator)
+- 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
+- 0 General entomopathogenic fungi interactions (weight 0.2 each)
+
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Vitis vinifera | 8 | 0 | 8 |
+
 ### Natural Disease Suppression [M4]
 
 Guild provides disease suppression via 8 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
 *Evidence:* Pathogen control score: 100.0/100, covering 8 mechanisms
+
+#### Pathogen Control Network Profile
+
+*Qualitative information about disease suppression (influences M4 scoring)*
+
+**Summary:**
+- 4 unique mycoparasite species (fungi that parasitize other fungi)
+- 197 unique pathogen species in guild
+
+**Mechanism Summary:**
+- 0 Specific antagonist matches (pathogen → known mycoparasite, weight 1.0, rarely fires)
+- 5 General mycoparasite fungi (primary mechanism, weight 1.0)
+
+**Top Mycoparasites (by connectivity):**
+
+| Rank | Mycoparasite Species | Plants Hosting | Network Contribution |
+|------|---------------------|----------------|----------------------|
+| 1 | trichoderma | 2 plants | 28.6% |
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Vitis vinifera | 4 | 181 |
+| Cheirodendron trigynum | 1 | 11 |
+| Allium schoenoprasum | 0 | 18 |
+| Alnus acuminata | 0 | 1 |
+| Pfaffia gnaphalioides | 0 | 1 |
 
 ### Beneficial Mycorrhizal Network [M5]
 

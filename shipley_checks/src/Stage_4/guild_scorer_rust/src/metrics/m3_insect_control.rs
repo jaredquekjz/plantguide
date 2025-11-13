@@ -22,6 +22,18 @@ pub struct M3Result {
     pub biocontrol_raw: f64,
     /// Number of mechanisms detected
     pub n_mechanisms: usize,
+    /// Map of predator_name → plant_count for network analysis
+    pub predator_counts: FxHashMap<String, usize>,
+    /// Map of entomopathogenic_fungus_name → plant_count for network analysis
+    pub entomo_fungi_counts: FxHashMap<String, usize>,
+    /// Count of specific predator matches (herbivore → known predator)
+    pub specific_predator_matches: usize,
+    /// Count of specific fungi matches (herbivore → known fungus)
+    pub specific_fungi_matches: usize,
+    /// List of matched (herbivore, predator) pairs
+    pub matched_predator_pairs: Vec<(String, String)>,
+    /// List of matched (herbivore, fungus) pairs
+    pub matched_fungi_pairs: Vec<(String, String)>,
 }
 
 /// Calculate M3: Beneficial Insect Networks (Biocontrol)
@@ -38,6 +50,10 @@ pub fn calculate_m3(
     let n_plants = plant_ids.len();
     let mut biocontrol_raw = 0.0;
     let mut n_mechanisms = 0;
+    let mut specific_predator_matches = 0;
+    let mut specific_fungi_matches = 0;
+    let mut matched_predator_pairs: Vec<(String, String)> = Vec::new();
+    let mut matched_fungi_pairs: Vec<(String, String)> = Vec::new();
 
     // Extract guild organism and fungi data
     let guild_organisms = filter_to_guild(organisms_df, plant_ids, "plant_wfo_id")?;
@@ -49,12 +65,40 @@ pub fn calculate_m3(
             norm: 0.0,
             biocontrol_raw: 0.0,
             n_mechanisms: 0,
+            predator_counts: FxHashMap::default(),
+            entomo_fungi_counts: FxHashMap::default(),
+            specific_predator_matches: 0,
+            specific_fungi_matches: 0,
+            matched_predator_pairs: Vec::new(),
+            matched_fungi_pairs: Vec::new(),
         });
     }
 
     // Extract organism data into structured format
     let plant_organisms = extract_organism_data(&guild_organisms)?;
+    let plant_predators = extract_predator_data(&guild_organisms)?;
     let plant_fungi = extract_fungi_data(&guild_fungi)?;
+
+    // Build set of ALL known predators (from herbivore_predators lookup values)
+    let mut known_predators: FxHashSet<String> = FxHashSet::default();
+    for predator_list in herbivore_predators.values() {
+        for predator in predator_list {
+            known_predators.insert(predator.clone());
+        }
+    }
+
+    // Build set of ALL known entomopathogenic fungi (from insect_parasites lookup values)
+    let mut known_entomo_fungi: FxHashSet<String> = FxHashSet::default();
+    for fungi_list in insect_parasites.values() {
+        for fungus in fungi_list {
+            known_entomo_fungi.insert(fungus.clone());
+        }
+    }
+
+    // Build agent counts: agent_name → number of plants it visits
+    // FILTER to only include agents that are known biocontrol agents in lookup tables
+    let predator_counts = build_predator_counts(&plant_predators, &known_predators)?;
+    let entomo_fungi_counts = build_entomo_fungi_counts(&plant_fungi, &known_entomo_fungi)?;
 
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, herbivores_a) in &plant_organisms {
@@ -76,10 +120,15 @@ pub fn calculate_m3(
             // MECHANISM 1: Specific animal predators (weight 1.0)
             for herbivore in herbivores_a {
                 if let Some(known_predators) = herbivore_predators.get(herbivore) {
-                    let matches = count_matches(predators_b, known_predators);
-                    if matches > 0 {
-                        biocontrol_raw += matches as f64 * 1.0;
+                    let matched_preds = find_matches(predators_b, known_predators);
+                    if !matched_preds.is_empty() {
+                        biocontrol_raw += matched_preds.len() as f64 * 1.0;
                         n_mechanisms += 1;
+                        specific_predator_matches += 1;
+                        // Track matched pairs
+                        for pred in matched_preds {
+                            matched_predator_pairs.push((herbivore.clone(), pred));
+                        }
                     }
                 }
             }
@@ -90,10 +139,15 @@ pub fn calculate_m3(
                     // MECHANISM 2: Specific entomopathogenic fungi (weight 1.0)
                     for herbivore in herbivores_a {
                         if let Some(known_parasites) = insect_parasites.get(herbivore) {
-                            let matches = count_matches(entomo_b, known_parasites);
-                            if matches > 0 {
-                                biocontrol_raw += matches as f64 * 1.0;
+                            let matched_fungi = find_matches(entomo_b, known_parasites);
+                            if !matched_fungi.is_empty() {
+                                biocontrol_raw += matched_fungi.len() as f64 * 1.0;
                                 n_mechanisms += 1;
+                                specific_fungi_matches += 1;
+                                // Track matched pairs
+                                for fungus in matched_fungi {
+                                    matched_fungi_pairs.push((herbivore.clone(), fungus));
+                                }
                             }
                         }
                     }
@@ -116,11 +170,23 @@ pub fn calculate_m3(
     // Percentile normalization
     let m3_norm = percentile_normalize(biocontrol_normalized, "p1", calibration, false)?;
 
+    // Deduplicate matched pairs
+    matched_predator_pairs.sort_unstable();
+    matched_predator_pairs.dedup();
+    matched_fungi_pairs.sort_unstable();
+    matched_fungi_pairs.dedup();
+
     Ok(M3Result {
         raw: biocontrol_normalized,
         norm: m3_norm,
         biocontrol_raw,
         n_mechanisms,
+        predator_counts,
+        entomo_fungi_counts,
+        specific_predator_matches,
+        specific_fungi_matches,
+        matched_predator_pairs,
+        matched_fungi_pairs,
     })
 }
 
@@ -208,10 +274,98 @@ fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> 
     Ok(map)
 }
 
-/// Count how many elements from list_a are in list_b
-fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+/// Extract predator data: plant_id → list of predators only
+/// Only includes the 3 predator columns, NOT herbivores or flower_visitors
+fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> {
+    let mut map: FxHashMap<String, Vec<String>> = FxHashMap::default();
+    let plant_ids = df.column("plant_wfo_id")?.str()?;
+
+    // ONLY predator columns
+    let predator_columns = [
+        "predators_hasHost",
+        "predators_interactsWith",
+        "predators_adjacentTo",
+    ];
+
+    for idx in 0..df.height() {
+        if let Some(plant_id) = plant_ids.get(idx) {
+            let mut predators = Vec::new();
+
+            for col_name in &predator_columns {
+                if let Ok(col) = df.column(col_name) {
+                    if let Ok(str_col) = col.str() {
+                        if let Some(value) = str_col.get(idx) {
+                            for org in value.split('|').filter(|s| !s.is_empty()) {
+                                predators.push(org.to_string());
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Deduplicate
+            predators.sort_unstable();
+            predators.dedup();
+
+            map.insert(plant_id.to_string(), predators);
+        }
+    }
+
+    Ok(map)
+}
+
+/// Build predator_name → plant_count mapping
+/// FILTERS to only include agents that appear in the known_predators set (from lookup table)
+fn build_predator_counts(
+    plant_predators: &FxHashMap<String, Vec<String>>,
+    known_predators: &FxHashSet<String>,
+) -> Result<FxHashMap<String, usize>> {
+    let mut counts: FxHashMap<String, usize> = FxHashMap::default();
+
+    for predators in plant_predators.values() {
+        for predator in predators {
+            // ONLY count if this agent is a known predator in the lookup table
+            if known_predators.contains(predator) {
+                *counts.entry(predator.clone()).or_insert(0) += 1;
+            }
+        }
+    }
+
+    Ok(counts)
+}
+
+/// Build entomo_fungi_name → plant_count mapping
+/// FILTERS to only include fungi that appear in the known_entomo_fungi set (from lookup table)
+fn build_entomo_fungi_counts(
+    plant_fungi: &FxHashMap<String, Vec<String>>,
+    known_entomo_fungi: &FxHashSet<String>,
+) -> Result<FxHashMap<String, usize>> {
+    let mut counts: FxHashMap<String, usize> = FxHashMap::default();
+
+    for fungi in plant_fungi.values() {
+        for fungus in fungi {
+            // ONLY count if this fungus is a known entomopathogenic fungus in the lookup table
+            if known_entomo_fungi.contains(fungus) {
+                *counts.entry(fungus.clone()).or_insert(0) += 1;
+            }
+        }
+    }
+
+    Ok(counts)
+}
+
+/// Find which elements from list_a are in list_b and return them
+fn find_matches(list_a: &[String], list_b: &[String]) -> Vec<String> {
     let set_b: FxHashSet<&String> = list_b.iter().collect();
-    list_a.iter().filter(|item| set_b.contains(item)).count()
+    list_a.iter()
+        .filter(|item| set_b.contains(item))
+        .map(|s| s.clone())
+        .collect()
+}
+
+/// Count how many elements from list_a are in list_b (kept for backward compatibility)
+fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+    find_matches(list_a, list_b).len()
 }
 
 #[cfg(test)]
