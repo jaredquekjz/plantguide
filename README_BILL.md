@@ -58,7 +58,27 @@ You have a file called `bill_foundational_data.zip` (20 GB) - this can be anywhe
    C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\input
    ```
 
-4. After extraction, you should see these files in `input\`:
+4. **CRITICAL**: After extraction, verify the files are **directly in `input\` folder**, NOT in a subfolder!
+
+   ✅ **CORRECT** structure:
+   ```
+   input\
+     ├── classification.csv
+     ├── duke_original.parquet
+     └── ...
+   ```
+
+   ❌ **WRONG** structure (do NOT have this):
+   ```
+   input\
+     └── bill_foundational_data\    ← Extra folder layer!
+           ├── classification.csv
+           └── ...
+   ```
+
+   **If you see an extra folder**, move all files up one level so they're directly in `input\`.
+
+5. After extraction, you should see these 14 files **directly in `input\`**:
    - `classification.csv`
    - `duke_original.parquet`
    - `eive_original.parquet`
@@ -74,7 +94,7 @@ You have a file called `bill_foundational_data.zip` (20 GB) - this can be anywhe
    - `mixgb_tree_11711_species_20251107.nwk`
    - `mixgb_wfo_to_tree_mapping_11711.csv`
 
-**Total: 14 files** should be in the `input\` folder.
+**Total: 14 files** should be **directly** in the `input\` folder (no subfolders!).
 
 ---
 
@@ -315,7 +335,20 @@ Any numerical differences should be **< 0.000001** (one millionth).
 C:\Users\shij1401\OneDrive - USherbrooke\shipley_checks\input\
 ```
 
-Use Windows Explorer to verify all 14 files are there.
+**Common mistake**: Files are in a subfolder like `input\bill_foundational_data\` instead of directly in `input\`.
+
+✅ Check that files are **directly** in `input\`:
+```
+input\classification.csv          ← Correct!
+input\duke_original.parquet       ← Correct!
+```
+
+❌ NOT like this:
+```
+input\bill_foundational_data\classification.csv    ← Wrong!
+```
+
+If files are in a subfolder, move them up one level so they're directly in `input\`.
 
 ---
 
