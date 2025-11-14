@@ -41,7 +41,7 @@ guilds <- list(
       "wfo-0000092746",
       "wfo-0000690499"
     ),
-    expected_rust = 90.5
+    expected_rust = 89.744099
   ),
   list(
     name = "Competitive Clash",
@@ -54,7 +54,7 @@ guilds <- list(
       "wfo-0000841021",
       "wfo-0000394258"
     ),
-    expected_rust = 53.0
+    expected_rust = 53.011553
   ),
   list(
     name = "Stress-Tolerant",
@@ -67,7 +67,7 @@ guilds <- list(
       "wfo-0000349035",
       "wfo-0000209726"
     ),
-    expected_rust = 42.4
+    expected_rust = 42.380873
   )
 )
 
@@ -99,10 +99,10 @@ for (guild in guilds) {
   # Print results
   cat("\nScores:\n")
   cat(sprintf("  R Overall:    %.6f\n", result$overall_score))
-  cat(sprintf("  Rust Overall: %.1f\n", guild$expected_rust))
+  cat(sprintf("  Rust Overall: %.6f\n", guild$expected_rust))
   diff <- abs(result$overall_score - guild$expected_rust)
-  status <- if (diff < 0.1) "✅ EXCELLENT PARITY" else if (diff < 0.5) "✅ GOOD PARITY" else "⚠️ PARITY ISSUE"
-  cat(sprintf("  Difference:   %.3f - %s\n", diff, status))
+  status <- if (diff < 0.01) "✅ PERFECT PARITY" else if (diff < 0.1) "✅ EXCELLENT PARITY" else if (diff < 0.5) "✅ GOOD PARITY" else "⚠️ PARITY ISSUE"
+  cat(sprintf("  Difference:   %.6f - %s\n", diff, status))
 
   cat("\nPerformance:\n")
   cat(sprintf("  Scoring:         %8.3f ms\n", scoring_time))
