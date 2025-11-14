@@ -91,19 +91,19 @@ cat("========================================================================\n\
 WFO_DIR <- file.path(OUTPUT_DIR, "wfo_verification")
 
 # Expected row counts for each dataset (based on empirical runs)
-# These values represent the number of unique plant names that successfully
-# matched against the WFO taxonomic backbone using exact matching (Fuzzy=0)
+# These values represent the number of matched WFO records OUTPUT by matching
+# Note: Output rows > input rows because one name can match multiple WFO entries
 # Values determined from initial verification runs and should remain stable
 # unless WFO backbone is updated or matching algorithm changes
 DATASETS <- list(
-  duke = 14027,         # Duke Ethnobotany database
-  eive = 14835,         # EIVE Ellenberg Indicators for European flora
-  mabberly = 13489,     # Mabberly's Plant-Book (genus-level taxonomy)
-  tryenhanced = 46047,  # TRY Enhanced trait database (TPL-standardized)
-  austraits = 33370,    # AusTraits Australian plant trait database
-  gbif = 160713,        # GBIF plant occurrence records (largest dataset)
-  globi = 74002,        # GloBI biotic interaction database
-  try_traits = 80788    # TRY selected traits database
+  duke = 17341,                     # Duke Ethnobotany database
+  eive = 19291,                     # EIVE Ellenberg Indicators for European flora
+  mabberly = 14487,                 # Mabberly's Plant-Book (genus-level taxonomy)
+  tryenhanced = 53852,              # TRY Enhanced trait database (TPL-standardized)
+  austraits = 35974,                # AusTraits Australian plant trait database
+  gbif_occurrence = 174939,         # GBIF plant occurrence records (largest dataset)
+  globi_interactions = 84507,       # GloBI biotic interaction database
+  try_selected_traits = 95252       # TRY selected traits database
 )
 
 # Track overall verification status across all datasets
