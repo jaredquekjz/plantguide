@@ -170,18 +170,16 @@ build_pollinator_to_plants_mapping <- function(organisms_df,
       next
     }
 
-    # Process both pollinators and flower_visitors columns
-    for (col in c("pollinators", "flower_visitors")) {
-      col_val <- row[[col]]
-      if (is.list(col_val)) col_val <- col_val[[1]]
+    # Process ONLY pollinators column (NOT flower_visitors - contaminated with herbivores/fungi)
+    col_val <- row[['pollinators']]
+    if (is.list(col_val)) col_val <- col_val[[1]]
 
-      if (!is.null(col_val) && length(col_val) > 0) {
-        for (pollinator in col_val) {
-          if (is.null(map[[pollinator]])) {
-            map[[pollinator]] <- character()
-          }
-          map[[pollinator]] <- c(map[[pollinator]], plant_id)
+    if (!is.null(col_val) && length(col_val) > 0) {
+      for (pollinator in col_val) {
+        if (is.null(map[[pollinator]])) {
+          map[[pollinator]] <- character()
         }
+        map[[pollinator]] <- c(map[[pollinator]], plant_id)
       }
     }
   }

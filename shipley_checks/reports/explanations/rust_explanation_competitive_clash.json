@@ -639,51 +639,9 @@
     ]
   },
   "pollinator_network_profile": {
-    "total_unique_pollinators": 68,
+    "total_unique_pollinators": 20,
     "shared_pollinators": [],
     "top_pollinators": [
-      {
-        "pollinator_name": "Aglais milberti",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Aglais urticae",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Andrena",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Andrena dorsata",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Andrena labialis",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Andrena nitida",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
-      {
-        "pollinator_name": "Anthocharis cardamines",
-        "plant_count": 1,
-        "category": "Other",
-        "network_contribution": 0.14285714285714285
-      },
       {
         "pollinator_name": "Apis mellifera",
         "plant_count": 1,
@@ -701,27 +659,75 @@
         "plant_count": 1,
         "category": "Other",
         "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus californicus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus flavifrons",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus hypnorum",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus jonellus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus lapidarius",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus lucorum",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Bombus melanopygus",
+        "plant_count": 1,
+        "category": "Other",
+        "network_contribution": 0.14285714285714285
       }
     ],
     "pollinators_by_category": {
-      "bees_count": 2,
+      "honey_bees_count": 1,
+      "bumblebees_count": 1,
+      "solitary_bees_count": 0,
+      "hover_flies_count": 0,
+      "muscid_flies_count": 0,
+      "mosquitoes_count": 0,
+      "other_flies_count": 0,
       "butterflies_count": 0,
       "moths_count": 0,
-      "flies_count": 0,
-      "beetles_count": 0,
+      "pollen_beetles_count": 0,
+      "other_beetles_count": 0,
       "wasps_count": 1,
       "birds_count": 0,
       "bats_count": 0,
       "other_count": 2,
       "top_per_category": [
         {
-          "pollinator_name": "Aglais milberti",
+          "pollinator_name": "Apis mellifera",
           "plant_count": 1,
           "category": "Other",
           "network_contribution": 0.14285714285714285
         },
         {
-          "pollinator_name": "Aglais urticae",
+          "pollinator_name": "Apoidea",
           "plant_count": 1,
           "category": "Other",
           "network_contribution": 0.14285714285714285
@@ -732,11 +738,17 @@
       {
         "plant_name": "Allium schoenoprasum",
         "pollinator_count": 2,
-        "bees_count": 2,
+        "honey_bees_count": 1,
+        "bumblebees_count": 1,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
@@ -745,11 +757,17 @@
       {
         "plant_name": "Vitis vinifera",
         "pollinator_count": 2,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 1,
         "birds_count": 0,
         "bats_count": 0,
@@ -758,11 +776,17 @@
       {
         "plant_name": "Cheirodendron trigynum",
         "pollinator_count": 1,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
@@ -771,11 +795,17 @@
       {
         "plant_name": "Alnus acuminata",
         "pollinator_count": 0,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
@@ -784,11 +814,17 @@
       {
         "plant_name": "Erythrina sandwicensis",
         "pollinator_count": 0,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
@@ -797,11 +833,17 @@
       {
         "plant_name": "Pfaffia gnaphalioides",
         "pollinator_count": 0,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
@@ -810,11 +852,17 @@
       {
         "plant_name": "Virola bicuhyba",
         "pollinator_count": 0,
-        "bees_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "flies_count": 0,
-        "beetles_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,

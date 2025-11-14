@@ -29,7 +29,7 @@ fn main() {
                 "wfo-0000092746".to_string(),
                 "wfo-0000690499".to_string(),
             ],
-            90.467710,
+            89.744099,
         ),
         (
             "Competitive Clash",

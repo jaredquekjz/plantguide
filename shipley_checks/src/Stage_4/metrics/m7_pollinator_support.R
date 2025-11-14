@@ -42,7 +42,7 @@
 # STEP 1: Count shared pollinators across guild members
 #   - For each pollinator taxon, count how many plants host it
 #   - Only pollinators shared by ≥2 plants contribute to score
-#   - Includes both strict pollinators AND flower visitors (nectar feeders)
+#   - Uses ONLY strict pollinators (NOT flower_visitors - contaminated)
 #
 # STEP 2: Score with quadratic weighting
 #   - For each shared pollinator:
@@ -64,12 +64,14 @@
 # ============================================================================
 #
 # organisms_df (organism_profiles_pure_r.csv):
-# - Columns: plant_wfo_id, pollinators, flower_visitors
-# - Each column contains pipe-separated GBIF animal taxon IDs
-# - Derived from GloBI interaction network
-# - Includes:
-#   * Strict pollinators (bees, specialized flies, hummingbirds)
-#   * Flower visitors (butterflies, beetles, generalist flies)
+# - Column: plant_wfo_id, pollinators (ONLY - NOT flower_visitors)
+# - Contains pipe-separated GBIF animal taxon IDs
+# - Derived from GloBI interaction network (interactionTypeName == 'pollinates')
+# - Includes only strict pollinators (bees, specialized flies, hummingbirds)
+# - DATA QUALITY NOTE: flower_visitors column is contaminated with:
+#   * Herbivore pests (mites, caterpillars) feeding on flowers
+#   * Pathogenic fungi growing on flowers
+#   * Other non-pollinator organisms found on flowers
 #
 # ============================================================================
 # PARITY REQUIREMENTS
@@ -78,10 +80,11 @@
 # To maintain 100% parity with Python scorer:
 # 1. Must use same count_shared_organisms logic (≥2 plants threshold)
 # 2. Must use same quadratic weighting formula: (count / n_plants)²
-# 3. Must include both pollinators AND flower_visitors columns
+# 3. Must use ONLY pollinators column (NOT flower_visitors - contaminated)
 # 4. Must use same Köppen tier calibration file for 'p6' metric
 #
 # Python implementation: guild_scorer_v3.py lines 1645-1674
+# NOTE: Python version also updated to use only 'pollinators' column
 #
 # ============================================================================
 
@@ -111,10 +114,10 @@ calculate_m7_pollinator_support <- function(plant_ids,
   n_plants <- length(plant_ids)
 
   # Count shared pollinators (pollinators hosted by ≥2 plants)
-  # Includes both strict pollinators AND flower visitors
+  # Uses ONLY strict pollinators (NOT flower_visitors - contaminated with herbivores/fungi)
   shared_pollinators <- count_shared_organisms_fn(
     organisms_df, plant_ids,
-    'pollinators', 'flower_visitors'
+    'pollinators'  # ONLY verified pollinators
   )
 
   # Score with QUADRATIC weighting
@@ -141,36 +144,60 @@ calculate_m7_pollinator_support <- function(plant_ids,
     # Convert to lowercase for case-insensitive matching
     name_lower <- tolower(name)
 
-    # Bees (Apoidea)
-    if (grepl("apis|bombus|anthophora|xylocopa|osmia|megachile|andrena|halictus|lasioglossum|bee", name_lower)) {
-      return("Bees")
+    # Honey Bees (Apis) - most specific first
+    if (grepl("\\bapis\\b", name_lower)) {
+      return("Honey Bees")
+    }
+    # Bumblebees (Bombus)
+    if (grepl("bombus", name_lower)) {
+      return("Bumblebees")
+    }
+    # Hover Flies (Syrphidae) - before general "fly"
+    if (grepl("syrph|episyrphus|eristalis|eupeodes|melanostoma|platycheirus|sphaerophoria|cheilosia", name_lower)) {
+      return("Hover Flies")
+    }
+    # Mosquitoes (Culicidae) - before general "fly"
+    if (grepl("aedes|culex|anopheles|culiseta|mosquito", name_lower)) {
+      return("Mosquitoes")
+    }
+    # Muscid Flies (Muscidae/Anthomyiidae) - before general "fly"
+    if (grepl("anthomyia|\\bmusca\\b|fannia|phaonia|delia|drymeia|muscidae", name_lower)) {
+      return("Muscid Flies")
+    }
+    # Solitary Bees (after Apis/Bombus, before general "bee")
+    if (grepl("andrena|lasioglossum|halictus|osmia|megachile|ceratina|xylocopa|anthophora|anthidium|colletes|nomada|agapostemon|amegilla|trigona|melipona|eulaema|epicharis|augochlora|chelostoma|tetralonia|bee", name_lower)) {
+      return("Solitary Bees")
+    }
+    # Other Flies (catch remaining Diptera)
+    if (grepl("fly|empis|calliphora|scathophaga|drosophila|bibio|diptera|rhamphomyia", name_lower)) {
+      return("Other Flies")
+    }
+    # Pollen Beetles (before general "beetle")
+    if (grepl("meligethes|brassicogethes|oedemera", name_lower)) {
+      return("Pollen Beetles")
+    }
+    # Other Beetles
+    if (grepl("beetle|cetonia|trichius|anaspis|coleoptera", name_lower)) {
+      return("Other Beetles")
     }
     # Butterflies (Lepidoptera - Rhopalocera)
-    if (grepl("papilio|pieris|vanessa|danaus|colias|lycaena|polyommatus|butterfly", name_lower)) {
+    if (grepl("papilio|pieris|vanessa|danaus|colias|lycaena|polyommatus|aglais|coenonympha|erebia|gonepteryx|anthocharis|maniola|butterfly", name_lower)) {
       return("Butterflies")
     }
     # Moths (Lepidoptera - Heterocera)
-    if (grepl("moth|sphinx|manduca|hyles", name_lower)) {
+    if (grepl("moth|sphinx|manduca|hyles|macroglossum", name_lower)) {
       return("Moths")
     }
-    # Flies (Diptera)
-    if (grepl("fly|syrphus|eristalis|musca|calliphora|drosophila|diptera", name_lower)) {
-      return("Flies")
-    }
-    # Beetles (Coleoptera)
-    if (grepl("beetle|cetonia|meligethes|coleoptera", name_lower)) {
-      return("Beetles")
-    }
     # Wasps (Hymenoptera - non-Apoidea)
-    if (grepl("wasp|vespula|vespa|polistes", name_lower)) {
+    if (grepl("wasp|vespula|vespa|polistes|dolichovespula", name_lower)) {
       return("Wasps")
     }
     # Birds
-    if (grepl("bird|hummingbird|trochilidae", name_lower)) {
+    if (grepl("bird|hummingbird|trochilidae|amazilia|phaethornis|coereba|anthracothorax|\\baves\\b", name_lower)) {
       return("Birds")
     }
     # Bats
-    if (grepl("bat|chiroptera", name_lower)) {
+    if (grepl("bat|chiroptera|pteropus|artibeus", name_lower)) {
       return("Bats")
     }
 
@@ -185,18 +212,16 @@ calculate_m7_pollinator_support <- function(plant_ids,
   for (i in seq_len(nrow(guild_organisms))) {
     row <- guild_organisms[i, ]
 
-    # Aggregate from both pollinators and flower_visitors columns
-    for (col in c('pollinators', 'flower_visitors')) {
-      col_val <- row[[col]]
-      if (is.list(col_val)) col_val <- col_val[[1]]
-      if (!is.null(col_val) && length(col_val) > 0) {
-        for (pollinator in col_val) {
-          if (is.null(pollinator_counts[[pollinator]])) {
-            pollinator_counts[[pollinator]] <- 0
-            pollinator_category_map[[pollinator]] <- categorize_pollinator(pollinator)
-          }
-          pollinator_counts[[pollinator]] <- pollinator_counts[[pollinator]] + 1
+    # Aggregate from ONLY pollinators column (NOT flower_visitors - contaminated)
+    col_val <- row[['pollinators']]
+    if (is.list(col_val)) col_val <- col_val[[1]]
+    if (!is.null(col_val) && length(col_val) > 0) {
+      for (pollinator in col_val) {
+        if (is.null(pollinator_counts[[pollinator]])) {
+          pollinator_counts[[pollinator]] <- 0
+          pollinator_category_map[[pollinator]] <- categorize_pollinator(pollinator)
         }
+        pollinator_counts[[pollinator]] <- pollinator_counts[[pollinator]] + 1
       }
     }
   }

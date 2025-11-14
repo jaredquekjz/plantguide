@@ -25,7 +25,7 @@ guilds <- list(
     plant_ids = c("wfo-0000832453", "wfo-0000649136", "wfo-0000642673",
                   "wfo-0000984977", "wfo-0000241769", "wfo-0000092746",
                   "wfo-0000690499"),
-    expected = 90.467710
+    expected = 89.744099  # Updated after M7 fix - removed flower_visitors contamination
   ),
   list(
     name = "Competitive Clash",

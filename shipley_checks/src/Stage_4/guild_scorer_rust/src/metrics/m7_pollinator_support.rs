@@ -7,13 +7,17 @@
 //!
 //! **Memory optimization**:
 //!   - Old: Receives full organisms_df (11,711 rows), filters inside count_shared_organisms
-//!   - New: Receives pre-filtered organisms_lazy (7 rows), selects only 3 needed columns
+//!   - New: Receives pre-filtered organisms_lazy (7 rows), selects only 2 needed columns
 //!   - Reuses same organisms_lazy as M3 (no redundant filtering!)
 //!
-//! **Columns needed** (M7 selects these 3):
+//! **Columns needed** (M7 selects these 2):
 //!   1. plant_wfo_id - Plant identification (for filtering)
-//!   2. pollinators - Pipe-separated pollinator IDs
-//!   3. flower_visitors - Pipe-separated flower visitor IDs
+//!   2. pollinators - Pipe-separated pollinator IDs (strict pollinators only)
+//!
+//! **Data Quality Note**:
+//!   - Uses ONLY "pollinators" column (GloBI interactionTypeName == 'pollinates')
+//!   - Does NOT use "flower_visitors" (contaminated with herbivores, fungi, etc.)
+//!   - flower_visitors includes mites, caterpillars, and pathogenic fungi
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m7_pollinator_support.R
 
@@ -45,17 +49,18 @@ pub fn calculate_m7(
     organisms_lazy: &LazyFrame,  // Schema-only scan (from scorer, reused from M3!)
     calibration: &Calibration,
 ) -> Result<M7Result> {
-    // STEP 1: Materialize only the pollinator columns
+    // STEP 1: Materialize only the pollinator column
+    // IMPORTANT: Uses ONLY "pollinators", NOT "flower_visitors"
+    // Reason: flower_visitors is contaminated with herbivores (mites, caterpillars) and fungi
     let organisms_selected = organisms_lazy
         .clone()
         .select(&[
             col("plant_wfo_id"),
-            col("pollinators"),
-            col("flower_visitors"),
+            col("pollinators"),  // ONLY strict pollinators (GloBI 'pollinates' interaction)
         ])
-        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
+        .collect()?;  // Execute: loads only 2 columns × 11,711 rows
 
-    // STEP 2: Filter to guild plants (fast - only 3 columns)
+    // STEP 2: Filter to guild plants (fast - only 2 columns)
     use std::collections::HashSet;
     let id_set: HashSet<_> = plant_ids.iter().collect();
     let id_col = organisms_selected.column("plant_wfo_id")?.str()?;
@@ -63,7 +68,7 @@ pub fn calculate_m7(
         .into_iter()
         .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
         .collect();
-    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
+    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 2 columns × 7 rows = 14 cells
 
     let n_plants = guild_organisms.height();
 
@@ -76,11 +81,11 @@ pub fn calculate_m7(
         .collect();
 
     // Count shared pollinators (pollinators hosted by ≥2 plants)
-    // Includes both strict pollinators AND flower visitors
+    // Uses ONLY strict pollinators (not flower_visitors - contaminated with herbivores/fungi)
     let shared_pollinators = count_shared_organisms(
         &guild_organisms,
         &guild_plant_ids,
-        &["pollinators", "flower_visitors"],
+        &["pollinators"],  // ONLY verified pollinators
     )?;
 
     // Score with QUADRATIC weighting

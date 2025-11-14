@@ -13,14 +13,20 @@ use serde::{Deserialize, Serialize};
 
 use crate::metrics::M7Result;
 
-/// Pollinator taxonomic categories
+/// Pollinator taxonomic categories (expanded from 9 to 15 categories)
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum PollinatorCategory {
-    Bees,
+    HoneyBees,
+    Bumblebees,
+    SolitaryBees,
+    HoverFlies,
+    MuscidFlies,
+    Mosquitoes,
+    OtherFlies,
     Butterflies,
     Moths,
-    Flies,
-    Beetles,
+    PollenBeetles,
+    OtherBeetles,
     Wasps,
     Birds,
     Bats,
@@ -29,60 +35,119 @@ pub enum PollinatorCategory {
 
 impl PollinatorCategory {
     /// Categorize a pollinator based on its name
+    /// Order matters: most specific patterns first to avoid false matches
     pub fn from_name(name: &str) -> Self {
         let name_lower = name.to_lowercase();
 
-        // Bees (Apoidea)
-        if name_lower.contains("apis") || name_lower.contains("bombus") ||
-           name_lower.contains("anthophora") || name_lower.contains("xylocopa") ||
-           name_lower.contains("osmia") || name_lower.contains("megachile") ||
-           name_lower.contains("andrena") || name_lower.contains("halictus") ||
-           name_lower.contains("lasioglossum") || name_lower.contains("bee") {
-            return PollinatorCategory::Bees;
+        // Honey Bees (Apis) - match word boundary
+        if name_lower == "apis" || name_lower.starts_with("apis ") ||
+           name_lower.contains(" apis ") || name_lower.ends_with(" apis") {
+            return PollinatorCategory::HoneyBees;
+        }
+
+        // Bumblebees (Bombus)
+        if name_lower.contains("bombus") {
+            return PollinatorCategory::Bumblebees;
+        }
+
+        // Hover Flies (Syrphidae) - before general "fly"
+        if name_lower.contains("syrph") || name_lower.contains("episyrphus") ||
+           name_lower.contains("eristalis") || name_lower.contains("eupeodes") ||
+           name_lower.contains("melanostoma") || name_lower.contains("platycheirus") ||
+           name_lower.contains("sphaerophoria") || name_lower.contains("cheilosia") {
+            return PollinatorCategory::HoverFlies;
+        }
+
+        // Mosquitoes (Culicidae) - before general "fly"
+        if name_lower.contains("aedes") || name_lower.contains("culex") ||
+           name_lower.contains("anopheles") || name_lower.contains("culiseta") ||
+           name_lower.contains("mosquito") {
+            return PollinatorCategory::Mosquitoes;
+        }
+
+        // Muscid Flies (Muscidae/Anthomyiidae) - before general "fly"
+        if name_lower.contains("anthomyia") || name_lower.contains(" musca ") ||
+           name_lower.starts_with("musca ") || name_lower.ends_with(" musca") ||
+           name_lower == "musca" || name_lower.contains("fannia") ||
+           name_lower.contains("phaonia") || name_lower.contains("delia") ||
+           name_lower.contains("drymeia") || name_lower.contains("muscidae") {
+            return PollinatorCategory::MuscidFlies;
+        }
+
+        // Solitary Bees (after Apis/Bombus, before general "bee")
+        if name_lower.contains("andrena") || name_lower.contains("lasioglossum") ||
+           name_lower.contains("halictus") || name_lower.contains("osmia") ||
+           name_lower.contains("megachile") || name_lower.contains("ceratina") ||
+           name_lower.contains("xylocopa") || name_lower.contains("anthophora") ||
+           name_lower.contains("anthidium") || name_lower.contains("colletes") ||
+           name_lower.contains("nomada") || name_lower.contains("agapostemon") ||
+           name_lower.contains("amegilla") || name_lower.contains("trigona") ||
+           name_lower.contains("melipona") || name_lower.contains("eulaema") ||
+           name_lower.contains("epicharis") || name_lower.contains("augochlora") ||
+           name_lower.contains("chelostoma") || name_lower.contains("tetralonia") ||
+           name_lower.contains("bee") {
+            return PollinatorCategory::SolitaryBees;
+        }
+
+        // Other Flies (catch remaining Diptera)
+        if name_lower.contains("fly") || name_lower.contains("empis") ||
+           name_lower.contains("calliphora") || name_lower.contains("scathophaga") ||
+           name_lower.contains("drosophila") || name_lower.contains("bibio") ||
+           name_lower.contains("diptera") || name_lower.contains("rhamphomyia") {
+            return PollinatorCategory::OtherFlies;
+        }
+
+        // Pollen Beetles (before general "beetle")
+        if name_lower.contains("meligethes") || name_lower.contains("brassicogethes") ||
+           name_lower.contains("oedemera") {
+            return PollinatorCategory::PollenBeetles;
+        }
+
+        // Other Beetles
+        if name_lower.contains("beetle") || name_lower.contains("cetonia") ||
+           name_lower.contains("trichius") || name_lower.contains("anaspis") ||
+           name_lower.contains("coleoptera") {
+            return PollinatorCategory::OtherBeetles;
         }
 
         // Butterflies (Lepidoptera - Rhopalocera)
         if name_lower.contains("papilio") || name_lower.contains("pieris") ||
            name_lower.contains("vanessa") || name_lower.contains("danaus") ||
            name_lower.contains("colias") || name_lower.contains("lycaena") ||
-           name_lower.contains("polyommatus") || name_lower.contains("butterfly") {
+           name_lower.contains("polyommatus") || name_lower.contains("aglais") ||
+           name_lower.contains("coenonympha") || name_lower.contains("erebia") ||
+           name_lower.contains("gonepteryx") || name_lower.contains("anthocharis") ||
+           name_lower.contains("maniola") || name_lower.contains("butterfly") {
             return PollinatorCategory::Butterflies;
         }
 
         // Moths (Lepidoptera - Heterocera)
         if name_lower.contains("moth") || name_lower.contains("sphinx") ||
-           name_lower.contains("manduca") || name_lower.contains("hyles") {
+           name_lower.contains("manduca") || name_lower.contains("hyles") ||
+           name_lower.contains("macroglossum") {
             return PollinatorCategory::Moths;
-        }
-
-        // Flies (Diptera)
-        if name_lower.contains("fly") || name_lower.contains("syrphus") ||
-           name_lower.contains("eristalis") || name_lower.contains("musca") ||
-           name_lower.contains("calliphora") || name_lower.contains("drosophila") ||
-           name_lower.contains("diptera") {
-            return PollinatorCategory::Flies;
-        }
-
-        // Beetles (Coleoptera)
-        if name_lower.contains("beetle") || name_lower.contains("cetonia") ||
-           name_lower.contains("meligethes") || name_lower.contains("coleoptera") {
-            return PollinatorCategory::Beetles;
         }
 
         // Wasps (Hymenoptera - non-Apoidea)
         if name_lower.contains("wasp") || name_lower.contains("vespula") ||
-           name_lower.contains("vespa") || name_lower.contains("polistes") {
+           name_lower.contains("vespa") || name_lower.contains("polistes") ||
+           name_lower.contains("dolichovespula") {
             return PollinatorCategory::Wasps;
         }
 
         // Birds
         if name_lower.contains("bird") || name_lower.contains("hummingbird") ||
-           name_lower.contains("trochilidae") {
+           name_lower.contains("trochilidae") || name_lower.contains("amazilia") ||
+           name_lower.contains("phaethornis") || name_lower.contains("coereba") ||
+           name_lower.contains("anthracothorax") || name_lower.contains(" aves ") ||
+           name_lower.starts_with("aves ") || name_lower.ends_with(" aves") ||
+           name_lower == "aves" {
             return PollinatorCategory::Birds;
         }
 
         // Bats
-        if name_lower.contains("bat") || name_lower.contains("chiroptera") {
+        if name_lower.contains("bat") || name_lower.contains("chiroptera") ||
+           name_lower.contains("pteropus") || name_lower.contains("artibeus") {
             return PollinatorCategory::Bats;
         }
 
@@ -91,11 +156,17 @@ impl PollinatorCategory {
 
     pub fn display_name(&self) -> &str {
         match self {
-            PollinatorCategory::Bees => "Bees",
+            PollinatorCategory::HoneyBees => "Honey Bees",
+            PollinatorCategory::Bumblebees => "Bumblebees",
+            PollinatorCategory::SolitaryBees => "Solitary Bees",
+            PollinatorCategory::HoverFlies => "Hover Flies",
+            PollinatorCategory::MuscidFlies => "Muscid Flies",
+            PollinatorCategory::Mosquitoes => "Mosquitoes",
+            PollinatorCategory::OtherFlies => "Other Flies",
             PollinatorCategory::Butterflies => "Butterflies",
             PollinatorCategory::Moths => "Moths",
-            PollinatorCategory::Flies => "Flies",
-            PollinatorCategory::Beetles => "Beetles",
+            PollinatorCategory::PollenBeetles => "Pollen Beetles",
+            PollinatorCategory::OtherBeetles => "Other Beetles",
             PollinatorCategory::Wasps => "Wasps",
             PollinatorCategory::Birds => "Birds",
             PollinatorCategory::Bats => "Bats",
@@ -123,14 +194,20 @@ pub struct TopPollinator {
     pub network_contribution: f64,
 }
 
-/// Pollinators grouped by category
+/// Pollinators grouped by category (expanded to 15 categories)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PollinatorsByCategoryProfile {
-    pub bees_count: usize,
+    pub honey_bees_count: usize,
+    pub bumblebees_count: usize,
+    pub solitary_bees_count: usize,
+    pub hover_flies_count: usize,
+    pub muscid_flies_count: usize,
+    pub mosquitoes_count: usize,
+    pub other_flies_count: usize,
     pub butterflies_count: usize,
     pub moths_count: usize,
-    pub flies_count: usize,
-    pub beetles_count: usize,
+    pub pollen_beetles_count: usize,
+    pub other_beetles_count: usize,
     pub wasps_count: usize,
     pub birds_count: usize,
     pub bats_count: usize,
@@ -138,16 +215,22 @@ pub struct PollinatorsByCategoryProfile {
     pub top_per_category: Vec<TopPollinator>,
 }
 
-/// Plant with many pollinator associations (network hub)
+/// Plant with many pollinator associations (network hub, expanded to 15 categories)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantPollinatorHub {
     pub plant_name: String,
     pub pollinator_count: usize,
-    pub bees_count: usize,
+    pub honey_bees_count: usize,
+    pub bumblebees_count: usize,
+    pub solitary_bees_count: usize,
+    pub hover_flies_count: usize,
+    pub muscid_flies_count: usize,
+    pub mosquitoes_count: usize,
+    pub other_flies_count: usize,
     pub butterflies_count: usize,
     pub moths_count: usize,
-    pub flies_count: usize,
-    pub beetles_count: usize,
+    pub pollen_beetles_count: usize,
+    pub other_beetles_count: usize,
     pub wasps_count: usize,
     pub birds_count: usize,
     pub bats_count: usize,
@@ -254,11 +337,17 @@ pub fn analyze_pollinator_network(
     let hub_plants = build_plant_pollinator_hubs(organisms_df, guild_plants, &category_map)?;
 
     let pollinators_by_category = PollinatorsByCategoryProfile {
-        bees_count: *category_counts.get(&PollinatorCategory::Bees).unwrap_or(&0),
+        honey_bees_count: *category_counts.get(&PollinatorCategory::HoneyBees).unwrap_or(&0),
+        bumblebees_count: *category_counts.get(&PollinatorCategory::Bumblebees).unwrap_or(&0),
+        solitary_bees_count: *category_counts.get(&PollinatorCategory::SolitaryBees).unwrap_or(&0),
+        hover_flies_count: *category_counts.get(&PollinatorCategory::HoverFlies).unwrap_or(&0),
+        muscid_flies_count: *category_counts.get(&PollinatorCategory::MuscidFlies).unwrap_or(&0),
+        mosquitoes_count: *category_counts.get(&PollinatorCategory::Mosquitoes).unwrap_or(&0),
+        other_flies_count: *category_counts.get(&PollinatorCategory::OtherFlies).unwrap_or(&0),
         butterflies_count: *category_counts.get(&PollinatorCategory::Butterflies).unwrap_or(&0),
         moths_count: *category_counts.get(&PollinatorCategory::Moths).unwrap_or(&0),
-        flies_count: *category_counts.get(&PollinatorCategory::Flies).unwrap_or(&0),
-        beetles_count: *category_counts.get(&PollinatorCategory::Beetles).unwrap_or(&0),
+        pollen_beetles_count: *category_counts.get(&PollinatorCategory::PollenBeetles).unwrap_or(&0),
+        other_beetles_count: *category_counts.get(&PollinatorCategory::OtherBeetles).unwrap_or(&0),
         wasps_count: *category_counts.get(&PollinatorCategory::Wasps).unwrap_or(&0),
         birds_count: *category_counts.get(&PollinatorCategory::Birds).unwrap_or(&0),
         bats_count: *category_counts.get(&PollinatorCategory::Bats).unwrap_or(&0),
@@ -424,8 +513,8 @@ fn build_plant_pollinator_hubs(
     let pollinators_col = organisms_df.column("pollinators")?.str()?;
     let flower_visitors_col = organisms_df.column("flower_visitors")?.str()?;
 
-    // Map: plant_id -> (total, bees, butterflies, moths, flies, beetles, wasps, birds, bats, other)
-    let mut plant_pollinator_counts: FxHashMap<String, (usize, usize, usize, usize, usize, usize, usize, usize, usize, usize)> =
+    // Map: plant_id -> (total, honey_bees, bumblebees, solitary_bees, hover_flies, muscid_flies, mosquitoes, other_flies, butterflies, moths, pollen_beetles, other_beetles, wasps, birds, bats, other)
+    let mut plant_pollinator_counts: FxHashMap<String, (usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize)> =
         FxHashMap::default();
 
     for idx in 0..organisms_df.height() {
@@ -437,7 +526,7 @@ fn build_plant_pollinator_hubs(
 
             let plant_id = plant_id.to_string();
             let entry = plant_pollinator_counts.entry(plant_id.clone())
-                .or_insert((0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+                .or_insert((0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
             let mut pollinators_seen: FxHashSet<String> = FxHashSet::default();
 
@@ -452,15 +541,21 @@ fn build_plant_pollinator_hubs(
                                 .unwrap_or(PollinatorCategory::Other);
                             entry.0 += 1; // total
                             match category {
-                                PollinatorCategory::Bees => entry.1 += 1,
-                                PollinatorCategory::Butterflies => entry.2 += 1,
-                                PollinatorCategory::Moths => entry.3 += 1,
-                                PollinatorCategory::Flies => entry.4 += 1,
-                                PollinatorCategory::Beetles => entry.5 += 1,
-                                PollinatorCategory::Wasps => entry.6 += 1,
-                                PollinatorCategory::Birds => entry.7 += 1,
-                                PollinatorCategory::Bats => entry.8 += 1,
-                                PollinatorCategory::Other => entry.9 += 1,
+                                PollinatorCategory::HoneyBees => entry.1 += 1,
+                                PollinatorCategory::Bumblebees => entry.2 += 1,
+                                PollinatorCategory::SolitaryBees => entry.3 += 1,
+                                PollinatorCategory::HoverFlies => entry.4 += 1,
+                                PollinatorCategory::MuscidFlies => entry.5 += 1,
+                                PollinatorCategory::Mosquitoes => entry.6 += 1,
+                                PollinatorCategory::OtherFlies => entry.7 += 1,
+                                PollinatorCategory::Butterflies => entry.8 += 1,
+                                PollinatorCategory::Moths => entry.9 += 1,
+                                PollinatorCategory::PollenBeetles => entry.10 += 1,
+                                PollinatorCategory::OtherBeetles => entry.11 += 1,
+                                PollinatorCategory::Wasps => entry.12 += 1,
+                                PollinatorCategory::Birds => entry.13 += 1,
+                                PollinatorCategory::Bats => entry.14 += 1,
+                                PollinatorCategory::Other => entry.15 += 1,
                             }
                         }
                     }
@@ -478,15 +573,21 @@ fn build_plant_pollinator_hubs(
                                 .unwrap_or(PollinatorCategory::Other);
                             entry.0 += 1; // total
                             match category {
-                                PollinatorCategory::Bees => entry.1 += 1,
-                                PollinatorCategory::Butterflies => entry.2 += 1,
-                                PollinatorCategory::Moths => entry.3 += 1,
-                                PollinatorCategory::Flies => entry.4 += 1,
-                                PollinatorCategory::Beetles => entry.5 += 1,
-                                PollinatorCategory::Wasps => entry.6 += 1,
-                                PollinatorCategory::Birds => entry.7 += 1,
-                                PollinatorCategory::Bats => entry.8 += 1,
-                                PollinatorCategory::Other => entry.9 += 1,
+                                PollinatorCategory::HoneyBees => entry.1 += 1,
+                                PollinatorCategory::Bumblebees => entry.2 += 1,
+                                PollinatorCategory::SolitaryBees => entry.3 += 1,
+                                PollinatorCategory::HoverFlies => entry.4 += 1,
+                                PollinatorCategory::MuscidFlies => entry.5 += 1,
+                                PollinatorCategory::Mosquitoes => entry.6 += 1,
+                                PollinatorCategory::OtherFlies => entry.7 += 1,
+                                PollinatorCategory::Butterflies => entry.8 += 1,
+                                PollinatorCategory::Moths => entry.9 += 1,
+                                PollinatorCategory::PollenBeetles => entry.10 += 1,
+                                PollinatorCategory::OtherBeetles => entry.11 += 1,
+                                PollinatorCategory::Wasps => entry.12 += 1,
+                                PollinatorCategory::Birds => entry.13 += 1,
+                                PollinatorCategory::Bats => entry.14 += 1,
+                                PollinatorCategory::Other => entry.15 += 1,
                             }
                         }
                     }
@@ -497,15 +598,21 @@ fn build_plant_pollinator_hubs(
 
     let mut hubs: Vec<PlantPollinatorHub> = plant_pollinator_counts
         .into_iter()
-        .map(|(plant_id, (total, bees, butterflies, moths, flies, beetles, wasps, birds, bats, other))| {
+        .map(|(plant_id, (total, honey_bees, bumblebees, solitary_bees, hover_flies, muscid_flies, mosquitoes, other_flies, butterflies, moths, pollen_beetles, other_beetles, wasps, birds, bats, other))| {
             PlantPollinatorHub {
                 plant_name: id_to_name_map.get(&plant_id).cloned().unwrap_or(plant_id),
                 pollinator_count: total,
-                bees_count: bees,
+                honey_bees_count: honey_bees,
+                bumblebees_count: bumblebees,
+                solitary_bees_count: solitary_bees,
+                hover_flies_count: hover_flies,
+                muscid_flies_count: muscid_flies,
+                mosquitoes_count: mosquitoes,
+                other_flies_count: other_flies,
                 butterflies_count: butterflies,
                 moths_count: moths,
-                flies_count: flies,
-                beetles_count: beetles,
+                pollen_beetles_count: pollen_beetles,
+                other_beetles_count: other_beetles,
                 wasps_count: wasps,
                 birds_count: birds,
                 bats_count: bats,
