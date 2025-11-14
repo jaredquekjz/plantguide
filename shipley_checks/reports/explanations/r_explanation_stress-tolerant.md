@@ -27,15 +27,15 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 **Top 10 Herbivore Pests**
 
-| Rank | Pest Species | Plants Attacked |
-|------|--------------|------------------|
-| 1 | Castiarina parallelipennis | Senna artemisioides |
-| 2 | Eurema smilax | Senna artemisioides |
-| 3 | Glycaspis collina | Eucalyptus melanophloia |
-| 4 | Jalmenus daemeli | Eucalyptus melanophloia |
-| 5 | Jalmenus icilius | Senna artemisioides |
-| 6 | Myzus ornatus | Senna artemisioides |
-| 7 | Pseudodendrothrips gillespiei | Alyxia ruscifolia |
+| Rank | Pest Species | Herbivore Category | Plants Attacked |
+|------|--------------|-------------------|------------------|
+| 1 | Castiarina parallelipennis | Other Herbivores | Senna artemisioides |
+| 2 | Eurema smilax | Other Herbivores | Senna artemisioides |
+| 3 | Glycaspis collina | Other Herbivores | Eucalyptus melanophloia |
+| 4 | Jalmenus daemeli | Other Herbivores | Eucalyptus melanophloia |
+| 5 | Jalmenus icilius | Other Herbivores | Senna artemisioides |
+| 6 | Myzus ornatus | Aphids | Senna artemisioides |
+| 7 | Pseudodendrothrips gillespiei | Thrips | Alyxia ruscifolia |
 
 **Most Vulnerable Plants**
 

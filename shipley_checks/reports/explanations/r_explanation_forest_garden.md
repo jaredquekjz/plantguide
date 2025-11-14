@@ -27,18 +27,18 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 **Top 10 Herbivore Pests**
 
-| Rank | Pest Species | Plants Attacked |
-|------|--------------|------------------|
-| 1 | Aceria fraxini | Fraxinus excelsior |
-| 2 | Aceria fraxinicola | Fraxinus excelsior |
-| 3 | Aceria fraxinivora | Fraxinus excelsior |
-| 4 | Acronicta rumicis | Fraxinus excelsior |
-| 5 | Aculus epiphyllus | Fraxinus excelsior |
-| 6 | Aculus fraxini | Fraxinus excelsior |
-| 7 | Adela croesella | Fraxinus excelsior |
-| 8 | Adoxophyes orana | Diospyros kaki |
-| 9 | Agrilus convexicollis | Fraxinus excelsior |
-| 10 | Agrilus planipennis | Fraxinus excelsior |
+| Rank | Pest Species | Herbivore Category | Plants Attacked |
+|------|--------------|-------------------|------------------|
+| 1 | Aceria fraxini | Mites | Fraxinus excelsior |
+| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior |
+| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior |
+| 4 | Acronicta rumicis | Moths | Fraxinus excelsior |
+| 5 | Aculus epiphyllus | Mites | Fraxinus excelsior |
+| 6 | Aculus fraxini | Mites | Fraxinus excelsior |
+| 7 | Adela croesella | Other Herbivores | Fraxinus excelsior |
+| 8 | Adoxophyes orana | Caterpillars | Diospyros kaki |
+| 9 | Agrilus convexicollis | Other Herbivores | Fraxinus excelsior |
+| 10 | Agrilus planipennis | Other Herbivores | Fraxinus excelsior |
 
 **Most Vulnerable Plants**
 
@@ -156,14 +156,14 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 **Pollinator Community Composition:**
 
+- 3 Flies - 3.6%
 - 1 Honey Bees - 1.2%
-- 5 Hover Flies - 6.0%
-- 2 Mosquitoes - 2.4%
-- 51 Other - 60.7%
-- 1 Other Beetles - 1.2%
-- 3 Other Flies - 3.6%
-- 20 Solitary Bees - 23.8%
+- 8 Hoverflies - 9.5%
+- 48 Other Pollinators - 57.1%
+- 1 Parasitoid Wasps - 1.2%
+- 21 Solitary Bees - 25.0%
 - 1 Wasps - 1.2%
+- 1 Weevils - 1.2%
 
 **Top Network Pollinators (by connectivity):**
 
@@ -171,21 +171,21 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 |------|-------------------|----------|------------------|----------------------|
 | 1 | Apis mellifera | Honey Bees | 2 plants | 28.6% |
 | 2 | Lasioglossum | Solitary Bees | 2 plants | 28.6% |
-| 3 | Aedes impiger | Mosquitoes | 1 plants | 14.3% |
-| 4 | Aedes nigripes | Mosquitoes | 1 plants | 14.3% |
+| 3 | Aedes impiger | Other Pollinators | 1 plants | 14.3% |
+| 4 | Aedes nigripes | Other Pollinators | 1 plants | 14.3% |
 | 5 | Andrena carlini | Solitary Bees | 1 plants | 14.3% |
 | 6 | Andrena columbiana | Solitary Bees | 1 plants | 14.3% |
 | 7 | Andrena flavipes | Solitary Bees | 1 plants | 14.3% |
 | 8 | Andrena marginata | Solitary Bees | 1 plants | 14.3% |
 | 9 | Andrena nothoscordi | Solitary Bees | 1 plants | 14.3% |
-| 10 | Anoplius illinoensis | Other | 1 plants | 14.3% |
+| 10 | Anoplius illinoensis | Other Pollinators | 1 plants | 14.3% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total | Bees | Butterflies | Moths | Flies | Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------|-------------|-------|-------|---------|-------|-------|------|-------|
-| Anaphalis margaritacea | 68 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 52 |
-| Maianthemum racemosum | 52 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 37 |
+| Anaphalis margaritacea | 68 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 38 |
+| Maianthemum racemosum | 52 | 0 | 0 | 0 | 3 | 0 | 1 | 0 | 0 | 0 |
 | Mercurialis perennis | 37 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Fraxinus excelsior | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 13 |
 | Diospyros kaki | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
