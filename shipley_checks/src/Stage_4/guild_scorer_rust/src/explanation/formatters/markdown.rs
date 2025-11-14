@@ -158,8 +158,8 @@ impl MarkdownFormatter {
         // Top pests by interaction count
         if !pest_profile.top_pests.is_empty() {
             md.push_str("**Top 10 Herbivore Pests**\n\n");
-            md.push_str("| Rank | Pest Species | Plants Attacked |\n");
-            md.push_str("|------|--------------|------------------|\n");
+            md.push_str("| Rank | Pest Species | Herbivore Category | Plants Attacked |\n");
+            md.push_str("|------|--------------|-------------------|------------------|\n");
             for (i, pest) in pest_profile.top_pests.iter().enumerate().take(10) {
                 let plant_list = if pest.plants.len() > 3 {
                     format!("{} plants", pest.plants.len())
@@ -167,9 +167,10 @@ impl MarkdownFormatter {
                     pest.plants.join(", ")
                 };
                 md.push_str(&format!(
-                    "| {} | {} | {} |\n",
+                    "| {} | {} | {} | {} |\n",
                     i + 1,
                     pest.pest_name,
+                    pest.category,
                     plant_list
                 ));
             }

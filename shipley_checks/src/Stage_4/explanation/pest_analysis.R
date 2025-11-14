@@ -12,6 +12,11 @@
 #
 # Rust reference: src/explanation/pest_analysis.rs
 
+# Source unified taxonomic categorization
+if (!exists("categorize_organism")) {
+  source("shipley_checks/src/Stage_4/explanation/unified_taxonomy.R")
+}
+
 #' Analyze pest profile for a guild
 #'
 #' Extracts herbivore information from organisms_df and identifies generalist
@@ -88,6 +93,7 @@ analyze_guild_pests <- function(guild_plants,
   # Identify shared pests (2+ plants)
   shared_pests <- data.frame(
     pest_name = character(),
+    category = character(),
     plant_count = integer(),
     plants = character(),
     stringsAsFactors = FALSE
@@ -98,6 +104,7 @@ analyze_guild_pests <- function(guild_plants,
     if (length(plants) >= 2) {
       shared_pests <- rbind(shared_pests, data.frame(
         pest_name = pest,
+        category = categorize_organism(pest, "herbivore"),
         plant_count = length(plants),
         plants = paste(plants, collapse = ", "),
         stringsAsFactors = FALSE
@@ -113,6 +120,7 @@ analyze_guild_pests <- function(guild_plants,
   # Top 10 pests by plant count (even if only 1 plant)
   top_pests <- data.frame(
     pest_name = character(),
+    category = character(),
     plant_count = integer(),
     plants = character(),
     stringsAsFactors = FALSE
@@ -122,6 +130,7 @@ analyze_guild_pests <- function(guild_plants,
     plants <- pest_to_plants[[pest]]
     top_pests <- rbind(top_pests, data.frame(
       pest_name = pest,
+      category = categorize_organism(pest, "herbivore"),
       plant_count = length(plants),
       plants = paste(plants, collapse = ", "),
       stringsAsFactors = FALSE

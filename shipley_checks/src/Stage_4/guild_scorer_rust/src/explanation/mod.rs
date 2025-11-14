@@ -7,6 +7,7 @@ pub mod fungi_network_analysis;
 pub mod pollinator_network_analysis;
 pub mod biocontrol_network_analysis;
 pub mod pathogen_control_network_analysis;
+pub mod unified_taxonomy;
 pub mod generator;
 pub mod formatters;
 

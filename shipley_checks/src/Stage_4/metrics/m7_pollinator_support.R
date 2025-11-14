@@ -139,69 +139,15 @@ calculate_m7_pollinator_support <- function(plant_ids,
   # -------------------------------------------------------------------------
   # Build pollinator_counts: pollinator_name → number of plants it visits
   # Also categorize each pollinator by taxonomic group
+  # Uses unified categorization system (unified_taxonomy.R)
+
+  # Source unified taxonomic categorization (if not already sourced)
+  if (!exists("categorize_organism")) {
+    source("shipley_checks/src/Stage_4/explanation/unified_taxonomy.R")
+  }
 
   categorize_pollinator <- function(name) {
-    # Convert to lowercase for case-insensitive matching
-    name_lower <- tolower(name)
-
-    # Honey Bees (Apis) - most specific first
-    if (grepl("\\bapis\\b", name_lower)) {
-      return("Honey Bees")
-    }
-    # Bumblebees (Bombus)
-    if (grepl("bombus", name_lower)) {
-      return("Bumblebees")
-    }
-    # Hover Flies (Syrphidae) - before general "fly"
-    if (grepl("syrph|episyrphus|eristalis|eupeodes|melanostoma|platycheirus|sphaerophoria|cheilosia", name_lower)) {
-      return("Hover Flies")
-    }
-    # Mosquitoes (Culicidae) - before general "fly"
-    if (grepl("aedes|culex|anopheles|culiseta|mosquito", name_lower)) {
-      return("Mosquitoes")
-    }
-    # Muscid Flies (Muscidae/Anthomyiidae) - before general "fly"
-    if (grepl("anthomyia|\\bmusca\\b|fannia|phaonia|delia|drymeia|muscidae", name_lower)) {
-      return("Muscid Flies")
-    }
-    # Solitary Bees (after Apis/Bombus, before general "bee")
-    if (grepl("andrena|lasioglossum|halictus|osmia|megachile|ceratina|xylocopa|anthophora|anthidium|colletes|nomada|agapostemon|amegilla|trigona|melipona|eulaema|epicharis|augochlora|chelostoma|tetralonia|bee", name_lower)) {
-      return("Solitary Bees")
-    }
-    # Other Flies (catch remaining Diptera)
-    if (grepl("fly|empis|calliphora|scathophaga|drosophila|bibio|diptera|rhamphomyia", name_lower)) {
-      return("Other Flies")
-    }
-    # Pollen Beetles (before general "beetle")
-    if (grepl("meligethes|brassicogethes|oedemera", name_lower)) {
-      return("Pollen Beetles")
-    }
-    # Other Beetles
-    if (grepl("beetle|cetonia|trichius|anaspis|coleoptera", name_lower)) {
-      return("Other Beetles")
-    }
-    # Butterflies (Lepidoptera - Rhopalocera)
-    if (grepl("papilio|pieris|vanessa|danaus|colias|lycaena|polyommatus|aglais|coenonympha|erebia|gonepteryx|anthocharis|maniola|butterfly", name_lower)) {
-      return("Butterflies")
-    }
-    # Moths (Lepidoptera - Heterocera)
-    if (grepl("moth|sphinx|manduca|hyles|macroglossum", name_lower)) {
-      return("Moths")
-    }
-    # Wasps (Hymenoptera - non-Apoidea)
-    if (grepl("wasp|vespula|vespa|polistes|dolichovespula", name_lower)) {
-      return("Wasps")
-    }
-    # Birds
-    if (grepl("bird|hummingbird|trochilidae|amazilia|phaethornis|coereba|anthracothorax|\\baves\\b", name_lower)) {
-      return("Birds")
-    }
-    # Bats
-    if (grepl("bat|chiroptera|pteropus|artibeus", name_lower)) {
-      return("Bats")
-    }
-
-    return("Other")
+    categorize_organism(name, "pollinator")
   }
 
   # Build pollinator counts from organisms_df

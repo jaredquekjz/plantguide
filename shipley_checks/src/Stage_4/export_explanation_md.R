@@ -153,13 +153,13 @@ format_m1_section <- function(guild_result) {
 
     # Top 10 pests table
     md <- paste0(md, "**Top 10 Herbivore Pests**\n\n")
-    md <- paste0(md, "| Rank | Pest Species | Plants Attacked |\n")
-    md <- paste0(md, "|------|--------------|------------------|\n")
+    md <- paste0(md, "| Rank | Pest Species | Herbivore Category | Plants Attacked |\n")
+    md <- paste0(md, "|------|--------------|-------------------|------------------|\n")
 
     if (nrow(pest_profile$top_pests) > 0) {
       for (i in 1:min(10, nrow(pest_profile$top_pests))) {
         pest <- pest_profile$top_pests[i, ]
-        md <- paste0(md, sprintf("| %d | %s | %s |\n", i, pest$pest_name, pest$plants))
+        md <- paste0(md, sprintf("| %d | %s | %s | %s |\n", i, pest$pest_name, pest$category, pest$plants))
       }
     }
     md <- paste0(md, "\n")

@@ -2,6 +2,7 @@ use polars::prelude::*;
 use anyhow::Result;
 use serde::{Serialize, Deserialize};
 use rustc_hash::FxHashMap;
+use crate::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
 
 /// Pest profile for a guild (qualitative information)
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -16,6 +17,7 @@ pub struct PestProfile {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SharedPest {
     pub pest_name: String,
+    pub category: String,
     pub plant_count: usize,
     pub plants: Vec<String>,
 }
@@ -24,6 +26,7 @@ pub struct SharedPest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TopPest {
     pub pest_name: String,
+    pub category: String,
     pub plant_count: usize,
     pub plants: Vec<String>,
 }
@@ -96,10 +99,14 @@ pub fn analyze_guild_pests(guild_plants: &DataFrame) -> Result<Option<PestProfil
     let mut shared_pests: Vec<SharedPest> = pest_to_plants
         .iter()
         .filter(|(_, plants)| plants.len() >= 2)
-        .map(|(pest, plants)| SharedPest {
-            pest_name: pest.clone(),
-            plant_count: plants.len(),
-            plants: plants.clone(),
+        .map(|(pest, plants)| {
+            let category = OrganismCategory::from_name(pest, Some(OrganismRole::Herbivore));
+            SharedPest {
+                pest_name: pest.clone(),
+                category: category.display_name().to_string(),
+                plant_count: plants.len(),
+                plants: plants.clone(),
+            }
         })
         .collect();
 
@@ -112,10 +119,14 @@ pub fn analyze_guild_pests(guild_plants: &DataFrame) -> Result<Option<PestProfil
     // Top 10 pests by plant count (even if only 1 plant)
     let mut top_pests: Vec<TopPest> = pest_to_plants
         .iter()
-        .map(|(pest, plants)| TopPest {
-            pest_name: pest.clone(),
-            plant_count: plants.len(),
-            plants: plants.clone(),
+        .map(|(pest, plants)| {
+            let category = OrganismCategory::from_name(pest, Some(OrganismRole::Herbivore));
+            TopPest {
+                pest_name: pest.clone(),
+                category: category.display_name().to_string(),
+                plant_count: plants.len(),
+                plants: plants.clone(),
+            }
         })
         .collect();
 

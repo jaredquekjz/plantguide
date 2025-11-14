@@ -10,131 +10,19 @@
 #
 # Rust reference: src/explanation/biocontrol_network_analysis.rs
 
-#' Categorize a predator by taxonomic/ecological guild
-#'
-#' @param name Predator name (typically genus or species)
-#' @return Category string (one of 14 predator categories)
+# Source unified taxonomic categorization
+source("shipley_checks/src/Stage_4/explanation/unified_taxonomy.R")
+
+#' Categorize a predator (wrapper for backward compatibility)
+#' @deprecated Use categorize_organism(name, "predator") instead
 categorize_predator <- function(name) {
-  name_lower <- tolower(name)
-
-  # Spiders (Araneae) - COMPREHENSIVE genus coverage
-  if (grepl("aculepeira|agalenatea|argiope|araneus|araneae|spider|lycosa|salticidae|araniella|mangora|tetragnatha|allagelena|pisaura|xysticus|cicurina|larinioides|centromerita|dipoena|coelotes|porrhomma|salticus|tibellus|robertus|diplostyla|collinsia|sibianor|singa|neottiura|walckenaeria|microlinyphia|tiso|zora|cryptachaea|argenna|clubiona|enoplognatha|myrmarachne|micrargus|plagiognathus|haplodrassus|trogulus|centromerus|erigone|erigonella|meioneta|oedothorax|semljicola|tenuiphantes|micaria|arctosa|diplocephalus|thomisidae|rilaena|dicymbium|eurithia|leptorhoptrum|trichonephila|phidippus|drassyllus|oligolophus|pardosa|trochosa|alopecosa|philodromus|theridion|oxyopes|cheiracanthium", name_lower)) {
-    return("Spiders")
-  }
-
-  # Ground Beetles (Carabidae) - COMPREHENSIVE including Amara, Harpalus
-  if (grepl("carabus|pterostichus|abax|acupalpus|carabidae|amara|harpalus|pseudophonus|agonum|poecilus|nebria|calathus|notiophilus|anisodactylus|anchomenus|leistus|stomis|loricera|syntomus|limodromus|trechus|cicindela|asaphidion|bembidion|cymindis", name_lower)) {
-    return("Ground Beetles")
-  }
-
-  # Rove Beetles (Staphylinidae) - SEPARATE CATEGORY, comprehensive
-  if (grepl("staphylinidae|staphylinus|tasgius|platydracus|ocypus|quedius|philonthus|tachyporus|lathrobium|carpelimus|gabrius|tachinus|bolitobius|mycetoporus|xantholinus|paederus|sepedophilus|philhygra|atheta|stenus|aleochara|oxypoda", name_lower)) {
-    return("Rove Beetles")
-  }
-
-  # Soldier Beetles (Cantharidae) - NEW MAJOR CATEGORY
-  if (grepl("cantharis|rhagonycha|rgonycha|cantharidae", name_lower)) {
-    return("Soldier Beetles")
-  }
-
-  # Bats (Chiroptera)
-  if (grepl("myotis|eptesicus|corynorhinus|miniopterus|pipistrellus|rhinolophus|lasiurus|barbastella|plecotus|nyctalus|tadarida|antrozous|murina|eumops|bat|chiroptera", name_lower)) {
-    return("Bats")
-  }
-
-  # Birds (Aves) - EXPANDED genus coverage
-  if (grepl("anthus|agelaius|vireo|cyanistes|empidonax|setophaga|cardinalis|catharus|baeolophus|tyrannus|coccyzus|sialia|lanius|contopus|dryobates|falco|rhipidura|merops|cracticus|bird|aves|fringilla|parus|turdus|corvus|garrulus|acrocephalus|phylloscopus|sturnus|parkesia|hylocichla|riparia|bubulcus|locustella|petrochelidon|progne|emberiza|stelgidopteryx|pheucticus|cypseloides", name_lower)) {
-    return("Birds")
-  }
-
-  # Hoverflies (Syrphidae) - ecologically important aphid predators
-  if (grepl("syrphus|episyrphus|eupeodes|melanostoma|platycheirus|sphaerophoria|scaeva|eristalis|syrphidae|syrph", name_lower)) {
-    return("Hoverflies")
-  }
-
-  # Ladybugs (Coccinellidae) - EXPANDED
-  if (grepl("adalia|coccinella|hippodamia|harmonia|chilocorus|coccinellidae|ladybug|propylea|exochomus|scymnus|stethorus", name_lower)) {
-    return("Ladybugs")
-  }
-
-  # Predatory Bugs (Hemiptera) - EXPANDED
-  if (grepl("anthocoris|orius|nabis|geocoris|picromerus|arilus|phymata|deraeocoris|pilophorus|miridae|reduviidae|himacerus|campylomma", name_lower)) {
-    return("Predatory Bugs")
-  }
-
-  # Predatory Wasps (Hymenoptera) - EXPANDED
-  if (grepl("vespula|polistes|vespa|dolichovespula|ichneumon|braconidae|eurytoma|mesopolobus|pteromalus|ascogaster|campoletis|symmorphus|torymus|apanteles|cotesia|aphidius", name_lower)) {
-    return("Predatory Wasps")
-  }
-
-  # Harvestmen (Opiliones) - NEW
-  if (grepl("opilio|phalangium|leiobunum|opiliones", name_lower)) {
-    return("Harvestmen")
-  }
-
-  # Earwigs (Dermaptera) - NEW
-  if (grepl("forficula|dermaptera|earwig|labidura|labia", name_lower)) {
-    return("Earwigs")
-  }
-
-  # Centipedes (Chilopoda) - NEW
-  if (grepl("lithobius|lamyctes|scolopendra|chilopoda|centipede|geophilus", name_lower)) {
-    return("Centipedes")
-  }
-
-  # Soft-bodied Beetles (Melyridae) - NEW minor category
-  if (grepl("malachius|malthinus|melyridae", name_lower)) {
-    return("Soft-bodied Beetles")
-  }
-
-  return("Other Predators")
+  categorize_organism(name, "predator")
 }
 
-#' Categorize a herbivore pest by taxonomic/ecological guild
-#'
-#' @param name Herbivore name (typically genus or species)
-#' @return Category string (one of 10 herbivore categories)
+#' Categorize a herbivore pest (wrapper for backward compatibility)
+#' @deprecated Use categorize_organism(name, "herbivore") instead
 categorize_herbivore <- function(name) {
-  name_lower <- tolower(name)
-
-  # Aphids (Aphididae) - most common
-  if (grepl("\\baphis\\b|aphid|myzus|macrosiphum|rhopalosiphum|acyrthosiphon|aulacorthum|brachycaudus|hyperomyzus|hyadaphis|cinara|cavariella|anoecia|dysaphis|cryptomyzus|allaphis|aphididae", name_lower)) {
-    return("Aphids")
-  }
-  # Herbivorous Mites (Tetranychidae/Eriophyidae)
-  if (grepl("aceria|tetranychus|panonychus|tetranychidae|eriophyidae|eriophyes", name_lower)) {
-    return("Mites")
-  }
-  # Leaf Miners (Agromyzidae)
-  if (grepl("phytomyza|liriomyza|agromyza|chromatomyia|agromyzidae|phytoliriomyza|calycomyza", name_lower)) {
-    return("Leaf Miners")
-  }
-  # Scale Insects (Coccoidea)
-  if (grepl("aspidiotus|aonidiella|diaspidiotus|pseudococcus|coccus|diaspididae|coccidae|pseudococcidae|hemiberlesia|abgrallaspis|lindingaspis|pseudaulacaspis|eriococcus|icerya|scale", name_lower)) {
-    return("Scale Insects")
-  }
-  # Caterpillars (Lepidoptera larvae)
-  if (grepl("spodoptera|helicoverpa|heliothis|plutella|mamestra|agrotis|abagrotis|adoxophyes|archips|choristoneura|acronicta|euxoa", name_lower)) {
-    return("Caterpillars")
-  }
-  # Thrips (Thysanoptera)
-  if (grepl("thrips|frankliniella|heliothrips|thysanoptera|akainothrips", name_lower)) {
-    return("Thrips")
-  }
-  # Whiteflies (Aleyrodidae)
-  if (grepl("bemisia|trialeurodes|aleurodidae|aleurocanthus|whitefly", name_lower)) {
-    return("Whiteflies")
-  }
-  # Herbivorous Beetles (Chrysomelidae, etc.)
-  if (grepl("phyllotreta|chrysomelidae|diabrotica|leptinotarsa|psylliodes|cassida|chrysolina|bruchidius", name_lower)) {
-    return("Beetles")
-  }
-  # Leafhoppers (Cicadellidae)
-  if (grepl("empoasca|cicadellidae|leafhopper|erythroneura|ausejanus", name_lower)) {
-    return("Leafhoppers")
-  }
-
-  return("Other Herbivores")
+  categorize_organism(name, "herbivore")
 }
 
 #' Analyze biocontrol network for M3
