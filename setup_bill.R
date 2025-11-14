@@ -117,7 +117,7 @@ input_files_needed <- c(
   "eive_original.parquet",
   "mabberly_original.parquet",
   "tryenhanced_species_original.parquet",
-  "austraits_taxa.parquet",
+  "austraits_traits.parquet",   # CORRECTED: traits file (1.8M rows), not taxa
   "try_selected_traits.parquet",
   "gbif_occurrence_plantae.parquet",
   "globi_interactions_plants.parquet",
@@ -157,6 +157,8 @@ required_packages <- c(
   "readr",        # For CSV I/O
   "tibble",       # For tibble data structures (dplyr dependency)
   "purrr",        # For functional programming (dplyr dependency)
+  "stringr",      # For Arrow-compatible string functions
+  "duckdb",       # For out-of-core GBIF processing (WARNING: 20-30 min compile time)
   "WorldFlora",   # For taxonomic matching
   "ape",          # For phylogenetic trees
   "phangorn"      # For phylogenetic analysis

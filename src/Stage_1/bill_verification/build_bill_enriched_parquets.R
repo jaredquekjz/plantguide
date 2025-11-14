@@ -65,6 +65,7 @@ suppressPackageStartupMessages({
   library(arrow)        # For reading/writing Parquet files
   library(dplyr)        # For data manipulation (pipes, joins, filtering)
   library(data.table)   # For fast CSV reading with fread() function
+  library(stringr)      # For Arrow-compatible string functions (str_trim, str_to_lower)
 })
 
 # Helper function to log messages with timestamps
@@ -676,16 +677,17 @@ write_parquet(try_sel_enriched, file.path(output_dir, "try_selected_traits_world
 log_msg("TRY Selected Traits complete: ", nrow(try_sel_enriched), " rows\n")
 
 # ==============================================================================
-# 7. GBIF OCCURRENCE DATA (Large streaming dataset)
+# 7. GBIF OCCURRENCE DATA (Large dataset - uses DuckDB)
 # ==============================================================================
 # GBIF: Global Biodiversity Information Facility occurrence database
-# Uses Arrow streaming to process 70M records without loading into memory
+# Uses DuckDB for out-of-core processing of 70M records (Arrow had memory issues)
 #
 # GBIF SPECIFICS:
 #   - Join key: scientificName (case-insensitive, normalized to lowercase)
 #   - Source name: 'scientificName' field
 #   - Data format: Occurrence records with coordinates and metadata
 #   - File size: ~5.4GB with 70M+ rows
+#   - Processing: DuckDB SQL (out-of-core, no memory load)
 
 log_msg("=== Processing GBIF Occurrence dataset ===")
 
@@ -740,35 +742,62 @@ gbif_wfo_clean <- gbif_wfo_dedup %>%
   )
 
 # -------------------------------------------------------
-# STEP 2: Stream GBIF original data and merge with WFO
+# STEP 2: Process GBIF using DuckDB (out-of-core join)
 # -------------------------------------------------------
-# Use Arrow to stream the large GBIF file without loading into memory
-log_msg("Streaming GBIF original data (5.4GB, 70M+ rows)...")
+# DuckDB is used for GBIF because Arrow had memory issues with 70M row joins
+# DuckDB processes data out-of-core without loading into memory
+log_msg("Processing GBIF with DuckDB (out-of-core, memory-efficient)...")
+log_msg("  Reading 5.4GB parquet with 70M+ rows...")
 
-# Open GBIF as Arrow dataset
-gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae.parquet"))
+# Load DuckDB library
+suppressPackageStartupMessages(library(duckdb))
 
-# Prepare WFO lookup as Arrow table
-log_msg("Preparing WFO lookup table...")
-wfo_lookup <- arrow_table(gbif_wfo_clean)
+# Create DuckDB connection (in-memory database for queries)
+con <- dbConnect(duckdb())
 
-# Stream GBIF data and merge using Arrow compute (NO memory load!)
-# Use trimws() and tolower() in separate steps (Arrow doesn't support nested functions)
-log_msg("Streaming and merging GBIF data using Arrow compute engine...")
-log_msg("  Processing 70M rows without loading into memory...")
+# Register WFO lookup table in DuckDB
+dbWriteTable(con, "wfo_lookup", gbif_wfo_clean, overwrite = TRUE)
 
-gbif_enriched <- gbif_dataset %>%
-  # Create normalized join key in two steps (Arrow doesn't support nested functions)
-  mutate(scientificName_trimmed = trimws(scientificName)) %>%
-  mutate(join_key_normalized = tolower(scientificName_trimmed)) %>%
-  # Join with WFO lookup table (Arrow handles this efficiently)
-  left_join(wfo_lookup, by = "join_key_normalized") %>%
-  # Remove temporary columns
-  select(-scientificName_trimmed, -join_key_normalized)
+# Get GBIF input path
+gbif_input_path <- file.path(INPUT_DIR, "gbif_occurrence_plantae.parquet")
+gbif_output_path <- file.path(output_dir, "gbif_occurrence_plantae_worldflora_enriched.parquet")
 
-log_msg("Writing GBIF enriched parquet...")
-write_parquet(gbif_enriched, file.path(output_dir, "gbif_occurrence_plantae_worldflora_enriched.parquet"), compression = "snappy")
-log_msg("GBIF complete: ", nrow(gbif_enriched), " rows")
+log_msg("  Performing out-of-core join in DuckDB...")
+
+# Use DuckDB SQL to:
+#   1. Read parquet file (streaming, not loaded to memory)
+#   2. Normalize scientificName (trim + lowercase)
+#   3. LEFT JOIN with WFO lookup
+#   4. Write result directly to parquet
+# All operations happen out-of-core - no 70M rows in memory!
+dbExecute(con, sprintf("
+  COPY (
+    SELECT
+      gbif.*,
+      wfo.wf_spec_name,
+      wfo.wfo_taxon_id,
+      wfo.wfo_scientific_name,
+      wfo.wfo_taxonomic_status,
+      wfo.wfo_accepted_nameusage_id,
+      wfo.wfo_new_accepted,
+      wfo.wfo_original_status,
+      wfo.wfo_original_id,
+      wfo.wfo_original_name,
+      wfo.wfo_matched,
+      wfo.wfo_unique,
+      wfo.wfo_fuzzy,
+      wfo.wfo_fuzzy_distance
+    FROM read_parquet('%s') AS gbif
+    LEFT JOIN wfo_lookup AS wfo
+      ON LOWER(TRIM(gbif.scientificName)) = wfo.join_key_normalized
+  ) TO '%s' (FORMAT PARQUET, COMPRESSION SNAPPY)
+", gbif_input_path, gbif_output_path))
+
+log_msg("  Written: ", gbif_output_path)
+log_msg("GBIF complete: 70M+ rows (processed out-of-core with DuckDB)")
+
+# Disconnect DuckDB
+dbDisconnect(con, shutdown = TRUE)
 log_msg("  (Note: Large file with occurrence records and WFO taxonomy)\n")
 
 log_msg("=== All enriched parquets created successfully ===")
