@@ -65,6 +65,18 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 17 Animal predators
 - 0 Entomopathogenic fungi
 
+**Predator Community Composition:**
+- 10 Other Predators - 58.8%
+- 4 Bats - 23.5%
+- 1 Birds - 5.9%
+- 1 Ladybugs - 5.9%
+- 1 Predatory Wasps - 5.9%
+
+**Herbivore Pest Composition:**
+- 2 Aphids - 50.0%
+- 1 Caterpillars - 25.0%
+- 1 Other Herbivores - 25.0%
+
 **Mechanism Summary:**
 - 4 Specific predator matches (herbivore → known predator)
 - 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
@@ -72,17 +84,17 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Matched Herbivore → Predator Pairs:**
 
-| Herbivore (Pest) | Known Predator | Match Type |
-|------------------|----------------|------------|
-| Adoxophyes orana | Eptesicus serotinus | Specific (weight 1.0) |
-| Adoxophyes orana | Myotis daubentonii | Specific (weight 1.0) |
-| Adoxophyes orana | Myotis mystacinus | Specific (weight 1.0) |
-| Aphis | Adalia bipunctata | Specific (weight 1.0) |
-| Aphis | Cyanistes caeruleus | Specific (weight 1.0) |
-| Aphis | Fringilla coelebs | Specific (weight 1.0) |
-| Cnephasia stephensiana | Myotis daubentonii | Specific (weight 1.0) |
-| Cnephasia stephensiana | Myotis mystacinus | Specific (weight 1.0) |
-| Myzus persicae | Adalia bipunctata | Specific (weight 1.0) |
+| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
+|------------------|-------------------|----------------|-------------------|------------|
+| Adoxophyes orana | Caterpillars | Eptesicus serotinus | Bats | Specific (weight 1.0) |
+| Adoxophyes orana | Caterpillars | Myotis daubentonii | Bats | Specific (weight 1.0) |
+| Adoxophyes orana | Caterpillars | Myotis mystacinus | Bats | Specific (weight 1.0) |
+| Aphis | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
+| Aphis | Aphids | Cyanistes caeruleus | Birds | Specific (weight 1.0) |
+| Aphis | Aphids | Fringilla coelebs | Other Predators | Specific (weight 1.0) |
+| Cnephasia stephensiana | Other Herbivores | Myotis daubentonii | Bats | Specific (weight 1.0) |
+| Cnephasia stephensiana | Other Herbivores | Myotis mystacinus | Bats | Specific (weight 1.0) |
+| Myzus persicae | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
 
 **Network Hubs (plants attracting most biocontrol):**
 

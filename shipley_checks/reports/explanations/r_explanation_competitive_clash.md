@@ -64,6 +64,11 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 13 Animal predators
 - 0 Entomopathogenic fungi
 
+**Predator Community Composition:**
+- 11 Other Predators - 84.6%
+- 1 Birds - 7.7%
+- 1 Predatory Wasps - 7.7%
+
 **Mechanism Summary:**
 - 0 Specific predator matches (herbivore → known predator)
 - 0 Specific fungi matches (herbivore → known entomopathogenic fungus)

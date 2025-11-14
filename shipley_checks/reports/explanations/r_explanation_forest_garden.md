@@ -1,8 +1,8 @@
-# ★★★★★ - Exceptional
+# ★★★★☆ - Excellent
 
-**Overall Score:** 90.5/100
+**Overall Score:** 89.7/100
 
-Overall guild compatibility: 90.5/100
+Overall guild compatibility: 89.7/100
 
 ## Climate Compatibility
 
@@ -65,6 +65,19 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 26 Animal predators
 - 0 Entomopathogenic fungi
 
+**Predator Community Composition:**
+- 18 Other Predators - 69.2%
+- 4 Bats - 15.4%
+- 1 Birds - 3.8%
+- 1 Ground Beetles - 3.8%
+- 1 Ladybugs - 3.8%
+- 1 Predatory Wasps - 3.8%
+
+**Herbivore Pest Composition:**
+- 2 Aphids - 50.0%
+- 1 Caterpillars - 25.0%
+- 1 Other Herbivores - 25.0%
+
 **Mechanism Summary:**
 - 5 Specific predator matches (herbivore → known predator)
 - 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
@@ -72,19 +85,19 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Matched Herbivore → Predator Pairs:**
 
-| Herbivore (Pest) | Known Predator | Match Type |
-|------------------|----------------|------------|
-| Adoxophyes orana | Eptesicus serotinus | Specific (weight 1.0) |
-| Adoxophyes orana | Myotis daubentonii | Specific (weight 1.0) |
-| Adoxophyes orana | Myotis mystacinus | Specific (weight 1.0) |
-| Aphis | Adalia bipunctata | Specific (weight 1.0) |
-| Aphis | Cyanistes caeruleus | Specific (weight 1.0) |
-| Aphis | Fringilla coelebs | Specific (weight 1.0) |
-| Aphis | Platycheirus scutatus | Specific (weight 1.0) |
-| Aphis | Syrphus vitripennis | Specific (weight 1.0) |
-| Cnephasia stephensiana | Myotis daubentonii | Specific (weight 1.0) |
-| Cnephasia stephensiana | Myotis mystacinus | Specific (weight 1.0) |
-| Myzus persicae | Adalia bipunctata | Specific (weight 1.0) |
+| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
+|------------------|-------------------|----------------|-------------------|------------|
+| Adoxophyes orana | Caterpillars | Eptesicus serotinus | Bats | Specific (weight 1.0) |
+| Adoxophyes orana | Caterpillars | Myotis daubentonii | Bats | Specific (weight 1.0) |
+| Adoxophyes orana | Caterpillars | Myotis mystacinus | Bats | Specific (weight 1.0) |
+| Aphis | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
+| Aphis | Aphids | Cyanistes caeruleus | Birds | Specific (weight 1.0) |
+| Aphis | Aphids | Fringilla coelebs | Other Predators | Specific (weight 1.0) |
+| Aphis | Aphids | Platycheirus scutatus | Other Predators | Specific (weight 1.0) |
+| Aphis | Aphids | Syrphus vitripennis | Other Predators | Specific (weight 1.0) |
+| Cnephasia stephensiana | Other Herbivores | Myotis daubentonii | Bats | Specific (weight 1.0) |
+| Cnephasia stephensiana | Other Herbivores | Myotis mystacinus | Bats | Specific (weight 1.0) |
+| Myzus persicae | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
 
 **Network Hubs (plants attracting most biocontrol):**
 
@@ -155,50 +168,52 @@ Different plant heights create vertical stratification, maximizing light capture
 
 ### Robust Pollinator Support [M7]
 
-170 shared pollinator species  
+84 shared pollinator species  
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.  
 
-*Evidence:* Pollinator support score: 92.0/100
+*Evidence:* Pollinator support score: 86.9/100
 
 #### Pollinator Network Profile
 
 *Qualitative information about pollinator networks (100% of M7 scoring)*
 
-**Total unique pollinator species:** 170
+**Total unique pollinator species:** 84
 
 **Pollinator Community Composition:**
 
-- 23 Bees - 13.5%
-- 1 Beetles - 0.6%
-- 9 Butterflies - 5.3%
-- 11 Flies - 6.5%
-- 125 Other - 73.5%
-- 1 Wasps - 0.6%
+- 1 Honey Bees - 1.2%
+- 5 Hover Flies - 6.0%
+- 2 Mosquitoes - 2.4%
+- 51 Other - 60.7%
+- 1 Other Beetles - 1.2%
+- 3 Other Flies - 3.6%
+- 20 Solitary Bees - 23.8%
+- 1 Wasps - 1.2%
 
 **Top Network Pollinators (by connectivity):**
 
 | Rank | Pollinator Species | Category | Plants Connected | Network Contribution |
 |------|-------------------|----------|------------------|----------------------|
-| 1 | Apis mellifera | Bees | 4 plants | 57.1% |
-| 2 | Lasioglossum | Bees | 4 plants | 57.1% |
-| 3 | Eristalis arbustorum | Flies | 3 plants | 42.9% |
-| 4 | Eristalis tenax | Flies | 3 plants | 42.9% |
-| 5 | Lasioglossum (austrevylaeus) maunga | Bees | 3 plants | 42.9% |
-| 6 | Aedes impiger | Other | 2 plants | 28.6% |
-| 7 | Aedes nigripes | Other | 2 plants | 28.6% |
-| 8 | Andrena carlini | Bees | 2 plants | 28.6% |
-| 9 | Andrena columbiana | Bees | 2 plants | 28.6% |
-| 10 | Andrena flavipes | Bees | 2 plants | 28.6% |
+| 1 | Apis mellifera | Honey Bees | 2 plants | 28.6% |
+| 2 | Lasioglossum | Solitary Bees | 2 plants | 28.6% |
+| 3 | Aedes impiger | Mosquitoes | 1 plants | 14.3% |
+| 4 | Aedes nigripes | Mosquitoes | 1 plants | 14.3% |
+| 5 | Andrena carlini | Solitary Bees | 1 plants | 14.3% |
+| 6 | Andrena columbiana | Solitary Bees | 1 plants | 14.3% |
+| 7 | Andrena flavipes | Solitary Bees | 1 plants | 14.3% |
+| 8 | Andrena marginata | Solitary Bees | 1 plants | 14.3% |
+| 9 | Andrena nothoscordi | Solitary Bees | 1 plants | 14.3% |
+| 10 | Anoplius illinoensis | Other | 1 plants | 14.3% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total | Bees | Butterflies | Moths | Flies | Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------|-------------|-------|-------|---------|-------|-------|------|-------|
-| Anaphalis margaritacea | 68 | 13 | 9 | 0 | 3 | 0 | 0 | 0 | 0 | 43 |
-| Maianthemum racemosum | 52 | 6 | 0 | 0 | 1 | 1 | 1 | 0 | 0 | 43 |
-| Mercurialis perennis | 37 | 3 | 0 | 0 | 9 | 0 | 0 | 0 | 0 | 25 |
-| Fraxinus excelsior | 14 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 13 |
-| Diospyros kaki | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Anaphalis margaritacea | 68 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 52 |
+| Maianthemum racemosum | 52 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 37 |
+| Mercurialis perennis | 37 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
+| Fraxinus excelsior | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 13 |
+| Diospyros kaki | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Rubus moorei | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Warnings
@@ -222,6 +237,6 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 97.7 | Excellent |
 | M6 - Structural Diversity | 85.0 | Excellent |
-| M7 - Pollinator Support | 92.0 | Excellent |
+| M7 - Pollinator Support | 86.9 | Excellent |
 
 

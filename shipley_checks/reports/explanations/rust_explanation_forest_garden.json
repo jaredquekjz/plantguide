@@ -913,44 +913,74 @@
     "specific_fungi_matches": 0,
     "general_entomo_fungi_count": 0,
     "matched_predator_pairs": [
-      [
-        "Adoxophyes orana",
-        "Eptesicus serotinus"
-      ],
-      [
-        "Adoxophyes orana",
-        "Myotis daubentonii"
-      ],
-      [
-        "Adoxophyes orana",
-        "Myotis mystacinus"
-      ],
-      [
-        "Aphis",
-        "Adalia bipunctata"
-      ],
-      [
-        "Aphis",
-        "Cyanistes caeruleus"
-      ],
-      [
-        "Aphis",
-        "Fringilla coelebs"
-      ],
-      [
-        "Cnephasia stephensiana",
-        "Myotis daubentonii"
-      ],
-      [
-        "Cnephasia stephensiana",
-        "Myotis mystacinus"
-      ],
-      [
-        "Myzus persicae",
-        "Adalia bipunctata"
-      ]
+      {
+        "herbivore": "Adoxophyes orana",
+        "herbivore_category": "Caterpillars",
+        "predator": "Eptesicus serotinus",
+        "predator_category": "Bats"
+      },
+      {
+        "herbivore": "Adoxophyes orana",
+        "herbivore_category": "Caterpillars",
+        "predator": "Myotis daubentonii",
+        "predator_category": "Bats"
+      },
+      {
+        "herbivore": "Adoxophyes orana",
+        "herbivore_category": "Caterpillars",
+        "predator": "Myotis mystacinus",
+        "predator_category": "Bats"
+      },
+      {
+        "herbivore": "Aphis",
+        "herbivore_category": "Aphids",
+        "predator": "Adalia bipunctata",
+        "predator_category": "Ladybugs"
+      },
+      {
+        "herbivore": "Aphis",
+        "herbivore_category": "Aphids",
+        "predator": "Cyanistes caeruleus",
+        "predator_category": "Birds"
+      },
+      {
+        "herbivore": "Aphis",
+        "herbivore_category": "Aphids",
+        "predator": "Fringilla coelebs",
+        "predator_category": "OtherPredators"
+      },
+      {
+        "herbivore": "Cnephasia stephensiana",
+        "herbivore_category": "OtherHerbivores",
+        "predator": "Myotis daubentonii",
+        "predator_category": "Bats"
+      },
+      {
+        "herbivore": "Cnephasia stephensiana",
+        "herbivore_category": "OtherHerbivores",
+        "predator": "Myotis mystacinus",
+        "predator_category": "Bats"
+      },
+      {
+        "herbivore": "Myzus persicae",
+        "herbivore_category": "Aphids",
+        "predator": "Adalia bipunctata",
+        "predator_category": "Ladybugs"
+      }
     ],
     "matched_fungi_pairs": [],
+    "predator_category_counts": {
+      "OtherPredators": 10,
+      "Ladybugs": 1,
+      "Bats": 4,
+      "PredatoryWasps": 1,
+      "Birds": 1
+    },
+    "herbivore_category_counts": {
+      "Aphids": 2,
+      "OtherHerbivores": 1,
+      "Caterpillars": 1
+    },
     "top_predators": [],
     "top_entomo_fungi": [],
     "hub_plants": [

@@ -878,6 +878,11 @@
     "general_entomo_fungi_count": 0,
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
+    "predator_category_counts": {
+      "OtherPredators": 7,
+      "PredatoryWasps": 1
+    },
+    "herbivore_category_counts": {},
     "top_predators": [],
     "top_entomo_fungi": [],
     "hub_plants": [
