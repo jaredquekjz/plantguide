@@ -39,13 +39,15 @@ categorize_organism <- function(name, role = NULL) {
   }
 
   # Butterflies - pollinators as adults, herbivores as larvae
-  if (grepl("papilio|pieris|vanessa|danaus|euploea|colias|lycaena|polyommatus|maculinea|anthocharis|gonepteryx|araschnia|argynnis|boloria|erebia|coenonympha|maniola|melanargia|pararge|pyronia|thymelicus|ochlodes|hesperia|aporia|leptidea|celastrina|satyrium|callophrys|thecla|aricia|plebejus|glaucopsyche|iphiclides|zerynthia|nymphalis|aglais|polygonia|limenitis|apatura", name_lower)) {
+  # Expanded with common genera from frequency analysis
+  if (grepl("papilio|pieris|vanessa|danaus|euploea|colias|lycaena|polyommatus|maculinea|anthocharis|gonepteryx|araschnia|argynnis|boloria|erebia|coenonympha|maniola|melanargia|pararge|pyronia|thymelicus|ochlodes|hesperia|aporia|leptidea|celastrina|satyrium|callophrys|thecla|aricia|plebejus|glaucopsyche|iphiclides|zerynthia|nymphalis|aglais|polygonia|limenitis|apatura|charaxes|neptis|hypochrysops|anthene|arhopala|melanitis|deudorix|mycalesis|curetis|rapala|jamides|nacaduba|lampides|everes|celastrina", name_lower)) {
     return("Butterflies")
   }
 
   # Moths - pollinators as adults, herbivores as larvae
   # Note: "Caterpillars" category used when shown as herbivore pests
-  if (grepl("orgyia|acronicta|spodoptera|lymantria|malacosoma|hyalophora|attacus|automeris|biston|ectropis|operophtera|erannis|agriopis|semiothisa|colotois|selenia|ourapteryx|geometra|hemithea|cyclophora|scopula|idaea|rhodometra|macaria|eupithecia|chloroclystis|xanthorhoe|epirrhoe|eulithis|anticlea|mesoleuca|rheumaptera|melanthia|catocala|agrotis|ochropleura|noctua|xestia|diarsia|standfussiana|anaplectoides|graphiphora|eugnorisma|naenia|polia|mamestra|mythimna|orthosia|cerapteryx|tholera|apamea|oligia|mesoligia|photedes|amphipoea|hydraecia|nonagria|archanara", name_lower)) {
+  # Expanded with Adelidae, Tortricidae, Limacodidae genera
+  if (grepl("orgyia|acronicta|spodoptera|lymantria|malacosoma|hyalophora|attacus|automeris|biston|ectropis|operophtera|erannis|agriopis|semiothisa|colotois|selenia|ourapteryx|geometra|hemithea|cyclophora|scopula|idaea|rhodometra|macaria|eupithecia|chloroclystis|xanthorhoe|epirrhoe|eulithis|anticlea|mesoleuca|rheumaptera|melanthia|catocala|agrotis|ochropleura|noctua|xestia|diarsia|standfussiana|anaplectoides|graphiphora|eugnorisma|naenia|polia|mamestra|mythimna|orthosia|cerapteryx|tholera|apamea|oligia|mesoligia|photedes|amphipoea|hydraecia|nonagria|archanara|adela|nemophora|parasa|megalopyge|archips|choristoneura|cnephasia|tortricidae|pandemis|hedya|epiphyas|cnephasia", name_lower)) {
     return("Moths")
   }
 
@@ -127,9 +129,24 @@ categorize_organism <- function(name, role = NULL) {
     return("Weevils")
   }
 
-  # Leaf Beetles
+  # Leaf Beetles (Chrysomelidae)
   if (grepl("chrysomela|phyllotreta|cassida|altica|chaetocnema|longitarsus|psylliodes|aphthona|crepidodera|haltica|galerucella|lochmaea|plagiodera|phratora|agelastica|oulema|lema|crioceris|lilioceris|donacia|plateumaris|macroplea|prasocuris", name_lower)) {
     return("Leaf Beetles")
+  }
+
+  # Jewel Beetles (Buprestidae) - wood borers
+  if (grepl("agrilus|castiarina|buprestis|chrysobothris|anthaxia|trachys|coraebus|meliboeus|acmaeodera|dicerca", name_lower)) {
+    return("Beetles")
+  }
+
+  # Leaf-mining moths (Nepticulidae, Gracillariidae) - add to existing stigmella
+  if (grepl("stigmella|nepticulidae|gracillaria|phyllocnistis|phyllonorycter|cameraria|caloptilia", name_lower)) {
+    return("Leaf Miners")
+  }
+
+  # Psyllids (jumping plant lice) - new category for sap-feeders
+  if (grepl("glycaspis|heptapsogaster|psylla|cacopsylla|trioza|bactericera|diaphorina|psyllidae", name_lower)) {
+    return("Psyllids")
   }
 
   # ==========================================================================

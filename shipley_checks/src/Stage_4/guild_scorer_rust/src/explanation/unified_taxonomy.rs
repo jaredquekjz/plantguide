@@ -43,6 +43,8 @@ pub enum OrganismCategory {
     Leafhoppers,
     Weevils,
     LeafBeetles,
+    Beetles,      // General beetles (wood borers, jewel beetles, etc.)
+    Psyllids,     // Jumping plant lice
 
     // Predator-specific categories
     Spiders,
@@ -110,11 +112,14 @@ impl OrganismCategory {
         }
 
         // Butterflies - pollinators as adults, herbivores as larvae
+        // Expanded with common genera from frequency analysis
         let butterfly_patterns = [
             "papilio", "pieris", "vanessa", "danaus", "euploea", "colias",
             "lycaena", "polyommatus", "maculinea", "anthocharis", "gonepteryx",
             "araschnia", "argynnis", "boloria", "erebia", "coenonympha",
             "maniola", "melanargia", "pararge", "pyronia", "thymelicus",
+            "charaxes", "neptis", "hypochrysops", "anthene", "arhopala",
+            "melanitis", "deudorix", "mycalesis", "curetis", "rapala",
         ];
         if butterfly_patterns.iter().any(|&p| name_lower.contains(p)) {
             return OrganismCategory::Butterflies;
@@ -122,11 +127,14 @@ impl OrganismCategory {
 
         // Moths - pollinators as adults, herbivores as larvae
         // Note: "Caterpillars" category used when shown as herbivore pests
+        // Expanded with Adelidae, Tortricidae, Limacodidae genera
         let moth_patterns = [
             "orgyia", "acronicta", "spodoptera", "lymantria", "malacosoma",
             "hyalophora", "attacus", "automeris", "biston", "ectropis",
             "operophtera", "erannis", "agriopis", "semiothisa", "colotois",
             "selenia", "ourapteryx", "geometra", "hemithea", "cyclophora",
+            "adela", "nemophora", "parasa", "megalopyge", "archips",
+            "choristoneura", "cnephasia", "tortricidae", "pandemis", "hedya",
         ];
         if moth_patterns.iter().any(|&p| name_lower.contains(p)) {
             return OrganismCategory::Moths;
@@ -266,13 +274,35 @@ impl OrganismCategory {
             return OrganismCategory::Weevils;
         }
 
-        // Leaf Beetles
+        // Leaf Beetles (Chrysomelidae)
         let leafbeetle_patterns = [
             "chrysomela", "phyllotreta", "cassida", "altica", "chaetocnema",
             "longitarsus", "psylliodes", "aphthona", "galerucella", "lochmaea",
         ];
         if leafbeetle_patterns.iter().any(|&p| name_lower.contains(p)) {
             return OrganismCategory::LeafBeetles;
+        }
+
+        // Jewel Beetles (Buprestidae) - wood borers
+        let jewelbeetle_patterns = [
+            "agrilus", "castiarina", "buprestis", "chrysobothris", "anthaxia",
+        ];
+        if jewelbeetle_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return OrganismCategory::Beetles;
+        }
+
+        // Leaf-mining moths (Nepticulidae, Gracillariidae)
+        if name_lower.contains("stigmella") || name_lower.contains("gracillaria") {
+            return OrganismCategory::LeafMiners;
+        }
+
+        // Psyllids (jumping plant lice) - sap-feeders
+        let psyllid_patterns = [
+            "glycaspis", "heptapsogaster", "psylla", "cacopsylla", "trioza",
+            "psyllidae",
+        ];
+        if psyllid_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return OrganismCategory::Psyllids;
         }
 
         // ====================================================================
@@ -416,6 +446,8 @@ impl OrganismCategory {
             OrganismCategory::Leafhoppers => "Leafhoppers",
             OrganismCategory::Weevils => "Weevils",
             OrganismCategory::LeafBeetles => "Leaf Beetles",
+            OrganismCategory::Beetles => "Beetles",
+            OrganismCategory::Psyllids => "Psyllids",
             OrganismCategory::Spiders => "Spiders",
             OrganismCategory::GroundBeetles => "Ground Beetles",
             OrganismCategory::RoveBeetles => "Rove Beetles",

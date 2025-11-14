@@ -29,9 +29,9 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Castiarina parallelipennis | Other Herbivores | Senna artemisioides |
+| 1 | Castiarina parallelipennis | Beetles | Senna artemisioides |
 | 2 | Eurema smilax | Other Herbivores | Senna artemisioides |
-| 3 | Glycaspis collina | Other Herbivores | Eucalyptus melanophloia |
+| 3 | Glycaspis collina | Psyllids | Eucalyptus melanophloia |
 | 4 | Jalmenus daemeli | Other Herbivores | Eucalyptus melanophloia |
 | 5 | Jalmenus icilius | Other Herbivores | Senna artemisioides |
 | 6 | Myzus ornatus | Aphids | Senna artemisioides |

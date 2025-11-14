@@ -35,10 +35,10 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 | 4 | Acronicta rumicis | Moths | Fraxinus excelsior |
 | 5 | Aculus epiphyllus | Mites | Fraxinus excelsior |
 | 6 | Aculus fraxini | Mites | Fraxinus excelsior |
-| 7 | Adela croesella | Other Herbivores | Fraxinus excelsior |
+| 7 | Adela croesella | Moths | Fraxinus excelsior |
 | 8 | Adoxophyes orana | Caterpillars | Diospyros kaki |
-| 9 | Agrilus convexicollis | Other Herbivores | Fraxinus excelsior |
-| 10 | Agrilus planipennis | Other Herbivores | Fraxinus excelsior |
+| 9 | Agrilus convexicollis | Beetles | Fraxinus excelsior |
+| 10 | Agrilus planipennis | Beetles | Fraxinus excelsior |
 
 **Most Vulnerable Plants**
 
@@ -70,8 +70,8 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | Aphis | Aphids | Fringilla coelebs | Birds | Specific (weight 1.0) |
 | Aphis | Aphids | Platycheirus scutatus | Hoverflies | Specific (weight 1.0) |
 | Aphis | Aphids | Syrphus vitripennis | Hoverflies | Specific (weight 1.0) |
-| Cnephasia stephensiana | Other Herbivores | Myotis daubentonii | Bats | Specific (weight 1.0) |
-| Cnephasia stephensiana | Other Herbivores | Myotis mystacinus | Bats | Specific (weight 1.0) |
+| Cnephasia stephensiana | Moths | Myotis daubentonii | Bats | Specific (weight 1.0) |
+| Cnephasia stephensiana | Moths | Myotis mystacinus | Bats | Specific (weight 1.0) |
 | Myzus persicae | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
 
 **Network Hubs (plants attracting most biocontrol):**
