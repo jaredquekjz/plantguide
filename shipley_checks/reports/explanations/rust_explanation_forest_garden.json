@@ -24,9 +24,9 @@
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "Guild provides insect pest control via 4 biocontrol mechanisms",
+      "message": "Guild provides natural insect pest control",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
-      "evidence": "Biocontrol score: 100.0/100, covering 4 mechanisms"
+      "evidence": "Biocontrol score: 100.0/100"
     },
     {
       "benefit_type": "disease_control",
@@ -947,7 +947,7 @@
         "herbivore": "Aphis",
         "herbivore_category": "Aphids",
         "predator": "Fringilla coelebs",
-        "predator_category": "OtherPredators"
+        "predator_category": "Birds"
       },
       {
         "herbivore": "Cnephasia stephensiana",
@@ -970,11 +970,12 @@
     ],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "OtherPredators": 10,
-      "Ladybugs": 1,
-      "Bats": 4,
       "PredatoryWasps": 1,
-      "Birds": 1
+      "Ladybugs": 1,
+      "Birds": 3,
+      "OtherPredators": 7,
+      "Hoverflies": 1,
+      "Bats": 4
     },
     "herbivore_category_counts": {
       "Aphids": 2,
