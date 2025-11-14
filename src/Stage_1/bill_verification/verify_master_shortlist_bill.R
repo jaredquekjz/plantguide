@@ -166,7 +166,7 @@ check_critical(
 )
 
 # Source coverage flags
-source_flags <- c("has_duke", "has_eive", "has_mabberly", "has_tryenhanced", "has_austraits")
+source_flags <- c("in_duke", "in_eive", "in_mabberly", "in_try_enhanced", "in_austraits")
 missing_flags <- setdiff(source_flags, names(df_master))
 all_checks_pass <- check_pass(
   length(missing_flags) == 0,
@@ -176,7 +176,7 @@ all_checks_pass <- check_pass(
 # Source counts
 cat("\n  Source coverage:\n")
 for (source in names(EXPECTED_SOURCE_COUNTS)) {
-  flag_col <- sprintf("has_%s", source)
+  flag_col <- sprintf("in_%s", source)
   if (flag_col %in% names(df_master)) {
     n_source <- sum(df_master[[flag_col]], na.rm = TRUE)
     expected_range <- EXPECTED_SOURCE_COUNTS[[source]]
@@ -250,7 +250,7 @@ if ("austraits_numeric_count" %in% names(df_shortlist)) {
 }
 
 # Qualification flags
-qual_flags <- c("qualified_by_eive", "qualified_by_try", "qualified_by_austraits")
+qual_flags <- c("qualifies_via_eive", "qualifies_via_try", "qualifies_via_austraits")
 missing_qual <- setdiff(qual_flags, names(df_shortlist))
 all_checks_pass <- check_pass(
   length(missing_qual) == 0,
