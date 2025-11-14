@@ -67,9 +67,9 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | Adoxophyes orana | Caterpillars | Myotis mystacinus | Bats | Specific (weight 1.0) |
 | Aphis | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |
 | Aphis | Aphids | Cyanistes caeruleus | Birds | Specific (weight 1.0) |
-| Aphis | Aphids | Fringilla coelebs | Other Predators | Specific (weight 1.0) |
-| Aphis | Aphids | Platycheirus scutatus | Other Predators | Specific (weight 1.0) |
-| Aphis | Aphids | Syrphus vitripennis | Other Predators | Specific (weight 1.0) |
+| Aphis | Aphids | Fringilla coelebs | Birds | Specific (weight 1.0) |
+| Aphis | Aphids | Platycheirus scutatus | Hoverflies | Specific (weight 1.0) |
+| Aphis | Aphids | Syrphus vitripennis | Hoverflies | Specific (weight 1.0) |
 | Cnephasia stephensiana | Other Herbivores | Myotis daubentonii | Bats | Specific (weight 1.0) |
 | Cnephasia stephensiana | Other Herbivores | Myotis mystacinus | Bats | Specific (weight 1.0) |
 | Myzus persicae | Aphids | Adalia bipunctata | Ladybugs | Specific (weight 1.0) |

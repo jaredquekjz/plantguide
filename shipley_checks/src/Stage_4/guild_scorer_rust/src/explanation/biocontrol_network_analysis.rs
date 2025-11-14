@@ -8,91 +8,159 @@ use rustc_hash::{FxHashMap, FxHashSet};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
-/// Predator taxonomic categories (8 categories)
+/// Predator taxonomic categories (14 comprehensive categories)
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum PredatorCategory {
     Spiders,
+    GroundBeetles,
+    RoveBeetles,
+    SoldierBeetles,
     Bats,
     Birds,
+    Hoverflies,
     Ladybugs,
-    GroundBeetles,
     PredatoryBugs,
     PredatoryWasps,
+    Harvestmen,
+    Earwigs,
+    Centipedes,
+    SoftBodiedBeetles,
     OtherPredators,
 }
 
 impl PredatorCategory {
-    /// Categorize a predator based on its name
+    /// Categorize a predator based on its name (14 comprehensive categories)
     pub fn from_name(name: &str) -> Self {
         let name_lower = name.to_lowercase();
 
-        // Spiders (Araneae) - most common
-        if name_lower.contains("aculepeira") || name_lower.contains("agalenatea") ||
-           name_lower.contains("argiope") || name_lower.contains("araneus") ||
-           name_lower.contains("araneae") || name_lower.contains("spider") ||
-           name_lower.contains("lycosa") || name_lower.contains("salticidae") {
+        // Spiders (Araneae) - COMPREHENSIVE genus coverage (17% of matches)
+        let spider_patterns = [
+            "aculepeira", "agalenatea", "argiope", "araneus", "araneae", "spider", "lycosa", "salticidae",
+            "araniella", "mangora", "tetragnatha", "allagelena", "pisaura", "xysticus", "cicurina", "larinioides",
+            "centromerita", "dipoena", "coelotes", "porrhomma", "salticus", "tibellus", "robertus", "diplostyla",
+            "collinsia", "sibianor", "singa", "neottiura", "walckenaeria", "microlinyphia", "tiso", "zora",
+            "cryptachaea", "argenna", "clubiona", "enoplognatha", "myrmarachne", "micrargus", "plagiognathus",
+            "haplodrassus", "trogulus", "centromerus", "erigone", "erigonella", "meioneta", "oedothorax",
+            "semljicola", "tenuiphantes", "micaria", "arctosa", "diplocephalus", "thomisidae", "rilaena",
+            "dicymbium", "eurithia", "leptorhoptrum", "trichonephila", "phidippus", "drassyllus", "oligolophus",
+            "pardosa", "trochosa", "alopecosa", "philodromus", "theridion", "oxyopes", "cheiracanthium"
+        ];
+        if spider_patterns.iter().any(|&p| name_lower.contains(p)) {
             return PredatorCategory::Spiders;
         }
 
-        // Bats (Chiroptera)
-        if name_lower.contains("myotis") || name_lower.contains("eptesicus") ||
-           name_lower.contains("corynorhinus") || name_lower.contains("miniopterus") ||
-           name_lower.contains("pipistrellus") || name_lower.contains("rhinolophus") ||
-           name_lower.contains("lasiurus") || name_lower.contains("barbastella") ||
-           name_lower.contains("plecotus") || name_lower.contains("nyctalus") ||
-           name_lower.contains("tadarida") || name_lower.contains("antrozous") ||
-           name_lower.contains("murina") || name_lower.contains("eumops") ||
-           name_lower.contains("bat") || name_lower.contains("chiroptera") {
-            return PredatorCategory::Bats;
-        }
-
-        // Birds (Aves)
-        if name_lower.contains("anthus") || name_lower.contains("agelaius") ||
-           name_lower.contains("vireo") || name_lower.contains("cyanistes") ||
-           name_lower.contains("empidonax") || name_lower.contains("setophaga") ||
-           name_lower.contains("cardinalis") || name_lower.contains("catharus") ||
-           name_lower.contains("baeolophus") || name_lower.contains("tyrannus") ||
-           name_lower.contains("coccyzus") || name_lower.contains("sialia") ||
-           name_lower.contains("lanius") || name_lower.contains("contopus") ||
-           name_lower.contains("dryobates") || name_lower.contains("falco") ||
-           name_lower.contains("rhipidura") || name_lower.contains("merops") ||
-           name_lower.contains("cracticus") || name_lower.contains("bird") ||
-           name_lower.contains("aves") {
-            return PredatorCategory::Birds;
-        }
-
-        // Ladybugs (Coccinellidae)
-        if name_lower.contains("adalia") || name_lower.contains("coccinella") ||
-           name_lower.contains("hippodamia") || name_lower.contains("harmonia") ||
-           name_lower.contains("chilocorus") || name_lower.contains("coccinellidae") ||
-           name_lower.contains("ladybug") {
-            return PredatorCategory::Ladybugs;
-        }
-
-        // Ground/Rove Beetles (Carabidae/Staphylinidae)
-        if name_lower.contains("carabus") || name_lower.contains("pterostichus") ||
-           name_lower.contains("abax") || name_lower.contains("acupalpus") ||
-           name_lower.contains("carabidae") || name_lower.contains("staphylinidae") ||
-           name_lower.contains("staphylinus") {
+        // Ground Beetles (Carabidae) - COMPREHENSIVE including Amara, Harpalus (11% of matches)
+        let ground_beetle_patterns = [
+            "carabus", "pterostichus", "abax", "acupalpus", "carabidae",
+            "amara", "harpalus", "pseudophonus", "agonum", "poecilus", "nebria", "calathus", "notiophilus",
+            "anisodactylus", "anchomenus", "leistus", "stomis", "loricera", "syntomus", "limodromus",
+            "trechus", "cicindela", "asaphidion", "bembidion", "cymindis"
+        ];
+        if ground_beetle_patterns.iter().any(|&p| name_lower.contains(p)) {
             return PredatorCategory::GroundBeetles;
         }
 
-        // Predatory Bugs (Hemiptera)
-        if name_lower.contains("anthocoris") || name_lower.contains("orius") ||
-           name_lower.contains("nabis") || name_lower.contains("geocoris") ||
-           name_lower.contains("picromerus") || name_lower.contains("arilus") ||
-           name_lower.contains("phymata") {
+        // Rove Beetles (Staphylinidae) - SEPARATE CATEGORY (5% of matches)
+        let rove_beetle_patterns = [
+            "staphylinidae", "staphylinus",
+            "tasgius", "platydracus", "ocypus", "quedius", "philonthus", "tachyporus", "lathrobium",
+            "carpelimus", "gabrius", "tachinus", "bolitobius", "mycetoporus", "xantholinus",
+            "paederus", "sepedophilus", "philhygra", "atheta", "stenus", "aleochara", "oxypoda"
+        ];
+        if rove_beetle_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return PredatorCategory::RoveBeetles;
+        }
+
+        // Soldier Beetles (Cantharidae) - NEW MAJOR CATEGORY (1% of matches)
+        if name_lower.contains("cantharis") || name_lower.contains("rhagonycha") ||
+           name_lower.contains("rgonycha") || name_lower.contains("cantharidae") {
+            return PredatorCategory::SoldierBeetles;
+        }
+
+        // Bats (Chiroptera) - 6% of matches
+        let bat_patterns = [
+            "myotis", "eptesicus", "corynorhinus", "miniopterus", "pipistrellus", "rhinolophus",
+            "lasiurus", "barbastella", "plecotus", "nyctalus", "tadarida", "antrozous",
+            "murina", "eumops", "bat", "chiroptera"
+        ];
+        if bat_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return PredatorCategory::Bats;
+        }
+
+        // Birds (Aves) - EXPANDED genus coverage (5% of matches)
+        let bird_patterns = [
+            "anthus", "agelaius", "vireo", "cyanistes", "empidonax", "setophaga", "cardinalis",
+            "catharus", "baeolophus", "tyrannus", "coccyzus", "sialia", "lanius", "contopus",
+            "dryobates", "falco", "rhipidura", "merops", "cracticus", "bird", "aves",
+            "fringilla", "parus", "turdus", "corvus", "garrulus", "acrocephalus", "phylloscopus",
+            "sturnus", "parkesia", "hylocichla", "riparia", "bubulcus", "locustella", "petrochelidon",
+            "progne", "emberiza", "stelgidopteryx", "pheucticus", "cypseloides"
+        ];
+        if bird_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return PredatorCategory::Birds;
+        }
+
+        // Hoverflies (Syrphidae) - ecologically important aphid predators (0.1% but key)
+        let hoverfly_patterns = [
+            "syrphus", "episyrphus", "eupeodes", "melanostoma", "platycheirus", "sphaerophoria",
+            "scaeva", "eristalis", "syrphidae", "syrph"
+        ];
+        if hoverfly_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return PredatorCategory::Hoverflies;
+        }
+
+        // Ladybugs (Coccinellidae) - EXPANDED (0.5% of matches)
+        let ladybug_patterns = [
+            "adalia", "coccinella", "hippodamia", "harmonia", "chilocorus", "coccinellidae",
+            "ladybug", "propylea", "exochomus", "scymnus", "stethorus"
+        ];
+        if ladybug_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return PredatorCategory::Ladybugs;
+        }
+
+        // Predatory Bugs (Hemiptera) - EXPANDED (1% of matches)
+        let predatory_bug_patterns = [
+            "anthocoris", "orius", "nabis", "geocoris", "picromerus", "arilus", "phymata",
+            "deraeocoris", "pilophorus", "miridae", "reduviidae", "himacerus", "campylomma"
+        ];
+        if predatory_bug_patterns.iter().any(|&p| name_lower.contains(p)) {
             return PredatorCategory::PredatoryBugs;
         }
 
-        // Predatory Wasps (Hymenoptera)
-        if name_lower.contains("vespula") || name_lower.contains("polistes") ||
-           name_lower.contains("vespa") || name_lower.contains("dolichovespula") ||
-           name_lower.contains("ichneumon") || name_lower.contains("braconidae") ||
-           name_lower.contains("eurytoma") || name_lower.contains("mesopolobus") ||
-           name_lower.contains("pteromalus") || name_lower.contains("ascogaster") ||
-           name_lower.contains("campoletis") || name_lower.contains("symmorphus") {
+        // Predatory Wasps (Hymenoptera) - EXPANDED (1% of matches)
+        let wasp_patterns = [
+            "vespula", "polistes", "vespa", "dolichovespula", "ichneumon", "braconidae",
+            "eurytoma", "mesopolobus", "pteromalus", "ascogaster", "campoletis", "symmorphus",
+            "torymus", "apanteles", "cotesia", "aphidius"
+        ];
+        if wasp_patterns.iter().any(|&p| name_lower.contains(p)) {
             return PredatorCategory::PredatoryWasps;
+        }
+
+        // Harvestmen (Opiliones) - NEW (0.6% of matches)
+        if name_lower.contains("opilio") || name_lower.contains("phalangium") ||
+           name_lower.contains("leiobunum") || name_lower.contains("opiliones") {
+            return PredatorCategory::Harvestmen;
+        }
+
+        // Earwigs (Dermaptera) - NEW (0.3% of matches)
+        if name_lower.contains("forficula") || name_lower.contains("dermaptera") ||
+           name_lower.contains("earwig") || name_lower.contains("labidura") ||
+           name_lower.contains("labia") {
+            return PredatorCategory::Earwigs;
+        }
+
+        // Centipedes (Chilopoda) - NEW (0.5% of matches)
+        if name_lower.contains("lithobius") || name_lower.contains("lamyctes") ||
+           name_lower.contains("scolopendra") || name_lower.contains("chilopoda") ||
+           name_lower.contains("centipede") || name_lower.contains("geophilus") {
+            return PredatorCategory::Centipedes;
+        }
+
+        // Soft-bodied Beetles (Melyridae) - NEW minor category (0.2% of matches)
+        if name_lower.contains("malachius") || name_lower.contains("malthinus") ||
+           name_lower.contains("melyridae") {
+            return PredatorCategory::SoftBodiedBeetles;
         }
 
         PredatorCategory::OtherPredators
@@ -101,12 +169,19 @@ impl PredatorCategory {
     pub fn display_name(&self) -> &str {
         match self {
             PredatorCategory::Spiders => "Spiders",
+            PredatorCategory::GroundBeetles => "Ground Beetles",
+            PredatorCategory::RoveBeetles => "Rove Beetles",
+            PredatorCategory::SoldierBeetles => "Soldier Beetles",
             PredatorCategory::Bats => "Bats",
             PredatorCategory::Birds => "Birds",
+            PredatorCategory::Hoverflies => "Hoverflies",
             PredatorCategory::Ladybugs => "Ladybugs",
-            PredatorCategory::GroundBeetles => "Ground Beetles",
             PredatorCategory::PredatoryBugs => "Predatory Bugs",
             PredatorCategory::PredatoryWasps => "Predatory Wasps",
+            PredatorCategory::Harvestmen => "Harvestmen",
+            PredatorCategory::Earwigs => "Earwigs",
+            PredatorCategory::Centipedes => "Centipedes",
+            PredatorCategory::SoftBodiedBeetles => "Soft-bodied Beetles",
             PredatorCategory::OtherPredators => "Other Predators",
         }
     }
