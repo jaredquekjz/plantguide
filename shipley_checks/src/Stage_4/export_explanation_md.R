@@ -194,29 +194,15 @@ format_m3_section <- function(guild_result) {
   n_mechanisms <- guild_result$details$m3$n_mechanisms
 
   md <- "### Natural Insect Pest Control [M3]\n\n"
-  md <- paste0(md, sprintf("Guild provides insect pest control via %d biocontrol mechanisms  \n", n_mechanisms))
   md <- paste0(md, "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  \n\n")
-  md <- paste0(md, sprintf("*Evidence:* Biocontrol score: %.1f/100, covering %d mechanisms\n\n", m3_score, n_mechanisms))
+  md <- paste0(md, sprintf("*Evidence:* Biocontrol score: %.1f/100\n\n", m3_score))
 
   if (!is.null(biocontrol_profile)) {
-    md <- paste0(md, "#### Biocontrol Network Profile\n\n")
-    md <- paste0(md, "*Qualitative information about insect pest control (influences M3 scoring)*\n\n")
-    md <- paste0(md, sprintf("**Total unique biocontrol agents:** %d\n",
-                            biocontrol_profile$total_unique_predators + biocontrol_profile$total_unique_entomo_fungi))
-    md <- paste0(md, sprintf("- %d Animal predators\n", biocontrol_profile$total_unique_predators))
-    md <- paste0(md, sprintf("- %d Entomopathogenic fungi\n\n", biocontrol_profile$total_unique_entomo_fungi))
-
-    md <- paste0(md, "**Mechanism Summary:**\n")
-    md <- paste0(md, sprintf("- %d Specific predator matches (herbivore → known predator)\n",
-                            biocontrol_profile$specific_predator_matches))
-    md <- paste0(md, sprintf("- %d Specific fungi matches (herbivore → known entomopathogenic fungus)\n",
-                            biocontrol_profile$specific_fungi_matches))
-    md <- paste0(md, sprintf("- %d General entomopathogenic fungi interactions (weight 0.2 each)\n\n",
-                            biocontrol_profile$general_entomo_fungi_count))
+    md <- paste0(md, "#### Verified Biocontrol Relationships\n\n")
 
     # Matched predator pairs
     if (nrow(biocontrol_profile$matched_predator_pairs) > 0) {
-      md <- paste0(md, "**Matched Herbivore → Predator Pairs:**\n\n")
+      md <- paste0(md, sprintf("**%d Herbivore → Predator matches found:**\n\n", nrow(biocontrol_profile$matched_predator_pairs)))
       md <- paste0(md, "| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |\n")
       md <- paste0(md, "|------------------|-------------------|----------------|-------------------|------------|\n")
       for (i in 1:nrow(biocontrol_profile$matched_predator_pairs)) {

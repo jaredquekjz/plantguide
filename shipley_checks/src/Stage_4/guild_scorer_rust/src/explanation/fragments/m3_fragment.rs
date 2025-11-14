@@ -7,24 +7,15 @@ use crate::metrics::M3Result;
 /// Multiple biocontrol mechanisms provide robust pest suppression.
 pub fn generate_m3_fragment(m3: &M3Result, display_score: f64) -> MetricFragment {
     if display_score > 50.0 {
-        let mechanism_text = if m3.n_mechanisms == 1 {
-            "mechanism".to_string()
-        } else {
-            "mechanisms".to_string()
-        };
-
         MetricFragment::with_benefit(BenefitCard {
             benefit_type: "insect_control".to_string(),
             metric_code: "M3".to_string(),
             title: "Natural Insect Pest Control".to_string(),
-            message: format!(
-                "Guild provides insect pest control via {} biocontrol {}",
-                m3.n_mechanisms, mechanism_text
-            ),
+            message: "Guild provides natural insect pest control".to_string(),
             detail: "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.".to_string(),
             evidence: Some(format!(
-                "Biocontrol score: {:.1}/100, covering {} mechanisms",
-                display_score, m3.n_mechanisms
+                "Biocontrol score: {:.1}/100",
+                display_score
             )),
         })
     } else {
@@ -51,7 +42,7 @@ mod tests {
 
         let benefit = fragment.benefit.unwrap();
         assert_eq!(benefit.metric_code, "M3");
-        assert!(benefit.message.contains("5 biocontrol mechanisms"));
+        assert!(benefit.message.contains("natural insect pest control"));
     }
 
     #[test]
@@ -68,7 +59,7 @@ mod tests {
         assert!(fragment.benefit.is_some());
 
         let benefit = fragment.benefit.unwrap();
-        assert!(benefit.message.contains("1 biocontrol mechanism"));
+        assert!(benefit.message.contains("natural insect pest control"));
     }
 
     #[test]

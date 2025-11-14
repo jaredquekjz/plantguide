@@ -417,24 +417,14 @@ impl MarkdownFormatter {
 
     /// Format biocontrol network profile section
     fn format_biocontrol_profile(md: &mut String, biocontrol_profile: &BiocontrolNetworkProfile) {
-        md.push_str("#### Biocontrol Network Profile\n\n");
-        md.push_str("*Qualitative information about insect pest control (influences M3 scoring)*\n\n");
-
-        md.push_str(&format!(
-            "**Total unique biocontrol agents:** {}\n",
-            biocontrol_profile.total_unique_predators + biocontrol_profile.total_unique_entomo_fungi
-        ));
-        md.push_str(&format!("- {} Animal predators\n", biocontrol_profile.total_unique_predators));
-        md.push_str(&format!("- {} Entomopathogenic fungi\n\n", biocontrol_profile.total_unique_entomo_fungi));
-
-        md.push_str("**Mechanism Summary:**\n");
-        md.push_str(&format!("- {} Specific predator matches (herbivore → known predator)\n", biocontrol_profile.specific_predator_matches));
-        md.push_str(&format!("- {} Specific fungi matches (herbivore → known entomopathogenic fungus)\n", biocontrol_profile.specific_fungi_matches));
-        md.push_str(&format!("- {} General entomopathogenic fungi interactions (weight 0.2 each)\n\n", biocontrol_profile.general_entomo_fungi_count));
+        md.push_str("#### Verified Biocontrol Relationships\n\n");
 
         // Show matched predator pairs
         if !biocontrol_profile.matched_predator_pairs.is_empty() {
-            md.push_str("**Matched Herbivore → Predator Pairs:**\n\n");
+            md.push_str(&format!(
+                "**{} Herbivore → Predator matches found:**\n\n",
+                biocontrol_profile.matched_predator_pairs.len()
+            ));
             md.push_str("| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |\n");
             md.push_str("|------------------|-------------------|----------------|-------------------|------------|\n");
             for pair in biocontrol_profile.matched_predator_pairs.iter().take(20) {

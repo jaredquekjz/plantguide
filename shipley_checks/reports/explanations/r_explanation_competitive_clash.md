@@ -51,23 +51,11 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 ### Natural Insect Pest Control [M3]
 
-Guild provides insect pest control via 0 biocontrol mechanisms  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  
 
-*Evidence:* Biocontrol score: 100.0/100, covering 0 mechanisms
+*Evidence:* Biocontrol score: 100.0/100
 
-#### Biocontrol Network Profile
-
-*Qualitative information about insect pest control (influences M3 scoring)*
-
-**Total unique biocontrol agents:** 13
-- 13 Animal predators
-- 0 Entomopathogenic fungi
-
-**Mechanism Summary:**
-- 0 Specific predator matches (herbivore → known predator)
-- 0 Specific fungi matches (herbivore → known entomopathogenic fungus)
-- 0 General entomopathogenic fungi interactions (weight 0.2 each)
+#### Verified Biocontrol Relationships
 
 **Network Hubs (plants attracting most biocontrol):**
 
