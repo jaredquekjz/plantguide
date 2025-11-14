@@ -100,7 +100,7 @@ DATASETS <- list(
   eive = 19291,                     # EIVE Ellenberg Indicators for European flora
   mabberly = 14487,                 # Mabberly's Plant-Book (genus-level taxonomy)
   tryenhanced = 53852,              # TRY Enhanced trait database (TPL-standardized)
-  austraits = 35974,                # AusTraits Australian plant trait database
+  austraits = 49590,                # AusTraits Australian plant trait database (traits file includes both taxon_name and original_name)
   gbif_occurrence = 174939,         # GBIF plant occurrence records (largest dataset)
   globi_interactions = 84507,       # GloBI biotic interaction database
   try_selected_traits = 95252       # TRY selected traits database
