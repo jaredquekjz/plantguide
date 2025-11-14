@@ -84,7 +84,7 @@ wfo_path <- file.path(INPUT_DIR, "classification.csv")
 # STEP 1: LOAD AND PREPARE AUSTRAITS NAMES
 # ========================================================================
 log_msg("Reading AusTraits names from: ", input_path)
-names_dt <- fread(input_path, encoding = "UTF-8", data.table = FALSE)
+names_dt <- fread(input_path, encoding = "UTF-8", data.table = FALSE, header = TRUE, sep = ",")
 log_msg("Loaded ", nrow(names_dt), " name rows")
 
 # Extract taxon_name (AusTraits' primary taxonomic name field)

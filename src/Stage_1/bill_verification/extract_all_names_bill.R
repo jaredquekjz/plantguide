@@ -193,11 +193,11 @@ cat("[5/8] Extracting AusTraits names...\n")
 aus_traits <- read_parquet(file.path(INPUT_DIR, "austraits_traits.parquet"))
 
 # Extract unique taxon names from trait measurements
-# taxon_name: scientific name of the taxon
-# original_name: original name as recorded in the source (before standardization)
-# Note: Traits file doesn't have taxonomic metadata (genus, family, etc.)
-# WorldFlora matching only needs the taxon name
-aus_names <- unique(aus_traits[, c("taxon_name", "original_name")])
+# taxon_name: scientific name of the taxon (updated/accepted name)
+# Note: We only extract taxon_name (not original_name) to avoid duplicates.
+# Same taxon can appear with multiple original_name values across studies,
+# but WorldFlora matching only uses taxon_name anyway.
+aus_names <- unique(aus_traits[, "taxon_name", drop = FALSE])
 
 # Remove rows where taxon_name is missing or empty
 aus_names <- aus_names[!is.na(aus_names$taxon_name) & trimws(aus_names$taxon_name) != "", ]
