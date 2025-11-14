@@ -88,8 +88,9 @@ log_msg("=== Phase 1 Step 3: GBIF Integration Verification (Optimized) ===\n")
 log_msg("Step 1: Counting GBIF occurrences using Arrow compute engine...")
 log_msg("  (Streaming 70M records without loading into memory)")
 
-# Open parquet as Arrow dataset (no memory load)
-gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae_wfo.parquet"))
+# Open WFO-enriched GBIF parquet as Arrow dataset (no memory load)
+# This file was created by build_bill_enriched_parquets.R in Phase 1.1
+gbif_dataset <- open_dataset(file.path(OUTPUT_DIR, "wfo_verification", "gbif_occurrence_plantae_worldflora_enriched.parquet"))
 
 # -------------------------------------------------------
 # Use Arrow compute to aggregate BEFORE pulling into R

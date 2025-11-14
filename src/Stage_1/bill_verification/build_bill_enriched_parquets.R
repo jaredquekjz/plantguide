@@ -675,5 +675,95 @@ log_msg("Writing TRY Selected Traits enriched parquet...")
 write_parquet(try_sel_enriched, file.path(output_dir, "try_selected_traits_worldflora_enriched.parquet"), compression = "snappy")
 log_msg("TRY Selected Traits complete: ", nrow(try_sel_enriched), " rows\n")
 
+# ==============================================================================
+# 7. GBIF OCCURRENCE DATA (Large streaming dataset)
+# ==============================================================================
+# GBIF: Global Biodiversity Information Facility occurrence database
+# Uses Arrow streaming to process 70M records without loading into memory
+#
+# GBIF SPECIFICS:
+#   - Join key: scientificName (case-insensitive, normalized to lowercase)
+#   - Source name: 'scientificName' field
+#   - Data format: Occurrence records with coordinates and metadata
+#   - File size: ~5.4GB with 70M+ rows
+
+log_msg("=== Processing GBIF Occurrence dataset ===")
+
+# -------------------------------------------------------
+# STEP 1: Load WFO matches (small file, can load into memory)
+# -------------------------------------------------------
+gbif_wfo <- fread(file.path(output_dir, "gbif_occurrence_wfo_worldflora.csv"), data.table = FALSE)
+log_msg("Loaded GBIF WFO matches: ", nrow(gbif_wfo), " rows")
+
+# Convert empty string taxonID to NA (match Python behavior)
+gbif_wfo$taxonID[trimws(gbif_wfo$taxonID) == ""] <- NA
+
+# Build source name and normalized key for deduplication
+gbif_wfo$src_name <- gbif_wfo$scientificName
+gbif_wfo$src_norm <- tolower(trimws(gbif_wfo$src_name))
+gbif_wfo$scientific_norm <- tolower(trimws(gbif_wfo$scientificName))
+
+# Deduplication logic (same as Python canonical)
+gbif_wfo$genus_rank <- 0  # GBIF doesn't have genus matching
+gbif_wfo$new_accepted_rank <- as.integer(!tolower(trimws(gbif_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
+gbif_wfo$status_rank <- as.integer(tolower(trimws(gbif_wfo$taxonomicStatus)) != "accepted")
+gbif_wfo$subseq_rank <- suppressWarnings(as.numeric(gbif_wfo$Subseq))
+gbif_wfo$subseq_rank[is.na(gbif_wfo$subseq_rank)] <- 9999999
+
+# Create normalized join key BEFORE deduplication
+gbif_wfo$join_key_normalized <- tolower(trimws(gbif_wfo$scientificName))
+
+# Deduplicate matches: keep best match per scientificName
+gbif_wfo_dedup <- gbif_wfo %>%
+  group_by(join_key_normalized) %>%
+  arrange(genus_rank, new_accepted_rank, status_rank, subseq_rank, .by_group = TRUE) %>%
+  slice(1) %>%
+  ungroup()
+
+# Rename columns to WFO standard naming
+gbif_wfo_clean <- gbif_wfo_dedup %>%
+  select(
+    scientificName,
+    join_key_normalized,
+    wf_spec_name = spec.name,
+    wfo_taxon_id = taxonID,
+    wfo_scientific_name = scientificName.1,
+    wfo_taxonomic_status = taxonomicStatus,
+    wfo_accepted_nameusage_id = acceptedNameUsageID,
+    wfo_new_accepted = New.accepted,
+    wfo_original_status = Old.status,
+    wfo_original_id = Old.ID,
+    wfo_original_name = Old.name,
+    wfo_matched = Matched,
+    wfo_unique = Unique,
+    wfo_fuzzy = Fuzzy,
+    wfo_fuzzy_distance = Fuzzy.dist
+  )
+
+# -------------------------------------------------------
+# STEP 2: Stream GBIF original data and merge with WFO
+# -------------------------------------------------------
+# Use Arrow to stream the large GBIF file without loading into memory
+log_msg("Streaming GBIF original data (5.4GB, 70M+ rows)...")
+
+# Open GBIF as Arrow dataset
+gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae.parquet"))
+
+# Add normalized join key and merge with WFO matches
+# Arrow will handle this efficiently without loading entire file
+gbif_enriched <- gbif_dataset %>%
+  mutate(join_key_normalized = tolower(trimws(scientificName))) %>%
+  left_join(
+    arrow_table(gbif_wfo_clean %>% select(-scientificName)),
+    by = "join_key_normalized"
+  ) %>%
+  select(-join_key_normalized) %>%
+  compute()  # Materialize the result
+
+log_msg("Writing GBIF enriched parquet...")
+write_parquet(gbif_enriched, file.path(output_dir, "gbif_occurrence_plantae_worldflora_enriched.parquet"), compression = "snappy")
+log_msg("GBIF complete: ", nrow(gbif_enriched), " rows")
+log_msg("  (Note: Large file with occurrence records and WFO taxonomy)\n")
+
 log_msg("=== All enriched parquets created successfully ===")
 log_msg("Output directory: ", output_dir)
