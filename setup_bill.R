@@ -155,6 +155,8 @@ required_packages <- c(
   "data.table",   # For fast data manipulation
   "dplyr",        # For data wrangling
   "readr",        # For CSV I/O
+  "tibble",       # For tibble data structures (dplyr dependency)
+  "purrr",        # For functional programming (dplyr dependency)
   "WorldFlora",   # For taxonomic matching
   "ape",          # For phylogenetic trees
   "phangorn"      # For phylogenetic analysis
@@ -172,7 +174,9 @@ for (pkg in required_packages) {
 
 if (length(missing_packages) > 0) {
   cat("\n  WARNING: ", length(missing_packages), " packages missing\n")
-  cat("  Install with: install.packages(c('", paste(missing_packages, collapse = "', '"), "'))\n\n")
+  cat("  Install with:\n")
+  cat("    install.packages(c('", paste(missing_packages, collapse = "', '"), "'), dependencies = TRUE)\n\n")
+  cat("  Note: 'dependencies = TRUE' ensures all sub-packages are also installed\n\n")
 } else {
   cat("\n  ✓ All required packages installed\n\n")
 }

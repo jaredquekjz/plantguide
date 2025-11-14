@@ -149,6 +149,8 @@ Step 3: Checking prerequisites...
     ✓ data.table
     ✓ dplyr
     ✓ readr
+    ✓ tibble
+    ✓ purrr
     ✓ WorldFlora
     ✓ ape
     ✓ phangorn
@@ -158,11 +160,15 @@ SETUP COMPLETE
 ========================================================================
 ```
 
-**If you see missing R packages**, install them:
+**If you see missing R packages**, install them with dependencies:
 
 ```r
-install.packages(c("arrow", "data.table", "dplyr", "readr", "WorldFlora", "ape", "phangorn"))
+# Install packages WITH all their dependencies (important!)
+install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr", "WorldFlora", "ape", "phangorn"),
+                 dependencies = TRUE)
 ```
+
+**Why `dependencies = TRUE`?** This ensures sub-packages like `stringr` (used by WorldFlora) are automatically installed.
 
 ---
 
@@ -354,10 +360,22 @@ If files are in a subfolder, move them up one level so they're directly in `inpu
 
 ### Problem: "Package not installed" errors
 
-**Solution**: Install missing R packages:
+**Common errors**:
+- `Error: there is no package called 'stringr'` (dependency of WorldFlora)
+- `Error: there is no package called 'tibble'` (dependency of dplyr)
+- `Error: there is no package called 'purrr'` (dependency of dplyr)
+
+**Solution**: Install missing R packages WITH dependencies:
 
 ```r
-install.packages(c("arrow", "data.table", "dplyr", "readr", "WorldFlora", "ape", "phangorn"))
+# IMPORTANT: Use dependencies = TRUE to install sub-packages automatically
+install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr", "WorldFlora", "ape", "phangorn"),
+                 dependencies = TRUE)
+```
+
+If you get an error about a specific package (like `stringr`), install it individually:
+```r
+install.packages("stringr", dependencies = TRUE)
 ```
 
 ---
