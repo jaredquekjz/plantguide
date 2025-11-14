@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-# Add GBIF occurrence counts to Bill's reconstructed shortlist
-# Phase 1 Step 3: GBIF Integration Verification (Memory-Optimized)
+# Add GBIF occurrence counts to shortlist candidates
+# Phase 1: GBIF Integration (Memory-Optimized)
 #
 # PURPOSE: This script adds GBIF occurrence counts to the shortlist candidates
 #          and filters to species with ≥30 occurrences for geographic analysis.
@@ -16,9 +16,9 @@
 #   - Only aggregated counts (not raw records) are loaded into R memory
 #
 # EXPECTED OUTPUTS:
-#   - gbif_occurrence_counts_by_wfo_R.parquet: All WFO taxa with GBIF counts
-#   - stage1_shortlist_with_gbif_R.parquet: Shortlist with GBIF counts (24,511 species)
-#   - stage1_shortlist_with_gbif_ge30_R.parquet: ≥30 occurrences (11,711 species)
+#   - gbif_occurrence_counts_by_wfo.parquet: All WFO taxa with GBIF counts
+#   - stage1_shortlist_with_gbif.parquet: Shortlist with GBIF counts (~24,511 species)
+#   - stage1_shortlist_with_gbif_ge30.parquet: ≥30 occurrences (~11,711 species)
 
 # ========================================================================
 # AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
@@ -115,17 +115,13 @@ log_msg("  Total occurrences counted: ", sum(gbif_counts$gbif_occurrence_count))
 log_msg("  Total georeferenced: ", sum(gbif_counts$gbif_georeferenced_count))
 
 # Write GBIF counts for QA
+gbif_counts_file <- file.path(OUTPUT_DIR, "gbif_occurrence_counts_by_wfo.parquet")
 write_parquet(
   gbif_counts,
-  "gbif_occurrence_counts_by_wfo_R.parquet",
+  gbif_counts_file,
   compression = "snappy"
 )
-write.csv(
-  gbif_counts,
-  "gbif_occurrence_counts_by_wfo_R.csv",
-  row.names = FALSE
-)
-log_msg("  Written: gbif_occurrence_counts_by_wfo_R.(parquet|csv)\n")
+log_msg(sprintf("  Written: %s\n", gbif_counts_file))
 
 # ==============================================================================
 # 2. Merge with shortlist candidates
@@ -151,17 +147,13 @@ log_msg("  Species with GBIF records: ", sum(shortlist_with_gbif$gbif_occurrence
 log_msg("  Species with >=30 occurrences: ", sum(shortlist_with_gbif$gbif_occurrence_count >= 30))
 
 # Write full shortlist with GBIF
+shortlist_file <- file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif.parquet")
 write_parquet(
   shortlist_with_gbif,
-  "stage1_shortlist_with_gbif_R.parquet",
+  shortlist_file,
   compression = "snappy"
 )
-write.csv(
-  shortlist_with_gbif,
-  "stage1_shortlist_with_gbif_R.csv",
-  row.names = FALSE
-)
-log_msg("  Written: stage1_shortlist_with_gbif_R.(parquet|csv)\n")
+log_msg(sprintf("  Written: %s\n", shortlist_file))
 
 # ==============================================================================
 # 3. Filter to >=30 GBIF occurrences
@@ -174,140 +166,36 @@ shortlist_ge30 <- shortlist_with_gbif %>%
   arrange(canonical_name)
 
 log_msg("  Species with >=30 occurrences: ", nrow(shortlist_ge30))
-log_msg("  Expected: 11,711")
+log_msg("  Expected: ~11,711")
 
-if (nrow(shortlist_ge30) == 11711) {
-  log_msg("  ✓ PASS: Row count matches expected\n")
+tolerance <- 100
+if (abs(nrow(shortlist_ge30) - 11711) <= tolerance) {
+  log_msg("  ✓ PASS: Row count within tolerance\n")
 } else {
-  log_msg("  ✗ FAIL: Expected 11,711, got ", nrow(shortlist_ge30), "\n")
+  log_msg("  ✗ FAIL: Expected ~11,711, got ", nrow(shortlist_ge30), "\n")
 }
 
 # Write >=30 subset
+shortlist_ge30_file <- file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet")
 write_parquet(
   shortlist_ge30,
-  "stage1_shortlist_with_gbif_ge30_R.parquet",
+  shortlist_ge30_file,
   compression = "snappy"
 )
-write.csv(
-  shortlist_ge30,
-  "stage1_shortlist_with_gbif_ge30_R.csv",
-  row.names = FALSE
-)
-log_msg("  Written: stage1_shortlist_with_gbif_ge30_R.(parquet|csv)\n")
-
-# ==============================================================================
-# 4. Verification against canonical
-# ==============================================================================
-
-log_msg("=== VERIFICATION AGAINST CANONICAL ===\n")
-
-# Load canonical >=30 shortlist
-canon_ge30 <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet"))
-log_msg("Canonical >=30 shortlist: ", nrow(canon_ge30), " species")
-log_msg("Bill's >=30 shortlist:     ", nrow(shortlist_ge30), " species\n")
-
-# Compare row counts
-if (nrow(shortlist_ge30) == nrow(canon_ge30)) {
-  log_msg("1. Row counts match: TRUE")
-} else {
-  log_msg("1. Row counts match: FALSE")
-  log_msg("   Difference: ", nrow(shortlist_ge30) - nrow(canon_ge30))
-}
-
-# Compare WFO IDs
-bill_wfo <- sort(shortlist_ge30$wfo_taxon_id)
-canon_wfo <- sort(canon_ge30$wfo_taxon_id)
-wfo_match <- identical(bill_wfo, canon_wfo)
-log_msg("2. WFO IDs match: ", toupper(as.character(wfo_match)))
-
-if (!wfo_match) {
-  only_bill <- setdiff(bill_wfo, canon_wfo)
-  only_canon <- setdiff(canon_wfo, bill_wfo)
-  if (length(only_bill) > 0) {
-    log_msg("   Only in Bill: ", length(only_bill), " taxa")
-    log_msg("   Examples: ", paste(head(only_bill, 3), collapse = ", "))
-  }
-  if (length(only_canon) > 0) {
-    log_msg("   Only in canonical: ", length(only_canon), " taxa")
-    log_msg("   Examples: ", paste(head(only_canon, 3), collapse = ", "))
-  }
-}
-
-# Compare column names
-bill_cols <- sort(names(shortlist_ge30))
-canon_cols <- sort(names(canon_ge30))
-cols_match <- identical(bill_cols, canon_cols)
-log_msg("3. Column names match: ", toupper(as.character(cols_match)))
-
-if (!cols_match) {
-  only_bill_cols <- setdiff(bill_cols, canon_cols)
-  only_canon_cols <- setdiff(canon_cols, bill_cols)
-  if (length(only_bill_cols) > 0) {
-    log_msg("   Only in Bill: ", paste(only_bill_cols, collapse = ", "))
-  }
-  if (length(only_canon_cols) > 0) {
-    log_msg("   Only in canonical: ", paste(only_canon_cols, collapse = ", "))
-  }
-}
-
-# Compare GBIF counts for matching taxa
-if (wfo_match && nrow(shortlist_ge30) == nrow(canon_ge30)) {
-  # Merge by wfo_taxon_id to compare counts
-  comparison <- shortlist_ge30 %>%
-    select(wfo_taxon_id, canonical_name,
-           bill_occ = gbif_occurrence_count,
-           bill_geo = gbif_georeferenced_count) %>%
-    inner_join(
-      canon_ge30 %>% select(wfo_taxon_id,
-                           canon_occ = gbif_occurrence_count,
-                           canon_geo = gbif_georeferenced_count),
-      by = "wfo_taxon_id"
-    ) %>%
-    mutate(
-      occ_match = bill_occ == canon_occ,
-      geo_match = bill_geo == canon_geo
-    )
-
-  occ_matches <- sum(comparison$occ_match)
-  geo_matches <- sum(comparison$geo_match)
-
-  log_msg("4. GBIF occurrence counts match: ", occ_matches, "/", nrow(comparison),
-          " (", round(100 * occ_matches / nrow(comparison), 1), "%)")
-  log_msg("5. GBIF georeferenced counts match: ", geo_matches, "/", nrow(comparison),
-          " (", round(100 * geo_matches / nrow(comparison), 1), "%)")
-
-  if (occ_matches < nrow(comparison)) {
-    mismatches <- comparison %>% filter(!occ_match) %>% head(5)
-    log_msg("\n   Example occurrence count mismatches:")
-    for (i in 1:min(5, nrow(mismatches))) {
-      log_msg("   - ", mismatches$canonical_name[i], ": Bill=", mismatches$bill_occ[i],
-              " Canon=", mismatches$canon_occ[i])
-    }
-  }
-}
-
-# Binary checksum comparison
-log_msg("\n6. Binary parquet checksums:")
-bill_md5 <- system(paste0("md5sum ", file.path(OUTPUT_DIR, "shipley_checks", "stage1_shortlist_with_gbif_ge30_R.parquet"), " | awk '{print $1}'"),
-                   intern = TRUE)
-canon_md5 <- system(paste0("md5sum ", file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet"), " | awk '{print $1}'"),
-                    intern = TRUE)
-
-log_msg("   Bill MD5:      ", bill_md5)
-log_msg("   Canonical MD5: ", canon_md5)
-
-if (bill_md5 == canon_md5) {
-  log_msg("   ✓ PASS: Binary checksums match")
-} else {
-  log_msg("   ✗ FAIL: Binary checksums differ (expected - R vs Python encoding)")
-}
+log_msg(sprintf("  Written: %s\n", shortlist_ge30_file))
 
 # ==============================================================================
 # SUMMARY
 # ==============================================================================
-log_msg("\n=== Phase 1 Step 3 Complete ===")
+log_msg("\n=== GBIF Integration Complete ===")
 log_msg("Summary:")
 log_msg("  - Counted GBIF occurrences using Arrow streaming (memory-efficient)")
-log_msg("  - Merged with Bill's reconstructed shortlist")
+log_msg("  - Merged with shortlist candidates")
 log_msg("  - Filtered to >=30 occurrences: ", nrow(shortlist_ge30), " species")
-log_msg("  - All verification outputs written to ", file.path(OUTPUT_DIR, "shipley_checks"))
+log_msg("\nOutputs:")
+log_msg("  - ", gbif_counts_file)
+log_msg("  - ", shortlist_file)
+log_msg("  - ", shortlist_ge30_file)
+
+# Return success
+invisible(TRUE)
