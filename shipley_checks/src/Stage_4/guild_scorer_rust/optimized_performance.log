@@ -1,0 +1,128 @@
+warning: function `filter_to_guild` is never used
+   --> src/metrics/m3_insect_control.rs:274:4
+    |
+274 | fn filter_to_guild(df: &DataFrame, plant_ids: &[String], col: &str) -> Result<DataFrame> {
+    |    ^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `count_matches` is never used
+   --> src/metrics/m3_insect_control.rs:447:4
+    |
+447 | fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+    |    ^^^^^^^^^^^^^
+
+warning: function `filter_to_guild` is never used
+   --> src/metrics/m4_disease_control.rs:168:4
+    |
+168 | fn filter_to_guild(df: &DataFrame, plant_ids: &[String], col: &str) -> Result<DataFrame> {
+    |    ^^^^^^^^^^^^^^^
+
+warning: function `count_matches` is never used
+   --> src/metrics/m4_disease_control.rs:231:4
+    |
+231 | fn count_matches(list_a: &[String], list_b: &[String]) -> usize {
+    |    ^^^^^^^^^^^^^
+
+warning: field `climate_tier` is never read
+  --> src/scorer.rs:25:5
+   |
+20 | pub struct GuildScorer {
+   |            ----------- field in this struct
+...
+25 |     climate_tier: String,
+   |     ^^^^^^^^^^^^
+
+warning: `guild_scorer_rust` (lib) generated 5 warnings
+    Finished `release` profile [optimized] target(s) in 0.11s
+     Running `shipley_checks/src/Stage_4/guild_scorer_rust/target/release/test_3_guilds`
+Initializing Guild Scorer (Rust)...
+
+
+Initializing Guild Scorer (Rust)...
+Loading calibration: "shipley_checks/stage4/normalization_params_7plant.json"
+CSR calibration not found - using fixed thresholds
+Initializing Faith's PD calculator...
+Loading phylogenetic tree from: data/stage1/phlogeny/compact_tree_11711.bin
+  Nodes: 19102
+  Leaves: 11010
+Loading mapping from: data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv
+  WFO mappings: 11673
+PhyloPDCalculator initialized (pure Rust CompactTree).
+Loading datasets (LazyFrame schema-only mode)...
+  Plants: 11711 (lazy: schema only)
+  Organisms: 11711 (lazy: schema only)
+  Fungi: 11711 (lazy: schema only)
+  Herbivore predators: 934
+  Insect parasites: 1203
+  Pathogen antagonists: 942
+
+Guild Scorer initialized:
+  Calibration: 7plant
+  Climate tier: tier_3_humid_temperate
+  Plants: 11711
+
+
+======================================================================
+PARITY TEST: 3 Guilds vs R Implementation
+======================================================================
+
+Forest Garden
+  Expected:  90.467710
+  Rust:      90.467737
+  Difference: 0.000027
+  Status:    ✅ PERFECT
+  Metrics:
+    M1: Pest Independence     58.6
+    M2: Growth Compatibility  100.0
+    M3: Insect Control        100.0
+    M4: Disease Control       100.0
+    M5: Beneficial Fungi      97.7
+    M6: Structural Diversity  85.0
+    M7: Pollinator Support    92.0
+
+Competitive Clash
+  Expected:  53.011553
+  Rust:      53.011554
+  Difference: 0.000001
+  Status:    ✅ PERFECT
+  Metrics:
+    M1: Pest Independence     70.4
+    M2: Growth Compatibility  2.0
+    M3: Insect Control        100.0
+    M4: Disease Control       100.0
+    M5: Beneficial Fungi      97.1
+    M6: Structural Diversity  1.6
+    M7: Pollinator Support    0.0
+
+Stress-Tolerant
+  Expected:  42.380873
+  Rust:      42.380900
+  Difference: 0.000027
+  Status:    ✅ PERFECT
+  Metrics:
+    M1: Pest Independence     36.7
+    M2: Growth Compatibility  100.0
+    M3: Insect Control        0.0
+    M4: Disease Control       100.0
+    M5: Beneficial Fungi      45.0
+    M6: Structural Diversity  14.9
+    M7: Pollinator Support    0.0
+
+======================================================================
+SUMMARY
+======================================================================
+Maximum difference: 0.000027
+Threshold: < 0.0001 (0.01%)
+
+======================================================================
+PERFORMANCE (Rust - Debug Build)
+======================================================================
+Initialization: 16.264 ms
+3 Guild Scoring: 24.336 ms total
+  Guild 1: 10.385 ms
+  Guild 2: 7.776 ms
+  Guild 3: 6.174 ms
+Average per guild: 8.112 ms
+
+✅ PARITY ACHIEVED: 100% match with R implementation
