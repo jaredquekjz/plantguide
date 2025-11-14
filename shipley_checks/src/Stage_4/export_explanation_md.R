@@ -212,7 +212,7 @@ format_m3_section <- function(guild_result) {
 
       # Sort categories by count (descending)
       category_counts <- biocontrol_profile$predator_category_counts
-      category_counts <- category_counts[order(-category_counts)]
+      category_counts <- category_counts[order(unlist(category_counts), decreasing = TRUE)]
 
       total_predators <- biocontrol_profile$total_unique_predators
       for (category_name in names(category_counts)) {
@@ -229,7 +229,7 @@ format_m3_section <- function(guild_result) {
 
       # Sort categories by count (descending)
       category_counts <- biocontrol_profile$herbivore_category_counts
-      category_counts <- category_counts[order(-category_counts)]
+      category_counts <- category_counts[order(unlist(category_counts), decreasing = TRUE)]
 
       total_herbivores <- sum(unlist(category_counts))
       for (category_name in names(category_counts)) {

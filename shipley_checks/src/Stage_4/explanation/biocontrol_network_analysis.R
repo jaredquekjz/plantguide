@@ -191,7 +191,7 @@ analyze_biocontrol_network <- function(m3_result,
   herbivore_category_counts <- if (length(herbivore_category_map) > 0) {
     table(herbivore_category_map)
   } else {
-    table()
+    list()
   }
 
   # Add category columns to matched predator pairs
