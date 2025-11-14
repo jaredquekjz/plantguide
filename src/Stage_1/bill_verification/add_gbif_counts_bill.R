@@ -131,7 +131,7 @@ log_msg(sprintf("  Written: %s\n", gbif_counts_file))
 log_msg("Step 2: Merging GBIF counts with shortlist...")
 
 # Load Bill's reconstructed shortlist from Phase 1 Step 2
-shortlist <- read_parquet("stage1_shortlist_candidates_R.parquet")
+shortlist <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet"))
 log_msg("  Loaded shortlist: ", nrow(shortlist), " species")
 
 # Merge GBIF counts (LEFT JOIN, coalesce to 0)
