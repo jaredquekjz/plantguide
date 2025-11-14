@@ -691,114 +691,92 @@ log_msg("TRY Selected Traits complete: ", nrow(try_sel_enriched), " rows\n")
 
 log_msg("=== Processing GBIF Occurrence dataset ===")
 
-# -------------------------------------------------------
-# STEP 1: Load WFO matches (small file, can load into memory)
-# -------------------------------------------------------
-gbif_wfo <- fread(file.path(output_dir, "gbif_occurrence_wfo_worldflora.csv"), data.table = FALSE)
-log_msg("Loaded GBIF WFO matches: ", nrow(gbif_wfo), " rows")
-
-# Convert empty string taxonID to NA (match Python behavior)
-gbif_wfo$taxonID[trimws(gbif_wfo$taxonID) == ""] <- NA
-
-# Build source name and normalized key for deduplication
-gbif_wfo$src_name <- gbif_wfo$scientificName
-gbif_wfo$src_norm <- tolower(trimws(gbif_wfo$src_name))
-gbif_wfo$scientific_norm <- tolower(trimws(gbif_wfo$scientificName))
-
-# Deduplication logic (same as Python canonical)
-gbif_wfo$genus_rank <- 0  # GBIF doesn't have genus matching
-gbif_wfo$new_accepted_rank <- as.integer(!tolower(trimws(gbif_wfo$New.accepted)) %in% c("true", "t", "1", "yes"))
-gbif_wfo$status_rank <- as.integer(tolower(trimws(gbif_wfo$taxonomicStatus)) != "accepted")
-gbif_wfo$subseq_rank <- suppressWarnings(as.numeric(gbif_wfo$Subseq))
-gbif_wfo$subseq_rank[is.na(gbif_wfo$subseq_rank)] <- 9999999
-
-# Create normalized join key BEFORE deduplication
-gbif_wfo$join_key_normalized <- tolower(trimws(gbif_wfo$scientificName))
-
-# Deduplicate matches: keep best match per scientificName
-gbif_wfo_dedup <- gbif_wfo %>%
-  group_by(join_key_normalized) %>%
-  arrange(genus_rank, new_accepted_rank, status_rank, subseq_rank, .by_group = TRUE) %>%
-  slice(1) %>%
-  ungroup()
-
-# Rename columns to WFO standard naming
-gbif_wfo_clean <- gbif_wfo_dedup %>%
-  select(
-    join_key_normalized,
-    wf_spec_name = spec.name,
-    wfo_taxon_id = taxonID,
-    wfo_scientific_name = scientificName,
-    wfo_taxonomic_status = taxonomicStatus,
-    wfo_accepted_nameusage_id = acceptedNameUsageID,
-    wfo_new_accepted = New.accepted,
-    wfo_original_status = Old.status,
-    wfo_original_id = Old.ID,
-    wfo_original_name = Old.name,
-    wfo_matched = Matched,
-    wfo_unique = Unique,
-    wfo_fuzzy = Fuzzy,
-    wfo_fuzzy_distance = Fuzzy.dist
-  )
-
-# -------------------------------------------------------
-# STEP 2: Process GBIF using DuckDB (out-of-core join)
-# -------------------------------------------------------
-# DuckDB is used for GBIF because Arrow had memory issues with 70M row joins
-# DuckDB processes data out-of-core without loading into memory
-log_msg("Processing GBIF with DuckDB (out-of-core, memory-efficient)...")
-log_msg("  Reading 5.4GB parquet with 70M+ rows...")
-
 # Load DuckDB library
 suppressPackageStartupMessages(library(duckdb))
 
-# Create DuckDB connection (in-memory database for queries)
+# Create DuckDB connection
 con <- dbConnect(duckdb())
 
-# Register WFO lookup table in DuckDB
-dbWriteTable(con, "wfo_lookup", gbif_wfo_clean, overwrite = TRUE)
+# -------------------------------------------------------
+# STEP 1: Deduplicate WFO matches in DuckDB
+# -------------------------------------------------------
+# Use same ranking logic as ellenberg Python
+log_msg("Deduplicating GBIF WFO matches in DuckDB...")
+dbExecute(con, sprintf("
+  CREATE OR REPLACE TEMP VIEW gbif_matches AS
+  SELECT *
+  FROM (
+    SELECT
+      SpeciesName,
+      taxonID AS wfo_taxon_id,
+      scientificName AS wfo_scientific_name,
+      taxonomicStatus AS wfo_taxonomic_status,
+      NULLIF(acceptedNameUsageID, '') AS wfo_accepted_nameusage_id,
+      \"New.accepted\" AS wfo_new_accepted,
+      \"Old.status\" AS wfo_original_status,
+      \"Old.ID\" AS wfo_original_id,
+      \"Old.name\" AS wfo_original_name,
+      Matched AS wfo_matched,
+      \"Unique\" AS wfo_unique,
+      Fuzzy AS wfo_fuzzy,
+      \"Fuzzy.dist\" AS wfo_fuzzy_distance,
+      ROW_NUMBER() OVER (
+        PARTITION BY SpeciesName
+        ORDER BY
+          CASE WHEN COALESCE(Matched, FALSE) THEN 0 ELSE 1 END,
+          CASE WHEN NULLIF(trim(taxonID), '') IS NOT NULL THEN 0 ELSE 1 END,
+          CASE WHEN lower(trim(scientificName)) = lower(trim(SpeciesName)) THEN 0 ELSE 1 END,
+          CASE WHEN split_part(lower(trim(scientificName)), ' ', 1) = split_part(lower(trim(SpeciesName)), ' ', 1) THEN 0 ELSE 1 END,
+          CASE WHEN \"New.accepted\" THEN 0 ELSE 1 END,
+          CASE WHEN lower(taxonomicStatus) = 'accepted' THEN 0 ELSE 1 END,
+          Subseq
+      ) AS rn
+    FROM read_csv_auto('%s', header=TRUE)
+  )
+  WHERE rn = 1
+", file.path(output_dir, "gbif_occurrence_wfo_worldflora.csv")))
 
-# Get GBIF input path
+log_msg("  WFO matches deduplicated")
+
+# -------------------------------------------------------
+# STEP 2: Join GBIF occurrence data with WFO matches
+# -------------------------------------------------------
+# Join on: trim(scientificName) = trim(SpeciesName)
+# This works because SpeciesName in WFO CSV is the original GBIF name (with authors)
+log_msg("Joining GBIF occurrences with WFO taxonomy (out-of-core)...")
+log_msg("  Processing 5.4GB parquet with 49M+ rows...")
+
 gbif_input_path <- file.path(INPUT_DIR, "gbif_occurrence_plantae.parquet")
 gbif_output_path <- file.path(output_dir, "gbif_occurrence_plantae_worldflora_enriched.parquet")
 
-log_msg("  Performing out-of-core join in DuckDB...")
-
-# Use DuckDB SQL to:
-#   1. Read parquet file (streaming, not loaded to memory)
-#   2. Normalize scientificName (trim + lowercase)
-#   3. LEFT JOIN with WFO lookup
-#   4. Write result directly to parquet
-# All operations happen out-of-core - no 70M rows in memory!
 dbExecute(con, sprintf("
   COPY (
     SELECT
-      gbif.*,
-      wfo.wf_spec_name,
-      wfo.wfo_taxon_id,
-      wfo.wfo_scientific_name,
-      wfo.wfo_taxonomic_status,
-      wfo.wfo_accepted_nameusage_id,
-      wfo.wfo_new_accepted,
-      wfo.wfo_original_status,
-      wfo.wfo_original_id,
-      wfo.wfo_original_name,
-      wfo.wfo_matched,
-      wfo.wfo_unique,
-      wfo.wfo_fuzzy,
-      wfo.wfo_fuzzy_distance
-    FROM read_parquet('%s') AS gbif
-    LEFT JOIN wfo_lookup AS wfo
-      ON LOWER(TRIM(gbif.scientificName)) = wfo.join_key_normalized
+      o.*,
+      m.wfo_taxon_id,
+      m.wfo_scientific_name,
+      m.wfo_taxonomic_status,
+      m.wfo_accepted_nameusage_id,
+      m.wfo_new_accepted,
+      m.wfo_original_status,
+      m.wfo_original_id,
+      m.wfo_original_name,
+      m.wfo_matched,
+      m.wfo_unique,
+      m.wfo_fuzzy,
+      m.wfo_fuzzy_distance
+    FROM read_parquet('%s') o
+    LEFT JOIN gbif_matches m
+      ON trim(o.scientificName) = trim(m.SpeciesName)
   ) TO '%s' (FORMAT PARQUET, COMPRESSION SNAPPY)
 ", gbif_input_path, gbif_output_path))
 
 log_msg("  Written: ", gbif_output_path)
-log_msg("GBIF complete: 70M+ rows (processed out-of-core with DuckDB)")
+log_msg("GBIF complete: 49M+ rows enriched with WFO taxonomy")
 
 # Disconnect DuckDB
 dbDisconnect(con, shutdown = TRUE)
-log_msg("  (Note: Large file with occurrence records and WFO taxonomy)\n")
+log_msg("  (Note: Used for GBIF counts and environmental sampling)\n")
 
 log_msg("=== All enriched parquets created successfully ===")
 log_msg("Output directory: ", output_dir)
