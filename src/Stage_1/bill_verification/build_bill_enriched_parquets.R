@@ -723,11 +723,10 @@ gbif_wfo_dedup <- gbif_wfo %>%
 # Rename columns to WFO standard naming
 gbif_wfo_clean <- gbif_wfo_dedup %>%
   select(
-    scientificName,
     join_key_normalized,
     wf_spec_name = spec.name,
     wfo_taxon_id = taxonID,
-    wfo_scientific_name = scientificName.1,
+    wfo_scientific_name = scientificName,
     wfo_taxonomic_status = taxonomicStatus,
     wfo_accepted_nameusage_id = acceptedNameUsageID,
     wfo_new_accepted = New.accepted,
@@ -754,7 +753,7 @@ gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae.parqu
 gbif_enriched <- gbif_dataset %>%
   mutate(join_key_normalized = tolower(trimws(scientificName))) %>%
   left_join(
-    arrow_table(gbif_wfo_clean %>% select(-scientificName)),
+    arrow_table(gbif_wfo_clean),
     by = "join_key_normalized"
   ) %>%
   select(-join_key_normalized) %>%
