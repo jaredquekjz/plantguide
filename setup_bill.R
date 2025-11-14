@@ -161,7 +161,9 @@ required_packages <- c(
   "duckdb",       # For out-of-core GBIF processing (WARNING: 20-30 min compile time)
   "WorldFlora",   # For taxonomic matching
   "ape",          # For phylogenetic trees
-  "phangorn"      # For phylogenetic analysis
+  "phangorn",     # For phylogenetic analysis
+  "RSpectra",     # For fast eigendecomposition in Phase 3 (phylogenetic eigenvectors)
+  "optparse"      # For command-line argument parsing in Stage 3
 )
 
 missing_packages <- c()
