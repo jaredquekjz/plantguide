@@ -748,24 +748,21 @@ log_msg("Streaming GBIF original data (5.4GB, 70M+ rows)...")
 # Open GBIF as Arrow dataset
 gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae.parquet"))
 
-# Prepare lookup table with normalized keys
-# Arrow doesn't support nested R functions, so prepare clean lookup first
+# Prepare WFO lookup as Arrow table
 log_msg("Preparing WFO lookup table...")
 wfo_lookup <- arrow_table(gbif_wfo_clean)
 
-# Merge with WFO matches using Arrow operations
-# Use collect() to bring into R for the join since Arrow has limited join capabilities
-log_msg("Streaming and merging GBIF data...")
-log_msg("  WARNING: This loads 70M rows into memory (~10-15GB RAM required)")
-gbif_orig <- gbif_dataset %>% collect()
-log_msg("  Loaded ", nrow(gbif_orig), " GBIF occurrence rows")
+# Stream GBIF data and merge using Arrow compute (NO memory load!)
+# Use Arrow's native string functions: utf8_lower() and str_trim()
+log_msg("Streaming and merging GBIF data using Arrow compute engine...")
+log_msg("  Processing 70M rows without loading into memory...")
 
-# Create normalized join key in R
-gbif_orig$join_key_normalized <- tolower(trimws(gbif_orig$scientificName))
-
-# Merge with WFO matches
-gbif_enriched <- gbif_orig %>%
-  left_join(as.data.frame(wfo_lookup), by = "join_key_normalized") %>%
+gbif_enriched <- gbif_dataset %>%
+  # Create normalized join key using Arrow's native string functions
+  mutate(join_key_normalized = utf8_lower(str_trim(scientificName))) %>%
+  # Join with WFO lookup table (Arrow handles this efficiently)
+  left_join(wfo_lookup, by = "join_key_normalized") %>%
+  # Remove the temporary join key
   select(-join_key_normalized)
 
 log_msg("Writing GBIF enriched parquet...")
