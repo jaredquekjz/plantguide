@@ -264,26 +264,15 @@ try_counts <- try_full %>%
 
 cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\n")
 
-# Read AusTraits overlap traits (use Bill's enriched parquet)
-cat("Counting AusTraits overlap numeric traits...\n")
-austraits_enriched_full <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "austraits_traits_worldflora_enriched.parquet")) %>%
-  filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
-
-# Filter for TRY-overlap numeric traits
-target_traits <- c('leaf_area', 'leaf_N_per_dry_mass', 'leaf_mass_per_area',
-                   'plant_height', 'diaspore_dry_mass', 'wood_density',
-                   'leaf_dry_matter_content', 'leaf_thickness')
-
-austraits_enriched <- austraits_enriched_full %>%
-  filter(trait_name %in% target_traits)
-
-austraits_counts <- austraits_enriched %>%
-  mutate(value_numeric = suppressWarnings(as.numeric(trimws(value)))) %>%
-  filter(!is.na(value_numeric)) %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(austraits_numeric_count = n_distinct(trait_name), .groups = "drop")
-
-cat("  Species with >=3 AusTraits traits:", sum(austraits_counts$austraits_numeric_count >= 3), "\n")
+# Note: AusTraits file is taxonomy-only (no trait measurements)
+# Skip trait counting for AusTraits since we don't have trait data
+cat("Skipping AusTraits trait counting (taxonomy-only dataset)...\n")
+austraits_counts <- data.frame(
+  wfo_taxon_id = character(0),
+  austraits_numeric_count = integer(0),
+  stringsAsFactors = FALSE
+)
+cat("  Species with >=3 AusTraits traits: 0 (no trait data available)\n")
 
 # Build presence flags
 cat("\nBuilding dataset presence flags...\n")
