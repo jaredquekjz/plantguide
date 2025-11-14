@@ -753,17 +753,18 @@ log_msg("Preparing WFO lookup table...")
 wfo_lookup <- arrow_table(gbif_wfo_clean)
 
 # Stream GBIF data and merge using Arrow compute (NO memory load!)
-# Use Arrow's native string functions: utf8_lower() and str_trim()
+# Use trimws() and tolower() in separate steps (Arrow doesn't support nested functions)
 log_msg("Streaming and merging GBIF data using Arrow compute engine...")
 log_msg("  Processing 70M rows without loading into memory...")
 
 gbif_enriched <- gbif_dataset %>%
-  # Create normalized join key using Arrow's native string functions
-  mutate(join_key_normalized = utf8_lower(str_trim(scientificName))) %>%
+  # Create normalized join key in two steps (Arrow doesn't support nested functions)
+  mutate(scientificName_trimmed = trimws(scientificName)) %>%
+  mutate(join_key_normalized = tolower(scientificName_trimmed)) %>%
   # Join with WFO lookup table (Arrow handles this efficiently)
   left_join(wfo_lookup, by = "join_key_normalized") %>%
-  # Remove the temporary join key
-  select(-join_key_normalized)
+  # Remove temporary columns
+  select(-scientificName_trimmed, -join_key_normalized)
 
 log_msg("Writing GBIF enriched parquet...")
 write_parquet(gbif_enriched, file.path(output_dir, "gbif_occurrence_plantae_worldflora_enriched.parquet"), compression = "snappy")
