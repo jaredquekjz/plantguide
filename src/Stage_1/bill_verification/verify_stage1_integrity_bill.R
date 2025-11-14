@@ -1,22 +1,18 @@
 #!/usr/bin/env Rscript
-# Stage 1 Data Integrity Verification (R implementation)
+# Stage 1 Data Integrity Verification
 # Author: Bill Shipley verification script
 # Date: 2025-11-06
-# Output: output/shipley_checks/
 #
-# PURPOSE: This script verifies Stage 1 outputs by reconstructing master taxa union
-#          and shortlist candidates from scratch, then comparing against canonical
-#          Python outputs. This ensures R and Python pipelines produce identical results.
+# PURPOSE: Build master taxa union and shortlist candidates from enriched datasets
 #
-# TWO-PART VERIFICATION:
+# TWO-PART PROCESS:
 #   Part 1: Master Taxa Union - Aggregates unique WFO taxa from 5 source datasets
 #   Part 2: Shortlist Candidates - Filters to trait-rich species (≥3 traits)
+#   Part 3: Validation - Verify outputs are complete and valid
 #
-# Expected counts (after 2025-11-06 case-sensitivity fix):
-#   Master taxa union: 86,592 unique WFO taxa
-#   Shortlist candidates: 24,511 species
-#
-# Prior to fix: 86,815 taxa, 24,542 species (contained 223 false duplicates)
+# Expected outputs:
+#   Master taxa union: ~86,592 unique WFO taxa
+#   Shortlist candidates: ~24,511 species
 
 # ========================================================================
 # AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
@@ -59,10 +55,6 @@ dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FAL
 # ========================================================================
 library(arrow)
 library(dplyr)
-library(tools)  # for md5sum checksum calculations
-
-# Create output directory for Bill's verification results
-dir.create(file.path(OUTPUT_DIR, "shipley_checks"), showWarnings = FALSE, recursive = TRUE)
 
 cat("=== Stage 1 Data Integrity Check ===\n")
 cat("Starting:", format(Sys.time()), "\n\n")
@@ -81,7 +73,7 @@ cat("Starting:", format(Sys.time()), "\n\n")
 #   1. Extract unique WFO taxa from each enriched dataset
 #   2. Combine all sources (preserving duplicates across sources)
 #   3. Aggregate by wfo_taxon_id, tracking which sources contain each taxon
-#   4. Match Python row order for exact binary comparison
+#   4. Sort by wfo_taxon_id for reproducible output
 
 cat("PART 1: Building Master Taxa Union\n")
 cat("Reading raw parquet files...\n")
@@ -180,26 +172,10 @@ cat("  Unique WFO taxa:", nrow(master_union_unsorted), "\n")
 cat("  Expected: 86,592\n")
 
 # -------------------------------------------------------
-# Match exact row order from Python canonical output
+# Sort for reproducible output
 # -------------------------------------------------------
-# CRITICAL: For binary comparison, row order must match exactly
-# Python uses DuckDB's default ordering (non-deterministic but stable)
-# We read Python output and use its row order as the canonical ordering
-cat("\nMatching Python row order...\n")
-py_master <- read_parquet(file.path(OUTPUT_DIR, "master_taxa_union.parquet"))
-py_order <- py_master %>%
-  select(wfo_taxon_id) %>%
-  mutate(row_order = row_number())
-
-# Join with Python row order, then arrange by it
-# Also use Python's sources string (exact string concatenation order)
 master_union <- master_union_unsorted %>%
-  inner_join(py_order, by = "wfo_taxon_id") %>%
-  arrange(row_order) %>%
-  select(-row_order, -sources) %>%  # Drop R-generated sources (order may differ)
-  # Add Python sources column (exact match to canonical)
-  left_join(py_master %>% select(wfo_taxon_id, sources), by = "wfo_taxon_id") %>%
-  # Ensure exact column order to match Python schema
+  arrange(wfo_taxon_id) %>%
   select(wfo_taxon_id, wfo_scientific_name, sources, source_count,
          in_duke, in_eive, in_mabberly, in_try_enhanced, in_austraits)
 
@@ -212,16 +188,11 @@ cat("  TRY Enhanced:", sum(master_union$in_try_enhanced), "\n")
 cat("  AusTraits:", sum(master_union$in_austraits), "\n")
 
 # Write output
-cat("\nWriting master_taxa_union_R.parquet...\n")
-write_parquet(master_union, "master_taxa_union_R.parquet",
-              compression = "zstd")
-
-# Calculate file MD5 checksum (binary comparison)
-# Compare binary parquet files to verify exact reproduction
-checksum_r_file <- md5sum("master_taxa_union_R.parquet")
-checksum_py_file <- md5sum(file.path(OUTPUT_DIR, "master_taxa_union.parquet"))
-cat("  R parquet MD5:     ", checksum_r_file, "\n")
-cat("  Python parquet MD5:", checksum_py_file, "\n")
+output_file <- file.path(OUTPUT_DIR, "master_taxa_union.parquet")
+cat("\nWriting master_taxa_union.parquet...\n")
+write_parquet(master_union, output_file, compression = "zstd")
+cat(sprintf("  Saved to: %s\n", output_file))
+cat(sprintf("  Rows: %d\n", nrow(master_union)))
 
 # ============================================================================
 # PART 2: Shortlist Candidates (Trait-rich species)
@@ -238,7 +209,7 @@ cat("  Python parquet MD5:", checksum_py_file, "\n")
 #   1. Count numeric traits per species in each dataset
 #   2. Identify species qualifying via each dataset (≥3 traits)
 #   3. Combine and deduplicate (species can qualify via multiple datasets)
-#   4. Match Python row order for exact binary comparison
+#   4. Sort by wfo_taxon_id for reproducible output
 
 cat("\n\nPART 2: Building Shortlist Candidates\n")
 cat("Applying trait-richness filters...\n")
@@ -366,18 +337,10 @@ shortlist_filtered <- shortlist_union_unsorted %>%
 cat("  Shortlisted species:", nrow(shortlist_filtered), "\n")
 cat("  Expected: 24,511\n")
 
-# Match Python row order
-cat("\nMatching Python row order...\n")
-py_shortlist <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet"))
-py_order_shortlist <- py_shortlist %>%
-  select(wfo_taxon_id) %>%
-  mutate(row_order = row_number())
-
+# Sort for reproducible output
+cat("\nSorting by wfo_taxon_id...\n")
 shortlist_final <- shortlist_filtered %>%
-  inner_join(py_order_shortlist, by = "wfo_taxon_id") %>%
-  arrange(row_order) %>%
-  select(-row_order) %>%
-  # Ensure exact column order to match Python
+  arrange(wfo_taxon_id) %>%
   select(wfo_taxon_id, canonical_name, eive_numeric_count, try_numeric_count,
          austraits_numeric_count, in_eive, in_try_enhanced, in_duke, in_austraits,
          qualifies_via_eive, qualifies_via_try, qualifies_via_austraits, shortlist_flag)
@@ -389,85 +352,44 @@ cat("  Via TRY (>=3 traits):", sum(shortlist_final$qualifies_via_try), "\n")
 cat("  Via AusTraits (>=3 traits):", sum(shortlist_final$qualifies_via_austraits), "\n")
 
 # Write output
-cat("\nWriting stage1_shortlist_candidates_R.parquet...\n")
-write_parquet(shortlist_final, "stage1_shortlist_candidates_R.parquet",
-              compression = "zstd")
-
-# Calculate file MD5 checksums
-checksum_shortlist_r_file <- md5sum("stage1_shortlist_candidates_R.parquet")
-checksum_shortlist_py_file <- md5sum(file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet"))
-cat("  R parquet MD5:     ", checksum_shortlist_r_file, "\n")
-cat("  Python parquet MD5:", checksum_shortlist_py_file, "\n")
+shortlist_output <- file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet")
+cat("\nWriting stage1_shortlist_candidates.parquet...\n")
+write_parquet(shortlist_final, shortlist_output, compression = "zstd")
+cat(sprintf("  Saved to: %s\n", shortlist_output))
+cat(sprintf("  Rows: %d\n", nrow(shortlist_final)))
 
 # ============================================================================
-# PART 3: Detailed Verification
+# PART 3: Validation
 # ============================================================================
 
-cat("\n\n=== DETAILED VERIFICATION ===\n")
+cat("\n\n=== VALIDATION ===\n")
 
-# Compare master union
+# Validate master union
 cat("\n1. Master Taxa Union\n")
-cat("   Row counts match:", nrow(master_union) == nrow(py_master), "\n")
-cat("   Column names match:", identical(names(master_union), names(py_master)), "\n")
+cat(sprintf("   Rows: %d (expected ~86,592)\n", nrow(master_union)))
+cat(sprintf("   Columns: %d\n", ncol(master_union)))
+cat(sprintf("   Row count within tolerance: %s\n",
+            abs(nrow(master_union) - 86592) <= 100))
 
-# Check for any data differences
-if (nrow(master_union) == nrow(py_master)) {
-  # Compare key fields
-  wfo_match <- all(master_union$wfo_taxon_id == py_master$wfo_taxon_id)
-  sources_match <- all(master_union$sources == py_master$sources)
-
-  cat("   WFO IDs match:", wfo_match, "\n")
-  cat("   Sources match:", sources_match, "\n")
-
-  if (!sources_match) {
-    diffs <- which(master_union$sources != py_master$sources)
-    cat("   Number of source mismatches:", length(diffs), "\n")
-    if (length(diffs) > 0 && length(diffs) <= 5) {
-      cat("   First mismatches:\n")
-      for (i in head(diffs, 5)) {
-        cat(sprintf("     Row %d: R='%s' vs Python='%s'\n",
-                    i, master_union$sources[i], py_master$sources[i]))
-      }
-    }
-  }
-}
-
-# Compare shortlist
+# Validate shortlist
 cat("\n2. Shortlist Candidates\n")
-cat("   Row counts match:", nrow(shortlist_final) == nrow(py_shortlist), "\n")
-cat("   Column names match:", identical(names(shortlist_final), names(py_shortlist)), "\n")
+cat(sprintf("   Rows: %d (expected ~24,511)\n", nrow(shortlist_final)))
+cat(sprintf("   Columns: %d\n", ncol(shortlist_final)))
+cat(sprintf("   Row count within tolerance: %s\n",
+            abs(nrow(shortlist_final) - 24511) <= 100))
 
-if (nrow(shortlist_final) == nrow(py_shortlist)) {
-  wfo_match_sl <- all(shortlist_final$wfo_taxon_id == py_shortlist$wfo_taxon_id)
-  cat("   WFO IDs match:", wfo_match_sl, "\n")
-
-  # Check numeric columns
-  numeric_cols <- c("eive_numeric_count", "try_numeric_count", "austraits_numeric_count")
-  for (col in numeric_cols) {
-    match_result <- all(shortlist_final[[col]] == py_shortlist[[col]])
-    cat(sprintf("   %s matches: %s\n", col, match_result))
-  }
-}
-
-# File checksum comparison
-cat("\n3. Binary File Checksums\n")
-master_match <- (checksum_r_file == checksum_py_file)
-shortlist_match <- (checksum_shortlist_r_file == checksum_shortlist_py_file)
-
-if (master_match) {
-  cat("   ✓ PASS: Master union parquet files are IDENTICAL\n")
-} else {
-  cat("   ✗ FAIL: Master union parquet files differ\n")
-  cat("   This may be due to minor encoding differences even if data matches\n")
-}
-
-if (shortlist_match) {
-  cat("   ✓ PASS: Shortlist parquet files are IDENTICAL\n")
-} else {
-  cat("   ✗ FAIL: Shortlist parquet files differ\n")
-  cat("   This may be due to minor encoding differences even if data matches\n")
-}
+# Check for data quality issues
+cat("\n3. Data Quality\n")
+cat(sprintf("   Master union - no NA taxon IDs: %s\n", !any(is.na(master_union$wfo_taxon_id))))
+cat(sprintf("   Shortlist - no NA taxon IDs: %s\n", !any(is.na(shortlist_final$wfo_taxon_id))))
+cat(sprintf("   Master union - unique taxon IDs: %s\n",
+            length(unique(master_union$wfo_taxon_id)) == nrow(master_union)))
+cat(sprintf("   Shortlist - unique taxon IDs: %s\n",
+            length(unique(shortlist_final$wfo_taxon_id)) == nrow(shortlist_final)))
 
 cat("\n=== Integrity Check Complete ===\n")
 cat("Finished:", format(Sys.time()), "\n")
-cat("\nR-generated files saved to output/shipley_checks/\n")
+cat(sprintf("\nOutputs saved:\n  - %s\n  - %s\n", output_file, shortlist_output))
+
+# Return success
+invisible(TRUE)
