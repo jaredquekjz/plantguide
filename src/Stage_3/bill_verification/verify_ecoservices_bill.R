@@ -47,24 +47,30 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 
-# Configuration
+# ========================================================================
+# Configuration: Input file path
+# ========================================================================
 INPUT_FILE <- file.path(OUTPUT_DIR, 'stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
 
 cat(strrep('=', 80), '\n')
 cat('VERIFICATION: Ecosystem Services\n')
 cat(strrep('=', 80), '\n\n')
 
-# Load data
+# ========================================================================
+# STEP 1: Load CSR + ecosystem services dataset
+# ========================================================================
 cat('[1/5] Loading CSR + ecosystem services dataset...\n')
 df <- read_csv(INPUT_FILE, show_col_types = FALSE)
 cat(sprintf('  ✓ Loaded %d species\n\n', nrow(df)))
 
-# Filter to valid CSR only
+# Filter to species with valid CSR scores (ecosystem services require valid CSR)
 valid_csr <- df %>% filter(!is.na(C) & !is.na(S) & !is.na(R))
 cat(sprintf('Valid CSR: %d/%d species (%.1f%%)\n\n',
             nrow(valid_csr), nrow(df), 100*nrow(valid_csr)/nrow(df)))
 
-# [1] Service Completeness
+# ========================================================================
+# CHECK 1: Service completeness - verify all 10 services have 100% coverage
+# ========================================================================
 cat('[2/5] Checking service completeness...\n')
 services <- c('npp_rating', 'decomposition_rating', 'nutrient_cycling_rating',
               'nutrient_retention_rating', 'nutrient_loss_rating',
@@ -82,17 +88,21 @@ for (svc in services) {
 cat(sprintf('\n%s All 10 services: 100%% coverage\n\n',
             ifelse(all_complete, '✓', '✗')))
 
-# [2] NPP Patterns (Shipley Part I + II)
+# ========================================================================
+# CHECK 2: NPP patterns - verify life form stratification (Shipley Part I + II)
+# ========================================================================
 cat('[3/5] Checking NPP patterns (Shipley Part I + II)...\n')
 
-# Identify dominant strategies
+# ========================================================================
+# Classify species by dominant CSR strategy (threshold: 40%)
+# ========================================================================
 valid_csr <- valid_csr %>%
   mutate(
     dominant = case_when(
-      C >= 40 ~ 'C',
-      S >= 40 ~ 'S',
-      R >= 40 ~ 'R',
-      TRUE ~ 'Mixed'
+      C >= 40 ~ 'C',      # C-dominant (Competitive)
+      S >= 40 ~ 'S',      # S-dominant (Stress-tolerant)
+      R >= 40 ~ 'R',      # R-dominant (Ruderal)
+      TRUE ~ 'Mixed'      # Mixed strategy (no single strategy >40%)
     )
   )
 
@@ -139,10 +149,13 @@ herb_vh <- npp_by_life %>%
   pull(pct)
 herb_vh <- ifelse(length(herb_vh) == 0, 0, herb_vh[1])
 
+# Calculate stratification ratio (woody vs herbaceous Very High NPP)
 ratio <- ifelse(herb_vh > 0, woody_vh / herb_vh, NA)
 cat(sprintf('\n  Life form ratio: %.1f× (woody/herbaceous Very High)\n', ratio))
 
-# [3] Decomposition Patterns
+# ========================================================================
+# CHECK 3: Decomposition patterns - verify R ≈ C > S relationship
+# ========================================================================
 cat('\n[4/5] Checking decomposition patterns (R ≈ C > S)...\n')
 decomp_by_csr <- valid_csr %>%
   group_by(dominant, decomposition_rating) %>%
@@ -159,7 +172,9 @@ for (strat in c('C', 'R', 'S')) {
   cat(sprintf('  %s-dominant: %.1f%% Very High, %.1f%% Low\n', strat, vh, low))
 }
 
-# [4] Nutrient Loss Patterns
+# ========================================================================
+# CHECK 4: Nutrient loss patterns - verify R > C relationship
+# ========================================================================
 cat('\n[5/5] Checking nutrient loss patterns (R > C)...\n')
 nloss_by_csr <- valid_csr %>%
   group_by(dominant, nutrient_loss_rating) %>%
@@ -176,7 +191,9 @@ for (strat in c('R', 'C')) {
   cat(sprintf('  %s-dominant: %.1f%% Very High, %.1f%% Low\n', strat, vh, vl))
 }
 
-# Nitrogen Fixation
+# ========================================================================
+# CHECK 5 (Bonus): Nitrogen fixation - verify fallback (all species Low)
+# ========================================================================
 cat('\n[Bonus] Nitrogen fixation fallback check...\n')
 nfix_summary <- valid_csr %>%
   group_by(nitrogen_fixation_rating) %>%

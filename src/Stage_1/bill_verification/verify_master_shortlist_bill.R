@@ -2,7 +2,18 @@
 #
 # verify_master_shortlist_bill.R
 #
-# Purpose: Verify master taxa union and shortlist creation logic
+# PURPOSE: Verify master taxa union and shortlist candidates meet expected thresholds
+#          This is a lightweight verification script that checks counts and data quality
+#          without reconstructing datasets from scratch (unlike verify_stage1_integrity_bill.R)
+#
+# CHECKS:
+#   1. File existence
+#   2. Row counts within expected ranges
+#   3. No duplicate wfo_taxon_id values
+#   4. Required columns present
+#   5. Source coverage counts reasonable
+#   6. Trait-richness thresholds met
+#
 # Author: Pipeline verification framework
 # Date: 2025-11-07
 #
@@ -43,22 +54,27 @@ dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FAL
 
 
 
+# ========================================================================
+# LIBRARY LOADING
+# ========================================================================
 suppressPackageStartupMessages({
   library(dplyr)
   library(arrow)
 })
 
 # ==============================================================================
-# CONFIGURATION
+# CONFIGURATION: Expected counts and thresholds
 # ==============================================================================
-
+# File paths (relative to current working directory)
 MASTER_UNION_FILE <- "master_taxa_union_bill.parquet"
 SHORTLIST_FILE <- "stage1_shortlist_candidates_bill.parquet"
 
+# Expected row counts (with tolerance ranges)
 EXPECTED_MASTER_ROWS <- c(86550, 86650)  # 86,592 ± 50
 EXPECTED_SHORTLIST_ROWS <- c(24460, 24560)  # 24,511 ± 50
 
-# Expected source counts
+# Expected source counts (number of unique WFO taxa per source dataset)
+# These are approximate ranges to detect major data issues
 EXPECTED_SOURCE_COUNTS <- list(
   duke = c(10600, 10680),
   eive = c(12800, 12900),
@@ -67,17 +83,19 @@ EXPECTED_SOURCE_COUNTS <- list(
   austraits = c(28000, 28150)
 )
 
-# Expected trait-richness counts
+# Expected trait-richness counts (species with ≥3 traits per dataset)
+# These verify that shortlist filtering logic is working correctly
 EXPECTED_TRAIT_COUNTS <- list(
-  eive_ge3 = c(12550, 12650),
-  try_ge3 = c(12600, 12700),
-  austraits_ge3 = c(3800, 3900)
+  eive_ge3 = c(12550, 12650),     # Species with ≥3 EIVE indices
+  try_ge3 = c(12600, 12700),      # Species with ≥3 TRY traits
+  austraits_ge3 = c(3800, 3900)   # Species with ≥3 AusTraits traits
 )
 
 # ==============================================================================
 # HELPER FUNCTIONS
 # ==============================================================================
-
+# check_pass: Non-critical check, returns TRUE/FALSE and updates all_checks_pass
+# Prints checkmark (✓) if passes, X (✗) if fails
 check_pass <- function(condition, message) {
   if (condition) {
     cat(sprintf("  ✓ %s\n", message))
@@ -88,6 +106,8 @@ check_pass <- function(condition, message) {
   }
 }
 
+# check_critical: Critical check that exits immediately if fails
+# Used for file existence and data integrity checks that block all subsequent checks
 check_critical <- function(condition, message) {
   if (condition) {
     cat(sprintf("  ✓ %s\n", message))

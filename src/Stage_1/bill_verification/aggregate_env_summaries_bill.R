@@ -50,27 +50,54 @@ suppressPackageStartupMessages({
 })
 
 
+# ========================================================================
+# LOGGING UTILITY
+# ========================================================================
+# Simple logging function that prints to console and flushes immediately
+# This ensures output appears in real-time during long-running operations
 log_msg <- function(...) {
   cat(..., "\n", sep = "")
   flush.console()
 }
 
+# ========================================================================
+# CORE AGGREGATION FUNCTION
+# ========================================================================
+# Aggregates environmental data by species, computing mean, SD, min, max
+# for each environmental variable across all occurrence samples per species
+#
+# Input: occurrence parquet file with columns:
+#   - wfo_taxon_id: species identifier
+#   - gbifID, lon, lat: metadata columns (not aggregated)
+#   - env_cols: all other columns are treated as environmental variables
+#
+# Output: species-level summary parquet with columns:
+#   - wfo_taxon_id
+#   - <var>_avg, <var>_stddev, <var>_min, <var>_max for each env variable
 aggregate_dataset <- function(dataset) {
   log_msg("=== Aggregating ", dataset, " ===")
 
-  # Paths
-  occ_path <- file.path("data/stage1", paste0(dataset, "_occ_samples.parquet"))
+  # -----------------------------------------------------------------------
+  # PATH CONSTRUCTION
+  # -----------------------------------------------------------------------
+  # Use auto-detected INTERMEDIATE_DIR for cross-platform compatibility
+  occ_path <- file.path(INTERMEDIATE_DIR, "stage1", paste0(dataset, "_occ_samples.parquet"))
   output_path <- file.path(file.path(OUTPUT_DIR, "shipley_checks"), paste0(dataset, "_species_summary_R.parquet"))
 
   if (!file.exists(occ_path)) {
     stop("Missing occurrence parquet: ", occ_path)
   }
 
-  # Read schema to identify environmental columns
+  # -----------------------------------------------------------------------
+  # IDENTIFY ENVIRONMENTAL COLUMNS
+  # -----------------------------------------------------------------------
+  # Read schema without loading full data to determine which columns
+  # are environmental variables vs. metadata columns
   schema <- read_parquet(occ_path, as_data_frame = FALSE)$schema
   all_cols <- names(schema)
 
-  # Exclude metadata columns
+  # Exclude metadata columns - everything else is an environmental variable
+  # Metadata: wfo_taxon_id (species ID), gbifID (occurrence ID), lon/lat (coordinates)
   env_cols <- setdiff(all_cols, c("wfo_taxon_id", "gbifID", "lon", "lat"))
 
   if (length(env_cols) == 0) {
@@ -80,13 +107,26 @@ aggregate_dataset <- function(dataset) {
   log_msg("  Found ", length(env_cols), " environmental variables")
   log_msg("  Reading occurrence samples...")
 
-  # Read occurrence data
+  # -----------------------------------------------------------------------
+  # LOAD OCCURRENCE DATA
+  # -----------------------------------------------------------------------
+  # Load the full parquet file into memory
   occ_data <- read_parquet(occ_path)
 
   log_msg("  Computing per-species aggregations...")
 
-  # Compute aggregations by species
-  # Use data.table-style summarise_at for efficiency
+  # -----------------------------------------------------------------------
+  # COMPUTE AGGREGATIONS BY SPECIES
+  # -----------------------------------------------------------------------
+  # Group by species (wfo_taxon_id) and compute four statistics for each
+  # environmental variable:
+  #   - avg: arithmetic mean
+  #   - stddev: standard deviation (sample SD with n-1 denominator)
+  #   - min: minimum value
+  #   - max: maximum value
+  #
+  # All statistics use na.rm=TRUE to handle missing values
+  # Output column naming: <variable>_<statistic> (e.g., bio1_avg, bio1_stddev)
   summary_data <- occ_data %>%
     group_by(wfo_taxon_id) %>%
     summarise(
@@ -100,50 +140,71 @@ aggregate_dataset <- function(dataset) {
         ),
         .names = "{.col}_{.fn}"
       ),
-      .groups = "drop"
+      .groups = "drop"  # Remove grouping structure after summarise
     ) %>%
-    arrange(wfo_taxon_id)
+    arrange(wfo_taxon_id)  # Sort by species ID for consistent output
 
   log_msg("  Aggregated to ", nrow(summary_data), " species")
   log_msg("  Writing to ", output_path)
 
-  # Write output
+  # -----------------------------------------------------------------------
+  # WRITE OUTPUT
+  # -----------------------------------------------------------------------
+  # Save as compressed parquet file using Snappy compression for balance
+  # between file size and read/write speed
   write_parquet(summary_data, output_path, compression = "snappy")
 
   log_msg("  ✓ Complete: ", basename(output_path), "\n")
 
+  # Return data invisibly (doesn't print to console, but available for assignment)
   invisible(summary_data)
 }
 
-# Parse command-line arguments
+# ========================================================================
+# COMMAND-LINE INTERFACE
+# ========================================================================
+# Parse command-line arguments to determine which datasets to process
 args <- commandArgs(trailingOnly = TRUE)
 
+# Show usage if no arguments provided
 if (length(args) == 0) {
   cat("Usage: Rscript aggregate_env_summaries_bill.R <dataset1> [dataset2] ...\n")
   cat("Datasets: worldclim, soilgrids, agroclime, all\n")
   quit(status = 1)
 }
 
-# Determine which datasets to process
+# -----------------------------------------------------------------------
+# VALIDATE AND EXPAND DATASET ARGUMENTS
+# -----------------------------------------------------------------------
+# Valid datasets correspond to the three environmental data sources
 valid_datasets <- c("worldclim", "soilgrids", "agroclime")
+
+# If user specifies "all", expand to all three datasets
 if ("all" %in% args) {
   datasets <- valid_datasets
 } else {
   datasets <- args
+  # Check for invalid dataset names
   invalid <- setdiff(datasets, valid_datasets)
   if (length(invalid) > 0) {
     stop("Invalid dataset(s): ", paste(invalid, collapse = ", "))
   }
 }
 
-# Create output directory
+# -----------------------------------------------------------------------
+# SETUP OUTPUT DIRECTORY
+# -----------------------------------------------------------------------
+# Create output directory structure if it doesn't exist
 dir.create(file.path(OUTPUT_DIR, "shipley_checks"), recursive = TRUE, showWarnings = FALSE)
 
-# Process each dataset
+# -----------------------------------------------------------------------
+# PROCESS ALL REQUESTED DATASETS
+# -----------------------------------------------------------------------
 log_msg("=== Environmental Summary Aggregation (Pure R) ===\n")
+# Loop through each dataset and run aggregation
 for (ds in datasets) {
   aggregate_dataset(ds)
 }
 
 log_msg("=== All aggregations complete ===")
-log_msg("Outputs written to: data/shipley_checks/*_species_summary_R.parquet")
+log_msg(paste0("Outputs written to: ", file.path(OUTPUT_DIR, "shipley_checks", "*_species_summary_R.parquet")))

@@ -47,32 +47,42 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 
-# Configuration
+# ========================================================================
+# Configuration: Input file path
+# ========================================================================
 INPUT_FILE <- file.path(OUTPUT_DIR, 'stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
 
 cat(strrep('=', 80), '\n')
 cat('VERIFICATION: Life Form Stratification (Shipley Part II)\n')
 cat(strrep('=', 80), '\n\n')
 
-# Load data
+# ========================================================================
+# STEP 1: Load CSR + ecosystem services dataset
+# ========================================================================
 cat('[1/4] Loading CSR + ecosystem services dataset...\n')
 df <- read_csv(INPUT_FILE, show_col_types = FALSE)
 cat(sprintf('  ✓ Loaded %d species\n\n', nrow(df)))
 
-# Filter to valid CSR with life form
+# Filter to species with valid CSR AND life form (both required for NPP stratification)
 valid <- df %>% filter(!is.na(C) & !is.na(S) & !is.na(R) & !is.na(life_form_simple))
 cat(sprintf('Valid CSR + life form: %d/%d species (%.1f%%)\n\n',
             nrow(valid), nrow(df), 100*nrow(valid)/nrow(df)))
 
-# [1] Formula Correctness
+# ========================================================================
+# CHECK 1: Formula correctness - verify NPP formula matches Shipley Part II
+# ========================================================================
 cat('[2/4] Verifying NPP formula implementation...\n')
 
-# Sample test cases
+# ========================================================================
+# Get sample test cases for manual inspection
+# ========================================================================
+# Woody sample: tallest trees (should have height-boosted NPP)
 woody_sample <- valid %>%
   filter(life_form_simple == 'woody') %>%
   arrange(desc(height_m)) %>%
   head(3)
 
+# Herbaceous sample: highest C scores (should have C-driven NPP)
 herb_sample <- valid %>%
   filter(life_form_simple == 'non-woody') %>%
   arrange(desc(C)) %>%
@@ -100,10 +110,14 @@ cat('    ✓ Woody: NPP ∝ height_m × (C/100)\n')
 cat('    ✓ Herbaceous: NPP ∝ C only\n')
 cat('    ✓ Semi-woody: treated as woody\n')
 
-# [2] Test Cases
+# ========================================================================
+# CHECK 2: Test specific cases - verify formula produces expected results
+# ========================================================================
 cat('\n[3/4] Testing specific cases...\n')
 
-# Find tall tree with high C
+# ========================================================================
+# Test case 1: Tall tree with high C (should get Very High NPP from height boost)
+# ========================================================================
 tall_tree <- valid %>%
   filter(life_form_simple == 'woody', height_m > 20, C > 30) %>%
   arrange(desc(height_m)) %>%
@@ -114,7 +128,9 @@ if (nrow(tall_tree) > 0) {
               tall_tree$height_m, tall_tree$C, tall_tree$npp_rating))
 }
 
-# Find short herb with high C
+# ========================================================================
+# Test case 2: Short herb with high C (should get Very High NPP from C only)
+# ========================================================================
 short_herb <- valid %>%
   filter(life_form_simple == 'non-woody', height_m < 1, C > 60) %>%
   arrange(desc(C)) %>%
@@ -125,7 +141,9 @@ if (nrow(short_herb) > 0) {
               short_herb$height_m, short_herb$C, short_herb$npp_rating))
 }
 
-# Find tall tree with low C
+# ========================================================================
+# Test case 3: Tall tree with low C (demonstrates stratification difference)
+# ========================================================================
 tall_lowc <- valid %>%
   filter(life_form_simple == 'woody', height_m > 20, C < 20) %>%
   arrange(desc(height_m)) %>%
@@ -137,9 +155,14 @@ if (nrow(tall_lowc) > 0) {
               tall_lowc$height_m, tall_lowc$C, npp_score, tall_lowc$npp_rating))
 }
 
-# [3] Distribution Validation
+# ========================================================================
+# CHECK 3: Distribution validation - verify life form effect on NPP ratings
+# ========================================================================
 cat('\n[4/4] Validating NPP distributions by life form...\n')
 
+# ========================================================================
+# Calculate NPP rating distribution by life form
+# ========================================================================
 npp_summary <- valid %>%
   group_by(life_form_simple, npp_rating) %>%
   summarise(n = n(), .groups = 'drop') %>%
@@ -161,7 +184,10 @@ for (lf in c('woody', 'non-woody', 'semi-woody')) {
               lf, total, vh, h))
 }
 
-# Calculate ratio
+# ========================================================================
+# Calculate stratification ratio (key metric for Shipley Part II validation)
+# ========================================================================
+# Expected ratio: ~3.6× (woody plants should have ~3.6× higher rate of Very High NPP)
 woody_vh <- npp_summary %>%
   filter(life_form_simple == 'woody', npp_rating == 'Very High') %>%
   pull(pct)

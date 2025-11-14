@@ -66,8 +66,12 @@ parse_args <- function(args) {
   out
 }
 
+# ========================================================================
+# Parse and access command-line arguments
+# ========================================================================
 args <- commandArgs(trailingOnly = TRUE)
 opts <- parse_args(args)
+# Helper function to get option value with fallback to default
 get_opt <- function(name, default) {
   if (!is.null(opts[[name]]) && nzchar(opts[[name]])) {
     opts[[name]]
@@ -76,9 +80,14 @@ get_opt <- function(name, default) {
   }
 }
 
-# Paths
+# Input path: CSR + ecosystem services dataset from calculate_csr_bill.R
 INPUT_PATH <- get_opt('input', file.path(OUTPUT_DIR, 'stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv'))
 
+# ========================================================================
+# Helper function to report pass/fail for individual checks
+# ========================================================================
+# Input: condition (boolean), description (string)
+# Output: TRUE if pass, FALSE if fail (also prints formatted message)
 check_pass <- function(condition, description) {
   if (condition) {
     cat(sprintf("  ✓ %s\n", description))
@@ -93,7 +102,9 @@ cat(strrep('=', 80), '\n')
 cat('VERIFICATION: CSR Calculation\n')
 cat(strrep('=', 80), '\n\n')
 
-# Load data
+# ========================================================================
+# STEP 1: Load CSR dataset and check file existence
+# ========================================================================
 cat('[1/4] Loading CSR dataset...\n')
 if (!file.exists(INPUT_PATH)) {
   cat(sprintf('  ✗ ERROR: File not found: %s\n', INPUT_PATH))
@@ -105,9 +116,12 @@ cat(sprintf('  ✓ Loaded %d species\n\n', nrow(df)))
 
 all_checks_pass <- TRUE
 
-# CHECK 1: CSR completeness
+# ========================================================================
+# CHECK 1: CSR completeness - verify most species have valid CSR scores
+# ========================================================================
 cat('[2/4] Checking CSR completeness...\n')
 
+# Count species with valid (non-NA) C, S, and R scores
 valid_csr <- !is.na(df$C) & !is.na(df$S) & !is.na(df$R)
 n_valid <- sum(valid_csr)
 pct_valid <- 100 * n_valid / nrow(df)
@@ -123,7 +137,9 @@ all_checks_pass <- check_pass(pct_valid >= 99.5 && pct_valid <= 100.0,
 all_checks_pass <- check_pass(n_invalid <= 60,
                                sprintf("Edge cases ≤60 species (%d found)", n_invalid)) && all_checks_pass
 
-# CHECK 2: CSR sum to 100
+# ========================================================================
+# CHECK 2: CSR sum to 100 - verify CSR scores sum to 100% for each species
+# ========================================================================
 cat('\n[3/4] Checking CSR sum to 100...\n')
 
 if (n_valid > 0) {
@@ -149,11 +165,15 @@ if (n_valid > 0) {
   all_checks_pass <- FALSE
 }
 
-# CHECK 3: CSR value ranges and distribution
+# ========================================================================
+# CHECK 3: CSR value ranges and distribution - verify values in [0,100] and match expected patterns
+# ========================================================================
 cat('\n[4/4] Checking CSR value ranges and distribution...\n')
 
 if (n_valid > 0) {
-  # Value ranges
+  # ========================================================================
+  # Sub-check 3a: Value ranges (all scores must be in [0, 100])
+  # ========================================================================
   c_min <- min(df$C[valid_csr], na.rm = TRUE)
   c_max <- max(df$C[valid_csr], na.rm = TRUE)
   s_min <- min(df$S[valid_csr], na.rm = TRUE)
@@ -172,7 +192,10 @@ if (n_valid > 0) {
   all_checks_pass <- check_pass(r_min >= 0 && r_max <= 100,
                                  "R in [0, 100]") && all_checks_pass
 
-  # Mean values (expected: C≈31%, S≈39%, R≈30%)
+  # ========================================================================
+  # Sub-check 3b: Mean values (verify distribution matches StrateFy expectations)
+  # ========================================================================
+  # Expected means from StrateFy calibration: C≈31%, S≈39%, R≈30%
   c_mean <- mean(df$C[valid_csr], na.rm = TRUE)
   s_mean <- mean(df$S[valid_csr], na.rm = TRUE)
   r_mean <- mean(df$R[valid_csr], na.rm = TRUE)
@@ -190,7 +213,10 @@ if (n_valid > 0) {
   all_checks_pass <- check_pass(r_mean >= 20 && r_mean <= 40,
                                  sprintf("Mean R ≈30%% (%.1f%%)", r_mean)) && all_checks_pass
 
-  # Dominant strategy counts (species where one strategy >40%)
+  # ========================================================================
+  # Sub-check 3c: Dominant strategy counts (species with clear strategy dominance)
+  # ========================================================================
+  # Count species where one strategy >40% (indicating clear C, S, or R dominance)
   c_dominant <- sum(df$C[valid_csr] > 40, na.rm = TRUE)
   s_dominant <- sum(df$S[valid_csr] > 40, na.rm = TRUE)
   r_dominant <- sum(df$R[valid_csr] > 40, na.rm = TRUE)

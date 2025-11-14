@@ -1,6 +1,24 @@
 #!/usr/bin/env Rscript
 # Add GBIF occurrence counts to Bill's reconstructed shortlist
 # Phase 1 Step 3: GBIF Integration Verification (Memory-Optimized)
+#
+# PURPOSE: This script adds GBIF occurrence counts to the shortlist candidates
+#          and filters to species with ≥30 occurrences for geographic analysis.
+#
+# THREE-STEP PROCESS:
+#   Step 1: Count GBIF occurrences by WFO taxon ID using Arrow streaming (memory-efficient)
+#   Step 2: Merge GBIF counts with shortlist candidates (LEFT JOIN, coalesce to 0)
+#   Step 3: Filter to species with ≥30 GBIF occurrences
+#
+# MEMORY OPTIMIZATION:
+#   - Uses Arrow streaming to process 70M GBIF records without loading into memory
+#   - Arrow compute engine aggregates BEFORE pulling into R
+#   - Only aggregated counts (not raw records) are loaded into R memory
+#
+# EXPECTED OUTPUTS:
+#   - gbif_occurrence_counts_by_wfo_R.parquet: All WFO taxa with GBIF counts
+#   - stage1_shortlist_with_gbif_R.parquet: Shortlist with GBIF counts (24,511 species)
+#   - stage1_shortlist_with_gbif_ge30_R.parquet: ≥30 occurrences (11,711 species)
 
 # ========================================================================
 # AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
@@ -38,12 +56,16 @@ dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FAL
 
 
 
+# ========================================================================
+# LIBRARY LOADING AND HELPER FUNCTIONS
+# ========================================================================
 suppressPackageStartupMessages({
-  library(arrow)
-  library(dplyr)
+  library(arrow)   # For streaming parquet processing
+  library(dplyr)   # For data manipulation
 })
 
-
+# Helper function to log messages with timestamps
+# Flushes console to ensure immediate output during long operations
 log_msg <- function(...) {
   cat(..., "\n", sep = "")
   flush.console()
@@ -52,8 +74,16 @@ log_msg <- function(...) {
 log_msg("=== Phase 1 Step 3: GBIF Integration Verification (Optimized) ===\n")
 
 # ==============================================================================
-# 1. Count GBIF occurrences by WFO taxon ID using Arrow streaming
+# STEP 1: Count GBIF occurrences by WFO taxon ID using Arrow streaming
 # ==============================================================================
+# APPROACH: Use Arrow's compute engine to aggregate GBIF data WITHOUT loading into R
+# This is critical because GBIF has ~70 million records (too large for R memory)
+#
+# WORKFLOW:
+#   1. Open GBIF parquet as Arrow dataset (no memory load)
+#   2. Filter to valid WFO taxon IDs (non-NA, non-empty)
+#   3. Group by wfo_taxon_id and count occurrences (Arrow compute)
+#   4. Collect aggregated results into R (only ~86K rows, manageable)
 
 log_msg("Step 1: Counting GBIF occurrences using Arrow compute engine...")
 log_msg("  (Streaming 70M records without loading into memory)")
@@ -61,20 +91,24 @@ log_msg("  (Streaming 70M records without loading into memory)")
 # Open parquet as Arrow dataset (no memory load)
 gbif_dataset <- open_dataset(file.path(INPUT_DIR, "gbif_occurrence_plantae_wfo.parquet"))
 
+# -------------------------------------------------------
 # Use Arrow compute to aggregate BEFORE pulling into R
+# -------------------------------------------------------
+# CRITICAL: All operations below run in Arrow (C++), NOT in R
 # This is memory-efficient - only the aggregated result is in R memory
+# Arrow processes 70M records and returns only ~86K aggregated rows to R
 gbif_counts <- gbif_dataset %>%
-  filter(!is.na(wfo_taxon_id), wfo_taxon_id != "") %>%
-  group_by(wfo_taxon_id) %>%
-  summarise(
-    gbif_occurrence_count = n(),
-    gbif_georeferenced_count = sum(
+  filter(!is.na(wfo_taxon_id), wfo_taxon_id != "") %>%  # Filter in Arrow
+  group_by(wfo_taxon_id) %>%                            # Group in Arrow
+  summarise(                                            # Aggregate in Arrow
+    gbif_occurrence_count = n(),                        # Total occurrences per taxon
+    gbif_georeferenced_count = sum(                     # Georeferenced occurrences
       !is.na(decimalLatitude) & !is.na(decimalLongitude),
       na.rm = TRUE
     )
   ) %>%
-  arrange(desc(gbif_occurrence_count)) %>%
-  collect()  # Only NOW pull aggregated data into R memory
+  arrange(desc(gbif_occurrence_count)) %>%              # Sort in Arrow
+  collect()  # ONLY NOW pull aggregated data into R memory (~86K rows)
 
 log_msg("  Unique WFO taxa with GBIF records: ", nrow(gbif_counts))
 log_msg("  Total occurrences counted: ", sum(gbif_counts$gbif_occurrence_count))
@@ -168,7 +202,7 @@ log_msg("  Written: stage1_shortlist_with_gbif_ge30_R.(parquet|csv)\n")
 log_msg("=== VERIFICATION AGAINST CANONICAL ===\n")
 
 # Load canonical >=30 shortlist
-canon_ge30 <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet")
+canon_ge30 <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet"))
 log_msg("Canonical >=30 shortlist: ", nrow(canon_ge30), " species")
 log_msg("Bill's >=30 shortlist:     ", nrow(shortlist_ge30), " species\n")
 
@@ -254,9 +288,9 @@ if (wfo_match && nrow(shortlist_ge30) == nrow(canon_ge30)) {
 
 # Binary checksum comparison
 log_msg("\n6. Binary parquet checksums:")
-bill_md5 <- system("md5sum file.path(OUTPUT_DIR, "shipley_checks", "stage1_shortlist_with_gbif_ge30_R.parquet | awk '{print $1}'",
+bill_md5 <- system(paste0("md5sum ", file.path(OUTPUT_DIR, "shipley_checks", "stage1_shortlist_with_gbif_ge30_R.parquet"), " | awk '{print $1}'"),
                    intern = TRUE)
-canon_md5 <- system("md5sum data/stage1/stage1_shortlist_with_gbif_ge30.parquet | awk '{print $1}'",
+canon_md5 <- system(paste0("md5sum ", file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet"), " | awk '{print $1}'"),
                     intern = TRUE)
 
 log_msg("   Bill MD5:      ", bill_md5)
@@ -268,9 +302,12 @@ if (bill_md5 == canon_md5) {
   log_msg("   ✗ FAIL: Binary checksums differ (expected - R vs Python encoding)")
 }
 
+# ==============================================================================
+# SUMMARY
+# ==============================================================================
 log_msg("\n=== Phase 1 Step 3 Complete ===")
 log_msg("Summary:")
 log_msg("  - Counted GBIF occurrences using Arrow streaming (memory-efficient)")
 log_msg("  - Merged with Bill's reconstructed shortlist")
 log_msg("  - Filtered to >=30 occurrences: ", nrow(shortlist_ge30), " species")
-log_msg("  - All verification outputs written to file.path(OUTPUT_DIR, "shipley_checks", "")
+log_msg("  - All verification outputs written to ", file.path(OUTPUT_DIR, "shipley_checks"))
