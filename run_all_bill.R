@@ -12,6 +12,15 @@
 #   3. Install required R packages (arrow, data.table, dplyr, readr, WorldFlora, ape, phangorn)
 #
 # Estimated runtime: ~8 hours on standard laptop
+#
+# RESUME FUNCTIONALITY:
+#   If pipeline fails or you want to skip completed phases, use:
+#     Rscript run_all_bill.R --start-from=phase1   # Skip Phase 0
+#     Rscript run_all_bill.R --start-from=phase2   # Skip Phases 0-1
+#     Rscript run_all_bill.R --start-from=phase3   # Skip Phases 0-2
+#     Rscript run_all_bill.R --start-from=stage3   # Skip all phases, run only Stage 3
+#
+#   Valid restart points: phase0, phase1, phase2, phase3, stage3
 ################################################################################
 
 # ========================================================================
@@ -40,9 +49,34 @@ SCRIPT_DIR <- file.path(repo_root, "src")
 # Set environment variable for sourced scripts to use
 Sys.setenv(BILL_REPO_ROOT = repo_root)
 
+# ========================================================================
+# COMMAND-LINE ARGUMENTS (for resuming pipeline)
+# ========================================================================
+# Parse command-line arguments to allow resuming from specific phases
+# Usage: Rscript run_all_bill.R --start-from=phase1
+args <- commandArgs(trailingOnly = TRUE)
+start_from <- "phase0"  # Default: start from beginning
+
+if (length(args) > 0) {
+  for (arg in args) {
+    if (grepl("^--start-from=", arg)) {
+      start_from <- sub("^--start-from=", "", arg)
+    }
+  }
+}
+
+# Valid restart points
+valid_starts <- c("phase0", "phase1", "phase2", "phase3", "stage3")
+if (!start_from %in% valid_starts) {
+  stop("Invalid --start-from value. Valid options: ", paste(valid_starts, collapse=", "))
+}
+
 cat("========================================================================\n")
 cat("BILL SHIPLEY VERIFICATION PIPELINE\n")
 cat("Cross-Platform Edition - Phases 0-3 + Stage 3\n")
+if (start_from != "phase0") {
+  cat(sprintf("RESUMING FROM: %s\n", toupper(start_from)))
+}
 cat("========================================================================\n\n")
 
 cat("Detected paths:\n")
@@ -109,6 +143,7 @@ pipeline_start_time <- Sys.time()
 # PHASE 0: WFO NORMALIZATION
 ################################################################################
 
+if (start_from %in% c("phase0")) {
 cat("\n\n")
 cat("========================================================================\n")
 cat("PHASE 0: WFO NORMALIZATION (Taxonomic Standardization)\n")
@@ -131,10 +166,15 @@ for (ds in datasets) {
 cat("\n--- Step 0.3: Verification ---\n")
 run_script("Stage_1/bill_verification/verify_wfo_matching_bill.R", "PHASE 0.3")
 
+} else {
+  cat("Skipping Phase 0 (WFO Normalization) - using existing outputs\n")
+}
+
 ################################################################################
 # PHASE 1: CORE INTEGRATION
 ################################################################################
 
+if (start_from %in% c("phase0", "phase1")) {
 cat("\n\n")
 cat("========================================================================\n")
 cat("PHASE 1: CORE INTEGRATION (Trait Assembly)\n")
@@ -166,10 +206,15 @@ run_script("Stage_1/bill_verification/add_gbif_counts_bill.R", "PHASE 1.5")
 cat("\n--- Step 1.6: Verify GBIF Integration ---\n")
 run_script("Stage_1/bill_verification/verify_gbif_integration_bill.R", "PHASE 1.6")
 
+} else {
+  cat("Skipping Phase 1 (Core Integration) - using existing outputs\n")
+}
+
 ################################################################################
 # PHASE 2: ENVIRONMENTAL AGGREGATION
 ################################################################################
 
+if (start_from %in% c("phase0", "phase1", "phase2")) {
 cat("\n\n")
 cat("========================================================================\n")
 cat("PHASE 2: ENVIRONMENTAL AGGREGATION\n")
@@ -189,10 +234,15 @@ run_script("Stage_1/bill_verification/aggregate_env_quantiles_bill.R", "PHASE 2.
 cat("\n--- Step 2.3: Verify Environmental Aggregation ---\n")
 run_script("Stage_1/bill_verification/verify_env_aggregation_bill.R", "PHASE 2.3")
 
+} else {
+  cat("Skipping Phase 2 (Environmental Aggregation) - using existing outputs\n")
+}
+
 ################################################################################
 # PHASE 3: IMPUTATION DATASET ASSEMBLY
 ################################################################################
 
+if (start_from %in% c("phase0", "phase1", "phase2", "phase3")) {
 cat("\n\n")
 cat("========================================================================\n")
 cat("PHASE 3: IMPUTATION DATASET ASSEMBLY\n")
@@ -215,6 +265,10 @@ run_script("Stage_1/bill_verification/assemble_canonical_imputation_input_bill.R
 # Step 3.4: Verify canonical assembly
 cat("\n--- Step 3.4: Verify Canonical Assembly ---\n")
 run_script("Stage_1/bill_verification/verify_canonical_assembly_bill.R", "PHASE 3.4")
+
+} else {
+  cat("Skipping Phase 3 (Imputation Dataset Assembly) - using existing outputs\n")
+}
 
 ################################################################################
 # STAGE 1-2: XGBOOST (SKIPPED - PRE-COMPUTED)
@@ -240,6 +294,7 @@ cat("✓ Pre-computed Stage 2 output verified\n")
 # STAGE 3: CSR + ECOSYSTEM SERVICES
 ################################################################################
 
+if (start_from %in% c("phase0", "phase1", "phase2", "phase3", "stage3")) {
 cat("\n\n")
 cat("========================================================================\n")
 cat("STAGE 3: CSR + ECOSYSTEM SERVICES\n")
@@ -258,6 +313,10 @@ run_script("Stage_3/bill_verification/calculate_csr_bill.R", "STAGE 3.2")
 # Step 3.3: Verify complete Stage 3 pipeline
 cat("\n--- Step 3.3: Verify Complete Stage 3 Pipeline ---\n")
 run_script("Stage_3/bill_verification/verify_stage3_complete_bill.R", "STAGE 3.3")
+
+} else {
+  cat("Skipping Stage 3 (CSR + Ecosystem Services) - using existing outputs\n")
+}
 
 ################################################################################
 # PIPELINE COMPLETE
