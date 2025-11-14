@@ -29,13 +29,13 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Achaea janata | Other Herbivores | Vitis vinifera |
-| 2 | Achatia distincta | Other Herbivores | Vitis vinifera |
-| 3 | Acrolepiopsis assectella | Other Herbivores | Allium schoenoprasum |
+| 1 | Achaea janata | Moths | Vitis vinifera |
+| 2 | Achatia distincta | Moths | Vitis vinifera |
+| 3 | Acrolepiopsis assectella | Moths | Allium schoenoprasum |
 | 4 | Agrotis segetum | Moths | Vitis vinifera |
-| 5 | Ambastus villosus | Other Herbivores | Alnus acuminata |
-| 6 | Amphipyra pyramidoides | Other Herbivores | Vitis vinifera |
-| 7 | Antheraea polyphemus | Other Herbivores | Vitis vinifera |
+| 5 | Ambastus villosus | Plant Bugs | Alnus acuminata |
+| 6 | Amphipyra pyramidoides | Moths | Vitis vinifera |
+| 7 | Antheraea polyphemus | Moths | Vitis vinifera |
 | 8 | Aonidiella aurantii | Scale Insects | Vitis vinifera |
 | 9 | Aonidiella orientalis | Scale Insects | Vitis vinifera |
 | 10 | Aphis spiraecola | Aphids | Vitis vinifera |

@@ -40,14 +40,14 @@ categorize_organism <- function(name, role = NULL) {
 
   # Butterflies - pollinators as adults, herbivores as larvae
   # Expanded with common genera from frequency analysis
-  if (grepl("papilio|pieris|vanessa|danaus|euploea|colias|lycaena|polyommatus|maculinea|anthocharis|gonepteryx|araschnia|argynnis|boloria|erebia|coenonympha|maniola|melanargia|pararge|pyronia|thymelicus|ochlodes|hesperia|aporia|leptidea|celastrina|satyrium|callophrys|thecla|aricia|plebejus|glaucopsyche|iphiclides|zerynthia|nymphalis|aglais|polygonia|limenitis|apatura|charaxes|neptis|hypochrysops|anthene|arhopala|melanitis|deudorix|mycalesis|curetis|rapala|jamides|nacaduba|lampides|everes|celastrina", name_lower)) {
+  if (grepl("papilio|pieris|vanessa|danaus|euploea|colias|lycaena|polyommatus|maculinea|anthocharis|gonepteryx|araschnia|argynnis|boloria|erebia|coenonympha|maniola|melanargia|pararge|pyronia|thymelicus|ochlodes|hesperia|aporia|leptidea|celastrina|satyrium|callophrys|thecla|aricia|plebejus|glaucopsyche|iphiclides|zerynthia|nymphalis|aglais|polygonia|limenitis|apatura|charaxes|neptis|hypochrysops|anthene|arhopala|melanitis|deudorix|mycalesis|curetis|rapala|jamides|nacaduba|lampides|everes|celastrina|eurema|jalmenus", name_lower)) {
     return("Butterflies")
   }
 
   # Moths - pollinators as adults, herbivores as larvae
   # Note: "Caterpillars" category used when shown as herbivore pests
-  # Expanded with Adelidae, Tortricidae, Limacodidae genera
-  if (grepl("orgyia|acronicta|spodoptera|lymantria|malacosoma|hyalophora|attacus|automeris|biston|ectropis|operophtera|erannis|agriopis|semiothisa|colotois|selenia|ourapteryx|geometra|hemithea|cyclophora|scopula|idaea|rhodometra|macaria|eupithecia|chloroclystis|xanthorhoe|epirrhoe|eulithis|anticlea|mesoleuca|rheumaptera|melanthia|catocala|agrotis|ochropleura|noctua|xestia|diarsia|standfussiana|anaplectoides|graphiphora|eugnorisma|naenia|polia|mamestra|mythimna|orthosia|cerapteryx|tholera|apamea|oligia|mesoligia|photedes|amphipoea|hydraecia|nonagria|archanara|adela|nemophora|parasa|megalopyge|archips|choristoneura|cnephasia|tortricidae|pandemis|hedya|epiphyas|cnephasia", name_lower)) {
+  # Expanded with Adelidae, Tortricidae, Limacodidae, Noctuidae, Erebidae, Saturniidae genera
+  if (grepl("orgyia|acronicta|spodoptera|lymantria|malacosoma|hyalophora|attacus|automeris|biston|ectropis|operophtera|erannis|agriopis|semiothisa|colotois|selenia|ourapteryx|geometra|hemithea|cyclophora|scopula|idaea|rhodometra|macaria|eupithecia|chloroclystis|xanthorhoe|epirrhoe|eulithis|anticlea|mesoleuca|rheumaptera|melanthia|catocala|agrotis|ochropleura|noctua|xestia|diarsia|standfussiana|anaplectoides|graphiphora|eugnorisma|naenia|polia|mamestra|mythimna|orthosia|cerapteryx|tholera|apamea|oligia|mesoligia|photedes|amphipoea|hydraecia|nonagria|archanara|adela|nemophora|parasa|megalopyge|archips|choristoneura|cnephasia|tortricidae|pandemis|hedya|epiphyas|achaea|achatia|acrolepiopsis|amphipyra|antheraea", name_lower)) {
     return("Moths")
   }
 
@@ -147,6 +147,11 @@ categorize_organism <- function(name, role = NULL) {
   # Psyllids (jumping plant lice) - new category for sap-feeders
   if (grepl("glycaspis|heptapsogaster|psylla|cacopsylla|trioza|bactericera|diaphorina|psyllidae", name_lower)) {
     return("Psyllids")
+  }
+
+  # Plant Bugs (herbivorous Hemiptera) - sap-feeders and plant tissue feeders
+  if (grepl("ambastus|lygus|nezara|eurygaster|dolycoris|elasmostethus|palomena|piezodorus|acrosternum|halyomorpha|pentatomidae|miridae|tingidae|coreidae|alydidae|rhopalidae|scutelleridae", name_lower)) {
+    return("Plant Bugs")
   }
 
   # ==========================================================================

@@ -16,7 +16,7 @@ pub enum OrganismRole {
     Pollinator,
 }
 
-/// Unified organism category (35 functional categories)
+/// Unified organism category (36 functional categories)
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum OrganismCategory {
     // Universal categories (appear in multiple roles)
@@ -45,6 +45,7 @@ pub enum OrganismCategory {
     LeafBeetles,
     Beetles,      // General beetles (wood borers, jewel beetles, etc.)
     Psyllids,     // Jumping plant lice
+    PlantBugs,    // Herbivorous Hemiptera (true bugs)
 
     // Predator-specific categories
     Spiders,
@@ -120,6 +121,7 @@ impl OrganismCategory {
             "maniola", "melanargia", "pararge", "pyronia", "thymelicus",
             "charaxes", "neptis", "hypochrysops", "anthene", "arhopala",
             "melanitis", "deudorix", "mycalesis", "curetis", "rapala",
+            "eurema", "jalmenus",  // Added Pieridae and Lycaenidae genera
         ];
         if butterfly_patterns.iter().any(|&p| name_lower.contains(p)) {
             return OrganismCategory::Butterflies;
@@ -127,7 +129,7 @@ impl OrganismCategory {
 
         // Moths - pollinators as adults, herbivores as larvae
         // Note: "Caterpillars" category used when shown as herbivore pests
-        // Expanded with Adelidae, Tortricidae, Limacodidae genera
+        // Expanded with Adelidae, Tortricidae, Limacodidae, Noctuidae, Erebidae, Saturniidae genera
         let moth_patterns = [
             "orgyia", "acronicta", "spodoptera", "lymantria", "malacosoma",
             "hyalophora", "attacus", "automeris", "biston", "ectropis",
@@ -135,6 +137,7 @@ impl OrganismCategory {
             "selenia", "ourapteryx", "geometra", "hemithea", "cyclophora",
             "adela", "nemophora", "parasa", "megalopyge", "archips",
             "choristoneura", "cnephasia", "tortricidae", "pandemis", "hedya",
+            "achaea", "achatia", "acrolepiopsis", "amphipyra", "antheraea",  // Added moth genera
         ];
         if moth_patterns.iter().any(|&p| name_lower.contains(p)) {
             return OrganismCategory::Moths;
@@ -305,6 +308,17 @@ impl OrganismCategory {
             return OrganismCategory::Psyllids;
         }
 
+        // Plant Bugs (herbivorous Hemiptera) - sap-feeders and plant tissue feeders
+        let plantbug_patterns = [
+            "ambastus", "lygus", "nezara", "eurygaster", "dolycoris",
+            "elasmostethus", "palomena", "piezodorus", "acrosternum",
+            "halyomorpha", "pentatomidae", "miridae", "tingidae",
+            "coreidae", "alydidae", "rhopalidae", "scutelleridae",
+        ];
+        if plantbug_patterns.iter().any(|&p| name_lower.contains(p)) {
+            return OrganismCategory::PlantBugs;
+        }
+
         // ====================================================================
         // PREDATOR-SPECIFIC CATEGORIES
         // ====================================================================
@@ -448,6 +462,7 @@ impl OrganismCategory {
             OrganismCategory::LeafBeetles => "Leaf Beetles",
             OrganismCategory::Beetles => "Beetles",
             OrganismCategory::Psyllids => "Psyllids",
+            OrganismCategory::PlantBugs => "Plant Bugs",
             OrganismCategory::Spiders => "Spiders",
             OrganismCategory::GroundBeetles => "Ground Beetles",
             OrganismCategory::RoveBeetles => "Rove Beetles",
