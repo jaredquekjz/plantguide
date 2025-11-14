@@ -206,6 +206,40 @@ format_m3_section <- function(guild_result) {
     md <- paste0(md, sprintf("- %d Animal predators\n", biocontrol_profile$total_unique_predators))
     md <- paste0(md, sprintf("- %d Entomopathogenic fungi\n\n", biocontrol_profile$total_unique_entomo_fungi))
 
+    # Predator category composition
+    if (length(biocontrol_profile$predator_category_counts) > 0) {
+      md <- paste0(md, "**Predator Community Composition:**\n")
+
+      # Sort categories by count (descending)
+      category_counts <- biocontrol_profile$predator_category_counts
+      category_counts <- category_counts[order(-category_counts)]
+
+      total_predators <- biocontrol_profile$total_unique_predators
+      for (category_name in names(category_counts)) {
+        count <- category_counts[[category_name]]
+        percentage <- (count / total_predators) * 100
+        md <- paste0(md, sprintf("- %d %s - %.1f%%\n", count, category_name, percentage))
+      }
+      md <- paste0(md, "\n")
+    }
+
+    # Herbivore category composition
+    if (length(biocontrol_profile$herbivore_category_counts) > 0) {
+      md <- paste0(md, "**Herbivore Pest Composition:**\n")
+
+      # Sort categories by count (descending)
+      category_counts <- biocontrol_profile$herbivore_category_counts
+      category_counts <- category_counts[order(-category_counts)]
+
+      total_herbivores <- sum(unlist(category_counts))
+      for (category_name in names(category_counts)) {
+        count <- category_counts[[category_name]]
+        percentage <- (count / total_herbivores) * 100
+        md <- paste0(md, sprintf("- %d %s - %.1f%%\n", count, category_name, percentage))
+      }
+      md <- paste0(md, "\n")
+    }
+
     md <- paste0(md, "**Mechanism Summary:**\n")
     md <- paste0(md, sprintf("- %d Specific predator matches (herbivore → known predator)\n",
                             biocontrol_profile$specific_predator_matches))
@@ -217,11 +251,13 @@ format_m3_section <- function(guild_result) {
     # Matched predator pairs
     if (nrow(biocontrol_profile$matched_predator_pairs) > 0) {
       md <- paste0(md, "**Matched Herbivore → Predator Pairs:**\n\n")
-      md <- paste0(md, "| Herbivore (Pest) | Known Predator | Match Type |\n")
-      md <- paste0(md, "|------------------|----------------|------------|\n")
+      md <- paste0(md, "| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |\n")
+      md <- paste0(md, "|------------------|-------------------|----------------|-------------------|------------|\n")
       for (i in 1:nrow(biocontrol_profile$matched_predator_pairs)) {
         pair <- biocontrol_profile$matched_predator_pairs[i, ]
-        md <- paste0(md, sprintf("| %s | %s | Specific (weight 1.0) |\n", pair$herbivore, pair$predator))
+        md <- paste0(md, sprintf("| %s | %s | %s | %s | Specific (weight 1.0) |\n",
+                                pair$herbivore, pair$herbivore_category,
+                                pair$predator, pair$predator_category))
       }
       md <- paste0(md, "\n")
     }

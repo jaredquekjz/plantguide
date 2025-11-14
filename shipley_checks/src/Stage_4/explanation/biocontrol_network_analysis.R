@@ -10,6 +10,92 @@
 #
 # Rust reference: src/explanation/biocontrol_network_analysis.rs
 
+#' Categorize a predator by taxonomic/ecological guild
+#'
+#' @param name Predator name (typically genus or species)
+#' @return Category string (one of 8 predator categories)
+categorize_predator <- function(name) {
+  name_lower <- tolower(name)
+
+  # Spiders (Araneae) - most common
+  if (grepl("aculepeira|agalenatea|argiope|araneus|araneae|spider|lycosa|salticidae", name_lower)) {
+    return("Spiders")
+  }
+  # Bats (Chiroptera)
+  if (grepl("myotis|eptesicus|corynorhinus|miniopterus|pipistrellus|rhinolophus|lasiurus|barbastella|plecotus|nyctalus|tadarida|antrozous|murina|eumops|bat|chiroptera", name_lower)) {
+    return("Bats")
+  }
+  # Birds (Aves)
+  if (grepl("anthus|agelaius|vireo|cyanistes|empidonax|setophaga|cardinalis|catharus|baeolophus|tyrannus|coccyzus|sialia|lanius|contopus|dryobates|falco|rhipidura|merops|cracticus|bird|aves", name_lower)) {
+    return("Birds")
+  }
+  # Ladybugs (Coccinellidae)
+  if (grepl("adalia|coccinella|hippodamia|harmonia|chilocorus|coccinellidae|ladybug", name_lower)) {
+    return("Ladybugs")
+  }
+  # Ground/Rove Beetles (Carabidae/Staphylinidae)
+  if (grepl("carabus|pterostichus|abax|acupalpus|carabidae|staphylinidae|staphylinus", name_lower)) {
+    return("Ground Beetles")
+  }
+  # Predatory Bugs (Hemiptera)
+  if (grepl("anthocoris|orius|nabis|geocoris|picromerus|arilus|phymata", name_lower)) {
+    return("Predatory Bugs")
+  }
+  # Predatory Wasps (Hymenoptera)
+  if (grepl("vespula|polistes|vespa|dolichovespula|ichneumon|braconidae|eurytoma|mesopolobus|pteromalus|ascogaster|campoletis|symmorphus", name_lower)) {
+    return("Predatory Wasps")
+  }
+
+  return("Other Predators")
+}
+
+#' Categorize a herbivore pest by taxonomic/ecological guild
+#'
+#' @param name Herbivore name (typically genus or species)
+#' @return Category string (one of 10 herbivore categories)
+categorize_herbivore <- function(name) {
+  name_lower <- tolower(name)
+
+  # Aphids (Aphididae) - most common
+  if (grepl("\\baphis\\b|aphid|myzus|macrosiphum|rhopalosiphum|acyrthosiphon|aulacorthum|brachycaudus|hyperomyzus|hyadaphis|cinara|cavariella|anoecia|dysaphis|cryptomyzus|allaphis|aphididae", name_lower)) {
+    return("Aphids")
+  }
+  # Herbivorous Mites (Tetranychidae/Eriophyidae)
+  if (grepl("aceria|tetranychus|panonychus|tetranychidae|eriophyidae|eriophyes", name_lower)) {
+    return("Mites")
+  }
+  # Leaf Miners (Agromyzidae)
+  if (grepl("phytomyza|liriomyza|agromyza|chromatomyia|agromyzidae|phytoliriomyza|calycomyza", name_lower)) {
+    return("Leaf Miners")
+  }
+  # Scale Insects (Coccoidea)
+  if (grepl("aspidiotus|aonidiella|diaspidiotus|pseudococcus|coccus|diaspididae|coccidae|pseudococcidae|hemiberlesia|abgrallaspis|lindingaspis|pseudaulacaspis|eriococcus|icerya|scale", name_lower)) {
+    return("Scale Insects")
+  }
+  # Caterpillars (Lepidoptera larvae)
+  if (grepl("spodoptera|helicoverpa|heliothis|plutella|mamestra|agrotis|abagrotis|adoxophyes|archips|choristoneura|acronicta|euxoa", name_lower)) {
+    return("Caterpillars")
+  }
+  # Thrips (Thysanoptera)
+  if (grepl("thrips|frankliniella|heliothrips|thysanoptera|akainothrips", name_lower)) {
+    return("Thrips")
+  }
+  # Whiteflies (Aleyrodidae)
+  if (grepl("bemisia|trialeurodes|aleurodidae|aleurocanthus|whitefly", name_lower)) {
+    return("Whiteflies")
+  }
+  # Herbivorous Beetles (Chrysomelidae, etc.)
+  if (grepl("phyllotreta|chrysomelidae|diabrotica|leptinotarsa|psylliodes|cassida|chrysolina|bruchidius", name_lower)) {
+    return("Beetles")
+  }
+  # Leafhoppers (Cicadellidae)
+  if (grepl("empoasca|cicadellidae|leafhopper|erythroneura|ausejanus", name_lower)) {
+    return("Leafhoppers")
+  }
+
+  return("Other Herbivores")
+}
+
 #' Analyze biocontrol network for M3
 #'
 #' Extracts predator and entomopathogenic fungi information from organisms and
@@ -92,6 +178,35 @@ analyze_biocontrol_network <- function(m3_result,
     known_entomo_fungi
   )
 
+  # Categorize predators and build category counts
+  predator_category_map <- sapply(names(predator_counts), categorize_predator)
+  predator_category_counts <- table(predator_category_map)
+
+  # Categorize herbivores from matched pairs and build category counts
+  herbivore_category_map <- list()
+  if (nrow(m3_result$matched_predator_pairs) > 0) {
+    unique_herbivores <- unique(m3_result$matched_predator_pairs$herbivore)
+    herbivore_category_map <- sapply(unique_herbivores, categorize_herbivore)
+  }
+  herbivore_category_counts <- if (length(herbivore_category_map) > 0) {
+    table(herbivore_category_map)
+  } else {
+    table()
+  }
+
+  # Add category columns to matched predator pairs
+  matched_predator_pairs_with_categories <- m3_result$matched_predator_pairs
+  if (nrow(matched_predator_pairs_with_categories) > 0) {
+    matched_predator_pairs_with_categories$herbivore_category <- sapply(
+      matched_predator_pairs_with_categories$herbivore,
+      categorize_herbivore
+    )
+    matched_predator_pairs_with_categories$predator_category <- sapply(
+      matched_predator_pairs_with_categories$predator,
+      categorize_predator
+    )
+  }
+
   # Return biocontrol network profile
   list(
     total_unique_predators = total_unique_predators,
@@ -99,11 +214,13 @@ analyze_biocontrol_network <- function(m3_result,
     specific_predator_matches = m3_result$specific_predator_matches,
     specific_fungi_matches = m3_result$specific_fungi_matches,
     general_entomo_fungi_count = general_entomo_fungi_count,
-    matched_predator_pairs = m3_result$matched_predator_pairs,
+    matched_predator_pairs = matched_predator_pairs_with_categories,
     matched_fungi_pairs = m3_result$matched_fungi_pairs,
     top_predators = top_predators,
     top_entomo_fungi = top_entomo_fungi,
-    hub_plants = hub_plants
+    hub_plants = hub_plants,
+    predator_category_counts = as.list(predator_category_counts),
+    herbivore_category_counts = as.list(herbivore_category_counts)
   )
 }
 
