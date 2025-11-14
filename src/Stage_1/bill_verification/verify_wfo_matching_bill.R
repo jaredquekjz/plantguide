@@ -172,7 +172,7 @@ if (all_pass) {
   cat("All 8 datasets successfully matched against WFO backbone.\n")
   cat("Row counts within tolerance and no duplicate taxonIDs detected.\n\n")
   cat("Phase 0 (WFO Normalization) completed successfully.\n\n")
-  quit(status = 0)  # Exit with success code (0)
+  invisible(TRUE)  # Return success without exiting R session  # Exit with success code (0)
 } else {
   # One or more checks failed - verification failed
   cat("✗ VERIFICATION FAILED\n")
@@ -183,5 +183,5 @@ if (all_pass) {
   cat("  - Missing input files (check extract_all_names_bill.R)\n")
   cat("  - WFO.match() errors (check individual matching scripts)\n")
   cat("  - Row count mismatches (may indicate WFO backbone version change)\n\n")
-  quit(status = 1)  # Exit with failure code (1)
+  stop("Verification failed")  # Throw error instead of quitting  # Exit with failure code (1)
 }

@@ -108,7 +108,7 @@ cat(strrep('=', 80), '\n\n')
 cat('[1/4] Loading CSR dataset...\n')
 if (!file.exists(INPUT_PATH)) {
   cat(sprintf('  ✗ ERROR: File not found: %s\n', INPUT_PATH))
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 df <- read_csv(INPUT_PATH, show_col_types = FALSE)
@@ -245,10 +245,10 @@ if (all_checks_pass) {
   cat('✓ VERIFICATION PASSED\n')
   cat(strrep('=', 80), '\n\n')
   cat('CSR calculation verified successfully.\n')
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat('✗ VERIFICATION FAILED\n')
   cat(strrep('=', 80), '\n\n')
   cat('Some checks failed. Review output above for details.\n')
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

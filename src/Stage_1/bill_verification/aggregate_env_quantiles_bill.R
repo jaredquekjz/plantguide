@@ -177,7 +177,7 @@ args <- commandArgs(trailingOnly = TRUE)
 if (length(args) == 0) {
   cat("Usage: Rscript aggregate_env_quantiles_bill.R <dataset1> [dataset2] ...\n")
   cat("Datasets: worldclim, soilgrids, agroclime, all\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # -----------------------------------------------------------------------

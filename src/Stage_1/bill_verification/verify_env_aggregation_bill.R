@@ -147,9 +147,9 @@ cat("\n========================================================================\
 if (all_pass) {
   cat("✓ VERIFICATION PASSED\n")
   cat("========================================================================\n\n")
-  quit(status = 0)  # Success: all checks passed
+  invisible(TRUE)  # Return success without exiting R session  # Success: all checks passed
 } else {
   cat("✗ VERIFICATION FAILED\n")
   cat("========================================================================\n\n")
-  quit(status = 1)  # Failure: at least one check failed
+  stop("Verification failed")  # Throw error instead of quitting  # Failure: at least one check failed
 }

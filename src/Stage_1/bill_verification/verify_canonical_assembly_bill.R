@@ -123,7 +123,7 @@ check_critical <- function(condition, message) {
   } else {
     cat(sprintf("  ✗ CRITICAL FAIL: %s\n", message))
     cat("\nVerification FAILED. Exiting.\n")
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -189,7 +189,7 @@ exists <- file.exists(INPUT_FILE)
 all_checks_pass <- check_critical(exists, sprintf("Input file exists: %s", INPUT_FILE)) && all_checks_pass
 
 if (!exists) {
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # Load data for verification
@@ -231,7 +231,7 @@ if (length(found_raw_traits) > 0) {
     cat(sprintf("    - %s\n", col))
   }
   cat("\n  Anti-leakage FAILED. These columns allow the model to cheat.\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # CHECK 4: Column presence
@@ -494,10 +494,10 @@ if (all_checks_pass) {
   cat("========================================================================\n")
   cat("\nCanonical imputation input assembly verified successfully.\n")
   cat("CRITICAL: Anti-leakage check passed - no raw trait columns present.\n\n")
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat("✗ VERIFICATION FAILED\n")
   cat("========================================================================\n")
   cat("\nSome checks failed. Review output above for details.\n\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

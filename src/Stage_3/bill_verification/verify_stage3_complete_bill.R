@@ -136,9 +136,9 @@ if (all_passed) {
   cat('✓ Ecosystem services: PASSED\n')
   cat('✓ Life form stratification: PASSED\n')
   cat('\nAll verification checks passed.\n')
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   # At least one verification check failed
   cat('✗ Some checks failed. Review output above.\n')
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

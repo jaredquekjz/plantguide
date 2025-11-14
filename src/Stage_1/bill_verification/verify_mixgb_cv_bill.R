@@ -89,5 +89,5 @@ if (file.exists(CV_FILE)) {
 }
 
 cat("\n========================================================================\n")
-if (all_pass) { cat("✓ VERIFICATION PASSED\n========================================================================\n\n"); quit(status = 0)
-} else { cat("✗ VERIFICATION FAILED\n========================================================================\n\n"); quit(status = 1) }
+if (all_pass) { cat("✓ VERIFICATION PASSED\n========================================================================\n\n"); invisible(TRUE)  # Return success without exiting R session
+} else { cat("✗ VERIFICATION FAILED\n========================================================================\n\n"); stop("Verification failed")  # Throw error instead of quitting }

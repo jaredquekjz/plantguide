@@ -156,7 +156,7 @@ for (trait in LOG_TRAITS) {
 all_complete <- all(sapply(trait_completeness, function(x) x$n_missing == 0))
 if (!all_complete) {
   cat('\n  ✗ ERROR: Not all traits are complete!\n')
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 cat(sprintf('\n  ✓ All %d traits are 100%% complete\n', length(LOG_TRAITS)))

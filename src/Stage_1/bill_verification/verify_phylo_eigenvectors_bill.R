@@ -117,8 +117,8 @@ if (file.exists(EV_FILE)) {
 cat("\n========================================================================\n")
 if (all_pass) {
   cat("✓ VERIFICATION PASSED\n========================================================================\n\n")
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat("✗ VERIFICATION FAILED\n========================================================================\n\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

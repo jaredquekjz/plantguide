@@ -98,7 +98,7 @@ check_critical <- function(condition, message) {
   } else {
     cat(sprintf("  ✗ CRITICAL FAIL: %s\n", message))
     cat("\nVerification FAILED. Exiting.\n")
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -129,7 +129,7 @@ if (length(missing_files) > 0) {
   for (f in missing_files) {
     cat(sprintf("    - %s\n", basename(f)))
   }
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # Check ensemble mean
@@ -140,7 +140,7 @@ check_critical(
 )
 
 if (!file.exists(mean_file)) {
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # Check file sizes
@@ -187,11 +187,11 @@ for (trait in LOG_TRAITS) {
     if (n_missing > 0) {
       cat(sprintf("\n  CRITICAL ERROR: %s has %d missing values\n", trait, n_missing))
       cat(sprintf("  Production imputation FAILED to achieve 100%% coverage.\n"))
-      quit(status = 1)
+      stop("Verification failed")  # Throw error instead of quitting
     }
   } else {
     cat(sprintf("  ✗ CRITICAL: Trait %s not found in dataset\n", trait))
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -338,10 +338,10 @@ if (all_checks_pass) {
   cat("\nProduction imputation verified successfully.\n")
   cat("CRITICAL: 100% trait coverage achieved.\n")
   cat("CRITICAL: PMM validity confirmed (no extrapolation).\n\n")
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat("✗ VERIFICATION FAILED\n")
   cat("========================================================================\n")
   cat("\nSome checks failed. Review output above for details.\n\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

@@ -115,7 +115,7 @@ check_critical <- function(condition, message) {
   } else {
     cat(sprintf("  ✗ CRITICAL FAIL: %s\n", message))
     cat("\nVerification FAILED. Exiting.\n")
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -138,7 +138,7 @@ check_critical(exists_master, sprintf("Master union file exists: %s", basename(M
 check_critical(exists_shortlist, sprintf("Shortlist file exists: %s", basename(SHORTLIST_FILE)))
 
 if (!exists_master || !exists_shortlist) {
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # Load data
@@ -305,9 +305,9 @@ cat("\n========================================================================\
 if (all_checks_pass) {
   cat("✓ VERIFICATION PASSED\n")
   cat("========================================================================\n\n")
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat("✗ VERIFICATION FAILED\n")
   cat("========================================================================\n\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

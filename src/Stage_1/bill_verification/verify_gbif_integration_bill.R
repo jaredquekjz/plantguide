@@ -65,7 +65,7 @@ check_critical <- function(cond, msg) {
     return(TRUE)
   } else {
     cat(sprintf("  ✗ CRITICAL: %s\n", msg))
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -113,4 +113,4 @@ check_critical(!any(is.na(df$gbif_occurrence_count)), "No NA in gbif_occurrence_
 cat("\n========================================================================\n")
 cat("✓ VERIFICATION PASSED\n")
 cat("========================================================================\n\n")
-quit(status = 0)
+invisible(TRUE)  # Return success without exiting R session
