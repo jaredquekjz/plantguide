@@ -427,39 +427,6 @@ impl MarkdownFormatter {
         md.push_str(&format!("- {} Animal predators\n", biocontrol_profile.total_unique_predators));
         md.push_str(&format!("- {} Entomopathogenic fungi\n\n", biocontrol_profile.total_unique_entomo_fungi));
 
-        // Predator category composition
-        if !biocontrol_profile.predator_category_counts.is_empty() {
-            md.push_str("**Predator Community Composition:**\n");
-
-            // Sort categories by count (descending), then by name
-            let mut category_counts: Vec<_> = biocontrol_profile.predator_category_counts.iter().collect();
-            category_counts.sort_by(|a, b| b.1.cmp(a.1).then_with(|| a.0.display_name().cmp(b.0.display_name())));
-
-            let total_predators = biocontrol_profile.total_unique_predators as f64;
-            for (category, count) in category_counts {
-                let percentage = (*count as f64 / total_predators) * 100.0;
-                md.push_str(&format!("- {} {} - {:.1}%\n", count, category.display_name(), percentage));
-            }
-            md.push_str("\n");
-        }
-
-        // Herbivore category composition
-        if !biocontrol_profile.herbivore_category_counts.is_empty() {
-            md.push_str("**Herbivore Pest Composition:**\n");
-
-            // Sort categories by count (descending), then by name
-            let mut category_counts: Vec<_> = biocontrol_profile.herbivore_category_counts.iter().collect();
-            category_counts.sort_by(|a, b| b.1.cmp(a.1).then_with(|| a.0.display_name().cmp(b.0.display_name())));
-
-            let total_herbivores: usize = biocontrol_profile.herbivore_category_counts.values().sum();
-            let total_herbivores_f64 = total_herbivores as f64;
-            for (category, count) in category_counts {
-                let percentage = (*count as f64 / total_herbivores_f64) * 100.0;
-                md.push_str(&format!("- {} {} - {:.1}%\n", count, category.display_name(), percentage));
-            }
-            md.push_str("\n");
-        }
-
         md.push_str("**Mechanism Summary:**\n");
         md.push_str(&format!("- {} Specific predator matches (herbivore → known predator)\n", biocontrol_profile.specific_predator_matches));
         md.push_str(&format!("- {} Specific fungi matches (herbivore → known entomopathogenic fungus)\n", biocontrol_profile.specific_fungi_matches));
