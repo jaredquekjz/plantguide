@@ -65,9 +65,9 @@ suppressPackageStartupMessages({
 # ==============================================================================
 # CONFIGURATION: Expected counts and thresholds
 # ==============================================================================
-# File paths (relative to current working directory)
-MASTER_UNION_FILE <- "master_taxa_union_bill.parquet"
-SHORTLIST_FILE <- "stage1_shortlist_candidates_bill.parquet"
+# File paths (in OUTPUT_DIR)
+MASTER_UNION_FILE <- file.path(OUTPUT_DIR, "master_taxa_union.parquet")
+SHORTLIST_FILE <- file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet")
 
 # Expected row counts (with tolerance ranges)
 EXPECTED_MASTER_ROWS <- c(86550, 86650)  # 86,592 ± 50
