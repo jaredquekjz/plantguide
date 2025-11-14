@@ -80,8 +80,9 @@ aggregate_quantiles <- function(dataset) {
   # -----------------------------------------------------------------------
   # PATH CONSTRUCTION
   # -----------------------------------------------------------------------
-  # Use auto-detected INTERMEDIATE_DIR for cross-platform compatibility
-  occ_path <- file.path(INTERMEDIATE_DIR, "stage1", paste0(dataset, "_occ_samples.parquet"))
+  # Use auto-detected INPUT_DIR for cross-platform compatibility
+  # Environmental occurrence samples are pre-computed input files
+  occ_path <- file.path(INPUT_DIR, paste0(dataset, "_occ_samples.parquet"))
   output_path <- file.path(file.path(OUTPUT_DIR, "shipley_checks"), paste0(dataset, "_species_quantiles_R.parquet"))
 
   if (!file.exists(occ_path)) {
@@ -173,29 +174,29 @@ aggregate_quantiles <- function(dataset) {
 # Parse command-line arguments to determine which datasets to process
 args <- commandArgs(trailingOnly = TRUE)
 
-# Show usage if no arguments provided
-if (length(args) == 0) {
-  cat("Usage: Rscript aggregate_env_quantiles_bill.R <dataset1> [dataset2] ...\n")
-  cat("Datasets: worldclim, soilgrids, agroclime, all\n")
-  stop("Verification failed")  # Throw error instead of quitting
-}
-
 # -----------------------------------------------------------------------
 # VALIDATE AND EXPAND DATASET ARGUMENTS
 # -----------------------------------------------------------------------
 # Valid datasets correspond to the three environmental data sources
 valid_datasets <- c("worldclim", "soilgrids", "agroclime")
 
-# If user specifies "all", expand to all three datasets
-if ("all" %in% args) {
+# Filter args to only include valid dataset names
+# When sourced by run_all_bill.R, args may contain parent script arguments
+# like "--start-from=phase1" which should be ignored
+dataset_args <- intersect(args, c(valid_datasets, "all"))
+
+# Default to all datasets when no valid dataset arguments found
+if (length(dataset_args) == 0) {
   datasets <- valid_datasets
+  log_msg("No dataset arguments provided, defaulting to all datasets: ", paste(datasets, collapse = ", "))
+} else if ("all" %in% dataset_args) {
+  # If user specifies "all", expand to all three datasets
+  datasets <- valid_datasets
+  log_msg("Processing all datasets: ", paste(datasets, collapse = ", "))
 } else {
-  datasets <- args
-  # Check for invalid dataset names
-  invalid <- setdiff(datasets, valid_datasets)
-  if (length(invalid) > 0) {
-    stop("Invalid dataset(s): ", paste(invalid, collapse = ", "))
-  }
+  # Use explicitly specified datasets
+  datasets <- dataset_args
+  log_msg("Processing specified datasets: ", paste(datasets, collapse = ", "))
 }
 
 # -----------------------------------------------------------------------

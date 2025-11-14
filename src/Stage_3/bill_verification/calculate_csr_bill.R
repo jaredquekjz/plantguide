@@ -191,8 +191,13 @@ compute_ecosystem_services <- function(df) {
 
   # Initialize nitrogen fixation if not present (Bill's verification doesn't have TRY N-fix data)
   if (!"nitrogen_fixation_rating" %in% names(df)) {
-    cat("  ⚠ nitrogen_fixation_rating not found, using 'Low' fallback for all species\n")
-    df$nitrogen_fixation_rating <- "Low"
+    cat("  ⚠ nitrogen_fixation_rating not found, using 'No Information' fallback for all species\n")
+    df$nitrogen_fixation_rating <- "No Information"
+    df$nitrogen_fixation_has_try <- FALSE
+  } else {
+    # Mark which species have TRY nitrogen fixation data vs fallback
+    df$nitrogen_fixation_has_try <- !is.na(df$nitrogen_fixation_rating) &
+                                     df$nitrogen_fixation_rating != "No Information"
   }
 
   # Ensure all required columns are present
@@ -402,8 +407,12 @@ compute_ecosystem_services <- function(df) {
   # SERVICE 10: Nitrogen Fixation (fallback for Bill's verification)
   # ========================================================================
   # Bill's verification doesn't have TRY nitrogen fixation data
-  # All species assigned "Low" rating with "Low" confidence
-  df$nitrogen_fixation_confidence <- "Low"
+  # Confidence is "High" for species with TRY data, "No Information" otherwise
+  df$nitrogen_fixation_confidence <- ifelse(
+    df$nitrogen_fixation_has_try,
+    "High",
+    "No Information"
+  )
 
   # ========================================================================
   # STEP 4: Mark species without valid CSR as "Unable to Classify"

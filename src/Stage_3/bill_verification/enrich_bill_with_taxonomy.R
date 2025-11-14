@@ -75,9 +75,9 @@ get_opt <- function(name, default) {
 # ========================================================================
 # Parse command-line arguments for input/output paths
 # ========================================================================
-# Defaults use auto-detected OUTPUT_DIR for cross-platform compatibility
+# Defaults use auto-detected INTERMEDIATE_DIR for pre-computed Stage 2 results
 # Users can override with --input and --output flags
-INPUT_PATH <- get_opt('input', file.path(OUTPUT_DIR, 'stage2_predictions', 'bill_complete_with_eive_20251107.csv'))
+INPUT_PATH <- get_opt('input', file.path(INTERMEDIATE_DIR, 'bill_complete_with_eive_20251107.csv'))
 OUTPUT_PATH <- get_opt('output', file.path(OUTPUT_DIR, 'stage3', 'bill_enriched_stage3_11711.csv'))
 
 ################################################################################
@@ -118,16 +118,35 @@ load_taxonomy_from_worldflora <- function(master_ids) {
 
     cat(sprintf('Loading %s...\n', basename(source_path)))
 
-    # Read only the columns we need (taxonID, family, genus)
-    wfo <- arrow::read_parquet(source_path, col_select = c('taxonID', 'family', 'genus'))
+    # Read parquet file - column names vary by source
+    # Try to read with flexible column selection
+    all_cols <- names(arrow::read_parquet(source_path, as_data_frame = FALSE)$schema)
+
+    # Identify which columns exist (case-sensitive)
+    has_wfo_taxon_id <- 'wfo_taxon_id' %in% all_cols
+    has_family <- 'Family' %in% all_cols
+    has_genus <- 'Genus' %in% all_cols
+
+    # Skip if no family/genus columns (e.g., EIVE doesn't have these)
+    if (!has_family && !has_genus) {
+      cat(sprintf('  ⚠ Skipping %s (no Family/Genus columns)\n', basename(source_path)))
+      next
+    }
+
+    # Select columns that exist
+    cols_to_read <- c('wfo_taxon_id')
+    if (has_family) cols_to_read <- c(cols_to_read, 'Family')
+    if (has_genus) cols_to_read <- c(cols_to_read, 'Genus')
+
+    wfo <- arrow::read_parquet(source_path, col_select = all_of(cols_to_read))
 
     # Filter to master IDs and remove duplicates
     # Only keep rows with valid family data
     wfo_filtered <- wfo %>%
-      filter(taxonID %in% master_ids) %>%
-      filter(!is.na(family)) %>%
-      distinct(taxonID, .keep_all = TRUE) %>%
-      rename(wfo_taxon_id = taxonID)
+      filter(wfo_taxon_id %in% master_ids) %>%
+      filter(!is.na(Family)) %>%
+      distinct(wfo_taxon_id, .keep_all = TRUE) %>%
+      rename(family = Family, genus = Genus)
 
     # Merge with existing taxonomy using "first source wins" strategy
     # distinct() keeps the first occurrence, so earlier sources take precedence
@@ -234,6 +253,32 @@ tax_coverage <- sum(!is.na(master$family)) / nrow(master) * 100
 cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
 
 # ========================================================================
+# STEP 2a: Load nitrogen fixation ratings from TRY (if available)
+# ========================================================================
+cat('[2a/4] Loading nitrogen fixation ratings...\n')
+
+# Path to pre-extracted nitrogen fixation data (TraitID 8 from TRY)
+NFIX_PATH <- file.path(OUTPUT_DIR, 'stage3', 'try_nitrogen_fixation_bill.csv')
+
+if (file.exists(NFIX_PATH)) {
+  nfix_data <- read_csv(NFIX_PATH, show_col_types = FALSE)
+
+  # Merge with master dataset
+  master <- master %>%
+    left_join(nfix_data %>% select(wfo_taxon_id, nitrogen_fixation_rating),
+              by = 'wfo_taxon_id')
+
+  n_try <- sum(!is.na(master$nitrogen_fixation_rating))
+  cat(sprintf('  ✓ Loaded TRY nitrogen fixation data: %d/%d species (%.1f%%)\n\n',
+              n_try, nrow(master), 100 * n_try / nrow(master)))
+} else {
+  cat('  ⚠ TRY nitrogen fixation file not found\n')
+  cat('  → Run extract_try_nitrogen_fixation_bill.R to generate TRY data\n')
+  cat('  → Using NA for all species (will fallback to "No Information" in CSR calculation)\n\n')
+  master$nitrogen_fixation_rating <- NA_character_
+}
+
+# ========================================================================
 # STEP 3: Back-transform height and simplify life form
 # ========================================================================
 cat('[3/4] Back-transforming height and simplifying life form...\n')
@@ -294,5 +339,8 @@ cat(sprintf('  height_m: %.1f%% (%d/%d)\n',
 cat(sprintf('  life_form_simple: %.1f%% (%d/%d)\n',
             100 * sum(!is.na(master$life_form_simple)) / nrow(master),
             sum(!is.na(master$life_form_simple)), nrow(master)))
+cat(sprintf('  nitrogen_fixation_rating: %.1f%% (%d/%d) from TRY\n',
+            100 * sum(!is.na(master$nitrogen_fixation_rating)) / nrow(master),
+            sum(!is.na(master$nitrogen_fixation_rating)), nrow(master)))
 
 cat('\n✓ Enrichment complete - ready for CSR calculation\n')

@@ -165,11 +165,17 @@ SETUP COMPLETE
 
 ```r
 # Install packages WITH all their dependencies (important!)
-install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr", "WorldFlora", "ape", "phangorn"),
+install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr",
+                   "stringr", "duckdb", "WorldFlora", "ape", "phangorn", "RSpectra"),
                  dependencies = TRUE)
 ```
 
-**Why `dependencies = TRUE`?** This ensures sub-packages like `stringr` (used by WorldFlora) are automatically installed.
+**Why `dependencies = TRUE`?** This ensures sub-packages are automatically installed.
+
+**Important packages added (Nov 2025)**:
+- `stringr`: Required for GBIF data processing
+- `duckdb`: Required for memory-efficient GBIF enrichment (49M rows)
+- `RSpectra`: Required for phylogenetic eigenvector extraction in Phase 3
 
 ---
 
@@ -362,7 +368,9 @@ If files are in a subfolder, move them up one level so they're directly in `inpu
 ### Problem: "Package not installed" errors
 
 **Common errors**:
-- `Error: there is no package called 'stringr'` (dependency of WorldFlora)
+- `Error: there is no package called 'stringr'` (required for GBIF processing)
+- `Error: there is no package called 'duckdb'` (required for GBIF enrichment in Phase 1)
+- `Error: there is no package called 'RSpectra'` (required for phylogeny in Phase 3)
 - `Error: there is no package called 'tibble'` (dependency of dplyr)
 - `Error: there is no package called 'purrr'` (dependency of dplyr)
 
@@ -370,12 +378,15 @@ If files are in a subfolder, move them up one level so they're directly in `inpu
 
 ```r
 # IMPORTANT: Use dependencies = TRUE to install sub-packages automatically
-install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr", "WorldFlora", "ape", "phangorn"),
+install.packages(c("arrow", "data.table", "dplyr", "readr", "tibble", "purrr",
+                   "stringr", "duckdb", "WorldFlora", "ape", "phangorn", "RSpectra"),
                  dependencies = TRUE)
 ```
 
-If you get an error about a specific package (like `stringr`), install it individually:
+If you get an error about a specific package, install it individually:
 ```r
+install.packages("RSpectra", dependencies = TRUE)
+install.packages("duckdb", dependencies = TRUE)
 install.packages("stringr", dependencies = TRUE)
 ```
 

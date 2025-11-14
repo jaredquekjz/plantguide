@@ -84,7 +84,7 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 # Base list criteria: species with GBIF occurrence count >= 30
 cat("[1/10] Loading base shortlist...\n")
 # Use auto-detected OUTPUT_DIR for cross-platform compatibility
-shortlist <- read_parquet(file.path(OUTPUT_DIR, "shipley_checks", "stage1_shortlist_with_gbif_ge30_R.parquet"))
+shortlist <- read_parquet(file.path(OUTPUT_DIR, "stage1_shortlist_with_gbif_ge30.parquet"))
 
 # Extract just the ID and scientific name columns (2 columns)
 # wfo_taxon_id: unique WFO identifier for each taxon
