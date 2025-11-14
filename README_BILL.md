@@ -78,13 +78,14 @@ You have a file called `bill_foundational_data.zip` (20 GB) - this can be anywhe
 
    **If you see an extra folder**, move all files up one level so they're directly in `input\`.
 
-5. After extraction, you should see these 14 files **directly in `input\`**:
+5. After extraction, you should see these 15 files **directly in `input\`**:
    - `classification.csv`
    - `duke_original.parquet`
    - `eive_original.parquet`
    - `mabberly_original.parquet`
    - `tryenhanced_species_original.parquet`
-   - `austraits_taxa.parquet`
+   - `austraits_taxa.parquet` (taxonomy only, 33K rows)
+   - `austraits_traits.parquet` (trait measurements, 1.8M rows)
    - `try_selected_traits.parquet`
    - `gbif_occurrence_plantae.parquet`
    - `globi_interactions_plants.parquet`
@@ -94,7 +95,7 @@ You have a file called `bill_foundational_data.zip` (20 GB) - this can be anywhe
    - `mixgb_tree_11711_species_20251107.nwk`
    - `mixgb_wfo_to_tree_mapping_11711.csv`
 
-**Total: 14 files** should be **directly** in the `input\` folder (no subfolders!).
+**Total: 15 files** should be **directly** in the `input\` folder (no subfolders!).
 
 ---
 

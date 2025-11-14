@@ -525,8 +525,8 @@ log_msg("=== Processing AusTraits Traits dataset ===")
 # -------------------------------------------------------
 # Load AusTraits traits data (long format with trait measurements)
 # NOTE: Using INPUT_DIR to match auto-detect pattern
-# File is austraits_taxa.parquet (directly in INPUT_DIR, not in subdirectory)
-aus_traits_orig <- read_parquet(file.path(INPUT_DIR, "austraits_taxa.parquet"))
+# File is austraits_traits.parquet (directly in INPUT_DIR, not in subdirectory)
+aus_traits_orig <- read_parquet(file.path(INPUT_DIR, "austraits_traits.parquet"))
 log_msg("Loaded AusTraits traits original: ", nrow(aus_traits_orig), " rows")
 
 aus_wfo <- fread(file.path(output_dir, "austraits_wfo_worldflora.csv"), data.table = FALSE)

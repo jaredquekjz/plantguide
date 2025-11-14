@@ -12,7 +12,7 @@
 #   - EIVE indicators parquet (input/eive_original.parquet)
 #   - Mabberly genera parquet (input/mabberly_original.parquet)
 #   - TRY Enhanced species parquet (input/tryenhanced_species_original.parquet)
-#   - AusTraits taxa parquet (input/austraits_taxa.parquet)
+#   - AusTraits traits parquet (input/austraits_traits.parquet)
 #   - GBIF occurrences parquet (input/gbif_occurrence_plantae.parquet) - 5.4GB, streamed
 #   - GloBI interactions parquet (input/globi_interactions_plants.parquet) - streamed
 #   - TRY selected traits parquet (input/try_selected_traits.parquet)
@@ -188,18 +188,19 @@ cat("      Wrote", nrow(try_enh_names), "TRY Enhanced name records\n\n")
 # DATASET 5: AUSTRAITS (AUSTRALIAN PLANT TRAITS)
 # ========================================================================
 # Extract unique taxa from AusTraits plant trait database
-# Focuses on Australian flora with comprehensive taxonomic metadata
+# Reads from original traits file (1.8M measurements) and extracts distinct taxa
 cat("[5/8] Extracting AusTraits names...\n")
-aus_taxa <- read_parquet(file.path(INPUT_DIR, "austraits_taxa.parquet"))
+aus_traits <- read_parquet(file.path(INPUT_DIR, "austraits_traits.parquet"))
 
-# Extract all taxonomic columns without filtering
-# taxon_name: full scientific name
-# taxon_rank: taxonomic rank (species, subspecies, variety, etc.)
-# genus, family: higher taxonomic classifications
-# taxonomic_status: accepted, synonym, etc.
-# taxonomic_dataset: source of the taxonomic information
-aus_names <- unique(aus_taxa[, c("taxon_name", "taxon_rank", "genus", "family",
-                                  "taxonomic_status", "taxonomic_dataset")])
+# Extract unique taxon names from trait measurements
+# taxon_name: scientific name of the taxon
+# original_name: original name as recorded in the source (before standardization)
+# Note: Traits file doesn't have taxonomic metadata (genus, family, etc.)
+# WorldFlora matching only needs the taxon name
+aus_names <- unique(aus_traits[, c("taxon_name", "original_name")])
+
+# Remove rows where taxon_name is missing or empty
+aus_names <- aus_names[!is.na(aus_names$taxon_name) & trimws(aus_names$taxon_name) != "", ]
 
 # Sort alphabetically by taxon name for easier verification
 aus_names <- aus_names[order(aus_names$taxon_name), ]
