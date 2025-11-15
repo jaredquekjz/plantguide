@@ -2,15 +2,13 @@
 #
 # Complete NLP-Based Organism Categorization Pipeline
 #
-# This script orchestrates all 8 steps of the dual-pipeline NLP approach
-# for organism categorization using vector similarity and frequency extraction.
+# Vector-only approach using KaLM embeddings for semantic classification.
 #
 # Prerequisites:
 #   - vLLM Docker server running (localhost:8000)
-#   - R environment with udpipe, duckdb, arrow packages
+#   - R environment with duckdb, arrow packages
 #   - Python conda AI environment with openai, pandas, scikit-learn
 #
-# Author: Claude Code
 # Date: 2025-11-15
 
 set -e  # Exit on error
@@ -139,60 +137,25 @@ run_step 2 \
 
 # Step 3: Vector Classification (Python + vLLM)
 run_step 3 \
-    "Vector classification via vLLM (Pipeline B)" \
+    "Vector classification via vLLM" \
     "${PYTHON_BIN} ${SCRIPT_DIR}/03_vector_classification_vllm.py"
 
-# Step 4: Frequency Extraction (R + udpipe)
-if [[ -f "${SCRIPT_DIR}/04_frequency_extraction.R" ]]; then
+# Step 4: Label Organisms
+if [[ -f "${SCRIPT_DIR}/04_label_organisms.R" ]]; then
     run_step 4 \
-        "Frequency extraction via udpipe (Pipeline A)" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/04_frequency_extraction.R"
-else
-    log_warn "Step 4 script not found (04_frequency_extraction.R) - skipping"
-fi
-
-# Step 5: Agreement Checking
-if [[ -f "${SCRIPT_DIR}/05_agreement_checking.R" ]]; then
-    run_step 5 \
-        "Agreement checking between Pipeline A and B" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/05_agreement_checking.R"
-else
-    log_warn "Step 5 script not found (05_agreement_checking.R) - skipping"
-fi
-
-# Step 6: Manual Review
-if [[ -f "${SCRIPT_DIR}/06_manual_review.R" ]]; then
-    log_info "Step 6: Manual review required"
-    log_info "Exporting disagreement cases..."
-
-    env R_LIBS_USER="${R_LIBS_USER}" ${R_BIN} ${SCRIPT_DIR}/06_manual_review.R
-
-    log_warn "Pipeline paused for manual review"
-    log_warn "Please review: reports/manual_review_queue.csv"
-    log_warn "Create decisions file: reports/manual_review_decisions.csv"
-    echo ""
-    read -p "Press Enter when manual review is complete..."
-    echo ""
-else
-    log_warn "Step 6 script not found (06_manual_review.R) - skipping"
-fi
-
-# Step 7: Label Organisms
-if [[ -f "${SCRIPT_DIR}/07_label_organisms.R" ]]; then
-    run_step 7 \
         "Apply genus-category mapping to all organisms" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/07_label_organisms.R"
+        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/04_label_organisms.R"
 else
-    log_warn "Step 7 script not found (07_label_organisms.R) - skipping"
+    log_warn "Step 4 script not found (04_label_organisms.R) - skipping"
 fi
 
-# Step 8: Validate Results
-if [[ -f "${SCRIPT_DIR}/08_validate_categories.R" ]]; then
-    run_step 8 \
+# Step 5: Validate Results
+if [[ -f "${SCRIPT_DIR}/05_validate_categories.R" ]]; then
+    run_step 5 \
         "Generate validation reports" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/08_validate_categories.R"
+        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/05_validate_categories.R"
 else
-    log_warn "Step 8 script not found (08_validate_categories.R) - skipping"
+    log_warn "Step 5 script not found (05_validate_categories.R) - skipping"
 fi
 
 # ============================================================================
@@ -214,10 +177,11 @@ log_info "Output files:"
 log_info "  - data/taxonomy/genus_vernacular_aggregations.parquet"
 log_info "  - data/taxonomy/functional_categories.parquet"
 log_info "  - data/taxonomy/vector_classifications_kalm.parquet (if Step 3 ran)"
-log_info "  - data/taxonomy/organisms_categorized_comprehensive.parquet (if Step 7 ran)"
+log_info "  - data/taxonomy/organisms_categorized_comprehensive.parquet (if Step 4 ran)"
+log_info "  - reports/category_*.csv (if Step 5 ran)"
 echo ""
 log_info "Next steps:"
-log_info "  1. Review validation reports (if Step 8 ran)"
-log_info "  2. Update Rust guild scorer to use new categorized dataset"
+log_info "  1. Review validation reports in reports/"
+log_info "  2. Update Rust guild scorer to use organism_category column"
 log_info "  3. Re-run guild scoring with data-driven categories"
 echo ""
