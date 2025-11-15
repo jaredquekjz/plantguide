@@ -39,7 +39,7 @@ CATEGORIES_FILE = "/home/olier/ellenberg/data/taxonomy/functional_categories_bil
 OUTPUT_FILE = "/home/olier/ellenberg/data/taxonomy/vector_classifications_kalm_chinese.parquet"
 
 BATCH_SIZE = 128
-SIMILARITY_THRESHOLD = 0.42  # Lowered from 0.45 for 98.0% coverage (threshold analysis)
+SIMILARITY_THRESHOLD = 0.45  # Standardized with English for quality consistency
 
 # ============================================================================
 # Setup

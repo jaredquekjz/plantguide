@@ -34,9 +34,9 @@ ENGLISH_FILE <- "/home/olier/ellenberg/data/taxonomy/vector_classifications_kalm
 CHINESE_FILE <- "/home/olier/ellenberg/data/taxonomy/vector_classifications_kalm_chinese.parquet"
 OUTPUT_FILE <- "/home/olier/ellenberg/data/taxonomy/vector_classifications_bilingual.parquet"
 
-# Thresholds (from threshold analysis)
-ENGLISH_THRESHOLD <- 0.45  # Lowered from 0.50 for better coverage
-CHINESE_THRESHOLD <- 0.42  # Slightly lower for Chinese
+# Thresholds (standardized for quality)
+ENGLISH_THRESHOLD <- 0.45  # Optimized from threshold analysis
+CHINESE_THRESHOLD <- 0.45  # Standardized with English for consistency
 
 # ============================================================================
 # Connect to DuckDB
