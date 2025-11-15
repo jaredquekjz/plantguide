@@ -25,7 +25,7 @@ import duckdb
 VLLM_BASE_URL = "http://localhost:8000/v1"
 MODEL_NAME = "tencent/KaLM-Embedding-Gemma3-12B-2511"
 BATCH_SIZE = 128  # Optimal for RTX 6000 Ada with 48GB VRAM
-MIN_SIMILARITY = 0.5  # Threshold for accepting a category match
+MIN_SIMILARITY = 0.45  # Lowered from 0.5 for 98.7% coverage (threshold analysis)
 
 DATA_DIR = "/home/olier/ellenberg/data/taxonomy"
 
