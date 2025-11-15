@@ -74,7 +74,7 @@ assign_vernaculars <- function(df, genus_col = "genus", family_col = "family",
   # Register input dataframe in DuckDB
   duckdb_register(con, "input_taxa", df)
 
-  # Apply hierarchical matching via SQL
+  # Apply hierarchical matching via SQL with language metadata
   result <- dbGetQuery(con, sprintf("
     SELECT
       t.*,
@@ -84,6 +84,7 @@ assign_vernaculars <- function(df, genus_col = "genus", family_col = "family",
       gv.derived_vernacular as genus_derived_vernacular,
       fv_itis.vernacular_names as itis_family_vernacular,
       fv_derived.derived_vernacular as family_derived_vernacular,
+      -- Vernacular source (priority-based)
       CASE
         WHEN inat.inat_all_vernaculars IS NOT NULL THEN 'P1_inat_species'
         WHEN gv.derived_vernacular IS NOT NULL THEN 'P2_derived_genus'
@@ -91,12 +92,45 @@ assign_vernaculars <- function(df, genus_col = "genus", family_col = "family",
         WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'P4_derived_family'
         ELSE 'uncategorized'
       END as vernacular_source,
+      -- Vernacular name (all languages)
       COALESCE(
         inat.inat_all_vernaculars,
         gv.derived_vernacular,
         fv_itis.vernacular_names,
         fv_derived.derived_vernacular
-      ) as vernacular_name
+      ) as vernacular_name,
+      -- NEW: English vernacular name
+      CASE
+        WHEN inat.inat_vernaculars_english IS NOT NULL THEN inat.inat_vernaculars_english
+        WHEN gv.derived_vernacular IS NOT NULL THEN gv.derived_vernacular
+        WHEN fv_itis.vernacular_names IS NOT NULL THEN fv_itis.vernacular_names
+        WHEN fv_derived.derived_vernacular IS NOT NULL THEN fv_derived.derived_vernacular
+        ELSE NULL
+      END as vernacular_name_english,
+      -- NEW: Primary language (ISO 639-1)
+      CASE
+        WHEN inat.inat_language_primary IS NOT NULL THEN inat.inat_language_primary
+        WHEN gv.derived_vernacular IS NOT NULL THEN 'en'
+        WHEN fv_itis.vernacular_names IS NOT NULL THEN 'en'
+        WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'en'
+        ELSE NULL
+      END as vernacular_language_primary,
+      -- NEW: All languages (semicolon-separated)
+      CASE
+        WHEN inat.inat_languages_all IS NOT NULL THEN inat.inat_languages_all
+        WHEN gv.derived_vernacular IS NOT NULL THEN 'en'
+        WHEN fv_itis.vernacular_names IS NOT NULL THEN 'en'
+        WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'en'
+        ELSE NULL
+      END as vernacular_languages_all,
+      -- NEW: Total count of vernacular names (based on matched source)
+      CASE
+        WHEN inat.inat_all_vernaculars IS NOT NULL THEN inat.n_vernaculars
+        WHEN gv.derived_vernacular IS NOT NULL THEN 1
+        WHEN fv_itis.vernacular_names IS NOT NULL THEN fv_itis.n_names
+        WHEN fv_derived.derived_vernacular IS NOT NULL THEN 1
+        ELSE 0
+      END as n_vernaculars_total
     FROM input_taxa t
     LEFT JOIN inat_matched inat
       ON LOWER(t.scientific_name) = LOWER(inat.organism_name)
@@ -167,7 +201,7 @@ dbExecute(con, sprintf("
   SELECT * FROM read_parquet('%s')
 ", INAT_VERNACULARS_FILE))
 
-# Create matched view (taxa + vernaculars aggregated)
+# Create matched view (taxa + vernaculars aggregated with language metadata)
 cat("  Creating iNaturalist matched view...\n")
 dbExecute(con, "
   CREATE OR REPLACE VIEW inat_matched AS
@@ -175,7 +209,17 @@ dbExecute(con, "
     t.scientificName as organism_name,
     t.id as inat_taxon_id,
     t.taxonRank,
+    -- All vernacular names (ordered)
     STRING_AGG(DISTINCT v.vernacularName, '; ' ORDER BY v.vernacularName) as inat_all_vernaculars,
+    -- English vernacular names only (language='en' or 'und')
+    STRING_AGG(CASE WHEN v.language IN ('en', 'und') THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language IN ('en', 'und')) as inat_vernaculars_english,
+    -- All languages (ISO 639-1 codes, ordered)
+    STRING_AGG(DISTINCT v.language, '; ' ORDER BY v.language)
+      FILTER (WHERE v.language IS NOT NULL) as inat_languages_all,
+    -- Primary language (prefer 'en', else most frequent by count)
+    MODE(v.language) FILTER (WHERE v.language IS NOT NULL) as inat_language_primary,
+    -- Count of vernacular names
     COUNT(DISTINCT v.vernacularName) as n_vernaculars
   FROM inat_taxa t
   LEFT JOIN inat_vernaculars v ON t.id = v.id
@@ -242,7 +286,8 @@ dbExecute(con, sprintf("
   CREATE OR REPLACE VIEW family_itis AS
   SELECT
     CAST(family AS VARCHAR) as family,
-    vernacular_names
+    vernacular_names,
+    n_names
   FROM read_parquet('%s')
 ", FAMILY_ITIS_FILE))
 
