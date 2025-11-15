@@ -32,6 +32,7 @@ cat("=", rep("=", 78), "\n\n", sep = "")
 DATA_DIR <- "/home/olier/ellenberg/data"
 TAXA_FILE <- file.path(DATA_DIR, "inaturalist/taxa.csv")
 VERNACULARS_FILE <- file.path(DATA_DIR, "taxonomy/inat_vernaculars_all_languages.parquet")
+TARGET_GENERA_FILE <- file.path(DATA_DIR, "taxonomy/target_genera.parquet")
 OUTPUT_FILE <- file.path(DATA_DIR, "taxonomy/genus_vernacular_aggregations.parquet")
 
 # Verify input files exist
@@ -41,6 +42,9 @@ if (!file.exists(TAXA_FILE)) {
 if (!file.exists(VERNACULARS_FILE)) {
   stop("Vernaculars file not found: ", VERNACULARS_FILE)
 }
+if (!file.exists(TARGET_GENERA_FILE)) {
+  stop("Target genera file not found: ", TARGET_GENERA_FILE)
+}
 
 # ============================================================================
 # Load Data with DuckDB
@@ -49,6 +53,21 @@ if (!file.exists(VERNACULARS_FILE)) {
 cat("Loading data...\n")
 
 con <- dbConnect(duckdb::duckdb())
+
+# Load target genera (combined from organisms + plants)
+cat("  Reading target genera (combined organisms + plants)...\n")
+target_genera_query <- sprintf("
+  SELECT DISTINCT genus
+  FROM read_parquet('%s')
+  WHERE genus IS NOT NULL
+", TARGET_GENERA_FILE)
+
+target_genera <- dbGetQuery(con, target_genera_query)
+cat(sprintf("    → %s target genera (animals + plants)\n", format(nrow(target_genera), big.mark = ",")))
+
+# Register target genera for filtering
+dbExecute(con, "DROP TABLE IF EXISTS target_genera")
+duckdb_register(con, "target_genera", target_genera)
 
 # Load taxa (only need genus and kingdom)
 cat("  Reading taxa.csv...\n")
@@ -65,8 +84,8 @@ taxa_query <- sprintf("
 taxa <- dbGetQuery(con, taxa_query)
 cat(sprintf("    → %s taxa with genus information\n", format(nrow(taxa), big.mark = ",")))
 
-# Load vernaculars
-cat("  Reading vernaculars parquet...\n")
+# Load vernaculars (ENGLISH ONLY for better semantic matching)
+cat("  Reading vernaculars parquet (English only)...\n")
 vernaculars_query <- sprintf("
   SELECT
     id AS taxon_id,
@@ -75,10 +94,11 @@ vernaculars_query <- sprintf("
   FROM read_parquet('%s')
   WHERE vernacularName IS NOT NULL
     AND language IS NOT NULL
+    AND language = 'en'
 ", VERNACULARS_FILE)
 
 vernaculars <- dbGetQuery(con, vernaculars_query)
-cat(sprintf("    → %s vernacular names\n", format(nrow(vernaculars), big.mark = ",")))
+cat(sprintf("    → %s English vernacular names\n", format(nrow(vernaculars), big.mark = ",")))
 
 # ============================================================================
 # Join Taxa with Vernaculars
@@ -92,7 +112,7 @@ dbExecute(con, "DROP TABLE IF EXISTS vernaculars_temp")
 duckdb_register(con, "taxa_temp", taxa)
 duckdb_register(con, "vernaculars_temp", vernaculars)
 
-# Join and aggregate
+# Join and aggregate (FILTER to target genera only)
 join_query <- "
   SELECT
     t.genus,
@@ -101,11 +121,12 @@ join_query <- "
     v.vernacularName
   FROM taxa_temp t
   INNER JOIN vernaculars_temp v ON t.taxon_id = v.taxon_id
+  INNER JOIN target_genera tg ON t.genus = tg.genus
   WHERE t.genus IS NOT NULL
 "
 
 joined <- dbGetQuery(con, join_query)
-cat(sprintf("  → %s genus-vernacular pairs\n", format(nrow(joined), big.mark = ",")))
+cat(sprintf("  → %s genus-vernacular pairs (filtered to target genera)\n", format(nrow(joined), big.mark = ",")))
 
 # ============================================================================
 # Aggregate by Genus
@@ -144,12 +165,12 @@ cat(sprintf("  Plantae genera: %s\n",
 # Distribution of vernacular counts
 quantiles <- quantile(genus_agg$n_vernaculars, probs = c(0.25, 0.5, 0.75, 0.9, 0.95, 0.99))
 cat("\nVernaculars per genus (quantiles):\n")
-cat(sprintf("  25%%: %d\n", quantiles[1]))
-cat(sprintf("  50%%: %d\n", quantiles[2]))
-cat(sprintf("  75%%: %d\n", quantiles[3]))
-cat(sprintf("  90%%: %d\n", quantiles[4]))
-cat(sprintf("  95%%: %d\n", quantiles[5]))
-cat(sprintf("  99%%: %d\n", quantiles[6]))
+cat(sprintf("  25%%: %.0f\n", quantiles[1]))
+cat(sprintf("  50%%: %.0f\n", quantiles[2]))
+cat(sprintf("  75%%: %.0f\n", quantiles[3]))
+cat(sprintf("  90%%: %.0f\n", quantiles[4]))
+cat(sprintf("  95%%: %.0f\n", quantiles[5]))
+cat(sprintf("  99%%: %.0f\n", quantiles[6]))
 
 # Top genera by vernacular count
 cat("\nTop 10 genera by vernacular count:\n")

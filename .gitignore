@@ -56,3 +56,4 @@ shipley_checks/**/*.nwk
 shipley_checks/**/*.rds
 shipley_checks/**/*.tar.xz
 shipley_checks/**/*.tar.gz
+shipley_checks/**/*.zip
