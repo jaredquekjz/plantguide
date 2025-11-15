@@ -470,7 +470,14 @@ main <- function() {
   )
 
   opt_parser <- OptionParser(option_list = option_list)
-  opt <- parse_args(opt_parser)
+
+  # Filter args to only valid options for this script
+  # When sourced by run_all_bill.R, args may contain parent script arguments
+  # like "--start-from=phase2" which should be ignored
+  all_args <- commandArgs(trailingOnly = TRUE)
+  valid_args <- grep("^--(input|output)", all_args, value = TRUE)
+
+  opt <- parse_args(opt_parser, args = valid_args)
 
   cat("============================================================\n")
   cat("Stage 3 CSR & Ecosystem Services (Bill's Verification)\n")
