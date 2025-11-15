@@ -74,58 +74,51 @@ assign_vernaculars <- function(df, genus_col = "genus", family_col = "family",
   # Register input dataframe in DuckDB
   duckdb_register(con, "input_taxa", df)
 
-  # Apply hierarchical matching via SQL with language metadata
+  # Apply hierarchical matching via SQL with wide-format language columns
   result <- dbGetQuery(con, sprintf("
     SELECT
       t.*,
       inat.inat_taxon_id,
-      inat.inat_all_vernaculars,
-      inat.n_vernaculars,
-      gv.derived_vernacular as genus_derived_vernacular,
-      fv_itis.vernacular_names as itis_family_vernacular,
-      fv_derived.derived_vernacular as family_derived_vernacular,
-      -- Vernacular source (priority-based)
+      -- Vernacular source (priority-based - check if ANY language has vernaculars)
       CASE
-        WHEN inat.inat_all_vernaculars IS NOT NULL THEN 'P1_inat_species'
+        WHEN inat.inat_taxon_id IS NOT NULL AND inat.n_vernaculars > 0 THEN 'P1_inat_species'
         WHEN gv.derived_vernacular IS NOT NULL THEN 'P2_derived_genus'
         WHEN fv_itis.vernacular_names IS NOT NULL THEN 'P3_itis_family'
         WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'P4_derived_family'
         ELSE 'uncategorized'
       END as vernacular_source,
-      -- Vernacular name (all languages)
+      -- Language columns (wide format): English (priority 1)
       COALESCE(
-        inat.inat_all_vernaculars,
+        inat.vernacular_name_en,
         gv.derived_vernacular,
         fv_itis.vernacular_names,
         fv_derived.derived_vernacular
-      ) as vernacular_name,
-      -- NEW: English vernacular name
+      ) as vernacular_name_en,
+      -- Chinese (priority 2)
+      inat.vernacular_name_zh,
+      -- Japanese
+      inat.vernacular_name_ja,
+      -- Russian
+      inat.vernacular_name_ru,
+      -- French
+      inat.vernacular_name_fr,
+      -- Spanish
+      inat.vernacular_name_es,
+      -- German
+      inat.vernacular_name_de,
+      -- Portuguese
+      inat.vernacular_name_pt,
+      -- Dutch
+      inat.vernacular_name_nl,
+      -- Polish
+      inat.vernacular_name_pl,
+      -- Italian
+      inat.vernacular_name_it,
+      -- Swedish
+      inat.vernacular_name_sv,
+      -- Total count of vernacular names (all languages)
       CASE
-        WHEN inat.inat_vernaculars_english IS NOT NULL THEN inat.inat_vernaculars_english
-        WHEN gv.derived_vernacular IS NOT NULL THEN gv.derived_vernacular
-        WHEN fv_itis.vernacular_names IS NOT NULL THEN fv_itis.vernacular_names
-        WHEN fv_derived.derived_vernacular IS NOT NULL THEN fv_derived.derived_vernacular
-        ELSE NULL
-      END as vernacular_name_english,
-      -- NEW: Primary language (ISO 639-1)
-      CASE
-        WHEN inat.inat_language_primary IS NOT NULL THEN inat.inat_language_primary
-        WHEN gv.derived_vernacular IS NOT NULL THEN 'en'
-        WHEN fv_itis.vernacular_names IS NOT NULL THEN 'en'
-        WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'en'
-        ELSE NULL
-      END as vernacular_language_primary,
-      -- NEW: All languages (semicolon-separated)
-      CASE
-        WHEN inat.inat_languages_all IS NOT NULL THEN inat.inat_languages_all
-        WHEN gv.derived_vernacular IS NOT NULL THEN 'en'
-        WHEN fv_itis.vernacular_names IS NOT NULL THEN 'en'
-        WHEN fv_derived.derived_vernacular IS NOT NULL THEN 'en'
-        ELSE NULL
-      END as vernacular_languages_all,
-      -- NEW: Total count of vernacular names (based on matched source)
-      CASE
-        WHEN inat.inat_all_vernaculars IS NOT NULL THEN inat.n_vernaculars
+        WHEN inat.vernacular_name_en IS NOT NULL THEN inat.n_vernaculars
         WHEN gv.derived_vernacular IS NOT NULL THEN 1
         WHEN fv_itis.vernacular_names IS NOT NULL THEN fv_itis.n_names
         WHEN fv_derived.derived_vernacular IS NOT NULL THEN 1
@@ -151,7 +144,8 @@ assign_vernaculars <- function(df, genus_col = "genus", family_col = "family",
 #' Print coverage summary
 print_coverage <- function(df, label) {
   n_total <- nrow(df)
-  n_categorized <- sum(!is.na(df$vernacular_name))
+  # Count as categorized if source is not 'uncategorized' (may have vernaculars in non-English languages)
+  n_categorized <- sum(df$vernacular_source != 'uncategorized')
   pct_categorized <- 100 * n_categorized / n_total
 
   cat(sprintf("\n=== %s Coverage ===\n", label))
@@ -201,7 +195,7 @@ dbExecute(con, sprintf("
   SELECT * FROM read_parquet('%s')
 ", INAT_VERNACULARS_FILE))
 
-# Create matched view (taxa + vernaculars aggregated with language metadata)
+# Create matched view (taxa + vernaculars by language - wide format)
 cat("  Creating iNaturalist matched view...\n")
 dbExecute(con, "
   CREATE OR REPLACE VIEW inat_matched AS
@@ -209,17 +203,32 @@ dbExecute(con, "
     t.scientificName as organism_name,
     t.id as inat_taxon_id,
     t.taxonRank,
-    -- All vernacular names (ordered)
-    STRING_AGG(DISTINCT v.vernacularName, '; ' ORDER BY v.vernacularName) as inat_all_vernaculars,
-    -- English vernacular names only (language='en' or 'und')
+    -- Wide format: separate column per language (top 12 languages)
     STRING_AGG(CASE WHEN v.language IN ('en', 'und') THEN v.vernacularName END, '; ')
-      FILTER (WHERE v.language IN ('en', 'und')) as inat_vernaculars_english,
-    -- All languages (ISO 639-1 codes, ordered)
-    STRING_AGG(DISTINCT v.language, '; ' ORDER BY v.language)
-      FILTER (WHERE v.language IS NOT NULL) as inat_languages_all,
-    -- Primary language (prefer 'en', else most frequent by count)
-    MODE(v.language) FILTER (WHERE v.language IS NOT NULL) as inat_language_primary,
-    -- Count of vernacular names
+      FILTER (WHERE v.language IN ('en', 'und')) as vernacular_name_en,
+    STRING_AGG(CASE WHEN v.language IN ('zh-CN', 'zh') THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language IN ('zh-CN', 'zh')) as vernacular_name_zh,
+    STRING_AGG(CASE WHEN v.language = 'ja' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'ja') as vernacular_name_ja,
+    STRING_AGG(CASE WHEN v.language = 'ru' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'ru') as vernacular_name_ru,
+    STRING_AGG(CASE WHEN v.language = 'fr' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'fr') as vernacular_name_fr,
+    STRING_AGG(CASE WHEN v.language = 'es' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'es') as vernacular_name_es,
+    STRING_AGG(CASE WHEN v.language = 'de' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'de') as vernacular_name_de,
+    STRING_AGG(CASE WHEN v.language = 'pt' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'pt') as vernacular_name_pt,
+    STRING_AGG(CASE WHEN v.language = 'nl' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'nl') as vernacular_name_nl,
+    STRING_AGG(CASE WHEN v.language = 'pl' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'pl') as vernacular_name_pl,
+    STRING_AGG(CASE WHEN v.language = 'it' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'it') as vernacular_name_it,
+    STRING_AGG(CASE WHEN v.language = 'sv' THEN v.vernacularName END, '; ')
+      FILTER (WHERE v.language = 'sv') as vernacular_name_sv,
+    -- Total count of vernacular names (all languages)
     COUNT(DISTINCT v.vernacularName) as n_vernaculars
   FROM inat_taxa t
   LEFT JOIN inat_vernaculars v ON t.id = v.id
@@ -426,7 +435,7 @@ for (role in c("is_herbivore", "is_pollinator", "is_predator")) {
 
   role_df <- organisms_final[organisms_final[[role]] == TRUE, ]
   n_total <- nrow(role_df)
-  n_categorized <- sum(!is.na(role_df$vernacular_name))
+  n_categorized <- sum(role_df$vernacular_source != 'uncategorized')
   pct_categorized <- 100 * n_categorized / n_total
   pct_other <- 100 - pct_categorized
 
@@ -470,7 +479,7 @@ cat("FINAL SUMMARY\n")
 cat(paste0(strrep("=", 80), "\n\n"))
 
 total_taxa <- nrow(combined)
-total_categorized <- sum(!is.na(combined$vernacular_name))
+total_categorized <- sum(combined$vernacular_source != 'uncategorized')
 pct_total <- 100 * total_categorized / total_taxa
 
 cat(sprintf("Total taxa processed: %s\n", format(total_taxa, big.mark = ",")))
