@@ -93,19 +93,36 @@ for (i in seq_along(SCRIPTS)) {
   }
 
   # Run verification script as subprocess and capture output + exit status
-  # Use system2() to execute Rscript with environment variables
+  # Use system2() to execute Rscript with cross-platform compatibility
   # Pass INPUT_FILE as --input argument to each verification script
-  result <- system2(
-    'env',
-    args = c(
-      sprintf('R_LIBS_USER=%s', R_LIBS),  # Preserve R library paths (package locations)
-      '/usr/bin/Rscript',                  # R interpreter path
-      script_path,                         # Verification script to run
-      sprintf('--input=%s', INPUT_FILE)   # Pass input file to verification script
-    ),
-    stdout = TRUE,  # Capture standard output (verification results)
-    stderr = TRUE   # Capture error output (any failures)
-  )
+
+  # Detect OS and use appropriate command
+  if (.Platform$OS.type == "windows") {
+    # Windows: use Rscript.exe directly
+    rscript_cmd <- file.path(R.home("bin"), "Rscript.exe")
+    result <- system2(
+      rscript_cmd,
+      args = c(
+        script_path,                        # Verification script to run
+        sprintf('--input=%s', INPUT_FILE)   # Pass input file to verification script
+      ),
+      stdout = TRUE,  # Capture standard output (verification results)
+      stderr = TRUE   # Capture error output (any failures)
+    )
+  } else {
+    # Unix/Linux/Mac: use env to preserve environment
+    result <- system2(
+      'env',
+      args = c(
+        sprintf('R_LIBS_USER=%s', R_LIBS),  # Preserve R library paths (package locations)
+        file.path(R.home("bin"), "Rscript"), # R interpreter path
+        script_path,                         # Verification script to run
+        sprintf('--input=%s', INPUT_FILE)   # Pass input file to verification script
+      ),
+      stdout = TRUE,  # Capture standard output (verification results)
+      stderr = TRUE   # Capture error output (any failures)
+    )
+  }
 
   # Extract exit code (0 = success, non-zero = failure)
   exit_code <- attr(result, 'status')
