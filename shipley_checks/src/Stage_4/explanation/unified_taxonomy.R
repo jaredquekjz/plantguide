@@ -52,7 +52,8 @@ categorize_organism <- function(name, role = NULL) {
   }
 
   # Wasps - predators + pollinators
-  if (grepl("vespula|vespa|polistes|ammophila|pemphredon|passaloecus|psenulus|ectemnius|crossocerus|rhopalum|trypoxylon|philanthus|cerceris|crabro|oxybelus|mellinus|gorytes|nysson|astata|mimesa|spilomena|stigmus|diodontus|ancistrocerus|symmorphus|odynerus|euodynerus", name_lower)) {
+  # Includes social wasps (Vespidae), digger wasps (Sphecidae, Crabronidae), spider wasps (Pompilidae)
+  if (grepl("vespula|vespa|polistes|ammophila|pemphredon|passaloecus|psenulus|ectemnius|crossocerus|rhopalum|trypoxylon|philanthus|cerceris|crabro|oxybelus|mellinus|gorytes|nysson|astata|mimesa|spilomena|stigmus|diodontus|ancistrocerus|symmorphus|odynerus|euodynerus|anoplius|pompilus|priocnemis|agenioideus|auplopus|dipogon|evagetes|homonotus|calicurgus|cryptocheilus", name_lower)) {
     return("Wasps")
   }
 

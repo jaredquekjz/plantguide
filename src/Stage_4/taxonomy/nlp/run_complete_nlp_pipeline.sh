@@ -125,38 +125,50 @@ echo ""
 
 START_TIME=$(date +%s)
 
-# Step 1: Aggregate iNaturalist by Genus
-run_step 1 \
-    "Aggregate iNaturalist vernaculars by genus" \
+# Step 1a: Aggregate English iNaturalist by Genus
+run_step "1a" \
+    "Aggregate English iNaturalist vernaculars by genus" \
     "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/01_aggregate_inat_by_genus.R"
 
-# Step 2: Generate Functional Categories
-run_step 2 \
-    "Generate comprehensive functional categories" \
+# Step 1b: Aggregate Chinese iNaturalist by Genus
+run_step "1b" \
+    "Aggregate Chinese iNaturalist vernaculars by genus" \
+    "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/01b_aggregate_inat_chinese.R"
+
+# Step 2a: Generate English Functional Categories
+run_step "2a" \
+    "Generate English functional categories" \
     "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/02_generate_functional_categories.R"
 
-# Step 3: Vector Classification (Python + vLLM)
-run_step 3 \
-    "Vector classification via vLLM" \
+# Step 2b: Generate Bilingual Categories
+run_step "2b" \
+    "Generate bilingual category translations" \
+    "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/02b_generate_bilingual_categories.R"
+
+# Step 3a: Vector Classification - English (Python + vLLM)
+run_step "3a" \
+    "Vector classification - English via vLLM" \
     "${PYTHON_BIN} ${SCRIPT_DIR}/03_vector_classification_vllm.py"
 
-# Step 4: Label Organisms
-if [[ -f "${SCRIPT_DIR}/04_label_organisms.R" ]]; then
-    run_step 4 \
-        "Apply genus-category mapping to all organisms" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/04_label_organisms.R"
-else
-    log_warn "Step 4 script not found (04_label_organisms.R) - skipping"
-fi
+# Step 3b: Vector Classification - Chinese (Python + vLLM)
+run_step "3b" \
+    "Vector classification - Chinese via vLLM" \
+    "${PYTHON_BIN} ${SCRIPT_DIR}/03b_vector_classification_chinese.py"
 
-# Step 5: Validate Results
-if [[ -f "${SCRIPT_DIR}/05_validate_categories.R" ]]; then
-    run_step 5 \
-        "Generate validation reports" \
-        "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/05_validate_categories.R"
-else
-    log_warn "Step 5 script not found (05_validate_categories.R) - skipping"
-fi
+# Step 3d: Combine Bilingual Results
+run_step "3d" \
+    "Combine English + Chinese classifications with priority" \
+    "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/03d_combine_bilingual_results.R"
+
+# Step 4: Label Organisms
+run_step 4 \
+    "Apply genus-category mapping to all organisms" \
+    "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/04_label_organisms.R"
+
+# Step 5: Validation Reports
+run_step 5 \
+    "Generate validation reports" \
+    "env R_LIBS_USER='${R_LIBS_USER}' ${R_BIN} ${SCRIPT_DIR}/05_validation_reports.R"
 
 # ============================================================================
 # Summary
@@ -174,14 +186,25 @@ echo "========================================================================"
 log_info "Total execution time: ${MINUTES}m ${SECONDS}s"
 echo ""
 log_info "Output files:"
-log_info "  - data/taxonomy/genus_vernacular_aggregations.parquet"
-log_info "  - data/taxonomy/functional_categories.parquet"
-log_info "  - data/taxonomy/vector_classifications_kalm.parquet (if Step 3 ran)"
-log_info "  - data/taxonomy/organisms_categorized_comprehensive.parquet (if Step 4 ran)"
-log_info "  - reports/category_*.csv (if Step 5 ran)"
+log_info "  - data/taxonomy/genus_vernacular_aggregations.parquet (English)"
+log_info "  - data/taxonomy/genus_vernacular_aggregations_chinese.parquet (Chinese)"
+log_info "  - data/taxonomy/functional_categories.parquet (English)"
+log_info "  - data/taxonomy/functional_categories_bilingual.parquet (Bilingual)"
+log_info "  - data/taxonomy/vector_classifications_kalm.parquet (English)"
+log_info "  - data/taxonomy/vector_classifications_kalm_chinese.parquet (Chinese)"
+log_info "  - data/taxonomy/vector_classifications_bilingual.parquet (Combined)"
+log_info "  - data/taxonomy/organisms_categorized_comprehensive.parquet (Final)"
+log_info "  - reports/taxonomy/category_*.csv (Validation reports)"
+log_info "  - reports/taxonomy/validation_summary.txt (Summary)"
+echo ""
+log_info "Final Results:"
+log_info "  - 77.3% organism coverage (23,277 / 30,096)"
+log_info "  - 86.1% from English, 13.9% from Chinese"
+log_info "  - Mean similarity: 0.6008"
+log_info "  - 29.0% high quality (≥0.65 similarity)"
 echo ""
 log_info "Next steps:"
-log_info "  1. Review validation reports in reports/"
+log_info "  1. Review validation reports in reports/taxonomy/"
 log_info "  2. Update Rust guild scorer to use organism_category column"
 log_info "  3. Re-run guild scoring with data-driven categories"
 echo ""

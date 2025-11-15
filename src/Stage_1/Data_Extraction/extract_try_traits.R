@@ -1,7 +1,7 @@
 # ================================================================================
 # TRY Database Trait Extraction Script
 # ================================================================================
-# Purpose: Extract 7 functional plant traits from TRY database (v5.0)
+# Purpose: Extract 8 functional plant traits from TRY database (v5.0)
 #
 # TRY (Plant Trait Database) provides standardized measurements of functional
 # traits across ~280K plant species. This script extracts a focused set of
@@ -9,6 +9,7 @@
 #
 # Target Traits:
 #   TraitID 7:    Mycorrhiza type (AM, EM, ERM, NM)
+#   TraitID 8:    Nitrogen fixation capacity (yes/no/unknown)
 #   TraitID 46:   Leaf thickness (mm)
 #   TraitID 37:   Leaf phenology type (deciduous, evergreen, etc.)
 #   TraitID 22:   Photosynthesis pathway (C3, C4, CAM)
@@ -44,10 +45,16 @@ library(data.table)
 # ================================================================================
 # Trait Selection Configuration
 # ================================================================================
-# Define the 7 functional traits to extract from TRY database
+# Define the 8 functional traits to extract from TRY database
 # Each trait includes: TraitID (TRY database identifier), name (slug), description
 target_traits <- list(
   list(id = 7, name = "mycorrhiza_type", desc = "Mycorrhiza type"),
+
+  # Nitrogen fixation capacity (TraitID 8)
+  # Used for ecosystem services calculation (Shipley 2025)
+  # Values: "yes", "no", or text descriptions indicating fixation capability
+  list(id = 8, name = "nitrogen_fixation", desc = "Nitrogen fixation capacity"),
+
   list(id = 46, name = "leaf_thickness", desc = "Leaf thickness"),
   list(id = 37, name = "leaf_phenology_type", desc = "Leaf phenology type"),
   list(id = 22, name = "photosynthesis_pathway", desc = "Photosynthesis pathway"),
@@ -162,9 +169,9 @@ for (input_file in input_files) {
       n_species <- length(unique(trait_data_selected$AccSpeciesName))
       message(paste("Extracted", n_records, "records for", n_species, "unique species"))
 
-      # For categorical traits (mycorrhiza, phenology, photosynthesis),
+      # For categorical traits (mycorrhiza, nitrogen fixation, phenology, photosynthesis),
       # show sample values to verify extraction quality
-      if (trait$id %in% c(7, 37, 22)) {
+      if (trait$id %in% c(7, 8, 37, 22)) {
         unique_vals <- unique(trait_data_selected$OrigValueStr[!is.na(trait_data_selected$OrigValueStr)])
         message("Sample values: ", paste(head(unique_vals, 10), collapse = ", "))
       }
@@ -231,11 +238,12 @@ for (trait in target_traits) {
 
     # Also save simplified canonical outputs for downstream modeling
     # Expected (per user):
+    #   - trait_8_nitrogen_fixation.rds
     #   - trait_46_leaf_thickness.rds
     #   - trait_37_leaf_phenology_type.rds
     #   - trait_22_photosynthesis_pathway.rds
     #   - trait_31_species_tolerance_to_frost.rds
-    if (trait$id %in% c(46, 37, 22, 31, 47, 3115)) {
+    if (trait$id %in% c(8, 46, 37, 22, 31, 47, 3115)) {
       canonical_out <- file.path(output_dir, paste0("trait_", trait$id, "_", trait$name, ".rds"))
       saveRDS(combined_data, file = canonical_out)
       message("  Canonical output saved to: ", canonical_out)
