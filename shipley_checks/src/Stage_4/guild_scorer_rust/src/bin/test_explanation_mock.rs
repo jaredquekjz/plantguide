@@ -34,9 +34,12 @@ fn create_mock_m4_result() -> M4Result {
         pathogen_control_raw: 0.4,
         n_mechanisms: 3,
         mycoparasite_counts: FxHashMap::default(),
+        fungivore_counts: FxHashMap::default(),
         pathogen_counts: FxHashMap::default(),
         specific_antagonist_matches: 0,
+        specific_fungivore_matches: 0,
         matched_antagonist_pairs: Vec::new(),
+        matched_fungivore_pairs: Vec::new(),
     }
 }
 

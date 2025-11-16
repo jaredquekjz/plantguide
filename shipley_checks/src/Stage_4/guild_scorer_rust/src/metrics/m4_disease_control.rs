@@ -1,20 +1,23 @@
-//! METRIC 4: DISEASE SUPPRESSION (ANTAGONIST FUNGI)
+//! METRIC 4: DISEASE SUPPRESSION (FUNGAL & ANIMAL BIOCONTROL)
 //!
 //! **PHASE 3 OPTIMIZATION**: Pre-filtered LazyFrame with column projection
 //!
-//! Scores fungal disease control provided by mycoparasitic fungi.
+//! Scores disease control provided by mycoparasitic fungi AND fungivorous animals.
 //! Uses pairwise analysis to identify protective relationships
-//! between vulnerable (disease-prone) and protective (mycoparasite-hosting) plants.
+//! between vulnerable (disease-prone) and protective (biocontrol-hosting) plants.
 //!
 //! **Memory optimization**:
-//!   - Old: Receives full fungi_df (11,711 rows), filters to guild
-//!   - New: Receives pre-filtered fungi_lazy (7 rows), selects only 2 needed columns
-//!   - Reuses same fungi_lazy as M3 and M5 (no redundant filtering!)
+//!   - Receives pre-filtered fungi_lazy (7 rows), selects only 2 needed columns
+//!   - Receives pre-filtered organisms_lazy (7 rows), selects only 1 needed column
+//!   - Reuses same LazyFrames as M3 (no redundant filtering!)
 //!
-//! **Columns needed** (M4 selects these 2):
+//! **Columns needed from fungi_lazy** (2 columns):
 //!   1. plant_wfo_id - Plant identification
-//!   2. pathogen_fungi - Pipe-separated pathogen IDs
+//!   2. pathogenic_fungi - Pipe-separated pathogen IDs
 //!   3. mycoparasite_fungi - Pipe-separated mycoparasite IDs
+//!
+//! **Columns needed from organisms_lazy** (1 column):
+//!   4. fungivores_eats - Pipe-separated fungivorous animal IDs
 //!
 //! R reference: shipley_checks/src/Stage_4/metrics/m4_disease_control.R
 
@@ -36,21 +39,28 @@ pub struct M4Result {
     pub n_mechanisms: usize,
     /// Map of mycoparasite_name → plant_count for network analysis
     pub mycoparasite_counts: FxHashMap<String, usize>,
+    /// Map of fungivore_name → plant_count for network analysis
+    pub fungivore_counts: FxHashMap<String, usize>,
     /// Map of pathogen_name → plant_count for network analysis
     pub pathogen_counts: FxHashMap<String, usize>,
     /// Count of specific antagonist matches (pathogen → known mycoparasite)
     pub specific_antagonist_matches: usize,
+    /// Count of specific fungivore matches (pathogen → known fungivore)
+    pub specific_fungivore_matches: usize,
     /// List of matched (pathogen, antagonist) pairs
     pub matched_antagonist_pairs: Vec<(String, String)>,
+    /// List of matched (pathogen, fungivore) pairs
+    pub matched_fungivore_pairs: Vec<(String, String)>,
 }
 
-/// Calculate M4: Disease Suppression (Antagonist Fungi)
+/// Calculate M4: Disease Suppression (Fungal & Animal Biocontrol)
 ///
-/// **PHASE 3 OPTIMIZATION**: Reuses fungi LazyFrame from scorer, filters after column projection
+/// **PHASE 3 OPTIMIZATION**: Reuses fungi and organisms LazyFrames from scorer
 ///
 /// R reference: m4_disease_control.R::calculate_m4_disease_control
 pub fn calculate_m4(
     plant_ids: &[String],        // Guild plant IDs for filtering
+    organisms_lazy: &LazyFrame,  // Schema-only scan (from scorer, reused from M3!)
     fungi_lazy: &LazyFrame,      // Schema-only scan (from scorer, reused from M3!)
     pathogen_antagonists: &FxHashMap<String, Vec<String>>,
     calibration: &Calibration,
@@ -58,9 +68,11 @@ pub fn calculate_m4(
     let mut pathogen_control_raw = 0.0;
     let mut n_mechanisms = 0;
     let mut specific_antagonist_matches = 0;
+    let mut specific_fungivore_matches = 0;
     let mut matched_antagonist_pairs: Vec<(String, String)> = Vec::new();
+    let mut matched_fungivore_pairs: Vec<(String, String)> = Vec::new();
 
-    // STEP 1: Materialize only the 3 columns M4 needs
+    // STEP 1a: Materialize fungi columns
     let fungi_selected = fungi_lazy
         .clone()
         .select(&[
@@ -70,15 +82,32 @@ pub fn calculate_m4(
         ])
         .collect()?;  // Execute: loads only 3 columns × 11,711 rows
 
-    // STEP 2: Filter to guild plants (fast - only 3 columns)
+    // STEP 1b: Materialize organisms columns (fungivores)
+    let organisms_selected = organisms_lazy
+        .clone()
+        .select(&[
+            col("plant_wfo_id"),
+            col("fungivores_eats"),
+        ])
+        .collect()?;  // Execute: loads only 2 columns × 11,711 rows
+
+    // STEP 2: Filter to guild plants
     use std::collections::HashSet;
     let id_set: HashSet<_> = plant_ids.iter().collect();
+
     let id_col = fungi_selected.column("plant_wfo_id")?.str()?;
     let mask: BooleanChunked = id_col
         .into_iter()
         .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
         .collect();
-    let guild_fungi = fungi_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
+    let guild_fungi = fungi_selected.filter(&mask)?;
+
+    let id_col_org = organisms_selected.column("plant_wfo_id")?.str()?;
+    let mask_org: BooleanChunked = id_col_org
+        .into_iter()
+        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .collect();
+    let guild_organisms = organisms_selected.filter(&mask_org)?;
 
     let n_plants = guild_fungi.height();
 
@@ -89,18 +118,23 @@ pub fn calculate_m4(
             pathogen_control_raw: 0.0,
             n_mechanisms: 0,
             mycoparasite_counts: FxHashMap::default(),
+            fungivore_counts: FxHashMap::default(),
             pathogen_counts: FxHashMap::default(),
             specific_antagonist_matches: 0,
+            specific_fungivore_matches: 0,
             matched_antagonist_pairs: Vec::new(),
+            matched_fungivore_pairs: Vec::new(),
         });
     }
 
-    // Extract fungi data into structured format
+    // Extract data into structured format
     let plant_pathogens = extract_column_data(&guild_fungi, "pathogenic_fungi")?;
     let plant_mycoparasites = extract_column_data(&guild_fungi, "mycoparasite_fungi")?;
+    let plant_fungivores = extract_column_data(&guild_organisms, "fungivores_eats")?;
 
     // Build agent counts: agent_name → number of plants
     let mycoparasite_counts = build_agent_counts(&plant_mycoparasites)?;
+    let fungivore_counts = build_agent_counts(&plant_fungivores)?;
     let pathogen_counts = build_agent_counts(&plant_pathogens)?;
 
     // Pairwise analysis: vulnerable plant A vs protective plant B
@@ -135,6 +169,29 @@ pub fn calculate_m4(
             pathogen_control_raw += mycoparasites_b.len() as f64 * 1.0;
             n_mechanisms += 1;
         }
+
+        // MECHANISM 3: Specific fungivorous animals (weight 1.0) - NEW!
+        // Check if other plants have fungivores that eat Plant A's pathogens
+        for (plant_b_id, fungivores_b) in &plant_fungivores {
+            if plant_a_id == plant_b_id || fungivores_b.is_empty() {
+                continue; // Skip self-comparison and plants without fungivores
+            }
+
+            for pathogen in pathogens_a {
+                if let Some(known_antagonists) = pathogen_antagonists.get(pathogen) {
+                    let matched_fungivores = find_matches(fungivores_b, known_antagonists);
+                    if !matched_fungivores.is_empty() {
+                        pathogen_control_raw += matched_fungivores.len() as f64 * 1.0;
+                        n_mechanisms += 1;
+                        specific_fungivore_matches += 1;
+                        // Track matched pairs
+                        for fungivore in matched_fungivores {
+                            matched_fungivore_pairs.push((pathogen.clone(), fungivore));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Normalize by guild size
@@ -151,6 +208,8 @@ pub fn calculate_m4(
     // Deduplicate matched pairs
     matched_antagonist_pairs.sort_unstable();
     matched_antagonist_pairs.dedup();
+    matched_fungivore_pairs.sort_unstable();
+    matched_fungivore_pairs.dedup();
 
     Ok(M4Result {
         raw: pathogen_control_normalized,
@@ -158,9 +217,12 @@ pub fn calculate_m4(
         pathogen_control_raw,
         n_mechanisms,
         mycoparasite_counts,
+        fungivore_counts,
         pathogen_counts,
         specific_antagonist_matches,
+        specific_fungivore_matches,
         matched_antagonist_pairs,
+        matched_fungivore_pairs,
     })
 }
 

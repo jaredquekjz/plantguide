@@ -225,9 +225,10 @@ impl GuildScorer {
 
         // Calculate M4: Disease Control
         // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
-        // Reuses same fungi_lazy as M3 (no redundant full-DataFrame passing!)
+        // Reuses same organisms_lazy and fungi_lazy as M3 (no redundant full-DataFrame passing!)
         let m4 = calculate_m4(
             plant_ids,
+            organisms_lazy,
             fungi_lazy,
             &self.data.pathogen_antagonists,
             &self.calibration,
@@ -345,6 +346,7 @@ impl GuildScorer {
                         // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
                         let m4 = calculate_m4(
                             plant_ids,
+                            organisms_lazy,
                             fungi_lazy,
                             &self.data.pathogen_antagonists,
                             &self.calibration,
@@ -506,6 +508,7 @@ impl GuildScorer {
                         // PHASE 3 OPTIMIZATION: Use LazyFrame with column projection
                         let m4 = calculate_m4(
                             plant_ids,
+                            organisms_lazy,
                             fungi_lazy,
                             &self.data.pathogen_antagonists,
                             &self.calibration,
@@ -645,9 +648,12 @@ impl GuildScorer {
             pathogen_control_raw: m4.pathogen_control_raw,
             n_mechanisms: m4.n_mechanisms,
             mycoparasite_counts: m4.mycoparasite_counts.clone(),
+            fungivore_counts: m4.fungivore_counts.clone(),
             pathogen_counts: m4.pathogen_counts.clone(),
             specific_antagonist_matches: m4.specific_antagonist_matches,
+            specific_fungivore_matches: m4.specific_fungivore_matches,
             matched_antagonist_pairs: m4.matched_antagonist_pairs.clone(),
+            matched_fungivore_pairs: m4.matched_fungivore_pairs.clone(),
         };
 
         // Clone M5Result for fungi network analysis
