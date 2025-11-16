@@ -26,7 +26,7 @@ set -e  # Exit on error
 # ============================================================================
 
 PROJECT_ROOT="/home/olier/ellenberg"
-PHASE2_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4/taxonomy/phase2_kimi"
+PHASE2_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4/Phase_2_kimi"
 DATA_DIR="${PROJECT_ROOT}/data/taxonomy"
 
 R_SCRIPT="/usr/bin/Rscript"

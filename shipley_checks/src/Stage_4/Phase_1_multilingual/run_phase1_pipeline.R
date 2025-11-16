@@ -85,5 +85,5 @@ cat(sprintf("  %s/all_taxa_vernacular_final.parquet\n", DATA_DIR))
 cat("\n")
 
 cat("NOTE: Animal categorization is provided by Phase 2 (Kimi AI pipeline)\n")
-cat("      See: shipley_checks/src/Stage_4/taxonomy/phase2_kimi/run_phase2_pipeline.sh\n")
+cat("      See: shipley_checks/src/Stage_4/Phase_2_kimi/run_phase2_pipeline.sh\n")
 cat("\n")

@@ -5,7 +5,7 @@
 set -e  # Exit on error
 
 PROJECT_ROOT="/home/olier/ellenberg"
-PHASE3_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4/taxonomy/phase3_koppen"
+PHASE3_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4/Phase_3_koppen"
 PYTHON="/home/olier/miniconda3/envs/AI/bin/python"
 
 echo "================================================================================"
