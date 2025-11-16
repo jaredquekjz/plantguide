@@ -28,7 +28,8 @@ cat("  1. Pollinators (pollinates)\n")
 cat("  2. Herbivores (from matched_herbivores_per_plant.parquet)\n")
 cat("  3. Pathogens (pathogenOf, parasiteOf, hasHost+Fungi)\n")
 cat("  4. Flower visitors (pollinates, visitsFlowersOf, visits)\n")
-cat("  5. Predators: hasHost, interactsWith, adjacentTo (Animalia, exclude marine)\n\n")
+cat("  5. Predators: hasHost, interactsWith, adjacentTo (Animalia, exclude marine)\n")
+cat("  6. Fungivores: Animals that eat fungi on plants (for disease control)\n\n")
 
 output_file <- "shipley_checks/validation/organism_profiles_11711.parquet"
 
@@ -136,6 +137,41 @@ dbExecute(con, sprintf("
               'Malacostraca', 'Polychaeta', 'Bivalvia', 'Cephalopoda'
           )
         GROUP BY target_wfo_taxon_id
+    ),
+    -- FUNGIVORES: Animals that eat fungi on plants (for M4 disease control)
+    -- Step 1: Get all fungi on each plant (broad relationships)
+    plant_fungi AS (
+        SELECT
+            target_wfo_taxon_id as plant_wfo_id,
+            sourceTaxonName as fungus_name
+        FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
+        WHERE target_wfo_taxon_id IS NOT NULL
+          AND sourceTaxonKingdomName = 'Fungi'
+          AND interactionTypeName IN (
+              'hasHost', 'pathogenOf', 'parasiteOf', 'symbiontOf',
+              'epiphyteOf', 'livesOn', 'livesInsideOf',
+              'adjacentTo', 'interactsWith'
+          )
+          AND sourceTaxonName != 'no name'
+    ),
+    -- Step 2: Find animals that eat those fungi
+    fungivores_eats AS (
+        SELECT
+            pf.plant_wfo_id,
+            LIST(DISTINCT g.sourceTaxonName) as fungivores_eats,
+            COUNT(DISTINCT g.sourceTaxonName) as fungivores_eats_count
+        FROM plant_fungi pf
+        INNER JOIN read_parquet('data/stage1/globi_interactions_original.parquet') g
+            ON pf.fungus_name = g.targetTaxonName
+        WHERE g.sourceTaxonKingdomName = 'Animalia'
+          AND g.interactionTypeName IN ('eats', 'preysOn')
+          AND g.sourceTaxonName != 'no name'
+          -- EXCLUDE marine/aquatic classes
+          AND g.sourceTaxonClassName NOT IN (
+              'Asteroidea', 'Homoscleromorpha', 'Anthozoa', 'Actinopterygii',
+              'Malacostraca', 'Polychaeta', 'Bivalvia', 'Cephalopoda'
+          )
+        GROUP BY pf.plant_wfo_id
     )
     SELECT
         p.plant_wfo_id,
@@ -153,7 +189,10 @@ dbExecute(con, sprintf("
         COALESCE(pred_int.predators_interactsWith, []) as predators_interactsWith,
         COALESCE(pred_int.predators_interactsWith_count, 0) as predators_interactsWith_count,
         COALESCE(pred_adj.predators_adjacentTo, []) as predators_adjacentTo,
-        COALESCE(pred_adj.predators_adjacentTo_count, 0) as predators_adjacentTo_count
+        COALESCE(pred_adj.predators_adjacentTo_count, 0) as predators_adjacentTo_count,
+        -- Fungivore columns for disease biocontrol (M4)
+        COALESCE(fung.fungivores_eats, []) as fungivores_eats,
+        COALESCE(fung.fungivores_eats_count, 0) as fungivores_eats_count
     FROM plants p
     LEFT JOIN pollinators pol ON p.plant_wfo_id = pol.plant_wfo_id
     LEFT JOIN herbivores herb ON p.plant_wfo_id = herb.plant_wfo_id
@@ -162,6 +201,7 @@ dbExecute(con, sprintf("
     LEFT JOIN predators_host pred_host ON p.plant_wfo_id = pred_host.plant_wfo_id
     LEFT JOIN predators_interacts pred_int ON p.plant_wfo_id = pred_int.plant_wfo_id
     LEFT JOIN predators_adjacent pred_adj ON p.plant_wfo_id = pred_adj.plant_wfo_id
+    LEFT JOIN fungivores_eats fung ON p.plant_wfo_id = fung.plant_wfo_id
     ORDER BY p.plant_wfo_id
   )
   TO '%s'
