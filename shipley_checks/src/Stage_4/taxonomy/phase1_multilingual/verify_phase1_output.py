@@ -23,7 +23,7 @@ OUTPUT_FILE = PROJECT_ROOT / "data/taxonomy/all_taxa_vernacular_final.parquet"
 PLANT_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
 ORGANISM_FILE = PROJECT_ROOT / "data/taxonomy/organism_taxonomy_enriched.parquet"
 
-# Expected languages (61 total)
+# Expected languages (59 total after merging und→en and zh-CN→zh)
 EXPECTED_LANGUAGES = [
     'af', 'ar', 'be', 'bg', 'br', 'ca', 'cs', 'da', 'de', 'el', 'en', 'eo',
     'es', 'et', 'eu', 'fa', 'fi', 'fil', 'fr', 'gl', 'haw', 'he', 'hr', 'hu',
@@ -31,6 +31,8 @@ EXPECTED_LANGUAGES = [
     'mr', 'myn', 'nb', 'nl', 'oc', 'oj', 'pl', 'pt', 'ro', 'ru', 'sat', 'si',
     'sk', 'sl', 'sq', 'sr', 'sv', 'sw', 'th', 'tr', 'uk', 'vi', 'zh'
 ]
+
+# Note: 'und' (undefined) merged into 'en', 'zh-CN' merged into 'zh'
 
 print("="*80)
 print("PHASE 1 VERIFICATION: MULTILINGUAL VERNACULAR NAMES")
@@ -60,34 +62,52 @@ print()
 print("CHECK 2: Completeness - all input taxa processed")
 print("-" * 80)
 
-# Count input taxa
+# Count UNIQUE input taxa (by scientific name)
 plant_count = con.execute(f"""
     SELECT COUNT(DISTINCT wfo_scientific_name) as n
     FROM read_csv('{PLANT_FILE}', all_varchar=true, sample_size=-1)
     WHERE wfo_scientific_name IS NOT NULL
 """).fetchdf()['n'][0]
 
-organism_count = con.execute(f"""
-    SELECT COUNT(*) as n
+organism_count_unique = con.execute(f"""
+    SELECT COUNT(DISTINCT organism_name) as n
     FROM read_parquet('{ORGANISM_FILE}')
 """).fetchdf()['n'][0]
 
-expected_total = plant_count + organism_count
-actual_total = len(df)
+# Count actual unique output taxa
+plants_in_output = (df['organism_type'] == 'plant').sum()
+organisms_in_output = (df['organism_type'] == 'beneficial_organism').sum()
+unique_taxa_output = df['scientific_name'].nunique()
 
-print(f"  Expected taxa:")
+print(f"  Input (unique species):")
 print(f"    Plants: {plant_count:,}")
-print(f"    Organisms: {organism_count:,}")
-print(f"    Total: {expected_total:,}")
+print(f"    Organisms: {organism_count_unique:,}")
+print(f"    Total: {plant_count + organism_count_unique:,}")
 print()
-print(f"  Actual output: {actual_total:,}")
+print(f"  Output (may have duplicates for multi-role organisms):")
+print(f"    Plant rows: {plants_in_output:,}")
+print(f"    Organism rows: {organisms_in_output:,}")
+print(f"    Total rows: {len(df):,}")
+print(f"    Unique species: {unique_taxa_output:,}")
 
-if actual_total == expected_total:
-    print(f"✓ PASSED: All {expected_total:,} taxa processed")
+# Check that all unique input taxa are in output
+missing_plants = plant_count - df[df['organism_type'] == 'plant']['scientific_name'].nunique()
+missing_organisms = organism_count_unique - df[df['organism_type'] == 'beneficial_organism']['scientific_name'].nunique()
+
+if missing_plants == 0 and missing_organisms == 0:
+    print(f"\n✓ PASSED: All unique taxa processed (some organisms appear in multiple roles)")
 else:
-    print(f"❌ FAILED: Expected {expected_total:,}, got {actual_total:,}")
-    print(f"  Difference: {actual_total - expected_total:+,}")
+    print(f"\n❌ FAILED: Missing taxa")
+    if missing_plants > 0:
+        print(f"  Missing plants: {missing_plants:,}")
+    if missing_organisms > 0:
+        print(f"  Missing organisms: {missing_organisms:,}")
     all_checks_passed = False
+
+# Extra rows are OK (multi-role organisms)
+extra_rows = len(df) - (plant_count + organism_count_unique)
+if extra_rows > 0:
+    print(f"\n  Note: +{extra_rows:,} extra rows (organisms in multiple roles - expected)")
 print()
 
 # Check 3: Language coverage - all 61 languages present
