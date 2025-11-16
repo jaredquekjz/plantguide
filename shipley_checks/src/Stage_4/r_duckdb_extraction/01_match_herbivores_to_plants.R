@@ -35,13 +35,18 @@ pollinator_count <- dbGetQuery(con, "
 cat(sprintf("  - %d pollinator organisms to exclude\n\n", pollinator_count))
 
 # Step 3: Match known herbivores in final plant dataset
-cat("Step 3: Matching known herbivores in plant dataset...\n")
+cat("Step 3: Matching known herbivores for 11,711 target plants...\n")
 cat("  Matching as SOURCE: eats, preysOn, hasHost, interactsWith, adjacentTo\n")
 cat("  Excluding: pollinators, nonsensical relations\n\n")
 
-# FAITHFUL port of Python SQL (lines 71-116)
+# FAITHFUL port of Python SQL (lines 71-116), but filter to 11,711 plants
 matched_herbivores <- dbGetQuery(con, "
-  WITH known_herbivores AS (
+  WITH target_plants AS (
+      -- CRITICAL: Only include our 11,711 target plants
+      SELECT DISTINCT wfo_taxon_id as plant_wfo_id
+      FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv')
+  ),
+  known_herbivores AS (
       SELECT DISTINCT herbivore_name
       FROM read_parquet('shipley_checks/validation/known_herbivore_insects.parquet')
   ),
@@ -61,8 +66,8 @@ matched_herbivores <- dbGetQuery(con, "
           sourceTaxonFamilyName
       FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
       WHERE
-          -- Target is a plant in our dataset
-          target_wfo_taxon_id IS NOT NULL
+          -- CRITICAL: Only match for our 11,711 target plants
+          target_wfo_taxon_id IN (SELECT plant_wfo_id FROM target_plants)
           -- Source is a known herbivore
           AND sourceTaxonName IN (SELECT herbivore_name FROM known_herbivores)
           -- Source is NOT a pollinator
@@ -112,7 +117,12 @@ cat("Writing Rust-ready parquet...\n")
 output_file <- "shipley_checks/validation/matched_herbivores_per_plant.parquet"
 dbExecute(con, sprintf("
   COPY (
-    WITH known_herbivores AS (
+    WITH target_plants AS (
+        -- CRITICAL: Only include our 11,711 target plants
+        SELECT DISTINCT wfo_taxon_id as plant_wfo_id
+        FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv')
+    ),
+    known_herbivores AS (
         SELECT DISTINCT herbivore_name
         FROM read_parquet('shipley_checks/validation/known_herbivore_insects.parquet')
     ),
@@ -132,7 +142,8 @@ dbExecute(con, sprintf("
             sourceTaxonFamilyName
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE
-            target_wfo_taxon_id IS NOT NULL
+            -- CRITICAL: Only match for our 11,711 target plants
+            target_wfo_taxon_id IN (SELECT plant_wfo_id FROM target_plants)
             AND sourceTaxonName IN (SELECT herbivore_name FROM known_herbivores)
             AND sourceTaxonName NOT IN (SELECT sourceTaxonName FROM pollinators)
             AND interactionTypeName IN ('eats', 'preysOn', 'hasHost', 'interactsWith', 'adjacentTo')
