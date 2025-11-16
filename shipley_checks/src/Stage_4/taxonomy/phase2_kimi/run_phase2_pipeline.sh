@@ -153,7 +153,28 @@ echo ""
 # ============================================================================
 
 echo "================================================================================"
-echo "Pipeline Status"
+echo "PHASE 2 VERIFICATION"
+echo "================================================================================"
+echo ""
+
+echo "Running verification checks..."
+echo ""
+
+"$PYTHON" "${PHASE2_DIR}/verify_phase2_output.py"
+
+if [ $? -eq 0 ]; then
+    echo ""
+    echo "✓ Phase 2 verification passed"
+else
+    echo ""
+    echo "❌ Phase 2 verification failed"
+    echo "Please review errors above before proceeding to Phase 3."
+    exit 1
+fi
+
+echo ""
+echo "================================================================================"
+echo "PHASE 2 COMPLETE"
 echo "================================================================================"
 echo ""
 echo "✓ Step 1: English vernaculars aggregated"

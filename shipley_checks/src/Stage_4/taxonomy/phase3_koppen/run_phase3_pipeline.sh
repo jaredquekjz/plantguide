@@ -65,6 +65,27 @@ fi
 
 echo ""
 echo "================================================================================"
+echo "PHASE 3 VERIFICATION"
+echo "================================================================================"
+echo ""
+
+echo "Running verification checks..."
+echo ""
+
+"$PYTHON" "${PHASE3_DIR}/verify_phase3_output.py"
+
+if [ $? -eq 0 ]; then
+    echo ""
+    echo "✓ Phase 3 verification passed"
+else
+    echo ""
+    echo "❌ Phase 3 verification failed"
+    echo "Please review errors above before proceeding to Phase 4."
+    exit 1
+fi
+
+echo ""
+echo "================================================================================"
 echo "PHASE 3 COMPLETE"
 echo "================================================================================"
 echo "Output: data/taxonomy/bill_with_koppen_only_11711.parquet"

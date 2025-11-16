@@ -43,6 +43,34 @@ system2(
 
 cat("\n")
 cat(strrep("=", 80), "\n")
+cat("PHASE 1 VERIFICATION\n")
+cat(strrep("=", 80), "\n\n")
+
+# ============================================================================
+# Verify Output
+# ============================================================================
+
+cat("Running verification checks...\n\n")
+
+verification_result <- system2(
+  command = "/home/olier/miniconda3/envs/AI/bin/python",
+  args = c(file.path(script_dir, "verify_phase1_output.py")),
+  stdout = TRUE,
+  stderr = TRUE
+)
+
+cat(paste(verification_result, collapse = "\n"))
+cat("\n\n")
+
+# Check if verification passed
+verification_exit <- attr(verification_result, "status")
+if (!is.null(verification_exit) && verification_exit != 0) {
+  cat("❌ PHASE 1 VERIFICATION FAILED\n")
+  cat("Please review errors above before proceeding to Phase 2.\n\n")
+  quit(status = 1)
+}
+
+cat(strrep("=", 80), "\n")
 cat("PHASE 1 COMPLETE\n")
 cat(strrep("=", 80), "\n\n")
 
