@@ -84,8 +84,8 @@ assign_vernaculars <- function(df, family_col = "family", con) {
     }
   })
 
-  # Apply hierarchical matching via SQL (P1 iNat + P2 ITIS only)
-  result <- dbGetQuery(con, sprintf("
+  # Build SQL query with language columns and family column
+  sql_query <- sprintf("
     SELECT
       t.*,
       inat.inat_taxon_id,
@@ -113,8 +113,11 @@ assign_vernaculars <- function(df, family_col = "family", con) {
     LEFT JOIN inat_matched inat
       ON LOWER(t.scientific_name) = LOWER(inat.organism_name)
     LEFT JOIN family_itis fv_itis
-      ON CAST(t.%%s AS VARCHAR) = fv_itis.family
-  ", paste(lang_selects, collapse = ",\n      "), family_col))
+      ON CAST(t.%s AS VARCHAR) = fv_itis.family
+  ", paste(lang_selects, collapse = ",\n      "), family_col)
+
+  # Apply hierarchical matching via SQL (P1 iNat + P2 ITIS only)
+  result <- dbGetQuery(con, sql_query)
 
   # Unregister
   duckdb_unregister(con, "input_taxa")
