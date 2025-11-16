@@ -26,11 +26,11 @@ set -e  # Exit on error
 # ============================================================================
 
 PROJECT_ROOT="/home/olier/ellenberg"
-TAXONOMY_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4/taxonomy"
+STAGE4_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4"
 
 export R_LIBS_USER="${PROJECT_ROOT}/.Rlib"
 
-cd "$TAXONOMY_DIR"
+cd "$STAGE4_DIR"
 
 # ============================================================================
 # Banner
@@ -51,7 +51,7 @@ echo "==========================================================================
 echo ""
 
 env R_LIBS_USER="$R_LIBS_USER" \
-  /usr/bin/Rscript phase1_multilingual/run_phase1_pipeline.R
+  /usr/bin/Rscript Phase_1_multilingual/run_phase1_pipeline.R
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -71,7 +71,7 @@ echo "PHASE 2: KIMI AI GARDENER-FRIENDLY LABELS (ANIMALS)"
 echo "================================================================================"
 echo ""
 
-bash phase2_kimi/run_phase2_pipeline.sh
+bash Phase_2_kimi/run_phase2_pipeline.sh
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -91,7 +91,7 @@ echo "PHASE 3: KÖPPEN CLIMATE ZONE LABELING"
 echo "================================================================================"
 echo ""
 
-bash phase3_koppen/run_phase3_pipeline.sh
+bash Phase_3_koppen/run_phase3_pipeline.sh
 
 if [ $? -eq 0 ]; then
     echo ""
@@ -111,7 +111,7 @@ echo "PHASE 4: MERGE TAXONOMY + KÖPPEN"
 echo "================================================================================"
 echo ""
 
-/home/olier/miniconda3/envs/AI/bin/python phase4_merge/merge_taxonomy_koppen.py
+/home/olier/miniconda3/envs/AI/bin/python Phase_4_merge/merge_taxonomy_koppen.py
 
 if [ $? -eq 0 ]; then
     echo ""

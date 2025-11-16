@@ -9,6 +9,8 @@ Validates Phase 2 output for:
 4. Error detection - identify failed requests
 5. Data quality - no malformed responses
 
+NOTE: Organism counts updated Nov 2025 to include fungivores (animal genera count may increase)
+
 Input:  data/taxonomy/kimi_gardener_labels.csv
 Output: Verification report (printed to stdout)
 Exit:   0 if all checks pass, 1 if any check fails

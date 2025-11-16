@@ -8,6 +8,8 @@ Validates Phase 1 output for:
 3. Data quality - no missing required columns
 4. Coverage statistics - vernacular name assignment rates
 
+NOTE: Organism counts updated Nov 2025 to include fungivores (~34K organisms vs 29K previously)
+
 Input:  data/taxonomy/all_taxa_vernacular_final.parquet
 Output: Verification report (printed to stdout)
 Exit:   0 if all checks pass, 1 if any check fails
