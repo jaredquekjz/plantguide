@@ -98,7 +98,53 @@ cat(sprintf("EXTRACTION COMPLETE (%.1f seconds)\n", as.numeric(extraction_time))
 cat("================================================================================\n\n")
 
 # ============================================================================
-# Step 6: Verify all outputs
+# Step 6: Copy to guild_scorer_rust naming convention
+# ============================================================================
+cat("Step 6.5/7: Creating guild_scorer_rust compatible file names...\n")
+cat("--------------------------------------------------------------------------\n")
+
+# Guild scorer expects *_pure_rust.parquet naming
+# Copy _11711.parquet → _pure_rust.parquet for backward compatibility
+
+file.copy(
+  "shipley_checks/validation/organism_profiles_11711.parquet",
+  "shipley_checks/validation/organism_profiles_pure_rust.parquet",
+  overwrite = TRUE
+)
+
+file.copy(
+  "shipley_checks/validation/fungal_guilds_hybrid_11711.parquet",
+  "shipley_checks/validation/fungal_guilds_pure_rust.parquet",
+  overwrite = TRUE
+)
+
+file.copy(
+  "shipley_checks/validation/herbivore_predators_11711.parquet",
+  "shipley_checks/validation/herbivore_predators_pure_rust.parquet",
+  overwrite = TRUE
+)
+
+file.copy(
+  "shipley_checks/validation/pathogen_antagonists_11711.parquet",
+  "shipley_checks/validation/pathogen_antagonists_pure_rust.parquet",
+  overwrite = TRUE
+)
+
+file.copy(
+  "shipley_checks/validation/insect_fungal_parasites_11711.parquet",
+  "shipley_checks/validation/insect_fungal_parasites_pure_rust.parquet",
+  overwrite = TRUE
+)
+
+cat("✓ Created guild_scorer_rust compatible file names\n")
+cat("  - organism_profiles_pure_rust.parquet\n")
+cat("  - fungal_guilds_pure_rust.parquet\n")
+cat("  - herbivore_predators_pure_rust.parquet\n")
+cat("  - pathogen_antagonists_pure_rust.parquet\n")
+cat("  - insect_fungal_parasites_pure_rust.parquet\n\n")
+
+# ============================================================================
+# Step 7: Verify all outputs
 # ============================================================================
 cat("Step 7/7: Verifying outputs (data integrity & completeness)...\n")
 cat("--------------------------------------------------------------------------\n")
