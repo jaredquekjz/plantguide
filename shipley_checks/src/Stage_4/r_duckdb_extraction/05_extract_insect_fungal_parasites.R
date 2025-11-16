@@ -38,7 +38,10 @@ dbExecute(con, sprintf("
     WHERE sourceTaxonKingdomName = 'Fungi'
       AND targetTaxonKingdomName = 'Animalia'
       AND targetTaxonClassName IN ('Insecta', 'Arachnida')
-      AND interactionTypeName IN ('pathogenOf', 'parasiteOf', 'parasitoidOf', 'hasHost', 'kills')
+      AND interactionTypeName IN (
+        'pathogenOf', 'parasiteOf', 'parasitoidOf', 'hasHost', 'kills',
+        'hemiparasiteOf', 'ectoparasiteOf', 'hyperparasiteOf', 'endoparasiteOf'
+      )
     GROUP BY targetTaxonName, targetTaxonFamilyName, targetTaxonOrderName, targetTaxonClassName
     HAVING COUNT(DISTINCT sourceTaxonName) > 0
     ORDER BY fungal_parasite_count DESC
