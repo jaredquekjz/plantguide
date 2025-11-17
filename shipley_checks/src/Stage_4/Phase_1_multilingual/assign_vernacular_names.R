@@ -222,21 +222,46 @@ for (lang in all_languages) {
   language_columns <- c(language_columns, sql_fragment)
 }
 
-# Build complete SQL query
+# Build complete SQL query with deduplication by taxonomic rank
 sql_query <- sprintf("
   CREATE OR REPLACE VIEW inat_matched AS
+  WITH ranked_taxa AS (
+    SELECT
+      t.scientificName as organism_name,
+      t.id as inat_taxon_id,
+      t.taxonRank,
+      -- Wide format: separate column per language (all %d languages)
+      %s,
+      -- Total count of vernacular names (all languages)
+      COUNT(DISTINCT v.vernacularName) as n_vernaculars,
+      -- Rank priority: prefer species > variety > subspecies > genus > others
+      ROW_NUMBER() OVER (
+        PARTITION BY t.scientificName
+        ORDER BY
+          CASE t.taxonRank
+            WHEN 'species' THEN 1
+            WHEN 'variety' THEN 2
+            WHEN 'subspecies' THEN 3
+            WHEN 'genus' THEN 4
+            WHEN 'form' THEN 5
+            ELSE 99
+          END,
+          COUNT(DISTINCT v.vernacularName) DESC  -- Tie-break: prefer more vernaculars
+      ) as rank_priority
+    FROM inat_taxa t
+    LEFT JOIN inat_vernaculars v ON t.id = v.id
+    GROUP BY t.scientificName, t.id, t.taxonRank
+  )
   SELECT
-    t.scientificName as organism_name,
-    t.id as inat_taxon_id,
-    t.taxonRank,
-    -- Wide format: separate column per language (all %d languages)
+    organism_name,
+    inat_taxon_id,
+    taxonRank,
     %s,
-    -- Total count of vernacular names (all languages)
-    COUNT(DISTINCT v.vernacularName) as n_vernaculars
-  FROM inat_taxa t
-  LEFT JOIN inat_vernaculars v ON t.id = v.id
-  GROUP BY t.scientificName, t.id, t.taxonRank
-", length(language_columns), paste(language_columns, collapse = ",\n    "))
+    n_vernaculars
+  FROM ranked_taxa
+  WHERE rank_priority = 1
+", length(language_columns), paste(language_columns, collapse = ",\n      "),
+   paste(paste0("vernacular_name_", gsub("-", "_", setdiff(all_languages, c("und", "zh-CN")))), collapse = ",\n    "))
 
 dbExecute(con, sql_query)
 

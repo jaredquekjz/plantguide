@@ -23,7 +23,7 @@ import sys
 PROJECT_ROOT = Path("/home/olier/ellenberg")
 OUTPUT_FILE = PROJECT_ROOT / "data/taxonomy/all_taxa_vernacular_final.parquet"
 PLANT_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
-ORGANISM_FILE = PROJECT_ROOT / "data/taxonomy/organism_taxonomy_enriched.parquet"
+ORGANISM_FILE = PROJECT_ROOT / "data/taxonomy/organisms_with_taxonomy_11711.parquet"  # Phase 0 output
 
 # Expected languages (59 total after merging und→en and zh-CN→zh)
 EXPECTED_LANGUAGES = [
