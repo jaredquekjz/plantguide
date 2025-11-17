@@ -29,8 +29,7 @@ use crate::utils::{Calibration, percentile_normalize, count_shared_organisms, ma
 /// Column requirements for M7 calculation (from organisms parquet)
 pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
     "plant_wfo_id",
-    "pollinators",
-    "flower_visitors",      // Added for R parity
+    "pollinators",  // ONLY pollinators - flower_visitors contaminated with herbivores/fungi
 ];
 
 /// Result of M7 calculation
@@ -76,11 +75,11 @@ pub fn calculate_m7(
         .collect();
 
     // Count shared pollinators (pollinators hosted by ≥2 plants)
-    // Uses both pollinators AND flower_visitors (R parity)
+    // Uses ONLY strict pollinators (NOT flower_visitors - contaminated with herbivores/fungi)
     let shared_pollinators = count_shared_organisms(
         &guild_organisms,
         &guild_plant_ids,
-        &["pollinators", "flower_visitors"],  // Match R implementation
+        &["pollinators"],  // Match R: ONLY verified pollinators
     )?;
 
     // Score with QUADRATIC weighting
