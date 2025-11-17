@@ -24,7 +24,20 @@
 use polars::prelude::*;
 use rustc_hash::{FxHashMap, FxHashSet};
 use anyhow::Result;
-use crate::utils::{Calibration, percentile_normalize};
+use crate::utils::{Calibration, percentile_normalize, materialize_with_columns, filter_to_guild};
+
+/// Column requirements for M4 calculation (from fungi parquet)
+pub const REQUIRED_FUNGI_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "pathogenic_fungi",
+    "mycoparasite_fungi",
+];
+
+/// Column requirements for M4 calculation (from organisms parquet)
+pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "fungivores_eats",
+];
 
 /// Result of M4 calculation
 #[derive(Debug)]
@@ -72,42 +85,23 @@ pub fn calculate_m4(
     let mut matched_antagonist_pairs: Vec<(String, String)> = Vec::new();
     let mut matched_fungivore_pairs: Vec<(String, String)> = Vec::new();
 
-    // STEP 1a: Materialize fungi columns
-    let fungi_selected = fungi_lazy
-        .clone()
-        .select(&[
-            col("plant_wfo_id"),
-            col("pathogenic_fungi"),
-            col("mycoparasite_fungi"),
-        ])
-        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
+    // STEP 1: Materialize fungi columns and filter to guild
+    let fungi_df = materialize_with_columns(
+        fungi_lazy,
+        REQUIRED_FUNGI_COLS,
+        "M4 fungi",
+    )?;
 
-    // STEP 1b: Materialize organisms columns (fungivores)
-    let organisms_selected = organisms_lazy
-        .clone()
-        .select(&[
-            col("plant_wfo_id"),
-            col("fungivores_eats"),
-        ])
-        .collect()?;  // Execute: loads only 2 columns × 11,711 rows
+    let guild_fungi = filter_to_guild(&fungi_df, plant_ids, "plant_wfo_id", "M4 fungi")?;
 
-    // STEP 2: Filter to guild plants
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
+    // STEP 2: Materialize organisms columns and filter to guild
+    let organisms_df = materialize_with_columns(
+        organisms_lazy,
+        REQUIRED_ORGANISM_COLS,
+        "M4 organisms",
+    )?;
 
-    let id_col = fungi_selected.column("plant_wfo_id")?.str()?;
-    let mask: BooleanChunked = id_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_fungi = fungi_selected.filter(&mask)?;
-
-    let id_col_org = organisms_selected.column("plant_wfo_id")?.str()?;
-    let mask_org: BooleanChunked = id_col_org
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_organisms = organisms_selected.filter(&mask_org)?;
+    let guild_organisms = filter_to_guild(&organisms_df, plant_ids, "plant_wfo_id", "M4 organisms")?;
 
     let n_plants = guild_fungi.height();
 
@@ -214,17 +208,6 @@ pub fn calculate_m4(
         matched_antagonist_pairs,
         matched_fungivore_pairs,
     })
-}
-
-/// Filter DataFrame to guild plants
-fn filter_to_guild(df: &DataFrame, plant_ids: &[String], col: &str) -> Result<DataFrame> {
-    let plant_id_set: FxHashSet<&String> = plant_ids.iter().collect();
-    let plant_col = df.column(col)?.str()?;
-    let mask: BooleanChunked = plant_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| plant_id_set.contains(&s.to_string())))
-        .collect();
-    Ok(df.filter(&mask)?)
 }
 
 /// Extract single column data: plant_id → list of fungi

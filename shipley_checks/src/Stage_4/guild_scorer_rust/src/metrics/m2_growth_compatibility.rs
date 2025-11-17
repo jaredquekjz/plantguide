@@ -24,10 +24,23 @@
 //! R reference: shipley_checks/src/Stage_4/metrics/m2_growth_compatibility.R
 
 use polars::prelude::*;
-use anyhow::Result;
-use crate::utils::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
+use anyhow::{Result, Context};
+use crate::utils::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile, filter_to_guild};
+use std::collections::HashSet;
 
 const PERCENTILE_THRESHOLD: f64 = 75.0; // Top quartile
+
+/// Column requirements for M2 calculation
+pub const REQUIRED_PLANT_COLS: &[&str] = &[
+    "wfo_taxon_id",         // WFO ID for filtering
+    "wfo_scientific_name",  // Plant name for diagnostics
+    "CSR_C",                // Competitor raw score (aliased from "C")
+    "CSR_S",                // Stress-tolerator raw score (aliased from "S")
+    "CSR_R",                // Ruderal raw score (aliased from "R")
+    "height_m",             // Height for vertical niche analysis
+    "try_growth_form",      // Growth form (tree/herb/vine)
+    "light_pref",           // Light preference (aliased from "EIVEres-L_complete")
+];
 
 /// Result of M2 calculation
 #[derive(Debug)]
@@ -92,51 +105,47 @@ pub fn calculate_m2(
     calibration: &Calibration,
 ) -> Result<M2Result> {
     // ========================================================================
-    // STEP 1: Build optimized query with filter and projection
+    // STEP 1: Materialize columns with aliasing (M2-specific)
     // ========================================================================
     //
-    // Strategy: First select columns, then filter in memory
-    // (Polars LazyFrame API doesn't support .is_in() for filtering during scan)
-    //
-    // Still optimized because:
-    //   1. Projection pruning: Only loads 7 columns from Parquet (not 782)
-    //   2. Column-oriented access: Polars Arrow format is cache-friendly
-    //   3. Minimal memory: 7 cols × 11,711 rows vs 782 cols × 11,711 rows
+    // M2 requires aliasing of parquet columns (C->CSR_C, S->CSR_S, etc.)
+    // so we handle materialization inline but use helper for filtering
 
-    let guild_plants_query = plants_lazy
-        .clone()  // Cheap: Only clones query plan, not data
+    let plants_filtered = plants_lazy
+        .clone()
         .select(&[
-            // Projection pruning: Load ONLY these 8 columns from Parquet
-            col("wfo_taxon_id"),         // WFO ID for filtering
-            col("wfo_scientific_name"),  // Plant name for diagnostics
-            // CSR columns: Must use original Parquet names and alias them
-            // (The eager DataFrame loader does this aliasing, we must too)
-            col("C").alias("CSR_C"),     // Competitor raw score
-            col("S").alias("CSR_S"),     // Stress-tolerator raw score
-            col("R").alias("CSR_R"),     // Ruderal raw score
-            col("height_m"),             // Height for vertical niche analysis
-            col("try_growth_form"),      // Growth form (tree/herb/vine)
-            col("EIVEres-L_complete").alias("light_pref"),  // Light preference (original name in Parquet)
-        ]);
+            col("wfo_taxon_id"),
+            col("wfo_scientific_name"),
+            col("C").alias("CSR_C"),
+            col("S").alias("CSR_S"),
+            col("R").alias("CSR_R"),
+            col("height_m"),
+            col("try_growth_form"),
+            col("EIVEres-L_complete").alias("light_pref"),
+        ])
+        .collect()
+        .with_context(|| "M2: Failed to materialize plant columns")?;
 
-    // ========================================================================
-    // STEP 2: Execute optimized query and filter to guild
-    // ========================================================================
-    //
-    // Collect materializes the 7-column DataFrame (efficient)
-    // Then filter in memory to guild plants (fast - only 7 columns)
-
-    let plants_filtered = guild_plants_query.collect()?;
-
-    // Filter to guild plants using same approach as original scorer
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
-    let id_col = plants_filtered.column("wfo_taxon_id")?.str()?;
-    let mask: BooleanChunked = id_col
+    // VALIDATE: Check all expected columns present
+    let actual_cols: HashSet<String> = plants_filtered.get_column_names()
         .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .map(|s| s.to_string())
         .collect();
-    let guild_plants = plants_filtered.filter(&mask)?;
+
+    for &expected in REQUIRED_PLANT_COLS {
+        if !actual_cols.contains(expected) {
+            anyhow::bail!(
+                "M2: Missing expected column '{}'. Available columns: {:?}",
+                expected, actual_cols
+            );
+        }
+    }
+
+    // ========================================================================
+    // STEP 2: Filter to guild plants using helper
+    // ========================================================================
+
+    let guild_plants = filter_to_guild(&plants_filtered, plant_ids, "wfo_taxon_id", "M2")?;
 
     let n_plants = guild_plants.height();
 

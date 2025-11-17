@@ -20,8 +20,18 @@
 
 use polars::prelude::*;
 use rustc_hash::{FxHashSet, FxHashMap};
-use anyhow::Result;
-use crate::utils::{Calibration, percentile_normalize};
+use anyhow::{Result, Context};
+use crate::utils::{Calibration, percentile_normalize, filter_to_guild};
+use std::collections::HashSet;
+
+/// Column requirements for M6 calculation (from plants parquet)
+pub const REQUIRED_PLANT_COLS: &[&str] = &[
+    "wfo_taxon_id",
+    "wfo_scientific_name",
+    "height_m",
+    "light_pref",           // Aliased from "EIVEres-L_complete"
+    "try_growth_form",
+];
 
 /// Plant with height and light preference information
 #[derive(Debug, Clone)]
@@ -68,27 +78,36 @@ pub fn calculate_m6(
     plants_lazy: &LazyFrame,     // Schema-only scan (from scorer)
     calibration: &Calibration,
 ) -> Result<M6Result> {
-    // STEP 1: Materialize only the 4 columns M6 needs
-    let plants_selected = plants_lazy
+    // STEP 1: Materialize columns with aliasing (M6-specific)
+    let plants_filtered = plants_lazy
         .clone()
         .select(&[
             col("wfo_taxon_id"),
             col("wfo_scientific_name"),
             col("height_m"),
-            col("EIVEres-L_complete").alias("light_pref"),  // Use imputed complete values
+            col("EIVEres-L_complete").alias("light_pref"),
             col("try_growth_form"),
         ])
-        .collect()?;  // Execute: loads only 5 columns × 11,711 rows
+        .collect()
+        .with_context(|| "M6: Failed to materialize plant columns")?;
 
-    // STEP 2: Filter to guild plants (fast - only 5 columns)
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
-    let id_col = plants_selected.column("wfo_taxon_id")?.str()?;
-    let mask: BooleanChunked = id_col
+    // VALIDATE: Check all expected columns present
+    let actual_cols: HashSet<String> = plants_filtered.get_column_names()
         .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
+        .map(|s| s.to_string())
         .collect();
-    let guild_plants = plants_selected.filter(&mask)?;  // Result: 5 columns × 7 rows
+
+    for &expected in REQUIRED_PLANT_COLS {
+        if !actual_cols.contains(expected) {
+            anyhow::bail!(
+                "M6: Missing expected column '{}'. Available columns: {:?}",
+                expected, actual_cols
+            );
+        }
+    }
+
+    // STEP 2: Filter to guild plants using helper
+    let guild_plants = filter_to_guild(&plants_filtered, plant_ids, "wfo_taxon_id", "M6")?;
 
     // Extract plant data from filtered DataFrame
     let growth_forms = guild_plants.column("try_growth_form")?.str()?;

@@ -24,7 +24,14 @@
 use polars::prelude::*;
 use anyhow::Result;
 use rustc_hash::FxHashMap;
-use crate::utils::{Calibration, percentile_normalize, count_shared_organisms};
+use crate::utils::{Calibration, percentile_normalize, count_shared_organisms, materialize_with_columns, filter_to_guild};
+
+/// Column requirements for M7 calculation (from organisms parquet)
+pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "pollinators",
+    "flower_visitors",      // Added for R parity
+];
 
 /// Result of M7 calculation
 #[derive(Debug)]
@@ -49,26 +56,14 @@ pub fn calculate_m7(
     organisms_lazy: &LazyFrame,  // Schema-only scan (from scorer, reused from M3!)
     calibration: &Calibration,
 ) -> Result<M7Result> {
-    // STEP 1: Materialize pollinator columns (R parity)
-    // Uses both pollinators AND flower_visitors to match R implementation
-    let organisms_selected = organisms_lazy
-        .clone()
-        .select(&[
-            col("plant_wfo_id"),
-            col("pollinators"),
-            col("flower_visitors"),  // Added for R parity
-        ])
-        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
+    // STEP 1: Materialize organisms columns and filter to guild
+    let organisms_df = materialize_with_columns(
+        organisms_lazy,
+        REQUIRED_ORGANISM_COLS,
+        "M7 organisms",
+    )?;
 
-    // STEP 2: Filter to guild plants (fast - only 3 columns)
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
-    let id_col = organisms_selected.column("plant_wfo_id")?.str()?;
-    let mask: BooleanChunked = id_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
+    let guild_organisms = filter_to_guild(&organisms_df, plant_ids, "plant_wfo_id", "M7")?;
 
     let n_plants = guild_organisms.height();
 

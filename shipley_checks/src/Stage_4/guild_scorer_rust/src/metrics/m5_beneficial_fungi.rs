@@ -22,7 +22,16 @@
 use polars::prelude::*;
 use anyhow::Result;
 use rustc_hash::FxHashMap;
-use crate::utils::{Calibration, percentile_normalize, count_shared_organisms};
+use crate::utils::{Calibration, percentile_normalize, count_shared_organisms, materialize_with_columns, filter_to_guild};
+
+/// Column requirements for M5 calculation (from fungi parquet)
+pub const REQUIRED_FUNGI_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "amf_fungi",
+    "emf_fungi",
+    "endophytic_fungi",
+    "saprotrophic_fungi",
+];
 
 /// Result of M5 calculation
 #[derive(Debug)]
@@ -53,27 +62,14 @@ pub fn calculate_m5(
     fungi_lazy: &LazyFrame,      // Schema-only scan (from scorer, reused from M3/M4!)
     calibration: &Calibration,
 ) -> Result<M5Result> {
-    // STEP 1: Materialize only the beneficial fungi columns
-    let fungi_selected = fungi_lazy
-        .clone()
-        .select(&[
-            col("plant_wfo_id"),
-            col("amf_fungi"),
-            col("emf_fungi"),
-            col("endophytic_fungi"),
-            col("saprotrophic_fungi"),
-        ])
-        .collect()?;  // Execute: loads only 5 columns × 11,711 rows
+    // STEP 1: Materialize fungi columns and filter to guild
+    let fungi_df = materialize_with_columns(
+        fungi_lazy,
+        REQUIRED_FUNGI_COLS,
+        "M5 fungi",
+    )?;
 
-    // STEP 2: Filter to guild plants (fast - only 5 columns)
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
-    let id_col = fungi_selected.column("plant_wfo_id")?.str()?;
-    let mask: BooleanChunked = id_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_fungi = fungi_selected.filter(&mask)?;  // Result: 5 columns × 7 rows = 35 cells
+    let guild_fungi = filter_to_guild(&fungi_df, plant_ids, "plant_wfo_id", "M5")?;
 
     let n_plants = guild_fungi.height();
 

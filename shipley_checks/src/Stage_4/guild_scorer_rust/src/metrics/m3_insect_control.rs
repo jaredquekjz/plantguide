@@ -26,7 +26,23 @@
 use polars::prelude::*;
 use rustc_hash::{FxHashMap, FxHashSet};
 use anyhow::Result;
-use crate::utils::{Calibration, percentile_normalize};
+use crate::utils::{Calibration, percentile_normalize, materialize_with_columns, filter_to_guild};
+
+/// Column requirements for M3 calculation (from organisms parquet)
+pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "herbivores",
+    "flower_visitors",      // Contains pollinator/predator data
+    "predators_hasHost",
+    "predators_interactsWith",
+    "predators_adjacentTo",
+];
+
+/// Column requirements for M3 calculation (from fungi parquet)
+pub const REQUIRED_FUNGI_COLS: &[&str] = &[
+    "plant_wfo_id",
+    "entomopathogenic_fungi",
+];
 
 /// Result of M3 calculation
 #[derive(Debug)]
@@ -95,48 +111,28 @@ pub fn calculate_m3(
     let mut matched_fungi_pairs: Vec<(String, String)> = Vec::new();
 
     // ========================================================================
-    // STEP 1: Materialize only the columns M3 needs, filter to guild
+    // STEP 1: Materialize organisms columns and filter to guild
     // ========================================================================
-    //
-    // Select columns first (projection pruning), then filter in memory
 
-    let organisms_selected = organisms_lazy
-        .clone()  // Cheap: clones query plan
-        .select(&[
-            col("plant_wfo_id"),
-            col("herbivores"),
-            col("flower_visitors"),  // Added for R parity
-            col("predators_hasHost"),
-            col("predators_interactsWith"),
-            col("predators_adjacentTo"),
-        ])
-        .collect()?;  // Execute: loads only 6 columns × 11,711 rows
+    let organisms_df = materialize_with_columns(
+        organisms_lazy,
+        REQUIRED_ORGANISM_COLS,
+        "M3 organisms",
+    )?;
 
-    // Filter to guild plants (fast - only 5 columns)
-    use std::collections::HashSet;
-    let id_set: HashSet<_> = plant_ids.iter().collect();
-    let id_col = organisms_selected.column("plant_wfo_id")?.str()?;
-    let mask: BooleanChunked = id_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 5 columns × 7 rows
+    let guild_organisms = filter_to_guild(&organisms_df, plant_ids, "plant_wfo_id", "M3 organisms")?;
 
-    // Same for fungi
-    let fungi_selected = fungi_lazy
-        .clone()
-        .select(&[
-            col("plant_wfo_id"),
-            col("entomopathogenic_fungi"),
-        ])
-        .collect()?;  // Execute: loads only 2 columns × 11,711 rows
+    // ========================================================================
+    // STEP 2: Materialize fungi columns and filter to guild
+    // ========================================================================
 
-    let fungi_mask: BooleanChunked = fungi_selected.column("plant_wfo_id")?
-        .str()?
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
-        .collect();
-    let guild_fungi = fungi_selected.filter(&fungi_mask)?;  // Result: 2 columns × 7 rows
+    let fungi_df = materialize_with_columns(
+        fungi_lazy,
+        REQUIRED_FUNGI_COLS,
+        "M3 fungi",
+    )?;
+
+    let guild_fungi = filter_to_guild(&fungi_df, plant_ids, "plant_wfo_id", "M3 fungi")?;
 
     let n_plants = guild_organisms.height();
 
@@ -289,17 +285,6 @@ pub fn calculate_m3(
         matched_predator_pairs,
         matched_fungi_pairs,
     })
-}
-
-/// Filter DataFrame to guild plants
-fn filter_to_guild(df: &DataFrame, plant_ids: &[String], col: &str) -> Result<DataFrame> {
-    let plant_id_set: FxHashSet<&String> = plant_ids.iter().collect();
-    let plant_col = df.column(col)?.str()?;
-    let mask: BooleanChunked = plant_col
-        .into_iter()
-        .map(|opt| opt.map_or(false, |s| plant_id_set.contains(&s.to_string())))
-        .collect();
-    Ok(df.filter(&mask)?)
 }
 
 /// Extract organism data: plant_id → list of all animals
