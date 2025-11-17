@@ -83,6 +83,119 @@ impl GuildScorer {
         })
     }
 
+    /// Create GuildScorer for calibration (uses dummy normalization)
+    ///
+    /// Mirrors R: GuildScorerV3Shipley$new(calibration_type='2plant', ...)
+    /// but with dummy calibration for raw score extraction.
+    ///
+    /// # Arguments
+    /// * `climate_tier` - Climate tier name (not used in calibration, but kept for API consistency)
+    ///
+    /// # Returns
+    /// GuildScorer instance configured for calibration (no normalization)
+    ///
+    /// # Example
+    /// ```rust
+    /// let scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate")?;
+    /// let raw_scores = scorer.compute_raw_scores(&plant_ids)?;
+    /// ```
+    pub fn new_for_calibration(climate_tier: &str) -> Result<Self> {
+        println!("\nInitializing Guild Scorer for Calibration (Rust)...");
+
+        // Create dummy calibration (returns raw values without normalization)
+        let calibration = Calibration::dummy();
+
+        // Initialize Faith's PD calculator
+        println!("Initializing Faith's PD calculator...");
+        let phylo_calculator = PhyloPDCalculator::new()?;
+
+        // Load datasets
+        let data = GuildData::load()?;
+
+        println!("\nGuild Scorer initialized for calibration:");
+        println!("  Mode: Calibration (dummy normalization)");
+        println!("  Climate tier: {} (reference only)", climate_tier);
+        println!("  Plants: {}", data.plants.height());
+        println!();
+
+        Ok(Self {
+            data,
+            calibration,
+            csr_calibration: None,  // Not needed for calibration
+            phylo_calculator,
+            climate_tier: climate_tier.to_string(),
+        })
+    }
+
+    /// Compute raw scores for a guild (for calibration)
+    ///
+    /// Mirrors R: compute_raw_scores(guild_ids, guild_scorer, plants_df)
+    ///
+    /// Returns raw metric values without normalization for percentile calculation.
+    /// Uses the canonical metric calculation code path, ensuring calibration and
+    /// production use identical logic.
+    ///
+    /// # Arguments
+    /// * `plant_ids` - Vector of plant WFO IDs for the guild
+    ///
+    /// # Returns
+    /// RawScores struct with unnormalized values for all 7 metrics
+    ///
+    /// # Example
+    /// ```rust
+    /// let scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate")?;
+    /// let plant_ids = vec!["wfo-123".to_string(), "wfo-456".to_string()];
+    /// let scores = scorer.compute_raw_scores(&plant_ids)?;
+    /// println!("M1 raw: {}", scores.m1_pest_risk);
+    /// ```
+    pub fn compute_raw_scores(&self, plant_ids: &[String]) -> Result<RawScores> {
+        // Call canonical metric functions (same as score_guild but with dummy calibration)
+        let m1 = calculate_m1(plant_ids, &self.phylo_calculator, &self.calibration)?;
+        let m2 = calculate_m2(
+            &self.data.plants_lazy,
+            plant_ids,
+            self.csr_calibration.as_ref(),
+            &self.calibration,
+        )?;
+        let m3 = calculate_m3(
+            plant_ids,
+            &self.data.organisms_lazy,
+            &self.data.fungi_lazy,
+            &self.data.herbivore_predators,
+            &self.data.insect_parasites,
+            &self.calibration,
+        )?;
+        let m4 = calculate_m4(
+            plant_ids,
+            &self.data.organisms_lazy,
+            &self.data.fungi_lazy,
+            &self.data.pathogen_antagonists,
+            &self.calibration,
+        )?;
+        let m5 = calculate_m5(plant_ids, &self.data.fungi_lazy, &self.calibration)?;
+        let m6 = calculate_m6(plant_ids, &self.data.plants_lazy, &self.calibration)?;
+        let m7 = calculate_m7(plant_ids, &self.data.organisms_lazy, &self.calibration)?;
+
+        Ok(RawScores {
+            m1_faiths_pd: m1.raw,
+            m1_pest_risk: m1.raw,
+            m2_conflict_density: m2.raw,
+            m3_biocontrol_raw: m3.raw,
+            m4_pathogen_control_raw: m4.raw,
+            m5_beneficial_fungi_raw: m5.raw,
+            m6_stratification_raw: m6.raw,
+            m7_pollinator_raw: m7.raw,
+        })
+    }
+
+    /// Access guild data (for calibration script to organize by tier)
+    ///
+    /// Returns reference to GuildData for external access patterns like
+    /// climate tier organization in calibration pipeline.
+    pub fn data(&self) -> &GuildData {
+        &self.data
+    }
+
     /// Provide LazyFrames for organisms and fungi (metrics will filter during collect)
     ///
     /// **PHASE 3 OPTIMIZATION**: Share LazyFrames across M3/M4/M5/M7
@@ -625,6 +738,7 @@ impl GuildScorer {
                 ["wfo_taxon_name"],
                 ["wfo_taxon_name"],
                 JoinArgs::new(JoinType::Left),
+                None,  // JoinTypeOptions added in Polars 0.46
             )?;
 
         // Clone M3Result for biocontrol network analysis

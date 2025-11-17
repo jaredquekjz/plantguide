@@ -37,6 +37,26 @@ pub struct RawScores {
 }
 
 /// Compute raw scores for calibration (no normalization)
+///
+/// # Deprecated
+/// This standalone function is deprecated. Use `GuildScorer::compute_raw_scores()` instead
+/// for the canonical scorer pattern that mirrors the R implementation.
+///
+/// # Migration
+/// ```rust
+/// // Old pattern:
+/// let data = GuildData::load()?;
+/// let phylo = PhyloPDCalculator::new()?;
+/// let scores = compute_raw_scores_for_calibration(&plant_ids, &data, &phylo)?;
+///
+/// // New pattern (preferred):
+/// let scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate")?;
+/// let scores = scorer.compute_raw_scores(&plant_ids)?;
+/// ```
+#[deprecated(
+    since = "0.2.0",
+    note = "Use GuildScorer::compute_raw_scores() instead for canonical scorer pattern"
+)]
 pub fn compute_raw_scores_for_calibration(
     plant_ids: &[String],
     data: &GuildData,
