@@ -28,6 +28,57 @@
 
 ---
 
+## CRITICAL PREREQUISITE: R-Rust M4 Parity
+
+**BLOCKER:** Rust implementation has fungivore enhancement for M4 (disease control) that R lacks.
+
+**Current State:**
+
+**R M4 Implementation** (2 mechanisms):
+1. Mechanism 1: Specific antagonist matches (pathogen → known mycoparasite)
+2. Mechanism 2: General mycoparasites
+
+**Rust M4 Implementation** (3 mechanisms):
+1. Mechanism 1: Specific antagonist matches (pathogen → known mycoparasite)
+2. Mechanism 2: General mycoparasites
+3. **Mechanism 3: Fungivores eating pathogens** (NEW - Rust only)
+
+**Impact:** R and Rust will produce different M4 scores, breaking parity verification.
+
+**Required Before Calibration:**
+
+1. **Update R M4 to include fungivore logic:**
+   - File: `shipley_checks/src/Stage_4/guild_scorer_v3_shipley.R`
+   - Function: `calculate_m4()`
+   - Add: Fungivore-pathogen matching mechanism
+   - Weight: Same as Rust (1.0 for specific matches, 0.2 for general)
+
+2. **Verify local parity on M4:**
+   - Test with 3 guilds (Forest Garden, Competitive Clash, Stress Tolerant)
+   - Compare M4 raw scores: R vs Rust (tolerance: ±0.001)
+   - Compare M4 normalized scores: R vs Rust (tolerance: ±0.1)
+
+3. **Update R data source:**
+   - Ensure R has fungivore data: `organism_profiles_pure_r.csv`
+   - Column: `fungivores_eats` (pipe-separated animal genera)
+   - Source: Phase 0 Script 2 (organism_profiles_11711.parquet)
+
+**Timeline:**
+- R fungivore implementation: 1-2 hours
+- Parity verification: 30 minutes
+- **Then proceed with Rust calibration plan below**
+
+**Alternative Approach:**
+If fungivore enhancement is experimental, could:
+1. Remove fungivore logic from Rust M4 temporarily
+2. Calibrate with 2-mechanism M4 (parity achieved)
+3. Re-add fungivore logic after calibration
+4. Accept that M4 scores will shift (recalibration needed)
+
+**Recommended:** Implement fungivore in R first for full parity.
+
+---
+
 ## Part 1: Current State Analysis
 
 ### 1.1 Existing R Calibration Pipeline
@@ -855,6 +906,101 @@ fn compare_scores(rust_results: &[GuildResult], r_csv_path: &str) -> anyhow::Res
 ---
 
 ## Part 4: Execution Plan
+
+### 4.0 Phase 0: R-Rust M4 Parity (PREREQUISITE)
+
+**MUST COMPLETE BEFORE CALIBRATION**
+
+**Task 1: Add fungivore column to organism_profiles_pure_r.csv (30 minutes)**
+
+Current R organism data missing fungivores column:
+```bash
+# Verify current columns
+head -1 shipley_checks/validation/organism_profiles_pure_r.csv
+```
+
+Expected columns (should include):
+- `plant_wfo_id`
+- `herbivores` (pipe-separated)
+- `pollinators` (pipe-separated)
+- `flower_visitors` (pipe-separated)
+- `predators_hasHost` (pipe-separated)
+- `predators_interactsWith` (pipe-separated)
+- `predators_adjacentTo` (pipe-separated)
+- **`fungivores_eats`** (pipe-separated) ← MISSING
+
+Solution: Re-run Phase 0 R extraction with fungivore logic from Script 2.
+
+**Task 2: Update R M4 implementation (1 hour)**
+
+File: `shipley_checks/src/Stage_4/guild_scorer_v3_shipley.R`
+
+Add to `calculate_m4()` function after Mechanism 2:
+
+```r
+# Mechanism 3: Fungivores eating pathogens (NEW)
+# Get guild organism data
+guild_organisms <- self$organisms_df %>% filter(plant_wfo_id %in% plant_ids)
+
+for (i in seq_len(nrow(guild_fungi))) {
+  row_a <- guild_fungi[i, ]
+  plant_a_id <- row_a$plant_wfo_id
+  pathogens_a <- row_a$pathogenic_fungi[[1]]
+
+  if (is.null(pathogens_a) || length(pathogens_a) == 0) {
+    next
+  }
+
+  for (j in seq_len(nrow(guild_organisms))) {
+    row_b <- guild_organisms[j, ]
+    plant_b_id <- row_b$plant_wfo_id
+
+    if (plant_a_id == plant_b_id) next
+
+    fungivores_b <- row_b$fungivores_eats[[1]]
+
+    if (is.null(fungivores_b) || length(fungivores_b) == 0) {
+      next
+    }
+
+    # Specific matches: pathogen genus matches fungivore target
+    # (Requires lookup table - may not be available)
+    # For now: General fungivores (weight 0.2)
+    if (length(pathogens_a) > 0 && length(fungivores_b) > 0) {
+      pathogen_control_raw <- pathogen_control_raw + length(fungivores_b) * 0.2
+      mechanisms[[length(mechanisms) + 1]] <- list(
+        type = 'general_fungivore',
+        vulnerable_plant = plant_a_id,
+        n_pathogens = length(pathogens_a),
+        control_plant = plant_b_id,
+        fungivores = head(fungivores_b, 5)
+      )
+    }
+  }
+}
+```
+
+**Task 3: Verify M4 parity (30 minutes)**
+
+Test with 3 guilds:
+```bash
+env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
+  /usr/bin/Rscript shipley_checks/src/Stage_4/test_guilds_against_calibration.R
+```
+
+Compare M4 scores:
+- Forest Garden: R M4 vs Rust M4 (expect ±0.1 tolerance)
+- Competitive Clash: R M4 vs Rust M4
+- Stress Tolerant: R M4 vs Rust M4
+
+**Success Criteria:**
+- ✅ M4 raw scores match within ±0.001
+- ✅ M4 normalized scores match within ±0.1
+- ✅ Overall scores match within ±0.5
+
+**If parity fails:** Debug mechanism weights, ensure fungivore data loaded correctly.
+
+---
 
 ### 4.1 Phase 1: Update Rust Implementation (1-2 hours)
 
