@@ -36,7 +36,7 @@ OUTPUT_DIR <- file.path(DATA_DIR, "taxonomy")
 
 # Input files
 PLANT_FILE <- "/home/olier/ellenberg/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
-ORGANISM_FILE <- file.path(DATA_DIR, "taxonomy/organism_taxonomy_enriched.parquet")
+ORGANISM_FILE <- file.path(DATA_DIR, "taxonomy/organisms_with_taxonomy_11711.parquet")  # From Phase 0
 INAT_TAXA_FILE <- file.path(DATA_DIR, "inaturalist/taxa.csv")
 INAT_VERNACULARS_FILE <- file.path(OUTPUT_DIR, "inat_vernaculars_all_languages.parquet")
 

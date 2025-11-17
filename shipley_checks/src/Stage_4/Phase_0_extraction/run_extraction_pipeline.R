@@ -8,7 +8,10 @@ cat("Purpose: Extract all ecological interaction networks for 11,711 plants\n")
 cat("Output: Rust-ready parquet files (DuckDB COPY TO, no R metadata)\n")
 cat("Target: guild_scorer_rust can read all files directly (no conversion)\n\n")
 
-script_dir <- "shipley_checks/src/Stage_4/r_duckdb_extraction"
+# Set working directory to project root (extraction scripts expect this)
+setwd("/home/olier/ellenberg")
+
+script_dir <- "shipley_checks/src/Stage_4/Phase_0_extraction"
 
 start_time <- Sys.time()
 
@@ -80,13 +83,26 @@ tryCatch({
 # ============================================================================
 # Step 5: Extract insect-fungal parasite relationships
 # ============================================================================
-cat("Step 6/6: Extracting insect-fungal parasite relationships...\n")
+cat("Step 6/7: Extracting insect-fungal parasite relationships...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "05_extract_insect_fungal_parasites.R"))
   cat("✓ Script 5 completed\n\n")
 }, error = function(e) {
   cat("✗ Script 5 FAILED:", conditionMessage(e), "\n\n")
+  quit(status = 1)
+})
+
+# ============================================================================
+# Step 6: Extract unique organisms with taxonomy (for Phase 1)
+# ============================================================================
+cat("Step 7/7: Extracting unique organisms with taxonomy...\n")
+cat("--------------------------------------------------------------------------\n")
+tryCatch({
+  source(file.path(script_dir, "06_extract_unique_organisms_taxonomy.R"))
+  cat("✓ Script 6 completed\n\n")
+}, error = function(e) {
+  cat("✗ Script 6 FAILED:", conditionMessage(e), "\n\n")
   quit(status = 1)
 })
 
@@ -198,9 +214,9 @@ cat("  ✓ Data integrity validated\n")
 cat("  ✓ Ready for guild_scorer_rust\n\n")
 
 cat("To run individual scripts:\n")
-cat("  Rscript shipley_checks/src/Stage_4/r_duckdb_extraction/00_extract_known_herbivores.R\n")
-cat("  Rscript shipley_checks/src/Stage_4/r_duckdb_extraction/01_match_herbivores_to_plants.R\n")
+cat("  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/00_extract_known_herbivores.R\n")
+cat("  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/01_match_herbivores_to_plants.R\n")
 cat("  # ... etc\n\n")
 
 cat("To verify outputs:\n")
-cat("  python shipley_checks/src/Stage_4/r_duckdb_extraction/verify_extraction_outputs.py\n\n")
+cat("  python shipley_checks/src/Stage_4/Phase_0_extraction/verify_extraction_outputs.py\n\n")

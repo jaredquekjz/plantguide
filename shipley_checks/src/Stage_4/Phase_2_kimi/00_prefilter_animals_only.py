@@ -18,8 +18,8 @@ print("Pre-filtering to ANIMAL GENERA WITH VERNACULARS")
 print("=" * 80)
 print()
 
-# Files
-ORGANISMS_FILE = "/home/olier/ellenberg/data/taxonomy/organisms_categorized_comprehensive.parquet"
+# Files (Phase 1 output)
+ORGANISMS_FILE = "/home/olier/ellenberg/data/taxonomy/organisms_vernacular_final.parquet"
 ENGLISH_VERN = "/home/olier/ellenberg/data/taxonomy/genus_vernacular_aggregations.parquet"
 CHINESE_VERN = "/home/olier/ellenberg/data/taxonomy/genus_vernacular_aggregations_chinese.parquet"
 OUTPUT_FILE = "/home/olier/ellenberg/data/taxonomy/animal_genera_with_vernaculars.parquet"
@@ -43,10 +43,10 @@ kingdom_counts = organisms_df['kingdom'].value_counts()
 for kingdom, count in kingdom_counts.items():
     print(f"  {kingdom}: {count:,}")
 
-# Step 1: Filter to Metazoa ONLY
-print("\nStep 1: Filtering to Metazoa (animals) only...")
-animals_df = organisms_df[organisms_df['kingdom'] == 'Metazoa'].copy()
-print(f"  Animals (Metazoa): {len(animals_df):,}")
+# Step 1: Filter to Metazoa OR Animalia (both mean animals, different taxonomy sources)
+print("\nStep 1: Filtering to animals (Metazoa + Animalia kingdoms)...")
+animals_df = organisms_df[organisms_df['kingdom'].isin(['Metazoa', 'Animalia'])].copy()
+print(f"  Animals (Metazoa + Animalia): {len(animals_df):,}")
 print(f"  Removed: {len(organisms_df) - len(animals_df):,} non-animal organisms")
 
 # Step 2: Get unique animal genera
