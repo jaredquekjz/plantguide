@@ -20,8 +20,8 @@ suppressPackageStartupMessages({
   library(R6)
 })
 
-# Source Faith's PD calculator
-source("shipley_checks/src/Stage_4/faiths_pd_calculator.R")
+# Source canonical guild scorer (contains all 7 metric calculation methods)
+source("shipley_checks/src/Stage_4/guild_scorer_v3_shipley.R")
 
 # Köppen tier structure
 TIERS <- list(
@@ -37,11 +37,11 @@ COMPONENTS <- c('m1', 'n4', 'p1', 'p2', 'p3', 'p5', 'p6')
 PERCENTILES <- c(1, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99)
 
 
-#' Load all necessary datasets
+#' Load all necessary datasets and initialize canonical GuildScorer
 #'
-#' @return List with plants_df, organisms_df, fungi_df
+#' @return List with guild_scorer instance and plant organization
 load_all_data <- function() {
-  cat("\nLoading datasets...\n")
+  cat("\nLoading datasets and initializing GuildScorer...\n")
 
   # Plants with Köppen tiers (SHIPLEY_CHECKS DATASET - 11,711 plants)
   plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet') %>%
@@ -56,30 +56,80 @@ load_all_data <- function() {
     ) %>%
     filter(!is.na(phylo_ev1))
 
-  # Organisms (SHIPLEY_CHECKS DATASET)
+  # Organisms (SHIPLEY_CHECKS DATASET) - Include predator columns for M3
   organisms_path <- 'shipley_checks/stage4/plant_organism_profiles_11711.parquet'
   if (file.exists(organisms_path)) {
     organisms_df <- read_parquet(organisms_path) %>%
-      select(plant_wfo_id, herbivores, flower_visitors, pollinators)
+      select(plant_wfo_id, herbivores, flower_visitors, pollinators,
+             predators_hasHost, predators_interactsWith, predators_adjacentTo)
   } else {
     organisms_df <- tibble()
   }
 
-  # Fungi (SHIPLEY_CHECKS DATASET)
+  # Fungi (SHIPLEY_CHECKS DATASET) - Include all fungal guilds for M3/M4/M5
   fungi_path <- 'shipley_checks/stage4/plant_fungal_guilds_hybrid_11711.parquet'
   if (file.exists(fungi_path)) {
     fungi_df <- read_parquet(fungi_path) %>%
       select(plant_wfo_id, pathogenic_fungi, pathogenic_fungi_host_specific,
-             amf_fungi, emf_fungi, endophytic_fungi, saprotrophic_fungi)
+             amf_fungi, emf_fungi, endophytic_fungi, saprotrophic_fungi,
+             entomopathogenic_fungi, mycoparasite_fungi)
   } else {
     fungi_df <- tibble()
+  }
+
+  # Load lookup tables for M3/M4
+  herbivore_predators_path <- 'shipley_checks/stage4/herbivore_predators_11711.parquet'
+  herbivore_predators <- if (file.exists(herbivore_predators_path)) {
+    df <- read_parquet(herbivore_predators_path)
+    setNames(df$predators, df$herbivore)
+  } else {
+    list()
+  }
+
+  insect_parasites_path <- 'shipley_checks/stage4/insect_fungal_parasites_11711.parquet'
+  insect_parasites <- if (file.exists(insect_parasites_path)) {
+    df <- read_parquet(insect_parasites_path)
+    setNames(df$entomopathogenic_fungi, df$herbivore)
+  } else {
+    list()
+  }
+
+  pathogen_antagonists_path <- 'shipley_checks/stage4/pathogen_antagonists_11711.parquet'
+  pathogen_antagonists <- if (file.exists(pathogen_antagonists_path)) {
+    df <- read_parquet(pathogen_antagonists_path)
+    setNames(df$antagonists, df$pathogen)
+  } else {
+    list()
   }
 
   cat(sprintf("  Plants: %s\n", format(nrow(plants_df), big.mark = ",")))
   cat(sprintf("  Organisms: %s\n", format(nrow(organisms_df), big.mark = ",")))
   cat(sprintf("  Fungi: %s\n", format(nrow(fungi_df), big.mark = ",")))
+  cat(sprintf("  Herbivore predators: %s\n", format(length(herbivore_predators), big.mark = ",")))
+  cat(sprintf("  Insect parasites: %s\n", format(length(insect_parasites), big.mark = ",")))
+  cat(sprintf("  Pathogen antagonists: %s\n", format(length(pathogen_antagonists), big.mark = ",")))
 
-  list(plants_df = plants_df, organisms_df = organisms_df, fungi_df = fungi_df)
+  # Initialize canonical GuildScorer (uses same metric logic as production scorer)
+  cat("\nInitializing GuildScorer...\n")
+  guild_scorer <- GuildScorerV3Shipley$new(
+    calibration_type = '2plant',  # Dummy - not used in calibration mode
+    climate_tier = "tier_3_humid_temperate"  # Dummy - not used in calibration mode
+  )
+
+  # Set data fields (GuildScorer stores these as public fields)
+  guild_scorer$plants_df <- plants_df
+  guild_scorer$organisms_df <- organisms_df
+  guild_scorer$fungi_df <- fungi_df
+  guild_scorer$herbivore_predators <- herbivore_predators
+  guild_scorer$insect_parasites <- insect_parasites
+  guild_scorer$pathogen_antagonists <- pathogen_antagonists
+
+  cat("✓ GuildScorer initialized\n")
+
+  list(
+    guild_scorer = guild_scorer,
+    plants_df = plants_df
+  )
 }
 
 
@@ -153,15 +203,13 @@ count_shared_organisms <- function(df, plant_ids, ...) {
 }
 
 
-#' Compute raw component scores for a guild
+#' Compute raw component scores for a guild using canonical GuildScorer methods
 #'
 #' @param guild_ids Vector of plant WFO IDs
-#' @param plants_df Plant dataset
-#' @param organisms_df Organism dataset
-#' @param fungi_df Fungal dataset
-#' @param phylo_calculator Faith's PD calculator instance
+#' @param guild_scorer GuildScorer R6 instance (canonical implementation)
+#' @param plants_df Plant dataset (for filtering guild_plants)
 #' @return Named list of scores (m1, n4, p1-p6) or NULL if missing data
-compute_raw_scores <- function(guild_ids, plants_df, organisms_df, fungi_df, phylo_calculator) {
+compute_raw_scores <- function(guild_ids, guild_scorer, plants_df) {
   n_plants <- length(guild_ids)
   guild_plants <- plants_df %>% filter(wfo_taxon_id %in% guild_ids)
 
@@ -169,155 +217,41 @@ compute_raw_scores <- function(guild_ids, plants_df, organisms_df, fungi_df, phy
     return(NULL)  # Missing data
   }
 
-  scores <- list()
+  # Call canonical GuildScorer methods (exact same logic as production scorer)
+  # Extract raw scores from each metric result
 
-  # N4: CSR conflicts (conflict_density)
-  HIGH_C <- 60
-  HIGH_S <- 60
-  HIGH_R <- 50
-  conflicts <- 0
+  m1_result <- guild_scorer$calculate_m1(guild_ids, guild_plants)
+  m2_result <- guild_scorer$calculate_m2(guild_plants)
+  m3_result <- guild_scorer$calculate_m3(guild_ids, guild_plants)
+  m4_result <- guild_scorer$calculate_m4(guild_ids, guild_plants)
+  m5_result <- guild_scorer$calculate_m5(guild_ids, guild_plants)
+  m6_result <- guild_scorer$calculate_m6(guild_plants)
+  m7_result <- guild_scorer$calculate_m7(guild_ids, guild_plants)
 
-  high_c <- guild_plants %>% filter(CSR_C > HIGH_C)
-  if (nrow(high_c) >= 2) {
-    conflicts <- conflicts + choose(nrow(high_c), 2)
-  }
-
-  high_s <- guild_plants %>% filter(CSR_S > HIGH_S)
-  high_c_plants <- guild_plants %>% filter(CSR_C > HIGH_C)
-
-  for (i in seq_len(nrow(high_c_plants))) {
-    for (j in seq_len(nrow(high_s))) {
-      if (high_c_plants$wfo_taxon_id[i] != high_s$wfo_taxon_id[j]) {
-        s_light <- ifelse(is.na(high_s$light_pref[j]), 5.0, high_s$light_pref[j])
-        conflict <- if (s_light < 3.2) 0.0 else if (s_light > 7.47) 0.9 else 0.6
-        conflicts <- conflicts + conflict
-      }
-    }
-  }
-
-  high_r <- guild_plants %>% filter(CSR_R > HIGH_R)
-  for (i in seq_len(nrow(high_c_plants))) {
-    for (j in seq_len(nrow(high_r))) {
-      if (high_c_plants$wfo_taxon_id[i] != high_r$wfo_taxon_id[j]) {
-        conflicts <- conflicts + 0.8
-      }
-    }
-  }
-
-  if (nrow(high_r) >= 2) {
-    conflicts <- conflicts + choose(nrow(high_r), 2) * 0.3
-  }
-
-  max_pairs <- if (n_plants > 1) n_plants * (n_plants - 1) else 1
-  scores$n4 <- conflicts / max_pairs
-
-  # P3: Beneficial fungi
-  beneficial_counts <- count_shared_organisms(
-    fungi_df, guild_ids,
-    'amf_fungi', 'emf_fungi', 'endophytic_fungi', 'saprotrophic_fungi'
+  # Return raw scores (used for calibration percentile computation)
+  list(
+    m1 = m1_result$raw,     # Pest & pathogen independence (Faith's PD)
+    n4 = m2_result$raw,     # Growth compatibility (CSR conflicts)
+    p1 = m3_result$raw,     # Biocontrol (insect predators/fungi)
+    p2 = m4_result$raw,     # Disease suppression (antagonist fungi)
+    p3 = m5_result$raw,     # Beneficial fungi networks
+    p5 = m6_result$raw,     # Structural diversity
+    p6 = m7_result$raw      # Pollinator support
   )
-
-  network_raw <- 0
-  for (org_name in names(beneficial_counts)) {
-    count <- beneficial_counts[[org_name]]
-    if (count >= 2) {
-      network_raw <- network_raw + (count / n_plants)
-    }
-  }
-
-  guild_fungi <- fungi_df %>% filter(plant_wfo_id %in% guild_ids)
-  plants_with_beneficial <- 0
-
-  for (i in seq_len(nrow(guild_fungi))) {
-    row <- guild_fungi[i, ]
-    has_beneficial <- FALSE
-    for (col in c('amf_fungi', 'emf_fungi', 'endophytic_fungi', 'saprotrophic_fungi')) {
-      col_val <- row[[col]]
-      if (!is.null(col_val) && length(col_val) > 0) {
-        has_beneficial <- TRUE
-        break
-      }
-    }
-    if (has_beneficial) {
-      plants_with_beneficial <- plants_with_beneficial + 1
-    }
-  }
-
-  coverage_ratio <- plants_with_beneficial / n_plants
-  scores$p3 <- network_raw * 0.6 + coverage_ratio * 0.4
-
-  # M1: Pathogen & Pest Independence using Faith's PD
-  # Literature: Faith 1992, Phylopathogen 2013, Gougherty-Davies 2021, Keesing et al. 2006
-  # Faith's PD increases with richness + divergence → captures dilution effect
-  plant_ids <- guild_plants$wfo_taxon_id
-
-  if (length(plant_ids) >= 2) {
-    # Calculate Faith's PD using C++ binary
-    faiths_pd <- phylo_calculator$calculate_pd(plant_ids, use_wfo_ids = TRUE)
-
-    # Apply EXPONENTIAL TRANSFORMATION
-    # Decay constant k calibrated for Faith's PD scale (hundreds)
-    k <- 0.001  # Much smaller than old k=3.0 (Faith's PD >> eigenvector distances)
-    pest_risk_raw <- exp(-k * faiths_pd)
-    scores$m1 <- pest_risk_raw  # Store TRANSFORMED value (0-1 scale)
-  } else {
-    # Single plant = maximum pest risk
-    scores$m1 <- 1.0  # No diversity = highest pest risk
-  }
-
-  # P5: Structural diversity
-  heights <- guild_plants$height_m[!is.na(guild_plants$height_m)]
-  forms <- guild_plants$try_growth_form[!is.na(guild_plants$try_growth_form)]
-
-  p5_raw <- 0
-  if (length(heights) >= 2) {
-    height_range <- max(heights) - min(heights)
-    p5_raw <- p5_raw + min(height_range / 20.0, 1.0) * 0.6
-  }
-
-  if (length(forms) > 0) {
-    unique_forms <- length(unique(forms))
-    p5_raw <- p5_raw + (unique_forms / 5.0) * 0.4
-  }
-
-  scores$p5 <- min(p5_raw, 1.0)
-
-  # P6: Pollinators
-  shared_pollinators <- count_shared_organisms(
-    organisms_df, guild_ids,
-    'pollinators', 'flower_visitors'
-  )
-
-  p6_score <- 0
-  for (org_name in names(shared_pollinators)) {
-    count <- shared_pollinators[[org_name]]
-    if (count >= 2) {
-      p6_score <- p6_score + (count / n_plants) ^ 1.5
-    }
-  }
-  scores$p6 <- p6_score
-
-  # P1/P2: Set to 0 (require complex relationship tables)
-  scores$p1 <- 0.0
-  scores$p2 <- 0.0
-
-  scores
 }
 
 
 #' Run calibration for one stage
 #'
 #' @param tier_plants Named list of plant IDs per tier
+#' @param guild_scorer GuildScorer R6 instance with canonical metric methods
 #' @param plants_df Plant dataset
-#' @param organisms_df Organism dataset
-#' @param fungi_df Fungal dataset
-#' @param phylo_calculator Faith's PD calculator
 #' @param guild_size Number of plants per guild
 #' @param n_guilds_per_tier Number of guilds to sample per tier
 #' @param stage_name Stage description
 #' @return Named list of calibration results
-calibrate_stage <- function(tier_plants, plants_df, organisms_df, fungi_df,
-                            phylo_calculator, guild_size, n_guilds_per_tier, stage_name) {
+calibrate_stage <- function(tier_plants, guild_scorer, plants_df,
+                            guild_size, n_guilds_per_tier, stage_name) {
   cat("\n================================================================================\n")
   cat(sprintf("STAGE: %s\n", stage_name))
   cat("================================================================================\n")
@@ -346,7 +280,7 @@ calibrate_stage <- function(tier_plants, plants_df, organisms_df, fungi_df,
 
       # Sample guild
       guild_ids <- sample(plant_ids, size = guild_size, replace = FALSE)
-      raw_scores <- compute_raw_scores(guild_ids, plants_df, organisms_df, fungi_df, phylo_calculator)
+      raw_scores <- compute_raw_scores(guild_ids, guild_scorer, plants_df)
 
       if (!is.null(raw_scores)) {
         for (comp in COMPONENTS) {
@@ -388,20 +322,15 @@ calibrate_stage <- function(tier_plants, plants_df, organisms_df, fungi_df,
 #' @param stage Which stage to run: '1', '2', or 'both'
 #' @param n_guilds Number of guilds per tier (default 20000)
 main <- function(stage = 'both', n_guilds = 20000) {
-  # Load data
+  # Load data and initialize canonical GuildScorer
   data <- load_all_data()
   tier_plants <- organize_by_tier(data$plants_df)
-
-  # Initialize Faith's PD calculator (once for all calibrations)
-  cat("\nInitializing Faith's PD calculator...\n")
-  phylo_calculator <- PhyloPDCalculator$new()
-  cat("✓ Faith's PD calculator loaded\n")
 
   # Stage 1: 2-plant
   if (stage %in% c('1', 'both')) {
     results <- calibrate_stage(
-      tier_plants, data$plants_df, data$organisms_df, data$fungi_df,
-      phylo_calculator, 2, n_guilds, 'Stage 1: 2-Plant'
+      tier_plants, data$guild_scorer, data$plants_df,
+      2, n_guilds, 'Stage 1: 2-Plant'
     )
 
     output_file <- 'shipley_checks/stage4/normalization_params_2plant_R.json'
@@ -413,8 +342,8 @@ main <- function(stage = 'both', n_guilds = 20000) {
   # Stage 2: 7-plant
   if (stage %in% c('2', 'both')) {
     results <- calibrate_stage(
-      tier_plants, data$plants_df, data$organisms_df, data$fungi_df,
-      phylo_calculator, 7, n_guilds, 'Stage 2: 7-Plant'
+      tier_plants, data$guild_scorer, data$plants_df,
+      7, n_guilds, 'Stage 2: 7-Plant'
     )
 
     output_file <- 'shipley_checks/stage4/normalization_params_7plant_R.json'
