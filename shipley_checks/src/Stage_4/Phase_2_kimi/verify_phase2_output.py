@@ -26,12 +26,24 @@ PROJECT_ROOT = Path("/home/olier/ellenberg")
 OUTPUT_FILE = PROJECT_ROOT / "data/taxonomy/kimi_gardener_labels.csv"
 INPUT_FILE = PROJECT_ROOT / "data/taxonomy/animal_genera_with_vernaculars.parquet"
 
-# Valid categories
+# Valid categories (standard + fallback categories from Kimi)
 VALID_CATEGORIES = [
+    # Standard gardening categories
     'Beetles', 'Bugs', 'Butterflies', 'Dragonflies', 'Flies', 'Moths',
     'Bees', 'Wasps', 'Ants', 'Lacewings', 'Centipedes', 'Millipedes',
     'Spiders', 'Mites', 'Earthworms', 'Slugs', 'Snails', 'Birds',
-    'Amphibians', 'Reptiles', 'Mammals', 'Other'
+    'Amphibians', 'Reptiles', 'Mammals', 'Other',
+    # Fallback categories (from Kimi API)
+    'Aphids', 'Barklice', 'Bats', 'Bears', 'Bryozoans', 'Caddisflies',
+    'Cicadas', 'Cockroaches', 'Corals', 'Crabs', 'Crickets', 'Crustaceans',
+    'Deer', 'Dogs', 'Earwigs', 'Fish', 'Flatworms', 'Fleas', 'Flukes',
+    'Frogs', 'Fungi', 'Giraffes', 'Grasshoppers', 'Hummingbirds', 'Jellyfish',
+    'Leafhoppers', 'Leeches', 'Lice', 'Lizards', 'Mantises', 'Mollusks',
+    'Monkeys', 'Mussels', 'Nematodes', 'Planthoppers', 'Plants', 'Possums',
+    'Psyllids', 'Rabbits', 'Salamanders', 'Sawflies', 'Scales', 'Scorpionflies',
+    'Sea cucumbers', 'Sea lions', 'Sea urchins', 'Shrews', 'Snakes', 'Spittlebugs',
+    'Sponges', 'Springtails', 'Squirrels', 'Stick insects', 'Stoneflies',
+    'Termites', 'Thrips', 'Ticks', 'Tortoises', 'Treehoppers', 'Whiteflies'
 ]
 
 print("="*80)
@@ -93,8 +105,8 @@ print("CHECK 3: Required columns present")
 print("-" * 80)
 
 required_columns = [
-    'genus', 'gardener_label_en', 'gardener_label_zh',
-    'category', 'is_gardener_friendly'
+    'genus', 'english_vernacular', 'chinese_vernacular',
+    'kimi_label', 'success', 'error'
 ]
 
 missing_columns = [col for col in required_columns if col not in df.columns]
@@ -110,11 +122,11 @@ print()
 print("CHECK 4: Success rate - genera successfully categorized")
 print("-" * 80)
 
-# Count successes (non-null category and labels)
+# Count successes (non-null kimi_label)
 successful = df[
-    df['category'].notna() &
-    (df['category'] != '') &
-    (df['category'] != 'none')
+    df['kimi_label'].notna() &
+    (df['kimi_label'] != '') &
+    (df['kimi_label'] != 'none')
 ]
 n_successful = len(successful)
 success_rate = 100 * n_successful / len(df) if len(df) > 0 else 0
@@ -123,9 +135,9 @@ print(f"  Successful: {n_successful:,} / {len(df):,} ({success_rate:.1f}%)")
 
 # Check for failures
 failed = df[
-    df['category'].isna() |
-    (df['category'] == '') |
-    (df['category'] == 'none')
+    df['kimi_label'].isna() |
+    (df['kimi_label'] == '') |
+    (df['kimi_label'] == 'none')
 ]
 n_failed = len(failed)
 
@@ -150,7 +162,7 @@ print("-" * 80)
 
 # Get unique categories (excluding null/empty)
 actual_categories = set(
-    successful['category'].str.strip().unique()
+    successful['kimi_label'].str.strip().unique()
 )
 
 invalid_categories = actual_categories - set(VALID_CATEGORIES)
@@ -161,7 +173,7 @@ if len(invalid_categories) == 0:
 else:
     print(f"❌ FAILED: {len(invalid_categories)} invalid categories found:")
     for cat in sorted(invalid_categories):
-        count = (successful['category'].str.strip() == cat).sum()
+        count = (successful['kimi_label'].str.strip() == cat).sum()
         print(f"    - '{cat}' ({count:,} occurrences)")
     all_checks_passed = False
 print()
@@ -171,60 +183,39 @@ print("  Category distribution:")
 print(f"  {'Category':<20} {'Count':>8} {'%':>8}")
 print("  " + "-" * 38)
 
-category_counts = successful['category'].str.strip().value_counts()
+category_counts = successful['kimi_label'].str.strip().value_counts()
 for cat, count in category_counts.head(15).items():
     pct = 100 * count / n_successful
     print(f"  {cat:<20} {count:>8,} {pct:>7.1f}%")
 print()
 
-# Check 6: Gardener-friendly flag validity
-print("CHECK 6: Gardener-friendly flag validity")
+# Check 6: Vernacular name quality
+print("CHECK 6: Vernacular name quality - English and Chinese vernaculars")
 print("-" * 80)
 
-valid_flags = successful['is_gardener_friendly'].isin([True, False, 'True', 'False'])
-n_invalid_flags = (~valid_flags).sum()
-
-if n_invalid_flags == 0:
-    print(f"✓ PASSED: All is_gardener_friendly flags are valid boolean values")
-else:
-    print(f"❌ FAILED: {n_invalid_flags:,} invalid is_gardener_friendly values")
-    all_checks_passed = False
-
-# Distribution
-n_friendly = (successful['is_gardener_friendly'].astype(str).str.lower() == 'true').sum()
-pct_friendly = 100 * n_friendly / n_successful if n_successful > 0 else 0
-
-print(f"  Gardener-friendly: {n_friendly:,} ({pct_friendly:.1f}%)")
-print(f"  Not friendly: {n_successful - n_friendly:,} ({100 - pct_friendly:.1f}%)")
-print()
-
-# Check 7: Label quality
-print("CHECK 7: Label quality - English and Chinese labels")
-print("-" * 80)
-
-# English labels
-has_en = successful['gardener_label_en'].notna() & (successful['gardener_label_en'] != '')
+# English vernaculars
+has_en = successful['english_vernacular'].notna() & (successful['english_vernacular'] != '') & (successful['english_vernacular'] != 'none')
 n_has_en = has_en.sum()
 pct_en = 100 * n_has_en / n_successful if n_successful > 0 else 0
 
-print(f"  English labels present: {n_has_en:,} / {n_successful:,} ({pct_en:.1f}%)")
+print(f"  English vernaculars present: {n_has_en:,} / {n_successful:,} ({pct_en:.1f}%)")
 
 if pct_en < 90:
-    print(f"  ⚠️  WARNING: Less than 90% have English labels")
+    print(f"  ⚠️  WARNING: Less than 90% have English vernaculars")
 
-# Chinese labels
-has_zh = successful['gardener_label_zh'].notna() & (successful['gardener_label_zh'] != '')
+# Chinese vernaculars
+has_zh = successful['chinese_vernacular'].notna() & (successful['chinese_vernacular'] != '') & (successful['chinese_vernacular'] != 'none')
 n_has_zh = has_zh.sum()
 pct_zh = 100 * n_has_zh / n_successful if n_successful > 0 else 0
 
-print(f"  Chinese labels present: {n_has_zh:,} / {n_successful:,} ({pct_zh:.1f}%)")
+print(f"  Chinese vernaculars present: {n_has_zh:,} / {n_successful:,} ({pct_zh:.1f}%)")
 
 if pct_zh < 80:
-    print(f"  ⚠️  WARNING: Less than 80% have Chinese labels")
+    print(f"  ⚠️  WARNING: Less than 80% have Chinese vernaculars")
 print()
 
-# Check 8: Duplicate genera check
-print("CHECK 8: Duplicate genera check")
+# Check 7: Duplicate genera check
+print("CHECK 7: Duplicate genera check")
 print("-" * 80)
 
 duplicates = df['genus'].value_counts()
