@@ -105,11 +105,12 @@ pub fn calculate_m3(
         .select(&[
             col("plant_wfo_id"),
             col("herbivores"),
+            col("flower_visitors"),  // Added for R parity
             col("predators_hasHost"),
             col("predators_interactsWith"),
             col("predators_adjacentTo"),
         ])
-        .collect()?;  // Execute: loads only 5 columns × 11,711 rows
+        .collect()?;  // Execute: loads only 6 columns × 11,711 rows
 
     // Filter to guild plants (fast - only 5 columns)
     use std::collections::HashSet;
@@ -180,6 +181,18 @@ pub fn calculate_m3(
     let predator_counts = build_predator_counts(&plant_predators, &known_predators)?;
     let entomo_fungi_counts = build_entomo_fungi_counts(&plant_fungi, &known_entomo_fungi)?;
 
+    // DEBUG: Log organism data for first 3 plants
+    eprintln!("\n=== M3 DEBUG: Guild organism data ===");
+    for (idx, (plant_id, herbivores)) in plant_organisms.iter().enumerate() {
+        if idx < 3 {
+            let predators = plant_predators.get(plant_id).map(|v| v.len()).unwrap_or(0);
+            let fungi = plant_fungi.get(plant_id).map(|v| v.len()).unwrap_or(0);
+            eprintln!("Plant {}: herbivores={}, predators={}, fungi={}",
+                plant_id, herbivores.len(), predators, fungi);
+        }
+    }
+    eprintln!("Total plants in guild: {}", n_plants);
+
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, herbivores_a) in &plant_organisms {
         if herbivores_a.is_empty() {
@@ -191,8 +204,8 @@ pub fn calculate_m3(
                 continue; // Skip self-comparison
             }
 
-            // Get predators from plant B (aggregate all animal columns)
-            let predators_b = plant_organisms
+            // Get predators from plant B (exclude herbivores - R parity)
+            let predators_b = plant_predators
                 .get(plant_b_id)
                 .map(|v| v.as_slice())
                 .unwrap_or(&[]);
@@ -246,6 +259,14 @@ pub fn calculate_m3(
     } else {
         0.0
     };
+
+    // DEBUG: Log final values
+    eprintln!("=== M3 DEBUG: Final calculation ===");
+    eprintln!("biocontrol_raw: {}", biocontrol_raw);
+    eprintln!("max_pairs: {}", max_pairs);
+    eprintln!("biocontrol_normalized: {}", biocontrol_normalized);
+    eprintln!("Mechanism counts: predator={}, fungi={}", specific_predator_matches, specific_fungi_matches);
+    eprintln!("===============================\n");
 
     // Percentile normalization
     let m3_norm = percentile_normalize(biocontrol_normalized, "p1", calibration, false)?;
@@ -302,7 +323,21 @@ fn extract_organism_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
 
             for col_name in &columns {
                 if let Ok(col) = df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Phase 0-4 parquets use Arrow list columns
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                for org_opt in str_series.into_iter() {
+                                    if let Some(org) = org_opt {
+                                        if !org.is_empty() {
+                                            organisms.push(org.to_string());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated strings (legacy format)
                         if let Some(value) = str_col.get(idx) {
                             for org in value.split('|').filter(|s| !s.is_empty()) {
                                 organisms.push(org.to_string());
@@ -334,7 +369,27 @@ fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> 
     let plant_ids = df.column("plant_wfo_id")?.str()?;
 
     if let Ok(entomo_col) = df.column("entomopathogenic_fungi") {
-        if let Ok(str_col) = entomo_col.str() {
+        // Phase 0-4 parquets use Arrow list columns
+        if let Ok(list_col) = entomo_col.list() {
+            for idx in 0..df.height() {
+                if let Some(plant_id) = plant_ids.get(idx) {
+                    if let Some(list_series) = list_col.get_as_series(idx) {
+                        if let Ok(str_series) = list_series.str() {
+                            let fungi: Vec<String> = str_series
+                                .into_iter()
+                                .filter_map(|opt| opt.map(|s| s.to_string()))
+                                .filter(|s| !s.is_empty())
+                                .collect();
+
+                            if !fungi.is_empty() {
+                                map.insert(plant_id.to_string(), fungi);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if let Ok(str_col) = entomo_col.str() {
+            // Fallback: pipe-separated strings (legacy format)
             for idx in 0..df.height() {
                 if let (Some(plant_id), Some(fungi_str)) = (plant_ids.get(idx), str_col.get(idx)) {
                     let fungi: Vec<String> = fungi_str
@@ -355,13 +410,24 @@ fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> 
 }
 
 /// Extract predator data: plant_id → list of predators only
-/// Only includes the 3 predator columns, NOT herbivores or flower_visitors
+/// Uses flower_visitors + 3 predator columns (R parity)
 fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> {
     let mut map: FxHashMap<String, Vec<String>> = FxHashMap::default();
     let plant_ids = df.column("plant_wfo_id")?.str()?;
 
-    // ONLY predator columns
+    // DEBUG: Check available columns
+    eprintln!("\n=== extract_predator_data: Available columns ===");
+    for col_name in df.get_column_names() {
+        eprintln!("  - {}", col_name);
+    }
+    eprintln!("================================================\n");
+
+    // DEBUG: Check first plant
+    let debug_plant_id = "wfo-0000241769";
+
+    // Predator columns (match R: flower_visitors + 3 predator types)
     let predator_columns = [
+        "flower_visitors",
         "predators_hasHost",
         "predators_interactsWith",
         "predators_adjacentTo",
@@ -370,22 +436,50 @@ fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
     for idx in 0..df.height() {
         if let Some(plant_id) = plant_ids.get(idx) {
             let mut predators = Vec::new();
+            let is_debug_plant = plant_id == debug_plant_id;
 
             for col_name in &predator_columns {
+                let mut col_count = 0;
                 if let Ok(col) = df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Phase 0-4 parquets use Arrow list columns
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                for org_opt in str_series.into_iter() {
+                                    if let Some(org) = org_opt {
+                                        if !org.is_empty() {
+                                            predators.push(org.to_string());
+                                            col_count += 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated strings (legacy format)
                         if let Some(value) = str_col.get(idx) {
                             for org in value.split('|').filter(|s| !s.is_empty()) {
                                 predators.push(org.to_string());
+                                col_count += 1;
                             }
                         }
                     }
+                }
+
+                if is_debug_plant {
+                    eprintln!("  extract_predator_data: {} from {}: {} items",
+                        plant_id, col_name, col_count);
                 }
             }
 
             // Deduplicate
             predators.sort_unstable();
             predators.dedup();
+
+            if is_debug_plant {
+                eprintln!("  extract_predator_data: {} TOTAL (after dedup): {} predators\n",
+                    plant_id, predators.len());
+            }
 
             map.insert(plant_id.to_string(), predators);
         }

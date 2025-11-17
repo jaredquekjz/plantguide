@@ -43,9 +43,23 @@ pub fn count_shared_organisms(
 
         for col_name in columns {
             if let Ok(col_series) = guild_df.column(col_name) {
-                if let Ok(utf8_col) = col_series.str() {
+                // Phase 0-4 parquets use Arrow list columns (not pipe-separated strings)
+                if let Ok(list_col) = col_series.list() {
+                    // Handle list column (Phase 0-4 format)
+                    if let Some(list_series) = list_col.get_as_series(idx) {
+                        if let Ok(str_series) = list_series.str() {
+                            for org_opt in str_series.into_iter() {
+                                if let Some(org) = org_opt {
+                                    if !org.is_empty() {
+                                        plant_organisms.push(org.to_string());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if let Ok(utf8_col) = col_series.str() {
+                    // Fallback: Handle pipe-separated string (legacy format)
                     if let Some(org_list_opt) = utf8_col.get(idx) {
-                        // Parse pipe-separated string
                         for org in org_list_opt.split('|').filter(|s| !s.is_empty()) {
                             plant_organisms.push(org.to_string());
                         }

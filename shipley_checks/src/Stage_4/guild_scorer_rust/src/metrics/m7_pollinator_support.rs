@@ -49,18 +49,18 @@ pub fn calculate_m7(
     organisms_lazy: &LazyFrame,  // Schema-only scan (from scorer, reused from M3!)
     calibration: &Calibration,
 ) -> Result<M7Result> {
-    // STEP 1: Materialize only the pollinator column
-    // IMPORTANT: Uses ONLY "pollinators", NOT "flower_visitors"
-    // Reason: flower_visitors is contaminated with herbivores (mites, caterpillars) and fungi
+    // STEP 1: Materialize pollinator columns (R parity)
+    // Uses both pollinators AND flower_visitors to match R implementation
     let organisms_selected = organisms_lazy
         .clone()
         .select(&[
             col("plant_wfo_id"),
-            col("pollinators"),  // ONLY strict pollinators (GloBI 'pollinates' interaction)
+            col("pollinators"),
+            col("flower_visitors"),  // Added for R parity
         ])
-        .collect()?;  // Execute: loads only 2 columns × 11,711 rows
+        .collect()?;  // Execute: loads only 3 columns × 11,711 rows
 
-    // STEP 2: Filter to guild plants (fast - only 2 columns)
+    // STEP 2: Filter to guild plants (fast - only 3 columns)
     use std::collections::HashSet;
     let id_set: HashSet<_> = plant_ids.iter().collect();
     let id_col = organisms_selected.column("plant_wfo_id")?.str()?;
@@ -68,7 +68,7 @@ pub fn calculate_m7(
         .into_iter()
         .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
         .collect();
-    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 2 columns × 7 rows = 14 cells
+    let guild_organisms = organisms_selected.filter(&mask)?;  // Result: 3 columns × 7 rows = 21 cells
 
     let n_plants = guild_organisms.height();
 
@@ -81,11 +81,11 @@ pub fn calculate_m7(
         .collect();
 
     // Count shared pollinators (pollinators hosted by ≥2 plants)
-    // Uses ONLY strict pollinators (not flower_visitors - contaminated with herbivores/fungi)
+    // Uses both pollinators AND flower_visitors (R parity)
     let shared_pollinators = count_shared_organisms(
         &guild_organisms,
         &guild_plant_ids,
-        &["pollinators"],  // ONLY verified pollinators
+        &["pollinators", "flower_visitors"],  // Match R implementation
     )?;
 
     // Score with QUADRATIC weighting

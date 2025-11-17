@@ -89,54 +89,34 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
     #' Load datasets
     load_datasets = function() {
-      cat("Loading datasets (R-generated CSV files for independence)...\n")
+      cat("Loading datasets (Phase 0-4 parquets)...\n")
 
-      # Plants - from shared parquet (stage 3 output)
-      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet') %>%
+      # Plants - from Phase 4 output (vernaculars + Köppen + CSR)
+      # CRITICAL: Use same parquet as Rust for parity
+      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet') %>%
         select(
           wfo_taxon_id, wfo_scientific_name, family, genus,
           height_m, try_growth_form,
           CSR_C = C, CSR_S = S, CSR_R = R,
-          light_pref = `EIVEres-L`,
+          light_pref = `EIVEres-L_complete`,  # Use imputed complete values (R-Rust parity)
           tier_1_tropical, tier_2_mediterranean, tier_3_humid_temperate,
           tier_4_continental, tier_5_boreal_polar, tier_6_arid
         )
 
-      # Helper function to convert pipe-separated strings back to lists
-      csv_to_lists <- function(df, list_cols) {
-        for (col in list_cols) {
-          if (col %in% names(df)) {
-            df <- df %>%
-              mutate(!!col := map(.data[[col]], function(x) {
-                if (is.na(x) || x == '') character(0) else strsplit(x, '\\|')[[1]]
-              }))
-          }
-        }
-        df
-      }
+      # Organisms - from Phase 0 output (Arrow lists, no conversion needed)
+      self$organisms_df <- read_parquet('shipley_checks/validation/organism_profiles_pure_rust.parquet')
 
-      # Organisms - from R-generated CSV (complete independence from Python)
-      self$organisms_df <- read_csv('shipley_checks/validation/organism_profiles_pure_r.csv', show_col_types = FALSE) %>%
-        csv_to_lists(c('herbivores', 'flower_visitors', 'pollinators',
-                       'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo'))
+      # Fungi - from Phase 0 output (Arrow lists, no conversion needed)
+      self$fungi_df <- read_parquet('shipley_checks/validation/fungal_guilds_pure_rust.parquet')
 
-      # Fungi - from R-generated CSV
-      self$fungi_df <- read_csv('shipley_checks/validation/fungal_guilds_pure_r.csv', show_col_types = FALSE) %>%
-        csv_to_lists(c('pathogenic_fungi', 'pathogenic_fungi_host_specific',
-                       'amf_fungi', 'emf_fungi', 'mycoparasite_fungi',
-                       'entomopathogenic_fungi', 'endophytic_fungi', 'saprotrophic_fungi'))
-
-      # Biocontrol lookup tables - from R-generated CSV
-      pred_df <- read_csv('shipley_checks/validation/herbivore_predators_pure_r.csv', show_col_types = FALSE) %>%
-        csv_to_lists('predators')
+      # Biocontrol lookup tables - from Phase 0 outputs (Arrow lists)
+      pred_df <- read_parquet('shipley_checks/validation/herbivore_predators_pure_rust.parquet')
       self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
 
-      para_df <- read_csv('shipley_checks/validation/insect_fungal_parasites_pure_r.csv', show_col_types = FALSE) %>%
-        csv_to_lists('entomopathogenic_fungi')
+      para_df <- read_parquet('shipley_checks/validation/insect_fungal_parasites_pure_rust.parquet')
       self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
 
-      antag_df <- read_csv('shipley_checks/validation/pathogen_antagonists_pure_r.csv', show_col_types = FALSE) %>%
-        csv_to_lists('antagonists')
+      antag_df <- read_parquet('shipley_checks/validation/pathogen_antagonists_pure_rust.parquet')
       self$pathogen_antagonists <- setNames(antag_df$antagonists, antag_df$pathogen)
 
       cat(glue("  Plants: {format(nrow(self$plants_df), big.mark=',')}\n"))
@@ -712,6 +692,46 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
               n_pathogens = length(pathogens_a),
               control_plant = plant_b_id,
               mycoparasites = head(mycoparasites_b, 5)
+            )
+          }
+        }
+      }
+
+      # Mechanism 3: Fungivores eating pathogens (weight 0.2) - NEW for R-Rust parity
+      # Get guild organism data for fungivore analysis
+      guild_organisms <- self$organisms_df %>% filter(plant_wfo_id %in% plant_ids)
+
+      for (i in seq_len(nrow(guild_fungi))) {
+        row_a <- guild_fungi[i, ]
+        plant_a_id <- row_a$plant_wfo_id
+        pathogens_a <- row_a$pathogenic_fungi[[1]]
+
+        if (is.null(pathogens_a) || length(pathogens_a) == 0) {
+          next
+        }
+
+        for (j in seq_len(nrow(guild_organisms))) {
+          row_b <- guild_organisms[j, ]
+          plant_b_id <- row_b$plant_wfo_id
+
+          if (plant_a_id == plant_b_id) next
+
+          fungivores_b <- row_b$fungivores_eats[[1]]
+
+          if (is.null(fungivores_b) || length(fungivores_b) == 0) {
+            next
+          }
+
+          # General fungivores eating pathogens (weight 0.2 per fungivore)
+          if (length(pathogens_a) > 0 && length(fungivores_b) > 0) {
+            pathogen_control_raw <- pathogen_control_raw + length(fungivores_b) * 0.2
+            mechanisms[[length(mechanisms) + 1]] <- list(
+              type = 'general_fungivore',
+              vulnerable_plant = plant_a_id,
+              n_pathogens = length(pathogens_a),
+              control_plant = plant_b_id,
+              n_fungivores = length(fungivores_b),
+              fungivores = head(fungivores_b, 5)
             )
           }
         }

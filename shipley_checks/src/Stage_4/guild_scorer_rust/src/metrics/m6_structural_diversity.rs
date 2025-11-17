@@ -75,7 +75,7 @@ pub fn calculate_m6(
             col("wfo_taxon_id"),
             col("wfo_scientific_name"),
             col("height_m"),
-            col("EIVEres-L_complete").alias("light_pref"),  // Light preference (original name in Parquet)
+            col("EIVEres-L_complete").alias("light_pref"),  // Use imputed complete values
             col("try_growth_form"),
         ])
         .collect()?;  // Execute: loads only 5 columns × 11,711 rows
@@ -111,9 +111,16 @@ pub fn calculate_m6(
         // Analyze all tall-short pairs (R lines 130-156)
         for i in 0..n - 1 {
             for j in i + 1..n {
-                let short_height = heights.get(i).unwrap_or(1.0);
-                let tall_height = heights.get(j).unwrap_or(1.0);
+                let short_height_opt = heights.get(i);
+                let tall_height_opt = heights.get(j);
 
+                // Skip pairs with NULL heights (match R behavior: !is.na(height_diff))
+                if short_height_opt.is_none() || tall_height_opt.is_none() {
+                    continue;
+                }
+
+                let short_height = short_height_opt.unwrap();
+                let tall_height = tall_height_opt.unwrap();
                 let height_diff = tall_height - short_height;
 
                 // Only significant height differences (>2m = different canopy layers)

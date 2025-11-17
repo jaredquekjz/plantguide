@@ -145,7 +145,16 @@ fn count_plants_with_beneficial_fungi(
             let mut has_beneficial = false;
             for col_name in columns {
                 if let Ok(col) = fungi_df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Phase 0-4 parquets use Arrow list columns
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if list_series.len() > 0 {
+                                has_beneficial = true;
+                                break;
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated strings (legacy format)
                         if let Some(fungi_str) = str_col.get(idx) {
                             if !fungi_str.is_empty() {
                                 has_beneficial = true;

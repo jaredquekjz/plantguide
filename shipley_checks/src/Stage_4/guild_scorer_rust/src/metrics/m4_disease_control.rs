@@ -170,26 +170,16 @@ pub fn calculate_m4(
             n_mechanisms += 1;
         }
 
-        // MECHANISM 3: Specific fungivorous animals (weight 1.0) - NEW!
-        // Check if other plants have fungivores that eat Plant A's pathogens
+        // MECHANISM 3: General fungivores eating pathogens (weight 0.2) - R parity
+        // All fungivores can consume pathogenic fungi (non-specific)
         for (plant_b_id, fungivores_b) in &plant_fungivores {
             if plant_a_id == plant_b_id || fungivores_b.is_empty() {
                 continue; // Skip self-comparison and plants without fungivores
             }
 
-            for pathogen in pathogens_a {
-                if let Some(known_antagonists) = pathogen_antagonists.get(pathogen) {
-                    let matched_fungivores = find_matches(fungivores_b, known_antagonists);
-                    if !matched_fungivores.is_empty() {
-                        pathogen_control_raw += matched_fungivores.len() as f64 * 1.0;
-                        n_mechanisms += 1;
-                        specific_fungivore_matches += 1;
-                        // Track matched pairs
-                        for fungivore in matched_fungivores {
-                            matched_fungivore_pairs.push((pathogen.clone(), fungivore));
-                        }
-                    }
-                }
+            // General fungivores (weight 0.2 per fungivore)
+            if !pathogens_a.is_empty() && !fungivores_b.is_empty() {
+                pathogen_control_raw += fungivores_b.len() as f64 * 0.2;
             }
         }
     }
@@ -247,7 +237,27 @@ fn extract_column_data(
     let plant_ids = df.column("plant_wfo_id")?.str()?;
 
     if let Ok(col) = df.column(col_name) {
-        if let Ok(str_col) = col.str() {
+        // Phase 0-4 parquets use Arrow list columns
+        if let Ok(list_col) = col.list() {
+            for idx in 0..df.height() {
+                if let Some(plant_id) = plant_ids.get(idx) {
+                    if let Some(list_series) = list_col.get_as_series(idx) {
+                        if let Ok(str_series) = list_series.str() {
+                            let fungi: Vec<String> = str_series
+                                .into_iter()
+                                .filter_map(|opt| opt.map(|s| s.to_string()))
+                                .filter(|s| !s.is_empty())
+                                .collect();
+
+                            if !fungi.is_empty() {
+                                map.insert(plant_id.to_string(), fungi);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if let Ok(str_col) = col.str() {
+            // Fallback: pipe-separated strings (legacy format)
             for idx in 0..df.height() {
                 if let (Some(plant_id), Some(fungi_str)) = (plant_ids.get(idx), str_col.get(idx)) {
                     let fungi: Vec<String> = fungi_str

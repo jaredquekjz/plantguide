@@ -1,9 +1,9 @@
 //! Test 3 guilds for parity verification
 //!
-//! Expected scores from R (near-perfect parity with Python):
+//! Expected scores from R (using EIVEres-L_complete for consistent imputed values):
 //! - Forest Garden: 90.467710
-//! - Competitive Clash: 55.441621
-//! - Stress-Tolerant: 45.442341
+//! - Competitive Clash: 53.011553
+//! - Stress-Tolerant: 42.380873
 
 use guild_scorer_rust::GuildScorer;
 use std::time::Instant;
@@ -29,7 +29,7 @@ fn main() {
                 "wfo-0000092746".to_string(),
                 "wfo-0000690499".to_string(),
             ],
-            89.744099,
+            90.467710,  // R value with EIVEres-L_complete
         ),
         (
             "Competitive Clash",
@@ -42,7 +42,7 @@ fn main() {
                 "wfo-0000841021".to_string(),
                 "wfo-0000394258".to_string(),
             ],
-            53.011553,
+            53.011553,  // R value with EIVEres-L_complete
         ),
         (
             "Stress-Tolerant",
@@ -55,7 +55,7 @@ fn main() {
                 "wfo-0000349035".to_string(),
                 "wfo-0000209726".to_string(),
             ],
-            42.380873,
+            42.380873,  // R value with EIVEres-L_complete
         ),
     ];
 
@@ -90,8 +90,8 @@ fn main() {
                 println!("  Difference: {:.6}", diff);
                 println!("  Status:    {}", status);
 
-                // Show individual metrics
-                println!("  Metrics:");
+                // Show individual metrics (normalized display scores)
+                println!("  Metrics (normalized):");
                 println!("    M1: Pest Independence     {:.1}", result.metrics[0]);
                 println!("    M2: Growth Compatibility  {:.1}", result.metrics[1]);
                 println!("    M3: Insect Control        {:.1}", result.metrics[2]);
@@ -99,6 +99,16 @@ fn main() {
                 println!("    M5: Beneficial Fungi      {:.1}", result.metrics[4]);
                 println!("    M6: Structural Diversity  {:.1}", result.metrics[5]);
                 println!("    M7: Pollinator Support    {:.1}", result.metrics[6]);
+
+                // Show raw scores for parity verification
+                println!("  Raw scores:");
+                println!("    M1: {:.6}", result.raw_scores[0]);
+                println!("    M2: {:.6}", result.raw_scores[1]);
+                println!("    M3: {:.6}", result.raw_scores[2]);
+                println!("    M4: {:.6}", result.raw_scores[3]);
+                println!("    M5: {:.6}", result.raw_scores[4]);
+                println!("    M6: {:.6}", result.raw_scores[5]);
+                println!("    M7: {:.6}", result.raw_scores[6]);
 
                 let guild_time = guild_start.elapsed();
                 guild_times.push(guild_time);
