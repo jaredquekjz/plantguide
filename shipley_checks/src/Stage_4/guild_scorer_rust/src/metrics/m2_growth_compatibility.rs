@@ -248,9 +248,20 @@ fn extract_plant_data(
     let light_prefs = df.column("light_pref")?.f64()?;
 
     for i in 0..n {
-        let c_val = csr_c.get(i).unwrap_or(50.0);
-        let s_val = csr_s.get(i).unwrap_or(50.0);
-        let r_val = csr_r.get(i).unwrap_or(50.0);
+        // Check for missing CSR values - if any are None, skip this guild
+        // Defaulting to 50.0 would distort conflict detection (Issue #NA-handling)
+        let c_val = csr_c.get(i).ok_or_else(|| {
+            anyhow::anyhow!("Plant {} has missing CSR_C data - cannot calculate M2",
+                           names.get(i).unwrap_or("Unknown"))
+        })?;
+        let s_val = csr_s.get(i).ok_or_else(|| {
+            anyhow::anyhow!("Plant {} has missing CSR_S data - cannot calculate M2",
+                           names.get(i).unwrap_or("Unknown"))
+        })?;
+        let r_val = csr_r.get(i).ok_or_else(|| {
+            anyhow::anyhow!("Plant {} has missing CSR_R data - cannot calculate M2",
+                           names.get(i).unwrap_or("Unknown"))
+        })?;
 
         plants.push(PlantRow {
             index: i,

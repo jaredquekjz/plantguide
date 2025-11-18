@@ -104,19 +104,19 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         )
 
       # Organisms - from Phase 0 output (Arrow lists, no conversion needed)
-      self$organisms_df <- read_parquet('shipley_checks/validation/organism_profiles_pure_rust.parquet')
+      self$organisms_df <- read_parquet('shipley_checks/phase0_output/organism_profiles_pure_rust.parquet')
 
       # Fungi - from Phase 0 output (Arrow lists, no conversion needed)
-      self$fungi_df <- read_parquet('shipley_checks/validation/fungal_guilds_pure_rust.parquet')
+      self$fungi_df <- read_parquet('shipley_checks/phase0_output/fungal_guilds_pure_rust.parquet')
 
       # Biocontrol lookup tables - from Phase 0 outputs (Arrow lists)
-      pred_df <- read_parquet('shipley_checks/validation/herbivore_predators_pure_rust.parquet')
+      pred_df <- read_parquet('shipley_checks/phase0_output/herbivore_predators_pure_rust.parquet')
       self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
 
-      para_df <- read_parquet('shipley_checks/validation/insect_fungal_parasites_pure_rust.parquet')
+      para_df <- read_parquet('shipley_checks/phase0_output/insect_fungal_parasites_pure_rust.parquet')
       self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
 
-      antag_df <- read_parquet('shipley_checks/validation/pathogen_antagonists_pure_rust.parquet')
+      antag_df <- read_parquet('shipley_checks/phase0_output/pathogen_antagonists_pure_rust.parquet')
       self$pathogen_antagonists <- setNames(antag_df$antagonists, antag_df$pathogen)
 
       cat(glue("  Plants: {format(nrow(self$plants_df), big.mark=',')}\n"))
@@ -323,6 +323,12 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
     #' M2: Growth Compatibility (CSR conflicts inverted)
     calculate_m2 = function(guild_plants) {
+      # Check for missing CSR data - if any plant has NA, cannot calculate M2
+      # Defaulting to 50 would distort conflict detection (Issue #NA-handling)
+      if (any(is.na(guild_plants$CSR_C) | is.na(guild_plants$CSR_S) | is.na(guild_plants$CSR_R))) {
+        stop("Guild contains plants with missing CSR data - cannot calculate M2")
+      }
+
       n_plants <- nrow(guild_plants)
       conflicts <- 0
       conflict_details <- list()
@@ -1063,6 +1069,11 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
     #' Unlike guild metrics (tier-stratified), CSR uses GLOBAL percentiles
     #' because conflicts are within-guild comparisons, not cross-guild
     csr_to_percentile = function(raw_value, strategy) {
+      # Handle NA values (matches Rust: unwrap_or(50.0))
+      if (is.na(raw_value)) {
+        return(50.0)
+      }
+
       # Check if we have CSR percentile calibration data
       if (is.null(self$csr_percentiles)) {
         # Fallback to fixed threshold behavior (matches Python lines 251-257)

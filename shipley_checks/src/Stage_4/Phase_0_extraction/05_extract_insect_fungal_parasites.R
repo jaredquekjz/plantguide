@@ -17,13 +17,13 @@ cat("===========================================================================
 con <- dbConnect(duckdb::duckdb())
 
 GLOBI_PATH <- "data/stage1/globi_interactions_original.parquet"
-PROFILES_PATH <- "shipley_checks/validation/organism_profiles_11711.parquet"
+PROFILES_PATH <- "shipley_checks/phase0_output/organism_profiles_11711.parquet"
 
 cat("Step 1: Extracting GLOBAL fungus → insect/mite parasitic relationships from GloBI...\n")
 cat("  (Scanning 20M+ rows - may take 2-3 minutes)\n\n")
 
 # Output 1: Global lookup (for myco spray recommendations)
-output_global <- "shipley_checks/validation/insect_fungal_parasites_11711.parquet"
+output_global <- "shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet"
 
 dbExecute(con, sprintf("
   COPY (
@@ -73,7 +73,7 @@ cat(sprintf("  - Found %d unique herbivores on our plants\n", nrow(our_herbivore
 duckdb::duckdb_register(con, "our_herbivores", our_herbivores)
 
 # Output 2: Filtered lookup (for Rust scorer)
-output_filtered <- "shipley_checks/validation/insect_fungal_parasites_11711_rust.parquet"
+output_filtered <- "shipley_checks/phase0_output/insect_fungal_parasites_11711_rust.parquet"
 
 # Filter global results to only our herbivores
 dbExecute(con, sprintf("

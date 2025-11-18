@@ -57,17 +57,20 @@ load_all_data <- function() {
     filter(!is.na(phylo_ev1))
 
   # Organisms (SHIPLEY_CHECKS DATASET) - Include predator columns for M3
-  organisms_path <- 'shipley_checks/stage4/plant_organism_profiles_11711.parquet'
+  # Phase 0-4 canonical output location (validation/, not legacy stage4/)
+  organisms_path <- 'shipley_checks/phase0_output/organism_profiles_11711.parquet'
   if (file.exists(organisms_path)) {
     organisms_df <- read_parquet(organisms_path) %>%
       select(plant_wfo_id, herbivores, flower_visitors, pollinators,
-             predators_hasHost, predators_interactsWith, predators_adjacentTo)
+             predators_hasHost, predators_interactsWith, predators_adjacentTo,
+             fungivores_eats)  # For M4 disease control mechanism 3
   } else {
     organisms_df <- tibble()
   }
 
   # Fungi (SHIPLEY_CHECKS DATASET) - Include all fungal guilds for M3/M4/M5
-  fungi_path <- 'shipley_checks/stage4/plant_fungal_guilds_hybrid_11711.parquet'
+  # Phase 0-4 canonical output location (validation/, not legacy stage4/)
+  fungi_path <- 'shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet'
   if (file.exists(fungi_path)) {
     fungi_df <- read_parquet(fungi_path) %>%
       select(plant_wfo_id, pathogenic_fungi, pathogenic_fungi_host_specific,
@@ -78,7 +81,8 @@ load_all_data <- function() {
   }
 
   # Load lookup tables for M3/M4
-  herbivore_predators_path <- 'shipley_checks/stage4/herbivore_predators_11711.parquet'
+  # Phase 0-4 canonical output location (validation/, not legacy stage4/)
+  herbivore_predators_path <- 'shipley_checks/phase0_output/herbivore_predators_11711.parquet'
   herbivore_predators <- if (file.exists(herbivore_predators_path)) {
     df <- read_parquet(herbivore_predators_path)
     setNames(df$predators, df$herbivore)
@@ -86,7 +90,7 @@ load_all_data <- function() {
     list()
   }
 
-  insect_parasites_path <- 'shipley_checks/stage4/insect_fungal_parasites_11711.parquet'
+  insect_parasites_path <- 'shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet'
   insect_parasites <- if (file.exists(insect_parasites_path)) {
     df <- read_parquet(insect_parasites_path)
     setNames(df$entomopathogenic_fungi, df$herbivore)
@@ -94,7 +98,7 @@ load_all_data <- function() {
     list()
   }
 
-  pathogen_antagonists_path <- 'shipley_checks/stage4/pathogen_antagonists_11711.parquet'
+  pathogen_antagonists_path <- 'shipley_checks/phase0_output/pathogen_antagonists_11711.parquet'
   pathogen_antagonists <- if (file.exists(pathogen_antagonists_path)) {
     df <- read_parquet(pathogen_antagonists_path)
     setNames(df$antagonists, df$pathogen)
@@ -221,7 +225,21 @@ compute_raw_scores <- function(guild_ids, guild_scorer, plants_df) {
   # Extract raw scores from each metric result
 
   m1_result <- guild_scorer$calculate_m1(guild_ids, guild_plants)
-  m2_result <- guild_scorer$calculate_m2(guild_plants)
+
+  # M2 (CSR compatibility) - skip if missing CSR data
+  m2_result <- tryCatch(
+    guild_scorer$calculate_m2(guild_plants),
+    error = function(e) {
+      if (grepl("missing CSR data", e$message)) {
+        return(NULL)  # Skip this guild for calibration
+      }
+      stop(e)  # Re-throw other errors
+    }
+  )
+  if (is.null(m2_result)) {
+    return(NULL)  # Skip guild with missing CSR data
+  }
+
   m3_result <- guild_scorer$calculate_m3(guild_ids, guild_plants)
   m4_result <- guild_scorer$calculate_m4(guild_ids, guild_plants)
   m5_result <- guild_scorer$calculate_m5(guild_ids, guild_plants)
@@ -320,8 +338,8 @@ calibrate_stage <- function(tier_plants, guild_scorer, plants_df,
 #' Main calibration function
 #'
 #' @param stage Which stage to run: '1', '2', or 'both'
-#' @param n_guilds Number of guilds per tier (default 20000)
-main <- function(stage = 'both', n_guilds = 20000) {
+#' @param n_guilds Number of guilds per tier (default 1000)
+main <- function(stage = 'both', n_guilds = 1000) {
   # Load data and initialize canonical GuildScorer
   data <- load_all_data()
   tier_plants <- organize_by_tier(data$plants_df)
@@ -361,7 +379,7 @@ main <- function(stage = 'both', n_guilds = 20000) {
 # Parse command line arguments
 args <- commandArgs(trailingOnly = TRUE)
 stage <- if (length(args) >= 1) args[1] else 'both'
-n_guilds <- if (length(args) >= 2) as.integer(args[2]) else 20000
+n_guilds <- if (length(args) >= 2) as.integer(args[2]) else 1000
 
 # Run calibration
 main(stage = stage, n_guilds = n_guilds)

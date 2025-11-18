@@ -1,6 +1,0 @@
-MD5:    615e520ce857cde72c1a6421f33342f2
-SHA256: 9f90c58c0268d96b274083e31e924ddb2fd188f88ded5f043d1d966282ac238b
-
-File: shipley_checks/validation/fungal_guilds_python_baseline.csv
-Size: 1,142,705 bytes
-Generated: 2025-11-10 08:33:06

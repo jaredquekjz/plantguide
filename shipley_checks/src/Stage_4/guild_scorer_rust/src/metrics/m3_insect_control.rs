@@ -177,17 +177,17 @@ pub fn calculate_m3(
     let predator_counts = build_predator_counts(&plant_predators, &known_predators)?;
     let entomo_fungi_counts = build_entomo_fungi_counts(&plant_fungi, &known_entomo_fungi)?;
 
-    // DEBUG: Log organism data for first 3 plants
-    eprintln!("\n=== M3 DEBUG: Guild organism data ===");
-    for (idx, (plant_id, herbivores)) in plant_organisms.iter().enumerate() {
-        if idx < 3 {
-            let predators = plant_predators.get(plant_id).map(|v| v.len()).unwrap_or(0);
-            let fungi = plant_fungi.get(plant_id).map(|v| v.len()).unwrap_or(0);
-            eprintln!("Plant {}: herbivores={}, predators={}, fungi={}",
-                plant_id, herbivores.len(), predators, fungi);
-        }
-    }
-    eprintln!("Total plants in guild: {}", n_plants);
+    // DEBUG: Log organism data for first 3 plants (DISABLED for performance)
+    // eprintln!("\n=== M3 DEBUG: Guild organism data ===");
+    // for (idx, (plant_id, herbivores)) in plant_organisms.iter().enumerate() {
+    //     if idx < 3 {
+    //         let predators = plant_predators.get(plant_id).map(|v| v.len()).unwrap_or(0);
+    //         let fungi = plant_fungi.get(plant_id).map(|v| v.len()).unwrap_or(0);
+    //         eprintln!("Plant {}: herbivores={}, predators={}, fungi={}",
+    //             plant_id, herbivores.len(), predators, fungi);
+    //     }
+    // }
+    // eprintln!("Total plants in guild: {}", n_plants);
 
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, herbivores_a) in &plant_organisms {
@@ -256,13 +256,13 @@ pub fn calculate_m3(
         0.0
     };
 
-    // DEBUG: Log final values
-    eprintln!("=== M3 DEBUG: Final calculation ===");
-    eprintln!("biocontrol_raw: {}", biocontrol_raw);
-    eprintln!("max_pairs: {}", max_pairs);
-    eprintln!("biocontrol_normalized: {}", biocontrol_normalized);
-    eprintln!("Mechanism counts: predator={}, fungi={}", specific_predator_matches, specific_fungi_matches);
-    eprintln!("===============================\n");
+    // DEBUG: Log final values (DISABLED for performance)
+    // eprintln!("=== M3 DEBUG: Final calculation ===");
+    // eprintln!("biocontrol_raw: {}", biocontrol_raw);
+    // eprintln!("max_pairs: {}", max_pairs);
+    // eprintln!("biocontrol_normalized: {}", biocontrol_normalized);
+    // eprintln!("Mechanism counts: predator={}, fungi={}", specific_predator_matches, specific_fungi_matches);
+    // eprintln!("===============================\n");
 
     // Percentile normalization
     let m3_norm = percentile_normalize(biocontrol_normalized, "p1", calibration, false)?;
@@ -400,12 +400,12 @@ fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
     let mut map: FxHashMap<String, Vec<String>> = FxHashMap::default();
     let plant_ids = df.column("plant_wfo_id")?.str()?;
 
-    // DEBUG: Check available columns
-    eprintln!("\n=== extract_predator_data: Available columns ===");
-    for col_name in df.get_column_names() {
-        eprintln!("  - {}", col_name);
-    }
-    eprintln!("================================================\n");
+    // DEBUG: Check available columns (DISABLED for performance)
+    // eprintln!("\n=== extract_predator_data: Available columns ===");
+    // for col_name in df.get_column_names() {
+    //     eprintln!("  - {}", col_name);
+    // }
+    // eprintln!("================================================\n");
 
     // DEBUG: Check first plant
     let debug_plant_id = "wfo-0000241769";

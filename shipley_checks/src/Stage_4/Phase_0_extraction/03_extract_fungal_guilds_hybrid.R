@@ -2,7 +2,7 @@
 # Phase 0 - Script 4: Extract Fungal Guilds (Hybrid FungalTraits + FunGuild)
 #
 # Purpose: Classify fungi into guilds using FungalTraits (primary) + FunGuild (fallback)
-# Output: shipley_checks/validation/fungal_guilds_hybrid_11711.parquet
+# Output: shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet
 # Baseline: shipley_checks/src/Stage_4/python_sql_verification/01_extract_fungal_guilds_hybrid_VERIFIED.py
 
 library(DBI)
@@ -225,7 +225,7 @@ cat(sprintf("  ✓ Processed %d plants\n\n", nrow(result)))
 
 # Write Rust-ready parquet using DuckDB COPY TO (full SQL embedded)
 cat("Writing Rust-ready parquet...\n")
-output_file <- "shipley_checks/validation/fungal_guilds_hybrid_11711.parquet"
+output_file <- "shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet"
 
 # Register result for COPY TO
 duckdb::duckdb_register(con, "result_temp", result)

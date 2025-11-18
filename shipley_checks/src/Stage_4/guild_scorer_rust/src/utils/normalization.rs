@@ -70,6 +70,27 @@ impl Calibration {
         Ok(calibration)
     }
 
+    /// Create dummy calibration for raw score computation (no normalization)
+    pub fn dummy() -> Self {
+        let dummy_tier = TierCalibration {
+            m1: None,
+            n4: None,
+            p1: None,
+            p2: None,
+            p3: None,
+            p5: None,
+            p6: None,
+        };
+
+        let mut tiers = HashMap::new();
+        tiers.insert("dummy".to_string(), dummy_tier);
+
+        Self {
+            tiers,
+            active_tier: "dummy".to_string(),
+        }
+    }
+
     /// Get tier calibration
     fn get_tier(&self) -> Result<&TierCalibration> {
         self.tiers.get(&self.active_tier)
@@ -110,8 +131,11 @@ pub fn percentile_normalize(
         _ => anyhow::bail!("Unknown metric: {}", metric_name),
     };
 
-    let params = params.as_ref()
-        .ok_or_else(|| anyhow::anyhow!("No calibration params for metric: {}", metric_name))?;
+    // For dummy calibration (calibration mode), return raw value without normalization
+    let params = match params.as_ref() {
+        Some(p) => p,
+        None => return Ok(raw_value),  // No calibration - return raw score
+    };
 
     let values = [
         params.p01, params.p05, params.p10, params.p20, params.p30,

@@ -2,7 +2,7 @@
 # Phase 0 - Script 1: Extract Known Herbivore Insects from Full GloBI
 #
 # Purpose: Build definitive lookup table of insects/arthropods that eat plants
-# Output: shipley_checks/validation/known_herbivore_insects.parquet
+# Output: shipley_checks/phase0_output/known_herbivore_insects.parquet
 # Baseline: src/Stage_4/03_extract_known_herbivores_from_full_globi.py
 
 library(DBI)
@@ -99,7 +99,7 @@ cat("\n")
 # Write Rust-ready parquet using DuckDB COPY TO (NO R metadata)
 cat("Writing Rust-ready parquet...\n")
 
-output_file <- "shipley_checks/validation/known_herbivore_insects.parquet"
+output_file <- "shipley_checks/phase0_output/known_herbivore_insects.parquet"
 dbExecute(con, sprintf("
   COPY (SELECT * FROM known_herbivores_temp ORDER BY plant_eating_records DESC)
   TO '%s'

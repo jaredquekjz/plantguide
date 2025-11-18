@@ -201,6 +201,10 @@ percentile_normalize <- function(raw_value,
 #' Python implementation: guild_scorer_v3.py lines 242-284 (_csr_to_percentile)
 #'
 csr_to_percentile <- function(raw_value, strategy, csr_percentiles = NULL) {
+  # Handle NA values (matches Rust: unwrap_or(50.0))
+  if (is.na(raw_value)) {
+    return(50.0)
+  }
 
   # Check if we have CSR percentile calibration data
   if (is.null(csr_percentiles)) {

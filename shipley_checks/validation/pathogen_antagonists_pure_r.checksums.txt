@@ -1,6 +1,0 @@
-MD5:    5fce9538e0b04cf6b969ccc5b8534afd
-SHA256: 4947aceaab87987fb3b66489037a7681e0222ce0d58a4c78bb53ba089a540c1e
-
-File: shipley_checks/validation/pathogen_antagonists_pure_r.csv
-Size: 160,666 bytes
-Generated: 2025-11-10 09:49:55

@@ -98,6 +98,14 @@ fn main() {
                 println!("  Sequential: {:.6}", result.overall_score);
                 println!("  Difference: {:.6}", diff);
                 println!("  Status:    {}", status);
+                println!("  Metrics:");
+                println!("    M1: Pest Independence     {:.1}", result.metrics[0]);
+                println!("    M2: Growth Compatibility  {:.1}", result.metrics[1]);
+                println!("    M3: Insect Control        {:.1}", result.metrics[2]);
+                println!("    M4: Disease Control       {:.1}", result.metrics[3]);
+                println!("    M5: Beneficial Fungi      {:.1}", result.metrics[4]);
+                println!("    M6: Structural Diversity  {:.1}", result.metrics[5]);
+                println!("    M7: Pollinator Support    {:.1}", result.metrics[6]);
 
                 let guild_time = guild_start.elapsed();
                 guild_times_seq.push(guild_time);

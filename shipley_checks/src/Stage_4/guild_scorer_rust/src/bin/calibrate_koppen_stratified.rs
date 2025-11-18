@@ -16,8 +16,9 @@ use serde_json::json;
 use std::time::Instant;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
-const GUILDS_PER_TIER: usize = 100;  // Debug mode - using 100 instead of 20K
+const GUILDS_PER_TIER: usize = 1000;  // Testing mode - using 1000 guilds per tier
 const PERCENTILES: [f64; 13] = [1.0, 5.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 95.0, 99.0];
 
 fn main() -> anyhow::Result<()> {
@@ -103,15 +104,27 @@ fn calibrate_2plant_pairs(
         let pairs = sample_random_pairs(tier_plants, GUILDS_PER_TIER);
         println!("  Sampled {} pairs in {:.2}s", pairs.len(), start_sampling.elapsed().as_secs_f64());
 
-        // Compute raw scores in parallel using canonical GuildScorer
+        // Compute raw scores in parallel using canonical GuildScorer (with progress tracking)
         let start_scoring = Instant::now();
+        let progress = AtomicUsize::new(0);
+        let total = pairs.len();
+
+        print!("  Scoring: 0/{}", total);
+        std::io::Write::flush(&mut std::io::stdout()).ok();
+
         let (raw_scores, errors): (Vec<_>, Vec<_>) = pairs.par_iter()
             .map(|pair| {
-                guild_scorer.compute_raw_scores(pair)
+                let result = guild_scorer.compute_raw_scores(pair);
+                let count = progress.fetch_add(1, Ordering::Relaxed) + 1;
+                if count % 1000 == 0 || count == total {
+                    print!("\r  Scoring: {}/{}", count, total);
+                    std::io::Write::flush(&mut std::io::stdout()).ok();
+                }
+                result
             })
             .partition(Result::is_ok);
         let raw_scores: Vec<_> = raw_scores.into_iter().map(Result::unwrap).collect();
-        println!("  Computed raw scores in {:.2}s", start_scoring.elapsed().as_secs_f64());
+        println!("\r  Computed raw scores in {:.2}s", start_scoring.elapsed().as_secs_f64());
         println!("  Valid scores: {}", raw_scores.len());
         if !errors.is_empty() {
             println!("  ⚠ Failed scores: {}", errors.len());
@@ -153,14 +166,26 @@ fn calibrate_7plant_guilds(
         let guilds = sample_random_guilds(tier_plants, 7, GUILDS_PER_TIER);
         println!("  Sampled {} guilds in {:.2}s", guilds.len(), start_sampling.elapsed().as_secs_f64());
 
-        // Compute raw scores in parallel using canonical GuildScorer
+        // Compute raw scores in parallel using canonical GuildScorer (with progress tracking)
         let start_scoring = Instant::now();
+        let progress = AtomicUsize::new(0);
+        let total = guilds.len();
+
+        print!("  Scoring: 0/{}", total);
+        std::io::Write::flush(&mut std::io::stdout()).ok();
+
         let raw_scores: Vec<_> = guilds.par_iter()
             .filter_map(|guild| {
-                guild_scorer.compute_raw_scores(guild).ok()
+                let result = guild_scorer.compute_raw_scores(guild).ok();
+                let count = progress.fetch_add(1, Ordering::Relaxed) + 1;
+                if count % 1000 == 0 || count == total {
+                    print!("\r  Scoring: {}/{}", count, total);
+                    std::io::Write::flush(&mut std::io::stdout()).ok();
+                }
+                result
             })
             .collect();
-        println!("  Computed raw scores in {:.2}s", start_scoring.elapsed().as_secs_f64());
+        println!("\r  Computed raw scores in {:.2}s", start_scoring.elapsed().as_secs_f64());
         println!("  Valid scores: {}", raw_scores.len());
 
         // Calculate percentiles for M1-M7

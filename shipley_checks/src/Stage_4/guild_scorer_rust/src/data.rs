@@ -148,7 +148,7 @@ impl GuildData {
         // PLANTS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let plants_path = "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711_rust.parquet";
+        let plants_path = "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet";
 
         // Eager DataFrame (backward compatibility - will be removed in Phase 7)
         // Loads ALL columns into memory: 11,711 rows × 782 cols = ~73 MB
@@ -167,7 +167,7 @@ impl GuildData {
         // ORGANISMS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let organisms_path = "shipley_checks/validation/organism_profiles_pure_rust.parquet";
+        let organisms_path = "shipley_checks/phase0_output/organism_profiles_11711.parquet";
 
         // Eager DataFrame: ~4.7 MB (will be removed after M3/M7 migration)
         let organisms = Self::load_organisms(organisms_path)?;
@@ -182,7 +182,7 @@ impl GuildData {
         // FUNGI: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let fungi_path = "shipley_checks/validation/fungal_guilds_pure_rust.parquet";
+        let fungi_path = "shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet";
 
         // Eager DataFrame: ~2.8 MB (will be removed after M3/M4/M5 migration)
         let fungi = Self::load_fungi(fungi_path)?;
@@ -202,19 +202,19 @@ impl GuildData {
         // No benefit from LazyFrame for this use case
 
         let herbivore_predators = Self::load_lookup_table(
-            "shipley_checks/validation/herbivore_predators_pure_rust.parquet",
+            "shipley_checks/phase0_output/herbivore_predators_11711.parquet",
             "herbivore",
             "predators",
         )?;
 
         let insect_parasites = Self::load_lookup_table(
-            "shipley_checks/validation/insect_fungal_parasites_pure_rust.parquet",
+            "shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet",
             "herbivore",
             "entomopathogenic_fungi",
         )?;
 
         let pathogen_antagonists = Self::load_lookup_table(
-            "shipley_checks/validation/pathogen_antagonists_pure_rust.parquet",
+            "shipley_checks/phase0_output/pathogen_antagonists_11711.parquet",
             "pathogen",
             "antagonists",
         )?;
@@ -301,11 +301,11 @@ impl GuildData {
             .with_context(|| "Failed to load fungi Parquet")
     }
 
-    /// Load lookup table: Key → Pipe-separated values
+    /// Load lookup table from Phase 0-4 parquets: Key → Arrow list of values
     ///
-    /// Example: herbivore_id → "predator1|predator2|predator3"
+    /// Example: herbivore_id → [predator1, predator2, predator3]
     ///
-    /// R reference: guild_scorer_v3_modular.R lines 162-172
+    /// Phase 0-4 parquets use Arrow list columns (not pipe-separated strings)
     fn load_lookup_table(
         path: &str,
         key_col: &str,
@@ -324,25 +324,95 @@ impl GuildData {
             .with_context(|| format!("Column '{}' is not string type", key_col))?;
 
         let value_series = df.column(value_col)
-            .with_context(|| format!("Column '{}' not found", value_col))?
-            .str()
-            .with_context(|| format!("Column '{}' is not string type", value_col))?;
+            .with_context(|| format!("Column '{}' not found", value_col))?;
+
+        // Phase 0-4 parquets have Arrow list columns
+        let value_list = value_series.list()
+            .with_context(|| format!("Column '{}' is not list type (Phase 0-4 format expected)", value_col))?;
 
         for idx in 0..df.height() {
-            if let (Some(key), Some(value_str)) = (key_series.get(idx), value_series.get(idx)) {
-                let values: Vec<String> = value_str
-                    .split('|')
-                    .filter(|s| !s.is_empty())
-                    .map(|s| s.to_string())
-                    .collect();
+            if let Some(key) = key_series.get(idx) {
+                if let Some(list_series) = value_list.get_as_series(idx) {
+                    let str_series = list_series.str()
+                        .with_context(|| format!("List items in '{}' are not strings", value_col))?;
 
-                if !values.is_empty() {
-                    map.insert(key.to_string(), values);
+                    let values: Vec<String> = str_series
+                        .into_iter()
+                        .filter_map(|opt_str| opt_str.map(|s| s.to_string()))
+                        .collect();
+
+                    if !values.is_empty() {
+                        map.insert(key.to_string(), values);
+                    }
                 }
             }
         }
 
         Ok(map)
+    }
+}
+
+/// Organizes plants by Köppen climate tier for stratified sampling
+pub struct ClimateOrganizer {
+    tier_plants: FxHashMap<String, Vec<String>>,
+}
+
+impl ClimateOrganizer {
+    /// Organize plants by Köppen tier from DataFrame
+    pub fn from_plants(plants_df: &DataFrame) -> Result<Self> {
+        let tier_columns = vec![
+            "tier_1_tropical",
+            "tier_2_mediterranean",
+            "tier_3_humid_temperate",
+            "tier_4_continental",
+            "tier_5_boreal_polar",
+            "tier_6_arid",
+        ];
+
+        let mut tier_plants: FxHashMap<String, Vec<String>> = FxHashMap::default();
+
+        let wfo_ids = plants_df
+            .column("wfo_taxon_id")
+            .with_context(|| "Column 'wfo_taxon_id' not found")?
+            .str()
+            .with_context(|| "Column 'wfo_taxon_id' is not string type")?;
+
+        for tier_col in &tier_columns {
+            let tier_mask = plants_df
+                .column(tier_col)
+                .with_context(|| format!("Column '{}' not found", tier_col))?
+                .bool()
+                .with_context(|| format!("Column '{}' is not boolean type", tier_col))?;
+
+            let mut tier_ids = Vec::new();
+            for (idx, is_member) in tier_mask.iter().enumerate() {
+                if is_member.unwrap_or(false) {
+                    if let Some(wfo_id) = wfo_ids.get(idx) {
+                        tier_ids.push(wfo_id.to_string());
+                    }
+                }
+            }
+
+            println!("  {:<30}: {:>5} plants", tier_col, tier_ids.len());
+            tier_plants.insert(tier_col.to_string(), tier_ids);
+        }
+
+        Ok(Self { tier_plants })
+    }
+
+    /// Get plant IDs for a specific tier
+    pub fn get_tier_plants(&self, tier_name: &str) -> &[String] {
+        self.tier_plants
+            .get(tier_name)
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
+    }
+
+    /// Get all tier names
+    pub fn tiers(&self) -> Vec<&str> {
+        let mut tiers: Vec<&str> = self.tier_plants.keys().map(|s| s.as_str()).collect();
+        tiers.sort();
+        tiers
     }
 }
 

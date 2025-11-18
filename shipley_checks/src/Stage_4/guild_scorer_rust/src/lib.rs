@@ -21,8 +21,8 @@ pub mod explanation;
 
 // Re-export commonly used types
 pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
-pub use data::GuildData;
-pub use metrics::*;
+pub use data::{GuildData, ClimateOrganizer};
+pub use metrics::{*, RawScores, compute_raw_scores_for_calibration};
 pub use scorer::{GuildScorer, GuildScore};
 pub use compact_tree::CompactTree;
 pub use explanation::{
