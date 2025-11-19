@@ -1628,7 +1628,748 @@
       }
     ]
   },
-  "pollinator_network_profile": null,
+  "pollinator_network_profile": {
+    "total_unique_pollinators": 240,
+    "shared_pollinators": [
+      {
+        "pollinator_name": "Apis mellifera",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "HoneyBees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Bombus pratorum",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Bombus sylvestris",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Andrena cineraria",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus hypnorum",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus lucorum",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus pascuorum",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Andrena scotica",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Apoidea",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0000515004",
+          "wfo-0001009785"
+        ],
+        "category": "OtherPollinators",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Bombus jonellus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Bombus lapidarius",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Eristalis",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Musca autumnalis",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Platycheirus albimanus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Volucella",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Anaspis frontalis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001009785"
+        ],
+        "category": "Beetles",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena barbilabris",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena bucephala",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena clarkella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena dorsata",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena flavipes",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena haemorrhoa",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena nigroaenea",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena nitida",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena synadelpha",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Andrena trimmerana",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Bombus sp.",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Bombus vestalis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Bumblebees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Calliphora vicina",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Chrysocharis pentheus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Wasps",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Dilophus febrilis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Diptera",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001009785"
+        ],
+        "category": "OtherPollinators",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Episyrphus balteatus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001009785"
+        ],
+        "category": "Hoverflies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Halictus tumulorum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000993770",
+          "wfo-0001009785"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Lasioglossum fulvicorne",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Melanostoma scalare",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001007437"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Oedemera nobilis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Beetles",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Pegoplata aestiva",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Phaonia angelicae",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Platycheirus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Platycheirus peltatus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Pnigalio soemius",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "OtherPollinators",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Scathophaga stercoraria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001007437",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Sympiesis sericeicornis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0001009785"
+        ],
+        "category": "Wasps",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Thricops semicinereus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0001009785"
+        ],
+        "category": "Flies",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Wind",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000439308",
+          "wfo-0000515004"
+        ],
+        "category": "OtherPollinators",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "top_pollinators": [
+      {
+        "pollinator_name": "Apis mellifera",
+        "plant_count": 5,
+        "category": "HoneyBees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Bombus pratorum",
+        "plant_count": 5,
+        "category": "Bumblebees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Bombus sylvestris",
+        "plant_count": 5,
+        "category": "Bumblebees",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "pollinator_name": "Andrena cineraria",
+        "plant_count": 4,
+        "category": "SolitaryBees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus hypnorum",
+        "plant_count": 4,
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus lucorum",
+        "plant_count": 4,
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Bombus pascuorum",
+        "plant_count": 4,
+        "category": "Bumblebees",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "pollinator_name": "Andrena scotica",
+        "plant_count": 3,
+        "category": "SolitaryBees",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Apoidea",
+        "plant_count": 3,
+        "category": "OtherPollinators",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "pollinator_name": "Bombus jonellus",
+        "plant_count": 3,
+        "category": "Bumblebees",
+        "network_contribution": 0.42857142857142855
+      }
+    ],
+    "pollinators_by_category": {
+      "honey_bees_count": 2,
+      "bumblebees_count": 13,
+      "solitary_bees_count": 49,
+      "hover_flies_count": 3,
+      "muscid_flies_count": 70,
+      "mosquitoes_count": 0,
+      "other_flies_count": 0,
+      "butterflies_count": 4,
+      "moths_count": 15,
+      "pollen_beetles_count": 20,
+      "other_beetles_count": 0,
+      "wasps_count": 26,
+      "birds_count": 0,
+      "bats_count": 0,
+      "other_count": 35,
+      "top_per_category": [
+        {
+          "pollinator_name": "Bombus pratorum",
+          "plant_count": 5,
+          "category": "Bumblebees",
+          "network_contribution": 0.7142857142857143
+        },
+        {
+          "pollinator_name": "Bombus sylvestris",
+          "plant_count": 5,
+          "category": "Bumblebees",
+          "network_contribution": 0.7142857142857143
+        },
+        {
+          "pollinator_name": "Apoidea",
+          "plant_count": 3,
+          "category": "OtherPollinators",
+          "network_contribution": 0.42857142857142855
+        },
+        {
+          "pollinator_name": "Apis mellifera",
+          "plant_count": 5,
+          "category": "HoneyBees",
+          "network_contribution": 0.7142857142857143
+        },
+        {
+          "pollinator_name": "Andrena cineraria",
+          "plant_count": 4,
+          "category": "SolitaryBees",
+          "network_contribution": 0.5714285714285714
+        },
+        {
+          "pollinator_name": "Andrena scotica",
+          "plant_count": 3,
+          "category": "SolitaryBees",
+          "network_contribution": 0.42857142857142855
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Crataegus monogyna",
+        "pollinator_count": 108,
+        "honey_bees_count": 1,
+        "bumblebees_count": 9,
+        "solitary_bees_count": 30,
+        "hover_flies_count": 1,
+        "muscid_flies_count": 35,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 2,
+        "moths_count": 4,
+        "pollen_beetles_count": 11,
+        "other_beetles_count": 0,
+        "wasps_count": 4,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 11
+      },
+      {
+        "plant_name": "Prunus spinosa",
+        "pollinator_count": 69,
+        "honey_bees_count": 1,
+        "bumblebees_count": 11,
+        "solitary_bees_count": 15,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 22,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 1,
+        "moths_count": 4,
+        "pollen_beetles_count": 2,
+        "other_beetles_count": 0,
+        "wasps_count": 9,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 4
+      },
+      {
+        "plant_name": "Rosa canina",
+        "pollinator_count": 40,
+        "honey_bees_count": 1,
+        "bumblebees_count": 8,
+        "solitary_bees_count": 3,
+        "hover_flies_count": 1,
+        "muscid_flies_count": 15,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 2,
+        "pollen_beetles_count": 6,
+        "other_beetles_count": 0,
+        "wasps_count": 2,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 2
+      },
+      {
+        "plant_name": "Acer saccharinum",
+        "pollinator_count": 37,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 9,
+        "hover_flies_count": 1,
+        "muscid_flies_count": 5,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 1,
+        "pollen_beetles_count": 3,
+        "other_beetles_count": 0,
+        "wasps_count": 3,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 15
+      },
+      {
+        "plant_name": "Sambucus nigra",
+        "pollinator_count": 28,
+        "honey_bees_count": 2,
+        "bumblebees_count": 5,
+        "solitary_bees_count": 4,
+        "hover_flies_count": 1,
+        "muscid_flies_count": 4,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 1,
+        "moths_count": 4,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 2,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 5
+      },
+      {
+        "plant_name": "Fragaria vesca",
+        "pollinator_count": 15,
+        "honey_bees_count": 1,
+        "bumblebees_count": 3,
+        "solitary_bees_count": 5,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 6,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Quercus robur",
+        "pollinator_count": 14,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 8,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 6
+      }
+    ]
+  },
   "biocontrol_network_profile": {
     "total_unique_predators": 34,
     "total_unique_entomo_fungi": 2,

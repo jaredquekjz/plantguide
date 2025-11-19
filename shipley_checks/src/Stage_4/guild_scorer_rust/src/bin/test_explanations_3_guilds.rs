@@ -52,14 +52,27 @@ fn main() -> anyhow::Result<()> {
             42.380873,
         ),
         (
+            "Entomopathogen Powerhouse",
+            vec![
+                "wfo-0000910097".to_string(), // Coffea arabica - Beauveria bassiana → Hypothenemus hampei, Coccus hesperidum
+                "wfo-0000421791".to_string(), // Vitis vinifera - Beauveria bassiana → Coccus hesperidum
+                "wfo-0000861498".to_string(), // Dactylis glomerata - 8 Beauveria/Metarhizium species (highest count)
+                "wfo-0001007437".to_string(), // Prunus spinosa (Blackthorn) - 81 herbivores for matching
+                "wfo-0000292858".to_string(), // Quercus robur (English Oak) - Biodiversity hub
+                "wfo-0001005999".to_string(), // Rosa canina (Dog rose) - 9 herbivores
+                "wfo-0000993770".to_string(), // Fragaria vesca (Wild strawberry) - 7 herbivores
+            ],
+            0.0, // Unknown score
+        ),
+        (
             "Biocontrol Powerhouse",
             vec![
                 "wfo-0001009785".to_string(), // Crataegus monogyna (Hawthorn)
                 "wfo-0000439308".to_string(), // Sambucus nigra (Elder)
                 "wfo-0001007437".to_string(), // Prunus spinosa (Blackthorn)
                 "wfo-0001005999".to_string(), // Rosa canina (Dog rose)
-                "wfo-0000515004".to_string(), // Acer saccharinum (Silver Maple) - Fungivore host
-                "wfo-0000292858".to_string(), // Quercus robur (English Oak) - Biodiversity hub
+                "wfo-0000515004".to_string(), // Acer saccharinum (Silver Maple)
+                "wfo-0000292858".to_string(), // Quercus robur (English Oak)
                 "wfo-0000993770".to_string(), // Fragaria vesca (Wild strawberry)
             ],
             0.0, // Unknown score

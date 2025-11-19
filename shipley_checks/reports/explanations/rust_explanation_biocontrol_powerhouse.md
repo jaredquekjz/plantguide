@@ -156,6 +156,56 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 *Evidence:* Pollinator support score: 100.0/100
 
+#### Pollinator Network Profile
+
+*Qualitative information about pollinator networks (100% of M7 scoring)*
+
+**Total unique pollinator species:** 240
+
+**Pollinator Community Composition:**
+
+- 2 Honey Bees - 0.8%
+- 13 Bumblebees - 5.4%
+- 49 Solitary Bees - 20.4%
+- 3 Hover Flies - 1.2%
+- 70 Muscid Flies - 29.2%
+- 4 Butterflies - 1.7%
+- 15 Moths - 6.2%
+- 20 Pollen Beetles - 8.3%
+- 26 Wasps - 10.8%
+- 35 Other - 14.6%
+
+**Shared Pollinators (visiting ≥2 plants):**
+
+46 pollinator species are shared across multiple plants in this guild.
+
+**Top Network Pollinators (by connectivity):**
+
+| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |
+|------|-------------------|----------|------------------|----------------------|
+| 1 | Apis mellifera | Honey Bees | 5 plants | 71.4% |
+| 2 | Bombus pratorum | Bumblebees | 5 plants | 71.4% |
+| 3 | Bombus sylvestris | Bumblebees | 5 plants | 71.4% |
+| 4 | Andrena cineraria | Solitary Bees | 4 plants | 57.1% |
+| 5 | Bombus hypnorum | Bumblebees | 4 plants | 57.1% |
+| 6 | Bombus lucorum | Bumblebees | 4 plants | 57.1% |
+| 7 | Bombus pascuorum | Bumblebees | 4 plants | 57.1% |
+| 8 | Andrena scotica | Solitary Bees | 3 plants | 42.9% |
+| 9 | Apoidea | Other Pollinators | 3 plants | 42.9% |
+| 10 | Bombus jonellus | Bumblebees | 3 plants | 42.9% |
+
+**Network Hubs (most connected plants):**
+
+| Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
+|-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
+| Crataegus monogyna | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
+| Prunus spinosa | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Acer saccharinum | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
+| Sambucus nigra | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
+| Fragaria vesca | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+
 ## Warnings
 
 ⚡ **Soil pH incompatibility detected**
