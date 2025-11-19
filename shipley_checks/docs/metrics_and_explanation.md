@@ -38,6 +38,7 @@ The scoring engine is optimized for performance using `Polars` LazyFrames with p
         - **Specific Fungi:** Weight 1.0 (Specific fungal parasite).
         - **General Fungi:** Weight 0.2 (Generalist entomopathogens).
     3.  **Scoring:** Sum of weighted links normalized by guild size.
+    *Note: All organism matching is case-insensitive normalized to ensure robust detection.*
 
 ### M4: Disease Suppression
 **Goal:** Control fungal pathogens via mycoparasites and fungivores.
