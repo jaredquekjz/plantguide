@@ -142,17 +142,31 @@ pub fn calculate_m4(
                 continue; // Skip self-comparison and plants without mycoparasites
             }
 
-            // MECHANISM 1: Specific antagonist matches (weight 1.0) - RARELY FIRES
+            // MECHANISM 1: Specific antagonist matches (weight 1.0)
             for pathogen in pathogens_a {
                 if let Some(known_antagonists) = pathogen_antagonists.get(pathogen) {
+                    // Check for fungal antagonists (mycoparasites)
                     let matched_ants = find_matches(mycoparasites_b, known_antagonists);
                     if !matched_ants.is_empty() {
                         pathogen_control_raw += matched_ants.len() as f64 * 1.0;
                         n_mechanisms += 1;
                         specific_antagonist_matches += 1;
-                        // Track matched pairs
                         for antagonist in matched_ants {
                             matched_antagonist_pairs.push((pathogen.clone(), antagonist));
+                        }
+                    }
+                    
+                    // Check for animal antagonists (fungivores)
+                    // "Specific Fungivore" mechanism
+                    if let Some(fungivores_b) = plant_fungivores.get(plant_b_id) {
+                        let matched_fungivores = find_matches(fungivores_b, known_antagonists);
+                        if !matched_fungivores.is_empty() {
+                            pathogen_control_raw += matched_fungivores.len() as f64 * 1.0;
+                            n_mechanisms += 1;
+                            specific_fungivore_matches += 1;
+                            for fungivore in matched_fungivores {
+                                matched_fungivore_pairs.push((pathogen.clone(), fungivore));
+                            }
                         }
                     }
                 }
@@ -164,16 +178,16 @@ pub fn calculate_m4(
             n_mechanisms += 1;
         }
 
-        // MECHANISM 3: General fungivores eating pathogens (weight 1.0) - R parity
+        // MECHANISM 3: General fungivores eating pathogens (weight 0.2) - R parity
         // All fungivores can consume pathogenic fungi (non-specific)
         for (plant_b_id, fungivores_b) in &plant_fungivores {
             if plant_a_id == plant_b_id || fungivores_b.is_empty() {
                 continue; // Skip self-comparison and plants without fungivores
             }
 
-            // General fungivores (weight 1.0 per fungivore)
+            // General fungivores (weight 0.2 per fungivore)
             if !pathogens_a.is_empty() && !fungivores_b.is_empty() {
-                pathogen_control_raw += fungivores_b.len() as f64 * 1.0;
+                pathogen_control_raw += fungivores_b.len() as f64 * 0.2;
             }
         }
     }
