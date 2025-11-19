@@ -426,7 +426,17 @@ impl MarkdownFormatter {
 
     /// Format biocontrol network profile section
     fn format_biocontrol_profile(md: &mut String, biocontrol_profile: &BiocontrolNetworkProfile) {
-        md.push_str("#### Verified Biocontrol Relationships\n\n");
+        md.push_str("#### Biocontrol Network Profile\n\n");
+        md.push_str("*Qualitative information about pest control (influences M3 scoring)*\n\n");
+
+        md.push_str("**Summary:**\n");
+        md.push_str(&format!("- {} unique predator species\n", biocontrol_profile.total_unique_predators));
+        md.push_str(&format!("- {} unique entomopathogenic fungi species\n\n", biocontrol_profile.total_unique_entomo_fungi));
+
+        md.push_str("**Mechanism Summary:**\n");
+        let total_specific = biocontrol_profile.specific_predator_matches + biocontrol_profile.specific_fungi_matches;
+        md.push_str(&format!("- {} Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)\n", total_specific));
+        md.push_str(&format!("- {} General entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)\n\n", biocontrol_profile.general_entomo_fungi_count));
 
         // Show matched predator pairs
         if !biocontrol_profile.matched_predator_pairs.is_empty() {
@@ -452,6 +462,10 @@ impl MarkdownFormatter {
                 ));
             }
             md.push_str("\n");
+        } else if biocontrol_profile.matched_fungi_pairs.is_empty() && biocontrol_profile.general_entomo_fungi_count > 0 {
+             // Only show this explanation if NO specific matches of ANY kind found, but general fungi exist
+             md.push_str("**No specific herbivore-predator matches found.**\n");
+             md.push_str("The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.\n\n");
         }
 
         // Show matched fungi pairs
@@ -563,12 +577,14 @@ impl MarkdownFormatter {
         // Show matched fungivore pairs (Animals)
         if !pathogen_profile.matched_fungivore_pairs.is_empty() {
             md.push_str("**Matched Pathogen → Fungivore Pairs:**\n\n");
-            md.push_str("| Pathogen | Known Antagonist (Animal Fungivore) | Match Type |\n");
-            md.push_str("|----------|--------------------------------------|------------|\n");
-            for (pathogen, fungivore) in pathogen_profile.matched_fungivore_pairs.iter().take(20) {
+            md.push_str("| Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |\n");
+            md.push_str("|----------|--------------------------------------|----------|------------|\n");
+            for pair in pathogen_profile.matched_fungivore_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | Specific (weight 1.0) |\n",
-                    pathogen, fungivore
+                    "| {} | {} | {} | Specific (weight 1.0) |\n",
+                    pair.pathogen, 
+                    pair.fungivore,
+                    pair.fungivore_category.display_name()
                 ));
             }
             if pathogen_profile.matched_fungivore_pairs.len() > 20 {

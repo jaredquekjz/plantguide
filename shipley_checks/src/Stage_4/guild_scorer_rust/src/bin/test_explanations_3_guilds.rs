@@ -51,6 +51,19 @@ fn main() -> anyhow::Result<()> {
             ],
             42.380873,
         ),
+        (
+            "Biocontrol Powerhouse",
+            vec![
+                "wfo-0001009785".to_string(), // Crataegus monogyna (Hawthorn)
+                "wfo-0000439308".to_string(), // Sambucus nigra (Elder)
+                "wfo-0001007437".to_string(), // Prunus spinosa (Blackthorn)
+                "wfo-0001005999".to_string(), // Rosa canina (Dog rose)
+                "wfo-0000515004".to_string(), // Acer saccharinum (Silver Maple) - Fungivore host
+                "wfo-0000292858".to_string(), // Quercus robur (English Oak) - Biodiversity hub
+                "wfo-0000993770".to_string(), // Fragaria vesca (Wild strawberry)
+            ],
+            0.0, // Unknown score
+        ),
     ];
 
     let start_time = Instant::now();
@@ -79,6 +92,7 @@ fn main() -> anyhow::Result<()> {
             &m5_result,
             &fungi_df,
             &m7_result,
+            &scorer.data().organism_categories,
         )?;
 
         let generation_time = guild_start.elapsed() - scoring_time;
@@ -152,8 +166,8 @@ fn main() -> anyhow::Result<()> {
     println!("\n======================================================================");
     println!("SUMMARY");
     println!("======================================================================");
-    println!("Total time (3 guilds × 3 formats): {:.3} ms", total_time.as_secs_f64() * 1000.0);
-    println!("Average per guild: {:.3} ms", total_time.as_secs_f64() * 1000.0 / 3.0);
+    println!("Total time (4 guilds × 3 formats): {:.3} ms", total_time.as_secs_f64() * 1000.0);
+    println!("Average per guild: {:.3} ms", total_time.as_secs_f64() * 1000.0 / 4.0);
     println!("\n✅ All explanations generated successfully!");
     println!("======================================================================\n");
 

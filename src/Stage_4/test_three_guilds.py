@@ -202,10 +202,10 @@ def main():
     guild4_ids = [
         'wfo-0001009785',  # Crataegus monogyna (Hawthorn)
         'wfo-0000439308',  # Sambucus nigra (Elder)
-        'wfo-0000996072',  # Prunus spinosa (Blackthorn)
-        'wfo-0001001226',  # Rosa canina (Dog rose)
-        'wfo-0000408637',  # Taxus baccata (Yew)
-        'wfo-0000815984',  # Ligustrum vulgare (Privet)
+        'wfo-0001007437',  # Prunus spinosa (Blackthorn)
+        'wfo-0001005999',  # Rosa canina (Dog rose)
+        'wfo-0000515004',  # Acer saccharinum (Silver Maple) - Fungivore host
+        'wfo-0000292858',  # Quercus robur (English Oak) - Biodiversity hub
         'wfo-0000993770'   # Fragaria vesca (Wild strawberry)
     ]
 
@@ -214,7 +214,7 @@ def main():
         "Guild 4: Biocontrol Powerhouse",
         guild4_ids,
         "HIGH score (60-80)",
-        "Hedgerow/woodland edge plants selected for biocontrol potential. Should score high on P1 (insect control) with fruit-eating birds and predatory insects."
+        "Hedgerow/woodland edge plants selected for biocontrol. Includes fungivore hosts (Maple/Oak) and fruit-bearing shrubs to maximize M3/M4 pest suppression."
     )
 
     # ============================================
