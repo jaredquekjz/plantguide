@@ -84,6 +84,8 @@ pub fn calculate_m7(
 
     // Score with QUADRATIC weighting
     // Reflects non-linear benefits of high-overlap pollinator communities
+    // Formula: Sum of (Number of plants visited by Pollinator X / Total Plants)^2 for all Pollinator Xs
+    // "overlap_ratio" = Fraction of guild plants that share Pollinator X
     let mut p7_raw = 0.0;
     for (_org_name, count) in &shared_pollinators {
         if *count >= 2 {

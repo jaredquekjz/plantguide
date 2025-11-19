@@ -158,22 +158,22 @@ pub fn calculate_m4(
                 }
             }
 
-            // MECHANISM 2: General mycoparasites (weight 1.0) - PRIMARY MECHANISM
+            // MECHANISM 2: General mycoparasites (weight 0.5) - PRIMARY MECHANISM
             // If plant A has any pathogens AND plant B has any mycoparasites
-            pathogen_control_raw += mycoparasites_b.len() as f64 * 1.0;
+            pathogen_control_raw += mycoparasites_b.len() as f64 * 0.5;
             n_mechanisms += 1;
         }
 
-        // MECHANISM 3: General fungivores eating pathogens (weight 0.2) - R parity
+        // MECHANISM 3: General fungivores eating pathogens (weight 1.0) - R parity
         // All fungivores can consume pathogenic fungi (non-specific)
         for (plant_b_id, fungivores_b) in &plant_fungivores {
             if plant_a_id == plant_b_id || fungivores_b.is_empty() {
                 continue; // Skip self-comparison and plants without fungivores
             }
 
-            // General fungivores (weight 0.2 per fungivore)
+            // General fungivores (weight 1.0 per fungivore)
             if !pathogens_a.is_empty() && !fungivores_b.is_empty() {
-                pathogen_control_raw += fungivores_b.len() as f64 * 0.2;
+                pathogen_control_raw += fungivores_b.len() as f64 * 1.0;
             }
         }
     }
