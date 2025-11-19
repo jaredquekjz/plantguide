@@ -574,6 +574,10 @@ impl MarkdownFormatter {
                 ));
             }
             md.push_str("\n");
+        } else if pathogen_profile.matched_fungivore_pairs.is_empty() && pathogen_profile.general_mycoparasite_count > 0 {
+             // Only show this explanation if NO specific matches of ANY kind found, but general mycoparasites exist
+             md.push_str("**No specific pathogen-antagonist matches found.**\n");
+             md.push_str("The disease suppression score is driven by the presence of **general mycoparasitic fungi** (e.g., Trichoderma) which provide broad-spectrum protection against fungal pathogens.\n\n");
         }
 
         // Show matched fungivore pairs (Animals)
