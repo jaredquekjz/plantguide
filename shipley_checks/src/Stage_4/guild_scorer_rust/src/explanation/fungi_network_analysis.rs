@@ -250,7 +250,23 @@ fn categorize_fungi(
 
             for (col_name, category) in &columns {
                 if let Ok(col) = fungi_df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Handle list column (Phase 0-4 format)
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                for org_opt in str_series.into_iter() {
+                                    if let Some(fungus) = org_opt {
+                                        if !fungus.trim().is_empty() {
+                                            category_map
+                                                .entry(fungus.trim().to_string())
+                                                .or_insert(category.clone());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated string (legacy format)
                         if let Some(fungi_str) = str_col.get(idx) {
                             if !fungi_str.is_empty() {
                                 for fungus in fungi_str.split('|').filter(|s| !s.trim().is_empty()) {
@@ -296,7 +312,29 @@ fn build_fungus_to_plants_mapping(
 
             for col_name in &columns {
                 if let Ok(col) = fungi_df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Handle list column (Phase 0-4 format)
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                for org_opt in str_series.into_iter() {
+                                    if let Some(fungus) = org_opt {
+                                        let fungus = fungus.trim();
+                                        if !fungus.is_empty() {
+                                            if let Some(category) = category_map.get(fungus) {
+                                                let entry = fungus_to_plants
+                                                    .entry(fungus.to_string())
+                                                    .or_insert((Vec::new(), category.clone()));
+                                                if !entry.0.contains(&plant_id.to_string()) {
+                                                    entry.0.push(plant_id.to_string());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated string (legacy format)
                         if let Some(fungi_str) = str_col.get(idx) {
                             if !fungi_str.is_empty() {
                                 for fungus in fungi_str.split('|').filter(|s| !s.trim().is_empty()) {
@@ -367,7 +405,30 @@ fn build_plant_fungal_hubs(
 
             for col_name in &columns {
                 if let Ok(col) = fungi_df.column(col_name) {
-                    if let Ok(str_col) = col.str() {
+                    // Handle list column (Phase 0-4 format)
+                    if let Ok(list_col) = col.list() {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                for org_opt in str_series.into_iter() {
+                                    if let Some(fungus) = org_opt {
+                                        let fungus = fungus.trim();
+                                        if !fungus.is_empty() {
+                                            entry.0 += 1; // total
+                                            if let Some(category) = category_map.get(fungus) {
+                                                match category {
+                                                    FungusCategory::AMF => entry.1 += 1,
+                                                    FungusCategory::EMF => entry.2 += 1,
+                                                    FungusCategory::Endophytic => entry.3 += 1,
+                                                    FungusCategory::Saprotrophic => entry.4 += 1,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else if let Ok(str_col) = col.str() {
+                        // Fallback: pipe-separated string (legacy format)
                         if let Some(fungi_str) = str_col.get(idx) {
                             if !fungi_str.is_empty() {
                                 for fungus in fungi_str.split('|').filter(|s| !s.trim().is_empty()) {

@@ -36,8 +36,8 @@ struct TierCalibration {
 /// Percentile values for a single metric
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct PercentileParams {
-    p01: f64,
-    p05: f64,
+    p1: f64,
+    p5: f64,
     p10: f64,
     p20: f64,
     p30: f64,
@@ -138,7 +138,7 @@ pub fn percentile_normalize(
     };
 
     let values = [
-        params.p01, params.p05, params.p10, params.p20, params.p30,
+        params.p1, params.p5, params.p10, params.p20, params.p30,
         params.p40, params.p50, params.p60, params.p70, params.p80,
         params.p90, params.p95, params.p99,
     ];

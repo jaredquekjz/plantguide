@@ -32,9 +32,17 @@ impl MarkdownFormatter {
         if !explanation.benefits.is_empty() {
             md.push_str("## Benefits\n\n");
             for benefit in &explanation.benefits {
+                // Find score
+                let mut score = 0.0;
+                if let Some(metric) = explanation.metrics_display.universal.iter().find(|m| m.code == benefit.metric_code) {
+                    score = metric.score;
+                } else if let Some(metric) = explanation.metrics_display.bonus.iter().find(|m| m.code == benefit.metric_code) {
+                    score = metric.score;
+                }
+
                 md.push_str(&format!(
-                    "### {} [{}]\n\n",
-                    benefit.title, benefit.metric_code
+                    "### {} [{} - {:.1}/100]\n\n",
+                    benefit.title, benefit.metric_code, score
                 ));
                 md.push_str(&format!("{}  \n", benefit.message));
                 md.push_str(&format!("{}  \n\n", benefit.detail));

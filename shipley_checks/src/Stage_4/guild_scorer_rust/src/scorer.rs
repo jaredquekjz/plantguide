@@ -725,18 +725,18 @@ impl GuildScorer {
         };
 
         // Join herbivores column from organisms DataFrame for pest profile analysis
-        // Note: organisms DataFrame uses "wfo_scientific_name", not "wfo_taxon_name"
+        // Note: organisms DataFrame uses "plant_wfo_id" (Phase 0 schema)
         let organisms_subset = self.data.organisms
             .clone()
             .lazy()
-            .select(&[col("wfo_scientific_name"), col("herbivores")])
-            .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
+            .select(&[col("plant_wfo_id"), col("herbivores")])
+            .with_column(col("plant_wfo_id").alias("wfo_taxon_id"))
             .collect()?;
         let guild_plants_with_organisms = guild_plants
             .join(
                 &organisms_subset,
-                ["wfo_taxon_name"],
-                ["wfo_taxon_name"],
+                ["wfo_taxon_id"],
+                ["wfo_taxon_id"],
                 JoinArgs::new(JoinType::Left),
                 None,  // JoinTypeOptions added in Polars 0.46
             )?;
