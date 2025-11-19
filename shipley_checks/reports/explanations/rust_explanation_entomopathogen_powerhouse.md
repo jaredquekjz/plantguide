@@ -167,6 +167,56 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 *Evidence:* Pollinator support score: 100.0/100
 
+#### Pollinator Network Profile
+
+*Qualitative information about pollinator networks (100% of M7 scoring)*
+
+**Total unique pollinator species:** 309
+
+**Pollinator Community Composition:**
+
+- 9 Honey Bees - 2.9%
+- 15 Bumblebees - 4.9%
+- 86 Solitary Bees - 27.8%
+- 1 Hover Flies - 0.3%
+- 63 Muscid Flies - 20.4%
+- 1 Butterflies - 0.3%
+- 6 Moths - 1.9%
+- 14 Pollen Beetles - 4.5%
+- 28 Wasps - 9.1%
+- 81 Other - 26.2%
+
+**Shared Pollinators (visiting ≥2 plants):**
+
+22 pollinator species are shared across multiple plants in this guild.
+
+**Top Network Pollinators (by connectivity):**
+
+| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |
+|------|-------------------|----------|------------------|----------------------|
+| 1 | Apis mellifera | Honey Bees | 4 plants | 57.1% |
+| 2 | Bombus sylvestris | Bumblebees | 4 plants | 57.1% |
+| 3 | Bombus pratorum | Bumblebees | 3 plants | 42.9% |
+| 4 | Andrena cineraria | Solitary Bees | 2 plants | 28.6% |
+| 5 | Bombus hypnorum | Bumblebees | 2 plants | 28.6% |
+| 6 | Bombus jonellus | Bumblebees | 2 plants | 28.6% |
+| 7 | Bombus lapidarius | Bumblebees | 2 plants | 28.6% |
+| 8 | Bombus lucorum | Bumblebees | 2 plants | 28.6% |
+| 9 | Bombus pascuorum | Bumblebees | 2 plants | 28.6% |
+| 10 | Delia platura | Flies | 2 plants | 28.6% |
+
+**Network Hubs (most connected plants):**
+
+| Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
+|-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
+| Coffea arabica | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
+| Prunus spinosa | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Dactylis glomerata | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
+| Fragaria vesca | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Vitis vinifera | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+
 ## Warnings
 
 ⚠️ **Soil pH incompatibility detected**
