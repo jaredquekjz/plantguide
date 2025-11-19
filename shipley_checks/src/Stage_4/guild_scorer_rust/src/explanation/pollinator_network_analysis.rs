@@ -378,7 +378,8 @@ fn categorize_pollinators(
 
     let organisms_plant_col = organisms_df.column("plant_wfo_id")?.str()?;
     let pollinators_col = organisms_df.column("pollinators")?.str()?;
-    let flower_visitors_col = organisms_df.column("flower_visitors")?.str()?;
+    // Note: We intentionally ignore "flower_visitors" to match M7 scoring logic
+    // (flower_visitors is contaminated with herbivores and fungi)
 
     let mut category_map: FxHashMap<String, PollinatorCategory> = FxHashMap::default();
 
@@ -389,7 +390,7 @@ fn categorize_pollinators(
                 continue;
             }
 
-            // Process pollinators column
+            // Process pollinators column (Legacy String Format)
             if let Some(pollinators_str) = pollinators_col.get(idx) {
                 if !pollinators_str.is_empty() {
                     for pol_name in pollinators_str.split(',') {
@@ -401,15 +402,18 @@ fn categorize_pollinators(
                     }
                 }
             }
-
-            // Process flower_visitors column
-            if let Some(visitors_str) = flower_visitors_col.get(idx) {
-                if !visitors_str.is_empty() {
-                    for pol_name in visitors_str.split(',') {
-                        let pol_name = pol_name.trim().to_string();
-                        if !pol_name.is_empty() {
-                            category_map.entry(pol_name.clone())
-                                .or_insert_with(|| PollinatorCategory::from_name(&pol_name));
+            // Process pollinators column (List Format - Phase 0-4)
+            if let Ok(list_col) = organisms_df.column("pollinators").and_then(|c| c.list()) {
+                if let Some(list_series) = list_col.get_as_series(idx) {
+                    if let Ok(str_series) = list_series.str() {
+                        for pol_opt in str_series.into_iter() {
+                            if let Some(pol_name) = pol_opt {
+                                if !pol_name.is_empty() {
+                                    let pol_name = pol_name.to_string();
+                                    category_map.entry(pol_name.clone())
+                                        .or_insert_with(|| PollinatorCategory::from_name(&pol_name));
+                                }
+                            }
                         }
                     }
                 }
@@ -435,7 +439,7 @@ fn build_pollinator_to_plants_mapping(
 
     let organisms_plant_col = organisms_df.column("plant_wfo_id")?.str()?;
     let pollinators_col = organisms_df.column("pollinators")?.str()?;
-    let flower_visitors_col = organisms_df.column("flower_visitors")?.str()?;
+    // Ignore flower_visitors
 
     let mut pollinator_to_plants: FxHashMap<String, (FxHashSet<String>, PollinatorCategory)> =
         FxHashMap::default();
@@ -449,7 +453,7 @@ fn build_pollinator_to_plants_mapping(
 
             let plant_id = plant_id.to_string();
 
-            // Process pollinators column
+            // Process pollinators column (Legacy String Format)
             if let Some(pollinators_str) = pollinators_col.get(idx) {
                 if !pollinators_str.is_empty() {
                     for pol_name in pollinators_str.split(',') {
@@ -464,18 +468,21 @@ fn build_pollinator_to_plants_mapping(
                     }
                 }
             }
-
-            // Process flower_visitors column
-            if let Some(visitors_str) = flower_visitors_col.get(idx) {
-                if !visitors_str.is_empty() {
-                    for pol_name in visitors_str.split(',') {
-                        let pol_name = pol_name.trim().to_string();
-                        if !pol_name.is_empty() {
-                            let category = category_map.get(&pol_name).cloned()
-                                .unwrap_or(PollinatorCategory::Other);
-                            pollinator_to_plants.entry(pol_name)
-                                .or_insert_with(|| (FxHashSet::default(), category))
-                                .0.insert(plant_id.clone());
+            // Process pollinators column (List Format - Phase 0-4)
+            if let Ok(list_col) = organisms_df.column("pollinators").and_then(|c| c.list()) {
+                if let Some(list_series) = list_col.get_as_series(idx) {
+                    if let Ok(str_series) = list_series.str() {
+                        for pol_opt in str_series.into_iter() {
+                            if let Some(pol_name) = pol_opt {
+                                if !pol_name.is_empty() {
+                                    let pol_name = pol_name.to_string();
+                                    let category = category_map.get(&pol_name).cloned()
+                                        .unwrap_or(PollinatorCategory::Other);
+                                    pollinator_to_plants.entry(pol_name)
+                                        .or_insert_with(|| (FxHashSet::default(), category))
+                                        .0.insert(plant_id.clone());
+                                }
+                            }
                         }
                     }
                 }
@@ -511,7 +518,7 @@ fn build_plant_pollinator_hubs(
 
     let organisms_plant_col = organisms_df.column("plant_wfo_id")?.str()?;
     let pollinators_col = organisms_df.column("pollinators")?.str()?;
-    let flower_visitors_col = organisms_df.column("flower_visitors")?.str()?;
+    // Ignore flower_visitors
 
     // Map: plant_id -> (total, honey_bees, bumblebees, solitary_bees, hover_flies, muscid_flies, mosquitoes, other_flies, butterflies, moths, pollen_beetles, other_beetles, wasps, birds, bats, other)
     let mut plant_pollinator_counts: FxHashMap<String, (usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize, usize)> =
@@ -530,7 +537,7 @@ fn build_plant_pollinator_hubs(
 
             let mut pollinators_seen: FxHashSet<String> = FxHashSet::default();
 
-            // Process pollinators column
+            // Process pollinators column (Legacy String Format)
             if let Some(pollinators_str) = pollinators_col.get(idx) {
                 if !pollinators_str.is_empty() {
                     for pol_name in pollinators_str.split(',') {
@@ -561,33 +568,36 @@ fn build_plant_pollinator_hubs(
                     }
                 }
             }
-
-            // Process flower_visitors column
-            if let Some(visitors_str) = flower_visitors_col.get(idx) {
-                if !visitors_str.is_empty() {
-                    for pol_name in visitors_str.split(',') {
-                        let pol_name = pol_name.trim().to_string();
-                        if !pol_name.is_empty() && !pollinators_seen.contains(&pol_name) {
-                            pollinators_seen.insert(pol_name.clone());
-                            let category = category_map.get(&pol_name).cloned()
-                                .unwrap_or(PollinatorCategory::Other);
-                            entry.0 += 1; // total
-                            match category {
-                                PollinatorCategory::HoneyBees => entry.1 += 1,
-                                PollinatorCategory::Bumblebees => entry.2 += 1,
-                                PollinatorCategory::SolitaryBees => entry.3 += 1,
-                                PollinatorCategory::HoverFlies => entry.4 += 1,
-                                PollinatorCategory::MuscidFlies => entry.5 += 1,
-                                PollinatorCategory::Mosquitoes => entry.6 += 1,
-                                PollinatorCategory::OtherFlies => entry.7 += 1,
-                                PollinatorCategory::Butterflies => entry.8 += 1,
-                                PollinatorCategory::Moths => entry.9 += 1,
-                                PollinatorCategory::PollenBeetles => entry.10 += 1,
-                                PollinatorCategory::OtherBeetles => entry.11 += 1,
-                                PollinatorCategory::Wasps => entry.12 += 1,
-                                PollinatorCategory::Birds => entry.13 += 1,
-                                PollinatorCategory::Bats => entry.14 += 1,
-                                PollinatorCategory::Other => entry.15 += 1,
+            // Process pollinators column (List Format - Phase 0-4)
+            if let Ok(list_col) = organisms_df.column("pollinators").and_then(|c| c.list()) {
+                if let Some(list_series) = list_col.get_as_series(idx) {
+                    if let Ok(str_series) = list_series.str() {
+                        for pol_opt in str_series.into_iter() {
+                            if let Some(pol_name) = pol_opt {
+                                if !pol_name.is_empty() && !pollinators_seen.contains(pol_name) {
+                                    let pol_name = pol_name.to_string();
+                                    pollinators_seen.insert(pol_name.clone());
+                                    let category = category_map.get(&pol_name).cloned()
+                                        .unwrap_or(PollinatorCategory::Other);
+                                    entry.0 += 1; // total
+                                    match category {
+                                        PollinatorCategory::HoneyBees => entry.1 += 1,
+                                        PollinatorCategory::Bumblebees => entry.2 += 1,
+                                        PollinatorCategory::SolitaryBees => entry.3 += 1,
+                                        PollinatorCategory::HoverFlies => entry.4 += 1,
+                                        PollinatorCategory::MuscidFlies => entry.5 += 1,
+                                        PollinatorCategory::Mosquitoes => entry.6 += 1,
+                                        PollinatorCategory::OtherFlies => entry.7 += 1,
+                                        PollinatorCategory::Butterflies => entry.8 += 1,
+                                        PollinatorCategory::Moths => entry.9 += 1,
+                                        PollinatorCategory::PollenBeetles => entry.10 += 1,
+                                        PollinatorCategory::OtherBeetles => entry.11 += 1,
+                                        PollinatorCategory::Wasps => entry.12 += 1,
+                                        PollinatorCategory::Birds => entry.13 += 1,
+                                        PollinatorCategory::Bats => entry.14 += 1,
+                                        PollinatorCategory::Other => entry.15 += 1,
+                                    }
+                                }
                             }
                         }
                     }
