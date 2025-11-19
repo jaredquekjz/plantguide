@@ -449,10 +449,10 @@ impl MarkdownFormatter {
             for pair in biocontrol_profile.matched_predator_pairs.iter().take(20) {
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | Specific (weight 1.0) |\n",
-                    pair.herbivore,
-                    pair.herbivore_category.display_name(),
-                    pair.predator,
-                    pair.predator_category.display_name()
+                    pair.target,
+                    pair.target_category.display_name(),
+                    pair.agent,
+                    pair.agent_category.display_name()
                 ));
             }
             if biocontrol_profile.matched_predator_pairs.len() > 20 {
@@ -471,12 +471,14 @@ impl MarkdownFormatter {
         // Show matched fungi pairs
         if !biocontrol_profile.matched_fungi_pairs.is_empty() {
             md.push_str("**Matched Herbivore → Entomopathogenic Fungus Pairs:**\n\n");
-            md.push_str("| Herbivore (Pest) | Entomopathogenic Fungus | Match Type |\n");
-            md.push_str("|------------------|------------------------|------------|\n");
-            for (herbivore, fungus) in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
+            md.push_str("| Herbivore (Pest) | Herbivore Category | Entomopathogenic Fungus | Match Type |\n");
+            md.push_str("|------------------|--------------------|------------------------|------------|\n");
+            for pair in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | Specific (weight 1.0) |\n",
-                    herbivore, fungus
+                    "| {} | {} | {} | Specific (weight 1.0) |\n",
+                    pair.target,
+                    pair.target_category.display_name(),
+                    pair.agent
                 ));
             }
             if biocontrol_profile.matched_fungi_pairs.len() > 20 {

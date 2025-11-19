@@ -7,312 +7,15 @@ use polars::prelude::*;
 use rustc_hash::{FxHashMap, FxHashSet};
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use crate::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
 
-/// Predator taxonomic categories (14 comprehensive categories)
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-pub enum PredatorCategory {
-    Spiders,
-    GroundBeetles,
-    RoveBeetles,
-    SoldierBeetles,
-    Bats,
-    Birds,
-    Hoverflies,
-    Ladybugs,
-    PredatoryBugs,
-    PredatoryWasps,
-    Harvestmen,
-    Earwigs,
-    Centipedes,
-    SoftBodiedBeetles,
-    OtherPredators,
-}
-
-impl PredatorCategory {
-    /// Categorize a predator based on its name (14 comprehensive categories)
-    pub fn from_name(name: &str) -> Self {
-        let name_lower = name.to_lowercase();
-
-        // Spiders (Araneae) - COMPREHENSIVE genus coverage (17% of matches)
-        let spider_patterns = [
-            "aculepeira", "agalenatea", "argiope", "araneus", "araneae", "spider", "lycosa", "salticidae",
-            "araniella", "mangora", "tetragnatha", "allagelena", "pisaura", "xysticus", "cicurina", "larinioides",
-            "centromerita", "dipoena", "coelotes", "porrhomma", "salticus", "tibellus", "robertus", "diplostyla",
-            "collinsia", "sibianor", "singa", "neottiura", "walckenaeria", "microlinyphia", "tiso", "zora",
-            "cryptachaea", "argenna", "clubiona", "enoplognatha", "myrmarachne", "micrargus", "plagiognathus",
-            "haplodrassus", "trogulus", "centromerus", "erigone", "erigonella", "meioneta", "oedothorax",
-            "semljicola", "tenuiphantes", "micaria", "arctosa", "diplocephalus", "thomisidae", "rilaena",
-            "dicymbium", "eurithia", "leptorhoptrum", "trichonephila", "phidippus", "drassyllus", "oligolophus",
-            "pardosa", "trochosa", "alopecosa", "philodromus", "theridion", "oxyopes", "cheiracanthium"
-        ];
-        if spider_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::Spiders;
-        }
-
-        // Ground Beetles (Carabidae) - COMPREHENSIVE including Amara, Harpalus (11% of matches)
-        let ground_beetle_patterns = [
-            "carabus", "pterostichus", "abax", "acupalpus", "carabidae",
-            "amara", "harpalus", "pseudophonus", "agonum", "poecilus", "nebria", "calathus", "notiophilus",
-            "anisodactylus", "anchomenus", "leistus", "stomis", "loricera", "syntomus", "limodromus",
-            "trechus", "cicindela", "asaphidion", "bembidion", "cymindis"
-        ];
-        if ground_beetle_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::GroundBeetles;
-        }
-
-        // Rove Beetles (Staphylinidae) - SEPARATE CATEGORY (5% of matches)
-        let rove_beetle_patterns = [
-            "staphylinidae", "staphylinus",
-            "tasgius", "platydracus", "ocypus", "quedius", "philonthus", "tachyporus", "lathrobium",
-            "carpelimus", "gabrius", "tachinus", "bolitobius", "mycetoporus", "xantholinus",
-            "paederus", "sepedophilus", "philhygra", "atheta", "stenus", "aleochara", "oxypoda"
-        ];
-        if rove_beetle_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::RoveBeetles;
-        }
-
-        // Soldier Beetles (Cantharidae) - NEW MAJOR CATEGORY (1% of matches)
-        if name_lower.contains("cantharis") || name_lower.contains("rhagonycha") ||
-           name_lower.contains("rgonycha") || name_lower.contains("cantharidae") {
-            return PredatorCategory::SoldierBeetles;
-        }
-
-        // Bats (Chiroptera) - 6% of matches
-        let bat_patterns = [
-            "myotis", "eptesicus", "corynorhinus", "miniopterus", "pipistrellus", "rhinolophus",
-            "lasiurus", "barbastella", "plecotus", "nyctalus", "tadarida", "antrozous",
-            "murina", "eumops", "bat", "chiroptera"
-        ];
-        if bat_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::Bats;
-        }
-
-        // Birds (Aves) - EXPANDED genus coverage (5% of matches)
-        let bird_patterns = [
-            "anthus", "agelaius", "vireo", "cyanistes", "empidonax", "setophaga", "cardinalis",
-            "catharus", "baeolophus", "tyrannus", "coccyzus", "sialia", "lanius", "contopus",
-            "dryobates", "falco", "rhipidura", "merops", "cracticus", "bird", "aves",
-            "fringilla", "parus", "turdus", "corvus", "garrulus", "acrocephalus", "phylloscopus",
-            "sturnus", "parkesia", "hylocichla", "riparia", "bubulcus", "locustella", "petrochelidon",
-            "progne", "emberiza", "stelgidopteryx", "pheucticus", "cypseloides"
-        ];
-        if bird_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::Birds;
-        }
-
-        // Hoverflies (Syrphidae) - ecologically important aphid predators (0.1% but key)
-        let hoverfly_patterns = [
-            "syrphus", "episyrphus", "eupeodes", "melanostoma", "platycheirus", "sphaerophoria",
-            "scaeva", "eristalis", "syrphidae", "syrph"
-        ];
-        if hoverfly_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::Hoverflies;
-        }
-
-        // Ladybugs (Coccinellidae) - EXPANDED (0.5% of matches)
-        let ladybug_patterns = [
-            "adalia", "coccinella", "hippodamia", "harmonia", "chilocorus", "coccinellidae",
-            "ladybug", "propylea", "exochomus", "scymnus", "stethorus"
-        ];
-        if ladybug_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::Ladybugs;
-        }
-
-        // Predatory Bugs (Hemiptera) - EXPANDED (1% of matches)
-        let predatory_bug_patterns = [
-            "anthocoris", "orius", "nabis", "geocoris", "picromerus", "arilus", "phymata",
-            "deraeocoris", "pilophorus", "miridae", "reduviidae", "himacerus", "campylomma"
-        ];
-        if predatory_bug_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::PredatoryBugs;
-        }
-
-        // Predatory Wasps (Hymenoptera) - EXPANDED (1% of matches)
-        let wasp_patterns = [
-            "vespula", "polistes", "vespa", "dolichovespula", "ichneumon", "braconidae",
-            "eurytoma", "mesopolobus", "pteromalus", "ascogaster", "campoletis", "symmorphus",
-            "torymus", "apanteles", "cotesia", "aphidius"
-        ];
-        if wasp_patterns.iter().any(|&p| name_lower.contains(p)) {
-            return PredatorCategory::PredatoryWasps;
-        }
-
-        // Harvestmen (Opiliones) - NEW (0.6% of matches)
-        if name_lower.contains("opilio") || name_lower.contains("phalangium") ||
-           name_lower.contains("leiobunum") || name_lower.contains("opiliones") {
-            return PredatorCategory::Harvestmen;
-        }
-
-        // Earwigs (Dermaptera) - NEW (0.3% of matches)
-        if name_lower.contains("forficula") || name_lower.contains("dermaptera") ||
-           name_lower.contains("earwig") || name_lower.contains("labidura") ||
-           name_lower.contains("labia") {
-            return PredatorCategory::Earwigs;
-        }
-
-        // Centipedes (Chilopoda) - NEW (0.5% of matches)
-        if name_lower.contains("lithobius") || name_lower.contains("lamyctes") ||
-           name_lower.contains("scolopendra") || name_lower.contains("chilopoda") ||
-           name_lower.contains("centipede") || name_lower.contains("geophilus") {
-            return PredatorCategory::Centipedes;
-        }
-
-        // Soft-bodied Beetles (Melyridae) - NEW minor category (0.2% of matches)
-        if name_lower.contains("malachius") || name_lower.contains("malthinus") ||
-           name_lower.contains("melyridae") {
-            return PredatorCategory::SoftBodiedBeetles;
-        }
-
-        PredatorCategory::OtherPredators
-    }
-
-    pub fn display_name(&self) -> &str {
-        match self {
-            PredatorCategory::Spiders => "Spiders",
-            PredatorCategory::GroundBeetles => "Ground Beetles",
-            PredatorCategory::RoveBeetles => "Rove Beetles",
-            PredatorCategory::SoldierBeetles => "Soldier Beetles",
-            PredatorCategory::Bats => "Bats",
-            PredatorCategory::Birds => "Birds",
-            PredatorCategory::Hoverflies => "Hoverflies",
-            PredatorCategory::Ladybugs => "Ladybugs",
-            PredatorCategory::PredatoryBugs => "Predatory Bugs",
-            PredatorCategory::PredatoryWasps => "Predatory Wasps",
-            PredatorCategory::Harvestmen => "Harvestmen",
-            PredatorCategory::Earwigs => "Earwigs",
-            PredatorCategory::Centipedes => "Centipedes",
-            PredatorCategory::SoftBodiedBeetles => "Soft-bodied Beetles",
-            PredatorCategory::OtherPredators => "Other Predators",
-        }
-    }
-}
-
-/// Herbivore pest taxonomic categories (10 categories)
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
-pub enum HerbivoreCategory {
-    Aphids,
-    Mites,
-    LeafMiners,
-    ScaleInsects,
-    Caterpillars,
-    Thrips,
-    Whiteflies,
-    Beetles,
-    Leafhoppers,
-    OtherHerbivores,
-}
-
-impl HerbivoreCategory {
-    /// Categorize a herbivore based on its name
-    pub fn from_name(name: &str) -> Self {
-        let name_lower = name.to_lowercase();
-
-        // Aphids (Aphididae) - most common
-        if (name_lower == "aphis" || name_lower.starts_with("aphis ") ||
-            name_lower.contains(" aphis ") || name_lower.ends_with(" aphis")) ||
-           name_lower.contains("aphid") || name_lower.contains("myzus") ||
-           name_lower.contains("macrosiphum") || name_lower.contains("rhopalosiphum") ||
-           name_lower.contains("acyrthosiphon") || name_lower.contains("aulacorthum") ||
-           name_lower.contains("brachycaudus") || name_lower.contains("hyperomyzus") ||
-           name_lower.contains("hyadaphis") || name_lower.contains("cinara") ||
-           name_lower.contains("cavariella") || name_lower.contains("anoecia") ||
-           name_lower.contains("dysaphis") || name_lower.contains("cryptomyzus") ||
-           name_lower.contains("allaphis") || name_lower.contains("aphididae") {
-            return HerbivoreCategory::Aphids;
-        }
-
-        // Herbivorous Mites
-        if name_lower.contains("aceria") || name_lower.contains("tetranychus") ||
-           name_lower.contains("panonychus") || name_lower.contains("tetranychidae") ||
-           name_lower.contains("eriophyidae") || name_lower.contains("eriophyes") {
-            return HerbivoreCategory::Mites;
-        }
-
-        // Leaf Miners
-        if name_lower.contains("phytomyza") || name_lower.contains("liriomyza") ||
-           name_lower.contains("agromyza") || name_lower.contains("chromatomyia") ||
-           name_lower.contains("agromyzidae") || name_lower.contains("phytoliriomyza") ||
-           name_lower.contains("calycomyza") {
-            return HerbivoreCategory::LeafMiners;
-        }
-
-        // Scale Insects
-        if name_lower.contains("aspidiotus") || name_lower.contains("aonidiella") ||
-           name_lower.contains("diaspidiotus") || name_lower.contains("pseudococcus") ||
-           name_lower.contains("coccus") || name_lower.contains("diaspididae") ||
-           name_lower.contains("coccidae") || name_lower.contains("pseudococcidae") ||
-           name_lower.contains("hemiberlesia") || name_lower.contains("abgrallaspis") ||
-           name_lower.contains("lindingaspis") || name_lower.contains("pseudaulacaspis") ||
-           name_lower.contains("eriococcus") || name_lower.contains("icerya") ||
-           name_lower.contains("scale") {
-            return HerbivoreCategory::ScaleInsects;
-        }
-
-        // Caterpillars
-        if name_lower.contains("spodoptera") || name_lower.contains("helicoverpa") ||
-           name_lower.contains("heliothis") || name_lower.contains("plutella") ||
-           name_lower.contains("mamestra") || name_lower.contains("agrotis") ||
-           name_lower.contains("abagrotis") || name_lower.contains("adoxophyes") ||
-           name_lower.contains("archips") || name_lower.contains("choristoneura") ||
-           name_lower.contains("acronicta") || name_lower.contains("euxoa") {
-            return HerbivoreCategory::Caterpillars;
-        }
-
-        // Thrips
-        if name_lower.contains("thrips") || name_lower.contains("frankliniella") ||
-           name_lower.contains("heliothrips") || name_lower.contains("thysanoptera") ||
-           name_lower.contains("akainothrips") {
-            return HerbivoreCategory::Thrips;
-        }
-
-        // Whiteflies
-        if name_lower.contains("bemisia") || name_lower.contains("trialeurodes") ||
-           name_lower.contains("aleurodidae") || name_lower.contains("aleurocanthus") ||
-           name_lower.contains("whitefly") {
-            return HerbivoreCategory::Whiteflies;
-        }
-
-        // Herbivorous Beetles
-        if name_lower.contains("phyllotreta") || name_lower.contains("chrysomelidae") ||
-           name_lower.contains("diabrotica") || name_lower.contains("leptinotarsa") ||
-           name_lower.contains("psylliodes") || name_lower.contains("cassida") ||
-           name_lower.contains("chrysolina") || name_lower.contains("bruchidius") {
-            return HerbivoreCategory::Beetles;
-        }
-
-        // Leafhoppers
-        if name_lower.contains("empoasca") || name_lower.contains("cicadellidae") ||
-           name_lower.contains("leafhopper") || name_lower.contains("erythroneura") ||
-           name_lower.contains("ausejanus") {
-            return HerbivoreCategory::Leafhoppers;
-        }
-
-        HerbivoreCategory::OtherHerbivores
-    }
-
-    pub fn display_name(&self) -> &str {
-        match self {
-            HerbivoreCategory::Aphids => "Aphids",
-            HerbivoreCategory::Mites => "Mites",
-            HerbivoreCategory::LeafMiners => "Leaf Miners",
-            HerbivoreCategory::ScaleInsects => "Scale Insects",
-            HerbivoreCategory::Caterpillars => "Caterpillars",
-            HerbivoreCategory::Thrips => "Thrips",
-            HerbivoreCategory::Whiteflies => "Whiteflies",
-            HerbivoreCategory::Beetles => "Beetles",
-            HerbivoreCategory::Leafhoppers => "Leafhoppers",
-            HerbivoreCategory::OtherHerbivores => "Other Herbivores",
-        }
-    }
-}
-
-/// Matched predator-herbivore pair with categories
+/// Matched biocontrol pair with categories (Predator or Fungi)
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct MatchedPredatorPair {
-    pub herbivore: String,
-    pub herbivore_category: HerbivoreCategory,
-    pub predator: String,
-    pub predator_category: PredatorCategory,
+pub struct MatchedBiocontrolPair {
+    pub target: String,            // Herbivore (pest)
+    pub target_category: OrganismCategory,
+    pub agent: String,             // Predator or Fungus
+    pub agent_category: OrganismCategory,
 }
 
 /// Biocontrol network profile showing qualitative pest control information
@@ -334,16 +37,16 @@ pub struct BiocontrolNetworkProfile {
     pub general_entomo_fungi_count: usize,
 
     /// List of matched (herbivore, predator) pairs with categories
-    pub matched_predator_pairs: Vec<MatchedPredatorPair>,
+    pub matched_predator_pairs: Vec<MatchedBiocontrolPair>,
 
-    /// List of matched (herbivore, entomopathogenic_fungus) pairs
-    pub matched_fungi_pairs: Vec<(String, String)>,
+    /// List of matched (herbivore, entomopathogenic_fungus) pairs with categories
+    pub matched_fungi_pairs: Vec<MatchedBiocontrolPair>,
 
     /// Predator category distribution
-    pub predator_category_counts: FxHashMap<PredatorCategory, usize>,
+    pub predator_category_counts: FxHashMap<OrganismCategory, usize>,
 
     /// Herbivore category distribution
-    pub herbivore_category_counts: FxHashMap<HerbivoreCategory, usize>,
+    pub herbivore_category_counts: FxHashMap<OrganismCategory, usize>,
 
     /// Top 10 predators by connectivity (visiting multiple plants)
     pub top_predators: Vec<BiocontrolAgent>,
@@ -404,6 +107,7 @@ pub fn analyze_biocontrol_network(
     guild_plants: &DataFrame,
     organisms_df: &DataFrame,
     fungi_df: &DataFrame,
+    organism_categories: &FxHashMap<String, String>,
 ) -> Result<Option<BiocontrolNetworkProfile>> {
     let n_plants = guild_plants.height();
 
@@ -421,31 +125,46 @@ pub fn analyze_biocontrol_network(
     }
 
     // Categorize predators and build category counts
-    let mut predator_category_counts: FxHashMap<PredatorCategory, usize> = FxHashMap::default();
+    let mut predator_category_counts: FxHashMap<OrganismCategory, usize> = FxHashMap::default();
     for predator_name in predator_counts.keys() {
-        let category = PredatorCategory::from_name(predator_name);
+        let category = OrganismCategory::from_name(predator_name, organism_categories, Some(OrganismRole::Predator));
         *predator_category_counts.entry(category).or_insert(0) += 1;
     }
 
     // Categorize herbivores from matched pairs and build category counts
-    let mut herbivore_category_counts: FxHashMap<HerbivoreCategory, usize> = FxHashMap::default();
+    let mut herbivore_category_counts: FxHashMap<OrganismCategory, usize> = FxHashMap::default();
     let mut unique_herbivores: FxHashSet<String> = FxHashSet::default();
 
-    for (herbivore, _) in matched_predator_pairs {
+    // Check herbivores from both predator and fungi matches
+    for (herbivore, _) in matched_predator_pairs.iter().chain(matched_fungi_pairs.iter()) {
         if unique_herbivores.insert(herbivore.clone()) {
-            let category = HerbivoreCategory::from_name(herbivore);
+            let category = OrganismCategory::from_name(herbivore, organism_categories, Some(OrganismRole::Herbivore));
             *herbivore_category_counts.entry(category).or_insert(0) += 1;
         }
     }
 
-    // Build matched pairs with categories
-    let matched_predator_pairs_with_categories: Vec<MatchedPredatorPair> = matched_predator_pairs
+    // Build matched predator pairs with categories
+    let matched_predator_pairs_with_categories: Vec<MatchedBiocontrolPair> = matched_predator_pairs
         .iter()
-        .map(|(herbivore, predator)| MatchedPredatorPair {
-            herbivore: herbivore.clone(),
-            herbivore_category: HerbivoreCategory::from_name(herbivore),
-            predator: predator.clone(),
-            predator_category: PredatorCategory::from_name(predator),
+        .map(|(herbivore, predator)| MatchedBiocontrolPair {
+            target: herbivore.clone(),
+            target_category: OrganismCategory::from_name(herbivore, organism_categories, Some(OrganismRole::Herbivore)),
+            agent: predator.clone(),
+            agent_category: OrganismCategory::from_name(predator, organism_categories, Some(OrganismRole::Predator)),
+        })
+        .collect();
+
+    // Build matched fungi pairs with categories
+    // Fungi don't have specific categories in OrganismCategory like "Beetles", so we use the generic role or name
+    // Usually entomopathogenic fungi are categorized as "Fungi" or "Entomopathogenic" if the enum supports it.
+    // For now, we'll trust from_name to do its best or default.
+    let matched_fungi_pairs_with_categories: Vec<MatchedBiocontrolPair> = matched_fungi_pairs
+        .iter()
+        .map(|(herbivore, fungus)| MatchedBiocontrolPair {
+            target: herbivore.clone(),
+            target_category: OrganismCategory::from_name(herbivore, organism_categories, Some(OrganismRole::Herbivore)),
+            agent: fungus.clone(),
+            agent_category: OrganismCategory::from_name(fungus, organism_categories, None), // No specific role needed, defaults apply
         })
         .collect();
 
@@ -492,7 +211,7 @@ pub fn analyze_biocontrol_network(
         specific_fungi_matches,
         general_entomo_fungi_count,
         matched_predator_pairs: matched_predator_pairs_with_categories,
-        matched_fungi_pairs: matched_fungi_pairs.to_vec(),
+        matched_fungi_pairs: matched_fungi_pairs_with_categories,
         predator_category_counts,
         herbivore_category_counts,
         top_predators,
