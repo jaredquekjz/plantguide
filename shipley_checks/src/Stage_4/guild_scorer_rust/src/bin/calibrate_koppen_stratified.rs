@@ -18,7 +18,7 @@ use rand::seq::SliceRandom;
 use rand::thread_rng;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-const GUILDS_PER_TIER: usize = 1000;  // Testing mode - using 1000 guilds per tier
+const GUILDS_PER_TIER: usize = 20000;  // Production calibration - 20K guilds per tier
 const PERCENTILES: [f64; 13] = [1.0, 5.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 95.0, 99.0];
 
 fn main() -> anyhow::Result<()> {

@@ -7,6 +7,15 @@ use polars::prelude::*;
 use rustc_hash::FxHashMap;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use crate::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
+
+/// Matched fungivore pair with category
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MatchedFungivorePair {
+    pub pathogen: String,
+    pub fungivore: String,
+    pub fungivore_category: OrganismCategory,
+}
 
 /// Pathogen control network profile showing qualitative disease suppression information
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -29,8 +38,8 @@ pub struct PathogenControlNetworkProfile {
     /// List of matched (pathogen, antagonist) pairs
     pub matched_antagonist_pairs: Vec<(String, String)>,
 
-    /// List of matched (pathogen, fungivore) pairs
-    pub matched_fungivore_pairs: Vec<(String, String)>,
+    /// List of matched (pathogen, fungivore) pairs with categories
+    pub matched_fungivore_pairs: Vec<MatchedFungivorePair>,
 
     /// Top 10 mycoparasites by connectivity (visiting multiple plants)
     pub top_mycoparasites: Vec<MycoparasiteAgent>,
@@ -81,6 +90,7 @@ pub fn analyze_pathogen_control_network(
     matched_fungivore_pairs: &[(String, String)],
     guild_plants: &DataFrame,
     fungi_df: &DataFrame,
+    organism_categories: &FxHashMap<String, String>,
 ) -> Result<Option<PathogenControlNetworkProfile>> {
     let n_plants = guild_plants.height();
 
@@ -97,6 +107,23 @@ pub fn analyze_pathogen_control_network(
     if total_unique_mycoparasites == 0 && specific_fungivore_matches == 0 {
         return Ok(None);
     }
+
+    // Transform matched fungivore pairs to include category (using Kimi lookup)
+    let matched_fungivore_pairs_structs: Vec<MatchedFungivorePair> = matched_fungivore_pairs
+        .iter()
+        .map(|(pathogen, fungivore)| {
+            let category = OrganismCategory::from_name(
+                fungivore, 
+                organism_categories, 
+                Some(OrganismRole::Predator) // Fungivores act as predators of fungi
+            );
+            MatchedFungivorePair {
+                pathogen: pathogen.clone(),
+                fungivore: fungivore.clone(),
+                fungivore_category: category,
+            }
+        })
+        .collect();
 
     // Build plant ID → name mapping
     let plant_names = build_plant_name_map(guild_plants)?;
@@ -123,7 +150,7 @@ pub fn analyze_pathogen_control_network(
         specific_fungivore_matches,
         general_mycoparasite_count,
         matched_antagonist_pairs: matched_antagonist_pairs.to_vec(),
-        matched_fungivore_pairs: matched_fungivore_pairs.to_vec(),
+        matched_fungivore_pairs: matched_fungivore_pairs_structs,
         top_mycoparasites,
         hub_plants,
     }))

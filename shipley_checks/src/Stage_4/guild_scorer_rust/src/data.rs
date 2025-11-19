@@ -115,6 +115,12 @@ pub struct GuildData {
 
     /// Pathogen ID → Vector of antagonist fungi IDs
     pub pathogen_antagonists: FxHashMap<String, Vec<String>>,
+
+    /// Genus → Category mapping from Kimi AI analysis
+    ///
+    /// Maps organism genus (lowercase) to functional category (e.g. "Snails", "Moths")
+    /// Source: data/taxonomy/kimi_gardener_labels.csv
+    pub organism_categories: FxHashMap<String, String>,
 }
 
 impl GuildData {
@@ -219,6 +225,17 @@ impl GuildData {
             "antagonists",
         )?;
 
+        // ====================================================================
+        // TAXONOMY: Load Kimi AI categories
+        // ====================================================================
+        
+        let organism_categories = Self::load_organism_categories(
+            "data/taxonomy/kimi_gardener_labels.csv"
+        ).unwrap_or_else(|e| {
+            eprintln!("Warning: Failed to load organism categories: {}", e);
+            FxHashMap::default()
+        });
+
         // Print stats (still shows eager DataFrame counts for compatibility)
         println!("  Plants: {} (lazy: schema only)", plants.height());
         println!("  Organisms: {} (lazy: schema only)", organisms.height());
@@ -226,6 +243,7 @@ impl GuildData {
         println!("  Herbivore predators: {}", herbivore_predators.len());
         println!("  Insect parasites: {}", insect_parasites.len());
         println!("  Pathogen antagonists: {}", pathogen_antagonists.len());
+        println!("  Organism categories: {}", organism_categories.len());
 
         Ok(GuildData {
             // Eager DataFrames (backward compatibility)
@@ -242,7 +260,30 @@ impl GuildData {
             herbivore_predators,
             insect_parasites,
             pathogen_antagonists,
+            organism_categories,
         })
+    }
+
+    /// Load organism categories from CSV (Kimi AI labels)
+    fn load_organism_categories(path: &str) -> Result<FxHashMap<String, String>> {
+        // Use CsvReadOptions for modern Polars API
+        let df = CsvReadOptions::default()
+            .with_has_header(true)
+            .try_into_reader_with_file_path(Some(path.into()))?
+            .finish()?;
+
+        let genus_col = df.column("genus")?.str()?;
+        let label_col = df.column("kimi_label")?.str()?;
+
+        let mut map = FxHashMap::default();
+
+        for (genus_opt, label_opt) in genus_col.into_iter().zip(label_col.into_iter()) {
+            if let (Some(genus), Some(label)) = (genus_opt, label_opt) {
+                // Lowercase keys for robust matching
+                map.insert(genus.to_lowercase(), label.to_string());
+            }
+        }
+        Ok(map)
     }
 
     /// Load plant metadata from Parquet

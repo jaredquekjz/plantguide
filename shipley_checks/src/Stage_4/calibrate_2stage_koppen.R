@@ -338,8 +338,8 @@ calibrate_stage <- function(tier_plants, guild_scorer, plants_df,
 #' Main calibration function
 #'
 #' @param stage Which stage to run: '1', '2', or 'both'
-#' @param n_guilds Number of guilds per tier (default 1000)
-main <- function(stage = 'both', n_guilds = 1000) {
+#' @param n_guilds Number of guilds per tier (default 20000)
+main <- function(stage = 'both', n_guilds = 20000) {
   # Load data and initialize canonical GuildScorer
   data <- load_all_data()
   tier_plants <- organize_by_tier(data$plants_df)
@@ -379,7 +379,7 @@ main <- function(stage = 'both', n_guilds = 1000) {
 # Parse command line arguments
 args <- commandArgs(trailingOnly = TRUE)
 stage <- if (length(args) >= 1) args[1] else 'both'
-n_guilds <- if (length(args) >= 2) as.integer(args[2]) else 1000
+n_guilds <- if (length(args) >= 2) as.integer(args[2]) else 20000
 
 # Run calibration
 main(stage = stage, n_guilds = n_guilds)

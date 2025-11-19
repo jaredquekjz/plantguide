@@ -44,7 +44,10 @@ pub struct VulnerablePlant {
 /// - Shared pests (generalists attacking 2+ plants)
 /// - Top 10 pests by interaction count
 /// - Most vulnerable plants
-pub fn analyze_guild_pests(guild_plants: &DataFrame) -> Result<Option<PestProfile>> {
+pub fn analyze_guild_pests(
+    guild_plants: &DataFrame,
+    organism_categories: &FxHashMap<String, String>,
+) -> Result<Option<PestProfile>> {
     // Check if herbivores column exists
     let herbivores_col = match guild_plants.column("herbivores") {
         Ok(col) => col.str()?,
@@ -100,7 +103,7 @@ pub fn analyze_guild_pests(guild_plants: &DataFrame) -> Result<Option<PestProfil
         .iter()
         .filter(|(_, plants)| plants.len() >= 2)
         .map(|(pest, plants)| {
-            let category = OrganismCategory::from_name(pest, Some(OrganismRole::Herbivore));
+            let category = OrganismCategory::from_name(pest, organism_categories, Some(OrganismRole::Herbivore));
             SharedPest {
                 pest_name: pest.clone(),
                 category: category.display_name().to_string(),
@@ -120,7 +123,7 @@ pub fn analyze_guild_pests(guild_plants: &DataFrame) -> Result<Option<PestProfil
     let mut top_pests: Vec<TopPest> = pest_to_plants
         .iter()
         .map(|(pest, plants)| {
-            let category = OrganismCategory::from_name(pest, Some(OrganismRole::Herbivore));
+            let category = OrganismCategory::from_name(pest, organism_categories, Some(OrganismRole::Herbivore));
             TopPest {
                 pest_name: pest.clone(),
                 category: category.display_name().to_string(),
@@ -173,7 +176,8 @@ mod tests {
         }
         .unwrap();
 
-        let profile = analyze_guild_pests(&df).unwrap().unwrap();
+        let categories = FxHashMap::default();
+        let profile = analyze_guild_pests(&df, &categories).unwrap().unwrap();
 
         assert_eq!(profile.total_unique_pests, 3);
         assert_eq!(profile.shared_pests.len(), 2); // Aphid and Beetle
@@ -192,7 +196,8 @@ mod tests {
         }
         .unwrap();
 
-        let profile = analyze_guild_pests(&df).unwrap().unwrap();
+        let categories = FxHashMap::default();
+        let profile = analyze_guild_pests(&df, &categories).unwrap().unwrap();
 
         assert_eq!(profile.total_unique_pests, 4);
         assert_eq!(profile.shared_pests.len(), 0); // No shared pests
@@ -207,7 +212,8 @@ mod tests {
         }
         .unwrap();
 
-        let profile = analyze_guild_pests(&df).unwrap();
+        let categories = FxHashMap::default();
+        let profile = analyze_guild_pests(&df, &categories).unwrap();
         assert!(profile.is_none());
     }
 }

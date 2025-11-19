@@ -4,6 +4,7 @@ use crate::scorer::GuildScore;
 use crate::metrics::{M3Result, M4Result, M5Result, M7Result};
 use anyhow::Result;
 use polars::prelude::*;
+use rustc_hash::FxHashMap;
 
 /// Main explanation generator
 pub struct ExplanationGenerator;
@@ -22,6 +23,7 @@ impl ExplanationGenerator {
     /// - fungi_df: Fungi DataFrame (for categorization)
     /// - m7_result: M7 result with pollinator counts (for network analysis)
     /// - organisms_df: Organisms DataFrame (for categorization)
+    /// - organism_categories: Kimi AI categorization map
     ///
     /// Returns: Complete Explanation with all cards
     pub fn generate(
@@ -35,6 +37,7 @@ impl ExplanationGenerator {
         m5_result: &M5Result,
         fungi_df: &DataFrame,
         m7_result: &M7Result,
+        organism_categories: &FxHashMap<String, String>,
     ) -> Result<Explanation> {
         // Overall score with stars
         let overall = Self::generate_overall(guild_score.overall_score);
@@ -72,9 +75,12 @@ impl ExplanationGenerator {
         }
 
         // Pest profile (qualitative information)
-        let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(guild_plants)
-            .ok()
-            .flatten();
+        let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(
+            guild_plants,
+            organism_categories,
+        )
+        .ok()
+        .flatten();
 
         // Biocontrol network profile (M3 - qualitative information)
         let biocontrol_network_profile = analyze_biocontrol_network(
@@ -87,6 +93,7 @@ impl ExplanationGenerator {
             guild_plants,
             organisms_df,
             fungi_df,
+            organism_categories,
         )
         .ok()
         .flatten();
@@ -101,6 +108,7 @@ impl ExplanationGenerator {
             &m4_result.matched_fungivore_pairs,
             guild_plants,
             fungi_df,
+            organism_categories,
         )
         .ok()
         .flatten();
@@ -111,9 +119,14 @@ impl ExplanationGenerator {
             .flatten();
 
         // Pollinator network profile (M7 - qualitative information)
-        let pollinator_network_profile = analyze_pollinator_network(m7_result, guild_plants, organisms_df)
-            .ok()
-            .flatten();
+        let pollinator_network_profile = analyze_pollinator_network(
+            m7_result,
+            guild_plants,
+            organisms_df,
+            organism_categories,
+        )
+        .ok()
+        .flatten();
 
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
