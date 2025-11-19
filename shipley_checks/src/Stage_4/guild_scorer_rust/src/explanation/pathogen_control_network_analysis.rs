@@ -20,11 +20,17 @@ pub struct PathogenControlNetworkProfile {
     /// Number of specific antagonist matches (pathogen → known mycoparasite)
     pub specific_antagonist_matches: usize,
 
+    /// Number of specific fungivore matches (pathogen → known fungivore)
+    pub specific_fungivore_matches: usize,
+
     /// Total count of general mycoparasites (primary mechanism)
     pub general_mycoparasite_count: usize,
 
     /// List of matched (pathogen, antagonist) pairs
     pub matched_antagonist_pairs: Vec<(String, String)>,
+
+    /// List of matched (pathogen, fungivore) pairs
+    pub matched_fungivore_pairs: Vec<(String, String)>,
 
     /// Top 10 mycoparasites by connectivity (visiting multiple plants)
     pub top_mycoparasites: Vec<MycoparasiteAgent>,
@@ -71,6 +77,8 @@ pub fn analyze_pathogen_control_network(
     pathogen_counts: &FxHashMap<String, usize>,
     specific_antagonist_matches: usize,
     matched_antagonist_pairs: &[(String, String)],
+    specific_fungivore_matches: usize,
+    matched_fungivore_pairs: &[(String, String)],
     guild_plants: &DataFrame,
     fungi_df: &DataFrame,
 ) -> Result<Option<PathogenControlNetworkProfile>> {
@@ -85,7 +93,8 @@ pub fn analyze_pathogen_control_network(
     let total_unique_pathogens = pathogen_counts.len();
     let general_mycoparasite_count = mycoparasite_counts.values().sum();
 
-    if total_unique_mycoparasites == 0 {
+    // Return None only if NO data at all (no mycoparasites AND no specific matches)
+    if total_unique_mycoparasites == 0 && specific_fungivore_matches == 0 {
         return Ok(None);
     }
 
@@ -111,8 +120,10 @@ pub fn analyze_pathogen_control_network(
         total_unique_mycoparasites,
         total_unique_pathogens,
         specific_antagonist_matches,
+        specific_fungivore_matches,
         general_mycoparasite_count,
         matched_antagonist_pairs: matched_antagonist_pairs.to_vec(),
+        matched_fungivore_pairs: matched_fungivore_pairs.to_vec(),
         top_mycoparasites,
         hub_plants,
     }))

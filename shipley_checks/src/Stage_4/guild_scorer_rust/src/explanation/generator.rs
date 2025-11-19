@@ -97,6 +97,8 @@ impl ExplanationGenerator {
             &m4_result.pathogen_counts,
             m4_result.specific_antagonist_matches,
             &m4_result.matched_antagonist_pairs,
+            m4_result.specific_fungivore_matches,
+            &m4_result.matched_fungivore_pairs,
             guild_plants,
             fungi_df,
         )

@@ -536,10 +536,11 @@ impl MarkdownFormatter {
         md.push_str(&format!("- {} unique pathogen species in guild\n\n", pathogen_profile.total_unique_pathogens));
 
         md.push_str("**Mechanism Summary:**\n");
-        md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite, weight 1.0, rarely fires)\n", pathogen_profile.specific_antagonist_matches));
-        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism, weight 1.0)\n\n", pathogen_profile.general_mycoparasite_count));
+        md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)\n", 
+            pathogen_profile.specific_antagonist_matches + pathogen_profile.specific_fungivore_matches));
+        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism, weight 0.5)\n\n", pathogen_profile.general_mycoparasite_count));
 
-        // Show matched antagonist pairs
+        // Show matched antagonist pairs (Mycoparasites)
         if !pathogen_profile.matched_antagonist_pairs.is_empty() {
             md.push_str("**Matched Pathogen → Mycoparasite Pairs:**\n\n");
             md.push_str("| Pathogen | Known Antagonist (Mycoparasite) | Match Type |\n");
@@ -554,6 +555,26 @@ impl MarkdownFormatter {
                 md.push_str(&format!(
                     "\n*Showing 20 of {} total matches*\n",
                     pathogen_profile.matched_antagonist_pairs.len()
+                ));
+            }
+            md.push_str("\n");
+        }
+
+        // Show matched fungivore pairs (Animals)
+        if !pathogen_profile.matched_fungivore_pairs.is_empty() {
+            md.push_str("**Matched Pathogen → Fungivore Pairs:**\n\n");
+            md.push_str("| Pathogen | Known Antagonist (Animal Fungivore) | Match Type |\n");
+            md.push_str("|----------|--------------------------------------|------------|\n");
+            for (pathogen, fungivore) in pathogen_profile.matched_fungivore_pairs.iter().take(20) {
+                md.push_str(&format!(
+                    "| {} | {} | Specific (weight 1.0) |\n",
+                    pathogen, fungivore
+                ));
+            }
+            if pathogen_profile.matched_fungivore_pairs.len() > 20 {
+                md.push_str(&format!(
+                    "\n*Showing 20 of {} total matches*\n",
+                    pathogen_profile.matched_fungivore_pairs.len()
                 ));
             }
             md.push_str("\n");
