@@ -315,7 +315,7 @@ fn extract_organism_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
                                 for org_opt in str_series.into_iter() {
                                     if let Some(org) = org_opt {
                                         if !org.is_empty() {
-                                            organisms.push(org.to_string());
+                                            organisms.push(org.to_lowercase());
                                         }
                                     }
                                 }
@@ -325,7 +325,7 @@ fn extract_organism_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
                         // Fallback: pipe-separated strings (legacy format)
                         if let Some(value) = str_col.get(idx) {
                             for org in value.split('|').filter(|s| !s.is_empty()) {
-                                organisms.push(org.to_string());
+                                organisms.push(org.to_lowercase());
                             }
                         }
                     }
@@ -362,7 +362,7 @@ fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> 
                         if let Ok(str_series) = list_series.str() {
                             let fungi: Vec<String> = str_series
                                 .into_iter()
-                                .filter_map(|opt| opt.map(|s| s.to_string()))
+                                .filter_map(|opt| opt.map(|s| s.to_lowercase()))
                                 .filter(|s| !s.is_empty())
                                 .collect();
 
@@ -380,7 +380,7 @@ fn extract_fungi_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>>> 
                     let fungi: Vec<String> = fungi_str
                         .split('|')
                         .filter(|s| !s.is_empty())
-                        .map(|s| s.to_string())
+                        .map(|s| s.to_lowercase())
                         .collect();
 
                     if !fungi.is_empty() {
@@ -433,7 +433,7 @@ fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
                                 for org_opt in str_series.into_iter() {
                                     if let Some(org) = org_opt {
                                         if !org.is_empty() {
-                                            predators.push(org.to_string());
+                                            predators.push(org.to_lowercase());
                                             col_count += 1;
                                         }
                                     }
@@ -444,7 +444,7 @@ fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
                         // Fallback: pipe-separated strings (legacy format)
                         if let Some(value) = str_col.get(idx) {
                             for org in value.split('|').filter(|s| !s.is_empty()) {
-                                predators.push(org.to_string());
+                                predators.push(org.to_lowercase());
                                 col_count += 1;
                             }
                         }

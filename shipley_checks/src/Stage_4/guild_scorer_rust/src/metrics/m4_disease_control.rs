@@ -242,7 +242,7 @@ fn extract_column_data(
                         if let Ok(str_series) = list_series.str() {
                             let fungi: Vec<String> = str_series
                                 .into_iter()
-                                .filter_map(|opt| opt.map(|s| s.to_string()))
+                                .filter_map(|opt| opt.map(|s| s.to_lowercase()))
                                 .filter(|s| !s.is_empty())
                                 .collect();
 
@@ -260,7 +260,7 @@ fn extract_column_data(
                     let fungi: Vec<String> = fungi_str
                         .split('|')
                         .filter(|s| !s.is_empty())
-                        .map(|s| s.to_string())
+                        .map(|s| s.to_lowercase())
                         .collect();
 
                     if !fungi.is_empty() {

@@ -338,11 +338,12 @@ impl GuildData {
 
                     let values: Vec<String> = str_series
                         .into_iter()
-                        .filter_map(|opt_str| opt_str.map(|s| s.to_string()))
+                        .filter_map(|opt_str| opt_str.map(|s| s.to_lowercase())) // Lowercase values too
                         .collect();
 
                     if !values.is_empty() {
-                        map.insert(key.to_string(), values);
+                        // Lowercase keys for consistent matching (plant data is often lowercase)
+                        map.insert(key.to_lowercase(), values);
                     }
                 }
             }
