@@ -1,0 +1,2275 @@
+{
+  "overall": {
+    "score": 91.2739960606035,
+    "stars": "★★★★★",
+    "label": "Exceptional",
+    "message": "Overall guild compatibility: 91.3/100"
+  },
+  "climate": {
+    "compatible": true,
+    "tier": "tier_3_humid_temperate",
+    "tier_display": "Tier 3 (Humid Temperate)",
+    "message": "All plants compatible with Tier 3 (Humid Temperate)"
+  },
+  "benefits": [
+    {
+      "benefit_type": "insect_control",
+      "metric_code": "M3",
+      "title": "Natural Insect Pest Control",
+      "message": "Guild provides natural insect pest control",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
+      "evidence": "Biocontrol score: 100.0/100"
+    },
+    {
+      "benefit_type": "disease_control",
+      "metric_code": "M4",
+      "title": "Natural Disease Suppression",
+      "message": "Guild provides disease suppression via 47 antagonistic fungal mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
+      "evidence": "Pathogen control score: 97.7/100, covering 47 mechanisms"
+    },
+    {
+      "benefit_type": "mycorrhizal_network",
+      "metric_code": "M5",
+      "title": "Beneficial Mycorrhizal Network",
+      "message": "512 shared mycorrhizal fungal species connect 7 plants",
+      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "evidence": "Network score: 100.0/100, coverage: 100.0%"
+    },
+    {
+      "benefit_type": "structural_diversity",
+      "metric_code": "M6",
+      "title": "High Structural Diversity",
+      "message": "5 growth forms spanning 27.0m height range",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur: 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera: 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica: 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa: 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina: 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata: 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca: 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "evidence": "Stratification quality: 1.00"
+    },
+    {
+      "benefit_type": "pollinator_support",
+      "metric_code": "M7",
+      "title": "Robust Pollinator Support",
+      "message": "309 shared pollinator species",
+      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.",
+      "evidence": "Pollinator support score: 100.0/100"
+    }
+  ],
+  "warnings": [
+    {
+      "warning_type": "ph_incompatible",
+      "severity": "Medium",
+      "icon": "⚠️",
+      "message": "Soil pH incompatibility detected",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nCoffea arabica: Neutral (pH 6-7)\nDactylis glomerata: Neutral (pH 6-7)\nFragaria vesca: Neutral (pH 6-7)\nPrunus spinosa: Neutral (pH 6-7)\nQuercus robur: Slightly Acidic (pH 5-6)\nRosa canina: Neutral (pH 6-7)\nVitis vinifera: Alkaline (pH 7-8)",
+      "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
+    }
+  ],
+  "risks": [],
+  "metrics_display": {
+    "universal": [
+      {
+        "code": "M1",
+        "name": "Pest & Pathogen Independence",
+        "score": 41.204075966458724,
+        "raw": 0.4474090557699892,
+        "interpretation": "Fair"
+      },
+      {
+        "code": "M2",
+        "name": "Growth Compatibility",
+        "score": 100.0,
+        "raw": 0.0,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M3",
+        "name": "Insect Pest Control",
+        "score": 100.0,
+        "raw": 23.142857142857146,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M4",
+        "name": "Disease Suppression",
+        "score": 97.71389645776567,
+        "raw": 55.80952380952379,
+        "interpretation": "Excellent"
+      }
+    ],
+    "bonus": [
+      {
+        "code": "M5",
+        "name": "Beneficial Fungi",
+        "score": 100.0,
+        "raw": 38.62857142857139,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M6",
+        "name": "Structural Diversity",
+        "score": 100.0,
+        "raw": 0.94,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M7",
+        "name": "Pollinator Support",
+        "score": 100.0,
+        "raw": 2.3877551020408174,
+        "interpretation": "Excellent"
+      }
+    ]
+  },
+  "pest_profile": null,
+  "fungi_network_profile": {
+    "total_unique_fungi": 512,
+    "shared_fungi": [
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 7,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 1.0
+      },
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "leptosphaeria",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "septoria",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "diaporthe",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "fusarium",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "phyllosticta",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "rosellinia",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "athelia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "botrytis",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "coniothyrium",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "didymella",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "didymosphaeria",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "diplodia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "fomes",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "funneliformis",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "hendersonia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "lophiostoma",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "microdiplodia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "mollisia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "mycosphaerella",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "nectria",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "peniophora",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "phoma",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "phomopsis",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "rhizoctonia",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "thanatephorus",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "trametes",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "trichothecium",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "verticillium",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.5714285714285714
+      },
+      {
+        "fungus_name": "acremonium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acrostalagmus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "armillaria",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "arthrinium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "auricularia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "beauveria",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "bipolaris",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "boeremia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "botryosphaeria",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "capnodium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "clathrospora",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "clonostachys",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "coniochaeta",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "curvularia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "cytospora",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "dinemasporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "discostroma",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "epicoccum",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "glomus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "hysterobrevium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "lasiodiplodia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "macrophomina",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "metasphaeria",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "monodictys",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "mycena",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "neofusicoccum",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "nigrospora",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "nodulisporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "paraconiothyrium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "paramyrothecium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "penicillium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "periconia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "pestalotia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "phellinus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "phomatospora",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "pleospora",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "rhizopus",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "sclerotinia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "setosphaeria",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "tapesia",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "trichocladium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "trichoderma",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acaulospora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "acrospermum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "akanthomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "albifimbria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "ampelomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "amphisphaeria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "angustimassarina",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aureobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "biscogniauxia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "candida",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "cephalosporium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "cephalotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "ceratobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "ceratocystis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "chaetomium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "coronophora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "corticium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "cryptocoryneum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "cucurbitaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "dematophora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "dichotomopilus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "dothiorella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "elsinoe",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "entrophospora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "exophiala",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "exosporium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "fenestella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "fusicoccum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "ganoderma",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000910097",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "geotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "gibberella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "gigaspora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "gnomonia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "humicola",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "hydnoporia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "hymenochaete",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "hypocrella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "hypoxylon",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "hysterium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "jattaea",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "lecanicillium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "leptoxyphium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "merismodes",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "microdochium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "microthyrium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "monilinia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mortierella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mucor",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "myrothecium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "necator",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "neosetophoma",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0001005999"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "oospora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "otthia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "paecilomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "perenniporia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "phialocephala",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pleurostromella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pseudogymnoascus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pyrenochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pyrenophora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pyrrhoderma",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "rhabdospora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "rhizophagus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "rhodotorula",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "robillarda",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000993770"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "saccharomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "saccothecium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "sarocladium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "schizophyllum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "scutellospora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "septoglomus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000993770"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "sordaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "sphaerulina",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000910097",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stachybotrys",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stemphylium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stereum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stigmina",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "synchytrium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "talaromyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "thelephora",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791"
+        ],
+        "category": "EMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "thelonectria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "thyridium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "torula",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "trichothyrium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000861498",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "typhula",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "umbelopsis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "valsaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "velutarina",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "xylaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000910097"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "top_fungi": [
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 7,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 1.0
+      },
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "leptosphaeria",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "septoria",
+        "plant_count": 6,
+        "plants": [
+          "wfo-0000292858",
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.8571428571428571
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "diaporthe",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0001005999",
+          "wfo-0001007437"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "fusarium",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "phyllosticta",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "rosellinia",
+        "plant_count": 5,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770",
+          "wfo-0001005999"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.7142857142857143
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 4,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000861498",
+          "wfo-0000910097",
+          "wfo-0000993770"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.5714285714285714
+      }
+    ],
+    "fungi_by_category": {
+      "amf_count": 12,
+      "emf_count": 9,
+      "endophytic_count": 58,
+      "saprotrophic_count": 433,
+      "top_per_category": [
+        {
+          "category": "AMF",
+          "fungus_name": "funneliformis",
+          "plant_count": 4
+        },
+        {
+          "category": "EMF",
+          "fungus_name": "thelephora",
+          "plant_count": 2
+        },
+        {
+          "category": "Endophytic",
+          "fungus_name": "phomopsis",
+          "plant_count": 4
+        },
+        {
+          "category": "Saprotrophic",
+          "fungus_name": "colletotrichum",
+          "plant_count": 7
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "fungus_count": 279,
+        "amf_count": 4,
+        "emf_count": 2,
+        "endophytic_count": 51,
+        "saprotrophic_count": 222
+      },
+      {
+        "plant_name": "Dactylis glomerata",
+        "fungus_count": 201,
+        "amf_count": 7,
+        "emf_count": 0,
+        "endophytic_count": 52,
+        "saprotrophic_count": 142
+      },
+      {
+        "plant_name": "Coffea arabica",
+        "fungus_count": 157,
+        "amf_count": 5,
+        "emf_count": 0,
+        "endophytic_count": 33,
+        "saprotrophic_count": 119
+      },
+      {
+        "plant_name": "Prunus spinosa",
+        "fungus_count": 95,
+        "amf_count": 0,
+        "emf_count": 1,
+        "endophytic_count": 10,
+        "saprotrophic_count": 84
+      },
+      {
+        "plant_name": "Rosa canina",
+        "fungus_count": 70,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 11,
+        "saprotrophic_count": 59
+      },
+      {
+        "plant_name": "Fragaria vesca",
+        "fungus_count": 38,
+        "amf_count": 7,
+        "emf_count": 0,
+        "endophytic_count": 7,
+        "saprotrophic_count": 24
+      },
+      {
+        "plant_name": "Quercus robur",
+        "fungus_count": 18,
+        "amf_count": 0,
+        "emf_count": 7,
+        "endophytic_count": 0,
+        "saprotrophic_count": 11
+      }
+    ]
+  },
+  "pollinator_network_profile": null,
+  "biocontrol_network_profile": {
+    "total_unique_predators": 30,
+    "total_unique_entomo_fungi": 9,
+    "specific_predator_matches": 13,
+    "specific_fungi_matches": 2,
+    "general_entomo_fungi_count": 13,
+    "matched_predator_pairs": [
+      {
+        "target": "adrastus rachifer",
+        "target_category": "Beetles",
+        "agent": "harpalus rufipes",
+        "agent_category": "Beetles"
+      },
+      {
+        "target": "aphis spiraecola",
+        "target_category": "Aphids",
+        "agent": "syrphus",
+        "agent_category": "Hoverflies"
+      },
+      {
+        "target": "athysanus argentarius",
+        "target_category": "Leafhoppers",
+        "agent": "harpalus rufipes",
+        "agent_category": "Beetles"
+      },
+      {
+        "target": "coccus hesperidum",
+        "target_category": "ScaleInsects",
+        "agent": "coccus hesperidum",
+        "agent_category": "ScaleInsects"
+      },
+      {
+        "target": "exomias trichopterus",
+        "target_category": "Beetles",
+        "agent": "harpalus rufipes",
+        "agent_category": "Beetles"
+      },
+      {
+        "target": "harpalus rufipes",
+        "target_category": "Beetles",
+        "agent": "turdus merula",
+        "agent_category": "Birds"
+      },
+      {
+        "target": "myzus persicae",
+        "target_category": "Aphids",
+        "agent": "harmonia axyridis",
+        "agent_category": "Beetles"
+      },
+      {
+        "target": "orgyia antiqua",
+        "target_category": "Moths",
+        "agent": "vespa velutina",
+        "agent_category": "Wasps"
+      },
+      {
+        "target": "otiorhynchus ligustici",
+        "target_category": "Beetles",
+        "agent": "harpalus rufipes",
+        "agent_category": "Beetles"
+      },
+      {
+        "target": "uroleucon",
+        "target_category": "Aphids",
+        "agent": "syrphidae",
+        "agent_category": "OtherPredators"
+      }
+    ],
+    "matched_fungi_pairs": [
+      {
+        "target": "vespa velutina",
+        "target_category": "Wasps",
+        "agent": "beauveria",
+        "agent_category": "Other"
+      }
+    ],
+    "predator_category_counts": {
+      "Beetles": 4,
+      "Hoverflies": 1,
+      "Lacewings": 1,
+      "Flies": 4,
+      "OtherPredators": 4,
+      "Wasps": 2,
+      "ScaleInsects": 3,
+      "Mites": 1,
+      "Moths": 3,
+      "Birds": 4,
+      "Butterflies": 1,
+      "Bats": 2
+    },
+    "herbivore_category_counts": {
+      "Beetles": 4,
+      "Moths": 1,
+      "Aphids": 3,
+      "Leafhoppers": 1,
+      "Wasps": 1,
+      "ScaleInsects": 1
+    },
+    "top_predators": [],
+    "top_entomo_fungi": [],
+    "hub_plants": []
+  },
+  "pathogen_control_profile": {
+    "total_unique_mycoparasites": 14,
+    "total_unique_pathogens": 306,
+    "specific_antagonist_matches": 0,
+    "specific_fungivore_matches": 17,
+    "general_mycoparasite_count": 17,
+    "matched_antagonist_pairs": [],
+    "matched_fungivore_pairs": [
+      {
+        "pathogen": "armillaria",
+        "fungivore": "ariolimax californicus",
+        "fungivore_category": "Snails"
+      },
+      {
+        "pathogen": "armillaria",
+        "fungivore": "krynickillus melanocephalus",
+        "fungivore_category": "OtherPredators"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "cis bidentatus",
+        "fungivore_category": "Beetles"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "cis bilamellatus",
+        "fungivore_category": "Beetles"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "cis castaneus",
+        "fungivore_category": "Beetles"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "ennearthron cornutum",
+        "fungivore_category": "Beetles"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "megalodacne fasciata",
+        "fungivore_category": "OtherPredators"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "megalodacne heros",
+        "fungivore_category": "OtherPredators"
+      },
+      {
+        "pathogen": "ganoderma",
+        "fungivore": "monadenia fidelis",
+        "fungivore_category": "Snails"
+      },
+      {
+        "pathogen": "laetiporus",
+        "fungivore": "prophysaon andersonii",
+        "fungivore_category": "OtherPredators"
+      },
+      {
+        "pathogen": "laetiporus",
+        "fungivore": "prophysaon foliolatum",
+        "fungivore_category": "OtherPredators"
+      },
+      {
+        "pathogen": "truncatella",
+        "fungivore": "acanthopagrus latus",
+        "fungivore_category": "OtherPredators"
+      }
+    ],
+    "top_mycoparasites": [],
+    "hub_plants": []
+  }
+}

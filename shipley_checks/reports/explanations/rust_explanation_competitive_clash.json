@@ -1,0 +1,590 @@
+{
+  "overall": {
+    "score": 55.47851575196431,
+    "stars": "★☆☆☆☆",
+    "label": "Poor",
+    "message": "Overall guild compatibility: 55.5/100"
+  },
+  "climate": {
+    "compatible": true,
+    "tier": "tier_3_humid_temperate",
+    "tier_display": "Tier 3 (Humid Temperate)",
+    "message": "All plants compatible with Tier 3 (Humid Temperate)"
+  },
+  "benefits": [
+    {
+      "benefit_type": "phylogenetic_diversity",
+      "metric_code": "M1",
+      "title": "High Phylogenetic Diversity",
+      "message": "Plants are distantly related (Faith's PD: 885.18)",
+      "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
+      "evidence": "Phylogenetic diversity score: 70.4/100"
+    },
+    {
+      "benefit_type": "insect_control",
+      "metric_code": "M3",
+      "title": "Natural Insect Pest Control",
+      "message": "Guild provides natural insect pest control",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
+      "evidence": "Biocontrol score: 100.0/100"
+    },
+    {
+      "benefit_type": "disease_control",
+      "metric_code": "M4",
+      "title": "Natural Disease Suppression",
+      "message": "Guild provides disease suppression via 9 antagonistic fungal mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
+      "evidence": "Pathogen control score: 100.0/100, covering 9 mechanisms"
+    },
+    {
+      "benefit_type": "mycorrhizal_network",
+      "metric_code": "M5",
+      "title": "Beneficial Mycorrhizal Network",
+      "message": "279 shared mycorrhizal fungal species connect 4 plants",
+      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "evidence": "Network score: 100.0/100, coverage: 57.1%"
+    }
+  ],
+  "warnings": [
+    {
+      "warning_type": "csr_conflict",
+      "severity": "High",
+      "icon": "⚠️",
+      "message": "8.4 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 5 Competitive, 1 Stress-tolerant",
+      "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
+    },
+    {
+      "warning_type": "ph_incompatible",
+      "severity": "Medium",
+      "icon": "⚠️",
+      "message": "Soil pH incompatibility detected",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum: Alkaline (pH 7-8)\nAlnus acuminata: Neutral (pH 6-7)\nCheirodendron trigynum: Neutral (pH 6-7)\nErythrina sandwicensis: Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera: Alkaline (pH 7-8)",
+      "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
+    }
+  ],
+  "risks": [],
+  "metrics_display": {
+    "universal": [
+      {
+        "code": "M1",
+        "name": "Pest & Pathogen Independence",
+        "score": 70.43033564555068,
+        "raw": 0.4126401547150537,
+        "interpretation": "Good"
+      },
+      {
+        "code": "M2",
+        "name": "Growth Compatibility",
+        "score": 1.3697478991596626,
+        "raw": 0.19904761904761903,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M3",
+        "name": "Insect Pest Control",
+        "score": 100.0,
+        "raw": 5.333333333333334,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M4",
+        "name": "Disease Suppression",
+        "score": 100.0,
+        "raw": 86.61904761904762,
+        "interpretation": "Excellent"
+      }
+    ],
+    "bonus": [
+      {
+        "code": "M5",
+        "name": "Beneficial Fungi",
+        "score": 100.0,
+        "raw": 4.257142857142856,
+        "interpretation": "Excellent"
+      },
+      {
+        "code": "M6",
+        "name": "Structural Diversity",
+        "score": 16.549526719039847,
+        "raw": 0.2026119216304338,
+        "interpretation": "Poor"
+      },
+      {
+        "code": "M7",
+        "name": "Pollinator Support",
+        "score": 0.0,
+        "raw": 0.0,
+        "interpretation": "Poor"
+      }
+    ]
+  },
+  "pest_profile": null,
+  "fungi_network_profile": {
+    "total_unique_fungi": 279,
+    "shared_fungi": [
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acremonium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "athelia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aureobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "botrytis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "coniochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "funneliformis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "fusarium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "geotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mucor",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "mycosphaerella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "nodulisporium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "paecilomyces",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "penicillium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "periconia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "preussia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "pyrenochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "rhinocladiella",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "stemphylium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "trichoderma",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "top_fungi": [
+      {
+        "fungus_name": "cladosporium",
+        "plant_count": 3,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.42857142857142855
+      },
+      {
+        "fungus_name": "acremonium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "alternaria",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aspergillus",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "athelia",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "aureobasidium",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "botrytis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "colletotrichum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "Saprotrophic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "coniochaeta",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000841021"
+        ],
+        "category": "Endophytic",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "fungus_name": "funneliformis",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000421791",
+          "wfo-0000757278"
+        ],
+        "category": "AMF",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "fungi_by_category": {
+      "amf_count": 6,
+      "emf_count": 2,
+      "endophytic_count": 33,
+      "saprotrophic_count": 238,
+      "top_per_category": [
+        {
+          "category": "AMF",
+          "fungus_name": "funneliformis",
+          "plant_count": 2
+        },
+        {
+          "category": "EMF",
+          "fungus_name": "thelephora",
+          "plant_count": 1
+        },
+        {
+          "category": "Endophytic",
+          "fungus_name": "coniochaeta",
+          "plant_count": 2
+        },
+        {
+          "category": "Saprotrophic",
+          "fungus_name": "cladosporium",
+          "plant_count": 3
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "fungus_count": 279,
+        "amf_count": 4,
+        "emf_count": 2,
+        "endophytic_count": 51,
+        "saprotrophic_count": 222
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "fungus_count": 32,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 14,
+        "saprotrophic_count": 18
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "fungus_count": 15,
+        "amf_count": 3,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 12
+      },
+      {
+        "plant_name": "Erythrina sandwicensis",
+        "fungus_count": 2,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 2
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Pfaffia gnaphalioides",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      },
+      {
+        "plant_name": "Virola bicuhyba",
+        "fungus_count": 0,
+        "amf_count": 0,
+        "emf_count": 0,
+        "endophytic_count": 0,
+        "saprotrophic_count": 0
+      }
+    ]
+  },
+  "pollinator_network_profile": null,
+  "biocontrol_network_profile": {
+    "total_unique_predators": 12,
+    "total_unique_entomo_fungi": 4,
+    "specific_predator_matches": 0,
+    "specific_fungi_matches": 0,
+    "general_entomo_fungi_count": 4,
+    "matched_predator_pairs": [],
+    "matched_fungi_pairs": [],
+    "predator_category_counts": {
+      "Lacewings": 1,
+      "Flies": 1,
+      "Wasps": 1,
+      "OtherPredators": 1,
+      "ScaleInsects": 3,
+      "Moths": 2,
+      "Birds": 1,
+      "Butterflies": 1,
+      "Bats": 1
+    },
+    "herbivore_category_counts": {},
+    "top_predators": [],
+    "top_entomo_fungi": [],
+    "hub_plants": []
+  },
+  "pathogen_control_profile": {
+    "total_unique_mycoparasites": 4,
+    "total_unique_pathogens": 197,
+    "specific_antagonist_matches": 0,
+    "specific_fungivore_matches": 1,
+    "general_mycoparasite_count": 5,
+    "matched_antagonist_pairs": [],
+    "matched_fungivore_pairs": [
+      {
+        "pathogen": "armillaria",
+        "fungivore": "ariolimax californicus",
+        "fungivore_category": "Snails"
+      }
+    ],
+    "top_mycoparasites": [],
+    "hub_plants": []
+  }
+}

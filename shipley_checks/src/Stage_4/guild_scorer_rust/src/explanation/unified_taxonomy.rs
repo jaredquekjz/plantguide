@@ -1,12 +1,12 @@
 //! Unified Taxonomic Categorization
 //!
 //! Single categorization system used across herbivores, predators, and pollinators.
-//! Based on frequency analysis of 16,800 herbivore records, 14,282 predator records,
-//! and 29,319 pollinator records.
+//! Prioritizes Kimi AI-generated categories (Phase 2) for accuracy.
 //!
 //! Functional categories preferred over pure taxonomy for clarity to gardeners/farmers.
 
 use serde::{Deserialize, Serialize};
+use rustc_hash::FxHashMap;
 
 /// Organism role context for categorization
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -16,7 +16,7 @@ pub enum OrganismRole {
     Pollinator,
 }
 
-/// Unified organism category (36 functional categories)
+/// Unified organism category
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub enum OrganismCategory {
     // Universal categories (appear in multiple roles)
@@ -31,6 +31,7 @@ pub enum OrganismCategory {
     Ants,
     SoldierBeetles,
     Flies,
+    Mosquitoes,   // Kimi "Mosquitoes"
 
     // Herbivore-specific categories
     Aphids,
@@ -43,9 +44,15 @@ pub enum OrganismCategory {
     Leafhoppers,
     Weevils,
     LeafBeetles,
-    Beetles,      // General beetles (wood borers, jewel beetles, etc.)
+    Beetles,      // General beetles
     Psyllids,     // Jumping plant lice
-    PlantBugs,    // Herbivorous Hemiptera (true bugs)
+    PlantBugs,    // Herbivorous Hemiptera
+    TrueBugs,     // Kimi "Bugs" (Hemiptera)
+    Sawflies,     // Kimi "Sawflies"
+    Cicadas,      // Kimi "Cicadas"
+    Grasshoppers, // Kimi "Grasshoppers"
+    Crickets,     // Kimi "Crickets"
+    Snails,       // Kimi "Snails" (includes slugs)
 
     // Predator-specific categories
     Spiders,
@@ -59,23 +66,90 @@ pub enum OrganismCategory {
     Harvestmen,
     Earwigs,
     Centipedes,
+    Mantises,     // Kimi "Mantises"
+    Dragonflies,  // Kimi "Dragonflies"
+    Amphibians,   // Frogs, Salamanders
+    Reptiles,     // Lizards, Snakes
 
     // Catch-all categories
     OtherHerbivores,
     OtherPredators,
     OtherPollinators,
     Other,
+    
+    // Fungi
+    Fungi,
+    EntomopathogenicFungus,
 }
 
 impl OrganismCategory {
     /// Categorize an organism by functional/ecological guild
     ///
+    /// **PRIORITY**:
+    /// 1. Kimi AI Lookup (Genus-based)
+    /// 2. Regex Pattern Matching (Legacy Fallback)
+    ///
     /// # Arguments
     /// * `name` - Organism scientific name
-    /// * `role` - Context hint (herbivore, predator, or pollinator) used for fallback only
-    pub fn from_name(name: &str, role: Option<OrganismRole>) -> Self {
+    /// * `categories_map` - Map of Genus -> Kimi Category
+    /// * `role` - Context hint (herbivore, predator, or pollinator)
+    pub fn from_name(
+        name: &str, 
+        categories_map: &FxHashMap<String, String>,
+        role: Option<OrganismRole>
+    ) -> Self {
         let name_lower = name.to_lowercase();
+        
+        // 1. Extract Genus (first word)
+        let genus = name_lower.split_whitespace().next().unwrap_or(&name_lower);
 
+        // 2. Kimi AI Lookup
+        if let Some(kimi_label) = categories_map.get(genus) {
+            match kimi_label.as_str() {
+                "Snails" => return OrganismCategory::Snails,
+                "Sawflies" => return OrganismCategory::Sawflies,
+                "Bugs" => return OrganismCategory::TrueBugs,
+                "Cicadas" => return OrganismCategory::Cicadas,
+                "Grasshoppers" => return OrganismCategory::Grasshoppers,
+                "Crickets" => return OrganismCategory::Crickets,
+                "Mantises" => return OrganismCategory::Mantises,
+                "Mosquitoes" => return OrganismCategory::Mosquitoes,
+                "Dragonflies" => return OrganismCategory::Dragonflies,
+                "Frogs" | "Salamanders" => return OrganismCategory::Amphibians,
+                "Lizards" | "Snakes" | "Tortoises" => return OrganismCategory::Reptiles,
+                "Ants" => return OrganismCategory::Ants,
+                "Aphids" => return OrganismCategory::Aphids,
+                "Bats" => return OrganismCategory::Bats,
+                "Bees" => {
+                    // Refine Bees if possible, else generic
+                    if name_lower.contains("bombus") { return OrganismCategory::Bumblebees; }
+                    if name_lower.contains("apis") { return OrganismCategory::HoneyBees; }
+                    return OrganismCategory::SolitaryBees; // Default for "Bees"
+                },
+                "Beetles" => return OrganismCategory::Beetles,
+                "Birds" => return OrganismCategory::Birds,
+                "Butterflies" => return OrganismCategory::Butterflies,
+                "Centipedes" => return OrganismCategory::Centipedes,
+                "Earwigs" => return OrganismCategory::Earwigs,
+                "Flies" => {
+                     if name_lower.contains("syrph") { return OrganismCategory::Hoverflies; }
+                     return OrganismCategory::Flies;
+                },
+                "Lacewings" => return OrganismCategory::Lacewings,
+                "Leafhoppers" => return OrganismCategory::Leafhoppers,
+                "Mites" => return OrganismCategory::Mites,
+                "Moths" => return OrganismCategory::Moths,
+                "Psyllids" => return OrganismCategory::Psyllids,
+                "Scales" => return OrganismCategory::ScaleInsects,
+                "Spiders" => return OrganismCategory::Spiders,
+                "Thrips" => return OrganismCategory::Thrips,
+                "Wasps" => return OrganismCategory::Wasps,
+                "Whiteflies" => return OrganismCategory::Whiteflies,
+                _ => {} // Fallback to regex if unknown Kimi label or "Plants"/"Fungi"
+            }
+        }
+
+        // 3. Regex Fallback (Legacy Logic) - kept for organisms NOT in Kimi list
         // ====================================================================
         // UNIVERSAL CATEGORIES (appear in multiple roles)
         // ====================================================================
@@ -450,6 +524,7 @@ impl OrganismCategory {
             OrganismCategory::Ants => "Ants",
             OrganismCategory::SoldierBeetles => "Soldier Beetles",
             OrganismCategory::Flies => "Flies",
+            OrganismCategory::Mosquitoes => "Mosquitoes",
             OrganismCategory::Aphids => "Aphids",
             OrganismCategory::ScaleInsects => "Scale Insects",
             OrganismCategory::Mites => "Mites",
@@ -463,6 +538,12 @@ impl OrganismCategory {
             OrganismCategory::Beetles => "Beetles",
             OrganismCategory::Psyllids => "Psyllids",
             OrganismCategory::PlantBugs => "Plant Bugs",
+            OrganismCategory::TrueBugs => "True Bugs",
+            OrganismCategory::Sawflies => "Sawflies",
+            OrganismCategory::Cicadas => "Cicadas",
+            OrganismCategory::Grasshoppers => "Grasshoppers",
+            OrganismCategory::Crickets => "Crickets",
+            OrganismCategory::Snails => "Snails & Slugs",
             OrganismCategory::Spiders => "Spiders",
             OrganismCategory::GroundBeetles => "Ground Beetles",
             OrganismCategory::RoveBeetles => "Rove Beetles",
@@ -474,10 +555,16 @@ impl OrganismCategory {
             OrganismCategory::Harvestmen => "Harvestmen",
             OrganismCategory::Earwigs => "Earwigs",
             OrganismCategory::Centipedes => "Centipedes",
+            OrganismCategory::Mantises => "Mantises",
+            OrganismCategory::Dragonflies => "Dragonflies",
+            OrganismCategory::Amphibians => "Amphibians",
+            OrganismCategory::Reptiles => "Reptiles",
             OrganismCategory::OtherHerbivores => "Other Herbivores",
             OrganismCategory::OtherPredators => "Other Predators",
             OrganismCategory::OtherPollinators => "Other Pollinators",
             OrganismCategory::Other => "Other",
+            OrganismCategory::Fungi => "Fungi",
+            OrganismCategory::EntomopathogenicFungus => "Entomopathogenic Fungus",
         }
     }
 }
