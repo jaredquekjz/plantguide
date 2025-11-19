@@ -155,6 +155,52 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 *Evidence:* Pollinator support score: 95.0/100
 
+#### Pollinator Network Profile
+
+*Qualitative information about pollinator networks (100% of M7 scoring)*
+
+**Total unique pollinator species:** 84
+
+**Pollinator Community Composition:**
+
+- 1 Honey Bees - 1.2%
+- 25 Solitary Bees - 29.8%
+- 21 Muscid Flies - 25.0%
+- 5 Pollen Beetles - 6.0%
+- 7 Wasps - 8.3%
+- 23 Other - 27.4%
+
+**Shared Pollinators (visiting ≥2 plants):**
+
+2 pollinator species are shared across multiple plants in this guild.
+
+**Top Network Pollinators (by connectivity):**
+
+| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |
+|------|-------------------|----------|------------------|----------------------|
+| 1 | Apis mellifera | Honey Bees | 2 plants | 28.6% |
+| 2 | Lasioglossum | Solitary Bees | 2 plants | 28.6% |
+| 3 | Aedes impiger | Flies | 1 plants | 14.3% |
+| 4 | Aedes nigripes | Flies | 1 plants | 14.3% |
+| 5 | Andrena carlini | Solitary Bees | 1 plants | 14.3% |
+| 6 | Andrena columbiana | Solitary Bees | 1 plants | 14.3% |
+| 7 | Andrena flavipes | Solitary Bees | 1 plants | 14.3% |
+| 8 | Andrena marginata | Solitary Bees | 1 plants | 14.3% |
+| 9 | Andrena nothoscordi | Solitary Bees | 1 plants | 14.3% |
+| 10 | Anoplius illinoensis | Wasps | 1 plants | 14.3% |
+
+**Network Hubs (most connected plants):**
+
+| Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
+|-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
+| Maianthemum racemosum | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
+| Anaphalis margaritacea | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
+| Mercurialis perennis | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Fraxinus excelsior | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Deutzia scabra | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Diospyros kaki | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Rubus moorei | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
 ## Warnings
 
 ⚠️ **Soil pH incompatibility detected**

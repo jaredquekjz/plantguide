@@ -571,7 +571,283 @@
       }
     ]
   },
-  "pollinator_network_profile": null,
+  "pollinator_network_profile": {
+    "total_unique_pollinators": 84,
+    "shared_pollinators": [
+      {
+        "pollinator_name": "Apis mellifera",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000241769",
+          "wfo-0000832453"
+        ],
+        "category": "HoneyBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Lasioglossum",
+        "plant_count": 2,
+        "plants": [
+          "wfo-0000092746",
+          "wfo-0000690499"
+        ],
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      }
+    ],
+    "top_pollinators": [
+      {
+        "pollinator_name": "Apis mellifera",
+        "plant_count": 2,
+        "category": "HoneyBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Lasioglossum",
+        "plant_count": 2,
+        "category": "SolitaryBees",
+        "network_contribution": 0.2857142857142857
+      },
+      {
+        "pollinator_name": "Aedes impiger",
+        "plant_count": 1,
+        "category": "Flies",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Aedes nigripes",
+        "plant_count": 1,
+        "category": "Flies",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena carlini",
+        "plant_count": 1,
+        "category": "SolitaryBees",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena columbiana",
+        "plant_count": 1,
+        "category": "SolitaryBees",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena flavipes",
+        "plant_count": 1,
+        "category": "SolitaryBees",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena marginata",
+        "plant_count": 1,
+        "category": "SolitaryBees",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Andrena nothoscordi",
+        "plant_count": 1,
+        "category": "SolitaryBees",
+        "network_contribution": 0.14285714285714285
+      },
+      {
+        "pollinator_name": "Anoplius illinoensis",
+        "plant_count": 1,
+        "category": "Wasps",
+        "network_contribution": 0.14285714285714285
+      }
+    ],
+    "pollinators_by_category": {
+      "honey_bees_count": 1,
+      "bumblebees_count": 0,
+      "solitary_bees_count": 25,
+      "hover_flies_count": 0,
+      "muscid_flies_count": 21,
+      "mosquitoes_count": 0,
+      "other_flies_count": 0,
+      "butterflies_count": 0,
+      "moths_count": 0,
+      "pollen_beetles_count": 5,
+      "other_beetles_count": 0,
+      "wasps_count": 7,
+      "birds_count": 0,
+      "bats_count": 0,
+      "other_count": 23,
+      "top_per_category": [
+        {
+          "pollinator_name": "Apis mellifera",
+          "plant_count": 2,
+          "category": "HoneyBees",
+          "network_contribution": 0.2857142857142857
+        },
+        {
+          "pollinator_name": "Aedes impiger",
+          "plant_count": 1,
+          "category": "Flies",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Aedes nigripes",
+          "plant_count": 1,
+          "category": "Flies",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Anoplius illinoensis",
+          "plant_count": 1,
+          "category": "Wasps",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Lasioglossum",
+          "plant_count": 2,
+          "category": "SolitaryBees",
+          "network_contribution": 0.2857142857142857
+        },
+        {
+          "pollinator_name": "Andrena carlini",
+          "plant_count": 1,
+          "category": "SolitaryBees",
+          "network_contribution": 0.14285714285714285
+        }
+      ]
+    },
+    "hub_plants": [
+      {
+        "plant_name": "Maianthemum racemosum",
+        "pollinator_count": 52,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 12,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 14,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 4,
+        "other_beetles_count": 0,
+        "wasps_count": 7,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 15
+      },
+      {
+        "plant_name": "Anaphalis margaritacea",
+        "pollinator_count": 30,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 12,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 7,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 1,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 10
+      },
+      {
+        "plant_name": "Mercurialis perennis",
+        "pollinator_count": 3,
+        "honey_bees_count": 1,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 2,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Fraxinus excelsior",
+        "pollinator_count": 1,
+        "honey_bees_count": 1,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Deutzia scabra",
+        "pollinator_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Diospyros kaki",
+        "pollinator_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      },
+      {
+        "plant_name": "Rubus moorei",
+        "pollinator_count": 0,
+        "honey_bees_count": 0,
+        "bumblebees_count": 0,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 0,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 0
+      }
+    ]
+  },
   "biocontrol_network_profile": {
     "total_unique_predators": 25,
     "total_unique_entomo_fungi": 2,
