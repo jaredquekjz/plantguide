@@ -176,6 +176,20 @@ cat("  Loading iNaturalist vernaculars (all languages)...\n")
 dbExecute(con, sprintf("
   CREATE OR REPLACE VIEW inat_vernaculars AS
   SELECT * FROM read_parquet('%s')
+  WHERE 
+    -- Filter out known code lexicons
+    lexicon NOT IN (
+      'Aou 4 Letter Codes', 
+      'Vermont Flora Codes', 
+      'U.S.D.A. Symbol', 
+      'Aou 6 Letter Codes', 
+      '6 Letter Flora Codes', 
+      'Usda Plant Code', 
+      'Ontario Plant Codes'
+    )
+    -- Safety net: Filter out 4+ letter uppercase codes (with optional numbers)
+    -- This catches ~1,800 codes mislabeled as 'English' (e.g., 'LONJAP')
+    AND NOT regexp_matches(vernacularName, '^[A-Z]{4,}[0-9]*$')
 ", INAT_VERNACULARS_FILE))
 
 # Create matched view (taxa + vernaculars by language - wide format)
@@ -192,10 +206,10 @@ all_languages <- dbGetQuery(con, "
 cat(sprintf("  Found %d languages in vernacular data\n", length(all_languages)))
 
 # Language mappings for combined codes
-# en + und -> en (English + undefined)
+# en: English only (removed 'und' to prevent pollution with codes like ACESA1)
 # zh + zh-CN -> zh (Chinese variants)
 language_mappings <- list(
-  en = c("en", "und"),
+  en = c("en"),
   zh = c("zh", "zh-CN")
 )
 
@@ -216,7 +230,7 @@ for (lang in all_languages) {
   col_name <- gsub("-", "_", lang)
 
   sql_fragment <- sprintf(
-    "STRING_AGG(CASE WHEN v.language IN (%s) THEN v.vernacularName END, '; ')\n      FILTER (WHERE v.language IN (%s)) as vernacular_name_%s",
+    "STRING_AGG(CASE WHEN v.language IN (%s) AND NOT regexp_matches(v.vernacularName, '^[A-Z]{4,}[0-9]*$') THEN v.vernacularName END, '; ')\n      FILTER (WHERE v.language IN (%s) AND NOT regexp_matches(v.vernacularName, '^[A-Z]{4,}[0-9]*$')) as vernacular_name_%s",
     lang_codes, lang_codes, col_name
   )
   language_columns <- c(language_columns, sql_fragment)
