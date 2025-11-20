@@ -311,6 +311,8 @@ impl GuildData {
                 col("tier_4_continental"),
                 col("tier_5_boreal_polar"),
                 col("tier_6_arid"),
+                col("vernacular_name_en"),
+                col("vernacular_name_zh"),
             ])
             .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
             .collect()

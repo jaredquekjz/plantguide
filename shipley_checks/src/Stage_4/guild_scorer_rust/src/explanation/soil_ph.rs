@@ -2,6 +2,7 @@ use crate::explanation::types::{Severity, WarningCard};
 use anyhow::Result;
 use polars::prelude::*;
 use serde::{Deserialize, Serialize};
+use crate::utils::get_display_name;
 
 /// EIVE R semantic binning from Dengler et al. 2023, Hill et al. 1999
 /// Source: src/Stage_3/generate_100_plants_evaluation.py EIVE_SCALES['R']
@@ -100,12 +101,21 @@ pub fn check_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<PhCompa
             return Ok(None);
         };
 
+        // Try to get vernacular columns (might not exist if using old eager loading without them)
+        let vernacular_en = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
+        let vernacular_zh = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
+
         // Build plant categories
         let mut plant_categories = Vec::new();
-        for (name_opt, r_opt) in names.into_iter().zip(r_values.into_iter()) {
-            if let (Some(name), Some(r)) = (name_opt, r_opt) {
+        for idx in 0..guild_plants.height() {
+            if let (Some(name), Some(r)) = (names.get(idx), r_values.get(idx)) {
+                let en = vernacular_en.and_then(|c| c.get(idx));
+                let zh = vernacular_zh.and_then(|c| c.get(idx));
+                
+                let display_name = get_display_name(name, en, zh);
+                
                 plant_categories.push(PhCategory {
-                    plant_name: name.to_string(),
+                    plant_name: display_name,
                     r_value: r,
                     category: get_ph_category(r).to_string(),
                 });

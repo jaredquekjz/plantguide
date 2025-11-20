@@ -21,7 +21,7 @@
 use polars::prelude::*;
 use rustc_hash::{FxHashSet, FxHashMap};
 use anyhow::{Result, Context};
-use crate::utils::{Calibration, percentile_normalize, filter_to_guild};
+use crate::utils::{Calibration, percentile_normalize, filter_to_guild, get_display_name};
 use std::collections::HashSet;
 
 /// Column requirements for M6 calculation (from plants parquet)
@@ -31,6 +31,8 @@ pub const REQUIRED_PLANT_COLS: &[&str] = &[
     "height_m",
     "light_pref",           // Aliased from "EIVEres-L_complete"
     "try_growth_form",
+    "vernacular_name_en",
+    "vernacular_name_zh",
 ];
 
 /// Plant with height and light preference information
@@ -87,6 +89,8 @@ pub fn calculate_m6(
             col("height_m"),
             col("EIVEres-L_complete").alias("light_pref"),
             col("try_growth_form"),
+            col("vernacular_name_en"),
+            col("vernacular_name_zh"),
         ])
         .collect()
         .with_context(|| "M6: Failed to materialize plant columns")?;
@@ -216,6 +220,8 @@ pub fn calculate_m6(
     // Group plants by growth form with heights and light preferences
     let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
     let light_prefs = guild_plants.column("light_pref")?.f64()?;
+    let vernacular_en_col = guild_plants.column("vernacular_name_en")?.str()?;
+    let vernacular_zh_col = guild_plants.column("vernacular_name_zh")?.str()?;
     let mut form_groups: FxHashMap<String, Vec<PlantHeight>> = FxHashMap::default();
 
     for idx in 0..n {
@@ -226,11 +232,17 @@ pub fn calculate_m6(
         ) {
             if !form.is_empty() {
                 let light_pref = light_prefs.get(idx);
+                
+                let en_name = vernacular_en_col.get(idx);
+                let zh_name = vernacular_zh_col.get(idx);
+                
+                let display_name = get_display_name(name, en_name, zh_name);
+
                 form_groups
                     .entry(form.to_string())
                     .or_insert_with(Vec::new)
                     .push(PlantHeight {
-                        name: name.to_string(),
+                        name: display_name,
                         height_m: height,
                         light_pref,
                     });
