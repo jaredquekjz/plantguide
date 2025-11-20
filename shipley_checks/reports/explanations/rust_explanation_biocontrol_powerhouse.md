@@ -34,13 +34,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific (weight 1.0) |
-| cinara | Aphids | eriozona syrphoides | Other Predators | Specific (weight 1.0) |
-| cynips longiventris | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
-| eurytoma brunniventris | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific (weight 1.0) |
+| cinara | Other Herbivores | eriozona syrphoides | Other Predators | Specific (weight 1.0) |
+| cynips longiventris | Other Herbivores | mesopolobus fasciiventris | Other Predators | Specific (weight 1.0) |
+| eurytoma brunniventris | Other Herbivores | mesopolobus fasciiventris | Other Predators | Specific (weight 1.0) |
+| harpalus rufipes | Ground Beetles | turdus merula | Birds | Specific (weight 1.0) |
 | nabidae | Other Herbivores | vireo gilvus | Birds | Specific (weight 1.0) |
 | pseudococcus | Scale Insects | syrphidae | Other Predators | Specific (weight 1.0) |
-| synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
+| synergus pallipes | Other Herbivores | mesopolobus fasciiventris | Other Predators | Specific (weight 1.0) |
 | tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific (weight 1.0) |
 
 ### Natural Disease Suppression [M4 - 97.3/100]
@@ -66,14 +66,14 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
-| ganoderma | cis bidentatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis bilamellatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis castaneus | Beetles | Specific (weight 1.0) |
-| ganoderma | ennearthron cornutum | Beetles | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Other Predators | Specific (weight 1.0) |
+| ganoderma | cis bidentatus | Other Predators | Specific (weight 1.0) |
+| ganoderma | cis bilamellatus | Other Predators | Specific (weight 1.0) |
+| ganoderma | cis castaneus | Other Predators | Specific (weight 1.0) |
+| ganoderma | ennearthron cornutum | Other Predators | Specific (weight 1.0) |
 | ganoderma | megalodacne fasciata | Other Predators | Specific (weight 1.0) |
 | ganoderma | megalodacne heros | Other Predators | Specific (weight 1.0) |
-| ganoderma | monadenia fidelis | Snails & Slugs | Specific (weight 1.0) |
+| ganoderma | monadenia fidelis | Other Predators | Specific (weight 1.0) |
 | laetiporus | prophysaon andersonii | Other Predators | Specific (weight 1.0) |
 | laetiporus | prophysaon foliolatum | Other Predators | Specific (weight 1.0) |
 
@@ -130,17 +130,17 @@ Shared mycorrhizal fungi create underground networks that facilitate nutrient ex
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Acer saccharinum: 33.7m, EIVE-L: 5.3 (flexible)
-  - Quercus robur: 27.1m, EIVE-L: 6.2 (flexible)
+  - Acer saccharinum (river maple): 33.7m, EIVE-L: 5.3 (flexible)
+  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)
 
 **Shrub Layer (1-5m):**
-  - Sambucus nigra: 4.5m, EIVE-L: 5.9 (flexible)
-  - Crataegus monogyna: 4.3m, EIVE-L: 6.9 (flexible)
-  - Prunus spinosa: 2.1m, EIVE-L: 7.1 (flexible)
-  - Rosa canina: 2.0m, EIVE-L: 7.2 (flexible)
+  - Sambucus nigra (Elder): 4.5m, EIVE-L: 5.9 (flexible)
+  - Crataegus monogyna (English Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)
+  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)
+  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)
 
 **Ground Layer (<1m):**
-  - Fragaria vesca: 0.1m, EIVE-L: 5.9 (flexible)
+  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
 7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -166,14 +166,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 - 2 Honey Bees - 0.8%
 - 13 Bumblebees - 5.4%
-- 49 Solitary Bees - 20.4%
-- 3 Hover Flies - 1.2%
-- 70 Muscid Flies - 29.2%
-- 4 Butterflies - 1.7%
-- 15 Moths - 6.2%
-- 20 Pollen Beetles - 8.3%
-- 26 Wasps - 10.8%
-- 35 Other - 14.6%
+- 45 Solitary Bees - 18.8%
+- 25 Hover Flies - 10.4%
+- 22 Muscid Flies - 9.2%
+- 3 Butterflies - 1.2%
+- 1 Moths - 0.4%
+- 1 Wasps - 0.4%
+- 122 Other - 50.8%
 
 **Shared Pollinators (visiting ≥2 plants):**
 
@@ -198,13 +197,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Crataegus monogyna | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
-| Prunus spinosa | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Acer saccharinum | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
-| Sambucus nigra | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
-| Fragaria vesca | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Crataegus monogyna | 108 | 1 | 9 | 30 | 9 | 13 | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 0 | 0 | 43 |
+| Prunus spinosa | 69 | 1 | 11 | 15 | 8 | 7 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
+| Rosa canina | 40 | 1 | 8 | 3 | 11 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
+| Acer saccharinum | 37 | 0 | 0 | 6 | 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 28 |
+| Sambucus nigra | 28 | 2 | 5 | 4 | 4 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 12 |
+| Fragaria vesca | 15 | 1 | 3 | 4 | 1 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
+| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 
 ## Warnings
 
@@ -213,13 +212,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 EIVE R range: 5.2-6.9 (difference: 1.7 units)
 
 Plant pH preferences:
-Acer saccharinum: Slightly Acidic (pH 5-6)
-Crataegus monogyna: Neutral (pH 6-7)
-Fragaria vesca: Neutral (pH 6-7)
-Prunus spinosa: Neutral (pH 6-7)
-Quercus robur: Slightly Acidic (pH 5-6)
-Rosa canina: Neutral (pH 6-7)
-Sambucus nigra: Neutral (pH 6-7)  
+Acer saccharinum (river maple): Slightly Acidic (pH 5-6)
+Crataegus monogyna (English Hawthorn): Neutral (pH 6-7)
+Fragaria vesca (European strawberry): Neutral (pH 6-7)
+Prunus spinosa (Blackthorn): Neutral (pH 6-7)
+Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
+Rosa canina (Dog-rose): Neutral (pH 6-7)
+Sambucus nigra (Elder): Neutral (pH 6-7)  
 *Advice:* Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.
 
 ## Risks

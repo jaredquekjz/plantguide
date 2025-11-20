@@ -59,7 +59,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum: Alkaline (pH 7-8)\nAlnus acuminata: Neutral (pH 6-7)\nCheirodendron trigynum: Neutral (pH 6-7)\nErythrina sandwicensis: Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera: Alkaline (pH 7-8)",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum (Chives): Alkaline (pH 7-8)\nAlnus acuminata (Andean Alder): Neutral (pH 6-7)\nCheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)\nErythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera (Grape Vine): Alkaline (pH 7-8)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
@@ -804,15 +804,13 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "Lacewings": 1,
-      "Flies": 1,
-      "Wasps": 1,
-      "OtherPredators": 1,
-      "ScaleInsects": 3,
-      "Moths": 2,
-      "Birds": 1,
       "Butterflies": 1,
-      "Bats": 1
+      "Hoverflies": 1,
+      "OtherPredators": 4,
+      "Lacewings": 1,
+      "Wasps": 1,
+      "Birds": 1,
+      "ScaleInsects": 3
     },
     "herbivore_category_counts": {},
     "top_predators": [],
@@ -830,7 +828,7 @@
       {
         "pathogen": "armillaria",
         "fungivore": "ariolimax californicus",
-        "fungivore_category": "Snails"
+        "fungivore_category": "OtherPredators"
       }
     ],
     "top_mycoparasites": [],

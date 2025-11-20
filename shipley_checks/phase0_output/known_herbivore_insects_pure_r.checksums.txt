@@ -1,0 +1,6 @@
+MD5:    054f008686e0f38c84613d6155cb641e
+SHA256: 6f8e1eaa9ef4235c8d9a4005b02c7c465ffa3d0accd0edddcd235c0687361a11
+
+File: shipley_checks/validation/known_herbivore_insects_pure_r.csv
+Size: 1,720,910 bytes
+Generated: 2025-11-10 09:59:31

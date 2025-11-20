@@ -35,7 +35,7 @@
       "severity": "High",
       "icon": "🚨",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nAlyxia ruscifolia: Neutral (pH 6-7)\nCarex mucronata: Strongly Alkaline (pH >8)\nEucalyptus melanophloia: Neutral (pH 6-7)\nHibbertia diffusa: Slightly Acidic (pH 5-6)\nJuncus usitatus: Neutral (pH 6-7)\nSenna artemisioides: Neutral (pH 6-7)\nSporobolus compositus: Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nAlyxia ruscifolia (Chain Fruit): Neutral (pH 6-7)\nCarex mucronata: Strongly Alkaline (pH >8)\nEucalyptus melanophloia (Silver-leaved Ironbark): Neutral (pH 6-7)\nHibbertia diffusa (Wedge Guinea Flower): Slightly Acidic (pH 5-6)\nJuncus usitatus (Common Rush): Neutral (pH 6-7)\nSenna artemisioides (Silver Cassia): Neutral (pH 6-7)\nSporobolus compositus (Composite Dropseed): Neutral (pH 6-7)",
       "advice": "Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments."
     }
   ],
@@ -278,7 +278,7 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "Bats": 4
+      "OtherPredators": 4
     },
     "herbivore_category_counts": {},
     "top_predators": [],

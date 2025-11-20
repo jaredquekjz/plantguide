@@ -10,6 +10,7 @@
 !/artifacts/
 !/papers/
 !/shipley_checks/
+!/.antigravity/
 
 # Keep artifacts ignored by default; selectively unignore small repro files
 artifacts/**

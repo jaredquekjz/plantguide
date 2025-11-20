@@ -49,7 +49,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 22.8m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior: 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki: 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra: 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea: 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei: 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum: 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis: 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (pearly everlasting): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific Solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": "Stratification quality: 1.00"
     },
     {
@@ -67,7 +67,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea: Neutral (pH 6-7)\nDeutzia scabra: Alkaline (pH 7-8)\nDiospyros kaki: Slightly Acidic (pH 5-6)\nFraxinus excelsior: Alkaline (pH 7-8)\nMaianthemum racemosum: Neutral (pH 6-7)\nMercurialis perennis: Alkaline (pH 7-8)\nRubus moorei: Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea (pearly everlasting): Neutral (pH 6-7)\nDeutzia scabra (Deutzia): Alkaline (pH 7-8)\nDiospyros kaki (Japanese Persimmon): Slightly Acidic (pH 5-6)\nFraxinus excelsior (Ash): Alkaline (pH 7-8)\nMaianthemum racemosum (Pacific Solomon's seal): Neutral (pH 6-7)\nMercurialis perennis (Dog's Mercury): Alkaline (pH 7-8)\nRubus moorei (bush lawyer): Neutral (pH 6-7)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
@@ -611,13 +611,13 @@
       {
         "pollinator_name": "Aedes impiger",
         "plant_count": 1,
-        "category": "Flies",
+        "category": "OtherPollinators",
         "network_contribution": 0.14285714285714285
       },
       {
         "pollinator_name": "Aedes nigripes",
         "plant_count": 1,
-        "category": "Flies",
+        "category": "OtherPollinators",
         "network_contribution": 0.14285714285714285
       },
       {
@@ -653,51 +653,27 @@
       {
         "pollinator_name": "Anoplius illinoensis",
         "plant_count": 1,
-        "category": "Wasps",
+        "category": "OtherPollinators",
         "network_contribution": 0.14285714285714285
       }
     ],
     "pollinators_by_category": {
       "honey_bees_count": 1,
       "bumblebees_count": 0,
-      "solitary_bees_count": 25,
-      "hover_flies_count": 0,
-      "muscid_flies_count": 21,
+      "solitary_bees_count": 21,
+      "hover_flies_count": 8,
+      "muscid_flies_count": 3,
       "mosquitoes_count": 0,
       "other_flies_count": 0,
       "butterflies_count": 0,
       "moths_count": 0,
-      "pollen_beetles_count": 5,
+      "pollen_beetles_count": 0,
       "other_beetles_count": 0,
-      "wasps_count": 7,
+      "wasps_count": 1,
       "birds_count": 0,
       "bats_count": 0,
-      "other_count": 23,
+      "other_count": 49,
       "top_per_category": [
-        {
-          "pollinator_name": "Apis mellifera",
-          "plant_count": 2,
-          "category": "HoneyBees",
-          "network_contribution": 0.2857142857142857
-        },
-        {
-          "pollinator_name": "Aedes impiger",
-          "plant_count": 1,
-          "category": "Flies",
-          "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Aedes nigripes",
-          "plant_count": 1,
-          "category": "Flies",
-          "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Anoplius illinoensis",
-          "plant_count": 1,
-          "category": "Wasps",
-          "network_contribution": 0.14285714285714285
-        },
         {
           "pollinator_name": "Lasioglossum",
           "plant_count": 2,
@@ -709,6 +685,24 @@
           "plant_count": 1,
           "category": "SolitaryBees",
           "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Aedes impiger",
+          "plant_count": 1,
+          "category": "OtherPollinators",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Aedes nigripes",
+          "plant_count": 1,
+          "category": "OtherPollinators",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Apis mellifera",
+          "plant_count": 2,
+          "category": "HoneyBees",
+          "network_contribution": 0.2857142857142857
         }
       ]
     },
@@ -718,19 +712,19 @@
         "pollinator_count": 52,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
-        "solitary_bees_count": 12,
-        "hover_flies_count": 0,
-        "muscid_flies_count": 14,
+        "solitary_bees_count": 8,
+        "hover_flies_count": 3,
+        "muscid_flies_count": 3,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "pollen_beetles_count": 4,
+        "pollen_beetles_count": 0,
         "other_beetles_count": 0,
-        "wasps_count": 7,
+        "wasps_count": 1,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 15
+        "other_count": 37
       },
       {
         "plant_name": "Anaphalis margaritacea",
@@ -738,18 +732,18 @@
         "honey_bees_count": 0,
         "bumblebees_count": 0,
         "solitary_bees_count": 12,
-        "hover_flies_count": 0,
-        "muscid_flies_count": 7,
+        "hover_flies_count": 5,
+        "muscid_flies_count": 0,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "pollen_beetles_count": 1,
+        "pollen_beetles_count": 0,
         "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 10
+        "other_count": 13
       },
       {
         "plant_name": "Mercurialis perennis",
@@ -857,19 +851,19 @@
     "matched_predator_pairs": [
       {
         "target": "adoxophyes orana",
-        "target_category": "Moths",
+        "target_category": "Caterpillars",
         "agent": "eptesicus serotinus",
         "agent_category": "Bats"
       },
       {
         "target": "adoxophyes orana",
-        "target_category": "Moths",
+        "target_category": "Caterpillars",
         "agent": "myotis daubentonii",
         "agent_category": "Bats"
       },
       {
         "target": "adoxophyes orana",
-        "target_category": "Moths",
+        "target_category": "Caterpillars",
         "agent": "myotis mystacinus",
         "agent_category": "Bats"
       },
@@ -877,7 +871,7 @@
         "target": "aphis",
         "target_category": "Aphids",
         "agent": "adalia bipunctata",
-        "agent_category": "Beetles"
+        "agent_category": "Ladybugs"
       },
       {
         "target": "aphis",
@@ -895,7 +889,7 @@
         "target": "aphis",
         "target_category": "Aphids",
         "agent": "platycheirus scutatus",
-        "agent_category": "Flies"
+        "agent_category": "Hoverflies"
       },
       {
         "target": "aphis",
@@ -919,24 +913,24 @@
         "target": "myzus persicae",
         "target_category": "Aphids",
         "agent": "adalia bipunctata",
-        "agent_category": "Beetles"
+        "agent_category": "Ladybugs"
       }
     ],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "Beetles": 2,
-      "Hoverflies": 1,
-      "OtherPredators": 4,
-      "Flies": 2,
+      "Hoverflies": 3,
+      "OtherPredators": 8,
+      "GroundBeetles": 1,
       "Wasps": 1,
       "ScaleInsects": 3,
-      "Birds": 4,
-      "Psyllids": 1,
+      "Birds": 3,
+      "Ladybugs": 1,
       "Butterflies": 1,
-      "Bats": 6
+      "Bats": 4
     },
     "herbivore_category_counts": {
-      "Moths": 2,
+      "Moths": 1,
+      "Caterpillars": 1,
       "Aphids": 2
     },
     "top_predators": [],

@@ -41,7 +41,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "5 growth forms spanning 27.0m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur: 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera: 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica: 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa: 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina: 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata: 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca: 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Grape Vine): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": "Stratification quality: 1.00"
     },
     {
@@ -59,7 +59,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nCoffea arabica: Neutral (pH 6-7)\nDactylis glomerata: Neutral (pH 6-7)\nFragaria vesca: Neutral (pH 6-7)\nPrunus spinosa: Neutral (pH 6-7)\nQuercus robur: Slightly Acidic (pH 5-6)\nRosa canina: Neutral (pH 6-7)\nVitis vinifera: Alkaline (pH 7-8)",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nCoffea arabica (Arabian Coffee): Neutral (pH 6-7)\nDactylis glomerata (Akaroa): Neutral (pH 6-7)\nFragaria vesca (European strawberry): Neutral (pH 6-7)\nPrunus spinosa (Blackthorn): Neutral (pH 6-7)\nQuercus robur (Acorn Tree): Slightly Acidic (pH 5-6)\nRosa canina (Dog-rose): Neutral (pH 6-7)\nVitis vinifera (Grape Vine): Alkaline (pH 7-8)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
@@ -2212,7 +2212,7 @@
           "wfo-0000861498",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "OtherPollinators",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2222,7 +2222,7 @@
           "wfo-0001005999",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2242,7 +2242,7 @@
           "wfo-0000861498",
           "wfo-0001005999"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2252,7 +2252,7 @@
           "wfo-0001005999",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "OtherPollinators",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2282,7 +2282,7 @@
           "wfo-0001005999",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2292,7 +2292,7 @@
           "wfo-0001005999",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2312,7 +2312,7 @@
           "wfo-0000861498",
           "wfo-0000993770"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       },
       {
@@ -2322,7 +2322,7 @@
           "wfo-0001005999",
           "wfo-0001007437"
         ],
-        "category": "Flies",
+        "category": "Hoverflies",
         "network_contribution": 0.2857142857142857
       }
     ],
@@ -2391,19 +2391,19 @@
     "pollinators_by_category": {
       "honey_bees_count": 9,
       "bumblebees_count": 15,
-      "solitary_bees_count": 86,
-      "hover_flies_count": 1,
-      "muscid_flies_count": 63,
+      "solitary_bees_count": 43,
+      "hover_flies_count": 18,
+      "muscid_flies_count": 16,
       "mosquitoes_count": 0,
       "other_flies_count": 0,
       "butterflies_count": 1,
-      "moths_count": 6,
-      "pollen_beetles_count": 14,
+      "moths_count": 0,
+      "pollen_beetles_count": 0,
       "other_beetles_count": 0,
-      "wasps_count": 28,
+      "wasps_count": 2,
       "birds_count": 0,
       "bats_count": 0,
-      "other_count": 81,
+      "other_count": 193,
       "top_per_category": [
         {
           "pollinator_name": "Bombus sylvestris",
@@ -2443,19 +2443,19 @@
         "pollinator_count": 169,
         "honey_bees_count": 9,
         "bumblebees_count": 2,
-        "solitary_bees_count": 65,
+        "solitary_bees_count": 23,
         "hover_flies_count": 0,
-        "muscid_flies_count": 12,
+        "muscid_flies_count": 0,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
         "pollen_beetles_count": 0,
         "other_beetles_count": 0,
-        "wasps_count": 9,
+        "wasps_count": 2,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 72
+        "other_count": 133
       },
       {
         "plant_name": "Prunus spinosa",
@@ -2463,18 +2463,18 @@
         "honey_bees_count": 1,
         "bumblebees_count": 11,
         "solitary_bees_count": 15,
-        "hover_flies_count": 0,
-        "muscid_flies_count": 22,
+        "hover_flies_count": 8,
+        "muscid_flies_count": 7,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 1,
-        "moths_count": 4,
-        "pollen_beetles_count": 2,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
         "other_beetles_count": 0,
-        "wasps_count": 9,
+        "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 4
+        "other_count": 26
       },
       {
         "plant_name": "Rosa canina",
@@ -2482,46 +2482,8 @@
         "honey_bees_count": 1,
         "bumblebees_count": 8,
         "solitary_bees_count": 3,
-        "hover_flies_count": 1,
-        "muscid_flies_count": 15,
-        "mosquitoes_count": 0,
-        "other_flies_count": 0,
-        "butterflies_count": 0,
-        "moths_count": 2,
-        "pollen_beetles_count": 6,
-        "other_beetles_count": 0,
-        "wasps_count": 2,
-        "birds_count": 0,
-        "bats_count": 0,
-        "other_count": 2
-      },
-      {
-        "plant_name": "Dactylis glomerata",
-        "pollinator_count": 28,
-        "honey_bees_count": 0,
-        "bumblebees_count": 1,
-        "solitary_bees_count": 0,
-        "hover_flies_count": 0,
-        "muscid_flies_count": 20,
-        "mosquitoes_count": 0,
-        "other_flies_count": 0,
-        "butterflies_count": 0,
-        "moths_count": 0,
-        "pollen_beetles_count": 6,
-        "other_beetles_count": 0,
-        "wasps_count": 0,
-        "birds_count": 0,
-        "bats_count": 0,
-        "other_count": 1
-      },
-      {
-        "plant_name": "Fragaria vesca",
-        "pollinator_count": 15,
-        "honey_bees_count": 1,
-        "bumblebees_count": 3,
-        "solitary_bees_count": 5,
-        "hover_flies_count": 0,
-        "muscid_flies_count": 6,
+        "hover_flies_count": 11,
+        "muscid_flies_count": 3,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
@@ -2531,7 +2493,45 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 14
+      },
+      {
+        "plant_name": "Dactylis glomerata",
+        "pollinator_count": 28,
+        "honey_bees_count": 0,
+        "bumblebees_count": 1,
+        "solitary_bees_count": 0,
+        "hover_flies_count": 4,
+        "muscid_flies_count": 8,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 15
+      },
+      {
+        "plant_name": "Fragaria vesca",
+        "pollinator_count": 15,
+        "honey_bees_count": 1,
+        "bumblebees_count": 3,
+        "solitary_bees_count": 4,
+        "hover_flies_count": 1,
+        "muscid_flies_count": 2,
+        "mosquitoes_count": 0,
+        "other_flies_count": 0,
+        "butterflies_count": 0,
+        "moths_count": 0,
+        "pollen_beetles_count": 0,
+        "other_beetles_count": 0,
+        "wasps_count": 0,
+        "birds_count": 0,
+        "bats_count": 0,
+        "other_count": 4
       },
       {
         "plant_name": "Quercus robur",
@@ -2547,10 +2547,10 @@
         "moths_count": 0,
         "pollen_beetles_count": 0,
         "other_beetles_count": 0,
-        "wasps_count": 8,
+        "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 6
+        "other_count": 14
       },
       {
         "plant_name": "Vitis vinifera",
@@ -2582,9 +2582,9 @@
     "matched_predator_pairs": [
       {
         "target": "adrastus rachifer",
-        "target_category": "Beetles",
+        "target_category": "OtherHerbivores",
         "agent": "harpalus rufipes",
-        "agent_category": "Beetles"
+        "agent_category": "GroundBeetles"
       },
       {
         "target": "aphis spiraecola",
@@ -2594,9 +2594,9 @@
       },
       {
         "target": "athysanus argentarius",
-        "target_category": "Leafhoppers",
+        "target_category": "OtherHerbivores",
         "agent": "harpalus rufipes",
-        "agent_category": "Beetles"
+        "agent_category": "GroundBeetles"
       },
       {
         "target": "coccus hesperidum",
@@ -2606,13 +2606,13 @@
       },
       {
         "target": "exomias trichopterus",
-        "target_category": "Beetles",
+        "target_category": "OtherHerbivores",
         "agent": "harpalus rufipes",
-        "agent_category": "Beetles"
+        "agent_category": "GroundBeetles"
       },
       {
         "target": "harpalus rufipes",
-        "target_category": "Beetles",
+        "target_category": "GroundBeetles",
         "agent": "turdus merula",
         "agent_category": "Birds"
       },
@@ -2620,7 +2620,7 @@
         "target": "myzus persicae",
         "target_category": "Aphids",
         "agent": "harmonia axyridis",
-        "agent_category": "Beetles"
+        "agent_category": "Ladybugs"
       },
       {
         "target": "orgyia antiqua",
@@ -2630,9 +2630,9 @@
       },
       {
         "target": "otiorhynchus ligustici",
-        "target_category": "Beetles",
+        "target_category": "Weevils",
         "agent": "harpalus rufipes",
-        "agent_category": "Beetles"
+        "agent_category": "GroundBeetles"
       },
       {
         "target": "uroleucon",
@@ -2650,24 +2650,24 @@
       }
     ],
     "predator_category_counts": {
-      "Beetles": 4,
-      "Hoverflies": 1,
+      "Hoverflies": 3,
+      "OtherPredators": 12,
       "Lacewings": 1,
-      "Flies": 4,
-      "OtherPredators": 4,
-      "Wasps": 2,
+      "Wasps": 1,
+      "GroundBeetles": 2,
       "ScaleInsects": 3,
       "Mites": 1,
-      "Moths": 3,
-      "Birds": 4,
-      "Butterflies": 1,
-      "Bats": 2
+      "Moths": 1,
+      "Birds": 3,
+      "Ladybugs": 2,
+      "Butterflies": 1
     },
     "herbivore_category_counts": {
-      "Beetles": 4,
+      "OtherHerbivores": 3,
+      "Weevils": 1,
       "Moths": 1,
       "Aphids": 3,
-      "Leafhoppers": 1,
+      "GroundBeetles": 1,
       "Wasps": 1,
       "ScaleInsects": 1
     },
@@ -2686,7 +2686,7 @@
       {
         "pathogen": "armillaria",
         "fungivore": "ariolimax californicus",
-        "fungivore_category": "Snails"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "armillaria",
@@ -2696,22 +2696,22 @@
       {
         "pathogen": "ganoderma",
         "fungivore": "cis bidentatus",
-        "fungivore_category": "Beetles"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "ganoderma",
         "fungivore": "cis bilamellatus",
-        "fungivore_category": "Beetles"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "ganoderma",
         "fungivore": "cis castaneus",
-        "fungivore_category": "Beetles"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "ganoderma",
         "fungivore": "ennearthron cornutum",
-        "fungivore_category": "Beetles"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "ganoderma",
@@ -2726,7 +2726,7 @@
       {
         "pathogen": "ganoderma",
         "fungivore": "monadenia fidelis",
-        "fungivore_category": "Snails"
+        "fungivore_category": "OtherPredators"
       },
       {
         "pathogen": "laetiporus",

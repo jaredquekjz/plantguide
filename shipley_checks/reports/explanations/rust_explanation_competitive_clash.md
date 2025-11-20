@@ -62,7 +62,7 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Other Predators | Specific (weight 1.0) |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -123,13 +123,13 @@ Growth strategy incompatibility: 5 Competitive, 1 Stress-tolerant
 EIVE R range: 5.2-7.5 (difference: 2.3 units)
 
 Plant pH preferences:
-Allium schoenoprasum: Alkaline (pH 7-8)
-Alnus acuminata: Neutral (pH 6-7)
-Cheirodendron trigynum: Neutral (pH 6-7)
-Erythrina sandwicensis: Neutral (pH 6-7)
+Allium schoenoprasum (Chives): Alkaline (pH 7-8)
+Alnus acuminata (Andean Alder): Neutral (pH 6-7)
+Cheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)
+Erythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)
 Pfaffia gnaphalioides: Neutral (pH 6-7)
 Virola bicuhyba: Slightly Acidic (pH 5-6)
-Vitis vinifera: Alkaline (pH 7-8)  
+Vitis vinifera (Grape Vine): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown

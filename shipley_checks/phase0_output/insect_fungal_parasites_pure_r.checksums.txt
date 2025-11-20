@@ -1,0 +1,6 @@
+MD5:    f3a8504ebd863031ba381cbbf72ed879
+SHA256: 1d92e8775e5b12cbc91e5fee53ef5a27b3886fbc9900c9c17c73988d78da46dc
+
+File: shipley_checks/validation/insect_fungal_parasites_pure_r.csv
+Size: 195,631 bytes
+Generated: 2025-11-10 10:23:28

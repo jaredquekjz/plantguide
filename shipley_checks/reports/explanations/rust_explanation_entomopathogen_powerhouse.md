@@ -33,15 +33,15 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
-| adrastus rachifer | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
+| adrastus rachifer | Other Herbivores | harpalus rufipes | Ground Beetles | Specific (weight 1.0) |
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific (weight 1.0) |
-| athysanus argentarius | Leafhoppers | harpalus rufipes | Beetles | Specific (weight 1.0) |
+| athysanus argentarius | Other Herbivores | harpalus rufipes | Ground Beetles | Specific (weight 1.0) |
 | coccus hesperidum | Scale Insects | coccus hesperidum | Scale Insects | Specific (weight 1.0) |
-| exomias trichopterus | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific (weight 1.0) |
-| myzus persicae | Aphids | harmonia axyridis | Beetles | Specific (weight 1.0) |
+| exomias trichopterus | Other Herbivores | harpalus rufipes | Ground Beetles | Specific (weight 1.0) |
+| harpalus rufipes | Ground Beetles | turdus merula | Birds | Specific (weight 1.0) |
+| myzus persicae | Aphids | harmonia axyridis | Ladybugs | Specific (weight 1.0) |
 | orgyia antiqua | Moths | vespa velutina | Wasps | Specific (weight 1.0) |
-| otiorhynchus ligustici | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
+| otiorhynchus ligustici | Weevils | harpalus rufipes | Ground Beetles | Specific (weight 1.0) |
 | uroleucon | Aphids | syrphidae | Other Predators | Specific (weight 1.0) |
 
 **Matched Herbivore → Entomopathogenic Fungus Pairs:**
@@ -73,15 +73,15 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Other Predators | Specific (weight 1.0) |
 | armillaria | krynickillus melanocephalus | Other Predators | Specific (weight 1.0) |
-| ganoderma | cis bidentatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis bilamellatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis castaneus | Beetles | Specific (weight 1.0) |
-| ganoderma | ennearthron cornutum | Beetles | Specific (weight 1.0) |
+| ganoderma | cis bidentatus | Other Predators | Specific (weight 1.0) |
+| ganoderma | cis bilamellatus | Other Predators | Specific (weight 1.0) |
+| ganoderma | cis castaneus | Other Predators | Specific (weight 1.0) |
+| ganoderma | ennearthron cornutum | Other Predators | Specific (weight 1.0) |
 | ganoderma | megalodacne fasciata | Other Predators | Specific (weight 1.0) |
 | ganoderma | megalodacne heros | Other Predators | Specific (weight 1.0) |
-| ganoderma | monadenia fidelis | Snails & Slugs | Specific (weight 1.0) |
+| ganoderma | monadenia fidelis | Other Predators | Specific (weight 1.0) |
 | laetiporus | prophysaon andersonii | Other Predators | Specific (weight 1.0) |
 | laetiporus | prophysaon foliolatum | Other Predators | Specific (weight 1.0) |
 | truncatella | acanthopagrus latus | Other Predators | Specific (weight 1.0) |
@@ -139,19 +139,19 @@ Shared mycorrhizal fungi create underground networks that facilitate nutrient ex
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Quercus robur: 27.1m, EIVE-L: 6.2 (flexible)
+  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)
 
 **Understory (5-15m):**
-  - Vitis vinifera: 9.7m, EIVE-L: 6.2 (flexible)
+  - Vitis vinifera (Grape Vine): 9.7m, EIVE-L: 6.2 (flexible)
 
 **Shrub Layer (1-5m):**
-  - Coffea arabica: 4.6m, EIVE-L: 6.9 (flexible)
-  - Prunus spinosa: 2.1m, EIVE-L: 7.1 (flexible)
-  - Rosa canina: 2.0m, EIVE-L: 7.2 (flexible)
+  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)
+  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)
+  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)
 
 **Ground Layer (<1m):**
-  - Dactylis glomerata: 0.7m, EIVE-L: 6.8 (flexible)
-  - Fragaria vesca: 0.1m, EIVE-L: 5.9 (flexible)
+  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)
+  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
 7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -177,14 +177,12 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 - 9 Honey Bees - 2.9%
 - 15 Bumblebees - 4.9%
-- 86 Solitary Bees - 27.8%
-- 1 Hover Flies - 0.3%
-- 63 Muscid Flies - 20.4%
+- 43 Solitary Bees - 13.9%
+- 18 Hover Flies - 5.8%
+- 16 Muscid Flies - 5.2%
 - 1 Butterflies - 0.3%
-- 6 Moths - 1.9%
-- 14 Pollen Beetles - 4.5%
-- 28 Wasps - 9.1%
-- 81 Other - 26.2%
+- 2 Wasps - 0.6%
+- 193 Other - 62.5%
 
 **Shared Pollinators (visiting ≥2 plants):**
 
@@ -209,12 +207,12 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Coffea arabica | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
-| Prunus spinosa | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Dactylis glomerata | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
-| Fragaria vesca | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Coffea arabica | 169 | 9 | 2 | 23 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 0 | 0 | 133 |
+| Prunus spinosa | 69 | 1 | 11 | 15 | 8 | 7 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 26 |
+| Rosa canina | 40 | 1 | 8 | 3 | 11 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
+| Dactylis glomerata | 28 | 0 | 1 | 0 | 4 | 8 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
+| Fragaria vesca | 15 | 1 | 3 | 4 | 1 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
+| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 | Vitis vinifera | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Warnings
@@ -224,13 +222,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 EIVE R range: 5.2-7.5 (difference: 2.3 units)
 
 Plant pH preferences:
-Coffea arabica: Neutral (pH 6-7)
-Dactylis glomerata: Neutral (pH 6-7)
-Fragaria vesca: Neutral (pH 6-7)
-Prunus spinosa: Neutral (pH 6-7)
-Quercus robur: Slightly Acidic (pH 5-6)
-Rosa canina: Neutral (pH 6-7)
-Vitis vinifera: Alkaline (pH 7-8)  
+Coffea arabica (Arabian Coffee): Neutral (pH 6-7)
+Dactylis glomerata (Akaroa): Neutral (pH 6-7)
+Fragaria vesca (European strawberry): Neutral (pH 6-7)
+Prunus spinosa (Blackthorn): Neutral (pH 6-7)
+Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
+Rosa canina (Dog-rose): Neutral (pH 6-7)
+Vitis vinifera (Grape Vine): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown
