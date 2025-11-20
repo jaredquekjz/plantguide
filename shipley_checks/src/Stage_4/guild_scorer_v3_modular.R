@@ -142,12 +142,18 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
         )
 
       # Helper function to convert pipe-separated strings back to lists
+      # IMPORTANT: Lowercases all organism/fungi names for case-insensitive matching (Rust parity)
       csv_to_lists <- function(df, list_cols) {
         for (col in list_cols) {
           if (col %in% names(df)) {
             df <- df %>%
               mutate(!!col := map(.data[[col]], function(x) {
-                if (is.na(x) || x == '') character(0) else strsplit(x, '\\|')[[1]]
+                if (is.na(x) || x == '') {
+                  character(0)
+                } else {
+                  # Lowercase for Rust parity (Rust's load_lookup_table lowercases at line 382)
+                  tolower(strsplit(x, '\\|')[[1]])
+                }
               }))
           }
         }
@@ -157,7 +163,8 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
       # Organisms - from R-generated Parquet (complete independence from Python)
       self$organisms_df <- read_parquet('shipley_checks/validation/organism_profiles_pure_r.parquet') %>%
         csv_to_lists(c('herbivores', 'flower_visitors', 'pollinators',
-                       'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo'))
+                       'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo',
+                       'fungivores_eats'))
 
       # Fungi - from R-generated Parquet
       self$fungi_df <- read_parquet('shipley_checks/validation/fungal_guilds_pure_r.parquet') %>%
@@ -166,17 +173,18 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
                        'entomopathogenic_fungi', 'endophytic_fungi', 'saprotrophic_fungi'))
 
       # Biocontrol lookup tables - from R-generated Parquet
+      # IMPORTANT: Lowercase keys for case-insensitive matching (Rust parity at data.rs:387)
       pred_df <- read_parquet('shipley_checks/validation/herbivore_predators_pure_r.parquet') %>%
         csv_to_lists('predators')
-      self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
+      self$herbivore_predators <- setNames(pred_df$predators, tolower(pred_df$herbivore))
 
       para_df <- read_parquet('shipley_checks/validation/insect_fungal_parasites_pure_r.parquet') %>%
         csv_to_lists('entomopathogenic_fungi')
-      self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
+      self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, tolower(para_df$herbivore))
 
       antag_df <- read_parquet('shipley_checks/validation/pathogen_antagonists_pure_r.parquet') %>%
         csv_to_lists('antagonists')
-      self$pathogen_antagonists <- setNames(antag_df$antagonists, antag_df$pathogen)
+      self$pathogen_antagonists <- setNames(antag_df$antagonists, tolower(antag_df$pathogen))
 
       cat(glue("  Plants: {format(nrow(self$plants_df), big.mark=',')}\n"))
       cat(glue("  Organisms: {format(nrow(self$organisms_df), big.mark=',')}\n"))
@@ -301,7 +309,7 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
 
       m4_result <- calculate_m4_disease_control(
         plant_ids, guild_plants,
-        self$fungi_df, self$pathogen_antagonists,
+        self$fungi_df, self$organisms_df, self$pathogen_antagonists,
         function(raw, metric, invert = FALSE) {
           percentile_normalize(raw, metric, self$calibration_params, self$climate_tier, invert)
         }

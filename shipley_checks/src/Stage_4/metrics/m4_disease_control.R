@@ -17,12 +17,18 @@
 #    - Database: pathogen_antagonists lookup table
 #    - Note: Data coverage is limited due to sparse mycoparasitism research
 #
-# 2. GENERAL MYCOPARASITES (Weight: 1.0) - PRIMARY MECHANISM
+# 2. GENERAL MYCOPARASITES (Weight: 0.5) - PRIMARY MECHANISM
 #    - Plant B hosts broad-spectrum mycoparasitic fungi (Trichoderma, Gliocladium)
 #    - These fungi provide generalist protection against multiple pathogens
 #    - Rationale: Most mycoparasites have broad host ranges, attacking multiple
 #      fungal genera through direct parasitism or antibiotic production
 #    - This mechanism fires much more frequently than specific matches
+#
+# 3. GENERAL FUNGIVORES (Weight: 0.2) - SUPPLEMENTARY MECHANISM
+#    - Plant B hosts animals that eat fungi (fungivores)
+#    - These organisms provide supplementary disease control by consuming pathogenic fungi
+#    - Examples: Fungus gnats, beetles, slugs that feed on fungal fruiting bodies
+#    - Lower weight reflects indirect/opportunistic nature of control
 #
 # KEY CONCEPT: Pairwise Protection (identical to M3)
 # - For each vulnerable plant A (with pathogens), check all other plants B
@@ -39,8 +45,8 @@
 #
 # STEP 2: Pairwise analysis (nested loop)
 #   - Outer loop: Plant A (vulnerable - has pathogens)
-#   - Inner loop: Plant B (protective - has mycoparasites)
-#   - For each A→B pair, check 2 disease suppression mechanisms
+#   - Inner loop: Plant B (protective - has mycoparasites/fungivores)
+#   - For each A→B pair, check 3 disease suppression mechanisms
 #
 # STEP 3: Mechanism scoring
 #   - Mechanism 1: For each pathogen on A, check if B hosts known antagonists
@@ -51,14 +57,19 @@
 #
 #   - Mechanism 2: General mycoparasites on B (PRIMARY MECHANISM)
 #     * If A has any pathogens AND B has any mycoparasites
-#     * Score: n_mycoparasites_on_B × 1.0
+#     * Score: n_mycoparasites_on_B × 0.5
 #     * This is the dominant scoring mechanism
+#
+#   - Mechanism 3: General fungivores on B (SUPPLEMENTARY MECHANISM)
+#     * If A has any pathogens AND B has any fungivores
+#     * Score: n_fungivores_on_B × 0.2
+#     * Provides indirect disease control through fungal consumption
 #
 # STEP 4: Normalize by guild size
 #   - pathogen_control_normalized = (pathogen_control_raw / max_pairs) × 10
 #   - max_pairs = n_plants × (n_plants - 1)
 #   - The ×10 scaling factor (vs ×20 for M3) reflects:
-#     * Lower mechanism diversity (2 vs 3 in M3)
+#     * Similar mechanism diversity (3 mechanisms, but lower weights)
 #     * Sparser data coverage for fungal interactions
 #
 # STEP 5: Percentile normalization
@@ -83,10 +94,10 @@
 # PARITY REQUIREMENTS
 # ============================================================================
 #
-# To maintain 100% parity with Python scorer:
-# 1. Must use same fungi extraction logic
-# 2. Must use same lookup tables (MD5-verified CSVs)
-# 3. Must use same weights (1.0, 1.0)
+# To maintain 100% parity with Rust scorer:
+# 1. Must use same fungi and organisms extraction logic
+# 2. Must use same lookup tables (MD5-verified parquets)
+# 3. Must use same weights (1.0, 0.5, 0.2)
 # 4. Must use same normalization (/ max_pairs × 10)
 # 5. Must use same Köppen tier calibration file for 'p2' metric
 #
@@ -104,6 +115,7 @@
 #' @param plant_ids Character vector of WFO taxon IDs for the guild
 #' @param guild_plants Data frame with plant metadata (not used in M4)
 #' @param fungi_df Data frame with plant-fungi associations
+#' @param organisms_df Data frame with plant-organism associations (for fungivores)
 #' @param pathogen_antagonists Named list mapping pathogen IDs to antagonist IDs
 #' @param percentile_normalize_fn Function to convert raw score to percentile
 #'
@@ -116,7 +128,8 @@
 #' @details
 #' Edge case: If no fungi data is available for guild, returns zero score.
 #' Mechanism 2 (general mycoparasites) is the primary contributor to the score,
-#' accounting for 95%+ of protection due to sparse specific antagonist data.
+#' accounting for ~80% of protection due to sparse specific antagonist data.
+#' Mechanism 3 (fungivores) provides supplementary indirect control (~15%).
 #'
 #' @references
 #' Python implementation: src/Stage_4/guild_scorer_v3.py lines 1331-1418
@@ -124,6 +137,7 @@
 calculate_m4_disease_control <- function(plant_ids,
                                          guild_plants,
                                          fungi_df,
+                                         organisms_df,
                                          pathogen_antagonists,
                                          percentile_normalize_fn) {
 
@@ -150,6 +164,9 @@ calculate_m4_disease_control <- function(plant_ids,
       details = list(note = "No fungi data available")
     ))
   }
+
+  # Extract guild organisms data (for fungivores)
+  guild_organisms <- organisms_df %>% dplyr::filter(plant_wfo_id %in% plant_ids)
 
   # Build set of ALL known mycoparasites (from pathogen_antagonists lookup values)
   known_mycoparasites <- unique(unlist(pathogen_antagonists, use.names = FALSE))
@@ -229,7 +246,7 @@ calculate_m4_disease_control <- function(plant_ids,
       }
 
       # -----------------------------------------------------------------
-      # MECHANISM 2: General mycoparasites (weight 1.0) - PRIMARY MECHANISM
+      # MECHANISM 2: General mycoparasites (weight 0.5) - PRIMARY MECHANISM
       # -----------------------------------------------------------------
       # If plant A has any pathogens AND plant B has any mycoparasites,
       # award score based on the number of mycoparasites.
@@ -248,13 +265,13 @@ calculate_m4_disease_control <- function(plant_ids,
       # - Gliocladium spp.: Attack Pythium, Phytophthora, Sclerotinia
       # - Clonostachys rosea: Attack Botrytis, Sclerotinia, Fusarium
       #
-      # Weight = 1.0 (same as specific matches) because:
+      # Weight = 0.5 (lower than specific matches) because:
       # - Broad-spectrum activity is well-documented
-      # - Reliability is similar to specific matches in practice
-      # - This mechanism is the primary source of protection in most guilds
+      # - But less reliable than targeted specific antagonist matches
+      # - This mechanism is still the primary source of protection in most guilds
 
       if (length(pathogens_a) > 0 && length(mycoparasites_b) > 0) {
-        pathogen_control_raw <- pathogen_control_raw + length(mycoparasites_b) * 1.0
+        pathogen_control_raw <- pathogen_control_raw + length(mycoparasites_b) * 0.5
         mechanisms[[length(mechanisms) + 1]] <- list(
           type = 'general_mycoparasite',
           vulnerable_plant = plant_a_id,
@@ -262,6 +279,48 @@ calculate_m4_disease_control <- function(plant_ids,
           control_plant = plant_b_id,
           mycoparasites = head(mycoparasites_b, 5)
         )
+      }
+
+      # -----------------------------------------------------------------
+      # MECHANISM 3: General fungivores (weight 0.2) - SUPPLEMENTARY MECHANISM
+      # -----------------------------------------------------------------
+      # If plant A has any pathogens AND plant B hosts fungivores (animals that
+      # eat fungi), award score based on the number of fungivores.
+      #
+      # Rationale:
+      # Fungivores provide supplementary disease control by consuming fungal
+      # fruiting bodies, mycelia, and spores. While not as targeted as
+      # mycoparasites, they can reduce pathogen inoculum and slow disease spread.
+      #
+      # Examples of fungivorous organisms:
+      # - Fungus gnats (Sciaridae): Consume fungal mycelia and spores
+      # - Collembola (springtails): Feed on fungal hyphae in soil/leaf litter
+      # - Mycophagous beetles: Consume fungal fruiting bodies
+      # - Slugs and snails: Opportunistically feed on fungi
+      #
+      # Weight = 0.2 (lowest weight) because:
+      # - Indirect/opportunistic mechanism (not specialized biocontrol agents)
+      # - May feed on beneficial fungi as well as pathogens (non-selective)
+      # - Control effect is supplementary to mycoparasitism
+      #
+      # NOTE: This matches Rust implementation at m4_disease_control.rs:181-193
+
+      # Find organism data for plant B
+      org_row_b <- guild_organisms %>% dplyr::filter(plant_wfo_id == plant_b_id)
+      if (nrow(org_row_b) > 0) {
+        fungivores_b <- org_row_b$fungivores_eats[[1]]
+
+        if (!is.null(fungivores_b) && length(fungivores_b) > 0 &&
+            length(pathogens_a) > 0) {
+          pathogen_control_raw <- pathogen_control_raw + length(fungivores_b) * 0.2
+          mechanisms[[length(mechanisms) + 1]] <- list(
+            type = 'general_fungivore',
+            vulnerable_plant = plant_a_id,
+            n_pathogens = length(pathogens_a),
+            control_plant = plant_b_id,
+            fungivores = head(fungivores_b, 5)
+          )
+        }
       }
     }
   }
