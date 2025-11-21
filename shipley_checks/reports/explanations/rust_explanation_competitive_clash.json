@@ -119,7 +119,106 @@
       }
     ]
   },
-  "pest_profile": null,
+  "pest_profile": {
+    "total_unique_pests": 58,
+    "shared_pests": [],
+    "top_pests": [
+      {
+        "pest_name": "Achatia distincta",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Acrolepiopsis assectella",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Allium schoenoprasum"
+        ]
+      },
+      {
+        "pest_name": "Ambastus villosus",
+        "category": "Plant Bugs",
+        "plant_count": 1,
+        "plants": [
+          "Alnus acuminata"
+        ]
+      },
+      {
+        "pest_name": "Amphipyra pyramidoides",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Antheraea polyphemus",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aonidiella aurantii",
+        "category": "Scale Insects",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aonidiella orientalis",
+        "category": "Scale Insects",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Aphis spiraecola",
+        "category": "Aphids",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      },
+      {
+        "pest_name": "Arctia caja",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Allium schoenoprasum"
+        ]
+      },
+      {
+        "pest_name": "Aspidiotus nerii",
+        "category": "Scale Insects",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera"
+        ]
+      }
+    ],
+    "vulnerable_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "pest_count": 53
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "pest_count": 4
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "pest_count": 1
+      }
+    ]
+  },
   "fungi_network_profile": {
     "total_unique_fungi": 279,
     "shared_fungi": [

@@ -48,11 +48,15 @@ pub fn analyze_guild_pests(
     guild_plants: &DataFrame,
     organism_categories: &FxHashMap<String, String>,
 ) -> Result<Option<PestProfile>> {
-    // Check if herbivores column exists
+    // Check if herbivores column exists (try both list and string formats)
     let herbivores_col = match guild_plants.column("herbivores") {
-        Ok(col) => col.str()?,
+        Ok(col) => col,
         Err(_) => return Ok(None),
     };
+
+    // Try both list format (Phase 0-4) and string format (legacy)
+    let herbivores_list_col = herbivores_col.list().ok();
+    let herbivores_str_col = herbivores_col.str().ok();
 
     let plant_names = guild_plants.column("wfo_taxon_name")?.str()?;
 
@@ -61,27 +65,53 @@ pub fn analyze_guild_pests(
     let mut plant_pest_counts: FxHashMap<String, usize> = FxHashMap::default();
 
     for idx in 0..guild_plants.height() {
-        if let (Some(plant_name), Some(herbivores_str)) = (
-            plant_names.get(idx),
-            herbivores_col.get(idx),
-        ) {
-            if herbivores_str.is_empty() {
-                continue;
+        if let Some(plant_name) = plant_names.get(idx) {
+            let plant_name = plant_name.to_string();
+            let mut herbivores: Vec<String> = Vec::new();
+
+            // Try list column format first (Phase 0-4)
+            if let Some(list_col) = herbivores_list_col {
+                if let Some(list_series) = list_col.get_as_series(idx) {
+                    if let Ok(str_series) = list_series.str() {
+                        for herb_opt in str_series.into_iter() {
+                            if let Some(herb) = herb_opt {
+                                let herb = herb.trim();
+                                if !herb.is_empty() {
+                                    herbivores.push(herb.to_string());
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-            let plant_name = plant_name.to_string();
-            let herbivores: Vec<&str> = herbivores_str.split('|').collect();
+            // Fallback to pipe-separated string format (legacy)
+            if herbivores.is_empty() {
+                if let Some(str_col) = herbivores_str_col {
+                    if let Some(herbivores_str) = str_col.get(idx) {
+                        if !herbivores_str.is_empty() {
+                            for herb in herbivores_str.split('|') {
+                                let herb = herb.trim();
+                                if !herb.is_empty() {
+                                    herbivores.push(herb.to_string());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if herbivores.is_empty() {
+                continue;
+            }
 
             *plant_pest_counts.entry(plant_name.clone()).or_insert(0) += herbivores.len();
 
             for pest in herbivores {
-                let pest = pest.trim();
-                if !pest.is_empty() {
-                    pest_to_plants
-                        .entry(pest.to_string())
-                        .or_insert_with(Vec::new)
-                        .push(plant_name.clone());
-                }
+                pest_to_plants
+                    .entry(pest)
+                    .or_insert_with(Vec::new)
+                    .push(plant_name.clone());
             }
         }
     }

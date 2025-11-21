@@ -17,6 +17,39 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 *Evidence:* Phylogenetic diversity score: 58.6/100
 
+#### Pest Vulnerability Profile
+
+*Qualitative information about herbivore pests (not used in scoring)*
+
+**Total unique herbivore species:** 131
+
+**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.
+
+**Top 10 Herbivore Pests**
+
+| Rank | Pest Species | Herbivore Category | Plants Attacked |
+|------|--------------|-------------------|------------------|
+| 1 | Aceria fraxini | Mites | Fraxinus excelsior |
+| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior |
+| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior |
+| 4 | Acronicta rumicis | Moths | Fraxinus excelsior |
+| 5 | Aculus epiphyllus | Mites | Fraxinus excelsior |
+| 6 | Aculus fraxini | Mites | Fraxinus excelsior |
+| 7 | Adela croesella | Moths | Fraxinus excelsior |
+| 8 | Adoxophyes orana | Moths | Diospyros kaki |
+| 9 | Agrilus convexicollis | Beetles | Fraxinus excelsior |
+| 10 | Agrilus planipennis | Beetles | Fraxinus excelsior |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Fraxinus excelsior | 100 |
+| Diospyros kaki | 19 |
+| Anaphalis margaritacea | 8 |
+| Deutzia scabra | 2 |
+| Mercurialis perennis | 2 |
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
 Guild provides natural insect pest control  

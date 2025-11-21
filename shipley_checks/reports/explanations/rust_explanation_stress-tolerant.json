@@ -95,7 +95,82 @@
       }
     ]
   },
-  "pest_profile": null,
+  "pest_profile": {
+    "total_unique_pests": 7,
+    "shared_pests": [],
+    "top_pests": [
+      {
+        "pest_name": "Castiarina parallelipennis",
+        "category": "Beetles",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Eurema smilax",
+        "category": "Butterflies",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Glycaspis collina",
+        "category": "Psyllids",
+        "plant_count": 1,
+        "plants": [
+          "Eucalyptus melanophloia"
+        ]
+      },
+      {
+        "pest_name": "Jalmenus daemeli",
+        "category": "Butterflies",
+        "plant_count": 1,
+        "plants": [
+          "Eucalyptus melanophloia"
+        ]
+      },
+      {
+        "pest_name": "Jalmenus icilius",
+        "category": "Butterflies",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Myzus ornatus",
+        "category": "Aphids",
+        "plant_count": 1,
+        "plants": [
+          "Senna artemisioides"
+        ]
+      },
+      {
+        "pest_name": "Pseudodendrothrips gillespiei",
+        "category": "Thrips",
+        "plant_count": 1,
+        "plants": [
+          "Alyxia ruscifolia"
+        ]
+      }
+    ],
+    "vulnerable_plants": [
+      {
+        "plant_name": "Senna artemisioides",
+        "pest_count": 4
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "pest_count": 2
+      },
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "pest_count": 1
+      }
+    ]
+  },
   "fungi_network_profile": {
     "total_unique_fungi": 16,
     "shared_fungi": [],

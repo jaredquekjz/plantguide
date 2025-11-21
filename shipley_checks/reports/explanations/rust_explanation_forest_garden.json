@@ -127,7 +127,114 @@
       }
     ]
   },
-  "pest_profile": null,
+  "pest_profile": {
+    "total_unique_pests": 131,
+    "shared_pests": [],
+    "top_pests": [
+      {
+        "pest_name": "Aceria fraxini",
+        "category": "Mites",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Aceria fraxinicola",
+        "category": "Mites",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Aceria fraxinivora",
+        "category": "Mites",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Acronicta rumicis",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Aculus epiphyllus",
+        "category": "Mites",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Aculus fraxini",
+        "category": "Mites",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Adela croesella",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Adoxophyes orana",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Diospyros kaki"
+        ]
+      },
+      {
+        "pest_name": "Agrilus convexicollis",
+        "category": "Beetles",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      },
+      {
+        "pest_name": "Agrilus planipennis",
+        "category": "Beetles",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior"
+        ]
+      }
+    ],
+    "vulnerable_plants": [
+      {
+        "plant_name": "Fraxinus excelsior",
+        "pest_count": 100
+      },
+      {
+        "plant_name": "Diospyros kaki",
+        "pest_count": 19
+      },
+      {
+        "plant_name": "Anaphalis margaritacea",
+        "pest_count": 8
+      },
+      {
+        "plant_name": "Deutzia scabra",
+        "pest_count": 2
+      },
+      {
+        "plant_name": "Mercurialis perennis",
+        "pest_count": 2
+      }
+    ]
+  },
   "fungi_network_profile": {
     "total_unique_fungi": 147,
     "shared_fungi": [
