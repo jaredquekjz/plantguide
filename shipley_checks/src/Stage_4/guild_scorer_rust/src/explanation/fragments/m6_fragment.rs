@@ -140,10 +140,7 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
                 m6.n_forms, forms_text, m6.height_range
             ),
             detail,
-            evidence: Some(format!(
-                "Stratification quality: {:.2}",
-                m6.stratification_quality
-            )),
+            evidence: None,  // Evidence already included in detail text above
         })
     } else {
         MetricFragment::empty()
