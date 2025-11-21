@@ -229,39 +229,51 @@ Clean, professional presentation without redundancy.
 
 ---
 
-## ⚪ MINOR ISSUE: Grammar - "1 plant(s)" (multiple reports)
+## ✅ MINOR ISSUE: Grammar - "1 plant(s)" - RESOLVED
 
-### Problem
+### Problem (Original)
 
-Some reports show "1 plant(s)" with plural parentheses when count is singular.
+Reports showed awkward plural forms with singular counts.
 
-**Location:** forest_garden.md, line 206
-
+**Example from forest_garden.md:**
 ```markdown
 1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy.
 6 plant(s) are flexible...
 ```
 
-### Analysis
+**Issues:**
+- "1 plant(s) are" - singular count with plural verb
+- Unnecessary "(s)" parentheses in all cases
 
-This is grammatically awkward. Should be:
-- "1 plant is shade-tolerant..." (singular verb)
-- "6 plants are flexible..." (plural verb, no parentheses)
+### Root Cause
 
-### Impact
+M6 fragment used fixed template "plant(s) are" for all counts without checking singular vs plural.
 
-- Very minor stylistic issue
-- Doesn't affect understanding
-
-### Recommended Fix
-
-Use conditional grammar in text generation:
-```python
-if count == 1:
-    text = f"{count} plant is {description}"
-else:
-    text = f"{count} plants are {description}"
+**Lines 114, 117, 120 in m6_fragment.rs:**
+```rust
+detail.push_str(&format!("{} plant(s) are shade-tolerant...", shade_tolerant_count));
 ```
+
+### Fix Applied (Commit e976ac9)
+
+**Updated m6_fragment.rs with conditional grammar:**
+```rust
+let (plant_word, verb) = if count == 1 {
+    ("plant", "is")
+} else {
+    ("plants", "are")
+};
+detail.push_str(&format!("{} {} {} shade-tolerant...", count, plant_word, verb));
+```
+
+Applied to three text sections:
+- Shade-tolerant plants description
+- Flexible plants description
+- Sun-loving plants description
+
+**Result:** Grammatically correct output
+- "1 plant is shade-tolerant..." (singular)
+- "6 plants are flexible..." (plural)
 
 ---
 
@@ -282,7 +294,7 @@ else:
 | Pathogenic fungi as beneficial | 🔴 Critical | Open | All 5 reports | High - Data quality |
 | Biocontrol count contradiction | 🔴 Critical | ✅ Resolved (65f4cd1) | All reports | Complete |
 | Duplicate evidence line | 🟡 Medium | ✅ Resolved (dab74c4) | All reports | Complete |
-| "plant(s)" grammar | ⚪ Minor | Open | Multiple | Very Low - Style |
+| "plant(s)" grammar | ⚪ Minor | ✅ Resolved (e976ac9) | All reports | Complete |
 
 ---
 
@@ -306,8 +318,9 @@ else:
    - Removed duplicate evidence field from M6 BenefitCard
    - Evidence now appears only once in detail text
 
-4. **Fix plural/singular grammar**
-   - Add conditional text generation for counts
+4. ✅ **Fix plural/singular grammar** - COMPLETE (Commit e976ac9)
+   - Added conditional text generation for singular/plural plant counts
+   - Proper grammar: "1 plant is" vs "6 plants are"
 
 ### Investigation Required
 
