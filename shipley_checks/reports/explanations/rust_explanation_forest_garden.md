@@ -89,11 +89,11 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Plant | Total Predators | Total Fungi | Combined |
 |-------|----------------|-------------|----------|
-| Fraxinus excelsior (Golden Ash; European ash; Ash) | 0 | 2 | 2 |
-| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) ⚠️ | 0 | 0 | 0 |
+| Fraxinus excelsior (Golden Ash) | 0 | 2 | 2 |
+| Anaphalis margaritacea (whitemargin pussytoes) ⚠️ | 0 | 0 | 0 |
 | Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 |
 | Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 |
-| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) ⚠️ | 0 | 0 | 0 |
+| Maianthemum racemosum (Pacific Solomon's seal) ⚠️ | 0 | 0 | 0 |
 | Mercurialis perennis (Dog's Mercury) ⚠️ | 0 | 0 | 0 |
 | Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 |
 
@@ -124,12 +124,12 @@ The disease suppression score is driven by the presence of **general mycoparasit
 **Network Hubs (plants harboring most mycoparasites):**
 
 | Plant | Mycoparasites | Pathogens |
-|-------|---------------|-----------||
-| Fraxinus excelsior (Golden Ash; European ash; Ash) | 2 | 49 |
-| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 0 | 14 |
+|-------|---------------|-----------|
+| Fraxinus excelsior (Golden Ash) | 2 | 49 |
+| Anaphalis margaritacea (whitemargin pussytoes) | 0 | 14 |
 | Deutzia scabra (Deutzia) | 0 | 1 |
 | Diospyros kaki (Japanese Persimmon) | 0 | 56 |
-| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 0 | 18 |
+| Maianthemum racemosum (Pacific Solomon's seal) | 0 | 18 |
 | Mercurialis perennis (Dog's Mercury) | 0 | 20 |
 | Rubus moorei (bush lawyer) | 0 | 1 |
 
@@ -160,23 +160,23 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | 1 | leptosphaeria | Saprotrophic | 4 plants | 57.1% |
 | 2 | mycosphaerella | Saprotrophic | 4 plants | 57.1% |
 | 3 | phyllosticta | Saprotrophic | 4 plants | 57.1% |
-| 4 | colletotrichum | Saprotrophic | wfo-0000649136, wfo-0000690499, wfo-0000832453 | 42.9% |
-| 5 | phoma | Saprotrophic | wfo-0000241769, wfo-0000649136, wfo-0000832453 | 42.9% |
-| 6 | phomopsis | Endophytic | wfo-0000649136, wfo-0000690499, wfo-0000832453 | 42.9% |
-| 7 | septoria | Saprotrophic | wfo-0000092746, wfo-0000241769, wfo-0000690499 | 42.9% |
-| 8 | alternaria | Saprotrophic | wfo-0000649136, wfo-0000832453 | 28.6% |
-| 9 | botryosphaeria | Saprotrophic | wfo-0000649136, wfo-0000832453 | 28.6% |
-| 10 | botrytis | Saprotrophic | wfo-0000649136, wfo-0000832453 | 28.6% |
+| 4 | colletotrichum | Saprotrophic | 3 plants | 42.9% |
+| 5 | phoma | Saprotrophic | 3 plants | 42.9% |
+| 6 | phomopsis | Endophytic | 3 plants | 42.9% |
+| 7 | septoria | Saprotrophic | 3 plants | 42.9% |
+| 8 | alternaria | Saprotrophic | 2 plants | 28.6% |
+| 9 | botryosphaeria | Saprotrophic | 2 plants | 28.6% |
+| 10 | botrytis | Saprotrophic | 2 plants | 28.6% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Fraxinus excelsior (Golden Ash; European ash; Ash) | 99 | 1 | 1 | 20 | 77 |
+| Fraxinus excelsior (Golden Ash) | 99 | 1 | 1 | 20 | 77 |
 | Diospyros kaki (Japanese Persimmon) | 45 | 0 | 0 | 7 | 38 |
 | Mercurialis perennis (Dog's Mercury) | 22 | 0 | 1 | 0 | 21 |
-| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 13 | 2 | 0 | 1 | 10 |
-| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 12 | 0 | 0 | 1 | 11 |
+| Anaphalis margaritacea (whitemargin pussytoes) | 13 | 2 | 0 | 1 | 10 |
+| Maianthemum racemosum (Pacific Solomon's seal) | 12 | 0 | 0 | 1 | 11 |
 | Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 | Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
@@ -241,23 +241,23 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 |------|-------------------|----------|------------------|----------------------|
 | 1 | Apis mellifera | Honey Bees | 2 plants | 28.6% |
 | 2 | Lasioglossum | Solitary Bees | 2 plants | 28.6% |
-| 3 | Aedes impiger | Flies | 1 plants | 14.3% |
-| 4 | Aedes nigripes | Flies | 1 plants | 14.3% |
-| 5 | Andrena carlini | Solitary Bees | 1 plants | 14.3% |
-| 6 | Andrena columbiana | Solitary Bees | 1 plants | 14.3% |
-| 7 | Andrena flavipes | Solitary Bees | 1 plants | 14.3% |
-| 8 | Andrena marginata | Solitary Bees | 1 plants | 14.3% |
-| 9 | Andrena nothoscordi | Solitary Bees | 1 plants | 14.3% |
-| 10 | Anoplius illinoensis | Wasps | 1 plants | 14.3% |
+| 3 | Aedes impiger | Flies | 1 plant | 14.3% |
+| 4 | Aedes nigripes | Flies | 1 plant | 14.3% |
+| 5 | Andrena carlini | Solitary Bees | 1 plant | 14.3% |
+| 6 | Andrena columbiana | Solitary Bees | 1 plant | 14.3% |
+| 7 | Andrena flavipes | Solitary Bees | 1 plant | 14.3% |
+| 8 | Andrena marginata | Solitary Bees | 1 plant | 14.3% |
+| 9 | Andrena nothoscordi | Solitary Bees | 1 plant | 14.3% |
+| 10 | Anoplius illinoensis | Wasps | 1 plant | 14.3% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
-| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
+| Maianthemum racemosum (Pacific Solomon's seal) | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
+| Anaphalis margaritacea (whitemargin pussytoes) | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
 | Mercurialis perennis (Dog's Mercury) | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Fraxinus excelsior (Golden Ash; European ash; Ash) | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Fraxinus excelsior (Golden Ash) | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |

@@ -381,7 +381,14 @@ fn build_plant_display_map_biocontrol(guild_plants: &DataFrame) -> Result<FxHash
     for idx in 0..guild_plants.height() {
         if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
             let vern = if let Some(ref v_col) = vernacular_col {
-                v_col.get(idx).unwrap_or("").to_string()
+                // Extract first vernacular name only (semicolon-separated list)
+                v_col.get(idx)
+                    .unwrap_or("")
+                    .split(';')
+                    .next()
+                    .unwrap_or("")
+                    .trim()
+                    .to_string()
             } else {
                 String::new()
             };

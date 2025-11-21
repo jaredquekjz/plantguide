@@ -74,11 +74,11 @@ The biocontrol score is driven by the presence of **general entomopathogenic fun
 
 | Plant | Total Predators | Total Fungi | Combined |
 |-------|----------------|-------------|----------|
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 0 | 4 | 4 |
-| Allium schoenoprasum (Chives; wild chives) ⚠️ | 0 | 0 | 0 |
+| Vitis vinifera (wine grape) | 0 | 4 | 4 |
+| Allium schoenoprasum (Chives) ⚠️ | 0 | 0 | 0 |
 | Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 |
-| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) ⚠️ | 0 | 0 | 0 |
-| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) ⚠️ | 0 | 0 | 0 |
+| Cheirodendron trigynum (Olapa) ⚠️ | 0 | 0 | 0 |
+| Erythrina sandwicensis (Hawaiian Coral Tree) ⚠️ | 0 | 0 | 0 |
 | Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 |
 | Virola bicuhyba ⚠️ | 0 | 0 | 0 |
 
@@ -112,12 +112,12 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 **Network Hubs (plants harboring most mycoparasites):**
 
 | Plant | Mycoparasites | Pathogens |
-|-------|---------------|-----------||
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 4 | 181 |
-| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) | 1 | 11 |
-| Allium schoenoprasum (Chives; wild chives) | 0 | 18 |
+|-------|---------------|-----------|
+| Vitis vinifera (wine grape) | 4 | 181 |
+| Cheirodendron trigynum (Olapa) | 1 | 11 |
+| Allium schoenoprasum (Chives) | 0 | 18 |
 | Alnus acuminata (Andean Alder) | 0 | 1 |
-| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) ⚠️ | 0 | 0 |
+| Erythrina sandwicensis (Hawaiian Coral Tree) ⚠️ | 0 | 0 |
 | Pfaffia gnaphalioides | 0 | 1 |
 | Virola bicuhyba ⚠️ | 0 | 0 |
 
@@ -147,25 +147,25 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Rank | Fungus Species | Category | Plants Connected | Network Contribution |
 |------|----------------|----------|------------------|----------------------|
-| 1 | cladosporium | Saprotrophic | wfo-0000421791, wfo-0000757278, wfo-0000841021 | 42.9% |
-| 2 | acremonium | Endophytic | wfo-0000421791, wfo-0000841021 | 28.6% |
-| 3 | alternaria | Saprotrophic | wfo-0000421791, wfo-0000757278 | 28.6% |
-| 4 | aspergillus | Endophytic | wfo-0000421791, wfo-0000841021 | 28.6% |
-| 5 | athelia | Saprotrophic | wfo-0000421791, wfo-0000757278 | 28.6% |
-| 6 | aureobasidium | Saprotrophic | wfo-0000421791, wfo-0000841021 | 28.6% |
-| 7 | botrytis | Saprotrophic | wfo-0000421791, wfo-0000757278 | 28.6% |
-| 8 | colletotrichum | Saprotrophic | wfo-0000421791, wfo-0000757278 | 28.6% |
-| 9 | coniochaeta | Endophytic | wfo-0000421791, wfo-0000841021 | 28.6% |
-| 10 | funneliformis | AMF | wfo-0000421791, wfo-0000757278 | 28.6% |
+| 1 | cladosporium | Saprotrophic | 3 plants | 42.9% |
+| 2 | acremonium | Endophytic | 2 plants | 28.6% |
+| 3 | alternaria | Saprotrophic | 2 plants | 28.6% |
+| 4 | aspergillus | Endophytic | 2 plants | 28.6% |
+| 5 | athelia | Saprotrophic | 2 plants | 28.6% |
+| 6 | aureobasidium | Saprotrophic | 2 plants | 28.6% |
+| 7 | botrytis | Saprotrophic | 2 plants | 28.6% |
+| 8 | colletotrichum | Saprotrophic | 2 plants | 28.6% |
+| 9 | coniochaeta | Endophytic | 2 plants | 28.6% |
+| 10 | funneliformis | AMF | 2 plants | 28.6% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 279 | 4 | 2 | 51 | 222 |
-| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) | 32 | 0 | 0 | 14 | 18 |
-| Allium schoenoprasum (Chives; wild chives) | 15 | 3 | 0 | 0 | 12 |
-| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) | 2 | 0 | 0 | 0 | 2 |
+| Vitis vinifera (wine grape) | 279 | 4 | 2 | 51 | 222 |
+| Cheirodendron trigynum (Olapa) | 32 | 0 | 0 | 14 | 18 |
+| Allium schoenoprasum (Chives) | 15 | 3 | 0 | 0 | 12 |
+| Erythrina sandwicensis (Hawaiian Coral Tree) | 2 | 0 | 0 | 0 | 2 |
 | Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 | Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 | 0 | 0 |
 | Virola bicuhyba ⚠️ | 0 | 0 | 0 | 0 | 0 |

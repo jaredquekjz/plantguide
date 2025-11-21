@@ -588,7 +588,7 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "fungus_count": 279,
         "amf_count": 4,
         "emf_count": 2,
@@ -598,7 +598,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "plant_vernacular": "Olapa",
         "fungus_count": 32,
         "amf_count": 0,
         "emf_count": 0,
@@ -608,7 +608,7 @@
       },
       {
         "plant_name": "Allium schoenoprasum",
-        "plant_vernacular": "Chives; wild chives",
+        "plant_vernacular": "Chives",
         "fungus_count": 15,
         "amf_count": 3,
         "emf_count": 0,
@@ -618,7 +618,7 @@
       },
       {
         "plant_name": "Erythrina sandwicensis",
-        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "plant_vernacular": "Hawaiian Coral Tree",
         "fungus_count": 2,
         "amf_count": 0,
         "emf_count": 0,
@@ -775,7 +775,7 @@
     "hub_plants": [
       {
         "plant_name": "Allium schoenoprasum",
-        "plant_vernacular": "Chives; wild chives",
+        "plant_vernacular": "Chives",
         "pollinator_count": 17,
         "honey_bees_count": 1,
         "bumblebees_count": 14,
@@ -796,7 +796,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "plant_vernacular": "Olapa",
         "pollinator_count": 2,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -817,7 +817,7 @@
       },
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "pollinator_count": 1,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -859,7 +859,7 @@
       },
       {
         "plant_name": "Erythrina sandwicensis",
-        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "plant_vernacular": "Hawaiian Coral Tree",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -947,7 +947,7 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "total_predators": 0,
         "total_entomo_fungi": 4,
         "total_biocontrol_agents": 4,
@@ -955,7 +955,7 @@
       },
       {
         "plant_name": "Allium schoenoprasum",
-        "plant_vernacular": "Chives; wild chives",
+        "plant_vernacular": "Chives",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -971,7 +971,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "plant_vernacular": "Olapa",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -979,7 +979,7 @@
       },
       {
         "plant_name": "Erythrina sandwicensis",
-        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "plant_vernacular": "Hawaiian Coral Tree",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1021,21 +1021,21 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "mycoparasite_count": 4,
         "pathogen_count": 181,
         "has_data": true
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "plant_vernacular": "Olapa",
         "mycoparasite_count": 1,
         "pathogen_count": 11,
         "has_data": true
       },
       {
         "plant_name": "Allium schoenoprasum",
-        "plant_vernacular": "Chives; wild chives",
+        "plant_vernacular": "Chives",
         "mycoparasite_count": 0,
         "pathogen_count": 18,
         "has_data": true
@@ -1049,7 +1049,7 @@
       },
       {
         "plant_name": "Erythrina sandwicensis",
-        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "plant_vernacular": "Hawaiian Coral Tree",
         "mycoparasite_count": 0,
         "pathogen_count": 0,
         "has_data": false

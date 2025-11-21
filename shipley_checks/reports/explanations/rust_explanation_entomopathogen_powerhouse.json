@@ -2257,7 +2257,7 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "fungus_count": 279,
         "amf_count": 4,
         "emf_count": 2,
@@ -2267,7 +2267,7 @@
       },
       {
         "plant_name": "Dactylis glomerata",
-        "plant_vernacular": "Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass",
+        "plant_vernacular": "Rough Cocksfoot",
         "fungus_count": 201,
         "amf_count": 7,
         "emf_count": 0,
@@ -2277,7 +2277,7 @@
       },
       {
         "plant_name": "Coffea arabica",
-        "plant_vernacular": "Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee",
+        "plant_vernacular": "Kona Coffee",
         "fungus_count": 157,
         "amf_count": 5,
         "emf_count": 0,
@@ -2287,7 +2287,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "fungus_count": 95,
         "amf_count": 0,
         "emf_count": 1,
@@ -2297,7 +2297,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "fungus_count": 70,
         "amf_count": 0,
         "emf_count": 0,
@@ -2307,7 +2307,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "fungus_count": 38,
         "amf_count": 7,
         "emf_count": 0,
@@ -2317,7 +2317,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "fungus_count": 18,
         "amf_count": 0,
         "emf_count": 7,
@@ -2670,7 +2670,7 @@
     "hub_plants": [
       {
         "plant_name": "Coffea arabica",
-        "plant_vernacular": "Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee",
+        "plant_vernacular": "Kona Coffee",
         "pollinator_count": 169,
         "honey_bees_count": 9,
         "bumblebees_count": 2,
@@ -2691,7 +2691,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "pollinator_count": 69,
         "honey_bees_count": 1,
         "bumblebees_count": 11,
@@ -2712,7 +2712,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "pollinator_count": 40,
         "honey_bees_count": 1,
         "bumblebees_count": 8,
@@ -2733,7 +2733,7 @@
       },
       {
         "plant_name": "Dactylis glomerata",
-        "plant_vernacular": "Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass",
+        "plant_vernacular": "Rough Cocksfoot",
         "pollinator_count": 28,
         "honey_bees_count": 0,
         "bumblebees_count": 1,
@@ -2754,7 +2754,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "pollinator_count": 15,
         "honey_bees_count": 1,
         "bumblebees_count": 3,
@@ -2775,7 +2775,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "pollinator_count": 14,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -2796,7 +2796,7 @@
       },
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "pollinator_count": 1,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -2920,7 +2920,7 @@
     "hub_plants": [
       {
         "plant_name": "Coffea arabica",
-        "plant_vernacular": "Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee",
+        "plant_vernacular": "Kona Coffee",
         "total_predators": 0,
         "total_entomo_fungi": 5,
         "total_biocontrol_agents": 5,
@@ -2928,7 +2928,7 @@
       },
       {
         "plant_name": "Dactylis glomerata",
-        "plant_vernacular": "Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass",
+        "plant_vernacular": "Rough Cocksfoot",
         "total_predators": 0,
         "total_entomo_fungi": 4,
         "total_biocontrol_agents": 4,
@@ -2936,7 +2936,7 @@
       },
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "total_predators": 0,
         "total_entomo_fungi": 4,
         "total_biocontrol_agents": 4,
@@ -2944,7 +2944,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2952,7 +2952,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2960,7 +2960,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2968,7 +2968,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -3049,49 +3049,49 @@
     "hub_plants": [
       {
         "plant_name": "Dactylis glomerata",
-        "plant_vernacular": "Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass",
+        "plant_vernacular": "Rough Cocksfoot",
         "mycoparasite_count": 5,
         "pathogen_count": 113,
         "has_data": true
       },
       {
         "plant_name": "Coffea arabica",
-        "plant_vernacular": "Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee",
+        "plant_vernacular": "Kona Coffee",
         "mycoparasite_count": 4,
         "pathogen_count": 85,
         "has_data": true
       },
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "plant_vernacular": "wine grape",
         "mycoparasite_count": 4,
         "pathogen_count": 181,
         "has_data": true
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "mycoparasite_count": 3,
         "pathogen_count": 64,
         "has_data": true
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "mycoparasite_count": 1,
         "pathogen_count": 67,
         "has_data": true
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "mycoparasite_count": 0,
         "pathogen_count": 39,
         "has_data": true
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "mycoparasite_count": 0,
         "pathogen_count": 9,
         "has_data": true

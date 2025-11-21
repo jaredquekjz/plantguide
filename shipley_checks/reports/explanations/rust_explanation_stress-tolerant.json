@@ -287,7 +287,7 @@
     "hub_plants": [
       {
         "plant_name": "Sporobolus compositus",
-        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
+        "plant_vernacular": "Composite Dropseed",
         "fungus_count": 10,
         "amf_count": 0,
         "emf_count": 0,
@@ -297,7 +297,7 @@
       },
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit; Chain Fruit",
+        "plant_vernacular": "Chainfruit",
         "fungus_count": 3,
         "amf_count": 0,
         "emf_count": 0,
@@ -317,7 +317,7 @@
       },
       {
         "plant_name": "Senna artemisioides",
-        "plant_vernacular": "Silver Cassia; silver senna",
+        "plant_vernacular": "Silver Cassia",
         "fungus_count": 1,
         "amf_count": 0,
         "emf_count": 0,
@@ -347,7 +347,7 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush; australian rush",
+        "plant_vernacular": "Common Rush",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
@@ -375,7 +375,7 @@
     "hub_plants": [
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit; Chain Fruit",
+        "plant_vernacular": "Chainfruit",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -407,7 +407,7 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush; australian rush",
+        "plant_vernacular": "Common Rush",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -415,7 +415,7 @@
       },
       {
         "plant_name": "Senna artemisioides",
-        "plant_vernacular": "Silver Cassia; silver senna",
+        "plant_vernacular": "Silver Cassia",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -423,7 +423,7 @@
       },
       {
         "plant_name": "Sporobolus compositus",
-        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
+        "plant_vernacular": "Composite Dropseed",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -443,7 +443,7 @@
     "hub_plants": [
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit; Chain Fruit",
+        "plant_vernacular": "Chainfruit",
         "mycoparasite_count": 1,
         "pathogen_count": 2,
         "has_data": true
@@ -471,21 +471,21 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush; australian rush",
+        "plant_vernacular": "Common Rush",
         "mycoparasite_count": 0,
         "pathogen_count": 0,
         "has_data": false
       },
       {
         "plant_name": "Senna artemisioides",
-        "plant_vernacular": "Silver Cassia; silver senna",
+        "plant_vernacular": "Silver Cassia",
         "mycoparasite_count": 0,
         "pathogen_count": 1,
         "has_data": true
       },
       {
         "plant_name": "Sporobolus compositus",
-        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
+        "plant_vernacular": "Composite Dropseed",
         "mycoparasite_count": 0,
         "pathogen_count": 15,
         "has_data": true

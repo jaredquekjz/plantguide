@@ -236,11 +236,8 @@ impl MarkdownFormatter {
             md.push_str("| Rank | Fungus Species | Category | Plants Connected | Network Contribution |\n");
             md.push_str("|------|----------------|----------|------------------|----------------------|\n");
             for (i, fungus) in fungi_profile.top_fungi.iter().enumerate() {
-                let plant_list = if fungus.plants.len() > 3 {
-                    format!("{} plants", fungus.plants.len())
-                } else {
-                    fungus.plants.join(", ")
-                };
+                // Always show count format, never show WFO IDs
+                let plant_list = format!("{} plants", fungus.plants.len());
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | {:.1}% |\n",
                     i + 1,
@@ -400,12 +397,18 @@ impl MarkdownFormatter {
             md.push_str("| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |\n");
             md.push_str("|------|-------------------|----------|------------------|----------------------|\n");
             for (i, pollinator) in pollinator_profile.top_pollinators.iter().enumerate() {
+                // Use singular/plural correctly
+                let plant_text = if pollinator.plant_count == 1 {
+                    "1 plant".to_string()
+                } else {
+                    format!("{} plants", pollinator.plant_count)
+                };
                 md.push_str(&format!(
-                    "| {} | {} | {} | {} plants | {:.1}% |\n",
+                    "| {} | {} | {} | {} | {:.1}% |\n",
                     i + 1,
                     pollinator.pollinator_name,
                     pollinator.category.display_name(),
-                    pollinator.plant_count,
+                    plant_text,
                     pollinator.network_contribution * 100.0
                 ));
             }
@@ -680,7 +683,7 @@ impl MarkdownFormatter {
         if !pathogen_profile.hub_plants.is_empty() {
             md.push_str("**Network Hubs (plants harboring most mycoparasites):**\n\n");
             md.push_str("| Plant | Mycoparasites | Pathogens |\n");
-            md.push_str("|-------|---------------|-----------||\n");
+            md.push_str("|-------|---------------|-----------|\n");
             for hub in pathogen_profile.hub_plants.iter().take(10) {
                 // Format display name with vernacular if available
                 let display_name = if !hub.plant_vernacular.is_empty() {

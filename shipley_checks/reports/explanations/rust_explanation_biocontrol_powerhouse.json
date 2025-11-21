@@ -1901,7 +1901,7 @@
     "hub_plants": [
       {
         "plant_name": "Acer saccharinum",
-        "plant_vernacular": "silver maple; river maple; white maple",
+        "plant_vernacular": "silver maple",
         "fungus_count": 216,
         "amf_count": 0,
         "emf_count": 2,
@@ -1911,7 +1911,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "fungus_count": 95,
         "amf_count": 0,
         "emf_count": 1,
@@ -1921,7 +1921,7 @@
       },
       {
         "plant_name": "Sambucus nigra",
-        "plant_vernacular": "Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder",
+        "plant_vernacular": "Parsley-leaved Elder",
         "fungus_count": 89,
         "amf_count": 0,
         "emf_count": 0,
@@ -1931,7 +1931,7 @@
       },
       {
         "plant_name": "Crataegus monogyna",
-        "plant_vernacular": "Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn",
+        "plant_vernacular": "Neapolitan medlar",
         "fungus_count": 88,
         "amf_count": 12,
         "emf_count": 2,
@@ -1941,7 +1941,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "fungus_count": 70,
         "amf_count": 0,
         "emf_count": 0,
@@ -1951,7 +1951,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "fungus_count": 38,
         "amf_count": 7,
         "emf_count": 0,
@@ -1961,7 +1961,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "fungus_count": 18,
         "amf_count": 0,
         "emf_count": 7,
@@ -2580,7 +2580,7 @@
     "hub_plants": [
       {
         "plant_name": "Crataegus monogyna",
-        "plant_vernacular": "Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn",
+        "plant_vernacular": "Neapolitan medlar",
         "pollinator_count": 108,
         "honey_bees_count": 1,
         "bumblebees_count": 9,
@@ -2601,7 +2601,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "pollinator_count": 69,
         "honey_bees_count": 1,
         "bumblebees_count": 11,
@@ -2622,7 +2622,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "pollinator_count": 40,
         "honey_bees_count": 1,
         "bumblebees_count": 8,
@@ -2643,7 +2643,7 @@
       },
       {
         "plant_name": "Acer saccharinum",
-        "plant_vernacular": "silver maple; river maple; white maple",
+        "plant_vernacular": "silver maple",
         "pollinator_count": 37,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -2664,7 +2664,7 @@
       },
       {
         "plant_name": "Sambucus nigra",
-        "plant_vernacular": "Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder",
+        "plant_vernacular": "Parsley-leaved Elder",
         "pollinator_count": 28,
         "honey_bees_count": 2,
         "bumblebees_count": 5,
@@ -2685,7 +2685,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "pollinator_count": 15,
         "honey_bees_count": 1,
         "bumblebees_count": 3,
@@ -2706,7 +2706,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "pollinator_count": 14,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -2817,7 +2817,7 @@
     "hub_plants": [
       {
         "plant_name": "Acer saccharinum",
-        "plant_vernacular": "silver maple; river maple; white maple",
+        "plant_vernacular": "silver maple",
         "total_predators": 0,
         "total_entomo_fungi": 2,
         "total_biocontrol_agents": 2,
@@ -2825,7 +2825,7 @@
       },
       {
         "plant_name": "Crataegus monogyna",
-        "plant_vernacular": "Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn",
+        "plant_vernacular": "Neapolitan medlar",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2833,7 +2833,7 @@
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2841,7 +2841,7 @@
       },
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2849,7 +2849,7 @@
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2857,7 +2857,7 @@
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2865,7 +2865,7 @@
       },
       {
         "plant_name": "Sambucus nigra",
-        "plant_vernacular": "Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder",
+        "plant_vernacular": "Parsley-leaved Elder",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -2936,49 +2936,49 @@
     "hub_plants": [
       {
         "plant_name": "Prunus spinosa",
-        "plant_vernacular": "Sloe; Blackthorn",
+        "plant_vernacular": "Sloe",
         "mycoparasite_count": 3,
         "pathogen_count": 64,
         "has_data": true
       },
       {
         "plant_name": "Acer saccharinum",
-        "plant_vernacular": "silver maple; river maple; white maple",
+        "plant_vernacular": "silver maple",
         "mycoparasite_count": 2,
         "pathogen_count": 97,
         "has_data": true
       },
       {
         "plant_name": "Sambucus nigra",
-        "plant_vernacular": "Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder",
+        "plant_vernacular": "Parsley-leaved Elder",
         "mycoparasite_count": 2,
         "pathogen_count": 59,
         "has_data": true
       },
       {
         "plant_name": "Rosa canina",
-        "plant_vernacular": "canker rose; dog rose; Dog-rose",
+        "plant_vernacular": "canker rose",
         "mycoparasite_count": 1,
         "pathogen_count": 67,
         "has_data": true
       },
       {
         "plant_name": "Crataegus monogyna",
-        "plant_vernacular": "Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn",
+        "plant_vernacular": "Neapolitan medlar",
         "mycoparasite_count": 0,
         "pathogen_count": 55,
         "has_data": true
       },
       {
         "plant_name": "Fragaria vesca",
-        "plant_vernacular": "wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry",
+        "plant_vernacular": "wild strawberry",
         "mycoparasite_count": 0,
         "pathogen_count": 39,
         "has_data": true
       },
       {
         "plant_name": "Quercus robur",
-        "plant_vernacular": "pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree",
+        "plant_vernacular": "pedunculate oak",
         "mycoparasite_count": 0,
         "pathogen_count": 9,
         "has_data": true

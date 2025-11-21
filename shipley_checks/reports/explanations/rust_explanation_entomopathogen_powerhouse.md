@@ -54,13 +54,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Plant | Total Predators | Total Fungi | Combined |
 |-------|----------------|-------------|----------|
-| Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee) | 0 | 5 | 5 |
-| Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass) | 0 | 4 | 4 |
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 0 | 4 | 4 |
-| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) ⚠️ | 0 | 0 | 0 |
-| Prunus spinosa (Sloe; Blackthorn) ⚠️ | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) ⚠️ | 0 | 0 | 0 |
-| Rosa canina (canker rose; dog rose; Dog-rose) ⚠️ | 0 | 0 | 0 |
+| Coffea arabica (Kona Coffee) | 0 | 5 | 5 |
+| Dactylis glomerata (Rough Cocksfoot) | 0 | 4 | 4 |
+| Vitis vinifera (wine grape) | 0 | 4 | 4 |
+| Fragaria vesca (wild strawberry) ⚠️ | 0 | 0 | 0 |
+| Prunus spinosa (Sloe) ⚠️ | 0 | 0 | 0 |
+| Quercus robur (pedunculate oak) ⚠️ | 0 | 0 | 0 |
+| Rosa canina (canker rose) ⚠️ | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
@@ -103,14 +103,14 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 **Network Hubs (plants harboring most mycoparasites):**
 
 | Plant | Mycoparasites | Pathogens |
-|-------|---------------|-----------||
-| Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass) | 5 | 113 |
-| Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee) | 4 | 85 |
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 4 | 181 |
-| Prunus spinosa (Sloe; Blackthorn) | 3 | 64 |
-| Rosa canina (canker rose; dog rose; Dog-rose) | 1 | 67 |
-| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 0 | 39 |
-| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 0 | 9 |
+|-------|---------------|-----------|
+| Dactylis glomerata (Rough Cocksfoot) | 5 | 113 |
+| Coffea arabica (Kona Coffee) | 4 | 85 |
+| Vitis vinifera (wine grape) | 4 | 181 |
+| Prunus spinosa (Sloe) | 3 | 64 |
+| Rosa canina (canker rose) | 1 | 67 |
+| Fragaria vesca (wild strawberry) | 0 | 39 |
+| Quercus robur (pedunculate oak) | 0 | 9 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -151,13 +151,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 279 | 4 | 2 | 51 | 222 |
-| Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass) | 201 | 7 | 0 | 52 | 142 |
-| Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee) | 157 | 5 | 0 | 33 | 119 |
-| Prunus spinosa (Sloe; Blackthorn) | 95 | 0 | 1 | 10 | 84 |
-| Rosa canina (canker rose; dog rose; Dog-rose) | 70 | 0 | 0 | 11 | 59 |
-| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 38 | 7 | 0 | 7 | 24 |
-| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
+| Vitis vinifera (wine grape) | 279 | 4 | 2 | 51 | 222 |
+| Dactylis glomerata (Rough Cocksfoot) | 201 | 7 | 0 | 52 | 142 |
+| Coffea arabica (Kona Coffee) | 157 | 5 | 0 | 33 | 119 |
+| Prunus spinosa (Sloe) | 95 | 0 | 1 | 10 | 84 |
+| Rosa canina (canker rose) | 70 | 0 | 0 | 11 | 59 |
+| Fragaria vesca (wild strawberry) | 38 | 7 | 0 | 7 | 24 |
+| Quercus robur (pedunculate oak) | 18 | 0 | 7 | 0 | 11 |
 
 ### High Structural Diversity [M6 - 100.0/100]
 
@@ -235,13 +235,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee) | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
-| Prunus spinosa (Sloe; Blackthorn) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina (canker rose; dog rose; Dog-rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass) | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
-| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
-| Vitis vinifera (wine grape; Grape Vine; common grape) | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| Coffea arabica (Kona Coffee) | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
+| Prunus spinosa (Sloe) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina (canker rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Dactylis glomerata (Rough Cocksfoot) | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
+| Fragaria vesca (wild strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur (pedunculate oak) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Vitis vinifera (wine grape) | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Warnings
 

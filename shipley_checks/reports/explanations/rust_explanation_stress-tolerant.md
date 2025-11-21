@@ -35,14 +35,14 @@ The disease suppression score is driven by the presence of **general mycoparasit
 **Network Hubs (plants harboring most mycoparasites):**
 
 | Plant | Mycoparasites | Pathogens |
-|-------|---------------|-----------||
-| Alyxia ruscifolia (Chainfruit; Chain Fruit) | 1 | 2 |
+|-------|---------------|-----------|
+| Alyxia ruscifolia (Chainfruit) | 1 | 2 |
 | Carex mucronata | 0 | 4 |
 | Eucalyptus melanophloia (Silver-leaved Ironbark) | 0 | 1 |
 | Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 |
-| Juncus usitatus (Common Rush; australian rush) ⚠️ | 0 | 0 |
-| Senna artemisioides (Silver Cassia; silver senna) | 0 | 1 |
-| Sporobolus compositus (Composite Dropseed; Tall Dropseed) | 0 | 15 |
+| Juncus usitatus (Common Rush) ⚠️ | 0 | 0 |
+| Senna artemisioides (Silver Cassia) | 0 | 1 |
+| Sporobolus compositus (Composite Dropseed) | 0 | 15 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
@@ -70,28 +70,28 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Rank | Fungus Species | Category | Plants Connected | Network Contribution |
 |------|----------------|----------|------------------|----------------------|
-| 1 | ciferrioxyphium | Saprotrophic | wfo-0000956222 | 14.3% |
-| 2 | clathrospora | Saprotrophic | wfo-0000349035 | 14.3% |
-| 3 | colletotrichum | Saprotrophic | wfo-0000901050 | 14.3% |
-| 4 | cosmospora | Saprotrophic | wfo-0000956222 | 14.3% |
-| 5 | fusarium | Saprotrophic | wfo-0000901050 | 14.3% |
-| 6 | graphyllium | Saprotrophic | wfo-0000901050 | 14.3% |
-| 7 | hendersonia | Saprotrophic | wfo-0000901050 | 14.3% |
-| 8 | hysterographium | Saprotrophic | wfo-0000901050 | 14.3% |
-| 9 | lasiodiplodia | Endophytic | wfo-0000209726 | 14.3% |
-| 10 | phyllosticta | Saprotrophic | wfo-0000956222 | 14.3% |
+| 1 | ciferrioxyphium | Saprotrophic | 1 plants | 14.3% |
+| 2 | clathrospora | Saprotrophic | 1 plants | 14.3% |
+| 3 | colletotrichum | Saprotrophic | 1 plants | 14.3% |
+| 4 | cosmospora | Saprotrophic | 1 plants | 14.3% |
+| 5 | fusarium | Saprotrophic | 1 plants | 14.3% |
+| 6 | graphyllium | Saprotrophic | 1 plants | 14.3% |
+| 7 | hendersonia | Saprotrophic | 1 plants | 14.3% |
+| 8 | hysterographium | Saprotrophic | 1 plants | 14.3% |
+| 9 | lasiodiplodia | Endophytic | 1 plants | 14.3% |
+| 10 | phyllosticta | Saprotrophic | 1 plants | 14.3% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Sporobolus compositus (Composite Dropseed; Tall Dropseed) | 10 | 0 | 0 | 0 | 10 |
-| Alyxia ruscifolia (Chainfruit; Chain Fruit) | 3 | 0 | 0 | 0 | 3 |
+| Sporobolus compositus (Composite Dropseed) | 10 | 0 | 0 | 0 | 10 |
+| Alyxia ruscifolia (Chainfruit) | 3 | 0 | 0 | 0 | 3 |
 | Carex mucronata | 2 | 0 | 0 | 1 | 1 |
-| Senna artemisioides (Silver Cassia; silver senna) | 1 | 0 | 0 | 1 | 0 |
+| Senna artemisioides (Silver Cassia) | 1 | 0 | 0 | 1 | 0 |
 | Eucalyptus melanophloia (Silver-leaved Ironbark) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 | Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 | 0 | 0 | 0 |
-| Juncus usitatus (Common Rush; australian rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Juncus usitatus (Common Rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 

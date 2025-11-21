@@ -622,7 +622,7 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "plant_vernacular": "Golden Ash",
         "fungus_count": 99,
         "amf_count": 1,
         "emf_count": 1,
@@ -652,7 +652,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "plant_vernacular": "whitemargin pussytoes",
         "fungus_count": 13,
         "amf_count": 2,
         "emf_count": 0,
@@ -662,7 +662,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "plant_vernacular": "Pacific Solomon's seal",
         "fungus_count": 12,
         "amf_count": 0,
         "emf_count": 0,
@@ -836,7 +836,7 @@
     "hub_plants": [
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "plant_vernacular": "Pacific Solomon's seal",
         "pollinator_count": 52,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -857,7 +857,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "plant_vernacular": "whitemargin pussytoes",
         "pollinator_count": 30,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -899,7 +899,7 @@
       },
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "plant_vernacular": "Golden Ash",
         "pollinator_count": 1,
         "honey_bees_count": 1,
         "bumblebees_count": 0,
@@ -1079,7 +1079,7 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "plant_vernacular": "Golden Ash",
         "total_predators": 0,
         "total_entomo_fungi": 2,
         "total_biocontrol_agents": 2,
@@ -1087,7 +1087,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "plant_vernacular": "whitemargin pussytoes",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1111,7 +1111,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "plant_vernacular": "Pacific Solomon's seal",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1147,14 +1147,14 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "plant_vernacular": "Golden Ash",
         "mycoparasite_count": 2,
         "pathogen_count": 49,
         "has_data": true
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "plant_vernacular": "whitemargin pussytoes",
         "mycoparasite_count": 0,
         "pathogen_count": 14,
         "has_data": true
@@ -1175,7 +1175,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "plant_vernacular": "Pacific Solomon's seal",
         "mycoparasite_count": 0,
         "pathogen_count": 18,
         "has_data": true
