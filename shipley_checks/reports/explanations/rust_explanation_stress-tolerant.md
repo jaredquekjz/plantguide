@@ -1,8 +1,8 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 40.9/100
+**Overall Score:** 47.2/100
 
-Overall guild compatibility: 40.9/100
+Overall guild compatibility: 47.2/100
 
 ## Climate Compatibility
 
@@ -95,6 +95,33 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
+### High Structural Diversity [M6 - 90.6/100]
+
+3 growth forms spanning 19.8m height range  
+**Vertical Stratification (Quality: 0.73 - Good):**
+
+**Canopy Layer (>15m):**
+  - Eucalyptus melanophloia (Silver-leaved ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)
+
+**Understory (5-15m):**
+  - Alyxia ruscifolia (Chainfruit): 5.0m, EIVE-L: 7.4 (flexible)
+
+**Shrub Layer (1-5m):**
+  - Senna artemisioides (Silver cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)
+  - Juncus usitatus (Common rush): 1.1m, EIVE-L: 7.1 (flexible)
+
+**Ground Layer (<1m):**
+  - Sporobolus compositus (Composite dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)
+  - Hibbertia diffusa (Wedge guinea flower): 0.3m, EIVE-L: 6.9 (flexible)
+  - Carex mucronata (Carex): 0.2m, EIVE-L: 9.5 (sun-loving ⚠)
+
+**Why this stratification is acceptable:**
+3 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plant(s) are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
+
+*Evidence:* Structural diversity score: 90.6/100, stratification quality: 0.73  
+
+*Evidence:* Stratification quality: 0.73
+
 ## Warnings
 
 🚨 **Soil pH incompatibility detected**
@@ -127,6 +154,6 @@ Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 46.3 | Fair |
+| M6 - Structural Diversity | 90.6 | Excellent |
 | M7 - Pollinator Support | 0.0 | Poor |
 

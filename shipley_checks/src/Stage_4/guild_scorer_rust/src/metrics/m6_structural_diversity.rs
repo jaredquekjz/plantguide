@@ -131,6 +131,7 @@ pub fn calculate_m6(
 
         let heights = sorted.column("height_m")?.f64()?;
         let light_prefs = sorted.column("light_pref")?.f64()?;
+        let sorted_growth_forms = sorted.column("try_growth_form")?.str()?;
 
         // Analyze all tall-short pairs (R lines 130-156)
         for i in 0..n - 1 {
@@ -149,24 +150,43 @@ pub fn calculate_m6(
 
                 // Only significant height differences (>2m = different canopy layers)
                 if height_diff > 2.0 {
-                    let short_light = light_prefs.get(i);
+                    // Check for complementary growth forms (analogous to M2 CSR conflict logic)
+                    let short_form = sorted_growth_forms.get(i).unwrap_or("").to_lowercase();
+                    let tall_form = sorted_growth_forms.get(j).unwrap_or("").to_lowercase();
 
-                    match short_light {
-                        None => {
-                            // Conservative: neutral/flexible (missing data)
-                            valid_stratification += height_diff * 0.5;
-                        }
-                        Some(light) if light < 3.2 => {
-                            // Shade-tolerant (EIVE-L 1-3): Can thrive under canopy
-                            valid_stratification += height_diff;
-                        }
-                        Some(light) if light > 7.47 => {
-                            // Sun-loving (EIVE-L 8-9): Will be shaded out
-                            invalid_stratification += height_diff;
-                        }
-                        Some(_) => {
-                            // Flexible (EIVE-L 4-7): Partial compatibility
-                            valid_stratification += height_diff * 0.6;
+                    let is_complementary =
+                        // Vine/liana can climb tree
+                        ((short_form.contains("vine") || short_form.contains("liana")) && tall_form.contains("tree"))
+                        || ((tall_form.contains("vine") || tall_form.contains("liana")) && short_form.contains("tree"))
+                        // Herb + tree occupy different vertical niches
+                        || (short_form.contains("herb") && tall_form.contains("tree"))
+                        || (tall_form.contains("herb") && short_form.contains("tree"));
+
+                    if is_complementary {
+                        // Complementary growth forms: full credit regardless of light preference
+                        // Vine climbs tree, herb grows under tree canopy
+                        valid_stratification += height_diff;
+                    } else {
+                        // Similar growth forms: evaluate based on light preference
+                        let short_light = light_prefs.get(i);
+
+                        match short_light {
+                            None => {
+                                // Conservative: neutral/flexible (missing data)
+                                valid_stratification += height_diff * 0.5;
+                            }
+                            Some(light) if light < 3.2 => {
+                                // Shade-tolerant (EIVE-L 1-3): Can thrive under canopy
+                                valid_stratification += height_diff;
+                            }
+                            Some(light) if light > 7.47 => {
+                                // Sun-loving (EIVE-L 8-9): Will be shaded out
+                                invalid_stratification += height_diff;
+                            }
+                            Some(_) => {
+                                // Flexible (EIVE-L 4-7): Partial compatibility
+                                valid_stratification += height_diff * 0.6;
+                            }
                         }
                     }
                 }
