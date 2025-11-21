@@ -40,17 +40,17 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
-| adoxophyes orana | Caterpillars | eptesicus serotinus | Bats | Specific (weight 1.0) |
-| adoxophyes orana | Caterpillars | myotis daubentonii | Bats | Specific (weight 1.0) |
-| adoxophyes orana | Caterpillars | myotis mystacinus | Bats | Specific (weight 1.0) |
-| aphis | Aphids | adalia bipunctata | Ladybugs | Specific (weight 1.0) |
+| adoxophyes orana | Moths | eptesicus serotinus | Bats | Specific (weight 1.0) |
+| adoxophyes orana | Moths | myotis daubentonii | Bats | Specific (weight 1.0) |
+| adoxophyes orana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
+| aphis | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
 | aphis | Aphids | cyanistes caeruleus | Birds | Specific (weight 1.0) |
 | aphis | Aphids | fringilla coelebs | Birds | Specific (weight 1.0) |
-| aphis | Aphids | platycheirus scutatus | Hoverflies | Specific (weight 1.0) |
+| aphis | Aphids | platycheirus scutatus | Flies | Specific (weight 1.0) |
 | aphis | Aphids | syrphus vitripennis | Hoverflies | Specific (weight 1.0) |
 | cnephasia stephensiana | Moths | myotis daubentonii | Bats | Specific (weight 1.0) |
 | cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
-| myzus persicae | Aphids | adalia bipunctata | Ladybugs | Specific (weight 1.0) |
+| myzus persicae | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
 
 ### Natural Disease Suppression [M4 - 95.1/100]
 
@@ -164,11 +164,11 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 **Pollinator Community Composition:**
 
 - 1 Honey Bees - 1.2%
-- 21 Solitary Bees - 25.0%
-- 8 Hover Flies - 9.5%
-- 3 Muscid Flies - 3.6%
-- 1 Wasps - 1.2%
-- 49 Other - 58.3%
+- 25 Solitary Bees - 29.8%
+- 21 Muscid Flies - 25.0%
+- 5 Pollen Beetles - 6.0%
+- 7 Wasps - 8.3%
+- 23 Other - 27.4%
 
 **Shared Pollinators (visiting ≥2 plants):**
 
@@ -180,21 +180,21 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 |------|-------------------|----------|------------------|----------------------|
 | 1 | Apis mellifera | Honey Bees | 2 plants | 28.6% |
 | 2 | Lasioglossum | Solitary Bees | 2 plants | 28.6% |
-| 3 | Aedes impiger | Other Pollinators | 1 plants | 14.3% |
-| 4 | Aedes nigripes | Other Pollinators | 1 plants | 14.3% |
+| 3 | Aedes impiger | Flies | 1 plants | 14.3% |
+| 4 | Aedes nigripes | Flies | 1 plants | 14.3% |
 | 5 | Andrena carlini | Solitary Bees | 1 plants | 14.3% |
 | 6 | Andrena columbiana | Solitary Bees | 1 plants | 14.3% |
 | 7 | Andrena flavipes | Solitary Bees | 1 plants | 14.3% |
 | 8 | Andrena marginata | Solitary Bees | 1 plants | 14.3% |
 | 9 | Andrena nothoscordi | Solitary Bees | 1 plants | 14.3% |
-| 10 | Anoplius illinoensis | Other Pollinators | 1 plants | 14.3% |
+| 10 | Anoplius illinoensis | Wasps | 1 plants | 14.3% |
 
 **Network Hubs (most connected plants):**
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Maianthemum racemosum | 52 | 0 | 0 | 8 | 3 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 37 |
-| Anaphalis margaritacea | 30 | 0 | 0 | 12 | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 13 |
+| Maianthemum racemosum | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
+| Anaphalis margaritacea | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
 | Mercurialis perennis | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Fraxinus excelsior | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Deutzia scabra | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |

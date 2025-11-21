@@ -804,13 +804,15 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "Butterflies": 1,
-      "Hoverflies": 1,
-      "OtherPredators": 4,
       "Lacewings": 1,
+      "Flies": 1,
       "Wasps": 1,
+      "OtherPredators": 1,
+      "ScaleInsects": 3,
+      "Moths": 2,
       "Birds": 1,
-      "ScaleInsects": 3
+      "Butterflies": 1,
+      "Bats": 1
     },
     "herbivore_category_counts": {},
     "top_predators": [],
@@ -828,7 +830,7 @@
       {
         "pathogen": "armillaria",
         "fungivore": "ariolimax californicus",
-        "fungivore_category": "OtherPredators"
+        "fungivore_category": "Snails"
       }
     ],
     "top_mycoparasites": [],

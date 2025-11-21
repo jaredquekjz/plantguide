@@ -611,13 +611,13 @@
       {
         "pollinator_name": "Aedes impiger",
         "plant_count": 1,
-        "category": "OtherPollinators",
+        "category": "Flies",
         "network_contribution": 0.14285714285714285
       },
       {
         "pollinator_name": "Aedes nigripes",
         "plant_count": 1,
-        "category": "OtherPollinators",
+        "category": "Flies",
         "network_contribution": 0.14285714285714285
       },
       {
@@ -653,27 +653,51 @@
       {
         "pollinator_name": "Anoplius illinoensis",
         "plant_count": 1,
-        "category": "OtherPollinators",
+        "category": "Wasps",
         "network_contribution": 0.14285714285714285
       }
     ],
     "pollinators_by_category": {
       "honey_bees_count": 1,
       "bumblebees_count": 0,
-      "solitary_bees_count": 21,
-      "hover_flies_count": 8,
-      "muscid_flies_count": 3,
+      "solitary_bees_count": 25,
+      "hover_flies_count": 0,
+      "muscid_flies_count": 21,
       "mosquitoes_count": 0,
       "other_flies_count": 0,
       "butterflies_count": 0,
       "moths_count": 0,
-      "pollen_beetles_count": 0,
+      "pollen_beetles_count": 5,
       "other_beetles_count": 0,
-      "wasps_count": 1,
+      "wasps_count": 7,
       "birds_count": 0,
       "bats_count": 0,
-      "other_count": 49,
+      "other_count": 23,
       "top_per_category": [
+        {
+          "pollinator_name": "Apis mellifera",
+          "plant_count": 2,
+          "category": "HoneyBees",
+          "network_contribution": 0.2857142857142857
+        },
+        {
+          "pollinator_name": "Aedes impiger",
+          "plant_count": 1,
+          "category": "Flies",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Aedes nigripes",
+          "plant_count": 1,
+          "category": "Flies",
+          "network_contribution": 0.14285714285714285
+        },
+        {
+          "pollinator_name": "Anoplius illinoensis",
+          "plant_count": 1,
+          "category": "Wasps",
+          "network_contribution": 0.14285714285714285
+        },
         {
           "pollinator_name": "Lasioglossum",
           "plant_count": 2,
@@ -685,24 +709,6 @@
           "plant_count": 1,
           "category": "SolitaryBees",
           "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Aedes impiger",
-          "plant_count": 1,
-          "category": "OtherPollinators",
-          "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Aedes nigripes",
-          "plant_count": 1,
-          "category": "OtherPollinators",
-          "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Apis mellifera",
-          "plant_count": 2,
-          "category": "HoneyBees",
-          "network_contribution": 0.2857142857142857
         }
       ]
     },
@@ -712,19 +718,19 @@
         "pollinator_count": 52,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
-        "solitary_bees_count": 8,
-        "hover_flies_count": 3,
-        "muscid_flies_count": 3,
+        "solitary_bees_count": 12,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 14,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "pollen_beetles_count": 0,
+        "pollen_beetles_count": 4,
         "other_beetles_count": 0,
-        "wasps_count": 1,
+        "wasps_count": 7,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 37
+        "other_count": 15
       },
       {
         "plant_name": "Anaphalis margaritacea",
@@ -732,18 +738,18 @@
         "honey_bees_count": 0,
         "bumblebees_count": 0,
         "solitary_bees_count": 12,
-        "hover_flies_count": 5,
-        "muscid_flies_count": 0,
+        "hover_flies_count": 0,
+        "muscid_flies_count": 7,
         "mosquitoes_count": 0,
         "other_flies_count": 0,
         "butterflies_count": 0,
         "moths_count": 0,
-        "pollen_beetles_count": 0,
+        "pollen_beetles_count": 1,
         "other_beetles_count": 0,
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 13
+        "other_count": 10
       },
       {
         "plant_name": "Mercurialis perennis",
@@ -851,19 +857,19 @@
     "matched_predator_pairs": [
       {
         "target": "adoxophyes orana",
-        "target_category": "Caterpillars",
+        "target_category": "Moths",
         "agent": "eptesicus serotinus",
         "agent_category": "Bats"
       },
       {
         "target": "adoxophyes orana",
-        "target_category": "Caterpillars",
+        "target_category": "Moths",
         "agent": "myotis daubentonii",
         "agent_category": "Bats"
       },
       {
         "target": "adoxophyes orana",
-        "target_category": "Caterpillars",
+        "target_category": "Moths",
         "agent": "myotis mystacinus",
         "agent_category": "Bats"
       },
@@ -871,7 +877,7 @@
         "target": "aphis",
         "target_category": "Aphids",
         "agent": "adalia bipunctata",
-        "agent_category": "Ladybugs"
+        "agent_category": "Beetles"
       },
       {
         "target": "aphis",
@@ -889,7 +895,7 @@
         "target": "aphis",
         "target_category": "Aphids",
         "agent": "platycheirus scutatus",
-        "agent_category": "Hoverflies"
+        "agent_category": "Flies"
       },
       {
         "target": "aphis",
@@ -913,24 +919,24 @@
         "target": "myzus persicae",
         "target_category": "Aphids",
         "agent": "adalia bipunctata",
-        "agent_category": "Ladybugs"
+        "agent_category": "Beetles"
       }
     ],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "Hoverflies": 3,
-      "OtherPredators": 8,
-      "GroundBeetles": 1,
+      "Beetles": 2,
+      "Hoverflies": 1,
+      "OtherPredators": 4,
+      "Flies": 2,
       "Wasps": 1,
       "ScaleInsects": 3,
-      "Birds": 3,
-      "Ladybugs": 1,
+      "Birds": 4,
+      "Psyllids": 1,
       "Butterflies": 1,
-      "Bats": 4
+      "Bats": 6
     },
     "herbivore_category_counts": {
-      "Moths": 1,
-      "Caterpillars": 1,
+      "Moths": 2,
       "Aphids": 2
     },
     "top_predators": [],

@@ -62,7 +62,7 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Other Predators | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 

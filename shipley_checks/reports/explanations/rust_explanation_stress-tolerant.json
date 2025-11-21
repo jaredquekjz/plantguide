@@ -204,7 +204,7 @@
         },
         {
           "category": "Saprotrophic",
-          "fungus_name": "fusarium",
+          "fungus_name": "wojnowicia",
           "plant_count": 1
         }
       ]
@@ -278,7 +278,7 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "OtherPredators": 4
+      "Bats": 4
     },
     "herbivore_category_counts": {},
     "top_predators": [],
