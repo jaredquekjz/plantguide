@@ -111,13 +111,19 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
             }
 
             if shade_tolerant_count > 0 {
-                detail.push_str(&format!("{} plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. ", shade_tolerant_count));
+                let (plant_word, verb) = if shade_tolerant_count == 1 { ("plant", "is") } else { ("plants", "are") };
+                detail.push_str(&format!("{} {} {} shade-tolerant (EIVE-L <3.2) and thrive under canopy. ",
+                    shade_tolerant_count, plant_word, verb));
             }
             if flexible_count > 0 {
-                detail.push_str(&format!("{} plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ", flexible_count));
+                let (plant_word, verb) = if flexible_count == 1 { ("plant", "is") } else { ("plants", "are") };
+                detail.push_str(&format!("{} {} {} flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ",
+                    flexible_count, plant_word, verb));
             }
             if sun_loving_count > 0 {
-                detail.push_str(&format!("⚠ {} plant(s) are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.", sun_loving_count));
+                let (plant_word, verb) = if sun_loving_count == 1 { ("plant", "is") } else { ("plants", "are") };
+                detail.push_str(&format!("⚠ {} {} {} sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.",
+                    sun_loving_count, plant_word, verb));
             } else {
                 detail.push_str("No sun-loving plants that would be shaded out.");
             }
