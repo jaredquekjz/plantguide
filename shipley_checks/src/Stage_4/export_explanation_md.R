@@ -88,20 +88,22 @@ export_guild_report_md <- function(guild_result, output_path, guild_name = NULL)
 # ==============================================================================
 
 get_star_rating <- function(score) {
+  # RUST PARITY: 6-level system (generator.rs lines 151-158)
   if (score >= 90) return("★★★★★")
   if (score >= 80) return("★★★★☆")
-  if (score >= 60) return("★★★☆☆")
-  if (score >= 40) return("★★☆☆☆")
-  if (score >= 20) return("★☆☆☆☆")
+  if (score >= 70) return("★★★☆☆")  # Added missing level
+  if (score >= 60) return("★★☆☆☆")
+  if (score >= 50) return("★☆☆☆☆")  # Added missing level
   return("☆☆☆☆☆")
 }
 
 get_score_label <- function(score) {
+  # RUST PARITY: 6-level system (generator.rs lines 151-158)
   if (score >= 90) return("Exceptional")
   if (score >= 80) return("Excellent")
-  if (score >= 60) return("Good")
-  if (score >= 40) return("Fair")
-  if (score >= 20) return("Poor")
+  if (score >= 70) return("Good")  # Added missing level
+  if (score >= 60) return("Fair")
+  if (score >= 50) return("Poor")  # Added missing level
   return("Unsuitable")
 }
 

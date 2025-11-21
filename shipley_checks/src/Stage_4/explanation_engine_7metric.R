@@ -32,18 +32,20 @@ generate_explanation <- function(guild_result) {
 
 #' Generate overall score explanation
 generate_overall_explanation <- function(overall_score) {
-  # Star rating
-  stars <- if (overall_score >= 80) "★★★★★"
-           else if (overall_score >= 60) "★★★★☆"
-           else if (overall_score >= 40) "★★★☆☆"
-           else if (overall_score >= 20) "★★☆☆☆"
-           else "★☆☆☆☆"
+  # Star rating (RUST PARITY: 6-level system, generator.rs lines 151-158)
+  stars <- if (overall_score >= 90) "★★★★★"
+           else if (overall_score >= 80) "★★★★☆"
+           else if (overall_score >= 70) "★★★☆☆"
+           else if (overall_score >= 60) "★★☆☆☆"
+           else if (overall_score >= 50) "★☆☆☆☆"
+           else "☆☆☆☆☆"
 
-  label <- if (overall_score >= 80) "Excellent Guild"
-           else if (overall_score >= 60) "Good Guild"
-           else if (overall_score >= 40) "Neutral Guild"
-           else if (overall_score >= 20) "Below Average Guild"
-           else "Poor Guild"
+  label <- if (overall_score >= 90) "Exceptional"
+           else if (overall_score >= 80) "Excellent"
+           else if (overall_score >= 70) "Good"
+           else if (overall_score >= 60) "Fair"
+           else if (overall_score >= 50) "Poor"
+           else "Unsuitable"
 
   list(
     score = round(overall_score, 1),
@@ -79,22 +81,45 @@ generate_climate_explanation <- function(climate_tier) {
 
 #' Generate risk explanations
 #'
-#' CRITICAL: NO N1/N2 risk cards in 7-metric framework
-#' M1 (phylogenetic distance) replaces pest/pathogen sharing metrics
+#' Generate risk explanations (RUST PARITY)
+#' M1 (phylogenetic distance) replaces old N1/N2 pest sharing metrics
 generate_risks_explanation <- function(guild_result) {
   risks <- list()
+  metrics <- guild_result$metrics
+  details <- guild_result$details
 
-  # Default: No specific risks detected
-  # (M1 score captures pest/pathogen risk via phylogenetic distance)
-  risks[[1]] <- list(
-    type = "none",
-    severity = "none",
-    icon = "✓",
-    title = "No Specific Risk Factors Detected",
-    message = "Guild metrics show generally compatible plants",
-    detail = "Review individual metrics and observed organisms for optimization opportunities",
-    advice = "Check metric breakdown for specific guidance"
-  )
+  # M1: Pest vulnerability risk (RUST PARITY: generator.rs lines 258-275)
+  m1_score <- if (is.null(metrics$m1)) NA else metrics$m1
+  if (!is.na(m1_score) && m1_score < 30) {
+    faiths_pd <- if (!is.null(details$m1$faiths_pd)) details$m1$faiths_pd else NA
+
+    risks[[length(risks) + 1]] <- list(
+      type = "pest_vulnerability",
+      severity = "medium",
+      icon = "🦠",
+      title = "Closely Related Plants",
+      message = "Guild contains closely related plants that may share pests",
+      detail = if (!is.na(faiths_pd)) {
+        glue("Low phylogenetic diversity (Faith's PD: {round(faiths_pd, 2)}) increases pest/pathogen risk")
+      } else {
+        "Low phylogenetic diversity increases pest/pathogen risk"
+      },
+      advice = "Consider adding plants from different families to increase diversity"
+    )
+  }
+
+  # Default: No risks if none detected
+  if (length(risks) == 0) {
+    risks[[1]] <- list(
+      type = "none",
+      severity = "none",
+      icon = "✓",
+      title = "No Specific Risk Factors Detected",
+      message = "Guild metrics show generally compatible plants",
+      detail = "Review individual metrics and observed organisms for optimization opportunities",
+      advice = "Check metric breakdown for specific guidance"
+    )
+  }
 
   return(risks)
 }
@@ -182,17 +207,123 @@ generate_benefits_explanation <- function(guild_result) {
 }
 
 
+#' Compute pH compatibility from guild plants (RUST PARITY)
+#'
+#' @param guild_plants Data frame with wfo_scientific_name and eive_r columns
+#' @return List with flag, severity, message, r_min, r_max, r_range
+compute_ph_compatibility <- function(guild_plants) {
+  # Extract EIVE R values (soil reaction indicator)
+  eive_r_values <- guild_plants$eive_r[!is.na(guild_plants$eive_r)]
+
+  # Need at least 2 plants with pH data
+  if (length(eive_r_values) < 2) {
+    return(list(
+      flag = "Insufficient data",
+      severity = "info",
+      message = NULL,
+      r_min = NA,
+      r_max = NA,
+      r_range = NA
+    ))
+  }
+
+  # Calculate pH range
+  r_min <- min(eive_r_values)
+  r_max <- max(eive_r_values)
+  r_range <- r_max - r_min
+
+  # Determine severity based on Rust thresholds (scorer.rs lines 365-392)
+  if (r_range < 1.0) {
+    return(list(
+      flag = "Compatible",
+      severity = "none",
+      message = NULL,
+      r_min = r_min,
+      r_max = r_max,
+      r_range = r_range
+    ))
+  } else if (r_range < 2.0) {
+    severity <- "info"
+    flag <- "Minor incompatibility"
+  } else if (r_range < 3.0) {
+    severity <- "warning"
+    flag = "Moderate incompatibility"
+  } else {
+    severity <- "critical"
+    flag <- "Strong incompatibility"
+  }
+
+  # Generate detailed message with plant pH categories
+  message <- generate_ph_warning_message(guild_plants, r_min, r_max, r_range)
+
+  return(list(
+    flag = flag,
+    severity = severity,
+    message = message,
+    r_min = r_min,
+    r_max = r_max,
+    r_range = r_range
+  ))
+}
+
+
+#' Generate pH warning message with plant categories (RUST PARITY)
+#'
+#' @param guild_plants Data frame with plant data
+#' @param r_min Minimum EIVE R value
+#' @param r_max Maximum EIVE R value
+#' @param r_range pH range
+#' @return Formatted warning message
+generate_ph_warning_message <- function(guild_plants, r_min, r_max, r_range) {
+  # Map EIVE R to pH categories (Rust generator.rs lines 234-250)
+  get_ph_category <- function(r_value) {
+    if (is.na(r_value)) return("Unknown")
+    if (r_value <= 2) return("Strongly Acidic (pH 3-4)")
+    if (r_value <= 4) return("Acidic (pH 4-5)")
+    if (r_value <= 5) return("Slightly Acidic (pH 5-6)")
+    if (r_value <= 7) return("Neutral (pH 6-7)")
+    if (r_value <= 8) return("Alkaline (pH 7-8)")
+    return("Strongly Alkaline (pH 8-9)")
+  }
+
+  # Build plant list with pH categories
+  plants_with_ph <- guild_plants %>%
+    filter(!is.na(eive_r)) %>%
+    mutate(ph_category = sapply(eive_r, get_ph_category)) %>%
+    select(wfo_scientific_name, eive_r, ph_category) %>%
+    arrange(eive_r)
+
+  plant_list <- paste0("- ", plants_with_ph$wfo_scientific_name, ": ",
+                      plants_with_ph$ph_category, collapse = "\n")
+
+  message <- glue(
+    "EIVE R range: {round(r_min, 1)}-{round(r_max, 1)} (difference: {round(r_range, 1)} units)\n\n",
+    "Plant pH preferences:\n{plant_list}\n\n",
+    "Advice: ",
+    if (r_range >= 3.0) {
+      "Strong pH incompatibility. These plants have very different pH needs. Use separate zones with pH amendments or reconsider plant selection."
+    } else if (r_range >= 2.0) {
+      "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
+    } else {
+      "Minor pH differences. Most plants should coexist with minimal pH adjustment."
+    }
+  )
+
+  return(message)
+}
+
+
 #' Generate warnings
 generate_warnings_explanation <- function(guild_result) {
   warnings <- list()
   details <- guild_result$details
   flags <- guild_result$flags
+  guild_plants <- guild_result$guild_plants  # Needed for pH computation
 
-  # M2: CSR conflicts
-  m2_score <- if (is.null(guild_result$metrics$m2)) NA else guild_result$metrics$m2
+  # M2: CSR conflicts (RUST PARITY: only check conflicts>0, not M2 score)
   m2_conflicts <- if (is.null(details$m2$n_conflicts)) 0 else details$m2$n_conflicts
 
-  if (!is.na(m2_score) && !is.na(m2_conflicts) && m2_score < 60 && m2_conflicts > 0) {
+  if (!is.na(m2_conflicts) && m2_conflicts > 0) {
     conflict_types <- c()
     high_c <- if (is.null(details$m2$high_c)) 0 else details$m2$high_c
     high_s <- if (is.null(details$m2$high_s)) 0 else details$m2$high_s
@@ -220,29 +351,44 @@ generate_warnings_explanation <- function(guild_result) {
     }
   }
 
-  # N5: Nitrogen fixation
-  nitrogen_flag <- if (is.null(flags$nitrogen)) "None" else flags$nitrogen
-  if (!is.na(nitrogen_flag) && nitrogen_flag != "None") {
+  # N5: Nitrogen fixation (RUST PARITY: threshold >2, nitrogen.rs lines 17-25)
+  n_fixers <- if (!is.null(guild_plants) && "nitrogen_fixation" %in% colnames(guild_plants)) {
+    sum(guild_plants$nitrogen_fixation %in% c("Yes", "yes", "Y"), na.rm = TRUE)
+  } else {
+    0
+  }
+
+  if (n_fixers > 2) {
     warnings[[length(warnings) + 1]] <- list(
-      type = "nitrogen_fixation",
-      severity = "info",
-      icon = "ℹ",
-      message = glue("Nitrogen-Fixing Plants Present: {nitrogen_flag}"),
-      detail = "These plants can enrich soil nitrogen",
-      advice = "Consider reducing nitrogen fertilizer for this guild"
+      type = "nitrogen_excess",
+      severity = "medium",
+      icon = "⚠️",
+      message = glue("{n_fixers} nitrogen-fixing plants may over-fertilize"),
+      detail = "Excess nitrogen can favor fast-growing weeds and reduce soil biodiversity",
+      advice = "Reduce to 1-2 nitrogen fixers or add nitrogen-demanding plants"
     )
   }
 
-  # N6: pH compatibility
-  ph_flag <- if (is.null(flags$soil_ph)) "Compatible" else flags$soil_ph
-  if (!is.na(ph_flag) && ph_flag != "Compatible") {
+  # N6: pH compatibility (RUST PARITY: compute from guild plants)
+  ph_result <- if (!is.null(guild_plants)) {
+    compute_ph_compatibility(guild_plants)
+  } else {
+    list(flag = "Compatible", severity = "none", message = NULL)
+  }
+
+  if (!is.null(ph_result$message) && ph_result$flag != "Compatible") {
+    # Map severity to icon
+    icon <- if (ph_result$severity == "critical") "🔴"
+           else if (ph_result$severity == "warning") "⚠️"
+           else "ℹ️"
+
     warnings[[length(warnings) + 1]] <- list(
       type = "ph_incompatible",
-      severity = "high",
-      icon = "⚠",
+      severity = ph_result$severity,
+      icon = icon,
       message = "pH Incompatibility Detected",
-      detail = glue("Plants have conflicting pH requirements: {ph_flag}"),
-      advice = "Some plants may struggle - check soil pH and amend accordingly"
+      detail = ph_result$message,
+      advice = NULL  # Advice already in message
     )
   }
 
