@@ -150,14 +150,13 @@ This approach:
 
 ---
 
-## 🔴 CRITICAL ISSUE 2: Contradictory Biocontrol Match Counts (forest_garden.md)
+## ✅ CRITICAL ISSUE 2: Contradictory Biocontrol Match Counts - RESOLVED
 
-### Problem
+### Problem (Original)
 
-The biocontrol network profile shows contradictory counts for predator/parasite matches.
+The biocontrol network profile showed contradictory counts for predator/parasite matches.
 
-**Location:** forest_garden.md, lines 68-72
-
+**Example from forest_garden.md:**
 ```markdown
 **Mechanism Summary:**
 - 5 Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)
@@ -166,41 +165,28 @@ The biocontrol network profile shows contradictory counts for predator/parasite 
 **11 Herbivore → Predator matches found:**
 ```
 
-**Contradiction:** Summary says **5 specific matches**, but table shows **11 matches**
+**Contradiction:** Summary said **5 specific matches**, but table showed **11 matches**
 
-### Analysis
+### Root Cause
 
-Looking at the table (lines 74-86):
-- adoxophyes orana → 3 predator matches (bats)
-- aphis → 5 predator matches (beetle, 2 birds, fly, hoverfly)
-- cnephasia stephensiana → 2 predator matches (bats)
-- myzus persicae → 1 predator match (beetle)
+Code used two different counts:
+- Line 492 (summary): `specific_predator_matches` - inflated count from pairwise analysis loop
+- Line 499 (table header): `matched_predator_pairs.len()` - deduplicated unique pairs
 
-**Total:** 11 individual matches across 4 unique herbivores (or 3 if aphis/myzus are counted together)
+The `specific_predator_matches` variable counted match instances during pairwise plant comparisons, which could count the same herbivore-predator relationship multiple times if they appeared on multiple plants.
 
-### Possible Interpretations
+### Fix Applied (Commit 65f4cd1)
 
-1. "5 specific matches" counts unique herbivore species (but table shows 4)
-2. "5 specific matches" counts unique predator species (but table shows >5)
-3. "5 specific matches" counts something else entirely
+**Updated markdown.rs formatter to:**
+1. Calculate actual unique herbivore species from matched pairs
+2. Show total pair count with species count as clarifying context
+3. Format: "N specific herbivore → predator/parasite matches (covering X pest species, weight 1.0)"
 
-### Impact
+**Result:** Numbers are now consistent and clearly explained
+- biocontrol_powerhouse: "9 specific matches (covering 9 pest species)"
+- forest_garden: "11 specific matches (covering 5 pest species)"
 
-- Confusing messaging - users can't tell which number is correct
-- Undermines trust in data accuracy
-
-### Recommended Fix
-
-Clarify the language:
-```markdown
-**Mechanism Summary:**
-- 11 specific herbivore → predator matches (covering 4 pest species, weight 1.0)
-- 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
-
-**11 Herbivore → Predator matches found:**
-```
-
-OR investigate which count is actually used in scoring and match the text to that.
+Both the mechanism summary and table header now show the same count (deduplicated pairs), with unique species count provided as additional context.
 
 ---
 
@@ -279,12 +265,12 @@ else:
 
 ## Summary Table
 
-| Issue | Severity | Reports Affected | Fix Priority |
-|-------|----------|-----------------|--------------|
-| Pathogenic fungi as beneficial | 🔴 Critical | All 5 reports | High - Data quality |
-| Biocontrol count contradiction | 🔴 Critical | forest_garden | Medium - Messaging |
-| Duplicate evidence line | 🟡 Medium | forest_garden | Low - Formatting |
-| "plant(s)" grammar | ⚪ Minor | Multiple | Very Low - Style |
+| Issue | Severity | Status | Reports Affected | Fix Priority |
+|-------|----------|--------|-----------------|--------------|
+| Pathogenic fungi as beneficial | 🔴 Critical | Open | All 5 reports | High - Data quality |
+| Biocontrol count contradiction | 🔴 Critical | ✅ Resolved (65f4cd1) | All reports | Complete |
+| Duplicate evidence line | 🟡 Medium | Open | forest_garden | Low - Formatting |
+| "plant(s)" grammar | ⚪ Minor | Open | Multiple | Very Low - Style |
 
 ---
 
@@ -297,10 +283,10 @@ else:
    - Determine if these fungi appear in both beneficial AND pathogenic columns
    - Implement filtering logic to exclude known pathogens from beneficial fungi
 
-2. **Clarify biocontrol match counting**
-   - Review M3 metric calculation to understand which count is used
-   - Update report text to match the actual scoring logic
-   - Ensure consistency between summary and detailed table
+2. ✅ **Clarify biocontrol match counting** - COMPLETE (Commit 65f4cd1)
+   - Fixed contradictory counts between mechanism summary and table header
+   - Now shows deduplicated pair count with unique species count for context
+   - Consistent across all reports
 
 ### Short-Term (Quality Improvements)
 
