@@ -150,21 +150,17 @@ pub fn calculate_m6(
 
                 // Only significant height differences (>2m = different canopy layers)
                 if height_diff > 2.0 {
-                    // Check for complementary growth forms (analogous to M2 CSR conflict logic)
+                    // Check if vine/liana can climb tree (analogous to M2 CSR conflict logic)
                     let short_form = sorted_growth_forms.get(i).unwrap_or("").to_lowercase();
                     let tall_form = sorted_growth_forms.get(j).unwrap_or("").to_lowercase();
 
-                    let is_complementary =
-                        // Vine/liana can climb tree
+                    let vine_climbs_tree =
                         ((short_form.contains("vine") || short_form.contains("liana")) && tall_form.contains("tree"))
-                        || ((tall_form.contains("vine") || tall_form.contains("liana")) && short_form.contains("tree"))
-                        // Herb + tree occupy different vertical niches
-                        || (short_form.contains("herb") && tall_form.contains("tree"))
-                        || (tall_form.contains("herb") && short_form.contains("tree"));
+                        || ((tall_form.contains("vine") || tall_form.contains("liana")) && short_form.contains("tree"));
 
-                    if is_complementary {
-                        // Complementary growth forms: full credit regardless of light preference
-                        // Vine climbs tree, herb grows under tree canopy
+                    if vine_climbs_tree {
+                        // Vine climbs tree: full credit regardless of light preference
+                        // (climbing plants don't compete for ground-level vertical space)
                         valid_stratification += height_diff;
                     } else {
                         // Similar growth forms: evaluate based on light preference
