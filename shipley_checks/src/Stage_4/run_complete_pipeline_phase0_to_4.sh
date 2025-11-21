@@ -258,12 +258,14 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   cargo build --release --bin calibrate_koppen_stratified 2>&1 | tail -5
   cd ..
 
-  # Run calibration with increased stack size
+  # Run calibration with increased stack size (from project root for correct relative paths)
   echo ""
   echo "Running calibration..."
+  cd "${PROJECT_ROOT}"
   env RUST_MIN_STACK=8388608 \
-    guild_scorer_rust/target/release/calibrate_koppen_stratified \
-    > "${PROJECT_ROOT}/shipley_checks/stage4/calibrate_rust_production.log" 2>&1
+    shipley_checks/src/Stage_4/guild_scorer_rust/target/release/calibrate_koppen_stratified \
+    > shipley_checks/stage4/calibrate_rust_production.log 2>&1
+  cd "${SCRIPT_DIR}"
 
   PHASE5_END=$(date +%s)
   PHASE5_TIME=$((PHASE5_END - PHASE5_START))
