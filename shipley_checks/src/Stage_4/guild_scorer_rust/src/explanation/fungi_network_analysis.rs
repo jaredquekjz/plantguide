@@ -75,11 +75,13 @@ pub struct FungiByCategoryProfile {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantFungalHub {
     pub plant_name: String,
+    pub plant_vernacular: String,
     pub fungus_count: usize,
     pub amf_count: usize,
     pub emf_count: usize,
     pub endophytic_count: usize,
     pub saprotrophic_count: usize,
+    pub has_data: bool,
 }
 
 /// Detailed fungi network analysis
@@ -364,28 +366,51 @@ fn build_fungus_to_plants_mapping(
     Ok(fungus_to_plants)
 }
 
+/// Build plant display map (WFO ID -> (scientific, vernacular))
+fn build_plant_display_map(guild_plants: &DataFrame) -> Result<FxHashMap<String, (String, String)>> {
+    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
+    let scientific_col = guild_plants.column("wfo_scientific_name")?.str()?;
+
+    // Try vernacular_name_en first, fall back to vernacular_name_zh, then empty string
+    let vernacular_col = if let Ok(col) = guild_plants.column("vernacular_name_en") {
+        Some(col.str()?.clone())
+    } else if let Ok(col) = guild_plants.column("vernacular_name_zh") {
+        Some(col.str()?.clone())
+    } else {
+        None
+    };
+
+    let mut map = FxHashMap::default();
+    for idx in 0..guild_plants.height() {
+        if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
+            let vern = if let Some(ref v_col) = vernacular_col {
+                v_col.get(idx).unwrap_or("").to_string()
+            } else {
+                String::new()
+            };
+            map.insert(id.to_string(), (sci.to_string(), vern));
+        }
+    }
+    Ok(map)
+}
+
 /// Build plant fungal hubs ranked by total fungi count
 fn build_plant_fungal_hubs(
     guild_plants: &DataFrame,
     fungi_df: &DataFrame,
     category_map: &FxHashMap<String, FungusCategory>,
 ) -> Result<Vec<PlantFungalHub>> {
-    // Use wfo_taxon_id to match against fungi_df's plant_wfo_id
+    // Get plant display map (scientific + vernacular)
+    let plant_display_map = build_plant_display_map(guild_plants)?;
+
+    // Get ALL guild plant IDs
     let plant_ids = guild_plants.column("wfo_taxon_id")?.str()?;
-    let guild_plant_set: rustc_hash::FxHashSet<String> = plant_ids
+    let all_guild_plants: Vec<String> = plant_ids
         .into_iter()
         .filter_map(|opt| opt.map(|s| s.to_string()))
         .collect();
 
-    // Also need plant names for display (wfo_taxon_id -> wfo_taxon_name mapping)
-    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
-    let plant_name_col = guild_plants.column("wfo_taxon_name")?.str()?;
-    let mut id_to_name_map: FxHashMap<String, String> = FxHashMap::default();
-    for idx in 0..guild_plants.height() {
-        if let (Some(id), Some(name)) = (plant_id_col.get(idx), plant_name_col.get(idx)) {
-            id_to_name_map.insert(id.to_string(), name.to_string());
-        }
-    }
+    let guild_plant_set: rustc_hash::FxHashSet<String> = all_guild_plants.iter().cloned().collect();
 
     let mut plant_fungi_counts: FxHashMap<String, (usize, usize, usize, usize, usize)> =
         FxHashMap::default();
@@ -451,15 +476,30 @@ fn build_plant_fungal_hubs(
         }
     }
 
-    let mut hubs: Vec<PlantFungalHub> = plant_fungi_counts
+    // Build hubs for ALL guild plants (including zeros)
+    let mut hubs: Vec<PlantFungalHub> = all_guild_plants
         .into_iter()
-        .map(|(plant_id, (total, amf, emf, endo, sapro))| PlantFungalHub {
-            plant_name: id_to_name_map.get(&plant_id).cloned().unwrap_or(plant_id),
-            fungus_count: total,
-            amf_count: amf,
-            emf_count: emf,
-            endophytic_count: endo,
-            saprotrophic_count: sapro,
+        .map(|plant_id| {
+            let (total, amf, emf, endo, sapro) = plant_fungi_counts
+                .get(&plant_id)
+                .cloned()
+                .unwrap_or((0, 0, 0, 0, 0));
+
+            let (scientific, vernacular) = plant_display_map
+                .get(&plant_id)
+                .cloned()
+                .unwrap_or_else(|| (plant_id.clone(), String::new()));
+
+            PlantFungalHub {
+                plant_name: scientific,
+                plant_vernacular: vernacular,
+                fungus_count: total,
+                amf_count: amf,
+                emf_count: emf,
+                endophytic_count: endo,
+                saprotrophic_count: sapro,
+                has_data: total > 0,
+            }
         })
         .collect();
 

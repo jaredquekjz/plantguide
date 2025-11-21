@@ -70,11 +70,17 @@ pub struct PlantPathogenControlHub {
     /// Plant scientific name
     pub plant_name: String,
 
+    /// Plant vernacular name
+    pub plant_vernacular: String,
+
     /// Number of mycoparasites on this plant
     pub mycoparasite_count: usize,
 
     /// Number of pathogens attacking this plant
     pub pathogen_count: usize,
+
+    /// Whether this plant has any pathogen control data
+    pub has_data: bool,
 }
 
 /// Analyze pathogen control network for M4
@@ -247,31 +253,67 @@ fn build_mycoparasite_to_plants_map(fungi_df: &DataFrame) -> Result<FxHashMap<St
     Ok(map)
 }
 
+/// Build plant display map (WFO ID -> (scientific, vernacular))
+fn build_plant_display_map_pathogen(guild_plants: &DataFrame) -> Result<FxHashMap<String, (String, String)>> {
+    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
+    let scientific_col = guild_plants.column("wfo_scientific_name")?.str()?;
+
+    // Try vernacular_name_en first, fall back to vernacular_name_zh, then empty string
+    let vernacular_col = if let Ok(col) = guild_plants.column("vernacular_name_en") {
+        Some(col.str()?.clone())
+    } else if let Ok(col) = guild_plants.column("vernacular_name_zh") {
+        Some(col.str()?.clone())
+    } else {
+        None
+    };
+
+    let mut map = FxHashMap::default();
+    for idx in 0..guild_plants.height() {
+        if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
+            let vern = if let Some(ref v_col) = vernacular_col {
+                v_col.get(idx).unwrap_or("").to_string()
+            } else {
+                String::new()
+            };
+            map.insert(id.to_string(), (sci.to_string(), vern));
+        }
+    }
+    Ok(map)
+}
+
 /// Find plants that are pathogen control hubs (harbor most mycoparasites)
 fn find_pathogen_control_hubs(
     guild_plants: &DataFrame,
     fungi_df: &DataFrame,
 ) -> Result<Vec<PlantPathogenControlHub>> {
+    // Get plant display map (scientific + vernacular)
+    let plant_display_map = build_plant_display_map_pathogen(guild_plants)?;
+
     let mut hubs: Vec<PlantPathogenControlHub> = Vec::new();
 
     let plant_ids = guild_plants.column("wfo_taxon_id")?.str()?;
-    let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
 
+    // Include ALL guild plants (not just those with data)
     for idx in 0..guild_plants.height() {
-        if let (Some(plant_id), Some(plant_name)) = (plant_ids.get(idx), plant_names.get(idx)) {
+        if let Some(plant_id) = plant_ids.get(idx) {
             // Count mycoparasites for this plant
             let mycoparasite_count = count_mycoparasites_for_plant(fungi_df, plant_id)?;
 
             // Count pathogens for this plant
             let pathogen_count = count_pathogens_for_plant(fungi_df, plant_id)?;
 
-            if mycoparasite_count > 0 || pathogen_count > 0 {
-                hubs.push(PlantPathogenControlHub {
-                    plant_name: plant_name.to_string(),
-                    mycoparasite_count,
-                    pathogen_count,
-                });
-            }
+            let (scientific, vernacular) = plant_display_map
+                .get(plant_id)
+                .cloned()
+                .unwrap_or_else(|| (plant_id.to_string(), String::new()));
+
+            hubs.push(PlantPathogenControlHub {
+                plant_name: scientific,
+                plant_vernacular: vernacular,
+                mycoparasite_count,
+                pathogen_count,
+                has_data: mycoparasite_count > 0 || pathogen_count > 0,
+            });
         }
     }
 

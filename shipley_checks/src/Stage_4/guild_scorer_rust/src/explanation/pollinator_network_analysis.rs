@@ -58,6 +58,7 @@ pub struct PollinatorsByCategoryProfile {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PlantPollinatorHub {
     pub plant_name: String,
+    pub plant_vernacular: String,
     pub pollinator_count: usize,
     pub honey_bees_count: usize,
     pub bumblebees_count: usize,
@@ -74,6 +75,7 @@ pub struct PlantPollinatorHub {
     pub birds_count: usize,
     pub bats_count: usize,
     pub other_count: usize,
+    pub has_data: bool,
 }
 
 /// Complete pollinator network profile
@@ -340,27 +342,51 @@ fn build_pollinator_to_plants_mapping(
 }
 
 /// Build list of hub plants with high pollinator connectivity
+/// Build plant display map (WFO ID -> (scientific, vernacular))
+fn build_plant_display_map_pollinator(guild_plants: &DataFrame) -> Result<FxHashMap<String, (String, String)>> {
+    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
+    let scientific_col = guild_plants.column("wfo_scientific_name")?.str()?;
+
+    // Try vernacular_name_en first, fall back to vernacular_name_zh, then empty string
+    let vernacular_col = if let Ok(col) = guild_plants.column("vernacular_name_en") {
+        Some(col.str()?.clone())
+    } else if let Ok(col) = guild_plants.column("vernacular_name_zh") {
+        Some(col.str()?.clone())
+    } else {
+        None
+    };
+
+    let mut map = FxHashMap::default();
+    for idx in 0..guild_plants.height() {
+        if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
+            let vern = if let Some(ref v_col) = vernacular_col {
+                v_col.get(idx).unwrap_or("").to_string()
+            } else {
+                String::new()
+            };
+            map.insert(id.to_string(), (sci.to_string(), vern));
+        }
+    }
+    Ok(map)
+}
+
 fn build_plant_pollinator_hubs(
     organisms_df: &DataFrame,
     guild_plants: &DataFrame,
     category_map: &FxHashMap<String, OrganismCategory>,
     organism_categories: &FxHashMap<String, String>,
 ) -> Result<Vec<PlantPollinatorHub>> {
-    // ... (same setup as before) ...
+    // Get plant display map (scientific + vernacular)
+    let plant_display_map = build_plant_display_map_pollinator(guild_plants)?;
+
+    // Get ALL guild plant IDs
     let plant_ids = guild_plants.column("wfo_taxon_id")?.str()?;
-    let guild_plant_set: FxHashSet<String> = plant_ids
+    let all_guild_plants: Vec<String> = plant_ids
         .into_iter()
         .filter_map(|opt| opt.map(|s| s.to_string()))
         .collect();
 
-    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
-    let plant_name_col = guild_plants.column("wfo_taxon_name")?.str()?;
-    let mut id_to_name_map: FxHashMap<String, String> = FxHashMap::default();
-    for idx in 0..guild_plants.height() {
-        if let (Some(id), Some(name)) = (plant_id_col.get(idx), plant_name_col.get(idx)) {
-            id_to_name_map.insert(id.to_string(), name.to_string());
-        }
-    }
+    let guild_plant_set: FxHashSet<String> = all_guild_plants.iter().cloned().collect();
 
     let organisms_plant_col = organisms_df.column("plant_wfo_id")?.str()?;
     // Don't force .str() here - might be List type
@@ -442,11 +468,24 @@ fn build_plant_pollinator_hubs(
         }
     }
 
-    let mut hubs: Vec<PlantPollinatorHub> = plant_pollinator_counts
+    // Build hubs for ALL guild plants (including zeros)
+    let mut hubs: Vec<PlantPollinatorHub> = all_guild_plants
         .into_iter()
-        .map(|(plant_id, (total, honey_bees, bumblebees, solitary_bees, hover_flies, muscid_flies, mosquitoes, other_flies, butterflies, moths, pollen_beetles, other_beetles, wasps, birds, bats, other))| {
+        .map(|plant_id| {
+            let (total, honey_bees, bumblebees, solitary_bees, hover_flies, muscid_flies, mosquitoes, other_flies, butterflies, moths, pollen_beetles, other_beetles, wasps, birds, bats, other) =
+                plant_pollinator_counts
+                    .get(&plant_id)
+                    .cloned()
+                    .unwrap_or((0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+
+            let (scientific, vernacular) = plant_display_map
+                .get(&plant_id)
+                .cloned()
+                .unwrap_or_else(|| (plant_id.clone(), String::new()));
+
             PlantPollinatorHub {
-                plant_name: id_to_name_map.get(&plant_id).cloned().unwrap_or(plant_id),
+                plant_name: scientific,
+                plant_vernacular: vernacular,
                 pollinator_count: total,
                 honey_bees_count: honey_bees,
                 bumblebees_count: bumblebees,
@@ -463,6 +502,7 @@ fn build_plant_pollinator_hubs(
                 birds_count: birds,
                 bats_count: bats,
                 other_count: other,
+                has_data: total > 0,
             }
         })
         .collect();

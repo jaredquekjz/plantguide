@@ -83,6 +83,9 @@ pub struct PlantBiocontrolHub {
     /// Plant scientific name
     pub plant_name: String,
 
+    /// Plant vernacular name
+    pub plant_vernacular: String,
+
     /// Number of predators visiting this plant
     pub total_predators: usize,
 
@@ -91,6 +94,9 @@ pub struct PlantBiocontrolHub {
 
     /// Combined total biocontrol agents
     pub total_biocontrol_agents: usize,
+
+    /// Whether this plant has any biocontrol data
+    pub has_data: bool,
 }
 
 /// Analyze biocontrol network for M3
@@ -357,6 +363,34 @@ fn build_fungi_to_plants_map(fungi_df: &DataFrame) -> Result<FxHashMap<String, V
     Ok(map)
 }
 
+/// Build plant display map (WFO ID -> (scientific, vernacular))
+fn build_plant_display_map_biocontrol(guild_plants: &DataFrame) -> Result<FxHashMap<String, (String, String)>> {
+    let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
+    let scientific_col = guild_plants.column("wfo_scientific_name")?.str()?;
+
+    // Try vernacular_name_en first, fall back to vernacular_name_zh, then empty string
+    let vernacular_col = if let Ok(col) = guild_plants.column("vernacular_name_en") {
+        Some(col.str()?.clone())
+    } else if let Ok(col) = guild_plants.column("vernacular_name_zh") {
+        Some(col.str()?.clone())
+    } else {
+        None
+    };
+
+    let mut map = FxHashMap::default();
+    for idx in 0..guild_plants.height() {
+        if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
+            let vern = if let Some(ref v_col) = vernacular_col {
+                v_col.get(idx).unwrap_or("").to_string()
+            } else {
+                String::new()
+            };
+            map.insert(id.to_string(), (sci.to_string(), vern));
+        }
+    }
+    Ok(map)
+}
+
 /// Find plants that are biocontrol hubs (attract most agents)
 fn find_biocontrol_hubs(
     guild_plants: &DataFrame,
@@ -365,13 +399,16 @@ fn find_biocontrol_hubs(
     known_predators: &FxHashSet<String>,
     known_entomo_fungi: &FxHashSet<String>,
 ) -> Result<Vec<PlantBiocontrolHub>> {
+    // Get plant display map (scientific + vernacular)
+    let plant_display_map = build_plant_display_map_biocontrol(guild_plants)?;
+
     let mut hubs: Vec<PlantBiocontrolHub> = Vec::new();
 
     let plant_ids = guild_plants.column("wfo_taxon_id")?.str()?;
-    let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
 
+    // Include ALL guild plants (not just those with agents)
     for idx in 0..guild_plants.height() {
-        if let (Some(plant_id), Some(plant_name)) = (plant_ids.get(idx), plant_names.get(idx)) {
+        if let Some(plant_id) = plant_ids.get(idx) {
             // Count predators for this plant (filtered to known predators only)
             let total_predators = count_predators_for_plant(organisms_df, plant_id, known_predators)?;
 
@@ -380,14 +417,19 @@ fn find_biocontrol_hubs(
 
             let total_biocontrol_agents = total_predators + total_entomo_fungi;
 
-            if total_biocontrol_agents > 0 {
-                hubs.push(PlantBiocontrolHub {
-                    plant_name: plant_name.to_string(),
-                    total_predators,
-                    total_entomo_fungi,
-                    total_biocontrol_agents,
-                });
-            }
+            let (scientific, vernacular) = plant_display_map
+                .get(plant_id)
+                .cloned()
+                .unwrap_or_else(|| (plant_id.to_string(), String::new()));
+
+            hubs.push(PlantBiocontrolHub {
+                plant_name: scientific,
+                plant_vernacular: vernacular,
+                total_predators,
+                total_entomo_fungi,
+                total_biocontrol_agents,
+                has_data: total_biocontrol_agents > 0,
+            });
         }
     }
 

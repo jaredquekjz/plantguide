@@ -259,9 +259,23 @@ impl MarkdownFormatter {
             md.push_str("| Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |\n");
             md.push_str("|-------|-------------|-----|-----|------------|---------------|\n");
             for hub in fungi_profile.hub_plants.iter().take(10) {
+                // Format display name with vernacular if available
+                let display_name = if !hub.plant_vernacular.is_empty() {
+                    format!("{} ({})", hub.plant_name, hub.plant_vernacular)
+                } else {
+                    hub.plant_name.clone()
+                };
+
+                // Add ⚠️ flag if no data
+                let display_name = if !hub.has_data {
+                    format!("{} ⚠️", display_name)
+                } else {
+                    display_name
+                };
+
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | {} | {} |\n",
-                    hub.plant_name,
+                    display_name,
                     hub.fungus_count,
                     hub.amf_count,
                     hub.emf_count,
@@ -270,6 +284,11 @@ impl MarkdownFormatter {
                 ));
             }
             md.push_str("\n");
+
+            // Add footnote if any plants have no data
+            if fungi_profile.hub_plants.iter().any(|h| !h.has_data) {
+                md.push_str("⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.\n\n");
+            }
         }
     }
 
@@ -399,9 +418,23 @@ impl MarkdownFormatter {
             md.push_str("| Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |\n");
             md.push_str("|-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|\n");
             for hub in pollinator_profile.hub_plants.iter().take(10) {
+                // Format display name with vernacular if available
+                let display_name = if !hub.plant_vernacular.is_empty() {
+                    format!("{} ({})", hub.plant_name, hub.plant_vernacular)
+                } else {
+                    hub.plant_name.clone()
+                };
+
+                // Add ⚠️ flag if no data
+                let display_name = if !hub.has_data {
+                    format!("{} ⚠️", display_name)
+                } else {
+                    display_name
+                };
+
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} | {} |\n",
-                    hub.plant_name,
+                    display_name,
                     hub.pollinator_count,
                     hub.honey_bees_count,
                     hub.bumblebees_count,
@@ -421,6 +454,11 @@ impl MarkdownFormatter {
                 ));
             }
             md.push_str("\n");
+
+            // Add footnote if any plants have no data
+            if pollinator_profile.hub_plants.iter().any(|h| !h.has_data) {
+                md.push_str("⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.\n\n");
+            }
         }
     }
 
@@ -530,15 +568,34 @@ impl MarkdownFormatter {
             md.push_str("| Plant | Total Predators | Total Fungi | Combined |\n");
             md.push_str("|-------|----------------|-------------|----------|\n");
             for hub in biocontrol_profile.hub_plants.iter().take(10) {
+                // Format display name with vernacular if available
+                let display_name = if !hub.plant_vernacular.is_empty() {
+                    format!("{} ({})", hub.plant_name, hub.plant_vernacular)
+                } else {
+                    hub.plant_name.clone()
+                };
+
+                // Add ⚠️ flag if no data
+                let display_name = if !hub.has_data {
+                    format!("{} ⚠️", display_name)
+                } else {
+                    display_name
+                };
+
                 md.push_str(&format!(
                     "| {} | {} | {} | {} |\n",
-                    hub.plant_name,
+                    display_name,
                     hub.total_predators,
                     hub.total_entomo_fungi,
                     hub.total_biocontrol_agents
                 ));
             }
             md.push_str("\n");
+
+            // Add footnote if any plants have no data
+            if biocontrol_profile.hub_plants.iter().any(|h| !h.has_data) {
+                md.push_str("⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.\n\n");
+            }
         }
     }
 
@@ -625,14 +682,33 @@ impl MarkdownFormatter {
             md.push_str("| Plant | Mycoparasites | Pathogens |\n");
             md.push_str("|-------|---------------|-----------||\n");
             for hub in pathogen_profile.hub_plants.iter().take(10) {
+                // Format display name with vernacular if available
+                let display_name = if !hub.plant_vernacular.is_empty() {
+                    format!("{} ({})", hub.plant_name, hub.plant_vernacular)
+                } else {
+                    hub.plant_name.clone()
+                };
+
+                // Add ⚠️ flag if no data
+                let display_name = if !hub.has_data {
+                    format!("{} ⚠️", display_name)
+                } else {
+                    display_name
+                };
+
                 md.push_str(&format!(
                     "| {} | {} | {} |\n",
-                    hub.plant_name,
+                    display_name,
                     hub.mycoparasite_count,
                     hub.pathogen_count
                 ));
             }
             md.push_str("\n");
+
+            // Add footnote if any plants have no data
+            if pathogen_profile.hub_plants.iter().any(|h| !h.has_data) {
+                md.push_str("⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.\n\n");
+            }
         }
     }
 }
