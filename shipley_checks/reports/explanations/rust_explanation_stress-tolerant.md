@@ -32,6 +32,20 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 **No specific pathogen-antagonist matches found.**
 The disease suppression score is driven by the presence of **general mycoparasitic fungi** (e.g., Trichoderma) which provide broad-spectrum protection against fungal pathogens.
 
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Alyxia ruscifolia (Chainfruit; Chain Fruit) | 1 | 2 |
+| Carex mucronata | 0 | 4 |
+| Eucalyptus melanophloia (Silver-leaved Ironbark) | 0 | 1 |
+| Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 |
+| Juncus usitatus (Common Rush; australian rush) ⚠️ | 0 | 0 |
+| Senna artemisioides (Silver Cassia; silver senna) | 0 | 1 |
+| Sporobolus compositus (Composite Dropseed; Tall Dropseed) | 0 | 15 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
+
 ### Beneficial Mycorrhizal Network [M5 - 45.0/100]
 
 16 shared beneficial fungal species connect 4 plants  
@@ -71,13 +85,15 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Sporobolus compositus | 10 | 0 | 0 | 0 | 10 |
-| Alyxia ruscifolia | 3 | 0 | 0 | 0 | 3 |
+| Sporobolus compositus (Composite Dropseed; Tall Dropseed) | 10 | 0 | 0 | 0 | 10 |
+| Alyxia ruscifolia (Chainfruit; Chain Fruit) | 3 | 0 | 0 | 0 | 3 |
 | Carex mucronata | 2 | 0 | 0 | 1 | 1 |
-| Senna artemisioides | 1 | 0 | 0 | 1 | 0 |
-| Eucalyptus melanophloia | 0 | 0 | 0 | 0 | 0 |
-| Hibbertia diffusa | 0 | 0 | 0 | 0 | 0 |
-| Juncus usitatus | 0 | 0 | 0 | 0 | 0 |
+| Senna artemisioides (Silver Cassia; silver senna) | 1 | 0 | 0 | 1 | 0 |
+| Eucalyptus melanophloia (Silver-leaved Ironbark) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Juncus usitatus (Common Rush; australian rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ## Warnings
 

@@ -212,59 +212,73 @@
     "hub_plants": [
       {
         "plant_name": "Sporobolus compositus",
+        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
         "fungus_count": 10,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 10
+        "saprotrophic_count": 10,
+        "has_data": true
       },
       {
         "plant_name": "Alyxia ruscifolia",
+        "plant_vernacular": "Chainfruit; Chain Fruit",
         "fungus_count": 3,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 3
+        "saprotrophic_count": 3,
+        "has_data": true
       },
       {
         "plant_name": "Carex mucronata",
+        "plant_vernacular": "",
         "fungus_count": 2,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 1,
-        "saprotrophic_count": 1
+        "saprotrophic_count": 1,
+        "has_data": true
       },
       {
         "plant_name": "Senna artemisioides",
+        "plant_vernacular": "Silver Cassia; silver senna",
         "fungus_count": 1,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 1,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": true
       },
       {
         "plant_name": "Eucalyptus melanophloia",
+        "plant_vernacular": "Silver-leaved Ironbark",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Hibbertia diffusa",
+        "plant_vernacular": "Wedge Guinea Flower",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Juncus usitatus",
+        "plant_vernacular": "Common Rush; australian rush",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       }
     ]
   },
@@ -283,7 +297,64 @@
     "herbivore_category_counts": {},
     "top_predators": [],
     "top_entomo_fungi": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "plant_vernacular": "Chainfruit; Chain Fruit",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Carex mucronata",
+        "plant_vernacular": "",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "plant_vernacular": "Silver-leaved Ironbark",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Hibbertia diffusa",
+        "plant_vernacular": "Wedge Guinea Flower",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Juncus usitatus",
+        "plant_vernacular": "Common Rush; australian rush",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Senna artemisioides",
+        "plant_vernacular": "Silver Cassia; silver senna",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Sporobolus compositus",
+        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      }
+    ]
   },
   "pathogen_control_profile": {
     "total_unique_mycoparasites": 1,
@@ -294,6 +365,56 @@
     "matched_antagonist_pairs": [],
     "matched_fungivore_pairs": [],
     "top_mycoparasites": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Alyxia ruscifolia",
+        "plant_vernacular": "Chainfruit; Chain Fruit",
+        "mycoparasite_count": 1,
+        "pathogen_count": 2,
+        "has_data": true
+      },
+      {
+        "plant_name": "Carex mucronata",
+        "plant_vernacular": "",
+        "mycoparasite_count": 0,
+        "pathogen_count": 4,
+        "has_data": true
+      },
+      {
+        "plant_name": "Eucalyptus melanophloia",
+        "plant_vernacular": "Silver-leaved Ironbark",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      },
+      {
+        "plant_name": "Hibbertia diffusa",
+        "plant_vernacular": "Wedge Guinea Flower",
+        "mycoparasite_count": 0,
+        "pathogen_count": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Juncus usitatus",
+        "plant_vernacular": "Common Rush; australian rush",
+        "mycoparasite_count": 0,
+        "pathogen_count": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Senna artemisioides",
+        "plant_vernacular": "Silver Cassia; silver senna",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      },
+      {
+        "plant_name": "Sporobolus compositus",
+        "plant_vernacular": "Composite Dropseed; Tall Dropseed",
+        "mycoparasite_count": 0,
+        "pathogen_count": 15,
+        "has_data": true
+      }
+    ]
   }
 }

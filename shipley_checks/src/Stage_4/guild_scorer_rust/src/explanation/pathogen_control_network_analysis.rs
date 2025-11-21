@@ -333,7 +333,25 @@ fn count_mycoparasites_for_plant(fungi_df: &DataFrame, target_plant_id: &str) ->
     let plant_ids = fungi_df.column("plant_wfo_id")?.str()?;
 
     if let Ok(col) = fungi_df.column("mycoparasite_fungi") {
-        if let Ok(str_col) = col.str() {
+        // Try list column first (Phase 0-4 format)
+        if let Ok(list_col) = col.list() {
+            for idx in 0..fungi_df.height() {
+                if let Some(plant_id) = plant_ids.get(idx) {
+                    if plant_id == target_plant_id {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                let count = str_series.into_iter()
+                                    .filter_map(|opt| opt.map(|s| s.trim()))
+                                    .filter(|s| !s.is_empty())
+                                    .count();
+                                return Ok(count);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if let Ok(str_col) = col.str() {
+            // Fallback: pipe-separated string (legacy format)
             for idx in 0..fungi_df.height() {
                 if let (Some(plant_id), Some(value)) = (plant_ids.get(idx), str_col.get(idx)) {
                     if plant_id == target_plant_id {
@@ -353,7 +371,25 @@ fn count_pathogens_for_plant(fungi_df: &DataFrame, target_plant_id: &str) -> Res
     let plant_ids = fungi_df.column("plant_wfo_id")?.str()?;
 
     if let Ok(col) = fungi_df.column("pathogenic_fungi") {
-        if let Ok(str_col) = col.str() {
+        // Try list column first (Phase 0-4 format)
+        if let Ok(list_col) = col.list() {
+            for idx in 0..fungi_df.height() {
+                if let Some(plant_id) = plant_ids.get(idx) {
+                    if plant_id == target_plant_id {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                let count = str_series.into_iter()
+                                    .filter_map(|opt| opt.map(|s| s.trim()))
+                                    .filter(|s| !s.is_empty())
+                                    .count();
+                                return Ok(count);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if let Ok(str_col) = col.str() {
+            // Fallback: pipe-separated string (legacy format)
             for idx in 0..fungi_df.height() {
                 if let (Some(plant_id), Some(value)) = (plant_ids.get(idx), str_col.get(idx)) {
                     if plant_id == target_plant_id {

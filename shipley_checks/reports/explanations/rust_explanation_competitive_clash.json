@@ -489,59 +489,73 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
+        "plant_vernacular": "wine grape; Grape Vine; common grape",
         "fungus_count": 279,
         "amf_count": 4,
         "emf_count": 2,
         "endophytic_count": 51,
-        "saprotrophic_count": 222
+        "saprotrophic_count": 222,
+        "has_data": true
       },
       {
         "plant_name": "Cheirodendron trigynum",
+        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
         "fungus_count": 32,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 14,
-        "saprotrophic_count": 18
+        "saprotrophic_count": 18,
+        "has_data": true
       },
       {
         "plant_name": "Allium schoenoprasum",
+        "plant_vernacular": "Chives; wild chives",
         "fungus_count": 15,
         "amf_count": 3,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 12
+        "saprotrophic_count": 12,
+        "has_data": true
       },
       {
         "plant_name": "Erythrina sandwicensis",
+        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
         "fungus_count": 2,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 2
+        "saprotrophic_count": 2,
+        "has_data": true
       },
       {
         "plant_name": "Alnus acuminata",
+        "plant_vernacular": "Andean Alder",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Pfaffia gnaphalioides",
+        "plant_vernacular": "",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Virola bicuhyba",
+        "plant_vernacular": "",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       }
     ]
   },
@@ -662,6 +676,7 @@
     "hub_plants": [
       {
         "plant_name": "Allium schoenoprasum",
+        "plant_vernacular": "Chives; wild chives",
         "pollinator_count": 17,
         "honey_bees_count": 1,
         "bumblebees_count": 14,
@@ -677,10 +692,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": true
       },
       {
         "plant_name": "Cheirodendron trigynum",
+        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
         "pollinator_count": 2,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -696,10 +713,12 @@
         "wasps_count": 0,
         "birds_count": 1,
         "bats_count": 0,
-        "other_count": 1
+        "other_count": 1,
+        "has_data": true
       },
       {
         "plant_name": "Vitis vinifera",
+        "plant_vernacular": "wine grape; Grape Vine; common grape",
         "pollinator_count": 1,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -715,10 +734,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 1
+        "other_count": 1,
+        "has_data": true
       },
       {
         "plant_name": "Alnus acuminata",
+        "plant_vernacular": "Andean Alder",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -734,10 +755,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Erythrina sandwicensis",
+        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -753,10 +776,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Pfaffia gnaphalioides",
+        "plant_vernacular": "",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -772,10 +797,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Virola bicuhyba",
+        "plant_vernacular": "",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -791,7 +818,8 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       }
     ]
   },
@@ -817,7 +845,64 @@
     "herbivore_category_counts": {},
     "top_predators": [],
     "top_entomo_fungi": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "total_predators": 0,
+        "total_entomo_fungi": 4,
+        "total_biocontrol_agents": 4,
+        "has_data": true
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "plant_vernacular": "Chives; wild chives",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "plant_vernacular": "Andean Alder",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Erythrina sandwicensis",
+        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Pfaffia gnaphalioides",
+        "plant_vernacular": "",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Virola bicuhyba",
+        "plant_vernacular": "",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      }
+    ]
   },
   "pathogen_control_profile": {
     "total_unique_mycoparasites": 4,
@@ -834,6 +919,56 @@
       }
     ],
     "top_mycoparasites": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Vitis vinifera",
+        "plant_vernacular": "wine grape; Grape Vine; common grape",
+        "mycoparasite_count": 4,
+        "pathogen_count": 181,
+        "has_data": true
+      },
+      {
+        "plant_name": "Cheirodendron trigynum",
+        "plant_vernacular": "Olapa; Common Cheirodendron; ʻŌlapa",
+        "mycoparasite_count": 1,
+        "pathogen_count": 11,
+        "has_data": true
+      },
+      {
+        "plant_name": "Allium schoenoprasum",
+        "plant_vernacular": "Chives; wild chives",
+        "mycoparasite_count": 0,
+        "pathogen_count": 18,
+        "has_data": true
+      },
+      {
+        "plant_name": "Alnus acuminata",
+        "plant_vernacular": "Andean Alder",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      },
+      {
+        "plant_name": "Erythrina sandwicensis",
+        "plant_vernacular": "Hawaiian Coral Tree; Wiliwili",
+        "mycoparasite_count": 0,
+        "pathogen_count": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Pfaffia gnaphalioides",
+        "plant_vernacular": "",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      },
+      {
+        "plant_name": "Virola bicuhyba",
+        "plant_vernacular": "",
+        "mycoparasite_count": 0,
+        "pathogen_count": 0,
+        "has_data": false
+      }
+    ]
   }
 }

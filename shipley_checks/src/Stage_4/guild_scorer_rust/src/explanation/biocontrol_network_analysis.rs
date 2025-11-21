@@ -465,7 +465,23 @@ fn count_predators_for_plant(
 
                 for col_name in &predator_columns {
                     if let Ok(col) = organisms_df.column(col_name) {
-                        if let Ok(str_col) = col.str() {
+                        // Try list column first (Phase 0-4 format)
+                        if let Ok(list_col) = col.list() {
+                            if let Some(list_series) = list_col.get_as_series(idx) {
+                                if let Ok(str_series) = list_series.str() {
+                                    for org_opt in str_series.into_iter() {
+                                        if let Some(predator) = org_opt {
+                                            let predator = predator.trim();
+                                            // ONLY count if this is a known predator from lookup table
+                                            if !predator.is_empty() && known_predators.contains(predator) {
+                                                predators.push(predator.to_string());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else if let Ok(str_col) = col.str() {
+                            // Fallback: pipe-separated string (legacy format)
                             if let Some(value) = str_col.get(idx) {
                                 for predator in value.split('|').filter(|s| !s.is_empty()) {
                                     // ONLY count if this is a known predator from lookup table
@@ -497,7 +513,25 @@ fn count_entomo_fungi_for_plant(
     let plant_ids = fungi_df.column("plant_wfo_id")?.str()?;
 
     if let Ok(col) = fungi_df.column("entomopathogenic_fungi") {
-        if let Ok(str_col) = col.str() {
+        // Try list column first (Phase 0-4 format)
+        if let Ok(list_col) = col.list() {
+            for idx in 0..fungi_df.height() {
+                if let Some(plant_id) = plant_ids.get(idx) {
+                    if plant_id == target_plant_id {
+                        if let Some(list_series) = list_col.get_as_series(idx) {
+                            if let Ok(str_series) = list_series.str() {
+                                let count = str_series.into_iter()
+                                    .filter_map(|opt| opt.map(|s| s.trim()))
+                                    .filter(|s| !s.is_empty() && known_entomo_fungi.contains(*s))
+                                    .count();
+                                return Ok(count);
+                            }
+                        }
+                    }
+                }
+            }
+        } else if let Ok(str_col) = col.str() {
+            // Fallback: pipe-separated string (legacy format)
             for idx in 0..fungi_df.height() {
                 if let (Some(plant_id), Some(value)) = (plant_ids.get(idx), str_col.get(idx)) {
                     if plant_id == target_plant_id {

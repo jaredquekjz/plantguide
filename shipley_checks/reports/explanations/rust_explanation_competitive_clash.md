@@ -39,6 +39,20 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 **No specific herbivore-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
 
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Vitis vinifera (wine grape; Grape Vine; common grape) | 0 | 4 | 4 |
+| Allium schoenoprasum (Chives; wild chives) ⚠️ | 0 | 0 | 0 |
+| Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 |
+| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) ⚠️ | 0 | 0 | 0 |
+| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) ⚠️ | 0 | 0 | 0 |
+| Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 |
+| Virola bicuhyba ⚠️ | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
+
 ### Natural Disease Suppression [M4 - 100.0/100]
 
 Guild provides disease suppression via 9 antagonistic fungal mechanisms  
@@ -63,6 +77,20 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
 | armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Vitis vinifera (wine grape; Grape Vine; common grape) | 4 | 181 |
+| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) | 1 | 11 |
+| Allium schoenoprasum (Chives; wild chives) | 0 | 18 |
+| Alnus acuminata (Andean Alder) | 0 | 1 |
+| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) ⚠️ | 0 | 0 |
+| Pfaffia gnaphalioides | 0 | 1 |
+| Virola bicuhyba ⚠️ | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -103,13 +131,15 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Vitis vinifera | 279 | 4 | 2 | 51 | 222 |
-| Cheirodendron trigynum | 32 | 0 | 0 | 14 | 18 |
-| Allium schoenoprasum | 15 | 3 | 0 | 0 | 12 |
-| Erythrina sandwicensis | 2 | 0 | 0 | 0 | 2 |
-| Alnus acuminata | 0 | 0 | 0 | 0 | 0 |
-| Pfaffia gnaphalioides | 0 | 0 | 0 | 0 | 0 |
-| Virola bicuhyba | 0 | 0 | 0 | 0 | 0 |
+| Vitis vinifera (wine grape; Grape Vine; common grape) | 279 | 4 | 2 | 51 | 222 |
+| Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) | 32 | 0 | 0 | 14 | 18 |
+| Allium schoenoprasum (Chives; wild chives) | 15 | 3 | 0 | 0 | 12 |
+| Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) | 2 | 0 | 0 | 0 | 2 |
+| Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Virola bicuhyba ⚠️ | 0 | 0 | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ## Warnings
 

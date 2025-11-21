@@ -43,6 +43,20 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
 | tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific (weight 1.0) |
 
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Acer saccharinum (silver maple; river maple; white maple) | 0 | 2 | 2 |
+| Crataegus monogyna (Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn) ⚠️ | 0 | 0 | 0 |
+| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) ⚠️ | 0 | 0 | 0 |
+| Prunus spinosa (Sloe; Blackthorn) ⚠️ | 0 | 0 | 0 |
+| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) ⚠️ | 0 | 0 | 0 |
+| Rosa canina (canker rose; dog rose; Dog-rose) ⚠️ | 0 | 0 | 0 |
+| Sambucus nigra (Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder) ⚠️ | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
+
 ### Natural Disease Suppression [M4 - 97.3/100]
 
 Guild provides disease suppression via 32 antagonistic fungal mechanisms  
@@ -76,6 +90,18 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 | ganoderma | monadenia fidelis | Snails & Slugs | Specific (weight 1.0) |
 | laetiporus | prophysaon andersonii | Other Predators | Specific (weight 1.0) |
 | laetiporus | prophysaon foliolatum | Other Predators | Specific (weight 1.0) |
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Prunus spinosa (Sloe; Blackthorn) | 3 | 64 |
+| Acer saccharinum (silver maple; river maple; white maple) | 2 | 97 |
+| Sambucus nigra (Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder) | 2 | 59 |
+| Rosa canina (canker rose; dog rose; Dog-rose) | 1 | 67 |
+| Crataegus monogyna (Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn) | 0 | 55 |
+| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 0 | 39 |
+| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 0 | 9 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -116,13 +142,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Acer saccharinum | 216 | 0 | 2 | 31 | 183 |
-| Prunus spinosa | 95 | 0 | 1 | 10 | 84 |
-| Sambucus nigra | 89 | 0 | 0 | 13 | 76 |
-| Crataegus monogyna | 88 | 12 | 2 | 9 | 65 |
-| Rosa canina | 70 | 0 | 0 | 11 | 59 |
-| Fragaria vesca | 38 | 7 | 0 | 7 | 24 |
-| Quercus robur | 18 | 0 | 7 | 0 | 11 |
+| Acer saccharinum (silver maple; river maple; white maple) | 216 | 0 | 2 | 31 | 183 |
+| Prunus spinosa (Sloe; Blackthorn) | 95 | 0 | 1 | 10 | 84 |
+| Sambucus nigra (Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder) | 89 | 0 | 0 | 13 | 76 |
+| Crataegus monogyna (Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn) | 88 | 12 | 2 | 9 | 65 |
+| Rosa canina (canker rose; dog rose; Dog-rose) | 70 | 0 | 0 | 11 | 59 |
+| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 38 | 7 | 0 | 7 | 24 |
+| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
 
 ### High Structural Diversity [M6 - 100.0/100]
 
@@ -198,13 +224,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Crataegus monogyna | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
-| Prunus spinosa | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Acer saccharinum | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
-| Sambucus nigra | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
-| Fragaria vesca | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Crataegus monogyna (Neapolitan medlar; hawthorn; may; common hawthorn; English Hawthorn) | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
+| Prunus spinosa (Sloe; Blackthorn) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina (canker rose; dog rose; Dog-rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Acer saccharinum (silver maple; river maple; white maple) | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
+| Sambucus nigra (Parsley-leaved Elder; black elderberry; European elder; European black elderberry; Europese Vlier; Elder) | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
+| Fragaria vesca (wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry; Thin-leaved Wild Strawberry; Hillside Strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur (pedunculate oak; common oak; English oak; Truffle Oak; Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
 
 ## Warnings
 

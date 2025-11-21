@@ -52,6 +52,20 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
 | myzus persicae | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
 
+**Network Hubs (plants attracting most biocontrol):**
+
+| Plant | Total Predators | Total Fungi | Combined |
+|-------|----------------|-------------|----------|
+| Fraxinus excelsior (Golden Ash; European ash; Ash) | 0 | 2 | 2 |
+| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) ⚠️ | 0 | 0 | 0 |
+| Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 |
+| Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 |
+| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) ⚠️ | 0 | 0 | 0 |
+| Mercurialis perennis (Dog's Mercury) ⚠️ | 0 | 0 | 0 |
+| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
+
 ### Natural Disease Suppression [M4 - 95.1/100]
 
 Guild provides disease suppression via 6 antagonistic fungal mechanisms  
@@ -73,6 +87,18 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 **No specific pathogen-antagonist matches found.**
 The disease suppression score is driven by the presence of **general mycoparasitic fungi** (e.g., Trichoderma) which provide broad-spectrum protection against fungal pathogens.
+
+**Network Hubs (plants harboring most mycoparasites):**
+
+| Plant | Mycoparasites | Pathogens |
+|-------|---------------|-----------||
+| Fraxinus excelsior (Golden Ash; European ash; Ash) | 2 | 49 |
+| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 0 | 14 |
+| Deutzia scabra (Deutzia) | 0 | 1 |
+| Diospyros kaki (Japanese Persimmon) | 0 | 56 |
+| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 0 | 18 |
+| Mercurialis perennis (Dog's Mercury) | 0 | 20 |
+| Rubus moorei (bush lawyer) | 0 | 1 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -113,13 +139,15 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Fraxinus excelsior | 99 | 1 | 1 | 20 | 77 |
-| Diospyros kaki | 45 | 0 | 0 | 7 | 38 |
-| Mercurialis perennis | 22 | 0 | 1 | 0 | 21 |
-| Anaphalis margaritacea | 13 | 2 | 0 | 1 | 10 |
-| Maianthemum racemosum | 12 | 0 | 0 | 1 | 11 |
-| Deutzia scabra | 0 | 0 | 0 | 0 | 0 |
-| Rubus moorei | 0 | 0 | 0 | 0 | 0 |
+| Fraxinus excelsior (Golden Ash; European ash; Ash) | 99 | 1 | 1 | 20 | 77 |
+| Diospyros kaki (Japanese Persimmon) | 45 | 0 | 0 | 7 | 38 |
+| Mercurialis perennis (Dog's Mercury) | 22 | 0 | 1 | 0 | 21 |
+| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 13 | 2 | 0 | 1 | 10 |
+| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 12 | 0 | 0 | 1 | 11 |
+| Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ### High Structural Diversity [M6 - 100.0/100]
 
@@ -193,13 +221,15 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Maianthemum racemosum | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
-| Anaphalis margaritacea | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
-| Mercurialis perennis | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Fraxinus excelsior | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Deutzia scabra | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Diospyros kaki | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Rubus moorei | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Maianthemum racemosum (Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries) | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
+| Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
+| Mercurialis perennis (Dog's Mercury) | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Fraxinus excelsior (Golden Ash; European ash; Ash) | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ## Warnings
 

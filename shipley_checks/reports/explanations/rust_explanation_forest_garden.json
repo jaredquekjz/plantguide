@@ -515,59 +515,73 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
+        "plant_vernacular": "Golden Ash; European ash; Ash",
         "fungus_count": 99,
         "amf_count": 1,
         "emf_count": 1,
         "endophytic_count": 20,
-        "saprotrophic_count": 77
+        "saprotrophic_count": 77,
+        "has_data": true
       },
       {
         "plant_name": "Diospyros kaki",
+        "plant_vernacular": "Japanese Persimmon",
         "fungus_count": 45,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 7,
-        "saprotrophic_count": 38
+        "saprotrophic_count": 38,
+        "has_data": true
       },
       {
         "plant_name": "Mercurialis perennis",
+        "plant_vernacular": "Dog's Mercury",
         "fungus_count": 22,
         "amf_count": 0,
         "emf_count": 1,
         "endophytic_count": 0,
-        "saprotrophic_count": 21
+        "saprotrophic_count": 21,
+        "has_data": true
       },
       {
         "plant_name": "Anaphalis margaritacea",
+        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
         "fungus_count": 13,
         "amf_count": 2,
         "emf_count": 0,
         "endophytic_count": 1,
-        "saprotrophic_count": 10
+        "saprotrophic_count": 10,
+        "has_data": true
       },
       {
         "plant_name": "Maianthemum racemosum",
+        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
         "fungus_count": 12,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 1,
-        "saprotrophic_count": 11
+        "saprotrophic_count": 11,
+        "has_data": true
       },
       {
         "plant_name": "Deutzia scabra",
+        "plant_vernacular": "Deutzia",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Rubus moorei",
+        "plant_vernacular": "bush lawyer",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
         "endophytic_count": 0,
-        "saprotrophic_count": 0
+        "saprotrophic_count": 0,
+        "has_data": false
       }
     ]
   },
@@ -715,6 +729,7 @@
     "hub_plants": [
       {
         "plant_name": "Maianthemum racemosum",
+        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
         "pollinator_count": 52,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -730,10 +745,12 @@
         "wasps_count": 7,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 15
+        "other_count": 15,
+        "has_data": true
       },
       {
         "plant_name": "Anaphalis margaritacea",
+        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
         "pollinator_count": 30,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -749,10 +766,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 10
+        "other_count": 10,
+        "has_data": true
       },
       {
         "plant_name": "Mercurialis perennis",
+        "plant_vernacular": "Dog's Mercury",
         "pollinator_count": 3,
         "honey_bees_count": 1,
         "bumblebees_count": 0,
@@ -768,10 +787,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": true
       },
       {
         "plant_name": "Fraxinus excelsior",
+        "plant_vernacular": "Golden Ash; European ash; Ash",
         "pollinator_count": 1,
         "honey_bees_count": 1,
         "bumblebees_count": 0,
@@ -787,10 +808,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": true
       },
       {
         "plant_name": "Deutzia scabra",
+        "plant_vernacular": "Deutzia",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -806,10 +829,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Diospyros kaki",
+        "plant_vernacular": "Japanese Persimmon",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -825,10 +850,12 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       },
       {
         "plant_name": "Rubus moorei",
+        "plant_vernacular": "bush lawyer",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -844,7 +871,8 @@
         "wasps_count": 0,
         "birds_count": 0,
         "bats_count": 0,
-        "other_count": 0
+        "other_count": 0,
+        "has_data": false
       }
     ]
   },
@@ -941,7 +969,64 @@
     },
     "top_predators": [],
     "top_entomo_fungi": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Fraxinus excelsior",
+        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "total_predators": 0,
+        "total_entomo_fungi": 2,
+        "total_biocontrol_agents": 2,
+        "has_data": true
+      },
+      {
+        "plant_name": "Anaphalis margaritacea",
+        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Deutzia scabra",
+        "plant_vernacular": "Deutzia",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Diospyros kaki",
+        "plant_vernacular": "Japanese Persimmon",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Maianthemum racemosum",
+        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Mercurialis perennis",
+        "plant_vernacular": "Dog's Mercury",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      },
+      {
+        "plant_name": "Rubus moorei",
+        "plant_vernacular": "bush lawyer",
+        "total_predators": 0,
+        "total_entomo_fungi": 0,
+        "total_biocontrol_agents": 0,
+        "has_data": false
+      }
+    ]
   },
   "pathogen_control_profile": {
     "total_unique_mycoparasites": 2,
@@ -952,6 +1037,56 @@
     "matched_antagonist_pairs": [],
     "matched_fungivore_pairs": [],
     "top_mycoparasites": [],
-    "hub_plants": []
+    "hub_plants": [
+      {
+        "plant_name": "Fraxinus excelsior",
+        "plant_vernacular": "Golden Ash; European ash; Ash",
+        "mycoparasite_count": 2,
+        "pathogen_count": 49,
+        "has_data": true
+      },
+      {
+        "plant_name": "Anaphalis margaritacea",
+        "plant_vernacular": "whitemargin pussytoes; pearly everlasting",
+        "mycoparasite_count": 0,
+        "pathogen_count": 14,
+        "has_data": true
+      },
+      {
+        "plant_name": "Deutzia scabra",
+        "plant_vernacular": "Deutzia",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      },
+      {
+        "plant_name": "Diospyros kaki",
+        "plant_vernacular": "Japanese Persimmon",
+        "mycoparasite_count": 0,
+        "pathogen_count": 56,
+        "has_data": true
+      },
+      {
+        "plant_name": "Maianthemum racemosum",
+        "plant_vernacular": "Pacific Solomon's seal; Solomon's plume; false Solomon's seal; Trackle-berries",
+        "mycoparasite_count": 0,
+        "pathogen_count": 18,
+        "has_data": true
+      },
+      {
+        "plant_name": "Mercurialis perennis",
+        "plant_vernacular": "Dog's Mercury",
+        "mycoparasite_count": 0,
+        "pathogen_count": 20,
+        "has_data": true
+      },
+      {
+        "plant_name": "Rubus moorei",
+        "plant_vernacular": "bush lawyer",
+        "mycoparasite_count": 0,
+        "pathogen_count": 1,
+        "has_data": true
+      }
+    ]
   }
 }
