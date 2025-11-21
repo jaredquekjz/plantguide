@@ -190,30 +190,42 @@ Both the mechanism summary and table header now show the same count (deduplicate
 
 ---
 
-## 🟡 MEDIUM ISSUE: Duplicate Evidence Line (forest_garden.md)
+## ✅ MEDIUM ISSUE: Duplicate Evidence Line - RESOLVED
 
-### Problem
+### Problem (Original)
 
-M6 (Structural Diversity) section has duplicate evidence statements.
+M6 (Structural Diversity) section had duplicate evidence statements.
 
-**Location:** forest_garden.md, lines 208-210
-
+**Example from forest_garden.md:**
 ```markdown
 *Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
 
 *Evidence:* Stratification quality: 1.00
 ```
 
-**Issue:** Line 210 duplicates the stratification quality already shown in line 208
+**Issue:** Second line duplicated the stratification quality already shown in first line
 
-### Impact
+### Root Cause
 
-- Minor redundancy in report
-- Slightly unprofessional presentation
+M6 fragment (`m6_fragment.rs`) added evidence in two places:
+- Line 129-132: Appended evidence line to `detail` text
+- Line 143-146: Added separate `evidence` field to BenefitCard
 
-### Recommended Fix
+The markdown formatter output both, creating redundant evidence lines.
 
-Remove line 210 or combine into a single evidence statement.
+### Fix Applied (Commit dab74c4)
+
+**Updated m6_fragment.rs:**
+- Removed duplicate `evidence` field from BenefitCard
+- Changed from `evidence: Some(...)` to `evidence: None`
+- Added comment: "Evidence already included in detail text above"
+
+**Result:** Reports now show single evidence line with complete information:
+```markdown
+*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
+```
+
+Clean, professional presentation without redundancy.
 
 ---
 
@@ -269,7 +281,7 @@ else:
 |-------|----------|--------|-----------------|--------------|
 | Pathogenic fungi as beneficial | 🔴 Critical | Open | All 5 reports | High - Data quality |
 | Biocontrol count contradiction | 🔴 Critical | ✅ Resolved (65f4cd1) | All reports | Complete |
-| Duplicate evidence line | 🟡 Medium | Open | forest_garden | Low - Formatting |
+| Duplicate evidence line | 🟡 Medium | ✅ Resolved (dab74c4) | All reports | Complete |
 | "plant(s)" grammar | ⚪ Minor | Open | Multiple | Very Low - Style |
 
 ---
@@ -290,8 +302,9 @@ else:
 
 ### Short-Term (Quality Improvements)
 
-3. **Fix duplicate evidence line**
-   - Update M6 fragment generation to show single evidence statement
+3. ✅ **Fix duplicate evidence line** - COMPLETE (Commit dab74c4)
+   - Removed duplicate evidence field from M6 BenefitCard
+   - Evidence now appears only once in detail text
 
 4. **Fix plural/singular grammar**
    - Add conditional text generation for counts
