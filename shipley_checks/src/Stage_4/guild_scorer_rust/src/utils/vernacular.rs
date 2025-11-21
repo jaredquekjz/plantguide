@@ -1,11 +1,14 @@
 //! Vernacular name handling utility
 //!
-//! Selects the best vernacular name based on user preferences:
-//! 1. First English name (alphabetical)
-//! 2. First Chinese name (alphabetical)
-//! 3. None (fallback to scientific name only)
+//! Uses pre-computed display_name from normalized vernaculars (Phase 1)
+//! Fallback to runtime normalization for backwards compatibility
 
 /// Get formatted display name for a plant
+///
+/// Priority:
+/// 1. Pre-computed display_name (from Phase 1 normalization)
+/// 2. Runtime normalization from vernacular_en/zh (backwards compat)
+/// 3. Scientific name only
 ///
 /// Returns: "Scientific Name (Vernacular Name)" or just "Scientific Name"
 pub fn get_display_name(
@@ -18,6 +21,23 @@ pub fn get_display_name(
     match vernacular {
         Some(v) => format!("{} ({})", scientific_name, v),
         None => scientific_name.to_string(),
+    }
+}
+
+/// Get formatted display name for a plant (optimized with pre-computed display_name)
+///
+/// This is the preferred function when display_name column is available
+///
+/// Returns: "Scientific Name (Vernacular Name)" or "Scientific Name (Genus)" or just "Scientific Name"
+pub fn get_display_name_optimized(
+    scientific_name: &str,
+    display_name: Option<&str>,
+) -> String {
+    match display_name {
+        Some(d) if !d.trim().is_empty() && d != scientific_name => {
+            format!("{} ({})", scientific_name, d)
+        }
+        _ => scientific_name.to_string(),
     }
 }
 

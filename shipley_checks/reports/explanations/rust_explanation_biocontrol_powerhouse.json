@@ -41,7 +41,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 33.6m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (river maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Elder): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (English Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (Silver maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Parsley-leaved elder): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (Neapolitan medlar): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": "Stratification quality: 1.00"
     },
     {
@@ -59,7 +59,7 @@
       "severity": "Low",
       "icon": "⚡",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-6.9 (difference: 1.7 units)\n\nPlant pH preferences:\nAcer saccharinum (river maple): Slightly Acidic (pH 5-6)\nCrataegus monogyna (English Hawthorn): Neutral (pH 6-7)\nFragaria vesca (European strawberry): Neutral (pH 6-7)\nPrunus spinosa (Blackthorn): Neutral (pH 6-7)\nQuercus robur (Acorn Tree): Slightly Acidic (pH 5-6)\nRosa canina (Dog-rose): Neutral (pH 6-7)\nSambucus nigra (Elder): Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.2-6.9 (difference: 1.7 units)\n\nPlant pH preferences:\nAcer saccharinum (Silver maple): Slightly Acidic (pH 5-6)\nCrataegus monogyna (Neapolitan medlar): Neutral (pH 6-7)\nFragaria vesca (Wild strawberry): Neutral (pH 6-7)\nPrunus spinosa (Sloe): Neutral (pH 6-7)\nQuercus robur (Pedunculate oak): Slightly Acidic (pH 5-6)\nRosa canina (Canker rose): Neutral (pH 6-7)\nSambucus nigra (Parsley-leaved elder): Neutral (pH 6-7)",
       "advice": "Minor pH incompatibility. Monitor plant health and adjust soil pH as needed."
     }
   ],

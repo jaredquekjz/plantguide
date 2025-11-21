@@ -91,6 +91,7 @@ pub fn calculate_m6(
             col("try_growth_form"),
             col("vernacular_name_en"),
             col("vernacular_name_zh"),
+            col("display_name"),
         ])
         .collect()
         .with_context(|| "M6: Failed to materialize plant columns")?;
@@ -220,8 +221,12 @@ pub fn calculate_m6(
     // Group plants by growth form with heights and light preferences
     let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
     let light_prefs = guild_plants.column("light_pref")?.f64()?;
-    let vernacular_en_col = guild_plants.column("vernacular_name_en")?.str()?;
-    let vernacular_zh_col = guild_plants.column("vernacular_name_zh")?.str()?;
+
+    // Try to get pre-computed display_name (preferred) or fallback to vernacular columns
+    let display_name_col = guild_plants.column("display_name").ok().and_then(|c| c.str().ok());
+    let vernacular_en_col = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
+    let vernacular_zh_col = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
+
     let mut form_groups: FxHashMap<String, Vec<PlantHeight>> = FxHashMap::default();
 
     for idx in 0..n {
@@ -232,11 +237,21 @@ pub fn calculate_m6(
         ) {
             if !form.is_empty() {
                 let light_pref = light_prefs.get(idx);
-                
-                let en_name = vernacular_en_col.get(idx);
-                let zh_name = vernacular_zh_col.get(idx);
-                
-                let display_name = get_display_name(name, en_name, zh_name);
+
+                // Try optimized path first (display_name column), fallback to runtime normalization
+                let display_name = if let Some(col) = display_name_col {
+                    if let Some(d) = col.get(idx) {
+                        crate::utils::get_display_name_optimized(name, Some(d))
+                    } else {
+                        let en = vernacular_en_col.and_then(|c| c.get(idx));
+                        let zh = vernacular_zh_col.and_then(|c| c.get(idx));
+                        get_display_name(name, en, zh)
+                    }
+                } else {
+                    let en = vernacular_en_col.and_then(|c| c.get(idx));
+                    let zh = vernacular_zh_col.and_then(|c| c.get(idx));
+                    get_display_name(name, en, zh)
+                };
 
                 form_groups
                     .entry(form.to_string())

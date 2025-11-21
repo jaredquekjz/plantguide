@@ -130,17 +130,17 @@ Shared mycorrhizal fungi create underground networks that facilitate nutrient ex
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Acer saccharinum (river maple): 33.7m, EIVE-L: 5.3 (flexible)
-  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)
+  - Acer saccharinum (Silver maple): 33.7m, EIVE-L: 5.3 (flexible)
+  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)
 
 **Shrub Layer (1-5m):**
-  - Sambucus nigra (Elder): 4.5m, EIVE-L: 5.9 (flexible)
-  - Crataegus monogyna (English Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)
-  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)
-  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)
+  - Sambucus nigra (Parsley-leaved elder): 4.5m, EIVE-L: 5.9 (flexible)
+  - Crataegus monogyna (Neapolitan medlar): 4.3m, EIVE-L: 6.9 (flexible)
+  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)
+  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)
 
 **Ground Layer (<1m):**
-  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)
+  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
 7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -213,13 +213,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 EIVE R range: 5.2-6.9 (difference: 1.7 units)
 
 Plant pH preferences:
-Acer saccharinum (river maple): Slightly Acidic (pH 5-6)
-Crataegus monogyna (English Hawthorn): Neutral (pH 6-7)
-Fragaria vesca (European strawberry): Neutral (pH 6-7)
-Prunus spinosa (Blackthorn): Neutral (pH 6-7)
-Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
-Rosa canina (Dog-rose): Neutral (pH 6-7)
-Sambucus nigra (Elder): Neutral (pH 6-7)  
+Acer saccharinum (Silver maple): Slightly Acidic (pH 5-6)
+Crataegus monogyna (Neapolitan medlar): Neutral (pH 6-7)
+Fragaria vesca (Wild strawberry): Neutral (pH 6-7)
+Prunus spinosa (Sloe): Neutral (pH 6-7)
+Quercus robur (Pedunculate oak): Slightly Acidic (pH 5-6)
+Rosa canina (Canker rose): Neutral (pH 6-7)
+Sambucus nigra (Parsley-leaved elder): Neutral (pH 6-7)  
 *Advice:* Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.
 
 ## Risks

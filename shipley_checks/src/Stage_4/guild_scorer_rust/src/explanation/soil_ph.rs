@@ -101,7 +101,8 @@ pub fn check_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<PhCompa
             return Ok(None);
         };
 
-        // Try to get vernacular columns (might not exist if using old eager loading without them)
+        // Try to get pre-computed display_name (preferred) or fallback to vernacular columns
+        let display_name_col = guild_plants.column("display_name").ok().and_then(|c| c.str().ok());
         let vernacular_en = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
         let vernacular_zh = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
 
@@ -109,10 +110,20 @@ pub fn check_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<PhCompa
         let mut plant_categories = Vec::new();
         for idx in 0..guild_plants.height() {
             if let (Some(name), Some(r)) = (names.get(idx), r_values.get(idx)) {
-                let en = vernacular_en.and_then(|c| c.get(idx));
-                let zh = vernacular_zh.and_then(|c| c.get(idx));
-                
-                let display_name = get_display_name(name, en, zh);
+                // Try optimized path first (display_name column), fallback to runtime normalization
+                let display_name = if let Some(col) = display_name_col {
+                    if let Some(d) = col.get(idx) {
+                        crate::utils::get_display_name_optimized(name, Some(d))
+                    } else {
+                        let en = vernacular_en.and_then(|c| c.get(idx));
+                        let zh = vernacular_zh.and_then(|c| c.get(idx));
+                        get_display_name(name, en, zh)
+                    }
+                } else {
+                    let en = vernacular_en.and_then(|c| c.get(idx));
+                    let zh = vernacular_zh.and_then(|c| c.get(idx));
+                    get_display_name(name, en, zh)
+                };
                 
                 plant_categories.push(PhCategory {
                     plant_name: display_name,

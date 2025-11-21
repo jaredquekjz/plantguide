@@ -59,7 +59,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum (Chives): Alkaline (pH 7-8)\nAlnus acuminata (Andean Alder): Neutral (pH 6-7)\nCheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)\nErythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera (Grape Vine): Alkaline (pH 7-8)",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum (Chives): Alkaline (pH 7-8)\nAlnus acuminata (Andean alder): Neutral (pH 6-7)\nCheirodendron trigynum (Olapa): Neutral (pH 6-7)\nErythrina sandwicensis (Hawaiian coral tree): Neutral (pH 6-7)\nPfaffia gnaphalioides (Pfaffia): Neutral (pH 6-7)\nVirola bicuhyba (Virola): Slightly Acidic (pH 5-6)\nVitis vinifera (Wine grape): Alkaline (pH 7-8)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],

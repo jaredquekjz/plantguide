@@ -124,12 +124,12 @@ EIVE R range: 5.2-7.5 (difference: 2.3 units)
 
 Plant pH preferences:
 Allium schoenoprasum (Chives): Alkaline (pH 7-8)
-Alnus acuminata (Andean Alder): Neutral (pH 6-7)
-Cheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)
-Erythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)
-Pfaffia gnaphalioides: Neutral (pH 6-7)
-Virola bicuhyba: Slightly Acidic (pH 5-6)
-Vitis vinifera (Grape Vine): Alkaline (pH 7-8)  
+Alnus acuminata (Andean alder): Neutral (pH 6-7)
+Cheirodendron trigynum (Olapa): Neutral (pH 6-7)
+Erythrina sandwicensis (Hawaiian coral tree): Neutral (pH 6-7)
+Pfaffia gnaphalioides (Pfaffia): Neutral (pH 6-7)
+Virola bicuhyba (Virola): Slightly Acidic (pH 5-6)
+Vitis vinifera (Wine grape): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown

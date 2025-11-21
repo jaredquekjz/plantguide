@@ -41,7 +41,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "5 growth forms spanning 27.0m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Grape Vine): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Dog-rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (European strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Wine grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Kona coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Rough cocksfoot): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": "Stratification quality: 1.00"
     },
     {
@@ -59,7 +59,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nCoffea arabica (Arabian Coffee): Neutral (pH 6-7)\nDactylis glomerata (Akaroa): Neutral (pH 6-7)\nFragaria vesca (European strawberry): Neutral (pH 6-7)\nPrunus spinosa (Blackthorn): Neutral (pH 6-7)\nQuercus robur (Acorn Tree): Slightly Acidic (pH 5-6)\nRosa canina (Dog-rose): Neutral (pH 6-7)\nVitis vinifera (Grape Vine): Alkaline (pH 7-8)",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nCoffea arabica (Kona coffee): Neutral (pH 6-7)\nDactylis glomerata (Rough cocksfoot): Neutral (pH 6-7)\nFragaria vesca (Wild strawberry): Neutral (pH 6-7)\nPrunus spinosa (Sloe): Neutral (pH 6-7)\nQuercus robur (Pedunculate oak): Slightly Acidic (pH 5-6)\nRosa canina (Canker rose): Neutral (pH 6-7)\nVitis vinifera (Wine grape): Alkaline (pH 7-8)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],

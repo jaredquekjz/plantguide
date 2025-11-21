@@ -86,13 +86,13 @@ Shared mycorrhizal fungi create underground networks that facilitate nutrient ex
 EIVE R range: 5.1-9.1 (difference: 4.0 units)
 
 Plant pH preferences:
-Alyxia ruscifolia (Chain Fruit): Neutral (pH 6-7)
-Carex mucronata: Strongly Alkaline (pH >8)
-Eucalyptus melanophloia (Silver-leaved Ironbark): Neutral (pH 6-7)
-Hibbertia diffusa (Wedge Guinea Flower): Slightly Acidic (pH 5-6)
-Juncus usitatus (Common Rush): Neutral (pH 6-7)
-Senna artemisioides (Silver Cassia): Neutral (pH 6-7)
-Sporobolus compositus (Composite Dropseed): Neutral (pH 6-7)  
+Alyxia ruscifolia (Chainfruit): Neutral (pH 6-7)
+Carex mucronata (Carex): Strongly Alkaline (pH >8)
+Eucalyptus melanophloia (Silver-leaved ironbark): Neutral (pH 6-7)
+Hibbertia diffusa (Wedge guinea flower): Slightly Acidic (pH 5-6)
+Juncus usitatus (Common rush): Neutral (pH 6-7)
+Senna artemisioides (Silver cassia): Neutral (pH 6-7)
+Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)  
 *Advice:* Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments.
 
 ## Metrics Breakdown

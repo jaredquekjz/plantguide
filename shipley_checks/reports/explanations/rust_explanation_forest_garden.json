@@ -49,7 +49,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 22.8m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (pearly everlasting): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific Solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Golden ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Whitemargin pussytoes): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": "Stratification quality: 1.00"
     },
     {
@@ -67,7 +67,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea (pearly everlasting): Neutral (pH 6-7)\nDeutzia scabra (Deutzia): Alkaline (pH 7-8)\nDiospyros kaki (Japanese Persimmon): Slightly Acidic (pH 5-6)\nFraxinus excelsior (Ash): Alkaline (pH 7-8)\nMaianthemum racemosum (Pacific Solomon's seal): Neutral (pH 6-7)\nMercurialis perennis (Dog's Mercury): Alkaline (pH 7-8)\nRubus moorei (bush lawyer): Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea (Whitemargin pussytoes): Neutral (pH 6-7)\nDeutzia scabra (Deutzia): Alkaline (pH 7-8)\nDiospyros kaki (Japanese persimmon): Slightly Acidic (pH 5-6)\nFraxinus excelsior (Golden ash): Alkaline (pH 7-8)\nMaianthemum racemosum (Pacific solomon's seal): Neutral (pH 6-7)\nMercurialis perennis (Dog's mercury): Alkaline (pH 7-8)\nRubus moorei (Bush lawyer): Neutral (pH 6-7)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
