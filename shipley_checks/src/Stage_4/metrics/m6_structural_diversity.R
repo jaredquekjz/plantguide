@@ -136,20 +136,34 @@ calculate_m6_structural_diversity <- function(guild_plants,
 
         # Only significant height differences (>2m = different canopy layers)
         if (!is.na(height_diff) && height_diff > 2.0) {
-          short_light <- short$light_pref
+          # Check if vine/liana can climb tree (RUST PARITY: lines 153-165)
+          short_form <- tolower(as.character(short$try_growth_form))
+          tall_form <- tolower(as.character(tall$try_growth_form))
 
-          if (length(short_light) == 0 || is.na(short_light)) {
-            # Conservative: neutral/flexible (missing data)
-            valid_stratification <- valid_stratification + height_diff * 0.5
-          } else if (short_light < 3.2) {
-            # Shade-tolerant (EIVE-L 1-3): Can thrive under canopy
+          vine_climbs_tree <- (grepl('vine|liana', short_form) && grepl('tree', tall_form)) ||
+                              (grepl('vine|liana', tall_form) && grepl('tree', short_form))
+
+          if (vine_climbs_tree) {
+            # Vine climbs tree: full stratification credit regardless of light preference
+            # Ecological rationale: climbing plants reach canopy by using trees as support
             valid_stratification <- valid_stratification + height_diff
-          } else if (short_light > 7.47) {
-            # Sun-loving (EIVE-L 8-9): Will be shaded out
-            invalid_stratification <- invalid_stratification + height_diff
           } else {
-            # Flexible (EIVE-L 4-7): Partial compatibility
-            valid_stratification <- valid_stratification + height_diff * 0.6
+            # Similar growth forms: evaluate based on light preference
+            short_light <- short$light_pref
+
+            if (length(short_light) == 0 || is.na(short_light)) {
+              # Conservative: neutral/flexible (missing data)
+              valid_stratification <- valid_stratification + height_diff * 0.5
+            } else if (short_light < 3.2) {
+              # Shade-tolerant (EIVE-L 1-3): Can thrive under canopy
+              valid_stratification <- valid_stratification + height_diff
+            } else if (short_light > 7.47) {
+              # Sun-loving (EIVE-L 8-9): Will be shaded out
+              invalid_stratification <- invalid_stratification + height_diff
+            } else {
+              # Flexible (EIVE-L 4-7): Partial compatibility
+              valid_stratification <- valid_stratification + height_diff * 0.6
+            }
           }
         }
       }

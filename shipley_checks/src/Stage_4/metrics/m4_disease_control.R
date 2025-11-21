@@ -145,7 +145,9 @@ calculate_m4_disease_control <- function(plant_ids,
   pathogen_control_raw <- 0.0
   mechanisms <- list()
   specific_antagonist_matches <- 0
+  specific_fungivore_matches <- 0  # RUST PARITY: track specific fungivore antagonists
   matched_antagonist_pairs <- list()
+  matched_fungivore_pairs <- list()  # RUST PARITY: track fungivore-pathogen pairs
 
   # -------------------------------------------------------------------------
   # STEP 1: Extract guild fungi data
@@ -160,7 +162,9 @@ calculate_m4_disease_control <- function(plant_ids,
       mycoparasite_counts = list(),
       pathogen_counts = list(),
       specific_antagonist_matches = 0,
+      specific_fungivore_matches = 0,  # RUST PARITY
       matched_antagonist_pairs = data.frame(pathogen = character(), antagonist = character()),
+      matched_fungivore_pairs = data.frame(pathogen = character(), fungivore = character()),  # RUST PARITY
       details = list(note = "No fungi data available")
     ))
   }
@@ -223,6 +227,7 @@ calculate_m4_disease_control <- function(plant_ids,
         if (pathogen %in% names(pathogen_antagonists)) {
           known_antagonists <- pathogen_antagonists[[pathogen]]
           if (!is.null(known_antagonists) && length(known_antagonists) > 0) {
+            # Check for fungal antagonists (mycoparasites)
             matching <- intersect(mycoparasites_b, known_antagonists)
             if (length(matching) > 0) {
               pathogen_control_raw <- pathogen_control_raw + length(matching) * 1.0
@@ -239,6 +244,33 @@ calculate_m4_disease_control <- function(plant_ids,
                   pathogen = pathogen,
                   antagonist = antagonist
                 )
+              }
+            }
+
+            # Check for animal antagonists (fungivores) - RUST PARITY: lines 159-172
+            # Some fungivores (e.g., specialized beetles) specifically target certain fungi
+            org_row_b <- guild_organisms %>% dplyr::filter(plant_wfo_id == plant_b_id)
+            if (nrow(org_row_b) > 0) {
+              fungivores_b <- org_row_b$fungivores_eats[[1]]
+              if (!is.null(fungivores_b) && length(fungivores_b) > 0) {
+                matching_fungivores <- intersect(fungivores_b, known_antagonists)
+                if (length(matching_fungivores) > 0) {
+                  pathogen_control_raw <- pathogen_control_raw + length(matching_fungivores) * 1.0
+                  specific_fungivore_matches <- specific_fungivore_matches + 1
+                  mechanisms[[length(mechanisms) + 1]] <- list(
+                    type = 'specific_fungivore_antagonist',
+                    pathogen = pathogen,
+                    control_plant = plant_b_id,
+                    fungivores = head(matching_fungivores, 3)
+                  )
+                  # Track matched pairs
+                  for (fungivore in matching_fungivores) {
+                    matched_fungivore_pairs[[length(matched_fungivore_pairs) + 1]] <- list(
+                      pathogen = pathogen,
+                      fungivore = fungivore
+                    )
+                  }
+                }
               }
             }
           }
@@ -396,6 +428,15 @@ calculate_m4_disease_control <- function(plant_ids,
     matched_antagonist_pairs_df <- data.frame(pathogen = character(), antagonist = character())
   }
 
+  # Convert matched fungivore pairs from list to data.frame and deduplicate (RUST PARITY)
+  if (length(matched_fungivore_pairs) > 0) {
+    matched_fungivore_pairs_df <- do.call(rbind, lapply(matched_fungivore_pairs, as.data.frame, stringsAsFactors = FALSE))
+    matched_fungivore_pairs_df <- unique(matched_fungivore_pairs_df)
+    matched_fungivore_pairs_df <- matched_fungivore_pairs_df[order(matched_fungivore_pairs_df$pathogen, matched_fungivore_pairs_df$fungivore), ]
+  } else {
+    matched_fungivore_pairs_df <- data.frame(pathogen = character(), fungivore = character())
+  }
+
   # -------------------------------------------------------------------------
   # RETURN: Normalized score, percentile, counts, and diagnostics
   # -------------------------------------------------------------------------
@@ -406,7 +447,9 @@ calculate_m4_disease_control <- function(plant_ids,
     mycoparasite_counts = mycoparasite_counts,
     pathogen_counts = pathogen_counts,
     specific_antagonist_matches = specific_antagonist_matches,
+    specific_fungivore_matches = specific_fungivore_matches,  # RUST PARITY
     matched_antagonist_pairs = matched_antagonist_pairs_df,
+    matched_fungivore_pairs = matched_fungivore_pairs_df,  # RUST PARITY
     details = list(
       pathogen_control_raw = pathogen_control_raw,
       max_pairs = max_pairs,
