@@ -66,8 +66,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-279 shared mycorrhizal fungal species connect 4 plants  
-Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+279 shared beneficial fungal species connect 4 plants  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
 
 *Evidence:* Network score: 100.0/100, coverage: 57.1%
 
@@ -115,7 +115,7 @@ Shared mycorrhizal fungi create underground networks that facilitate nutrient ex
 
 ⚠️ **8.4 CSR strategy conflicts detected**
 
-Growth strategy incompatibility: 5 Competitive, 1 Stress-tolerant  
+Growth strategy incompatibility: 5 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**

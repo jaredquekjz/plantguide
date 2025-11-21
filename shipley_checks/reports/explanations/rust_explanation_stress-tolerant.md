@@ -34,8 +34,8 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 ### Beneficial Mycorrhizal Network [M5 - 45.0/100]
 
-16 shared mycorrhizal fungal species connect 4 plants  
-Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+16 shared beneficial fungal species connect 4 plants  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
 
 *Evidence:* Network score: 45.0/100, coverage: 57.1%
 

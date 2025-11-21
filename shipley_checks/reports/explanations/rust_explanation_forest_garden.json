@@ -40,8 +40,8 @@
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "147 shared mycorrhizal fungal species connect 5 plants",
-      "detail": "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
+      "message": "147 shared beneficial fungal species connect 5 plants",
+      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
       "evidence": "Network score: 100.0/100, coverage: 71.4%"
     },
     {

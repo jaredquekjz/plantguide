@@ -8,21 +8,23 @@ use crate::metrics::M2Result;
 pub fn generate_m2_fragment(m2: &M2Result, _display_score: f64) -> MetricFragment {
     if m2.total_conflicts > 0.0 {
         // Build detail message with CSR breakdown
+        // Note: Counts represent plants with high values (>75th percentile) in each strategy
+        // Plants can be high in multiple strategies, so counts may not sum to guild size
         let mut parts = Vec::new();
         if m2.high_c_count > 0 {
-            parts.push(format!("{} Competitive", m2.high_c_count));
+            parts.push(format!("{} Competitive-dominant", m2.high_c_count));
         }
         if m2.high_s_count > 0 {
-            parts.push(format!("{} Stress-tolerant", m2.high_s_count));
+            parts.push(format!("{} Stress-tolerant-dominant", m2.high_s_count));
         }
         if m2.high_r_count > 0 {
-            parts.push(format!("{} Ruderal", m2.high_r_count));
+            parts.push(format!("{} Ruderal-dominant", m2.high_r_count));
         }
 
         let breakdown = if parts.is_empty() {
-            "Mixed strategies detected".to_string()
+            "Mixed strategies (no dominant types)".to_string()
         } else {
-            parts.join(", ")
+            format!("{} (high CSR values: >75th percentile)", parts.join(", "))
         };
 
         // Severity based on conflict magnitude
@@ -73,9 +75,10 @@ mod tests {
 
         let warning = fragment.warning.unwrap();
         assert_eq!(warning.warning_type, "csr_conflict");
-        assert!(warning.detail.contains("4 Competitive"));
-        assert!(warning.detail.contains("2 Stress-tolerant"));
-        assert!(warning.detail.contains("1 Ruderal"));
+        assert!(warning.detail.contains("4 Competitive-dominant"));
+        assert!(warning.detail.contains("2 Stress-tolerant-dominant"));
+        assert!(warning.detail.contains("1 Ruderal-dominant"));
+        assert!(warning.detail.contains(">75th percentile"));
         assert_eq!(warning.severity as u8, Severity::High as u8);
     }
 

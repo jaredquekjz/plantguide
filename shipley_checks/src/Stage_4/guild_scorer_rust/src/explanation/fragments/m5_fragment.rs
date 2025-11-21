@@ -24,10 +24,10 @@ pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment
             metric_code: "M5".to_string(),
             title: "Beneficial Mycorrhizal Network".to_string(),
             message: format!(
-                "{} shared mycorrhizal fungal {} connect {} {}",
+                "{} shared beneficial fungal {} connect {} {}",
                 m5.n_shared_fungi, species_text, m5.plants_with_fungi, plants_text
             ),
-            detail: "Shared mycorrhizal fungi create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.".to_string(),
+            detail: "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.".to_string(),
             evidence: Some(format!(
                 "Network score: {:.1}/100, coverage: {:.1}%",
                 display_score, m5.coverage_ratio * 100.0
@@ -59,7 +59,7 @@ mod tests {
 
         let benefit = fragment.benefit.unwrap();
         assert_eq!(benefit.metric_code, "M5");
-        assert!(benefit.message.contains("12 shared mycorrhizal fungal species"));
+        assert!(benefit.message.contains("12 shared beneficial fungal species"));
         assert!(benefit.message.contains("6 plants"));
     }
 
@@ -79,7 +79,7 @@ mod tests {
         assert!(fragment.benefit.is_some());
 
         let benefit = fragment.benefit.unwrap();
-        assert!(benefit.message.contains("3 shared mycorrhizal fungal species"));
+        assert!(benefit.message.contains("3 shared beneficial fungal species"));
         assert!(benefit.message.contains("4 plants"));
     }
 
