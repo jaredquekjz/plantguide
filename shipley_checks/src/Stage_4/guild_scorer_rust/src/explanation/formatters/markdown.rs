@@ -238,16 +238,29 @@ impl MarkdownFormatter {
             for (i, fungus) in fungi_profile.top_fungi.iter().enumerate() {
                 // Always show count format, never show WFO IDs
                 let plant_list = format!("{} plants", fungus.plants.len());
+
+                // Annotate dual-lifestyle fungi
+                let category_str = if fungus.is_dual_lifestyle {
+                    format!("{} ⚠ Pathogen", fungus.category)
+                } else {
+                    format!("{}", fungus.category)
+                };
+
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | {:.1}% |\n",
                     i + 1,
                     fungus.fungus_name,
-                    fungus.category,
+                    category_str,
                     plant_list,
                     fungus.network_contribution * 100.0
                 ));
             }
             md.push_str("\n");
+
+            // Add explanatory note if any dual-lifestyle fungi are present
+            if fungi_profile.top_fungi.iter().any(|f| f.is_dual_lifestyle) {
+                md.push_str("⚠ **Dual-Lifestyle Fungi**: Some fungi have both beneficial (decomposition, nutrient cycling) and pathogenic (disease-causing) roles. While they contribute to the beneficial fungi network (included in M5 score), they may cause leaf spots, fruit rot, or other diseases under favorable conditions.\n\n");
+            }
         }
 
         // Network hubs

@@ -1,5 +1,8 @@
 # Report Review Findings - Format & Ecological Issues
 
+**Date:** 2025-11-21
+**Analysis:** Final report review before production release
+
 ## Summary
 
 Reviewed 4 explanation reports for formatting issues and ecological red flags.
@@ -68,11 +71,32 @@ Well-known plant pathogens are appearing in the "Beneficial Fungi Network" secti
 
 ### Root Cause
 
-This is a **data classification issue**, not a code bug. Possibilities:
+**CONFIRMED: Data handling issue in Rust code, NOT a data classification error**
 
-1. **GloBI source data misclassification** - These fungi may be tagged as "saprotroph" in the source database even though they're primarily pathogens
-2. **Dual lifestyle fungi** - Some fungi can be both pathogenic AND saprotrophic depending on conditions, and may be classified based on one behavior
-3. **Missing pathogen filtering** - The beneficial fungi extraction logic may not exclude known pathogens
+The parquet data is CORRECT - these fungi are dual-lifestyle organisms that are BOTH pathogenic AND saprotrophic:
+
+**Investigation findings:**
+
+1. **Parquet columns are correct**: Script `03_extract_fungal_guilds_hybrid.R` correctly uses FungalTraits to identify dual-lifestyle fungi
+   - Colletotrichum: 802 plants have it in BOTH pathogenic_fungi AND saprotrophic_fungi (100% dual-lifestyle)
+   - Alternaria: 623 plants, 100% dual-lifestyle
+   - Botrytis: 349 plants, 100% dual-lifestyle
+   - Botryosphaeria: 238 plants, 100% dual-lifestyle
+   - Mycosphaerella: 947 plants, 100% dual-lifestyle
+   - Phyllosticta: 993 plants, 100% dual-lifestyle
+   - Septoria: 1201 plants, 100% dual-lifestyle
+
+2. **FungalTraits logic is correct**: Lines 63-71 of R script correctly allow fungi to have BOTH:
+   - `is_pathogen = TRUE` (primary_lifestyle = 'plant_pathogen')
+   - `is_saprotrophic = TRUE` (primary_lifestyle = various saprotroph types OR secondary_lifestyle contains 'saprotroph')
+
+3. **Rust code ignores pathogenic column**: The issue is in `fungi_network_analysis.rs` (lines 240-245, 307):
+   ```rust
+   let columns = ["amf_fungi", "emf_fungi", "endophytic_fungi", "saprotrophic_fungi"];
+   ```
+   - Loads beneficial fungi from these 4 columns ONLY
+   - NEVER checks if a fungus also appears in `pathogenic_fungi` column
+   - Result: Dual-lifestyle pathogens are treated as beneficial without any filtering
 
 ### Impact
 
@@ -82,19 +106,47 @@ This is a **data classification issue**, not a code bug. Possibilities:
 
 ### Recommended Fix
 
-**Option 1:** Exclude known pathogenic genera from beneficial fungi extraction
-```python
-KNOWN_PATHOGEN_GENERA = ['colletotrichum', 'alternaria', 'botrytis', 'botryosphaeria',
-                         'mycosphaerella', 'phyllosticta', 'septoria', ...]
+**Update Rust code to filter out dual-lifestyle pathogens from beneficial fungi**
 
-# In beneficial fungi extraction:
-if fungus_genus.lower() in KNOWN_PATHOGEN_GENERA:
-    continue  # Skip this fungus
+Modify `fungi_network_analysis.rs` to:
+
+1. **First pass**: Load all `pathogenic_fungi` for guild plants into a set
+2. **Second pass**: When processing beneficial fungi columns (AMF, EMF, Endophytic, Saprotrophic), exclude any fungus that appears in the pathogen set
+
+**Implementation location:**
+- `categorize_fungi()` function (line 220): Add pathogen filtering before categorizing
+- `build_fungus_to_plants_mapping()` function (line 291): Add pathogen filtering before mapping
+
+**Example logic:**
+```rust
+// Step 0: Build pathogen exclusion set
+let mut pathogen_set: FxHashSet<String> = FxHashSet::default();
+for idx in 0..fungi_df.height() {
+    if let Some(plant_id) = fungi_plant_col.get(idx) {
+        if guild_plant_set.contains(plant_id) {
+            if let Ok(col) = fungi_df.column("pathogenic_fungi") {
+                if let Ok(list_col) = col.list() {
+                    // Extract all pathogens into set
+                }
+            }
+        }
+    }
+}
+
+// Step 1: Process beneficial columns, skip if in pathogen_set
+for col_name in &["amf_fungi", "emf_fungi", "endophytic_fungi", "saprotrophic_fungi"] {
+    // ... existing code ...
+    if !pathogen_set.contains(fungus) {
+        // Include in beneficial fungi
+    }
+}
 ```
 
-**Option 2:** Cross-reference with pathogenic_fungi column and exclude overlaps
-
-**Option 3:** Re-classify based on primary lifestyle (pathogen > saprotroph priority)
+This approach:
+- Preserves the correct FungalTraits dual-lifestyle classification in parquet
+- Correctly prioritizes pathogenic behavior over saprotrophic for reporting
+- No hardcoded genus lists (data-driven filtering)
+- Respects per-plant associations (a fungus may be pathogenic on one plant, beneficial on another - though data shows 100% overlap for these genera)
 
 ---
 
@@ -260,18 +312,19 @@ else:
 
 ### Investigation Required
 
-- **Source data audit:** Review fungal guilds classification in GloBI/source data
-- **M3 scoring audit:** Verify which biocontrol count is actually used in calculations
-- **Cross-report consistency check:** Ensure all reports follow same format/logic
+- ✅ **Source data audit:** COMPLETE - FungalTraits correctly classifies dual-lifestyle fungi; parquet data is correct
+- ⚠️ **M3 scoring audit:** Verify which biocontrol count is actually used in calculations (5 vs 11 matches)
+- ⚠️ **Cross-report consistency check:** Ensure all reports follow same format/logic
 
 ---
 
 ## Files to Review/Modify
 
 **For pathogenic fungi issue:**
-- Source data: `phase0_output/fungal_guilds_hybrid_11711.parquet`
-- Extraction logic: Phase 0 fungi classification scripts
-- Potentially: M5 beneficial fungi metric calculation
+- **Rust code**: `src/Stage_4/guild_scorer_rust/src/explanation/fungi_network_analysis.rs` (lines 220-288, 291-367)
+- Functions to update: `categorize_fungi()` and `build_fungus_to_plants_mapping()`
+- Source data: `phase0_output/fungal_guilds_hybrid_11711.parquet` (CORRECT - no changes needed)
+- Extraction logic: `src/Stage_4/Phase_0_extraction/03_extract_fungal_guilds_hybrid.R` (CORRECT - no changes needed)
 
 **For biocontrol contradiction:**
 - M3 metric: `src/metrics/m3_insect_control.rs`

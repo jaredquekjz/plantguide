@@ -1,8 +1,8 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 47.2/100
+**Overall Score:** 40.9/100
 
-Overall guild compatibility: 47.2/100
+Overall guild compatibility: 40.9/100
 
 ## Climate Compatibility
 
@@ -71,15 +71,17 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Rank | Fungus Species | Category | Plants Connected | Network Contribution |
 |------|----------------|----------|------------------|----------------------|
 | 1 | ciferrioxyphium | Saprotrophic | 1 plants | 14.3% |
-| 2 | clathrospora | Saprotrophic | 1 plants | 14.3% |
-| 3 | colletotrichum | Saprotrophic | 1 plants | 14.3% |
+| 2 | clathrospora | Saprotrophic ⚠ Pathogen | 1 plants | 14.3% |
+| 3 | colletotrichum | Saprotrophic ⚠ Pathogen | 1 plants | 14.3% |
 | 4 | cosmospora | Saprotrophic | 1 plants | 14.3% |
-| 5 | fusarium | Saprotrophic | 1 plants | 14.3% |
+| 5 | fusarium | Saprotrophic ⚠ Pathogen | 1 plants | 14.3% |
 | 6 | graphyllium | Saprotrophic | 1 plants | 14.3% |
 | 7 | hendersonia | Saprotrophic | 1 plants | 14.3% |
 | 8 | hysterographium | Saprotrophic | 1 plants | 14.3% |
-| 9 | lasiodiplodia | Endophytic | 1 plants | 14.3% |
-| 10 | phyllosticta | Saprotrophic | 1 plants | 14.3% |
+| 9 | lasiodiplodia | Endophytic ⚠ Pathogen | 1 plants | 14.3% |
+| 10 | phyllosticta | Saprotrophic ⚠ Pathogen | 1 plants | 14.3% |
+
+⚠ **Dual-Lifestyle Fungi**: Some fungi have both beneficial (decomposition, nutrient cycling) and pathogenic (disease-causing) roles. While they contribute to the beneficial fungi network (included in M5 score), they may cause leaf spots, fruit rot, or other diseases under favorable conditions.
 
 **Network Hubs (most connected plants):**
 
@@ -94,33 +96,6 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Juncus usitatus (Common Rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
-### High Structural Diversity [M6 - 90.6/100]
-
-3 growth forms spanning 19.8m height range  
-**Vertical Stratification (Quality: 0.73 - Good):**
-
-**Canopy Layer (>15m):**
-  - Eucalyptus melanophloia (Silver-leaved ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)
-
-**Understory (5-15m):**
-  - Alyxia ruscifolia (Chainfruit): 5.0m, EIVE-L: 7.4 (flexible)
-
-**Shrub Layer (1-5m):**
-  - Senna artemisioides (Silver cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)
-  - Juncus usitatus (Common rush): 1.1m, EIVE-L: 7.1 (flexible)
-
-**Ground Layer (<1m):**
-  - Sporobolus compositus (Composite dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)
-  - Hibbertia diffusa (Wedge guinea flower): 0.3m, EIVE-L: 6.9 (flexible)
-  - Carex mucronata (Carex): 0.2m, EIVE-L: 9.5 (sun-loving ⚠)
-
-**Why this stratification is acceptable:**
-3 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plant(s) are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
-
-*Evidence:* Structural diversity score: 90.6/100, stratification quality: 0.73  
-
-*Evidence:* Stratification quality: 0.73
 
 ## Warnings
 
@@ -154,6 +129,6 @@ Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 90.6 | Excellent |
+| M6 - Structural Diversity | 46.3 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 

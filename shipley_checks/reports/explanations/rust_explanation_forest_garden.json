@@ -248,7 +248,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "mycosphaerella",
@@ -260,7 +261,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phyllosticta",
@@ -272,7 +274,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "colletotrichum",
@@ -283,7 +286,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phoma",
@@ -294,7 +298,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phomopsis",
@@ -305,7 +310,8 @@
           "wfo-0000832453"
         ],
         "category": "Endophytic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "septoria",
@@ -316,7 +322,8 @@
           "wfo-0000690499"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "alternaria",
@@ -326,7 +333,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "botryosphaeria",
@@ -336,7 +344,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "botrytis",
@@ -346,7 +355,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "cladosporium",
@@ -356,7 +366,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "coniothyrium",
@@ -366,7 +377,8 @@
           "wfo-0000690499"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "conocybe",
@@ -376,7 +388,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "cryptosporiopsis",
@@ -386,7 +399,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "diaporthe",
@@ -396,7 +410,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "fusarium",
@@ -406,7 +421,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "hymenoscyphus",
@@ -416,7 +432,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "lepiota",
@@ -426,7 +443,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "penicillium",
@@ -436,7 +454,8 @@
           "wfo-0000832453"
         ],
         "category": "Endophytic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "pestalotia",
@@ -446,7 +465,8 @@
           "wfo-0000649136"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phaeosphaeria",
@@ -456,7 +476,8 @@
           "wfo-0000690499"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "psathyrella",
@@ -466,7 +487,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "synchytrium",
@@ -476,7 +498,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       }
     ],
     "top_fungi": [
@@ -490,7 +513,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "mycosphaerella",
@@ -502,7 +526,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phyllosticta",
@@ -514,7 +539,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.5714285714285714
+        "network_contribution": 0.5714285714285714,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "colletotrichum",
@@ -525,7 +551,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phoma",
@@ -536,7 +563,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phomopsis",
@@ -547,7 +575,8 @@
           "wfo-0000832453"
         ],
         "category": "Endophytic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "septoria",
@@ -558,7 +587,8 @@
           "wfo-0000690499"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.42857142857142855
+        "network_contribution": 0.42857142857142855,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "alternaria",
@@ -568,7 +598,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "botryosphaeria",
@@ -578,7 +609,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "botrytis",
@@ -588,7 +620,8 @@
           "wfo-0000832453"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.2857142857142857
+        "network_contribution": 0.2857142857142857,
+        "is_dual_lifestyle": true
       }
     ],
     "fungi_by_category": {

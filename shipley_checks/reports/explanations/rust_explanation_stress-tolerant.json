@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 47.2192691869457,
+    "score": 40.88867301629744,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 47.2/100"
+    "message": "Overall guild compatibility: 40.9/100"
   },
   "climate": {
     "compatible": true,
@@ -27,14 +27,6 @@
       "message": "16 shared beneficial fungal species connect 4 plants",
       "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
       "evidence": "Network score: 45.0/100, coverage: 57.1%"
-    },
-    {
-      "benefit_type": "structural_diversity",
-      "metric_code": "M6",
-      "title": "High Structural Diversity",
-      "message": "3 growth forms spanning 19.8m height range",
-      "detail": "**Vertical Stratification (Quality: 0.73 - Good):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chainfruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Common rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge guinea flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata (Carex): 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification is acceptable:**\n3 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plant(s) are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\n*Evidence:* Structural diversity score: 90.6/100, stratification quality: 0.73",
-      "evidence": "Stratification quality: 0.73"
     }
   ],
   "warnings": [
@@ -90,9 +82,9 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 90.59998394686612,
-        "raw": 0.6322590606744579,
-        "interpretation": "Excellent"
+        "score": 46.285810752328274,
+        "raw": 0.3691127953935177,
+        "interpretation": "Fair"
       },
       {
         "code": "M7",
@@ -190,7 +182,8 @@
           "wfo-0000956222"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "clathrospora",
@@ -199,7 +192,8 @@
           "wfo-0000349035"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "colletotrichum",
@@ -208,7 +202,8 @@
           "wfo-0000901050"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "cosmospora",
@@ -217,7 +212,8 @@
           "wfo-0000956222"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "fusarium",
@@ -226,7 +222,8 @@
           "wfo-0000901050"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "graphyllium",
@@ -235,7 +232,8 @@
           "wfo-0000901050"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "hendersonia",
@@ -244,7 +242,8 @@
           "wfo-0000901050"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "hysterographium",
@@ -253,7 +252,8 @@
           "wfo-0000901050"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": false
       },
       {
         "fungus_name": "lasiodiplodia",
@@ -262,7 +262,8 @@
           "wfo-0000209726"
         ],
         "category": "Endophytic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": true
       },
       {
         "fungus_name": "phyllosticta",
@@ -271,7 +272,8 @@
           "wfo-0000956222"
         ],
         "category": "Saprotrophic",
-        "network_contribution": 0.14285714285714285
+        "network_contribution": 0.14285714285714285,
+        "is_dual_lifestyle": true
       }
     ],
     "fungi_by_category": {

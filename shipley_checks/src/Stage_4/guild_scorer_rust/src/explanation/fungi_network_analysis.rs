@@ -40,6 +40,8 @@ pub struct SharedFungus {
     pub category: FungusCategory,
     /// Network contribution (plant_count / n_plants)
     pub network_contribution: f64,
+    /// Whether this fungus is dual-lifestyle (also appears in pathogenic_fungi)
+    pub is_dual_lifestyle: bool,
 }
 
 /// Top fungus by network importance
@@ -50,6 +52,8 @@ pub struct TopFungus {
     pub plants: Vec<String>,
     pub category: FungusCategory,
     pub network_contribution: f64,
+    /// Whether this fungus is dual-lifestyle (also appears in pathogenic_fungi)
+    pub is_dual_lifestyle: bool,
 }
 
 /// Fungus featured in a category
@@ -117,8 +121,8 @@ pub fn analyze_fungi_network(
         return Ok(None);
     }
 
-    // Step 1: Categorize all fungi by querying fungi_df
-    let category_map = categorize_fungi(fungi_df, guild_plants)?;
+    // Step 1: Categorize all fungi by querying fungi_df and get pathogen set
+    let (category_map, pathogen_set) = categorize_fungi(fungi_df, guild_plants)?;
 
     // Step 2: Build fungus-to-plants mapping by inverting fungi_counts
     let fungus_to_plants = build_fungus_to_plants_mapping(fungi_df, guild_plants, &category_map)?;
@@ -133,6 +137,7 @@ pub fn analyze_fungi_network(
             plants: plants.clone(),
             category: category.clone(),
             network_contribution: plants.len() as f64 / n_plants as f64,
+            is_dual_lifestyle: pathogen_set.contains(fungus_name),
         })
         .collect();
 
@@ -153,6 +158,7 @@ pub fn analyze_fungi_network(
             plants: plants.clone(),
             category: category.clone(),
             network_contribution: plants.len() as f64 / n_plants as f64,
+            is_dual_lifestyle: pathogen_set.contains(fungus_name),
         })
         .collect();
 
@@ -222,11 +228,13 @@ pub fn analyze_fungi_network(
 }
 
 /// Categorize fungi by querying which column they appear in
+/// Returns (category_map, pathogen_set) where pathogen_set contains all pathogenic fungi
 fn categorize_fungi(
     fungi_df: &DataFrame,
     guild_plants: &DataFrame,
-) -> Result<FxHashMap<String, FungusCategory>> {
+) -> Result<(FxHashMap<String, FungusCategory>, rustc_hash::FxHashSet<String>)> {
     let mut category_map: FxHashMap<String, FungusCategory> = FxHashMap::default();
+    let mut pathogen_set: rustc_hash::FxHashSet<String> = rustc_hash::FxHashSet::default();
 
     // Use wfo_taxon_id to match against fungi_df's plant_wfo_id
     let plant_ids = guild_plants.column("wfo_taxon_id")?.str()?;
@@ -237,6 +245,42 @@ fn categorize_fungi(
 
     let fungi_plant_col = fungi_df.column("plant_wfo_id")?.str()?;
 
+    // FIRST PASS: Build pathogen set from pathogenic_fungi column
+    for idx in 0..fungi_df.height() {
+        if let Some(plant_id) = fungi_plant_col.get(idx) {
+            if !guild_plant_set.contains(plant_id) {
+                continue; // Not in guild
+            }
+
+            // Extract pathogens for this plant
+            if let Ok(col) = fungi_df.column("pathogenic_fungi") {
+                if let Ok(list_col) = col.list() {
+                    if let Some(list_series) = list_col.get_as_series(idx) {
+                        if let Ok(str_series) = list_series.str() {
+                            for fungus_opt in str_series.into_iter() {
+                                if let Some(fungus) = fungus_opt {
+                                    if !fungus.trim().is_empty() {
+                                        pathogen_set.insert(fungus.trim().to_string());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if let Ok(str_col) = col.str() {
+                    // Fallback: pipe-separated string (legacy format)
+                    if let Some(fungi_str) = str_col.get(idx) {
+                        if !fungi_str.is_empty() {
+                            for fungus in fungi_str.split('|').filter(|s| !s.trim().is_empty()) {
+                                pathogen_set.insert(fungus.trim().to_string());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // SECOND PASS: Categorize beneficial fungi
     let columns = [
         ("amf_fungi", FungusCategory::AMF),
         ("emf_fungi", FungusCategory::EMF),
@@ -284,7 +328,7 @@ fn categorize_fungi(
         }
     }
 
-    Ok(category_map)
+    Ok((category_map, pathogen_set))
 }
 
 /// Build fungus-to-plants mapping with categories

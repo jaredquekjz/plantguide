@@ -1,8 +1,8 @@
-# ★★☆☆☆ - Fair
+# ★☆☆☆☆ - Poor
 
-**Overall Score:** 66.7/100
+**Overall Score:** 55.5/100
 
-Overall guild compatibility: 66.7/100
+Overall guild compatibility: 55.5/100
 
 ## Climate Compatibility
 
@@ -147,16 +147,18 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Rank | Fungus Species | Category | Plants Connected | Network Contribution |
 |------|----------------|----------|------------------|----------------------|
-| 1 | cladosporium | Saprotrophic | 3 plants | 42.9% |
+| 1 | cladosporium | Saprotrophic ⚠ Pathogen | 3 plants | 42.9% |
 | 2 | acremonium | Endophytic | 2 plants | 28.6% |
-| 3 | alternaria | Saprotrophic | 2 plants | 28.6% |
+| 3 | alternaria | Saprotrophic ⚠ Pathogen | 2 plants | 28.6% |
 | 4 | aspergillus | Endophytic | 2 plants | 28.6% |
 | 5 | athelia | Saprotrophic | 2 plants | 28.6% |
 | 6 | aureobasidium | Saprotrophic | 2 plants | 28.6% |
-| 7 | botrytis | Saprotrophic | 2 plants | 28.6% |
-| 8 | colletotrichum | Saprotrophic | 2 plants | 28.6% |
+| 7 | botrytis | Saprotrophic ⚠ Pathogen | 2 plants | 28.6% |
+| 8 | colletotrichum | Saprotrophic ⚠ Pathogen | 2 plants | 28.6% |
 | 9 | coniochaeta | Endophytic | 2 plants | 28.6% |
 | 10 | funneliformis | AMF | 2 plants | 28.6% |
+
+⚠ **Dual-Lifestyle Fungi**: Some fungi have both beneficial (decomposition, nutrient cycling) and pathogenic (disease-causing) roles. While they contribute to the beneficial fungi network (included in M5 score), they may cause leaf spots, fruit rot, or other diseases under favorable conditions.
 
 **Network Hubs (most connected plants):**
 
@@ -171,29 +173,6 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Virola bicuhyba ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
-### High Structural Diversity [M6 - 95.1/100]
-
-3 growth forms spanning 14.1m height range  
-**Vertical Stratification (Quality: 0.83 - Excellent):**
-
-**Understory (5-15m):**
-  - Alnus acuminata (Andean alder): 14.2m, EIVE-L: 7.1 (flexible)
-  - Vitis vinifera (Wine grape): 9.7m, EIVE-L: 6.2 (flexible)
-  - Erythrina sandwicensis (Hawaiian coral tree): 9.1m, EIVE-L: 7.1 (flexible)
-  - Cheirodendron trigynum (Olapa): 8.3m, EIVE-L: 6.4 (flexible)
-  - Virola bicuhyba (Virola): 8.0m, EIVE-L: 4.9 (flexible)
-
-**Ground Layer (<1m):**
-  - Allium schoenoprasum (Chives): 0.3m, EIVE-L: 7.5 (sun-loving ⚠)
-  - Pfaffia gnaphalioides (Pfaffia): 0.1m, EIVE-L: 8.0 (sun-loving ⚠)
-
-**Why this stratification works well:**
-5 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 2 plant(s) are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
-
-*Evidence:* Structural diversity score: 95.1/100, stratification quality: 0.83  
-
-*Evidence:* Stratification quality: 0.83
 
 ## Warnings
 
@@ -232,6 +211,6 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 95.1 | Excellent |
+| M6 - Structural Diversity | 16.5 | Poor |
 | M7 - Pollinator Support | 0.0 | Poor |
 

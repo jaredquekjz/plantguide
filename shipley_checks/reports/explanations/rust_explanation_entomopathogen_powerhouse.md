@@ -136,16 +136,18 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Rank | Fungus Species | Category | Plants Connected | Network Contribution |
 |------|----------------|----------|------------------|----------------------|
-| 1 | colletotrichum | Saprotrophic | 7 plants | 100.0% |
-| 2 | cladosporium | Saprotrophic | 6 plants | 85.7% |
-| 3 | leptosphaeria | Saprotrophic | 6 plants | 85.7% |
-| 4 | septoria | Saprotrophic | 6 plants | 85.7% |
-| 5 | alternaria | Saprotrophic | 5 plants | 71.4% |
-| 6 | diaporthe | Saprotrophic | 5 plants | 71.4% |
-| 7 | fusarium | Saprotrophic | 5 plants | 71.4% |
-| 8 | phyllosticta | Saprotrophic | 5 plants | 71.4% |
-| 9 | rosellinia | Saprotrophic | 5 plants | 71.4% |
+| 1 | colletotrichum | Saprotrophic ⚠ Pathogen | 7 plants | 100.0% |
+| 2 | cladosporium | Saprotrophic ⚠ Pathogen | 6 plants | 85.7% |
+| 3 | leptosphaeria | Saprotrophic ⚠ Pathogen | 6 plants | 85.7% |
+| 4 | septoria | Saprotrophic ⚠ Pathogen | 6 plants | 85.7% |
+| 5 | alternaria | Saprotrophic ⚠ Pathogen | 5 plants | 71.4% |
+| 6 | diaporthe | Saprotrophic ⚠ Pathogen | 5 plants | 71.4% |
+| 7 | fusarium | Saprotrophic ⚠ Pathogen | 5 plants | 71.4% |
+| 8 | phyllosticta | Saprotrophic ⚠ Pathogen | 5 plants | 71.4% |
+| 9 | rosellinia | Saprotrophic ⚠ Pathogen | 5 plants | 71.4% |
 | 10 | aspergillus | Endophytic | 4 plants | 57.1% |
+
+⚠ **Dual-Lifestyle Fungi**: Some fungi have both beneficial (decomposition, nutrient cycling) and pathogenic (disease-causing) roles. While they contribute to the beneficial fungi network (included in M5 score), they may cause leaf spots, fruit rot, or other diseases under favorable conditions.
 
 **Network Hubs (most connected plants):**
 
