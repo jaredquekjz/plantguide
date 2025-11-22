@@ -16,9 +16,9 @@
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
       "title": "Phylogenetic Diversity",
-      "message": "9th percentile - Plants are closely related (low phylogenetic diversity)",
+      "message": "9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)",
       "detail": "Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.",
-      "evidence": "Faith's PD index: 704.52. Strongly consider adding plants from diverse families (e.g., legumes, composites, grasses) to reduce disease risk."
+      "evidence": null
     },
     {
       "benefit_type": "insect_control",

@@ -12,10 +12,8 @@ Overall guild compatibility: 41.0/100
 
 ### Phylogenetic Diversity [M1 - 32.8/100]
 
-33th percentile - Plants have some close relatives (fair phylogenetic diversity)  
+33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
-
-*Evidence:* Faith's PD index: 785.39. Consider diversifying with plants from different families to improve pest independence.
 
 #### Pest Vulnerability Profile
 

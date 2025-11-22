@@ -12,10 +12,8 @@ Overall guild compatibility: 92.5/100
 
 ### Phylogenetic Diversity [M1 - 57.4/100]
 
-57th percentile - Plants are moderately related (good phylogenetic diversity)  
+57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
 Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.  
-
-*Evidence:* Faith's PD index: 844.68. To further improve, consider adding plants from underrepresented families.
 
 #### Pest Vulnerability Profile
 

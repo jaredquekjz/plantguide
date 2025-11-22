@@ -16,9 +16,9 @@
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
       "title": "Phylogenetic Diversity",
-      "message": "40th percentile - Plants have some close relatives (fair phylogenetic diversity)",
+      "message": "40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)",
       "detail": "Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.",
-      "evidence": "Faith's PD index: 804.28. Consider diversifying with plants from different families to improve pest independence."
+      "evidence": null
     },
     {
       "benefit_type": "insect_control",
