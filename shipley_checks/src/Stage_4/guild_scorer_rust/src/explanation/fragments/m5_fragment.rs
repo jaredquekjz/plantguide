@@ -6,36 +6,46 @@ use crate::metrics::M5Result;
 /// High scores indicate strong fungal network connections between plants.
 /// Shared mycorrhizal fungi facilitate nutrient exchange and communication.
 pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment {
-    if display_score > 30.0 {
-        let species_text = if m5.n_shared_fungi == 1 {
-            "species".to_string()
-        } else {
-            "species".to_string()
-        };
-
-        let plants_text = if m5.plants_with_fungi == 1 {
-            "plant".to_string()
-        } else {
-            "plants".to_string()
-        };
-
-        MetricFragment::with_benefit(BenefitCard {
-            benefit_type: "mycorrhizal_network".to_string(),
-            metric_code: "M5".to_string(),
-            title: "Beneficial Mycorrhizal Network".to_string(),
-            message: format!(
-                "{} shared beneficial fungal {} connect {} {}",
-                m5.n_shared_fungi, species_text, m5.plants_with_fungi, plants_text
-            ),
-            detail: "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.".to_string(),
-            evidence: Some(format!(
-                "Network score: {:.1}/100, coverage: {:.1}%",
-                display_score, m5.coverage_ratio * 100.0
-            )),
-        })
+    let species_text = if m5.n_shared_fungi == 1 {
+        "species".to_string()
     } else {
-        MetricFragment::empty()
-    }
+        "species".to_string()
+    };
+
+    let plants_text = if m5.plants_with_fungi == 1 {
+        "plant".to_string()
+    } else {
+        "plants".to_string()
+    };
+
+    let interpretation = if display_score >= 80.0 {
+        "Excellent fungal network - abundant shared fungi create strong underground connections"
+    } else if display_score >= 60.0 {
+        "Good fungal network - meaningful shared fungi facilitate nutrient exchange"
+    } else if display_score >= 40.0 {
+        "Moderate fungal network - some shared fungi present but connectivity may be limited"
+    } else {
+        "Limited fungal network - few documented shared fungi, plants may be more independent"
+    };
+
+    MetricFragment::with_benefit(BenefitCard {
+        benefit_type: "mycorrhizal_network".to_string(),
+        metric_code: "M5".to_string(),
+        title: "Beneficial Mycorrhizal Network".to_string(),
+        message: format!(
+            "{} shared beneficial fungal {} connect {} {} ({}th percentile)",
+            m5.n_shared_fungi, species_text, m5.plants_with_fungi, plants_text,
+            display_score.round() as i32
+        ),
+        detail: format!(
+            "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. {}",
+            interpretation
+        ),
+        evidence: Some(format!(
+            "Network score: {:.1}/100, coverage: {:.1}%. Higher scores indicate more shared fungal species.",
+            display_score, m5.coverage_ratio * 100.0
+        )),
+    })
 }
 
 #[cfg(test)]

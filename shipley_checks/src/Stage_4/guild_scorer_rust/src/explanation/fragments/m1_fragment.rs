@@ -3,42 +3,45 @@ use crate::metrics::M1Result;
 
 /// Generate explanation fragment for M1 (Pest & Pathogen Independence)
 ///
-/// High scores (>50) indicate high phylogenetic diversity - distant relatives
-/// share fewer pests and pathogens.
-///
-/// Low scores (<30) indicate closely related plants that may share pests.
+/// Measures phylogenetic diversity - how distantly related plants are.
+/// Higher scores indicate more distant relatives that share fewer pests/pathogens.
+/// Lower scores indicate closer relatives that may share more pests/pathogens.
 pub fn generate_m1_fragment(m1: &M1Result, display_score: f64) -> MetricFragment {
-    if display_score > 50.0 {
-        MetricFragment::with_benefit(BenefitCard {
-            benefit_type: "phylogenetic_diversity".to_string(),
-            metric_code: "M1".to_string(),
-            title: "High Phylogenetic Diversity".to_string(),
-            message: format!(
-                "Plants are distantly related (Faith's PD: {:.2})",
-                m1.faiths_pd
-            ),
-            detail: "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.".to_string(),
-            evidence: Some(format!(
-                "Phylogenetic diversity score: {:.1}/100",
-                display_score
-            )),
-        })
-    } else if display_score < 30.0 {
-        MetricFragment::with_risk(RiskCard {
-            risk_type: "pest_vulnerability".to_string(),
-            severity: Severity::from_score(display_score),
-            icon: "🦠".to_string(),
-            title: "Closely Related Plants".to_string(),
-            message: "Guild contains closely related plants that may share pests".to_string(),
-            detail: format!(
-                "Low phylogenetic diversity (Faith's PD: {:.2}) increases pest/pathogen risk",
-                m1.faiths_pd
-            ),
-            advice: "Consider adding plants from different families to increase diversity".to_string(),
-        })
+    // Determine interpretation based on score
+    let (interpretation, advice) = if display_score >= 70.0 {
+        ("Excellent diversity - distant plant relatives reduce pest/pathogen sharing",
+         "Maintain this diversity to minimize disease spread")
+    } else if display_score >= 50.0 {
+        ("Good diversity - moderate phylogenetic distance provides decent pest independence",
+         "Consider adding plants from different families to further increase diversity")
+    } else if display_score >= 30.0 {
+        ("Fair diversity - some related plants may share pests, but not critically clustered",
+         "Consider diversifying with plants from different families")
     } else {
-        MetricFragment::empty()
-    }
+        ("Low diversity - closely related plants may share many pests and pathogens",
+         "Strongly consider adding plants from different families to reduce disease risk")
+    };
+
+    // Always show as benefit with contextual explanation
+    MetricFragment::with_benefit(BenefitCard {
+        benefit_type: "phylogenetic_diversity".to_string(),
+        metric_code: "M1".to_string(),
+        title: "Phylogenetic Diversity".to_string(),
+        message: format!(
+            "Faith's PD: {:.2} ({}th percentile)",
+            m1.faiths_pd,
+            display_score.round() as i32
+        ),
+        detail: format!(
+            "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. {}",
+            interpretation
+        ),
+        evidence: Some(format!(
+            "{}. {}",
+            interpretation,
+            advice
+        )),
+    })
 }
 
 #[cfg(test)]

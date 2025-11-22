@@ -1,33 +1,34 @@
-use crate::explanation::types::{MetricFragment, Severity, WarningCard};
+use crate::explanation::types::{BenefitCard, MetricFragment, Severity, WarningCard};
 use crate::metrics::M2Result;
 
 /// Generate explanation fragment for M2 (Growth Compatibility)
 ///
-/// Detects CSR (Competitive-Stress-Ruderal) strategy conflicts.
-/// High C, S, or R counts indicate potential growth incompatibility.
-pub fn generate_m2_fragment(m2: &M2Result, _display_score: f64) -> MetricFragment {
+/// Measures CSR (Competitive-Stress-Ruderal) strategy compatibility.
+/// Lower conflict scores indicate compatible growth strategies.
+/// Higher conflict scores indicate potential competition or incompatibility.
+pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment {
+    // Build CSR breakdown
+    // Note: Counts represent plants with high values (>75th percentile) in each strategy
+    // Plants can be high in multiple strategies, so counts may not sum to guild size
+    let mut parts = Vec::new();
+    if m2.high_c_count > 0 {
+        parts.push(format!("{} Competitive-dominant", m2.high_c_count));
+    }
+    if m2.high_s_count > 0 {
+        parts.push(format!("{} Stress-tolerant-dominant", m2.high_s_count));
+    }
+    if m2.high_r_count > 0 {
+        parts.push(format!("{} Ruderal-dominant", m2.high_r_count));
+    }
+
+    let breakdown = if parts.is_empty() {
+        "Mixed strategies with no dominant types".to_string()
+    } else {
+        format!("{} (high CSR values: >75th percentile)", parts.join(", "))
+    };
+
     if m2.total_conflicts > 0.0 {
-        // Build detail message with CSR breakdown
-        // Note: Counts represent plants with high values (>75th percentile) in each strategy
-        // Plants can be high in multiple strategies, so counts may not sum to guild size
-        let mut parts = Vec::new();
-        if m2.high_c_count > 0 {
-            parts.push(format!("{} Competitive-dominant", m2.high_c_count));
-        }
-        if m2.high_s_count > 0 {
-            parts.push(format!("{} Stress-tolerant-dominant", m2.high_s_count));
-        }
-        if m2.high_r_count > 0 {
-            parts.push(format!("{} Ruderal-dominant", m2.high_r_count));
-        }
-
-        let breakdown = if parts.is_empty() {
-            "Mixed strategies (no dominant types)".to_string()
-        } else {
-            format!("{} (high CSR values: >75th percentile)", parts.join(", "))
-        };
-
-        // Severity based on conflict magnitude
+        // Show as warning when conflicts exist
         let severity = if m2.total_conflicts > 2.0 {
             Severity::High
         } else if m2.total_conflicts > 1.0 {
@@ -41,17 +42,35 @@ pub fn generate_m2_fragment(m2: &M2Result, _display_score: f64) -> MetricFragmen
             severity,
             icon: "⚠️".to_string(),
             message: format!(
-                "{:.1} CSR strategy conflicts detected",
-                m2.total_conflicts
+                "{:.1} CSR strategy conflicts detected ({}th percentile compatibility)",
+                m2.total_conflicts,
+                display_score.round() as i32
             ),
             detail: format!(
-                "Growth strategy incompatibility: {}",
+                "Growth strategy incompatibility: {}. CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.",
                 breakdown
             ),
             advice: "Consider mixing growth strategies more evenly, or group plants with similar strategies together".to_string(),
         })
     } else {
-        MetricFragment::empty()
+        // Show as benefit when no conflicts
+        MetricFragment::with_benefit(BenefitCard {
+            benefit_type: "csr_compatibility".to_string(),
+            metric_code: "M2".to_string(),
+            title: "Compatible Growth Strategies".to_string(),
+            message: format!(
+                "No CSR strategy conflicts ({}th percentile compatibility)",
+                display_score.round() as i32
+            ),
+            detail: format!(
+                "Plants have compatible growth strategies: {}. CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.",
+                breakdown
+            ),
+            evidence: Some(format!(
+                "Compatibility score: {:.1}/100. Compatible growth strategies allow plants to coexist with minimal competition.",
+                display_score
+            )),
+        })
     }
 }
 

@@ -3,33 +3,44 @@ use crate::metrics::M7Result;
 
 /// Generate explanation fragment for M7 (Pollinator Support)
 ///
-/// High scores indicate plants that share pollinators, supporting
-/// robust pollinator populations and ensuring reliable pollination.
+/// Measures shared pollinator communities between plants.
+/// Higher scores indicate more overlapping pollinator species.
+/// Lower scores indicate fewer documented shared pollinators.
 pub fn generate_m7_fragment(m7: &M7Result, display_score: f64) -> MetricFragment {
-    if display_score > 30.0 {
-        let species_text = if m7.n_shared_pollinators == 1 {
-            "species".to_string()
-        } else {
-            "species".to_string()
-        };
-
-        MetricFragment::with_benefit(BenefitCard {
-            benefit_type: "pollinator_support".to_string(),
-            metric_code: "M7".to_string(),
-            title: "Robust Pollinator Support".to_string(),
-            message: format!(
-                "{} shared pollinator {}",
-                m7.n_shared_pollinators, species_text
-            ),
-            detail: "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.".to_string(),
-            evidence: Some(format!(
-                "Pollinator support score: {:.1}/100",
-                display_score
-            )),
-        })
+    let species_text = if m7.n_shared_pollinators == 1 {
+        "species".to_string()
     } else {
-        MetricFragment::empty()
-    }
+        "species".to_string()
+    };
+
+    let interpretation = if display_score >= 80.0 {
+        "Excellent pollinator support - abundant shared pollinators ensure reliable pollination"
+    } else if display_score >= 60.0 {
+        "Good pollinator support - meaningful pollinator overlap promotes diversity"
+    } else if display_score >= 40.0 {
+        "Moderate pollinator support - some shared pollinators present but overlap may be limited"
+    } else {
+        "Limited pollinator support - few documented shared pollinators, plants may rely on different visitors"
+    };
+
+    MetricFragment::with_benefit(BenefitCard {
+        benefit_type: "pollinator_support".to_string(),
+        metric_code: "M7".to_string(),
+        title: "Pollinator Support".to_string(),
+        message: format!(
+            "{} shared pollinator {} ({}th percentile)",
+            m7.n_shared_pollinators, species_text,
+            display_score.round() as i32
+        ),
+        detail: format!(
+            "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. {}",
+            interpretation
+        ),
+        evidence: Some(format!(
+            "Pollinator support score: {:.1}/100. Higher scores indicate more shared pollinator species.",
+            display_score
+        )),
+    })
 }
 
 #[cfg(test)]

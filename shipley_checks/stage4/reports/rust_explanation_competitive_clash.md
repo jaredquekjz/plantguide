@@ -10,12 +10,12 @@ Overall guild compatibility: 55.3/100
 
 ## Benefits
 
-### High Phylogenetic Diversity [M1 - 70.3/100]
+### Phylogenetic Diversity [M1 - 70.3/100]
 
-Plants are distantly related (Faith's PD: 885.18)  
-Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.  
+Faith's PD: 885.18 (70th percentile)  
+Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Excellent diversity - distant plant relatives reduce pest/pathogen sharing  
 
-*Evidence:* Phylogenetic diversity score: 70.3/100
+*Evidence:* Excellent diversity - distant plant relatives reduce pest/pathogen sharing. Maintain this diversity to minimize disease spread
 
 #### Pest Vulnerability Profile
 
@@ -50,10 +50,10 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-Guild provides natural insect pest control  
-Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  
+100th percentile biocontrol capacity  
+Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
-*Evidence:* Biocontrol score: 100.0/100
+*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -71,10 +71,10 @@ The biocontrol score is driven by the presence of **general entomopathogenic fun
 
 ### Natural Disease Suppression [M4 - 100.0/100]
 
-Guild provides disease suppression via 9 antagonistic fungal mechanisms  
-Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
+100th percentile pathogen control via 9 antagonistic mechanisms  
+Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
-*Evidence:* Pathogen control score: 100.0/100, covering 9 mechanisms
+*Evidence:* Pathogen control score: 100.0/100, covering 9 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -110,10 +110,10 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-279 shared beneficial fungal species connect 4 plants  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+279 shared beneficial fungal species connect 4 plants (100th percentile)  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
-*Evidence:* Network score: 100.0/100, coverage: 57.1%
+*Evidence:* Network score: 100.0/100, coverage: 57.1%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -159,11 +159,88 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
+### Structural Diversity [M6 - 17.0/100]
+
+3 growth forms spanning 14.1m height range (17th percentile)  
+**Vertical Stratification (Quality: 0.12 - Poor):**
+
+**Understory (5-15m):**
+  - Alnus acuminata (Andean Alder): 14.2m, EIVE-L: 7.1 (flexible)
+  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)
+  - Erythrina sandwicensis (Hawaiian Coral Tree): 9.1m, EIVE-L: 7.1 (flexible)
+  - Cheirodendron trigynum (Common Cheirodendron): 8.3m, EIVE-L: 6.4 (flexible)
+  - Virola bicuhyba: 8.0m, EIVE-L: 4.9 (flexible)
+
+**Ground Layer (<1m):**
+  - Allium schoenoprasum (Chives): 0.3m, EIVE-L: 7.5 (sun-loving ⚠)
+  - Pfaffia gnaphalioides: 0.1m, EIVE-L: 8.0 (sun-loving ⚠)
+
+**Why this stratification has issues:**
+5 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 2 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
+
+*Evidence:* Structural diversity score: 17.0/100, stratification quality: 0.12
+
+Limited structural diversity - few layers or growth forms, less efficient space use  
+
+*Evidence:* Structural diversity score: 17.0/100. Higher scores indicate more growth forms and better vertical stratification.
+
+### Pollinator Support [M7 - 0.0/100]
+
+20 shared pollinator species (0th percentile)  
+Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
+
+*Evidence:* Pollinator support score: 0.0/100. Higher scores indicate more shared pollinator species.
+
+#### Pollinator Network Profile
+
+*Qualitative information about pollinator networks (100% of M7 scoring)*
+
+**Total unique pollinator species:** 20
+
+**Pollinator Community Composition:**
+
+- 1 Honey Bees - 5.0%
+- 14 Bumblebees - 70.0%
+- 2 Solitary Bees - 10.0%
+- 1 Birds - 5.0%
+- 2 Other - 10.0%
+
+**No shared pollinators detected** - Each pollinator visits only one plant species in this guild.
+
+**Top Network Pollinators (by connectivity):**
+
+| Rank | Pollinator Species | Category | Plants Connected | Network Contribution |
+|------|-------------------|----------|------------------|----------------------|
+| 1 | Apis mellifera | Honey Bees | 1 plant | 14.3% |
+| 2 | Apoidea | Other Pollinators | 1 plant | 14.3% |
+| 3 | Aves | Birds | 1 plant | 14.3% |
+| 4 | Bombus californicus | Bumblebees | 1 plant | 14.3% |
+| 5 | Bombus flavifrons | Bumblebees | 1 plant | 14.3% |
+| 6 | Bombus hypnorum | Bumblebees | 1 plant | 14.3% |
+| 7 | Bombus jonellus | Bumblebees | 1 plant | 14.3% |
+| 8 | Bombus lapidarius | Bumblebees | 1 plant | 14.3% |
+| 9 | Bombus lucorum | Bumblebees | 1 plant | 14.3% |
+| 10 | Bombus melanopygus | Bumblebees | 1 plant | 14.3% |
+
+**Network Hubs (most connected plants):**
+
+| Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
+|-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
+| Allium schoenoprasum (Chives) | 17 | 1 | 14 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Cheirodendron trigynum (Common Cheirodendron) | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 1 |
+| Vitis vinifera (Common Grape) | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Erythrina sandwicensis (Hawaiian Coral Tree) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Virola bicuhyba ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
+
 ## Warnings
 
-⚠️ **14.6 CSR strategy conflicts detected**
+⚠️ **14.6 CSR strategy conflicts detected (0th percentile compatibility)**
 
-Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile)  
+Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**

@@ -13,44 +13,52 @@
   },
   "benefits": [
     {
+      "benefit_type": "phylogenetic_diversity",
+      "metric_code": "M1",
+      "title": "Phylogenetic Diversity",
+      "message": "Faith's PD: 804.28 (40th percentile)",
+      "detail": "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Fair diversity - some related plants may share pests, but not critically clustered",
+      "evidence": "Fair diversity - some related plants may share pests, but not critically clustered. Consider diversifying with plants from different families"
+    },
+    {
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "Guild provides natural insect pest control",
-      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
-      "evidence": "Biocontrol score: 100.0/100"
+      "message": "100th percentile biocontrol capacity",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
+      "evidence": "Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships."
     },
     {
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "Guild provides disease suppression via 47 antagonistic fungal mechanisms",
-      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 97.7/100, covering 47 mechanisms"
+      "message": "98th percentile pathogen control via 47 antagonistic mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
+      "evidence": "Pathogen control score: 97.7/100, covering 47 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships."
     },
     {
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "512 shared beneficial fungal species connect 7 plants",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
-      "evidence": "Network score: 100.0/100, coverage: 100.0%"
+      "message": "512 shared beneficial fungal species connect 7 plants (100th percentile)",
+      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
+      "evidence": "Network score: 100.0/100, coverage: 100.0%. Higher scores indicate more shared fungal species."
     },
     {
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
-      "title": "High Structural Diversity",
-      "message": "5 growth forms spanning 27.0m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
-      "evidence": null
+      "title": "Structural Diversity",
+      "message": "5 growth forms spanning 27.0m height range (100th percentile)",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00\n\nExcellent structural diversity - multiple layers maximize space and light use",
+      "evidence": "Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification."
     },
     {
       "benefit_type": "pollinator_support",
       "metric_code": "M7",
-      "title": "Robust Pollinator Support",
-      "message": "309 shared pollinator species",
-      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.",
-      "evidence": "Pollinator support score: 100.0/100"
+      "title": "Pollinator Support",
+      "message": "309 shared pollinator species (100th percentile)",
+      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination",
+      "evidence": "Pollinator support score: 100.0/100. Higher scores indicate more shared pollinator species."
     }
   ],
   "warnings": [
@@ -58,8 +66,8 @@
       "warning_type": "csr_conflict",
       "severity": "Low",
       "icon": "⚠️",
-      "message": "0.9 CSR strategy conflicts detected",
-      "detail": "Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile)",
+      "message": "0.9 CSR strategy conflicts detected (50th percentile compatibility)",
+      "detail": "Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.",
       "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
     },
     {

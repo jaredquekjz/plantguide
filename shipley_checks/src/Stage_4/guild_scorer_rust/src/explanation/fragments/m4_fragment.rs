@@ -3,33 +3,45 @@ use crate::metrics::M4Result;
 
 /// Generate explanation fragment for M4 (Disease Suppression)
 ///
-/// High scores indicate plants with antagonistic fungi that suppress pathogens.
-/// Multiple mechanisms provide robust disease control.
+/// Measures disease suppression via antagonistic fungi and fungivores.
+/// Higher scores indicate more beneficial organisms that suppress pathogens.
+/// Lower scores indicate fewer documented disease control mechanisms.
 pub fn generate_m4_fragment(m4: &M4Result, display_score: f64) -> MetricFragment {
-    if display_score > 50.0 {
-        let mechanism_text = if m4.n_mechanisms == 1 {
-            "mechanism".to_string()
-        } else {
-            "mechanisms".to_string()
-        };
-
-        MetricFragment::with_benefit(BenefitCard {
-            benefit_type: "disease_control".to_string(),
-            metric_code: "M4".to_string(),
-            title: "Natural Disease Suppression".to_string(),
-            message: format!(
-                "Guild provides disease suppression via {} antagonistic fungal {}",
-                m4.n_mechanisms, mechanism_text
-            ),
-            detail: "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.".to_string(),
-            evidence: Some(format!(
-                "Pathogen control score: {:.1}/100, covering {} mechanisms",
-                display_score, m4.n_mechanisms
-            )),
-        })
+    let mechanism_text = if m4.n_mechanisms == 1 {
+        "mechanism".to_string()
     } else {
-        MetricFragment::empty()
-    }
+        "mechanisms".to_string()
+    };
+
+    let interpretation = if display_score >= 80.0 {
+        "Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control"
+    } else if display_score >= 60.0 {
+        "Good disease suppression - beneficial fungi provide meaningful pathogen control"
+    } else if display_score >= 40.0 {
+        "Moderate disease suppression - some antagonistic mechanisms present but coverage may be limited"
+    } else {
+        "Limited disease suppression - few documented mycoparasites/fungivores, may need supplemental disease management"
+    };
+
+    MetricFragment::with_benefit(BenefitCard {
+        benefit_type: "disease_control".to_string(),
+        metric_code: "M4".to_string(),
+        title: "Natural Disease Suppression".to_string(),
+        message: format!(
+            "{}th percentile pathogen control via {} antagonistic {}",
+            display_score.round() as i32,
+            m4.n_mechanisms,
+            mechanism_text
+        ),
+        detail: format!(
+            "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. {}",
+            interpretation
+        ),
+        evidence: Some(format!(
+            "Pathogen control score: {:.1}/100, covering {} {}. Higher scores indicate more documented mycoparasite-pathogen relationships.",
+            display_score, m4.n_mechanisms, mechanism_text
+        )),
+    })
 }
 
 #[cfg(test)]

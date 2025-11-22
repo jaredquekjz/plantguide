@@ -10,12 +10,65 @@ Overall guild compatibility: 82.4/100
 
 ## Benefits
 
+### Phylogenetic Diversity [M1 - 9.5/100]
+
+Faith's PD: 704.52 (9th percentile)  
+Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Low diversity - closely related plants may share many pests and pathogens  
+
+*Evidence:* Low diversity - closely related plants may share many pests and pathogens. Strongly consider adding plants from different families to reduce disease risk
+
+#### Pest Vulnerability Profile
+
+*Qualitative information about herbivore pests (not used in scoring)*
+
+**Total unique herbivore species:** 194
+
+**Shared Pests (Generalists)**
+
+These pests attack multiple plants in the guild:
+
+1. **Hyalophora cecropia**: attacks 4 plant(s) (Acer saccharinum, Crataegus monogyna, Prunus spinosa, Sambucus nigra)
+2. **Eriogaster lanestris**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Rosa canina)
+3. **Euproctis chrysorrhoea**: attacks 3 plant(s) (Acer saccharinum, Prunus spinosa, Sambucus nigra)
+4. **Hemerobiidae**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Sambucus nigra)
+5. **Nabidae**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Sambucus nigra)
+6. **Operophtera brumata**: attacks 3 plant(s) (Acer saccharinum, Crataegus monogyna, Prunus spinosa)
+7. **Acronicta psi**: attacks 2 plant(s) (Prunus spinosa, Quercus robur)
+8. **Coleophora anatipennella**: attacks 2 plant(s) (Crataegus monogyna, Prunus spinosa)
+9. **Eacles imperialis**: attacks 2 plant(s) (Acer saccharinum, Sambucus nigra)
+10. **Gastropacha quercifolia**: attacks 2 plant(s) (Crataegus monogyna, Prunus spinosa)
+
+**Top 10 Herbivore Pests**
+
+| Rank | Pest Species | Herbivore Category | Plants Attacked |
+|------|--------------|-------------------|------------------|
+| 1 | Hyalophora cecropia | Moths | 4 plants |
+| 2 | Eriogaster lanestris | Moths | Crataegus monogyna, Prunus spinosa, Rosa canina |
+| 3 | Euproctis chrysorrhoea | Moths | Acer saccharinum, Prunus spinosa, Sambucus nigra |
+| 4 | Hemerobiidae | Other Herbivores | Crataegus monogyna, Prunus spinosa, Sambucus nigra |
+| 5 | Nabidae | Other Herbivores | Crataegus monogyna, Prunus spinosa, Sambucus nigra |
+| 6 | Operophtera brumata | Moths | Acer saccharinum, Crataegus monogyna, Prunus spinosa |
+| 7 | Acronicta psi | Moths | Prunus spinosa, Quercus robur |
+| 8 | Coleophora anatipennella | Moths | Crataegus monogyna, Prunus spinosa |
+| 9 | Eacles imperialis | Moths | Acer saccharinum, Sambucus nigra |
+| 10 | Gastropacha quercifolia | Moths | Crataegus monogyna, Prunus spinosa |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Prunus spinosa | 81 |
+| Acer saccharinum | 55 |
+| Crataegus monogyna | 29 |
+| Quercus robur | 25 |
+| Sambucus nigra | 16 |
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-Guild provides natural insect pest control  
-Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  
+100th percentile biocontrol capacity  
+Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
-*Evidence:* Biocontrol score: 100.0/100
+*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -45,10 +98,10 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ### Natural Disease Suppression [M4 - 97.3/100]
 
-Guild provides disease suppression via 32 antagonistic fungal mechanisms  
-Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
+97th percentile pathogen control via 32 antagonistic mechanisms  
+Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
-*Evidence:* Pathogen control score: 97.3/100, covering 32 mechanisms
+*Evidence:* Pathogen control score: 97.3/100, covering 32 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -91,10 +144,10 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-385 shared beneficial fungal species connect 7 plants  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+385 shared beneficial fungal species connect 7 plants (100th percentile)  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
-*Evidence:* Network score: 100.0/100, coverage: 100.0%
+*Evidence:* Network score: 100.0/100, coverage: 100.0%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -138,9 +191,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Fragaria vesca (Alpine Strawberry) | 38 | 7 | 0 | 7 | 24 |
 | Quercus robur (Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
 
-### High Structural Diversity [M6 - 100.0/100]
+### Structural Diversity [M6 - 100.0/100]
 
-4 growth forms spanning 33.6m height range  
+4 growth forms spanning 33.6m height range (100th percentile)  
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
@@ -159,14 +212,18 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification works well:**
 7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
-*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
+*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
 
-### Robust Pollinator Support [M7 - 100.0/100]
+Excellent structural diversity - multiple layers maximize space and light use  
 
-240 shared pollinator species  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.  
+*Evidence:* Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
-*Evidence:* Pollinator support score: 100.0/100
+### Pollinator Support [M7 - 100.0/100]
+
+240 shared pollinator species (100th percentile)  
+Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
+
+*Evidence:* Pollinator support score: 100.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 
@@ -220,9 +277,9 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 ## Warnings
 
-⚠️ **0.3 CSR strategy conflicts detected**
+⚠️ **0.3 CSR strategy conflicts detected (70th percentile compatibility)**
 
-Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th percentile)  
+Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚡ **Soil pH incompatibility detected**
@@ -238,14 +295,6 @@ Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
 Rosa canina (Canker Rose): Neutral (pH 6-7)
 Sambucus nigra (Black Elderberry): Neutral (pH 6-7)  
 *Advice:* Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.
-
-## Risks
-
-🦠 **Closely Related Plants**
-
-Guild contains closely related plants that may share pests  
-Low phylogenetic diversity (Faith's PD: 704.52) increases pest/pathogen risk  
-*Advice:* Consider adding plants from different families to increase diversity
 
 ## Metrics Breakdown
 

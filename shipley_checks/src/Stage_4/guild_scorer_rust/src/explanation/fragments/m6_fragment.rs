@@ -3,10 +3,21 @@ use crate::metrics::M6Result;
 
 /// Generate explanation fragment for M6 (Structural Diversity)
 ///
-/// High scores indicate diverse growth forms and vertical stratification.
-/// Multiple canopy layers maximize space use and light capture.
+/// Measures vertical layering and growth form diversity.
+/// Higher scores indicate better space utilization through stratification.
+/// Lower scores indicate less vertical diversity or fewer growth forms.
 pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment {
-    if display_score > 50.0 {
+    let interpretation = if display_score >= 80.0 {
+        "Excellent structural diversity - multiple layers maximize space and light use"
+    } else if display_score >= 60.0 {
+        "Good structural diversity - meaningful vertical layering supports diverse niches"
+    } else if display_score >= 40.0 {
+        "Moderate structural diversity - some layering present but coverage may be limited"
+    } else {
+        "Limited structural diversity - few layers or growth forms, less efficient space use"
+    };
+
+    // Always show structural diversity (even for low scores)
         let forms_text = if m6.n_forms == 1 {
             "form".to_string()
         } else {
@@ -140,17 +151,18 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
         MetricFragment::with_benefit(BenefitCard {
             benefit_type: "structural_diversity".to_string(),
             metric_code: "M6".to_string(),
-            title: "High Structural Diversity".to_string(),
+            title: "Structural Diversity".to_string(),
             message: format!(
-                "{} growth {} spanning {:.1}m height range",
-                m6.n_forms, forms_text, m6.height_range
+                "{} growth {} spanning {:.1}m height range ({}th percentile)",
+                m6.n_forms, forms_text, m6.height_range,
+                display_score.round() as i32
             ),
-            detail,
-            evidence: None,  // Evidence already included in detail text above
+            detail: format!("{}\n\n{}", detail, interpretation),
+            evidence: Some(format!(
+                "Structural diversity score: {:.1}/100. Higher scores indicate more growth forms and better vertical stratification.",
+                display_score
+            )),
         })
-    } else {
-        MetricFragment::empty()
-    }
 }
 
 #[cfg(test)]

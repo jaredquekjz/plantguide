@@ -10,12 +10,12 @@ Overall guild compatibility: 92.5/100
 
 ## Benefits
 
-### High Phylogenetic Diversity [M1 - 57.4/100]
+### Phylogenetic Diversity [M1 - 57.4/100]
 
-Plants are distantly related (Faith's PD: 844.68)  
-Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.  
+Faith's PD: 844.68 (57th percentile)  
+Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Good diversity - moderate phylogenetic distance provides decent pest independence  
 
-*Evidence:* Phylogenetic diversity score: 57.4/100
+*Evidence:* Good diversity - moderate phylogenetic distance provides decent pest independence. Consider adding plants from different families to further increase diversity
 
 #### Pest Vulnerability Profile
 
@@ -50,12 +50,19 @@ Distant relatives typically share fewer pests and pathogens, reducing disease sp
 | Deutzia scabra | 2 |
 | Mercurialis perennis | 2 |
 
+### Compatible Growth Strategies [M2 - 100.0/100]
+
+No CSR strategy conflicts (100th percentile compatibility)  
+Plants have compatible growth strategies: 1 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.  
+
+*Evidence:* Compatibility score: 100.0/100. Compatible growth strategies allow plants to coexist with minimal competition.
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-Guild provides natural insect pest control  
-Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  
+100th percentile biocontrol capacity  
+Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
-*Evidence:* Biocontrol score: 100.0/100
+*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -87,10 +94,10 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ### Natural Disease Suppression [M4 - 95.1/100]
 
-Guild provides disease suppression via 6 antagonistic fungal mechanisms  
-Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
+95th percentile pathogen control via 6 antagonistic mechanisms  
+Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
-*Evidence:* Pathogen control score: 95.1/100, covering 6 mechanisms
+*Evidence:* Pathogen control score: 95.1/100, covering 6 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -121,10 +128,10 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-147 shared beneficial fungal species connect 5 plants  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+147 shared beneficial fungal species connect 5 plants (100th percentile)  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
-*Evidence:* Network score: 100.0/100, coverage: 71.4%
+*Evidence:* Network score: 100.0/100, coverage: 71.4%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -170,9 +177,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### High Structural Diversity [M6 - 100.0/100]
+### Structural Diversity [M6 - 100.0/100]
 
-4 growth forms spanning 22.8m height range  
+4 growth forms spanning 22.8m height range (100th percentile)  
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
@@ -193,14 +200,18 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification works well:**
 1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
-*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
+*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
 
-### Robust Pollinator Support [M7 - 95.0/100]
+Excellent structural diversity - multiple layers maximize space and light use  
 
-84 shared pollinator species  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.  
+*Evidence:* Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
-*Evidence:* Pollinator support score: 95.0/100
+### Pollinator Support [M7 - 95.0/100]
+
+84 shared pollinator species (95th percentile)  
+Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
+
+*Evidence:* Pollinator support score: 95.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 

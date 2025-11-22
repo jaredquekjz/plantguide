@@ -3,24 +3,37 @@ use crate::metrics::M3Result;
 
 /// Generate explanation fragment for M3 (Insect Pest Control)
 ///
-/// High scores indicate plants with beneficial insect predators and parasitoids.
-/// Multiple biocontrol mechanisms provide robust pest suppression.
+/// Measures natural biocontrol via predators and parasitoids.
+/// Higher scores indicate more beneficial insects that suppress pests.
+/// Lower scores indicate fewer documented biocontrol agents.
 pub fn generate_m3_fragment(m3: &M3Result, display_score: f64) -> MetricFragment {
-    if display_score > 50.0 {
-        MetricFragment::with_benefit(BenefitCard {
-            benefit_type: "insect_control".to_string(),
-            metric_code: "M3".to_string(),
-            title: "Natural Insect Pest Control".to_string(),
-            message: "Guild provides natural insect pest control".to_string(),
-            detail: "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.".to_string(),
-            evidence: Some(format!(
-                "Biocontrol score: {:.1}/100",
-                display_score
-            )),
-        })
+    let interpretation = if display_score >= 80.0 {
+        "Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression"
+    } else if display_score >= 60.0 {
+        "Good biocontrol - beneficial insects provide meaningful pest suppression"
+    } else if display_score >= 40.0 {
+        "Moderate biocontrol - some beneficial insects present but coverage may be limited"
     } else {
-        MetricFragment::empty()
-    }
+        "Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management"
+    };
+
+    MetricFragment::with_benefit(BenefitCard {
+        benefit_type: "insect_control".to_string(),
+        metric_code: "M3".to_string(),
+        title: "Natural Insect Pest Control".to_string(),
+        message: format!(
+            "{}th percentile biocontrol capacity",
+            display_score.round() as i32
+        ),
+        detail: format!(
+            "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. {}",
+            interpretation
+        ),
+        evidence: Some(format!(
+            "Biocontrol score: {:.1}/100. Higher scores indicate more documented predator-pest relationships.",
+            display_score
+        )),
+    })
 }
 
 #[cfg(test)]

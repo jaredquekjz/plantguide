@@ -15,50 +15,58 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "High Phylogenetic Diversity",
-      "message": "Plants are distantly related (Faith's PD: 844.68)",
-      "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
-      "evidence": "Phylogenetic diversity score: 57.4/100"
+      "title": "Phylogenetic Diversity",
+      "message": "Faith's PD: 844.68 (57th percentile)",
+      "detail": "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Good diversity - moderate phylogenetic distance provides decent pest independence",
+      "evidence": "Good diversity - moderate phylogenetic distance provides decent pest independence. Consider adding plants from different families to further increase diversity"
+    },
+    {
+      "benefit_type": "csr_compatibility",
+      "metric_code": "M2",
+      "title": "Compatible Growth Strategies",
+      "message": "No CSR strategy conflicts (100th percentile compatibility)",
+      "detail": "Plants have compatible growth strategies: 1 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.",
+      "evidence": "Compatibility score: 100.0/100. Compatible growth strategies allow plants to coexist with minimal competition."
     },
     {
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "Guild provides natural insect pest control",
-      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
-      "evidence": "Biocontrol score: 100.0/100"
+      "message": "100th percentile biocontrol capacity",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
+      "evidence": "Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships."
     },
     {
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "Guild provides disease suppression via 6 antagonistic fungal mechanisms",
-      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 95.1/100, covering 6 mechanisms"
+      "message": "95th percentile pathogen control via 6 antagonistic mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
+      "evidence": "Pathogen control score: 95.1/100, covering 6 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships."
     },
     {
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "147 shared beneficial fungal species connect 5 plants",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
-      "evidence": "Network score: 100.0/100, coverage: 71.4%"
+      "message": "147 shared beneficial fungal species connect 5 plants (100th percentile)",
+      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
+      "evidence": "Network score: 100.0/100, coverage: 71.4%. Higher scores indicate more shared fungal species."
     },
     {
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
-      "title": "High Structural Diversity",
-      "message": "4 growth forms spanning 22.8m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Pearly Everlasting): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush Lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (False Solomon's Seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
-      "evidence": null
+      "title": "Structural Diversity",
+      "message": "4 growth forms spanning 22.8m height range (100th percentile)",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Pearly Everlasting): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush Lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (False Solomon's Seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00\n\nExcellent structural diversity - multiple layers maximize space and light use",
+      "evidence": "Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification."
     },
     {
       "benefit_type": "pollinator_support",
       "metric_code": "M7",
-      "title": "Robust Pollinator Support",
-      "message": "84 shared pollinator species",
-      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.",
-      "evidence": "Pollinator support score: 95.0/100"
+      "title": "Pollinator Support",
+      "message": "84 shared pollinator species (95th percentile)",
+      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination",
+      "evidence": "Pollinator support score: 95.0/100. Higher scores indicate more shared pollinator species."
     }
   ],
   "warnings": [

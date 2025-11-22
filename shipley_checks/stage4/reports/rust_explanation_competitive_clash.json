@@ -15,34 +15,50 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "High Phylogenetic Diversity",
-      "message": "Plants are distantly related (Faith's PD: 885.18)",
-      "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
-      "evidence": "Phylogenetic diversity score: 70.3/100"
+      "title": "Phylogenetic Diversity",
+      "message": "Faith's PD: 885.18 (70th percentile)",
+      "detail": "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Excellent diversity - distant plant relatives reduce pest/pathogen sharing",
+      "evidence": "Excellent diversity - distant plant relatives reduce pest/pathogen sharing. Maintain this diversity to minimize disease spread"
     },
     {
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "Guild provides natural insect pest control",
-      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.",
-      "evidence": "Biocontrol score: 100.0/100"
+      "message": "100th percentile biocontrol capacity",
+      "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
+      "evidence": "Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships."
     },
     {
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "Guild provides disease suppression via 9 antagonistic fungal mechanisms",
-      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 100.0/100, covering 9 mechanisms"
+      "message": "100th percentile pathogen control via 9 antagonistic mechanisms",
+      "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
+      "evidence": "Pathogen control score: 100.0/100, covering 9 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships."
     },
     {
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "279 shared beneficial fungal species connect 4 plants",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.",
-      "evidence": "Network score: 100.0/100, coverage: 57.1%"
+      "message": "279 shared beneficial fungal species connect 4 plants (100th percentile)",
+      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
+      "evidence": "Network score: 100.0/100, coverage: 57.1%. Higher scores indicate more shared fungal species."
+    },
+    {
+      "benefit_type": "structural_diversity",
+      "metric_code": "M6",
+      "title": "Structural Diversity",
+      "message": "3 growth forms spanning 14.1m height range (17th percentile)",
+      "detail": "**Vertical Stratification (Quality: 0.12 - Poor):**\n\n**Understory (5-15m):**\n  - Alnus acuminata (Andean Alder): 14.2m, EIVE-L: 7.1 (flexible)\n  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)\n  - Erythrina sandwicensis (Hawaiian Coral Tree): 9.1m, EIVE-L: 7.1 (flexible)\n  - Cheirodendron trigynum (Common Cheirodendron): 8.3m, EIVE-L: 6.4 (flexible)\n  - Virola bicuhyba: 8.0m, EIVE-L: 4.9 (flexible)\n\n**Ground Layer (<1m):**\n  - Allium schoenoprasum (Chives): 0.3m, EIVE-L: 7.5 (sun-loving ⚠)\n  - Pfaffia gnaphalioides: 0.1m, EIVE-L: 8.0 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n5 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 2 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\n*Evidence:* Structural diversity score: 17.0/100, stratification quality: 0.12\n\nLimited structural diversity - few layers or growth forms, less efficient space use",
+      "evidence": "Structural diversity score: 17.0/100. Higher scores indicate more growth forms and better vertical stratification."
+    },
+    {
+      "benefit_type": "pollinator_support",
+      "metric_code": "M7",
+      "title": "Pollinator Support",
+      "message": "20 shared pollinator species (0th percentile)",
+      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors",
+      "evidence": "Pollinator support score: 0.0/100. Higher scores indicate more shared pollinator species."
     }
   ],
   "warnings": [
@@ -50,8 +66,8 @@
       "warning_type": "csr_conflict",
       "severity": "High",
       "icon": "⚠️",
-      "message": "14.6 CSR strategy conflicts detected",
-      "detail": "Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile)",
+      "message": "14.6 CSR strategy conflicts detected (0th percentile compatibility)",
+      "detail": "Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.",
       "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
     },
     {

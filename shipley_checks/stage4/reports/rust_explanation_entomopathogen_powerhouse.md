@@ -10,12 +10,65 @@ Overall guild compatibility: 84.0/100
 
 ## Benefits
 
+### Phylogenetic Diversity [M1 - 40.2/100]
+
+Faith's PD: 804.28 (40th percentile)  
+Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Fair diversity - some related plants may share pests, but not critically clustered  
+
+*Evidence:* Fair diversity - some related plants may share pests, but not critically clustered. Consider diversifying with plants from different families
+
+#### Pest Vulnerability Profile
+
+*Qualitative information about herbivore pests (not used in scoring)*
+
+**Total unique herbivore species:** 262
+
+**Shared Pests (Generalists)**
+
+These pests attack multiple plants in the guild:
+
+1. **Acronicta psi**: attacks 2 plant(s) (Prunus spinosa, Quercus robur)
+2. **Coccus hesperidum**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
+3. **Creontiades dilutus**: attacks 2 plant(s) (Dactylis glomerata, Vitis vinifera)
+4. **Eriogaster lanestris**: attacks 2 plant(s) (Prunus spinosa, Rosa canina)
+5. **Eupoecilia ambiguella**: attacks 2 plant(s) (Prunus spinosa, Vitis vinifera)
+6. **Hemiberlesia lataniae**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
+7. **Hyalophora cecropia**: attacks 2 plant(s) (Prunus spinosa, Vitis vinifera)
+8. **Myzus persicae**: attacks 2 plant(s) (Dactylis glomerata, Prunus spinosa)
+9. **Orgyia postica**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
+10. **Tetranychus urticae**: attacks 2 plant(s) (Rosa canina, Vitis vinifera)
+
+**Top 10 Herbivore Pests**
+
+| Rank | Pest Species | Herbivore Category | Plants Attacked |
+|------|--------------|-------------------|------------------|
+| 1 | Acronicta psi | Moths | Prunus spinosa, Quercus robur |
+| 2 | Coccus hesperidum | Scale Insects | Coffea arabica, Vitis vinifera |
+| 3 | Creontiades dilutus | True Bugs | Dactylis glomerata, Vitis vinifera |
+| 4 | Eriogaster lanestris | Moths | Prunus spinosa, Rosa canina |
+| 5 | Eupoecilia ambiguella | Moths | Prunus spinosa, Vitis vinifera |
+| 6 | Hemiberlesia lataniae | Scale Insects | Coffea arabica, Vitis vinifera |
+| 7 | Hyalophora cecropia | Moths | Prunus spinosa, Vitis vinifera |
+| 8 | Myzus persicae | Aphids | Dactylis glomerata, Prunus spinosa |
+| 9 | Orgyia postica | Moths | Coffea arabica, Vitis vinifera |
+| 10 | Tetranychus urticae | Mites | Rosa canina, Vitis vinifera |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Prunus spinosa | 81 |
+| Dactylis glomerata | 74 |
+| Vitis vinifera | 53 |
+| Quercus robur | 25 |
+| Coffea arabica | 23 |
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-Guild provides natural insect pest control  
-Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations.  
+100th percentile biocontrol capacity  
+Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
-*Evidence:* Biocontrol score: 100.0/100
+*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -52,10 +105,10 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ### Natural Disease Suppression [M4 - 97.7/100]
 
-Guild provides disease suppression via 47 antagonistic fungal mechanisms  
-Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
+98th percentile pathogen control via 47 antagonistic mechanisms  
+Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
-*Evidence:* Pathogen control score: 97.7/100, covering 47 mechanisms
+*Evidence:* Pathogen control score: 97.7/100, covering 47 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -100,10 +153,10 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-512 shared beneficial fungal species connect 7 plants  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants.  
+512 shared beneficial fungal species connect 7 plants (100th percentile)  
+Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
-*Evidence:* Network score: 100.0/100, coverage: 100.0%
+*Evidence:* Network score: 100.0/100, coverage: 100.0%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -147,9 +200,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Fragaria vesca (Alpine Strawberry) | 38 | 7 | 0 | 7 | 24 |
 | Quercus robur (Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
 
-### High Structural Diversity [M6 - 100.0/100]
+### Structural Diversity [M6 - 100.0/100]
 
-5 growth forms spanning 27.0m height range  
+5 growth forms spanning 27.0m height range (100th percentile)  
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
@@ -170,14 +223,18 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification works well:**
 7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
-*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
+*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
 
-### Robust Pollinator Support [M7 - 100.0/100]
+Excellent structural diversity - multiple layers maximize space and light use  
 
-309 shared pollinator species  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity.  
+*Evidence:* Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
-*Evidence:* Pollinator support score: 100.0/100
+### Pollinator Support [M7 - 100.0/100]
+
+309 shared pollinator species (100th percentile)  
+Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
+
+*Evidence:* Pollinator support score: 100.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 
@@ -231,9 +288,9 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 ## Warnings
 
-⚠️ **0.9 CSR strategy conflicts detected**
+⚠️ **0.9 CSR strategy conflicts detected (50th percentile compatibility)**
 
-Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile)  
+Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**
