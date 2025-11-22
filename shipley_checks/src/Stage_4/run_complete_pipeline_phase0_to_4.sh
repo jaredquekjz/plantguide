@@ -390,9 +390,9 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
     echo "✓ Test 2 passed: All explanation reports generated"
     echo ""
     echo "Generated reports:"
-    echo "  - shipley_checks/reports/explanations/rust_explanation_forest_garden.{md,json,html}"
-    echo "  - shipley_checks/reports/explanations/rust_explanation_competitive_clash.{md,json,html}"
-    echo "  - shipley_checks/reports/explanations/rust_explanation_stress-tolerant.{md,json,html}"
+    echo "  - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}"
+    echo "  - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}"
+    echo "  - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}"
   else
     echo "✗ Test 2 failed: Explanation generation failed"
   fi
@@ -503,9 +503,9 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
 fi
 if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo "  Phase 6 (Test reports):"
-  echo "    - shipley_checks/reports/explanations/rust_explanation_forest_garden.{md,json,html}"
-  echo "    - shipley_checks/reports/explanations/rust_explanation_competitive_clash.{md,json,html}"
-  echo "    - shipley_checks/reports/explanations/rust_explanation_stress-tolerant.{md,json,html}"
+  echo "    - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}"
+  echo "    - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}"
+  echo "    - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}"
   echo ""
 fi
 echo "================================================================================"

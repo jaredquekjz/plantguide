@@ -17,7 +17,7 @@
 # Usage:
 #   Rscript calculate_csr_bill.R \
 #     --input data/shipley_checks/stage3/bill_enriched_stage3_11711.csv \
-#     --output data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv
+#     --output data/shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv
 #
 # Note: Previous implementation based on commonreed/StrateFy had edge case bugs
 #       affecting ~4% of species. MultiTraits provides validated implementation.

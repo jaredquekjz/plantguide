@@ -126,7 +126,7 @@ fn main() -> anyhow::Result<()> {
 
         // Write outputs
         let safe_name = guild_name.replace(" ", "_").to_lowercase();
-        let output_dir = "shipley_checks/reports/explanations";
+        let output_dir = "shipley_checks/stage4/reports";
 
         fs::write(
             format!("{}/rust_explanation_{}.md", output_dir, safe_name),

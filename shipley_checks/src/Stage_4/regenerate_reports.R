@@ -47,7 +47,7 @@ for (guild_info in guilds) {
   result <- scorer$score_guild(guild_info$ids)
 
   # Export to markdown
-  output_path <- sprintf("shipley_checks/reports/explanations/r_explanation_%s.md",
+  output_path <- sprintf("shipley_checks/stage4/reports/r_explanation_%s.md",
                         guild_info$name)
   export_guild_report_md(result, output_path, guild_info$display_name)
 

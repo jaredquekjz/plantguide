@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-Integrate Köppen distributions and tier assignments into bill_with_csr_ecoservices_11711.csv.
+Integrate Köppen distributions and tier assignments into bill_with_csr_ecoservices_11711_20251122.csv.
 
 Purpose:
-- Merge plant_koppen_distributions_11711.parquet with bill_with_csr_ecoservices_11711.csv
+- Merge plant_koppen_distributions_11711.parquet with bill_with_csr_ecoservices_11711_20251122.csv
 - Add tier assignment columns (boolean flags for each tier)
 - Create final dataset ready for climate-stratified calibration
 
 Input:
   - shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet (Köppen data)
-  - data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv (main dataset)
+  - data/shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv (main dataset)
 
 Output:
   - data/shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet
@@ -24,7 +24,7 @@ from datetime import datetime
 # File paths (absolute paths from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
 KOPPEN_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet"
-MAIN_DATASET = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
+MAIN_DATASET = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
 OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
 
 # Tier structure
@@ -226,7 +226,7 @@ Multi-assignment handling:
   - This is correct behavior (wide-ranging species)
 
 File naming:
-  - Input dataset: bill_with_csr_ecoservices_11711.csv
+  - Input dataset: bill_with_csr_ecoservices_11711_20251122.csv
   - Output dataset: bill_with_csr_ecoservices_koppen_11711.parquet
   - This replaces the old perm2_11680_with_koppen_tiers_20251103.parquet
 """)

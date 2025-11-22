@@ -89,7 +89,7 @@ for (guild in guilds) {
   # Export to markdown (Rust-compatible format)
   markdown_start <- Sys.time()
   safe_name <- tolower(gsub(" ", "_", guild$name))
-  output_dir <- "shipley_checks/reports/explanations"
+  output_dir <- "shipley_checks/stage4/reports"
   output_path <- sprintf("%s/r_explanation_%s.md", output_dir, safe_name)
   export_guild_report_md(result, output_path, guild$name)
   markdown_time <- as.numeric(difftime(Sys.time(), markdown_start, units = "secs")) * 1000

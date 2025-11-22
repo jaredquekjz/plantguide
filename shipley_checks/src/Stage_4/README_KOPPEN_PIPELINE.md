@@ -9,7 +9,7 @@
 
 ## Overview
 
-This pure R pipeline assigns Köppen-Geiger climate zones to the **November 6-7, 2025** occurrence data, which already contains all 11,711 plants from the new `bill_with_csr_ecoservices_11711.csv` dataset.
+This pure R pipeline assigns Köppen-Geiger climate zones to the **November 6-7, 2025** occurrence data, which already contains all 11,711 plants from the new `bill_with_csr_ecoservices_11711_20251122.csv` dataset.
 
 ### Key Facts
 
@@ -115,7 +115,7 @@ env R_LIBS_USER="/home/olier/ellenberg/.Rlib" \
 
 **Input:**
 - `data/stage4/plant_koppen_distributions_11711.parquet`
-- `data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv`
+- `data/shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv`
 
 **Output:** `data/shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet`
 
@@ -363,7 +363,7 @@ data/shipley_checks/src/
 └── README_KOPPEN_PIPELINE.md               # This file
 
 data/shipley_checks/stage3/
-├── bill_with_csr_ecoservices_11711.csv     # Input: Main dataset
+├── bill_with_csr_ecoservices_11711_20251122.csv     # Input: Main dataset
 └── bill_with_csr_ecoservices_koppen_11711.parquet  # Output: Final integrated dataset
 
 data/stage1/

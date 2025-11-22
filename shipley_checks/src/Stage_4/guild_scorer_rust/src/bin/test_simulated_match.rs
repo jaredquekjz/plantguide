@@ -97,9 +97,9 @@ fn main() -> anyhow::Result<()> {
     let md = MarkdownFormatter::format(&explanation);
 
     // 4. Save
-    fs::write("shipley_checks/reports/explanations/simulated_fungi_match.html", html)?;
-    fs::write("shipley_checks/reports/explanations/simulated_fungi_match.md", md)?;
+    fs::write("shipley_checks/stage4/reports/simulated_fungi_match.html", html)?;
+    fs::write("shipley_checks/stage4/reports/simulated_fungi_match.md", md)?;
 
-    println!("Done! Check 'shipley_checks/reports/explanations/simulated_fungi_match.html'");
+    println!("Done! Check 'shipley_checks/stage4/reports/simulated_fungi_match.html'");
     Ok(())
 }

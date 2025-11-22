@@ -1,15 +1,15 @@
 #!/usr/bin/env Rscript
 #
-# Integrate Köppen distributions and tier assignments into bill_with_csr_ecoservices_11711.csv
+# Integrate Köppen distributions and tier assignments into bill_with_csr_ecoservices_11711_20251122.csv
 #
 # Purpose:
-#   - Merge plant_koppen_distributions_11711.parquet with bill_with_csr_ecoservices_11711.csv
+#   - Merge plant_koppen_distributions_11711.parquet with bill_with_csr_ecoservices_11711_20251122.csv
 #   - Add tier assignment columns (boolean flags for each tier)
 #   - Create final dataset ready for climate-stratified calibration
 #
 # Input:
 #   - shipley_checks/stage4/plant_koppen_distributions_11711.parquet (Köppen data)
-#   - shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv (main dataset)
+#   - shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv (main dataset)
 #
 # Output:
 #   - shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet
@@ -31,7 +31,7 @@ cat(rep("=", 80), "\n", sep = "")
 
 # File paths
 KOPPEN_FILE <- "shipley_checks/stage4/plant_koppen_distributions_11711.parquet"
-MAIN_DATASET <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
+MAIN_DATASET <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
 OUTPUT_FILE <- "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet"
 
 # Tier structure

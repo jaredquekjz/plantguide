@@ -6,7 +6,7 @@
 #   Run all three R scripts in sequence to:
 #   1. Assign Köppen zones to occurrence data
 #   2. Aggregate to plant-level distributions
-#   3. Integrate with bill_with_csr_ecoservices_11711.csv
+#   3. Integrate with bill_with_csr_ecoservices_11711_20251122.csv
 #
 # Usage:
 #   bash shipley_checks/src/Stage_4/run_koppen_pipeline_11711.sh

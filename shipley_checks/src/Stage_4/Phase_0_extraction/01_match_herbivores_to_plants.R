@@ -44,7 +44,7 @@ matched_herbivores <- dbGetQuery(con, "
   WITH target_plants AS (
       -- CRITICAL: Only include our 11,711 target plants
       SELECT DISTINCT wfo_taxon_id as plant_wfo_id
-      FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv')
+      FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
   ),
   known_herbivores AS (
       SELECT DISTINCT herbivore_name
@@ -120,7 +120,7 @@ dbExecute(con, sprintf("
     WITH target_plants AS (
         -- CRITICAL: Only include our 11,711 target plants
         SELECT DISTINCT wfo_taxon_id as plant_wfo_id
-        FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv')
+        FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
     ),
     known_herbivores AS (
         SELECT DISTINCT herbivore_name
