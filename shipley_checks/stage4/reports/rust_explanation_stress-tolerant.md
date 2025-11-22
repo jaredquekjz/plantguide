@@ -21,27 +21,25 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 **Total unique herbivore species:** 7
 
-**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.
-
 **Top 10 Herbivore Pests**
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Castiarina parallelipennis | Beetles | Senna artemisioides |
-| 2 | Eurema smilax | Butterflies | Senna artemisioides |
-| 3 | Glycaspis collina | Psyllids | Eucalyptus melanophloia |
-| 4 | Jalmenus daemeli | Butterflies | Eucalyptus melanophloia |
-| 5 | Jalmenus icilius | Butterflies | Senna artemisioides |
-| 6 | Myzus ornatus | Aphids | Senna artemisioides |
-| 7 | Pseudodendrothrips gillespiei | Thrips | Alyxia ruscifolia |
+| 1 | Castiarina parallelipennis | Beetles | Senna artemisioides (Silver Cassia) |
+| 2 | Eurema smilax | Butterflies | Senna artemisioides (Silver Cassia) |
+| 3 | Glycaspis collina | Psyllids | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| 4 | Jalmenus daemeli | Butterflies | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| 5 | Jalmenus icilius | Butterflies | Senna artemisioides (Silver Cassia) |
+| 6 | Myzus ornatus | Aphids | Senna artemisioides (Silver Cassia) |
+| 7 | Pseudodendrothrips gillespiei | Thrips | Alyxia ruscifolia (Chain Fruit) |
 
 **Most Vulnerable Plants**
 
 | Plant | Herbivore Count |
 |-------|------------------|
-| Senna artemisioides | 4 |
-| Eucalyptus melanophloia | 2 |
-| Alyxia ruscifolia | 1 |
+| Senna artemisioides (Silver Cassia) | 4 |
+| Eucalyptus melanophloia (Silver-leaved Ironbark) | 2 |
+| Alyxia ruscifolia (Chain Fruit) | 1 |
 
 ### Compatible Growth Strategies [M2 - 100.0/100]
 

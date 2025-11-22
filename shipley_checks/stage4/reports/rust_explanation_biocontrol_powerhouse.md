@@ -21,45 +21,30 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 
 **Total unique herbivore species:** 194
 
-**Shared Pests (Generalists)**
-
-These pests attack multiple plants in the guild:
-
-1. **Hyalophora cecropia**: attacks 4 plant(s) (Acer saccharinum, Crataegus monogyna, Prunus spinosa, Sambucus nigra)
-2. **Eriogaster lanestris**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Rosa canina)
-3. **Euproctis chrysorrhoea**: attacks 3 plant(s) (Acer saccharinum, Prunus spinosa, Sambucus nigra)
-4. **Hemerobiidae**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Sambucus nigra)
-5. **Nabidae**: attacks 3 plant(s) (Crataegus monogyna, Prunus spinosa, Sambucus nigra)
-6. **Operophtera brumata**: attacks 3 plant(s) (Acer saccharinum, Crataegus monogyna, Prunus spinosa)
-7. **Acronicta psi**: attacks 2 plant(s) (Prunus spinosa, Quercus robur)
-8. **Coleophora anatipennella**: attacks 2 plant(s) (Crataegus monogyna, Prunus spinosa)
-9. **Eacles imperialis**: attacks 2 plant(s) (Acer saccharinum, Sambucus nigra)
-10. **Gastropacha quercifolia**: attacks 2 plant(s) (Crataegus monogyna, Prunus spinosa)
-
 **Top 10 Herbivore Pests**
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
 | 1 | Hyalophora cecropia | Moths | 4 plants |
-| 2 | Eriogaster lanestris | Moths | Crataegus monogyna, Prunus spinosa, Rosa canina |
-| 3 | Euproctis chrysorrhoea | Moths | Acer saccharinum, Prunus spinosa, Sambucus nigra |
-| 4 | Hemerobiidae | Other Herbivores | Crataegus monogyna, Prunus spinosa, Sambucus nigra |
-| 5 | Nabidae | Other Herbivores | Crataegus monogyna, Prunus spinosa, Sambucus nigra |
-| 6 | Operophtera brumata | Moths | Acer saccharinum, Crataegus monogyna, Prunus spinosa |
-| 7 | Acronicta psi | Moths | Prunus spinosa, Quercus robur |
-| 8 | Coleophora anatipennella | Moths | Crataegus monogyna, Prunus spinosa |
-| 9 | Eacles imperialis | Moths | Acer saccharinum, Sambucus nigra |
-| 10 | Gastropacha quercifolia | Moths | Crataegus monogyna, Prunus spinosa |
+| 2 | Eriogaster lanestris | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
+| 3 | Euproctis chrysorrhoea | Moths | Acer saccharinum (River Maple), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
+| 4 | Hemerobiidae | Other Herbivores | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
+| 5 | Nabidae | Other Herbivores | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
+| 6 | Operophtera brumata | Moths | Acer saccharinum (River Maple), Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
+| 7 | Acronicta psi | Moths | Prunus spinosa (Blackthorn), Quercus robur (Acorn Tree) |
+| 8 | Coleophora anatipennella | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
+| 9 | Eacles imperialis | Moths | Acer saccharinum (River Maple), Sambucus nigra (Black Elderberry) |
+| 10 | Gastropacha quercifolia | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
 
 **Most Vulnerable Plants**
 
 | Plant | Herbivore Count |
 |-------|------------------|
-| Prunus spinosa | 81 |
-| Acer saccharinum | 55 |
-| Crataegus monogyna | 29 |
-| Quercus robur | 25 |
-| Sambucus nigra | 16 |
+| Prunus spinosa (Blackthorn) | 81 |
+| Acer saccharinum (River Maple) | 55 |
+| Crataegus monogyna (Common Hawthorn) | 29 |
+| Quercus robur (Acorn Tree) | 25 |
+| Sambucus nigra (Black Elderberry) | 16 |
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 

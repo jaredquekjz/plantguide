@@ -3,23 +3,14 @@ use anyhow::Result;
 use serde::{Serialize, Deserialize};
 use rustc_hash::FxHashMap;
 use crate::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
+use crate::utils::get_display_name;
 
 /// Pest profile for a guild (qualitative information)
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PestProfile {
     pub total_unique_pests: usize,
-    pub shared_pests: Vec<SharedPest>,
     pub top_pests: Vec<TopPest>,
     pub vulnerable_plants: Vec<VulnerablePlant>,
-}
-
-/// Pest that attacks multiple plants (generalist)
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SharedPest {
-    pub pest_name: String,
-    pub category: String,
-    pub plant_count: usize,
-    pub plants: Vec<String>,
 }
 
 /// Top pest by total interactions
@@ -60,13 +51,22 @@ pub fn analyze_guild_pests(
 
     let plant_names = guild_plants.column("wfo_taxon_name")?.str()?;
 
-    // Build pest-to-plants mapping
+    // Try to get vernacular name columns for display formatting
+    let vernacular_en = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
+    let vernacular_zh = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
+
+    // Build pest-to-plants mapping with display names
     let mut pest_to_plants: FxHashMap<String, Vec<String>> = FxHashMap::default();
     let mut plant_pest_counts: FxHashMap<String, usize> = FxHashMap::default();
 
     for idx in 0..guild_plants.height() {
         if let Some(plant_name) = plant_names.get(idx) {
-            let plant_name = plant_name.to_string();
+            let scientific_name = plant_name.to_string();
+
+            // Build display name with vernacular (e.g., "Prunus spinosa (Blackthorn)")
+            let en = vernacular_en.and_then(|col| col.get(idx));
+            let zh = vernacular_zh.and_then(|col| col.get(idx));
+            let display_name = get_display_name(&scientific_name, en, zh);
             let mut herbivores: Vec<String> = Vec::new();
 
             // Try list column format first (Phase 0-4)
@@ -105,13 +105,13 @@ pub fn analyze_guild_pests(
                 continue;
             }
 
-            *plant_pest_counts.entry(plant_name.clone()).or_insert(0) += herbivores.len();
+            *plant_pest_counts.entry(display_name.clone()).or_insert(0) += herbivores.len();
 
             for pest in herbivores {
                 pest_to_plants
                     .entry(pest)
                     .or_insert_with(Vec::new)
-                    .push(plant_name.clone());
+                    .push(display_name.clone());
             }
         }
     }
@@ -128,28 +128,7 @@ pub fn analyze_guild_pests(
 
     let total_unique_pests = pest_to_plants.len();
 
-    // Identify shared pests (2+ plants)
-    let mut shared_pests: Vec<SharedPest> = pest_to_plants
-        .iter()
-        .filter(|(_, plants)| plants.len() >= 2)
-        .map(|(pest, plants)| {
-            let category = OrganismCategory::from_name(pest, organism_categories, Some(OrganismRole::Herbivore));
-            SharedPest {
-                pest_name: pest.clone(),
-                category: category.display_name().to_string(),
-                plant_count: plants.len(),
-                plants: plants.clone(),
-            }
-        })
-        .collect();
-
-    // Sort by plant count (most generalist first), then by name for deterministic ordering
-    shared_pests.sort_by(|a, b| {
-        b.plant_count.cmp(&a.plant_count)
-            .then_with(|| a.pest_name.cmp(&b.pest_name))
-    });
-
-    // Top 10 pests by plant count (even if only 1 plant)
+    // Top 10 pests by plant count
     let mut top_pests: Vec<TopPest> = pest_to_plants
         .iter()
         .map(|(pest, plants)| {
@@ -188,7 +167,6 @@ pub fn analyze_guild_pests(
 
     Ok(Some(PestProfile {
         total_unique_pests,
-        shared_pests,
         top_pests,
         vulnerable_plants,
     }))
@@ -210,7 +188,6 @@ mod tests {
         let profile = analyze_guild_pests(&df, &categories).unwrap().unwrap();
 
         assert_eq!(profile.total_unique_pests, 3);
-        assert_eq!(profile.shared_pests.len(), 2); // Aphid and Beetle
         assert_eq!(profile.top_pests.len(), 3);
 
         // Aphid should be top (2 plants)
@@ -230,7 +207,6 @@ mod tests {
         let profile = analyze_guild_pests(&df, &categories).unwrap().unwrap();
 
         assert_eq!(profile.total_unique_pests, 4);
-        assert_eq!(profile.shared_pests.len(), 0); // No shared pests
         assert_eq!(profile.top_pests.len(), 4);
     }
 

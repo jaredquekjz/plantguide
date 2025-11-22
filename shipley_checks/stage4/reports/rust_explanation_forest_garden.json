@@ -137,14 +137,13 @@
   },
   "pest_profile": {
     "total_unique_pests": 131,
-    "shared_pests": [],
     "top_pests": [
       {
         "pest_name": "Aceria fraxini",
         "category": "Mites",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -152,7 +151,7 @@
         "category": "Mites",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -160,7 +159,7 @@
         "category": "Mites",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -168,7 +167,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -176,7 +175,7 @@
         "category": "Mites",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -184,7 +183,7 @@
         "category": "Mites",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -192,7 +191,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -200,7 +199,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Diospyros kaki"
+          "Diospyros kaki (Japanese Persimmon)"
         ]
       },
       {
@@ -208,7 +207,7 @@
         "category": "Beetles",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       },
       {
@@ -216,29 +215,29 @@
         "category": "Beetles",
         "plant_count": 1,
         "plants": [
-          "Fraxinus excelsior"
+          "Fraxinus excelsior (Ash)"
         ]
       }
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Fraxinus excelsior",
+        "plant_name": "Fraxinus excelsior (Ash)",
         "pest_count": 100
       },
       {
-        "plant_name": "Diospyros kaki",
+        "plant_name": "Diospyros kaki (Japanese Persimmon)",
         "pest_count": 19
       },
       {
-        "plant_name": "Anaphalis margaritacea",
+        "plant_name": "Anaphalis margaritacea (Pearly Everlasting)",
         "pest_count": 8
       },
       {
-        "plant_name": "Deutzia scabra",
+        "plant_name": "Deutzia scabra (Deutzia)",
         "pest_count": 2
       },
       {
-        "plant_name": "Mercurialis perennis",
+        "plant_name": "Mercurialis perennis (Dog's Mercury)",
         "pest_count": 2
       }
     ]

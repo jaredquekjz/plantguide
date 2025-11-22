@@ -21,45 +21,30 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 **Total unique herbivore species:** 262
 
-**Shared Pests (Generalists)**
-
-These pests attack multiple plants in the guild:
-
-1. **Acronicta psi**: attacks 2 plant(s) (Prunus spinosa, Quercus robur)
-2. **Coccus hesperidum**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
-3. **Creontiades dilutus**: attacks 2 plant(s) (Dactylis glomerata, Vitis vinifera)
-4. **Eriogaster lanestris**: attacks 2 plant(s) (Prunus spinosa, Rosa canina)
-5. **Eupoecilia ambiguella**: attacks 2 plant(s) (Prunus spinosa, Vitis vinifera)
-6. **Hemiberlesia lataniae**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
-7. **Hyalophora cecropia**: attacks 2 plant(s) (Prunus spinosa, Vitis vinifera)
-8. **Myzus persicae**: attacks 2 plant(s) (Dactylis glomerata, Prunus spinosa)
-9. **Orgyia postica**: attacks 2 plant(s) (Coffea arabica, Vitis vinifera)
-10. **Tetranychus urticae**: attacks 2 plant(s) (Rosa canina, Vitis vinifera)
-
 **Top 10 Herbivore Pests**
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Acronicta psi | Moths | Prunus spinosa, Quercus robur |
-| 2 | Coccus hesperidum | Scale Insects | Coffea arabica, Vitis vinifera |
-| 3 | Creontiades dilutus | True Bugs | Dactylis glomerata, Vitis vinifera |
-| 4 | Eriogaster lanestris | Moths | Prunus spinosa, Rosa canina |
-| 5 | Eupoecilia ambiguella | Moths | Prunus spinosa, Vitis vinifera |
-| 6 | Hemiberlesia lataniae | Scale Insects | Coffea arabica, Vitis vinifera |
-| 7 | Hyalophora cecropia | Moths | Prunus spinosa, Vitis vinifera |
-| 8 | Myzus persicae | Aphids | Dactylis glomerata, Prunus spinosa |
-| 9 | Orgyia postica | Moths | Coffea arabica, Vitis vinifera |
-| 10 | Tetranychus urticae | Mites | Rosa canina, Vitis vinifera |
+| 1 | Acronicta psi | Moths | Prunus spinosa (Blackthorn), Quercus robur (Acorn Tree) |
+| 2 | Coccus hesperidum | Scale Insects | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+| 3 | Creontiades dilutus | True Bugs | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
+| 4 | Eriogaster lanestris | Moths | Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
+| 5 | Eupoecilia ambiguella | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
+| 6 | Hemiberlesia lataniae | Scale Insects | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+| 7 | Hyalophora cecropia | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
+| 8 | Myzus persicae | Aphids | Dactylis glomerata (Akaroa), Prunus spinosa (Blackthorn) |
+| 9 | Orgyia postica | Moths | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+| 10 | Tetranychus urticae | Mites | Rosa canina (Canker Rose), Vitis vinifera (Common Grape) |
 
 **Most Vulnerable Plants**
 
 | Plant | Herbivore Count |
 |-------|------------------|
-| Prunus spinosa | 81 |
-| Dactylis glomerata | 74 |
-| Vitis vinifera | 53 |
-| Quercus robur | 25 |
-| Coffea arabica | 23 |
+| Prunus spinosa (Blackthorn) | 81 |
+| Dactylis glomerata (Akaroa) | 74 |
+| Vitis vinifera (Common Grape) | 53 |
+| Quercus robur (Acorn Tree) | 25 |
+| Coffea arabica (Arabian Coffee) | 23 |
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 

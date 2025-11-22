@@ -137,214 +137,16 @@
   },
   "pest_profile": {
     "total_unique_pests": 194,
-    "shared_pests": [
-      {
-        "pest_name": "Hyalophora cecropia",
-        "category": "Moths",
-        "plant_count": 4,
-        "plants": [
-          "Acer saccharinum",
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Eriogaster lanestris",
-        "category": "Moths",
-        "plant_count": 3,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Rosa canina"
-        ]
-      },
-      {
-        "pest_name": "Euproctis chrysorrhoea",
-        "category": "Moths",
-        "plant_count": 3,
-        "plants": [
-          "Acer saccharinum",
-          "Prunus spinosa",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Hemerobiidae",
-        "category": "Other Herbivores",
-        "plant_count": 3,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Nabidae",
-        "category": "Other Herbivores",
-        "plant_count": 3,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Operophtera brumata",
-        "category": "Moths",
-        "plant_count": 3,
-        "plants": [
-          "Acer saccharinum",
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Acronicta psi",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa",
-          "Quercus robur"
-        ]
-      },
-      {
-        "pest_name": "Coleophora anatipennella",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Eacles imperialis",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Acer saccharinum",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Gastropacha quercifolia",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Malacosoma neustria",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Nola cucullatella",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Oenopia conglobata",
-        "category": "Beetles",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Orgyia leucostigma",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Acer saccharinum",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Orthosia hibisci",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Acer saccharinum",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Phyllocoptes goniothorax",
-        "category": "Mites",
-        "plant_count": 2,
-        "plants": [
-          "Acer saccharinum",
-          "Crataegus monogyna"
-        ]
-      },
-      {
-        "pest_name": "Scymnus subvillosus",
-        "category": "Beetles",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Stethorus punctillum",
-        "category": "Beetles",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Thyridopteryx ephemeraeformis",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Acer saccharinum",
-          "Sambucus nigra"
-        ]
-      },
-      {
-        "pest_name": "Trichiura crataegi",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Yponomeuta padella",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
-        ]
-      }
-    ],
     "top_pests": [
       {
         "pest_name": "Hyalophora cecropia",
         "category": "Moths",
         "plant_count": 4,
         "plants": [
-          "Acer saccharinum",
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
+          "Acer saccharinum (River Maple)",
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)",
+          "Sambucus nigra (Black Elderberry)"
         ]
       },
       {
@@ -352,9 +154,9 @@
         "category": "Moths",
         "plant_count": 3,
         "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Rosa canina"
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)",
+          "Rosa canina (Canker Rose)"
         ]
       },
       {
@@ -362,9 +164,9 @@
         "category": "Moths",
         "plant_count": 3,
         "plants": [
-          "Acer saccharinum",
-          "Prunus spinosa",
-          "Sambucus nigra"
+          "Acer saccharinum (River Maple)",
+          "Prunus spinosa (Blackthorn)",
+          "Sambucus nigra (Black Elderberry)"
         ]
       },
       {
@@ -372,9 +174,9 @@
         "category": "Other Herbivores",
         "plant_count": 3,
         "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)",
+          "Sambucus nigra (Black Elderberry)"
         ]
       },
       {
@@ -382,9 +184,9 @@
         "category": "Other Herbivores",
         "plant_count": 3,
         "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa",
-          "Sambucus nigra"
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)",
+          "Sambucus nigra (Black Elderberry)"
         ]
       },
       {
@@ -392,9 +194,9 @@
         "category": "Moths",
         "plant_count": 3,
         "plants": [
-          "Acer saccharinum",
-          "Crataegus monogyna",
-          "Prunus spinosa"
+          "Acer saccharinum (River Maple)",
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)"
         ]
       },
       {
@@ -402,8 +204,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa",
-          "Quercus robur"
+          "Prunus spinosa (Blackthorn)",
+          "Quercus robur (Acorn Tree)"
         ]
       },
       {
@@ -411,8 +213,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)"
         ]
       },
       {
@@ -420,8 +222,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Acer saccharinum",
-          "Sambucus nigra"
+          "Acer saccharinum (River Maple)",
+          "Sambucus nigra (Black Elderberry)"
         ]
       },
       {
@@ -429,38 +231,38 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Crataegus monogyna",
-          "Prunus spinosa"
+          "Crataegus monogyna (Common Hawthorn)",
+          "Prunus spinosa (Blackthorn)"
         ]
       }
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Prunus spinosa",
+        "plant_name": "Prunus spinosa (Blackthorn)",
         "pest_count": 81
       },
       {
-        "plant_name": "Acer saccharinum",
+        "plant_name": "Acer saccharinum (River Maple)",
         "pest_count": 55
       },
       {
-        "plant_name": "Crataegus monogyna",
+        "plant_name": "Crataegus monogyna (Common Hawthorn)",
         "pest_count": 29
       },
       {
-        "plant_name": "Quercus robur",
+        "plant_name": "Quercus robur (Acorn Tree)",
         "pest_count": 25
       },
       {
-        "plant_name": "Sambucus nigra",
+        "plant_name": "Sambucus nigra (Black Elderberry)",
         "pest_count": 16
       },
       {
-        "plant_name": "Rosa canina",
+        "plant_name": "Rosa canina (Canker Rose)",
         "pest_count": 9
       },
       {
-        "plant_name": "Fragaria vesca",
+        "plant_name": "Fragaria vesca (Alpine Strawberry)",
         "pest_count": 7
       }
     ]

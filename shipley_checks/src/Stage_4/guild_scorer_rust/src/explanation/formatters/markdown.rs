@@ -146,24 +146,6 @@ impl MarkdownFormatter {
             pest_profile.total_unique_pests
         ));
 
-        // Shared pests (generalists)
-        if !pest_profile.shared_pests.is_empty() {
-            md.push_str("**Shared Pests (Generalists)**\n\n");
-            md.push_str("These pests attack multiple plants in the guild:\n\n");
-            for (i, pest) in pest_profile.shared_pests.iter().enumerate().take(10) {
-                md.push_str(&format!(
-                    "{}. **{}**: attacks {} plant(s) ({})\n",
-                    i + 1,
-                    pest.pest_name,
-                    pest.plant_count,
-                    pest.plants.join(", ")
-                ));
-            }
-            md.push_str("\n");
-        } else {
-            md.push_str("**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.\n\n");
-        }
-
         // Top pests by interaction count
         if !pest_profile.top_pests.is_empty() {
             md.push_str("**Top 10 Herbivore Pests**\n\n");

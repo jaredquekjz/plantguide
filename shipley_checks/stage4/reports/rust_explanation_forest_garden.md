@@ -21,32 +21,30 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 
 **Total unique herbivore species:** 131
 
-**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.
-
 **Top 10 Herbivore Pests**
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Aceria fraxini | Mites | Fraxinus excelsior |
-| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior |
-| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior |
-| 4 | Acronicta rumicis | Moths | Fraxinus excelsior |
-| 5 | Aculus epiphyllus | Mites | Fraxinus excelsior |
-| 6 | Aculus fraxini | Mites | Fraxinus excelsior |
-| 7 | Adela croesella | Moths | Fraxinus excelsior |
-| 8 | Adoxophyes orana | Moths | Diospyros kaki |
-| 9 | Agrilus convexicollis | Beetles | Fraxinus excelsior |
-| 10 | Agrilus planipennis | Beetles | Fraxinus excelsior |
+| 1 | Aceria fraxini | Mites | Fraxinus excelsior (Ash) |
+| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior (Ash) |
+| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior (Ash) |
+| 4 | Acronicta rumicis | Moths | Fraxinus excelsior (Ash) |
+| 5 | Aculus epiphyllus | Mites | Fraxinus excelsior (Ash) |
+| 6 | Aculus fraxini | Mites | Fraxinus excelsior (Ash) |
+| 7 | Adela croesella | Moths | Fraxinus excelsior (Ash) |
+| 8 | Adoxophyes orana | Moths | Diospyros kaki (Japanese Persimmon) |
+| 9 | Agrilus convexicollis | Beetles | Fraxinus excelsior (Ash) |
+| 10 | Agrilus planipennis | Beetles | Fraxinus excelsior (Ash) |
 
 **Most Vulnerable Plants**
 
 | Plant | Herbivore Count |
 |-------|------------------|
-| Fraxinus excelsior | 100 |
-| Diospyros kaki | 19 |
-| Anaphalis margaritacea | 8 |
-| Deutzia scabra | 2 |
-| Mercurialis perennis | 2 |
+| Fraxinus excelsior (Ash) | 100 |
+| Diospyros kaki (Japanese Persimmon) | 19 |
+| Anaphalis margaritacea (Pearly Everlasting) | 8 |
+| Deutzia scabra (Deutzia) | 2 |
+| Mercurialis perennis (Dog's Mercury) | 2 |
 
 ### Compatible Growth Strategies [M2 - 100.0/100]
 

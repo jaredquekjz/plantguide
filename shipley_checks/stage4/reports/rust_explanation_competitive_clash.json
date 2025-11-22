@@ -137,14 +137,13 @@
   },
   "pest_profile": {
     "total_unique_pests": 58,
-    "shared_pests": [],
     "top_pests": [
       {
         "pest_name": "Achatia distincta",
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -152,7 +151,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Allium schoenoprasum"
+          "Allium schoenoprasum (Chives)"
         ]
       },
       {
@@ -160,7 +159,7 @@
         "category": "Plant Bugs",
         "plant_count": 1,
         "plants": [
-          "Alnus acuminata"
+          "Alnus acuminata (Andean Alder)"
         ]
       },
       {
@@ -168,7 +167,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -176,7 +175,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -184,7 +183,7 @@
         "category": "Scale Insects",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -192,7 +191,7 @@
         "category": "Scale Insects",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -200,7 +199,7 @@
         "category": "Aphids",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -208,7 +207,7 @@
         "category": "Moths",
         "plant_count": 1,
         "plants": [
-          "Allium schoenoprasum"
+          "Allium schoenoprasum (Chives)"
         ]
       },
       {
@@ -216,21 +215,21 @@
         "category": "Scale Insects",
         "plant_count": 1,
         "plants": [
-          "Vitis vinifera"
+          "Vitis vinifera (Common Grape)"
         ]
       }
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Vitis vinifera",
+        "plant_name": "Vitis vinifera (Common Grape)",
         "pest_count": 53
       },
       {
-        "plant_name": "Allium schoenoprasum",
+        "plant_name": "Allium schoenoprasum (Chives)",
         "pest_count": 4
       },
       {
-        "plant_name": "Alnus acuminata",
+        "plant_name": "Alnus acuminata (Andean Alder)",
         "pest_count": 1
       }
     ]

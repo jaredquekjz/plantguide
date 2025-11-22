@@ -137,106 +137,14 @@
   },
   "pest_profile": {
     "total_unique_pests": 262,
-    "shared_pests": [
-      {
-        "pest_name": "Acronicta psi",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa",
-          "Quercus robur"
-        ]
-      },
-      {
-        "pest_name": "Coccus hesperidum",
-        "category": "Scale Insects",
-        "plant_count": 2,
-        "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Creontiades dilutus",
-        "category": "True Bugs",
-        "plant_count": 2,
-        "plants": [
-          "Dactylis glomerata",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Eriogaster lanestris",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa",
-          "Rosa canina"
-        ]
-      },
-      {
-        "pest_name": "Eupoecilia ambiguella",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Hemiberlesia lataniae",
-        "category": "Scale Insects",
-        "plant_count": 2,
-        "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Hyalophora cecropia",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Myzus persicae",
-        "category": "Aphids",
-        "plant_count": 2,
-        "plants": [
-          "Dactylis glomerata",
-          "Prunus spinosa"
-        ]
-      },
-      {
-        "pest_name": "Orgyia postica",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
-        ]
-      },
-      {
-        "pest_name": "Tetranychus urticae",
-        "category": "Mites",
-        "plant_count": 2,
-        "plants": [
-          "Rosa canina",
-          "Vitis vinifera"
-        ]
-      }
-    ],
     "top_pests": [
       {
         "pest_name": "Acronicta psi",
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa",
-          "Quercus robur"
+          "Prunus spinosa (Blackthorn)",
+          "Quercus robur (Acorn Tree)"
         ]
       },
       {
@@ -244,8 +152,8 @@
         "category": "Scale Insects",
         "plant_count": 2,
         "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
+          "Coffea arabica (Arabian Coffee)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -253,8 +161,8 @@
         "category": "True Bugs",
         "plant_count": 2,
         "plants": [
-          "Dactylis glomerata",
-          "Vitis vinifera"
+          "Dactylis glomerata (Akaroa)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -262,8 +170,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa",
-          "Rosa canina"
+          "Prunus spinosa (Blackthorn)",
+          "Rosa canina (Canker Rose)"
         ]
       },
       {
@@ -271,8 +179,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa",
-          "Vitis vinifera"
+          "Prunus spinosa (Blackthorn)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -280,8 +188,8 @@
         "category": "Scale Insects",
         "plant_count": 2,
         "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
+          "Coffea arabica (Arabian Coffee)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -289,8 +197,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa",
-          "Vitis vinifera"
+          "Prunus spinosa (Blackthorn)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -298,8 +206,8 @@
         "category": "Aphids",
         "plant_count": 2,
         "plants": [
-          "Dactylis glomerata",
-          "Prunus spinosa"
+          "Dactylis glomerata (Akaroa)",
+          "Prunus spinosa (Blackthorn)"
         ]
       },
       {
@@ -307,8 +215,8 @@
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Coffea arabica",
-          "Vitis vinifera"
+          "Coffea arabica (Arabian Coffee)",
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -316,38 +224,38 @@
         "category": "Mites",
         "plant_count": 2,
         "plants": [
-          "Rosa canina",
-          "Vitis vinifera"
+          "Rosa canina (Canker Rose)",
+          "Vitis vinifera (Common Grape)"
         ]
       }
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Prunus spinosa",
+        "plant_name": "Prunus spinosa (Blackthorn)",
         "pest_count": 81
       },
       {
-        "plant_name": "Dactylis glomerata",
+        "plant_name": "Dactylis glomerata (Akaroa)",
         "pest_count": 74
       },
       {
-        "plant_name": "Vitis vinifera",
+        "plant_name": "Vitis vinifera (Common Grape)",
         "pest_count": 53
       },
       {
-        "plant_name": "Quercus robur",
+        "plant_name": "Quercus robur (Acorn Tree)",
         "pest_count": 25
       },
       {
-        "plant_name": "Coffea arabica",
+        "plant_name": "Coffea arabica (Arabian Coffee)",
         "pest_count": 23
       },
       {
-        "plant_name": "Rosa canina",
+        "plant_name": "Rosa canina (Canker Rose)",
         "pest_count": 9
       },
       {
-        "plant_name": "Fragaria vesca",
+        "plant_name": "Fragaria vesca (Alpine Strawberry)",
         "pest_count": 7
       }
     ]

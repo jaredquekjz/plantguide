@@ -21,30 +21,28 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 
 **Total unique herbivore species:** 58
 
-**No shared pests detected** - Each herbivore attacks only one plant species in this guild, indicating high diversity.
-
 **Top 10 Herbivore Pests**
 
 | Rank | Pest Species | Herbivore Category | Plants Attacked |
 |------|--------------|-------------------|------------------|
-| 1 | Achatia distincta | Moths | Vitis vinifera |
-| 2 | Acrolepiopsis assectella | Moths | Allium schoenoprasum |
-| 3 | Ambastus villosus | Plant Bugs | Alnus acuminata |
-| 4 | Amphipyra pyramidoides | Moths | Vitis vinifera |
-| 5 | Antheraea polyphemus | Moths | Vitis vinifera |
-| 6 | Aonidiella aurantii | Scale Insects | Vitis vinifera |
-| 7 | Aonidiella orientalis | Scale Insects | Vitis vinifera |
-| 8 | Aphis spiraecola | Aphids | Vitis vinifera |
-| 9 | Arctia caja | Moths | Allium schoenoprasum |
-| 10 | Aspidiotus nerii | Scale Insects | Vitis vinifera |
+| 1 | Achatia distincta | Moths | Vitis vinifera (Common Grape) |
+| 2 | Acrolepiopsis assectella | Moths | Allium schoenoprasum (Chives) |
+| 3 | Ambastus villosus | Plant Bugs | Alnus acuminata (Andean Alder) |
+| 4 | Amphipyra pyramidoides | Moths | Vitis vinifera (Common Grape) |
+| 5 | Antheraea polyphemus | Moths | Vitis vinifera (Common Grape) |
+| 6 | Aonidiella aurantii | Scale Insects | Vitis vinifera (Common Grape) |
+| 7 | Aonidiella orientalis | Scale Insects | Vitis vinifera (Common Grape) |
+| 8 | Aphis spiraecola | Aphids | Vitis vinifera (Common Grape) |
+| 9 | Arctia caja | Moths | Allium schoenoprasum (Chives) |
+| 10 | Aspidiotus nerii | Scale Insects | Vitis vinifera (Common Grape) |
 
 **Most Vulnerable Plants**
 
 | Plant | Herbivore Count |
 |-------|------------------|
-| Vitis vinifera | 53 |
-| Allium schoenoprasum | 4 |
-| Alnus acuminata | 1 |
+| Vitis vinifera (Common Grape) | 53 |
+| Allium schoenoprasum (Chives) | 4 |
+| Alnus acuminata (Andean Alder) | 1 |
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 

@@ -137,14 +137,13 @@
   },
   "pest_profile": {
     "total_unique_pests": 7,
-    "shared_pests": [],
     "top_pests": [
       {
         "pest_name": "Castiarina parallelipennis",
         "category": "Beetles",
         "plant_count": 1,
         "plants": [
-          "Senna artemisioides"
+          "Senna artemisioides (Silver Cassia)"
         ]
       },
       {
@@ -152,7 +151,7 @@
         "category": "Butterflies",
         "plant_count": 1,
         "plants": [
-          "Senna artemisioides"
+          "Senna artemisioides (Silver Cassia)"
         ]
       },
       {
@@ -160,7 +159,7 @@
         "category": "Psyllids",
         "plant_count": 1,
         "plants": [
-          "Eucalyptus melanophloia"
+          "Eucalyptus melanophloia (Silver-leaved Ironbark)"
         ]
       },
       {
@@ -168,7 +167,7 @@
         "category": "Butterflies",
         "plant_count": 1,
         "plants": [
-          "Eucalyptus melanophloia"
+          "Eucalyptus melanophloia (Silver-leaved Ironbark)"
         ]
       },
       {
@@ -176,7 +175,7 @@
         "category": "Butterflies",
         "plant_count": 1,
         "plants": [
-          "Senna artemisioides"
+          "Senna artemisioides (Silver Cassia)"
         ]
       },
       {
@@ -184,7 +183,7 @@
         "category": "Aphids",
         "plant_count": 1,
         "plants": [
-          "Senna artemisioides"
+          "Senna artemisioides (Silver Cassia)"
         ]
       },
       {
@@ -192,21 +191,21 @@
         "category": "Thrips",
         "plant_count": 1,
         "plants": [
-          "Alyxia ruscifolia"
+          "Alyxia ruscifolia (Chain Fruit)"
         ]
       }
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Senna artemisioides",
+        "plant_name": "Senna artemisioides (Silver Cassia)",
         "pest_count": 4
       },
       {
-        "plant_name": "Eucalyptus melanophloia",
+        "plant_name": "Eucalyptus melanophloia (Silver-leaved Ironbark)",
         "pest_count": 2
       },
       {
-        "plant_name": "Alyxia ruscifolia",
+        "plant_name": "Alyxia ruscifolia (Chain Fruit)",
         "pest_count": 1
       }
     ]
