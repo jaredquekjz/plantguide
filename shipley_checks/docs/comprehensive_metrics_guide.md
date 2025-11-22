@@ -15,6 +15,38 @@ This document provides a complete overview of the 7 ecological metrics used to s
 
 ---
 
+## Calibration and Scoring Methodology
+
+**Climate-Stratified Monte Carlo Calibration**
+
+Percentile distributions for M1-M7 were generated using Köppen tier-stratified random sampling:
+
+- **Sample size:** 20,000 random guilds per tier × 6 climate tiers = 120,000 guilds total
+- **Guild sizes:** 2-plant pairs (Stage 1: M1-M2 only) + 7-plant guilds (Stage 2: M1-M7)
+- **Climate tiers:** Tropical, Arid, Temperate, Continental, Polar, High-altitude
+- **Percentile points:** 13 values per metric (p1, p5, p10, p20, p30, p40, p50, p60, p70, p80, p90, p95, p99)
+- **Implementation:** Rust parallel processing (~25s runtime, 24× faster than R baseline)
+- **Source:** `shipley_checks/src/Stage_4/guild_scorer_rust/src/bin/calibrate_koppen_stratified.rs`
+
+**Calibration Architecture:**
+
+1. **Köppen Tier-Stratified (M1, M3-M7):** Each climate tier has independent percentile distributions
+   - File: `normalization_params_7plant.json` (16 KB)
+
+2. **Global CSR (M2 only):** Single global distribution (CSR strategies universal across climates)
+   - File: `csr_percentile_calibration_global.json` (<1 KB)
+
+**Scoring Process:**
+
+1. Calculate raw metric values using formulas below (M1-M7)
+2. Normalize to percentile (0-100) using tier-specific or global calibration
+3. Display transformation: M1, M2 inverted (`100 - percentile`); M3-M7 direct
+4. Overall score: Simple average of all 7 display scores
+
+This ensures scores reflect realistic guild performance within each climate zone, accounting for regional species pool differences and ecological interactions.
+
+---
+
 ## M1: Pest & Pathogen Independence
 *Risk Management through Diversity*
 
@@ -29,7 +61,7 @@ Imagine a family tree of all plants. The code looks at your list of plants and m
 
 **Technical Details:**
 - **Decay constant K:** 0.001 (controls sensitivity to phylogenetic distance)
-- **Implementation:** Pure Rust CompactTree (10-15× faster than external C++ process)
+- **Implementation:** Pure Rust CompactTree (10-15× faster than external C++ process), calibrated for parity against R's Picante library. 
 - **Data source:** `data/stage1/phlogeny/compact_tree_11711.bin` (binary format, 11,010 species)
 - **Edge cases:** Single-plant guild returns raw=1.0 (max risk); missing phylogeny returns 0.0 PD
 
@@ -121,11 +153,9 @@ For each pair of plants (A, B):
   predators_from_B = predators/fungi attracted by plant B
 
   specific_matches = count(herbivores_on_A ∩ known_prey_of(predators_from_B))
-  general_predators = count(predators_from_B) - specific_matches
   general_fungi = count(entomopathogenic_fungi_from_B)
 
   protection_score += specific_matches × 1.0
-  protection_score += general_predators × 1.0
   protection_score += general_fungi × 0.2
 
 Final score = (protection_score / n_plant_pairs) × 20.0
@@ -134,7 +164,6 @@ Percentile normalize
 
 **Mechanism Weights:**
 - **Specific predator/parasite match:** 1.0 (herbivore A → known predator B)
-- **General predator presence:** 1.0 (predator with no specific match)
 - **Entomopathogenic fungi:** 0.2 (broad-spectrum but less targeted)
 
 **Normalization Factor:**
@@ -170,19 +199,18 @@ Similar to M3, but for diseases.
 ```
 For each pair of plants (A, B):
   pathogens_on_A = pathogenic fungi on plant A
-  antagonists_from_B = mycoparasites/fungivores from plant B
+  mycoparasites_from_B = mycoparasitic fungi from plant B
+  fungivores_from_B = fungivorous animals from plant B
 
   specific_fungi_matches = count(pathogens_on_A ∩ known_prey_of(mycoparasites_from_B))
   specific_animal_matches = count(pathogens_on_A ∩ known_prey_of(fungivores_from_B))
-  general_mycoparasites = count(mycoparasites_from_B) - specific_fungi_matches
-  general_trichoderma = count(trichoderma_from_B)
 
   control_score += specific_fungi_matches × 1.0
   control_score += specific_animal_matches × 1.0
-  control_score += general_mycoparasites × 0.5
-  control_score += general_trichoderma × 0.2
+  control_score += count(mycoparasites_from_B) × 0.5
+  control_score += count(fungivores_from_B) × 0.2
 
-Final score = (control_score / n_plant_pairs) × 40.0
+Final score = (control_score / n_plant_pairs) × 10.0
 Percentile normalize
 ```
 
@@ -190,7 +218,7 @@ Percentile normalize
 - **Specific mycoparasite match:** 1.0 (pathogen A → known mycoparasite B)
 - **Specific fungivore match:** 1.0 (animal that eats pathogen A)
 - **General mycoparasite:** 0.5 (broad-spectrum fungal antagonist)
-- **Trichoderma presence:** 0.2 (generalist biocontrol agent)
+- **General fungivore:** 0.2 (generalist pathogen consumers)
 
 **Dual Antagonist System:**
 The metric considers both:
@@ -200,12 +228,13 @@ The metric considers both:
 This dual approach recognizes that disease suppression operates through multiple pathways.
 
 **Normalization Factor:**
-- Final raw score multiplied by 40.0 before percentile normalization
+- Final raw score multiplied by 10.0 before percentile normalization
 
 **Technical Details:**
 - **Data sources:** `fungal_guilds_hybrid_11711.parquet` with columns:
-  - `pathogenic_fungi`, `mycoparasite_fungi`, `trichoderma_count`
+  - `pathogenic_fungi`, `mycoparasite_fungi`
   - FungalTraits (primary) + FunGuild (fallback) for guild classification
+- **Organisms dataset:** `organism_profiles_11711.parquet` with `fungivores_eats` column
 - **Lookup table:** `pathogen_antagonists` (942 entries)
 - **Edge case:** Zero pathogens returns score = 0.0
 
@@ -230,7 +259,7 @@ This metric looks for plants that can "plug in" to the same fungal internet.
 ```
 1. Network Score (60%):
    For each fungus shared by ≥2 plants:
-     contribution = (n_plants_with_fungus / total_plants)²
+     contribution = n_plants_with_fungus / total_plants
    network_raw = sum of all contributions
 
 2. Coverage Score (40%):
@@ -241,7 +270,7 @@ Percentile normalize
 ```
 
 **Network Formula Explanation:**
-The quadratic weighting `(n/total)²` rewards fungi that connect many plants. A fungus shared by 4/7 plants contributes (4/7)² = 0.33, while 4 separate fungi each connecting 1 plant contribute only 4×(1/7)² = 0.08.
+The linear weighting `n/total` rewards fungi that connect many plants. A fungus shared by 4/7 plants contributes 4/7 ≈ 0.57, while 4 separate fungi each connecting 1 plant contribute only 4×(1/7) ≈ 0.57 combined.
 
 **Fungal Categories Included:**
 - **AMF** (Arbuscular Mycorrhizal Fungi): 13 species average per guild
@@ -362,19 +391,18 @@ This metric calculates how many of your plants share the same pollinators.
        contribution = (n_plants / total_plants)²
      else:
        contribution = 0  # Single-plant pollinators don't contribute
-3. overlap_ratio = sum of all contributions
-4. m7_raw = overlap_ratio² (quadratic weighting)
-5. Percentile normalize
+3. m7_raw = sum of all contributions
+4. Percentile normalize
 ```
 
 **Quadratic Formula:**
-`m7_raw = (Σ (n_i / N)²)²` where n_i is plants visited by pollinator i, N is total plants.
+`m7_raw = Σ (n_i / N)²` where n_i is plants visited by pollinator i, N is total plants.
 
-The outer square rewards dense pollinator sharing. Example:
-- Guild A: 5 plants share 1 bee → overlap = (5/5)² = 1.0, m7 = 1.0² = 1.0
-- Guild B: 5 plants with 5 separate bees → overlap = 5×(1/5)² = 0.2, m7 = 0.04
+Each pollinator's contribution is squared, rewarding dense sharing. Example:
+- Guild A: 5 plants share 1 bee → m7 = (5/5)² = 1.0
+- Guild B: 5 plants with 5 separate bees → m7 = 5×(1/5)² = 0.2
 
-Guild A scores 25× higher despite same pollinator count, correctly modeling the "magnet effect."
+Guild A scores 5× higher despite same pollinator count, correctly modeling the "magnet effect."
 
 **Data Quality Decision:**
 - **Uses:** `pollinators` column ONLY (strict pollinators verified by interaction data)
@@ -400,47 +428,7 @@ The quadratic weighting is empirically justified: studies show pollinator visita
 
 ## Technical Appendix
 
-### A. Calibration System
-
-**Architecture:**
-The scorer uses a two-tier calibration system to convert raw metric values to percentile scores (0-100).
-
-**1. Köppen Tier-Stratified Calibration (M1, M3-M7):**
-- Six climate tiers based on Köppen classification
-- Each tier has independent percentile distributions for each metric
-- 13 percentile points per metric: p1, p5, p10, p25, p50, p75, p85, p90, p95, p97, p98, p99
-- File: `shipley_checks/stage4/normalization_params_{calibration_type}.json`
-- Example: `normalization_params_7plant.json` for 7-plant guilds
-
-**2. Global CSR Calibration (M2 conflicts):**
-- Single global distribution (NOT tier-specific)
-- CSR strategies are universal across climates
-- 15 percentile points (includes p75, p85 for conflict detection)
-- File: `shipley_checks/stage4/csr_percentile_calibration_global.json`
-
-**Percentile Normalization Algorithm:**
-```rust
-1. Find bracketing percentiles [pi, pi+1] where values[pi] ≤ raw ≤ values[pi+1]
-2. Calculate fraction: (raw - values[pi]) / (values[pi+1] - values[pi])
-3. Interpolate: percentile = pi + fraction × (pi+1 - pi)
-4. Edge cases:
-   - raw ≤ values[0]:  return 0.0
-   - raw ≥ values[12]: return 100.0
-```
-
-**Display Score Transformation:**
-- M1 and M2 are inverted: `display = 100 - percentile` (low risk/conflict = high score)
-- M3-M7 are direct: `display = percentile` (high benefit = high score)
-
-**Overall Score:**
-```rust
-overall_score = (M1 + M2 + M3 + M4 + M5 + M6 + M7) / 7.0
-```
-Simple average of all 7 display scores.
-
----
-
-### B. Data Sources and Formats
+### A. Data Sources and Formats
 
 **Plants Dataset:**
 - File: `bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet`
@@ -479,7 +467,7 @@ Simple average of all 7 display scores.
 
 ---
 
-### C. Performance Optimizations
+### B. Performance Optimizations
 
 **1. LazyFrame Architecture (Phase 2-4):**
 - Schema-only scans at initialization (100KB vs 80MB)
@@ -510,7 +498,7 @@ Simple average of all 7 display scores.
 
 ---
 
-### D. Edge Cases and Error Handling
+### C. Edge Cases and Error Handling
 
 **M1:**
 - Single plant guild: returns max risk (raw=1.0)
@@ -535,79 +523,10 @@ Example: "M2: Missing expected column 'CSR_C'. Available columns: [...]"
 
 ---
 
-### E. Recent Enhancements
 
-**1. Dual-Lifestyle Fungi Annotation (2025-11-21, commit ca45c25):**
-- Fungi in BOTH pathogenic and beneficial columns now annotated in reports
-- Display: "Saprotrophic ⚠ Pathogen"
-- Explanatory note: "Dual-Lifestyle Fungi: Some fungi have both beneficial (decomposition, nutrient cycling) and pathogenic (disease-causing) roles..."
-- M5 scores unchanged (scientifically accurate - decomposition is a real benefit)
-
-**2. M6 Growth Form Simplification (2025-11-21, commit cb9fc00):**
-- Removed redundant herb+tree logic (light preference check already handles this)
-- Kept vine+tree complementarity (unique vertical space use)
-
-**3. Vernacular Name Formatting (2025-11-20, commit 46c45d5):**
-- Consistent "Scientific (Vernacular)" format across all reports
-- First English name only (not semicolon-separated lists)
-- Optimized path using pre-computed display_name column
-
-**4. Zero-Interaction Indicators (2025-11-13, commit 0871396):**
-- Plants with no data marked with ⚠️ in network hub tables
-- Note: "Data Completeness Note: Plants marked with ⚠️ have no interaction data in this dimension..."
-- Distinguishes true ecological absence from data gaps
-
-**5. Specific Fungivore Matches (2025-11-09, commit cae0639):**
-- M4 now recognizes animal-mediated disease suppression
-- Beetles, snails that eat fungal fruiting bodies
-
----
-
-## Summary Recommendation
-
-*   **Start with M6 (Structure) and M2 (Growth):** These ensure your plants will physically fit and won't kill each other. Critical thresholds: EIVE-L 3.2/7.47 for light compatibility, 2.0m for layer separation.
-*   **Check M1 (Pest Independence):** To avoid catastrophic disease risk. Aim for phylogenetically diverse guilds (different families).
-*   **Optimize M3 (Insects) and M7 (Pollinators):** To boost ecosystem services and yield. Look for specific predator matches and shared pollinators.
-*   **Treat M4 and M5:** As indicators of long-term soil health and resilience. Be aware of dual-lifestyle fungi annotations.
-*   **Understand Data Quality:** ⚠️ symbols indicate data gaps, not necessarily true absence of interactions.
-
----
-
-## For Developers
-
-**Testing:**
-- `test_3_guilds_parallel.rs`: Verifies score parity vs R baseline
-- `test_explanations_3_guilds.rs`: Generates explanation reports
-
-**Calibration:**
-- `calibrate_koppen_stratified.rs`: Generates percentile distributions from 20k random guilds
-- Outputs: `normalization_params_*.json`, `csr_percentile_calibration_global.json`
-
-**Performance:**
-- Debug builds: Fast iteration (5-10 seconds compile)
-- Release builds: Use `--release` flag for production (2+ minutes compile, significant runtime optimization)
-
-**Key Modules:**
-- `scorer.rs`: Main coordinator, three scoring modes
-- `data.rs`: LazyFrame data loading
-- `metrics/`: Individual metric implementations (m1-m7)
-- `explanation/`: Report generation system
-- `utils/`: Normalization, organism counting, vernacular formatting
-
-**Documentation:**
-- Comprehensive audit: `docs/rust_codebase_audit_report.md`
-- R reference implementations: `src/Stage_4/metrics/m*.R`
-- Python baseline: `src/Stage_4/python_baseline/`
-
----
 
 ## References
 
-**Scientific Foundations:**
-- Faith's PD: Faith, D.P. (1992). Conservation evaluation and phylogenetic diversity
-- CSR Theory: Grime, J.P. (1977). Evidence for the existence of three primary strategies
-- EIVE-L: Ellenberg indicator values for light
-- Biocontrol: Conservation biological control theory
 
 **Implementation:**
 - Rust codebase: `shipley_checks/src/Stage_4/guild_scorer_rust/`
