@@ -603,9 +603,9 @@ impl MarkdownFormatter {
 
         // Network hubs
         if !biocontrol_profile.hub_plants.is_empty() {
-            md.push_str("**Network Hubs (plants attracting most biocontrol):**\n\n");
-            md.push_str("| Plant | Total Predators | Total Fungi | Combined |\n");
-            md.push_str("|-------|----------------|-------------|----------|\n");
+            md.push_str("**Network Hubs (plant-associated biocontrol agents):**\n\n");
+            md.push_str("| Plant | Predators | Entomo Fungi | Combined |\n");
+            md.push_str("|-------|-----------|--------------|----------|\n");
             for hub in biocontrol_profile.hub_plants.iter().take(10) {
                 // Format display name with vernacular if available
                 let display_name = if !hub.plant_vernacular.is_empty() {
