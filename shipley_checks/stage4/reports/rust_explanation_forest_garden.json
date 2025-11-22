@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 92.64105121009962,
+    "score": 92.49788814872912,
     "stars": "★★★★★",
     "label": "Exceptional",
-    "message": "Overall guild compatibility: 92.6/100"
+    "message": "Overall guild compatibility: 92.5/100"
   },
   "climate": {
     "compatible": true,
@@ -18,7 +18,7 @@
       "title": "High Phylogenetic Diversity",
       "message": "Plants are distantly related (Faith's PD: 844.68)",
       "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
-      "evidence": "Phylogenetic diversity score: 58.3/100"
+      "evidence": "Phylogenetic diversity score: 57.4/100"
     },
     {
       "benefit_type": "insect_control",
@@ -34,7 +34,7 @@
       "title": "Natural Disease Suppression",
       "message": "Guild provides disease suppression via 6 antagonistic fungal mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 95.2/100, covering 6 mechanisms"
+      "evidence": "Pathogen control score: 95.1/100, covering 6 mechanisms"
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -49,7 +49,7 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 22.8m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Golden ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Whitemargin pussytoes): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Pearly Everlasting): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush Lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (False Solomon's Seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
       "evidence": null
     },
     {
@@ -67,7 +67,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea (Whitemargin pussytoes): Neutral (pH 6-7)\nDeutzia scabra (Deutzia): Alkaline (pH 7-8)\nDiospyros kaki (Japanese persimmon): Slightly Acidic (pH 5-6)\nFraxinus excelsior (Golden ash): Alkaline (pH 7-8)\nMaianthemum racemosum (Pacific solomon's seal): Neutral (pH 6-7)\nMercurialis perennis (Dog's mercury): Alkaline (pH 7-8)\nRubus moorei (Bush lawyer): Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.4-7.6 (difference: 2.3 units)\n\nPlant pH preferences:\nAnaphalis margaritacea (Pearly Everlasting): Neutral (pH 6-7)\nDeutzia scabra (Deutzia): Alkaline (pH 7-8)\nDiospyros kaki (Japanese Persimmon): Slightly Acidic (pH 5-6)\nFraxinus excelsior (Ash): Alkaline (pH 7-8)\nMaianthemum racemosum (False Solomon's Seal): Neutral (pH 6-7)\nMercurialis perennis (Dog's Mercury): Alkaline (pH 7-8)\nRubus moorei (Bush Lawyer): Neutral (pH 6-7)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
@@ -77,7 +77,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 58.33495013137313,
+        "score": 57.39572551568015,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -98,7 +98,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 95.15240833932423,
+        "score": 95.08949152542372,
         "raw": 9.428571428571429,
         "interpretation": "Excellent"
       }
@@ -655,7 +655,7 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash",
+        "plant_vernacular": "Ash",
         "fungus_count": 99,
         "amf_count": 1,
         "emf_count": 1,
@@ -685,7 +685,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes",
+        "plant_vernacular": "Pearly Everlasting",
         "fungus_count": 13,
         "amf_count": 2,
         "emf_count": 0,
@@ -695,7 +695,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal",
+        "plant_vernacular": "False Solomon's Seal",
         "fungus_count": 12,
         "amf_count": 0,
         "emf_count": 0,
@@ -715,7 +715,7 @@
       },
       {
         "plant_name": "Rubus moorei",
-        "plant_vernacular": "bush lawyer",
+        "plant_vernacular": "Bush Lawyer",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
@@ -869,7 +869,7 @@
     "hub_plants": [
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal",
+        "plant_vernacular": "False Solomon's Seal",
         "pollinator_count": 52,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -890,7 +890,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes",
+        "plant_vernacular": "Pearly Everlasting",
         "pollinator_count": 30,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -932,7 +932,7 @@
       },
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash",
+        "plant_vernacular": "Ash",
         "pollinator_count": 1,
         "honey_bees_count": 1,
         "bumblebees_count": 0,
@@ -995,7 +995,7 @@
       },
       {
         "plant_name": "Rubus moorei",
-        "plant_vernacular": "bush lawyer",
+        "plant_vernacular": "Bush Lawyer",
         "pollinator_count": 0,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -1112,7 +1112,7 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash",
+        "plant_vernacular": "Ash",
         "total_predators": 0,
         "total_entomo_fungi": 2,
         "total_biocontrol_agents": 2,
@@ -1120,7 +1120,7 @@
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes",
+        "plant_vernacular": "Pearly Everlasting",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1144,7 +1144,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal",
+        "plant_vernacular": "False Solomon's Seal",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1160,7 +1160,7 @@
       },
       {
         "plant_name": "Rubus moorei",
-        "plant_vernacular": "bush lawyer",
+        "plant_vernacular": "Bush Lawyer",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1180,14 +1180,14 @@
     "hub_plants": [
       {
         "plant_name": "Fraxinus excelsior",
-        "plant_vernacular": "Golden Ash",
+        "plant_vernacular": "Ash",
         "mycoparasite_count": 2,
         "pathogen_count": 49,
         "has_data": true
       },
       {
         "plant_name": "Anaphalis margaritacea",
-        "plant_vernacular": "whitemargin pussytoes",
+        "plant_vernacular": "Pearly Everlasting",
         "mycoparasite_count": 0,
         "pathogen_count": 14,
         "has_data": true
@@ -1208,7 +1208,7 @@
       },
       {
         "plant_name": "Maianthemum racemosum",
-        "plant_vernacular": "Pacific Solomon's seal",
+        "plant_vernacular": "False Solomon's Seal",
         "mycoparasite_count": 0,
         "pathogen_count": 18,
         "has_data": true
@@ -1222,7 +1222,7 @@
       },
       {
         "plant_name": "Rubus moorei",
-        "plant_vernacular": "bush lawyer",
+        "plant_vernacular": "Bush Lawyer",
         "mycoparasite_count": 0,
         "pathogen_count": 1,
         "has_data": true

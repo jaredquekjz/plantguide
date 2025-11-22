@@ -10,12 +10,12 @@ Overall guild compatibility: 55.3/100
 
 ## Benefits
 
-### High Phylogenetic Diversity [M1 - 70.4/100]
+### High Phylogenetic Diversity [M1 - 70.3/100]
 
 Plants are distantly related (Faith's PD: 885.18)  
 Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.  
 
-*Evidence:* Phylogenetic diversity score: 70.4/100
+*Evidence:* Phylogenetic diversity score: 70.3/100
 
 #### Pest Vulnerability Profile
 
@@ -69,20 +69,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 **No specific herbivore-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
 
-**Network Hubs (plants attracting most biocontrol):**
-
-| Plant | Total Predators | Total Fungi | Combined |
-|-------|----------------|-------------|----------|
-| Vitis vinifera (wine grape) | 0 | 4 | 4 |
-| Allium schoenoprasum (Chives) ⚠️ | 0 | 0 | 0 |
-| Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 |
-| Cheirodendron trigynum (Olapa) ⚠️ | 0 | 0 | 0 |
-| Erythrina sandwicensis (Hawaiian Coral Tree) ⚠️ | 0 | 0 | 0 |
-| Pfaffia gnaphalioides ⚠️ | 0 | 0 | 0 |
-| Virola bicuhyba ⚠️ | 0 | 0 | 0 |
-
-⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
 ### Natural Disease Suppression [M4 - 100.0/100]
 
 Guild provides disease suppression via 9 antagonistic fungal mechanisms  
@@ -112,8 +98,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Plant | Mycoparasites | Pathogens |
 |-------|---------------|-----------|
-| Vitis vinifera (wine grape) | 4 | 181 |
-| Cheirodendron trigynum (Olapa) | 1 | 11 |
+| Vitis vinifera (Common Grape) | 4 | 181 |
+| Cheirodendron trigynum (Common Cheirodendron) | 1 | 11 |
 | Allium schoenoprasum (Chives) | 0 | 18 |
 | Alnus acuminata (Andean Alder) | 0 | 1 |
 | Erythrina sandwicensis (Hawaiian Coral Tree) ⚠️ | 0 | 0 |
@@ -163,8 +149,8 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Vitis vinifera (wine grape) | 279 | 4 | 2 | 51 | 222 |
-| Cheirodendron trigynum (Olapa) | 32 | 0 | 0 | 14 | 18 |
+| Vitis vinifera (Common Grape) | 279 | 4 | 2 | 51 | 222 |
+| Cheirodendron trigynum (Common Cheirodendron) | 32 | 0 | 0 | 14 | 18 |
 | Allium schoenoprasum (Chives) | 15 | 3 | 0 | 0 | 12 |
 | Erythrina sandwicensis (Hawaiian Coral Tree) | 2 | 0 | 0 | 0 | 2 |
 | Alnus acuminata (Andean Alder) ⚠️ | 0 | 0 | 0 | 0 | 0 |
@@ -175,9 +161,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ## Warnings
 
-⚠️ **12.8 CSR strategy conflicts detected**
+⚠️ **14.6 CSR strategy conflicts detected**
 
-Growth strategy incompatibility: 6 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)  
+Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile)  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**
@@ -186,12 +172,12 @@ EIVE R range: 5.2-7.5 (difference: 2.3 units)
 
 Plant pH preferences:
 Allium schoenoprasum (Chives): Alkaline (pH 7-8)
-Alnus acuminata (Andean alder): Neutral (pH 6-7)
-Cheirodendron trigynum (Olapa): Neutral (pH 6-7)
-Erythrina sandwicensis (Hawaiian coral tree): Neutral (pH 6-7)
-Pfaffia gnaphalioides (Pfaffia): Neutral (pH 6-7)
-Virola bicuhyba (Virola): Slightly Acidic (pH 5-6)
-Vitis vinifera (Wine grape): Alkaline (pH 7-8)  
+Alnus acuminata (Andean Alder): Neutral (pH 6-7)
+Cheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)
+Erythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)
+Pfaffia gnaphalioides: Neutral (pH 6-7)
+Virola bicuhyba: Slightly Acidic (pH 5-6)
+Vitis vinifera (Common Grape): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown
@@ -200,7 +186,7 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.4 | Good |
+| M1 - Pest & Pathogen Independence | 70.3 | Good |
 | M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
@@ -210,6 +196,6 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 16.6 | Poor |
+| M6 - Structural Diversity | 17.0 | Poor |
 | M7 - Pollinator Support | 0.0 | Poor |
 

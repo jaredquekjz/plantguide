@@ -1,8 +1,8 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 85.6/100
+**Overall Score:** 84.0/100
 
-Overall guild compatibility: 85.6/100
+Overall guild compatibility: 84.0/100
 
 ## Climate Compatibility
 
@@ -50,26 +50,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 |------------------|--------------------|------------------------|------------|
 | vespa velutina | Wasps | beauveria | Specific (weight 1.0) |
 
-**Network Hubs (plants attracting most biocontrol):**
-
-| Plant | Total Predators | Total Fungi | Combined |
-|-------|----------------|-------------|----------|
-| Coffea arabica (Kona Coffee) | 0 | 5 | 5 |
-| Dactylis glomerata (Rough Cocksfoot) | 0 | 4 | 4 |
-| Vitis vinifera (wine grape) | 0 | 4 | 4 |
-| Fragaria vesca (wild strawberry) ⚠️ | 0 | 0 | 0 |
-| Prunus spinosa (Sloe) ⚠️ | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak) ⚠️ | 0 | 0 | 0 |
-| Rosa canina (canker rose) ⚠️ | 0 | 0 | 0 |
-
-⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
-### Natural Disease Suppression [M4 - 98.0/100]
+### Natural Disease Suppression [M4 - 97.7/100]
 
 Guild provides disease suppression via 47 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 98.0/100, covering 47 mechanisms
+*Evidence:* Pathogen control score: 97.7/100, covering 47 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -104,13 +90,13 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Plant | Mycoparasites | Pathogens |
 |-------|---------------|-----------|
-| Dactylis glomerata (Rough Cocksfoot) | 5 | 113 |
-| Coffea arabica (Kona Coffee) | 4 | 85 |
-| Vitis vinifera (wine grape) | 4 | 181 |
-| Prunus spinosa (Sloe) | 3 | 64 |
-| Rosa canina (canker rose) | 1 | 67 |
-| Fragaria vesca (wild strawberry) | 0 | 39 |
-| Quercus robur (pedunculate oak) | 0 | 9 |
+| Dactylis glomerata (Akaroa) | 5 | 113 |
+| Coffea arabica (Arabian Coffee) | 4 | 85 |
+| Vitis vinifera (Common Grape) | 4 | 181 |
+| Prunus spinosa (Blackthorn) | 3 | 64 |
+| Rosa canina (Canker Rose) | 1 | 67 |
+| Fragaria vesca (Alpine Strawberry) | 0 | 39 |
+| Quercus robur (Acorn Tree) | 0 | 9 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -153,13 +139,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Vitis vinifera (wine grape) | 279 | 4 | 2 | 51 | 222 |
-| Dactylis glomerata (Rough Cocksfoot) | 201 | 7 | 0 | 52 | 142 |
-| Coffea arabica (Kona Coffee) | 157 | 5 | 0 | 33 | 119 |
-| Prunus spinosa (Sloe) | 95 | 0 | 1 | 10 | 84 |
-| Rosa canina (canker rose) | 70 | 0 | 0 | 11 | 59 |
-| Fragaria vesca (wild strawberry) | 38 | 7 | 0 | 7 | 24 |
-| Quercus robur (pedunculate oak) | 18 | 0 | 7 | 0 | 11 |
+| Vitis vinifera (Common Grape) | 279 | 4 | 2 | 51 | 222 |
+| Dactylis glomerata (Akaroa) | 201 | 7 | 0 | 52 | 142 |
+| Coffea arabica (Arabian Coffee) | 157 | 5 | 0 | 33 | 119 |
+| Prunus spinosa (Blackthorn) | 95 | 0 | 1 | 10 | 84 |
+| Rosa canina (Canker Rose) | 70 | 0 | 0 | 11 | 59 |
+| Fragaria vesca (Alpine Strawberry) | 38 | 7 | 0 | 7 | 24 |
+| Quercus robur (Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
 
 ### High Structural Diversity [M6 - 100.0/100]
 
@@ -167,19 +153,19 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)
+  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)
 
 **Understory (5-15m):**
-  - Vitis vinifera (Wine grape): 9.7m, EIVE-L: 6.2 (flexible)
+  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)
 
 **Shrub Layer (1-5m):**
-  - Coffea arabica (Kona coffee): 4.6m, EIVE-L: 6.9 (flexible)
-  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)
-  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)
+  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)
+  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)
+  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)
 
 **Ground Layer (<1m):**
-  - Dactylis glomerata (Rough cocksfoot): 0.7m, EIVE-L: 6.8 (flexible)
-  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)
+  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)
+  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
 7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -235,13 +221,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Coffea arabica (Kona Coffee) | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
-| Prunus spinosa (Sloe) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina (canker rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Dactylis glomerata (Rough Cocksfoot) | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
-| Fragaria vesca (wild strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
-| Vitis vinifera (wine grape) | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
+| Coffea arabica (Arabian Coffee) | 169 | 9 | 2 | 65 | 0 | 12 | 0 | 0 | 0 | 0 | 0 | 0 | 9 | 0 | 0 | 72 |
+| Prunus spinosa (Blackthorn) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina (Canker Rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Dactylis glomerata (Akaroa) | 28 | 0 | 1 | 0 | 0 | 20 | 0 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 1 |
+| Fragaria vesca (Alpine Strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur (Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Vitis vinifera (Common Grape) | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Warnings
 
@@ -255,13 +241,13 @@ Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th 
 EIVE R range: 5.2-7.5 (difference: 2.3 units)
 
 Plant pH preferences:
-Coffea arabica (Kona coffee): Neutral (pH 6-7)
-Dactylis glomerata (Rough cocksfoot): Neutral (pH 6-7)
-Fragaria vesca (Wild strawberry): Neutral (pH 6-7)
-Prunus spinosa (Sloe): Neutral (pH 6-7)
-Quercus robur (Pedunculate oak): Slightly Acidic (pH 5-6)
-Rosa canina (Canker rose): Neutral (pH 6-7)
-Vitis vinifera (Wine grape): Alkaline (pH 7-8)  
+Coffea arabica (Arabian Coffee): Neutral (pH 6-7)
+Dactylis glomerata (Akaroa): Neutral (pH 6-7)
+Fragaria vesca (Alpine Strawberry): Neutral (pH 6-7)
+Prunus spinosa (Blackthorn): Neutral (pH 6-7)
+Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
+Rosa canina (Canker Rose): Neutral (pH 6-7)
+Vitis vinifera (Common Grape): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown
@@ -270,10 +256,10 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 41.2 | Fair |
-| M2 - Growth Compatibility | 60.0 | Good |
+| M1 - Pest & Pathogen Independence | 40.2 | Fair |
+| M2 - Growth Compatibility | 50.0 | Fair |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 98.0 | Excellent |
+| M4 - Disease Suppression | 97.7 | Excellent |
 
 ### Bonus Indicators
 

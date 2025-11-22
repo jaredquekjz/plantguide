@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 41.15679321530261,
+    "score": 41.04282209694241,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 41.2/100"
+    "message": "Overall guild compatibility: 41.0/100"
   },
   "climate": {
     "compatible": true,
@@ -35,7 +35,7 @@
       "severity": "High",
       "icon": "🚨",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nAlyxia ruscifolia (Chainfruit): Neutral (pH 6-7)\nCarex mucronata (Carex): Strongly Alkaline (pH >8)\nEucalyptus melanophloia (Silver-leaved ironbark): Neutral (pH 6-7)\nHibbertia diffusa (Wedge guinea flower): Slightly Acidic (pH 5-6)\nJuncus usitatus (Common rush): Neutral (pH 6-7)\nSenna artemisioides (Silver cassia): Neutral (pH 6-7)\nSporobolus compositus (Composite dropseed): Neutral (pH 6-7)",
+      "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nAlyxia ruscifolia (Chain Fruit): Neutral (pH 6-7)\nCarex mucronata: Strongly Alkaline (pH >8)\nEucalyptus melanophloia (Silver-leaved Ironbark): Neutral (pH 6-7)\nHibbertia diffusa (Wedge Guinea Flower): Slightly Acidic (pH 5-6)\nJuncus usitatus (Australian Rush): Neutral (pH 6-7)\nSenna artemisioides (Silver Cassia): Neutral (pH 6-7)\nSporobolus compositus (Composite Dropseed): Neutral (pH 6-7)",
       "advice": "Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments."
     }
   ],
@@ -45,7 +45,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 33.66776365008104,
+        "score": 32.84573560585548,
         "raw": 0.4559407172659578,
         "interpretation": "Poor"
       },
@@ -82,7 +82,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 46.09645552370392,
+        "score": 46.12068573940803,
         "raw": 0.3691127953935177,
         "interpretation": "Fair"
       },
@@ -289,7 +289,7 @@
         },
         {
           "category": "Saprotrophic",
-          "fungus_name": "fusarium",
+          "fungus_name": "wojnowicia",
           "plant_count": 1
         }
       ]
@@ -307,7 +307,7 @@
       },
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit",
+        "plant_vernacular": "Chain Fruit",
         "fungus_count": 3,
         "amf_count": 0,
         "emf_count": 0,
@@ -357,7 +357,7 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush",
+        "plant_vernacular": "Australian Rush",
         "fungus_count": 0,
         "amf_count": 0,
         "emf_count": 0,
@@ -385,7 +385,7 @@
     "hub_plants": [
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit",
+        "plant_vernacular": "Chain Fruit",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -417,7 +417,7 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush",
+        "plant_vernacular": "Australian Rush",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -453,7 +453,7 @@
     "hub_plants": [
       {
         "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chainfruit",
+        "plant_vernacular": "Chain Fruit",
         "mycoparasite_count": 1,
         "pathogen_count": 2,
         "has_data": true
@@ -481,7 +481,7 @@
       },
       {
         "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Common Rush",
+        "plant_vernacular": "Australian Rush",
         "mycoparasite_count": 0,
         "pathogen_count": 0,
         "has_data": false

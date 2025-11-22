@@ -1,8 +1,8 @@
 # ★★★★★ - Exceptional
 
-**Overall Score:** 92.6/100
+**Overall Score:** 92.5/100
 
-Overall guild compatibility: 92.6/100
+Overall guild compatibility: 92.5/100
 
 ## Climate Compatibility
 
@@ -10,12 +10,12 @@ Overall guild compatibility: 92.6/100
 
 ## Benefits
 
-### High Phylogenetic Diversity [M1 - 58.3/100]
+### High Phylogenetic Diversity [M1 - 57.4/100]
 
 Plants are distantly related (Faith's PD: 844.68)  
 Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.  
 
-*Evidence:* Phylogenetic diversity score: 58.3/100
+*Evidence:* Phylogenetic diversity score: 57.4/100
 
 #### Pest Vulnerability Profile
 
@@ -85,26 +85,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
 | myzus persicae | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
 
-**Network Hubs (plants attracting most biocontrol):**
-
-| Plant | Total Predators | Total Fungi | Combined |
-|-------|----------------|-------------|----------|
-| Fraxinus excelsior (Golden Ash) | 0 | 2 | 2 |
-| Anaphalis margaritacea (whitemargin pussytoes) ⚠️ | 0 | 0 | 0 |
-| Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 |
-| Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 |
-| Maianthemum racemosum (Pacific Solomon's seal) ⚠️ | 0 | 0 | 0 |
-| Mercurialis perennis (Dog's Mercury) ⚠️ | 0 | 0 | 0 |
-| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 |
-
-⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
-### Natural Disease Suppression [M4 - 95.2/100]
+### Natural Disease Suppression [M4 - 95.1/100]
 
 Guild provides disease suppression via 6 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 95.2/100, covering 6 mechanisms
+*Evidence:* Pathogen control score: 95.1/100, covering 6 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -125,13 +111,13 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 | Plant | Mycoparasites | Pathogens |
 |-------|---------------|-----------|
-| Fraxinus excelsior (Golden Ash) | 2 | 49 |
-| Anaphalis margaritacea (whitemargin pussytoes) | 0 | 14 |
+| Fraxinus excelsior (Ash) | 2 | 49 |
+| Anaphalis margaritacea (Pearly Everlasting) | 0 | 14 |
 | Deutzia scabra (Deutzia) | 0 | 1 |
 | Diospyros kaki (Japanese Persimmon) | 0 | 56 |
-| Maianthemum racemosum (Pacific Solomon's seal) | 0 | 18 |
+| Maianthemum racemosum (False Solomon's Seal) | 0 | 18 |
 | Mercurialis perennis (Dog's Mercury) | 0 | 20 |
-| Rubus moorei (bush lawyer) | 0 | 1 |
+| Rubus moorei (Bush Lawyer) | 0 | 1 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -174,13 +160,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Fraxinus excelsior (Golden Ash) | 99 | 1 | 1 | 20 | 77 |
+| Fraxinus excelsior (Ash) | 99 | 1 | 1 | 20 | 77 |
 | Diospyros kaki (Japanese Persimmon) | 45 | 0 | 0 | 7 | 38 |
 | Mercurialis perennis (Dog's Mercury) | 22 | 0 | 1 | 0 | 21 |
-| Anaphalis margaritacea (whitemargin pussytoes) | 13 | 2 | 0 | 1 | 10 |
-| Maianthemum racemosum (Pacific Solomon's seal) | 12 | 0 | 0 | 1 | 11 |
+| Anaphalis margaritacea (Pearly Everlasting) | 13 | 2 | 0 | 1 | 10 |
+| Maianthemum racemosum (False Solomon's Seal) | 12 | 0 | 0 | 1 | 11 |
 | Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 |
-| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Rubus moorei (Bush Lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
@@ -190,19 +176,19 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Fraxinus excelsior (Golden ash): 23.1m, EIVE-L: 4.5 (flexible)
+  - Fraxinus excelsior (Ash): 23.1m, EIVE-L: 4.5 (flexible)
 
 **Understory (5-15m):**
-  - Diospyros kaki (Japanese persimmon): 12.0m, EIVE-L: 7.4 (flexible)
+  - Diospyros kaki (Japanese Persimmon): 12.0m, EIVE-L: 7.4 (flexible)
 
 **Shrub Layer (1-5m):**
   - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)
 
 **Ground Layer (<1m):**
-  - Anaphalis margaritacea (Whitemargin pussytoes): 0.6m, EIVE-L: 7.4 (flexible)
-  - Rubus moorei (Bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)
-  - Maianthemum racemosum (Pacific solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)
-  - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)
+  - Anaphalis margaritacea (Pearly Everlasting): 0.6m, EIVE-L: 7.4 (flexible)
+  - Rubus moorei (Bush Lawyer): 0.5m, EIVE-L: 6.4 (flexible)
+  - Maianthemum racemosum (False Solomon's Seal): 0.4m, EIVE-L: 4.9 (flexible)
+  - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)
 
 **Why this stratification works well:**
 1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -254,13 +240,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Maianthemum racemosum (Pacific Solomon's seal) | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
-| Anaphalis margaritacea (whitemargin pussytoes) | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
+| Maianthemum racemosum (False Solomon's Seal) | 52 | 0 | 0 | 12 | 0 | 14 | 0 | 0 | 0 | 0 | 4 | 0 | 7 | 0 | 0 | 15 |
+| Anaphalis margaritacea (Pearly Everlasting) | 30 | 0 | 0 | 12 | 0 | 7 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 10 |
 | Mercurialis perennis (Dog's Mercury) | 3 | 1 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Fraxinus excelsior (Golden Ash) | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Fraxinus excelsior (Ash) | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Deutzia scabra (Deutzia) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Diospyros kaki (Japanese Persimmon) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Rubus moorei (bush lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Rubus moorei (Bush Lawyer) ⚠️ | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
@@ -271,13 +257,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 EIVE R range: 5.4-7.6 (difference: 2.3 units)
 
 Plant pH preferences:
-Anaphalis margaritacea (Whitemargin pussytoes): Neutral (pH 6-7)
+Anaphalis margaritacea (Pearly Everlasting): Neutral (pH 6-7)
 Deutzia scabra (Deutzia): Alkaline (pH 7-8)
-Diospyros kaki (Japanese persimmon): Slightly Acidic (pH 5-6)
-Fraxinus excelsior (Golden ash): Alkaline (pH 7-8)
-Maianthemum racemosum (Pacific solomon's seal): Neutral (pH 6-7)
-Mercurialis perennis (Dog's mercury): Alkaline (pH 7-8)
-Rubus moorei (Bush lawyer): Neutral (pH 6-7)  
+Diospyros kaki (Japanese Persimmon): Slightly Acidic (pH 5-6)
+Fraxinus excelsior (Ash): Alkaline (pH 7-8)
+Maianthemum racemosum (False Solomon's Seal): Neutral (pH 6-7)
+Mercurialis perennis (Dog's Mercury): Alkaline (pH 7-8)
+Rubus moorei (Bush Lawyer): Neutral (pH 6-7)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
 
 ## Metrics Breakdown
@@ -286,10 +272,10 @@ Rubus moorei (Bush lawyer): Neutral (pH 6-7)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 58.3 | Fair |
+| M1 - Pest & Pathogen Independence | 57.4 | Fair |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 95.2 | Excellent |
+| M4 - Disease Suppression | 95.1 | Excellent |
 
 ### Bonus Indicators
 

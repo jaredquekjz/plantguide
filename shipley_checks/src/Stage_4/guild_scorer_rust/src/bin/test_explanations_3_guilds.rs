@@ -179,8 +179,8 @@ fn main() -> anyhow::Result<()> {
     println!("\n======================================================================");
     println!("SUMMARY");
     println!("======================================================================");
-    println!("Total time (4 guilds × 3 formats): {:.3} ms", total_time.as_secs_f64() * 1000.0);
-    println!("Average per guild: {:.3} ms", total_time.as_secs_f64() * 1000.0 / 4.0);
+    println!("Total time (5 guilds × 3 formats): {:.3} ms", total_time.as_secs_f64() * 1000.0);
+    println!("Average per guild: {:.3} ms", total_time.as_secs_f64() * 1000.0 / 5.0);
     println!("\n✅ All explanations generated successfully!");
     println!("======================================================================\n");
 

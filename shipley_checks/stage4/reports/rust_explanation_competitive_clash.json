@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 55.29132472979909,
+    "score": 55.327639893470725,
     "stars": "★☆☆☆☆",
     "label": "Poor",
     "message": "Overall guild compatibility: 55.3/100"
@@ -18,7 +18,7 @@
       "title": "High Phylogenetic Diversity",
       "message": "Plants are distantly related (Faith's PD: 885.18)",
       "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
-      "evidence": "Phylogenetic diversity score: 70.4/100"
+      "evidence": "Phylogenetic diversity score: 70.3/100"
     },
     {
       "benefit_type": "insect_control",
@@ -50,8 +50,8 @@
       "warning_type": "csr_conflict",
       "severity": "High",
       "icon": "⚠️",
-      "message": "12.8 CSR strategy conflicts detected",
-      "detail": "Growth strategy incompatibility: 6 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)",
+      "message": "14.6 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile)",
       "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
     },
     {
@@ -59,7 +59,7 @@
       "severity": "Medium",
       "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
-      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum (Chives): Alkaline (pH 7-8)\nAlnus acuminata (Andean alder): Neutral (pH 6-7)\nCheirodendron trigynum (Olapa): Neutral (pH 6-7)\nErythrina sandwicensis (Hawaiian coral tree): Neutral (pH 6-7)\nPfaffia gnaphalioides (Pfaffia): Neutral (pH 6-7)\nVirola bicuhyba (Virola): Slightly Acidic (pH 5-6)\nVitis vinifera (Wine grape): Alkaline (pH 7-8)",
+      "detail": "EIVE R range: 5.2-7.5 (difference: 2.3 units)\n\nPlant pH preferences:\nAllium schoenoprasum (Chives): Alkaline (pH 7-8)\nAlnus acuminata (Andean Alder): Neutral (pH 6-7)\nCheirodendron trigynum (Common Cheirodendron): Neutral (pH 6-7)\nErythrina sandwicensis (Hawaiian Coral Tree): Neutral (pH 6-7)\nPfaffia gnaphalioides: Neutral (pH 6-7)\nVirola bicuhyba: Slightly Acidic (pH 5-6)\nVitis vinifera (Common Grape): Alkaline (pH 7-8)",
       "advice": "Moderate pH incompatibility. Use soil amendments to adjust pH for different zones."
     }
   ],
@@ -69,7 +69,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 70.40546826918163,
+        "score": 70.3412789689769,
         "raw": 0.4126401547150537,
         "interpretation": "Good"
       },
@@ -77,7 +77,7 @@
         "code": "M2",
         "name": "Growth Compatibility",
         "score": 0.0,
-        "raw": 0.3038095238095238,
+        "raw": 0.34714285714285714,
         "interpretation": "Poor"
       },
       {
@@ -106,7 +106,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 16.633804839412043,
+        "score": 16.952200285318145,
         "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },
@@ -621,7 +621,7 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape",
+        "plant_vernacular": "Common Grape",
         "fungus_count": 279,
         "amf_count": 4,
         "emf_count": 2,
@@ -631,7 +631,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa",
+        "plant_vernacular": "Common Cheirodendron",
         "fungus_count": 32,
         "amf_count": 0,
         "emf_count": 0,
@@ -829,7 +829,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa",
+        "plant_vernacular": "Common Cheirodendron",
         "pollinator_count": 2,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -850,7 +850,7 @@
       },
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape",
+        "plant_vernacular": "Common Grape",
         "pollinator_count": 1,
         "honey_bees_count": 0,
         "bumblebees_count": 0,
@@ -980,7 +980,7 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape",
+        "plant_vernacular": "Common Grape",
         "total_predators": 0,
         "total_entomo_fungi": 4,
         "total_biocontrol_agents": 4,
@@ -1004,7 +1004,7 @@
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa",
+        "plant_vernacular": "Common Cheirodendron",
         "total_predators": 0,
         "total_entomo_fungi": 0,
         "total_biocontrol_agents": 0,
@@ -1054,14 +1054,14 @@
     "hub_plants": [
       {
         "plant_name": "Vitis vinifera",
-        "plant_vernacular": "wine grape",
+        "plant_vernacular": "Common Grape",
         "mycoparasite_count": 4,
         "pathogen_count": 181,
         "has_data": true
       },
       {
         "plant_name": "Cheirodendron trigynum",
-        "plant_vernacular": "Olapa",
+        "plant_vernacular": "Common Cheirodendron",
         "mycoparasite_count": 1,
         "pathogen_count": 11,
         "has_data": true

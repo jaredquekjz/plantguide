@@ -1,8 +1,8 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 41.2/100
+**Overall Score:** 41.0/100
 
-Overall guild compatibility: 41.2/100
+Overall guild compatibility: 41.0/100
 
 ## Climate Compatibility
 
@@ -36,11 +36,11 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 | Plant | Mycoparasites | Pathogens |
 |-------|---------------|-----------|
-| Alyxia ruscifolia (Chainfruit) | 1 | 2 |
+| Alyxia ruscifolia (Chain Fruit) | 1 | 2 |
 | Carex mucronata | 0 | 4 |
 | Eucalyptus melanophloia (Silver-leaved Ironbark) | 0 | 1 |
 | Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 |
-| Juncus usitatus (Common Rush) ⚠️ | 0 | 0 |
+| Juncus usitatus (Australian Rush) ⚠️ | 0 | 0 |
 | Senna artemisioides (Silver Cassia) | 0 | 1 |
 | Sporobolus compositus (Composite Dropseed) | 0 | 15 |
 
@@ -88,12 +88,12 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
 | Sporobolus compositus (Composite Dropseed) | 10 | 0 | 0 | 0 | 10 |
-| Alyxia ruscifolia (Chainfruit) | 3 | 0 | 0 | 0 | 3 |
+| Alyxia ruscifolia (Chain Fruit) | 3 | 0 | 0 | 0 | 3 |
 | Carex mucronata | 2 | 0 | 0 | 1 | 1 |
 | Senna artemisioides (Silver Cassia) | 1 | 0 | 0 | 1 | 0 |
 | Eucalyptus melanophloia (Silver-leaved Ironbark) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 | Hibbertia diffusa (Wedge Guinea Flower) ⚠️ | 0 | 0 | 0 | 0 | 0 |
-| Juncus usitatus (Common Rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
+| Juncus usitatus (Australian Rush) ⚠️ | 0 | 0 | 0 | 0 | 0 |
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
@@ -104,13 +104,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 EIVE R range: 5.1-9.1 (difference: 4.0 units)
 
 Plant pH preferences:
-Alyxia ruscifolia (Chainfruit): Neutral (pH 6-7)
-Carex mucronata (Carex): Strongly Alkaline (pH >8)
-Eucalyptus melanophloia (Silver-leaved ironbark): Neutral (pH 6-7)
-Hibbertia diffusa (Wedge guinea flower): Slightly Acidic (pH 5-6)
-Juncus usitatus (Common rush): Neutral (pH 6-7)
-Senna artemisioides (Silver cassia): Neutral (pH 6-7)
-Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)  
+Alyxia ruscifolia (Chain Fruit): Neutral (pH 6-7)
+Carex mucronata: Strongly Alkaline (pH >8)
+Eucalyptus melanophloia (Silver-leaved Ironbark): Neutral (pH 6-7)
+Hibbertia diffusa (Wedge Guinea Flower): Slightly Acidic (pH 5-6)
+Juncus usitatus (Australian Rush): Neutral (pH 6-7)
+Senna artemisioides (Silver Cassia): Neutral (pH 6-7)
+Sporobolus compositus (Composite Dropseed): Neutral (pH 6-7)  
 *Advice:* Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments.
 
 ## Metrics Breakdown
@@ -119,7 +119,7 @@ Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 33.7 | Poor |
+| M1 - Pest & Pathogen Independence | 32.8 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
 | M4 - Disease Suppression | 63.3 | Good |

@@ -1,8 +1,8 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 83.9/100
+**Overall Score:** 82.4/100
 
-Overall guild compatibility: 83.9/100
+Overall guild compatibility: 82.4/100
 
 ## Climate Compatibility
 
@@ -43,26 +43,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
 | tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific (weight 1.0) |
 
-**Network Hubs (plants attracting most biocontrol):**
-
-| Plant | Total Predators | Total Fungi | Combined |
-|-------|----------------|-------------|----------|
-| Acer saccharinum (silver maple) | 0 | 2 | 2 |
-| Crataegus monogyna (Neapolitan medlar) ⚠️ | 0 | 0 | 0 |
-| Fragaria vesca (wild strawberry) ⚠️ | 0 | 0 | 0 |
-| Prunus spinosa (Sloe) ⚠️ | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak) ⚠️ | 0 | 0 | 0 |
-| Rosa canina (canker rose) ⚠️ | 0 | 0 | 0 |
-| Sambucus nigra (Parsley-leaved Elder) ⚠️ | 0 | 0 | 0 |
-
-⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
-
-### Natural Disease Suppression [M4 - 97.5/100]
+### Natural Disease Suppression [M4 - 97.3/100]
 
 Guild provides disease suppression via 32 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 97.5/100, covering 32 mechanisms
+*Evidence:* Pathogen control score: 97.3/100, covering 32 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -95,13 +81,13 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Plant | Mycoparasites | Pathogens |
 |-------|---------------|-----------|
-| Prunus spinosa (Sloe) | 3 | 64 |
-| Acer saccharinum (silver maple) | 2 | 97 |
-| Sambucus nigra (Parsley-leaved Elder) | 2 | 59 |
-| Rosa canina (canker rose) | 1 | 67 |
-| Crataegus monogyna (Neapolitan medlar) | 0 | 55 |
-| Fragaria vesca (wild strawberry) | 0 | 39 |
-| Quercus robur (pedunculate oak) | 0 | 9 |
+| Prunus spinosa (Blackthorn) | 3 | 64 |
+| Acer saccharinum (River Maple) | 2 | 97 |
+| Sambucus nigra (Black Elderberry) | 2 | 59 |
+| Rosa canina (Canker Rose) | 1 | 67 |
+| Crataegus monogyna (Common Hawthorn) | 0 | 55 |
+| Fragaria vesca (Alpine Strawberry) | 0 | 39 |
+| Quercus robur (Acorn Tree) | 0 | 9 |
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
@@ -144,13 +130,13 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 | Plant | Total Fungi | AMF | EMF | Endophytic | Saprotrophic |
 |-------|-------------|-----|-----|------------|---------------|
-| Acer saccharinum (silver maple) | 216 | 0 | 2 | 31 | 183 |
-| Prunus spinosa (Sloe) | 95 | 0 | 1 | 10 | 84 |
-| Sambucus nigra (Parsley-leaved Elder) | 89 | 0 | 0 | 13 | 76 |
-| Crataegus monogyna (Neapolitan medlar) | 88 | 12 | 2 | 9 | 65 |
-| Rosa canina (canker rose) | 70 | 0 | 0 | 11 | 59 |
-| Fragaria vesca (wild strawberry) | 38 | 7 | 0 | 7 | 24 |
-| Quercus robur (pedunculate oak) | 18 | 0 | 7 | 0 | 11 |
+| Acer saccharinum (River Maple) | 216 | 0 | 2 | 31 | 183 |
+| Prunus spinosa (Blackthorn) | 95 | 0 | 1 | 10 | 84 |
+| Sambucus nigra (Black Elderberry) | 89 | 0 | 0 | 13 | 76 |
+| Crataegus monogyna (Common Hawthorn) | 88 | 12 | 2 | 9 | 65 |
+| Rosa canina (Canker Rose) | 70 | 0 | 0 | 11 | 59 |
+| Fragaria vesca (Alpine Strawberry) | 38 | 7 | 0 | 7 | 24 |
+| Quercus robur (Acorn Tree) | 18 | 0 | 7 | 0 | 11 |
 
 ### High Structural Diversity [M6 - 100.0/100]
 
@@ -158,17 +144,17 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Vertical Stratification (Quality: 1.00 - Excellent):**
 
 **Canopy Layer (>15m):**
-  - Acer saccharinum (Silver maple): 33.7m, EIVE-L: 5.3 (flexible)
-  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)
+  - Acer saccharinum (River Maple): 33.7m, EIVE-L: 5.3 (flexible)
+  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)
 
 **Shrub Layer (1-5m):**
-  - Sambucus nigra (Parsley-leaved elder): 4.5m, EIVE-L: 5.9 (flexible)
-  - Crataegus monogyna (Neapolitan medlar): 4.3m, EIVE-L: 6.9 (flexible)
-  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)
-  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)
+  - Sambucus nigra (Black Elderberry): 4.5m, EIVE-L: 5.9 (flexible)
+  - Crataegus monogyna (Common Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)
+  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)
+  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)
 
 **Ground Layer (<1m):**
-  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)
+  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
 7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
@@ -224,13 +210,13 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 | Plant | Total | Honey Bees | Bumblebees | Solitary Bees | Hover Flies | Muscid Flies | Mosquitoes | Other Flies | Butterflies | Moths | Pollen Beetles | Other Beetles | Wasps | Birds | Bats | Other |
 |-------|-------|------------|------------|---------------|-------------|--------------|------------|-------------|-------------|-------|----------------|---------------|-------|-------|------|-------|
-| Crataegus monogyna (Neapolitan medlar) | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
-| Prunus spinosa (Sloe) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
-| Rosa canina (canker rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
-| Acer saccharinum (silver maple) | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
-| Sambucus nigra (Parsley-leaved Elder) | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
-| Fragaria vesca (wild strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Quercus robur (pedunculate oak) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
+| Crataegus monogyna (Common Hawthorn) | 108 | 1 | 9 | 30 | 1 | 35 | 0 | 0 | 2 | 4 | 11 | 0 | 4 | 0 | 0 | 11 |
+| Prunus spinosa (Blackthorn) | 69 | 1 | 11 | 15 | 0 | 22 | 0 | 0 | 1 | 4 | 2 | 0 | 9 | 0 | 0 | 4 |
+| Rosa canina (Canker Rose) | 40 | 1 | 8 | 3 | 1 | 15 | 0 | 0 | 0 | 2 | 6 | 0 | 2 | 0 | 0 | 2 |
+| Acer saccharinum (River Maple) | 37 | 0 | 0 | 9 | 1 | 5 | 0 | 0 | 0 | 1 | 3 | 0 | 3 | 0 | 0 | 15 |
+| Sambucus nigra (Black Elderberry) | 28 | 2 | 5 | 4 | 1 | 4 | 0 | 0 | 1 | 4 | 0 | 0 | 2 | 0 | 0 | 5 |
+| Fragaria vesca (Alpine Strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Quercus robur (Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
 
 ## Warnings
 
@@ -244,13 +230,13 @@ Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th 
 EIVE R range: 5.2-6.9 (difference: 1.7 units)
 
 Plant pH preferences:
-Acer saccharinum (Silver maple): Slightly Acidic (pH 5-6)
-Crataegus monogyna (Neapolitan medlar): Neutral (pH 6-7)
-Fragaria vesca (Wild strawberry): Neutral (pH 6-7)
-Prunus spinosa (Sloe): Neutral (pH 6-7)
-Quercus robur (Pedunculate oak): Slightly Acidic (pH 5-6)
-Rosa canina (Canker rose): Neutral (pH 6-7)
-Sambucus nigra (Parsley-leaved elder): Neutral (pH 6-7)  
+Acer saccharinum (River Maple): Slightly Acidic (pH 5-6)
+Crataegus monogyna (Common Hawthorn): Neutral (pH 6-7)
+Fragaria vesca (Alpine Strawberry): Neutral (pH 6-7)
+Prunus spinosa (Blackthorn): Neutral (pH 6-7)
+Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
+Rosa canina (Canker Rose): Neutral (pH 6-7)
+Sambucus nigra (Black Elderberry): Neutral (pH 6-7)  
 *Advice:* Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.
 
 ## Risks
@@ -268,9 +254,9 @@ Low phylogenetic diversity (Faith's PD: 704.52) increases pest/pathogen risk
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M1 - Pest & Pathogen Independence | 9.5 | Poor |
-| M2 - Growth Compatibility | 80.0 | Excellent |
+| M2 - Growth Compatibility | 70.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.5 | Excellent |
+| M4 - Disease Suppression | 97.3 | Excellent |
 
 ### Bonus Indicators
 

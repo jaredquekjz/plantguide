@@ -25,7 +25,7 @@
 #                        Default: false (run calibration)
 #   --skip-kimi          Skip Phase 2 (Kimi AI, ~30 min)
 #                        Default: false (run Kimi)
-#   --skip-tests         Skip Phase 6 (canonical 3-guild tests + explanation reports)
+#   --skip-tests         Skip Phase 6 (canonical 5-guild tests + explanation reports)
 #                        Default: false (run tests)
 #
 # Examples:
@@ -362,15 +362,15 @@ elif [ "$SKIP_CALIBRATION" -eq 1 ]; then
 fi
 
 # ============================================================================
-# Phase 6: Canonical 3-Guild Tests (optional)
+# Phase 6: Canonical 5-Guild Tests (optional)
 # ============================================================================
 
 if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo "================================================================================"
-  echo "PHASE 6: CANONICAL 3-GUILD TESTS + EXPLANATION REPORTS"
+  echo "PHASE 6: CANONICAL 5-GUILD TESTS + EXPLANATION REPORTS"
   echo "================================================================================"
   echo ""
-  echo "Running verification tests with 3 canonical guilds"
+  echo "Running verification tests with 5 canonical guilds"
   echo ""
 
   PHASE6_START=$(date +%s)
@@ -402,7 +402,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
 
   echo ""
   echo "----------------------------------------------------------------------"
-  echo "Test 2: Generate Explanation Reports (3 guilds × 3 formats)"
+  echo "Test 2: Generate Explanation Reports (5 guilds × 3 formats)"
   echo "----------------------------------------------------------------------"
   echo ""
 
@@ -417,6 +417,8 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
     echo "  - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}"
     echo "  - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}"
     echo "  - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}"
+    echo "  - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}"
+    echo "  - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}"
   else
     echo "✗ Test 2 failed: Explanation generation failed"
   fi
@@ -436,7 +438,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo ""
 elif [ "$RUN_TESTS" -eq 0 ]; then
   echo "================================================================================"
-  echo "PHASE 6: CANONICAL 3-GUILD TESTS (SKIPPED)"
+  echo "PHASE 6: CANONICAL 5-GUILD TESTS (SKIPPED)"
   echo "================================================================================"
   echo ""
   echo "Phase 6 was skipped (--skip-tests flag used)"
@@ -490,7 +492,7 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   [ -n "$PHASE5_TIME" ] && echo "           Time: ${PHASE5_TIME}s ($((PHASE5_TIME / 60)) min)"
 fi
 if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
-  echo "✓ Phase 6: Canonical 3-guild tests + explanation reports"
+  echo "✓ Phase 6: Canonical 5-guild tests + explanation reports"
   [ -n "$PHASE6_TIME" ] && echo "           Time: ${PHASE6_TIME}s"
 fi
 
@@ -530,6 +532,8 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo "    - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}"
   echo "    - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}"
   echo "    - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}"
+  echo "    - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}"
+  echo "    - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}"
   echo ""
 fi
 echo "================================================================================"
