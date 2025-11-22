@@ -12,10 +12,10 @@ Overall guild compatibility: 55.3/100
 
 ### Phylogenetic Diversity [M1 - 70.3/100]
 
-Faith's PD: 885.18 (70th percentile)  
-Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Excellent diversity - distant plant relatives reduce pest/pathogen sharing  
+70th percentile - Plants are distantly related (high phylogenetic diversity)  
+Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.  
 
-*Evidence:* Excellent diversity - distant plant relatives reduce pest/pathogen sharing. Maintain this diversity to minimize disease spread
+*Evidence:* Faith's PD index: 885.18. Maintain this diversity when adding new plants - prioritize species from different plant families.
 
 #### Pest Vulnerability Profile
 

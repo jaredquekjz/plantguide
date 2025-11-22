@@ -16,9 +16,9 @@
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
       "title": "Phylogenetic Diversity",
-      "message": "Faith's PD: 844.68 (57th percentile)",
-      "detail": "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Good diversity - moderate phylogenetic distance provides decent pest independence",
-      "evidence": "Good diversity - moderate phylogenetic distance provides decent pest independence. Consider adding plants from different families to further increase diversity"
+      "message": "57th percentile - Plants are moderately related (good phylogenetic diversity)",
+      "detail": "Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.",
+      "evidence": "Faith's PD index: 844.68. To further improve, consider adding plants from underrepresented families."
     },
     {
       "benefit_type": "csr_compatibility",

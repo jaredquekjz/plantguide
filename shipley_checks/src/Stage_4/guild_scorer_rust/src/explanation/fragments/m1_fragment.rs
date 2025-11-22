@@ -7,19 +7,31 @@ use crate::metrics::M1Result;
 /// Higher scores indicate more distant relatives that share fewer pests/pathogens.
 /// Lower scores indicate closer relatives that may share more pests/pathogens.
 pub fn generate_m1_fragment(m1: &M1Result, display_score: f64) -> MetricFragment {
-    // Determine interpretation based on score
-    let (interpretation, advice) = if display_score >= 70.0 {
-        ("Excellent diversity - distant plant relatives reduce pest/pathogen sharing",
-         "Maintain this diversity to minimize disease spread")
+    // Determine interpretation and implications based on score
+    let (message, detail, advice) = if display_score >= 70.0 {
+        (
+            "Plants are distantly related (high phylogenetic diversity)",
+            "Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.",
+            "Maintain this diversity when adding new plants - prioritize species from different plant families."
+        )
     } else if display_score >= 50.0 {
-        ("Good diversity - moderate phylogenetic distance provides decent pest independence",
-         "Consider adding plants from different families to further increase diversity")
+        (
+            "Plants are moderately related (good phylogenetic diversity)",
+            "Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.",
+            "To further improve, consider adding plants from underrepresented families."
+        )
     } else if display_score >= 30.0 {
-        ("Fair diversity - some related plants may share pests, but not critically clustered",
-         "Consider diversifying with plants from different families")
+        (
+            "Plants have some close relatives (fair phylogenetic diversity)",
+            "Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.",
+            "Consider diversifying with plants from different families to improve pest independence."
+        )
     } else {
-        ("Low diversity - closely related plants may share many pests and pathogens",
-         "Strongly consider adding plants from different families to reduce disease risk")
+        (
+            "Plants are closely related (low phylogenetic diversity)",
+            "Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.",
+            "Strongly consider adding plants from diverse families (e.g., legumes, composites, grasses) to reduce disease risk."
+        )
     };
 
     // Always show as benefit with contextual explanation
@@ -28,17 +40,14 @@ pub fn generate_m1_fragment(m1: &M1Result, display_score: f64) -> MetricFragment
         metric_code: "M1".to_string(),
         title: "Phylogenetic Diversity".to_string(),
         message: format!(
-            "Faith's PD: {:.2} ({}th percentile)",
-            m1.faiths_pd,
-            display_score.round() as i32
+            "{}th percentile - {}",
+            display_score.round() as i32,
+            message
         ),
-        detail: format!(
-            "Phylogenetic diversity measures how distantly related plants are in evolutionary terms. {}",
-            interpretation
-        ),
+        detail: detail.to_string(),
         evidence: Some(format!(
-            "{}. {}",
-            interpretation,
+            "Faith's PD index: {:.2}. {}",
+            m1.faiths_pd,
             advice
         )),
     })

@@ -12,10 +12,10 @@ Overall guild compatibility: 82.4/100
 
 ### Phylogenetic Diversity [M1 - 9.5/100]
 
-Faith's PD: 704.52 (9th percentile)  
-Phylogenetic diversity measures how distantly related plants are in evolutionary terms. Low diversity - closely related plants may share many pests and pathogens  
+9th percentile - Plants are closely related (low phylogenetic diversity)  
+Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.  
 
-*Evidence:* Low diversity - closely related plants may share many pests and pathogens. Strongly consider adding plants from different families to reduce disease risk
+*Evidence:* Faith's PD index: 704.52. Strongly consider adding plants from diverse families (e.g., legumes, composites, grasses) to reduce disease risk.
 
 #### Pest Vulnerability Profile
 
