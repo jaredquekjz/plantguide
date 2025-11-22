@@ -601,41 +601,7 @@ impl MarkdownFormatter {
             md.push_str("\n");
         }
 
-        // Network hubs
-        if !biocontrol_profile.hub_plants.is_empty() {
-            md.push_str("**Network Hubs (plant-associated biocontrol agents):**\n\n");
-            md.push_str("| Plant | Predators | Entomo Fungi | Combined |\n");
-            md.push_str("|-------|-----------|--------------|----------|\n");
-            for hub in biocontrol_profile.hub_plants.iter().take(10) {
-                // Format display name with vernacular if available
-                let display_name = if !hub.plant_vernacular.is_empty() {
-                    format!("{} ({})", hub.plant_name, hub.plant_vernacular)
-                } else {
-                    hub.plant_name.clone()
-                };
-
-                // Add ⚠️ flag if no data
-                let display_name = if !hub.has_data {
-                    format!("{} ⚠️", display_name)
-                } else {
-                    display_name
-                };
-
-                md.push_str(&format!(
-                    "| {} | {} | {} | {} |\n",
-                    display_name,
-                    hub.total_predators,
-                    hub.total_entomo_fungi,
-                    hub.total_biocontrol_agents
-                ));
-            }
-            md.push_str("\n");
-
-            // Add footnote if any plants have no data
-            if biocontrol_profile.hub_plants.iter().any(|h| !h.has_data) {
-                md.push_str("⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.\n\n");
-            }
-        }
+        // Network hubs table removed - data too sparse and lack of data doesn't mean absence
     }
 
     /// Format pathogen control network profile section
