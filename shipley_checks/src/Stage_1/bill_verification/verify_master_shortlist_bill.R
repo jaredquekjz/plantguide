@@ -2,27 +2,79 @@
 #
 # verify_master_shortlist_bill.R
 #
-# Purpose: Verify master taxa union and shortlist creation logic
+# PURPOSE: Verify master taxa union and shortlist candidates meet expected thresholds
+#          This is a lightweight verification script that checks counts and data quality
+#          without reconstructing datasets from scratch (unlike verify_stage1_integrity_bill.R)
+#
+# CHECKS:
+#   1. File existence
+#   2. Row counts within expected ranges
+#   3. No duplicate wfo_taxon_id values
+#   4. Required columns present
+#   5. Source coverage counts reasonable
+#   6. Trait-richness thresholds met
+#
 # Author: Pipeline verification framework
 # Date: 2025-11-07
 #
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
+# ========================================================================
+# LIBRARY LOADING
+# ========================================================================
 suppressPackageStartupMessages({
   library(dplyr)
   library(arrow)
 })
 
 # ==============================================================================
-# CONFIGURATION
+# CONFIGURATION: Expected counts and thresholds
 # ==============================================================================
+# File paths (in OUTPUT_DIR)
+MASTER_UNION_FILE <- file.path(OUTPUT_DIR, "master_taxa_union.parquet")
+SHORTLIST_FILE <- file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet")
 
-MASTER_UNION_FILE <- "data/shipley_checks/master_taxa_union_bill.parquet"
-SHORTLIST_FILE <- "data/shipley_checks/stage1_shortlist_candidates_bill.parquet"
-
+# Expected row counts (with tolerance ranges)
 EXPECTED_MASTER_ROWS <- c(86550, 86650)  # 86,592 ± 50
 EXPECTED_SHORTLIST_ROWS <- c(24460, 24560)  # 24,511 ± 50
 
-# Expected source counts
+# Expected source counts (number of unique WFO taxa per source dataset)
+# These are approximate ranges to detect major data issues
 EXPECTED_SOURCE_COUNTS <- list(
   duke = c(10600, 10680),
   eive = c(12800, 12900),
@@ -31,17 +83,19 @@ EXPECTED_SOURCE_COUNTS <- list(
   austraits = c(28000, 28150)
 )
 
-# Expected trait-richness counts
+# Expected trait-richness counts (species with ≥3 traits per dataset)
+# These verify that shortlist filtering logic is working correctly
 EXPECTED_TRAIT_COUNTS <- list(
-  eive_ge3 = c(12550, 12650),
-  try_ge3 = c(12600, 12700),
-  austraits_ge3 = c(3800, 3900)
+  eive_ge3 = c(12550, 12650),     # Species with ≥3 EIVE indices
+  try_ge3 = c(12600, 12700),      # Species with ≥3 TRY traits
+  austraits_ge3 = c(3800, 3900)   # Species with ≥3 AusTraits traits
 )
 
 # ==============================================================================
 # HELPER FUNCTIONS
 # ==============================================================================
-
+# check_pass: Non-critical check, returns TRUE/FALSE and updates all_checks_pass
+# Prints checkmark (✓) if passes, X (✗) if fails
 check_pass <- function(condition, message) {
   if (condition) {
     cat(sprintf("  ✓ %s\n", message))
@@ -52,6 +106,8 @@ check_pass <- function(condition, message) {
   }
 }
 
+# check_critical: Critical check that exits immediately if fails
+# Used for file existence and data integrity checks that block all subsequent checks
 check_critical <- function(condition, message) {
   if (condition) {
     cat(sprintf("  ✓ %s\n", message))
@@ -59,7 +115,7 @@ check_critical <- function(condition, message) {
   } else {
     cat(sprintf("  ✗ CRITICAL FAIL: %s\n", message))
     cat("\nVerification FAILED. Exiting.\n")
-    quit(status = 1)
+    stop("Verification failed")  # Throw error instead of quitting
   }
 }
 
@@ -82,7 +138,7 @@ check_critical(exists_master, sprintf("Master union file exists: %s", basename(M
 check_critical(exists_shortlist, sprintf("Shortlist file exists: %s", basename(SHORTLIST_FILE)))
 
 if (!exists_master || !exists_shortlist) {
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }
 
 # Load data
@@ -110,7 +166,7 @@ check_critical(
 )
 
 # Source coverage flags
-source_flags <- c("has_duke", "has_eive", "has_mabberly", "has_tryenhanced", "has_austraits")
+source_flags <- c("in_duke", "in_eive", "in_mabberly", "in_try_enhanced", "in_austraits")
 missing_flags <- setdiff(source_flags, names(df_master))
 all_checks_pass <- check_pass(
   length(missing_flags) == 0,
@@ -120,7 +176,7 @@ all_checks_pass <- check_pass(
 # Source counts
 cat("\n  Source coverage:\n")
 for (source in names(EXPECTED_SOURCE_COUNTS)) {
-  flag_col <- sprintf("has_%s", source)
+  flag_col <- sprintf("in_%s", source)
   if (flag_col %in% names(df_master)) {
     n_source <- sum(df_master[[flag_col]], na.rm = TRUE)
     expected_range <- EXPECTED_SOURCE_COUNTS[[source]]
@@ -194,7 +250,7 @@ if ("austraits_numeric_count" %in% names(df_shortlist)) {
 }
 
 # Qualification flags
-qual_flags <- c("qualified_by_eive", "qualified_by_try", "qualified_by_austraits")
+qual_flags <- c("qualifies_via_eive", "qualifies_via_try", "qualifies_via_austraits")
 missing_qual <- setdiff(qual_flags, names(df_shortlist))
 all_checks_pass <- check_pass(
   length(missing_qual) == 0,
@@ -230,7 +286,7 @@ if (all(qual_flags %in% names(df_shortlist))) {
   all_qualified <- all(has_qualification)
   all_checks_pass <- check_pass(
     all_qualified,
-    sprintf("All species have ≥1 qualification (%d/% d)", sum(has_qualification), nrow(df_shortlist))
+    sprintf("All species have ≥1 qualification (%d/%d)", sum(has_qualification), nrow(df_shortlist))
   ) && all_checks_pass
 }
 
@@ -249,9 +305,9 @@ cat("\n========================================================================\
 if (all_checks_pass) {
   cat("✓ VERIFICATION PASSED\n")
   cat("========================================================================\n\n")
-  quit(status = 0)
+  invisible(TRUE)  # Return success without exiting R session
 } else {
   cat("✗ VERIFICATION FAILED\n")
   cat("========================================================================\n\n")
-  quit(status = 1)
+  stop("Verification failed")  # Throw error instead of quitting
 }

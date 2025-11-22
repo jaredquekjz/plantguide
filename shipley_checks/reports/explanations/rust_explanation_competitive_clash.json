@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 55.47851575196431,
+    "score": 55.29132472979909,
     "stars": "★☆☆☆☆",
     "label": "Poor",
-    "message": "Overall guild compatibility: 55.5/100"
+    "message": "Overall guild compatibility: 55.3/100"
   },
   "climate": {
     "compatible": true,
@@ -50,8 +50,8 @@
       "warning_type": "csr_conflict",
       "severity": "High",
       "icon": "⚠️",
-      "message": "8.4 CSR strategy conflicts detected",
-      "detail": "Growth strategy incompatibility: 5 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)",
+      "message": "12.8 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 6 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)",
       "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
     },
     {
@@ -69,15 +69,15 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 70.43033564555068,
+        "score": 70.40546826918163,
         "raw": 0.4126401547150537,
         "interpretation": "Good"
       },
       {
         "code": "M2",
         "name": "Growth Compatibility",
-        "score": 1.3697478991596626,
-        "raw": 0.19904761904761903,
+        "score": 0.0,
+        "raw": 0.3038095238095238,
         "interpretation": "Poor"
       },
       {
@@ -106,7 +106,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 16.549526719039847,
+        "score": 16.633804839412043,
         "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },

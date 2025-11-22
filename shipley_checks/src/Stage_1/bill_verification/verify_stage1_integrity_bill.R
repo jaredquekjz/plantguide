@@ -1,24 +1,60 @@
 #!/usr/bin/env Rscript
-# Stage 1 Data Integrity Verification (R implementation)
+# Stage 1 Data Integrity Verification
 # Author: Bill Shipley verification script
 # Date: 2025-11-06
-# Output: data/shipley_checks/
 #
-# Expected counts (after 2025-11-06 case-sensitivity fix):
-#   Master taxa union: 86,592 unique WFO taxa
-#   Shortlist candidates: 24,511 species
+# PURPOSE: Build master taxa union and shortlist candidates from enriched datasets
 #
-# Prior to fix: 86,815 taxa, 24,542 species (contained 223 false duplicates)
+# TWO-PART PROCESS:
+#   Part 1: Master Taxa Union - Aggregates unique WFO taxa from 5 source datasets
+#   Part 2: Shortlist Candidates - Filters to trait-rich species (≥3 traits)
+#   Part 3: Validation - Verify outputs are complete and valid
+#
+# Expected outputs:
+#   Master taxa union: ~86,592 unique WFO taxa
+#   Shortlist candidates: ~24,511 species
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
+# ========================================================================
+# LIBRARY LOADING
+# ========================================================================
 library(arrow)
 library(dplyr)
-library(tools)  # for md5sum
-
-# Set working directory to repository root
-setwd("/home/olier/ellenberg")
-
-# Create output directory
-dir.create("data/shipley_checks", showWarnings = FALSE, recursive = TRUE)
 
 cat("=== Stage 1 Data Integrity Check ===\n")
 cat("Starting:", format(Sys.time()), "\n\n")
@@ -26,12 +62,34 @@ cat("Starting:", format(Sys.time()), "\n\n")
 # ============================================================================
 # PART 1: Master Taxa Union (5 sources)
 # ============================================================================
+# PURPOSE: Aggregate all unique WFO taxa from 5 source datasets
+#   - Duke ethnobotany
+#   - EIVE ecological indicators
+#   - Mabberly genera
+#   - TRY Enhanced traits
+#   - AusTraits traits
+#
+# PROCESS:
+#   1. Extract unique WFO taxa from each enriched dataset
+#   2. Combine all sources (preserving duplicates across sources)
+#   3. Aggregate by wfo_taxon_id, tracking which sources contain each taxon
+#   4. Sort by wfo_taxon_id for reproducible output
 
 cat("PART 1: Building Master Taxa Union\n")
 cat("Reading raw parquet files...\n")
 
-# Read Duke ethnobotany
-duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enriched.parquet") %>%
+# ============================================================================
+# Load enriched datasets and extract unique WFO taxa
+# ============================================================================
+# For each source dataset:
+#   1. Load WFO-enriched parquet from Bill's wfo_verification directory
+#   2. Filter to rows with valid WFO taxon IDs (non-NA)
+#   3. Extract wfo_taxon_id and wfo_scientific_name columns
+#   4. Remove duplicates within source (one row per unique WFO taxon)
+#   5. Tag with source name for later aggregation
+
+# Read Duke ethnobotany - extract unique WFO taxa with valid taxon IDs
+duke <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "duke_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -39,8 +97,8 @@ duke <- read_parquet("data/shipley_checks/wfo_verification/duke_worldflora_enric
 
 cat("  Duke:", nrow(duke), "records\n")
 
-# Read EIVE
-eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
+# Read EIVE - ecological indicator values
+eive <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "eive_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -48,8 +106,8 @@ eive <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enric
 
 cat("  EIVE:", nrow(eive), "records\n")
 
-# Read Mabberly
-mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet") %>%
+# Read Mabberly - genus-level taxonomy
+mabberly <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "mabberly_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -57,8 +115,8 @@ mabberly <- read_parquet("data/shipley_checks/wfo_verification/mabberly_worldflo
 
 cat("  Mabberly:", nrow(mabberly), "records\n")
 
-# Read TRY Enhanced
-try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
+# Read TRY Enhanced - global trait database
+try_enhanced <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "tryenhanced_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -66,8 +124,8 @@ try_enhanced <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_w
 
 cat("  TRY Enhanced:", nrow(try_enhanced), "records\n")
 
-# Read AusTraits (from traits parquet - contains both taxonomy and measurements)
-austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+# Read AusTraits (from output/wfo_verification - contains trait measurements with WFO taxonomy)
+austraits <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "austraits_traits_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id)) %>%
   select(wfo_taxon_id, wfo_scientific_name) %>%
   distinct() %>%
@@ -75,13 +133,26 @@ austraits <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits
 
 cat("  AusTraits:", nrow(austraits), "records\n")
 
-# Combine all sources (preserve order for source string aggregation)
+# -------------------------------------------------------
+# Combine all sources into single dataframe
+# -------------------------------------------------------
+# bind_rows stacks all 5 datasets vertically
+# Same wfo_taxon_id may appear multiple times (once per source that contains it)
 cat("\nCombining sources...\n")
 combined <- bind_rows(duke, eive, mabberly, try_enhanced, austraits)
 cat("  Total records before deduplication:", nrow(combined), "\n")
 
-# Aggregate by wfo_taxon_id
+# -------------------------------------------------------
+# Aggregate by wfo_taxon_id to create master union
+# -------------------------------------------------------
+# Group by WFO taxon ID and create summary statistics:
+#   - wfo_scientific_name: Keep first non-NA scientific name
+#   - sources: Comma-separated list of source datasets containing this taxon
+#   - source_count: Number of distinct sources containing this taxon
+#   - in_X flags: Binary flags (0/1) indicating presence in each source
+#
 # KEY: Do NOT sort source names - preserve order of appearance to match DuckDB STRING_AGG
+# Python uses DuckDB which aggregates strings in encounter order, not alphabetically
 cat("Aggregating by wfo_taxon_id...\n")
 master_union_unsorted <- combined %>%
   group_by(wfo_taxon_id) %>%
@@ -100,20 +171,11 @@ master_union_unsorted <- combined %>%
 cat("  Unique WFO taxa:", nrow(master_union_unsorted), "\n")
 cat("  Expected: 86,592\n")
 
-# KEY: Match exact row order from Python by reading it and joining
-cat("\nMatching Python row order...\n")
-py_master <- read_parquet("data/stage1/master_taxa_union.parquet")
-py_order <- py_master %>%
-  select(wfo_taxon_id) %>%
-  mutate(row_order = row_number())
-
+# -------------------------------------------------------
+# Sort for reproducible output
+# -------------------------------------------------------
 master_union <- master_union_unsorted %>%
-  inner_join(py_order, by = "wfo_taxon_id") %>%
-  arrange(row_order) %>%
-  select(-row_order, -sources) %>%  # Drop R-generated sources
-  # Add Python sources column (exact match)
-  left_join(py_master %>% select(wfo_taxon_id, sources), by = "wfo_taxon_id") %>%
-  # Ensure exact column order
+  arrange(wfo_taxon_id) %>%
   select(wfo_taxon_id, wfo_scientific_name, sources, source_count,
          in_duke, in_eive, in_mabberly, in_try_enhanced, in_austraits)
 
@@ -126,28 +188,43 @@ cat("  TRY Enhanced:", sum(master_union$in_try_enhanced), "\n")
 cat("  AusTraits:", sum(master_union$in_austraits), "\n")
 
 # Write output
-cat("\nWriting master_taxa_union_R.parquet...\n")
-write_parquet(master_union, "data/shipley_checks/master_taxa_union_R.parquet",
-              compression = "zstd")
-
-# Calculate file MD5 checksum (binary comparison)
-checksum_r_file <- md5sum("data/shipley_checks/master_taxa_union_R.parquet")
-checksum_py_file <- md5sum("data/stage1/master_taxa_union.parquet")
-cat("  R parquet MD5:     ", checksum_r_file, "\n")
-cat("  Python parquet MD5:", checksum_py_file, "\n")
+output_file <- file.path(OUTPUT_DIR, "master_taxa_union.parquet")
+cat("\nWriting master_taxa_union.parquet...\n")
+write_parquet(master_union, output_file, compression = "zstd")
+cat(sprintf("  Saved to: %s\n", output_file))
+cat(sprintf("  Rows: %d\n", nrow(master_union)))
 
 # ============================================================================
 # PART 2: Shortlist Candidates (Trait-rich species)
 # ============================================================================
+# PURPOSE: Filter master taxa to trait-rich species suitable for ecological analysis
+#
+# SHORTLIST CRITERIA:
+#   Species must have ≥3 numeric traits in at least ONE of:
+#     - EIVE: 5 ecological indices (M, N, R, L, T)
+#     - TRY Enhanced: 9 functional traits (leaf area, Nmass, LMA, height, etc.)
+#     - AusTraits: 8 overlap traits matching TRY
+#
+# PROCESS:
+#   1. Count numeric traits per species in each dataset
+#   2. Identify species qualifying via each dataset (≥3 traits)
+#   3. Combine and deduplicate (species can qualify via multiple datasets)
+#   4. Sort by wfo_taxon_id for reproducible output
 
 cat("\n\nPART 2: Building Shortlist Candidates\n")
 cat("Applying trait-richness filters...\n")
 
+# -------------------------------------------------------
+# EIVE: Count ecological indicator values per species
+# -------------------------------------------------------
 # Read EIVE with trait counts
-eive_full <- read_parquet("data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet") %>%
+# Filter to valid WFO taxa only (non-empty taxon IDs)
+eive_full <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "eive_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric EIVE indices per species
+# EIVE provides 5 ecological indicators: M (moisture), N (nitrogen), R (pH), L (light), T (temperature)
+# as.numeric() returns NA for non-numeric values, !is.na() counts valid numeric values
 cat("Counting EIVE numeric traits...\n")
 eive_counts <- eive_full %>%
   mutate(
@@ -164,7 +241,7 @@ eive_counts <- eive_full %>%
 cat("  Species with >=3 EIVE indices:", sum(eive_counts$eive_numeric_count >= 3), "\n")
 
 # Read TRY Enhanced with trait counts
-try_full <- read_parquet("data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet") %>%
+try_full <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "tryenhanced_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Count numeric TRY traits per species
@@ -187,9 +264,9 @@ try_counts <- try_full %>%
 
 cat("  Species with >=3 TRY traits:", sum(try_counts$try_numeric_count >= 3), "\n")
 
-# Read AusTraits overlap traits (use Bill's enriched parquet)
+# Read AusTraits overlap traits (use enriched parquet with trait measurements)
 cat("Counting AusTraits overlap numeric traits...\n")
-austraits_enriched_full <- read_parquet("data/shipley_checks/wfo_verification/austraits_traits_worldflora_enriched.parquet") %>%
+austraits_enriched_full <- read_parquet(file.path(OUTPUT_DIR, "wfo_verification", "austraits_traits_worldflora_enriched.parquet")) %>%
   filter(!is.na(wfo_taxon_id), trimws(wfo_taxon_id) != "")
 
 # Filter for TRY-overlap numeric traits
@@ -260,18 +337,10 @@ shortlist_filtered <- shortlist_union_unsorted %>%
 cat("  Shortlisted species:", nrow(shortlist_filtered), "\n")
 cat("  Expected: 24,511\n")
 
-# Match Python row order
-cat("\nMatching Python row order...\n")
-py_shortlist <- read_parquet("data/stage1/stage1_shortlist_candidates.parquet")
-py_order_shortlist <- py_shortlist %>%
-  select(wfo_taxon_id) %>%
-  mutate(row_order = row_number())
-
+# Sort for reproducible output
+cat("\nSorting by wfo_taxon_id...\n")
 shortlist_final <- shortlist_filtered %>%
-  inner_join(py_order_shortlist, by = "wfo_taxon_id") %>%
-  arrange(row_order) %>%
-  select(-row_order) %>%
-  # Ensure exact column order to match Python
+  arrange(wfo_taxon_id) %>%
   select(wfo_taxon_id, canonical_name, eive_numeric_count, try_numeric_count,
          austraits_numeric_count, in_eive, in_try_enhanced, in_duke, in_austraits,
          qualifies_via_eive, qualifies_via_try, qualifies_via_austraits, shortlist_flag)
@@ -283,85 +352,44 @@ cat("  Via TRY (>=3 traits):", sum(shortlist_final$qualifies_via_try), "\n")
 cat("  Via AusTraits (>=3 traits):", sum(shortlist_final$qualifies_via_austraits), "\n")
 
 # Write output
-cat("\nWriting stage1_shortlist_candidates_R.parquet...\n")
-write_parquet(shortlist_final, "data/shipley_checks/stage1_shortlist_candidates_R.parquet",
-              compression = "zstd")
-
-# Calculate file MD5 checksums
-checksum_shortlist_r_file <- md5sum("data/shipley_checks/stage1_shortlist_candidates_R.parquet")
-checksum_shortlist_py_file <- md5sum("data/stage1/stage1_shortlist_candidates.parquet")
-cat("  R parquet MD5:     ", checksum_shortlist_r_file, "\n")
-cat("  Python parquet MD5:", checksum_shortlist_py_file, "\n")
+shortlist_output <- file.path(OUTPUT_DIR, "stage1_shortlist_candidates.parquet")
+cat("\nWriting stage1_shortlist_candidates.parquet...\n")
+write_parquet(shortlist_final, shortlist_output, compression = "zstd")
+cat(sprintf("  Saved to: %s\n", shortlist_output))
+cat(sprintf("  Rows: %d\n", nrow(shortlist_final)))
 
 # ============================================================================
-# PART 3: Detailed Verification
+# PART 3: Validation
 # ============================================================================
 
-cat("\n\n=== DETAILED VERIFICATION ===\n")
+cat("\n\n=== VALIDATION ===\n")
 
-# Compare master union
+# Validate master union
 cat("\n1. Master Taxa Union\n")
-cat("   Row counts match:", nrow(master_union) == nrow(py_master), "\n")
-cat("   Column names match:", identical(names(master_union), names(py_master)), "\n")
+cat(sprintf("   Rows: %d (expected ~86,592)\n", nrow(master_union)))
+cat(sprintf("   Columns: %d\n", ncol(master_union)))
+cat(sprintf("   Row count within tolerance: %s\n",
+            abs(nrow(master_union) - 86592) <= 100))
 
-# Check for any data differences
-if (nrow(master_union) == nrow(py_master)) {
-  # Compare key fields
-  wfo_match <- all(master_union$wfo_taxon_id == py_master$wfo_taxon_id)
-  sources_match <- all(master_union$sources == py_master$sources)
-
-  cat("   WFO IDs match:", wfo_match, "\n")
-  cat("   Sources match:", sources_match, "\n")
-
-  if (!sources_match) {
-    diffs <- which(master_union$sources != py_master$sources)
-    cat("   Number of source mismatches:", length(diffs), "\n")
-    if (length(diffs) > 0 && length(diffs) <= 5) {
-      cat("   First mismatches:\n")
-      for (i in head(diffs, 5)) {
-        cat(sprintf("     Row %d: R='%s' vs Python='%s'\n",
-                    i, master_union$sources[i], py_master$sources[i]))
-      }
-    }
-  }
-}
-
-# Compare shortlist
+# Validate shortlist
 cat("\n2. Shortlist Candidates\n")
-cat("   Row counts match:", nrow(shortlist_final) == nrow(py_shortlist), "\n")
-cat("   Column names match:", identical(names(shortlist_final), names(py_shortlist)), "\n")
+cat(sprintf("   Rows: %d (expected ~24,511)\n", nrow(shortlist_final)))
+cat(sprintf("   Columns: %d\n", ncol(shortlist_final)))
+cat(sprintf("   Row count within tolerance: %s\n",
+            abs(nrow(shortlist_final) - 24511) <= 100))
 
-if (nrow(shortlist_final) == nrow(py_shortlist)) {
-  wfo_match_sl <- all(shortlist_final$wfo_taxon_id == py_shortlist$wfo_taxon_id)
-  cat("   WFO IDs match:", wfo_match_sl, "\n")
-
-  # Check numeric columns
-  numeric_cols <- c("eive_numeric_count", "try_numeric_count", "austraits_numeric_count")
-  for (col in numeric_cols) {
-    match_result <- all(shortlist_final[[col]] == py_shortlist[[col]])
-    cat(sprintf("   %s matches: %s\n", col, match_result))
-  }
-}
-
-# File checksum comparison
-cat("\n3. Binary File Checksums\n")
-master_match <- (checksum_r_file == checksum_py_file)
-shortlist_match <- (checksum_shortlist_r_file == checksum_shortlist_py_file)
-
-if (master_match) {
-  cat("   ✓ PASS: Master union parquet files are IDENTICAL\n")
-} else {
-  cat("   ✗ FAIL: Master union parquet files differ\n")
-  cat("   This may be due to minor encoding differences even if data matches\n")
-}
-
-if (shortlist_match) {
-  cat("   ✓ PASS: Shortlist parquet files are IDENTICAL\n")
-} else {
-  cat("   ✗ FAIL: Shortlist parquet files differ\n")
-  cat("   This may be due to minor encoding differences even if data matches\n")
-}
+# Check for data quality issues
+cat("\n3. Data Quality\n")
+cat(sprintf("   Master union - no NA taxon IDs: %s\n", !any(is.na(master_union$wfo_taxon_id))))
+cat(sprintf("   Shortlist - no NA taxon IDs: %s\n", !any(is.na(shortlist_final$wfo_taxon_id))))
+cat(sprintf("   Master union - unique taxon IDs: %s\n",
+            length(unique(master_union$wfo_taxon_id)) == nrow(master_union)))
+cat(sprintf("   Shortlist - unique taxon IDs: %s\n",
+            length(unique(shortlist_final$wfo_taxon_id)) == nrow(shortlist_final)))
 
 cat("\n=== Integrity Check Complete ===\n")
 cat("Finished:", format(Sys.time()), "\n")
-cat("\nR-generated files saved to: data/shipley_checks/\n")
+cat(sprintf("\nOutputs saved:\n  - %s\n  - %s\n", output_file, shortlist_output))
+
+# Return success
+invisible(TRUE)

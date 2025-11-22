@@ -23,14 +23,16 @@
 #                        Default: 0 (run all phases)
 #   --skip-calibration   Skip Phase 5 (Rust calibration)
 #                        Default: false (run calibration)
-#   --run-tests          Run Phase 6 (canonical 3-guild tests + explanation reports)
-#                        Default: false (skip testing)
+#   --skip-kimi          Skip Phase 2 (Kimi AI, ~30 min)
+#                        Default: false (run Kimi)
+#   --skip-tests         Skip Phase 6 (canonical 3-guild tests + explanation reports)
+#                        Default: false (run tests)
 #
 # Examples:
-#   ./run_complete_pipeline_phase0_to_4.sh              # Run all phases including calibration
+#   ./run_complete_pipeline_phase0_to_4.sh              # Run all phases including tests
 #   ./run_complete_pipeline_phase0_to_4.sh --start-from 2   # Skip Phase 0-1, start from Phase 2
-#   ./run_complete_pipeline_phase0_to_4.sh --skip-calibration  # Run Phases 0-4 only
-#   ./run_complete_pipeline_phase0_to_4.sh --run-tests  # Run Phases 0-6 (full pipeline + tests)
+#   ./run_complete_pipeline_phase0_to_4.sh --skip-calibration  # Run Phases 0-4,6 (skip calibration)
+#   ./run_complete_pipeline_phase0_to_4.sh --skip-tests  # Run Phases 0-5 (skip guild tests)
 #
 # Date: 2025-11-16
 #
@@ -49,7 +51,8 @@ export R_LIBS_USER="${PROJECT_ROOT}/.Rlib"
 # Parse arguments
 START_PHASE=0
 SKIP_CALIBRATION=0
-RUN_TESTS=0
+SKIP_KIMI=0
+RUN_TESTS=1  # Changed: Phase 6 runs by default now
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -61,13 +64,17 @@ while [[ $# -gt 0 ]]; do
       SKIP_CALIBRATION=1
       shift
       ;;
-    --run-tests)
-      RUN_TESTS=1
+    --skip-kimi)
+      SKIP_KIMI=1
+      shift
+      ;;
+    --skip-tests)
+      RUN_TESTS=0
       shift
       ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 [--start-from PHASE] [--skip-calibration] [--run-tests]"
+      echo "Usage: $0 [--start-from PHASE] [--skip-calibration] [--skip-kimi] [--skip-tests]"
       exit 1
       ;;
   esac
@@ -158,7 +165,7 @@ fi
 # Phase 2: Kimi AI Gardener-Friendly Labels (animals, ~30 min)
 # ============================================================================
 
-if [ "$START_PHASE" -le 2 ]; then
+if [ "$START_PHASE" -le 2 ] && [ "$SKIP_KIMI" -eq 0 ]; then
   echo "================================================================================"
   echo "PHASE 2: KIMI AI GARDENER-FRIENDLY LABELS (ANIMALS)"
   echo "================================================================================"
@@ -181,6 +188,13 @@ if [ "$START_PHASE" -le 2 ]; then
     echo "✗ Phase 2 failed"
     exit 1
   fi
+elif [ "$SKIP_KIMI" -eq 1 ]; then
+  echo "================================================================================"
+  echo "PHASE 2: KIMI AI GARDENER-FRIENDLY LABELS (SKIPPED)"
+  echo "================================================================================"
+  echo ""
+  echo "Using existing Kimi AI labels: data/taxonomy/kimi_gardener_labels.csv"
+  echo ""
 fi
 
 # ============================================================================
@@ -238,19 +252,43 @@ if [ "$START_PHASE" -le 4 ]; then
 fi
 
 # ============================================================================
-# Phase 5: Rust Guild Scorer Calibration (optional)
+# Phase 5: Calibration (CSR Percentiles + Guild Metrics)
 # ============================================================================
 
 if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   echo "================================================================================"
-  echo "PHASE 5: RUST GUILD SCORER CALIBRATION"
+  echo "PHASE 5: CALIBRATION (CSR PERCENTILES + GUILD METRICS)"
   echo "================================================================================"
   echo ""
-  echo "Running 20K guilds/tier calibration (~5 minutes)"
-  echo "Output: shipley_checks/stage4/normalization_params_7plant_rust.json"
+  echo "Step 1: CSR Percentile Calibration (global distribution)"
+  echo "Step 2: Guild Metric Calibration (Köppen-stratified, 20K guilds/tier)"
   echo ""
 
   PHASE5_START=$(date +%s)
+
+  # Step 1: Generate CSR percentile calibration
+  echo "----------------------------------------------------------------------"
+  echo "Step 1: CSR Percentile Calibration"
+  echo "----------------------------------------------------------------------"
+  echo ""
+
+  # Run from project root for correct relative paths (like Rust calibration)
+  cd "${PROJECT_ROOT}"
+  env R_LIBS_USER="$R_LIBS_USER" \
+    /usr/bin/Rscript shipley_checks/src/Stage_4/calibration/generate_csr_percentile_calibration.R
+  CSR_STATUS=$?
+  cd "${STAGE4_DIR}"
+
+  if [ $CSR_STATUS -ne 0 ]; then
+    echo "✗ CSR percentile calibration failed"
+    exit 1
+  fi
+
+  echo ""
+  echo "----------------------------------------------------------------------"
+  echo "Step 2: Guild Metric Calibration"
+  echo "----------------------------------------------------------------------"
+  echo ""
 
   # Build Rust calibration binary (release mode)
   echo "Building Rust calibration binary (release mode)..."
@@ -275,8 +313,11 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
     echo "✓ Phase 5 complete (${PHASE5_TIME}s = $((PHASE5_TIME / 60)) min)"
     echo ""
     echo "Calibration parameters saved:"
-    echo "  - shipley_checks/stage4/normalization_params_7plant_rust.json (16 KB)"
-    echo "  - shipley_checks/stage4/normalization_params_2plant_rust.json (4 KB)"
+    echo "  Step 1 (CSR percentiles):"
+    echo "    - shipley_checks/stage4/csr_percentile_calibration_global.json (< 1 KB)"
+    echo "  Step 2 (Guild metrics):"
+    echo "    - shipley_checks/stage4/normalization_params_7plant_rust.json (16 KB)"
+    echo "    - shipley_checks/stage4/normalization_params_2plant_rust.json (4 KB)"
     echo ""
   else
     echo "✗ Phase 5 failed"
@@ -374,7 +415,9 @@ elif [ "$RUN_TESTS" -eq 0 ]; then
   echo "PHASE 6: CANONICAL 3-GUILD TESTS (SKIPPED)"
   echo "================================================================================"
   echo ""
-  echo "To run tests, use: $0 --run-tests"
+  echo "Phase 6 was skipped (--skip-tests flag used)"
+  echo ""
+  echo "To run tests, use: $0 --start-from 6"
   echo ""
   echo "Manual testing:"
   echo "  cd /home/olier/ellenberg"
@@ -453,8 +496,9 @@ echo "    - shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_1
 echo ""
 if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   echo "  Phase 5 (Calibration parameters):"
-  echo "    - shipley_checks/stage4/normalization_params_7plant_rust.json (production)"
-  echo "    - shipley_checks/stage4/normalization_params_2plant_rust.json (intermediate)"
+  echo "    - shipley_checks/stage4/csr_percentile_calibration_global.json (CSR percentiles)"
+  echo "    - shipley_checks/stage4/normalization_params_7plant_rust.json (7-plant guilds)"
+  echo "    - shipley_checks/stage4/normalization_params_2plant_rust.json (2-plant pairs)"
   echo ""
 fi
 if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then

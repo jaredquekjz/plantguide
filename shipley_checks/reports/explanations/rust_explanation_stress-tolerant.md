@@ -1,8 +1,8 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 40.9/100
+**Overall Score:** 41.2/100
 
-Overall guild compatibility: 40.9/100
+Overall guild compatibility: 41.2/100
 
 ## Climate Compatibility
 
@@ -10,12 +10,12 @@ Overall guild compatibility: 40.9/100
 
 ## Benefits
 
-### Natural Disease Suppression [M4 - 61.1/100]
+### Natural Disease Suppression [M4 - 63.3/100]
 
 Guild provides disease suppression via 4 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 61.1/100, covering 4 mechanisms
+*Evidence:* Pathogen control score: 63.3/100, covering 4 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -119,16 +119,16 @@ Sporobolus compositus (Composite dropseed): Neutral (pH 6-7)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 33.8 | Poor |
+| M1 - Pest & Pathogen Independence | 33.7 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
-| M4 - Disease Suppression | 61.1 | Good |
+| M4 - Disease Suppression | 63.3 | Good |
 
 ### Bonus Indicators
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 46.3 | Fair |
+| M6 - Structural Diversity | 46.1 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 

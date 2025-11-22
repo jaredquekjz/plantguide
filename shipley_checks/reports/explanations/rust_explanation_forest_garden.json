@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 92.66347949149825,
+    "score": 92.64105121009962,
     "stars": "★★★★★",
     "label": "Exceptional",
-    "message": "Overall guild compatibility: 92.7/100"
+    "message": "Overall guild compatibility: 92.6/100"
   },
   "climate": {
     "compatible": true,
@@ -18,7 +18,7 @@
       "title": "High Phylogenetic Diversity",
       "message": "Plants are distantly related (Faith's PD: 844.68)",
       "detail": "Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.",
-      "evidence": "Phylogenetic diversity score: 58.6/100"
+      "evidence": "Phylogenetic diversity score: 58.3/100"
     },
     {
       "benefit_type": "insect_control",
@@ -34,7 +34,7 @@
       "title": "Natural Disease Suppression",
       "message": "Guild provides disease suppression via 6 antagonistic fungal mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 95.1/100, covering 6 mechanisms"
+      "evidence": "Pathogen control score: 95.2/100, covering 6 mechanisms"
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -49,8 +49,8 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 22.8m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Golden ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Whitemargin pussytoes): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
-      "evidence": "Stratification quality: 1.00"
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Fraxinus excelsior (Golden ash): 23.1m, EIVE-L: 4.5 (flexible)\n\n**Understory (5-15m):**\n  - Diospyros kaki (Japanese persimmon): 12.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Deutzia scabra (Deutzia): 2.1m, EIVE-L: 5.4 (flexible)\n\n**Ground Layer (<1m):**\n  - Anaphalis margaritacea (Whitemargin pussytoes): 0.6m, EIVE-L: 7.4 (flexible)\n  - Rubus moorei (Bush lawyer): 0.5m, EIVE-L: 6.4 (flexible)\n  - Maianthemum racemosum (Pacific solomon's seal): 0.4m, EIVE-L: 4.9 (flexible)\n  - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)\n\n**Why this stratification works well:**\n1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "evidence": null
     },
     {
       "benefit_type": "pollinator_support",
@@ -77,7 +77,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 58.58441093640052,
+        "score": 58.33495013137313,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -98,7 +98,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 95.0599455040872,
+        "score": 95.15240833932423,
         "raw": 9.428571428571429,
         "interpretation": "Excellent"
       }

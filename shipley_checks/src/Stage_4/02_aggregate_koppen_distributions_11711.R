@@ -35,11 +35,10 @@ OUTPUT_FILE <- file.path(OUTPUT_DIR, "plant_koppen_distributions_11711.parquet")
 # Create output directory
 dir.create(OUTPUT_DIR, showWarnings = FALSE, recursive = TRUE)
 
-# Check if output already exists
+# Delete old output if exists (always regenerate)
 if (file.exists(OUTPUT_FILE)) {
-  cat("\n⚠️  Output file already exists:", OUTPUT_FILE, "\n")
-  cat("Delete it first if you want to regenerate.\n")
-  quit(status = 0)
+  cat("\n🔄 Removing old output file:", OUTPUT_FILE, "\n")
+  file.remove(OUTPUT_FILE)
 }
 
 # Check if input exists

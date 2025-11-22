@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 40.88867301629744,
+    "score": 41.15679321530261,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 40.9/100"
+    "message": "Overall guild compatibility: 41.2/100"
   },
   "climate": {
     "compatible": true,
@@ -18,7 +18,7 @@
       "title": "Natural Disease Suppression",
       "message": "Guild provides disease suppression via 4 antagonistic fungal mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 61.1/100, covering 4 mechanisms"
+      "evidence": "Pathogen control score: 63.3/100, covering 4 mechanisms"
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -45,7 +45,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 33.82378925064265,
+        "score": 33.66776365008104,
         "raw": 0.4559407172659578,
         "interpretation": "Poor"
       },
@@ -66,7 +66,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 61.11111111111111,
+        "score": 63.33333333333333,
         "raw": 0.47619047619047616,
         "interpretation": "Good"
       }
@@ -82,7 +82,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 46.285810752328274,
+        "score": 46.09645552370392,
         "raw": 0.3691127953935177,
         "interpretation": "Fair"
       },
@@ -289,7 +289,7 @@
         },
         {
           "category": "Saprotrophic",
-          "fungus_name": "wojnowicia",
+          "fungus_name": "fusarium",
           "plant_count": 1
         }
       ]

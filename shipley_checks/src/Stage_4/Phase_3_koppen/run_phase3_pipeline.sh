@@ -17,20 +17,15 @@ cd "$PROJECT_ROOT"
 
 # Step 1: Assign Köppen zones to plant occurrences (~30 min)
 echo "Step 1/3: Assigning Köppen zones to plant occurrences (~30 min)..."
-echo "Note: This step can be skipped if worldclim_occ_samples_with_koppen_11711.parquet already exists"
 echo ""
 
-if [ -f "data/stage1/worldclim_occ_samples_with_koppen_11711.parquet" ]; then
-    echo "✓ Köppen occurrence data already exists, skipping Step 1"
-else
-    "$PYTHON" "${PHASE3_DIR}/assign_koppen_zones_11711.py"
+"$PYTHON" "${PHASE3_DIR}/assign_koppen_zones_11711.py"
 
-    if [ $? -eq 0 ]; then
-        echo "✓ Köppen zone assignment complete"
-    else
-        echo "✗ Step 1 failed"
-        exit 1
-    fi
+if [ $? -eq 0 ]; then
+    echo "✓ Köppen zone assignment complete"
+else
+    echo "✗ Step 1 failed"
+    exit 1
 fi
 
 echo ""

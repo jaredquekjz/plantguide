@@ -37,13 +37,9 @@ print("="*80)
 print("ASSIGN KÖPPEN ZONES TO 11,711 PLANT DATASET")
 print("="*80)
 
-# Check if output already exists
+# Delete old output if exists (always regenerate)
 if OUTPUT_FILE.exists():
-    print(f"\n⚠️  Output file already exists: {OUTPUT_FILE}")
-    response = input("Delete and regenerate? (y/n): ")
-    if response.lower() != 'y':
-        print("Exiting.")
-        exit(0)
+    print(f"\n🔄 Removing old output file: {OUTPUT_FILE}")
     OUTPUT_FILE.unlink()
 
 # Connect to DuckDB

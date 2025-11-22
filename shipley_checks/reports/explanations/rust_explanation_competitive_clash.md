@@ -1,8 +1,8 @@
 # ★☆☆☆☆ - Poor
 
-**Overall Score:** 55.5/100
+**Overall Score:** 55.3/100
 
-Overall guild compatibility: 55.5/100
+Overall guild compatibility: 55.3/100
 
 ## Climate Compatibility
 
@@ -64,8 +64,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 4 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 0 Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)
-- 4 General entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+- 4 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
 **No specific herbivore-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
@@ -176,9 +175,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ## Warnings
 
-⚠️ **8.4 CSR strategy conflicts detected**
+⚠️ **12.8 CSR strategy conflicts detected**
 
-Growth strategy incompatibility: 5 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)  
+Growth strategy incompatibility: 6 Competitive-dominant, 1 Stress-tolerant-dominant (high CSR values: >75th percentile)  
 *Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**
@@ -202,7 +201,7 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M1 - Pest & Pathogen Independence | 70.4 | Good |
-| M2 - Growth Compatibility | 1.4 | Poor |
+| M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
 
@@ -211,6 +210,6 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 16.5 | Poor |
+| M6 - Structural Diversity | 16.6 | Poor |
 | M7 - Pollinator Support | 0.0 | Poor |
 

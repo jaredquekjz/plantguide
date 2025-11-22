@@ -93,7 +93,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
       # Plants - from Phase 4 output (vernaculars + Köppen + CSR)
       # CRITICAL: Use same parquet as Rust for parity
-      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet') %>%
+      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet') %>%
         select(
           wfo_taxon_id, wfo_scientific_name, family, genus,
           height_m, try_growth_form,
@@ -103,20 +103,53 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           tier_4_continental, tier_5_boreal_polar, tier_6_arid
         )
 
-      # Organisms - from Phase 0 output (Arrow lists, no conversion needed)
-      self$organisms_df <- read_parquet('shipley_checks/phase0_output/organism_profiles_pure_rust.parquet')
+      # Organisms - from Phase 0 output (use same file as Rust for parity)
+      self$organisms_df <- read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
 
-      # Fungi - from Phase 0 output (Arrow lists, no conversion needed)
-      self$fungi_df <- read_parquet('shipley_checks/phase0_output/fungal_guilds_pure_rust.parquet')
+      # Fungi - from Phase 0 output (use same file as Rust for parity)
+      self$fungi_df <- read_parquet('shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet')
 
-      # Biocontrol lookup tables - from Phase 0 outputs (Arrow lists)
-      pred_df <- read_parquet('shipley_checks/phase0_output/herbivore_predators_pure_rust.parquet')
+      # Biocontrol lookup tables - from Phase 0 outputs (use same files as Rust for parity)
+      # RUST PARITY: Lowercase keys AND values for case-insensitive matching
+      # Rust does this via key.to_lowercase() and s.to_lowercase() in load_lookup_table()
+
+      pred_df <- read_parquet('shipley_checks/phase0_output/herbivore_predators_11711.parquet')
+      # Lowercase both keys and list values
+      pred_df <- pred_df %>%
+        mutate(
+          herbivore = tolower(herbivore),
+          predators = lapply(predators, tolower)
+        ) %>%
+        # RUST PARITY: Keep last occurrence of duplicates (HashMap overwrites)
+        group_by(herbivore) %>%
+        slice_tail(n = 1) %>%
+        ungroup()
       self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
 
-      para_df <- read_parquet('shipley_checks/phase0_output/insect_fungal_parasites_pure_rust.parquet')
+      para_df <- read_parquet('shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet')
+      # Lowercase both keys and list values
+      para_df <- para_df %>%
+        mutate(
+          herbivore = tolower(herbivore),
+          entomopathogenic_fungi = lapply(entomopathogenic_fungi, tolower)
+        ) %>%
+        # RUST PARITY: Keep last occurrence of duplicates (HashMap overwrites)
+        group_by(herbivore) %>%
+        slice_tail(n = 1) %>%
+        ungroup()
       self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
 
-      antag_df <- read_parquet('shipley_checks/phase0_output/pathogen_antagonists_pure_rust.parquet')
+      antag_df <- read_parquet('shipley_checks/phase0_output/pathogen_antagonists_11711.parquet')
+      # Lowercase both keys and list values
+      antag_df <- antag_df %>%
+        mutate(
+          pathogen = tolower(pathogen),
+          antagonists = lapply(antagonists, tolower)
+        ) %>%
+        # RUST PARITY: Keep last occurrence of duplicates (HashMap overwrites)
+        group_by(pathogen) %>%
+        slice_tail(n = 1) %>%
+        ungroup()
       self$pathogen_antagonists <- setNames(antag_df$antagonists, antag_df$pathogen)
 
       cat(glue("  Plants: {format(nrow(self$plants_df), big.mark=',')}\n"))
@@ -534,6 +567,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           next
         }
 
+        # RUST PARITY: Lowercase herbivores for case-insensitive matching
+        herbivores_a <- tolower(herbivores_a)
+
         for (j in seq_len(nrow(guild_organisms))) {
           if (i == j) next
 
@@ -555,6 +591,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
             predators_b <- c(predators_b, row_b$predators_adjacentTo[[1]])
           }
           predators_b <- unique(predators_b)
+
+          # RUST PARITY: Lowercase predators for case-insensitive matching
+          predators_b <- tolower(predators_b)
 
           # Mechanism 1: Specific animal predators (weight 1.0)
           for (herbivore in herbivores_a) {
@@ -580,6 +619,8 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           if (nrow(fungi_b) > 0) {
             entomo_b <- fungi_b$entomopathogenic_fungi[[1]]
             if (!is.null(entomo_b) && length(entomo_b) > 0) {
+              # RUST PARITY: Lowercase entomopathogenic fungi for case-insensitive matching
+              entomo_b <- tolower(entomo_b)
 
               # Mechanism 2: Specific entomopathogenic fungi (weight 1.0)
               for (herbivore in herbivores_a) {
@@ -649,6 +690,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         ))
       }
 
+      # Get guild organisms data (needed for fungivore analysis)
+      guild_organisms <- self$organisms_df %>% filter(plant_wfo_id %in% plant_ids)
+
       # Pairwise analysis: vulnerable plant A vs protective plant B
       for (i in seq_len(nrow(guild_fungi))) {
         row_a <- guild_fungi[i, ]
@@ -658,6 +702,10 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         if (is.null(pathogens_a) || length(pathogens_a) == 0) {
           next
         }
+
+        # RUST PARITY: Lowercase pathogen names for case-insensitive matching
+        # Rust does this via s.to_lowercase() in extract_column_data()
+        pathogens_a <- tolower(pathogens_a)
 
         for (j in seq_len(nrow(guild_fungi))) {
           if (i == j) next
@@ -669,6 +717,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           if (is.null(mycoparasites_b) || length(mycoparasites_b) == 0) {
             next
           }
+
+          # RUST PARITY: Lowercase mycoparasites for case-insensitive matching
+          mycoparasites_b <- tolower(mycoparasites_b)
 
           # Mechanism 1: Specific antagonist matches (weight 1.0) - RARELY FIRES
           for (pathogen in pathogens_a) {
@@ -685,13 +736,34 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
                     antagonists = head(matching, 3)
                   )
                 }
+
+                # Check for animal antagonists (fungivores) - RUST PARITY
+                # Some fungivores specifically target certain fungi
+                org_row_b <- guild_organisms %>% filter(plant_wfo_id == plant_b_id)
+                if (nrow(org_row_b) > 0) {
+                  fungivores_b <- org_row_b$fungivores_eats[[1]]
+                  if (!is.null(fungivores_b) && length(fungivores_b) > 0) {
+                    # RUST PARITY: Lowercase fungivores for case-insensitive matching
+                    fungivores_b <- tolower(fungivores_b)
+                    matching_fungivores <- intersect(fungivores_b, known_antagonists)
+                    if (length(matching_fungivores) > 0) {
+                      pathogen_control_raw <- pathogen_control_raw + length(matching_fungivores) * 1.0
+                      mechanisms[[length(mechanisms) + 1]] <- list(
+                        type = 'specific_fungivore_antagonist',
+                        pathogen = pathogen,
+                        control_plant = plant_b_id,
+                        fungivores = head(matching_fungivores, 3)
+                      )
+                    }
+                  }
+                }
               }
             }
           }
 
-          # Mechanism 2: General mycoparasites (weight 1.0) - PRIMARY MECHANISM
+          # Mechanism 2: General mycoparasites (weight 0.5) - PRIMARY MECHANISM
           if (length(pathogens_a) > 0 && length(mycoparasites_b) > 0) {
-            pathogen_control_raw <- pathogen_control_raw + length(mycoparasites_b) * 1.0
+            pathogen_control_raw <- pathogen_control_raw + length(mycoparasites_b) * 0.5
             mechanisms[[length(mechanisms) + 1]] <- list(
               type = 'general_mycoparasite',
               vulnerable_plant = plant_a_id,
@@ -704,8 +776,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
       }
 
       # Mechanism 3: Fungivores eating pathogens (weight 0.2) - NEW for R-Rust parity
-      # Get guild organism data for fungivore analysis
-      guild_organisms <- self$organisms_df %>% filter(plant_wfo_id %in% plant_ids)
+      # Note: guild_organisms already extracted above
 
       for (i in seq_len(nrow(guild_fungi))) {
         row_a <- guild_fungi[i, ]
@@ -715,6 +786,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         if (is.null(pathogens_a) || length(pathogens_a) == 0) {
           next
         }
+
+        # RUST PARITY: Lowercase pathogens for case-insensitive matching
+        pathogens_a <- tolower(pathogens_a)
 
         for (j in seq_len(nrow(guild_organisms))) {
           row_b <- guild_organisms[j, ]
@@ -727,6 +801,9 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           if (is.null(fungivores_b) || length(fungivores_b) == 0) {
             next
           }
+
+          # RUST PARITY: Lowercase fungivores for case-insensitive matching
+          fungivores_b <- tolower(fungivores_b)
 
           # General fungivores eating pathogens (weight 0.2 per fungivore)
           if (length(pathogens_a) > 0 && length(fungivores_b) > 0) {
@@ -906,10 +983,11 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
     calculate_m7 = function(plant_ids, guild_plants) {
       n_plants <- nrow(guild_plants)
 
-      # Count shared pollinators
+      # Count shared pollinators (RUST PARITY: use ONLY 'pollinators' column)
+      # Do NOT use 'flower_visitors' - contaminated with herbivores, fungi, mites
       shared_pollinators <- self$count_shared_organisms(
         self$organisms_df, plant_ids,
-        'pollinators', 'flower_visitors'
+        'pollinators'
       )
 
       # Score with QUADRATIC weighting (matches Python line 1670)

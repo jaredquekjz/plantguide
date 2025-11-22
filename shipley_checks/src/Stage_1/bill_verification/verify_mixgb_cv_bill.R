@@ -1,5 +1,41 @@
 #!/usr/bin/env Rscript
 # verify_mixgb_cv_bill.R - Verify cross-validation completeness
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
+
 suppressPackageStartupMessages({library(readr)})
 check_pass <- function(cond, msg) { stat <- if (cond) "✓" else "✗"; cat(sprintf("  %s %s\n", stat, msg)); return(cond) }
 
@@ -7,7 +43,7 @@ cat("========================================================================\n"
 cat("VERIFICATION: MixGB Cross-Validation\n")
 cat("========================================================================\n\n")
 
-CV_FILE <- "data/shipley_checks/imputation/mixgb_cv_rmse_bill.csv"
+CV_FILE <- "imputation/mixgb_cv_rmse_bill.csv"
 all_pass <- TRUE
 
 all_pass <- check_pass(file.exists(CV_FILE), "CV metrics file exists") && all_pass
@@ -53,5 +89,5 @@ if (file.exists(CV_FILE)) {
 }
 
 cat("\n========================================================================\n")
-if (all_pass) { cat("✓ VERIFICATION PASSED\n========================================================================\n\n"); quit(status = 0)
-} else { cat("✗ VERIFICATION FAILED\n========================================================================\n\n"); quit(status = 1) }
+if (all_pass) { cat("✓ VERIFICATION PASSED\n========================================================================\n\n"); invisible(TRUE)  # Return success without exiting R session
+} else { cat("✗ VERIFICATION FAILED\n========================================================================\n\n"); stop("Verification failed")  # Throw error instead of quitting }

@@ -9,6 +9,41 @@
 # Adapted from: src/Stage_3/enrich_master_with_taxonomy.py
 ################################################################################
 
+# ========================================================================
+# AUTO-DETECTING PATHS (works on Windows/Linux/Mac, any location)
+# ========================================================================
+get_repo_root <- function() {
+  # First check if environment variable is set (from run_all_bill.R)
+  env_root <- Sys.getenv("BILL_REPO_ROOT", unset = NA)
+  if (!is.na(env_root) && env_root != "") {
+    return(normalizePath(env_root))
+  }
+
+  # Otherwise detect from script path
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    script_path <- sub("^--file=", "", file_arg[1])
+    # Navigate up from script to repo root
+    # Scripts are in src/Stage_X/bill_verification/
+    repo_root <- normalizePath(file.path(dirname(script_path), "..", "..", ".."))
+  } else {
+    # Fallback: assume current directory is repo root
+    repo_root <- normalizePath(getwd())
+  }
+  return(repo_root)
+}
+
+repo_root <- get_repo_root()
+INPUT_DIR <- file.path(repo_root, "input")
+INTERMEDIATE_DIR <- file.path(repo_root, "intermediate")
+OUTPUT_DIR <- file.path(repo_root, "output")
+
+# Create output directories
+dir.create(file.path(OUTPUT_DIR, "wfo_verification"), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(OUTPUT_DIR, "stage3"), recursive = TRUE, showWarnings = FALSE)
+
+
 suppressPackageStartupMessages({
   library(readr)
   library(dplyr)
@@ -37,22 +72,35 @@ get_opt <- function(name, default) {
   }
 }
 
-# Paths
-INPUT_PATH <- get_opt('input', 'data/shipley_checks/stage2_predictions/bill_complete_with_eive_20251107.csv')
-OUTPUT_PATH <- get_opt('output', 'data/shipley_checks/stage3/bill_enriched_stage3_11711.csv')
+# ========================================================================
+# Parse command-line arguments for input/output paths
+# ========================================================================
+# Defaults use auto-detected INTERMEDIATE_DIR for pre-computed Stage 2 results
+# Users can override with --input and --output flags
+INPUT_PATH <- get_opt('input', file.path(INTERMEDIATE_DIR, 'bill_complete_with_eive_20251107.csv'))
+OUTPUT_PATH <- get_opt('output', file.path(OUTPUT_DIR, 'stage3', 'bill_enriched_stage3_11711.csv'))
 
 ################################################################################
 # Helper Functions
 ################################################################################
 
+# ========================================================================
+# Load taxonomy (family, genus) from WFO-enriched parquet files
+# ========================================================================
+# These files were created in Stage 1 by enriching trait sources with World Flora Online taxonomy
+# Strategy: Accumulate taxonomy from multiple sources, with first source taking precedence
+# Input: master_ids (vector of WFO taxon IDs from Stage 2 dataset)
+# Output: data.frame with columns: wfo_taxon_id, family, genus
 load_taxonomy_from_worldflora <- function(master_ids) {
-  # Bill's verification uses enriched parquet files from WFO matching
+  # Bill's verification uses enriched parquet files from wfo_verification output
+  # These sources contain WFO taxonID, family, and genus columns
   sources <- c(
-    'data/shipley_checks/wfo_verification/tryenhanced_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/eive_worldflora_enriched.parquet',
-    'data/shipley_checks/wfo_verification/mabberly_worldflora_enriched.parquet'
+    file.path(OUTPUT_DIR, 'wfo_verification', 'tryenhanced_worldflora_enriched.parquet'),
+    file.path(OUTPUT_DIR, 'wfo_verification', 'eive_worldflora_enriched.parquet'),
+    file.path(OUTPUT_DIR, 'wfo_verification', 'mabberly_worldflora_enriched.parquet')
   )
 
+  # Initialize empty taxonomy dataframe to accumulate results
   taxonomy <- data.frame(
     wfo_taxon_id = character(),
     family = character(),
@@ -60,6 +108,8 @@ load_taxonomy_from_worldflora <- function(master_ids) {
     stringsAsFactors = FALSE
   )
 
+  # Iterate through each source file, accumulating taxonomy data
+  # First source has priority (due to distinct() call below)
   for (source_path in sources) {
     if (!file.exists(source_path)) {
       cat(sprintf('  ⚠ Skipping %s (not found)\n', basename(source_path)))
@@ -68,19 +118,42 @@ load_taxonomy_from_worldflora <- function(master_ids) {
 
     cat(sprintf('Loading %s...\n', basename(source_path)))
 
-    wfo <- arrow::read_parquet(source_path, col_select = c('taxonID', 'family', 'genus'))
+    # Read parquet file - column names vary by source
+    # Try to read with flexible column selection
+    all_cols <- names(arrow::read_parquet(source_path, as_data_frame = FALSE)$schema)
+
+    # Identify which columns exist (case-sensitive)
+    has_wfo_taxon_id <- 'wfo_taxon_id' %in% all_cols
+    has_family <- 'Family' %in% all_cols
+    has_genus <- 'Genus' %in% all_cols
+
+    # Skip if no family/genus columns (e.g., EIVE doesn't have these)
+    if (!has_family && !has_genus) {
+      cat(sprintf('  ⚠ Skipping %s (no Family/Genus columns)\n', basename(source_path)))
+      next
+    }
+
+    # Select columns that exist
+    cols_to_read <- c('wfo_taxon_id')
+    if (has_family) cols_to_read <- c(cols_to_read, 'Family')
+    if (has_genus) cols_to_read <- c(cols_to_read, 'Genus')
+
+    wfo <- arrow::read_parquet(source_path, col_select = all_of(cols_to_read))
 
     # Filter to master IDs and remove duplicates
+    # Only keep rows with valid family data
     wfo_filtered <- wfo %>%
-      filter(taxonID %in% master_ids) %>%
-      filter(!is.na(family)) %>%
-      distinct(taxonID, .keep_all = TRUE) %>%
-      rename(wfo_taxon_id = taxonID)
+      filter(wfo_taxon_id %in% master_ids) %>%
+      filter(!is.na(Family)) %>%
+      distinct(wfo_taxon_id, .keep_all = TRUE) %>%
+      rename(family = Family, genus = Genus)
 
-    # Merge with existing taxonomy (first source wins)
+    # Merge with existing taxonomy using "first source wins" strategy
+    # distinct() keeps the first occurrence, so earlier sources take precedence
     taxonomy <- bind_rows(taxonomy, wfo_filtered) %>%
       distinct(wfo_taxon_id, .keep_all = TRUE)
 
+    # Report cumulative coverage after each source
     coverage <- nrow(taxonomy)
     cat(sprintf('  Coverage: %d/%d (%.1f%%)\n', coverage, length(master_ids),
                 100 * coverage / length(master_ids)))
@@ -93,20 +166,30 @@ load_taxonomy_from_worldflora <- function(master_ids) {
   return(taxonomy)
 }
 
+# ========================================================================
+# Simplify TRY woodiness values to three categories
+# ========================================================================
+# Simplify TRY woodiness values to three categories: woody, non-woody, semi-woody
+# This is needed for NPP life form stratification in Stage 3 (Shipley Part II)
+# Input: woodiness (character vector from TRY database, e.g., "woody", "non-woody", "semi-woody", "woody;non-woody")
+# Output: simplified life_form_simple (woody/non-woody/semi-woody or NA)
 simplify_life_form <- function(woodiness) {
-  # Simplify try_woodiness to woody/non-woody/semi-woody
+  # Input: try_woodiness vector (from TRY database)
+  # Output: simplified life_form_simple vector (woody/non-woody/semi-woody)
 
   result <- character(length(woodiness))
 
   for (i in seq_along(woodiness)) {
+    # Handle missing values
     if (is.na(woodiness[i])) {
       result[i] <- NA_character_
       next
     }
 
+    # Normalize to lowercase and trim whitespace for matching
     w <- tolower(trimws(as.character(woodiness[i])))
 
-    # Exact matches first
+    # Exact matches first (most common cases)
     if (w == 'non-woody') {
       result[i] <- 'non-woody'
     } else if (w == 'woody') {
@@ -115,14 +198,19 @@ simplify_life_form <- function(woodiness) {
       result[i] <- 'semi-woody'
     } else if (grepl(';', w) || (grepl('woody', w) && grepl('non-woody', w))) {
       # Mixed cases (contains semicolon or multiple terms)
+      # e.g., "woody;non-woody" -> semi-woody
       result[i] <- 'semi-woody'
     } else if (grepl('non-woody', w)) {
+      # Contains "non-woody" substring
       result[i] <- 'non-woody'
     } else if (grepl('semi-woody', w)) {
+      # Contains "semi-woody" substring
       result[i] <- 'semi-woody'
     } else if (grepl('woody', w)) {
+      # Contains "woody" substring (catch-all for woody variants)
       result[i] <- 'woody'
     } else {
+      # Unrecognized value
       result[i] <- NA_character_
     }
   }
@@ -131,14 +219,16 @@ simplify_life_form <- function(woodiness) {
 }
 
 ################################################################################
-# Main
+# Main Pipeline
 ################################################################################
 
 cat(strrep('=', 80), '\n')
 cat('STAGE 3 ENRICHMENT (Bill Verification)\n')
 cat(strrep('=', 80), '\n\n')
 
-# Load master table from Stage 2
+# ========================================================================
+# STEP 1: Load Stage 2 output (complete dataset with 100% EIVE coverage)
+# ========================================================================
 cat('[1/4] Loading Stage 2 complete dataset...\n')
 cat(sprintf('  Input: %s\n', INPUT_PATH))
 
@@ -149,20 +239,52 @@ if (!file.exists(INPUT_PATH)) {
 master <- read_csv(INPUT_PATH, show_col_types = FALSE)
 cat(sprintf('  ✓ Loaded %d species × %d columns\n\n', nrow(master), ncol(master)))
 
-# Load taxonomy
+# ========================================================================
+# STEP 2: Load and merge taxonomy (family, genus) from WorldFlora
+# ========================================================================
 cat('[2/4] Loading taxonomy from WorldFlora sources...\n')
 taxonomy <- load_taxonomy_from_worldflora(master$wfo_taxon_id)
 
-# Merge taxonomy
+# Left join preserves all species from master, adding family/genus where available
 master <- master %>%
   left_join(taxonomy, by = 'wfo_taxon_id')
 
 tax_coverage <- sum(!is.na(master$family)) / nrow(master) * 100
 cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
 
-# Back-transform height
+# ========================================================================
+# STEP 2a: Load nitrogen fixation ratings from TRY (if available)
+# ========================================================================
+cat('[2a/4] Loading nitrogen fixation ratings...\n')
+
+# Path to pre-extracted nitrogen fixation data (TraitID 8 from TRY)
+NFIX_PATH <- file.path(OUTPUT_DIR, 'stage3', 'try_nitrogen_fixation_bill.csv')
+
+if (file.exists(NFIX_PATH)) {
+  nfix_data <- read_csv(NFIX_PATH, show_col_types = FALSE)
+
+  # Merge with master dataset
+  master <- master %>%
+    left_join(nfix_data %>% select(wfo_taxon_id, nitrogen_fixation_rating),
+              by = 'wfo_taxon_id')
+
+  n_try <- sum(!is.na(master$nitrogen_fixation_rating))
+  cat(sprintf('  ✓ Loaded TRY nitrogen fixation data: %d/%d species (%.1f%%)\n\n',
+              n_try, nrow(master), 100 * n_try / nrow(master)))
+} else {
+  cat('  ⚠ TRY nitrogen fixation file not found\n')
+  cat('  → Run extract_try_nitrogen_fixation_bill.R to generate TRY data\n')
+  cat('  → Using NA for all species (will fallback to "No Information" in CSR calculation)\n\n')
+  master$nitrogen_fixation_rating <- NA_character_
+}
+
+# ========================================================================
+# STEP 3: Back-transform height and simplify life form
+# ========================================================================
 cat('[3/4] Back-transforming height and simplifying life form...\n')
 
+# Back-transform height from log scale to meters
+# logH was created in Stage 1, now convert back: height_m = exp(logH)
 if ('logH' %in% names(master)) {
   master <- master %>%
     mutate(height_m = exp(logH))
@@ -172,7 +294,7 @@ if ('logH' %in% names(master)) {
   cat('  ⚠ logH not found, skipping height_m\n')
 }
 
-# Simplify life form
+# Simplify TRY woodiness to woody/non-woody/semi-woody for NPP stratification
 if ('try_woodiness' %in% names(master)) {
   master <- master %>%
     mutate(life_form_simple = simplify_life_form(try_woodiness))
@@ -182,7 +304,9 @@ if ('try_woodiness' %in% names(master)) {
   cat('  ⚠ try_woodiness not found, skipping life_form_simple\n\n')
 }
 
-# Save enriched dataset
+# ========================================================================
+# STEP 4: Save enriched dataset for CSR calculation
+# ========================================================================
 cat('[4/4] Saving enriched dataset...\n')
 write_csv(master, OUTPUT_PATH)
 
@@ -191,7 +315,9 @@ cat(sprintf('  ✓ Saved: %s\n', OUTPUT_PATH))
 cat(sprintf('  Dimensions: %d species × %d columns\n', nrow(master), ncol(master)))
 cat(sprintf('  Size: %.1f MB\n', file_info$size / 1024 / 1024))
 
-# Summary
+# ========================================================================
+# Final Summary: Report enrichment coverage
+# ========================================================================
 cat('\n', strrep('=', 80), '\n')
 cat('ENRICHMENT SUMMARY\n')
 cat(strrep('=', 80), '\n\n')
@@ -199,6 +325,7 @@ cat(strrep('=', 80), '\n\n')
 cat(sprintf('Species: %d\n', nrow(master)))
 cat(sprintf('Columns: %d\n\n', ncol(master)))
 
+# Report coverage for all enriched columns
 cat('Enrichment coverage:\n')
 cat(sprintf('  family: %.1f%% (%d/%d)\n',
             100 * sum(!is.na(master$family)) / nrow(master),
@@ -212,5 +339,8 @@ cat(sprintf('  height_m: %.1f%% (%d/%d)\n',
 cat(sprintf('  life_form_simple: %.1f%% (%d/%d)\n',
             100 * sum(!is.na(master$life_form_simple)) / nrow(master),
             sum(!is.na(master$life_form_simple)), nrow(master)))
+cat(sprintf('  nitrogen_fixation_rating: %.1f%% (%d/%d) from TRY\n',
+            100 * sum(!is.na(master$nitrogen_fixation_rating)) / nrow(master),
+            sum(!is.na(master$nitrogen_fixation_rating)), nrow(master)))
 
 cat('\n✓ Enrichment complete - ready for CSR calculation\n')

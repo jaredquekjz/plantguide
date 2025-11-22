@@ -1,8 +1,8 @@
 # ★★★★★ - Exceptional
 
-**Overall Score:** 92.7/100
+**Overall Score:** 92.6/100
 
-Overall guild compatibility: 92.7/100
+Overall guild compatibility: 92.6/100
 
 ## Climate Compatibility
 
@@ -10,12 +10,12 @@ Overall guild compatibility: 92.7/100
 
 ## Benefits
 
-### High Phylogenetic Diversity [M1 - 58.6/100]
+### High Phylogenetic Diversity [M1 - 58.3/100]
 
 Plants are distantly related (Faith's PD: 844.68)  
 Distant relatives typically share fewer pests and pathogens, reducing disease spread in the guild.  
 
-*Evidence:* Phylogenetic diversity score: 58.6/100
+*Evidence:* Phylogenetic diversity score: 58.3/100
 
 #### Pest Vulnerability Profile
 
@@ -66,8 +66,8 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 5 Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)
-- 2 General entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+- 11 specific herbivore → predator/parasite matches (covering 4 pest species, weight 1.0)
+- 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
 **11 Herbivore → Predator matches found:**
 
@@ -99,12 +99,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Natural Disease Suppression [M4 - 95.1/100]
+### Natural Disease Suppression [M4 - 95.2/100]
 
 Guild provides disease suppression via 6 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 95.1/100, covering 6 mechanisms
+*Evidence:* Pathogen control score: 95.2/100, covering 6 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -205,11 +205,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
   - Mercurialis perennis (Dog's mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)
 
 **Why this stratification works well:**
-1 plant(s) are shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
+1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
 *Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
-
-*Evidence:* Stratification quality: 1.00
 
 ### Robust Pollinator Support [M7 - 95.0/100]
 
@@ -288,10 +286,10 @@ Rubus moorei (Bush lawyer): Neutral (pH 6-7)
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 58.6 | Fair |
+| M1 - Pest & Pathogen Independence | 58.3 | Fair |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 95.1 | Excellent |
+| M4 - Disease Suppression | 95.2 | Excellent |
 
 ### Bonus Indicators
 

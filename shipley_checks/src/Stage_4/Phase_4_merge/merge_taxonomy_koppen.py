@@ -38,21 +38,13 @@ if not KOPPEN_FILE.exists():
     print("Run Phase 3 first.")
     exit(1)
 
-# Check if output already exists
+# Ensure output directory exists
+OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+# Delete old output if exists (always regenerate)
 if OUTPUT_FILE.exists():
-    import sys
-    print(f"\n⚠️  Output file already exists: {OUTPUT_FILE}")
-    if sys.stdin.isatty():
-        # Interactive mode - ask user
-        response = input("Delete and regenerate? (y/n): ")
-        if response.lower() != 'y':
-            print("Exiting.")
-            exit(0)
-        OUTPUT_FILE.unlink()
-    else:
-        # Non-interactive mode (nohup/background) - skip
-        print("✓ Skipping (file exists, non-interactive mode)")
-        exit(0)
+    print(f"\n🔄 Removing old output file: {OUTPUT_FILE}")
+    OUTPUT_FILE.unlink()
 
 # Connect to DuckDB
 con = duckdb.connect()

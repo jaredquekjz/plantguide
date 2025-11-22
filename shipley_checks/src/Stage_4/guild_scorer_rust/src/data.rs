@@ -154,7 +154,7 @@ impl GuildData {
         // PLANTS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let plants_path = "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet";
+        let plants_path = "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet";
 
         // Eager DataFrame (backward compatibility - will be removed in Phase 7)
         // Loads ALL columns into memory: 11,711 rows × 782 cols = ~73 MB

@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 91.2739960606035,
-    "stars": "★★★★★",
-    "label": "Exceptional",
-    "message": "Overall guild compatibility: 91.3/100"
+    "score": 85.58820336446176,
+    "stars": "★★★★☆",
+    "label": "Excellent",
+    "message": "Overall guild compatibility: 85.6/100"
   },
   "climate": {
     "compatible": true,
@@ -26,7 +26,7 @@
       "title": "Natural Disease Suppression",
       "message": "Guild provides disease suppression via 47 antagonistic fungal mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 97.7/100, covering 47 mechanisms"
+      "evidence": "Pathogen control score: 98.0/100, covering 47 mechanisms"
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -41,8 +41,8 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "5 growth forms spanning 27.0m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Wine grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Kona coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Rough cocksfoot): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
-      "evidence": "Stratification quality: 1.00"
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Wine grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Kona coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Rough cocksfoot): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "evidence": null
     },
     {
       "benefit_type": "pollinator_support",
@@ -54,6 +54,14 @@
     }
   ],
   "warnings": [
+    {
+      "warning_type": "csr_conflict",
+      "severity": "Low",
+      "icon": "⚠️",
+      "message": "0.9 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile)",
+      "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
+    },
     {
       "warning_type": "ph_incompatible",
       "severity": "Medium",
@@ -69,16 +77,16 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 41.204075966458724,
+        "score": 41.164152523195085,
         "raw": 0.4474090557699892,
         "interpretation": "Fair"
       },
       {
         "code": "M2",
         "name": "Growth Compatibility",
-        "score": 100.0,
-        "raw": 0.0,
-        "interpretation": "Excellent"
+        "score": 60.0,
+        "raw": 0.021428571428571425,
+        "interpretation": "Good"
       },
       {
         "code": "M3",
@@ -90,7 +98,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.71389645776567,
+        "score": 97.95327102803738,
         "raw": 55.80952380952379,
         "interpretation": "Excellent"
       }

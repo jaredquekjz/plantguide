@@ -1,8 +1,8 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 86.7/100
+**Overall Score:** 83.9/100
 
-Overall guild compatibility: 86.7/100
+Overall guild compatibility: 83.9/100
 
 ## Climate Compatibility
 
@@ -26,8 +26,8 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 13 Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)
-- 2 General entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+- 9 specific herbivore → predator/parasite matches (covering 9 pest species, weight 1.0)
+- 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
 **9 Herbivore → Predator matches found:**
 
@@ -57,12 +57,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Natural Disease Suppression [M4 - 97.3/100]
+### Natural Disease Suppression [M4 - 97.5/100]
 
 Guild provides disease suppression via 32 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 97.3/100, covering 32 mechanisms
+*Evidence:* Pathogen control score: 97.5/100, covering 32 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -171,11 +171,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
   - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
-7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
+7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
 *Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
-
-*Evidence:* Stratification quality: 1.00
 
 ### Robust Pollinator Support [M7 - 100.0/100]
 
@@ -236,6 +234,11 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 ## Warnings
 
+⚠️ **0.3 CSR strategy conflicts detected**
+
+Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th percentile)  
+*Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
+
 ⚡ **Soil pH incompatibility detected**
 
 EIVE R range: 5.2-6.9 (difference: 1.7 units)
@@ -264,10 +267,10 @@ Low phylogenetic diversity (Faith's PD: 704.52) increases pest/pathogen risk
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 9.6 | Poor |
-| M2 - Growth Compatibility | 100.0 | Excellent |
+| M1 - Pest & Pathogen Independence | 9.5 | Poor |
+| M2 - Growth Compatibility | 80.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.3 | Excellent |
+| M4 - Disease Suppression | 97.5 | Excellent |
 
 ### Bonus Indicators
 

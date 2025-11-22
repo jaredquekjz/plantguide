@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 86.6961345091833,
+    "score": 83.8548653438453,
     "stars": "★★★★☆",
     "label": "Excellent",
-    "message": "Overall guild compatibility: 86.7/100"
+    "message": "Overall guild compatibility: 83.9/100"
   },
   "climate": {
     "compatible": true,
@@ -26,7 +26,7 @@
       "title": "Natural Disease Suppression",
       "message": "Guild provides disease suppression via 32 antagonistic fungal mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.",
-      "evidence": "Pathogen control score: 97.3/100, covering 32 mechanisms"
+      "evidence": "Pathogen control score: 97.5/100, covering 32 mechanisms"
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -41,8 +41,8 @@
       "metric_code": "M6",
       "title": "High Structural Diversity",
       "message": "4 growth forms spanning 33.6m height range",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (Silver maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Parsley-leaved elder): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (Neapolitan medlar): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
-      "evidence": "Stratification quality: 1.00"
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (Silver maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Pedunculate oak): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Parsley-leaved elder): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (Neapolitan medlar): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Sloe): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00",
+      "evidence": null
     },
     {
       "benefit_type": "pollinator_support",
@@ -54,6 +54,14 @@
     }
   ],
   "warnings": [
+    {
+      "warning_type": "csr_conflict",
+      "severity": "Low",
+      "icon": "⚠️",
+      "message": "0.3 CSR strategy conflicts detected",
+      "detail": "Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th percentile)",
+      "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
+    },
     {
       "warning_type": "ph_incompatible",
       "severity": "Low",
@@ -79,15 +87,15 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 9.570489248206869,
+        "score": 9.465006364501676,
         "raw": 0.4943434744133984,
         "interpretation": "Poor"
       },
       {
         "code": "M2",
         "name": "Growth Compatibility",
-        "score": 100.0,
-        "raw": 0.0,
+        "score": 80.0,
+        "raw": 0.007142857142857143,
         "interpretation": "Excellent"
       },
       {
@@ -100,7 +108,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.3024523160763,
+        "score": 97.51905104241553,
         "raw": 48.619047619047606,
         "interpretation": "Excellent"
       }

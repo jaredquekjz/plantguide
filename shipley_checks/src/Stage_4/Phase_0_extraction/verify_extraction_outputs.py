@@ -15,7 +15,7 @@ from pathlib import Path
 import sys
 
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-VALIDATION_DIR = PROJECT_ROOT / "shipley_checks/validation"
+VALIDATION_DIR = PROJECT_ROOT / "shipley_checks/phase0_output"
 
 con = duckdb.connect()
 

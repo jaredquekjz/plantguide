@@ -1,8 +1,8 @@
-# ★★★★★ - Exceptional
+# ★★★★☆ - Excellent
 
-**Overall Score:** 91.3/100
+**Overall Score:** 85.6/100
 
-Overall guild compatibility: 91.3/100
+Overall guild compatibility: 85.6/100
 
 ## Climate Compatibility
 
@@ -26,8 +26,8 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 9 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 15 Specific predator/parasite matches (herbivore → known natural enemy, weight 1.0)
-- 13 General entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+- 11 specific herbivore → predator/parasite matches (covering 11 pest species, weight 1.0)
+- 13 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
 **10 Herbivore → Predator matches found:**
 
@@ -64,12 +64,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Natural Disease Suppression [M4 - 97.7/100]
+### Natural Disease Suppression [M4 - 98.0/100]
 
 Guild provides disease suppression via 47 antagonistic fungal mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control.  
 
-*Evidence:* Pathogen control score: 97.7/100, covering 47 mechanisms
+*Evidence:* Pathogen control score: 98.0/100, covering 47 mechanisms
 
 #### Pathogen Control Network Profile
 
@@ -182,11 +182,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
   - Fragaria vesca (Wild strawberry): 0.1m, EIVE-L: 5.9 (flexible)
 
 **Why this stratification works well:**
-7 plant(s) are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
+7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
 *Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00  
-
-*Evidence:* Stratification quality: 1.00
 
 ### Robust Pollinator Support [M7 - 100.0/100]
 
@@ -247,6 +245,11 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 
 ## Warnings
 
+⚠️ **0.9 CSR strategy conflicts detected**
+
+Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile)  
+*Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
+
 ⚠️ **Soil pH incompatibility detected**
 
 EIVE R range: 5.2-7.5 (difference: 2.3 units)
@@ -268,9 +271,9 @@ Vitis vinifera (Wine grape): Alkaline (pH 7-8)
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M1 - Pest & Pathogen Independence | 41.2 | Fair |
-| M2 - Growth Compatibility | 100.0 | Excellent |
+| M2 - Growth Compatibility | 60.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.7 | Excellent |
+| M4 - Disease Suppression | 98.0 | Excellent |
 
 ### Bonus Indicators
 
