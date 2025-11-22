@@ -51,7 +51,7 @@ impl GuildScorer {
         let calibration = Calibration::load(cal_path, climate_tier)?;
 
         // Load CSR calibration (global, not tier-specific)
-        let csr_path_str = "shipley_checks/stage4/csr_percentile_calibration_global.json";
+        let csr_path_str = "shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json";
         let csr_path = Path::new(csr_path_str);
         let csr_calibration = if csr_path.exists() {
             println!("Loading CSR calibration: {:?}", csr_path);

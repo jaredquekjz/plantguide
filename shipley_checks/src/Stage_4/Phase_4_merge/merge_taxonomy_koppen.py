@@ -19,7 +19,7 @@ from pathlib import Path
 
 # Paths (absolute from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-VERNACULAR_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase1_output/plants_vernacular_normalized.parquet"
+VERNACULAR_FILE = PROJECT_ROOT / "data/taxonomy/plants_vernacular_final.parquet"
 KOPPEN_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
 OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet"
 
@@ -142,10 +142,7 @@ merged_df = con.execute("""
         v.vernacular_name_uk,
         v.vernacular_name_vi,
         v.vernacular_name_zh,
-        v.n_vernaculars_total,
-        v.display_name_en,
-        v.display_name_zh,
-        v.display_name
+        v.n_vernaculars_total
     FROM koppen_df k
     LEFT JOIN vernacular_df v
         ON k.wfo_scientific_name = v.scientific_name

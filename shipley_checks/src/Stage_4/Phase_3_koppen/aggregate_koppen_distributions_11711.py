@@ -21,7 +21,7 @@ import json
 # Paths (absolute paths from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
 INPUT_FILE = PROJECT_ROOT / "data/stage1/worldclim_occ_samples_with_koppen_11711.parquet"
-OUTPUT_DIR = PROJECT_ROOT / "data/stage4"
+OUTPUT_DIR = PROJECT_ROOT / "shipley_checks/stage4/phase3_output"
 OUTPUT_FILE = OUTPUT_DIR / "plant_koppen_distributions_11711.parquet"
 
 # Ensure output directory exists

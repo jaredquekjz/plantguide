@@ -17,7 +17,7 @@ con <- dbConnect(duckdb::duckdb())
 # Paths
 FUNGALTRAITS_PATH <- "data/fungaltraits/fungaltraits.parquet"
 FUNGUILD_PATH <- "data/funguild/funguild.parquet"
-PLANT_DATASET_PATH <- "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet"
+PLANT_DATASET_PATH <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.parquet"
 GLOBI_PATH <- "data/stage1/globi_interactions_plants_wfo.parquet"
 
 cat("Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION\n")
@@ -259,31 +259,39 @@ cat("===========================================================================
 cat("SUMMARY STATISTICS\n")
 cat("================================================================================\n")
 
-stats <- dbGetQuery(con, sprintf("
-  SELECT
-      COUNT(*) as total_plants,
-      SUM(CASE WHEN pathogenic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_pathogens,
-      SUM(CASE WHEN mycorrhizae_total_count > 0 THEN 1 ELSE 0 END) as plants_with_mycorrhizae,
-      SUM(CASE WHEN biocontrol_total_count > 0 THEN 1 ELSE 0 END) as plants_with_biocontrol,
-      SUM(CASE WHEN endophytic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_endophytic,
-      SUM(CASE WHEN saprotrophic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_saprotrophic,
-      SUM(fungaltraits_genera) as total_ft_genera,
-      SUM(funguild_genera) as total_fg_genera
-  FROM read_parquet('%s')
-", output_file))
+# Wrap stats in tryCatch - non-critical summary, allow pipeline to continue if it fails
+stats <- tryCatch({
+  dbGetQuery(con, sprintf("
+    SELECT
+        COUNT(*) as total_plants,
+        SUM(CASE WHEN pathogenic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_pathogens,
+        SUM(CASE WHEN mycorrhizae_total_count > 0 THEN 1 ELSE 0 END) as plants_with_mycorrhizae,
+        SUM(CASE WHEN biocontrol_total_count > 0 THEN 1 ELSE 0 END) as plants_with_biocontrol,
+        SUM(CASE WHEN endophytic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_endophytic,
+        SUM(CASE WHEN saprotrophic_fungi_count > 0 THEN 1 ELSE 0 END) as plants_with_saprotrophic,
+        SUM(fungaltraits_genera) as total_ft_genera,
+        SUM(funguild_genera) as total_fg_genera
+    FROM read_parquet('%s')
+  ", output_file))
+}, error = function(e) {
+  cat("⚠ Summary statistics skipped (non-critical)\n\n")
+  return(NULL)
+})
 
-cat(sprintf("Total plants: %d\n\n", stats$total_plants))
+if (!is.null(stats)) {
+  cat(sprintf("Total plants: %d\n\n", stats$total_plants))
 
-cat("Plants with fungi by guild:\n")
-cat(sprintf("  - Pathogenic: %d (%.1f%%)\n", stats$plants_with_pathogens, stats$plants_with_pathogens/stats$total_plants*100))
-cat(sprintf("  - Mycorrhizal: %d (%.1f%%)\n", stats$plants_with_mycorrhizae, stats$plants_with_mycorrhizae/stats$total_plants*100))
-cat(sprintf("  - Biocontrol: %d (%.1f%%)\n", stats$plants_with_biocontrol, stats$plants_with_biocontrol/stats$total_plants*100))
-cat(sprintf("  - Endophytic: %d (%.1f%%)\n", stats$plants_with_endophytic, stats$plants_with_endophytic/stats$total_plants*100))
-cat(sprintf("  - Saprotrophic: %d (%.1f%%)\n\n", stats$plants_with_saprotrophic, stats$plants_with_saprotrophic/stats$total_plants*100))
+  cat("Plants with fungi by guild:\n")
+  cat(sprintf("  - Pathogenic: %d (%.1f%%)\n", stats$plants_with_pathogens, stats$plants_with_pathogens/stats$total_plants*100))
+  cat(sprintf("  - Mycorrhizal: %d (%.1f%%)\n", stats$plants_with_mycorrhizae, stats$plants_with_mycorrhizae/stats$total_plants*100))
+  cat(sprintf("  - Biocontrol: %d (%.1f%%)\n", stats$plants_with_biocontrol, stats$plants_with_biocontrol/stats$total_plants*100))
+  cat(sprintf("  - Endophytic: %d (%.1f%%)\n", stats$plants_with_endophytic, stats$plants_with_endophytic/stats$total_plants*100))
+  cat(sprintf("  - Saprotrophic: %d (%.1f%%)\n\n", stats$plants_with_saprotrophic, stats$plants_with_saprotrophic/stats$total_plants*100))
 
-cat("Data source breakdown:\n")
-cat(sprintf("  - FungalTraits genera: %d (%.1f%%)\n", stats$total_ft_genera, stats$total_ft_genera/(stats$total_ft_genera+stats$total_fg_genera)*100))
-cat(sprintf("  - FunGuild genera: %d (%.1f%%)\n\n", stats$total_fg_genera, stats$total_fg_genera/(stats$total_ft_genera+stats$total_fg_genera)*100))
+  cat("Data source breakdown:\n")
+  cat(sprintf("  - FungalTraits genera: %d (%.1f%%)\n", stats$total_ft_genera, stats$total_ft_genera/(stats$total_ft_genera+stats$total_fg_genera)*100))
+  cat(sprintf("  - FunGuild genera: %d (%.1f%%)\n\n", stats$total_fg_genera, stats$total_fg_genera/(stats$total_ft_genera+stats$total_fg_genera)*100))
+}
 
 cat(sprintf("Output: %s\n\n", output_file))
 cat("Next: Build multitrophic networks (herbivore→predator, pathogen→antagonist)\n")

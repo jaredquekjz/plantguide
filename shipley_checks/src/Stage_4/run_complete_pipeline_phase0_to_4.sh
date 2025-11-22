@@ -106,6 +106,29 @@ echo ""
 PIPELINE_START=$(date +%s)
 
 # ============================================================================
+# Pre-Phase 0: Convert Canonical CSV to Parquet
+# ============================================================================
+
+if [ "$START_PHASE" -le 0 ]; then
+  echo "================================================================================"
+  echo "PRE-PHASE 0: CONVERT CANONICAL CSV TO PARQUET"
+  echo "================================================================================"
+  echo ""
+
+  env R_LIBS_USER="$R_LIBS_USER" \
+    /usr/bin/Rscript 00_convert_csv_to_parquet.R
+
+  if [ $? -eq 0 ]; then
+    echo ""
+    echo "✓ CSV to Parquet conversion complete"
+    echo ""
+  else
+    echo "✗ CSV to Parquet conversion failed"
+    exit 1
+  fi
+fi
+
+# ============================================================================
 # Phase 0: R DuckDB Extraction (GloBI → Rust-ready parquets)
 # ============================================================================
 
@@ -316,8 +339,8 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
     echo "  Step 1 (CSR percentiles):"
     echo "    - shipley_checks/stage4/csr_percentile_calibration_global.json (< 1 KB)"
     echo "  Step 2 (Guild metrics):"
-    echo "    - shipley_checks/stage4/normalization_params_7plant_rust.json (16 KB)"
-    echo "    - shipley_checks/stage4/normalization_params_2plant_rust.json (4 KB)"
+    echo "    - shipley_checks/stage4/phase5_output/normalization_params_7plant.json (16 KB)"
+    echo "    - shipley_checks/stage4/phase5_output/normalization_params_2plant.json (4 KB)"
     echo ""
   else
     echo "✗ Phase 5 failed"
@@ -354,6 +377,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
 
   # Build test binaries (debug mode is fine for testing)
   echo "Building test binaries..."
+  cd "${STAGE4_DIR}"
   cd guild_scorer_rust
   cargo build --bin test_3_guilds_parallel 2>&1 | tail -5
   cargo build --bin test_explanations_3_guilds 2>&1 | tail -5
@@ -496,9 +520,9 @@ echo "    - shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_1
 echo ""
 if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   echo "  Phase 5 (Calibration parameters):"
-  echo "    - shipley_checks/stage4/csr_percentile_calibration_global.json (CSR percentiles)"
-  echo "    - shipley_checks/stage4/normalization_params_7plant_rust.json (7-plant guilds)"
-  echo "    - shipley_checks/stage4/normalization_params_2plant_rust.json (2-plant pairs)"
+  echo "    - shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json (CSR percentiles)"
+  echo "    - shipley_checks/stage4/phase5_output/normalization_params_7plant.json (7-plant guilds)"
+  echo "    - shipley_checks/stage4/phase5_output/normalization_params_2plant.json (2-plant pairs)"
   echo ""
 fi
 if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then

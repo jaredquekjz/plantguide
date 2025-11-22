@@ -91,7 +91,6 @@ pub fn calculate_m6(
             col("try_growth_form"),
             col("vernacular_name_en"),
             col("vernacular_name_zh"),
-            col("display_name"),
         ])
         .collect()
         .with_context(|| "M6: Failed to materialize plant columns")?;

@@ -4,7 +4,7 @@
 //!   Stage 1: 2-plant pairs (20K per tier × 6 tiers = 120K pairs)
 //!   Stage 2: 7-plant guilds (20K per tier × 6 tiers = 120K guilds)
 //!
-//! Output: normalization_params_7plant_rust.json (546 calibration values)
+//! Output: normalization_params_7plant.json (546 calibration values)
 //!
 //! Expected Performance:
 //!   - R baseline: ~600 seconds
@@ -46,7 +46,7 @@ fn main() -> anyhow::Result<()> {
     let stage1_time = stage1_start.elapsed();
 
     // Save Stage 1 results
-    let output_path_2plant = "shipley_checks/stage4/phase5_output/normalization_params_2plant_rust.json";
+    let output_path_2plant = "shipley_checks/stage4/phase5_output/normalization_params_2plant.json";
     std::fs::write(output_path_2plant, serde_json::to_string_pretty(&params_2plant)?)?;
     println!("\n✓ Saved: {}", output_path_2plant);
 
@@ -60,7 +60,7 @@ fn main() -> anyhow::Result<()> {
     let stage2_time = stage2_start.elapsed();
 
     // Save Stage 2 results
-    let output_path_7plant = "shipley_checks/stage4/phase5_output/normalization_params_7plant_rust.json";
+    let output_path_7plant = "shipley_checks/stage4/phase5_output/normalization_params_7plant.json";
     std::fs::write(output_path_7plant, serde_json::to_string_pretty(&params_7plant)?)?;
     println!("\n✓ Saved: {}", output_path_7plant);
 

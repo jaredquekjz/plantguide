@@ -72,7 +72,7 @@ Height separation:
 
 **Light Preference Modulation (C-S conflicts):**
 ```
-EIVE-L scale (1-9): 1=deep shade, 9=full sun
+EIVE-L scale (1-10)
 
 If short plant (S) is shaded by tall plant (C):
   - EIVE-L < 3.2:     conflict = 0.0 (shade-tolerant: beneficial!)
