@@ -412,33 +412,32 @@ fn build_fungus_to_plants_mapping(
 
 /// Build plant display map (WFO ID -> (scientific, vernacular))
 fn build_plant_display_map(guild_plants: &DataFrame) -> Result<FxHashMap<String, (String, String)>> {
+    use crate::utils::get_display_name;
+
     let plant_id_col = guild_plants.column("wfo_taxon_id")?.str()?;
     let scientific_col = guild_plants.column("wfo_scientific_name")?.str()?;
-
-    // Try vernacular_name_en first, fall back to vernacular_name_zh, then empty string
-    let vernacular_col = if let Ok(col) = guild_plants.column("vernacular_name_en") {
-        Some(col.str()?.clone())
-    } else if let Ok(col) = guild_plants.column("vernacular_name_zh") {
-        Some(col.str()?.clone())
-    } else {
-        None
-    };
+    let vernacular_en_col = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
+    let vernacular_zh_col = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
 
     let mut map = FxHashMap::default();
     for idx in 0..guild_plants.height() {
         if let (Some(id), Some(sci)) = (plant_id_col.get(idx), scientific_col.get(idx)) {
-            let vern = if let Some(ref v_col) = vernacular_col {
-                // Extract first vernacular name only (semicolon-separated list)
-                v_col.get(idx)
-                    .unwrap_or("")
-                    .split(';')
-                    .next()
-                    .unwrap_or("")
-                    .trim()
-                    .to_string()
+            // Use Title Case normalization from vernacular.rs
+            let en = vernacular_en_col.and_then(|c| c.get(idx));
+            let zh = vernacular_zh_col.and_then(|c| c.get(idx));
+            let display_name_full = get_display_name(sci, en, zh);
+
+            // Extract just the vernacular part from "Scientific (Vernacular)" format
+            let vern = if let Some(start_idx) = display_name_full.find('(') {
+                if let Some(end_idx) = display_name_full.rfind(')') {
+                    display_name_full[start_idx + 1..end_idx].to_string()
+                } else {
+                    String::new()
+                }
             } else {
                 String::new()
             };
+
             map.insert(id.to_string(), (sci.to_string(), vern));
         }
     }

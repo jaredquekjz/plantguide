@@ -237,8 +237,7 @@ pub fn calculate_m6(
     let plant_names = guild_plants.column("wfo_scientific_name")?.str()?;
     let light_prefs = guild_plants.column("light_pref")?.f64()?;
 
-    // Try to get pre-computed display_name (preferred) or fallback to vernacular columns
-    let display_name_col = guild_plants.column("display_name").ok().and_then(|c| c.str().ok());
+    // Get vernacular name columns for display formatting with Title Case normalization
     let vernacular_en_col = guild_plants.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
     let vernacular_zh_col = guild_plants.column("vernacular_name_zh").ok().and_then(|c| c.str().ok());
 
@@ -253,20 +252,10 @@ pub fn calculate_m6(
             if !form.is_empty() {
                 let light_pref = light_prefs.get(idx);
 
-                // Try optimized path first (display_name column), fallback to runtime normalization
-                let display_name = if let Some(col) = display_name_col {
-                    if let Some(d) = col.get(idx) {
-                        crate::utils::get_display_name_optimized(name, Some(d))
-                    } else {
-                        let en = vernacular_en_col.and_then(|c| c.get(idx));
-                        let zh = vernacular_zh_col.and_then(|c| c.get(idx));
-                        get_display_name(name, en, zh)
-                    }
-                } else {
-                    let en = vernacular_en_col.and_then(|c| c.get(idx));
-                    let zh = vernacular_zh_col.and_then(|c| c.get(idx));
-                    get_display_name(name, en, zh)
-                };
+                // Format display name with Title Case normalization from vernacular columns
+                let en = vernacular_en_col.and_then(|c| c.get(idx));
+                let zh = vernacular_zh_col.and_then(|c| c.get(idx));
+                let display_name = get_display_name(name, en, zh);
 
                 form_groups
                     .entry(form.to_string())

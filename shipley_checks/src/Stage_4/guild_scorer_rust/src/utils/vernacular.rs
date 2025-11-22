@@ -71,7 +71,7 @@ fn get_best_vernacular(
     None
 }
 
-/// Parse pipe-separated or semi-colon separated string, sort, and return first
+/// Parse pipe-separated or semi-colon separated string, sort, and return first in Title Case
 fn pick_first_alphabetical(raw_str: &str) -> Option<String> {
     // Split by semi-colon (most common in this dataset) or pipe (just in case)
     let separators = [';', '|'];
@@ -85,10 +85,28 @@ fn pick_first_alphabetical(raw_str: &str) -> Option<String> {
         return None;
     }
 
-    names.sort();
-    
-    // Return the first one
-    names.first().map(|s| s.to_string())
+    // Case-insensitive sort for consistent ordering
+    names.sort_by_key(|s| s.to_lowercase());
+
+    // Return the first one in Title Case for consistent capitalization
+    names.first().map(|s| to_title_case(s))
+}
+
+/// Convert string to Title Case (first letter of each word capitalized)
+fn to_title_case(s: &str) -> String {
+    s.split_whitespace()
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                None => String::new(),
+                Some(first) => {
+                    first.to_uppercase().collect::<String>()
+                        + &chars.as_str().to_lowercase()
+                }
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 #[cfg(test)]
@@ -97,20 +115,42 @@ mod tests {
 
     #[test]
     fn test_pick_first_alphabetical() {
+        // Test case-insensitive sorting + Title Case normalization
         assert_eq!(
             pick_first_alphabetical("Silver Maple; River Maple; White Maple"),
             Some("River Maple".to_string())
         );
         assert_eq!(
+            pick_first_alphabetical("Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee"),
+            Some("Arabian Coffee".to_string())
+        );
+        assert_eq!(
+            pick_first_alphabetical("Grape Vine; common grape; wine grape"),
+            Some("Common Grape".to_string())  // Case-insensitive sort, Title Case output
+        );
+        assert_eq!(
+            pick_first_alphabetical("canker rose; dog rose; Dog-rose"),
+            Some("Canker Rose".to_string())  // Lowercase input, Title Case output
+        );
+        assert_eq!(
             pick_first_alphabetical("  b_name  ; a_name "),
-            Some("a_name".to_string())
+            Some("A_name".to_string())  // Title Case normalization
         );
         assert_eq!(
             pick_first_alphabetical("single_name"),
-            Some("single_name".to_string())
+            Some("Single_name".to_string())  // Title Case
         );
         assert_eq!(pick_first_alphabetical(""), None);
         assert_eq!(pick_first_alphabetical("   ;   "), None);
+    }
+
+    #[test]
+    fn test_to_title_case() {
+        assert_eq!(to_title_case("wild strawberry"), "Wild Strawberry");
+        assert_eq!(to_title_case("KONA COFFEE"), "Kona Coffee");
+        assert_eq!(to_title_case("canker rose"), "Canker Rose");
+        assert_eq!(to_title_case("Dog-rose"), "Dog-rose");  // Hyphenated words not split
+        assert_eq!(to_title_case("English oak"), "English Oak");
     }
 
     #[test]
@@ -130,6 +170,11 @@ mod tests {
         assert_eq!(
             get_display_name("Acer saccharinum", None, None),
             "Acer saccharinum"
+        );
+        // Test Title Case normalization
+        assert_eq!(
+            get_display_name("Vitis vinifera", Some("Grape Vine; common grape; wine grape"), None),
+            "Vitis vinifera (Common Grape)"
         );
     }
 }
