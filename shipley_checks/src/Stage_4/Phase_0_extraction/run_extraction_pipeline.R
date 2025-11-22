@@ -123,32 +123,32 @@ cat("--------------------------------------------------------------------------\
 # Copy _11711.parquet → _pure_rust.parquet for backward compatibility
 
 file.copy(
-  "shipley_checks/phase0_output/organism_profiles_11711.parquet",
-  "shipley_checks/phase0_output/organism_profiles_pure_rust.parquet",
+  "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet",
+  "shipley_checks/stage4/phase0_output/organism_profiles_pure_rust.parquet",
   overwrite = TRUE
 )
 
 file.copy(
-  "shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet",
-  "shipley_checks/phase0_output/fungal_guilds_pure_rust.parquet",
+  "shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet",
+  "shipley_checks/stage4/phase0_output/fungal_guilds_pure_rust.parquet",
   overwrite = TRUE
 )
 
 file.copy(
-  "shipley_checks/phase0_output/herbivore_predators_11711.parquet",
-  "shipley_checks/phase0_output/herbivore_predators_pure_rust.parquet",
+  "shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet",
+  "shipley_checks/stage4/phase0_output/herbivore_predators_pure_rust.parquet",
   overwrite = TRUE
 )
 
 file.copy(
-  "shipley_checks/phase0_output/pathogen_antagonists_11711.parquet",
-  "shipley_checks/phase0_output/pathogen_antagonists_pure_rust.parquet",
+  "shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet",
+  "shipley_checks/stage4/phase0_output/pathogen_antagonists_pure_rust.parquet",
   overwrite = TRUE
 )
 
 file.copy(
-  "shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet",
-  "shipley_checks/phase0_output/insect_fungal_parasites_pure_rust.parquet",
+  "shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet",
+  "shipley_checks/stage4/phase0_output/insect_fungal_parasites_pure_rust.parquet",
   overwrite = TRUE
 )
 
@@ -198,7 +198,7 @@ cat("===========================================================================
 
 cat(sprintf("Total pipeline time: %.1f seconds\n\n", as.numeric(total_time)))
 
-cat("Outputs (shipley_checks/phase0_output/):\n")
+cat("Outputs (shipley_checks/stage4/phase0_output/):\n")
 cat("  1. known_herbivore_insects.parquet       - 14K+ herbivore species\n")
 cat("  2. matched_herbivores_per_plant.parquet  - 3K+ plants with herbivores\n")
 cat("  3. organism_profiles_11711.parquet       - 11,711 plants × organisms\n")

@@ -8,7 +8,7 @@ Purpose:
 - Create final dataset ready for climate-stratified calibration
 
 Input:
-  - data/stage4/plant_koppen_distributions_11711.parquet (Köppen data)
+  - shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet (Köppen data)
   - data/shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv (main dataset)
 
 Output:
@@ -23,9 +23,9 @@ from datetime import datetime
 
 # File paths (absolute paths from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-KOPPEN_FILE = PROJECT_ROOT / "data/stage4/plant_koppen_distributions_11711.parquet"
+KOPPEN_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet"
 MAIN_DATASET = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
-OUTPUT_FILE = PROJECT_ROOT / "data/taxonomy/bill_with_koppen_only_11711.parquet"
+OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
 
 # Tier structure
 TIER_STRUCTURE = {

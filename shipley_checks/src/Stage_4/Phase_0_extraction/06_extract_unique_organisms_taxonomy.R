@@ -15,7 +15,7 @@ cat("===========================================================================
 con <- dbConnect(duckdb::duckdb())
 
 cat("Extracting unique organisms from organism_profiles...\n")
-cat("  Source: shipley_checks/phase0_output/organism_profiles_11711.parquet\n")
+cat("  Source: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet\n")
 cat("  GloBI: data/stage1/globi_interactions_original.parquet\n\n")
 
 # Extract all unique organisms with taxonomy from GloBI
@@ -24,27 +24,27 @@ organisms_sql <- "
   -- Step 1: Extract all organism names from organism_profiles
   all_organisms AS (
       SELECT UNNEST(pollinators) as organism_name
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE pollinators IS NOT NULL
       UNION
       SELECT UNNEST(herbivores)
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE herbivores IS NOT NULL
       UNION
       SELECT UNNEST(predators_hasHost)
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE predators_hasHost IS NOT NULL
       UNION
       SELECT UNNEST(predators_interactsWith)
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE predators_interactsWith IS NOT NULL
       UNION
       SELECT UNNEST(predators_adjacentTo)
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE predators_adjacentTo IS NOT NULL
       UNION
       SELECT UNNEST(fungivores_eats)
-      FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE fungivores_eats IS NOT NULL
   ),
 
@@ -94,23 +94,23 @@ organisms_sql <- "
           MAX(CASE WHEN role = 'predator' THEN 1 ELSE 0 END) as is_predator
       FROM (
           SELECT UNNEST(pollinators) as organism_name, 'pollinator' as role
-          FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+          FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE pollinators IS NOT NULL
           UNION ALL
           SELECT UNNEST(herbivores), 'herbivore'
-          FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+          FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE herbivores IS NOT NULL
           UNION ALL
           SELECT UNNEST(predators_hasHost), 'predator'
-          FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+          FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE predators_hasHost IS NOT NULL
           UNION ALL
           SELECT UNNEST(predators_interactsWith), 'predator'
-          FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+          FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE predators_interactsWith IS NOT NULL
           UNION ALL
           SELECT UNNEST(predators_adjacentTo), 'predator'
-          FROM read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
+          FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE predators_adjacentTo IS NOT NULL
       ) roles
       GROUP BY organism_name

@@ -8,10 +8,10 @@ Purpose:
 
 Input:
   - data/taxonomy/plants_vernacular_final.parquet (Phase 1 output)
-  - data/taxonomy/bill_with_koppen_only_11711.parquet (Phase 3 output)
+  - shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet (Phase 3 output)
 
 Output:
-  - shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet
+  - shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet
 """
 
 import duckdb
@@ -19,9 +19,9 @@ from pathlib import Path
 
 # Paths (absolute from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-VERNACULAR_FILE = PROJECT_ROOT / "data/taxonomy/plants_vernacular_normalized.parquet"
-KOPPEN_FILE = PROJECT_ROOT / "data/taxonomy/bill_with_koppen_only_11711.parquet"
-OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet"
+VERNACULAR_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase1_output/plants_vernacular_normalized.parquet"
+KOPPEN_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
+OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet"
 
 print("="*80)
 print("PHASE 4: MERGE TAXONOMY + KÖPPEN")

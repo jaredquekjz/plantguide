@@ -55,7 +55,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
       self$climate_tier <- climate_tier
 
       # Load calibration parameters (use Python calibration for parity testing)
-      cal_file <- glue("shipley_checks/stage4/phase5_output/normalization_params_{calibration_type}.json")
+      cal_file <- glue("shipley_checks/stage4/normalization_params_{calibration_type}.json")
       if (!file.exists(cal_file)) {
         stop(glue("Calibration file not found: {cal_file}"))
       }
@@ -63,7 +63,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
       # Load CSR percentile calibration (global, not tier-specific)
       # Used for M2 conflict detection with consistent thresholds
-      csr_cal_file <- "shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json"
+      csr_cal_file <- "shipley_checks/stage4/csr_percentile_calibration_global.json"
       if (file.exists(csr_cal_file)) {
         self$csr_percentiles <- fromJSON(csr_cal_file)
         cat("Loaded CSR percentile calibration (global)\n")
@@ -93,7 +93,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
 
       # Plants - from Phase 4 output (vernaculars + Köppen + CSR)
       # CRITICAL: Use same parquet as Rust for parity
-      self$plants_df <- read_parquet('shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet') %>%
+      self$plants_df <- read_parquet('shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet') %>%
         select(
           wfo_taxon_id, wfo_scientific_name, family, genus,
           height_m, try_growth_form,
@@ -104,16 +104,16 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         )
 
       # Organisms - from Phase 0 output (use same file as Rust for parity)
-      self$organisms_df <- read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
+      self$organisms_df <- read_parquet('shipley_checks/phase0_output/organism_profiles_11711.parquet')
 
       # Fungi - from Phase 0 output (use same file as Rust for parity)
-      self$fungi_df <- read_parquet('shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet')
+      self$fungi_df <- read_parquet('shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet')
 
       # Biocontrol lookup tables - from Phase 0 outputs (use same files as Rust for parity)
       # RUST PARITY: Lowercase keys AND values for case-insensitive matching
       # Rust does this via key.to_lowercase() and s.to_lowercase() in load_lookup_table()
 
-      pred_df <- read_parquet('shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet')
+      pred_df <- read_parquet('shipley_checks/phase0_output/herbivore_predators_11711.parquet')
       # Lowercase both keys and list values
       pred_df <- pred_df %>%
         mutate(
@@ -126,7 +126,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         ungroup()
       self$herbivore_predators <- setNames(pred_df$predators, pred_df$herbivore)
 
-      para_df <- read_parquet('shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet')
+      para_df <- read_parquet('shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet')
       # Lowercase both keys and list values
       para_df <- para_df %>%
         mutate(
@@ -139,7 +139,7 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
         ungroup()
       self$insect_parasites <- setNames(para_df$entomopathogenic_fungi, para_df$herbivore)
 
-      antag_df <- read_parquet('shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet')
+      antag_df <- read_parquet('shipley_checks/phase0_output/pathogen_antagonists_11711.parquet')
       # Lowercase both keys and list values
       antag_df <- antag_df %>%
         mutate(

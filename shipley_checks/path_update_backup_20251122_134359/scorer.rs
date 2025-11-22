@@ -43,7 +43,7 @@ impl GuildScorer {
 
         // Load calibration parameters
         let cal_path_str = format!(
-            "shipley_checks/stage4/phase5_output/normalization_params_{}.json",
+            "shipley_checks/stage4/normalization_params_{}.json",
             calibration_type
         );
         let cal_path = Path::new(&cal_path_str);

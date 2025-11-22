@@ -10,7 +10,7 @@
 #   - shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711_polars.parquet
 #
 # Output:
-#   - shipley_checks/stage4/csr_percentile_calibration_global.json
+#   - shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json
 #
 # Usage:
 #   Rscript calibration/generate_csr_percentile_calibration.R
@@ -30,8 +30,8 @@ cat("CSR PERCENTILE CALIBRATION (GLOBAL DISTRIBUTION)\n")
 cat(rep("=", 80), "\n\n", sep = "")
 
 # Configuration
-INPUT_PARQUET <- "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet"
-OUTPUT_JSON <- "shipley_checks/stage4/csr_percentile_calibration_global.json"
+INPUT_PARQUET <- "shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet"
+OUTPUT_JSON <- "shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json"
 
 # Percentiles to compute (matches Rust implementation)
 PERCENTILES <- c(1, 5, 10, 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 99)

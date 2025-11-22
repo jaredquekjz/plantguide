@@ -10,7 +10,7 @@ Purpose:
 - Save plant-level Köppen distributions
 
 Input:  data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
-Output: data/stage4/plant_koppen_distributions_11711.parquet
+Output: shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet
 """
 
 import duckdb

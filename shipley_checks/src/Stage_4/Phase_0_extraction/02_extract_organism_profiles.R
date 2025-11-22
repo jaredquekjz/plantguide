@@ -2,7 +2,7 @@
 # Phase 0 - Script 3: Extract Organism Profiles for 11,711 Plants
 #
 # Purpose: Extract pollinators, herbivores, pathogens, flower visitors, and predators
-# Output: shipley_checks/phase0_output/organism_profiles_11711.parquet
+# Output: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
 # Baseline: shipley_checks/src/Stage_4/python_sql_verification/01_extract_organism_profiles_VERIFIED.py
 
 library(DBI)
@@ -31,7 +31,7 @@ cat("  4. Flower visitors (pollinates, visitsFlowersOf, visits)\n")
 cat("  5. Predators: hasHost, interactsWith, adjacentTo (Animalia, exclude marine)\n")
 cat("  6. Fungivores: Animals that eat fungi on plants (for disease control)\n\n")
 
-output_file <- "shipley_checks/phase0_output/organism_profiles_11711.parquet"
+output_file <- "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet"
 
 # Execute full SQL in COPY TO to avoid registered table issues with LIST columns
 dbExecute(con, sprintf("
@@ -56,7 +56,7 @@ dbExecute(con, sprintf("
             plant_wfo_id,
             herbivores,
             herbivore_count
-        FROM read_parquet('shipley_checks/phase0_output/matched_herbivores_per_plant.parquet')
+        FROM read_parquet('shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet')
     ),
     pathogens AS (
         SELECT

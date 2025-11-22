@@ -3,8 +3,8 @@
 #
 # Purpose: Build predator-prey relationships for herbivores and pathogen antagonists
 # Output:
-#   - shipley_checks/phase0_output/herbivore_predators_11711.parquet
-#   - shipley_checks/phase0_output/pathogen_antagonists_11711.parquet
+#   - shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+#   - shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
 # Baseline: shipley_checks/src/Stage_4/python_sql_verification/02_build_multitrophic_network_VERIFIED.py
 
 library(DBI)
@@ -17,7 +17,7 @@ cat("===========================================================================
 con <- dbConnect(duckdb::duckdb())
 
 # Paths
-PROFILES_PATH <- "shipley_checks/phase0_output/organism_profiles_11711.parquet"
+PROFILES_PATH <- "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet"
 GLOBI_FULL_PATH <- "data/stage1/globi_interactions_original.parquet"
 
 cat("Loading organism profiles...\n")
@@ -93,8 +93,8 @@ cat(sprintf("  - Total antagonist relationships: %d\n\n", sum(antagonists_of_pat
 # Step 5: Write Rust-ready parquets using DuckDB COPY TO
 cat("Step 5: Saving results...\n")
 
-output_predators <- "shipley_checks/phase0_output/herbivore_predators_11711.parquet"
-output_antagonists <- "shipley_checks/phase0_output/pathogen_antagonists_11711.parquet"
+output_predators <- "shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet"
+output_antagonists <- "shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet"
 
 # Unregister if exists, then register herbivore and pathogen lists
 tryCatch(dbExecute(con, "DROP VIEW our_herbivores"), error = function(e) NULL)

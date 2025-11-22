@@ -154,7 +154,7 @@ impl GuildData {
         // PLANTS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let plants_path = "shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet";
+        let plants_path = "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet";
 
         // Eager DataFrame (backward compatibility - will be removed in Phase 7)
         // Loads ALL columns into memory: 11,711 rows × 782 cols = ~73 MB
@@ -173,7 +173,7 @@ impl GuildData {
         // ORGANISMS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let organisms_path = "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet";
+        let organisms_path = "shipley_checks/phase0_output/organism_profiles_11711.parquet";
 
         // Eager DataFrame: ~4.7 MB (will be removed after M3/M7 migration)
         let organisms = Self::load_organisms(organisms_path)?;
@@ -188,7 +188,7 @@ impl GuildData {
         // FUNGI: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let fungi_path = "shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet";
+        let fungi_path = "shipley_checks/phase0_output/fungal_guilds_hybrid_11711.parquet";
 
         // Eager DataFrame: ~2.8 MB (will be removed after M3/M4/M5 migration)
         let fungi = Self::load_fungi(fungi_path)?;
@@ -208,19 +208,19 @@ impl GuildData {
         // No benefit from LazyFrame for this use case
 
         let herbivore_predators = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet",
+            "shipley_checks/phase0_output/herbivore_predators_11711.parquet",
             "herbivore",
             "predators",
         )?;
 
         let insect_parasites = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet",
+            "shipley_checks/phase0_output/insect_fungal_parasites_11711.parquet",
             "herbivore",
             "entomopathogenic_fungi",
         )?;
 
         let pathogen_antagonists = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet",
+            "shipley_checks/phase0_output/pathogen_antagonists_11711.parquet",
             "pathogen",
             "antagonists",
         )?;

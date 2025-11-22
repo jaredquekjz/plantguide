@@ -8,7 +8,7 @@ Validates Phase 3 output for:
 3. Coverage - reasonable Köppen zone coverage
 4. Data quality - no missing required columns
 
-Input:  data/taxonomy/bill_with_koppen_only_11711.parquet
+Input:  shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
 Output: Verification report (printed to stdout)
 Exit:   0 if all checks pass, 1 if any check fails
 """
@@ -20,7 +20,7 @@ import json
 
 # Paths
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-OUTPUT_FILE = PROJECT_ROOT / "data/taxonomy/bill_with_koppen_only_11711.parquet"
+OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
 INPUT_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711.csv"
 
 # Tier structure

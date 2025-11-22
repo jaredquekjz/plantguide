@@ -2,7 +2,7 @@
 # Phase 0 - Script 2: Match Known Herbivores to 11,711 Plant Dataset
 #
 # Purpose: Match 14,345 known herbivores to our final plant dataset
-# Output: shipley_checks/phase0_output/matched_herbivores_per_plant.parquet
+# Output: shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet
 # Baseline: src/Stage_4/04_match_known_herbivores_to_plants.py
 
 library(DBI)
@@ -16,11 +16,11 @@ con <- dbConnect(duckdb::duckdb())
 
 # Step 1: Load known herbivore insects
 cat("Step 1: Loading known herbivore insects lookup...\n")
-cat("  Source: shipley_checks/phase0_output/known_herbivore_insects.parquet\n")
+cat("  Source: shipley_checks/stage4/phase0_output/known_herbivore_insects.parquet\n")
 
 herbivore_count <- dbGetQuery(con, "
   SELECT COUNT(*) as count
-  FROM read_parquet('shipley_checks/phase0_output/known_herbivore_insects.parquet')
+  FROM read_parquet('shipley_checks/stage4/phase0_output/known_herbivore_insects.parquet')
 ")$count
 cat(sprintf("  - %d known herbivore species/taxa\n\n", herbivore_count))
 
@@ -48,7 +48,7 @@ matched_herbivores <- dbGetQuery(con, "
   ),
   known_herbivores AS (
       SELECT DISTINCT herbivore_name
-      FROM read_parquet('shipley_checks/phase0_output/known_herbivore_insects.parquet')
+      FROM read_parquet('shipley_checks/stage4/phase0_output/known_herbivore_insects.parquet')
   ),
   pollinators AS (
       SELECT DISTINCT sourceTaxonName
@@ -114,7 +114,7 @@ cat("\n")
 cat("Writing Rust-ready parquet...\n")
 
 # Execute the full SQL again directly in COPY TO (avoid registered table issues)
-output_file <- "shipley_checks/phase0_output/matched_herbivores_per_plant.parquet"
+output_file <- "shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet"
 dbExecute(con, sprintf("
   COPY (
     WITH target_plants AS (
@@ -124,7 +124,7 @@ dbExecute(con, sprintf("
     ),
     known_herbivores AS (
         SELECT DISTINCT herbivore_name
-        FROM read_parquet('shipley_checks/phase0_output/known_herbivore_insects.parquet')
+        FROM read_parquet('shipley_checks/stage4/phase0_output/known_herbivore_insects.parquet')
     ),
     pollinators AS (
         SELECT DISTINCT sourceTaxonName
