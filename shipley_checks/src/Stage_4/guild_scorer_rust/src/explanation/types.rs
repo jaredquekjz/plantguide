@@ -4,6 +4,7 @@ use crate::explanation::fungi_network_analysis::FungiNetworkProfile;
 use crate::explanation::pollinator_network_analysis::PollinatorNetworkProfile;
 use crate::explanation::biocontrol_network_analysis::BiocontrolNetworkProfile;
 use crate::explanation::pathogen_control_network_analysis::PathogenControlNetworkProfile;
+use crate::explanation::csr_strategy_analysis::CsrStrategyProfile;
 
 /// Complete explanation for a guild
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -15,6 +16,7 @@ pub struct Explanation {
     pub risks: Vec<RiskCard>,
     pub metrics_display: MetricsDisplay,
     pub pest_profile: Option<PestProfile>,
+    pub csr_strategy_profile: Option<CsrStrategyProfile>,
     pub fungi_network_profile: Option<FungiNetworkProfile>,
     pub pollinator_network_profile: Option<PollinatorNetworkProfile>,
     pub biocontrol_network_profile: Option<BiocontrolNetworkProfile>,

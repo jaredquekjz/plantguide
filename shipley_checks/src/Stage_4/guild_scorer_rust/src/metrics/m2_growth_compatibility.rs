@@ -42,8 +42,22 @@ pub const REQUIRED_PLANT_COLS: &[&str] = &[
     "light_pref",           // Light preference (aliased from "EIVEres-L_complete")
 ];
 
+/// Per-plant CSR data for detailed breakdown
+#[derive(Debug, Clone)]
+pub struct PlantCsrData {
+    pub plant_name: String,
+    pub display_name: String,
+    pub c_raw: f64,
+    pub s_raw: f64,
+    pub r_raw: f64,
+    pub c_percentile: f64,
+    pub s_percentile: f64,
+    pub r_percentile: f64,
+    pub dominant_strategy: String,
+}
+
 /// Result of M2 calculation
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct M2Result {
     /// Conflict density (conflicts per possible pair)
     pub raw: f64,
@@ -57,6 +71,8 @@ pub struct M2Result {
     pub high_r_count: usize,
     /// Total raw conflicts before density normalization
     pub total_conflicts: f64,
+    /// Per-plant CSR data for detailed breakdown
+    pub plant_csr_data: Vec<PlantCsrData>,
 }
 
 /// Plant data for conflict detection
@@ -65,6 +81,7 @@ pub struct M2Result {
 struct PlantRow {
     index: usize,
     name: String,
+    display_name: String,  // With vernacular (e.g., "Vitis vinifera (Common Grape)")
     csr_c: f64,
     csr_s: f64,
     csr_r: f64,
@@ -116,6 +133,7 @@ pub fn calculate_m2(
         .select(&[
             col("wfo_taxon_id"),
             col("wfo_scientific_name"),
+            col("vernacular_name_en"),  // For display names
             col("C").alias("CSR_C"),
             col("S").alias("CSR_S"),
             col("R").alias("CSR_R"),
@@ -221,6 +239,25 @@ pub fn calculate_m2(
     // Percentile normalization (Köppen tier-stratified)
     let m2_norm = percentile_normalize(conflict_density, "n4", calibration, false)?;
 
+    // Build per-plant CSR data for detailed breakdown
+    let plant_csr_data: Vec<PlantCsrData> = plants.iter().map(|p| {
+        PlantCsrData {
+            plant_name: p.name.clone(),
+            display_name: p.display_name.clone(),
+            c_raw: p.csr_c,
+            s_raw: p.csr_s,
+            r_raw: p.csr_r,
+            c_percentile: p.c_percentile,
+            s_percentile: p.s_percentile,
+            r_percentile: p.r_percentile,
+            dominant_strategy: determine_dominant_strategy(
+                p.c_percentile,
+                p.s_percentile,
+                p.r_percentile
+            ),
+        }
+    }).collect();
+
     Ok(M2Result {
         raw: conflict_density,
         norm: m2_norm,
@@ -228,7 +265,42 @@ pub fn calculate_m2(
         high_s_count: high_s.len(),
         high_r_count: high_r.len(),
         total_conflicts,
+        plant_csr_data,
     })
+}
+
+/// Determine dominant CSR strategy based on percentiles
+///
+/// Returns the strategy with the highest percentile, or "Mixed" if balanced
+fn determine_dominant_strategy(c_pct: f64, s_pct: f64, r_pct: f64) -> String {
+    // Check if strategies are relatively balanced (within 20 percentile points)
+    let max_pct = c_pct.max(s_pct).max(r_pct);
+    let min_pct = c_pct.min(s_pct).min(r_pct);
+
+    if max_pct - min_pct < 20.0 {
+        return "Mixed".to_string();
+    }
+
+    // Otherwise return the dominant strategy
+    if c_pct >= s_pct && c_pct >= r_pct {
+        if c_pct > PERCENTILE_THRESHOLD {
+            "Competitive".to_string()
+        } else {
+            "C-leaning".to_string()
+        }
+    } else if s_pct >= c_pct && s_pct >= r_pct {
+        if s_pct > PERCENTILE_THRESHOLD {
+            "Stress-tolerant".to_string()
+        } else {
+            "S-leaning".to_string()
+        }
+    } else {
+        if r_pct > PERCENTILE_THRESHOLD {
+            "Ruderal".to_string()
+        } else {
+            "R-leaning".to_string()
+        }
+    }
 }
 
 /// Extract plant data from DataFrame and convert CSR to percentiles
@@ -236,10 +308,13 @@ fn extract_plant_data(
     df: &DataFrame,
     csr_calibration: Option<&CsrCalibration>,
 ) -> Result<Vec<PlantRow>> {
+    use crate::utils::get_display_name;
+
     let n = df.height();
     let mut plants = Vec::with_capacity(n);
 
     let names = df.column("wfo_scientific_name")?.str()?;
+    let vernacular_en = df.column("vernacular_name_en").ok().and_then(|c| c.str().ok());
     let csr_c = df.column("CSR_C")?.f64()?;
     let csr_s = df.column("CSR_S")?.f64()?;
     let csr_r = df.column("CSR_R")?.f64()?;
@@ -250,22 +325,26 @@ fn extract_plant_data(
     for i in 0..n {
         // Check for missing CSR values - if any are None, skip this guild
         // Defaulting to 50.0 would distort conflict detection (Issue #NA-handling)
+        let name = names.get(i).unwrap_or("Unknown").to_string();
+
         let c_val = csr_c.get(i).ok_or_else(|| {
-            anyhow::anyhow!("Plant {} has missing CSR_C data - cannot calculate M2",
-                           names.get(i).unwrap_or("Unknown"))
+            anyhow::anyhow!("Plant {} has missing CSR_C data - cannot calculate M2", name)
         })?;
         let s_val = csr_s.get(i).ok_or_else(|| {
-            anyhow::anyhow!("Plant {} has missing CSR_S data - cannot calculate M2",
-                           names.get(i).unwrap_or("Unknown"))
+            anyhow::anyhow!("Plant {} has missing CSR_S data - cannot calculate M2", name)
         })?;
         let r_val = csr_r.get(i).ok_or_else(|| {
-            anyhow::anyhow!("Plant {} has missing CSR_R data - cannot calculate M2",
-                           names.get(i).unwrap_or("Unknown"))
+            anyhow::anyhow!("Plant {} has missing CSR_R data - cannot calculate M2", name)
         })?;
+
+        // Build display name with vernacular
+        let en = vernacular_en.and_then(|col| col.get(i));
+        let display_name = get_display_name(&name, en, None);
 
         plants.push(PlantRow {
             index: i,
-            name: names.get(i).unwrap_or("Unknown").to_string(),
+            name,
+            display_name,
             csr_c: c_val,
             csr_s: s_val,
             csr_r: r_val,

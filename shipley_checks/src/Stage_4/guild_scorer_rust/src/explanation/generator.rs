@@ -1,7 +1,7 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network, analyze_csr_strategies};
 use crate::scorer::GuildScore;
-use crate::metrics::{M3Result, M4Result, M5Result, M7Result};
+use crate::metrics::{M2Result, M3Result, M4Result, M5Result, M7Result};
 use anyhow::Result;
 use polars::prelude::*;
 use rustc_hash::FxHashMap;
@@ -17,6 +17,7 @@ impl ExplanationGenerator {
     /// - guild_plants: DataFrame of guild plants (for nitrogen/pH checks)
     /// - climate_tier: Köppen tier string
     /// - fragments: Pre-generated metric fragments from parallel scoring
+    /// - m2_result: M2 result with CSR strategy data (for strategy profile)
     /// - m3_result: M3 result with biocontrol agent counts (for network analysis)
     /// - m4_result: M4 result with mycoparasite counts (for network analysis)
     /// - m5_result: M5 result with fungi counts (for network analysis)
@@ -31,6 +32,7 @@ impl ExplanationGenerator {
         guild_plants: &DataFrame,
         climate_tier: &str,
         fragments: Vec<MetricFragment>,
+        m2_result: &M2Result,
         m3_result: &M3Result,
         organisms_df: &DataFrame,
         m4_result: &M4Result,
@@ -81,6 +83,15 @@ impl ExplanationGenerator {
         )
         .ok()
         .flatten();
+
+        // CSR strategy profile (M2 - per-plant CSR breakdown and compatibility analysis)
+        let csr_strategy_profile = Some(analyze_csr_strategies(
+            &m2_result.plant_csr_data,
+            m2_result.total_conflicts,
+            m2_result.high_c_count,
+            m2_result.high_s_count,
+            m2_result.high_r_count,
+        ));
 
         // Biocontrol network profile (M3 - qualitative information)
         let biocontrol_network_profile = analyze_biocontrol_network(
@@ -139,6 +150,7 @@ impl ExplanationGenerator {
             risks,
             metrics_display,
             pest_profile,
+            csr_strategy_profile,
             fungi_network_profile,
             pollinator_network_profile,
             biocontrol_network_profile,

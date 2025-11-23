@@ -54,8 +54,8 @@ EncyclopediaGenerator <- R6Class("EncyclopediaGenerator",
     #' @param organism_profiles_path Path to organism profiles parquet
     #' @param fungal_guilds_path Path to fungal guilds parquet
     initialize = function(plant_data_path,
-                          organism_profiles_path = "shipley_checks/stage4/plant_organism_profiles_11711.parquet",
-                          fungal_guilds_path = "shipley_checks/stage4/plant_fungal_guilds_hybrid_11711.parquet") {
+                          organism_profiles_path = "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet",
+                          fungal_guilds_path = "shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet") {
 
       cat("Loading plant dataset...\n")
       private$plants_df <- read.csv(plant_data_path, stringsAsFactors = FALSE, check.names = FALSE)

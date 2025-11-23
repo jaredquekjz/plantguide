@@ -3,6 +3,7 @@ use crate::explanation::pest_analysis::PestProfile;
 use crate::explanation::fungi_network_analysis::FungiNetworkProfile;
 use crate::explanation::pollinator_network_analysis::PollinatorNetworkProfile;
 use crate::explanation::biocontrol_network_analysis::BiocontrolNetworkProfile;
+use crate::explanation::csr_strategy_analysis::CsrStrategyProfile;
 use crate::explanation::pathogen_control_network_analysis::PathogenControlNetworkProfile;
 use rustc_hash::FxHashSet;
 
@@ -55,6 +56,13 @@ impl MarkdownFormatter {
                 if benefit.metric_code == "M1" {
                     if let Some(pest_profile) = &explanation.pest_profile {
                         Self::format_pest_profile(&mut md, pest_profile);
+                    }
+                }
+
+                // Insert CSR strategy profile after M2 (Growth Compatibility)
+                if benefit.metric_code == "M2" {
+                    if let Some(csr_profile) = &explanation.csr_strategy_profile {
+                        Self::format_csr_profile(&mut md, csr_profile);
                     }
                 }
 
@@ -587,6 +595,54 @@ impl MarkdownFormatter {
     }
 
     /// Format pathogen control network profile section
+    fn format_csr_profile(md: &mut String, csr_profile: &CsrStrategyProfile) {
+        md.push_str("#### CSR Strategy Profile\n\n");
+        md.push_str("*Per-plant CSR breakdown and compatibility analysis*\n\n");
+
+        // Table of all plants with their CSR data
+        md.push_str("**Plant CSR Strategies:**\n\n");
+        md.push_str("| Plant | C %ile | S %ile | R %ile | Dominant Strategy |\n");
+        md.push_str("|-------|--------|--------|--------|-------------------|\n");
+        for plant in &csr_profile.plants {
+            let c_indicator = if plant.high_c { " ⚠" } else { "" };
+            let s_indicator = if plant.high_s { " ⚠" } else { "" };
+            let r_indicator = if plant.high_r { " ⚠" } else { "" };
+            
+            md.push_str(&format!(
+                "| {} | {:.0}{} | {:.0}{} | {:.0}{} | {} |\n",
+                plant.display_name,
+                plant.c_percentile, c_indicator,
+                plant.s_percentile, s_indicator,
+                plant.r_percentile, r_indicator,
+                plant.dominant_strategy
+            ));
+        }
+        md.push_str("\n⚠ = High (>75th percentile)\n\n");
+
+        // Show conflicts
+        if !csr_profile.conflicts.is_empty() {
+            md.push_str("**Detected Conflicts:**\n\n");
+            for conflict in &csr_profile.conflicts {
+                md.push_str(&format!("- **{}**: ", conflict.conflict_type));
+                md.push_str(&conflict.plants.join(", "));
+                md.push_str("\n");
+                md.push_str(&format!("  - {}\n\n", conflict.explanation));
+            }
+        }
+
+        // Show compatible groups
+        if !csr_profile.compatible_groups.is_empty() {
+            md.push_str("**Compatible Groupings:**\n\n");
+            for group in &csr_profile.compatible_groups {
+                md.push_str(&format!("- **{}**: ", group.strategy));
+                md.push_str(&group.plants.join(", "));
+                md.push_str("\n");
+                md.push_str(&format!("  - {}\n\n", group.reason));
+            }
+        }
+    }
+
+
     fn format_pathogen_control_profile(md: &mut String, pathogen_profile: &PathogenControlNetworkProfile) {
         md.push_str("#### Pathogen Control Network Profile\n\n");
         md.push_str("*Qualitative information about disease suppression (influences M4 scoring)*\n\n");

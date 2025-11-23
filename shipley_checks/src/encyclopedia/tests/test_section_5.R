@@ -18,10 +18,10 @@ cat("Loading sample plants...\n")
 sample_plants <- read.csv("/tmp/test_plants_sample.csv", stringsAsFactors = FALSE, check.names = FALSE)
 
 cat("Loading organism profiles parquet...\n")
-organism_profiles <- arrow::read_parquet("shipley_checks/stage4/plant_organism_profiles_11711.parquet")
+organism_profiles <- arrow::read_parquet("shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet")
 
 cat("Loading fungal guilds parquet...\n")
-fungal_guilds <- arrow::read_parquet("shipley_checks/stage4/plant_fungal_guilds_hybrid_11711.parquet")
+fungal_guilds <- arrow::read_parquet("shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet")
 
 cat(sprintf("Loaded %d sample plants\n", nrow(sample_plants)))
 cat(sprintf("Organism profiles: %d rows\n", nrow(organism_profiles)))

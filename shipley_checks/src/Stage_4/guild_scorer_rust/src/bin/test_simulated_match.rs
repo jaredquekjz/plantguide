@@ -86,6 +86,7 @@ fn main() -> anyhow::Result<()> {
             bonus: vec![],
         },
         pest_profile: None,
+        csr_strategy_profile: None,
         fungi_network_profile: None,
         pollinator_network_profile: None,
         biocontrol_network_profile: Some(biocontrol_profile),

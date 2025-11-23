@@ -32,6 +32,7 @@ fn main() -> anyhow::Result<()> {
         guild_score,
         fragments,
         guild_plants,
+        m2_result,
         m3_result,
         organisms_df, // Needed for explanation
         m4_result,
@@ -65,6 +66,7 @@ fn main() -> anyhow::Result<()> {
         &guild_plants,
         climate_tier,
         fragments,
+            &m2_result,
         &m3_result,
         &organisms_df,
         &m4_result,

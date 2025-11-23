@@ -19,7 +19,8 @@ generator <- EncyclopediaGenerator$new(
 # Generate pages for test samples
 # ==============================================================================
 
-test_ids <- c("wfo-0000614323", "wfo-0000447854", "wfo-0000631143")
+# Use actual plant IDs from test sample
+test_ids <- c("wfo-0000510888", "wfo-0000510976", "wfo-0000510989")
 
 for (wfo_id in test_ids) {
   cat(sprintf("\n--- Generating page for %s ---\n", wfo_id))

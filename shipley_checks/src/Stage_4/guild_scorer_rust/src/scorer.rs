@@ -560,7 +560,7 @@ impl GuildScorer {
     pub fn score_guild_with_explanation_parallel(
         &self,
         plant_ids: &[String],
-    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M3Result, DataFrame, M4Result, M5Result, DataFrame, M7Result)> {
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M2Result, M3Result, DataFrame, M4Result, M5Result, DataFrame, M7Result)> {
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
@@ -770,6 +770,17 @@ impl GuildScorer {
             matched_fungivore_pairs: m4.matched_fungivore_pairs.clone(),
         };
 
+        // Clone M2Result for CSR strategy profile analysis
+        let m2_cloned = M2Result {
+            raw: m2.raw,
+            norm: m2.norm,
+            high_c_count: m2.high_c_count,
+            high_s_count: m2.high_s_count,
+            high_r_count: m2.high_r_count,
+            total_conflicts: m2.total_conflicts,
+            plant_csr_data: m2.plant_csr_data.clone(),
+        };
+
         // Clone M5Result for fungi network analysis
         let m5_cloned = M5Result {
             raw: m5.raw,
@@ -789,7 +800,7 @@ impl GuildScorer {
             pollinator_counts: m7.pollinator_counts.clone(),
         };
 
-        Ok((guild_score, fragments, guild_plants_with_organisms, m3_cloned, self.data.organisms.clone(), m4_cloned, m5_cloned, self.data.fungi.clone(), m7_cloned))
+        Ok((guild_score, fragments, guild_plants_with_organisms, m2_cloned, m3_cloned, self.data.organisms.clone(), m4_cloned, m5_cloned, self.data.fungi.clone(), m7_cloned))
     }
 }
 
