@@ -4,6 +4,25 @@
 
 Overall guild compatibility: 55.3/100
 
+## Metrics Breakdown
+
+### Universal Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M1 - Pest & Pathogen Independence | 70.3 | Good |
+| M2 - Growth Compatibility | 0.0 | Poor |
+| M3 - Insect Pest Control | 100.0 | Excellent |
+| M4 - Disease Suppression | 100.0 | Excellent |
+
+### Bonus Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M5 - Beneficial Fungi | 100.0 | Excellent |
+| M6 - Structural Diversity | 17.0 | Poor |
+| M7 - Pollinator Support | 0.0 | Poor |
+
 ## Climate Compatibility
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
@@ -115,7 +134,7 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Snails & Slugs | Specific |
 
 **Network Hubs (plants harboring most mycoparasites):**
 
@@ -268,23 +287,4 @@ Pfaffia gnaphalioides: Neutral (pH 6-7)
 Virola bicuhyba: Slightly Acidic (pH 5-6)
 Vitis vinifera (Common Grape): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
-
-## Metrics Breakdown
-
-### Universal Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.3 | Good |
-| M2 - Growth Compatibility | 0.0 | Poor |
-| M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 100.0 | Excellent |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 17.0 | Poor |
-| M7 - Pollinator Support | 0.0 | Poor |
 

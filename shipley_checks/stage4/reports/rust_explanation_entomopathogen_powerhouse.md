@@ -4,6 +4,25 @@
 
 Overall guild compatibility: 84.0/100
 
+## Metrics Breakdown
+
+### Universal Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M1 - Pest & Pathogen Independence | 40.2 | Fair |
+| M2 - Growth Compatibility | 50.0 | Fair |
+| M3 - Insect Pest Control | 100.0 | Excellent |
+| M4 - Disease Suppression | 97.7 | Excellent |
+
+### Bonus Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M5 - Beneficial Fungi | 100.0 | Excellent |
+| M6 - Structural Diversity | 100.0 | Excellent |
+| M7 - Pollinator Support | 100.0 | Excellent |
+
 ## Climate Compatibility
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
@@ -100,22 +119,22 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
-| adrastus rachifer | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
-| aphis spiraecola | Aphids | syrphus | Hoverflies | Specific (weight 1.0) |
-| athysanus argentarius | Leafhoppers | harpalus rufipes | Beetles | Specific (weight 1.0) |
-| coccus hesperidum | Scale Insects | coccus hesperidum | Scale Insects | Specific (weight 1.0) |
-| exomias trichopterus | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific (weight 1.0) |
-| myzus persicae | Aphids | harmonia axyridis | Beetles | Specific (weight 1.0) |
-| orgyia antiqua | Moths | vespa velutina | Wasps | Specific (weight 1.0) |
-| otiorhynchus ligustici | Beetles | harpalus rufipes | Beetles | Specific (weight 1.0) |
-| uroleucon | Aphids | syrphidae | Other Predators | Specific (weight 1.0) |
+| adrastus rachifer | Beetles | harpalus rufipes | Beetles | Specific |
+| aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
+| athysanus argentarius | Leafhoppers | harpalus rufipes | Beetles | Specific |
+| coccus hesperidum | Scale Insects | coccus hesperidum | Scale Insects | Specific |
+| exomias trichopterus | Beetles | harpalus rufipes | Beetles | Specific |
+| harpalus rufipes | Beetles | turdus merula | Birds | Specific |
+| myzus persicae | Aphids | harmonia axyridis | Beetles | Specific |
+| orgyia antiqua | Moths | vespa velutina | Wasps | Specific |
+| otiorhynchus ligustici | Beetles | harpalus rufipes | Beetles | Specific |
+| uroleucon | Aphids | syrphidae | Other Predators | Specific |
 
 **Matched Herbivore → Entomopathogenic Fungus Pairs:**
 
 | Herbivore (Pest) | Herbivore Category | Entomopathogenic Fungus | Match Type |
 |------------------|--------------------|------------------------|------------|
-| vespa velutina | Wasps | beauveria | Specific (weight 1.0) |
+| vespa velutina | Wasps | beauveria | Specific |
 
 ### Natural Disease Suppression [M4 - 97.7/100]
 
@@ -138,18 +157,18 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
-| armillaria | krynickillus melanocephalus | Other Predators | Specific (weight 1.0) |
-| ganoderma | cis bidentatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis bilamellatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis castaneus | Beetles | Specific (weight 1.0) |
-| ganoderma | ennearthron cornutum | Beetles | Specific (weight 1.0) |
-| ganoderma | megalodacne fasciata | Other Predators | Specific (weight 1.0) |
-| ganoderma | megalodacne heros | Other Predators | Specific (weight 1.0) |
-| ganoderma | monadenia fidelis | Snails & Slugs | Specific (weight 1.0) |
-| laetiporus | prophysaon andersonii | Other Predators | Specific (weight 1.0) |
-| laetiporus | prophysaon foliolatum | Other Predators | Specific (weight 1.0) |
-| truncatella | acanthopagrus latus | Other Predators | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Snails & Slugs | Specific |
+| armillaria | krynickillus melanocephalus | Other Predators | Specific |
+| ganoderma | cis bidentatus | Beetles | Specific |
+| ganoderma | cis bilamellatus | Beetles | Specific |
+| ganoderma | cis castaneus | Beetles | Specific |
+| ganoderma | ennearthron cornutum | Beetles | Specific |
+| ganoderma | megalodacne fasciata | Other Predators | Specific |
+| ganoderma | megalodacne heros | Other Predators | Specific |
+| ganoderma | monadenia fidelis | Snails & Slugs | Specific |
+| laetiporus | prophysaon andersonii | Other Predators | Specific |
+| laetiporus | prophysaon foliolatum | Other Predators | Specific |
+| truncatella | acanthopagrus latus | Other Predators | Specific |
 
 **Network Hubs (plants harboring most mycoparasites):**
 
@@ -307,23 +326,4 @@ Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
 Rosa canina (Canker Rose): Neutral (pH 6-7)
 Vitis vinifera (Common Grape): Alkaline (pH 7-8)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
-
-## Metrics Breakdown
-
-### Universal Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 40.2 | Fair |
-| M2 - Growth Compatibility | 50.0 | Fair |
-| M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.7 | Excellent |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 100.0 | Excellent |
-| M7 - Pollinator Support | 100.0 | Excellent |
 

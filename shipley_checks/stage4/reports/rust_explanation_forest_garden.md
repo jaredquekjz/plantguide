@@ -4,6 +4,25 @@
 
 Overall guild compatibility: 92.5/100
 
+## Metrics Breakdown
+
+### Universal Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M1 - Pest & Pathogen Independence | 57.4 | Fair |
+| M2 - Growth Compatibility | 100.0 | Excellent |
+| M3 - Insect Pest Control | 100.0 | Excellent |
+| M4 - Disease Suppression | 95.1 | Excellent |
+
+### Bonus Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M5 - Beneficial Fungi | 100.0 | Excellent |
+| M6 - Structural Diversity | 100.0 | Excellent |
+| M7 - Pollinator Support | 95.0 | Excellent |
+
 ## Climate Compatibility
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
@@ -90,17 +109,17 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
-| adoxophyes orana | Moths | eptesicus serotinus | Bats | Specific (weight 1.0) |
-| adoxophyes orana | Moths | myotis daubentonii | Bats | Specific (weight 1.0) |
-| adoxophyes orana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
-| aphis | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
-| aphis | Aphids | cyanistes caeruleus | Birds | Specific (weight 1.0) |
-| aphis | Aphids | fringilla coelebs | Birds | Specific (weight 1.0) |
-| aphis | Aphids | platycheirus scutatus | Flies | Specific (weight 1.0) |
-| aphis | Aphids | syrphus vitripennis | Hoverflies | Specific (weight 1.0) |
-| cnephasia stephensiana | Moths | myotis daubentonii | Bats | Specific (weight 1.0) |
-| cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific (weight 1.0) |
-| myzus persicae | Aphids | adalia bipunctata | Beetles | Specific (weight 1.0) |
+| adoxophyes orana | Moths | eptesicus serotinus | Bats | Specific |
+| adoxophyes orana | Moths | myotis daubentonii | Bats | Specific |
+| adoxophyes orana | Moths | myotis mystacinus | Bats | Specific |
+| aphis | Aphids | adalia bipunctata | Beetles | Specific |
+| aphis | Aphids | cyanistes caeruleus | Birds | Specific |
+| aphis | Aphids | fringilla coelebs | Birds | Specific |
+| aphis | Aphids | platycheirus scutatus | Flies | Specific |
+| aphis | Aphids | syrphus vitripennis | Hoverflies | Specific |
+| cnephasia stephensiana | Moths | myotis daubentonii | Bats | Specific |
+| cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific |
+| myzus persicae | Aphids | adalia bipunctata | Beetles | Specific |
 
 ### Natural Disease Suppression [M4 - 95.1/100]
 
@@ -278,23 +297,4 @@ Maianthemum racemosum (False Solomon's Seal): Neutral (pH 6-7)
 Mercurialis perennis (Dog's Mercury): Alkaline (pH 7-8)
 Rubus moorei (Bush Lawyer): Neutral (pH 6-7)  
 *Advice:* Moderate pH incompatibility. Use soil amendments to adjust pH for different zones.
-
-## Metrics Breakdown
-
-### Universal Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 57.4 | Fair |
-| M2 - Growth Compatibility | 100.0 | Excellent |
-| M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 95.1 | Excellent |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 100.0 | Excellent |
-| M7 - Pollinator Support | 95.0 | Excellent |
 

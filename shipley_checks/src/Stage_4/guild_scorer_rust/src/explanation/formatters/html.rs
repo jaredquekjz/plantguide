@@ -48,6 +48,28 @@ impl HtmlFormatter {
         ));
         html.push_str(&format!("<p>{}</p>\n", explanation.overall.message));
 
+        // Metrics table (moved to top for quick reference)
+        html.push_str("<h2>Metrics Breakdown</h2>\n");
+        html.push_str("<h3>Universal Indicators</h3>\n");
+        html.push_str("<table>\n<thead><tr><th>Metric</th><th>Score</th><th>Interpretation</th></tr></thead>\n<tbody>\n");
+        for metric in &explanation.metrics_display.universal {
+            html.push_str(&format!(
+                "<tr><td>{} - {}</td><td>{:.1}</td><td>{}</td></tr>\n",
+                metric.code, metric.name, metric.score, metric.interpretation
+            ));
+        }
+        html.push_str("</tbody>\n</table>\n");
+
+        html.push_str("<h3>Bonus Indicators</h3>\n");
+        html.push_str("<table>\n<thead><tr><th>Metric</th><th>Score</th><th>Interpretation</th></tr></thead>\n<tbody>\n");
+        for metric in &explanation.metrics_display.bonus {
+            html.push_str(&format!(
+                "<tr><td>{} - {}</td><td>{:.1}</td><td>{}</td></tr>\n",
+                metric.code, metric.name, metric.score, metric.interpretation
+            ));
+        }
+        html.push_str("</tbody>\n</table>\n");
+
         // Climate
         html.push_str("<h2>Climate Compatibility</h2>\n");
         html.push_str(&format!("<p>✅ {}</p>\n", explanation.climate.message));
@@ -112,28 +134,6 @@ impl HtmlFormatter {
                 html.push_str("</div>\n");
             }
         }
-
-        // Metrics table
-        html.push_str("<h2>Metrics Breakdown</h2>\n");
-        html.push_str("<h3>Universal Indicators</h3>\n");
-        html.push_str("<table>\n<thead><tr><th>Metric</th><th>Score</th><th>Interpretation</th></tr></thead>\n<tbody>\n");
-        for metric in &explanation.metrics_display.universal {
-            html.push_str(&format!(
-                "<tr><td>{} - {}</td><td>{:.1}</td><td>{}</td></tr>\n",
-                metric.code, metric.name, metric.score, metric.interpretation
-            ));
-        }
-        html.push_str("</tbody>\n</table>\n");
-
-        html.push_str("<h3>Bonus Indicators</h3>\n");
-        html.push_str("<table>\n<thead><tr><th>Metric</th><th>Score</th><th>Interpretation</th></tr></thead>\n<tbody>\n");
-        for metric in &explanation.metrics_display.bonus {
-            html.push_str(&format!(
-                "<tr><td>{} - {}</td><td>{:.1}</td><td>{}</td></tr>\n",
-                metric.code, metric.name, metric.score, metric.interpretation
-            ));
-        }
-        html.push_str("</tbody>\n</table>\n");
 
         html.push_str("</body>\n</html>\n");
         html

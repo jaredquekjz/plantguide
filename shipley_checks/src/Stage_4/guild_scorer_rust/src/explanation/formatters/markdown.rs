@@ -26,6 +26,30 @@ impl MarkdownFormatter {
         ));
         md.push_str(&format!("{}\n\n", explanation.overall.message));
 
+        // Metrics Breakdown (moved to top for quick reference)
+        md.push_str("## Metrics Breakdown\n\n");
+
+        md.push_str("### Universal Indicators\n\n");
+        md.push_str("| Metric | Score | Interpretation |\n");
+        md.push_str("|--------|-------|----------------|\n");
+        for metric in &explanation.metrics_display.universal {
+            md.push_str(&format!(
+                "| {} - {} | {:.1} | {} |\n",
+                metric.code, metric.name, metric.score, metric.interpretation
+            ));
+        }
+
+        md.push_str("\n### Bonus Indicators\n\n");
+        md.push_str("| Metric | Score | Interpretation |\n");
+        md.push_str("|--------|-------|----------------|\n");
+        for metric in &explanation.metrics_display.bonus {
+            md.push_str(&format!(
+                "| {} - {} | {:.1} | {} |\n",
+                metric.code, metric.name, metric.score, metric.interpretation
+            ));
+        }
+        md.push_str("\n");
+
         // Climate
         md.push_str("## Climate Compatibility\n\n");
         md.push_str(&format!("✅ {}\n\n", explanation.climate.message));
@@ -117,30 +141,6 @@ impl MarkdownFormatter {
             }
         }
 
-        // Metrics Breakdown
-        md.push_str("## Metrics Breakdown\n\n");
-
-        md.push_str("### Universal Indicators\n\n");
-        md.push_str("| Metric | Score | Interpretation |\n");
-        md.push_str("|--------|-------|----------------|\n");
-        for metric in &explanation.metrics_display.universal {
-            md.push_str(&format!(
-                "| {} - {} | {:.1} | {} |\n",
-                metric.code, metric.name, metric.score, metric.interpretation
-            ));
-        }
-
-        md.push_str("\n### Bonus Indicators\n\n");
-        md.push_str("| Metric | Score | Interpretation |\n");
-        md.push_str("|--------|-------|----------------|\n");
-        for metric in &explanation.metrics_display.bonus {
-            md.push_str(&format!(
-                "| {} - {} | {:.1} | {} |\n",
-                metric.code, metric.name, metric.score, metric.interpretation
-            ));
-        }
-
-        md.push('\n');
         md
     }
 
@@ -515,7 +515,7 @@ impl MarkdownFormatter {
             md.push_str("|------------------|-------------------|----------------|-------------------|------------|\n");
             for pair in biocontrol_profile.matched_predator_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | {} | {} | Specific (weight 1.0) |\n",
+                    "| {} | {} | {} | {} | Specific |\n",
                     pair.target,
                     pair.target_category.display_name(),
                     pair.agent,
@@ -542,7 +542,7 @@ impl MarkdownFormatter {
             md.push_str("|------------------|--------------------|------------------------|------------|\n");
             for pair in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | {} | Specific (weight 1.0) |\n",
+                    "| {} | {} | {} | Specific |\n",
                     pair.target,
                     pair.target_category.display_name(),
                     pair.agent
@@ -663,7 +663,7 @@ impl MarkdownFormatter {
             md.push_str("|----------|----------------------------------|------------|\n");
             for (pathogen, antagonist) in pathogen_profile.matched_antagonist_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | Specific (weight 1.0) |\n",
+                    "| {} | {} | Specific |\n",
                     pathogen, antagonist
                 ));
             }
@@ -687,8 +687,8 @@ impl MarkdownFormatter {
             md.push_str("|----------|--------------------------------------|----------|------------|\n");
             for pair in pathogen_profile.matched_fungivore_pairs.iter().take(20) {
                 md.push_str(&format!(
-                    "| {} | {} | {} | Specific (weight 1.0) |\n",
-                    pair.pathogen, 
+                    "| {} | {} | {} | Specific |\n",
+                    pair.pathogen,
                     pair.fungivore,
                     pair.fungivore_category.display_name()
                 ));

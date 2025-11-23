@@ -4,6 +4,25 @@
 
 Overall guild compatibility: 41.0/100
 
+## Metrics Breakdown
+
+### Universal Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M1 - Pest & Pathogen Independence | 32.8 | Poor |
+| M2 - Growth Compatibility | 100.0 | Excellent |
+| M3 - Insect Pest Control | 0.0 | Poor |
+| M4 - Disease Suppression | 63.3 | Good |
+
+### Bonus Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M5 - Beneficial Fungi | 45.0 | Fair |
+| M6 - Structural Diversity | 46.1 | Fair |
+| M7 - Pollinator Support | 0.0 | Poor |
+
 ## Climate Compatibility
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
@@ -215,23 +234,4 @@ Juncus usitatus (Australian Rush): Neutral (pH 6-7)
 Senna artemisioides (Silver Cassia): Neutral (pH 6-7)
 Sporobolus compositus (Composite Dropseed): Neutral (pH 6-7)  
 *Advice:* Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments.
-
-## Metrics Breakdown
-
-### Universal Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 32.8 | Poor |
-| M2 - Growth Compatibility | 100.0 | Excellent |
-| M3 - Insect Pest Control | 0.0 | Poor |
-| M4 - Disease Suppression | 63.3 | Good |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 46.1 | Fair |
-| M7 - Pollinator Support | 0.0 | Poor |
 

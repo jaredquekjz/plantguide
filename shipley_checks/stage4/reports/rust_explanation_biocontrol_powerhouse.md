@@ -4,6 +4,25 @@
 
 Overall guild compatibility: 82.4/100
 
+## Metrics Breakdown
+
+### Universal Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M1 - Pest & Pathogen Independence | 9.5 | Poor |
+| M2 - Growth Compatibility | 70.0 | Good |
+| M3 - Insect Pest Control | 100.0 | Excellent |
+| M4 - Disease Suppression | 97.3 | Excellent |
+
+### Bonus Indicators
+
+| Metric | Score | Interpretation |
+|--------|-------|----------------|
+| M5 - Beneficial Fungi | 100.0 | Excellent |
+| M6 - Structural Diversity | 100.0 | Excellent |
+| M7 - Pollinator Support | 100.0 | Excellent |
+
 ## Climate Compatibility
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
@@ -100,15 +119,15 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 | Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
 |------------------|-------------------|----------------|-------------------|------------|
-| aphis spiraecola | Aphids | syrphus | Hoverflies | Specific (weight 1.0) |
-| cinara | Aphids | eriozona syrphoides | Other Predators | Specific (weight 1.0) |
-| cynips longiventris | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
-| eurytoma brunniventris | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific (weight 1.0) |
-| nabidae | Other Herbivores | vireo gilvus | Birds | Specific (weight 1.0) |
-| pseudococcus | Scale Insects | syrphidae | Other Predators | Specific (weight 1.0) |
-| synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific (weight 1.0) |
-| tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific (weight 1.0) |
+| aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
+| cinara | Aphids | eriozona syrphoides | Other Predators | Specific |
+| cynips longiventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |
+| eurytoma brunniventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |
+| harpalus rufipes | Beetles | turdus merula | Birds | Specific |
+| nabidae | Other Herbivores | vireo gilvus | Birds | Specific |
+| pseudococcus | Scale Insects | syrphidae | Other Predators | Specific |
+| synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific |
+| tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific |
 
 ### Natural Disease Suppression [M4 - 97.3/100]
 
@@ -131,16 +150,16 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 | Pathogen | Known Antagonist (Animal Fungivore) | Category | Match Type |
 |----------|--------------------------------------|----------|------------|
-| armillaria | ariolimax californicus | Snails & Slugs | Specific (weight 1.0) |
-| ganoderma | cis bidentatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis bilamellatus | Beetles | Specific (weight 1.0) |
-| ganoderma | cis castaneus | Beetles | Specific (weight 1.0) |
-| ganoderma | ennearthron cornutum | Beetles | Specific (weight 1.0) |
-| ganoderma | megalodacne fasciata | Other Predators | Specific (weight 1.0) |
-| ganoderma | megalodacne heros | Other Predators | Specific (weight 1.0) |
-| ganoderma | monadenia fidelis | Snails & Slugs | Specific (weight 1.0) |
-| laetiporus | prophysaon andersonii | Other Predators | Specific (weight 1.0) |
-| laetiporus | prophysaon foliolatum | Other Predators | Specific (weight 1.0) |
+| armillaria | ariolimax californicus | Snails & Slugs | Specific |
+| ganoderma | cis bidentatus | Beetles | Specific |
+| ganoderma | cis bilamellatus | Beetles | Specific |
+| ganoderma | cis castaneus | Beetles | Specific |
+| ganoderma | ennearthron cornutum | Beetles | Specific |
+| ganoderma | megalodacne fasciata | Other Predators | Specific |
+| ganoderma | megalodacne heros | Other Predators | Specific |
+| ganoderma | monadenia fidelis | Snails & Slugs | Specific |
+| laetiporus | prophysaon andersonii | Other Predators | Specific |
+| laetiporus | prophysaon foliolatum | Other Predators | Specific |
 
 **Network Hubs (plants harboring most mycoparasites):**
 
@@ -296,23 +315,4 @@ Quercus robur (Acorn Tree): Slightly Acidic (pH 5-6)
 Rosa canina (Canker Rose): Neutral (pH 6-7)
 Sambucus nigra (Black Elderberry): Neutral (pH 6-7)  
 *Advice:* Minor pH incompatibility. Monitor plant health and adjust soil pH as needed.
-
-## Metrics Breakdown
-
-### Universal Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 9.5 | Poor |
-| M2 - Growth Compatibility | 70.0 | Good |
-| M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.3 | Excellent |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
-| M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 100.0 | Excellent |
-| M7 - Pollinator Support | 100.0 | Excellent |
 
