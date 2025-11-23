@@ -64,8 +64,8 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Apocynaceae | Alyxia | Alyxia ruscifolia (Chainfruit, Chain Fruit) |
 | Cyperaceae | Carex | Carex mucronata |
 | Dilleniaceae | Hibbertia | Hibbertia diffusa (Wedge Guinea Flower) |
-| Juncaceae | Juncus | Juncus usitatus (Common Rush, australian rush) |
-| Leguminosae | Senna | Senna artemisioides (silver senna, Silver Cassia) |
+| Juncaceae | Juncus | Juncus usitatus (Common Rush, Australian Rush) |
+| Leguminosae | Senna | Senna artemisioides (Silver Senna, Silver Cassia) |
 | Myrtaceae | Eucalyptus | Eucalyptus melanophloia (Silver-leaved Ironbark) |
 | Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed, Tall Dropseed) |
 

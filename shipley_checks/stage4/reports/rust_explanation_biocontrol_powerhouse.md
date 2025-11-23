@@ -66,13 +66,13 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, black elderberry, European elder, European black elderberry, Parsley-leaved Elder) |
-| Fagaceae | Quercus | Quercus robur (English oak, Truffle Oak, Acorn Tree, pedunculate oak, common oak) |
-| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, Neapolitan medlar, hawthorn, may, common hawthorn) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, wild strawberry, woodland strawberry, alpine strawberry, European strawberry, wood strawberry) |
+| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder) |
+| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
+| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, Neapolitan Medlar, Hawthorn, May, Common Hawthorn) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
-| Rosaceae | Rosa | Rosa canina (canker rose, dog rose, Dog-rose) |
-| Sapindaceae | Acer | Acer saccharinum (river maple, white maple, silver maple) |
+| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
+| Sapindaceae | Acer | Acer saccharinum (River Maple, White Maple, Silver Maple) |
 
 **Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
 

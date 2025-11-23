@@ -109,6 +109,44 @@ fn to_title_case(s: &str) -> String {
         .join(" ")
 }
 
+/// Format all vernacular names (not just first) with Title Case and comma separation
+///
+/// Used for comprehensive display of all common names
+///
+/// Returns: "Name1, Name2, Name3" (all in Title Case)
+pub fn format_all_vernaculars(
+    vernacular_en: Option<&str>,
+    vernacular_zh: Option<&str>,
+) -> String {
+    // Try English first
+    if let Some(en_str) = vernacular_en {
+        if !en_str.trim().is_empty() {
+            return format_vernacular_list(en_str);
+        }
+    }
+
+    // Fallback to Chinese
+    if let Some(zh_str) = vernacular_zh {
+        if !zh_str.trim().is_empty() {
+            return format_vernacular_list(zh_str);
+        }
+    }
+
+    String::new()
+}
+
+/// Format a semicolon-separated list into comma-separated Title Case names
+fn format_vernacular_list(raw_str: &str) -> String {
+    let names: Vec<String> = raw_str
+        .split(';')
+        .map(|s| s.trim())
+        .filter(|s| !s.is_empty())
+        .map(|s| to_title_case(s))
+        .collect();
+
+    names.join(", ")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

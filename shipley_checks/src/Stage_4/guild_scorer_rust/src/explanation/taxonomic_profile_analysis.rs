@@ -2,6 +2,7 @@ use serde::{Deserialize, Serialize};
 use polars::prelude::*;
 use anyhow::Result;
 use rustc_hash::FxHashMap;
+use crate::utils::vernacular::format_all_vernaculars;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TaxonomicProfile {
@@ -60,16 +61,19 @@ pub fn analyze_taxonomic_diversity(guild_plants: &DataFrame) -> Result<Taxonomic
     // Build plant entries with display names
     let mut plant_entries = Vec::new();
     for i in 0..families.len() {
-        // Format vernacular names: use English, fallback to Chinese, replace semicolons with commas
-        let vernacular = if !vernacular_names_en[i].is_empty() {
-            // Clean up English names: replace semicolons with commas
-            vernacular_names_en[i].replace("; ", ", ")
-        } else if !vernacular_names_zh[i].is_empty() {
-            // Fallback to Chinese names if English not available
-            vernacular_names_zh[i].replace("; ", ", ")
+        // Format vernacular names: all names in Title Case, English preferred, Chinese fallback
+        let en = if !vernacular_names_en[i].is_empty() {
+            Some(vernacular_names_en[i].as_str())
         } else {
-            String::new()
+            None
         };
+        let zh = if !vernacular_names_zh[i].is_empty() {
+            Some(vernacular_names_zh[i].as_str())
+        } else {
+            None
+        };
+
+        let vernacular = format_all_vernaculars(en, zh);
 
         let display_name = if !vernacular.is_empty() {
             format!("{} ({})", plant_names[i], vernacular)

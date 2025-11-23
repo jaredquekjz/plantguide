@@ -66,13 +66,13 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, Pacific Solomon's seal, Solomon's plume, false Solomon's seal) |
-| Compositae | Anaphalis | Anaphalis margaritacea (whitemargin pussytoes, pearly everlasting) |
+| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, Pacific Solomon's Seal, Solomon's Plume, False Solomon's Seal) |
+| Compositae | Anaphalis | Anaphalis margaritacea (Whitemargin Pussytoes, Pearly Everlasting) |
 | Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
 | Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |
 | Hydrangeaceae | Deutzia | Deutzia scabra (Deutzia) |
-| Oleaceae | Fraxinus | Fraxinus excelsior (Ash, Golden Ash, European ash) |
-| Rosaceae | Rubus | Rubus moorei (bush lawyer) |
+| Oleaceae | Fraxinus | Fraxinus excelsior (Ash, Golden Ash, European Ash) |
+| Rosaceae | Rubus | Rubus moorei (Bush Lawyer) |
 
 **Family clustering:** Asparagaceae (1 plant), Compositae (1 plant), Ebenaceae (1 plant), Euphorbiaceae (1 plant), Hydrangeaceae (1 plant), Oleaceae (1 plant), Rosaceae (1 plant)
 

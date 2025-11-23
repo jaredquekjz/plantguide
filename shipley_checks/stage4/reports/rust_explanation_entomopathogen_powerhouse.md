@@ -66,13 +66,13 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Fagaceae | Quercus | Quercus robur (English oak, Truffle Oak, Acorn Tree, pedunculate oak, common oak) |
-| Poaceae | Dactylis | Dactylis glomerata (Rough Cocksfoot, Akaroa, cock's foot, cocksfoot, cock's-foot, orchardgrass, orchard grass) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, wild strawberry, woodland strawberry, alpine strawberry, European strawberry, wood strawberry) |
+| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
+| Poaceae | Dactylis | Dactylis glomerata (Rough Cocksfoot, Akaroa, Cock's Foot, Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
-| Rosaceae | Rosa | Rosa canina (canker rose, dog rose, Dog-rose) |
+| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
 | Rubiaceae | Coffea | Coffea arabica (Kona Coffee, Arabian Coffee, Arabica Coffee, Coffee) |
-| Vitaceae | Vitis | Vitis vinifera (Grape Vine, common grape, wine grape) |
+| Vitaceae | Vitis | Vitis vinifera (Grape Vine, Common Grape, Wine Grape) |
 
 **Family clustering:** Rosaceae (3 plants), Fagaceae (1 plant), Poaceae (1 plant), Rubiaceae (1 plant), Vitaceae (1 plant)
 
