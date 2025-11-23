@@ -29,10 +29,7 @@ pub fn generate_m3_fragment(m3: &M3Result, display_score: f64) -> MetricFragment
             "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. {}",
             interpretation
         ),
-        evidence: Some(format!(
-            "Biocontrol score: {:.1}/100. Higher scores indicate more documented predator-pest relationships.",
-            display_score
-        )),
+        evidence: None,
     })
 }
 

@@ -46,19 +46,33 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 | Deutzia scabra (Deutzia) | 2 |
 | Mercurialis perennis (Dog's Mercury) | 2 |
 
-### Compatible Growth Strategies [M2 - 100.0/100]
+### Growth Strategy Compatibility [M2 - 100.0/100]
 
-No CSR strategy conflicts (100th percentile compatibility)  
-Plants have compatible growth strategies: 1 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.  
+100th percentile compatibility  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 1 Competitive-dominant (high CSR values: >75th percentile). No conflicts detected - plants have compatible resource allocation strategies.  
 
-*Evidence:* Compatibility score: 100.0/100. Compatible growth strategies allow plants to coexist with minimal competition.
+#### CSR Strategy Profile
+
+*Per-plant CSR breakdown and compatibility analysis*
+
+**Plant CSR Strategies:**
+
+| Plant | C %ile | S %ile | R %ile | Dominant Strategy |
+|-------|--------|--------|--------|-------------------|
+| Anaphalis margaritacea (Pearly Everlasting) | 63 | 58 | 41 | C-leaning |
+| Deutzia scabra (Deutzia) | 63 | 36 | 68 | R-leaning |
+| Diospyros kaki (Japanese Persimmon) | 85 ⚠ | 41 | 40 | Competitive |
+| Fraxinus excelsior (Ash) | 67 | 58 | 38 | C-leaning |
+| Maianthemum racemosum (False Solomon's Seal) | 64 | 38 | 64 | R-leaning |
+| Mercurialis perennis (Dog's Mercury) | 68 | 33 | 68 | C-leaning |
+| Rubus moorei (Bush Lawyer) | 70 | 43 | 53 | C-leaning |
+
+⚠ = High (>75th percentile)
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
-
-*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -93,8 +107,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 95th percentile pathogen control via 6 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
-*Evidence:* Pathogen control score: 95.1/100, covering 6 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
-
 #### Pathogen Control Network Profile
 
 *Qualitative information about disease suppression (influences M4 scoring)*
@@ -126,8 +138,6 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 147 shared beneficial fungal species connect 5 plants (100th percentile)  
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
-
-*Evidence:* Network score: 100.0/100, coverage: 71.4%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -196,18 +206,14 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification works well:**
 1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
-*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
+
 
 Excellent structural diversity - multiple layers maximize space and light use  
-
-*Evidence:* Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
 ### Pollinator Support [M7 - 95.0/100]
 
 84 shared pollinator species (95th percentile)  
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
-
-*Evidence:* Pollinator support score: 95.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 

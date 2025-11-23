@@ -143,11 +143,6 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
             detail.push_str("Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.\n\n");
         }
 
-        detail.push_str(&format!(
-            "*Evidence:* Structural diversity score: {:.1}/100, stratification quality: {:.2}",
-            display_score, m6.stratification_quality
-        ));
-
         MetricFragment::with_benefit(BenefitCard {
             benefit_type: "structural_diversity".to_string(),
             metric_code: "M6".to_string(),
@@ -158,10 +153,7 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
                 display_score.round() as i32
             ),
             detail: format!("{}\n\n{}", detail, interpretation),
-            evidence: Some(format!(
-                "Structural diversity score: {:.1}/100. Higher scores indicate more growth forms and better vertical stratification.",
-                display_score
-            )),
+            evidence: None,
         })
 }
 

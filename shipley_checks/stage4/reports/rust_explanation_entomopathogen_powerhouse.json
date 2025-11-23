@@ -21,12 +21,20 @@
       "evidence": null
     },
     {
+      "benefit_type": "growth_compatibility",
+      "metric_code": "M2",
+      "title": "Growth Strategy Compatibility",
+      "message": "50th percentile compatibility",
+      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). 0.9 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
+      "evidence": null
+    },
+    {
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
       "message": "100th percentile biocontrol capacity",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
-      "evidence": "Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships."
+      "evidence": null
     },
     {
       "benefit_type": "disease_control",
@@ -34,7 +42,7 @@
       "title": "Natural Disease Suppression",
       "message": "98th percentile pathogen control via 47 antagonistic mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
-      "evidence": "Pathogen control score: 97.7/100, covering 47 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships."
+      "evidence": null
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -42,15 +50,15 @@
       "title": "Beneficial Mycorrhizal Network",
       "message": "512 shared beneficial fungal species connect 7 plants (100th percentile)",
       "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
-      "evidence": "Network score: 100.0/100, coverage: 100.0%. Higher scores indicate more shared fungal species."
+      "evidence": null
     },
     {
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
       "title": "Structural Diversity",
       "message": "5 growth forms spanning 27.0m height range (100th percentile)",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00\n\nExcellent structural diversity - multiple layers maximize space and light use",
-      "evidence": "Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification."
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Understory (5-15m):**\n  - Vitis vinifera (Common Grape): 9.7m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Coffea arabica (Arabian Coffee): 4.6m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Dactylis glomerata (Akaroa): 0.7m, EIVE-L: 6.8 (flexible)\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n\n\nExcellent structural diversity - multiple layers maximize space and light use",
+      "evidence": null
     },
     {
       "benefit_type": "pollinator_support",
@@ -58,18 +66,10 @@
       "title": "Pollinator Support",
       "message": "309 shared pollinator species (100th percentile)",
       "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination",
-      "evidence": "Pollinator support score: 100.0/100. Higher scores indicate more shared pollinator species."
+      "evidence": null
     }
   ],
   "warnings": [
-    {
-      "warning_type": "csr_conflict",
-      "severity": "Low",
-      "icon": "⚠️",
-      "message": "0.9 CSR strategy conflicts detected (50th percentile compatibility)",
-      "detail": "Growth strategy incompatibility: 3 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.",
-      "advice": "Consider mixing growth strategies more evenly, or group plants with similar strategies together"
-    },
     {
       "warning_type": "ph_incompatible",
       "severity": "Medium",
@@ -259,6 +259,110 @@
         "pest_count": 7
       }
     ]
+  },
+  "csr_strategy_profile": {
+    "plants": [
+      {
+        "display_name": "Coffea arabica (Arabian Coffee)",
+        "dominant_strategy": "Competitive",
+        "c_percentile": 87.40941435439751,
+        "s_percentile": 43.857690734142366,
+        "r_percentile": 32.58197135386222,
+        "high_c": true,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Dactylis glomerata (Akaroa)",
+        "dominant_strategy": "Mixed",
+        "c_percentile": 61.82802031789694,
+        "s_percentile": 41.978958866046206,
+        "r_percentile": 61.431894943807364,
+        "high_c": false,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Fragaria vesca (Alpine Strawberry)",
+        "dominant_strategy": "Mixed",
+        "c_percentile": 52.12372037986176,
+        "s_percentile": 51.42229559609503,
+        "r_percentile": 57.4274068658947,
+        "high_c": false,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Prunus spinosa (Blackthorn)",
+        "dominant_strategy": "Mixed",
+        "c_percentile": 43.90147386630213,
+        "s_percentile": 62.09659084946154,
+        "r_percentile": 49.52416546753582,
+        "high_c": false,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Quercus robur (Acorn Tree)",
+        "dominant_strategy": "Competitive",
+        "c_percentile": 78.86807611016214,
+        "s_percentile": 48.173503402636086,
+        "r_percentile": 38.23011536036931,
+        "high_c": true,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Rosa canina (Canker Rose)",
+        "dominant_strategy": "Mixed",
+        "c_percentile": 55.25471038650806,
+        "s_percentile": 57.4878212673307,
+        "r_percentile": 47.59633195871197,
+        "high_c": false,
+        "high_s": false,
+        "high_r": false
+      },
+      {
+        "display_name": "Vitis vinifera (Common Grape)",
+        "dominant_strategy": "Competitive",
+        "c_percentile": 93.07378822934604,
+        "s_percentile": 0.0,
+        "r_percentile": 62.90110798804952,
+        "high_c": true,
+        "high_s": false,
+        "high_r": false
+      }
+    ],
+    "conflicts": [
+      {
+        "conflict_type": "C-C",
+        "plants": [
+          "Coffea arabica (Arabian Coffee)",
+          "Quercus robur (Acorn Tree)",
+          "Vitis vinifera (Common Grape)"
+        ],
+        "explanation": "Multiple competitive plants may compete intensely for light, nutrients, and space. Consider spatial separation or staggered planting times."
+      }
+    ],
+    "compatible_groups": [
+      {
+        "strategy": "Mixed",
+        "plants": [
+          "Dactylis glomerata (Akaroa)",
+          "Fragaria vesca (Alpine Strawberry)",
+          "Prunus spinosa (Blackthorn)",
+          "Rosa canina (Canker Rose)"
+        ],
+        "reason": "Balanced CSR strategies - flexible resource use"
+      }
+    ],
+    "summary": {
+      "high_c_count": 3,
+      "high_s_count": 0,
+      "high_r_count": 0,
+      "mixed_count": 4,
+      "total_conflicts": 0.8999999999999999
+    }
   },
   "fungi_network_profile": {
     "total_unique_fungi": 512,

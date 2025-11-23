@@ -36,10 +36,7 @@ pub fn generate_m7_fragment(m7: &M7Result, display_score: f64) -> MetricFragment
             "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. {}",
             interpretation
         ),
-        evidence: Some(format!(
-            "Pollinator support score: {:.1}/100. Higher scores indicate more shared pollinator species.",
-            display_score
-        )),
+        evidence: None,
     })
 }
 

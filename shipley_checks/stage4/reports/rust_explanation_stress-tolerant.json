@@ -21,12 +21,12 @@
       "evidence": null
     },
     {
-      "benefit_type": "csr_compatibility",
+      "benefit_type": "growth_compatibility",
       "metric_code": "M2",
-      "title": "Compatible Growth Strategies",
-      "message": "No CSR strategy conflicts (100th percentile compatibility)",
-      "detail": "Plants have compatible growth strategies: 7 Stress-tolerant-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.",
-      "evidence": "Compatibility score: 100.0/100. Compatible growth strategies allow plants to coexist with minimal competition."
+      "title": "Growth Strategy Compatibility",
+      "message": "100th percentile compatibility",
+      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 7 Stress-tolerant-dominant (high CSR values: >75th percentile). No conflicts detected - plants have compatible resource allocation strategies.",
+      "evidence": null
     },
     {
       "benefit_type": "insect_control",
@@ -34,7 +34,7 @@
       "title": "Natural Insect Pest Control",
       "message": "0th percentile biocontrol capacity",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management",
-      "evidence": "Biocontrol score: 0.0/100. Higher scores indicate more documented predator-pest relationships."
+      "evidence": null
     },
     {
       "benefit_type": "disease_control",
@@ -42,7 +42,7 @@
       "title": "Natural Disease Suppression",
       "message": "63th percentile pathogen control via 4 antagonistic mechanisms",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control",
-      "evidence": "Pathogen control score: 63.3/100, covering 4 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships."
+      "evidence": null
     },
     {
       "benefit_type": "mycorrhizal_network",
@@ -50,15 +50,15 @@
       "title": "Beneficial Mycorrhizal Network",
       "message": "16 shared beneficial fungal species connect 4 plants (45th percentile)",
       "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Moderate fungal network - some shared fungi present but connectivity may be limited",
-      "evidence": "Network score: 45.0/100, coverage: 57.1%. Higher scores indicate more shared fungal species."
+      "evidence": null
     },
     {
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
       "title": "Structural Diversity",
       "message": "3 growth forms spanning 19.8m height range (46th percentile)",
-      "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\n*Evidence:* Structural diversity score: 46.1/100, stratification quality: 0.36\n\nModerate structural diversity - some layering present but coverage may be limited",
-      "evidence": "Structural diversity score: 46.1/100. Higher scores indicate more growth forms and better vertical stratification."
+      "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\n\n\nModerate structural diversity - some layering present but coverage may be limited",
+      "evidence": null
     },
     {
       "benefit_type": "pollinator_support",
@@ -66,7 +66,7 @@
       "title": "Pollinator Support",
       "message": "0 shared pollinator species (0th percentile)",
       "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors",
-      "evidence": "Pollinator support score: 0.0/100. Higher scores indicate more shared pollinator species."
+      "evidence": null
     }
   ],
   "warnings": [
@@ -209,6 +209,103 @@
         "pest_count": 1
       }
     ]
+  },
+  "csr_strategy_profile": {
+    "plants": [
+      {
+        "display_name": "Alyxia ruscifolia (Chain Fruit)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 16.433721913972207,
+        "s_percentile": 93.2066280618745,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Carex mucronata",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 29.174014967079824,
+        "s_percentile": 87.73430823397614,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Eucalyptus melanophloia (Silver-leaved Ironbark)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 54.60571140550504,
+        "s_percentile": 76.38618235711078,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Hibbertia diffusa (Wedge Guinea Flower)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 7.273671366442583,
+        "s_percentile": 82.3093657688906,
+        "r_percentile": 42.50620715208203,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Juncus usitatus (Australian Rush)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 36.6117382699106,
+        "s_percentile": 84.61514885207198,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Senna artemisioides (Silver Cassia)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 7.5016566155734825,
+        "s_percentile": 97.75490186275208,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      },
+      {
+        "display_name": "Sporobolus compositus (Composite Dropseed)",
+        "dominant_strategy": "Stress-tolerant",
+        "c_percentile": 43.30140085405428,
+        "s_percentile": 81.77670598296696,
+        "r_percentile": 0.0,
+        "high_c": false,
+        "high_s": true,
+        "high_r": false
+      }
+    ],
+    "conflicts": [],
+    "compatible_groups": [
+      {
+        "strategy": "Stress-tolerant",
+        "plants": [
+          "Alyxia ruscifolia (Chain Fruit)",
+          "Carex mucronata",
+          "Eucalyptus melanophloia (Silver-leaved Ironbark)",
+          "Hibbertia diffusa (Wedge Guinea Flower)",
+          "Juncus usitatus (Australian Rush)",
+          "Senna artemisioides (Silver Cassia)",
+          "Sporobolus compositus (Composite Dropseed)"
+        ],
+        "reason": "Stress-tolerant plants without competitive dominants - compatible niche"
+      }
+    ],
+    "summary": {
+      "high_c_count": 0,
+      "high_s_count": 7,
+      "high_r_count": 0,
+      "mixed_count": 0,
+      "total_conflicts": 0.0
+    }
   },
   "fungi_network_profile": {
     "total_unique_fungi": 16,

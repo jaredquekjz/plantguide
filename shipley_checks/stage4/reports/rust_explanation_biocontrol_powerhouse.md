@@ -46,12 +46,43 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 | Quercus robur (Acorn Tree) | 25 |
 | Sambucus nigra (Black Elderberry) | 16 |
 
+### Growth Strategy Compatibility [M2 - 70.0/100]
+
+70th percentile compatibility  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). 0.3 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+
+#### CSR Strategy Profile
+
+*Per-plant CSR breakdown and compatibility analysis*
+
+**Plant CSR Strategies:**
+
+| Plant | C %ile | S %ile | R %ile | Dominant Strategy |
+|-------|--------|--------|--------|-------------------|
+| Acer saccharinum (River Maple) | 75 ⚠ | 45 | 45 | Competitive |
+| Crataegus monogyna (Common Hawthorn) | 56 | 65 | 36 | S-leaning |
+| Fragaria vesca (Alpine Strawberry) | 52 | 51 | 57 | Mixed |
+| Prunus spinosa (Blackthorn) | 44 | 62 | 50 | Mixed |
+| Quercus robur (Acorn Tree) | 79 ⚠ | 48 | 38 | Competitive |
+| Rosa canina (Canker Rose) | 55 | 57 | 48 | Mixed |
+| Sambucus nigra (Black Elderberry) | 67 | 31 | 70 | R-leaning |
+
+⚠ = High (>75th percentile)
+
+**Detected Conflicts:**
+
+- **C-C**: Acer saccharinum (River Maple), Quercus robur (Acorn Tree)
+  - Multiple competitive plants may compete intensely for light, nutrients, and space. Consider spatial separation or staggered planting times.
+
+**Compatible Groupings:**
+
+- **Mixed**: Fragaria vesca (Alpine Strawberry), Prunus spinosa (Blackthorn), Rosa canina (Canker Rose)
+  - Balanced CSR strategies - flexible resource use
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
-
-*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -83,8 +114,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 97th percentile pathogen control via 32 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
-
-*Evidence:* Pathogen control score: 97.3/100, covering 32 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -129,8 +158,6 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 385 shared beneficial fungal species connect 7 plants (100th percentile)  
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
-
-*Evidence:* Network score: 100.0/100, coverage: 100.0%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -195,18 +222,14 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification works well:**
 7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
-*Evidence:* Structural diversity score: 100.0/100, stratification quality: 1.00
+
 
 Excellent structural diversity - multiple layers maximize space and light use  
-
-*Evidence:* Structural diversity score: 100.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
 ### Pollinator Support [M7 - 100.0/100]
 
 240 shared pollinator species (100th percentile)  
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
-
-*Evidence:* Pollinator support score: 100.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 
@@ -259,11 +282,6 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 | Quercus robur (Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
 
 ## Warnings
-
-⚠️ **0.3 CSR strategy conflicts detected (70th percentile compatibility)**
-
-Growth strategy incompatibility: 2 Competitive-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.  
-*Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚡ **Soil pH incompatibility detected**
 

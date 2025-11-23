@@ -44,12 +44,41 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 | Allium schoenoprasum (Chives) | 4 |
 | Alnus acuminata (Andean Alder) | 1 |
 
+### Growth Strategy Compatibility [M2 - 0.0/100]
+
+0th percentile compatibility  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). 14.6 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+
+#### CSR Strategy Profile
+
+*Per-plant CSR breakdown and compatibility analysis*
+
+**Plant CSR Strategies:**
+
+| Plant | C %ile | S %ile | R %ile | Dominant Strategy |
+|-------|--------|--------|--------|-------------------|
+| Allium schoenoprasum (Chives) | 25 | 89 ⚠ | 0 | Stress-tolerant |
+| Alnus acuminata (Andean Alder) | 55 | 76 ⚠ | 0 | Stress-tolerant |
+| Cheirodendron trigynum (Common Cheirodendron) | 100 ⚠ | 24 | 0 | Competitive |
+| Erythrina sandwicensis (Hawaiian Coral Tree) | 90 ⚠ | 35 | 40 | Competitive |
+| Pfaffia gnaphalioides | 96 ⚠ | 28 | 34 | Competitive |
+| Virola bicuhyba | 92 ⚠ | 45 | 0 | Competitive |
+| Vitis vinifera (Common Grape) | 93 ⚠ | 0 | 63 | Competitive |
+
+⚠ = High (>75th percentile)
+
+**Detected Conflicts:**
+
+- **C-C**: Cheirodendron trigynum (Common Cheirodendron), Erythrina sandwicensis (Hawaiian Coral Tree), Pfaffia gnaphalioides, Virola bicuhyba, Vitis vinifera (Common Grape)
+  - Multiple competitive plants may compete intensely for light, nutrients, and space. Consider spatial separation or staggered planting times.
+
+- **C-S**: Cheirodendron trigynum (Common Cheirodendron), Erythrina sandwicensis (Hawaiian Coral Tree), Pfaffia gnaphalioides, Virola bicuhyba, Vitis vinifera (Common Grape), Allium schoenoprasum (Chives), Alnus acuminata (Andean Alder)
+  - Competitive plants may shade out stress-tolerant plants unless the stress-tolerant plants are shade-adapted or have significant height separation.
+
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
-
-*Evidence:* Biocontrol score: 100.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -69,8 +98,6 @@ The biocontrol score is driven by the presence of **general entomopathogenic fun
 
 100th percentile pathogen control via 9 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
-
-*Evidence:* Pathogen control score: 100.0/100, covering 9 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -108,8 +135,6 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 279 shared beneficial fungal species connect 4 plants (100th percentile)  
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
-
-*Evidence:* Network score: 100.0/100, coverage: 57.1%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -174,18 +199,14 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification has issues:**
 5 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 2 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
 
-*Evidence:* Structural diversity score: 17.0/100, stratification quality: 0.12
+
 
 Limited structural diversity - few layers or growth forms, less efficient space use  
-
-*Evidence:* Structural diversity score: 17.0/100. Higher scores indicate more growth forms and better vertical stratification.
 
 ### Pollinator Support [M7 - 0.0/100]
 
 20 shared pollinator species (0th percentile)  
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
-
-*Evidence:* Pollinator support score: 0.0/100. Higher scores indicate more shared pollinator species.
 
 #### Pollinator Network Profile
 
@@ -233,11 +254,6 @@ Plants attract and support overlapping pollinator communities, ensuring reliable
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
 ## Warnings
-
-⚠️ **14.6 CSR strategy conflicts detected (0th percentile compatibility)**
-
-Growth strategy incompatibility: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies.  
-*Advice:* Consider mixing growth strategies more evenly, or group plants with similar strategies together
 
 ⚠️ **Soil pH incompatibility detected**
 

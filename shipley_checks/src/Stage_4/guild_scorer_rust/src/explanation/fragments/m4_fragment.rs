@@ -37,10 +37,7 @@ pub fn generate_m4_fragment(m4: &M4Result, display_score: f64) -> MetricFragment
             "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. {}",
             interpretation
         ),
-        evidence: Some(format!(
-            "Pathogen control score: {:.1}/100, covering {} {}. Higher scores indicate more documented mycoparasite-pathogen relationships.",
-            display_score, m4.n_mechanisms, mechanism_text
-        )),
+        evidence: None,
     })
 }
 

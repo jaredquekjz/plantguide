@@ -41,19 +41,38 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Eucalyptus melanophloia (Silver-leaved Ironbark) | 2 |
 | Alyxia ruscifolia (Chain Fruit) | 1 |
 
-### Compatible Growth Strategies [M2 - 100.0/100]
+### Growth Strategy Compatibility [M2 - 100.0/100]
 
-No CSR strategy conflicts (100th percentile compatibility)  
-Plants have compatible growth strategies: 7 Stress-tolerant-dominant (high CSR values: >75th percentile). CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Compatible strategies reduce resource competition.  
+100th percentile compatibility  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 7 Stress-tolerant-dominant (high CSR values: >75th percentile). No conflicts detected - plants have compatible resource allocation strategies.  
 
-*Evidence:* Compatibility score: 100.0/100. Compatible growth strategies allow plants to coexist with minimal competition.
+#### CSR Strategy Profile
+
+*Per-plant CSR breakdown and compatibility analysis*
+
+**Plant CSR Strategies:**
+
+| Plant | C %ile | S %ile | R %ile | Dominant Strategy |
+|-------|--------|--------|--------|-------------------|
+| Alyxia ruscifolia (Chain Fruit) | 16 | 93 ⚠ | 0 | Stress-tolerant |
+| Carex mucronata | 29 | 88 ⚠ | 0 | Stress-tolerant |
+| Eucalyptus melanophloia (Silver-leaved Ironbark) | 55 | 76 ⚠ | 0 | Stress-tolerant |
+| Hibbertia diffusa (Wedge Guinea Flower) | 7 | 82 ⚠ | 43 | Stress-tolerant |
+| Juncus usitatus (Australian Rush) | 37 | 85 ⚠ | 0 | Stress-tolerant |
+| Senna artemisioides (Silver Cassia) | 8 | 98 ⚠ | 0 | Stress-tolerant |
+| Sporobolus compositus (Composite Dropseed) | 43 | 82 ⚠ | 0 | Stress-tolerant |
+
+⚠ = High (>75th percentile)
+
+**Compatible Groupings:**
+
+- **Stress-tolerant**: Alyxia ruscifolia (Chain Fruit), Carex mucronata, Eucalyptus melanophloia (Silver-leaved Ironbark), Hibbertia diffusa (Wedge Guinea Flower), Juncus usitatus (Australian Rush), Senna artemisioides (Silver Cassia), Sporobolus compositus (Composite Dropseed)
+  - Stress-tolerant plants without competitive dominants - compatible niche
 
 ### Natural Insect Pest Control [M3 - 0.0/100]
 
 0th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management  
-
-*Evidence:* Biocontrol score: 0.0/100. Higher scores indicate more documented predator-pest relationships.
 
 #### Biocontrol Network Profile
 
@@ -70,8 +89,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 63th percentile pathogen control via 4 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control  
-
-*Evidence:* Pathogen control score: 63.3/100, covering 4 mechanisms. Higher scores indicate more documented mycoparasite-pathogen relationships.
 
 #### Pathogen Control Network Profile
 
@@ -106,8 +123,6 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 16 shared beneficial fungal species connect 4 plants (45th percentile)  
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Moderate fungal network - some shared fungi present but connectivity may be limited  
-
-*Evidence:* Network score: 45.0/100, coverage: 57.1%. Higher scores indicate more shared fungal species.
 
 #### Beneficial Fungi Network Profile
 
@@ -176,18 +191,14 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 **Why this stratification has issues:**
 3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
 
-*Evidence:* Structural diversity score: 46.1/100, stratification quality: 0.36
+
 
 Moderate structural diversity - some layering present but coverage may be limited  
-
-*Evidence:* Structural diversity score: 46.1/100. Higher scores indicate more growth forms and better vertical stratification.
 
 ### Pollinator Support [M7 - 0.0/100]
 
 0 shared pollinator species (0th percentile)  
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
-
-*Evidence:* Pollinator support score: 0.0/100. Higher scores indicate more shared pollinator species.
 
 ## Warnings
 

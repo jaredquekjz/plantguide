@@ -56,10 +56,7 @@ pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment
             breakdown,
             detail_suffix
         ),
-        evidence: Some(format!(
-            "Compatibility score: {:.1}/100. See CSR Strategy Profile below for per-plant breakdown.",
-            display_score
-        )),
+        evidence: None,
     })
 }
 

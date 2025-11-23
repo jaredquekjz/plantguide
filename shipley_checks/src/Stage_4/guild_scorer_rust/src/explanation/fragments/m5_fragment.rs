@@ -41,10 +41,7 @@ pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment
             "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. {}",
             interpretation
         ),
-        evidence: Some(format!(
-            "Network score: {:.1}/100, coverage: {:.1}%. Higher scores indicate more shared fungal species.",
-            display_score, m5.coverage_ratio * 100.0
-        )),
+        evidence: None,
     })
 }
 
