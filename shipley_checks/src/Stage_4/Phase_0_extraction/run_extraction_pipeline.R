@@ -16,22 +16,16 @@ script_dir <- "shipley_checks/src/Stage_4/Phase_0_extraction"
 start_time <- Sys.time()
 
 # ============================================================================
-# Step 0: Extract known herbivores from full GloBI
+# Step 0: Direct herbivore extraction (archived 00_extract_known_herbivores.R)
 # ============================================================================
-cat("Step 1/6: Extracting known herbivores from full GloBI...\n")
-cat("--------------------------------------------------------------------------\n")
-tryCatch({
-  source(file.path(script_dir, "00_extract_known_herbivores.R"))
-  cat("✓ Script 0 completed\n\n")
-}, error = function(e) {
-  cat("✗ Script 0 FAILED:", conditionMessage(e), "\n\n")
-  quit(status = 1)
-})
+# ARCHIVED: 00_extract_known_herbivores.R - global herbivore pre-extraction
+# New approach: 01_match_herbivores_to_plants.R queries GloBI directly with
+# taxonomic filters (no pre-extraction step needed)
 
 # ============================================================================
-# Step 1: Match herbivores to 11,711 plants
+# Step 1: Match herbivores to 11,711 plants (direct query + taxonomic filters)
 # ============================================================================
-cat("Step 2/6: Matching herbivores to 11,711 plants...\n")
+cat("Step 1/6: Extracting herbivores for 11,711 plants (direct GloBI query)...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "01_match_herbivores_to_plants.R"))
@@ -44,7 +38,7 @@ tryCatch({
 # ============================================================================
 # Step 2: Extract organism profiles (pollinators, herbivores, predators, fungivores)
 # ============================================================================
-cat("Step 3/6: Extracting organism profiles...\n")
+cat("Step 2/6: Extracting organism profiles...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "02_extract_organism_profiles.R"))
@@ -57,7 +51,7 @@ tryCatch({
 # ============================================================================
 # Step 3: Extract fungal guilds (FungalTraits + FunGuild hybrid)
 # ============================================================================
-cat("Step 4/6: Extracting fungal guilds (FungalTraits + FunGuild hybrid)...\n")
+cat("Step 3/6: Extracting fungal guilds (FungalTraits + FunGuild hybrid)...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "03_extract_fungal_guilds_hybrid.R"))
@@ -70,7 +64,7 @@ tryCatch({
 # ============================================================================
 # Step 4: Build multitrophic networks (predator, antagonist)
 # ============================================================================
-cat("Step 5/6: Building multitrophic networks...\n")
+cat("Step 4/6: Building multitrophic networks...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "04_build_multitrophic_network.R"))
@@ -83,7 +77,7 @@ tryCatch({
 # ============================================================================
 # Step 5: Extract insect-fungal parasite relationships
 # ============================================================================
-cat("Step 6/7: Extracting insect-fungal parasite relationships...\n")
+cat("Step 5/6: Extracting insect-fungal parasite relationships...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "05_extract_insect_fungal_parasites.R"))
@@ -96,7 +90,7 @@ tryCatch({
 # ============================================================================
 # Step 6: Extract unique organisms with taxonomy (for Phase 1)
 # ============================================================================
-cat("Step 7/7: Extracting unique organisms with taxonomy...\n")
+cat("Step 6/6: Extracting unique organisms with taxonomy...\n")
 cat("--------------------------------------------------------------------------\n")
 tryCatch({
   source(file.path(script_dir, "06_extract_unique_organisms_taxonomy.R"))
@@ -199,13 +193,12 @@ cat("===========================================================================
 cat(sprintf("Total pipeline time: %.1f seconds\n\n", as.numeric(total_time)))
 
 cat("Outputs (shipley_checks/stage4/phase0_output/):\n")
-cat("  1. known_herbivore_insects.parquet       - 14K+ herbivore species\n")
-cat("  2. matched_herbivores_per_plant.parquet  - 3K+ plants with herbivores\n")
-cat("  3. organism_profiles_11711.parquet       - 11,711 plants × organisms\n")
-cat("  4. fungal_guilds_hybrid_11711.parquet    - 11,711 plants × fungi\n")
-cat("  5. herbivore_predators_11711.parquet     - Herbivore → predator network\n")
-cat("  6. pathogen_antagonists_11711.parquet    - Pathogen → antagonist network\n")
-cat("  7. insect_fungal_parasites_11711.parquet - Insect → parasite network\n\n")
+cat("  1. matched_herbivores_per_plant.parquet  - 3.9K+ plants with herbivores (taxonomic filtered)\n")
+cat("  2. organism_profiles_11711.parquet       - 11,711 plants × organisms\n")
+cat("  3. fungal_guilds_hybrid_11711.parquet    - 11,711 plants × fungi\n")
+cat("  4. herbivore_predators_11711.parquet     - Herbivore → predator network\n")
+cat("  5. pathogen_antagonists_11711.parquet    - Pathogen → antagonist network\n")
+cat("  6. insect_fungal_parasites_11711.parquet - Insect → parasite network\n\n")
 
 cat("All parquets:\n")
 cat("  ✓ DuckDB COPY TO format (no R metadata)\n")
@@ -213,9 +206,14 @@ cat("  ✓ Polars-compatible (Rust-ready)\n")
 cat("  ✓ Data integrity validated\n")
 cat("  ✓ Ready for guild_scorer_rust\n\n")
 
+cat("Taxonomic filters applied:\n")
+cat("  ✓ Excluded 5 mutualist families (bees)\n")
+cat("  ✓ Excluded 14 predator families (>70%% predation ratio)\n")
+cat("  ✓ Direct GloBI query (no pre-extraction step)\n\n")
+
 cat("To run individual scripts:\n")
-cat("  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/00_extract_known_herbivores.R\n")
 cat("  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/01_match_herbivores_to_plants.R\n")
+cat("  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/02_extract_organism_profiles.R\n")
 cat("  # ... etc\n\n")
 
 cat("To verify outputs:\n")

@@ -27,51 +27,15 @@ print()
 all_checks_passed = True
 
 # ============================================================================
-# Dataset 1: Known Herbivore Insects
+# ARCHIVED: Dataset 1 - Known Herbivore Insects (00_extract_known_herbivores.R)
 # ============================================================================
-print("1. Known Herbivore Insects")
-print("   File: known_herbivore_insects.parquet")
-
-file = VALIDATION_DIR / "known_herbivore_insects.parquet"
-if not file.exists():
-    print("   ✗ FAILED: File not found")
-    all_checks_passed = False
-else:
-    df = con.execute(f"SELECT * FROM read_parquet('{file}')").fetchdf()
-
-    # Check row count (should be ~14,000-15,000)
-    if 13000 <= len(df) <= 16000:
-        print(f"   ✓ Row count: {len(df):,} herbivore species")
-    else:
-        print(f"   ✗ Row count: {len(df):,} (expected 13,000-16,000)")
-        all_checks_passed = False
-
-    # Check required columns (actual column names from Script 0)
-    required_cols = ['herbivore_name', 'sourceTaxonGenusName', 'sourceTaxonFamilyName',
-                    'sourceTaxonOrderName', 'sourceTaxonClassName', 'sourceTaxonPhylumName',
-                    'sourceTaxonKingdomName', 'plant_eating_records']
-    missing = [col for col in required_cols if col not in df.columns]
-    if not missing:
-        print(f"   ✓ All required columns present ({len(required_cols)} columns)")
-    else:
-        print(f"   ✗ Missing columns: {missing}")
-        all_checks_passed = False
-
-    # Check data integrity: plant_eating_records should be > 0
-    if 'plant_eating_records' in df.columns:
-        invalid_hosts = (df['plant_eating_records'] <= 0).sum()
-        if invalid_hosts == 0:
-            print(f"   ✓ All herbivores have plant_eating_records > 0")
-        else:
-            print(f"   ✗ {invalid_hosts} herbivores have plant_eating_records <= 0")
-            all_checks_passed = False
-
-print()
+# This dataset is no longer generated. The new approach (01_match_herbivores_to_plants.R)
+# queries GloBI directly with taxonomic filters, eliminating the pre-extraction step.
 
 # ============================================================================
-# Dataset 2: Matched Herbivores Per Plant
+# Dataset 1: Matched Herbivores Per Plant (Taxonomic Filtered)
 # ============================================================================
-print("2. Matched Herbivores Per Plant")
+print("1. Matched Herbivores Per Plant (Taxonomic Filtered)")
 print("   File: matched_herbivores_per_plant.parquet")
 
 file = VALIDATION_DIR / "matched_herbivores_per_plant.parquet"
@@ -114,9 +78,9 @@ else:
 print()
 
 # ============================================================================
-# Dataset 3: Organism Profiles (11,711 plants)
+# Dataset 2: Organism Profiles (11,711 plants)
 # ============================================================================
-print("3. Organism Profiles")
+print("2. Organism Profiles")
 print("   File: organism_profiles_11711.parquet")
 
 file = VALIDATION_DIR / "organism_profiles_11711.parquet"
@@ -180,9 +144,9 @@ else:
 print()
 
 # ============================================================================
-# Dataset 4: Fungal Guilds (11,711 plants)
+# Dataset 3: Fungal Guilds (11,711 plants)
 # ============================================================================
-print("4. Fungal Guilds (FungalTraits + FunGuild Hybrid)")
+print("3. Fungal Guilds (FungalTraits + FunGuild Hybrid)")
 print("   File: fungal_guilds_hybrid_11711.parquet")
 
 file = VALIDATION_DIR / "fungal_guilds_hybrid_11711.parquet"
@@ -233,12 +197,12 @@ else:
 print()
 
 # ============================================================================
-# Dataset 5: Multitrophic Networks
+# Dataset 4: Multitrophic Networks
 # ============================================================================
-print("5. Multitrophic Networks")
+print("4. Multitrophic Networks")
 
-# 5a. Herbivore Predators
-print("   5a. Herbivore → Predator Network")
+# 4a. Herbivore Predators
+print("   4a. Herbivore → Predator Network")
 print("       File: herbivore_predators_11711.parquet")
 
 file = VALIDATION_DIR / "herbivore_predators_11711.parquet"
@@ -262,8 +226,8 @@ else:
 
     print(f"       ✓ {stats['herbivores_with_predators'][0]:,} herbivores have known predators")
 
-# 5b. Pathogen Antagonists
-print("   5b. Pathogen → Antagonist Network")
+# 4b. Pathogen Antagonists
+print("   4b. Pathogen → Antagonist Network")
 print("       File: pathogen_antagonists_11711.parquet")
 
 file = VALIDATION_DIR / "pathogen_antagonists_11711.parquet"
@@ -290,9 +254,9 @@ else:
 print()
 
 # ============================================================================
-# Dataset 6: Insect Fungal Parasites
+# Dataset 5: Insect Fungal Parasites
 # ============================================================================
-print("6. Insect → Fungal Parasite Relationships")
+print("5. Insect → Fungal Parasite Relationships")
 print("   File: insect_fungal_parasites_11711.parquet")
 
 file = VALIDATION_DIR / "insect_fungal_parasites_11711.parquet"
@@ -323,14 +287,13 @@ print()
 # ============================================================================
 # POLARS COMPATIBILITY TEST
 # ============================================================================
-print("7. Polars Compatibility (Rust-Ready Test)")
+print("6. Polars Compatibility (Rust-Ready Test)")
 print("   Testing if Polars can read all parquets...")
 
 try:
     import polars as pl
 
     files_to_test = [
-        "known_herbivore_insects.parquet",
         "matched_herbivores_per_plant.parquet",
         "organism_profiles_11711.parquet",
         "fungal_guilds_hybrid_11711.parquet",
