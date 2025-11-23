@@ -19,6 +19,13 @@ pub mod scorer;
 pub mod compact_tree;
 pub mod explanation;
 
+// Phase 8: DataFusion Query Engine (optional feature)
+#[cfg(feature = "api")]
+pub mod query_engine;
+
+#[cfg(feature = "api")]
+pub mod api_server;
+
 // Re-export commonly used types
 pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::{GuildData, ClimateOrganizer};
@@ -29,6 +36,12 @@ pub use explanation::{
     Explanation, BenefitCard, WarningCard, RiskCard, MetricFragment, Severity,
     ExplanationGenerator, MarkdownFormatter, JsonFormatter, HtmlFormatter,
 };
+
+#[cfg(feature = "api")]
+pub use query_engine::{QueryEngine, PlantFilters};
+
+#[cfg(feature = "api")]
+pub use api_server::{AppState, create_router};
 
 #[cfg(test)]
 mod tests {

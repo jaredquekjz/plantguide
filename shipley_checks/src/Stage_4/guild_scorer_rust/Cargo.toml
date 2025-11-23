@@ -30,10 +30,63 @@ rand = "0.8"
 anyhow = "1.0"
 thiserror = "1.0"
 
+# Data verification (DuckDB for SQL-based integrity checks)
+duckdb = { version = "1.1", features = ["bundled"], optional = true }
+
+# Phase 8: DataFusion Query Engine
+datafusion = { version = "43", optional = true }
+arrow = { version = "53", optional = true }
+
+# Phase 8: Axum Web Framework
+axum = { version = "0.7", features = ["macros"], optional = true }
+tokio = { version = "1.35", features = ["full"], optional = true }
+tower = { version = "0.4", features = ["util"], optional = true }
+tower-http = { version = "0.5", features = ["fs", "compression-gzip", "compression-br", "cors", "trace"], optional = true }
+
+# Phase 8: Caching
+moka = { version = "0.12", features = ["future"], optional = true }
+
+# Phase 8: HTTP
+hyper = { version = "1.0", features = ["full"], optional = true }
+
+# Phase 8: Logging
+tracing = { version = "0.1", optional = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"], optional = true }
+
+# Phase 8: Timestamps
+chrono = { version = "0.4", optional = true }
+
 [dev-dependencies]
 # Testing
 approx = "0.5"         # Floating-point comparison
 criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bin]]
+name = "verify_phase7_integrity"
+path = "../Phase_7_datafusion/verify_phase7_integrity.rs"
+required-features = ["duckdb"]
+
+[[bin]]
+name = "api_server"
+path = "src/bin/api_server.rs"
+required-features = ["api"]
+
+[features]
+default = []
+verification = ["duckdb"]
+api = [
+    "datafusion",
+    "arrow",
+    "axum",
+    "tokio",
+    "tower",
+    "tower-http",
+    "moka",
+    "hyper",
+    "tracing",
+    "tracing-subscriber",
+    "chrono",
+]
 
 [profile.release]
 opt-level = 3
