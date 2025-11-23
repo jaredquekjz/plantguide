@@ -247,12 +247,12 @@
       {
         "family": "Amaryllidaceae",
         "genus": "Allium",
-        "display_name": "Allium schoenoprasum (wild chives; Chives)"
+        "display_name": "Allium schoenoprasum (wild chives, Chives)"
       },
       {
         "family": "Araliaceae",
         "genus": "Cheirodendron",
-        "display_name": "Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa)"
+        "display_name": "Cheirodendron trigynum (Olapa, Common Cheirodendron, ʻŌlapa)"
       },
       {
         "family": "Betulaceae",
@@ -262,7 +262,7 @@
       {
         "family": "Leguminosae",
         "genus": "Erythrina",
-        "display_name": "Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili)"
+        "display_name": "Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili)"
       },
       {
         "family": "Myristicaceae",
@@ -272,7 +272,7 @@
       {
         "family": "Vitaceae",
         "genus": "Vitis",
-        "display_name": "Vitis vinifera (Grape Vine; common grape; wine grape)"
+        "display_name": "Vitis vinifera (Grape Vine, common grape, wine grape)"
       }
     ],
     "family_distribution": [

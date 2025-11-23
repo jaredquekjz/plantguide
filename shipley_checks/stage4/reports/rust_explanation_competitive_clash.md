@@ -65,12 +65,12 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
 | Amaranthaceae | Pfaffia | Pfaffia gnaphalioides |
-| Amaryllidaceae | Allium | Allium schoenoprasum (wild chives; Chives) |
-| Araliaceae | Cheirodendron | Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) |
+| Amaryllidaceae | Allium | Allium schoenoprasum (wild chives, Chives) |
+| Araliaceae | Cheirodendron | Cheirodendron trigynum (Olapa, Common Cheirodendron, ʻŌlapa) |
 | Betulaceae | Alnus | Alnus acuminata (Andean Alder) |
-| Leguminosae | Erythrina | Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) |
+| Leguminosae | Erythrina | Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili) |
 | Myristicaceae | Virola | Virola bicuhyba |
-| Vitaceae | Vitis | Vitis vinifera (Grape Vine; common grape; wine grape) |
+| Vitaceae | Vitis | Vitis vinifera (Grape Vine, common grape, wine grape) |
 
 **Family clustering:** Amaranthaceae (1 plant), Amaryllidaceae (1 plant), Araliaceae (1 plant), Betulaceae (1 plant), Leguminosae (1 plant), Myristicaceae (1 plant), Vitaceae (1 plant)
 

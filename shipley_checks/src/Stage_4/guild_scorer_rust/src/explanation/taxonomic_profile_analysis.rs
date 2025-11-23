@@ -43,8 +43,15 @@ pub fn analyze_taxonomic_diversity(guild_plants: &DataFrame) -> Result<Taxonomic
         .map(|n| n.map(|s| s.to_string()).unwrap_or_default())
         .collect::<Vec<_>>();
 
-    let vernacular_names = guild_plants
+    let vernacular_names_en = guild_plants
         .column("vernacular_name_en")?
+        .str()?
+        .into_iter()
+        .map(|v| v.map(|s| s.to_string()).unwrap_or_default())
+        .collect::<Vec<_>>();
+
+    let vernacular_names_zh = guild_plants
+        .column("vernacular_name_zh")?
         .str()?
         .into_iter()
         .map(|v| v.map(|s| s.to_string()).unwrap_or_default())
@@ -53,8 +60,19 @@ pub fn analyze_taxonomic_diversity(guild_plants: &DataFrame) -> Result<Taxonomic
     // Build plant entries with display names
     let mut plant_entries = Vec::new();
     for i in 0..families.len() {
-        let display_name = if !vernacular_names[i].is_empty() {
-            format!("{} ({})", plant_names[i], vernacular_names[i])
+        // Format vernacular names: use English, fallback to Chinese, replace semicolons with commas
+        let vernacular = if !vernacular_names_en[i].is_empty() {
+            // Clean up English names: replace semicolons with commas
+            vernacular_names_en[i].replace("; ", ", ")
+        } else if !vernacular_names_zh[i].is_empty() {
+            // Fallback to Chinese names if English not available
+            vernacular_names_zh[i].replace("; ", ", ")
+        } else {
+            String::new()
+        };
+
+        let display_name = if !vernacular.is_empty() {
+            format!("{} ({})", plant_names[i], vernacular)
         } else {
             plant_names[i].clone()
         };

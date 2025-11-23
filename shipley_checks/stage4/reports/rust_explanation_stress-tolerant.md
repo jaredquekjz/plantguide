@@ -61,13 +61,13 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Apocynaceae | Alyxia | Alyxia ruscifolia (Chainfruit; Chain Fruit) |
+| Apocynaceae | Alyxia | Alyxia ruscifolia (Chainfruit, Chain Fruit) |
 | Cyperaceae | Carex | Carex mucronata |
 | Dilleniaceae | Hibbertia | Hibbertia diffusa (Wedge Guinea Flower) |
-| Juncaceae | Juncus | Juncus usitatus (Common Rush; australian rush) |
-| Leguminosae | Senna | Senna artemisioides (silver senna; Silver Cassia) |
+| Juncaceae | Juncus | Juncus usitatus (Common Rush, australian rush) |
+| Leguminosae | Senna | Senna artemisioides (silver senna, Silver Cassia) |
 | Myrtaceae | Eucalyptus | Eucalyptus melanophloia (Silver-leaved Ironbark) |
-| Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed; Tall Dropseed) |
+| Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed, Tall Dropseed) |
 
 **Family clustering:** Apocynaceae (1 plant), Cyperaceae (1 plant), Dilleniaceae (1 plant), Juncaceae (1 plant), Leguminosae (1 plant), Myrtaceae (1 plant), Poaceae (1 plant)
 

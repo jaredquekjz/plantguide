@@ -218,7 +218,7 @@
       {
         "family": "Apocynaceae",
         "genus": "Alyxia",
-        "display_name": "Alyxia ruscifolia (Chainfruit; Chain Fruit)"
+        "display_name": "Alyxia ruscifolia (Chainfruit, Chain Fruit)"
       },
       {
         "family": "Cyperaceae",
@@ -233,12 +233,12 @@
       {
         "family": "Juncaceae",
         "genus": "Juncus",
-        "display_name": "Juncus usitatus (Common Rush; australian rush)"
+        "display_name": "Juncus usitatus (Common Rush, australian rush)"
       },
       {
         "family": "Leguminosae",
         "genus": "Senna",
-        "display_name": "Senna artemisioides (silver senna; Silver Cassia)"
+        "display_name": "Senna artemisioides (silver senna, Silver Cassia)"
       },
       {
         "family": "Myrtaceae",
@@ -248,7 +248,7 @@
       {
         "family": "Poaceae",
         "genus": "Sporobolus",
-        "display_name": "Sporobolus compositus (Composite Dropseed; Tall Dropseed)"
+        "display_name": "Sporobolus compositus (Composite Dropseed, Tall Dropseed)"
       }
     ],
     "family_distribution": [
