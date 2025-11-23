@@ -19,7 +19,7 @@
 #   ./run_complete_pipeline_phase0_to_4.sh [OPTIONS]
 #
 # Options:
-#   --start-from PHASE   Start from specific phase (0, 1, 2, 3, 4, 5, or 6)
+#   --start-from PHASE   Start from specific phase (0, 1, 2, 3, 4, 5, 6, or 7)
 #                        Default: 0 (run all phases)
 #   --skip-calibration   Skip Phase 5 (Rust calibration)
 #                        Default: false (run calibration)
@@ -81,8 +81,8 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate start phase
-if [[ ! "$START_PHASE" =~ ^[0-6]$ ]]; then
-  echo "Error: Invalid phase '$START_PHASE'. Must be 0, 1, 2, 3, 4, 5, or 6."
+if [[ ! "$START_PHASE" =~ ^[0-7]$ ]]; then
+  echo "Error: Invalid phase '$START_PHASE'. Must be 0, 1, 2, 3, 4, 5, 6, or 7."
   exit 1
 fi
 
@@ -455,6 +455,35 @@ elif [ "$RUN_TESTS" -eq 0 ]; then
 fi
 
 # ============================================================================
+# Phase 7: DataFusion SQL-Optimized Parquet Conversion
+# ============================================================================
+
+if [ "$START_PHASE" -le 7 ]; then
+  echo "================================================================================"
+  echo "PHASE 7: DATAFUSION SQL-OPTIMIZED PARQUET CONVERSION"
+  echo "================================================================================"
+  echo ""
+  echo "Converting datasets to SQL-queryable format for DataFusion query engine"
+  echo ""
+
+  PHASE7_START=$(date +%s)
+
+  bash Phase_7_datafusion/run_phase7_pipeline.sh
+
+  PHASE7_END=$(date +%s)
+  PHASE7_TIME=$((PHASE7_END - PHASE7_START))
+
+  if [ $? -eq 0 ]; then
+    echo ""
+    echo "✓ Phase 7 complete (${PHASE7_TIME}s)"
+    echo ""
+  else
+    echo "✗ Phase 7 failed"
+    exit 1
+  fi
+fi
+
+# ============================================================================
 # Summary
 # ============================================================================
 
@@ -495,6 +524,10 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo "✓ Phase 6: Canonical 5-guild tests + explanation reports"
   [ -n "$PHASE6_TIME" ] && echo "           Time: ${PHASE6_TIME}s"
 fi
+if [ "$START_PHASE" -le 7 ]; then
+  echo "✓ Phase 7: DataFusion SQL-optimized parquet conversion"
+  [ -n "$PHASE7_TIME" ] && echo "           Time: ${PHASE7_TIME}s"
+fi
 
 echo ""
 echo "Total pipeline time: ${PIPELINE_TIME}s ($((PIPELINE_TIME / 60)) min)"
@@ -534,6 +567,13 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo "    - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}"
   echo "    - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}"
   echo "    - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}"
+  echo ""
+fi
+if [ "$START_PHASE" -le 7 ]; then
+  echo "  Phase 7 (SQL-optimized parquets for DataFusion):"
+  echo "    - shipley_checks/stage4/phase7_output/plants_searchable_11711.parquet (2.8 MB)"
+  echo "    - shipley_checks/stage4/phase7_output/organisms_searchable.parquet (1.4 MB)"
+  echo "    - shipley_checks/stage4/phase7_output/fungi_searchable.parquet (386 KB)"
   echo ""
 fi
 echo "================================================================================"
