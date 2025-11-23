@@ -20,7 +20,7 @@ Overall guild compatibility: 82.4/100
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
 
-## Benefits
+## Metrics Explanation
 
 ### Phylogenetic Diversity [M1 - 9.5/100]
 
@@ -57,6 +57,24 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 | Crataegus monogyna (Common Hawthorn) | 29 |
 | Quercus robur (Acorn Tree) | 25 |
 | Sambucus nigra (Black Elderberry) | 16 |
+
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 4 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier; Elder; black elderberry; European elder; European black elderberry; Parsley-leaved Elder) |
+| Fagaceae | Quercus | Quercus robur (English oak; Truffle Oak; Acorn Tree; pedunculate oak; common oak) |
+| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn; Neapolitan medlar; hawthorn; may; common hawthorn) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry; Hillside Strawberry; wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry) |
+| Rosaceae | Prunus | Prunus spinosa (Sloe; Blackthorn) |
+| Rosaceae | Rosa | Rosa canina (canker rose; dog rose; Dog-rose) |
+| Sapindaceae | Acer | Acer saccharinum (river maple; white maple; silver maple) |
+
+**Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 70.0/100]
 

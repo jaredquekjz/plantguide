@@ -267,6 +267,66 @@
       }
     ]
   },
+  "taxonomic_profile": {
+    "total_plants": 7,
+    "total_families": 4,
+    "total_genera": 7,
+    "plant_entries": [
+      {
+        "family": "Adoxaceae",
+        "genus": "Sambucus",
+        "display_name": "Sambucus nigra (Europese Vlier; Elder; black elderberry; European elder; European black elderberry; Parsley-leaved Elder)"
+      },
+      {
+        "family": "Fagaceae",
+        "genus": "Quercus",
+        "display_name": "Quercus robur (English oak; Truffle Oak; Acorn Tree; pedunculate oak; common oak)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Crataegus",
+        "display_name": "Crataegus monogyna (English Hawthorn; Neapolitan medlar; hawthorn; may; common hawthorn)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Fragaria",
+        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry; Hillside Strawberry; wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Prunus",
+        "display_name": "Prunus spinosa (Sloe; Blackthorn)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Rosa",
+        "display_name": "Rosa canina (canker rose; dog rose; Dog-rose)"
+      },
+      {
+        "family": "Sapindaceae",
+        "genus": "Acer",
+        "display_name": "Acer saccharinum (river maple; white maple; silver maple)"
+      }
+    ],
+    "family_distribution": [
+      [
+        "Rosaceae",
+        4
+      ],
+      [
+        "Adoxaceae",
+        1
+      ],
+      [
+        "Fagaceae",
+        1
+      ],
+      [
+        "Sapindaceae",
+        1
+      ]
+    ]
+  },
   "csr_strategy_profile": {
     "plants": [
       {

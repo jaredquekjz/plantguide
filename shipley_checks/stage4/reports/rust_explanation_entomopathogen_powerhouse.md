@@ -20,7 +20,7 @@ Overall guild compatibility: 84.0/100
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
 
-## Benefits
+## Metrics Explanation
 
 ### Phylogenetic Diversity [M1 - 40.2/100]
 
@@ -57,6 +57,24 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Vitis vinifera (Common Grape) | 53 |
 | Quercus robur (Acorn Tree) | 25 |
 | Coffea arabica (Arabian Coffee) | 23 |
+
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 5 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Fagaceae | Quercus | Quercus robur (English oak; Truffle Oak; Acorn Tree; pedunculate oak; common oak) |
+| Poaceae | Dactylis | Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry; Hillside Strawberry; wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry) |
+| Rosaceae | Prunus | Prunus spinosa (Sloe; Blackthorn) |
+| Rosaceae | Rosa | Rosa canina (canker rose; dog rose; Dog-rose) |
+| Rubiaceae | Coffea | Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee) |
+| Vitaceae | Vitis | Vitis vinifera (Grape Vine; common grape; wine grape) |
+
+**Family clustering:** Rosaceae (3 plants), Fagaceae (1 plant), Poaceae (1 plant), Rubiaceae (1 plant), Vitaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 50.0/100]
 

@@ -1,5 +1,5 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network, analyze_csr_strategies};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network, analyze_csr_strategies, analyze_taxonomic_diversity};
 use crate::scorer::GuildScore;
 use crate::metrics::{M2Result, M3Result, M4Result, M5Result, M7Result};
 use anyhow::Result;
@@ -84,6 +84,10 @@ impl ExplanationGenerator {
         .ok()
         .flatten();
 
+        // Taxonomic diversity profile (M1 - family and genus information)
+        let taxonomic_profile = analyze_taxonomic_diversity(guild_plants)
+            .ok();
+
         // CSR strategy profile (M2 - per-plant CSR breakdown and compatibility analysis)
         let csr_strategy_profile = Some(analyze_csr_strategies(
             &m2_result.plant_csr_data,
@@ -150,6 +154,7 @@ impl ExplanationGenerator {
             risks,
             metrics_display,
             pest_profile,
+            taxonomic_profile,
             csr_strategy_profile,
             fungi_network_profile,
             pollinator_network_profile,

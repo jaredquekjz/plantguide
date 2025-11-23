@@ -234,6 +234,78 @@
       }
     ]
   },
+  "taxonomic_profile": {
+    "total_plants": 7,
+    "total_families": 7,
+    "total_genera": 7,
+    "plant_entries": [
+      {
+        "family": "Amaranthaceae",
+        "genus": "Pfaffia",
+        "display_name": "Pfaffia gnaphalioides"
+      },
+      {
+        "family": "Amaryllidaceae",
+        "genus": "Allium",
+        "display_name": "Allium schoenoprasum (wild chives; Chives)"
+      },
+      {
+        "family": "Araliaceae",
+        "genus": "Cheirodendron",
+        "display_name": "Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa)"
+      },
+      {
+        "family": "Betulaceae",
+        "genus": "Alnus",
+        "display_name": "Alnus acuminata (Andean Alder)"
+      },
+      {
+        "family": "Leguminosae",
+        "genus": "Erythrina",
+        "display_name": "Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili)"
+      },
+      {
+        "family": "Myristicaceae",
+        "genus": "Virola",
+        "display_name": "Virola bicuhyba"
+      },
+      {
+        "family": "Vitaceae",
+        "genus": "Vitis",
+        "display_name": "Vitis vinifera (Grape Vine; common grape; wine grape)"
+      }
+    ],
+    "family_distribution": [
+      [
+        "Amaranthaceae",
+        1
+      ],
+      [
+        "Amaryllidaceae",
+        1
+      ],
+      [
+        "Araliaceae",
+        1
+      ],
+      [
+        "Betulaceae",
+        1
+      ],
+      [
+        "Leguminosae",
+        1
+      ],
+      [
+        "Myristicaceae",
+        1
+      ],
+      [
+        "Vitaceae",
+        1
+      ]
+    ]
+  },
   "csr_strategy_profile": {
     "plants": [
       {

@@ -20,7 +20,7 @@ Overall guild compatibility: 92.5/100
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
 
-## Benefits
+## Metrics Explanation
 
 ### Phylogenetic Diversity [M1 - 57.4/100]
 
@@ -57,6 +57,24 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 | Anaphalis margaritacea (Pearly Everlasting) | 8 |
 | Deutzia scabra (Deutzia) | 2 |
 | Mercurialis perennis (Dog's Mercury) | 2 |
+
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 7 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries; Pacific Solomon's seal; Solomon's plume; false Solomon's seal) |
+| Compositae | Anaphalis | Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting) |
+| Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
+| Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |
+| Hydrangeaceae | Deutzia | Deutzia scabra (Deutzia) |
+| Oleaceae | Fraxinus | Fraxinus excelsior (Ash; Golden Ash; European ash) |
+| Rosaceae | Rubus | Rubus moorei (bush lawyer) |
+
+**Family clustering:** Asparagaceae (1 plant), Compositae (1 plant), Ebenaceae (1 plant), Euphorbiaceae (1 plant), Hydrangeaceae (1 plant), Oleaceae (1 plant), Rosaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 100.0/100]
 

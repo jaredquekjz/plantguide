@@ -242,6 +242,78 @@
       }
     ]
   },
+  "taxonomic_profile": {
+    "total_plants": 7,
+    "total_families": 7,
+    "total_genera": 7,
+    "plant_entries": [
+      {
+        "family": "Asparagaceae",
+        "genus": "Maianthemum",
+        "display_name": "Maianthemum racemosum (Trackle-berries; Pacific Solomon's seal; Solomon's plume; false Solomon's seal)"
+      },
+      {
+        "family": "Compositae",
+        "genus": "Anaphalis",
+        "display_name": "Anaphalis margaritacea (whitemargin pussytoes; pearly everlasting)"
+      },
+      {
+        "family": "Ebenaceae",
+        "genus": "Diospyros",
+        "display_name": "Diospyros kaki (Japanese Persimmon)"
+      },
+      {
+        "family": "Euphorbiaceae",
+        "genus": "Mercurialis",
+        "display_name": "Mercurialis perennis (Dog's Mercury)"
+      },
+      {
+        "family": "Hydrangeaceae",
+        "genus": "Deutzia",
+        "display_name": "Deutzia scabra (Deutzia)"
+      },
+      {
+        "family": "Oleaceae",
+        "genus": "Fraxinus",
+        "display_name": "Fraxinus excelsior (Ash; Golden Ash; European ash)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Rubus",
+        "display_name": "Rubus moorei (bush lawyer)"
+      }
+    ],
+    "family_distribution": [
+      [
+        "Asparagaceae",
+        1
+      ],
+      [
+        "Compositae",
+        1
+      ],
+      [
+        "Ebenaceae",
+        1
+      ],
+      [
+        "Euphorbiaceae",
+        1
+      ],
+      [
+        "Hydrangeaceae",
+        1
+      ],
+      [
+        "Oleaceae",
+        1
+      ],
+      [
+        "Rosaceae",
+        1
+      ]
+    ]
+  },
   "csr_strategy_profile": {
     "plants": [
       {

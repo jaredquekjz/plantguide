@@ -210,6 +210,78 @@
       }
     ]
   },
+  "taxonomic_profile": {
+    "total_plants": 7,
+    "total_families": 7,
+    "total_genera": 7,
+    "plant_entries": [
+      {
+        "family": "Apocynaceae",
+        "genus": "Alyxia",
+        "display_name": "Alyxia ruscifolia (Chainfruit; Chain Fruit)"
+      },
+      {
+        "family": "Cyperaceae",
+        "genus": "Carex",
+        "display_name": "Carex mucronata"
+      },
+      {
+        "family": "Dilleniaceae",
+        "genus": "Hibbertia",
+        "display_name": "Hibbertia diffusa (Wedge Guinea Flower)"
+      },
+      {
+        "family": "Juncaceae",
+        "genus": "Juncus",
+        "display_name": "Juncus usitatus (Common Rush; australian rush)"
+      },
+      {
+        "family": "Leguminosae",
+        "genus": "Senna",
+        "display_name": "Senna artemisioides (silver senna; Silver Cassia)"
+      },
+      {
+        "family": "Myrtaceae",
+        "genus": "Eucalyptus",
+        "display_name": "Eucalyptus melanophloia (Silver-leaved Ironbark)"
+      },
+      {
+        "family": "Poaceae",
+        "genus": "Sporobolus",
+        "display_name": "Sporobolus compositus (Composite Dropseed; Tall Dropseed)"
+      }
+    ],
+    "family_distribution": [
+      [
+        "Apocynaceae",
+        1
+      ],
+      [
+        "Cyperaceae",
+        1
+      ],
+      [
+        "Dilleniaceae",
+        1
+      ],
+      [
+        "Juncaceae",
+        1
+      ],
+      [
+        "Leguminosae",
+        1
+      ],
+      [
+        "Myrtaceae",
+        1
+      ],
+      [
+        "Poaceae",
+        1
+      ]
+    ]
+  },
   "csr_strategy_profile": {
     "plants": [
       {

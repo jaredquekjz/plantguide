@@ -71,9 +71,9 @@ impl HtmlFormatter {
         html.push_str("<h2>Climate Compatibility</h2>\n");
         html.push_str(&format!("<p>✅ {}</p>\n", explanation.climate.message));
 
-        // Benefits
+        // Metrics Explanation
         if !explanation.benefits.is_empty() {
-            html.push_str("<h2>Benefits</h2>\n");
+            html.push_str("<h2>Metrics Explanation</h2>\n");
             for benefit in &explanation.benefits {
                 html.push_str("<div class=\"benefit\">\n");
                 html.push_str(&format!(
@@ -87,7 +87,11 @@ impl HtmlFormatter {
                 }
 
                 // Insert detailed profiles if they match the metric
-                if benefit.metric_code == "M3" {
+                if benefit.metric_code == "M1" {
+                    if let Some(profile) = &explanation.taxonomic_profile {
+                        html.push_str(&Self::format_taxonomic_profile(profile));
+                    }
+                } else if benefit.metric_code == "M3" {
                     if let Some(profile) = &explanation.biocontrol_network_profile {
                         html.push_str(&Self::format_biocontrol_profile(profile));
                     }
@@ -133,6 +137,50 @@ impl HtmlFormatter {
         }
 
         html.push_str("</body>\n</html>\n");
+        html
+    }
+
+    fn format_taxonomic_profile(profile: &crate::explanation::taxonomic_profile_analysis::TaxonomicProfile) -> String {
+        let mut html = String::new();
+        html.push_str("<h4>Taxonomic Diversity Profile</h4>");
+        html.push_str("<p><em>Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.</em></p>");
+
+        // Summary
+        html.push_str(&format!(
+            "<p><strong>Guild contains: {} plants from {} families across {} genera</strong></p>",
+            profile.total_plants,
+            profile.total_families,
+            profile.total_genera
+        ));
+
+        // Plant table
+        html.push_str("<table><thead><tr><th>Family</th><th>Genus</th><th>Plant (Vernacular Name)</th></tr></thead><tbody>");
+        for entry in &profile.plant_entries {
+            html.push_str(&format!(
+                "<tr><td>{}</td><td>{}</td><td>{}</td></tr>",
+                entry.family, entry.genus, entry.display_name
+            ));
+        }
+        html.push_str("</tbody></table>");
+
+        // Family clustering
+        if !profile.family_distribution.is_empty() {
+            html.push_str("<p><strong>Family clustering:</strong> ");
+            let family_strings: Vec<String> = profile
+                .family_distribution
+                .iter()
+                .map(|(family, count)| {
+                    if *count == 1 {
+                        format!("{} (1 plant)", family)
+                    } else {
+                        format!("{} ({} plants)", family, count)
+                    }
+                })
+                .collect();
+            html.push_str(&family_strings.join(", "));
+            html.push_str("</p>");
+        }
+
         html
     }
 

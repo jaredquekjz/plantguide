@@ -260,6 +260,70 @@
       }
     ]
   },
+  "taxonomic_profile": {
+    "total_plants": 7,
+    "total_families": 5,
+    "total_genera": 7,
+    "plant_entries": [
+      {
+        "family": "Fagaceae",
+        "genus": "Quercus",
+        "display_name": "Quercus robur (English oak; Truffle Oak; Acorn Tree; pedunculate oak; common oak)"
+      },
+      {
+        "family": "Poaceae",
+        "genus": "Dactylis",
+        "display_name": "Dactylis glomerata (Rough Cocksfoot; Akaroa; cock's foot; cocksfoot; cock's-foot; orchardgrass; orchard grass)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Fragaria",
+        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry; Hillside Strawberry; wild strawberry; woodland strawberry; alpine strawberry; European strawberry; wood strawberry)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Prunus",
+        "display_name": "Prunus spinosa (Sloe; Blackthorn)"
+      },
+      {
+        "family": "Rosaceae",
+        "genus": "Rosa",
+        "display_name": "Rosa canina (canker rose; dog rose; Dog-rose)"
+      },
+      {
+        "family": "Rubiaceae",
+        "genus": "Coffea",
+        "display_name": "Coffea arabica (Kona Coffee; Arabian Coffee; Arabica Coffee; Coffee)"
+      },
+      {
+        "family": "Vitaceae",
+        "genus": "Vitis",
+        "display_name": "Vitis vinifera (Grape Vine; common grape; wine grape)"
+      }
+    ],
+    "family_distribution": [
+      [
+        "Rosaceae",
+        3
+      ],
+      [
+        "Fagaceae",
+        1
+      ],
+      [
+        "Poaceae",
+        1
+      ],
+      [
+        "Rubiaceae",
+        1
+      ],
+      [
+        "Vitaceae",
+        1
+      ]
+    ]
+  },
   "csr_strategy_profile": {
     "plants": [
       {

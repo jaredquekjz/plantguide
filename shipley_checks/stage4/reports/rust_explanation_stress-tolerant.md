@@ -20,7 +20,7 @@ Overall guild compatibility: 41.0/100
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
 
-## Benefits
+## Metrics Explanation
 
 ### Phylogenetic Diversity [M1 - 32.8/100]
 
@@ -52,6 +52,24 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Senna artemisioides (Silver Cassia) | 4 |
 | Eucalyptus melanophloia (Silver-leaved Ironbark) | 2 |
 | Alyxia ruscifolia (Chain Fruit) | 1 |
+
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 7 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Apocynaceae | Alyxia | Alyxia ruscifolia (Chainfruit; Chain Fruit) |
+| Cyperaceae | Carex | Carex mucronata |
+| Dilleniaceae | Hibbertia | Hibbertia diffusa (Wedge Guinea Flower) |
+| Juncaceae | Juncus | Juncus usitatus (Common Rush; australian rush) |
+| Leguminosae | Senna | Senna artemisioides (silver senna; Silver Cassia) |
+| Myrtaceae | Eucalyptus | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed; Tall Dropseed) |
+
+**Family clustering:** Apocynaceae (1 plant), Cyperaceae (1 plant), Dilleniaceae (1 plant), Juncaceae (1 plant), Leguminosae (1 plant), Myrtaceae (1 plant), Poaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 100.0/100]
 

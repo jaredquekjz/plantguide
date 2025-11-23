@@ -20,7 +20,7 @@ Overall guild compatibility: 55.3/100
 
 ✅ All plants compatible with Tier 3 (Humid Temperate)
 
-## Benefits
+## Metrics Explanation
 
 ### Phylogenetic Diversity [M1 - 70.3/100]
 
@@ -55,6 +55,24 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 | Vitis vinifera (Common Grape) | 53 |
 | Allium schoenoprasum (Chives) | 4 |
 | Alnus acuminata (Andean Alder) | 1 |
+
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 7 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Amaranthaceae | Pfaffia | Pfaffia gnaphalioides |
+| Amaryllidaceae | Allium | Allium schoenoprasum (wild chives; Chives) |
+| Araliaceae | Cheirodendron | Cheirodendron trigynum (Olapa; Common Cheirodendron; ʻŌlapa) |
+| Betulaceae | Alnus | Alnus acuminata (Andean Alder) |
+| Leguminosae | Erythrina | Erythrina sandwicensis (Hawaiian Coral Tree; Wiliwili) |
+| Myristicaceae | Virola | Virola bicuhyba |
+| Vitaceae | Vitis | Vitis vinifera (Grape Vine; common grape; wine grape) |
+
+**Family clustering:** Amaranthaceae (1 plant), Amaryllidaceae (1 plant), Araliaceae (1 plant), Betulaceae (1 plant), Leguminosae (1 plant), Myristicaceae (1 plant), Vitaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 0.0/100]
 

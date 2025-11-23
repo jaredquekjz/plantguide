@@ -50,9 +50,9 @@ impl MarkdownFormatter {
         md.push_str("## Climate Compatibility\n\n");
         md.push_str(&format!("✅ {}\n\n", explanation.climate.message));
 
-        // Benefits (with interleaved profiles)
+        // Metrics Explanation (with interleaved profiles)
         if !explanation.benefits.is_empty() {
-            md.push_str("## Benefits\n\n");
+            md.push_str("## Metrics Explanation\n\n");
             for benefit in &explanation.benefits {
                 // Find score
                 let mut score = 0.0;
@@ -76,6 +76,10 @@ impl MarkdownFormatter {
                 if benefit.metric_code == "M1" {
                     if let Some(pest_profile) = &explanation.pest_profile {
                         Self::format_pest_profile(&mut md, pest_profile);
+                    }
+                    // Insert taxonomic profile after pest profile
+                    if let Some(taxonomic_profile) = &explanation.taxonomic_profile {
+                        Self::format_taxonomic_profile(&mut md, taxonomic_profile);
                     }
                 }
 
@@ -185,6 +189,49 @@ impl MarkdownFormatter {
                 ));
             }
             md.push_str("\n");
+        }
+    }
+
+    /// Format taxonomic diversity profile section
+    fn format_taxonomic_profile(md: &mut String, taxonomic_profile: &crate::explanation::taxonomic_profile_analysis::TaxonomicProfile) {
+        md.push_str("#### Taxonomic Diversity Profile\n\n");
+        md.push_str("*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*\n\n");
+
+        // Summary
+        md.push_str(&format!(
+            "**Guild contains: {} plants from {} families across {} genera**\n\n",
+            taxonomic_profile.total_plants,
+            taxonomic_profile.total_families,
+            taxonomic_profile.total_genera
+        ));
+
+        // Plant table
+        md.push_str("| Family | Genus | Plant (Vernacular Name) |\n");
+        md.push_str("|--------|-------|-------------------------|\n");
+        for entry in &taxonomic_profile.plant_entries {
+            md.push_str(&format!(
+                "| {} | {} | {} |\n",
+                entry.family, entry.genus, entry.display_name
+            ));
+        }
+        md.push_str("\n");
+
+        // Family clustering
+        if !taxonomic_profile.family_distribution.is_empty() {
+            md.push_str("**Family clustering:** ");
+            let family_strings: Vec<String> = taxonomic_profile
+                .family_distribution
+                .iter()
+                .map(|(family, count)| {
+                    if *count == 1 {
+                        format!("{} (1 plant)", family)
+                    } else {
+                        format!("{} ({} plants)", family, count)
+                    }
+                })
+                .collect();
+            md.push_str(&family_strings.join(", "));
+            md.push_str("\n\n");
         }
     }
 
