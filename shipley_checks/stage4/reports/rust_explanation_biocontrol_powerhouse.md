@@ -6,19 +6,12 @@ Overall guild compatibility: 82.4/100
 
 ## Metrics Breakdown
 
-### Universal Indicators
-
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
 | M1 - Pest & Pathogen Independence | 9.5 | Poor |
 | M2 - Growth Compatibility | 70.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 97.3 | Excellent |
-
-### Bonus Indicators
-
-| Metric | Score | Interpretation |
-|--------|-------|----------------|
 | M5 - Beneficial Fungi | 100.0 | Excellent |
 | M6 - Structural Diversity | 100.0 | Excellent |
 | M7 - Pollinator Support | 100.0 | Excellent |

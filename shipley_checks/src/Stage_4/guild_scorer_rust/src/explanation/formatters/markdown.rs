@@ -28,20 +28,16 @@ impl MarkdownFormatter {
 
         // Metrics Breakdown (moved to top for quick reference)
         md.push_str("## Metrics Breakdown\n\n");
-
-        md.push_str("### Universal Indicators\n\n");
         md.push_str("| Metric | Score | Interpretation |\n");
         md.push_str("|--------|-------|----------------|\n");
+
+        // Combine universal and bonus indicators in order
         for metric in &explanation.metrics_display.universal {
             md.push_str(&format!(
                 "| {} - {} | {:.1} | {} |\n",
                 metric.code, metric.name, metric.score, metric.interpretation
             ));
         }
-
-        md.push_str("\n### Bonus Indicators\n\n");
-        md.push_str("| Metric | Score | Interpretation |\n");
-        md.push_str("|--------|-------|----------------|\n");
         for metric in &explanation.metrics_display.bonus {
             md.push_str(&format!(
                 "| {} - {} | {:.1} | {} |\n",
