@@ -122,9 +122,13 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
             }
 
             if shade_tolerant_count > 0 {
-                let (plant_word, verb) = if shade_tolerant_count == 1 { ("plant", "is") } else { ("plants", "are") };
-                detail.push_str(&format!("{} {} {} shade-tolerant (EIVE-L <3.2) and thrive under canopy. ",
-                    shade_tolerant_count, plant_word, verb));
+                let (plant_word, verb, thrive_verb) = if shade_tolerant_count == 1 {
+                    ("plant", "is", "thrives")
+                } else {
+                    ("plants", "are", "thrive")
+                };
+                detail.push_str(&format!("{} {} {} shade-tolerant (EIVE-L <3.2) and {} under canopy. ",
+                    shade_tolerant_count, plant_word, verb, thrive_verb));
             }
             if flexible_count > 0 {
                 let (plant_word, verb) = if flexible_count == 1 { ("plant", "is") } else { ("plants", "are") };
@@ -138,9 +142,9 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
             } else {
                 detail.push_str("No sun-loving plants that would be shaded out.");
             }
-            detail.push_str("\n\n");
+            detail.push_str("\n");
         } else {
-            detail.push_str("Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.\n\n");
+            detail.push_str("Diverse plant structures create vertical stratification, maximizing space use, light capture, and habitat complexity.\n");
         }
 
         MetricFragment::with_benefit(BenefitCard {
@@ -152,7 +156,7 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
                 m6.n_forms, forms_text, m6.height_range,
                 display_score.round() as i32
             ),
-            detail: format!("{}\n\n{}", detail, interpretation),
+            detail: format!("{}\n{}", detail, interpretation),
             evidence: None,
         })
 }

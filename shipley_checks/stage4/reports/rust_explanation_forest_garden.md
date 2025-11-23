@@ -2,8 +2,6 @@
 
 **Overall Score:** 92.5/100
 
-Overall guild compatibility: 92.5/100
-
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
@@ -234,9 +232,7 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
   - Mercurialis perennis (Dog's Mercury): 0.3m, EIVE-L: 1.8 (shade-tolerant ✓)
 
 **Why this stratification works well:**
-1 plant is shade-tolerant (EIVE-L <3.2) and thrive under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
-
-
+1 plant is shade-tolerant (EIVE-L <3.2) and thrives under canopy. 6 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.
 
 Excellent structural diversity - multiple layers maximize space and light use  
 

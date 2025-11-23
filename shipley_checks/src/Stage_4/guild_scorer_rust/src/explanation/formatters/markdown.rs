@@ -24,7 +24,6 @@ impl MarkdownFormatter {
             "**Overall Score:** {:.1}/100\n\n",
             explanation.overall.score
         ));
-        md.push_str(&format!("{}\n\n", explanation.overall.message));
 
         // Metrics Breakdown (moved to top for quick reference)
         md.push_str("## Metrics Breakdown\n\n");

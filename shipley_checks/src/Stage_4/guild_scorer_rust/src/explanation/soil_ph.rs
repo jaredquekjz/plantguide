@@ -52,13 +52,8 @@ pub fn check_soil_ph_compatibility(guild_plants: &DataFrame) -> Result<Option<Wa
     let detailed = check_ph_compatibility(guild_plants)?;
 
     if let Some(warning_data) = detailed {
-        // Convert to WarningCard format
-        let severity_icon = match warning_data.severity {
-            Severity::High => "🚨",
-            Severity::Medium => "⚠️",
-            Severity::Low => "⚡",
-            _ => "ℹ️",
-        };
+        // Convert to WarningCard format - use consistent icon for all pH warnings
+        let severity_icon = "⚠️";
 
         let categories_list: Vec<String> = warning_data.plant_categories
             .iter()

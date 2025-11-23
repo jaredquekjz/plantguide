@@ -57,7 +57,7 @@
       "metric_code": "M6",
       "title": "Structural Diversity",
       "message": "4 growth forms spanning 33.6m height range (100th percentile)",
-      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (River Maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Black Elderberry): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (Common Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\n\n\nExcellent structural diversity - multiple layers maximize space and light use",
+      "detail": "**Vertical Stratification (Quality: 1.00 - Excellent):**\n\n**Canopy Layer (>15m):**\n  - Acer saccharinum (River Maple): 33.7m, EIVE-L: 5.3 (flexible)\n  - Quercus robur (Acorn Tree): 27.1m, EIVE-L: 6.2 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Sambucus nigra (Black Elderberry): 4.5m, EIVE-L: 5.9 (flexible)\n  - Crataegus monogyna (Common Hawthorn): 4.3m, EIVE-L: 6.9 (flexible)\n  - Prunus spinosa (Blackthorn): 2.1m, EIVE-L: 7.1 (flexible)\n  - Rosa canina (Canker Rose): 2.0m, EIVE-L: 7.2 (flexible)\n\n**Ground Layer (<1m):**\n  - Fragaria vesca (Alpine Strawberry): 0.1m, EIVE-L: 5.9 (flexible)\n\n**Why this stratification works well:**\n7 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. No sun-loving plants that would be shaded out.\n\nExcellent structural diversity - multiple layers maximize space and light use",
       "evidence": null
     },
     {
@@ -73,7 +73,7 @@
     {
       "warning_type": "ph_incompatible",
       "severity": "Low",
-      "icon": "⚡",
+      "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
       "detail": "EIVE R range: 5.2-6.9 (difference: 1.7 units)\n\nPlant pH preferences:\nAcer saccharinum (River Maple): Slightly Acidic (pH 5-6)\nCrataegus monogyna (Common Hawthorn): Neutral (pH 6-7)\nFragaria vesca (Alpine Strawberry): Neutral (pH 6-7)\nPrunus spinosa (Blackthorn): Neutral (pH 6-7)\nQuercus robur (Acorn Tree): Slightly Acidic (pH 5-6)\nRosa canina (Canker Rose): Neutral (pH 6-7)\nSambucus nigra (Black Elderberry): Neutral (pH 6-7)",
       "advice": "Minor pH incompatibility. Monitor plant health and adjust soil pH as needed."

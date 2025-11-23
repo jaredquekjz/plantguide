@@ -57,7 +57,7 @@
       "metric_code": "M6",
       "title": "Structural Diversity",
       "message": "3 growth forms spanning 19.8m height range (46th percentile)",
-      "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\n\n\nModerate structural diversity - some layering present but coverage may be limited",
+      "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\nModerate structural diversity - some layering present but coverage may be limited",
       "evidence": null
     },
     {
@@ -73,7 +73,7 @@
     {
       "warning_type": "ph_incompatible",
       "severity": "High",
-      "icon": "🚨",
+      "icon": "⚠️",
       "message": "Soil pH incompatibility detected",
       "detail": "EIVE R range: 5.1-9.1 (difference: 4.0 units)\n\nPlant pH preferences:\nAlyxia ruscifolia (Chain Fruit): Neutral (pH 6-7)\nCarex mucronata: Strongly Alkaline (pH >8)\nEucalyptus melanophloia (Silver-leaved Ironbark): Neutral (pH 6-7)\nHibbertia diffusa (Wedge Guinea Flower): Slightly Acidic (pH 5-6)\nJuncus usitatus (Australian Rush): Neutral (pH 6-7)\nSenna artemisioides (Silver Cassia): Neutral (pH 6-7)\nSporobolus compositus (Composite Dropseed): Neutral (pH 6-7)",
       "advice": "Strong pH incompatibility. Consider separating plants into distinct beds with appropriate soil amendments."

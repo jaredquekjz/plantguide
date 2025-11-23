@@ -2,8 +2,6 @@
 
 **Overall Score:** 55.3/100
 
-Overall guild compatibility: 55.3/100
-
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
@@ -228,8 +226,6 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 **Why this stratification has issues:**
 5 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 2 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.
-
-
 
 Limited structural diversity - few layers or growth forms, less efficient space use  
 
