@@ -27,6 +27,24 @@ Overall guild compatibility: 92.5/100
 57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
 Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.  
 
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 7 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, Pacific Solomon's Seal, Solomon's Plume, False Solomon's Seal) |
+| Compositae | Anaphalis | Anaphalis margaritacea (Whitemargin Pussytoes, Pearly Everlasting) |
+| Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
+| Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |
+| Hydrangeaceae | Deutzia | Deutzia scabra (Deutzia) |
+| Oleaceae | Fraxinus | Fraxinus excelsior (Ash, Golden Ash, European Ash) |
+| Rosaceae | Rubus | Rubus moorei (Bush Lawyer) |
+
+**Family clustering:** Asparagaceae (1 plant), Compositae (1 plant), Ebenaceae (1 plant), Euphorbiaceae (1 plant), Hydrangeaceae (1 plant), Oleaceae (1 plant), Rosaceae (1 plant)
+
 #### Pest Vulnerability Profile
 
 *Qualitative information about herbivore pests (not used in scoring)*
@@ -57,24 +75,6 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 | Anaphalis margaritacea (Pearly Everlasting) | 8 |
 | Deutzia scabra (Deutzia) | 2 |
 | Mercurialis perennis (Dog's Mercury) | 2 |
-
-#### Taxonomic Diversity Profile
-
-*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
-
-**Guild contains: 7 plants from 7 families across 7 genera**
-
-| Family | Genus | Plant (Vernacular Name) |
-|--------|-------|-------------------------|
-| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, Pacific Solomon's Seal, Solomon's Plume, False Solomon's Seal) |
-| Compositae | Anaphalis | Anaphalis margaritacea (Whitemargin Pussytoes, Pearly Everlasting) |
-| Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
-| Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |
-| Hydrangeaceae | Deutzia | Deutzia scabra (Deutzia) |
-| Oleaceae | Fraxinus | Fraxinus excelsior (Ash, Golden Ash, European Ash) |
-| Rosaceae | Rubus | Rubus moorei (Bush Lawyer) |
-
-**Family clustering:** Asparagaceae (1 plant), Compositae (1 plant), Ebenaceae (1 plant), Euphorbiaceae (1 plant), Hydrangeaceae (1 plant), Oleaceae (1 plant), Rosaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 100.0/100]
 

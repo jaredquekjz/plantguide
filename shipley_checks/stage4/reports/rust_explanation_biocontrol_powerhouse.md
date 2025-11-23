@@ -27,6 +27,24 @@ Overall guild compatibility: 82.4/100
 9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)  
 Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.  
 
+#### Taxonomic Diversity Profile
+
+*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
+
+**Guild contains: 7 plants from 4 families across 7 genera**
+
+| Family | Genus | Plant (Vernacular Name) |
+|--------|-------|-------------------------|
+| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder) |
+| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
+| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, Neapolitan Medlar, Hawthorn, May, Common Hawthorn) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
+| Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
+| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
+| Sapindaceae | Acer | Acer saccharinum (River Maple, White Maple, Silver Maple) |
+
+**Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
+
 #### Pest Vulnerability Profile
 
 *Qualitative information about herbivore pests (not used in scoring)*
@@ -57,24 +75,6 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 | Crataegus monogyna (Common Hawthorn) | 29 |
 | Quercus robur (Acorn Tree) | 25 |
 | Sambucus nigra (Black Elderberry) | 16 |
-
-#### Taxonomic Diversity Profile
-
-*Taxonomic diversity (variety of families and genera) generally correlates with phylogenetic diversity, as plants from different families typically share more distant evolutionary ancestry. However, the relationship is not perfect—phylogenetic diversity (measured using Faith's PD) quantifies total evolutionary history by summing branch lengths in the evolutionary tree, where branch lengths represent millions of years of independent evolution. This is what our percentile calculations are based on.*
-
-**Guild contains: 7 plants from 4 families across 7 genera**
-
-| Family | Genus | Plant (Vernacular Name) |
-|--------|-------|-------------------------|
-| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder) |
-| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
-| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, Neapolitan Medlar, Hawthorn, May, Common Hawthorn) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
-| Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
-| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
-| Sapindaceae | Acer | Acer saccharinum (River Maple, White Maple, Silver Maple) |
-
-**Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
 
 ### Growth Strategy Compatibility [M2 - 70.0/100]
 

@@ -72,14 +72,15 @@ impl MarkdownFormatter {
                     md.push_str(&format!("*Evidence:* {}\n\n", evidence));
                 }
 
-                // Insert pest profile after M1 (Phylogenetic Diversity)
+                // Insert taxonomic profile after M1 (Phylogenetic Diversity)
+                // This provides intuitive elaboration of Faith's PD metric
                 if benefit.metric_code == "M1" {
-                    if let Some(pest_profile) = &explanation.pest_profile {
-                        Self::format_pest_profile(&mut md, pest_profile);
-                    }
-                    // Insert taxonomic profile after pest profile
                     if let Some(taxonomic_profile) = &explanation.taxonomic_profile {
                         Self::format_taxonomic_profile(&mut md, taxonomic_profile);
+                    }
+                    // Insert pest profile after taxonomic profile
+                    if let Some(pest_profile) = &explanation.pest_profile {
+                        Self::format_pest_profile(&mut md, pest_profile);
                     }
                 }
 
