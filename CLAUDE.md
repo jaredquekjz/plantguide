@@ -213,6 +213,28 @@ python src/Stage_1/convert_to_mmd.py papers/input.pdf [optional_output.mmd]
 - Extracting methodology from scientific literature
 - Building literature review documentation
 
+## MCP Tools and External Services
+
+### Context7 Library Documentation (MANDATORY)
+
+**CRITICAL**: Always use Context7 MCP tools when I need code generation, setup or configuration steps, or library/API documentation. This means you should automatically use the Context7 MCP tools to resolve library id and get library docs without me having to explicitly ask.
+
+**Use Context7 for:**
+- Code generation (getting API usage examples, best practices)
+- Setup/configuration steps for libraries
+- Library documentation and reference
+- Understanding library capabilities and features
+
+**Workflow:**
+1. Use `mcp__context7__resolve-library-id` to find the library ID
+2. Use `mcp__context7__get-library-docs` with the resolved ID to fetch documentation
+3. Apply documentation to generate accurate, up-to-date code
+
+**Example libraries to use Context7 for:**
+- Rust: datafusion, axum, tokio, polars, arrow
+- Python: duckdb, pandas, scikit-learn, xgboost
+- R: arrow, dplyr, ggplot2
+
 ## Style
 
 - Always plan your work systematically, based on thorough checks of context, before executing. Always propose industry best practices for code - no short cuts.
