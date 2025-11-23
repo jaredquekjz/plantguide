@@ -176,12 +176,19 @@ Percentile normalize
   - `predators_hasHost`, `predators_interactsWith`, `predators_adjacentTo`
   - `entomopathogenic_fungi` (list column)
 - **Lookup tables:** `herbivore_predators` (805 entries), `insect_parasites` (2,372 entries)
+- **Herbivore extraction:** Conservative taxonomic filtering approach (33.6% plant coverage)
+  - Direct GloBI query with relationship types: `eats`, `preysOn`, `hasHost`
+  - Excluded 5 mutualist families: Apidae, Halictidae, Andrenidae, Megachilidae, Colletidae (bees)
+  - Excluded 14 predator families with >70% predation ratio (e.g., Nabidae, Hemerobiidae, Carabidae)
+  - Filters out ecologically confounding organisms (pollinators, beneficial predators)
 - **Edge case:** Zero herbivores returns score = 0.0 (no pests = no biocontrol needed)
 
 ### Scientific Basis (Soundness: Moderate)
 **Conservation Biological Control** is real: diverse gardens attract beneficial insects. However, the metric relies on data that is often incomplete. A "zero" score might just mean "we don't know," not "no protection."
 
 **Data Quality Note:** Reports now include ⚠️ indicators for plants with no interaction data, distinguishing true absence from data gaps.
+
+**Ecological Accuracy Improvement:** The taxonomic filtering approach eliminates false positives from earlier versions (bees and beneficial predators misclassified as herbivores). This conservative method prioritizes precision over coverage, ensuring recommendations reflect genuine antagonistic herbivory rather than mutualistic or predatory interactions.
 
 ### Horticultural Usefulness (High)
 *   **Actionable Advice:** "Plant Yarrow to attract wasps that eat the aphids on your Broccoli."
