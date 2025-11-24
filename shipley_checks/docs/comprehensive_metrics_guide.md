@@ -25,7 +25,7 @@ Percentile distributions for M1-M7 were generated using Köppen tier-stratified 
 - **Guild sizes:** 2-plant pairs (Stage 1: M1-M2 only) + 7-plant guilds (Stage 2: M1-M7)
 - **Climate tiers:** Tropical, Arid, Temperate, Continental, Polar, High-altitude
 - **Percentile points:** 13 values per metric (p1, p5, p10, p20, p30, p40, p50, p60, p70, p80, p90, p95, p99)
-- **Implementation:** Rust parallel processing (~25s runtime, 24× faster than R baseline)
+- **Implementation:** Rust parallel processing (~5min runtime for 240K guilds)
 - **Source:** `shipley_checks/src/Stage_4/guild_scorer_rust/src/bin/calibrate_koppen_stratified.rs`
 
 **Calibration Architecture:**
@@ -43,7 +43,16 @@ Percentile distributions for M1-M7 were generated using Köppen tier-stratified 
 3. Display transformation: M1, M2 inverted (`100 - percentile`); M3-M7 direct
 4. Overall score: Simple average of all 7 display scores
 
-This ensures scores reflect realistic guild performance within each climate zone, accounting for regional species pool differences and ecological interactions.
+**Coverage-Based Metrics (M3, M4, M5, M7):**
+
+In November 2024, M3-M5 and M7 were redesigned from unbounded match-count formulas to simple coverage percentages. This change addressed the ceiling effect where real guilds consistently exceeded calibration maximums.
+
+**Rationale for simplification:**
+- **Old approach**: Complex weighted formulas (e.g., M3: `Σ(predator_matches × 1.0 + fungi × 0.2) / max_pairs × 20.0`) produced unbounded scores that exceeded calibration ranges (e.g., real guilds scored 5.33-21.24 vs. p99 = 2.29)
+- **New approach**: Simple coverage percentage (`plants_with_mechanism / total_plants × 100`) creates natural 0-100% bounds with interpretable meaning
+- **Result**: Real guilds now overlap with calibration distributions (57-86% vs. p99 = 71%), enabling meaningful percentile discrimination instead of all guilds scoring 100th percentile
+
+This simplification improves both scientific validity (bounded distributions) and horticultural interpretability ("71% of plants have biocontrol" vs "21.24 normalized units").
 
 ---
 
@@ -144,31 +153,27 @@ Grime's CSR theory is a cornerstone of ecology. It accurately predicts that a fa
 *The Bodyguard System*
 
 ### How It Works (The Code)
-The code acts like a matchmaker using a massive database of "who eats whom."
+The code checks which plants have documented biocontrol mechanisms (predators or entomopathogenic fungi).
 
-**Algorithm:**
+**Algorithm (Coverage-Based):**
 ```
-For each pair of plants (A, B):
-  herbivores_on_A = herbivores attacking plant A
-  predators_from_B = predators/fungi attracted by plant B
+For each plant in guild:
+  has_predators = check if any other plant attracts predators that eat this plant's herbivores
+  has_fungi = check if any other plant hosts entomopathogenic fungi
 
-  specific_matches = count(herbivores_on_A ∩ known_prey_of(predators_from_B))
-  general_fungi = count(entomopathogenic_fungi_from_B)
+  if has_predators OR has_fungi:
+    mark plant as having biocontrol
 
-  protection_score += specific_matches × 1.0
-  protection_score += general_fungi × 0.2
-
-Final score = (protection_score / n_plant_pairs) × 20.0
+biocontrol_coverage = (plants_with_biocontrol / total_plants) × 100
 Percentile normalize
 ```
 
-**Mechanism Weights:**
-- **Specific predator/parasite match:** 1.0 (herbivore A → known predator B)
-- **Entomopathogenic fungi:** 0.2 (broad-spectrum but less targeted)
+**Simplified from weighted match-count formula** (Nov 2024): Previously calculated total predator/fungi matches with weights (1.0 for specific matches, 0.2 for general fungi), normalized by plant pairs, and multiplied by 20.0. This produced unbounded scores (real guilds: 5.33-21.24 vs. calibration p99: 2.29). New formula counts % of plants covered, creating natural 0-100% bounds where real guilds (57-86%) now overlap with calibration (p99: 71.4%).
 
-**Normalization Factor:**
-- Final raw score multiplied by 20.0 before percentile normalization
-- Calibrates scores to match empirical distribution
+**Output:**
+- **Raw score:** Coverage percentage (0-100%)
+- **Percentile:** Position in Köppen tier-specific distribution
+- **Interpretation:** "71% of plants have biocontrol" (horticulturally meaningful)
 
 **Technical Details:**
 - **Data sources:** `organism_profiles_11711.parquet` with columns:
@@ -200,42 +205,32 @@ Percentile normalize
 *The Soil Immune System*
 
 ### How It Works (The Code)
-Similar to M3, but for diseases.
+The code checks which plants have documented disease control mechanisms (mycoparasites or fungivores).
 
-**Algorithm:**
+**Algorithm (Coverage-Based):**
 ```
-For each pair of plants (A, B):
-  pathogens_on_A = pathogenic fungi on plant A
-  mycoparasites_from_B = mycoparasitic fungi from plant B
-  fungivores_from_B = fungivorous animals from plant B
+For each plant in guild:
+  has_mycoparasites = check if any other plant hosts fungi that attack this plant's pathogens
+  has_fungivores = check if any other plant attracts animals that eat pathogenic fungi
 
-  specific_fungi_matches = count(pathogens_on_A ∩ known_prey_of(mycoparasites_from_B))
-  specific_animal_matches = count(pathogens_on_A ∩ known_prey_of(fungivores_from_B))
+  if has_mycoparasites OR has_fungivores:
+    mark plant as having disease control
 
-  control_score += specific_fungi_matches × 1.0
-  control_score += specific_animal_matches × 1.0
-  control_score += count(mycoparasites_from_B) × 0.5
-  control_score += count(fungivores_from_B) × 0.2
-
-Final score = (control_score / n_plant_pairs) × 10.0
+disease_coverage = (plants_with_disease_control / total_plants) × 100
 Percentile normalize
 ```
 
-**Mechanism Weights:**
-- **Specific mycoparasite match:** 1.0 (pathogen A → known mycoparasite B)
-- **Specific fungivore match:** 1.0 (animal that eats pathogen A)
-- **General mycoparasite:** 0.5 (broad-spectrum fungal antagonist)
-- **General fungivore:** 0.2 (generalist pathogen consumers)
+**Simplified from weighted match-count formula** (Nov 2024): Previously calculated total antagonist/fungivore matches with weights (1.0 for specific, 0.5 for general mycoparasites, 0.2 for general fungivores), normalized by plant pairs, and multiplied by 10.0. New formula counts % of plants covered, creating natural 0-100% bounds. Random guilds show better baseline (p50: 42.9%) than M3, reflecting broader availability of fungal antagonists.
 
 **Dual Antagonist System:**
 The metric considers both:
 1. **Fungal mycoparasites** (fungi that parasitize other fungi)
 2. **Animal fungivores** (beetles, snails that eat fungal fruiting bodies)
 
-This dual approach recognizes that disease suppression operates through multiple pathways.
-
-**Normalization Factor:**
-- Final raw score multiplied by 10.0 before percentile normalization
+**Output:**
+- **Raw score:** Coverage percentage (0-100%)
+- **Percentile:** Position in Köppen tier-specific distribution
+- **Calibration example (tier_3):** p50=42.9%, p90=85.7%, p99=100.0%
 
 **Technical Details:**
 - **Data sources:** `fungal_guilds_hybrid_11711.parquet` with columns:
@@ -260,24 +255,21 @@ Mycoparasites are proven biocontrol agents. However, soil ecology is complex; ju
 *The Wood Wide Web*
 
 ### How It Works (The Code)
-This metric looks for plants that can "plug in" to the same fungal internet.
+The code checks which plants have documented beneficial fungal associations.
 
-**Two-Component Score:**
+**Algorithm (Coverage-Based):**
 ```
-1. Network Score (60%):
-   For each fungus shared by ≥2 plants:
-     contribution = n_plants_with_fungus / total_plants
-   network_raw = sum of all contributions
+For each plant in guild:
+  has_fungi = check if plant has AMF, EMF, endophytes, or saprotrophs
 
-2. Coverage Score (40%):
-   coverage_raw = n_plants_with_any_fungi / total_plants
+  if has_fungi:
+    mark plant as having beneficial fungi
 
-Final: m5_raw = 0.6 × network_raw + 0.4 × coverage_raw
+fungi_coverage = (plants_with_fungi / total_plants) × 100
 Percentile normalize
 ```
 
-**Network Formula Explanation:**
-The linear weighting `n/total` rewards fungi that connect many plants. A fungus shared by 4/7 plants contributes 4/7 ≈ 0.57, while 4 separate fungi each connecting 1 plant contribute only 4×(1/7) ≈ 0.57 combined.
+**Simplified from weighted network formula** (Nov 2024): Previously used complex two-component score (60% network connectivity + 40% coverage), where network score rewarded fungi shared by multiple plants. New formula simply counts % of plants with any beneficial fungi, creating natural 0-100% bounds. This change prioritizes interpretability ("71% of plants have fungal partners") over theoretical network effects, which have limited empirical support.
 
 **Fungal Categories Included:**
 - **AMF** (Arbuscular Mycorrhizal Fungi): 13 species average per guild
@@ -285,12 +277,15 @@ The linear weighting `n/total` rewards fungi that connect many plants. A fungus 
 - **Endophytic**: 32 species average
 - **Saprotrophic**: 328 species average
 
+**Output:**
+- **Raw score:** Coverage percentage (0-100%)
+- **Percentile:** Position in Köppen tier-specific distribution
+- **Calibration example (tier_3):** p50=42.9%, p90=71.4%, p99=85.7%
+
 **Technical Details:**
-- **Component weights:** 60% network, 40% coverage
 - **Data source:** `fungal_guilds_hybrid_11711.parquet` with list columns:
   - `amf_fungi`, `emf_fungi`, `endophytic_fungi`, `saprotrophic_fungi`
-- **Shared threshold:** Fungus must connect ≥2 plants to contribute to network score
-- **Edge case:** No fungi returns 0.0
+- **Edge case:** No fungi returns 0.0%
 
 **⚠️ Dual-Lifestyle Fungi Annotation (Recent Feature):**
 Some fungi appear in BOTH `pathogenic_fungi` AND beneficial columns (e.g., Colletotrichum, Alternaria, Botrytis). These are true dual-lifestyle organisms: they decompose dead material (saprotrophic) but also cause disease on living tissue (pathogenic).
@@ -387,29 +382,27 @@ The thresholds 3.2 and 7.47 represent empirically calibrated boundaries where li
 *The Bee Magnet*
 
 ### How It Works (The Code)
-This metric calculates how many of your plants share the same pollinators.
+The code checks which plants have documented pollinators in the GloBI database.
 
-**Algorithm:**
+**Algorithm (Coverage-Based):**
 ```
-1. Count pollinators per plant (using organism_counter)
-2. For each pollinator:
-     n_plants = number of plants visited by this pollinator
-     if n_plants >= 2:
-       contribution = (n_plants / total_plants)²
-     else:
-       contribution = 0  # Single-plant pollinators don't contribute
-3. m7_raw = sum of all contributions
-4. Percentile normalize
+For each plant in guild:
+  has_pollinators = check if plant has documented pollinators (strict "pollinates" relationship)
+
+  if has_pollinators:
+    mark plant as having pollinator support
+
+pollinator_coverage = (plants_with_pollinators / total_plants) × 100
+Percentile normalize
 ```
 
-**Quadratic Formula:**
-`m7_raw = Σ (n_i / N)²` where n_i is plants visited by pollinator i, N is total plants.
+**Simplified from quadratic network formula** (Nov 2024): Previously used `Σ(n_plants_visited/total)²` to reward pollinators shared by many plants (quadratic weighting), modeling the "magnet effect" where dense flower patches attract more pollinators. New formula simply counts % of plants with any documented pollinators, creating natural 0-100% bounds. This addresses data sparsity issue (70% of random guilds had zero pollinators in old calibration) while maintaining horticultural value ("57% of plants attract documented pollinators").
 
-Each pollinator's contribution is squared, rewarding dense sharing. Example:
-- Guild A: 5 plants share 1 bee → m7 = (5/5)² = 1.0
-- Guild B: 5 plants with 5 separate bees → m7 = 5×(1/5)² = 0.2
-
-Guild A scores 5× higher despite same pollinator count, correctly modeling the "magnet effect."
+**Output:**
+- **Raw score:** Coverage percentage (0-100%)
+- **Percentile:** Position in Köppen tier-specific distribution
+- **Calibration example (tier_3):** p50=14.3%, p90=28.6%, p99=57.1%
+- **Data sparsity:** Most random guilds (p1-p70) have 0% coverage, reflecting limited GloBI pollinator data
 
 **Data Quality Decision:**
 - **Uses:** `pollinators` column ONLY (strict pollinators verified by interaction data)
