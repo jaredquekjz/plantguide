@@ -118,7 +118,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Mechanism Summary:**
 - 9 specific pest → predator/parasite matches (covering 9 pest species, weight 1.0)
-- 9 general entomopathogenic fungi species present on 13 plants total (broad-spectrum biocontrol, weight 0.2)
+- 9 general entomopathogenic fungi species (13 total occurrences, broad-spectrum biocontrol, weight 0.2)
 
 **8 Pest → Predator matches found:**
 

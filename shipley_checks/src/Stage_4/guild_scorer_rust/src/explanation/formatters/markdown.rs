@@ -545,7 +545,7 @@ impl MarkdownFormatter {
             ));
         }
         md.push_str(&format!(
-            "- {} general entomopathogenic fungi species present on {} plants total (broad-spectrum biocontrol, weight 0.2)\n\n",
+            "- {} general entomopathogenic fungi species ({} total occurrences, broad-spectrum biocontrol, weight 0.2)\n\n",
             biocontrol_profile.total_unique_entomo_fungi,
             biocontrol_profile.general_entomo_fungi_count
         ));
