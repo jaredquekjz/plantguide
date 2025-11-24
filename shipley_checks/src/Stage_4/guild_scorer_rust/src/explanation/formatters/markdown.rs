@@ -45,6 +45,9 @@ impl MarkdownFormatter {
         }
         md.push_str("\n");
 
+        // Add data quality disclaimer
+        md.push_str("**How to Read These Scores:** Metrics M1-M7 are percentiles (0-100) comparing your guild to 120,000 randomly generated plant combinations in your climate zone—a score of 80 means better than 80% of random guilds. Scores reflect documented ecological interactions and plant information in scientific databases. Higher scores indicate well-documented beneficial relationships; lower scores may indicate either incomplete research or true absence of these interactions.\n\n");
+
         // Climate
         md.push_str("## Climate Compatibility\n\n");
         md.push_str(&format!("✅ {}\n\n", explanation.climate.message));
