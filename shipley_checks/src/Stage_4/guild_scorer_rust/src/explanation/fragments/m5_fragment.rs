@@ -6,26 +6,19 @@ use crate::metrics::M5Result;
 /// High scores indicate strong fungal network connections between plants.
 /// Shared mycorrhizal fungi facilitate nutrient exchange and communication.
 pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment {
-    let species_text = if m5.n_shared_fungi == 1 {
-        "species".to_string()
-    } else {
-        "species".to_string()
-    };
-
-    let plants_text = if m5.plants_with_fungi == 1 {
-        "plant".to_string()
-    } else {
-        "plants".to_string()
-    };
+    // Coverage-based interpretation
+    let coverage_pct = m5.raw; // Now stores coverage % (0-100)
+    let plants_covered = m5.plants_with_fungi;
+    let total_plants = m5.total_plants;
 
     let interpretation = if display_score >= 80.0 {
-        "Excellent fungal network - abundant shared fungi create strong underground connections"
+        "Excellent fungal network - most plants have beneficial fungal partners"
     } else if display_score >= 60.0 {
-        "Good fungal network - meaningful shared fungi facilitate nutrient exchange"
+        "Good fungal network - many plants have beneficial fungal associations"
     } else if display_score >= 40.0 {
-        "Moderate fungal network - some shared fungi present but connectivity may be limited"
+        "Moderate fungal network - some plants have beneficial fungi but coverage is limited"
     } else {
-        "Limited fungal network - few documented shared fungi, plants may be more independent"
+        "Limited fungal network - few documented beneficial fungi, plants may be more independent"
     };
 
     MetricFragment::with_benefit(BenefitCard {
@@ -33,12 +26,14 @@ pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment
         metric_code: "M5".to_string(),
         title: "Beneficial Mycorrhizal Network".to_string(),
         message: format!(
-            "{} shared beneficial fungal {} connect {} {} ({}th percentile)",
-            m5.n_shared_fungi, species_text, m5.plants_with_fungi, plants_text,
-            display_score.round() as i32
+            "{}th percentile - {:.0}% coverage ({}/{} plants have beneficial fungi)",
+            display_score.round() as i32,
+            coverage_pct,
+            plants_covered,
+            total_plants
         ),
         detail: format!(
-            "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. {}",
+            "Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. {}",
             interpretation
         ),
         evidence: None,

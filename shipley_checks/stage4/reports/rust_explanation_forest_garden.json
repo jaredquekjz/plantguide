@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 92.49788814872912,
+    "score": 92.48844812775901,
     "stars": "★★★★★",
     "label": "Exceptional",
     "message": "Overall guild compatibility: 92.5/100"
@@ -32,7 +32,7 @@
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "100th percentile biocontrol capacity",
+      "message": "100th percentile - 86% coverage (6/7 plants have biocontrol)",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
       "evidence": null
     },
@@ -40,7 +40,7 @@
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "95th percentile pathogen control via 6 antagonistic mechanisms",
+      "message": "100th percentile - 100% coverage (7/7 plants have disease control)",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
       "evidence": null
     },
@@ -48,8 +48,8 @@
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "147 shared beneficial fungal species connect 5 plants (100th percentile)",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
+      "message": "90th percentile - 71% coverage (5/7 plants have beneficial fungi)",
+      "detail": "Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - most plants have beneficial fungal partners",
       "evidence": null
     },
     {
@@ -64,8 +64,8 @@
       "benefit_type": "pollinator_support",
       "metric_code": "M7",
       "title": "Pollinator Support",
-      "message": "84 shared pollinator species (95th percentile)",
-      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination",
+      "message": "100th percentile - 57% coverage (4/7 plants have documented pollinators)",
+      "detail": "Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - most plants have documented pollinators",
       "evidence": null
     }
   ],
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 57.39572551568015,
+        "score": 57.41913689431306,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -100,14 +100,14 @@
         "code": "M3",
         "name": "Insect Pest Control",
         "score": 100.0,
-        "raw": 5.904761904761906,
+        "raw": 85.71428571428571,
         "interpretation": "Excellent"
       },
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 95.08949152542372,
-        "raw": 9.428571428571429,
+        "score": 100.0,
+        "raw": 100.0,
         "interpretation": "Excellent"
       }
     ],
@@ -115,8 +115,8 @@
       {
         "code": "M5",
         "name": "Beneficial Fungi",
-        "score": 100.0,
-        "raw": 5.0857142857142845,
+        "score": 90.0,
+        "raw": 71.42857142857143,
         "interpretation": "Excellent"
       },
       {
@@ -129,8 +129,8 @@
       {
         "code": "M7",
         "name": "Pollinator Support",
-        "score": 95.0,
-        "raw": 0.16326530612244897,
+        "score": 100.0,
+        "raw": 57.14285714285714,
         "interpretation": "Excellent"
       }
     ]

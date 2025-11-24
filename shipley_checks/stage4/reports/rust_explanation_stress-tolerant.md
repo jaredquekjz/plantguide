@@ -1,16 +1,16 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 41.0/100
+**Overall Score:** 44.1/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 32.8 | Poor |
+| M1 - Pest & Pathogen Independence | 32.6 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
-| M4 - Disease Suppression | 63.3 | Good |
-| M5 - Beneficial Fungi | 45.0 | Fair |
+| M4 - Disease Suppression | 60.0 | Good |
+| M5 - Beneficial Fungi | 70.0 | Good |
 | M6 - Structural Diversity | 46.1 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 32.8/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 32.6/100]
 
 33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -75,7 +75,7 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 
 ### Natural Insect Pest Control [M3 - 0.0/100]
 
-0th percentile biocontrol capacity  
+0th percentile - 0% coverage (0/7 plants have biocontrol)  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management  
 
 #### Pest Vulnerability Profile
@@ -103,9 +103,9 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | Senna artemisioides (Silver Cassia) | 3 |
 | Alyxia ruscifolia (Chain Fruit) | 2 |
 
-### Natural Disease Suppression [M4 - 63.3/100]
+### Natural Disease Suppression [M4 - 60.0/100]
 
-63th percentile pathogen control via 4 antagonistic mechanisms  
+60th percentile - 57% coverage (4/7 plants have disease control)  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control  
 
 #### Pathogen Control Network Profile
@@ -135,10 +135,10 @@ The disease suppression score is driven by the presence of **general mycoparasit
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Beneficial Mycorrhizal Network [M5 - 45.0/100]
+### Beneficial Mycorrhizal Network [M5 - 70.0/100]
 
-16 shared beneficial fungal species connect 4 plants (45th percentile)  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Moderate fungal network - some shared fungi present but connectivity may be limited  
+70th percentile - 57% coverage (4/7 plants have beneficial fungi)  
+Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Good fungal network - many plants have beneficial fungal associations  
 
 #### Beneficial Fungi Network Profile
 
@@ -209,8 +209,8 @@ Moderate structural diversity - some layering present but coverage may be limite
 
 ### Pollinator Support [M7 - 0.0/100]
 
-0 shared pollinator species (0th percentile)  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
+0th percentile - 0% coverage (0/7 plants have documented pollinators)  
+Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented pollinators, may need to add pollinator-friendly plants  
 
 ## Warnings
 

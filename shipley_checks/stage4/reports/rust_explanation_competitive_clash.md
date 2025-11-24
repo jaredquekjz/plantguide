@@ -1,18 +1,18 @@
-# ★☆☆☆☆ - Poor
+# ★★☆☆☆ - Fair
 
-**Overall Score:** 55.3/100
+**Overall Score:** 61.7/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.3 | Good |
+| M1 - Pest & Pathogen Independence | 70.4 | Good |
 | M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 100.0 | Excellent |
-| M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 17.0 | Poor |
-| M7 - Pollinator Support | 0.0 | Poor |
+| M4 - Disease Suppression | 80.0 | Excellent |
+| M5 - Beneficial Fungi | 70.0 | Good |
+| M6 - Structural Diversity | 16.7 | Poor |
+| M7 - Pollinator Support | 95.0 | Excellent |
 
 **How to Read These Scores:** Metrics M1-M7 are percentiles (0-100) comparing your guild to 120,000 randomly generated plant combinations in your climate zone—a score of 80 means better than 80% of random guilds. Scores reflect documented ecological interactions and plant information in scientific databases. Higher scores indicate well-documented beneficial relationships; lower scores may indicate either incomplete research or true absence of these interactions.
 
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.3/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.4/100]
 
 70th percentile (Faith's PD: 885.18) - Plants are distantly related (high phylogenetic diversity)  
 Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.  
@@ -78,7 +78,7 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-100th percentile biocontrol capacity  
+100th percentile - 71% coverage (5/7 plants have biocontrol)  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
 #### Pest Vulnerability Profile
@@ -121,9 +121,9 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 **No specific pest-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
 
-### Natural Disease Suppression [M4 - 100.0/100]
+### Natural Disease Suppression [M4 - 80.0/100]
 
-100th percentile pathogen control via 9 antagonistic mechanisms  
+80th percentile - 71% coverage (5/7 plants have disease control)  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
@@ -156,10 +156,10 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Beneficial Mycorrhizal Network [M5 - 100.0/100]
+### Beneficial Mycorrhizal Network [M5 - 70.0/100]
 
-279 shared beneficial fungal species connect 4 plants (100th percentile)  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
+70th percentile - 57% coverage (4/7 plants have beneficial fungi)  
+Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Good fungal network - many plants have beneficial fungal associations  
 
 #### Beneficial Fungi Network Profile
 
@@ -203,7 +203,7 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 17.0/100]
+### Structural Diversity [M6 - 16.7/100]
 
 3 growth forms spanning 14.1m height range (17th percentile)  
 **Vertical Stratification (Quality: 0.12 - Poor):**
@@ -224,10 +224,10 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 Limited structural diversity - few layers or growth forms, less efficient space use  
 
-### Pollinator Support [M7 - 0.0/100]
+### Pollinator Support [M7 - 95.0/100]
 
-20 shared pollinator species (0th percentile)  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
+95th percentile - 43% coverage (3/7 plants have documented pollinators)  
+Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - most plants have documented pollinators  
 
 #### Pollinator Network Profile
 

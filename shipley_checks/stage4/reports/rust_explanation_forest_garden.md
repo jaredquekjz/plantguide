@@ -9,10 +9,10 @@
 | M1 - Pest & Pathogen Independence | 57.4 | Fair |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 95.1 | Excellent |
-| M5 - Beneficial Fungi | 100.0 | Excellent |
+| M4 - Disease Suppression | 100.0 | Excellent |
+| M5 - Beneficial Fungi | 90.0 | Excellent |
 | M6 - Structural Diversity | 100.0 | Excellent |
-| M7 - Pollinator Support | 95.0 | Excellent |
+| M7 - Pollinator Support | 100.0 | Excellent |
 
 **How to Read These Scores:** Metrics M1-M7 are percentiles (0-100) comparing your guild to 120,000 randomly generated plant combinations in your climate zone—a score of 80 means better than 80% of random guilds. Scores reflect documented ecological interactions and plant information in scientific databases. Higher scores indicate well-documented beneficial relationships; lower scores may indicate either incomplete research or true absence of these interactions.
 
@@ -70,7 +70,7 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-100th percentile biocontrol capacity  
+100th percentile - 86% coverage (6/7 plants have biocontrol)  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
 #### Pest Vulnerability Profile
@@ -127,9 +127,9 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | cnephasia stephensiana | Moths | myotis daubentonii | Bats | Specific |
 | cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific |
 
-### Natural Disease Suppression [M4 - 95.1/100]
+### Natural Disease Suppression [M4 - 100.0/100]
 
-95th percentile pathogen control via 6 antagonistic mechanisms  
+100th percentile - 100% coverage (7/7 plants have disease control)  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
@@ -157,10 +157,10 @@ The disease suppression score is driven by the presence of **general mycoparasit
 | Mercurialis perennis (Dog's Mercury) | 0 | 20 |
 | Rubus moorei (Bush Lawyer) | 0 | 1 |
 
-### Beneficial Mycorrhizal Network [M5 - 100.0/100]
+### Beneficial Mycorrhizal Network [M5 - 90.0/100]
 
-147 shared beneficial fungal species connect 5 plants (100th percentile)  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
+90th percentile - 71% coverage (5/7 plants have beneficial fungi)  
+Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - most plants have beneficial fungal partners  
 
 #### Beneficial Fungi Network Profile
 
@@ -229,10 +229,10 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 Excellent structural diversity - multiple layers maximize space and light use  
 
-### Pollinator Support [M7 - 95.0/100]
+### Pollinator Support [M7 - 100.0/100]
 
-84 shared pollinator species (95th percentile)  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
+100th percentile - 57% coverage (4/7 plants have documented pollinators)  
+Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - most plants have documented pollinators  
 
 #### Pollinator Network Profile
 

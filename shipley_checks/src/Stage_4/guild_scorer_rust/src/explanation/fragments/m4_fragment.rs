@@ -7,11 +7,10 @@ use crate::metrics::M4Result;
 /// Higher scores indicate more beneficial organisms that suppress pathogens.
 /// Lower scores indicate fewer documented disease control mechanisms.
 pub fn generate_m4_fragment(m4: &M4Result, display_score: f64) -> MetricFragment {
-    let mechanism_text = if m4.n_mechanisms == 1 {
-        "mechanism".to_string()
-    } else {
-        "mechanisms".to_string()
-    };
+    // Coverage-based interpretation
+    let coverage_pct = m4.raw; // Now stores coverage % (0-100)
+    let plants_covered = m4.plants_with_disease_control;
+    let total_plants = m4.total_plants;
 
     let interpretation = if display_score >= 80.0 {
         "Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control"
@@ -28,10 +27,11 @@ pub fn generate_m4_fragment(m4: &M4Result, display_score: f64) -> MetricFragment
         metric_code: "M4".to_string(),
         title: "Natural Disease Suppression".to_string(),
         message: format!(
-            "{}th percentile pathogen control via {} antagonistic {}",
+            "{}th percentile - {:.0}% coverage ({}/{} plants have disease control)",
             display_score.round() as i32,
-            m4.n_mechanisms,
-            mechanism_text
+            coverage_pct,
+            plants_covered,
+            total_plants
         ),
         detail: format!(
             "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. {}",

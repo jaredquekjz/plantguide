@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 82.40202880137925,
+    "score": 82.73164625188517,
     "stars": "★★★★☆",
     "label": "Excellent",
-    "message": "Overall guild compatibility: 82.4/100"
+    "message": "Overall guild compatibility: 82.7/100"
   },
   "climate": {
     "compatible": true,
@@ -32,7 +32,7 @@
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "100th percentile biocontrol capacity",
+      "message": "100th percentile - 100% coverage (7/7 plants have biocontrol)",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression",
       "evidence": null
     },
@@ -40,7 +40,7 @@
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "97th percentile pathogen control via 32 antagonistic mechanisms",
+      "message": "100th percentile - 100% coverage (7/7 plants have disease control)",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control",
       "evidence": null
     },
@@ -48,8 +48,8 @@
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "385 shared beneficial fungal species connect 7 plants (100th percentile)",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections",
+      "message": "100th percentile - 100% coverage (7/7 plants have beneficial fungi)",
+      "detail": "Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - most plants have beneficial fungal partners",
       "evidence": null
     },
     {
@@ -64,8 +64,8 @@
       "benefit_type": "pollinator_support",
       "metric_code": "M7",
       "title": "Pollinator Support",
-      "message": "240 shared pollinator species (100th percentile)",
-      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination",
+      "message": "100th percentile - 100% coverage (7/7 plants have documented pollinators)",
+      "detail": "Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - most plants have documented pollinators",
       "evidence": null
     }
   ],
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 9.4928456774512,
+        "score": 9.121523763196208,
         "raw": 0.4943434744133984,
         "interpretation": "Poor"
       },
@@ -100,14 +100,14 @@
         "code": "M3",
         "name": "Insect Pest Control",
         "score": 100.0,
-        "raw": 6.190476190476191,
+        "raw": 100.0,
         "interpretation": "Excellent"
       },
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.32135593220339,
-        "raw": 48.619047619047606,
+        "score": 100.0,
+        "raw": 100.0,
         "interpretation": "Excellent"
       }
     ],
@@ -116,7 +116,7 @@
         "code": "M5",
         "name": "Beneficial Fungi",
         "score": 100.0,
-        "raw": 27.65714285714283,
+        "raw": 100.0,
         "interpretation": "Excellent"
       },
       {
@@ -130,7 +130,7 @@
         "code": "M7",
         "name": "Pollinator Support",
         "score": 100.0,
-        "raw": 6.836734693877554,
+        "raw": 100.0,
         "interpretation": "Excellent"
       }
     ]

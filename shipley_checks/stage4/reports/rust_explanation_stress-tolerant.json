@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 41.04282209694241,
+    "score": 44.10410041106151,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 41.0/100"
+    "message": "Overall guild compatibility: 44.1/100"
   },
   "climate": {
     "compatible": true,
@@ -32,7 +32,7 @@
       "benefit_type": "insect_control",
       "metric_code": "M3",
       "title": "Natural Insect Pest Control",
-      "message": "0th percentile biocontrol capacity",
+      "message": "0th percentile - 0% coverage (0/7 plants have biocontrol)",
       "detail": "Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management",
       "evidence": null
     },
@@ -40,7 +40,7 @@
       "benefit_type": "disease_control",
       "metric_code": "M4",
       "title": "Natural Disease Suppression",
-      "message": "63th percentile pathogen control via 4 antagonistic mechanisms",
+      "message": "60th percentile - 57% coverage (4/7 plants have disease control)",
       "detail": "Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control",
       "evidence": null
     },
@@ -48,8 +48,8 @@
       "benefit_type": "mycorrhizal_network",
       "metric_code": "M5",
       "title": "Beneficial Mycorrhizal Network",
-      "message": "16 shared beneficial fungal species connect 4 plants (45th percentile)",
-      "detail": "Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Moderate fungal network - some shared fungi present but connectivity may be limited",
+      "message": "70th percentile - 57% coverage (4/7 plants have beneficial fungi)",
+      "detail": "Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Good fungal network - many plants have beneficial fungal associations",
       "evidence": null
     },
     {
@@ -64,8 +64,8 @@
       "benefit_type": "pollinator_support",
       "metric_code": "M7",
       "title": "Pollinator Support",
-      "message": "0 shared pollinator species (0th percentile)",
-      "detail": "Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors",
+      "message": "0th percentile - 0% coverage (0/7 plants have documented pollinators)",
+      "detail": "Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented pollinators, may need to add pollinator-friendly plants",
       "evidence": null
     }
   ],
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 32.84573560585548,
+        "score": 32.587533668691194,
         "raw": 0.4559407172659578,
         "interpretation": "Poor"
       },
@@ -106,8 +106,8 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 63.33333333333333,
-        "raw": 0.47619047619047616,
+        "score": 60.0,
+        "raw": 57.14285714285714,
         "interpretation": "Good"
       }
     ],
@@ -115,14 +115,14 @@
       {
         "code": "M5",
         "name": "Beneficial Fungi",
-        "score": 45.0,
-        "raw": 0.22857142857142856,
-        "interpretation": "Fair"
+        "score": 70.0,
+        "raw": 57.14285714285714,
+        "interpretation": "Good"
       },
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 46.12068573940803,
+        "score": 46.141169208739356,
         "raw": 0.3691127953935177,
         "interpretation": "Fair"
       },

@@ -1,15 +1,15 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 84.0/100
+**Overall Score:** 84.3/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 40.2 | Fair |
+| M1 - Pest & Pathogen Independence | 39.8 | Poor |
 | M2 - Growth Compatibility | 50.0 | Fair |
 | M3 - Insect Pest Control | 100.0 | Excellent |
-| M4 - Disease Suppression | 97.7 | Excellent |
+| M4 - Disease Suppression | 100.0 | Excellent |
 | M5 - Beneficial Fungi | 100.0 | Excellent |
 | M6 - Structural Diversity | 100.0 | Excellent |
 | M7 - Pollinator Support | 100.0 | Excellent |
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 40.2/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 39.8/100]
 
 40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -80,7 +80,7 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 
 ### Natural Insect Pest Control [M3 - 100.0/100]
 
-100th percentile biocontrol capacity  
+100th percentile - 100% coverage (7/7 plants have biocontrol)  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
 #### Pest Vulnerability Profile
@@ -141,9 +141,9 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 |------|----------|------------------------|------------|
 | vespa velutina | Wasps | beauveria | Specific |
 
-### Natural Disease Suppression [M4 - 97.7/100]
+### Natural Disease Suppression [M4 - 100.0/100]
 
-98th percentile pathogen control via 47 antagonistic mechanisms  
+100th percentile - 100% coverage (7/7 plants have disease control)  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
@@ -187,8 +187,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 ### Beneficial Mycorrhizal Network [M5 - 100.0/100]
 
-512 shared beneficial fungal species connect 7 plants (100th percentile)  
-Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
+100th percentile - 100% coverage (7/7 plants have beneficial fungi)  
+Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - most plants have beneficial fungal partners  
 
 #### Beneficial Fungi Network Profile
 
@@ -257,8 +257,8 @@ Excellent structural diversity - multiple layers maximize space and light use
 
 ### Pollinator Support [M7 - 100.0/100]
 
-309 shared pollinator species (100th percentile)  
-Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
+100th percentile - 100% coverage (7/7 plants have documented pollinators)  
+Plants attract and support pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - most plants have documented pollinators  
 
 #### Pollinator Network Profile
 
