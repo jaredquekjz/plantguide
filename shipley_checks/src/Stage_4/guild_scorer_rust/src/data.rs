@@ -313,6 +313,27 @@ impl GuildData {
                 col("tier_6_arid"),
                 col("vernacular_name_en"),
                 col("vernacular_name_zh"),
+                // Ecosystem service ratings (M8-M17)
+                col("npp_rating"),
+                col("npp_confidence"),
+                col("decomposition_rating"),
+                col("decomposition_confidence"),
+                col("nutrient_cycling_rating"),
+                col("nutrient_cycling_confidence"),
+                col("nutrient_retention_rating"),
+                col("nutrient_retention_confidence"),
+                col("nutrient_loss_rating"),
+                col("nutrient_loss_confidence"),
+                col("carbon_biomass_rating"),
+                col("carbon_biomass_confidence"),
+                col("carbon_recalcitrant_rating"),
+                col("carbon_recalcitrant_confidence"),
+                col("carbon_total_rating"),
+                col("carbon_total_confidence"),
+                col("erosion_protection_rating"),
+                col("erosion_protection_confidence"),
+                col("nitrogen_fixation_rating"),
+                col("nitrogen_fixation_confidence"),
             ])
             .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
             .collect()

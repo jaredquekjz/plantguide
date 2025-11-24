@@ -38,7 +38,8 @@ fn main() -> anyhow::Result<()> {
         m4_result,
         m5_result,
         fungi_df,     // Needed for explanation
-        m7_result
+        m7_result,
+        _ecosystem_services
     ) = scorer.score_guild_with_explanation_parallel(&plant_ids)?;
     
     println!("Scored in {:.2?}", score_start.elapsed());

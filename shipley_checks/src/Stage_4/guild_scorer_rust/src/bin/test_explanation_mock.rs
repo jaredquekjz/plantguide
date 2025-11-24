@@ -2,7 +2,7 @@ use guild_scorer_rust::{
     GuildScore, ExplanationGenerator, MarkdownFormatter, JsonFormatter, HtmlFormatter,
     MetricFragment, BenefitCard, WarningCard, RiskCard, Severity,
 };
-use guild_scorer_rust::metrics::{M3Result, M4Result, M5Result, M7Result};
+use guild_scorer_rust::metrics::{M3Result, M4Result, M5Result, M7Result, EcosystemServicesResult};
 use rustc_hash::FxHashMap;
 use polars::prelude::*;
 use std::fs;
@@ -75,10 +75,39 @@ fn create_mock_fungi_df() -> anyhow::Result<DataFrame> {
 /// Create mock M7Result for testing
 fn create_mock_m7_result() -> M7Result {
     M7Result {
-        raw: 0.3,
+        raw: 42.9,  // 3/7 plants = 42.9% coverage
         norm: 30.0,
+        quadratic_score: 0.3,  // OLD metric for backwards compat
         n_shared_pollinators: 3,
+        plants_with_pollinators: 3,  // NEW: coverage fields
+        total_plants: 7,              // NEW: coverage fields
         pollinator_counts: FxHashMap::default(),
+    }
+}
+
+/// Create mock EcosystemServicesResult for testing
+fn create_mock_ecosystem_services() -> EcosystemServicesResult {
+    EcosystemServicesResult {
+        m8_npp_score: 4.0,
+        m8_npp_rating: "High".to_string(),
+        m9_decomp_score: 4.5,
+        m9_decomp_rating: "Very High".to_string(),
+        m10_nutrient_cycling_score: 3.5,
+        m10_nutrient_cycling_rating: "High".to_string(),
+        m11_nutrient_retention_score: 3.0,
+        m11_nutrient_retention_rating: "Moderate".to_string(),
+        m12_nutrient_loss_score: 2.5,
+        m12_nutrient_loss_rating: "Moderate".to_string(),
+        m13_carbon_biomass_score: 4.0,
+        m13_carbon_biomass_rating: "High".to_string(),
+        m14_carbon_recalcitrant_score: 3.5,
+        m14_carbon_recalcitrant_rating: "High".to_string(),
+        m15_carbon_total_score: 4.2,
+        m15_carbon_total_rating: "High".to_string(),
+        m16_erosion_protection_score: 3.8,
+        m16_erosion_protection_rating: "High".to_string(),
+        m17_nitrogen_fixation_score: 2.0,
+        m17_nitrogen_fixation_rating: "Low".to_string(),
     }
 }
 
@@ -193,6 +222,7 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
     let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
+    let ecosystem_services = create_mock_ecosystem_services();
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -206,6 +236,7 @@ fn test_high_scoring_guild() -> anyhow::Result<()> {
         &m5_result,
         &fungi_df,
         &m7_result,
+        &ecosystem_services,
     )?;
 
     // Print summary
@@ -281,6 +312,7 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
     let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
+    let ecosystem_services = create_mock_ecosystem_services();
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -294,6 +326,7 @@ fn test_medium_scoring_guild() -> anyhow::Result<()> {
         &m5_result,
         &fungi_df,
         &m7_result,
+        &ecosystem_services,
     )?;
 
     // Print summary
@@ -358,6 +391,7 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
     let m4_result = create_mock_m4_result();
     let fungi_df = create_mock_fungi_df()?;
     let m7_result = create_mock_m7_result();
+    let ecosystem_services = create_mock_ecosystem_services();
 
     // Generate explanation
     let explanation = ExplanationGenerator::generate(
@@ -371,6 +405,7 @@ fn test_low_scoring_guild() -> anyhow::Result<()> {
         &m5_result,
         &fungi_df,
         &m7_result,
+        &ecosystem_services,
     )?;
 
     // Print summary
