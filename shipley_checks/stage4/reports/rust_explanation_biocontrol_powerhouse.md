@@ -296,6 +296,50 @@ Plants attract and support pollinator communities, ensuring reliable pollination
 | Fragaria vesca (Alpine Strawberry) | 15 | 1 | 3 | 5 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Quercus robur (Acorn Tree) | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8 | 0 | 0 | 6 |
 
+## Ecosystem Services
+
+*These ratings show how your guild contributes to important ecosystem functions based on plant traits and growth strategies.*
+
+### 🔸 Net Primary Productivity [Moderate]
+
+How much your plants grow and produce biomass each year. High productivity means more leaves, stems, and roots—providing food for wildlife, improving air quality, and creating a lush, thriving garden that captures more carbon from the atmosphere.  
+
+### 🔸 Decomposition Rate [Moderate]
+
+How quickly plant material breaks down and returns nutrients to the soil. Fast decomposition means nutrients cycle rapidly, keeping your soil fertile and reducing the need for external fertilizers. This supports healthy soil biology with active earthworms and microbes.  
+
+### 🔸 Nutrient Cycling [Moderate]
+
+How efficiently nutrients move through your garden's ecosystem—from soil to plants to decomposers and back to soil. Good cycling creates a self-sustaining system where nutrients are constantly recycled, reducing fertilizer dependency and creating resilient, healthy plants.  
+
+### 🔸 Nutrient Retention [Moderate]
+
+How well plants and soil hold onto valuable nutrients instead of losing them to leaching or runoff. High retention means nutrients stay available for plant uptake longer, improving water quality downstream and reducing the need for frequent fertilizer applications.  
+
+### ✅ Nutrient Loss Prevention [Moderate]
+
+How much your guild prevents nutrients from being washed away by rain or irrigation. Lower nutrient loss protects water quality in nearby streams and ponds, saves money on fertilizers, and keeps nutrients available for your plants rather than polluting waterways.  
+
+### 🔸 Carbon Storage (Living Biomass) [Moderate]
+
+How much carbon your plants store in their stems, leaves, and roots while they're alive. Plants with large, dense growth capture more CO₂ from the air, helping combat climate change while creating habitat and shade. This is the 'green carbon' you can see and touch.  
+
+### ✅ Carbon Storage (Long-term Soil) [High]
+
+How much stable, long-lasting carbon your plants contribute to the soil through tough, slow-decomposing materials like woody tissues and waxy leaves. This 'recalcitrant' carbon stays in soil for decades or centuries, providing lasting climate benefits and improving soil structure.  
+
+### ✅ Total Carbon Storage [High]
+
+The combined climate benefit from both living plant biomass and long-term soil carbon. High total storage means your guild acts as a powerful carbon sink, removing CO₂ from the atmosphere both quickly (through growth) and permanently (through soil enrichment).  
+
+### 🔸 Soil Erosion Protection [Moderate]
+
+How well your plants anchor the soil and prevent it from washing or blowing away. Good protection comes from extensive root systems and ground cover that hold soil in place during storms, preserving your topsoil—the most fertile layer—and preventing sediment pollution in waterways.  
+
+### ℹ️ Nitrogen Fixation [Unable to Classify]
+
+Whether your guild includes legumes or other plants that partner with bacteria to capture nitrogen from the air and convert it into plant-usable forms. This natural fertilizer factory can provide 25-75+ pounds of nitrogen per acre per year, reducing or eliminating the need for synthetic fertilizers.  
+
 ## Warnings
 
 ⚠️ **Soil pH incompatibility detected**

@@ -125,6 +125,29 @@ impl MarkdownFormatter {
             }
         }
 
+        // Ecosystem Services (M8-M17)
+        if let Some(services) = &explanation.ecosystem_services {
+            md.push_str("## Ecosystem Services\n\n");
+            md.push_str("*These ratings show how your guild contributes to important ecosystem functions based on plant traits and growth strategies.*\n\n");
+
+            for service in services {
+                let emoji = match service.benefit_level.as_str() {
+                    "Excellent" => "🌟",
+                    "Good" => "✅",
+                    "Moderate" => "🔸",
+                    "Limited" => "⚠️",
+                    "Very Limited" => "⚠️",
+                    _ => "ℹ️",
+                };
+
+                md.push_str(&format!(
+                    "### {} {} [{}]\n\n",
+                    emoji, service.name, service.rating
+                ));
+                md.push_str(&format!("{}  \n\n", service.description));
+            }
+        }
+
         // Warnings
         if !explanation.warnings.is_empty() {
             md.push_str("## Warnings\n\n");
