@@ -72,117 +72,28 @@ The table below shows raw score thresholds at key percentiles. This helps interp
 
 ---
 
-## EIVE Semantic Binning
+## EIVE-L Semantic Binning (Light Gradient)
 
-**Purpose:** Mapping continuous EIVE scores (0-10 scale) to qualitative ecological labels.
+EIVE-L represents a species' realized niche along the light gradient. The thresholds 3.2 and 7.47 represent empirically calibrated boundaries where light competition becomes significant.
 
-EIVE (European Indicator Value Estimates) scores predict plant ecological preferences on five axes:
-- **L (Light):** Deep shade → Full sun
-- **M (Moisture):** Extreme drought → Aquatic
-- **T (Temperature):** Alpine/Arctic → Mediterranean
-- **R (Reaction/pH):** Strongly acidic → Alkaline
-- **N (Nitrogen/Fertility):** Oligotrophic → Extremely rich
-
-The semantic bins translate numeric predictions into the same vocabulary used by classical Ellenberg indicator systems, enabling validation against historical ecological descriptions.
-
-### Methodology
-
-1. **Source systems:** British Isles + Germany indicators (L, M, R, N); Germany + France + Italy (T)
-2. **Class derivation:** For each integer class (1-9/12), compute median EIVE across all taxa
-3. **Bin boundaries:** Midpoints between adjacent class medians, clipped to [0, 10]
-4. **Labels:** Legacy wording from Hill et al. (1999) and Wirth (2010)
-
-### Light (L) - 9 Classes
-
-EIVE-L represents a species' realized niche along the light gradient. Thresholds at 3.2 and 7.47 represent empirically calibrated boundaries where light competition becomes significant.
-
-| Class | Label | Median | Lower | Upper | Interpretation |
-|-------|-------|--------|-------|-------|----------------|
-| 1 | Deep shade plant (<1% relative illumination) | 1.16 | 0.00 | 1.61 | Forest floor specialists |
-| 2 | Between deep shade and shade | 2.05 | 1.61 | 2.44 | Very low light |
-| 3 | Shade plant (mostly <5% relative illumination) | 2.83 | 2.44 | 3.20 | Shade specialists |
-| 4 | Between shade and semi-shade | 3.58 | 3.20 | 4.23 | Partial shade |
-| 5 | Semi-shade plant (>10% illumination, seldom full light) | 4.88 | 4.23 | 5.45 | Woodland edge |
-| 6 | Between semi-shade and semi-sun | 6.02 | 5.45 | 6.50 | Flexible generalists |
-| 7 | Half-light plant (mostly well lit but tolerates shade) | 6.98 | 6.50 | 7.47 | Sun-preferring but shade-tolerant |
-| 8 | Light-loving plant (rarely <40% illumination) | 7.95 | 7.47 | 8.37 | Full sun preferred |
-| 9 | Full-light plant (requires full sun) | 8.79 | 8.37 | 10.00 | Open habitat specialists |
+| Class | Label | Lower | Upper |
+|-------|-------|-------|-------|
+| 1 | Deep shade plant (<1% relative illumination) | 0.00 | 1.61 |
+| 2 | Between deep shade and shade | 1.61 | 2.44 |
+| 3 | Shade plant (mostly <5% relative illumination) | 2.44 | 3.20 |
+| 4 | Between shade and semi-shade | 3.20 | 4.23 |
+| 5 | Semi-shade plant (>10% illumination, seldom full light) | 4.23 | 5.45 |
+| 6 | Between semi-shade and semi-sun | 5.45 | 6.50 |
+| 7 | Half-light plant (mostly well lit but tolerates shade) | 6.50 | 7.47 |
+| 8 | Light-loving plant (rarely <40% illumination) | 7.47 | 8.37 |
+| 9 | Full-light plant (requires full sun) | 8.37 | 10.00 |
 
 **Ecological interpretation:**
 - **1-3 (0.00-3.20):** Deep shade specialists (forest floor species)
 - **4-7 (3.20-7.47):** Flexible generalists (forest edge, woodland)
 - **8-9 (7.47-10.00):** Full sun specialists (open habitats)
 
-### Moisture (M) - 11 Classes
-
-| Class | Label | Median | Lower | Upper |
-|-------|-------|--------|-------|-------|
-| 1 | Indicator of extreme dryness; soils often dry out | 0.95 | 0.00 | 1.51 |
-| 2 | Very dry sites; shallow soils or sand | 2.06 | 1.51 | 2.47 |
-| 3 | Dry-site indicator; more often on dry ground | 2.88 | 2.47 | 3.22 |
-| 4 | Moderately dry; also in dry sites with humidity | 3.56 | 3.22 | 3.95 |
-| 5 | Fresh/mesic soils of average dampness | 4.33 | 3.95 | 4.69 |
-| 6 | Moist; upper range of fresh soils | 5.04 | 4.69 | 5.39 |
-| 7 | Constantly moist or damp but not wet | 5.74 | 5.39 | 6.07 |
-| 8 | Moist to wet; tolerates short inundation | 6.41 | 6.07 | 6.78 |
-| 9 | Wet, water-saturated poorly aerated soils | 7.15 | 6.78 | 7.54 |
-| 10 | Shallow water sites; often temporarily flooded | 7.92 | 7.54 | 8.40 |
-| 11 | Rooted in water, emergent or floating | 8.88 | 8.40 | 10.00 |
-
-### Temperature (T) - 12 Classes
-
-| Class | Label | Median | Lower | Upper |
-|-------|-------|--------|-------|-------|
-| 1 | Very cold climates (high alpine / arctic-boreal) | 0.49 | 0.00 | 0.91 |
-| 2 | Cold alpine to subalpine zones | 1.33 | 0.91 | 1.81 |
-| 3 | Cool; mainly subalpine and high montane | 2.28 | 1.81 | 2.74 |
-| 4 | Rather cool montane climates | 3.21 | 2.74 | 3.68 |
-| 5 | Moderately cool to moderately warm (montane-submontane) | 4.15 | 3.68 | 4.43 |
-| 6 | Submontane / colline; mild montane | 4.71 | 4.43 | 5.09 |
-| 7 | Warm; colline, extending to mild northern areas | 5.47 | 5.09 | 5.94 |
-| 8 | Warm-submediterranean to mediterranean core | 6.41 | 5.94 | 6.84 |
-| 9 | Very warm; southern-central European lowlands | 7.27 | 6.84 | 7.74 |
-| 10 | Hot-submediterranean; warm Mediterranean foothills | 8.20 | 7.74 | 8.50 |
-| 11 | Hot Mediterranean lowlands | 8.80 | 8.50 | 9.21 |
-| 12 | Very hot / subtropical Mediterranean extremes | 9.62 | 9.21 | 10.00 |
-
-### Reaction/pH (R) - 9 Classes
-
-| Class | Label | Median | Lower | Upper |
-|-------|-------|--------|-------|-------|
-| 1 | Strongly acidic substrates only | 1.30 | 0.00 | 1.82 |
-| 2 | Very acidic, seldom on less acidic soils | 2.35 | 1.82 | 2.73 |
-| 3 | Acid indicator; mainly acid soils | 3.11 | 2.73 | 3.50 |
-| 4 | Slightly acidic; between acid and moderately acid | 3.90 | 3.50 | 4.42 |
-| 5 | Moderately acidic soils; occasional neutral/basic | 4.94 | 4.42 | 5.41 |
-| 6 | Slightly acidic to neutral | 5.88 | 5.41 | 6.38 |
-| 7 | Weakly acidic to weakly basic; absent from very acid | 6.87 | 6.38 | 7.24 |
-| 8 | Between weakly basic and basic | 7.61 | 7.24 | 8.05 |
-| 9 | Basic/alkaline; calcareous substrates | 8.50 | 8.05 | 10.00 |
-
-### Nitrogen/Fertility (N) - 9 Classes
-
-| Class | Label | Median | Lower | Upper |
-|-------|-------|--------|-------|-------|
-| 1 | Extremely infertile, oligotrophic sites | 1.60 | 0.00 | 1.98 |
-| 2 | Very low fertility | 2.37 | 1.98 | 2.77 |
-| 3 | Infertile to moderately poor soils | 3.17 | 2.77 | 3.71 |
-| 4 | Moderately poor; low fertility | 4.25 | 3.71 | 4.79 |
-| 5 | Intermediate fertility | 5.33 | 4.79 | 5.71 |
-| 6 | Moderately rich soils | 6.09 | 5.71 | 6.60 |
-| 7 | Rich, eutrophic sites | 7.12 | 6.60 | 7.47 |
-| 8 | Very rich, high nutrient supply | 7.82 | 7.47 | 8.35 |
-| 9 | Extremely rich; manure or waste sites | 8.87 | 8.35 | 10.00 |
-
-### Usage
-
-**Model outputs → qualitative labels:** Drop predicted EIVE scores into bins to obtain narrative phrases (e.g., L=8.4 → "light-loving plant")
-
-**Data source:** `shipley_checks/src/encyclopedia/data/*_bins.csv`
-
-**Implementation:** R function `get_eive_label()` in `shipley_checks/src/encyclopedia/utils/lookup_tables.R`
-
-**Reference:** Full binning methodology documented in `results/summaries/phylotraits/Stage_4/EIVE_semantic_binning.md`
+**Source:** British Isles + Germany indicators. Full methodology and other EIVE axes (M, T, R, N) documented in `results/summaries/phylotraits/Stage_4/EIVE_semantic_binning.md`
 
 ---
 
