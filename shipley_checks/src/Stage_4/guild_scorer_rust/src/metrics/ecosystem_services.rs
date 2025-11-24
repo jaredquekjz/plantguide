@@ -71,8 +71,8 @@ pub struct EcosystemServicesResult {
 /// Calculate all 10 ecosystem services for a guild
 ///
 /// # Arguments
-/// * `organisms_df` - DataFrame containing all plants with ecosystem service rating columns
-/// * `plant_ids` - List of plant IDs in the guild (wfo_scientific_name)
+/// * `plants_df` - DataFrame containing all plants with ecosystem service rating columns
+/// * `plant_ids` - List of plant IDs in the guild (wfo_taxon_id format: "wfo-0000832453")
 ///
 /// # Returns
 /// EcosystemServicesResult with scores and ratings for M8-M17
@@ -84,7 +84,7 @@ pub struct EcosystemServicesResult {
 /// 3. Calculate mean (excluding NaN/Unable to Classify)
 /// 4. Convert back to categorical rating
 pub fn calculate_ecosystem_services(
-    organisms_df: &DataFrame,
+    plants_df: &DataFrame,
     plant_ids: &[String],
 ) -> Result<EcosystemServicesResult> {
     // Build set of plant IDs for filtering
@@ -92,18 +92,18 @@ pub fn calculate_ecosystem_services(
         .map(|s| s.as_str())
         .collect();
 
-    // Filter organisms_df to guild plants only
-    let guild_mask = organisms_df
-        .column("wfo_scientific_name")
-        .with_context(|| "Missing wfo_scientific_name column")?
+    // Filter plants_df to guild plants only (using wfo_taxon_id)
+    let guild_mask = plants_df
+        .column("wfo_taxon_id")
+        .with_context(|| "Missing wfo_taxon_id column")?
         .str()
-        .with_context(|| "wfo_scientific_name is not a string column")?
+        .with_context(|| "wfo_taxon_id is not a string column")?
         .into_iter()
-        .map(|opt| opt.map(|name| plant_set.contains(name)).unwrap_or(false))
+        .map(|opt| opt.map(|id| plant_set.contains(id)).unwrap_or(false))
         .collect::<BooleanChunked>();
 
-    let guild_df = organisms_df.filter(&guild_mask)
-        .with_context(|| "Failed to filter organisms_df to guild plants")?;
+    let guild_df = plants_df.filter(&guild_mask)
+        .with_context(|| "Failed to filter plants_df to guild plants")?;
 
     // Helper function to extract rating column as Vec<&str>
     let extract_ratings = |col_name: &str| -> Result<Vec<&str>> {

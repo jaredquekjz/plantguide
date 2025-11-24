@@ -332,8 +332,8 @@ impl GuildData {
                 col("carbon_total_confidence"),
                 col("erosion_protection_rating"),
                 col("erosion_protection_confidence"),
-                col("nitrogen_fixation_rating"),
-                col("nitrogen_fixation_confidence"),
+                col("nitrogen_fixation_rating").cast(DataType::String),
+                col("nitrogen_fixation_confidence").cast(DataType::String),
             ])
             .with_column(col("wfo_scientific_name").alias("wfo_taxon_name"))
             .collect()

@@ -809,7 +809,8 @@ impl GuildScorer {
         };
 
         // Calculate ecosystem services (M8-M17)
-        let ecosystem_services = calculate_ecosystem_services(&self.data.organisms, plant_ids)?;
+        // Note: Uses plants dataframe which has ecosystem service rating columns from Stage 3
+        let ecosystem_services = calculate_ecosystem_services(&self.data.plants, plant_ids)?;
 
         Ok((guild_score, fragments, guild_plants_with_organisms, m2_cloned, m3_cloned, self.data.organisms.clone(), m4_cloned, m5_cloned, self.data.fungi.clone(), m7_cloned, ecosystem_services))
     }
