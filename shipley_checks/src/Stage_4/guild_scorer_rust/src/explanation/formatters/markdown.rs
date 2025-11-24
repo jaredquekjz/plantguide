@@ -709,7 +709,11 @@ impl MarkdownFormatter {
         md.push_str("**Mechanism Summary:**\n");
         md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite or fungivore)\n",
             pathogen_profile.specific_antagonist_matches + pathogen_profile.specific_fungivore_matches));
-        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism)\n\n", pathogen_profile.general_mycoparasite_count));
+        md.push_str(&format!(
+            "- {} general mycoparasite species ({} total occurrences, primary mechanism)\n\n",
+            pathogen_profile.total_unique_mycoparasites,
+            pathogen_profile.general_mycoparasite_count
+        ));
 
         // Show matched antagonist pairs (Mycoparasites)
         if !pathogen_profile.matched_antagonist_pairs.is_empty() {

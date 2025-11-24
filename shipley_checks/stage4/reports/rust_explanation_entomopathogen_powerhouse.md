@@ -154,7 +154,7 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 
 **Mechanism Summary:**
 - 17 Specific antagonist matches (pathogen → known mycoparasite or fungivore)
-- 17 General mycoparasite fungi (primary mechanism)
+- 14 general mycoparasite species (17 total occurrences, primary mechanism)
 
 **Matched Pathogen → Fungivore Pairs:**
 
