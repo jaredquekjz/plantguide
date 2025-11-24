@@ -323,10 +323,10 @@ if [ "$START_PHASE" -le 5 ] && [ "$SKIP_CALIBRATION" -eq 0 ]; then
   echo ""
   echo "Running calibration..."
   cd "${PROJECT_ROOT}"
-  env RUST_MIN_STACK=8388608 \
+  env RUST_MIN_STACK=134217728 \
     shipley_checks/src/Stage_4/guild_scorer_rust/target/release/calibrate_koppen_stratified \
     > shipley_checks/stage4/calibrate_rust_production.log 2>&1
-  cd "${SCRIPT_DIR}"
+  cd "${STAGE4_DIR}"
 
   PHASE5_END=$(date +%s)
   PHASE5_TIME=$((PHASE5_END - PHASE5_START))
