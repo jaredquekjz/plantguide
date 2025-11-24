@@ -7,12 +7,6 @@
 
 This document provides a complete overview of the 7 ecological metrics used to score plant guilds. It combines a friendly explanation of **how the code calculates the score**, the **scientific theory** behind it, its **practical use** for gardeners and designers, and **detailed technical implementation** for scientific reproducibility and developer reference.
 
-**What's New in This Version:**
-- Added explicit formulas, thresholds, and weights for all metrics
-- Documented recent features (dual-lifestyle fungi annotation, growth form complementarity)
-- Added Technical Appendix covering calibration system, data formats, and optimizations
-- Included edge case handling and data quality considerations
-
 ---
 
 ## Calibration and Scoring Methodology
@@ -75,6 +69,120 @@ The table below shows raw score thresholds at key percentiles. This helps interp
 - **M5 (Fungi)**: Good spread - median at 43%, p99 at 86% (6/7 plants)
 - **M7 (Pollinators)**: Most challenging - even p99 only reaches 57% (4/7 plants), reflecting rarity of pollinator documentation
 - **Continuous metrics** (M1, M2, M6) show smooth distributions but M1/M2 have narrow ranges
+
+---
+
+## EIVE Semantic Binning
+
+**Purpose:** Mapping continuous EIVE scores (0-10 scale) to qualitative ecological labels.
+
+EIVE (European Indicator Value Estimates) scores predict plant ecological preferences on five axes:
+- **L (Light):** Deep shade → Full sun
+- **M (Moisture):** Extreme drought → Aquatic
+- **T (Temperature):** Alpine/Arctic → Mediterranean
+- **R (Reaction/pH):** Strongly acidic → Alkaline
+- **N (Nitrogen/Fertility):** Oligotrophic → Extremely rich
+
+The semantic bins translate numeric predictions into the same vocabulary used by classical Ellenberg indicator systems, enabling validation against historical ecological descriptions.
+
+### Methodology
+
+1. **Source systems:** British Isles + Germany indicators (L, M, R, N); Germany + France + Italy (T)
+2. **Class derivation:** For each integer class (1-9/12), compute median EIVE across all taxa
+3. **Bin boundaries:** Midpoints between adjacent class medians, clipped to [0, 10]
+4. **Labels:** Legacy wording from Hill et al. (1999) and Wirth (2010)
+
+### Light (L) - 9 Classes
+
+EIVE-L represents a species' realized niche along the light gradient. Thresholds at 3.2 and 7.47 represent empirically calibrated boundaries where light competition becomes significant.
+
+| Class | Label | Median | Lower | Upper | Interpretation |
+|-------|-------|--------|-------|-------|----------------|
+| 1 | Deep shade plant (<1% relative illumination) | 1.16 | 0.00 | 1.61 | Forest floor specialists |
+| 2 | Between deep shade and shade | 2.05 | 1.61 | 2.44 | Very low light |
+| 3 | Shade plant (mostly <5% relative illumination) | 2.83 | 2.44 | 3.20 | Shade specialists |
+| 4 | Between shade and semi-shade | 3.58 | 3.20 | 4.23 | Partial shade |
+| 5 | Semi-shade plant (>10% illumination, seldom full light) | 4.88 | 4.23 | 5.45 | Woodland edge |
+| 6 | Between semi-shade and semi-sun | 6.02 | 5.45 | 6.50 | Flexible generalists |
+| 7 | Half-light plant (mostly well lit but tolerates shade) | 6.98 | 6.50 | 7.47 | Sun-preferring but shade-tolerant |
+| 8 | Light-loving plant (rarely <40% illumination) | 7.95 | 7.47 | 8.37 | Full sun preferred |
+| 9 | Full-light plant (requires full sun) | 8.79 | 8.37 | 10.00 | Open habitat specialists |
+
+**Ecological interpretation:**
+- **1-3 (0.00-3.20):** Deep shade specialists (forest floor species)
+- **4-7 (3.20-7.47):** Flexible generalists (forest edge, woodland)
+- **8-9 (7.47-10.00):** Full sun specialists (open habitats)
+
+### Moisture (M) - 11 Classes
+
+| Class | Label | Median | Lower | Upper |
+|-------|-------|--------|-------|-------|
+| 1 | Indicator of extreme dryness; soils often dry out | 0.95 | 0.00 | 1.51 |
+| 2 | Very dry sites; shallow soils or sand | 2.06 | 1.51 | 2.47 |
+| 3 | Dry-site indicator; more often on dry ground | 2.88 | 2.47 | 3.22 |
+| 4 | Moderately dry; also in dry sites with humidity | 3.56 | 3.22 | 3.95 |
+| 5 | Fresh/mesic soils of average dampness | 4.33 | 3.95 | 4.69 |
+| 6 | Moist; upper range of fresh soils | 5.04 | 4.69 | 5.39 |
+| 7 | Constantly moist or damp but not wet | 5.74 | 5.39 | 6.07 |
+| 8 | Moist to wet; tolerates short inundation | 6.41 | 6.07 | 6.78 |
+| 9 | Wet, water-saturated poorly aerated soils | 7.15 | 6.78 | 7.54 |
+| 10 | Shallow water sites; often temporarily flooded | 7.92 | 7.54 | 8.40 |
+| 11 | Rooted in water, emergent or floating | 8.88 | 8.40 | 10.00 |
+
+### Temperature (T) - 12 Classes
+
+| Class | Label | Median | Lower | Upper |
+|-------|-------|--------|-------|-------|
+| 1 | Very cold climates (high alpine / arctic-boreal) | 0.49 | 0.00 | 0.91 |
+| 2 | Cold alpine to subalpine zones | 1.33 | 0.91 | 1.81 |
+| 3 | Cool; mainly subalpine and high montane | 2.28 | 1.81 | 2.74 |
+| 4 | Rather cool montane climates | 3.21 | 2.74 | 3.68 |
+| 5 | Moderately cool to moderately warm (montane-submontane) | 4.15 | 3.68 | 4.43 |
+| 6 | Submontane / colline; mild montane | 4.71 | 4.43 | 5.09 |
+| 7 | Warm; colline, extending to mild northern areas | 5.47 | 5.09 | 5.94 |
+| 8 | Warm-submediterranean to mediterranean core | 6.41 | 5.94 | 6.84 |
+| 9 | Very warm; southern-central European lowlands | 7.27 | 6.84 | 7.74 |
+| 10 | Hot-submediterranean; warm Mediterranean foothills | 8.20 | 7.74 | 8.50 |
+| 11 | Hot Mediterranean lowlands | 8.80 | 8.50 | 9.21 |
+| 12 | Very hot / subtropical Mediterranean extremes | 9.62 | 9.21 | 10.00 |
+
+### Reaction/pH (R) - 9 Classes
+
+| Class | Label | Median | Lower | Upper |
+|-------|-------|--------|-------|-------|
+| 1 | Strongly acidic substrates only | 1.30 | 0.00 | 1.82 |
+| 2 | Very acidic, seldom on less acidic soils | 2.35 | 1.82 | 2.73 |
+| 3 | Acid indicator; mainly acid soils | 3.11 | 2.73 | 3.50 |
+| 4 | Slightly acidic; between acid and moderately acid | 3.90 | 3.50 | 4.42 |
+| 5 | Moderately acidic soils; occasional neutral/basic | 4.94 | 4.42 | 5.41 |
+| 6 | Slightly acidic to neutral | 5.88 | 5.41 | 6.38 |
+| 7 | Weakly acidic to weakly basic; absent from very acid | 6.87 | 6.38 | 7.24 |
+| 8 | Between weakly basic and basic | 7.61 | 7.24 | 8.05 |
+| 9 | Basic/alkaline; calcareous substrates | 8.50 | 8.05 | 10.00 |
+
+### Nitrogen/Fertility (N) - 9 Classes
+
+| Class | Label | Median | Lower | Upper |
+|-------|-------|--------|-------|-------|
+| 1 | Extremely infertile, oligotrophic sites | 1.60 | 0.00 | 1.98 |
+| 2 | Very low fertility | 2.37 | 1.98 | 2.77 |
+| 3 | Infertile to moderately poor soils | 3.17 | 2.77 | 3.71 |
+| 4 | Moderately poor; low fertility | 4.25 | 3.71 | 4.79 |
+| 5 | Intermediate fertility | 5.33 | 4.79 | 5.71 |
+| 6 | Moderately rich soils | 6.09 | 5.71 | 6.60 |
+| 7 | Rich, eutrophic sites | 7.12 | 6.60 | 7.47 |
+| 8 | Very rich, high nutrient supply | 7.82 | 7.47 | 8.35 |
+| 9 | Extremely rich; manure or waste sites | 8.87 | 8.35 | 10.00 |
+
+### Usage
+
+**Model outputs → qualitative labels:** Drop predicted EIVE scores into bins to obtain narrative phrases (e.g., L=8.4 → "light-loving plant")
+
+**Data source:** `shipley_checks/src/encyclopedia/data/*_bins.csv`
+
+**Implementation:** R function `get_eive_label()` in `shipley_checks/src/encyclopedia/utils/lookup_tables.R`
+
+**Reference:** Full binning methodology documented in `results/summaries/phylotraits/Stage_4/EIVE_semantic_binning.md`
 
 ---
 
@@ -160,7 +268,7 @@ If short plant (S) is shaded by tall plant (C):
 - **Height thresholds:** 2.0m, 5.0m, 8.0m for layer separation
 - **Edge cases:** Missing CSR causes error (cannot default); missing height defaults to 1.0m; missing light defaults to 5.0 (flexible)
 
-### Scientific Basis (Soundness: High)
+### Scientific Basis 
 Grime's CSR theory is a cornerstone of ecology. It accurately predicts that a fast-growing, resource-hungry plant will kill a slow-growing specialist if they compete for the same resources. The code's addition of light and height modulations makes this highly realistic.
 
 **Recent Enhancement:** Growth form complementarity (vine+tree) added to recognize mutualistic vertical space use, analogous to CSR conflict modulation.
@@ -210,7 +318,7 @@ Percentile normalize
   - Filters out ecologically confounding organisms (pollinators, beneficial predators)
 - **Edge case:** Zero herbivores returns score = 0.0 (no pests = no biocontrol needed)
 
-### Scientific Basis (Soundness: Moderate)
+### Scientific Basis 
 **Conservation Biological Control** is real: diverse gardens attract beneficial insects. However, the metric relies on data that is often incomplete. A "zero" score might just mean "we don't know," not "no protection."
 
 **Data Quality Note:** Reports now include ⚠️ indicators for plants with no interaction data, distinguishing true absence from data gaps.
@@ -262,7 +370,7 @@ The metric considers both:
 - **Lookup table:** `pathogen_antagonists` (942 entries)
 - **Edge case:** Zero pathogens returns score = 0.0
 
-### Scientific Basis (Soundness: Moderate)
+### Scientific Basis 
 Mycoparasites are proven biocontrol agents. However, soil ecology is complex; just having the good fungus doesn't guarantee it will cure the disease. It's a good indicator of potential resilience.
 
 **Recent Enhancement:** Added specific fungivore matches (commit cae0639), recognizing animal-mediated disease suppression.
@@ -318,8 +426,8 @@ Some fungi appear in BOTH `pathogenic_fungi` AND beneficial columns (e.g., Colle
 - Explanatory note included when dual-lifestyle fungi present
 - Full scientific transparency maintained (commit ca45c25)
 
-### Scientific Basis (Soundness: Low-Moderate)
-Common Mycorrhizal Networks (CMNs) exist, but their benefits are debated. Sometimes they transfer nutrients, sometimes they don't. The "Coverage" part (just having fungi) is scientifically very sound—most plants grow better with fungal partners.
+### Scientific Basis 
+Common Mycorrhizal Networks (CMNs) exist, but their benefits are debated. Sometimes they transfer nutrients, sometimes they don't. The "Coverage" part (just having fungi) is scientifically sound—most plants grow better with fungal partners.
 
 **Dual-Lifestyle Fungi Context:**
 FungalTraits database (128 mycologists, expert-curated) correctly classifies these as having BOTH roles. The parquet data preserves this scientific accuracy; the reporting system prioritizes pathogenic risk in user-facing warnings.
@@ -383,11 +491,11 @@ Vines and lianas climbing trees receive full credit regardless of light preferen
   - Missing growth form: no complementarity applied
 - **Sorting:** Plants sorted by height before analysis (ensures consistent tall-short pairing)
 
-### Scientific Basis (Soundness: High)
+### Scientific Basis 
 This is **Niche Partitioning**. Plants can grow densely if they don't fight for the same space or light. The code's "Shade Test" is scientifically rigorous and prevents overcrowding mistakes.
 
 **EIVE-L Ecological Interpretation:**
-The Ellenberg Indicator Value for Light (EIVE-L) represents a species' realized niche along the light gradient:
+EIVE-L represents a species' realized niche along the light gradient:
 - 1-3: Deep shade specialists (forest floor species)
 - 4-7: Flexible generalists (forest edge, woodland)
 - 8-9: Full sun specialists (open habitats)
@@ -437,10 +545,10 @@ Percentile normalize
 - **Taxonomy:** Uses Kimi AI gardener labels for pollinator categorization
 - **Edge case:** Zero pollinators returns 0.0
 
-### Scientific Basis (Soundness: Moderate)
+### Scientific Basis 
 **Pollinator Facilitation**: A dense patch of flowers attracts more pollinators than scattered ones. The math correctly models this "magnet effect."
 
-The quadratic weighting is empirically justified: studies show pollinator visitation rates increase non-linearly with flower density, due to pollinator learning and foraging efficiency.
+The quadratic weighting (though no longer implemented) is empirically justified: studies show pollinator visitation rates increase non-linearly with flower density, due to pollinator learning and foraging efficiency.
 
 ### Horticultural Usefulness (High)
 *   **Actionable Advice:** "Create a pollinator strip."
