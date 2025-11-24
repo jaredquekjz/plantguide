@@ -746,6 +746,8 @@ impl GuildScorer {
             raw: m3.raw,
             norm: m3.norm,
             biocontrol_raw: m3.biocontrol_raw,
+            plants_with_biocontrol: m3.plants_with_biocontrol,
+            total_plants: m3.total_plants,
             n_mechanisms: m3.n_mechanisms,
             predator_counts: m3.predator_counts.clone(),
             entomo_fungi_counts: m3.entomo_fungi_counts.clone(),
@@ -760,6 +762,8 @@ impl GuildScorer {
             raw: m4.raw,
             norm: m4.norm,
             pathogen_control_raw: m4.pathogen_control_raw,
+            plants_with_disease_control: m4.plants_with_disease_control,
+            total_plants: m4.total_plants,
             n_mechanisms: m4.n_mechanisms,
             mycoparasite_counts: m4.mycoparasite_counts.clone(),
             fungivore_counts: m4.fungivore_counts.clone(),
@@ -789,6 +793,7 @@ impl GuildScorer {
             coverage_ratio: m5.coverage_ratio,
             n_shared_fungi: m5.n_shared_fungi,
             plants_with_fungi: m5.plants_with_fungi,
+            total_plants: m5.total_plants,
             fungi_counts: m5.fungi_counts.clone(),
         };
 
@@ -796,7 +801,10 @@ impl GuildScorer {
         let m7_cloned = M7Result {
             raw: m7.raw,
             norm: m7.norm,
+            quadratic_score: m7.quadratic_score,
             n_shared_pollinators: m7.n_shared_pollinators,
+            plants_with_pollinators: m7.plants_with_pollinators,
+            total_plants: m7.total_plants,
             pollinator_counts: m7.pollinator_counts.clone(),
         };
 

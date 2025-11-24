@@ -36,18 +36,20 @@ pub const REQUIRED_FUNGI_COLS: &[&str] = &[
 /// Result of M5 calculation
 #[derive(Debug)]
 pub struct M5Result {
-    /// Combined network + coverage score (0-1 scale)
+    /// Coverage percentage: % of plants with ≥1 beneficial fungus (0-100)
     pub raw: f64,
     /// Percentile score (0-100, HIGH = GOOD)
     pub norm: f64,
-    /// Network connectivity score
+    /// Network connectivity score (OLD metric, kept for reporting)
     pub network_score: f64,
-    /// Fraction of plants with beneficial fungi
+    /// Fraction of plants with beneficial fungi (kept for reporting)
     pub coverage_ratio: f64,
     /// Number of shared fungi
     pub n_shared_fungi: usize,
     /// Number of plants with beneficial fungi
     pub plants_with_fungi: usize,
+    /// Total plants in guild
+    pub total_plants: usize,
     /// Map of fungus_name → plant_count for detailed analysis
     pub fungi_counts: FxHashMap<String, usize>,
 }
@@ -88,7 +90,7 @@ pub fn calculate_m5(
     // guild_fungi is already filtered (7 rows), so this just analyzes the guild
     let beneficial_counts = count_shared_organisms(&guild_fungi, &guild_plant_ids, columns)?;
 
-    // COMPONENT 1: Network score (weight 0.6)
+    // COMPONENT 1: Network score (weight 0.6) - OLD metric, kept for reporting
     // For each shared fungus, calculate network connectivity
     let mut network_raw = 0.0;
     for (_org_name, count) in &beneficial_counts {
@@ -97,24 +99,24 @@ pub fn calculate_m5(
         }
     }
 
-    // COMPONENT 2: Coverage ratio (weight 0.4)
-    // What fraction of plants have ANY beneficial fungi?
+    // COMPONENT 2: Coverage ratio - What fraction of plants have ANY beneficial fungi?
     let plants_with_beneficial = count_plants_with_beneficial_fungi(&guild_fungi, &guild_plant_ids, columns)?;
     let coverage_ratio = plants_with_beneficial as f64 / n_plants as f64;
 
-    // Combined score: 60% network, 40% coverage
-    let p5_raw = network_raw * 0.6 + coverage_ratio * 0.4;
+    // NEW: Calculate coverage percentage (0-100%)
+    let coverage_pct = coverage_ratio * 100.0;
 
-    // Percentile normalize
-    let m5_norm = percentile_normalize(p5_raw, "p3", calibration, false)?;
+    // Percentile normalize (using coverage %)
+    let m5_norm = percentile_normalize(coverage_pct, "p3", calibration, false)?;
 
     Ok(M5Result {
-        raw: p5_raw,
-        norm: m5_norm,
-        network_score: network_raw,
-        coverage_ratio,
+        raw: coverage_pct,  // Coverage % (0-100)
+        norm: m5_norm,      // Percentile
+        network_score: network_raw,  // OLD metric (kept for reporting)
+        coverage_ratio,     // OLD metric (kept for reporting)
         n_shared_fungi: beneficial_counts.len(),
         plants_with_fungi: plants_with_beneficial,
+        total_plants: n_plants,
         fungi_counts: beneficial_counts,
     })
 }

@@ -47,12 +47,16 @@ pub const REQUIRED_FUNGI_COLS: &[&str] = &[
 /// Result of M3 calculation
 #[derive(Debug)]
 pub struct M3Result {
-    /// Normalized biocontrol score (scaled by guild size)
+    /// Coverage percentage: % of plants with ≥1 biocontrol mechanism (0-100)
     pub raw: f64,
     /// Percentile score (0-100, HIGH = GOOD)
     pub norm: f64,
-    /// Total biocontrol before normalization
+    /// Total biocontrol before normalization (OLD metric, kept for reporting)
     pub biocontrol_raw: f64,
+    /// Number of plants with ≥1 biocontrol mechanism
+    pub plants_with_biocontrol: usize,
+    /// Total plants in guild
+    pub total_plants: usize,
     /// Number of mechanisms detected
     pub n_mechanisms: usize,
     /// Map of predator_name → plant_count for network analysis
@@ -141,6 +145,8 @@ pub fn calculate_m3(
             raw: 0.0,
             norm: 0.0,
             biocontrol_raw: 0.0,
+            plants_with_biocontrol: 0,
+            total_plants: 0,
             n_mechanisms: 0,
             predator_counts: FxHashMap::default(),
             entomo_fungi_counts: FxHashMap::default(),
@@ -189,6 +195,9 @@ pub fn calculate_m3(
     // }
     // eprintln!("Total plants in guild: {}", n_plants);
 
+    // Track which plants have biocontrol (for coverage calculation)
+    let mut plants_with_biocontrol: FxHashSet<String> = FxHashSet::default();
+
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, herbivores_a) in &plant_organisms {
         if herbivores_a.is_empty() {
@@ -218,6 +227,8 @@ pub fn calculate_m3(
                         for pred in matched_preds {
                             matched_predator_pairs.push((herbivore.clone(), pred));
                         }
+                        // Mark plant A as having biocontrol
+                        plants_with_biocontrol.insert(plant_a_id.clone());
                     }
                 }
             }
@@ -237,21 +248,25 @@ pub fn calculate_m3(
                                 for fungus in matched_fungi {
                                     matched_fungi_pairs.push((herbivore.clone(), fungus));
                                 }
+                                // Mark plant A as having biocontrol
+                                plants_with_biocontrol.insert(plant_a_id.clone());
                             }
                         }
                     }
 
                     // MECHANISM 3: General entomopathogenic fungi (weight 0.2)
                     biocontrol_raw += entomo_b.len() as f64 * 0.2;
+                    // Mark plant A as having biocontrol (general fungi also count)
+                    plants_with_biocontrol.insert(plant_a_id.clone());
                 }
             }
         }
     }
 
-    // Normalize by guild size
-    let max_pairs = n_plants * (n_plants - 1);
-    let biocontrol_normalized = if max_pairs > 0 {
-        biocontrol_raw / max_pairs as f64 * 20.0
+    // Calculate coverage percentage: % of plants with ≥1 biocontrol mechanism
+    let plants_with_biocontrol_count = plants_with_biocontrol.len();
+    let coverage_pct = if n_plants > 0 {
+        (plants_with_biocontrol_count as f64 / n_plants as f64) * 100.0
     } else {
         0.0
     };
@@ -259,13 +274,13 @@ pub fn calculate_m3(
     // DEBUG: Log final values (DISABLED for performance)
     // eprintln!("=== M3 DEBUG: Final calculation ===");
     // eprintln!("biocontrol_raw: {}", biocontrol_raw);
-    // eprintln!("max_pairs: {}", max_pairs);
-    // eprintln!("biocontrol_normalized: {}", biocontrol_normalized);
+    // eprintln!("plants_with_biocontrol: {}/{}", plants_with_biocontrol_count, n_plants);
+    // eprintln!("coverage_pct: {}%", coverage_pct);
     // eprintln!("Mechanism counts: predator={}, fungi={}", specific_predator_matches, specific_fungi_matches);
     // eprintln!("===============================\n");
 
-    // Percentile normalization
-    let m3_norm = percentile_normalize(biocontrol_normalized, "p1", calibration, false)?;
+    // Percentile normalization (using coverage %)
+    let m3_norm = percentile_normalize(coverage_pct, "p1", calibration, false)?;
 
     // Deduplicate matched pairs
     matched_predator_pairs.sort_unstable();
@@ -274,9 +289,11 @@ pub fn calculate_m3(
     matched_fungi_pairs.dedup();
 
     Ok(M3Result {
-        raw: biocontrol_normalized,
-        norm: m3_norm,
-        biocontrol_raw,
+        raw: coverage_pct,  // Coverage % (0-100)
+        norm: m3_norm,      // Percentile
+        biocontrol_raw,     // OLD metric (kept for reporting)
+        plants_with_biocontrol: plants_with_biocontrol_count,
+        total_plants: n_plants,
         n_mechanisms,
         predator_counts,
         entomo_fungi_counts,

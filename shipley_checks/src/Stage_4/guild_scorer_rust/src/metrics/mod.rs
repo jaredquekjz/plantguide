@@ -29,11 +29,11 @@ pub struct RawScores {
     pub m1_faiths_pd: f64,
     pub m1_pest_risk: f64,
     pub m2_conflict_density: f64,
-    pub m3_biocontrol_raw: f64,
-    pub m4_pathogen_control_raw: f64,
-    pub m5_beneficial_fungi_raw: f64,
+    pub m3_biocontrol_raw: f64,  // Coverage % (0-100): % plants with biocontrol
+    pub m4_pathogen_control_raw: f64,  // Coverage % (0-100): % plants with disease control
+    pub m5_beneficial_fungi_raw: f64,  // Coverage % (0-100): % plants with beneficial fungi
     pub m6_stratification_raw: f64,
-    pub m7_pollinator_raw: f64,
+    pub m7_pollinator_raw: f64,  // Coverage % (0-100): % plants with pollinators
 }
 
 /// Compute raw scores for calibration (no normalization)

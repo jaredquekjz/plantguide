@@ -42,12 +42,16 @@ pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
 /// Result of M4 calculation
 #[derive(Debug)]
 pub struct M4Result {
-    /// Normalized pathogen control score (scaled by guild size)
+    /// Coverage percentage: % of plants with ≥1 disease control mechanism (0-100)
     pub raw: f64,
     /// Percentile score (0-100, HIGH = GOOD)
     pub norm: f64,
-    /// Total pathogen control before normalization
+    /// Total pathogen control before normalization (OLD metric, kept for reporting)
     pub pathogen_control_raw: f64,
+    /// Number of plants with ≥1 disease control mechanism
+    pub plants_with_disease_control: usize,
+    /// Total plants in guild
+    pub total_plants: usize,
     /// Number of mechanisms detected
     pub n_mechanisms: usize,
     /// Map of mycoparasite_name → plant_count for network analysis
@@ -110,6 +114,8 @@ pub fn calculate_m4(
             raw: 0.0,
             norm: 0.0,
             pathogen_control_raw: 0.0,
+            plants_with_disease_control: 0,
+            total_plants: 0,
             n_mechanisms: 0,
             mycoparasite_counts: FxHashMap::default(),
             fungivore_counts: FxHashMap::default(),
@@ -130,6 +136,9 @@ pub fn calculate_m4(
     let mycoparasite_counts = build_agent_counts(&plant_mycoparasites)?;
     let fungivore_counts = build_agent_counts(&plant_fungivores)?;
     let pathogen_counts = build_agent_counts(&plant_pathogens)?;
+
+    // Track which plants have disease control (for coverage calculation)
+    let mut plants_with_disease_control: FxHashSet<String> = FxHashSet::default();
 
     // Pairwise analysis: vulnerable plant A vs protective plant B
     for (plant_a_id, pathogens_a) in &plant_pathogens {
@@ -154,8 +163,10 @@ pub fn calculate_m4(
                         for antagonist in matched_ants {
                             matched_antagonist_pairs.push((pathogen.clone(), antagonist));
                         }
+                        // Mark plant A as having disease control
+                        plants_with_disease_control.insert(plant_a_id.clone());
                     }
-                    
+
                     // Check for animal antagonists (fungivores)
                     // "Specific Fungivore" mechanism
                     if let Some(fungivores_b) = plant_fungivores.get(plant_b_id) {
@@ -167,6 +178,8 @@ pub fn calculate_m4(
                             for fungivore in matched_fungivores {
                                 matched_fungivore_pairs.push((pathogen.clone(), fungivore));
                             }
+                            // Mark plant A as having disease control
+                            plants_with_disease_control.insert(plant_a_id.clone());
                         }
                     }
                 }
@@ -176,6 +189,8 @@ pub fn calculate_m4(
             // If plant A has any pathogens AND plant B has any mycoparasites
             pathogen_control_raw += mycoparasites_b.len() as f64 * 0.5;
             n_mechanisms += 1;
+            // Mark plant A as having disease control (general mycoparasites also count)
+            plants_with_disease_control.insert(plant_a_id.clone());
         }
 
         // MECHANISM 3: General fungivores eating pathogens (weight 0.2) - R parity
@@ -188,20 +203,22 @@ pub fn calculate_m4(
             // General fungivores (weight 0.2 per fungivore)
             if !pathogens_a.is_empty() && !fungivores_b.is_empty() {
                 pathogen_control_raw += fungivores_b.len() as f64 * 0.2;
+                // Mark plant A as having disease control (general fungivores also count)
+                plants_with_disease_control.insert(plant_a_id.clone());
             }
         }
     }
 
-    // Normalize by guild size
-    let max_pairs = n_plants * (n_plants - 1);
-    let pathogen_control_normalized = if max_pairs > 0 {
-        pathogen_control_raw / max_pairs as f64 * 10.0
+    // Calculate coverage percentage: % of plants with ≥1 disease control mechanism
+    let plants_with_disease_control_count = plants_with_disease_control.len();
+    let coverage_pct = if n_plants > 0 {
+        (plants_with_disease_control_count as f64 / n_plants as f64) * 100.0
     } else {
         0.0
     };
 
-    // Percentile normalization
-    let m4_norm = percentile_normalize(pathogen_control_normalized, "p2", calibration, false)?;
+    // Percentile normalization (using coverage %)
+    let m4_norm = percentile_normalize(coverage_pct, "p2", calibration, false)?;
 
     // Deduplicate matched pairs
     matched_antagonist_pairs.sort_unstable();
@@ -210,9 +227,11 @@ pub fn calculate_m4(
     matched_fungivore_pairs.dedup();
 
     Ok(M4Result {
-        raw: pathogen_control_normalized,
-        norm: m4_norm,
-        pathogen_control_raw,
+        raw: coverage_pct,  // Coverage % (0-100)
+        norm: m4_norm,      // Percentile
+        pathogen_control_raw,  // OLD metric (kept for reporting)
+        plants_with_disease_control: plants_with_disease_control_count,
+        total_plants: n_plants,
         n_mechanisms,
         mycoparasite_counts,
         fungivore_counts,

@@ -35,12 +35,18 @@ pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
 /// Result of M7 calculation
 #[derive(Debug)]
 pub struct M7Result {
-    /// Quadratic-weighted pollinator overlap score
+    /// Coverage percentage: % of plants with ≥1 documented pollinator (0-100)
     pub raw: f64,
     /// Percentile score (0-100, HIGH = GOOD)
     pub norm: f64,
+    /// Quadratic-weighted pollinator overlap score (OLD metric, kept for reporting)
+    pub quadratic_score: f64,
     /// Number of shared pollinators
     pub n_shared_pollinators: usize,
+    /// Number of plants with ≥1 documented pollinator
+    pub plants_with_pollinators: usize,
+    /// Total plants in guild
+    pub total_plants: usize,
     /// Map of pollinator_name → plant_count for detailed analysis
     pub pollinator_counts: FxHashMap<String, usize>,
 }
@@ -82,27 +88,78 @@ pub fn calculate_m7(
         &["pollinators"],  // Match R: ONLY verified pollinators
     )?;
 
-    // Score with QUADRATIC weighting
+    // Calculate OLD quadratic-weighted score (kept for reporting)
     // Reflects non-linear benefits of high-overlap pollinator communities
     // Formula: Sum of (Number of plants visited by Pollinator X / Total Plants)^2 for all Pollinator Xs
-    // "overlap_ratio" = Fraction of guild plants that share Pollinator X
-    let mut p7_raw = 0.0;
+    let mut quadratic_score = 0.0;
     for (_org_name, count) in &shared_pollinators {
         if *count >= 2 {
             let overlap_ratio = *count as f64 / n_plants as f64;
-            p7_raw += overlap_ratio.powi(2); // QUADRATIC benefit
+            quadratic_score += overlap_ratio.powi(2); // QUADRATIC benefit
         }
     }
 
-    // Percentile normalize
-    let m7_norm = percentile_normalize(p7_raw, "p6", calibration, false)?;
+    // Calculate coverage percentage: % of plants with ≥1 documented pollinator
+    let plants_with_pollinators = count_plants_with_pollinators(&guild_organisms, &guild_plant_ids)?;
+    let coverage_pct = if n_plants > 0 {
+        (plants_with_pollinators as f64 / n_plants as f64) * 100.0
+    } else {
+        0.0
+    };
+
+    // Percentile normalize (using coverage %)
+    let m7_norm = percentile_normalize(coverage_pct, "p6", calibration, false)?;
 
     Ok(M7Result {
-        raw: p7_raw,
-        norm: m7_norm,
+        raw: coverage_pct,  // Coverage % (0-100)
+        norm: m7_norm,      // Percentile
+        quadratic_score,    // OLD metric (kept for reporting)
         n_shared_pollinators: shared_pollinators.len(),
+        plants_with_pollinators,
+        total_plants: n_plants,
         pollinator_counts: shared_pollinators,
     })
+}
+
+/// Count how many plants have at least one documented pollinator
+fn count_plants_with_pollinators(
+    organisms_df: &DataFrame,
+    plant_ids: &[String],
+) -> Result<usize> {
+    use rustc_hash::FxHashSet;
+
+    let plant_id_set: FxHashSet<&String> = plant_ids.iter().collect();
+    let plant_col = organisms_df.column("plant_wfo_id")?.str()?;
+
+    let mut count = 0;
+    for idx in 0..organisms_df.height() {
+        if let Some(plant_id) = plant_col.get(idx) {
+            if !plant_id_set.contains(&plant_id.to_string()) {
+                continue; // Not in guild
+            }
+
+            // Check if this plant has any pollinators
+            if let Ok(pol_col) = organisms_df.column("pollinators") {
+                // Phase 0-4 parquets use Arrow list columns
+                if let Ok(list_col) = pol_col.list() {
+                    if let Some(list_series) = list_col.get_as_series(idx) {
+                        if list_series.len() > 0 {
+                            count += 1;
+                        }
+                    }
+                } else if let Ok(str_col) = pol_col.str() {
+                    // Fallback: pipe-separated strings (legacy format)
+                    if let Some(value) = str_col.get(idx) {
+                        if !value.is_empty() && value.split('|').any(|s| !s.is_empty()) {
+                            count += 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    Ok(count)
 }
 
 #[cfg(test)]

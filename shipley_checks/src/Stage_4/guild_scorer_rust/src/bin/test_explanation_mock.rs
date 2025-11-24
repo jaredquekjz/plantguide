@@ -13,9 +13,11 @@ use guild_scorer_rust::GuildScorer;
 /// Create mock M3Result for testing
 fn create_mock_m3_result() -> M3Result {
     M3Result {
-        raw: 0.4,
+        raw: 57.14,  // ~4/7 plants = 57.14% coverage
         norm: 40.0,
         biocontrol_raw: 0.35,
+        plants_with_biocontrol: 4,
+        total_plants: 7,
         n_mechanisms: 2,
         predator_counts: FxHashMap::default(),
         entomo_fungi_counts: FxHashMap::default(),
@@ -29,9 +31,11 @@ fn create_mock_m3_result() -> M3Result {
 /// Create mock M4Result for testing
 fn create_mock_m4_result() -> M4Result {
     M4Result {
-        raw: 0.45,
+        raw: 71.43,  // ~5/7 plants = 71.43% coverage
         norm: 45.0,
         pathogen_control_raw: 0.4,
+        plants_with_disease_control: 5,
+        total_plants: 7,
         n_mechanisms: 3,
         mycoparasite_counts: FxHashMap::default(),
         fungivore_counts: FxHashMap::default(),
@@ -46,12 +50,13 @@ fn create_mock_m4_result() -> M4Result {
 /// Create mock M5Result for testing
 fn create_mock_m5_result() -> M5Result {
     M5Result {
-        raw: 0.5,
+        raw: 71.43,  // ~5/7 plants = 71.43% coverage
         norm: 50.0,
         network_score: 0.4,
-        coverage_ratio: 0.6,
+        coverage_ratio: 0.714,
         n_shared_fungi: 5,
-        plants_with_fungi: 4,
+        plants_with_fungi: 5,
+        total_plants: 7,
         fungi_counts: FxHashMap::default(),
     }
 }
