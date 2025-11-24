@@ -517,12 +517,12 @@ impl MarkdownFormatter {
 
         md.push_str("**Summary:**\n");
         md.push_str(&format!(
-            "- {} unique predator species ({} with documented pest matches)\n",
+            "- {} known predator species (predators of herbivores/parasites, {} with documented pest matches in this guild)\n",
             biocontrol_profile.total_unique_predators,
             biocontrol_profile.matched_predator_pairs.len()
         ));
         md.push_str(&format!(
-            "- {} unique entomopathogenic fungi species ({} with documented pest matches)\n\n",
+            "- {} known entomopathogenic fungi species ({} with documented pest matches in this guild)\n\n",
             biocontrol_profile.total_unique_entomo_fungi,
             biocontrol_profile.matched_fungi_pairs.len()
         ));

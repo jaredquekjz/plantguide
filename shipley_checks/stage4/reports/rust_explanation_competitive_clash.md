@@ -110,8 +110,8 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 #### Biocontrol Network Profile
 
 **Summary:**
-- 9 unique predator species (0 with documented pest matches)
-- 4 unique entomopathogenic fungi species (0 with documented pest matches)
+- 9 known predator species (predators of herbivores/parasites, 0 with documented pest matches in this guild)
+- 4 known entomopathogenic fungi species (0 with documented pest matches in this guild)
 
 **Mechanism Summary:**
 - 4 general entomopathogenic fungi species (4 total occurrences, broad-spectrum biocontrol)
