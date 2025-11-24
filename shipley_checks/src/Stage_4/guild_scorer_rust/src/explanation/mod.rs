@@ -12,6 +12,7 @@ pub mod taxonomic_profile_analysis;
 pub mod unified_taxonomy;
 pub mod generator;
 pub mod formatters;
+pub mod ecosystem_services;
 
 pub use types::{
     BenefitCard, ClimateExplanation, Explanation, MetricCard, MetricFragment, MetricsDisplay,

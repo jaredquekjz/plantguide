@@ -23,6 +23,7 @@ pub struct Explanation {
     pub pollinator_network_profile: Option<PollinatorNetworkProfile>,
     pub biocontrol_network_profile: Option<BiocontrolNetworkProfile>,
     pub pathogen_control_profile: Option<PathogenControlNetworkProfile>,
+    pub ecosystem_services: Option<Vec<crate::explanation::ecosystem_services::EcosystemServiceCard>>,
 }
 
 /// Overall score interpretation with stars

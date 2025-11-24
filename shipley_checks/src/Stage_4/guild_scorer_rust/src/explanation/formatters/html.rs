@@ -34,6 +34,13 @@ impl HtmlFormatter {
         html.push_str(".tag { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }\n");
         html.push_str(".tag-pest { background: #ffebee; color: #c62828; }\n");
         html.push_str(".tag-agent { background: #e8f5e9; color: #2e7d32; }\n");
+        html.push_str(".ecosystem-service { background: #f8f9fa; border-left: 4px solid #6c757d; padding: 15px; margin: 15px 0; border-radius: 4px; }\n");
+        html.push_str(".ecosystem-service.excellent { background: #d4edda; border-left-color: #28a745; }\n");
+        html.push_str(".ecosystem-service.good { background: #d1ecf1; border-left-color: #17a2b8; }\n");
+        html.push_str(".ecosystem-service.moderate { background: #fff3cd; border-left-color: #ffc107; }\n");
+        html.push_str(".ecosystem-service.limited { background: #f8d7da; border-left-color: #dc3545; }\n");
+        html.push_str(".ecosystem-service h3 { margin-top: 0; display: flex; justify-content: space-between; align-items: center; }\n");
+        html.push_str(".rating-badge { font-size: 0.75em; background: white; padding: 4px 12px; border-radius: 20px; font-weight: 600; }\n");
         html.push_str("</style>\n</head>\n<body>\n");
 
         // Overall score
@@ -132,6 +139,31 @@ impl HtmlFormatter {
                 html.push_str(&format!("<p>{}</p>\n", risk.message));
                 html.push_str(&format!("<p><em>{}</em></p>\n", risk.detail));
                 html.push_str(&format!("<p><strong>Advice:</strong> {}</p>\n", risk.advice));
+                html.push_str("</div>\n");
+            }
+        }
+
+        // Ecosystem Services (M8-M17)
+        if let Some(services) = &explanation.ecosystem_services {
+            html.push_str("<h2>Ecosystem Services</h2>\n");
+            html.push_str("<p><em>These ratings show how your guild contributes to important ecosystem functions based on plant traits and growth strategies.</em></p>\n");
+
+            for service in services {
+                let (emoji, color_class) = match service.benefit_level.as_str() {
+                    "Excellent" => ("🌟", "excellent"),
+                    "Good" => ("✅", "good"),
+                    "Moderate" => ("🔸", "moderate"),
+                    "Limited" => ("⚠️", "limited"),
+                    "Very Limited" => ("⚠️", "very-limited"),
+                    _ => ("ℹ️", "unknown"),
+                };
+
+                html.push_str(&format!("<div class=\"ecosystem-service {}\">\n", color_class));
+                html.push_str(&format!(
+                    "<h3>{} {} <span class=\"rating-badge\">{}</span></h3>\n",
+                    emoji, service.name, service.rating
+                ));
+                html.push_str(&format!("<p>{}</p>\n", service.description));
                 html.push_str("</div>\n");
             }
         }

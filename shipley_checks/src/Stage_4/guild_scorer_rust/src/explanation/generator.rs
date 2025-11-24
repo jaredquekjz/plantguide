@@ -40,6 +40,7 @@ impl ExplanationGenerator {
         fungi_df: &DataFrame,
         m7_result: &M7Result,
         organism_categories: &FxHashMap<String, String>,
+        ecosystem_services_result: &crate::metrics::EcosystemServicesResult,
     ) -> Result<Explanation> {
         // Overall score with stars
         let overall = Self::generate_overall(guild_score.overall_score);
@@ -146,6 +147,11 @@ impl ExplanationGenerator {
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
 
+        // Ecosystem services (M8-M17)
+        let ecosystem_services = Some(crate::explanation::ecosystem_services::generate_ecosystem_services(
+            ecosystem_services_result
+        ));
+
         Ok(Explanation {
             overall,
             climate,
@@ -160,6 +166,7 @@ impl ExplanationGenerator {
             pollinator_network_profile,
             biocontrol_network_profile,
             pathogen_control_profile,
+            ecosystem_services,
         })
     }
 
