@@ -151,7 +151,7 @@ impl MarkdownFormatter {
         md.push_str("#### Pest Vulnerability Profile\n\n");
 
         md.push_str(&format!(
-            "**Total unique herbivore species:** {}\n\n",
+            "**Total unique pest species:** {}\n\n",
             pest_profile.total_unique_pests
         ));
 
@@ -180,7 +180,7 @@ impl MarkdownFormatter {
         // Most vulnerable plants
         if !pest_profile.vulnerable_plants.is_empty() {
             md.push_str("**Most Vulnerable Plants**\n\n");
-            md.push_str("| Plant | Herbivore Count |\n");
+            md.push_str("| Plant | Pest Count |\n");
             md.push_str("|-------|------------------|\n");
             for plant in pest_profile.vulnerable_plants.iter().take(5) {
                 md.push_str(&format!(
@@ -521,27 +521,27 @@ impl MarkdownFormatter {
 
         md.push_str("**Mechanism Summary:**\n");
 
-        // Calculate total individual matches (pairs) and unique herbivore species covered
+        // Calculate total individual matches (pairs) and unique pest species covered
         let total_predator_pairs = biocontrol_profile.matched_predator_pairs.len();
         let total_fungi_pairs = biocontrol_profile.matched_fungi_pairs.len();
         let total_specific_pairs = total_predator_pairs + total_fungi_pairs;
 
-        // Count unique herbivore species (not match instances during pairwise analysis)
-        let mut unique_herbivore_names: FxHashSet<String> = FxHashSet::default();
+        // Count unique pest species (not match instances during pairwise analysis)
+        let mut unique_pest_names: FxHashSet<String> = FxHashSet::default();
         for pair in &biocontrol_profile.matched_predator_pairs {
-            unique_herbivore_names.insert(pair.target.clone());
+            unique_pest_names.insert(pair.target.clone());
         }
         for pair in &biocontrol_profile.matched_fungi_pairs {
-            unique_herbivore_names.insert(pair.target.clone());
+            unique_pest_names.insert(pair.target.clone());
         }
-        let unique_herbivores_covered = unique_herbivore_names.len();
+        let unique_pests_covered = unique_pest_names.len();
 
-        // Show total pairs with herbivore species count for clarity
-        if unique_herbivores_covered > 0 {
+        // Show total pairs with pest species count for clarity
+        if unique_pests_covered > 0 {
             md.push_str(&format!(
-                "- {} specific herbivore → predator/parasite matches (covering {} pest species, weight 1.0)\n",
+                "- {} specific pest → predator/parasite matches (covering {} pest species, weight 1.0)\n",
                 total_specific_pairs,
-                unique_herbivores_covered
+                unique_pests_covered
             ));
         }
         md.push_str(&format!("- {} general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)\n\n", biocontrol_profile.general_entomo_fungi_count));
@@ -549,11 +549,11 @@ impl MarkdownFormatter {
         // Show matched predator pairs
         if !biocontrol_profile.matched_predator_pairs.is_empty() {
             md.push_str(&format!(
-                "**{} Herbivore → Predator matches found:**\n\n",
+                "**{} Pest → Predator matches found:**\n\n",
                 biocontrol_profile.matched_predator_pairs.len()
             ));
-            md.push_str("| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |\n");
-            md.push_str("|------------------|----------|----------------|-------------------|------------|\n");
+            md.push_str("| Pest | Category | Known Predator | Predator Category | Match Type |\n");
+            md.push_str("|------|----------|----------------|-------------------|------------|\n");
             for pair in biocontrol_profile.matched_predator_pairs.iter().take(20) {
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | Specific |\n",
@@ -572,15 +572,15 @@ impl MarkdownFormatter {
             md.push_str("\n");
         } else if biocontrol_profile.matched_fungi_pairs.is_empty() && biocontrol_profile.general_entomo_fungi_count > 0 {
              // Only show this explanation if NO specific matches of ANY kind found, but general fungi exist
-             md.push_str("**No specific herbivore-predator matches found.**\n");
+             md.push_str("**No specific pest-predator matches found.**\n");
              md.push_str("The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.\n\n");
         }
 
         // Show matched fungi pairs
         if !biocontrol_profile.matched_fungi_pairs.is_empty() {
-            md.push_str("**Matched Herbivore → Entomopathogenic Fungus Pairs:**\n\n");
-            md.push_str("| Herbivore (Pest) | Category | Entomopathogenic Fungus | Match Type |\n");
-            md.push_str("|------------------|----------|------------------------|------------|\n");
+            md.push_str("**Matched Pest → Entomopathogenic Fungus Pairs:**\n\n");
+            md.push_str("| Pest | Category | Entomopathogenic Fungus | Match Type |\n");
+            md.push_str("|------|----------|------------------------|------------|\n");
             for pair in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
                 md.push_str(&format!(
                     "| {} | {} | {} | Specific |\n",

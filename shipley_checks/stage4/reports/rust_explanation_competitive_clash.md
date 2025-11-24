@@ -6,12 +6,12 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.4 | Good |
+| M1 - Pest & Pathogen Independence | 70.3 | Good |
 | M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
 | M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 16.7 | Poor |
+| M6 - Structural Diversity | 17.0 | Poor |
 | M7 - Pollinator Support | 0.0 | Poor |
 
 ## Climate Compatibility
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.4/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.3/100]
 
 70th percentile (Faith's PD: 885.18) - Plants are distantly related (high phylogenetic diversity)  
 Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.  
@@ -81,7 +81,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 #### Pest Vulnerability Profile
 
-**Total unique herbivore species:** 134
+**Total unique pest species:** 134
 
 **Top 10 Herbivores and Parasites**
 
@@ -100,7 +100,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Most Vulnerable Plants**
 
-| Plant | Herbivore Count |
+| Plant | Pest Count |
 |-------|------------------|
 | Vitis vinifera (Common Grape) | 124 |
 | Allium schoenoprasum (Chives) | 7 |
@@ -116,7 +116,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 **Mechanism Summary:**
 - 4 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**No specific herbivore-predator matches found.**
+**No specific pest-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
 
 ### Natural Disease Suppression [M4 - 100.0/100]
@@ -201,7 +201,7 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 16.7/100]
+### Structural Diversity [M6 - 17.0/100]
 
 3 growth forms spanning 14.1m height range (17th percentile)  
 **Vertical Stratification (Quality: 0.12 - Poor):**

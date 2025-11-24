@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 55.29115528297383,
+    "score": 55.327639893470725,
     "stars": "★☆☆☆☆",
     "label": "Poor",
     "message": "Overall guild compatibility: 55.3/100"
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 70.3522406071798,
+        "score": 70.3412789689769,
         "raw": 0.4126401547150537,
         "interpretation": "Good"
       },
@@ -122,7 +122,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 16.68584637363702,
+        "score": 16.952200285318145,
         "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },

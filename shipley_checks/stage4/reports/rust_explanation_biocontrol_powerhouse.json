@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 82.34183751932457,
+    "score": 82.40202880137925,
     "stars": "★★★★☆",
     "label": "Excellent",
-    "message": "Overall guild compatibility: 82.3/100"
+    "message": "Overall guild compatibility: 82.4/100"
   },
   "climate": {
     "compatible": true,
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 9.065835608244896,
+        "score": 9.4928456774512,
         "raw": 0.4943434744133984,
         "interpretation": "Poor"
       },
@@ -106,7 +106,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.32702702702703,
+        "score": 97.32135593220339,
         "raw": 48.619047619047606,
         "interpretation": "Excellent"
       }

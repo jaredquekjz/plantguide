@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 92.54101567364519,
+    "score": 92.49788814872912,
     "stars": "★★★★★",
     "label": "Exceptional",
     "message": "Overall guild compatibility: 92.5/100"
@@ -16,7 +16,7 @@
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
       "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
-      "message": "58th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)",
+      "message": "57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)",
       "detail": "Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.",
       "evidence": null
     },
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 57.6844070128136,
+        "score": 57.39572551568015,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -106,7 +106,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 95.1027027027027,
+        "score": 95.08949152542372,
         "raw": 9.428571428571429,
         "interpretation": "Excellent"
       }

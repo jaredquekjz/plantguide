@@ -1,17 +1,17 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 41.1/100
+**Overall Score:** 41.0/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 33.1 | Poor |
+| M1 - Pest & Pathogen Independence | 32.8 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
-| M4 - Disease Suppression | 62.9 | Good |
+| M4 - Disease Suppression | 63.3 | Good |
 | M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 46.5 | Fair |
+| M6 - Structural Diversity | 46.1 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 
 ## Climate Compatibility
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 33.1/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 32.8/100]
 
 33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -78,7 +78,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 #### Pest Vulnerability Profile
 
-**Total unique herbivore species:** 8
+**Total unique pest species:** 8
 
 **Top 10 Herbivores and Parasites**
 
@@ -95,13 +95,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Most Vulnerable Plants**
 
-| Plant | Herbivore Count |
+| Plant | Pest Count |
 |-------|------------------|
 | Eucalyptus melanophloia (Silver-leaved Ironbark) | 3 |
 | Senna artemisioides (Silver Cassia) | 3 |
 | Alyxia ruscifolia (Chain Fruit) | 2 |
 
-### Natural Disease Suppression [M4 - 62.9/100]
+### Natural Disease Suppression [M4 - 63.3/100]
 
 63th percentile pathogen control via 4 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control  
@@ -180,9 +180,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 46.5/100]
+### Structural Diversity [M6 - 46.1/100]
 
-3 growth forms spanning 19.8m height range (47th percentile)  
+3 growth forms spanning 19.8m height range (46th percentile)  
 **Vertical Stratification (Quality: 0.36 - Poor):**
 
 **Canopy Layer (>15m):**

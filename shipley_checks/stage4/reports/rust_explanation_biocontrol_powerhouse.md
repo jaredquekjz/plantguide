@@ -1,12 +1,12 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 82.3/100
+**Overall Score:** 82.4/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 9.1 | Poor |
+| M1 - Pest & Pathogen Independence | 9.5 | Poor |
 | M2 - Growth Compatibility | 70.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 97.3 | Excellent |
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 9.1/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 9.5/100]
 
 9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)  
 Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.  
@@ -83,7 +83,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 #### Pest Vulnerability Profile
 
-**Total unique herbivore species:** 327
+**Total unique pest species:** 327
 
 **Top 10 Herbivores and Parasites**
 
@@ -102,7 +102,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Most Vulnerable Plants**
 
-| Plant | Herbivore Count |
+| Plant | Pest Count |
 |-------|------------------|
 | Prunus spinosa (Blackthorn) | 133 |
 | Acer saccharinum (River Maple) | 73 |
@@ -117,13 +117,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 6 specific herbivore → predator/parasite matches (covering 6 pest species, weight 1.0)
+- 6 specific pest → predator/parasite matches (covering 6 pest species, weight 1.0)
 - 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**6 Herbivore → Predator matches found:**
+**6 Pest → Predator matches found:**
 
-| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
-|------------------|----------|----------------|-------------------|------------|
+| Pest | Category | Known Predator | Predator Category | Match Type |
+|------|----------|----------------|-------------------|------------|
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
 | cynips longiventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |
 | eurytoma brunniventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |

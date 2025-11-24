@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 40.6 | Fair |
+| M1 - Pest & Pathogen Independence | 40.2 | Fair |
 | M2 - Growth Compatibility | 50.0 | Fair |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 97.7 | Excellent |
@@ -20,9 +20,9 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 40.6/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 40.2/100]
 
-41th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
+40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
 
 #### Taxonomic Diversity Profile
@@ -83,7 +83,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 #### Pest Vulnerability Profile
 
-**Total unique herbivore species:** 473
+**Total unique pest species:** 473
 
 **Top 10 Herbivores and Parasites**
 
@@ -102,7 +102,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Most Vulnerable Plants**
 
-| Plant | Herbivore Count |
+| Plant | Pest Count |
 |-------|------------------|
 | Prunus spinosa (Blackthorn) | 133 |
 | Vitis vinifera (Common Grape) | 124 |
@@ -117,13 +117,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 9 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 9 specific herbivore → predator/parasite matches (covering 9 pest species, weight 1.0)
+- 9 specific pest → predator/parasite matches (covering 9 pest species, weight 1.0)
 - 13 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**8 Herbivore → Predator matches found:**
+**8 Pest → Predator matches found:**
 
-| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
-|------------------|----------|----------------|-------------------|------------|
+| Pest | Category | Known Predator | Predator Category | Match Type |
+|------|----------|----------------|-------------------|------------|
 | adrastus rachifer | Beetles | harpalus rufipes | Beetles | Specific |
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
 | athysanus argentarius | Leafhoppers | harpalus rufipes | Beetles | Specific |
@@ -133,10 +133,10 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | orgyia antiqua | Moths | vespa velutina | Wasps | Specific |
 | otiorhynchus ligustici | Beetles | harpalus rufipes | Beetles | Specific |
 
-**Matched Herbivore → Entomopathogenic Fungus Pairs:**
+**Matched Pest → Entomopathogenic Fungus Pairs:**
 
-| Herbivore (Pest) | Category | Entomopathogenic Fungus | Match Type |
-|------------------|----------|------------------------|------------|
+| Pest | Category | Entomopathogenic Fungus | Match Type |
+|------|----------|------------------------|------------|
 | vespa velutina | Wasps | beauveria | Specific |
 
 ### Natural Disease Suppression [M4 - 97.7/100]

@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 57.7 | Fair |
+| M1 - Pest & Pathogen Independence | 57.4 | Fair |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 95.1 | Excellent |
@@ -20,9 +20,9 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 57.7/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 57.4/100]
 
-58th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
+57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
 Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.  
 
 #### Taxonomic Diversity Profile
@@ -73,7 +73,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 #### Pest Vulnerability Profile
 
-**Total unique herbivore species:** 128
+**Total unique pest species:** 128
 
 **Top 10 Herbivores and Parasites**
 
@@ -92,7 +92,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 
 **Most Vulnerable Plants**
 
-| Plant | Herbivore Count |
+| Plant | Pest Count |
 |-------|------------------|
 | Fraxinus excelsior (Ash) | 63 |
 | Diospyros kaki (Japanese Persimmon) | 50 |
@@ -107,13 +107,13 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 10 specific herbivore → predator/parasite matches (covering 3 pest species, weight 1.0)
+- 10 specific pest → predator/parasite matches (covering 3 pest species, weight 1.0)
 - 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**10 Herbivore → Predator matches found:**
+**10 Pest → Predator matches found:**
 
-| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
-|------------------|----------|----------------|-------------------|------------|
+| Pest | Category | Known Predator | Predator Category | Match Type |
+|------|----------|----------------|-------------------|------------|
 | adoxophyes orana | Moths | eptesicus serotinus | Bats | Specific |
 | adoxophyes orana | Moths | myotis daubentonii | Bats | Specific |
 | adoxophyes orana | Moths | myotis mystacinus | Bats | Specific |
