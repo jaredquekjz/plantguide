@@ -544,7 +544,11 @@ impl MarkdownFormatter {
                 unique_pests_covered
             ));
         }
-        md.push_str(&format!("- {} general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)\n\n", biocontrol_profile.general_entomo_fungi_count));
+        md.push_str(&format!(
+            "- {} general entomopathogenic fungi species present on {} plants total (broad-spectrum biocontrol, weight 0.2)\n\n",
+            biocontrol_profile.total_unique_entomo_fungi,
+            biocontrol_profile.general_entomo_fungi_count
+        ));
 
         // Show matched predator pairs
         if !biocontrol_profile.matched_predator_pairs.is_empty() {

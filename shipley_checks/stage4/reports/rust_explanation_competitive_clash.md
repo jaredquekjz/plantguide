@@ -114,7 +114,7 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 - 4 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 4 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+- 4 general entomopathogenic fungi species present on 4 plants total (broad-spectrum biocontrol, weight 0.2)
 
 **No specific pest-predator matches found.**
 The biocontrol score is driven by the presence of **general entomopathogenic fungi** which provide broad-spectrum protection against insect pests.
