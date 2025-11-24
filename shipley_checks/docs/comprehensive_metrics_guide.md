@@ -54,6 +54,28 @@ In November 2024, M3-M5 and M7 were redesigned from unbounded match-count formul
 
 This simplification improves both scientific validity (bounded distributions) and horticultural interpretability ("71% of plants have biocontrol" vs "21.24 normalized units").
 
+**Percentile Distribution Table (Tier 3: Humid Temperate, 7-plant guilds)**
+
+The table below shows raw score thresholds at key percentiles. This helps interpret what percentile scores mean in practice:
+
+| Metric | p1 | p50 | p70 | p80 | p90 | p95 | p99 |
+|--------|----|----|----|----|----|----|-----|
+| **M1 - Phylogenetic Diversity** | 0.207 | 0.436 | 0.459 | 0.471 | 0.491 | 0.510 | 0.544 |
+| **M2 - Growth Compatibility** | 0.000 | 0.021 | 0.059 | 0.076 | 0.103 | 0.130 | 0.191 |
+| **M3 - Insect Pest Control** | 0% (0/7) | 0% (0/7) | 0% (0/7) | 14% (1/7) | 43% (3/7) | 57% (4/7) | 71% (5/7) |
+| **M4 - Disease Suppression** | 0% (0/7) | 43% (3/7) | 57% (4/7) | 71% (5/7) | 86% (6/7) | 86% (6/7) | 100% (7/7) |
+| **M5 - Beneficial Fungi** | 0% (0/7) | 43% (3/7) | 57% (4/7) | 57% (4/7) | 71% (5/7) | 71% (5/7) | 86% (6/7) |
+| **M6 - Structural Diversity** | 0.00 | 0.39 | 0.48 | 0.54 | 0.63 | 0.70 | 0.84 |
+| **M7 - Pollinator Support** | 0% (0/7) | 14% (1/7) | 14% (1/7) | 29% (2/7) | 29% (2/7) | 43% (3/7) | 57% (4/7) |
+
+**Key observations:**
+- **Coverage metrics** (M3, M4, M5, M7) show discrete values due to 7-plant guild size (only 8 possible values: 0%, 14%, 29%, 43%, 57%, 71%, 86%, 100%)
+- **M3 (Biocontrol)**: 70% of random guilds have zero biocontrol - steep distribution with p99 at 71% (5/7 plants)
+- **M4 (Disease)**: Best spread among coverage metrics - median at 43%, ceiling at 100%
+- **M5 (Fungi)**: Good spread - median at 43%, p99 at 86% (6/7 plants)
+- **M7 (Pollinators)**: Most challenging - even p99 only reaches 57% (4/7 plants), reflecting rarity of pollinator documentation
+- **Continuous metrics** (M1, M2, M6) show smooth distributions but M1/M2 have narrow ranges
+
 ---
 
 ## M1: Pest & Pathogen Independence
