@@ -516,8 +516,16 @@ impl MarkdownFormatter {
         md.push_str("#### Biocontrol Network Profile\n\n");
 
         md.push_str("**Summary:**\n");
-        md.push_str(&format!("- {} unique predator species\n", biocontrol_profile.total_unique_predators));
-        md.push_str(&format!("- {} unique entomopathogenic fungi species\n\n", biocontrol_profile.total_unique_entomo_fungi));
+        md.push_str(&format!(
+            "- {} unique predator species ({} with documented pest matches)\n",
+            biocontrol_profile.total_unique_predators,
+            biocontrol_profile.matched_predator_pairs.len()
+        ));
+        md.push_str(&format!(
+            "- {} unique entomopathogenic fungi species ({} with documented pest matches)\n\n",
+            biocontrol_profile.total_unique_entomo_fungi,
+            biocontrol_profile.matched_fungi_pairs.len()
+        ));
 
         md.push_str("**Mechanism Summary:**\n");
 
@@ -539,13 +547,13 @@ impl MarkdownFormatter {
         // Show total pairs with pest species count for clarity
         if unique_pests_covered > 0 {
             md.push_str(&format!(
-                "- {} specific pest → predator/parasite matches (covering {} pest species, weight 1.0)\n",
+                "- {} specific pest → predator/parasite matches covering {} pest species\n",
                 total_specific_pairs,
                 unique_pests_covered
             ));
         }
         md.push_str(&format!(
-            "- {} general entomopathogenic fungi species ({} total occurrences, broad-spectrum biocontrol, weight 0.2)\n\n",
+            "- {} general entomopathogenic fungi species ({} total occurrences, broad-spectrum biocontrol)\n\n",
             biocontrol_profile.total_unique_entomo_fungi,
             biocontrol_profile.general_entomo_fungi_count
         ));
@@ -696,9 +704,9 @@ impl MarkdownFormatter {
         md.push_str(&format!("- {} unique pathogen species in guild\n\n", pathogen_profile.total_unique_pathogens));
 
         md.push_str("**Mechanism Summary:**\n");
-        md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)\n", 
+        md.push_str(&format!("- {} Specific antagonist matches (pathogen → known mycoparasite or fungivore)\n",
             pathogen_profile.specific_antagonist_matches + pathogen_profile.specific_fungivore_matches));
-        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism, weight 0.5)\n\n", pathogen_profile.general_mycoparasite_count));
+        md.push_str(&format!("- {} General mycoparasite fungi (primary mechanism)\n\n", pathogen_profile.general_mycoparasite_count));
 
         // Show matched antagonist pairs (Mycoparasites)
         if !pathogen_profile.matched_antagonist_pairs.is_empty() {

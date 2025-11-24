@@ -113,8 +113,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 - 22 unique pathogen species in guild
 
 **Mechanism Summary:**
-- 0 Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)
-- 1 General mycoparasite fungi (primary mechanism, weight 0.5)
+- 0 Specific antagonist matches (pathogen → known mycoparasite or fungivore)
+- 1 General mycoparasite fungi (primary mechanism)
 
 **No specific pathogen-antagonist matches found.**
 The disease suppression score is driven by the presence of **general mycoparasitic fungi** (e.g., Trichoderma) which provide broad-spectrum protection against fungal pathogens.

@@ -46,7 +46,7 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 ### Growth Strategy Compatibility [M2 - 70.0/100]
 
 70th percentile compatibility  
-CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). Some potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
 
 #### CSR Strategy Profile
 
@@ -113,12 +113,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 #### Biocontrol Network Profile
 
 **Summary:**
-- 28 unique predator species
-- 2 unique entomopathogenic fungi species
+- 28 unique predator species (6 with documented pest matches)
+- 2 unique entomopathogenic fungi species (0 with documented pest matches)
 
 **Mechanism Summary:**
-- 6 specific pest → predator/parasite matches (covering 6 pest species, weight 1.0)
-- 2 general entomopathogenic fungi species (2 total occurrences, broad-spectrum biocontrol, weight 0.2)
+- 6 specific pest → predator/parasite matches covering 6 pest species
+- 2 general entomopathogenic fungi species (2 total occurrences, broad-spectrum biocontrol)
 
 **6 Pest → Predator matches found:**
 
@@ -143,8 +143,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 - 198 unique pathogen species in guild
 
 **Mechanism Summary:**
-- 8 Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)
-- 8 General mycoparasite fungi (primary mechanism, weight 0.5)
+- 8 Specific antagonist matches (pathogen → known mycoparasite or fungivore)
+- 8 General mycoparasite fungi (primary mechanism)
 
 **Matched Pathogen → Fungivore Pairs:**
 

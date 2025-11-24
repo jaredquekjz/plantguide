@@ -33,15 +33,10 @@ pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment
             "Growth Strategy Compatibility",
             ". Many potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
         )
-    } else if m2.total_conflicts >= 1.0 {
-        (
-            "Growth Strategy Compatibility",
-            ". Some potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
-        )
     } else if m2.total_conflicts > 0.0 {
         (
             "Growth Strategy Compatibility",
-            ". Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
+            ". Some potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
         )
     } else {
         (

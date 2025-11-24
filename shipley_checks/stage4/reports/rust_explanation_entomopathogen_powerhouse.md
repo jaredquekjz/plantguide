@@ -46,7 +46,7 @@ Several plants share recent evolutionary history. Related plants often share sus
 ### Growth Strategy Compatibility [M2 - 50.0/100]
 
 50th percentile compatibility  
-CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). Some potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
 
 #### CSR Strategy Profile
 
@@ -113,12 +113,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 #### Biocontrol Network Profile
 
 **Summary:**
-- 24 unique predator species
-- 9 unique entomopathogenic fungi species
+- 24 unique predator species (8 with documented pest matches)
+- 9 unique entomopathogenic fungi species (1 with documented pest matches)
 
 **Mechanism Summary:**
-- 9 specific pest → predator/parasite matches (covering 9 pest species, weight 1.0)
-- 9 general entomopathogenic fungi species (13 total occurrences, broad-spectrum biocontrol, weight 0.2)
+- 9 specific pest → predator/parasite matches covering 9 pest species
+- 9 general entomopathogenic fungi species (13 total occurrences, broad-spectrum biocontrol)
 
 **8 Pest → Predator matches found:**
 
@@ -151,8 +151,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 - 306 unique pathogen species in guild
 
 **Mechanism Summary:**
-- 17 Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)
-- 17 General mycoparasite fungi (primary mechanism, weight 0.5)
+- 17 Specific antagonist matches (pathogen → known mycoparasite or fungivore)
+- 17 General mycoparasite fungi (primary mechanism)
 
 **Matched Pathogen → Fungivore Pairs:**
 

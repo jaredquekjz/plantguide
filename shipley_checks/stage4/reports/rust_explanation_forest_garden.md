@@ -103,12 +103,12 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 #### Biocontrol Network Profile
 
 **Summary:**
-- 23 unique predator species
-- 2 unique entomopathogenic fungi species
+- 23 unique predator species (10 with documented pest matches)
+- 2 unique entomopathogenic fungi species (0 with documented pest matches)
 
 **Mechanism Summary:**
-- 10 specific pest → predator/parasite matches (covering 3 pest species, weight 1.0)
-- 2 general entomopathogenic fungi species (2 total occurrences, broad-spectrum biocontrol, weight 0.2)
+- 10 specific pest → predator/parasite matches covering 3 pest species
+- 2 general entomopathogenic fungi species (2 total occurrences, broad-spectrum biocontrol)
 
 **10 Pest → Predator matches found:**
 
@@ -137,8 +137,8 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 - 112 unique pathogen species in guild
 
 **Mechanism Summary:**
-- 0 Specific antagonist matches (pathogen → known mycoparasite or fungivore, weight 1.0)
-- 2 General mycoparasite fungi (primary mechanism, weight 0.5)
+- 0 Specific antagonist matches (pathogen → known mycoparasite or fungivore)
+- 2 General mycoparasite fungi (primary mechanism)
 
 **No specific pathogen-antagonist matches found.**
 The disease suppression score is driven by the presence of **general mycoparasitic fungi** (e.g., Trichoderma) which provide broad-spectrum protection against fungal pathogens.
