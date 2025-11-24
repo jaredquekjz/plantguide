@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 92.49788814872912,
+    "score": 92.54101567364519,
     "stars": "★★★★★",
     "label": "Exceptional",
     "message": "Overall guild compatibility: 92.5/100"
@@ -15,8 +15,8 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "Phylogenetic Diversity",
-      "message": "57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)",
+      "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
+      "message": "58th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)",
       "detail": "Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.",
       "evidence": null
     },
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 57.39572551568015,
+        "score": 57.6844070128136,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -100,13 +100,13 @@
         "code": "M3",
         "name": "Insect Pest Control",
         "score": 100.0,
-        "raw": 6.380952380952381,
+        "raw": 5.904761904761906,
         "interpretation": "Excellent"
       },
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 95.08949152542372,
+        "score": 95.1027027027027,
         "raw": 9.428571428571429,
         "interpretation": "Excellent"
       }
@@ -136,7 +136,7 @@
     ]
   },
   "pest_profile": {
-    "total_unique_pests": 131,
+    "total_unique_pests": 128,
     "top_pests": [
       {
         "pest_name": "Aceria fraxini",
@@ -157,14 +157,6 @@
       {
         "pest_name": "Aceria fraxinivora",
         "category": "Mites",
-        "plant_count": 1,
-        "plants": [
-          "Fraxinus excelsior (Ash)"
-        ]
-      },
-      {
-        "pest_name": "Acronicta rumicis",
-        "category": "Moths",
         "plant_count": 1,
         "plants": [
           "Fraxinus excelsior (Ash)"
@@ -217,28 +209,40 @@
         "plants": [
           "Fraxinus excelsior (Ash)"
         ]
+      },
+      {
+        "pest_name": "Agrochola circellaris",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Fraxinus excelsior (Ash)"
+        ]
       }
     ],
     "vulnerable_plants": [
       {
         "plant_name": "Fraxinus excelsior (Ash)",
-        "pest_count": 100
+        "pest_count": 63
       },
       {
         "plant_name": "Diospyros kaki (Japanese Persimmon)",
-        "pest_count": 19
+        "pest_count": 50
       },
       {
         "plant_name": "Anaphalis margaritacea (Pearly Everlasting)",
-        "pest_count": 8
+        "pest_count": 10
       },
       {
-        "plant_name": "Deutzia scabra (Deutzia)",
+        "plant_name": "Maianthemum racemosum (False Solomon's Seal)",
         "pest_count": 2
       },
       {
         "plant_name": "Mercurialis perennis (Dog's Mercury)",
         "pest_count": 2
+      },
+      {
+        "plant_name": "Deutzia scabra (Deutzia)",
+        "pest_count": 1
       }
     ]
   },
@@ -250,12 +254,12 @@
       {
         "family": "Asparagaceae",
         "genus": "Maianthemum",
-        "display_name": "Maianthemum racemosum (Trackle-berries, Pacific Solomon's Seal, Solomon's Plume, False Solomon's Seal)"
+        "display_name": "Maianthemum racemosum (Trackle-berries, False Solomon's Seal, Pacific Solomon's Seal, Solomon's Plume)"
       },
       {
         "family": "Compositae",
         "genus": "Anaphalis",
-        "display_name": "Anaphalis margaritacea (Whitemargin Pussytoes, Pearly Everlasting)"
+        "display_name": "Anaphalis margaritacea (Pearly Everlasting, Whitemargin Pussytoes)"
       },
       {
         "family": "Ebenaceae",
@@ -1179,9 +1183,9 @@
     ]
   },
   "biocontrol_network_profile": {
-    "total_unique_predators": 25,
+    "total_unique_predators": 23,
     "total_unique_entomo_fungi": 2,
-    "specific_predator_matches": 5,
+    "specific_predator_matches": 4,
     "specific_fungi_matches": 0,
     "general_entomo_fungi_count": 2,
     "matched_predator_pairs": [
@@ -1244,12 +1248,6 @@
         "target_category": "Moths",
         "agent": "myotis mystacinus",
         "agent_category": "Bats"
-      },
-      {
-        "target": "myzus persicae",
-        "target_category": "Aphids",
-        "agent": "adalia bipunctata",
-        "agent_category": "Beetles"
       }
     ],
     "matched_fungi_pairs": [],
@@ -1258,8 +1256,7 @@
       "Hoverflies": 1,
       "OtherPredators": 4,
       "Flies": 2,
-      "Wasps": 1,
-      "ScaleInsects": 3,
+      "Wasps": 2,
       "Birds": 4,
       "Psyllids": 1,
       "Butterflies": 1,
@@ -1267,7 +1264,7 @@
     },
     "herbivore_category_counts": {
       "Moths": 2,
-      "Aphids": 2
+      "Aphids": 1
     },
     "top_predators": [],
     "top_entomo_fungi": [],

@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 83.98660135840917,
+    "score": 84.04864298886527,
     "stars": "★★★★☆",
     "label": "Excellent",
     "message": "Overall guild compatibility: 84.0/100"
@@ -15,8 +15,8 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "Phylogenetic Diversity",
-      "message": "40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)",
+      "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
+      "message": "41th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)",
       "detail": "Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.",
       "evidence": null
     },
@@ -25,7 +25,7 @@
       "metric_code": "M2",
       "title": "Growth Strategy Compatibility",
       "message": "50th percentile compatibility",
-      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). 0.9 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
+      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
       "evidence": null
     },
     {
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 40.175362051237066,
+        "score": 40.605365786921766,
         "raw": 0.4474090557699892,
         "interpretation": "Fair"
       },
@@ -100,13 +100,13 @@
         "code": "M3",
         "name": "Insect Pest Control",
         "score": 100.0,
-        "raw": 23.142857142857146,
+        "raw": 21.23809523809524,
         "interpretation": "Excellent"
       },
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.73084745762712,
+        "score": 97.73513513513514,
         "raw": 55.80952380952379,
         "interpretation": "Excellent"
       }
@@ -136,17 +136,8 @@
     ]
   },
   "pest_profile": {
-    "total_unique_pests": 262,
+    "total_unique_pests": 473,
     "top_pests": [
-      {
-        "pest_name": "Acronicta psi",
-        "category": "Moths",
-        "plant_count": 2,
-        "plants": [
-          "Prunus spinosa (Blackthorn)",
-          "Quercus robur (Acorn Tree)"
-        ]
-      },
       {
         "pest_name": "Coccus hesperidum",
         "category": "Scale Insects",
@@ -159,6 +150,15 @@
       {
         "pest_name": "Creontiades dilutus",
         "category": "True Bugs",
+        "plant_count": 2,
+        "plants": [
+          "Dactylis glomerata (Akaroa)",
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Cryptococcus",
+        "category": "Scale Insects",
         "plant_count": 2,
         "plants": [
           "Dactylis glomerata (Akaroa)",
@@ -184,30 +184,12 @@
         ]
       },
       {
-        "pest_name": "Hemiberlesia lataniae",
-        "category": "Scale Insects",
-        "plant_count": 2,
-        "plants": [
-          "Coffea arabica (Arabian Coffee)",
-          "Vitis vinifera (Common Grape)"
-        ]
-      },
-      {
         "pest_name": "Hyalophora cecropia",
         "category": "Moths",
         "plant_count": 2,
         "plants": [
           "Prunus spinosa (Blackthorn)",
           "Vitis vinifera (Common Grape)"
-        ]
-      },
-      {
-        "pest_name": "Myzus persicae",
-        "category": "Aphids",
-        "plant_count": 2,
-        "plants": [
-          "Dactylis glomerata (Akaroa)",
-          "Prunus spinosa (Blackthorn)"
         ]
       },
       {
@@ -220,11 +202,29 @@
         ]
       },
       {
-        "pest_name": "Tetranychus urticae",
-        "category": "Mites",
+        "pest_name": "Papaipema nebris",
+        "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Rosa canina (Canker Rose)",
+          "Dactylis glomerata (Akaroa)",
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Phyllochlaenia",
+        "category": "Other Herbivores",
+        "plant_count": 2,
+        "plants": [
+          "Dactylis glomerata (Akaroa)",
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Rhizophagus",
+        "category": "Other Herbivores",
+        "plant_count": 2,
+        "plants": [
+          "Coffea arabica (Arabian Coffee)",
           "Vitis vinifera (Common Grape)"
         ]
       }
@@ -232,31 +232,31 @@
     "vulnerable_plants": [
       {
         "plant_name": "Prunus spinosa (Blackthorn)",
-        "pest_count": 81
-      },
-      {
-        "plant_name": "Dactylis glomerata (Akaroa)",
-        "pest_count": 74
+        "pest_count": 133
       },
       {
         "plant_name": "Vitis vinifera (Common Grape)",
-        "pest_count": 53
-      },
-      {
-        "plant_name": "Quercus robur (Acorn Tree)",
-        "pest_count": 25
+        "pest_count": 124
       },
       {
         "plant_name": "Coffea arabica (Arabian Coffee)",
-        "pest_count": 23
+        "pest_count": 88
       },
       {
-        "plant_name": "Rosa canina (Canker Rose)",
-        "pest_count": 9
+        "plant_name": "Dactylis glomerata (Akaroa)",
+        "pest_count": 82
       },
       {
         "plant_name": "Fragaria vesca (Alpine Strawberry)",
-        "pest_count": 7
+        "pest_count": 19
+      },
+      {
+        "plant_name": "Quercus robur (Acorn Tree)",
+        "pest_count": 19
+      },
+      {
+        "plant_name": "Rosa canina (Canker Rose)",
+        "pest_count": 19
       }
     ]
   },
@@ -268,17 +268,17 @@
       {
         "family": "Fagaceae",
         "genus": "Quercus",
-        "display_name": "Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak)"
+        "display_name": "Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak)"
       },
       {
         "family": "Poaceae",
         "genus": "Dactylis",
-        "display_name": "Dactylis glomerata (Rough Cocksfoot, Akaroa, Cock's Foot, Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass)"
+        "display_name": "Dactylis glomerata (Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass, Rough Cocksfoot, Akaroa, Cock's Foot)"
       },
       {
         "family": "Rosaceae",
         "genus": "Fragaria",
-        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry)"
+        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
       },
       {
         "family": "Rosaceae",
@@ -298,7 +298,7 @@
       {
         "family": "Vitaceae",
         "genus": "Vitis",
-        "display_name": "Vitis vinifera (Grape Vine, Common Grape, Wine Grape)"
+        "display_name": "Vitis vinifera (Wine Grape, Grape Vine, Common Grape)"
       }
     ],
     "family_distribution": [
@@ -3083,9 +3083,9 @@
     ]
   },
   "biocontrol_network_profile": {
-    "total_unique_predators": 30,
+    "total_unique_predators": 24,
     "total_unique_entomo_fungi": 9,
-    "specific_predator_matches": 13,
+    "specific_predator_matches": 9,
     "specific_fungi_matches": 2,
     "general_entomo_fungi_count": 13,
     "matched_predator_pairs": [
@@ -3120,12 +3120,6 @@
         "agent_category": "Beetles"
       },
       {
-        "target": "harpalus rufipes",
-        "target_category": "Beetles",
-        "agent": "turdus merula",
-        "agent_category": "Birds"
-      },
-      {
         "target": "myzus persicae",
         "target_category": "Aphids",
         "agent": "harmonia axyridis",
@@ -3142,12 +3136,6 @@
         "target_category": "Beetles",
         "agent": "harpalus rufipes",
         "agent_category": "Beetles"
-      },
-      {
-        "target": "uroleucon",
-        "target_category": "Aphids",
-        "agent": "syrphidae",
-        "agent_category": "OtherPredators"
       }
     ],
     "matched_fungi_pairs": [
@@ -3161,21 +3149,20 @@
     "predator_category_counts": {
       "Beetles": 4,
       "Hoverflies": 1,
-      "Lacewings": 1,
-      "Flies": 4,
       "OtherPredators": 4,
+      "Flies": 3,
+      "Lacewings": 1,
       "Wasps": 2,
-      "ScaleInsects": 3,
-      "Mites": 1,
-      "Moths": 3,
-      "Birds": 4,
+      "ScaleInsects": 1,
+      "Moths": 1,
+      "Birds": 5,
       "Butterflies": 1,
-      "Bats": 2
+      "Bats": 1
     },
     "herbivore_category_counts": {
-      "Beetles": 4,
+      "Beetles": 3,
       "Moths": 1,
-      "Aphids": 3,
+      "Aphids": 2,
       "Leafhoppers": 1,
       "Wasps": 1,
       "ScaleInsects": 1

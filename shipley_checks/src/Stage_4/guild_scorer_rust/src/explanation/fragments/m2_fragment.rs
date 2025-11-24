@@ -28,18 +28,25 @@ pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment
     };
 
     // Always show as benefit - conflicts are detailed in CSR Strategy Profile below
-    let (title, detail_suffix) = if m2.total_conflicts > 0.0 {
+    let (title, detail_suffix) = if m2.total_conflicts > 2.0 {
         (
             "Growth Strategy Compatibility",
-            format!(
-                " {:.1} potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
-                m2.total_conflicts
-            )
+            ". Many potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
+        )
+    } else if m2.total_conflicts >= 1.0 {
+        (
+            "Growth Strategy Compatibility",
+            ". Some potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
+        )
+    } else if m2.total_conflicts > 0.0 {
+        (
+            "Growth Strategy Compatibility",
+            ". Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.".to_string()
         )
     } else {
         (
             "Growth Strategy Compatibility",
-            " No conflicts detected - plants have compatible resource allocation strategies.".to_string()
+            ". No conflicts detected - plants have compatible resource allocation strategies.".to_string()
         )
     };
 
@@ -52,7 +59,7 @@ pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment
             display_score.round() as i32
         ),
         detail: format!(
-            "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: {}.{}",
+            "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: {}{}",
             breakdown,
             detail_suffix
         ),

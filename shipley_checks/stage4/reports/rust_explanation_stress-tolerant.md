@@ -1,17 +1,17 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 41.0/100
+**Overall Score:** 41.1/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 32.8 | Poor |
+| M1 - Pest & Pathogen Independence | 33.1 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
-| M4 - Disease Suppression | 63.3 | Good |
+| M4 - Disease Suppression | 62.9 | Good |
 | M5 - Beneficial Fungi | 45.0 | Fair |
-| M6 - Structural Diversity | 46.1 | Fair |
+| M6 - Structural Diversity | 46.5 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 
 ## Climate Compatibility
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Phylogenetic Diversity [M1 - 32.8/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 33.1/100]
 
 33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -37,37 +37,11 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Cyperaceae | Carex | Carex mucronata |
 | Dilleniaceae | Hibbertia | Hibbertia diffusa (Wedge Guinea Flower) |
 | Juncaceae | Juncus | Juncus usitatus (Common Rush, Australian Rush) |
-| Leguminosae | Senna | Senna artemisioides (Silver Senna, Silver Cassia) |
+| Leguminosae | Senna | Senna artemisioides (Silver Cassia, Silver Senna) |
 | Myrtaceae | Eucalyptus | Eucalyptus melanophloia (Silver-leaved Ironbark) |
 | Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed, Tall Dropseed) |
 
 **Family clustering:** Apocynaceae (1 plant), Cyperaceae (1 plant), Dilleniaceae (1 plant), Juncaceae (1 plant), Leguminosae (1 plant), Myrtaceae (1 plant), Poaceae (1 plant)
-
-#### Pest Vulnerability Profile
-
-*Qualitative information about herbivore pests (not used in scoring)*
-
-**Total unique herbivore species:** 7
-
-**Top 10 Herbivore Pests**
-
-| Rank | Pest Species | Herbivore Category | Plants Attacked |
-|------|--------------|-------------------|------------------|
-| 1 | Castiarina parallelipennis | Beetles | Senna artemisioides (Silver Cassia) |
-| 2 | Eurema smilax | Butterflies | Senna artemisioides (Silver Cassia) |
-| 3 | Glycaspis collina | Psyllids | Eucalyptus melanophloia (Silver-leaved Ironbark) |
-| 4 | Jalmenus daemeli | Butterflies | Eucalyptus melanophloia (Silver-leaved Ironbark) |
-| 5 | Jalmenus icilius | Butterflies | Senna artemisioides (Silver Cassia) |
-| 6 | Myzus ornatus | Aphids | Senna artemisioides (Silver Cassia) |
-| 7 | Pseudodendrothrips gillespiei | Thrips | Alyxia ruscifolia (Chain Fruit) |
-
-**Most Vulnerable Plants**
-
-| Plant | Herbivore Count |
-|-------|------------------|
-| Senna artemisioides (Silver Cassia) | 4 |
-| Eucalyptus melanophloia (Silver-leaved Ironbark) | 2 |
-| Alyxia ruscifolia (Chain Fruit) | 1 |
 
 ### Growth Strategy Compatibility [M2 - 100.0/100]
 
@@ -102,25 +76,37 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 0th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Limited biocontrol - few documented predators/parasitoids, may need supplemental pest management  
 
-#### Biocontrol Network Profile
+#### Pest Vulnerability Profile
 
-*Qualitative information about pest control (influences M3 scoring)*
+**Total unique herbivore species:** 8
 
-**Summary:**
-- 4 unique predator species
-- 0 unique entomopathogenic fungi species
+**Top 10 Herbivores and Parasites**
 
-**Mechanism Summary:**
-- 0 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
+| Rank | Pest Species | Category | Plants Attacked |
+|------|--------------|----------|------------------|
+| 1 | Apiomorpha ovicola | Scale Insects | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| 2 | Castiarina parallelipennis | Beetles | Senna artemisioides (Silver Cassia) |
+| 3 | Eurema smilax | Butterflies | Senna artemisioides (Silver Cassia) |
+| 4 | Glycaspis collina | Psyllids | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| 5 | Goniodes securiger | Other Herbivores | Alyxia ruscifolia (Chain Fruit) |
+| 6 | Jalmenus daemeli | Butterflies | Eucalyptus melanophloia (Silver-leaved Ironbark) |
+| 7 | Jalmenus icilius | Butterflies | Senna artemisioides (Silver Cassia) |
+| 8 | Pseudodendrothrips gillespiei | Thrips | Alyxia ruscifolia (Chain Fruit) |
 
-### Natural Disease Suppression [M4 - 63.3/100]
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Eucalyptus melanophloia (Silver-leaved Ironbark) | 3 |
+| Senna artemisioides (Silver Cassia) | 3 |
+| Alyxia ruscifolia (Chain Fruit) | 2 |
+
+### Natural Disease Suppression [M4 - 62.9/100]
 
 63th percentile pathogen control via 4 antagonistic mechanisms  
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Good disease suppression - beneficial fungi provide meaningful pathogen control  
 
 #### Pathogen Control Network Profile
-
-*Qualitative information about disease suppression (influences M4 scoring)*
 
 **Summary:**
 - 1 unique mycoparasite species (fungi that parasitize other fungi)
@@ -153,8 +139,6 @@ The disease suppression score is driven by the presence of **general mycoparasit
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Moderate fungal network - some shared fungi present but connectivity may be limited  
 
 #### Beneficial Fungi Network Profile
-
-*Qualitative information about fungal networks (60% of M5 scoring)*
 
 **Total unique beneficial fungi species:** 16
 
@@ -196,9 +180,9 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 46.1/100]
+### Structural Diversity [M6 - 46.5/100]
 
-3 growth forms spanning 19.8m height range (46th percentile)  
+3 growth forms spanning 19.8m height range (47th percentile)  
 **Vertical Stratification (Quality: 0.36 - Poor):**
 
 **Canopy Layer (>15m):**

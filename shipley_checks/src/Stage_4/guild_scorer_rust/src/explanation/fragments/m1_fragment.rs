@@ -34,7 +34,7 @@ pub fn generate_m1_fragment(m1: &M1Result, display_score: f64) -> MetricFragment
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "phylogenetic_diversity".to_string(),
         metric_code: "M1".to_string(),
-        title: "Phylogenetic Diversity".to_string(),
+        title: "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)".to_string(),
         message: format!(
             "{}th percentile (Faith's PD: {:.2}) - {}",
             display_score.round() as i32,

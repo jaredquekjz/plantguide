@@ -1,12 +1,12 @@
 # ★★★★☆ - Excellent
 
-**Overall Score:** 82.4/100
+**Overall Score:** 82.3/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 9.5 | Poor |
+| M1 - Pest & Pathogen Independence | 9.1 | Poor |
 | M2 - Growth Compatibility | 70.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 97.3 | Excellent |
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Phylogenetic Diversity [M1 - 9.5/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 9.1/100]
 
 9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)  
 Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.  
@@ -33,51 +33,20 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder) |
-| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
-| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, Neapolitan Medlar, Hawthorn, May, Common Hawthorn) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
+| Adoxaceae | Sambucus | Sambucus nigra (Parsley-leaved Elder, Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry) |
+| Fagaceae | Quercus | Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak) |
+| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, May, Common Hawthorn, Neapolitan Medlar, Hawthorn) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
 | Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
 | Sapindaceae | Acer | Acer saccharinum (River Maple, White Maple, Silver Maple) |
 
 **Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
 
-#### Pest Vulnerability Profile
-
-*Qualitative information about herbivore pests (not used in scoring)*
-
-**Total unique herbivore species:** 194
-
-**Top 10 Herbivore Pests**
-
-| Rank | Pest Species | Herbivore Category | Plants Attacked |
-|------|--------------|-------------------|------------------|
-| 1 | Hyalophora cecropia | Moths | 4 plants |
-| 2 | Eriogaster lanestris | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
-| 3 | Euproctis chrysorrhoea | Moths | Acer saccharinum (River Maple), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
-| 4 | Hemerobiidae | Other Herbivores | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
-| 5 | Nabidae | Other Herbivores | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
-| 6 | Operophtera brumata | Moths | Acer saccharinum (River Maple), Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
-| 7 | Acronicta psi | Moths | Prunus spinosa (Blackthorn), Quercus robur (Acorn Tree) |
-| 8 | Coleophora anatipennella | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
-| 9 | Eacles imperialis | Moths | Acer saccharinum (River Maple), Sambucus nigra (Black Elderberry) |
-| 10 | Gastropacha quercifolia | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
-
-**Most Vulnerable Plants**
-
-| Plant | Herbivore Count |
-|-------|------------------|
-| Prunus spinosa (Blackthorn) | 81 |
-| Acer saccharinum (River Maple) | 55 |
-| Crataegus monogyna (Common Hawthorn) | 29 |
-| Quercus robur (Acorn Tree) | 25 |
-| Sambucus nigra (Black Elderberry) | 16 |
-
 ### Growth Strategy Compatibility [M2 - 70.0/100]
 
 70th percentile compatibility  
-CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). 0.3 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
 
 #### CSR Strategy Profile
 
@@ -112,28 +81,52 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
+#### Pest Vulnerability Profile
+
+**Total unique herbivore species:** 327
+
+**Top 10 Herbivores and Parasites**
+
+| Rank | Pest Species | Category | Plants Attacked |
+|------|--------------|----------|------------------|
+| 1 | Hyalophora cecropia | Moths | 4 plants |
+| 2 | Eriogaster lanestris | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
+| 3 | Euproctis chrysorrhoea | Moths | Acer saccharinum (River Maple), Prunus spinosa (Blackthorn), Sambucus nigra (Black Elderberry) |
+| 4 | Operophtera brumata | Moths | Acer saccharinum (River Maple), Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
+| 5 | Antheraea polyphemus polyphemus | Moths | Acer saccharinum (River Maple), Crataegus monogyna (Common Hawthorn) |
+| 6 | BOLD:AAB9664 | Other Herbivores | Crataegus monogyna (Common Hawthorn), Fragaria vesca (Alpine Strawberry) |
+| 7 | Coleophora anatipennella | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
+| 8 | Eacles imperialis | Moths | Acer saccharinum (River Maple), Sambucus nigra (Black Elderberry) |
+| 9 | Ectoedemia atricollis | Moths | Crataegus monogyna (Common Hawthorn), Rosa canina (Canker Rose) |
+| 10 | Gastropacha quercifolia | Moths | Crataegus monogyna (Common Hawthorn), Prunus spinosa (Blackthorn) |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Prunus spinosa (Blackthorn) | 133 |
+| Acer saccharinum (River Maple) | 73 |
+| Crataegus monogyna (Common Hawthorn) | 53 |
+| Sambucus nigra (Black Elderberry) | 42 |
+| Fragaria vesca (Alpine Strawberry) | 19 |
+
 #### Biocontrol Network Profile
 
-*Qualitative information about pest control (influences M3 scoring)*
-
 **Summary:**
-- 34 unique predator species
+- 28 unique predator species
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 9 specific herbivore → predator/parasite matches (covering 9 pest species, weight 1.0)
+- 6 specific herbivore → predator/parasite matches (covering 6 pest species, weight 1.0)
 - 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**9 Herbivore → Predator matches found:**
+**6 Herbivore → Predator matches found:**
 
-| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
-|------------------|-------------------|----------------|-------------------|------------|
+| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
+|------------------|----------|----------------|-------------------|------------|
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
-| cinara | Aphids | eriozona syrphoides | Other Predators | Specific |
 | cynips longiventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |
 | eurytoma brunniventris | Wasps | mesopolobus fasciiventris | Wasps | Specific |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific |
-| nabidae | Other Herbivores | vireo gilvus | Birds | Specific |
 | pseudococcus | Scale Insects | syrphidae | Other Predators | Specific |
 | synergus pallipes | Wasps | mesopolobus fasciiventris | Wasps | Specific |
 | tetranychus urticae | Mites | campyloneura virgula | Other Predators | Specific |
@@ -144,8 +137,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
-
-*Qualitative information about disease suppression (influences M4 scoring)*
 
 **Summary:**
 - 7 unique mycoparasite species (fungi that parasitize other fungi)
@@ -188,8 +179,6 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
 #### Beneficial Fungi Network Profile
-
-*Qualitative information about fungal networks (60% of M5 scoring)*
 
 **Total unique beneficial fungi species:** 385
 
@@ -258,8 +247,6 @@ Excellent structural diversity - multiple layers maximize space and light use
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
 
 #### Pollinator Network Profile
-
-*Qualitative information about pollinator networks (100% of M7 scoring)*
 
 **Total unique pollinator species:** 240
 

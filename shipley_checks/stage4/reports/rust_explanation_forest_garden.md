@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 57.4 | Fair |
+| M1 - Pest & Pathogen Independence | 57.7 | Fair |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 95.1 | Excellent |
@@ -20,9 +20,9 @@
 
 ## Metrics Explanation
 
-### Phylogenetic Diversity [M1 - 57.4/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 57.7/100]
 
-57th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
+58th percentile (Faith's PD: 844.68) - Plants are moderately related (good phylogenetic diversity)  
 Plants have moderate evolutionary distance, providing reasonable pest independence. Some pest sharing may occur among closely related species, but overall diversity is adequate.  
 
 #### Taxonomic Diversity Profile
@@ -33,8 +33,8 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, Pacific Solomon's Seal, Solomon's Plume, False Solomon's Seal) |
-| Compositae | Anaphalis | Anaphalis margaritacea (Whitemargin Pussytoes, Pearly Everlasting) |
+| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, False Solomon's Seal, Pacific Solomon's Seal, Solomon's Plume) |
+| Compositae | Anaphalis | Anaphalis margaritacea (Pearly Everlasting, Whitemargin Pussytoes) |
 | Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
 | Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |
 | Hydrangeaceae | Deutzia | Deutzia scabra (Deutzia) |
@@ -42,37 +42,6 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 | Rosaceae | Rubus | Rubus moorei (Bush Lawyer) |
 
 **Family clustering:** Asparagaceae (1 plant), Compositae (1 plant), Ebenaceae (1 plant), Euphorbiaceae (1 plant), Hydrangeaceae (1 plant), Oleaceae (1 plant), Rosaceae (1 plant)
-
-#### Pest Vulnerability Profile
-
-*Qualitative information about herbivore pests (not used in scoring)*
-
-**Total unique herbivore species:** 131
-
-**Top 10 Herbivore Pests**
-
-| Rank | Pest Species | Herbivore Category | Plants Attacked |
-|------|--------------|-------------------|------------------|
-| 1 | Aceria fraxini | Mites | Fraxinus excelsior (Ash) |
-| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior (Ash) |
-| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior (Ash) |
-| 4 | Acronicta rumicis | Moths | Fraxinus excelsior (Ash) |
-| 5 | Aculus epiphyllus | Mites | Fraxinus excelsior (Ash) |
-| 6 | Aculus fraxini | Mites | Fraxinus excelsior (Ash) |
-| 7 | Adela croesella | Moths | Fraxinus excelsior (Ash) |
-| 8 | Adoxophyes orana | Moths | Diospyros kaki (Japanese Persimmon) |
-| 9 | Agrilus convexicollis | Beetles | Fraxinus excelsior (Ash) |
-| 10 | Agrilus planipennis | Beetles | Fraxinus excelsior (Ash) |
-
-**Most Vulnerable Plants**
-
-| Plant | Herbivore Count |
-|-------|------------------|
-| Fraxinus excelsior (Ash) | 100 |
-| Diospyros kaki (Japanese Persimmon) | 19 |
-| Anaphalis margaritacea (Pearly Everlasting) | 8 |
-| Deutzia scabra (Deutzia) | 2 |
-| Mercurialis perennis (Dog's Mercury) | 2 |
 
 ### Growth Strategy Compatibility [M2 - 100.0/100]
 
@@ -102,22 +71,49 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
+#### Pest Vulnerability Profile
+
+**Total unique herbivore species:** 128
+
+**Top 10 Herbivores and Parasites**
+
+| Rank | Pest Species | Category | Plants Attacked |
+|------|--------------|----------|------------------|
+| 1 | Aceria fraxini | Mites | Fraxinus excelsior (Ash) |
+| 2 | Aceria fraxinicola | Mites | Fraxinus excelsior (Ash) |
+| 3 | Aceria fraxinivora | Mites | Fraxinus excelsior (Ash) |
+| 4 | Aculus epiphyllus | Mites | Fraxinus excelsior (Ash) |
+| 5 | Aculus fraxini | Mites | Fraxinus excelsior (Ash) |
+| 6 | Adela croesella | Moths | Fraxinus excelsior (Ash) |
+| 7 | Adoxophyes orana | Moths | Diospyros kaki (Japanese Persimmon) |
+| 8 | Agrilus convexicollis | Beetles | Fraxinus excelsior (Ash) |
+| 9 | Agrilus planipennis | Beetles | Fraxinus excelsior (Ash) |
+| 10 | Agrochola circellaris | Moths | Fraxinus excelsior (Ash) |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Fraxinus excelsior (Ash) | 63 |
+| Diospyros kaki (Japanese Persimmon) | 50 |
+| Anaphalis margaritacea (Pearly Everlasting) | 10 |
+| Maianthemum racemosum (False Solomon's Seal) | 2 |
+| Mercurialis perennis (Dog's Mercury) | 2 |
+
 #### Biocontrol Network Profile
 
-*Qualitative information about pest control (influences M3 scoring)*
-
 **Summary:**
-- 25 unique predator species
+- 23 unique predator species
 - 2 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 11 specific herbivore → predator/parasite matches (covering 4 pest species, weight 1.0)
+- 10 specific herbivore → predator/parasite matches (covering 3 pest species, weight 1.0)
 - 2 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**11 Herbivore → Predator matches found:**
+**10 Herbivore → Predator matches found:**
 
-| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
-|------------------|-------------------|----------------|-------------------|------------|
+| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
+|------------------|----------|----------------|-------------------|------------|
 | adoxophyes orana | Moths | eptesicus serotinus | Bats | Specific |
 | adoxophyes orana | Moths | myotis daubentonii | Bats | Specific |
 | adoxophyes orana | Moths | myotis mystacinus | Bats | Specific |
@@ -128,7 +124,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 | aphis | Aphids | syrphus vitripennis | Hoverflies | Specific |
 | cnephasia stephensiana | Moths | myotis daubentonii | Bats | Specific |
 | cnephasia stephensiana | Moths | myotis mystacinus | Bats | Specific |
-| myzus persicae | Aphids | adalia bipunctata | Beetles | Specific |
 
 ### Natural Disease Suppression [M4 - 95.1/100]
 
@@ -136,8 +131,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
-
-*Qualitative information about disease suppression (influences M4 scoring)*
 
 **Summary:**
 - 2 unique mycoparasite species (fungi that parasitize other fungi)
@@ -168,8 +161,6 @@ The disease suppression score is driven by the presence of **general mycoparasit
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
 #### Beneficial Fungi Network Profile
-
-*Qualitative information about fungal networks (60% of M5 scoring)*
 
 **Total unique beneficial fungi species:** 147
 
@@ -242,8 +233,6 @@ Excellent structural diversity - multiple layers maximize space and light use
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
 
 #### Pollinator Network Profile
-
-*Qualitative information about pollinator networks (100% of M7 scoring)*
 
 **Total unique pollinator species:** 84
 

@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 41.04282209694241,
+    "score": 41.066372843920824,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 41.0/100"
+    "message": "Overall guild compatibility: 41.1/100"
   },
   "climate": {
     "compatible": true,
@@ -15,7 +15,7 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "Phylogenetic Diversity",
+      "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
       "message": "33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)",
       "detail": "Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.",
       "evidence": null
@@ -56,7 +56,7 @@
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
       "title": "Structural Diversity",
-      "message": "3 growth forms spanning 19.8m height range (46th percentile)",
+      "message": "3 growth forms spanning 19.8m height range (47th percentile)",
       "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\nModerate structural diversity - some layering present but coverage may be limited",
       "evidence": null
     },
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 32.84573560585548,
+        "score": 33.08045717091777,
         "raw": 0.4559407172659578,
         "interpretation": "Poor"
       },
@@ -106,7 +106,7 @@
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 63.33333333333333,
+        "score": 62.857142857142854,
         "raw": 0.47619047619047616,
         "interpretation": "Good"
       }
@@ -122,7 +122,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 46.12068573940803,
+        "score": 46.52700987938513,
         "raw": 0.3691127953935177,
         "interpretation": "Fair"
       },
@@ -136,8 +136,16 @@
     ]
   },
   "pest_profile": {
-    "total_unique_pests": 7,
+    "total_unique_pests": 8,
     "top_pests": [
+      {
+        "pest_name": "Apiomorpha ovicola",
+        "category": "Scale Insects",
+        "plant_count": 1,
+        "plants": [
+          "Eucalyptus melanophloia (Silver-leaved Ironbark)"
+        ]
+      },
       {
         "pest_name": "Castiarina parallelipennis",
         "category": "Beetles",
@@ -163,6 +171,14 @@
         ]
       },
       {
+        "pest_name": "Goniodes securiger",
+        "category": "Other Herbivores",
+        "plant_count": 1,
+        "plants": [
+          "Alyxia ruscifolia (Chain Fruit)"
+        ]
+      },
+      {
         "pest_name": "Jalmenus daemeli",
         "category": "Butterflies",
         "plant_count": 1,
@@ -179,14 +195,6 @@
         ]
       },
       {
-        "pest_name": "Myzus ornatus",
-        "category": "Aphids",
-        "plant_count": 1,
-        "plants": [
-          "Senna artemisioides (Silver Cassia)"
-        ]
-      },
-      {
         "pest_name": "Pseudodendrothrips gillespiei",
         "category": "Thrips",
         "plant_count": 1,
@@ -197,16 +205,16 @@
     ],
     "vulnerable_plants": [
       {
-        "plant_name": "Senna artemisioides (Silver Cassia)",
-        "pest_count": 4
+        "plant_name": "Eucalyptus melanophloia (Silver-leaved Ironbark)",
+        "pest_count": 3
       },
       {
-        "plant_name": "Eucalyptus melanophloia (Silver-leaved Ironbark)",
-        "pest_count": 2
+        "plant_name": "Senna artemisioides (Silver Cassia)",
+        "pest_count": 3
       },
       {
         "plant_name": "Alyxia ruscifolia (Chain Fruit)",
-        "pest_count": 1
+        "pest_count": 2
       }
     ]
   },
@@ -238,7 +246,7 @@
       {
         "family": "Leguminosae",
         "genus": "Senna",
-        "display_name": "Senna artemisioides (Silver Senna, Silver Cassia)"
+        "display_name": "Senna artemisioides (Silver Cassia, Silver Senna)"
       },
       {
         "family": "Myrtaceae",
@@ -497,7 +505,7 @@
         },
         {
           "category": "Saprotrophic",
-          "fungus_name": "wojnowicia",
+          "fungus_name": "fusarium",
           "plant_count": 1
         }
       ]
@@ -576,79 +584,7 @@
     ]
   },
   "pollinator_network_profile": null,
-  "biocontrol_network_profile": {
-    "total_unique_predators": 4,
-    "total_unique_entomo_fungi": 0,
-    "specific_predator_matches": 0,
-    "specific_fungi_matches": 0,
-    "general_entomo_fungi_count": 0,
-    "matched_predator_pairs": [],
-    "matched_fungi_pairs": [],
-    "predator_category_counts": {
-      "Bats": 4
-    },
-    "herbivore_category_counts": {},
-    "top_predators": [],
-    "top_entomo_fungi": [],
-    "hub_plants": [
-      {
-        "plant_name": "Alyxia ruscifolia",
-        "plant_vernacular": "Chain Fruit",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Carex mucronata",
-        "plant_vernacular": "",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Eucalyptus melanophloia",
-        "plant_vernacular": "Silver-leaved Ironbark",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Hibbertia diffusa",
-        "plant_vernacular": "Wedge Guinea Flower",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Juncus usitatus",
-        "plant_vernacular": "Australian Rush",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Senna artemisioides",
-        "plant_vernacular": "Silver Cassia",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      },
-      {
-        "plant_name": "Sporobolus compositus",
-        "plant_vernacular": "Composite Dropseed",
-        "total_predators": 0,
-        "total_entomo_fungi": 0,
-        "total_biocontrol_agents": 0,
-        "has_data": false
-      }
-    ]
-  },
+  "biocontrol_network_profile": null,
   "pathogen_control_profile": {
     "total_unique_mycoparasites": 1,
     "total_unique_pathogens": 22,

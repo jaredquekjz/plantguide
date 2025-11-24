@@ -6,12 +6,12 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.3 | Good |
+| M1 - Pest & Pathogen Independence | 70.4 | Good |
 | M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
 | M5 - Beneficial Fungi | 100.0 | Excellent |
-| M6 - Structural Diversity | 17.0 | Poor |
+| M6 - Structural Diversity | 16.7 | Poor |
 | M7 - Pollinator Support | 0.0 | Poor |
 
 ## Climate Compatibility
@@ -20,7 +20,7 @@
 
 ## Metrics Explanation
 
-### Phylogenetic Diversity [M1 - 70.3/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.4/100]
 
 70th percentile (Faith's PD: 885.18) - Plants are distantly related (high phylogenetic diversity)  
 Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.  
@@ -34,48 +34,19 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
 | Amaranthaceae | Pfaffia | Pfaffia gnaphalioides |
-| Amaryllidaceae | Allium | Allium schoenoprasum (Wild Chives, Chives) |
+| Amaryllidaceae | Allium | Allium schoenoprasum (Chives, Wild Chives) |
 | Araliaceae | Cheirodendron | Cheirodendron trigynum (Olapa, Common Cheirodendron, ʻōlapa) |
 | Betulaceae | Alnus | Alnus acuminata (Andean Alder) |
-| Leguminosae | Erythrina | Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili) |
+| Leguminosae | Erythrina | Erythrina sandwicensis (Wiliwili, Hawaiian Coral Tree) |
 | Myristicaceae | Virola | Virola bicuhyba |
-| Vitaceae | Vitis | Vitis vinifera (Grape Vine, Common Grape, Wine Grape) |
+| Vitaceae | Vitis | Vitis vinifera (Wine Grape, Grape Vine, Common Grape) |
 
 **Family clustering:** Amaranthaceae (1 plant), Amaryllidaceae (1 plant), Araliaceae (1 plant), Betulaceae (1 plant), Leguminosae (1 plant), Myristicaceae (1 plant), Vitaceae (1 plant)
-
-#### Pest Vulnerability Profile
-
-*Qualitative information about herbivore pests (not used in scoring)*
-
-**Total unique herbivore species:** 58
-
-**Top 10 Herbivore Pests**
-
-| Rank | Pest Species | Herbivore Category | Plants Attacked |
-|------|--------------|-------------------|------------------|
-| 1 | Achatia distincta | Moths | Vitis vinifera (Common Grape) |
-| 2 | Acrolepiopsis assectella | Moths | Allium schoenoprasum (Chives) |
-| 3 | Ambastus villosus | Plant Bugs | Alnus acuminata (Andean Alder) |
-| 4 | Amphipyra pyramidoides | Moths | Vitis vinifera (Common Grape) |
-| 5 | Antheraea polyphemus | Moths | Vitis vinifera (Common Grape) |
-| 6 | Aonidiella aurantii | Scale Insects | Vitis vinifera (Common Grape) |
-| 7 | Aonidiella orientalis | Scale Insects | Vitis vinifera (Common Grape) |
-| 8 | Aphis spiraecola | Aphids | Vitis vinifera (Common Grape) |
-| 9 | Arctia caja | Moths | Allium schoenoprasum (Chives) |
-| 10 | Aspidiotus nerii | Scale Insects | Vitis vinifera (Common Grape) |
-
-**Most Vulnerable Plants**
-
-| Plant | Herbivore Count |
-|-------|------------------|
-| Vitis vinifera (Common Grape) | 53 |
-| Allium schoenoprasum (Chives) | 4 |
-| Alnus acuminata (Andean Alder) | 1 |
 
 ### Growth Strategy Compatibility [M2 - 0.0/100]
 
 0th percentile compatibility  
-CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). 14.6 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). Many potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
 
 #### CSR Strategy Profile
 
@@ -108,12 +79,38 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
+#### Pest Vulnerability Profile
+
+**Total unique herbivore species:** 134
+
+**Top 10 Herbivores and Parasites**
+
+| Rank | Pest Species | Category | Plants Attacked |
+|------|--------------|----------|------------------|
+| 1 | Rhizophagus | Other Herbivores | Alnus acuminata (Andean Alder), Vitis vinifera (Common Grape) |
+| 2 | Abagrotis cupida | Moths | Vitis vinifera (Common Grape) |
+| 3 | Abagrotis orbis | Moths | Vitis vinifera (Common Grape) |
+| 4 | Achatia distincta | Moths | Vitis vinifera (Common Grape) |
+| 5 | Acrolepia sapporensis | Moths | Allium schoenoprasum (Chives) |
+| 6 | Acrolepiopsis assectella | Moths | Allium schoenoprasum (Chives) |
+| 7 | Agrilus derasofasciatus | Beetles | Vitis vinifera (Common Grape) |
+| 8 | Amphicerus bicaudatus | Beetles | Vitis vinifera (Common Grape) |
+| 9 | Amphipyra pyramidoides | Moths | Vitis vinifera (Common Grape) |
+| 10 | Antheraea polyphemus | Moths | Vitis vinifera (Common Grape) |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Vitis vinifera (Common Grape) | 124 |
+| Allium schoenoprasum (Chives) | 7 |
+| Cheirodendron trigynum (Common Cheirodendron) | 3 |
+| Alnus acuminata (Andean Alder) | 1 |
+
 #### Biocontrol Network Profile
 
-*Qualitative information about pest control (influences M3 scoring)*
-
 **Summary:**
-- 12 unique predator species
+- 9 unique predator species
 - 4 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
@@ -128,8 +125,6 @@ The biocontrol score is driven by the presence of **general entomopathogenic fun
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
-
-*Qualitative information about disease suppression (influences M4 scoring)*
 
 **Summary:**
 - 4 unique mycoparasite species (fungi that parasitize other fungi)
@@ -165,8 +160,6 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
 #### Beneficial Fungi Network Profile
-
-*Qualitative information about fungal networks (60% of M5 scoring)*
 
 **Total unique beneficial fungi species:** 279
 
@@ -208,7 +201,7 @@ Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) crea
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 17.0/100]
+### Structural Diversity [M6 - 16.7/100]
 
 3 growth forms spanning 14.1m height range (17th percentile)  
 **Vertical Stratification (Quality: 0.12 - Poor):**
@@ -235,8 +228,6 @@ Limited structural diversity - few layers or growth forms, less efficient space 
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Limited pollinator support - few documented shared pollinators, plants may rely on different visitors  
 
 #### Pollinator Network Profile
-
-*Qualitative information about pollinator networks (100% of M7 scoring)*
 
 **Total unique pollinator species:** 20
 

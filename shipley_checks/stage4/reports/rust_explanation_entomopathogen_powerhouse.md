@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 40.2 | Fair |
+| M1 - Pest & Pathogen Independence | 40.6 | Fair |
 | M2 - Growth Compatibility | 50.0 | Fair |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 97.7 | Excellent |
@@ -20,9 +20,9 @@
 
 ## Metrics Explanation
 
-### Phylogenetic Diversity [M1 - 40.2/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 40.6/100]
 
-40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
+41th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
 
 #### Taxonomic Diversity Profile
@@ -33,51 +33,20 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Fagaceae | Quercus | Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak) |
-| Poaceae | Dactylis | Dactylis glomerata (Rough Cocksfoot, Akaroa, Cock's Foot, Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry) |
+| Fagaceae | Quercus | Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak) |
+| Poaceae | Dactylis | Dactylis glomerata (Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass, Rough Cocksfoot, Akaroa, Cock's Foot) |
+| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
 | Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
 | Rubiaceae | Coffea | Coffea arabica (Kona Coffee, Arabian Coffee, Arabica Coffee, Coffee) |
-| Vitaceae | Vitis | Vitis vinifera (Grape Vine, Common Grape, Wine Grape) |
+| Vitaceae | Vitis | Vitis vinifera (Wine Grape, Grape Vine, Common Grape) |
 
 **Family clustering:** Rosaceae (3 plants), Fagaceae (1 plant), Poaceae (1 plant), Rubiaceae (1 plant), Vitaceae (1 plant)
-
-#### Pest Vulnerability Profile
-
-*Qualitative information about herbivore pests (not used in scoring)*
-
-**Total unique herbivore species:** 262
-
-**Top 10 Herbivore Pests**
-
-| Rank | Pest Species | Herbivore Category | Plants Attacked |
-|------|--------------|-------------------|------------------|
-| 1 | Acronicta psi | Moths | Prunus spinosa (Blackthorn), Quercus robur (Acorn Tree) |
-| 2 | Coccus hesperidum | Scale Insects | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
-| 3 | Creontiades dilutus | True Bugs | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
-| 4 | Eriogaster lanestris | Moths | Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
-| 5 | Eupoecilia ambiguella | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
-| 6 | Hemiberlesia lataniae | Scale Insects | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
-| 7 | Hyalophora cecropia | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
-| 8 | Myzus persicae | Aphids | Dactylis glomerata (Akaroa), Prunus spinosa (Blackthorn) |
-| 9 | Orgyia postica | Moths | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
-| 10 | Tetranychus urticae | Mites | Rosa canina (Canker Rose), Vitis vinifera (Common Grape) |
-
-**Most Vulnerable Plants**
-
-| Plant | Herbivore Count |
-|-------|------------------|
-| Prunus spinosa (Blackthorn) | 81 |
-| Dactylis glomerata (Akaroa) | 74 |
-| Vitis vinifera (Common Grape) | 53 |
-| Quercus robur (Acorn Tree) | 25 |
-| Coffea arabica (Arabian Coffee) | 23 |
 
 ### Growth Strategy Compatibility [M2 - 50.0/100]
 
 50th percentile compatibility  
-CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). 0.9 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
+CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 3 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.  
 
 #### CSR Strategy Profile
 
@@ -112,37 +81,62 @@ CSR strategies measure how plants allocate resources to Competitive growth, Stre
 100th percentile biocontrol capacity  
 Plants attract beneficial insects (predators and parasitoids) that naturally suppress pest populations. Excellent biocontrol - abundant predators and parasitoids provide strong pest suppression  
 
+#### Pest Vulnerability Profile
+
+**Total unique herbivore species:** 473
+
+**Top 10 Herbivores and Parasites**
+
+| Rank | Pest Species | Category | Plants Attacked |
+|------|--------------|----------|------------------|
+| 1 | Coccus hesperidum | Scale Insects | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+| 2 | Creontiades dilutus | True Bugs | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
+| 3 | Cryptococcus | Scale Insects | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
+| 4 | Eriogaster lanestris | Moths | Prunus spinosa (Blackthorn), Rosa canina (Canker Rose) |
+| 5 | Eupoecilia ambiguella | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
+| 6 | Hyalophora cecropia | Moths | Prunus spinosa (Blackthorn), Vitis vinifera (Common Grape) |
+| 7 | Orgyia postica | Moths | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+| 8 | Papaipema nebris | Moths | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
+| 9 | Phyllochlaenia | Other Herbivores | Dactylis glomerata (Akaroa), Vitis vinifera (Common Grape) |
+| 10 | Rhizophagus | Other Herbivores | Coffea arabica (Arabian Coffee), Vitis vinifera (Common Grape) |
+
+**Most Vulnerable Plants**
+
+| Plant | Herbivore Count |
+|-------|------------------|
+| Prunus spinosa (Blackthorn) | 133 |
+| Vitis vinifera (Common Grape) | 124 |
+| Coffea arabica (Arabian Coffee) | 88 |
+| Dactylis glomerata (Akaroa) | 82 |
+| Fragaria vesca (Alpine Strawberry) | 19 |
+
 #### Biocontrol Network Profile
 
-*Qualitative information about pest control (influences M3 scoring)*
-
 **Summary:**
-- 30 unique predator species
+- 24 unique predator species
 - 9 unique entomopathogenic fungi species
 
 **Mechanism Summary:**
-- 11 specific herbivore → predator/parasite matches (covering 11 pest species, weight 1.0)
+- 9 specific herbivore → predator/parasite matches (covering 9 pest species, weight 1.0)
 - 13 general entomopathogenic fungi (broad-spectrum biocontrol, weight 0.2)
 
-**10 Herbivore → Predator matches found:**
+**8 Herbivore → Predator matches found:**
 
-| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |
-|------------------|-------------------|----------------|-------------------|------------|
+| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |
+|------------------|----------|----------------|-------------------|------------|
 | adrastus rachifer | Beetles | harpalus rufipes | Beetles | Specific |
 | aphis spiraecola | Aphids | syrphus | Hoverflies | Specific |
 | athysanus argentarius | Leafhoppers | harpalus rufipes | Beetles | Specific |
 | coccus hesperidum | Scale Insects | coccus hesperidum | Scale Insects | Specific |
 | exomias trichopterus | Beetles | harpalus rufipes | Beetles | Specific |
-| harpalus rufipes | Beetles | turdus merula | Birds | Specific |
 | myzus persicae | Aphids | harmonia axyridis | Beetles | Specific |
 | orgyia antiqua | Moths | vespa velutina | Wasps | Specific |
 | otiorhynchus ligustici | Beetles | harpalus rufipes | Beetles | Specific |
-| uroleucon | Aphids | syrphidae | Other Predators | Specific |
 
 **Matched Herbivore → Entomopathogenic Fungus Pairs:**
 
-| Herbivore (Pest) | Herbivore Category | Entomopathogenic Fungus | Match Type |
-|------------------|--------------------|------------------------|------------|
+| Herbivore (Pest) | Category | Entomopathogenic Fungus | Match Type |
+|------------------|----------|------------------------|------------|
 | vespa velutina | Wasps | beauveria | Specific |
 
 ### Natural Disease Suppression [M4 - 97.7/100]
@@ -151,8 +145,6 @@ Plants attract beneficial insects (predators and parasitoids) that naturally sup
 Plants harbor beneficial fungi that antagonize pathogens, reducing disease incidence through biological control. Excellent disease suppression - abundant antagonistic fungi provide strong pathogen control  
 
 #### Pathogen Control Network Profile
-
-*Qualitative information about disease suppression (influences M4 scoring)*
 
 **Summary:**
 - 14 unique mycoparasite species (fungi that parasitize other fungi)
@@ -197,8 +189,6 @@ Plants harbor beneficial fungi that antagonize pathogens, reducing disease incid
 Shared beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create underground networks that facilitate nutrient exchange, water sharing, and chemical communication between plants. Excellent fungal network - abundant shared fungi create strong underground connections  
 
 #### Beneficial Fungi Network Profile
-
-*Qualitative information about fungal networks (60% of M5 scoring)*
 
 **Total unique beneficial fungi species:** 512
 
@@ -269,8 +259,6 @@ Excellent structural diversity - multiple layers maximize space and light use
 Plants attract and support overlapping pollinator communities, ensuring reliable pollination services and promoting pollinator diversity. Excellent pollinator support - abundant shared pollinators ensure reliable pollination  
 
 #### Pollinator Network Profile
-
-*Qualitative information about pollinator networks (100% of M7 scoring)*
 
 **Total unique pollinator species:** 309
 

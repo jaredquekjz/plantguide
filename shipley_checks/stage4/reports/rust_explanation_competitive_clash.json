@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 55.327639893470725,
+    "score": 55.29115528297383,
     "stars": "★☆☆☆☆",
     "label": "Poor",
     "message": "Overall guild compatibility: 55.3/100"
@@ -15,7 +15,7 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "Phylogenetic Diversity",
+      "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
       "message": "70th percentile (Faith's PD: 885.18) - Plants are distantly related (high phylogenetic diversity)",
       "detail": "Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.",
       "evidence": null
@@ -25,7 +25,7 @@
       "metric_code": "M2",
       "title": "Growth Strategy Compatibility",
       "message": "0th percentile compatibility",
-      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). 14.6 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
+      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 5 Competitive-dominant, 2 Stress-tolerant-dominant (high CSR values: >75th percentile). Many potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
       "evidence": null
     },
     {
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 70.3412789689769,
+        "score": 70.3522406071798,
         "raw": 0.4126401547150537,
         "interpretation": "Good"
       },
@@ -122,7 +122,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 16.952200285318145,
+        "score": 16.68584637363702,
         "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },
@@ -136,14 +136,47 @@
     ]
   },
   "pest_profile": {
-    "total_unique_pests": 58,
+    "total_unique_pests": 134,
     "top_pests": [
+      {
+        "pest_name": "Rhizophagus",
+        "category": "Other Herbivores",
+        "plant_count": 2,
+        "plants": [
+          "Alnus acuminata (Andean Alder)",
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Abagrotis cupida",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Abagrotis orbis",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
       {
         "pest_name": "Achatia distincta",
         "category": "Moths",
         "plant_count": 1,
         "plants": [
           "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Acrolepia sapporensis",
+        "category": "Moths",
+        "plant_count": 1,
+        "plants": [
+          "Allium schoenoprasum (Chives)"
         ]
       },
       {
@@ -155,11 +188,19 @@
         ]
       },
       {
-        "pest_name": "Ambastus villosus",
-        "category": "Plant Bugs",
+        "pest_name": "Agrilus derasofasciatus",
+        "category": "Beetles",
         "plant_count": 1,
         "plants": [
-          "Alnus acuminata (Andean Alder)"
+          "Vitis vinifera (Common Grape)"
+        ]
+      },
+      {
+        "pest_name": "Amphicerus bicaudatus",
+        "category": "Beetles",
+        "plant_count": 1,
+        "plants": [
+          "Vitis vinifera (Common Grape)"
         ]
       },
       {
@@ -177,56 +218,20 @@
         "plants": [
           "Vitis vinifera (Common Grape)"
         ]
-      },
-      {
-        "pest_name": "Aonidiella aurantii",
-        "category": "Scale Insects",
-        "plant_count": 1,
-        "plants": [
-          "Vitis vinifera (Common Grape)"
-        ]
-      },
-      {
-        "pest_name": "Aonidiella orientalis",
-        "category": "Scale Insects",
-        "plant_count": 1,
-        "plants": [
-          "Vitis vinifera (Common Grape)"
-        ]
-      },
-      {
-        "pest_name": "Aphis spiraecola",
-        "category": "Aphids",
-        "plant_count": 1,
-        "plants": [
-          "Vitis vinifera (Common Grape)"
-        ]
-      },
-      {
-        "pest_name": "Arctia caja",
-        "category": "Moths",
-        "plant_count": 1,
-        "plants": [
-          "Allium schoenoprasum (Chives)"
-        ]
-      },
-      {
-        "pest_name": "Aspidiotus nerii",
-        "category": "Scale Insects",
-        "plant_count": 1,
-        "plants": [
-          "Vitis vinifera (Common Grape)"
-        ]
       }
     ],
     "vulnerable_plants": [
       {
         "plant_name": "Vitis vinifera (Common Grape)",
-        "pest_count": 53
+        "pest_count": 124
       },
       {
         "plant_name": "Allium schoenoprasum (Chives)",
-        "pest_count": 4
+        "pest_count": 7
+      },
+      {
+        "plant_name": "Cheirodendron trigynum (Common Cheirodendron)",
+        "pest_count": 3
       },
       {
         "plant_name": "Alnus acuminata (Andean Alder)",
@@ -247,7 +252,7 @@
       {
         "family": "Amaryllidaceae",
         "genus": "Allium",
-        "display_name": "Allium schoenoprasum (Wild Chives, Chives)"
+        "display_name": "Allium schoenoprasum (Chives, Wild Chives)"
       },
       {
         "family": "Araliaceae",
@@ -262,7 +267,7 @@
       {
         "family": "Leguminosae",
         "genus": "Erythrina",
-        "display_name": "Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili)"
+        "display_name": "Erythrina sandwicensis (Wiliwili, Hawaiian Coral Tree)"
       },
       {
         "family": "Myristicaceae",
@@ -272,7 +277,7 @@
       {
         "family": "Vitaceae",
         "genus": "Vitis",
-        "display_name": "Vitis vinifera (Grape Vine, Common Grape, Wine Grape)"
+        "display_name": "Vitis vinifera (Wine Grape, Grape Vine, Common Grape)"
       }
     ],
     "family_distribution": [
@@ -1151,7 +1156,7 @@
     ]
   },
   "biocontrol_network_profile": {
-    "total_unique_predators": 12,
+    "total_unique_predators": 9,
     "total_unique_entomo_fungi": 4,
     "specific_predator_matches": 0,
     "specific_fungi_matches": 0,
@@ -1159,15 +1164,14 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
+      "OtherPredators": 1,
       "Lacewings": 1,
       "Flies": 1,
       "Wasps": 1,
-      "OtherPredators": 1,
-      "ScaleInsects": 3,
-      "Moths": 2,
+      "ScaleInsects": 1,
+      "Moths": 1,
       "Birds": 1,
-      "Butterflies": 1,
-      "Bats": 1
+      "Butterflies": 2
     },
     "herbivore_category_counts": {},
     "top_predators": [],

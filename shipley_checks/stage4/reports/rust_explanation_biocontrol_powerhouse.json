@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 82.40202880137925,
+    "score": 82.34183751932457,
     "stars": "★★★★☆",
     "label": "Excellent",
-    "message": "Overall guild compatibility: 82.4/100"
+    "message": "Overall guild compatibility: 82.3/100"
   },
   "climate": {
     "compatible": true,
@@ -15,7 +15,7 @@
     {
       "benefit_type": "phylogenetic_diversity",
       "metric_code": "M1",
-      "title": "Phylogenetic Diversity",
+      "title": "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)",
       "message": "9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)",
       "detail": "Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.",
       "evidence": null
@@ -25,7 +25,7 @@
       "metric_code": "M2",
       "title": "Growth Strategy Compatibility",
       "message": "70th percentile compatibility",
-      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). 0.3 potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
+      "detail": "CSR strategies measure how plants allocate resources to Competitive growth, Stress tolerance, or Ruderal (disturbance) strategies. Guild composition: 2 Competitive-dominant (high CSR values: >75th percentile). Few potential conflicts detected - see CSR Strategy Profile below for details and recommendations.",
       "evidence": null
     },
     {
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 9.4928456774512,
+        "score": 9.065835608244896,
         "raw": 0.4943434744133984,
         "interpretation": "Poor"
       },
@@ -100,13 +100,13 @@
         "code": "M3",
         "name": "Insect Pest Control",
         "score": 100.0,
-        "raw": 9.047619047619047,
+        "raw": 6.190476190476191,
         "interpretation": "Excellent"
       },
       {
         "code": "M4",
         "name": "Disease Suppression",
-        "score": 97.32135593220339,
+        "score": 97.32702702702703,
         "raw": 48.619047619047606,
         "interpretation": "Excellent"
       }
@@ -136,7 +136,7 @@
     ]
   },
   "pest_profile": {
-    "total_unique_pests": 194,
+    "total_unique_pests": 327,
     "top_pests": [
       {
         "pest_name": "Hyalophora cecropia",
@@ -170,26 +170,6 @@
         ]
       },
       {
-        "pest_name": "Hemerobiidae",
-        "category": "Other Herbivores",
-        "plant_count": 3,
-        "plants": [
-          "Crataegus monogyna (Common Hawthorn)",
-          "Prunus spinosa (Blackthorn)",
-          "Sambucus nigra (Black Elderberry)"
-        ]
-      },
-      {
-        "pest_name": "Nabidae",
-        "category": "Other Herbivores",
-        "plant_count": 3,
-        "plants": [
-          "Crataegus monogyna (Common Hawthorn)",
-          "Prunus spinosa (Blackthorn)",
-          "Sambucus nigra (Black Elderberry)"
-        ]
-      },
-      {
         "pest_name": "Operophtera brumata",
         "category": "Moths",
         "plant_count": 3,
@@ -200,12 +180,21 @@
         ]
       },
       {
-        "pest_name": "Acronicta psi",
+        "pest_name": "Antheraea polyphemus polyphemus",
         "category": "Moths",
         "plant_count": 2,
         "plants": [
-          "Prunus spinosa (Blackthorn)",
-          "Quercus robur (Acorn Tree)"
+          "Acer saccharinum (River Maple)",
+          "Crataegus monogyna (Common Hawthorn)"
+        ]
+      },
+      {
+        "pest_name": "BOLD:AAB9664",
+        "category": "Other Herbivores",
+        "plant_count": 2,
+        "plants": [
+          "Crataegus monogyna (Common Hawthorn)",
+          "Fragaria vesca (Alpine Strawberry)"
         ]
       },
       {
@@ -227,6 +216,15 @@
         ]
       },
       {
+        "pest_name": "Ectoedemia atricollis",
+        "category": "Moths",
+        "plant_count": 2,
+        "plants": [
+          "Crataegus monogyna (Common Hawthorn)",
+          "Rosa canina (Canker Rose)"
+        ]
+      },
+      {
         "pest_name": "Gastropacha quercifolia",
         "category": "Moths",
         "plant_count": 2,
@@ -239,31 +237,31 @@
     "vulnerable_plants": [
       {
         "plant_name": "Prunus spinosa (Blackthorn)",
-        "pest_count": 81
+        "pest_count": 133
       },
       {
         "plant_name": "Acer saccharinum (River Maple)",
-        "pest_count": 55
+        "pest_count": 73
       },
       {
         "plant_name": "Crataegus monogyna (Common Hawthorn)",
-        "pest_count": 29
-      },
-      {
-        "plant_name": "Quercus robur (Acorn Tree)",
-        "pest_count": 25
+        "pest_count": 53
       },
       {
         "plant_name": "Sambucus nigra (Black Elderberry)",
-        "pest_count": 16
-      },
-      {
-        "plant_name": "Rosa canina (Canker Rose)",
-        "pest_count": 9
+        "pest_count": 42
       },
       {
         "plant_name": "Fragaria vesca (Alpine Strawberry)",
-        "pest_count": 7
+        "pest_count": 19
+      },
+      {
+        "plant_name": "Quercus robur (Acorn Tree)",
+        "pest_count": 19
+      },
+      {
+        "plant_name": "Rosa canina (Canker Rose)",
+        "pest_count": 19
       }
     ]
   },
@@ -275,22 +273,22 @@
       {
         "family": "Adoxaceae",
         "genus": "Sambucus",
-        "display_name": "Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder)"
+        "display_name": "Sambucus nigra (Parsley-leaved Elder, Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry)"
       },
       {
         "family": "Fagaceae",
         "genus": "Quercus",
-        "display_name": "Quercus robur (English Oak, Truffle Oak, Acorn Tree, Pedunculate Oak, Common Oak)"
+        "display_name": "Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak)"
       },
       {
         "family": "Rosaceae",
         "genus": "Crataegus",
-        "display_name": "Crataegus monogyna (English Hawthorn, Neapolitan Medlar, Hawthorn, May, Common Hawthorn)"
+        "display_name": "Crataegus monogyna (English Hawthorn, May, Common Hawthorn, Neapolitan Medlar, Hawthorn)"
       },
       {
         "family": "Rosaceae",
         "genus": "Fragaria",
-        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry, Wood Strawberry)"
+        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
       },
       {
         "family": "Rosaceae",
@@ -2828,9 +2826,9 @@
     ]
   },
   "biocontrol_network_profile": {
-    "total_unique_predators": 34,
+    "total_unique_predators": 28,
     "total_unique_entomo_fungi": 2,
-    "specific_predator_matches": 13,
+    "specific_predator_matches": 7,
     "specific_fungi_matches": 0,
     "general_entomo_fungi_count": 2,
     "matched_predator_pairs": [
@@ -2839,12 +2837,6 @@
         "target_category": "Aphids",
         "agent": "syrphus",
         "agent_category": "Hoverflies"
-      },
-      {
-        "target": "cinara",
-        "target_category": "Aphids",
-        "agent": "eriozona syrphoides",
-        "agent_category": "OtherPredators"
       },
       {
         "target": "cynips longiventris",
@@ -2857,18 +2849,6 @@
         "target_category": "Wasps",
         "agent": "mesopolobus fasciiventris",
         "agent_category": "Wasps"
-      },
-      {
-        "target": "harpalus rufipes",
-        "target_category": "Beetles",
-        "agent": "turdus merula",
-        "agent_category": "Birds"
-      },
-      {
-        "target": "nabidae",
-        "target_category": "OtherHerbivores",
-        "agent": "vireo gilvus",
-        "agent_category": "Birds"
       },
       {
         "target": "pseudococcus",
@@ -2894,20 +2874,15 @@
       "Beetles": 3,
       "Hoverflies": 2,
       "OtherPredators": 6,
-      "Flies": 4,
+      "Flies": 3,
       "Wasps": 3,
-      "Mites": 1,
-      "ScaleInsects": 2,
       "Spiders": 1,
-      "Moths": 1,
       "Birds": 7,
-      "Ants": 2,
+      "Ants": 1,
       "Butterflies": 2
     },
     "herbivore_category_counts": {
-      "Beetles": 1,
-      "OtherHerbivores": 1,
-      "Aphids": 2,
+      "Aphids": 1,
       "Mites": 1,
       "Wasps": 3,
       "ScaleInsects": 1

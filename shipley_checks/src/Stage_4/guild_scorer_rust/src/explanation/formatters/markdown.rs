@@ -77,10 +77,7 @@ impl MarkdownFormatter {
                     if let Some(taxonomic_profile) = &explanation.taxonomic_profile {
                         Self::format_taxonomic_profile(&mut md, taxonomic_profile);
                     }
-                    // Insert pest profile after taxonomic profile
-                    if let Some(pest_profile) = &explanation.pest_profile {
-                        Self::format_pest_profile(&mut md, pest_profile);
-                    }
+                    // Pest profile moved to M3 for better coherence with biocontrol
                 }
 
                 // Insert CSR strategy profile after M2 (Growth Compatibility)
@@ -90,8 +87,13 @@ impl MarkdownFormatter {
                     }
                 }
 
-                // Insert biocontrol profile after M3 (Insect Pest Control)
+                // Insert pest and biocontrol profiles after M3 (Insect Pest Control)
                 if benefit.metric_code == "M3" {
+                    // Show pest vulnerability FIRST (what are the pests?)
+                    if let Some(pest_profile) = &explanation.pest_profile {
+                        Self::format_pest_profile(&mut md, pest_profile);
+                    }
+                    // Then show biocontrol network (how do we control them?)
                     if let Some(biocontrol_profile) = &explanation.biocontrol_network_profile {
                         Self::format_biocontrol_profile(&mut md, biocontrol_profile);
                     }
@@ -147,7 +149,6 @@ impl MarkdownFormatter {
     /// Format pest vulnerability profile section
     fn format_pest_profile(md: &mut String, pest_profile: &PestProfile) {
         md.push_str("#### Pest Vulnerability Profile\n\n");
-        md.push_str("*Qualitative information about herbivore pests (not used in scoring)*\n\n");
 
         md.push_str(&format!(
             "**Total unique herbivore species:** {}\n\n",
@@ -156,9 +157,9 @@ impl MarkdownFormatter {
 
         // Top pests by interaction count
         if !pest_profile.top_pests.is_empty() {
-            md.push_str("**Top 10 Herbivore Pests**\n\n");
-            md.push_str("| Rank | Pest Species | Herbivore Category | Plants Attacked |\n");
-            md.push_str("|------|--------------|-------------------|------------------|\n");
+            md.push_str("**Top 10 Herbivores and Parasites**\n\n");
+            md.push_str("| Rank | Pest Species | Category | Plants Attacked |\n");
+            md.push_str("|------|--------------|----------|------------------|\n");
             for (i, pest) in pest_profile.top_pests.iter().enumerate().take(10) {
                 let plant_list = if pest.plants.len() > 3 {
                     format!("{} plants", pest.plants.len())
@@ -238,7 +239,6 @@ impl MarkdownFormatter {
     /// Format fungi network profile section
     fn format_fungi_profile(md: &mut String, fungi_profile: &FungiNetworkProfile) {
         md.push_str("#### Beneficial Fungi Network Profile\n\n");
-        md.push_str("*Qualitative information about fungal networks (60% of M5 scoring)*\n\n");
 
         md.push_str(&format!(
             "**Total unique beneficial fungi species:** {}\n\n",
@@ -339,7 +339,6 @@ impl MarkdownFormatter {
     /// Format pollinator network profile section
     fn format_pollinator_profile(md: &mut String, pollinator_profile: &PollinatorNetworkProfile) {
         md.push_str("#### Pollinator Network Profile\n\n");
-        md.push_str("*Qualitative information about pollinator networks (100% of M7 scoring)*\n\n");
 
         md.push_str(&format!(
             "**Total unique pollinator species:** {}\n\n",
@@ -515,7 +514,6 @@ impl MarkdownFormatter {
     /// Format biocontrol network profile section
     fn format_biocontrol_profile(md: &mut String, biocontrol_profile: &BiocontrolNetworkProfile) {
         md.push_str("#### Biocontrol Network Profile\n\n");
-        md.push_str("*Qualitative information about pest control (influences M3 scoring)*\n\n");
 
         md.push_str("**Summary:**\n");
         md.push_str(&format!("- {} unique predator species\n", biocontrol_profile.total_unique_predators));
@@ -554,8 +552,8 @@ impl MarkdownFormatter {
                 "**{} Herbivore → Predator matches found:**\n\n",
                 biocontrol_profile.matched_predator_pairs.len()
             ));
-            md.push_str("| Herbivore (Pest) | Herbivore Category | Known Predator | Predator Category | Match Type |\n");
-            md.push_str("|------------------|-------------------|----------------|-------------------|------------|\n");
+            md.push_str("| Herbivore (Pest) | Category | Known Predator | Predator Category | Match Type |\n");
+            md.push_str("|------------------|----------|----------------|-------------------|------------|\n");
             for pair in biocontrol_profile.matched_predator_pairs.iter().take(20) {
                 md.push_str(&format!(
                     "| {} | {} | {} | {} | Specific |\n",
@@ -581,8 +579,8 @@ impl MarkdownFormatter {
         // Show matched fungi pairs
         if !biocontrol_profile.matched_fungi_pairs.is_empty() {
             md.push_str("**Matched Herbivore → Entomopathogenic Fungus Pairs:**\n\n");
-            md.push_str("| Herbivore (Pest) | Herbivore Category | Entomopathogenic Fungus | Match Type |\n");
-            md.push_str("|------------------|--------------------|------------------------|------------|\n");
+            md.push_str("| Herbivore (Pest) | Category | Entomopathogenic Fungus | Match Type |\n");
+            md.push_str("|------------------|----------|------------------------|------------|\n");
             for pair in biocontrol_profile.matched_fungi_pairs.iter().take(20) {
                 md.push_str(&format!(
                     "| {} | {} | {} | Specific |\n",
@@ -688,7 +686,6 @@ impl MarkdownFormatter {
 
     fn format_pathogen_control_profile(md: &mut String, pathogen_profile: &PathogenControlNetworkProfile) {
         md.push_str("#### Pathogen Control Network Profile\n\n");
-        md.push_str("*Qualitative information about disease suppression (influences M4 scoring)*\n\n");
 
         md.push_str("**Summary:**\n");
         md.push_str(&format!("- {} unique mycoparasite species (fungi that parasitize other fungi)\n", pathogen_profile.total_unique_mycoparasites));
