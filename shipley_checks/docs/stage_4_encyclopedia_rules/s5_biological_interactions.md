@@ -219,9 +219,33 @@ The following are used for **guild scoring** and **dynamic care plans**, not sta
 | `herbivore_predators_11711.parquet` | Herbivore → known predators | M3 metric, SQL care plan |
 | `insect_fungal_parasites_11711.parquet` | Herbivore → entomopathogenic fungi | M3 metric, SQL care plan |
 | `pathogen_antagonists_11711.parquet` | Pathogen → antagonist organisms | M4 metric, SQL care plan |
-| `predators_hasHost/interactsWith/adjacentTo` | Legacy: animals associated with plant | Not used (misleading) |
 
 These enable future UI features like "Generate care plan" which would:
 1. Look up predators of this plant's herbivores
 2. Find companion plants that host those predators
 3. Suggest biocontrol-optimized planting combinations
+
+---
+
+## Known Issues / Future Investigation
+
+### Erroneous `is_biocontrol` flag in `organisms_searchable.parquet`
+
+**Location**: `shipley_checks/stage4/phase7_output/organisms_searchable.parquet`
+
+**Problem**: The `is_biocontrol` boolean flag incorrectly labels ALL animals from `predators_hasHost`, `predators_interactsWith`, `predators_adjacentTo` columns as biocontrol agents.
+
+**Reality**: These columns contain animals with various relationships TO THE PLANT (hasHost, interactsWith, adjacentTo) - NOT predators of herbivores. They include herbivores, commensals, and incidental visitors.
+
+**Source of error**: `Phase_7_datafusion/convert_organisms_for_sql.R` lines 119-120:
+```r
+is_biocontrol = interaction_type %in% c("predators_hasHost", "predators_interactsWith",
+                                         "predators_adjacentTo"),
+```
+
+**Correct biocontrol data**: Use `herbivore_predators_11711.parquet` which contains actual predator-prey relationships extracted via GloBI `eats`/`preysOn`.
+
+**Action needed**: When refining SQL engine, either:
+1. Remove misleading `is_biocontrol` column from organisms_searchable
+2. Or rename to `is_plant_associated_animal` to reflect actual meaning
+3. Add proper biocontrol column derived from herbivore_predators lookup
