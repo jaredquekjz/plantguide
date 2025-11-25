@@ -22,27 +22,35 @@ Static recommendations based on THIS plant's characteristics, derived from Guild
 
 ### Recommendation Rules
 
-| Plant's Family | Companion Guidance |
-|----------------|-------------------|
-| Rosaceae | Avoid other Rosaceae (shared rust, aphids). Pair with Lamiaceae, Asteraceae |
-| Fabaceae | Nitrogen-fixer. Pair with heavy feeders from any family |
-| Brassicaceae | Avoid other Brassicaceae (shared clubroot, cabbage pests). Pair with Allium |
-| Solanaceae | Avoid other Solanaceae (shared blight, Colorado beetle). Pair with legumes |
-| Poaceae | Grasses share many pests. Mix with broadleaf plants |
-| Apiaceae | Avoid other Apiaceae (shared carrot fly). Pair with Allium |
+The GuildBuilder calculates Faith's Phylogenetic Diversity (PD) - the sum of evolutionary branch lengths connecting guild members. Higher PD = greater pest/pathogen independence.
+
+**General principles**:
+- Plants in the SAME genus share the most pests/pathogens → avoid clustering
+- Plants in the SAME family share many pests/pathogens → diversify
+- Plants in DIFFERENT families have fewer shared vulnerabilities
+- Maximum diversity: different orders or higher taxonomic levels
 
 ### Output Format
 
 ```markdown
 ### Phylogenetic Independence
 
-**Family**: Rosaceae
-**Genus**: Malus
+**Family**: {family}
+**Genus**: {genus}
 
 **Guild Recommendation**:
-- Avoid pairing with other Rosaceae (Rosa, Prunus, Rubus) - shared apple scab, rust, aphids
-- Excellent companions: Allium (pest deterrent), Lamiaceae (aromatic distraction)
-- Seek maximum taxonomic distance for pest dilution
+- Avoid clustering plants from the same genus (highest shared pest risk)
+- Diversify beyond this family for reduced pathogen transmission
+- Seek maximum taxonomic distance for pest dilution effect
+```
+
+### Decision Tree
+
+```
+ALWAYS:
+  "Seek companions from different families to reduce shared pest/pathogen risk."
+  "Avoid clustering multiple plants of the same genus."
+  "Greater taxonomic distance = lower shared vulnerability."
 ```
 
 ---
@@ -85,19 +93,15 @@ Static recommendations based on THIS plant's characteristics, derived from Guild
 ```markdown
 ### Growth Compatibility
 
-**CSR Profile**: C: 65% | S: 20% | R: 15%
-**Strategy**: Competitive (C-dominant)
-**Height**: 4.5m
-**Light Preference**: EIVE-L 7 (full sun)
+**CSR Profile**: C: {c_pct}% | S: {s_pct}% | R: {r_pct}%
+**Strategy**: {dominant_strategy}
+**Height**: {height_m}m
+**Light Preference**: EIVE-L {light_pref}
 
 **Guild Recommendations**:
-- **Avoid**: Other C-dominant plants at same height (resource competition)
-- **Good companions**:
-  - S-dominant shade-tolerant understory (EIVE-L < 3.2)
-  - Vines that can climb this plant
-  - Low herbs with different vertical niche
-- **Spacing**: Give extra space to other competitive plants
-- **Succession**: R-dominant plants can fill temporary gaps
+- {strategy-specific guidance}
+- {height-specific guidance}
+- {light-specific guidance}
 ```
 
 ### Decision Tree
@@ -128,7 +132,11 @@ IF balanced (no > 75%):
 
 ## GP3: Pest Control Contribution (from M3)
 
-**Data source**: `herbivores` list, `herbivore_count`, `flower_visitors`, predator columns
+**Data source**:
+- `herbivores` list, `herbivore_count` - pests attacking this plant
+- `flower_visitors`, `visitor_count` - insects visiting flowers (includes predators)
+- `predators_hasHost`, `predators_interactsWith`, `predators_adjacentTo` (+ counts) - beneficial predators
+- `entomopathogenic_fungi`, `entomopathogenic_fungi_count` - insect-killing fungi hosted
 
 **Scientific basis**: Plants hosting predators of neighbouring plants' herbivores provide biocontrol. Entomopathogenic fungi on one plant can suppress pests on companions.
 
@@ -136,9 +144,10 @@ IF balanced (no > 75%):
 
 | Field | Source | Guild Relevance |
 |-------|--------|-----------------|
-| Herbivore count | `herbivore_count` | Pest pressure level |
-| Key herbivores | `herbivores` list | What attacks this plant |
-| Flower visitors | `flower_visitors` | Potential predator habitat |
+| Herbivore count | `herbivore_count` | Pest pressure on this plant |
+| Key herbivores | `herbivores` list | What pests attack this plant |
+| Beneficial predators | predator columns | Predatory insects this plant hosts |
+| Entomopathogenic fungi | `entomopathogenic_fungi` | Insect-killing fungi hosted |
 
 ### Pest Pressure Classification
 
@@ -149,49 +158,66 @@ IF balanced (no > 75%):
 | < 5 | Low | Few documented pests; may provide predator habitat |
 | 0 | Unknown | Not well-studied |
 
+### Biocontrol Contribution Classification
+
+| Metric | Guild Value |
+|--------|-------------|
+| Predator count > 10 | High biocontrol habitat value |
+| Predator count 3-10 | Moderate biocontrol habitat |
+| Predator count < 3 | Low documented predator hosting |
+| Entomopathogenic fungi > 0 | Hosts insect-killing fungi |
+
 ### Output Format
 
 ```markdown
 ### Pest Control Potential
 
-**Herbivore Load**: 12 taxa documented (Moderate)
-**Key Pests**: Aphids (Myzus persicae), Caterpillars (Operophtera brumata)
+**Pest Load**: {herbivore_count} herbivore taxa documented ({level})
+**Key Pests**: {top 3-5 herbivores from list}
+
+**Biocontrol Assets**:
+- Hosts {predator_count} beneficial predator taxa
+- Hosts {entomo_fungi_count} entomopathogenic fungi species
 
 **Guild Recommendations**:
-- **Seek companions hosting**: Ladybirds, parasitic wasps, hoverflies
-- **Beneficial neighbours**: Umbellifer family (parasitoid habitat), Asteraceae (hoverfly habitat)
-- **Biocontrol synergy**: Plants with similar pest profiles share predator communities
+- {pest-level-specific guidance}
+- {predator-specific guidance}
 
 **This Plant Provides**:
-- Habitat for {n} beneficial insects visiting flowers
-- Potential predator refuge if unpruned/unharvested
+- Habitat for {predator_count} beneficial insects
+- {entomopathogenic fungi contribution if any}
 ```
 
-### Guidance Rules
+### Decision Tree
 
 ```
 IF herbivore_count > 15:
-  "High pest pressure. Prioritise companions hosting known predators."
-  "Consider: Yarrow, fennel, dill (parasitoid wasps); native wildflowers (general predators)"
+  "High pest pressure. Benefits significantly from companions hosting predators of these pests."
 
 IF herbivore_count 5-15:
   "Moderate pest pressure. Diverse plantings provide natural balance."
 
 IF herbivore_count < 5:
-  "Low documented pest pressure. This plant may provide predator habitat for neighbours."
+  "Low documented pest pressure. May provide predator habitat for neighbours."
 
-IF family == "Apiaceae":
-  "Umbellifer flowers attract parasitic wasps - excellent biocontrol habitat."
+IF predator_count > 10:
+  "Strong biocontrol habitat. This plant hosts many beneficial predators that protect neighbours."
 
-IF family == "Asteraceae":
-  "Composite flowers attract hoverflies and predatory beetles."
+IF predator_count 3-10:
+  "Moderate biocontrol value. Contributes predator habitat to guild."
+
+IF entomopathogenic_fungi_count > 0:
+  "Hosts {entomopathogenic_fungi_count} insect-killing fungi species that may suppress pests on neighbouring plants."
 ```
 
 ---
 
 ## GP4: Disease Control Contribution (from M4)
 
-**Data source**: `pathogens` list, `pathogen_count`, `mycoparasite_fungi`, `fungivores_eats`
+**Data source**:
+- `pathogenic_fungi` list, `pathogenic_fungi_count` - diseases affecting this plant
+- `mycoparasite_fungi`, `mycoparasite_fungi_count` - fungi that attack pathogenic fungi
+- `fungivores_eats`, `fungivores_eats_count` - animals that consume fungi
 
 **Scientific basis**: Mycoparasitic fungi attack plant pathogens. Fungivorous animals consume pathogenic fungi. Plants hosting these provide disease suppression.
 
@@ -199,112 +225,137 @@ IF family == "Asteraceae":
 
 | Field | Source | Guild Relevance |
 |-------|--------|-----------------|
-| Pathogen count | `pathogen_count` | Disease pressure level |
-| Key pathogens | `pathogens` list | What diseases affect this plant |
-| Mycoparasites hosted | `mycoparasite_fungi` | Beneficial fungi this plant supports |
+| Pathogen count | `pathogenic_fungi_count` | Disease pressure level |
+| Key pathogens | `pathogenic_fungi` list | What diseases affect this plant |
+| Mycoparasites | `mycoparasite_fungi`, `mycoparasite_fungi_count` | Fungi that attack pathogens |
+| Fungivores | `fungivores_eats`, `fungivores_eats_count` | Animals that eat pathogenic fungi |
 
 ### Disease Pressure Classification
 
 | Pathogen Count | Level | Implication |
 |----------------|-------|-------------|
-| > 10 | High | Multiple disease risks; needs diverse biocontrol |
+| > 10 | High | Multiple disease risks; avoid clustering same pathogens |
 | 3-10 | Moderate | Some disease pressure |
 | < 3 | Low | Few documented diseases |
 | 0 | Unknown | Not well-studied |
+
+### Disease Control Contribution Classification
+
+| Metric | Guild Value |
+|--------|-------------|
+| Mycoparasite count > 5 | High disease suppression potential |
+| Mycoparasite count 1-5 | Moderate mycoparasite hosting |
+| Fungivore count > 3 | Hosts fungivorous animals |
+| Fungivore count 1-3 | Some fungivore habitat |
 
 ### Output Format
 
 ```markdown
 ### Disease Control Potential
 
-**Pathogen Load**: 5 taxa documented (Moderate)
-**Key Diseases**: Powdery mildew (Erysiphe), Rust (Puccinia)
+**Disease Load**: {pathogenic_fungi_count} pathogen taxa documented ({level})
+**Key Diseases**: {top 3-5 from pathogenic_fungi list}
+
+**Biocontrol Assets**:
+- Hosts {mycoparasite_fungi_count} mycoparasitic fungi (attack plant pathogens)
+- Hosts {fungivores_eats_count} fungivorous animals (consume pathogenic fungi)
 
 **Guild Recommendations**:
-- **Seek companions with**: Mycoparasitic fungi (Trichoderma, Ampelomyces)
-- **Avoid clustering**: Plants with identical pathogens (amplifies inoculum)
-- **Airflow**: Space plants to reduce humidity-driven disease spread
+- {disease-level-specific guidance}
+- {biocontrol-specific guidance}
 
 **This Plant Provides**:
-- Hosts {n} mycoparasitic fungi that may protect neighbours
-- Soil microbiome contribution to disease suppression
+- {mycoparasite contribution if any}
+- {fungivore contribution if any}
 ```
 
-### Guidance Rules
+### Decision Tree
 
 ```
-IF pathogen_count > 10:
-  "High disease pressure. Avoid planting with species sharing same pathogens."
-  "Seek companions hosting mycoparasitic Trichoderma spp."
+IF pathogenic_fungi_count > 10:
+  "High disease pressure. Avoid clustering with plants sharing the same pathogens."
+  "Improve airflow by spacing to reduce humidity-driven disease spread."
 
-IF family == "Rosaceae" AND pathogen includes "rust" OR "scab":
-  "Common Rosaceae diseases. Improve airflow; avoid clustering rose family plants."
+IF pathogenic_fungi_count 3-10:
+  "Moderate disease pressure. Benefits from companions hosting disease antagonists."
 
-IF mycoparasite_fungi count > 0:
-  "This plant hosts beneficial mycoparasites that may protect neighbours from fungal diseases."
+IF pathogenic_fungi_count < 3:
+  "Low documented disease pressure."
+
+IF mycoparasite_fungi_count > 0:
+  "Hosts mycoparasitic fungi that may protect neighbours from fungal diseases."
+
+IF fungivores_eats_count > 0:
+  "Hosts fungivorous animals that consume pathogenic fungi - contributes to guild disease suppression."
 ```
 
 ---
 
 ## GP5: Mycorrhizal Network (from M5)
 
-**Data source**: `is_amf`, `is_emf`, `amf_fungi`, `emf_fungi`, `endophytic_fungi`
+**Data source**: `amf_fungi`, `amf_fungi_count`, `emf_fungi`, `emf_fungi_count`, `endophytic_fungi`, `saprotrophic_fungi`
 
-**Scientific basis**: Plants sharing mycorrhizal fungi form Common Mycorrhizal Networks (CMNs) enabling nutrient sharing and chemical signaling. AMF and EMF are largely incompatible networks.
+**Scientific basis**: Plants sharing mycorrhizal fungi form Common Mycorrhizal Networks (CMNs) enabling nutrient sharing (carbon, phosphorus, nitrogen) and chemical stress signaling. AMF and EMF fungi form separate network types that cannot interconnect.
 
 ### Mycorrhizal Classification
 
-| Type | Typical Plants | Network Properties |
-|------|---------------|-------------------|
-| AMF (Arbuscular) | Most herbs, grasses, many shrubs | Broad networks, phosphorus transfer |
-| EMF (Ectomycorrhizal) | Oaks, beeches, birches, pines | Tree-dominated, nutrient + defense signaling |
-| Dual | Some plants form both | Flexible network membership |
-| Non-mycorrhizal | Brassicaceae, Chenopodiaceae | No network participation |
+| Type | Description | Network Properties |
+|------|-------------|-------------------|
+| AMF (Arbuscular) | Forms arbuscules inside root cells | Broad low-specificity networks, phosphorus transfer |
+| EMF (Ectomycorrhizal) | Forms sheath around root tips | Higher host specificity, nutrient + defense signaling |
+| Dual | Associates with both AMF and EMF | Can participate in either network type |
+| Non-mycorrhizal | Does not form mycorrhizal associations | No network participation |
 
 ### Network Compatibility Rules
 
-| Plant Type | Compatible With | Incompatible With |
-|------------|-----------------|-------------------|
-| AMF-only | Other AMF plants | EMF-only plants |
-| EMF-only | Other EMF plants | AMF-only plants |
-| Dual | Both networks | None |
-| Non-mycorrhizal | Any (no network effect) | None |
+CMNs require shared fungal partners. Plants using the same mycorrhizal type CAN share networks; plants using different types CANNOT transfer resources between networks.
+
+| Plant Type | Network Potential | Notes |
+|------------|-------------------|-------|
+| AMF-only | Connects to other AMF plants | Forms broad networks with herbs, grasses, many shrubs |
+| EMF-only | Connects to other EMF plants | Forms networks with specific tree genera |
+| Dual | Bridges both network types | Versatile guild member |
+| Non-mycorrhizal | No network connection | Neither benefits nor loses from CMN |
+
+**Key insight**: AMF and EMF are not "incompatible" in a harmful sense - they simply form separate underground networks. A guild can contain both, but they won't share resources across network types.
 
 ### Output Format
 
 ```markdown
 ### Mycorrhizal Network
 
-**Association**: AMF (Arbuscular Mycorrhizal)
-**Documented Fungi**: Glomus spp., Rhizophagus irregularis
+**Association**: {AMF / EMF / Dual / Non-mycorrhizal}
+**Documented Fungi**: {list of specific fungi if available}
 
 **Guild Recommendations**:
-- **Network-compatible**: Other AMF plants (most herbs, grasses, shrubs)
-- **Potential conflict**: EMF-exclusive trees (oaks, pines) - different networks
+- **Network-compatible plants**: Other {AMF/EMF}-associated plants
+- **Network benefit**: Can share {nutrients/signals} with compatible plants
 - **Soil management**: Avoid excessive tillage to preserve hyphal networks
 
 **This Plant Contributes**:
-- Connection point for carbon/phosphorus sharing network
-- Potential stress signal relay to network partners
+- {Connection point description based on type}
 ```
 
-### Guidance Rules
+### Decision Tree
 
 ```
-IF is_amf == TRUE AND is_emf == FALSE:
-  "AMF-exclusive. Best paired with other AMF plants (herbs, grasses, most shrubs)."
-  "Network bonus with: legumes, Asteraceae, Poaceae"
+IF amf_fungi_count > 0 AND emf_fungi_count == 0:
+  "AMF-associated. Forms underground networks with other AMF plants."
+  "Network bonus: Can share phosphorus and carbon with AMF-compatible neighbours."
+  "Soil tip: Minimize tillage to preserve fungal hyphal connections."
 
-IF is_emf == TRUE AND is_amf == FALSE:
-  "EMF-exclusive. Best paired with other EMF trees (oaks, beeches, birches, pines)."
+IF emf_fungi_count > 0 AND amf_fungi_count == 0:
+  "EMF-associated. Forms underground networks with other EMF plants."
+  "Network bonus: Can share nutrients and defense signals with EMF-compatible neighbours."
   "Creates forest-type nutrient-sharing network."
 
-IF is_amf == TRUE AND is_emf == TRUE:
-  "Dual mycorrhizal. Can connect to both network types - versatile guild member."
+IF amf_fungi_count > 0 AND emf_fungi_count > 0:
+  "Dual mycorrhizal. Can connect to both AMF and EMF network types."
+  "Versatile guild member - bridges different plant communities."
 
-IF family IN ("Brassicaceae", "Chenopodiaceae", "Amaranthaceae"):
-  "Non-mycorrhizal family. Does not participate in underground networks."
-  "No network conflict, but no network benefit either."
+IF amf_fungi_count == 0 AND emf_fungi_count == 0:
+  "Non-mycorrhizal or undocumented. May not participate in underground fungal networks."
+  "No network conflict, but no documented network benefit from CMN."
 ```
 
 ---
@@ -313,7 +364,7 @@ IF family IN ("Brassicaceae", "Chenopodiaceae", "Amaranthaceae"):
 
 **Data source**: `height_m`, `try_growth_form`, `EIVEres-L_complete`
 
-**Scientific basis**: Vertical stratification creates microhabitats. Taller plants shade shorter ones - beneficial only if shorter plants are shade-tolerant.
+**Scientific basis**: Vertical stratification creates microhabitats. Taller plants shade shorter ones - beneficial only if shorter plants are shade-tolerant. The GuildBuilder validates height differences against light preferences.
 
 ### Layer Classification
 
@@ -338,30 +389,28 @@ IF family IN ("Brassicaceae", "Chenopodiaceae", "Amaranthaceae"):
 | Form Combination | Synergy | Notes |
 |-----------------|---------|-------|
 | Tree + Vine | High | Vine uses tree as climbing structure |
-| Tree + Shade herb | High | Herb benefits from canopy |
-| Tree + Sun herb | Low | Herb shaded out |
+| Tree + Shade-tolerant herb | High | Herb benefits from canopy |
+| Tree + Sun-loving herb | Low | Herb shaded out |
 | Shrub + Ground cover | High | Different vertical niches |
-| Herb + Herb (same height) | Variable | Depends on resource overlap |
+| Herb + Herb (same height) | Variable | Depends on CSR and resource overlap |
 
 ### Output Format
 
 ```markdown
 ### Structural Role
 
-**Layer**: Sub-canopy (7m)
-**Growth Form**: Tree
-**Light Preference**: EIVE-L 6 (partial sun)
+**Layer**: {layer_name} ({height_m}m)
+**Growth Form**: {try_growth_form}
+**Light Preference**: EIVE-L {light_pref}
 
 **Guild Recommendations**:
-- **Below this plant**: Shade-tolerant herbs (EIVE-L < 5), ferns, woodland groundcovers
-- **Same layer**: Avoid other sub-canopy trees (competition for filtered light)
-- **Above this plant**: Pairs well under taller canopy trees
-- **Climbing**: Suitable structure for shade-tolerant vines
+- **Below this plant**: {shade-tolerance requirements}
+- **Same layer**: {competition considerations}
+- **Above this plant**: {canopy compatibility}
+- **Climbing**: {suitability as climbing structure}
 
 **Structural Contribution**:
-- Provides filtered shade for 2-5m zone
-- Wind reduction for shorter plants
-- Habitat structure for wildlife
+- {shade/wind/habitat provision}
 ```
 
 ### Decision Tree
@@ -369,8 +418,8 @@ IF family IN ("Brassicaceae", "Chenopodiaceae", "Amaranthaceae"):
 ```
 IF height > 10m:
   "Canopy layer. Creates significant shade below."
-  "Pair with: shade-tolerant understory, woodland herbs, ferns"
-  "Avoid pairing with: sun-loving plants in shade zone"
+  "Pair with: shade-tolerant understory plants (EIVE-L < 5)"
+  "Avoid pairing with: sun-loving plants in the shade zone"
 
 IF height 5-10m:
   "Sub-canopy. Provides partial shade, benefits from canopy protection."
@@ -383,7 +432,7 @@ IF height 2-5m:
 IF height 0.5-2m:
   "Understory. Consider light requirements."
   IF EIVE-L < 3.2:
-    "Shade-adapted. Place under trees/tall shrubs."
+    "Shade-adapted. Thrives under trees/tall shrubs."
   ELSE IF EIVE-L > 7.47:
     "Sun-loving. Needs open position, not under canopy."
   ELSE:
@@ -393,8 +442,8 @@ IF height < 0.5m:
   "Ground cover. Soil protection, weed suppression role."
   "Pair with: any taller plants (provides living mulch)"
 
-IF growth_form == "vine" OR growth_form == "liana":
-  "Climber. Needs vertical structure (trees, trellises)."
+IF growth_form CONTAINS "vine" OR "liana":
+  "Climber. Needs vertical structure."
   "Pair with: trees or tall shrubs as climbing hosts"
 ```
 
@@ -404,7 +453,7 @@ IF growth_form == "vine" OR growth_form == "liana":
 
 **Data source**: `pollinators` list, `pollinator_count`
 
-**Scientific basis**: Plants sharing pollinators create mutual attraction. Quadratic benefit: more overlap = non-linearly better pollination for both plants.
+**Scientific basis**: Plants sharing pollinators create mutual attraction effects. The GuildBuilder uses quadratic weighting - more shared pollinators = non-linearly better pollination for both plants.
 
 ### Pollinator Value Classification
 
@@ -431,21 +480,20 @@ IF growth_form == "vine" OR growth_form == "liana":
 ```markdown
 ### Pollinator Support
 
-**Pollinator Value**: High (18 taxa documented)
-**Key Visitors**: Bumblebees (Bombus spp.), Honeybees (Apis mellifera), Hoverflies
+**Pollinator Value**: {level} ({pollinator_count} taxa documented)
+**Key Visitors**: {top pollinators from list}
 
 **Guild Recommendations**:
 - **Complement flowering times**: Pair with early/late bloomers for season-long support
-- **Pollinator magnet**: This plant attracts pollinators that benefit neighbours
+- **Shared pollinators**: Plants with overlapping pollinator communities benefit each other
 - **Proximity bonus**: Nearby plants with shared pollinators get increased visits
 
 **This Plant Provides**:
-- Nectar/pollen for 18+ pollinator species
+- Nectar/pollen for {pollinator_count} pollinator taxa
 - Attraction effect increases visits to neighbouring plants
-- Supports both generalist and specialist pollinators
 ```
 
-### Guidance Rules
+### Decision Tree
 
 ```
 IF pollinator_count > 20:
@@ -456,20 +504,11 @@ IF pollinator_count 11-20:
   "Strong pollinator support. Valuable addition to any guild."
 
 IF pollinator_count 5-10:
-  "Moderate pollinator support. Combine with high-value plants."
+  "Moderate pollinator support. Combine with high-pollinator plants for synergy."
 
 IF pollinator_count < 5:
   "Limited documented pollinators. May have specialist visitors."
-  "Consider pairing with pollinator magnets for cross-pollination."
-
-IF family == "Lamiaceae":
-  "Mint family - typically excellent for bumblebees and hoverflies."
-
-IF family == "Asteraceae":
-  "Daisy family - open florets attract diverse pollinators including hoverflies."
-
-IF family == "Fabaceae":
-  "Legume family - important for long-tongued bees."
+  "Consider pairing with pollinator-rich plants for cross-pollination support."
 ```
 
 ---
@@ -483,28 +522,28 @@ IF family == "Fabaceae":
 
 | Metric | Value | Guild Contribution |
 |--------|-------|-------------------|
-| Phylogenetic | Rosaceae → Malus | Seek non-Rosaceae companions |
-| CSR Strategy | C: 65% (Competitive) | Avoid other C-dominant at same height |
-| Structural | Sub-canopy (7m) | Provides shade, supports climbers |
-| Mycorrhizal | AMF-compatible | Network with herbs, grasses |
-| Pest Control | 12 herbivores | Benefits from predator plants |
-| Disease Control | 5 pathogens | Avoid pathogen clustering |
-| Pollinator | High (18 taxa) | Attracts pollinators for neighbours |
+| Phylogenetic | {family} → {genus} | Seek different families |
+| CSR Strategy | C: {c}% S: {s}% R: {r}% | {strategy guidance} |
+| Structural | {layer} ({height}m) | {structural role} |
+| Mycorrhizal | {AMF/EMF/Dual/Non} | {network compatibility} |
+| Pest Control | {herbivore_count} pests, {predator_count} predators | {biocontrol role} |
+| Disease Control | {pathogen_count} pathogens, {mycoparasite_count} antagonists | {disease role} |
+| Pollinator | {pollinator_count} taxa | {pollinator value} |
 
-### Top Companion Recommendations
+### Top Companion Principles
 
 Based on this plant's characteristics:
 
-1. **Shade-tolerant ground cover** (EIVE-L < 3.2) - benefits from canopy
-2. **Umbellifer herbs** (Apiaceae) - different family, hosts parasitoid wasps
-3. **Aromatic Lamiaceae** - pest-deterrent, pollinator support, different family
-4. **Nitrogen-fixing legumes** - soil enrichment, different family, AMF-compatible
+1. **Taxonomic diversity** - seek plants from different families
+2. **CSR compatibility** - {strategy-specific guidance}
+3. **Structural layering** - {height-appropriate companions}
+4. **Mycorrhizal network** - {network-compatible plants}
 
-### Avoid
+### Cautions
 
-- Other Rosaceae at same height (shared pests, competition)
-- Sun-loving herbs directly below (will be shaded out)
-- EMF-exclusive trees (network incompatibility)
+- {family clustering warning}
+- {CSR conflict warning if applicable}
+- {light/shade conflict if applicable}
 
 **→ [Launch GuildBuilder]** for optimised companion scoring with specific plants
 ```
@@ -512,6 +551,8 @@ Based on this plant's characteristics:
 ---
 
 ## Data Column Reference
+
+### Plants Master Dataset (Stage 3)
 
 | Column | Source | Used For |
 |--------|--------|----------|
@@ -521,13 +562,38 @@ Based on this plant's characteristics:
 | `height_m` | TRY | GP2, GP6 - Structure |
 | `EIVEres-L_complete` | Stage 2 | GP2, GP6 - Light compatibility |
 | `try_growth_form` | TRY | GP2, GP6 - Structure |
-| `herbivores` | Phase 0 | GP3 - Pest control |
-| `herbivore_count` | Phase 0 | GP3 - Pest control |
-| `pathogens` | Phase 0 | GP4 - Disease control |
-| `pathogen_count` | Phase 0 | GP4 - Disease control |
-| `is_amf`, `is_emf` | Phase 0 | GP5 - Mycorrhizal |
-| `pollinators` | Phase 0 | GP7 - Pollinator support |
-| `pollinator_count` | Phase 0 | GP7 - Pollinator support |
+
+### Organisms Parquet (`organism_profiles_11711.parquet`)
+
+| Column | Used For |
+|--------|----------|
+| `herbivores` | GP3 - Pest list |
+| `herbivore_count` | GP3 - Pest pressure level |
+| `flower_visitors` | GP3 - Potential predator habitat |
+| `predators_hasHost` | GP3 - Beneficial predators |
+| `predators_interactsWith` | GP3 - Beneficial predators |
+| `predators_adjacentTo` | GP3 - Beneficial predators |
+| `fungivores_eats` | GP4 - Fungivorous animals |
+| `fungivores_eats_count` | GP4 - Fungivore count |
+| `pollinators` | GP7 - Pollinator list |
+| `pollinator_count` | GP7 - Pollinator count |
+
+### Fungi Parquet (`fungal_guilds_hybrid_11711.parquet`)
+
+| Column | Used For |
+|--------|----------|
+| `pathogenic_fungi` | GP4 - Disease list |
+| `pathogenic_fungi_count` | GP4 - Disease pressure level |
+| `mycoparasite_fungi` | GP4 - Mycoparasitic fungi |
+| `mycoparasite_fungi_count` | GP4 - Mycoparasite count |
+| `entomopathogenic_fungi` | GP3 - Insect-killing fungi |
+| `entomopathogenic_fungi_count` | GP3 - Entomopathogen count |
+| `amf_fungi` | GP5 - AMF species list |
+| `amf_fungi_count` | GP5 - AMF presence/count |
+| `emf_fungi` | GP5 - EMF species list |
+| `emf_fungi_count` | GP5 - EMF presence/count |
+| `endophytic_fungi` | GP5 - Endophytes |
+| `saprotrophic_fungi` | GP5 - Saprotrophs |
 
 ---
 
@@ -545,3 +611,12 @@ The following require pairwise analysis (GuildBuilder territory):
 | EIVE compatibility scoring | Requires pairwise distance calculation |
 
 Static encyclopedia provides the traits. GuildBuilder uses those traits to score actual combinations.
+
+---
+
+## References
+
+Mycorrhizal network science:
+- [Common Mycorrhizal Networks: Theories and Mechanisms](https://pmc.ncbi.nlm.nih.gov/articles/PMC10512311/)
+- [Inter-plant communication through mycorrhizal networks](https://pmc.ncbi.nlm.nih.gov/articles/PMC4497361/)
+- [Common Mycorrhizae Network in Sustainable Agriculture](https://pmc.ncbi.nlm.nih.gov/articles/PMC11020090/)
