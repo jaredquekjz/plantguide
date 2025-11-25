@@ -375,43 +375,26 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
 
   PHASE6_START=$(date +%s)
 
-  # Build test binaries (debug mode is fine for testing)
-  echo "Building test binaries..."
+  # Build test binary (debug mode is fine for testing)
+  echo "Building test binary..."
   cd "${STAGE4_DIR}"
   cd guild_scorer_rust
-  cargo build --bin test_3_guilds_parallel 2>&1 | tail -5
-  cargo build --bin test_explanations_3_guilds 2>&1 | tail -5
+  cargo build --bin test_guild_scoring 2>&1 | tail -5
   cd "${STAGE4_DIR}"
 
   echo ""
   echo "----------------------------------------------------------------------"
-  echo "Test 1: Parallel vs Sequential Parity"
+  echo "Guild Scoring Test (5 guilds × 3 formats)"
   echo "----------------------------------------------------------------------"
   echo ""
 
   cd "${PROJECT_ROOT}"
-  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_3_guilds_parallel
-  TEST1_STATUS=$?
+  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_guild_scoring
+  TEST_STATUS=$?
 
-  if [ $TEST1_STATUS -eq 0 ]; then
+  if [ $TEST_STATUS -eq 0 ]; then
     echo ""
-    echo "✓ Test 1 passed: Parallel/Sequential parity verified"
-  else
-    echo "✗ Test 1 failed: Parity check failed"
-  fi
-
-  echo ""
-  echo "----------------------------------------------------------------------"
-  echo "Test 2: Generate Explanation Reports (5 guilds × 3 formats)"
-  echo "----------------------------------------------------------------------"
-  echo ""
-
-  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_explanations_3_guilds
-  TEST2_STATUS=$?
-
-  if [ $TEST2_STATUS -eq 0 ]; then
-    echo ""
-    echo "✓ Test 2 passed: All explanation reports generated"
+    echo "✓ Test passed: All guild scores and explanation reports generated"
     echo ""
     echo "Generated reports:"
     echo "  - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}"
@@ -420,7 +403,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
     echo "  - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}"
     echo "  - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}"
   else
-    echo "✗ Test 2 failed: Explanation generation failed"
+    echo "✗ Test failed: Guild scoring or explanation generation failed"
   fi
 
   PHASE6_END=$(date +%s)
@@ -429,7 +412,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   cd "${STAGE4_DIR}"
 
   echo ""
-  if [ $TEST1_STATUS -eq 0 ] && [ $TEST2_STATUS -eq 0 ]; then
+  if [ $TEST_STATUS -eq 0 ]; then
     echo "✓ Phase 6 complete (${PHASE6_TIME}s) - All tests passed"
   else
     echo "✗ Phase 6 completed with failures (${PHASE6_TIME}s)"
@@ -447,10 +430,7 @@ elif [ "$RUN_TESTS" -eq 0 ]; then
   echo ""
   echo "Manual testing:"
   echo "  cd /home/olier/ellenberg"
-  echo "  # Test 1: Parallel/Sequential parity"
-  echo "  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_3_guilds_parallel"
-  echo "  # Test 2: Generate explanation reports"
-  echo "  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_explanations_3_guilds"
+  echo "  shipley_checks/src/Stage_4/guild_scorer_rust/target/debug/test_guild_scoring"
   echo ""
 fi
 
