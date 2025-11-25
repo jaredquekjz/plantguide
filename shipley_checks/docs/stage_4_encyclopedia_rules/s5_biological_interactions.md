@@ -1,29 +1,33 @@
 # S5: Biological Interactions Rules
 
-Rules for generating the biological interactions section from GloBI (Global Biotic Interactions) data.
+Rules for generating the biological interactions section of static encyclopedia articles.
 
-## Scientific Foundation
+## Scope
 
-**Data Sources**:
-- GloBI database - species-level interaction records (organisms_searchable.parquet)
-- FungalTraits + FunGuild - fungal guild classifications (fungi_searchable.parquet)
-- Entomopathogen database - insect-killing fungi (insect_fungal_parasites_11711.parquet)
+**Static encyclopedia** shows interactions documented for THIS plant:
+- Pollinators visiting this plant
+- Herbivores attacking this plant
+- Pathogens/parasites affecting this plant
+- Fungi associated with this plant (pathogenic and beneficial)
 
-**Interaction Types**:
-- Pollinators (strict definition)
-- Herbivores (invertebrate and vertebrate)
-- Pathogens (plant-associated diseases)
-- Natural enemies (predators/parasitoids of herbivores)
-- Beneficial biocontrol organisms
-- Beneficial fungi (mycorrhizal, entomopathogenic, mycoparasitic)
+**Dynamic features** (future SQL-based UI, not in static encyclopedia):
+- "Care plan" generation using predator lookups
+- Companion plant suggestions based on shared biocontrol agents
+
+---
+
+## Data Sources
+
+| Data | Source File | Key Columns |
+|------|-------------|-------------|
+| Pollinators, Herbivores, Pathogens | `organism_profiles_11711.parquet` | `pollinators`, `herbivores`, `pathogens` |
+| Fungal associations | `fungi_searchable.parquet` | `fungus_taxon`, `is_pathogenic`, `is_mycorrhizal`, etc. |
 
 ---
 
 ## M7: Pollinator Support
 
-**What it measures**: Diversity of pollinator taxa visiting the plant
-
-**Data source**: GloBI `pollinators` column (strict definition only, not `flower_visitors` which includes non-pollinators)
+**Data source**: `pollinators` column (strict GloBI `pollinates` relationship)
 
 ### Interpretation
 
@@ -33,259 +37,132 @@ Rules for generating the biological interactions section from GloBI (Global Biot
 | 11-20 | High | Good pollinator support |
 | 5-10 | Moderate | Moderate support |
 | 1-4 | Low | Limited pollinator value |
-| 0 | Very Low | Not documented as pollinator plant |
+| 0 | No data | Not documented (may still be visited) |
 
 ### Output Format
 
 ```markdown
-**Pollinator Support**: High (15 taxa recorded)
-Documented pollinators include: Apis mellifera, Bombus terrestris, various Syrphidae
+**Pollinators**: 15 taxa documented
+- Apis mellifera (honeybee)
+- Bombus terrestris (buff-tailed bumblebee)
+- Various Syrphidae (hoverflies)
 ```
 
 ---
 
 ## Herbivore Associations
 
-**What it measures**: Documented herbivore interactions
+**Data source**: `herbivores` column
 
-### Categories
-
-| Type | Examples |
-|------|----------|
-| Invertebrate herbivores | Lepidoptera larvae, aphids, leaf beetles |
-| Vertebrate herbivores | Deer, rabbits, birds |
+**What it shows**: Invertebrate and vertebrate animals documented feeding on this plant.
 
 ### Risk Interpretation
 
-| Herbivore Count | Risk Level | Advice |
-|-----------------|------------|--------|
-| > 15 | High | Monitor closely; may need protection |
-| 5-15 | Moderate | Occasional damage likely |
-| < 5 | Low | Limited pest pressure documented |
+| Count | Risk Level | Advice |
+|-------|------------|--------|
+| > 15 | High | Multiple pest species; monitor closely |
+| 5-15 | Moderate | Some pest pressure expected |
+| < 5 | Low | Few documented pests |
+| 0 | No data | Not well-studied or pest-free |
 
 ### Output Format
 
 ```markdown
-**Herbivore Associations**: 12 taxa documented
-- **Invertebrates**: Various Lepidoptera, aphids (Aphididae)
-- **Vertebrates**: Deer, rabbits
-- **Risk**: Moderate - occasional damage likely; consider netting in deer areas
+**Herbivores**: 8 taxa documented
+- Operophtera brumata (winter moth) - caterpillars on leaves
+- Myzus persicae (peach-potato aphid) - sap feeder
+- Otiorrhynchus sulcatus (vine weevil) - root damage
+
+**Pest Pressure**: Moderate
 ```
 
 ---
 
 ## Pathogen Associations
 
-**What it measures**: Documented plant pathogens affecting the species
+**Data source**: `pathogens` column
 
-### Categories
+**Extraction includes** (from GloBI):
+- `pathogenOf` relationships
+- `parasiteOf` relationships
+- `hasHost` where source is Fungi (fungal pathogens)
 
-| Type | Examples |
-|------|----------|
-| Fungal | Powdery mildew, rust, root rot |
-| Bacterial | Bacterial leaf spot, crown gall |
-| Viral | Mosaic virus, ring spot |
-
-### Output Format
-
-```markdown
-**Pathogen Susceptibility**: 5 pathogens documented
-- Powdery mildew (Erysiphe spp.) - common in humid conditions
-- Rust (Puccinia spp.) - monitor in wet seasons
-- **Prevention**: Good air circulation, avoid overhead watering
-```
-
----
-
-## Natural Enemy Support
-
-**What it measures**: Predators and parasitoids associated with the plant's herbivore community
-
-### Garden Value
-
-| Enemy Count | Interpretation |
-|-------------|----------------|
-| > 10 | Excellent biocontrol potential |
-| 5-10 | Good natural pest control |
-| < 5 | Limited natural enemy support |
+**Excludes**: Generic names (Fungi, Bacteria, Viruses), misclassified kingdoms
 
 ### Output Format
 
 ```markdown
-**Natural Enemy Support**: High (8 predator/parasitoid taxa)
-Supports: Ladybirds (Coccinellidae), hoverflies (Syrphidae), parasitic wasps
-**Garden Value**: Excellent for integrated pest management
+**Pathogens**: 5 taxa documented
+- Erysiphe spp. (powdery mildew)
+- Puccinia spp. (rust)
+- Botrytis cinerea (grey mould)
+
+**Disease Risk**: Moderate - monitor in humid conditions
 ```
 
 ---
 
-## Beneficial Biocontrol Organisms (Predators of Herbivores)
-
-**Data source**: `herbivore_predators_11711.parquet` (from Phase 0, Script 4)
-
-**Extraction method**:
-```sql
--- From full GloBI: find animals that EAT herbivores on our plants
-WHERE interactionTypeName IN ('eats', 'preysOn')
-AND targetTaxonName IN (herbivores found on our 11,711 plants)
-```
-
-**Coverage**: 1,142 herbivore → predator mappings
-
-**What it measures**: Animals documented in GloBI as eating/preying on herbivores that attack our plants
-
-### Examples
-
-| Herbivore | Predators |
-|-----------|-----------|
-| Abagrotis alternata (moth) | Bats: Corynorhinus townsendii, Myotis spp., Eptesicus fuscus |
-| Abraxas sylvata (moth) | Formica rufa (wood ant) |
-| Acanalonia conica (planthopper) | Spiders, bats, assassin bugs |
-
-### Categories
-
-| Type | Examples | Garden Benefit |
-|------|----------|----------------|
-| Insectivorous bats | Myotis, Eptesicus | Consume night-flying moths |
-| Predatory insects | Ladybirds, lacewings, ground beetles | Consume aphids, caterpillars |
-| Parasitoid wasps | Ichneumonidae, Braconidae | Parasitise caterpillars, aphids |
-| Spiders | Various families | Generalist predators |
-| Predatory ants | Formica spp. | Colony-based predation |
-
-### Algorithm (M3 Metric)
-
-The GuildBuilder uses pairwise analysis:
-1. Get herbivores from plant A
-2. Look up known predators from `herbivore_predators_11711.parquet`
-3. Check if those predators are present on plant B (from organism profiles)
-4. Count matches as biocontrol mechanisms
-
-### Output Format
-
-```markdown
-**Biocontrol Network**:
-- Herbivores on this plant: 8 taxa
-- Known predators of those herbivores: 15 taxa
-- Predators present in guild: 5 taxa (matched)
-**IPM Value**: High - guild contains predators of this plant's pests
-```
-
-**Note**: The `is_biocontrol` flag in `organisms_searchable.parquet` is legacy/misleading - it labels all plant-associated animals, not verified predators. Use the lookup table instead.
-
----
-
-## Beneficial Fungi
+## Fungal Associations
 
 **Data source**: `fungi_searchable.parquet`
 
-**Categories**:
+### Pathogenic Fungi
 
-### Mycorrhizal Fungi (Mutualistic)
-
-| Type | Column | Count | Benefit |
-|------|--------|-------|---------|
-| Arbuscular mycorrhizal (AMF) | `is_amf` | 439 | Phosphorus uptake, drought tolerance |
-| Ectomycorrhizal (EMF) | `is_emf` | 942 | Nutrient uptake, disease resistance |
-| General mycorrhizal | `is_mycorrhizal` | 1,381 | Root health, nutrient exchange |
+| Column | Meaning |
+|--------|---------|
+| `is_pathogenic = true` | Harmful fungal association |
+| `functional_role = 'harmful'` | Disease-causing |
 
 **Output**:
 ```markdown
-**Mycorrhizal Associations**: 5 fungi documented
-- Arbuscular mycorrhizal: Glomus, Claroideoglomus
-- Ectomycorrhizal: Cortinarius, Russula
-**Garden Note**: Avoid disturbing soil to preserve mycorrhizal networks
+**Fungal Diseases**: 3 documented
+- Puccinia (rust) - leaf spots, yellow pustules
+- Entyloma (leaf smut) - dark lesions
+- Coleosporium (rust) - orange spores
 ```
 
-### Entomopathogenic Fungi (Pest-killing)
+### Beneficial Fungi
 
-**Data source**: `insect_fungal_parasites_11711.parquet`
-
-**What they do**: Kill herbivorous insects that feed on the plant
-
-| Type | Examples | Target Pests |
-|------|----------|--------------|
-| Entomopathogenic | Beauveria, Metarhizium, Cordyceps | Aphids, caterpillars, beetles |
-| Counts | `is_entomopathogen` | 620 fungi |
+| Column | Meaning |
+|--------|---------|
+| `is_mycorrhizal = true` | Mutualistic root association |
+| `is_amf = true` | Arbuscular mycorrhizal (most herbs) |
+| `is_emf = true` | Ectomycorrhizal (trees, some shrubs) |
+| `is_endophytic = true` | Lives in plant tissue (often protective) |
 
 **Output**:
 ```markdown
-**Entomopathogenic Fungi**: 8 insect-killing fungi documented
-- Beauveria bassiana - kills aphids, whiteflies
-- Metarhizium anisopliae - kills beetles, caterpillars
-**IPM Potential**: High - natural pest control from associated fungi
-```
+**Mycorrhizal Associations**: 2 documented
+- Glomus spp. (AMF) - aids phosphorus uptake
+- Rhizophagus irregularis (AMF) - drought tolerance
 
-### Mycoparasitic Fungi (Disease-fighting)
-
-**What they do**: Attack and kill plant-pathogenic fungi
-
-| Type | Examples | Targets |
-|------|----------|---------|
-| Mycoparasites | Trichoderma, Clonostachys | Root rot fungi, mildews |
-| Count | `is_mycoparasite` | 508 fungi |
-
-**Output**:
-```markdown
-**Mycoparasites**: 3 fungi documented
-- Trichoderma spp. - attacks root rot pathogens
-**Disease Suppression**: Good natural protection from pathogenic fungi
-```
-
-### Endophytic Fungi
-
-**What they do**: Live within plant tissues without causing disease; often protective
-
-| Type | Benefits |
-|------|----------|
-| Protective endophytes | Produce compounds deterring herbivores |
-| Stress-tolerance endophytes | Improve drought/heat tolerance |
-| Count | `is_endophytic` | 4,907 associations |
-
-**Output**:
-```markdown
-**Endophytic Fungi**: 15 documented
-**Function**: May provide pest deterrence and stress tolerance
+**Garden Note**: Avoid excessive tillage to preserve mycorrhizal networks
 ```
 
 ---
 
-## Integrated Pest/Disease Risk Assessment
-
-Combine herbivore and pathogen data:
-
-### Risk Matrix
-
-| Herbivores | Pathogens | Overall Risk | Advice |
-|------------|-----------|--------------|--------|
-| High | High | Very High | Regular monitoring essential |
-| High | Low | Moderate-High | Focus on physical pest barriers |
-| Low | High | Moderate-High | Focus on disease prevention |
-| Low | Low | Low | Generally trouble-free |
-
----
-
-## Output Format (Complete Section)
+## Integrated Output Format
 
 ```markdown
 ## Biological Interactions
 
-### Pollinator Value
+### Pollinators
 **Rating**: High (15 taxa)
-Key pollinators: Bumblebees, honeybees, hoverflies
+Key visitors: Bumblebees, honeybees, hoverflies
 
-### Wildlife Associations
-**Herbivores**: 8 taxa documented (Moderate pressure)
-- Caterpillars (various Lepidoptera)
-- Aphids
-**Natural Enemies**: 6 taxa (Good biocontrol potential)
-- Ladybirds, parasitic wasps
+### Herbivores
+**Documented**: 8 taxa
+- Winter moth, vine weevil, aphids
+**Pest Pressure**: Moderate
 
-### Pest & Disease Risk
-**Pathogens**: 3 documented
-- Powdery mildew (humid conditions)
-- Honey fungus (waterlogged sites)
-**Overall Risk**: Moderate
-**Management**: Good air circulation, avoid waterlogging
+### Diseases
+**Fungal**: Powdery mildew, rust
+**Other pathogens**: 2 bacterial/viral
+**Disease Risk**: Moderate in humid conditions
+
+### Beneficial Associations
+**Mycorrhizal**: AMF associations documented
+**Advice**: Maintain soil health for natural disease resistance
 ```
 
 ---
@@ -297,29 +174,13 @@ Key pollinators: Bumblebees, honeybees, hoverflies
 | Column | Description |
 |--------|-------------|
 | `plant_wfo_id` | Plant identifier |
-| `pollinators` | List of strict pollinator taxa |
+| `pollinators` | List of pollinator taxa (GloBI `pollinates`) |
+| `pollinator_count` | Number of pollinator taxa |
 | `herbivores` | List of herbivore taxa |
-| `pathogens` | List of pathogen taxa |
-| `flower_visitors` | List of flower visitors (broader than pollinators) |
-| `predators_hasHost` | Animals with hasHost relationship to plant (legacy) |
-| `predators_interactsWith` | Animals with interactsWith relationship (legacy) |
-| `predators_adjacentTo` | Animals with adjacentTo relationship (legacy) |
-
-### Biocontrol Lookup (herbivore_predators_11711.parquet)
-
-| Column | Description |
-|--------|-------------|
-| `herbivore` | Herbivore taxon name |
-| `predators` | List of known predators (from GloBI eats/preysOn) |
-| `predator_count` | Number of known predators |
-
-### Pathogen Antagonists (pathogen_antagonists_11711.parquet)
-
-| Column | Description |
-|--------|-------------|
-| `pathogen` | Pathogen taxon name |
-| `antagonists` | List of antagonists (from GloBI eats/preysOn/parasiteOf/pathogenOf) |
-| `antagonist_count` | Number of known antagonists |
+| `herbivore_count` | Number of herbivore taxa |
+| `pathogens` | List of pathogen taxa (includes parasites) |
+| `pathogen_count` | Number of pathogen taxa |
+| `flower_visitors` | Broader list (includes non-pollinators) |
 
 ### Fungi (fungi_searchable.parquet)
 
@@ -327,27 +188,28 @@ Key pollinators: Bumblebees, honeybees, hoverflies
 |--------|-------------|
 | `plant_wfo_id` | Plant identifier |
 | `fungus_taxon` | Fungus name |
-| `guild_type` | Primary guild classification |
-| `guild_category` | Functional category |
-| `functional_role` | beneficial/pathogenic/neutral |
-| `is_mycorrhizal` | Boolean: any mycorrhizal association |
+| `guild_category` | pathogenic / mycorrhizal / saprotrophic / etc. |
+| `functional_role` | harmful / beneficial / neutral / biocontrol |
+| `is_pathogenic` | Boolean: causes disease |
+| `is_mycorrhizal` | Boolean: mutualistic root association |
 | `is_amf` | Boolean: arbuscular mycorrhizal |
 | `is_emf` | Boolean: ectomycorrhizal |
-| `is_pathogenic` | Boolean: plant pathogen |
-| `is_biocontrol` | Boolean: biocontrol fungus |
-| `is_entomopathogen` | Boolean: insect-killing fungus |
-| `is_mycoparasite` | Boolean: fungus-killing fungus |
-| `is_endophytic` | Boolean: endophyte |
-| `is_saprotrophic` | Boolean: decomposer |
+| `is_endophytic` | Boolean: lives within plant tissue |
 
-### Entomopathogen Links (insect_fungal_parasites_11711.parquet)
+---
 
-| Column | Description |
-|--------|-------------|
-| `herbivore` | Herbivore insect name |
-| `herbivore_family` | Insect family |
-| `herbivore_order` | Insect order |
-| `entomopathogenic_fungi` | List of fungi that kill this herbivore |
-| `fungal_parasite_count` | Number of entomopathogenic fungi |
+## Not Included in Static Encyclopedia
 
-**Note**: GloBI and fungal data coverage varies by species. Well-studied species have more complete interaction records.
+The following are used for **guild scoring** and **dynamic care plans**, not static articles:
+
+| Data | Purpose | Used By |
+|------|---------|---------|
+| `herbivore_predators_11711.parquet` | Herbivore → known predators | M3 metric, SQL care plan |
+| `insect_fungal_parasites_11711.parquet` | Herbivore → entomopathogenic fungi | M3 metric, SQL care plan |
+| `pathogen_antagonists_11711.parquet` | Pathogen → antagonist organisms | M4 metric, SQL care plan |
+| `predators_hasHost/interactsWith/adjacentTo` | Legacy: animals associated with plant | Not used (misleading) |
+
+These enable future UI features like "Generate care plan" which would:
+1. Look up predators of this plant's herbivores
+2. Find companion plants that host those predators
+3. Suggest biocontrol-optimized planting combinations
