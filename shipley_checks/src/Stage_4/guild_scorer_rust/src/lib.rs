@@ -26,6 +26,10 @@ pub mod query_engine;
 #[cfg(feature = "api")]
 pub mod api_server;
 
+// Encyclopedia generator module (optional feature)
+#[cfg(feature = "api")]
+pub mod encyclopedia;
+
 // Re-export commonly used types
 pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::{GuildData, ClimateOrganizer};
@@ -42,6 +46,9 @@ pub use query_engine::{QueryEngine, PlantFilters};
 
 #[cfg(feature = "api")]
 pub use api_server::{AppState, create_router};
+
+#[cfg(feature = "api")]
+pub use encyclopedia::EncyclopediaGenerator;
 
 #[cfg(test)]
 mod tests {
