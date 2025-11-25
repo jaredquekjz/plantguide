@@ -119,32 +119,58 @@ Supports: Ladybirds (Coccinellidae), hoverflies (Syrphidae), parasitic wasps
 
 ---
 
-## Beneficial Biocontrol Organisms
+## Beneficial Biocontrol Organisms (Predators of Herbivores)
 
-**Data source**: `organisms_searchable.parquet` with `is_biocontrol = true`
+**Data source**: `herbivore_predators_11711.parquet` (from Phase 0, Script 4)
 
-**What it measures**: Organisms associated with the plant that prey on or parasitise pest species
+**Extraction method**:
+```sql
+-- From full GloBI: find animals that EAT herbivores on our plants
+WHERE interactionTypeName IN ('eats', 'preysOn')
+AND targetTaxonName IN (herbivores found on our 11,711 plants)
+```
 
-**Coverage**: 50,259 biocontrol records across all plants
+**Coverage**: 1,142 herbivore → predator mappings
+
+**What it measures**: Animals documented in GloBI as eating/preying on herbivores that attack our plants
+
+### Examples
+
+| Herbivore | Predators |
+|-----------|-----------|
+| Abagrotis alternata (moth) | Bats: Corynorhinus townsendii, Myotis spp., Eptesicus fuscus |
+| Abraxas sylvata (moth) | Formica rufa (wood ant) |
+| Acanalonia conica (planthopper) | Spiders, bats, assassin bugs |
 
 ### Categories
 
 | Type | Examples | Garden Benefit |
 |------|----------|----------------|
+| Insectivorous bats | Myotis, Eptesicus | Consume night-flying moths |
 | Predatory insects | Ladybirds, lacewings, ground beetles | Consume aphids, caterpillars |
 | Parasitoid wasps | Ichneumonidae, Braconidae | Parasitise caterpillars, aphids |
-| Predatory mites | Phytoseiidae | Control spider mites |
-| Parasitic flies | Tachinidae | Parasitise caterpillars |
+| Spiders | Various families | Generalist predators |
+| Predatory ants | Formica spp. | Colony-based predation |
+
+### Algorithm (M3 Metric)
+
+The GuildBuilder uses pairwise analysis:
+1. Get herbivores from plant A
+2. Look up known predators from `herbivore_predators_11711.parquet`
+3. Check if those predators are present on plant B (from organism profiles)
+4. Count matches as biocontrol mechanisms
 
 ### Output Format
 
 ```markdown
-**Biocontrol Associates**: 12 predator/parasitoid taxa
-- Ladybirds (Coccinellidae) - aphid predators
-- Parasitic wasps (Braconidae) - caterpillar parasitoids
-- Hoverfly larvae (Syrphidae) - aphid predators
-**IPM Value**: High - excellent habitat for beneficial insects
+**Biocontrol Network**:
+- Herbivores on this plant: 8 taxa
+- Known predators of those herbivores: 15 taxa
+- Predators present in guild: 5 taxa (matched)
+**IPM Value**: High - guild contains predators of this plant's pests
 ```
+
+**Note**: The `is_biocontrol` flag in `organisms_searchable.parquet` is legacy/misleading - it labels all plant-associated animals, not verified predators. Use the lookup table instead.
 
 ---
 
@@ -266,19 +292,34 @@ Key pollinators: Bumblebees, honeybees, hoverflies
 
 ## Data Column Reference
 
-### Organisms (organisms_searchable.parquet)
+### Organism Profiles (organism_profiles_11711.parquet)
 
 | Column | Description |
 |--------|-------------|
 | `plant_wfo_id` | Plant identifier |
-| `organism_taxon` | Interacting organism name |
-| `interaction_type` | Type of interaction |
-| `interaction_category` | Category (pollinator, herbivore, biocontrol, etc.) |
-| `is_pollinator` | Boolean: strict pollinator |
-| `is_pest` | Boolean: pest organism |
-| `is_biocontrol` | Boolean: beneficial predator/parasitoid |
-| `is_pathogen` | Boolean: plant pathogen |
-| `is_herbivore` | Boolean: herbivore |
+| `pollinators` | List of strict pollinator taxa |
+| `herbivores` | List of herbivore taxa |
+| `pathogens` | List of pathogen taxa |
+| `flower_visitors` | List of flower visitors (broader than pollinators) |
+| `predators_hasHost` | Animals with hasHost relationship to plant (legacy) |
+| `predators_interactsWith` | Animals with interactsWith relationship (legacy) |
+| `predators_adjacentTo` | Animals with adjacentTo relationship (legacy) |
+
+### Biocontrol Lookup (herbivore_predators_11711.parquet)
+
+| Column | Description |
+|--------|-------------|
+| `herbivore` | Herbivore taxon name |
+| `predators` | List of known predators (from GloBI eats/preysOn) |
+| `predator_count` | Number of known predators |
+
+### Pathogen Antagonists (pathogen_antagonists_11711.parquet)
+
+| Column | Description |
+|--------|-------------|
+| `pathogen` | Pathogen taxon name |
+| `antagonists` | List of antagonists (from GloBI eats/preysOn/parasiteOf/pathogenOf) |
+| `antagonist_count` | Number of known antagonists |
 
 ### Fungi (fungi_searchable.parquet)
 
