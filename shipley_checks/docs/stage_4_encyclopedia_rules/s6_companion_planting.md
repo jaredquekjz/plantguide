@@ -4,6 +4,8 @@ Static recommendations based on THIS plant's characteristics, derived from Guild
 
 **Scope**: Static encyclopedia shows individual plant contributions. Dynamic GuildBuilder does actual pairwise scoring.
 
+**Data provenance**: Biotic interaction data (herbivores, pathogens, pollinators, fungi, predators) are derived from **GloBI (Global Biotic Interactions)** observation records. Counts reflect the number of distinct taxa with documented interactions, not interaction frequency or severity.
+
 ---
 
 ## GP1: Phylogenetic Independence (from M1)
@@ -132,11 +134,11 @@ IF balanced (no > 75%):
 
 ## GP3: Pest Control Contribution (from M3)
 
-**Data source**:
-- `herbivores` list, `herbivore_count` - pests attacking this plant
-- `flower_visitors`, `visitor_count` - insects visiting flowers (includes predators)
-- `predators_hasHost`, `predators_interactsWith`, `predators_adjacentTo` (+ counts) - beneficial predators
-- `entomopathogenic_fungi`, `entomopathogenic_fungi_count` - insect-killing fungi hosted
+**Data source** (GloBI observations):
+- `herbivores` list, `herbivore_count` - taxa observed feeding on this plant (eats, preysOn, hasHost)
+- `flower_visitors`, `visitor_count` - taxa observed visiting flowers
+- `predators_hasHost`, `predators_interactsWith`, `predators_adjacentTo` (+ counts) - predatory taxa observed on this plant
+- `entomopathogenic_fungi`, `entomopathogenic_fungi_count` - insect-pathogenic fungi observed on this plant
 
 **Scientific basis**: Plants hosting predators of neighbouring plants' herbivores provide biocontrol. Entomopathogenic fungi on one plant can suppress pests on companions.
 
@@ -144,47 +146,47 @@ IF balanced (no > 75%):
 
 | Field | Source | Guild Relevance |
 |-------|--------|-----------------|
-| Herbivore count | `herbivore_count` | Pest pressure on this plant |
-| Key herbivores | `herbivores` list | What pests attack this plant |
-| Beneficial predators | predator columns | Predatory insects this plant hosts |
-| Entomopathogenic fungi | `entomopathogenic_fungi` | Insect-killing fungi hosted |
+| Herbivore count | `herbivore_count` | Number of taxa observed feeding on this plant |
+| Key herbivores | `herbivores` list | Taxa observed as herbivores/parasites |
+| Beneficial predators | predator columns | Predatory taxa observed visiting this plant |
+| Entomopathogenic fungi | `entomopathogenic_fungi` | Insect-killing fungi observed |
 
 ### Pest Pressure Classification
 
 | Herbivore Count | Level | Implication |
 |-----------------|-------|-------------|
-| > 15 | High | Multiple pest species; needs diverse biocontrol |
-| 5-15 | Moderate | Some pest pressure; benefits from predator plants |
-| < 5 | Low | Few documented pests; may provide predator habitat |
-| 0 | Unknown | Not well-studied |
+| > 15 | High | Many herbivore taxa observed; likely needs diverse biocontrol |
+| 5-15 | Moderate | Several herbivore taxa observed |
+| < 5 | Low | Few herbivore taxa observed; may provide predator habitat |
+| 0 | No data | No herbivore observations in GloBI |
 
 ### Biocontrol Contribution Classification
 
 | Metric | Guild Value |
 |--------|-------------|
-| Predator count > 10 | High biocontrol habitat value |
-| Predator count 3-10 | Moderate biocontrol habitat |
-| Predator count < 3 | Low documented predator hosting |
-| Entomopathogenic fungi > 0 | Hosts insect-killing fungi |
+| Predator count > 10 | Many predatory taxa observed - high biocontrol habitat |
+| Predator count 3-10 | Several predatory taxa observed |
+| Predator count < 3 | Few predatory taxa observed |
+| Entomopathogenic fungi > 0 | Insect-killing fungi observed on this plant |
 
 ### Output Format
 
 ```markdown
 ### Pest Control Potential
 
-**Pest Load**: {herbivore_count} herbivore taxa documented ({level})
-**Key Pests**: {top 3-5 herbivores from list}
+**Observed Herbivores**: {herbivore_count} taxa recorded feeding on this plant ({level})
+**Key Herbivores**: {top 3-5 from herbivores list}
 
-**Biocontrol Assets**:
-- Hosts {predator_count} beneficial predator taxa
-- Hosts {entomo_fungi_count} entomopathogenic fungi species
+**Observed Biocontrol Agents**:
+- {predator_count} predatory taxa observed visiting this plant
+- {entomo_fungi_count} entomopathogenic fungi species observed
 
 **Guild Recommendations**:
 - {pest-level-specific guidance}
 - {predator-specific guidance}
 
 **This Plant Provides**:
-- Habitat for {predator_count} beneficial insects
+- Observed habitat for {predator_count} predatory taxa
 - {entomopathogenic fungi contribution if any}
 ```
 
@@ -214,10 +216,10 @@ IF entomopathogenic_fungi_count > 0:
 
 ## GP4: Disease Control Contribution (from M4)
 
-**Data source**:
-- `pathogenic_fungi` list, `pathogenic_fungi_count` - diseases affecting this plant
-- `mycoparasite_fungi`, `mycoparasite_fungi_count` - fungi that attack pathogenic fungi
-- `fungivores_eats`, `fungivores_eats_count` - animals that consume fungi
+**Data source** (GloBI observations):
+- `pathogenic_fungi` list, `pathogenic_fungi_count` - fungal pathogens observed on this plant (pathogenOf, parasiteOf)
+- `mycoparasite_fungi`, `mycoparasite_fungi_count` - mycoparasitic fungi observed (parasitize other fungi)
+- `fungivores_eats`, `fungivores_eats_count` - fungivorous animals observed eating fungi on this plant
 
 **Scientific basis**: Mycoparasitic fungi attack plant pathogens. Fungivorous animals consume pathogenic fungi. Plants hosting these provide disease suppression.
 
@@ -225,40 +227,40 @@ IF entomopathogenic_fungi_count > 0:
 
 | Field | Source | Guild Relevance |
 |-------|--------|-----------------|
-| Pathogen count | `pathogenic_fungi_count` | Disease pressure level |
-| Key pathogens | `pathogenic_fungi` list | What diseases affect this plant |
-| Mycoparasites | `mycoparasite_fungi`, `mycoparasite_fungi_count` | Fungi that attack pathogens |
-| Fungivores | `fungivores_eats`, `fungivores_eats_count` | Animals that eat pathogenic fungi |
+| Pathogen count | `pathogenic_fungi_count` | Number of pathogenic fungi observed on this plant |
+| Key pathogens | `pathogenic_fungi` list | Fungal pathogens observed |
+| Mycoparasites | `mycoparasite_fungi`, `mycoparasite_fungi_count` | Fungi observed parasitizing other fungi |
+| Fungivores | `fungivores_eats`, `fungivores_eats_count` | Animals observed eating fungi |
 
 ### Disease Pressure Classification
 
 | Pathogen Count | Level | Implication |
 |----------------|-------|-------------|
-| > 10 | High | Multiple disease risks; avoid clustering same pathogens |
-| 3-10 | Moderate | Some disease pressure |
-| < 3 | Low | Few documented diseases |
-| 0 | Unknown | Not well-studied |
+| > 10 | High | Many pathogenic fungi observed; avoid clustering with plants sharing same pathogens |
+| 3-10 | Moderate | Several pathogenic fungi observed |
+| < 3 | Low | Few pathogenic fungi observed |
+| 0 | No data | No pathogen observations in GloBI |
 
 ### Disease Control Contribution Classification
 
 | Metric | Guild Value |
 |--------|-------------|
-| Mycoparasite count > 5 | High disease suppression potential |
-| Mycoparasite count 1-5 | Moderate mycoparasite hosting |
-| Fungivore count > 3 | Hosts fungivorous animals |
-| Fungivore count 1-3 | Some fungivore habitat |
+| Mycoparasite count > 5 | Many mycoparasitic fungi observed - high disease suppression potential |
+| Mycoparasite count 1-5 | Some mycoparasitic fungi observed |
+| Fungivore count > 3 | Several fungivorous animals observed |
+| Fungivore count 1-3 | Few fungivorous animals observed |
 
 ### Output Format
 
 ```markdown
 ### Disease Control Potential
 
-**Disease Load**: {pathogenic_fungi_count} pathogen taxa documented ({level})
-**Key Diseases**: {top 3-5 from pathogenic_fungi list}
+**Observed Pathogens**: {pathogenic_fungi_count} pathogenic fungi recorded on this plant ({level})
+**Key Pathogens**: {top 3-5 from pathogenic_fungi list}
 
-**Biocontrol Assets**:
-- Hosts {mycoparasite_fungi_count} mycoparasitic fungi (attack plant pathogens)
-- Hosts {fungivores_eats_count} fungivorous animals (consume pathogenic fungi)
+**Observed Biocontrol Agents**:
+- {mycoparasite_fungi_count} mycoparasitic fungi observed (parasitize plant pathogens)
+- {fungivores_eats_count} fungivorous animals observed (consume fungi)
 
 **Guild Recommendations**:
 - {disease-level-specific guidance}
@@ -293,7 +295,11 @@ IF fungivores_eats_count > 0:
 
 ## GP5: Mycorrhizal Network (from M5)
 
-**Data source**: `amf_fungi`, `amf_fungi_count`, `emf_fungi`, `emf_fungi_count`, `endophytic_fungi`, `saprotrophic_fungi`
+**Data source** (GloBI + FungalTraits/FunGuild):
+- `amf_fungi`, `amf_fungi_count` - arbuscular mycorrhizal fungi observed on this plant
+- `emf_fungi`, `emf_fungi_count` - ectomycorrhizal fungi observed on this plant
+- `endophytic_fungi` - endophytic fungi observed
+- `saprotrophic_fungi` - saprotrophic fungi observed
 
 **Scientific basis**: Plants sharing mycorrhizal fungi form Common Mycorrhizal Networks (CMNs) enabling nutrient sharing (carbon, phosphorus, nitrogen) and chemical stress signaling. AMF and EMF fungi form separate network types that cannot interconnect.
 
@@ -312,10 +318,10 @@ CMNs require shared fungal partners. Plants using the same mycorrhizal type CAN 
 
 | Plant Type | Network Potential | Notes |
 |------------|-------------------|-------|
-| AMF-only | Connects to other AMF plants | Forms broad networks with herbs, grasses, many shrubs |
-| EMF-only | Connects to other EMF plants | Forms networks with specific tree genera |
-| Dual | Bridges both network types | Versatile guild member |
-| Non-mycorrhizal | No network connection | Neither benefits nor loses from CMN |
+| AMF observed | Can connect to other AMF plants | Forms broad networks with herbs, grasses, many shrubs |
+| EMF observed | Can connect to other EMF plants | Forms networks with specific tree genera |
+| Both observed | Bridges both network types | Versatile guild member |
+| Neither observed | No documented network | May still form associations (data gap) |
 
 **Key insight**: AMF and EMF are not "incompatible" in a harmful sense - they simply form separate underground networks. A guild can contain both, but they won't share resources across network types.
 
@@ -324,16 +330,16 @@ CMNs require shared fungal partners. Plants using the same mycorrhizal type CAN 
 ```markdown
 ### Mycorrhizal Network
 
-**Association**: {AMF / EMF / Dual / Non-mycorrhizal}
-**Documented Fungi**: {list of specific fungi if available}
+**Observed Association**: {AMF / EMF / Dual / None documented}
+**Documented Fungi**: {list of specific fungi observed, if available}
 
 **Guild Recommendations**:
-- **Network-compatible plants**: Other {AMF/EMF}-associated plants
-- **Network benefit**: Can share {nutrients/signals} with compatible plants
+- **Network-compatible plants**: Other plants with {AMF/EMF} fungi observed
+- **Network benefit**: Can potentially share {nutrients/signals} with compatible plants
 - **Soil management**: Avoid excessive tillage to preserve hyphal networks
 
 **This Plant Contributes**:
-- {Connection point description based on type}
+- {Connection point description based on observed associations}
 ```
 
 ### Decision Tree
@@ -451,7 +457,9 @@ IF growth_form CONTAINS "vine" OR "liana":
 
 ## GP7: Pollinator Contribution (from M7)
 
-**Data source**: `pollinators` list, `pollinator_count`
+**Data source** (GloBI observations):
+- `pollinators` list - taxa observed pollinating this plant (interactionTypeName = 'pollinates')
+- `pollinator_count` - number of distinct pollinator taxa observed
 
 **Scientific basis**: Plants sharing pollinators create mutual attraction effects. The GuildBuilder uses quadratic weighting - more shared pollinators = non-linearly better pollination for both plants.
 
@@ -459,11 +467,11 @@ IF growth_form CONTAINS "vine" OR "liana":
 
 | Pollinator Count | Value | Guild Contribution |
 |------------------|-------|-------------------|
-| > 20 | Very High | Major pollinator hub - benefits all neighbours |
-| 11-20 | High | Significant pollinator attraction |
-| 5-10 | Moderate | Useful pollinator support |
-| 1-4 | Low | Limited documented pollinator visits |
-| 0 | Unknown | May still support pollinators (undocumented) |
+| > 20 | Very High | Many pollinator taxa observed - major pollinator hub |
+| 11-20 | High | Several pollinator taxa observed |
+| 5-10 | Moderate | Some pollinator taxa observed |
+| 1-4 | Low | Few pollinator taxa observed |
+| 0 | No data | No pollinator observations in GloBI |
 
 ### Pollinator Guild Synergies
 
@@ -480,34 +488,34 @@ IF growth_form CONTAINS "vine" OR "liana":
 ```markdown
 ### Pollinator Support
 
-**Pollinator Value**: {level} ({pollinator_count} taxa documented)
-**Key Visitors**: {top pollinators from list}
+**Observed Pollinators**: {pollinator_count} taxa recorded pollinating this plant ({level})
+**Key Pollinators**: {top pollinators from list}
 
 **Guild Recommendations**:
 - **Complement flowering times**: Pair with early/late bloomers for season-long support
-- **Shared pollinators**: Plants with overlapping pollinator communities benefit each other
+- **Shared pollinators**: Plants with overlapping observed pollinators benefit each other
 - **Proximity bonus**: Nearby plants with shared pollinators get increased visits
 
 **This Plant Provides**:
-- Nectar/pollen for {pollinator_count} pollinator taxa
-- Attraction effect increases visits to neighbouring plants
+- Observed nectar/pollen source for {pollinator_count} pollinator taxa
+- Attraction effect may increase visits to neighbouring plants
 ```
 
 ### Decision Tree
 
 ```
 IF pollinator_count > 20:
-  "Pollinator champion. Central to guild pollination success."
+  "Many pollinators observed. Central to guild pollination success."
   "Benefits ALL flowering neighbours through attraction effect."
 
 IF pollinator_count 11-20:
-  "Strong pollinator support. Valuable addition to any guild."
+  "Several pollinators observed. Valuable addition to any guild."
 
 IF pollinator_count 5-10:
-  "Moderate pollinator support. Combine with high-pollinator plants for synergy."
+  "Some pollinators observed. Combine with pollinator-rich plants for synergy."
 
 IF pollinator_count < 5:
-  "Limited documented pollinators. May have specialist visitors."
+  "Few pollinators observed. May have specialist visitors not yet documented."
   "Consider pairing with pollinator-rich plants for cross-pollination support."
 ```
 
