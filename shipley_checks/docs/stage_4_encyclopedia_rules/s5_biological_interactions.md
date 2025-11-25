@@ -52,9 +52,16 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Herbivore Associations
 
-**Data source**: `herbivores` column
+**Data source**: `herbivores` column (from `matched_herbivores_per_plant.parquet`)
 
-**What it shows**: Invertebrate and vertebrate animals documented feeding on this plant.
+**Extraction logic**:
+- Relationships: `eats`, `preysOn`, `hasHost`
+- Filtered to **invertebrates only**: Insecta, Arachnida, Chilopoda, Diplopoda, Malacostraca, Gastropoda, Bivalvia
+- Excludes: pollinators, bee families, predator families
+
+**What it includes**:
+- True herbivores (leaf-eaters, sap-suckers, root-feeders)
+- Invertebrate parasites (gall-formers, leaf-miners via `hasHost`)
 
 ### Risk Interpretation
 
@@ -80,14 +87,19 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Pathogen Associations
 
-**Data source**: `pathogens` column
+**Data source**: `pathogens` column (from `organism_profiles_11711.parquet`)
 
-**Extraction includes** (from GloBI):
-- `pathogenOf` relationships
-- `parasiteOf` relationships
-- `hasHost` where source is Fungi (fungal pathogens)
+**Extraction logic**:
+- Relationships: `pathogenOf`, `parasiteOf`, `hasHost` (Fungi only)
+- Filtered to **exclude Plantae and Animalia** (microbial only)
+- Excludes: Generic names (Fungi, Bacteria, Viruses, Insecta, Plantae, Animalia)
 
-**Excludes**: Generic names (Fungi, Bacteria, Viruses), misclassified kingdoms
+**What it includes**:
+- Fungal pathogens (rusts, mildews, rots)
+- Bacterial pathogens
+- Viral pathogens
+- Oomycetes (water moulds)
+- Microbial parasites
 
 ### Output Format
 
