@@ -35,6 +35,12 @@ use crate::query_engine::{QueryEngine, PlantFilters};
 use crate::scorer::GuildScorer;
 
 #[cfg(feature = "api")]
+use crate::encyclopedia::{
+    EncyclopediaGenerator,
+    sections::s5_biological_interactions::{OrganismCounts, FungalCounts},
+};
+
+#[cfg(feature = "api")]
 use datafusion::arrow::array::RecordBatch;
 
 #[cfg(feature = "api")]
@@ -49,6 +55,7 @@ use datafusion::arrow::json::ArrayWriter;
 pub struct AppState {
     pub query_engine: Arc<QueryEngine>,
     pub guild_scorer: Arc<GuildScorer>,
+    pub encyclopedia: Arc<EncyclopediaGenerator>,
     pub cache: Cache<String, serde_json::Value>,
 }
 
@@ -61,6 +68,9 @@ impl AppState {
         tracing::info!("Initializing Polars guild scorer...");
         let guild_scorer = Arc::new(GuildScorer::new("7plant", climate_tier)?);
 
+        tracing::info!("Initializing encyclopedia generator...");
+        let encyclopedia = Arc::new(EncyclopediaGenerator::new());
+
         tracing::info!("Initializing Moka cache...");
         let cache = Cache::builder()
             .max_capacity(10_000) // 10K entries
@@ -70,6 +80,7 @@ impl AppState {
         Ok(Self {
             query_engine,
             guild_scorer,
+            encyclopedia,
             cache,
         })
     }
@@ -92,6 +103,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/api/plants/similar", post(find_similar))
         // Guild endpoints
         .route("/api/guilds/score", post(score_guild))
+        // Encyclopedia endpoint
+        .route("/api/encyclopedia/:id", get(get_encyclopedia))
         // Middleware (applied in reverse order)
         .layer(CompressionLayer::new()) // gzip + brotli compression
         .layer(CorsLayer::permissive()) // Allow all origins (adjust for production)
@@ -300,6 +313,165 @@ async fn score_guild(
     });
 
     Ok(Json(response))
+}
+
+/// Generate encyclopedia page for a plant
+#[cfg(feature = "api")]
+async fn get_encyclopedia(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, AppError> {
+    let cache_key = format!("encyclopedia:{}", id);
+
+    // Check cache for pre-generated markdown
+    if let Some(cached) = state.cache.get(&cache_key).await {
+        tracing::debug!("Cache hit for encyclopedia {}", id);
+        if let Some(markdown) = cached.as_str() {
+            return Ok((
+                [("Content-Type", "text/markdown; charset=utf-8")],
+                markdown.to_string(),
+            ));
+        }
+    }
+
+    tracing::debug!("Generating encyclopedia for plant {}", id);
+
+    // 1. Fetch plant data
+    let plant_batches = state
+        .query_engine
+        .get_plant(&id)
+        .await
+        .map_err(|e| AppError::DataFusion(e.to_string()))?;
+
+    if plant_batches.is_empty() || plant_batches[0].num_rows() == 0 {
+        return Err(AppError::NotFound(format!("Plant {} not found", id)));
+    }
+
+    // Convert plant batch to JSON then HashMap
+    let plant_json = batches_to_json(&plant_batches)?;
+    let plant_data: std::collections::HashMap<String, serde_json::Value> = plant_json
+        .get("data")
+        .and_then(|d| d.as_array())
+        .and_then(|arr| arr.first())
+        .and_then(|obj| serde_json::from_value(obj.clone()).ok())
+        .ok_or_else(|| AppError::Internal("Failed to parse plant data".to_string()))?;
+
+    // 2. Fetch organism summary for counts
+    let organism_counts = match state.query_engine.get_organism_summary(&id).await {
+        Ok(batches) => parse_organism_counts(&batches),
+        Err(_) => None,
+    };
+
+    // 3. Fetch fungi summary for counts
+    let fungal_counts = match state.query_engine.get_fungi_summary(&id).await {
+        Ok(batches) => parse_fungal_counts(&batches),
+        Err(_) => None,
+    };
+
+    // 4. Generate encyclopedia markdown
+    let markdown = state
+        .encyclopedia
+        .generate(&id, &plant_data, organism_counts, fungal_counts)
+        .map_err(|e| AppError::Internal(e))?;
+
+    // Cache the result
+    state.cache.insert(cache_key, serde_json::json!(markdown)).await;
+
+    Ok((
+        [("Content-Type", "text/markdown; charset=utf-8")],
+        markdown,
+    ))
+}
+
+/// Parse organism summary batches into OrganismCounts
+#[cfg(feature = "api")]
+fn parse_organism_counts(batches: &[RecordBatch]) -> Option<OrganismCounts> {
+    if batches.is_empty() {
+        return None;
+    }
+
+    let json = batches_to_json(batches).ok()?;
+    let data = json.get("data")?.as_array()?;
+
+    let mut pollinators = 0;
+    let mut visitors = 0;
+    let mut herbivores = 0;
+    let mut pathogens = 0;
+    let mut predators = 0;
+
+    for row in data {
+        let interaction_type = row.get("interaction_type")?.as_str()?;
+        let count = row.get("count")?.as_u64()? as usize;
+
+        match interaction_type.to_lowercase().as_str() {
+            "pollinator" | "pollinators" => pollinators += count,
+            "visitor" | "visitors" | "flower_visitor" => visitors += count,
+            "herbivore" | "herbivores" => herbivores += count,
+            "pathogen" | "pathogens" | "pathogenic" => pathogens += count,
+            "predator" | "predators" | "natural_enemy" => predators += count,
+            _ => {}
+        }
+    }
+
+    // Only return if we have any data
+    if pollinators + visitors + herbivores + pathogens + predators > 0 {
+        Some(OrganismCounts {
+            pollinators,
+            visitors,
+            herbivores,
+            pathogens,
+            predators,
+        })
+    } else {
+        None
+    }
+}
+
+/// Parse fungi summary batches into FungalCounts
+#[cfg(feature = "api")]
+fn parse_fungal_counts(batches: &[RecordBatch]) -> Option<FungalCounts> {
+    if batches.is_empty() {
+        return None;
+    }
+
+    let json = batches_to_json(batches).ok()?;
+    let data = json.get("data")?.as_array()?;
+
+    let mut amf = 0;
+    let mut emf = 0;
+    let mut endophytes = 0;
+    let mut mycoparasites = 0;
+    let mut entomopathogens = 0;
+
+    for row in data {
+        let guild = row.get("guild")?.as_str()?.to_lowercase();
+        let count = row.get("count")?.as_u64()? as usize;
+
+        if guild.contains("arbuscular") || guild.contains("amf") {
+            amf += count;
+        } else if guild.contains("ectomycorrhiz") || guild.contains("emf") {
+            emf += count;
+        } else if guild.contains("endophyt") {
+            endophytes += count;
+        } else if guild.contains("mycoparasit") || guild.contains("hyperparasit") {
+            mycoparasites += count;
+        } else if guild.contains("entomopathogen") || guild.contains("insect_pathogen") {
+            entomopathogens += count;
+        }
+    }
+
+    // Only return if we have any data
+    if amf + emf + endophytes + mycoparasites + entomopathogens > 0 {
+        Some(FungalCounts {
+            amf,
+            emf,
+            endophytes,
+            mycoparasites,
+            entomopathogens,
+        })
+    } else {
+        None
+    }
 }
 
 // ============================================================================
