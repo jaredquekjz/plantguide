@@ -107,36 +107,36 @@ impl QueryEngine {
             ));
         }
 
-        // EIVE filters
+        // EIVE filters (quoted for case-sensitivity)
         if let Some(min) = filters.min_light {
-            conditions.push(format!("EIVE_L >= {}", min));
+            conditions.push(format!("\"EIVE_L\" >= {}", min));
         }
         if let Some(max) = filters.max_light {
-            conditions.push(format!("EIVE_L <= {}", max));
+            conditions.push(format!("\"EIVE_L\" <= {}", max));
         }
         if let Some(min) = filters.min_moisture {
-            conditions.push(format!("EIVE_M >= {}", min));
+            conditions.push(format!("\"EIVE_M\" >= {}", min));
         }
         if let Some(max) = filters.max_moisture {
-            conditions.push(format!("EIVE_M <= {}", max));
+            conditions.push(format!("\"EIVE_M\" <= {}", max));
         }
         if let Some(min) = filters.min_temperature {
-            conditions.push(format!("EIVE_T >= {}", min));
+            conditions.push(format!("\"EIVE_T\" >= {}", min));
         }
         if let Some(max) = filters.max_temperature {
-            conditions.push(format!("EIVE_T <= {}", max));
+            conditions.push(format!("\"EIVE_T\" <= {}", max));
         }
         if let Some(min) = filters.min_nitrogen {
-            conditions.push(format!("EIVE_N >= {}", min));
+            conditions.push(format!("\"EIVE_N\" >= {}", min));
         }
         if let Some(max) = filters.max_nitrogen {
-            conditions.push(format!("EIVE_N <= {}", max));
+            conditions.push(format!("\"EIVE_N\" <= {}", max));
         }
         if let Some(min) = filters.min_ph {
-            conditions.push(format!("EIVE_R >= {}", min));
+            conditions.push(format!("\"EIVE_R\" >= {}", min));
         }
         if let Some(max) = filters.max_ph {
-            conditions.push(format!("EIVE_R <= {}", max));
+            conditions.push(format!("\"EIVE_R\" <= {}", max));
         }
 
         // CSR filters
@@ -378,7 +378,7 @@ mod tests {
     #[tokio::test]
     async fn test_query_engine_initialization() {
         // This test requires Phase 7 parquets to exist
-        let data_dir = "/home/olier/ellenberg/shipley_checks/src/Stage_4/Phase_7_datafusion/output";
+        let data_dir = "/home/olier/ellenberg/shipley_checks/stage4/phase7_output";
 
         match QueryEngine::new(data_dir).await {
             Ok(engine) => {
@@ -395,7 +395,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_search_plants() {
-        let data_dir = "/home/olier/ellenberg/shipley_checks/src/Stage_4/Phase_7_datafusion/output";
+        let data_dir = "/home/olier/ellenberg/shipley_checks/stage4/phase7_output";
 
         if let Ok(engine) = QueryEngine::new(data_dir).await {
             let filters = PlantFilters {
@@ -406,7 +406,7 @@ mod tests {
             };
 
             let result = engine.search_plants(&filters).await;
-            assert!(result.is_ok(), "Search query failed");
+            assert!(result.is_ok(), "Search query failed: {:?}", result.err());
         }
     }
 }

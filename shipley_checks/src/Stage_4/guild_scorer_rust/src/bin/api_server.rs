@@ -26,7 +26,7 @@ async fn main() -> anyhow::Result<()> {
     // Configuration from environment variables
     let data_dir = std::env::var("DATA_DIR")
         .unwrap_or_else(|_| {
-            "/home/olier/ellenberg/shipley_checks/src/Stage_4/Phase_7_datafusion/output".to_string()
+            "/home/olier/ellenberg/shipley_checks/stage4/phase7_output".to_string()
         });
 
     let climate_tier = std::env::var("CLIMATE_TIER")
