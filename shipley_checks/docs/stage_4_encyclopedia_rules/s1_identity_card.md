@@ -15,6 +15,78 @@ Rules for generating the plant identity/header section of encyclopedia articles.
 | Height | `height_m` | TRY database |
 | Leaf persistence | `try_leaf_phenology` | TRY database |
 | Woodiness | `try_woodiness` | TRY database |
+| Vernacular names | `vernacular_name_*` | iNaturalist (61 languages) |
+
+---
+
+## Vernacular Names (61 Languages)
+
+**Data Source**: iNaturalist taxon vernaculars (Phase 1 extraction)
+
+**Coverage**: Variable by species and language. English has highest coverage.
+
+### Language Codes
+
+| Code | Language | Code | Language | Code | Language |
+|------|----------|------|----------|------|----------|
+| af | Afrikaans | hu | Hungarian | pt | Portuguese |
+| ar | Arabic | id | Indonesian | ro | Romanian |
+| be | Belarusian | it | Italian | ru | Russian |
+| bg | Bulgarian | ja | Japanese | sat | Santali |
+| br | Breton | ka | Georgian | si | Sinhala |
+| ca | Catalan | kk | Kazakh | sk | Slovak |
+| cs | Czech | kn | Kannada | sl | Slovenian |
+| da | Danish | ko | Korean | sq | Albanian |
+| de | German | lb | Luxembourgish | sr | Serbian |
+| el | Greek | lt | Lithuanian | sv | Swedish |
+| en | English | lv | Latvian | sw | Swahili |
+| eo | Esperanto | mi | Māori | th | Thai |
+| es | Spanish | mk | Macedonian | tr | Turkish |
+| et | Estonian | mr | Marathi | uk | Ukrainian |
+| eu | Basque | myn | Mayan | vi | Vietnamese |
+| fa | Persian | nb | Norwegian Bokmål | zh | Chinese |
+| fi | Finnish | nl | Dutch | | |
+| fil | Filipino | oc | Occitan | | |
+| fr | French | oj | Ojibwe | | |
+| gl | Galician | pl | Polish | | |
+| haw | Hawaiian | | | | |
+| he | Hebrew | | | | |
+| hr | Croatian | | | | |
+
+### Output Rules
+
+**Current generation**: Output ALL available vernacular names for comprehensive documentation.
+
+**Future UI**: Filter to show:
+- English (primary)
+- Chinese (if English unavailable)
+- User's locale preference
+
+### Column Reference
+
+| Column | Description |
+|--------|-------------|
+| `vernacular_name_en` | English common name |
+| `vernacular_name_zh` | Chinese common name |
+| `vernacular_name_de` | German common name |
+| ... | (61 language columns total) |
+| `n_vernaculars_total` | Count of languages with names |
+
+### Output Format
+
+```markdown
+## Common Names
+
+**English**: English Oak, Pedunculate Oak
+**German**: Stieleiche
+**French**: Chêne pédonculé
+**Spanish**: Roble común
+**Chinese**: 夏栎
+**Japanese**: ヨーロッパナラ
+... (all available languages)
+
+*Names available in 35 languages*
+```
 
 ## Output Structure
 

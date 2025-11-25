@@ -4,13 +4,18 @@ Rules for generating the biological interactions section from GloBI (Global Biot
 
 ## Scientific Foundation
 
-**Data Source**: GloBI database - species-level interaction records
+**Data Sources**:
+- GloBI database - species-level interaction records (organisms_searchable.parquet)
+- FungalTraits + FunGuild - fungal guild classifications (fungi_searchable.parquet)
+- Entomopathogen database - insect-killing fungi (insect_fungal_parasites_11711.parquet)
 
 **Interaction Types**:
 - Pollinators (strict definition)
 - Herbivores (invertebrate and vertebrate)
 - Pathogens (plant-associated diseases)
 - Natural enemies (predators/parasitoids of herbivores)
+- Beneficial biocontrol organisms
+- Beneficial fungi (mycorrhizal, entomopathogenic, mycoparasitic)
 
 ---
 
@@ -114,6 +119,110 @@ Supports: Ladybirds (Coccinellidae), hoverflies (Syrphidae), parasitic wasps
 
 ---
 
+## Beneficial Biocontrol Organisms
+
+**Data source**: `organisms_searchable.parquet` with `is_biocontrol = true`
+
+**What it measures**: Organisms associated with the plant that prey on or parasitise pest species
+
+**Coverage**: 50,259 biocontrol records across all plants
+
+### Categories
+
+| Type | Examples | Garden Benefit |
+|------|----------|----------------|
+| Predatory insects | Ladybirds, lacewings, ground beetles | Consume aphids, caterpillars |
+| Parasitoid wasps | Ichneumonidae, Braconidae | Parasitise caterpillars, aphids |
+| Predatory mites | Phytoseiidae | Control spider mites |
+| Parasitic flies | Tachinidae | Parasitise caterpillars |
+
+### Output Format
+
+```markdown
+**Biocontrol Associates**: 12 predator/parasitoid taxa
+- Ladybirds (Coccinellidae) - aphid predators
+- Parasitic wasps (Braconidae) - caterpillar parasitoids
+- Hoverfly larvae (Syrphidae) - aphid predators
+**IPM Value**: High - excellent habitat for beneficial insects
+```
+
+---
+
+## Beneficial Fungi
+
+**Data source**: `fungi_searchable.parquet`
+
+**Categories**:
+
+### Mycorrhizal Fungi (Mutualistic)
+
+| Type | Column | Count | Benefit |
+|------|--------|-------|---------|
+| Arbuscular mycorrhizal (AMF) | `is_amf` | 439 | Phosphorus uptake, drought tolerance |
+| Ectomycorrhizal (EMF) | `is_emf` | 942 | Nutrient uptake, disease resistance |
+| General mycorrhizal | `is_mycorrhizal` | 1,381 | Root health, nutrient exchange |
+
+**Output**:
+```markdown
+**Mycorrhizal Associations**: 5 fungi documented
+- Arbuscular mycorrhizal: Glomus, Claroideoglomus
+- Ectomycorrhizal: Cortinarius, Russula
+**Garden Note**: Avoid disturbing soil to preserve mycorrhizal networks
+```
+
+### Entomopathogenic Fungi (Pest-killing)
+
+**Data source**: `insect_fungal_parasites_11711.parquet`
+
+**What they do**: Kill herbivorous insects that feed on the plant
+
+| Type | Examples | Target Pests |
+|------|----------|--------------|
+| Entomopathogenic | Beauveria, Metarhizium, Cordyceps | Aphids, caterpillars, beetles |
+| Counts | `is_entomopathogen` | 620 fungi |
+
+**Output**:
+```markdown
+**Entomopathogenic Fungi**: 8 insect-killing fungi documented
+- Beauveria bassiana - kills aphids, whiteflies
+- Metarhizium anisopliae - kills beetles, caterpillars
+**IPM Potential**: High - natural pest control from associated fungi
+```
+
+### Mycoparasitic Fungi (Disease-fighting)
+
+**What they do**: Attack and kill plant-pathogenic fungi
+
+| Type | Examples | Targets |
+|------|----------|---------|
+| Mycoparasites | Trichoderma, Clonostachys | Root rot fungi, mildews |
+| Count | `is_mycoparasite` | 508 fungi |
+
+**Output**:
+```markdown
+**Mycoparasites**: 3 fungi documented
+- Trichoderma spp. - attacks root rot pathogens
+**Disease Suppression**: Good natural protection from pathogenic fungi
+```
+
+### Endophytic Fungi
+
+**What they do**: Live within plant tissues without causing disease; often protective
+
+| Type | Benefits |
+|------|----------|
+| Protective endophytes | Produce compounds deterring herbivores |
+| Stress-tolerance endophytes | Improve drought/heat tolerance |
+| Count | `is_endophytic` | 4,907 associations |
+
+**Output**:
+```markdown
+**Endophytic Fungi**: 15 documented
+**Function**: May provide pest deterrence and stress tolerance
+```
+
+---
+
 ## Integrated Pest/Disease Risk Assessment
 
 Combine herbivore and pathogen data:
@@ -157,14 +266,47 @@ Key pollinators: Bumblebees, honeybees, hoverflies
 
 ## Data Column Reference
 
+### Organisms (organisms_searchable.parquet)
+
 | Column | Description |
 |--------|-------------|
-| `pollinators` | Count/list of strict pollinator taxa |
-| `flower_visitors` | Count/list of all flower visitors (not used for M7) |
-| `herbivores_invertebrate` | Invertebrate herbivore count/list |
-| `herbivores_vertebrate` | Vertebrate herbivore count/list |
-| `pathogens` | Pathogen count/list |
-| `parasites` | Parasite count/list |
-| `predators_of_herbivores` | Natural enemy count/list |
+| `plant_wfo_id` | Plant identifier |
+| `organism_taxon` | Interacting organism name |
+| `interaction_type` | Type of interaction |
+| `interaction_category` | Category (pollinator, herbivore, biocontrol, etc.) |
+| `is_pollinator` | Boolean: strict pollinator |
+| `is_pest` | Boolean: pest organism |
+| `is_biocontrol` | Boolean: beneficial predator/parasitoid |
+| `is_pathogen` | Boolean: plant pathogen |
+| `is_herbivore` | Boolean: herbivore |
 
-**Note**: GloBI data coverage varies by species. Well-studied species have more complete interaction records.
+### Fungi (fungi_searchable.parquet)
+
+| Column | Description |
+|--------|-------------|
+| `plant_wfo_id` | Plant identifier |
+| `fungus_taxon` | Fungus name |
+| `guild_type` | Primary guild classification |
+| `guild_category` | Functional category |
+| `functional_role` | beneficial/pathogenic/neutral |
+| `is_mycorrhizal` | Boolean: any mycorrhizal association |
+| `is_amf` | Boolean: arbuscular mycorrhizal |
+| `is_emf` | Boolean: ectomycorrhizal |
+| `is_pathogenic` | Boolean: plant pathogen |
+| `is_biocontrol` | Boolean: biocontrol fungus |
+| `is_entomopathogen` | Boolean: insect-killing fungus |
+| `is_mycoparasite` | Boolean: fungus-killing fungus |
+| `is_endophytic` | Boolean: endophyte |
+| `is_saprotrophic` | Boolean: decomposer |
+
+### Entomopathogen Links (insect_fungal_parasites_11711.parquet)
+
+| Column | Description |
+|--------|-------------|
+| `herbivore` | Herbivore insect name |
+| `herbivore_family` | Insect family |
+| `herbivore_order` | Insect order |
+| `entomopathogenic_fungi` | List of fungi that kill this herbivore |
+| `fungal_parasite_count` | Number of entomopathogenic fungi |
+
+**Note**: GloBI and fungal data coverage varies by species. Well-studied species have more complete interaction records.

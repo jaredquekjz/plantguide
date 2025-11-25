@@ -1,0 +1,27 @@
+# Phase 8.7: Docker Compose for local development
+#
+# Usage:
+#   cd /home/olier/ellenberg  # Must run from repo root!
+#   docker-compose -f shipley_checks/src/Stage_4/guild_scorer_rust/docker-compose.yml up --build
+#   docker-compose -f shipley_checks/src/Stage_4/guild_scorer_rust/docker-compose.yml logs -f
+#   docker-compose -f shipley_checks/src/Stage_4/guild_scorer_rust/docker-compose.yml down
+
+services:
+  api:
+    build:
+      context: ../../../..  # Repo root: /home/olier/ellenberg
+      dockerfile: shipley_checks/src/Stage_4/guild_scorer_rust/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DATA_DIR=/shipley_checks/stage4/phase7_output
+      - CLIMATE_TIER=tier_3_humid_temperate
+      - PORT=3000
+      - RUST_LOG=info,guild_scorer_rust=debug
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s

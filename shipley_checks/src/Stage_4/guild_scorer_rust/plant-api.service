@@ -1,0 +1,49 @@
+# Phase 8.7: Systemd service file for VPS deployment
+#
+# Installation:
+#   sudo cp plant-api.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable plant-api
+#   sudo systemctl start plant-api
+#
+# Management:
+#   sudo systemctl status plant-api
+#   sudo systemctl restart plant-api
+#   sudo journalctl -u plant-api -f
+
+[Unit]
+Description=Plant Guide API Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=appuser
+Group=appuser
+WorkingDirectory=/app
+ExecStart=/app/api_server
+
+# Environment
+Environment="DATA_DIR=/app/data"
+Environment="CLIMATE_TIER=tier_3_humid_temperate"
+Environment="PORT=3000"
+Environment="RUST_LOG=info"
+
+# Restart policy
+Restart=always
+RestartSec=5s
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/app/logs
+
+# Resource limits
+LimitNOFILE=65536
+MemoryLimit=1G
+CPUQuota=200%
+
+[Install]
+WantedBy=multi-user.target
