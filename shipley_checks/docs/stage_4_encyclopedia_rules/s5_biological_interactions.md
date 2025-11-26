@@ -31,9 +31,14 @@ Rules for generating the biological interactions section of static encyclopedia 
 |--------------------------------|-----------------------------------|
 | `pollinators`, `pollinator_count` | `pathogenic_fungi`, `pathogenic_fungi_count` |
 | `herbivores`, `herbivore_count` | `amf_fungi`, `amf_fungi_count` |
-| `predators_hasHost`, etc. | `emf_fungi`, `emf_fungi_count` |
-| `fungivores_eats`, `fungivores_eats_count` | `mycoparasite_fungi`, `mycoparasite_fungi_count` |
-| `flower_visitors`, `visitor_count` | `entomopathogenic_fungi`, `entomopathogenic_fungi_count` |
+| `pathogens`, `pathogen_count` | `emf_fungi`, `emf_fungi_count` |
+| `predators_hasHost`, etc. | `mycoparasite_fungi`, `mycoparasite_fungi_count` |
+| `fungivores_eats`, `fungivores_eats_count` | `entomopathogenic_fungi`, `entomopathogenic_fungi_count` |
+| `flower_visitors`, `visitor_count` | `endophytic_fungi`, `saprotrophic_fungi` |
+
+**Note on pathogen columns:**
+- `pathogens` (organism_profiles): Species-level pathogen names from GloBI (63% coverage)
+- `pathogenic_fungi` (fungal_guilds): Genus-level fungal pathogens from FungalTraits/FunGuild (62% coverage)
 
 ---
 
@@ -201,11 +206,16 @@ Location: `shipley_checks/stage4/phase0_output/`
 | `pollinator_count` | Number of pollinator species |
 | `herbivores` | List of pest species (feeding on or parasitizing plant) |
 | `herbivore_count` | Number of pest species |
+| `pathogens` | List of pathogen species (GloBI `pathogenOf`/`parasiteOf`) |
+| `pathogen_count` | Number of pathogen species |
 | `flower_visitors` | Broader list (includes non-pollinators) |
 | `visitor_count` | Number of flower visitors |
-| `predators_hasHost` | Beneficial predators observed (hasHost relationship) |
-| `predators_interactsWith` | Beneficial predators observed (interactsWith) |
-| `predators_adjacentTo` | Beneficial predators observed (adjacentTo) |
+| `predators_hasHost` | Animals with hasHost relationship to plant |
+| `predators_hasHost_count` | Count of hasHost animals |
+| `predators_interactsWith` | Animals with interactsWith relationship |
+| `predators_interactsWith_count` | Count of interactsWith animals |
+| `predators_adjacentTo` | Animals with adjacentTo relationship |
+| `predators_adjacentTo_count` | Count of adjacentTo animals |
 | `fungivores_eats` | Animals observed eating fungi |
 | `fungivores_eats_count` | Number of fungus-eating animals |
 

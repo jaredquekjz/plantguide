@@ -184,14 +184,18 @@ THEN "Vigorous grower; may become invasive in favourable conditions"
 
 ## Data Column Reference
 
-| Column | Purpose |
-|--------|---------|
-| `pollinators` | Pollinator value score |
-| `herbivores_*` | Wildlife food value |
-| `carbon_total_rating` | Carbon storage assessment |
-| `nitrogen_fixation_rating` | Soil building potential |
-| `erosion_protection_rating` | Erosion control value |
-| `C`, `S`, `R` | Invasive potential assessment |
+**Source parquets:**
+- Pollinators, herbivores: `shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet`
+- Ecosystem service ratings: `shipley_checks/bill_foundational_data/stage3/bill_with_csr_ecoservices_11711.csv`
+
+| Column | Source | Purpose |
+|--------|--------|---------|
+| `pollinator_count` | organism_profiles | Pollinator value score |
+| `herbivore_count` | organism_profiles | Wildlife food value |
+| `carbon_total_rating` | Stage 3 CSV | Carbon storage assessment |
+| `nitrogen_fixation_rating` | Stage 3 CSV | Soil building potential |
+| `erosion_protection_rating` | Stage 3 CSV | Erosion control value |
+| `C`, `S`, `R` | Stage 3 CSV | Invasive potential assessment |
 
 ---
 

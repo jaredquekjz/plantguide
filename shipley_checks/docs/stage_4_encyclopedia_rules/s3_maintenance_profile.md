@@ -267,11 +267,16 @@ Use CSR percentile + climate envelope to flag invasive risk:
 
 ## Data Column Reference
 
+**Source file:** `shipley_checks/bill_foundational_data/stage3/bill_with_csr_ecoservices_11711.csv`
+
 | Column | Description |
 |--------|-------------|
-| `C` | Competitor score (0-1 or 0-100) |
-| `S` | Stress-tolerator score (0-1 or 0-100) |
-| `R` | Ruderal score (0-1 or 0-100) |
+| `C` | Competitor score (0-100%) |
+| `S` | Stress-tolerator score (0-100%) |
+| `R` | Ruderal score (0-100%) |
 | `height_m` | Plant height for size scaling |
-| `try_growth_form` | Growth form (tree/shrub/herb) |
+| `try_growth_form` | Growth form (tree/shrub/herb/vine/etc.) |
+| `life_form_simple` | Simplified life form (woody/non-woody) |
 | `decomposition_rating` | Litter decomposition rate |
+
+**CSR percentile calibration:** `shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json`

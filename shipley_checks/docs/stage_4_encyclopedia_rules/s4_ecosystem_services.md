@@ -204,6 +204,8 @@ Each ecosystem service has an associated confidence column:
 
 ## Data Column Reference
 
+**Source file:** `shipley_checks/bill_foundational_data/stage3/bill_with_csr_ecoservices_11711.csv`
+
 | Column | Description |
 |--------|-------------|
 | `npp_rating` | Net Primary Productivity rating |
@@ -217,4 +219,4 @@ Each ecosystem service has an associated confidence column:
 | `erosion_protection_rating` | Erosion protection rating |
 | `nitrogen_fixation_rating` | Nitrogen fixation rating |
 
-All ratings have corresponding `*_confidence` columns.
+All ratings have corresponding `*_confidence` columns (e.g., `npp_confidence`, `decomposition_confidence`).
