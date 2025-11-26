@@ -4,11 +4,7 @@
 //! Run with: cargo run --features api --bin generate_sample_encyclopedias
 
 #[cfg(feature = "api")]
-use guild_scorer_rust::encyclopedia::EncyclopediaGenerator;
-#[cfg(feature = "api")]
-use guild_scorer_rust::encyclopedia::sections::s5_biological_interactions::{
-    FungalCounts, OrganismCounts,
-};
+use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts};
 #[cfg(feature = "api")]
 use guild_scorer_rust::query_engine::QueryEngine;
 #[cfg(feature = "api")]
@@ -19,7 +15,7 @@ use std::fs;
 use std::path::Path;
 
 #[cfg(feature = "api")]
-const DATA_DIR: &str = "/home/olier/ellenberg/shipley_checks/stage4/phase7_output";
+const PROJECT_ROOT: &str = "/home/olier/ellenberg";
 #[cfg(feature = "api")]
 const OUTPUT_DIR: &str = "/home/olier/ellenberg/shipley_checks/stage4/reports/encyclopedia";
 
@@ -130,31 +126,37 @@ fn parse_fungal_counts(
     let mut endophytes = 0;
     let mut mycoparasites = 0;
     let mut entomopathogens = 0;
+    let mut pathogenic = 0;
 
     for row in &json_data {
         let guild = row.get("guild")?.as_str()?.to_lowercase();
         let count = row.get("count")?.as_u64()? as usize;
 
-        if guild.contains("arbuscular") || guild.contains("amf") {
+        // Match actual source_column values from fungi_flat.parquet
+        if guild.contains("amf_fungi") || guild.contains("arbuscular") {
             amf += count;
-        } else if guild.contains("ectomycorrhiz") || guild.contains("emf") {
+        } else if guild.contains("emf_fungi") || guild.contains("ectomycorrhiz") {
             emf += count;
-        } else if guild.contains("endophyt") {
+        } else if guild.contains("endophytic_fungi") || guild.contains("endophyt") {
             endophytes += count;
-        } else if guild.contains("mycoparasit") || guild.contains("hyperparasit") {
+        } else if guild.contains("mycoparasite_fungi") || guild.contains("mycoparasit") {
             mycoparasites += count;
-        } else if guild.contains("entomopathogen") || guild.contains("insect_pathogen") {
+        } else if guild.contains("entomopathogenic_fungi") || guild.contains("entomopathogen") {
             entomopathogens += count;
+        } else if guild.contains("pathogenic_fungi") || guild == "pathogenic" {
+            // Plant pathogenic fungi (diseases) - must check after entomopathogenic
+            pathogenic += count;
         }
     }
 
-    if amf + emf + endophytes + mycoparasites + entomopathogens > 0 {
+    if amf + emf + endophytes + mycoparasites + entomopathogens + pathogenic > 0 {
         Some(FungalCounts {
             amf,
             emf,
             endophytes,
             mycoparasites,
             entomopathogens,
+            pathogenic,
         })
     } else {
         None
@@ -170,7 +172,7 @@ async fn main() -> anyhow::Result<()> {
     fs::create_dir_all(OUTPUT_DIR)?;
 
     // Initialize query engine and generator
-    let engine = QueryEngine::new(DATA_DIR).await?;
+    let engine = QueryEngine::new(PROJECT_ROOT).await?;
     let generator = EncyclopediaGenerator::new();
 
     for (wfo_id, filename, description) in SAMPLE_PLANTS {

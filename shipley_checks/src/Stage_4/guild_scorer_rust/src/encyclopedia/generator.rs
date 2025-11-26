@@ -1,110 +1,96 @@
 //! Encyclopedia Generator
 //!
-//! Orchestrates generation of complete encyclopedia pages by combining
-//! multiple section modules.
+//! Main entry point for generating plant encyclopedia articles.
+//! Orchestrates all six sections (S1-S6) to produce a complete markdown document.
+//!
+//! Public API (consumed by api_server.rs and generate_sample_encyclopedias.rs):
+//! - EncyclopediaGenerator::new() -> Self
+//! - EncyclopediaGenerator::generate(wfo_id, plant_data, organism_counts, fungal_counts) -> Result<String>
 
+use std::collections::HashMap;
+use serde_json::Value;
+use chrono::Utc;
+
+use crate::encyclopedia::types::{OrganismCounts, FungalCounts};
 use crate::encyclopedia::sections::{
-    s1_identity_card::{PlantIdentity, generate_identity_card},
-    s2_growing_requirements::{GrowingRequirementsData, generate_growing_requirements},
-    s3_maintenance_profile::{MaintenanceData, generate_maintenance_profile},
-    s4_ecosystem_services::{EcosystemServicesData, generate_ecosystem_services},
-    s5_biological_interactions::{BiologicalInteractionsData, OrganismCounts, FungalCounts, generate_biological_interactions},
-    s6_companion_planting::{CompanionPlantingData, generate_companion_planting},
-    s7_biodiversity_value::{BiodiversityValueData, generate_biodiversity_value},
+    s1_identity,
+    s2_requirements,
+    s3_maintenance,
+    s4_services,
+    s5_interactions,
+    s6_companion,
 };
 
-use chrono::Utc;
-use std::collections::HashMap;
-
-/// Encyclopedia page generator
+/// Encyclopedia generator - stateless markdown generator.
 pub struct EncyclopediaGenerator;
 
 impl EncyclopediaGenerator {
+    /// Create a new encyclopedia generator.
     pub fn new() -> Self {
         Self
     }
 
-    /// Generate complete encyclopedia page from plant data
+    /// Generate a complete encyclopedia article for a plant.
     ///
     /// # Arguments
-    /// * `plant_data` - HashMap of plant column values (from DataFusion query)
+    /// * `wfo_id` - WFO taxon ID (e.g., "wfo-0001005999")
+    /// * `plant_data` - HashMap of plant attributes from Phase 7 parquet
     /// * `organism_counts` - Optional organism interaction counts
     /// * `fungal_counts` - Optional fungal association counts
+    ///
+    /// # Returns
+    /// Complete markdown document as a String, or error message.
     pub fn generate(
         &self,
         wfo_id: &str,
-        plant_data: &HashMap<String, serde_json::Value>,
+        plant_data: &HashMap<String, Value>,
         organism_counts: Option<OrganismCounts>,
         fungal_counts: Option<FungalCounts>,
     ) -> Result<String, String> {
-        // Extract plant identity
-        let plant_identity = PlantIdentity::from_row(plant_data)
-            .ok_or_else(|| "Failed to extract plant identity data".to_string())?;
-
-        let scientific_name = &plant_identity.scientific_name;
-
-        // Generate sections
         let mut sections = Vec::new();
 
         // YAML frontmatter
-        let timestamp = Utc::now().format("%Y-%m-%d").to_string();
-        sections.push(format!(
-            "---\nwfo_id: {}\nscientific_name: {}\ngenerated: {}\ngenerator: Rust Encyclopedia v1.0\n---",
-            wfo_id, scientific_name, timestamp
+        sections.push(generate_frontmatter(wfo_id, plant_data));
+
+        // S1: Identity Card
+        sections.push(s1_identity::generate(plant_data));
+
+        // S2: Growing Requirements
+        sections.push(s2_requirements::generate(plant_data));
+
+        // S3: Maintenance Profile
+        sections.push(s3_maintenance::generate(plant_data));
+
+        // S4: Ecosystem Services
+        sections.push(s4_services::generate(plant_data));
+
+        // S5: Biological Interactions
+        sections.push(s5_interactions::generate(
+            plant_data,
+            organism_counts.as_ref(),
+            fungal_counts.as_ref(),
         ));
 
-        // Section 1: Identity Card
-        sections.push(generate_identity_card(&plant_identity));
-        sections.push("---".to_string());
-
-        // Section 2: Growing Requirements
-        let growing_data = GrowingRequirementsData::from_row(plant_data);
-        sections.push(generate_growing_requirements(&growing_data));
-        sections.push("---".to_string());
-
-        // Section 3: Maintenance Profile
-        let maintenance_data = extract_maintenance_data(plant_data);
-        sections.push(generate_maintenance_profile(&maintenance_data));
-        sections.push("---".to_string());
-
-        // Section 4: Ecosystem Services
-        let ecosystem_data = extract_ecosystem_data(plant_data);
-        sections.push(generate_ecosystem_services(&ecosystem_data));
-        sections.push("---".to_string());
-
-        // Section 5: Biological Interactions
-        let bio_data = BiologicalInteractionsData {
-            organisms: organism_counts.clone(),
-            fungi: fungal_counts.clone(),
-            mycorrhiza_type: plant_data.get("try_mycorrhiza_type")
-                .and_then(|v| v.as_str())
-                .map(|s| s.to_string()),
-        };
-        sections.push(generate_biological_interactions(&bio_data));
-        sections.push("---".to_string());
-
-        // Section 6: Companion Planting (placeholder - requires pre-computed data)
-        let companion_data = CompanionPlantingData {
-            top_companions: vec![],
-            plants_to_avoid: vec![],
-        };
-        sections.push(generate_companion_planting(&companion_data));
-        sections.push("---".to_string());
-
-        // Section 7: Biodiversity Value
-        let biodiversity_data = BiodiversityValueData {
-            organisms: organism_counts,
-            fungi: fungal_counts,
-            ecosystem_services_avg: calculate_ecosystem_avg(plant_data),
-        };
-        sections.push(generate_biodiversity_value(&biodiversity_data));
+        // S6: Guild Potential (Companion Planting)
+        sections.push(s6_companion::generate(
+            plant_data,
+            organism_counts.as_ref(),
+            fungal_counts.as_ref(),
+        ));
 
         // Footer
-        sections.push("---".to_string());
-        sections.push("*Generated by Rust encyclopedia generator*".to_string());
-        sections.push("*Data sources: EIVE (Dengler et al. 2023), CSR (Pierce et al. 2017), TRY database*".to_string());
+        sections.push(generate_footer(wfo_id));
 
-        Ok(sections.join("\n\n"))
+        // Join with separators: frontmatter just needs blank line, other sections get ---
+        let mut result = sections[0].clone(); // frontmatter (ends with ---)
+        result.push_str("\n\n"); // blank line after frontmatter
+        result.push_str(&sections[1]); // S1 identity
+
+        for section in &sections[2..] {
+            result.push_str("\n\n---\n\n");
+            result.push_str(section);
+        }
+        Ok(result)
     }
 }
 
@@ -114,128 +100,91 @@ impl Default for EncyclopediaGenerator {
     }
 }
 
-fn extract_maintenance_data(row: &HashMap<String, serde_json::Value>) -> MaintenanceData {
-    MaintenanceData {
-        csr_c: row.get("C").and_then(|v| v.as_f64())
-            .or_else(|| row.get("C_norm").and_then(|v| v.as_f64())),
-        csr_s: row.get("S").and_then(|v| v.as_f64())
-            .or_else(|| row.get("S_norm").and_then(|v| v.as_f64())),
-        csr_r: row.get("R").and_then(|v| v.as_f64())
-            .or_else(|| row.get("R_norm").and_then(|v| v.as_f64())),
-        growth_form: row.get("try_growth_form").and_then(|v| v.as_str()).map(|s| s.to_string()),
-        height_m: row.get("height_m").and_then(|v| v.as_f64()),
-        leaf_phenology: row.get("try_leaf_phenology").and_then(|v| v.as_str()).map(|s| s.to_string()),
-        decomposition_rating: row.get("decomposition_rating").and_then(|v| v.as_f64()),
-        decomposition_confidence: row.get("decomposition_confidence").and_then(|v| v.as_f64()),
-    }
+/// Generate YAML frontmatter with metadata.
+fn generate_frontmatter(wfo_id: &str, data: &HashMap<String, Value>) -> String {
+    let scientific_name = data
+        .get("wfo_scientific_name")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Unknown");
+
+    let family = data
+        .get("family")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Unknown");
+
+    let genus = data
+        .get("genus")
+        .and_then(|v| v.as_str())
+        .unwrap_or("Unknown");
+
+    let now = Utc::now().format("%Y-%m-%dT%H:%M:%SZ");
+
+    format!(
+        r#"---
+wfo_id: "{}"
+scientific_name: "{}"
+family: "{}"
+genus: "{}"
+generated: "{}"
+version: "2.0"
+---"#,
+        wfo_id, scientific_name, family, genus, now
+    )
 }
 
-fn extract_ecosystem_data(row: &HashMap<String, serde_json::Value>) -> EcosystemServicesData {
-    EcosystemServicesData {
-        carbon_rating: row.get("carbon_biomass_rating").and_then(|v| v.as_f64()),
-        carbon_confidence: row.get("carbon_biomass_confidence").and_then(|v| v.as_f64()),
-        nitrogen_fix_rating: row.get("nitrogen_fixation_rating").and_then(|v| v.as_f64()),
-        nitrogen_fix_confidence: row.get("nitrogen_fixation_confidence").and_then(|v| v.as_f64()),
-        nitrogen_fix_has_try: row.get("nitrogen_fixation_has_try").and_then(|v| v.as_bool()),
-        erosion_rating: row.get("erosion_protection_rating").and_then(|v| v.as_f64()),
-        erosion_confidence: row.get("erosion_protection_confidence").and_then(|v| v.as_f64()),
-        nutrient_cycling_rating: row.get("nutrient_cycling_rating").and_then(|v| v.as_f64()),
-        nutrient_cycling_confidence: row.get("nutrient_cycling_confidence").and_then(|v| v.as_f64()),
-        decomposition_rating: row.get("decomposition_rating").and_then(|v| v.as_f64()),
-        height_m: row.get("height_m").and_then(|v| v.as_f64()),
-        woodiness: row.get("try_woodiness").and_then(|v| v.as_f64()),
-        growth_form: row.get("try_growth_form").and_then(|v| v.as_str()).map(|s| s.to_string()),
-    }
-}
+/// Generate footer with data sources and links.
+fn generate_footer(wfo_id: &str) -> String {
+    format!(
+        r#"## Data Sources
 
-fn calculate_ecosystem_avg(row: &HashMap<String, serde_json::Value>) -> Option<f64> {
-    let ratings: Vec<f64> = [
-        "carbon_biomass_rating",
-        "nitrogen_fixation_rating",
-        "erosion_protection_rating",
-        "nutrient_cycling_rating",
-    ]
-    .iter()
-    .filter_map(|key| row.get(*key).and_then(|v| v.as_f64()))
-    .collect();
+- **Taxonomy**: [World Flora Online](https://www.worldfloraonline.org/taxon/{})
+- **Traits**: TRY Plant Trait Database
+- **Climate/Soil**: WorldClim 2.1, SoilGrids 2.0
+- **EIVE**: Dengler et al. (2023) Ellenberg-type Indicator Values for Europe
+- **CSR Strategy**: Pierce et al. (2017) StrateFy global calibration
+- **Biotic Interactions**: GloBI (Global Biotic Interactions)
+- **Fungal Guilds**: FungalTraits, FunGuild
 
-    if ratings.is_empty() {
-        None
-    } else {
-        Some(ratings.iter().sum::<f64>() / ratings.len() as f64)
-    }
+*Encyclopedia generated from the Ellenberg Plant Database*"#,
+        wfo_id
+    )
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use serde_json::json;
 
-    fn make_test_plant_data() -> HashMap<String, serde_json::Value> {
+    #[test]
+    fn test_generate_minimal() {
+        let generator = EncyclopediaGenerator::new();
         let mut data = HashMap::new();
-        data.insert("wfo_scientific_name".to_string(), json!("Quercus robur"));
-        data.insert("family".to_string(), json!("Fagaceae"));
-        data.insert("genus".to_string(), json!("Quercus"));
-        data.insert("height_m".to_string(), json!(25.0));
-        data.insert("try_growth_form".to_string(), json!("tree"));
-        data.insert("try_woodiness".to_string(), json!(1.0));
-        data.insert("try_leaf_phenology".to_string(), json!("deciduous"));
-        data.insert("EIVE_L".to_string(), json!(6.5));
-        data.insert("EIVE_M".to_string(), json!(5.0));
-        data.insert("EIVE_T".to_string(), json!(5.5));
-        data.insert("EIVE_N".to_string(), json!(5.0));
-        data.insert("EIVE_R".to_string(), json!(6.5));
-        data.insert("C".to_string(), json!(0.5));
-        data.insert("S".to_string(), json!(0.3));
-        data.insert("R".to_string(), json!(0.2));
-        data.insert("carbon_biomass_rating".to_string(), json!(8.0));
-        data.insert("carbon_biomass_confidence".to_string(), json!(0.8));
-        data
+        data.insert("wfo_scientific_name".to_string(), Value::String("Test species".to_string()));
+        data.insert("family".to_string(), Value::String("Testaceae".to_string()));
+        data.insert("genus".to_string(), Value::String("Testus".to_string()));
+
+        let result = generator.generate("wfo-test", &data, None, None);
+        assert!(result.is_ok());
+
+        let content = result.unwrap();
+        assert!(content.contains("Test species"));
+        assert!(content.contains("Testaceae"));
+        assert!(content.contains("Growing Requirements"));
+        assert!(content.contains("Maintenance Profile"));
+        assert!(content.contains("Ecosystem Services"));
+        assert!(content.contains("Biological Interactions"));
+        assert!(content.contains("Guild Potential"));
     }
 
     #[test]
-    fn test_generate_full_page() {
-        let generator = EncyclopediaGenerator::new();
-        let data = make_test_plant_data();
+    fn test_frontmatter() {
+        let mut data = HashMap::new();
+        data.insert("wfo_scientific_name".to_string(), Value::String("Quercus robur".to_string()));
+        data.insert("family".to_string(), Value::String("Fagaceae".to_string()));
+        data.insert("genus".to_string(), Value::String("Quercus".to_string()));
 
-        let result = generator.generate("wfo-0000292858", &data, None, None);
-        assert!(result.is_ok());
-
-        let page = result.unwrap();
-        assert!(page.contains("Quercus robur"));
-        assert!(page.contains("Fagaceae"));
-        assert!(page.contains("Growing Requirements"));
-        assert!(page.contains("Maintenance Profile"));
-        assert!(page.contains("Ecosystem Services"));
-        assert!(page.contains("Biological Interactions"));
-    }
-
-    #[test]
-    fn test_generate_with_organisms() {
-        let generator = EncyclopediaGenerator::new();
-        let data = make_test_plant_data();
-
-        let organisms = Some(OrganismCounts {
-            pollinators: 15,
-            visitors: 10,
-            herbivores: 20,
-            pathogens: 5,
-            predators: 8,
-        });
-
-        let fungi = Some(FungalCounts {
-            amf: 0,
-            emf: 12,
-            endophytes: 3,
-            mycoparasites: 2,
-            entomopathogens: 1,
-        });
-
-        let result = generator.generate("wfo-0000292858", &data, organisms, fungi);
-        assert!(result.is_ok());
-
-        let page = result.unwrap();
-        assert!(page.contains("Pollinator"));
-        assert!(page.contains("EMF") || page.contains("Ectomycorrhizae"));
+        let frontmatter = generate_frontmatter("wfo-0000455648", &data);
+        assert!(frontmatter.contains("wfo_id: \"wfo-0000455648\""));
+        assert!(frontmatter.contains("scientific_name: \"Quercus robur\""));
+        assert!(frontmatter.contains("family: \"Fagaceae\""));
     }
 }

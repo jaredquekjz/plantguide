@@ -35,10 +35,7 @@ use crate::query_engine::{QueryEngine, PlantFilters};
 use crate::scorer::GuildScorer;
 
 #[cfg(feature = "api")]
-use crate::encyclopedia::{
-    EncyclopediaGenerator,
-    sections::s5_biological_interactions::{OrganismCounts, FungalCounts},
-};
+use crate::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts};
 
 #[cfg(feature = "api")]
 use datafusion::arrow::array::RecordBatch;
@@ -442,14 +439,15 @@ fn parse_fungal_counts(batches: &[RecordBatch]) -> Option<FungalCounts> {
     let mut endophytes = 0;
     let mut mycoparasites = 0;
     let mut entomopathogens = 0;
+    let mut pathogenic = 0;
 
     for row in data {
         let guild = row.get("guild")?.as_str()?.to_lowercase();
         let count = row.get("count")?.as_u64()? as usize;
 
-        if guild.contains("arbuscular") || guild.contains("amf") {
+        if guild.contains("arbuscular") || guild.contains("amf_fungi") {
             amf += count;
-        } else if guild.contains("ectomycorrhiz") || guild.contains("emf") {
+        } else if guild.contains("ectomycorrhiz") || guild.contains("emf_fungi") {
             emf += count;
         } else if guild.contains("endophyt") {
             endophytes += count;
@@ -457,17 +455,21 @@ fn parse_fungal_counts(batches: &[RecordBatch]) -> Option<FungalCounts> {
             mycoparasites += count;
         } else if guild.contains("entomopathogen") || guild.contains("insect_pathogen") {
             entomopathogens += count;
+        } else if guild.contains("pathogenic_fungi") || guild == "pathogenic" {
+            // Plant pathogenic fungi (diseases) - must check after entomopathogenic
+            pathogenic += count;
         }
     }
 
     // Only return if we have any data
-    if amf + emf + endophytes + mycoparasites + entomopathogens > 0 {
+    if amf + emf + endophytes + mycoparasites + entomopathogens + pathogenic > 0 {
         Some(FungalCounts {
             amf,
             emf,
             endophytes,
             mycoparasites,
             entomopathogens,
+            pathogenic,
         })
     } else {
         None

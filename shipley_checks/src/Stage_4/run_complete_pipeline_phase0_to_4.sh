@@ -435,15 +435,16 @@ elif [ "$RUN_TESTS" -eq 0 ]; then
 fi
 
 # ============================================================================
-# Phase 7: DataFusion SQL-Optimized Parquet Conversion
+# Phase 7: Flatten Data for SQL Queries
 # ============================================================================
 
 if [ "$START_PHASE" -le 7 ]; then
   echo "================================================================================"
-  echo "PHASE 7: DATAFUSION SQL-OPTIMIZED PARQUET CONVERSION"
+  echo "PHASE 7: FLATTEN DATA FOR SQL QUERIES"
   echo "================================================================================"
   echo ""
-  echo "Converting datasets to SQL-queryable format for DataFusion query engine"
+  echo "Flattening organism/fungal list columns for SQL queries"
+  echo "Note: Plants use master dataset directly (no flattening needed)"
   echo ""
 
   PHASE7_START=$(date +%s)
@@ -505,7 +506,7 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   [ -n "$PHASE6_TIME" ] && echo "           Time: ${PHASE6_TIME}s"
 fi
 if [ "$START_PHASE" -le 7 ]; then
-  echo "✓ Phase 7: DataFusion SQL-optimized parquet conversion"
+  echo "✓ Phase 7: Flatten data for SQL queries"
   [ -n "$PHASE7_TIME" ] && echo "           Time: ${PHASE7_TIME}s"
 fi
 
@@ -550,10 +551,10 @@ if [ "$START_PHASE" -le 6 ] && [ "$RUN_TESTS" -eq 1 ]; then
   echo ""
 fi
 if [ "$START_PHASE" -le 7 ]; then
-  echo "  Phase 7 (SQL-optimized parquets for DataFusion):"
-  echo "    - shipley_checks/stage4/phase7_output/plants_searchable_11711.parquet (2.8 MB)"
-  echo "    - shipley_checks/stage4/phase7_output/organisms_searchable.parquet (1.4 MB)"
-  echo "    - shipley_checks/stage4/phase7_output/fungi_searchable.parquet (386 KB)"
+  echo "  Phase 7 (Flattened data for SQL queries):"
+  echo "    - shipley_checks/stage4/phase7_output/organisms_flat.parquet (SQL search by organism)"
+  echo "    - shipley_checks/stage4/phase7_output/fungi_flat.parquet (SQL search by fungus)"
+  echo "    Note: Plants use master dataset directly (stage3/bill_with_csr_ecoservices_*.parquet)"
   echo ""
 fi
 echo "================================================================================"

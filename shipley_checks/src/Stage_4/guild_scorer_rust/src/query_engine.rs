@@ -1,6 +1,10 @@
 // Phase 8.2: DataFusion Query Engine Module
 //
-// Purpose: Async SQL query engine for Phase 7 parquet files
+// Purpose: Async SQL query engine for plant ecological data
+// Data sources:
+//   - Plants: master dataset (stage3/bill_with_csr_ecoservices_*.parquet, 782 cols)
+//   - Organisms: phase0 wide format (for counts) + phase7 flat format (for SQL search)
+//   - Fungi: phase0 wide format (for counts) + phase7 flat format (for SQL search)
 // Performance: <10ms for plant searches, <20ms for similarity queries
 
 #[cfg(feature = "api")]
@@ -13,6 +17,8 @@ use datafusion::arrow::array::RecordBatch;
 use std::sync::Arc;
 #[cfg(feature = "api")]
 use std::path::Path;
+#[cfg(feature = "api")]
+use std::fs;
 
 #[cfg(feature = "api")]
 pub type DFResult<T> = Result<T, DataFusionError>;
@@ -25,18 +31,20 @@ pub struct QueryEngine {
 
 #[cfg(feature = "api")]
 impl QueryEngine {
-    /// Initialize query engine and register Phase 7 parquets
-    pub async fn new(data_dir: &str) -> DFResult<Self> {
+    /// Initialize query engine with master dataset and flattened interaction tables
+    ///
+    /// Expected directory structure from project_root:
+    ///   - shipley_checks/stage3/bill_with_csr_ecoservices_11711_*.parquet (plants master)
+    ///   - shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet (organisms wide)
+    ///   - shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet (fungi wide)
+    ///   - shipley_checks/stage4/phase7_output/organisms_flat.parquet (organisms flat)
+    ///   - shipley_checks/stage4/phase7_output/fungi_flat.parquet (fungi flat)
+    pub async fn new(project_root: &str) -> DFResult<Self> {
         let ctx = SessionContext::new();
 
-        // Register plants table
-        let plants_path = format!("{}/plants_searchable_11711.parquet", data_dir);
-        if !Path::new(&plants_path).exists() {
-            return Err(DataFusionError::Plan(format!(
-                "Plants parquet not found: {}",
-                plants_path
-            )));
-        }
+        // Find master plants parquet (may have date suffix)
+        let stage3_dir = format!("{}/shipley_checks/stage3", project_root);
+        let plants_path = Self::find_master_plants(&stage3_dir)?;
         ctx.register_parquet(
             "plants",
             &plants_path,
@@ -44,32 +52,74 @@ impl QueryEngine {
         )
         .await?;
 
-        // Register organisms table
-        let organisms_path = format!("{}/organisms_searchable.parquet", data_dir);
-        if !Path::new(&organisms_path).exists() {
+        // Register organisms wide (for counts)
+        let organisms_wide_path = format!(
+            "{}/shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet",
+            project_root
+        );
+        if !Path::new(&organisms_wide_path).exists() {
             return Err(DataFusionError::Plan(format!(
-                "Organisms parquet not found: {}",
-                organisms_path
+                "Organisms wide parquet not found: {}",
+                organisms_wide_path
             )));
         }
         ctx.register_parquet(
-            "organisms",
-            &organisms_path,
+            "organisms_wide",
+            &organisms_wide_path,
             ParquetReadOptions::default(),
         )
         .await?;
 
-        // Register fungi table
-        let fungi_path = format!("{}/fungi_searchable.parquet", data_dir);
-        if !Path::new(&fungi_path).exists() {
+        // Register organisms flat (for SQL search)
+        let organisms_flat_path = format!(
+            "{}/shipley_checks/stage4/phase7_output/organisms_flat.parquet",
+            project_root
+        );
+        if !Path::new(&organisms_flat_path).exists() {
             return Err(DataFusionError::Plan(format!(
-                "Fungi parquet not found: {}",
-                fungi_path
+                "Organisms flat parquet not found: {}",
+                organisms_flat_path
+            )));
+        }
+        ctx.register_parquet(
+            "organisms",
+            &organisms_flat_path,
+            ParquetReadOptions::default(),
+        )
+        .await?;
+
+        // Register fungi wide (for counts)
+        let fungi_wide_path = format!(
+            "{}/shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet",
+            project_root
+        );
+        if !Path::new(&fungi_wide_path).exists() {
+            return Err(DataFusionError::Plan(format!(
+                "Fungi wide parquet not found: {}",
+                fungi_wide_path
+            )));
+        }
+        ctx.register_parquet(
+            "fungi_wide",
+            &fungi_wide_path,
+            ParquetReadOptions::default(),
+        )
+        .await?;
+
+        // Register fungi flat (for SQL search)
+        let fungi_flat_path = format!(
+            "{}/shipley_checks/stage4/phase7_output/fungi_flat.parquet",
+            project_root
+        );
+        if !Path::new(&fungi_flat_path).exists() {
+            return Err(DataFusionError::Plan(format!(
+                "Fungi flat parquet not found: {}",
+                fungi_flat_path
             )));
         }
         ctx.register_parquet(
             "fungi",
-            &fungi_path,
+            &fungi_flat_path,
             ParquetReadOptions::default(),
         )
         .await?;
@@ -77,6 +127,29 @@ impl QueryEngine {
         Ok(Self {
             ctx: Arc::new(ctx),
         })
+    }
+
+    /// Find the master plants parquet file (handles date suffixes)
+    fn find_master_plants(stage3_dir: &str) -> DFResult<String> {
+        let entries = fs::read_dir(stage3_dir).map_err(|e| {
+            DataFusionError::Plan(format!("Cannot read stage3 directory: {}", e))
+        })?;
+
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+                if name.starts_with("bill_with_csr_ecoservices_11711_")
+                    && name.ends_with(".parquet")
+                {
+                    return Ok(path.to_string_lossy().to_string());
+                }
+            }
+        }
+
+        Err(DataFusionError::Plan(format!(
+            "Master plants parquet not found in {}",
+            stage3_dir
+        )))
     }
 
     /// Raw SQL execution (for advanced queries)
@@ -107,76 +180,87 @@ impl QueryEngine {
             ));
         }
 
-        // EIVE filters (quoted for case-sensitivity)
+        // EIVE filters (using master dataset column names with quotes for hyphens)
         if let Some(min) = filters.min_light {
-            conditions.push(format!("\"EIVE_L\" >= {}", min));
+            conditions.push(format!("\"EIVEres-L_complete\" >= {}", min));
         }
         if let Some(max) = filters.max_light {
-            conditions.push(format!("\"EIVE_L\" <= {}", max));
+            conditions.push(format!("\"EIVEres-L_complete\" <= {}", max));
         }
         if let Some(min) = filters.min_moisture {
-            conditions.push(format!("\"EIVE_M\" >= {}", min));
+            conditions.push(format!("\"EIVEres-M_complete\" >= {}", min));
         }
         if let Some(max) = filters.max_moisture {
-            conditions.push(format!("\"EIVE_M\" <= {}", max));
+            conditions.push(format!("\"EIVEres-M_complete\" <= {}", max));
         }
         if let Some(min) = filters.min_temperature {
-            conditions.push(format!("\"EIVE_T\" >= {}", min));
+            conditions.push(format!("\"EIVEres-T_complete\" >= {}", min));
         }
         if let Some(max) = filters.max_temperature {
-            conditions.push(format!("\"EIVE_T\" <= {}", max));
+            conditions.push(format!("\"EIVEres-T_complete\" <= {}", max));
         }
         if let Some(min) = filters.min_nitrogen {
-            conditions.push(format!("\"EIVE_N\" >= {}", min));
+            conditions.push(format!("\"EIVEres-N_complete\" >= {}", min));
         }
         if let Some(max) = filters.max_nitrogen {
-            conditions.push(format!("\"EIVE_N\" <= {}", max));
+            conditions.push(format!("\"EIVEres-N_complete\" <= {}", max));
         }
         if let Some(min) = filters.min_ph {
-            conditions.push(format!("\"EIVE_R\" >= {}", min));
+            conditions.push(format!("\"EIVEres-R_complete\" >= {}", min));
         }
         if let Some(max) = filters.max_ph {
-            conditions.push(format!("\"EIVE_R\" <= {}", max));
+            conditions.push(format!("\"EIVEres-R_complete\" <= {}", max));
         }
 
-        // CSR filters
+        // CSR filters (master uses 0-100 scale, convert filter from 0-1)
         if let Some(min) = filters.min_c {
-            conditions.push(format!("C_norm >= {}", min));
+            conditions.push(format!("C >= {}", min * 100.0));
         }
         if let Some(max) = filters.max_c {
-            conditions.push(format!("C_norm <= {}", max));
+            conditions.push(format!("C <= {}", max * 100.0));
         }
         if let Some(min) = filters.min_s {
-            conditions.push(format!("S_norm >= {}", min));
+            conditions.push(format!("S >= {}", min * 100.0));
         }
         if let Some(max) = filters.max_s {
-            conditions.push(format!("S_norm <= {}", max));
+            conditions.push(format!("S <= {}", max * 100.0));
         }
         if let Some(min) = filters.min_r {
-            conditions.push(format!("R_norm >= {}", min));
+            conditions.push(format!("R >= {}", min * 100.0));
         }
         if let Some(max) = filters.max_r {
-            conditions.push(format!("R_norm <= {}", max));
+            conditions.push(format!("R <= {}", max * 100.0));
         }
 
-        // Maintenance level filter
+        // Maintenance level filter (computed from CSR: S>50=low, C>50=high, else medium)
         if let Some(ref level) = filters.maintenance_level {
-            let escaped = level.replace("'", "''");
-            conditions.push(format!("maintenance_level = '{}'", escaped));
+            match level.as_str() {
+                "low" => conditions.push("S > 50".to_string()),
+                "high" => conditions.push("C > 50".to_string()),
+                "medium" => conditions.push("(S <= 50 AND C <= 50)".to_string()),
+                _ => {}
+            }
         }
 
-        // Boolean filters
+        // Boolean filters (computed inline from EIVE/CSR)
         if let Some(drought_tolerant) = filters.drought_tolerant {
-            conditions.push(format!("drought_tolerant = {}", drought_tolerant));
+            if drought_tolerant {
+                conditions.push("S > 60".to_string());
+            } else {
+                conditions.push("S <= 60".to_string());
+            }
         }
         if let Some(fast_growing) = filters.fast_growing {
-            conditions.push(format!("fast_growing = {}", fast_growing));
+            if fast_growing {
+                conditions.push("R > 60".to_string());
+            } else {
+                conditions.push("R <= 60".to_string());
+            }
         }
 
-        // Climate tier filter
-        if let Some(ref tier) = filters.climate_tier {
-            let escaped = tier.replace("'", "''");
-            conditions.push(format!("{} = true", escaped));
+        // Climate tier filter (skip if not applicable to master)
+        if let Some(ref _tier) = filters.climate_tier {
+            // Climate tier columns may not be in master - skip for now
         }
 
         // Build WHERE clause
@@ -214,24 +298,27 @@ impl QueryEngine {
     ) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
 
-        // SQL query: compute Euclidean distance in 6D EIVE space
+        // SQL query: compute Euclidean distance in 5D EIVE space (using master column names)
         let sql = format!(
             r#"
             WITH target AS (
                 SELECT
-                    EIVE_L, EIVE_M, EIVE_T, EIVE_K, EIVE_N, EIVE_R
+                    "EIVEres-L_complete" as L,
+                    "EIVEres-M_complete" as M,
+                    "EIVEres-T_complete" as T,
+                    "EIVEres-N_complete" as N,
+                    "EIVEres-R_complete" as R
                 FROM plants
                 WHERE wfo_taxon_id = '{}'
             )
             SELECT
                 p.*,
                 SQRT(
-                    POWER(p.EIVE_L - t.EIVE_L, 2) +
-                    POWER(p.EIVE_M - t.EIVE_M, 2) +
-                    POWER(p.EIVE_T - t.EIVE_T, 2) +
-                    POWER(p.EIVE_K - t.EIVE_K, 2) +
-                    POWER(p.EIVE_N - t.EIVE_N, 2) +
-                    POWER(p.EIVE_R - t.EIVE_R, 2)
+                    POWER(p."EIVEres-L_complete" - t.L, 2) +
+                    POWER(p."EIVEres-M_complete" - t.M, 2) +
+                    POWER(p."EIVEres-T_complete" - t.T, 2) +
+                    POWER(p."EIVEres-N_complete" - t.N, 2) +
+                    POWER(p."EIVEres-R_complete" - t.R, 2)
                 ) AS eive_distance
             FROM plants p, target t
             WHERE p.wfo_taxon_id != '{}'
@@ -244,66 +331,68 @@ impl QueryEngine {
         self.query(&sql).await
     }
 
-    /// Get organisms for a plant
+    /// Get organisms for a plant (from flat format)
+    /// Filter by source_column (original Phase 0 column name: pollinators, herbivores, etc.)
     pub async fn get_organisms(
         &self,
         plant_id: &str,
-        interaction_type: Option<&str>,
+        source_column: Option<&str>,
     ) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
 
-        let type_filter = if let Some(t) = interaction_type {
+        let type_filter = if let Some(t) = source_column {
             let escaped_type = t.replace("'", "''");
-            format!("AND interaction_type = '{}'", escaped_type)
+            format!("AND source_column = '{}'", escaped_type)
         } else {
             String::new()
         };
 
         let sql = format!(
-            "SELECT * FROM organisms WHERE plant_wfo_id = '{}' {} ORDER BY interaction_type",
+            "SELECT * FROM organisms WHERE plant_wfo_id = '{}' {} ORDER BY source_column",
             escaped_id, type_filter
         );
 
         self.query(&sql).await
     }
 
-    /// Get fungi for a plant
+    /// Get fungi for a plant (from flat format)
+    /// Filter by source_column (original Phase 0 column name: amf_fungi, emf_fungi, etc.)
     pub async fn get_fungi(
         &self,
         plant_id: &str,
-        guild_category: Option<&str>,
+        source_column: Option<&str>,
     ) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
 
-        let category_filter = if let Some(cat) = guild_category {
+        let category_filter = if let Some(cat) = source_column {
             let escaped_cat = cat.replace("'", "''");
-            format!("AND guild_category = '{}'", escaped_cat)
+            format!("AND source_column = '{}'", escaped_cat)
         } else {
             String::new()
         };
 
         let sql = format!(
-            "SELECT * FROM fungi WHERE plant_wfo_id = '{}' {} ORDER BY guild",
+            "SELECT * FROM fungi WHERE plant_wfo_id = '{}' {} ORDER BY source_column",
             escaped_id, category_filter
         );
 
         self.query(&sql).await
     }
 
-    /// Get organism interaction counts aggregated by type
+    /// Get organism interaction counts (by source column from flat format)
     pub async fn get_organism_summary(&self, plant_id: &str) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
 
+        // Query flat format - source_column preserves original Phase 0 column name
         let sql = format!(
             r#"
             SELECT
-                interaction_type,
-                interaction_category,
+                source_column as interaction_type,
                 COUNT(*) as count
             FROM organisms
             WHERE plant_wfo_id = '{}'
-            GROUP BY interaction_type, interaction_category
-            ORDER BY interaction_type
+            GROUP BY source_column
+            ORDER BY source_column
             "#,
             escaped_id
         );
@@ -311,20 +400,20 @@ impl QueryEngine {
         self.query(&sql).await
     }
 
-    /// Get fungal guild counts aggregated by category
+    /// Get fungal guild counts (by source column from flat format)
     pub async fn get_fungi_summary(&self, plant_id: &str) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
 
+        // Query flat format - source_column preserves original Phase 0 column name
         let sql = format!(
             r#"
             SELECT
-                guild,
-                guild_category,
+                source_column as guild,
                 COUNT(*) as count
             FROM fungi
             WHERE plant_wfo_id = '{}'
-            GROUP BY guild, guild_category
-            ORDER BY guild
+            GROUP BY source_column
+            ORDER BY source_column
             "#,
             escaped_id
         );
@@ -375,12 +464,11 @@ pub struct PlantFilters {
 mod tests {
     use super::*;
 
+    const PROJECT_ROOT: &str = "/home/olier/ellenberg";
+
     #[tokio::test]
     async fn test_query_engine_initialization() {
-        // This test requires Phase 7 parquets to exist
-        let data_dir = "/home/olier/ellenberg/shipley_checks/stage4/phase7_output";
-
-        match QueryEngine::new(data_dir).await {
+        match QueryEngine::new(PROJECT_ROOT).await {
             Ok(engine) => {
                 // Verify we can execute a simple query
                 let result = engine.query("SELECT COUNT(*) FROM plants").await;
@@ -388,16 +476,14 @@ mod tests {
             }
             Err(e) => {
                 // If files don't exist, skip test
-                println!("Skipping test (Phase 7 files not found): {}", e);
+                println!("Skipping test (data files not found): {}", e);
             }
         }
     }
 
     #[tokio::test]
     async fn test_search_plants() {
-        let data_dir = "/home/olier/ellenberg/shipley_checks/stage4/phase7_output";
-
-        if let Ok(engine) = QueryEngine::new(data_dir).await {
+        if let Ok(engine) = QueryEngine::new(PROJECT_ROOT).await {
             let filters = PlantFilters {
                 min_light: Some(7.0),
                 max_moisture: Some(5.0),

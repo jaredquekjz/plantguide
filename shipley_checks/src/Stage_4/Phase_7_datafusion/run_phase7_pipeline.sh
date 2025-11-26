@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 #
-# Phase 7: DataFusion SQL-Optimized Parquet Conversion
+# Phase 7: Flatten Organism and Fungal Data for SQL Queries
 #
 # Purpose:
-# - Convert Phase 4 and Phase 0 outputs to SQL-optimized parquet files
-# - Create searchable datasets for DataFusion query engine
+# - Flatten list columns from Phase 0 parquets into relational format
+# - Enable SQL queries like "find plants by organism/fungus"
+# - Faithful transformation: no derived labels or categories
 #
 # Prerequisites:
 #   - Phase 0 complete (organism and fungal profiles)
-#   - Phase 4 complete (plants with vernaculars + Köppen)
 #   - R custom library at /home/olier/ellenberg/.Rlib
 #
 # Outputs:
-#   - shipley_checks/stage4/phase7_output/plants_searchable_11711.parquet
-#   - shipley_checks/stage4/phase7_output/organisms_searchable.parquet
-#   - shipley_checks/stage4/phase7_output/fungi_searchable.parquet
+#   - shipley_checks/stage4/phase7_output/organisms_flat.parquet
+#   - shipley_checks/stage4/phase7_output/fungi_flat.parquet
+#
+# Note: Plants use master dataset directly (no flattening needed)
 #
 
 set -e  # Exit on error
@@ -27,15 +28,22 @@ export R_LIBS_USER="${PROJECT_ROOT}/.Rlib"
 
 cat <<'EOF'
 ================================================================================
-PHASE 7: DATAFUSION SQL-OPTIMIZED PARQUET CONVERSION
+PHASE 7: FLATTEN DATA FOR SQL QUERIES
 ================================================================================
 
-Converting datasets to SQL-queryable format for DataFusion query engine
+Flattening organism and fungal list columns for DataFusion SQL engine.
+
+Design principles:
+  - Faithful transformation: no derived labels or categories
+  - Source column preserved: know exactly which Phase 0 column data came from
+  - Minimal schema: plant_id, taxon, source_column only
 
 Steps:
-  1. Convert plants (Phase 4 output → SQL-optimized)
-  2. Convert organisms (Phase 0 output → flattened relational)
-  3. Convert fungi (Phase 0 output → flattened relational)
+  1. Flatten organisms (pollinators, herbivores, etc.)
+  2. Flatten fungi (amf, emf, pathogenic, etc.)
+  3. Verify data integrity
+
+Note: Plants use master dataset directly (782 columns, no flattening)
 
 EOF
 
@@ -46,78 +54,79 @@ mkdir -p "$OUTPUT_DIR"
 PHASE7_START=$(date +%s)
 
 # ----------------------------------------------------------------------------
-# Step 1: Convert Plants
+# Step 1: Flatten Organisms
 # ----------------------------------------------------------------------------
 
 echo "--------------------------------------------------------------------------------"
-echo "Step 1: Converting Plant Encyclopedia Data to SQL Format"
+echo "Step 1: Flattening Organism Profiles"
 echo "--------------------------------------------------------------------------------"
 echo ""
 
 STEP1_START=$(date +%s)
 
 cd "$PHASE7_DIR"
-env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript convert_plants_for_sql.R
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript flatten_organisms.R
 
 STEP1_END=$(date +%s)
 STEP1_TIME=$((STEP1_END - STEP1_START))
 
 if [ $? -eq 0 ]; then
   echo ""
-  echo "✓ Step 1 complete (${STEP1_TIME}s)"
+  echo "Step 1 complete (${STEP1_TIME}s)"
   echo ""
 else
-  echo "✗ Step 1 failed"
+  echo "Step 1 failed"
   exit 1
 fi
 
 # ----------------------------------------------------------------------------
-# Step 2: Convert Organisms
+# Step 2: Flatten Fungi
 # ----------------------------------------------------------------------------
 
 echo "--------------------------------------------------------------------------------"
-echo "Step 2: Converting Organism Profiles to SQL Format"
+echo "Step 2: Flattening Fungal Guilds"
 echo "--------------------------------------------------------------------------------"
 echo ""
 
 STEP2_START=$(date +%s)
 
-env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript convert_organisms_for_sql.R
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript flatten_fungi.R
 
 STEP2_END=$(date +%s)
 STEP2_TIME=$((STEP2_END - STEP2_START))
 
 if [ $? -eq 0 ]; then
   echo ""
-  echo "✓ Step 2 complete (${STEP2_TIME}s)"
+  echo "Step 2 complete (${STEP2_TIME}s)"
   echo ""
 else
-  echo "✗ Step 2 failed"
+  echo "Step 2 failed"
   exit 1
 fi
 
 # ----------------------------------------------------------------------------
-# Step 3: Convert Fungi
+# Step 3: Verify Data Integrity
 # ----------------------------------------------------------------------------
 
 echo "--------------------------------------------------------------------------------"
-echo "Step 3: Converting Fungal Guilds to SQL Format"
+echo "Step 3: Verifying Data Integrity"
 echo "--------------------------------------------------------------------------------"
 echo ""
 
 STEP3_START=$(date +%s)
 
-env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript convert_fungi_for_sql.R
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript verify_phase7_integrity.R
 
+VERIFY_STATUS=$?
 STEP3_END=$(date +%s)
 STEP3_TIME=$((STEP3_END - STEP3_START))
 
-if [ $? -eq 0 ]; then
+if [ $VERIFY_STATUS -eq 0 ]; then
   echo ""
-  echo "✓ Step 3 complete (${STEP3_TIME}s)"
+  echo "Step 3 complete (${STEP3_TIME}s)"
   echo ""
 else
-  echo "✗ Step 3 failed"
+  echo "Step 3 failed - data integrity check failed"
   exit 1
 fi
 
@@ -137,19 +146,11 @@ echo ""
 echo "Outputs:"
 ls -lh "$OUTPUT_DIR"/*.parquet 2>/dev/null | awk '{print "  - " $9 " (" $5 ")"}'
 echo ""
-
-# Verify all files exist
-PLANTS_FILE="${OUTPUT_DIR}/plants_searchable_11711.parquet"
-ORGANISMS_FILE="${OUTPUT_DIR}/organisms_searchable.parquet"
-FUNGI_FILE="${OUTPUT_DIR}/fungi_searchable.parquet"
-
-if [ -f "$PLANTS_FILE" ] && [ -f "$ORGANISMS_FILE" ] && [ -f "$FUNGI_FILE" ]; then
-  echo "✓ All SQL-optimized parquet files created successfully"
-  echo ""
-  echo "Ready for DataFusion query engine integration (Phase 8)"
-else
-  echo "✗ Some output files are missing"
-  exit 1
-fi
-
+echo "Data sources for DataFusion:"
+echo "  - Plants: stage3/bill_with_csr_ecoservices_*.parquet (master, 782 cols)"
+echo "  - Organisms (wide): phase0_output/organism_profiles_11711.parquet (for counts)"
+echo "  - Organisms (flat): phase7_output/organisms_flat.parquet (for SQL search)"
+echo "  - Fungi (wide): phase0_output/fungal_guilds_hybrid_11711.parquet (for counts)"
+echo "  - Fungi (flat): phase7_output/fungi_flat.parquet (for SQL search)"
+echo ""
 echo "================================================================================"

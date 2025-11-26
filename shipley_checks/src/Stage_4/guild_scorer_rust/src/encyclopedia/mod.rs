@@ -1,19 +1,34 @@
-//! Encyclopedia Generator Module
+//! Encyclopedia Module
 //!
-//! Generates plant encyclopedia articles in markdown format.
-//! Ported from R implementation: shipley_checks/src/encyclopedia/
+//! Generates static plant encyclopedia articles from trait and interaction data.
+//! Follows planning docs in docs/stage_4_encyclopedia_rules/
 //!
 //! ## Sections
-//! 1. Identity Card - taxonomy, growth form, height, traits
-//! 2. Growing Requirements - EIVE indicators, CSR, climate zones
-//! 3. Maintenance Profile - CSR-derived labor estimates, seasonal tasks
-//! 4. Ecosystem Services - carbon, nitrogen, erosion, nutrient cycling
-//! 5. Biological Interactions - pollinators, pests, diseases, fungi
-//! 6. Companion Planting (NEW) - guild compatibility scores
-//! 7. Biodiversity Value (NEW) - composite organism/fungi richness index
+//! - S1: Identity Card - Taxonomy, morphology, vernacular names
+//! - S2: Growing Requirements - EIVE indicators, climate/soil envelopes
+//! - S3: Maintenance Profile - CSR-based maintenance guidance
+//! - S4: Ecosystem Services - Pre-calculated service ratings
+//! - S5: Biological Interactions - Pollinators, pests, diseases, fungi
+//! - S6: Guild Potential - Companion planting guidance (GP1-GP7)
+//!
+//! ## Public API
+//! ```rust,ignore
+//! use encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts};
+//!
+//! let generator = EncyclopediaGenerator::new();
+//! let article = generator.generate(
+//!     "wfo-0001005999",
+//!     &plant_data,
+//!     Some(organism_counts),
+//!     Some(fungal_counts),
+//! )?;
+//! ```
 
+pub mod types;
 pub mod utils;
 pub mod sections;
 pub mod generator;
 
+// Re-export public API
+pub use types::{OrganismCounts, FungalCounts};
 pub use generator::EncyclopediaGenerator;
