@@ -12,7 +12,6 @@ Reference documentation for the Stage 4 Rust encyclopedia generator.
 | `s4_ecosystem_services.rs` | [s4_ecosystem_services.md](s4_ecosystem_services.md) | Pre-calculated ratings |
 | `s5_biological_interactions.rs` | [s5_biological_interactions.md](s5_biological_interactions.md) | GloBI organisms |
 | `s6_companion_planting.rs` | [s6_companion_planting.md](s6_companion_planting.md) | Guild synergies |
-| `s7_biodiversity_value.rs` | [s7_biodiversity_value.md](s7_biodiversity_value.md) | Summary thresholds |
 
 ## Scientific Foundation
 
