@@ -119,14 +119,18 @@ ALWAYS:
 
 **Scientific basis**: CSR strategy conflicts cause competition failures. C-C pairs compete destructively; C-S pairs may shade out S-plants unless S is shade-tolerant. Growth form and height modulate these conflicts.
 
-### CSR Classification
+### CSR Classification (Percentile-Based)
 
-| Condition | Classification |
-|-----------|---------------|
-| C > 60% | C-dominant (Competitor) |
-| S > 60% | S-dominant (Stress-tolerator) |
-| R > 60% | R-dominant (Ruderal) |
-| No single > 60% | Balanced/Generalist |
+The GuildBuilder uses **percentile ranking** to determine CSR dominance, not absolute values.
+
+| Strategy | p75 Raw Value | Classification |
+|----------|---------------|----------------|
+| C (Competitor) | > 41.3% | C-dominant (top 25% by C) |
+| S (Stress-tolerator) | > 72.2% | S-dominant (top 25% by S) |
+| R (Ruderal) | > 47.6% | R-dominant (top 25% by R) |
+| No percentile > 75 | — | Balanced/Generalist |
+
+**Why percentiles?** Raw CSR scores have different distributions. A plant with C=50% is in the top 20% of competitors, but S=50% is only median for stress-tolerators. Percentiles normalize this.
 
 ---
 
@@ -214,10 +218,10 @@ For S-plants paired with taller C-plants, light preference determines success.
 ### Decision Tree
 
 ```
-STEP 1: Determine CSR classification
-  C > 60%: C-dominant
-  S > 60%: S-dominant
-  R > 60%: R-dominant
+STEP 1: Determine CSR classification (percentile-based)
+  C percentile > 75 (raw C > 41.3%): C-dominant
+  S percentile > 75 (raw S > 72.2%): S-dominant
+  R percentile > 75 (raw R > 47.6%): R-dominant
   else: Balanced
 
 STEP 2: Determine growth form category

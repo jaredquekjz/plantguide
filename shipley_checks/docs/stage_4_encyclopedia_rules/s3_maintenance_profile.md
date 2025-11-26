@@ -11,13 +11,40 @@ Rules for generating maintenance requirements based on CSR (Competitor-Stress to
 
 **Data Source**: Pierce et al. (2017) StrateFy global calibration using leaf traits (LA, LDMC, SLA)
 
-**Columns**: `C`, `S`, `R` (proportions summing to 1.0 or percentages summing to 100)
+**Columns**: `C`, `S`, `R` (percentages summing to 100)
+
+---
+
+## CSR Classification
+
+### Percentile-Based Thresholds (GuildBuilder)
+
+CSR dominance is determined by **percentile ranking** across all 11,711 plants, not absolute values.
+
+| Strategy | p75 Raw Value | Meaning |
+|----------|---------------|---------|
+| C (Competitor) | 41.3% | Top 25% of plants by C score |
+| S (Stress-tolerator) | 72.2% | Top 25% of plants by S score |
+| R (Ruderal) | 47.6% | Top 25% of plants by R score |
+
+A plant is classified as "C-dominant" if its C percentile > 75 (i.e., raw C > 41.3%), not if C > 60%.
+
+### Absolute Thresholds (Ecosystem Services)
+
+The ecosystem services module (Stage 3) uses simpler absolute thresholds for rating classification:
+
+| Threshold | Used For |
+|-----------|----------|
+| C/S/R ≥ 60% | "Very High" ecosystem service ratings |
+| C/S/R ≥ 45% | "High" ecosystem service ratings |
+
+**Note**: The CSR percentile classification is more ecologically meaningful for companion planting decisions. Absolute thresholds are used for ecosystem service ratings due to their direct interpretation.
 
 ---
 
 ## CSR to Horticultural Traits
 
-| Property | C-Dominant (>60%) | S-Dominant (>60%) | R-Dominant (>60%) |
+| Property | C-Dominant (p75+) | S-Dominant (p75+) | R-Dominant (p75+) |
 |----------|-------------------|-------------------|-------------------|
 | **Growth Rate** | Fast, vigorous | Slow, steady | Rapid but brief |
 | **Nutrient Demand** | HIGH | LOW | Moderate |
@@ -31,16 +58,16 @@ Rules for generating maintenance requirements based on CSR (Competitor-Stress to
 
 ## Maintenance Level Algorithm
 
-### Primary Classification
+### Primary Classification (Percentile-Based)
 
 | Condition | Maintenance Level | Time Estimate |
 |-----------|------------------|---------------|
-| S > 60% | LOW | 1-2 hrs/yr |
-| S > 50% | LOW-MEDIUM | 2-3 hrs/yr |
-| C > 60% | HIGH | 5-7 hrs/yr |
-| C > 50% | MEDIUM-HIGH | 4-5 hrs/yr |
-| R > 60% | MEDIUM | 3-4 hrs/yr |
-| Balanced | MEDIUM | 3-4 hrs/yr |
+| S percentile > 90 | LOW | 1-2 hrs/yr |
+| S percentile > 75 | LOW-MEDIUM | 2-3 hrs/yr |
+| C percentile > 90 | HIGH | 5-7 hrs/yr |
+| C percentile > 75 | MEDIUM-HIGH | 4-5 hrs/yr |
+| R percentile > 75 | MEDIUM | 3-4 hrs/yr |
+| Balanced (no p75+) | MEDIUM | 3-4 hrs/yr |
 
 ### Size Scaling
 
@@ -174,13 +201,13 @@ All growth forms:
 
 ## Invasive Potential
 
-Use CSR + climate envelope to flag invasive risk:
+Use CSR percentile + climate envelope to flag invasive risk:
 
 | Pattern | Risk | Flag |
 |---------|------|------|
-| C > 70% + wide climate tolerance | HIGH | "Vigorous; may become invasive in mild climates" |
-| R > 60% + prolific seeding | MODERATE | "Self-seeds freely; may need containment" |
-| S > 60% | LOW | "Unlikely to spread aggressively" |
+| C percentile > 90 + wide climate tolerance | HIGH | "Vigorous; may become invasive in mild climates" |
+| R percentile > 75 + prolific seeding | MODERATE | "Self-seeds freely; may need containment" |
+| S percentile > 75 | LOW | "Unlikely to spread aggressively" |
 
 ---
 
@@ -216,10 +243,10 @@ Use CSR + climate envelope to flag invasive risk:
 ### Decision Tree for Output Generation
 
 ```
-1. Determine CSR classification:
-   - C > 60%: C-dominant
-   - S > 60%: S-dominant
-   - R > 60%: R-dominant
+1. Determine CSR classification (percentile-based):
+   - C percentile > 75: C-dominant (raw C > 41.3%)
+   - S percentile > 75: S-dominant (raw S > 72.2%)
+   - R percentile > 75: R-dominant (raw R > 47.6%)
    - else: Balanced
 
 2. Determine growth form category:
