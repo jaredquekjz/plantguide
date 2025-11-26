@@ -117,34 +117,74 @@ ALWAYS:
 
 **Data source**: `C`, `S`, `R` scores (CSR strategy), `height_m`, `try_growth_form`, `EIVEres-L_complete`
 
-**Scientific basis**: CSR strategy conflicts cause competition failures. C-C pairs compete destructively; C-S pairs may shade out S-plants unless S is shade-tolerant.
+**Scientific basis**: CSR strategy conflicts cause competition failures. C-C pairs compete destructively; C-S pairs may shade out S-plants unless S is shade-tolerant. Growth form and height modulate these conflicts.
 
-### CSR Percentile Classification
+### CSR Classification
 
-| Percentile | Classification | Meaning |
-|------------|---------------|---------|
-| > 75% C | High Competitor | Vigorous, resource-acquiring |
-| > 75% S | High Stress-tolerator | Slow, persistent, conservative |
-| > 75% R | High Ruderal | Fast, short-lived, opportunistic |
-| < 75% all | Mixed/Balanced | Generalist strategy |
+| Condition | Classification |
+|-----------|---------------|
+| C > 60% | C-dominant (Competitor) |
+| S > 60% | S-dominant (Stress-tolerator) |
+| R > 60% | R-dominant (Ruderal) |
+| No single > 60% | Balanced/Generalist |
 
-### Conflict Rules (from M2 logic)
+---
 
-**C-C Conflict** (base severity 1.0):
-- Reduced to 0.2 if vine + tree (vine climbs)
-- Reduced to 0.4 if tree + herb (different vertical niches)
-- Reduced by height separation (>5m → 0.3×)
+### Companion Compatibility Matrix (CSR × CSR)
 
-**C-S Conflict** (base severity 0.6):
-- **Zero conflict** if S plant has EIVE-L < 3.2 (shade-adapted)
-- **High conflict (0.9)** if S plant has EIVE-L > 7.47 (sun-loving)
-- Reduced if height difference > 8m
+The GuildBuilder calculates pairwise conflict scores. This matrix shows base compatibility.
 
-**C-R Conflict** (base severity 0.8):
-- Reduced to 0.24 if height difference > 5m (R exploits gaps)
+| This Plant ↓ / Companion → | C-dominant | S-dominant | R-dominant | Balanced |
+|---------------------------|------------|------------|------------|----------|
+| **C-dominant** | Poor (compete) | Conditional | Moderate | Good |
+| **S-dominant** | Conditional | Good | Good | Good |
+| **R-dominant** | Moderate | Good | Moderate | Good |
+| **Balanced** | Good | Good | Good | Good |
 
-**R-R Conflict** (low severity 0.3):
-- Both short-lived; succession planning needed
+**Key interactions:**
+- **C + C**: Direct competition for resources. Avoid unless height separation > 5m.
+- **C + S**: Works IF the S-plant is shade-tolerant (EIVE-L < 3.2). Fails if S-plant needs sun.
+- **C + R**: R-plants exploit gaps around vigorous C-plants. Moderate compatibility.
+- **S + S**: Both conservative; minimal competition. Good pairing.
+- **R + R**: Both short-lived; plan for succession. Neither provides long-term structure.
+
+---
+
+### Height and Growth Form Modifiers
+
+Conflict severity is modified by structural relationships.
+
+#### Conflict Reduction Rules (from M2)
+
+| Structural Relationship | Effect on Conflict | Example |
+|------------------------|-------------------|---------|
+| Vine + Tree | Conflict ×0.2 | Vine uses tree as support; synergy |
+| Tree + Herb (C-dominant both) | Conflict ×0.4 | Different vertical niches |
+| Height difference > 5m | Conflict ×0.3 | Vertical stratification reduces overlap |
+| Height difference > 8m (C+S) | Conflict reduced | C-tree, S-ground cover = no competition |
+
+#### Growth Form Pairing Guide
+
+| This Plant's Form | Best Companions | Avoid |
+|-------------------|-----------------|-------|
+| Tree (>5m) | Shade-tolerant understory, vines | Sun-loving herbs in shade zone |
+| Shrub (1-5m) | Ground covers, compatible shrubs | Same-height C-dominant shrubs |
+| Herb (<1m) | Taller protective plants, other herbs | Aggressive C-dominant at same height |
+| Vine | Trees or tall shrubs as hosts | Other aggressive vines on same support |
+
+---
+
+### Light Preference Integration (EIVE-L)
+
+For S-plants paired with taller C-plants, light preference determines success.
+
+| S-plant EIVE-L | Interpretation | Under C-Canopy |
+|----------------|---------------|----------------|
+| < 3.2 | Shade-loving | Thrives (zero conflict) |
+| 3.2 - 7.47 | Flexible | Tolerates some shade |
+| > 7.47 | Sun-demanding | Will fail under canopy (conflict 0.9) |
+
+---
 
 ### Output Format
 
@@ -152,38 +192,84 @@ ALWAYS:
 ### Growth Compatibility
 
 **CSR Profile**: C: {c_pct}% | S: {s_pct}% | R: {r_pct}%
-**Strategy**: {dominant_strategy}
+**Classification**: {C-dominant / S-dominant / R-dominant / Balanced}
+**Growth Form**: {tree / shrub / herb / vine}
 **Height**: {height_m}m
 **Light Preference**: EIVE-L {light_pref}
 
-**Guild Recommendations**:
-- {strategy-specific guidance}
-- {height-specific guidance}
-- {light-specific guidance}
+**Companion Strategy**:
+- {CSR-based pairing advice}
+- {height/form-based pairing advice}
+- {light-based caution if applicable}
+
+**Good Companions**:
+- {form-specific recommendations}
+
+**Avoid Pairing With**:
+- {conflict situations}
 ```
+
+---
 
 ### Decision Tree
 
 ```
-IF C > 75%:
-  IF height > 5m:
-    "Canopy competitor. Understory shade-tolerant plants benefit from protection."
-  ELSE:
-    "Vigorous mid-layer competitor. Give space; avoid other C-dominant at same height."
+STEP 1: Determine CSR classification
+  C > 60%: C-dominant
+  S > 60%: S-dominant
+  R > 60%: R-dominant
+  else: Balanced
 
-IF S > 75%:
+STEP 2: Determine growth form category
+  IF try_growth_form CONTAINS "vine" OR "liana": Vine
+  ELSE IF height > 5m: Tree
+  ELSE IF height > 1m: Shrub
+  ELSE: Herb
+
+STEP 3: Generate advice by CSR × Form
+
+IF C-dominant:
+  IF Tree:
+    "Canopy competitor. Pairs well with shade-tolerant understory (EIVE-L < 5)."
+    "Avoid other large C-dominant trees nearby; root and light competition."
+    "Vines can use as support without conflict."
+  IF Shrub:
+    "Vigorous mid-layer. Give wide spacing from other C-dominant shrubs."
+    "Good with S-dominant ground covers; provides protection."
+  IF Herb:
+    "Spreading competitor. May outcompete neighbouring herbs."
+    "Best with well-spaced, resilient companions or as solo planting."
+  IF Vine:
+    "Aggressive climber. Needs robust host tree or structure."
+    "May smother less vigorous plants; keep away from delicate shrubs."
+
+IF S-dominant:
   IF EIVE-L < 3.2:
-    "Shade-tolerant stress-tolerator. Thrives under canopy trees."
+    "Shade-tolerant. Thrives under C-dominant canopy trees."
+    "Ideal understory plant for layered guilds."
   ELSE IF EIVE-L > 7.47:
-    "Sun-loving stress-tolerator. Avoid being shaded by C-dominant plants."
+    "Sun-demanding despite S-strategy. Needs open position."
+    "Avoid planting under tall C-dominant plants."
   ELSE:
-    "Flexible stress-tolerator. Pairs well with most strategies."
+    "Flexible S-plant. Tolerates range of companions."
 
-IF R > 75%:
-  "Short-lived opportunist. Use for gap-filling; pair with longer-lived plants for succession."
+  All forms:
+    "Low competition profile. Pairs well with most strategies."
+    "Long-lived and persistent; good structural backbone for guilds."
 
-IF balanced (no > 75%):
-  "Generalist. Compatible with most strategies."
+IF R-dominant:
+  "Short-lived opportunist. Use for seasonal colour or gap-filling."
+  "Pair with longer-lived S or balanced plants for continuity."
+  "Will not persist; plan for succession or self-seeding."
+  IF Herb:
+    "Annual/biennial. Good for dynamic, changing plantings."
+  IF Vine:
+    "May die back; regrows rapidly from base or seed."
+
+IF Balanced:
+  "Generalist strategy. Compatible with most companion types."
+  "Moderate vigour; neither dominates nor is dominated."
+  "Flexible in guild positioning."
 ```
 
 ---
