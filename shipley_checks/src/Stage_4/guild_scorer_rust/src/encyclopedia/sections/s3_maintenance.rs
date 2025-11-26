@@ -1,7 +1,7 @@
 //! S3: Maintenance Profile
 //!
 //! Rules for generating maintenance requirements based on CSR strategy.
-//! Uses absolute thresholds for maintenance classification (>60% = dominant).
+//! Uses percentile-based classification per doc (p75 thresholds: C>41.3%, S>72.2%, R>47.6%).
 //!
 //! Data Sources:
 //! - CSR scores: `C`, `S`, `R` (0-100%)
@@ -24,7 +24,8 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     let r = get_f64(data, "R").unwrap_or(0.0);
 
     // CSR Strategy display
-    let csr_strategy = classify_csr_absolute(c, s, r);
+    // Use percentile-based classification per doc line 246
+    let csr_strategy = classify_csr_percentile(c, s, r);
     sections.push(format!(
         "**CSR Strategy**: C {:.0}% / S {:.0}% / R {:.0}% ({})",
         c, s, r, csr_leaning_label(c, s, r)
