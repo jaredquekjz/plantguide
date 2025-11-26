@@ -2,7 +2,7 @@
 //
 // Purpose: Async SQL query engine for plant ecological data
 // Data sources:
-//   - Plants: master dataset (stage3/bill_with_csr_ecoservices_*.parquet, 782 cols)
+//   - Plants: master dataset (phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet, 861 cols)
 //   - Organisms: phase0 wide format (for counts) + phase7 flat format (for SQL search)
 //   - Fungi: phase0 wide format (for counts) + phase7 flat format (for SQL search)
 // Performance: <10ms for plant searches, <20ms for similarity queries
@@ -17,8 +17,6 @@ use datafusion::arrow::array::RecordBatch;
 use std::sync::Arc;
 #[cfg(feature = "api")]
 use std::path::Path;
-#[cfg(feature = "api")]
-use std::fs;
 
 #[cfg(feature = "api")]
 pub type DFResult<T> = Result<T, DataFusionError>;
@@ -34,7 +32,7 @@ impl QueryEngine {
     /// Initialize query engine with master dataset and flattened interaction tables
     ///
     /// Expected directory structure from project_root:
-    ///   - shipley_checks/stage3/bill_with_csr_ecoservices_11711_*.parquet (plants master)
+    ///   - shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet (plants master, 861 cols)
     ///   - shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet (organisms wide)
     ///   - shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet (fungi wide)
     ///   - shipley_checks/stage4/phase7_output/organisms_flat.parquet (organisms flat)
@@ -42,9 +40,13 @@ impl QueryEngine {
     pub async fn new(project_root: &str) -> DFResult<Self> {
         let ctx = SessionContext::new();
 
-        // Find master plants parquet (may have date suffix)
-        let stage3_dir = format!("{}/shipley_checks/stage3", project_root);
-        let plants_path = Self::find_master_plants(&stage3_dir)?;
+        // Register master plants dataset (Phase 4 output with Köppen + vernaculars)
+        let plants_path = format!("{}/shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet", project_root);
+        if !Path::new(&plants_path).exists() {
+            return Err(DataFusionError::External(
+                format!("Master dataset not found: {}\nRun Phase 4 (merge_taxonomy_koppen.py) first.", plants_path).into()
+            ));
+        }
         ctx.register_parquet(
             "plants",
             &plants_path,
@@ -127,29 +129,6 @@ impl QueryEngine {
         Ok(Self {
             ctx: Arc::new(ctx),
         })
-    }
-
-    /// Find the master plants parquet file (handles date suffixes)
-    fn find_master_plants(stage3_dir: &str) -> DFResult<String> {
-        let entries = fs::read_dir(stage3_dir).map_err(|e| {
-            DataFusionError::Plan(format!("Cannot read stage3 directory: {}", e))
-        })?;
-
-        for entry in entries.flatten() {
-            let path = entry.path();
-            if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
-                if name.starts_with("bill_with_csr_ecoservices_11711_")
-                    && name.ends_with(".parquet")
-                {
-                    return Ok(path.to_string_lossy().to_string());
-                }
-            }
-        }
-
-        Err(DataFusionError::Plan(format!(
-            "Master plants parquet not found in {}",
-            stage3_dir
-        )))
     }
 
     /// Raw SQL execution (for advanced queries)

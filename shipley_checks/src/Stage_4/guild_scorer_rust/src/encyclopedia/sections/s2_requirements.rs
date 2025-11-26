@@ -77,22 +77,30 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
     lines.push("### Climate".to_string());
 
-    // Hardiness (cold tolerance)
+    // Köppen zones (from master dataset)
+    if let Some(koppen) = get_str(data, "top_zone_code") {
+        if !koppen.is_empty() && koppen != "NA" {
+            let koppen_label = interpret_koppen_zone(koppen);
+            lines.push(format!("**Köppen Zones**: {} ({})", koppen, koppen_label));
+        }
+    }
+
+    // Hardiness (cold tolerance) - inline format with concise descriptor
     // Note: Temperature data is stored in Kelvin, convert to Celsius
     let tnn_q05_k = get_f64(data, "TNn_q05");
     let tnn_q05_c = tnn_q05_k.map(|k| k - 273.15);
-    if let Some((_zone, label)) = classify_hardiness_zone(tnn_q05_c) {
-        lines.push(format!("**Hardiness**: {} ({:.0}°C minimum)", label, tnn_q05_c.unwrap_or(0.0)));
-        lines.push(cold_advice(tnn_q05_c.unwrap_or(0.0)));
+    if let Some((zone, _label)) = classify_hardiness_zone(tnn_q05_c) {
+        let descriptor = cold_descriptor(tnn_q05_c.unwrap_or(0.0));
+        lines.push(format!("**Hardiness**: Zone {} ({:.0}°C) - {}", zone, tnn_q05_c.unwrap_or(0.0), descriptor));
     }
 
-    // Heat tolerance
+    // Heat tolerance - concise category only
     // Note: Temperature data is stored in Kelvin, convert to Celsius
     let txx_q95_k = get_f64(data, "TXx_q95");
     let txx_q95_c = txx_q95_k.map(|k| k - 273.15);
     if let Some(t) = txx_q95_c {
-        let heat_label = classify_heat_tolerance(t);
-        lines.push(format!("**Heat Tolerance**: {} ({:.0}°C maximum)", heat_label, t));
+        let heat_category = classify_heat_category(t);
+        lines.push(format!("**Heat Tolerance**: {} ({:.0}°C max)", heat_category, t));
     }
 
     // EIVE-T
@@ -135,33 +143,35 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     lines.join("\n")
 }
 
-fn cold_advice(tnn_q05: f64) -> String {
+/// Concise cold hardiness descriptor (inline format per doc spec)
+fn cold_descriptor(tnn_q05: f64) -> &'static str {
     if tnn_q05 < -40.0 {
-        "Extremely hardy; survives severe continental winters.".to_string()
+        "Extremely hardy"
     } else if tnn_q05 < -25.0 {
-        "Very hardy; reliable in cold temperate climates.".to_string()
+        "Very hardy"
     } else if tnn_q05 < -15.0 {
-        "Cold-hardy; survives hard frosts.".to_string()
+        "Cold-hardy"
     } else if tnn_q05 < -5.0 {
-        "Moderately hardy; mulch roots in cold areas.".to_string()
+        "Moderately hardy"
     } else if tnn_q05 < 0.0 {
-        "Half-hardy; protect from hard frost.".to_string()
+        "Half-hardy"
     } else {
-        "Frost-tender; requires frost protection.".to_string()
+        "Frost-tender"
     }
 }
 
-fn classify_heat_tolerance(txx_q95: f64) -> &'static str {
+/// Concise heat tolerance category (doc spec lines 64-70)
+fn classify_heat_category(txx_q95: f64) -> &'static str {
     if txx_q95 > 45.0 {
-        "Extreme heat (thrives in desert conditions)"
+        "Extreme heat"
     } else if txx_q95 > 40.0 {
-        "Very heat-tolerant (survives prolonged hot spells)"
+        "Very heat-tolerant"
     } else if txx_q95 > 35.0 {
-        "Heat-tolerant (tolerates hot summers)"
+        "Heat-tolerant"
     } else if txx_q95 > 30.0 {
-        "Moderate (shade in extreme heat)"
+        "Moderate"
     } else {
-        "Cool-climate (struggles in hot summers; shade essential)"
+        "Cool-climate"
     }
 }
 
@@ -330,4 +340,42 @@ fn classify_texture(clay_q50: Option<f64>, sand_q95: Option<f64>) -> String {
     };
 
     format!("{}{}", clay_label, sand_tolerance)
+}
+
+/// Interpret Köppen-Geiger climate code with human-readable label
+fn interpret_koppen_zone(code: &str) -> &'static str {
+    match code {
+        // Tropical (A)
+        "Af" => "Tropical rainforest",
+        "Am" => "Tropical monsoon",
+        "Aw" | "As" => "Tropical savanna",
+
+        // Arid (B)
+        "BWh" => "Hot desert",
+        "BWk" => "Cold desert",
+        "BSh" => "Hot semi-arid",
+        "BSk" => "Cold semi-arid",
+
+        // Temperate (C)
+        "Cfa" => "Humid subtropical",
+        "Cfb" => "Temperate oceanic",
+        "Cfc" => "Subpolar oceanic",
+        "Csa" => "Mediterranean hot summer",
+        "Csb" => "Mediterranean warm summer",
+        "Csc" => "Mediterranean cool summer",
+        "Cwa" => "Humid subtropical (dry winter)",
+        "Cwb" | "Cwc" => "Subtropical highland",
+
+        // Continental (D)
+        "Dfa" | "Dfb" => "Humid continental",
+        "Dfc" | "Dfd" => "Subarctic",
+        "Dwa" | "Dwb" | "Dwc" | "Dwd" => "Continental (dry winter)",
+        "Dsa" | "Dsb" | "Dsc" | "Dsd" => "Continental Mediterranean",
+
+        // Polar (E)
+        "ET" => "Tundra",
+        "EF" => "Ice cap",
+
+        _ => "Unknown climate type",
+    }
 }

@@ -54,9 +54,17 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     // Hardiness zone from TNn_q05 (stored in Kelvin, convert to Celsius)
     let tnn_q05_k = get_f64(data, "TNn_q05");
     let tnn_q05_c = tnn_q05_k.map(|k| k - 273.15);
-    if let Some((_zone, label)) = classify_hardiness_zone(tnn_q05_c) {
+    if let Some((zone, _label)) = classify_hardiness_zone(tnn_q05_c) {
         let temp_str = tnn_q05_c.map(|t| format!(" ({:.0}°C)", t)).unwrap_or_default();
-        sections.push(format!("**Hardiness**: {}{}", label, temp_str));
+        sections.push(format!("**Hardiness**: Zone {}{}", zone, temp_str));
+    }
+
+    // Köppen climate zones
+    if let Some(koppen) = get_str(data, "top_zone_code") {
+        if !koppen.is_empty() && koppen != "NA" {
+            let koppen_label = interpret_koppen_zone(koppen);
+            sections.push(format!("**Native Climate**: {} ({})", koppen, koppen_label));
+        }
     }
 
     // Woodiness
@@ -124,6 +132,44 @@ fn capitalize_first(s: &str) -> String {
     match chars.next() {
         None => String::new(),
         Some(first) => first.to_uppercase().chain(chars).collect(),
+    }
+}
+
+/// Interpret Köppen-Geiger climate code with human-readable label.
+fn interpret_koppen_zone(code: &str) -> &'static str {
+    match code {
+        // Tropical (A)
+        "Af" => "Tropical rainforest",
+        "Am" => "Tropical monsoon",
+        "Aw" | "As" => "Tropical savanna",
+
+        // Arid (B)
+        "BWh" => "Hot desert",
+        "BWk" => "Cold desert",
+        "BSh" => "Hot semi-arid",
+        "BSk" => "Cold semi-arid",
+
+        // Temperate (C)
+        "Cfa" => "Humid subtropical",
+        "Cfb" => "Temperate oceanic",
+        "Cfc" => "Subpolar oceanic",
+        "Csa" => "Mediterranean hot summer",
+        "Csb" => "Mediterranean warm summer",
+        "Csc" => "Mediterranean cool summer",
+        "Cwa" => "Humid subtropical (dry winter)",
+        "Cwb" | "Cwc" => "Subtropical highland",
+
+        // Continental (D)
+        "Dfa" | "Dfb" => "Humid continental",
+        "Dfc" | "Dfd" => "Subarctic",
+        "Dwa" | "Dwb" | "Dwc" | "Dwd" => "Continental (dry winter)",
+        "Dsa" | "Dsb" | "Dsc" | "Dsd" => "Continental Mediterranean",
+
+        // Polar (E)
+        "ET" => "Tundra",
+        "EF" => "Ice cap",
+
+        _ => "Unknown climate type",
     }
 }
 
