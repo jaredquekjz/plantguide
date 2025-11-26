@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-26T02:27:28Z"
+generated: "2025-11-26T13:56:02Z"
 version: "2.0"
 ---
 
@@ -12,7 +12,8 @@ version: "2.0"
 **Growth Form**: Climber
 **Height**: 2.0m (Medium (1-3m))
 **Leaf Type**: Deciduous
-**Hardiness**: Zone 9 - Subtropical (-3°C)
+**Hardiness**: Zone 9 (-3°C)
+**Native Climate**: Cfb (Temperate oceanic)
 **Woodiness**: Woody
 
 ---
@@ -20,29 +21,87 @@ version: "2.0"
 ## Growing Requirements
 
 ### Light
+
 **EIVE-L**: 7.2/10 - Full sun to part shade
 Open borders work well; tolerates some afternoon shade.
 
+*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
+
 ### Climate
-**Hardiness**: Zone 9 - Subtropical (-3°C minimum)
-Half-hardy; protect from hard frost.
-**Heat Tolerance**: Cool-climate (struggles in hot summers; shade essential) (25°C maximum)
-**EIVE-T**: 4.3/10 - Temperate; typical UK/NW Europe
+
+*This section shows where populations naturally occur (climate tolerance) and where species is most abundant (ecological indicators):*
+
+**Temperature extremes**: Coldest winter night -3°C, hottest summer day 25°C
+**Temperature means**: Average 24°C in warmest month, -1°C in coldest month
+**Annual rainfall**: 439-1177mm/year across populations (typically 764mm)
+
+---
+
+**Köppen Zones**: Cfb (Temperate oceanic - mild year-round, no dry season (typical Western Europe))
+**Cold tolerance**: Coldest populations survive -3°C winter nights (Half-hardy)
+**Heat tolerance**: Hottest populations experience 25°C summer days (Cool-climate)
+**Frost exposure**: 0-4 frost days/year (typically 2)
+*Frost-free to occasional*
+**Cold spell tolerance**: Populations survive up to 22 consecutive frost days
+*Extended freezing - Can endure extended cold periods*
+**Warm nights**: Essentially none (cool nights year-round)
+*Cool nights year-round*
+**Climate type**: Populations found where day-night temperature varies by 6-12°C (typically 8°C)
+*Moderate variation climate - Typical temperate variation
+**Growing season**: 196-364 days/year with temperatures suitable for growth (typically 269 - about 9 months)
+*Long - Period when temperatures allow active growth*
+
+**Ecological Indicator (EIVE-T)**:
+- Temperature indicator: 4.3/10
+- Climate type: Temperate; typical Northern Europe
+*Where species is most abundant in natural vegetation; from field surveys*
 
 **Moisture**:
-- Annual rainfall: 439-1177mm (median 764mm)
-- Drought tolerance: Limited
-- EIVE-M: 3.9/10 - Dry conditions preferred
-- Watering: Deep infrequent watering.
+
+- **Annual rainfall**: 439-1177mm (typically 764mm)
+  *Temperate climate*
+- **Dry spells**: Typically 12 consecutive dry days, up to 26 days maximum
+  *Limited - Needs moisture during 2+ week dry spells*
+- Warm-wet conditions: Populations found where 1-5 days/year are warm & wet (typically 3)
+  *Low disease pressure - Plant from drier climates; may be vulnerable in humid gardens*
+
+**Ecological Indicator (EIVE-M)**:
+- Moisture indicator: 3.9/10
+- Typical position: Dry conditions
+- Watering: Sparse; weekly in drought
+*Where species is most abundant in natural vegetation; from field surveys*
+
+**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
 
 ### Soil
-**pH**: 5.2-7.5 (median 6.3) - Slightly acid
-**EIVE-R**: 6.4/10 - Neutral to slightly alkaline
-*Tolerates some lime.*
-**Fertility**: Fertile (CEC 28 cmol/kg)
-**EIVE-N**: 4.3/10 - Moderate nutrient
-*Standard annual feeding.*
-**Texture**: Loam; moderate sand tolerance
+
+**pH tolerance**: 5.2-7.5 (from most acidic to most alkaline population locations)
+*Wide tolerance; adaptable*
+
+---
+
+**pH**: 5.2-7.5 (typically 6.3)
+*Slightly acidic*
+
+**Ecological Indicator (EIVE-R)**:
+- pH indicator: 6.4/10
+- Typical position: Neutral
+- Compost: Tolerates some lime
+*Where species is most abundant in natural vegetation; from field surveys*
+
+**Fertility**: Populations found in fertile soils (CEC 28 cmol/kg)
+*Good nutrient retention (clay loam) - Benefits from annual feeding*
+
+**Ecological Indicator (EIVE-N)**:
+- Nutrient indicator: 4.3/10
+- Typical position: Moderate nutrient
+- Feeding: Standard annual feeding
+*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
+
+**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
+
+**Texture**: Populations found primarily in loam (clay ~25%)
+*Moderate sand tolerance - Standard garden soil works*
 
 ---
 
@@ -53,18 +112,18 @@ Half-hardy; protect from hard frost.
 **Maintenance Level**: MEDIUM (~4 hrs/yr)
 
 **Growth Characteristics**:
-- Slow, steady growth
-- Low nutrient demand
-- Drought-tolerant once established
+- Moderate growth rate
+- Adaptable to range of conditions
+- Responsive to feeding but not demanding
 
 **Form-Specific Notes**:
-Slow to establish; train carefully in first years. Once established, minimal intervention required. Avoid fertiliser; will not respond well to rich conditions.
+Standard garden care applies. Adaptable to range of conditions. Moderate vigour; manageable with annual attention. Responsive to feeding but not demanding.
 
 **Seasonal Tasks**:
-- **Spring**: Minimal intervention, check health
-- **Summer**: Water only in severe drought
-- **Autumn**: Light tidy if needed
-- **Winter**: Protect only if borderline hardy
+- **Spring**: Feed, shape if needed
+- **Summer**: Water in dry spells
+- **Autumn**: Mulch, tidy
+- **Winter**: Protect if borderline hardy
 
 ---
 
@@ -86,7 +145,7 @@ Slow to establish; train carefully in first years. Once established, minimal int
 
 ### Soil Services
 - **Erosion Protection**: Moderate (3.0) - Moderate protection
-- **Nitrogen Fixation**: NA
+- **Nitrogen Fixation**: Unable to Classify
 
 **Garden Value**: Good choice - good carbon storage for climate-conscious planting.
 

@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-26T02:27:29Z"
+generated: "2025-11-26T13:56:03Z"
 version: "2.0"
 ---
 
@@ -12,7 +12,8 @@ version: "2.0"
 **Growth Form**: Herbaceous
 **Height**: 0.2m (Ground cover (<0.3m))
 **Leaf Type**: Evergreen
-**Hardiness**: Zone 8 - Warm temperate (-8°C)
+**Hardiness**: Zone 8 (-8°C)
+**Native Climate**: Cfa (Humid subtropical)
 **Woodiness**: Non-woody
 
 ---
@@ -20,29 +21,87 @@ version: "2.0"
 ## Growing Requirements
 
 ### Light
+
 **EIVE-L**: 7.6/10 - Full sun to part shade
 Open borders work well; tolerates some afternoon shade.
 
+*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
+
 ### Climate
-**Hardiness**: Zone 8 - Warm temperate (-8°C minimum)
-Moderately hardy; mulch roots in cold areas.
-**Heat Tolerance**: Cool-climate (struggles in hot summers; shade essential) (30°C maximum)
-**EIVE-T**: 4.1/10 - Temperate; typical UK/NW Europe
+
+*This section shows where populations naturally occur (climate tolerance) and where species is most abundant (ecological indicators):*
+
+**Temperature extremes**: Coldest winter night -8°C, hottest summer day 30°C
+**Temperature means**: Average 27°C in warmest month, -4°C in coldest month
+**Annual rainfall**: 443-1539mm/year across populations (typically 934mm)
+
+---
+
+**Köppen Zones**: Cfa (Humid subtropical - hot humid summers, mild winters, rain year-round)
+**Cold tolerance**: Coldest populations survive -8°C winter nights (Moderately hardy)
+**Heat tolerance**: Hottest populations experience 30°C summer days (Cool-climate)
+**Frost exposure**: 0-5 frost days/year (typically 3)
+*Frost-free to occasional*
+**Cold spell tolerance**: Populations survive up to 37 consecutive frost days
+*Long winter freeze - Can endure extended cold periods*
+**Warm nights**: Essentially none (cool nights year-round)
+*Cool nights year-round*
+**Climate type**: Populations found where day-night temperature varies by 7-14°C (typically 10°C)
+*Moderate variation climate - Typical temperate variation
+**Growing season**: 164-365 days/year with temperatures suitable for growth (typically 260 - about 9 months)
+*Long - Period when temperatures allow active growth*
+
+**Ecological Indicator (EIVE-T)**:
+- Temperature indicator: 4.1/10
+- Climate type: Temperate; typical Northern Europe
+*Where species is most abundant in natural vegetation; from field surveys*
 
 **Moisture**:
-- Annual rainfall: 443-1539mm (median 934mm)
-- Drought tolerance: Limited
-- EIVE-M: 4.5/10 - Moderate moisture
-- Watering: Regular watering in dry spells.
+
+- **Annual rainfall**: 443-1539mm (typically 934mm)
+  *Temperate climate*
+- **Dry spells**: Typically 13 consecutive dry days, up to 28 days maximum
+  *Limited - Needs moisture during 2+ week dry spells*
+- Warm-wet conditions: Populations found where 1-4 days/year are warm & wet (typically 3)
+  *Low disease pressure - Plant from drier climates; may be vulnerable in humid gardens*
+
+**Ecological Indicator (EIVE-M)**:
+- Moisture indicator: 4.5/10
+- Typical position: Moderate moisture
+- Watering: Regular; 1-2 times weekly
+*Where species is most abundant in natural vegetation; from field surveys*
+
+**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
 
 ### Soil
-**pH**: 4.8-6.9 (median 5.7) - Slightly acid
-**EIVE-R**: 5.8/10 - Slightly acidic to neutral
-*Standard multipurpose compost.*
-**Fertility**: Fertile (CEC 28 cmol/kg)
-**EIVE-N**: 6.4/10 - High nutrient
-*Benefits from generous feeding.*
-**Texture**: Loam; moderate sand tolerance
+
+**pH tolerance**: 4.8-6.9 (from most acidic to most alkaline population locations)
+*Wide tolerance; adaptable*
+
+---
+
+**pH**: 4.8-6.9 (typically 5.7)
+*Slightly acidic*
+
+**Ecological Indicator (EIVE-R)**:
+- pH indicator: 5.8/10
+- Typical position: Slightly acidic to neutral
+- Compost: Standard multipurpose compost
+*Where species is most abundant in natural vegetation; from field surveys*
+
+**Fertility**: Populations found in fertile soils (CEC 28 cmol/kg)
+*Good nutrient retention (clay loam) - Benefits from annual feeding*
+
+**Ecological Indicator (EIVE-N)**:
+- Nutrient indicator: 6.4/10
+- Typical position: High nutrient
+- Feeding: Benefits from generous feeding
+*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
+
+**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
+
+**Texture**: Populations found primarily in loam (clay ~22%)
+*Moderate sand tolerance - Standard garden soil works*
 
 ---
 
@@ -90,7 +149,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 ### Soil Services
 - **Erosion Protection**: Low (2.0) - Limited protection
-- **Nitrogen Fixation**: NA
+- **Nitrogen Fixation**: Unable to Classify
 
 **Garden Value**: Standard ecosystem contribution.
 
