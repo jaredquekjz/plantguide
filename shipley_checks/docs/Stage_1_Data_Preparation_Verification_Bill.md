@@ -5,6 +5,27 @@
 **Environment**: Pure R, no Python/SQL required
 
 ---
+
+## Documentation Structure
+
+**Complete Stage 1 documentation consists of three documents**:
+
+1. **Stage_0_Raw_Environmental_Data_Preparation.md** (NEW - 2025-11-27)
+   - Pre-processing of raw environmental archives → analysis-ready rasters
+   - WorldClim unzipping, AgroClim NetCDF → mean GeoTIFFs
+   - **CRITICAL**: Documents that AgroClim rasters contain temporal means (TXx_mean, not raw TXx)
+   - Scripts: `src/Stage_0_RawDataPrep/prepare_agroclim_means.py`, `convert_worldclim_uncompressed.py`
+
+2. **Dataset_Provenance_Report.md**
+   - Complete provenance for all 11 foundational datasets (8 core + 3 environmental)
+   - Source files, conversion scripts, file creation timestamps
+   - Environmental sampling: `sample_env_terra.R` extracts rasters at GBIF coordinates
+
+3. **Stage_1_Data_Preparation_Verification_Bill.md** (this document)
+   - Bill's pure R verification pipeline (27 scripts)
+   - WFO normalization, integration, environmental aggregation, imputation assembly
+
+---
 ## Scripts Overview
 
 All scripts located in: `src/Stage_1/bill_verification/`
