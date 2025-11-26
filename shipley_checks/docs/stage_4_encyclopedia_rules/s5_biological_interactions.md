@@ -18,10 +18,22 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Data Sources
 
-| Data | Source File | Key Columns |
-|------|-------------|-------------|
-| Pollinators, Herbivores, Pathogens | `organism_profiles_11711.parquet` | `pollinators`, `herbivores`, `pathogens` |
-| Fungal associations | `fungi_searchable.parquet` | `fungus_taxon`, `is_pathogenic`, `is_mycorrhizal`, etc. |
+**Source parquets** (Phase 0 output, used by GuildBuilder):
+
+| Data | Source File | Location |
+|------|-------------|----------|
+| Pollinators, Herbivores, Predators, Fungivores | `organism_profiles_11711.parquet` | `shipley_checks/stage4/phase0_output/` |
+| Pathogenic fungi, Mycorrhizae, Beneficial fungi | `fungal_guilds_hybrid_11711.parquet` | `shipley_checks/stage4/phase0_output/` |
+
+**Key columns by parquet:**
+
+| organism_profiles_11711.parquet | fungal_guilds_hybrid_11711.parquet |
+|--------------------------------|-----------------------------------|
+| `pollinators`, `pollinator_count` | `pathogenic_fungi`, `pathogenic_fungi_count` |
+| `herbivores`, `herbivore_count` | `amf_fungi`, `amf_fungi_count` |
+| `predators_hasHost`, etc. | `emf_fungi`, `emf_fungi_count` |
+| `fungivores_eats`, `fungivores_eats_count` | `mycoparasite_fungi`, `mycoparasite_fungi_count` |
+| `flower_visitors`, `visitor_count` | `entomopathogenic_fungi`, `entomopathogenic_fungi_count` |
 
 ---
 
@@ -85,26 +97,24 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ---
 
-## Pathogen Associations
+## Pathogen/Disease Associations
 
-**Data source**: `pathogens` column (from `organism_profiles_11711.parquet`)
+**Data source**: `pathogenic_fungi`, `pathogenic_fungi_count` from `fungal_guilds_hybrid_11711.parquet`
 
-**Extraction logic**:
-- Relationships: `pathogenOf`, `parasiteOf`, `hasHost` (Fungi only)
-- Filtered to **exclude Plantae and Animalia** (microbial only)
-- Excludes: Generic names (Fungi, Bacteria, Viruses, Insecta, Plantae, Animalia)
+**Extraction logic** (Phase 0):
+- Relationships: `pathogenOf`, `parasiteOf`, `hasHost`
+- Filtered to fungal pathogens via FungalTraits/FunGuild guild classification
+- Includes host-specific pathogens in separate column
 
 **What it includes**:
-- Fungal pathogens (rusts, mildews, rots)
-- Bacterial pathogens
-- Viral pathogens
+- Fungal pathogens (rusts, mildews, rots, smuts)
 - Oomycetes (water moulds)
-- Microbial parasites
+- Other microbial plant parasites
 
 ### Output Format
 
 ```markdown
-**Pathogens**: 5 taxa documented
+**Diseases**: 5 species observed
 - Erysiphe spp. (powdery mildew)
 - Puccinia spp. (rust)
 - Botrytis cinerea (grey mould)
@@ -116,39 +126,38 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Fungal Associations
 
-**Data source**: `fungi_searchable.parquet`
+**Data source**: `fungal_guilds_hybrid_11711.parquet` (Phase 0 output)
 
-### Pathogenic Fungi
-
-| Column | Meaning |
-|--------|---------|
-| `is_pathogenic = true` | Harmful fungal association |
-| `functional_role = 'harmful'` | Disease-causing |
-
-**Output**:
-```markdown
-**Fungal Diseases**: 3 documented
-- Puccinia (rust) - leaf spots, yellow pustules
-- Entyloma (leaf smut) - dark lesions
-- Coleosporium (rust) - orange spores
-```
-
-### Beneficial Fungi
+### Beneficial Fungi (Mycorrhizae)
 
 | Column | Meaning |
 |--------|---------|
-| `is_mycorrhizal = true` | Mutualistic root association |
-| `is_amf = true` | Arbuscular mycorrhizal (most herbs) |
-| `is_emf = true` | Ectomycorrhizal (trees, some shrubs) |
-| `is_endophytic = true` | Lives in plant tissue (often protective) |
+| `amf_fungi`, `amf_fungi_count` | Arbuscular mycorrhizal fungi (most herbs, grasses) |
+| `emf_fungi`, `emf_fungi_count` | Ectomycorrhizal fungi (trees, some shrubs) |
+| `endophytic_fungi`, `endophytic_fungi_count` | Live in plant tissue (often protective) |
+| `saprotrophic_fungi`, `saprotrophic_fungi_count` | Decomposers in soil around plant |
 
 **Output**:
 ```markdown
-**Mycorrhizal Associations**: 2 documented
+**Mycorrhizal Associations**: 2 species observed
 - Glomus spp. (AMF) - aids phosphorus uptake
 - Rhizophagus irregularis (AMF) - drought tolerance
 
 **Garden Note**: Avoid excessive tillage to preserve mycorrhizal networks
+```
+
+### Biocontrol Fungi
+
+| Column | Meaning |
+|--------|---------|
+| `mycoparasite_fungi`, `mycoparasite_fungi_count` | Fungi that attack plant pathogens |
+| `entomopathogenic_fungi`, `entomopathogenic_fungi_count` | Fungi that kill pest insects |
+
+**Output**:
+```markdown
+**Biocontrol Fungi**:
+- 1 mycoparasitic fungus observed (attacks plant diseases)
+- 2 insect-killing fungi observed (natural pest control)
 ```
 
 ---
@@ -181,32 +190,44 @@ Key visitors: Bumblebees, honeybees, hoverflies
 
 ## Data Column Reference
 
-### Organism Profiles (organism_profiles_11711.parquet)
+### Organism Profiles (`organism_profiles_11711.parquet`)
+
+Location: `shipley_checks/stage4/phase0_output/`
 
 | Column | Description |
 |--------|-------------|
 | `plant_wfo_id` | Plant identifier |
-| `pollinators` | List of pollinator taxa (GloBI `pollinates`) |
-| `pollinator_count` | Number of pollinator taxa |
-| `herbivores` | List of herbivore taxa |
-| `herbivore_count` | Number of herbivore taxa |
-| `pathogens` | List of pathogen taxa (includes parasites) |
-| `pathogen_count` | Number of pathogen taxa |
+| `pollinators` | List of pollinator species (GloBI `pollinates`) |
+| `pollinator_count` | Number of pollinator species |
+| `herbivores` | List of pest species (feeding on or parasitizing plant) |
+| `herbivore_count` | Number of pest species |
 | `flower_visitors` | Broader list (includes non-pollinators) |
+| `visitor_count` | Number of flower visitors |
+| `predators_hasHost` | Beneficial predators observed (hasHost relationship) |
+| `predators_interactsWith` | Beneficial predators observed (interactsWith) |
+| `predators_adjacentTo` | Beneficial predators observed (adjacentTo) |
+| `fungivores_eats` | Animals observed eating fungi |
+| `fungivores_eats_count` | Number of fungus-eating animals |
 
-### Fungi (fungi_searchable.parquet)
+### Fungi (`fungal_guilds_hybrid_11711.parquet`)
+
+Location: `shipley_checks/stage4/phase0_output/`
 
 | Column | Description |
 |--------|-------------|
 | `plant_wfo_id` | Plant identifier |
-| `fungus_taxon` | Fungus name |
-| `guild_category` | pathogenic / mycorrhizal / saprotrophic / etc. |
-| `functional_role` | harmful / beneficial / neutral / biocontrol |
-| `is_pathogenic` | Boolean: causes disease |
-| `is_mycorrhizal` | Boolean: mutualistic root association |
-| `is_amf` | Boolean: arbuscular mycorrhizal |
-| `is_emf` | Boolean: ectomycorrhizal |
-| `is_endophytic` | Boolean: lives within plant tissue |
+| `pathogenic_fungi` | List of disease-causing fungi |
+| `pathogenic_fungi_count` | Number of pathogenic fungi |
+| `amf_fungi` | Arbuscular mycorrhizal fungi list |
+| `amf_fungi_count` | Number of AMF species |
+| `emf_fungi` | Ectomycorrhizal fungi list |
+| `emf_fungi_count` | Number of EMF species |
+| `mycoparasite_fungi` | Fungi that attack other fungi |
+| `mycoparasite_fungi_count` | Number of mycoparasitic fungi |
+| `entomopathogenic_fungi` | Fungi that kill insects |
+| `entomopathogenic_fungi_count` | Number of insect-killing fungi |
+| `endophytic_fungi` | Fungi living within plant tissue |
+| `saprotrophic_fungi` | Decomposer fungi |
 
 ---
 

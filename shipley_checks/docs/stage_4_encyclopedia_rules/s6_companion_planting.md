@@ -12,7 +12,13 @@ Static recommendations based on THIS plant's characteristics, derived from Guild
 
 Percentile thresholds for classifying observation counts. Based on 11,711 European plants.
 
+**Source parquets:**
+- Pests, pollinators, predators: `shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet`
+- Diseases, beneficial fungi: `shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet`
+
 ### Herbivores/Pests (33.6% of plants have data)
+
+Source: `herbivore_count` from `organism_profiles_11711.parquet`
 
 | Percentile | Count | Interpretation |
 |------------|-------|----------------|
@@ -23,6 +29,8 @@ Percentile thresholds for classifying observation counts. Based on 11,711 Europe
 
 ### Pollinators (13.4% of plants have data)
 
+Source: `pollinator_count` from `organism_profiles_11711.parquet`
+
 | Percentile | Count | Interpretation |
 |------------|-------|----------------|
 | p25 | 2 | Few pollinators observed |
@@ -32,6 +40,8 @@ Percentile thresholds for classifying observation counts. Based on 11,711 Europe
 
 ### Pathogenic Fungi (61.6% of plants have data)
 
+Source: `pathogenic_fungi_count` from `fungal_guilds_hybrid_11711.parquet`
+
 | Percentile | Count | Interpretation |
 |------------|-------|----------------|
 | p25 | 1 | Few pathogens observed |
@@ -40,6 +50,8 @@ Percentile thresholds for classifying observation counts. Based on 11,711 Europe
 | p90 | 15 | High disease diversity observed |
 
 ### Beneficial Predators (35.1% of plants have data)
+
+Source: `predators_hasHost_count + predators_interactsWith_count + predators_adjacentTo_count` from `organism_profiles_11711.parquet`
 
 | Percentile | Count | Interpretation |
 |------------|-------|----------------|
