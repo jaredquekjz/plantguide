@@ -74,33 +74,53 @@ Open borders work well; tolerates some afternoon shade.
 
 ## Temperature
 
-### Understanding Temperature Data
+### Understanding Temperature Data (Updated 2025-11-27)
 
-We use different temperature measurements:
-- **TNn** (coldest night of the year): The single coldest temperature the plant experiences
-- **BIO6** (average winter minimum): The typical overnight low during the coldest month
-- **TXx** (hottest day of the year): The single hottest temperature
-- **BIO5** (average summer maximum): The typical daytime high during the warmest month
+**Primary temperature variables** (BioClim - WorldClim 2.x):
+- **BIO5** (Max Temperature of Warmest Month): Average of daily maximum temperatures during the warmest month
+- **BIO6** (Min Temperature of Coldest Month): Average of daily minimum temperatures during the coldest month
 
-**Why both?** Knowing the coldest **single night** tells you if it will survive a cold snap. Knowing the **average winter** tells you if it needs cold dormancy.
+These are the **primary temperature indicators** used in the encyclopedia.
 
 ### Data Sources
 
-**Temperature variables**:
-- `TNn_q05/q50/q95`: Absolute minimum temperature (coldest night) - **in Kelvin, convert to °C by subtracting 273.15**
-- `TXx_q05/q50/q95`: Absolute maximum temperature (hottest day) - **in Kelvin, convert to °C by subtracting 273.15**
-- `wc2.1_30s_bio_6_q05/q50/q95`: Min Temperature of Coldest Month - **already in °C** (WorldClim 2.x stores BIO variables in °C; only v1.4 used °C × 10)
-- `wc2.1_30s_bio_5_q05/q50/q95`: Max Temperature of Warmest Month - **already in °C** (WorldClim 2.x stores BIO variables in °C; only v1.4 used °C × 10)
+**Temperature variables** (BioClim only):
+- `wc2.1_30s_bio_5_q05/q50/q95`: Max Temperature of Warmest Month - **already in °C** (WorldClim 2.x)
+- `wc2.1_30s_bio_6_q05/q50/q95`: Min Temperature of Coldest Month - **already in °C** (WorldClim 2.x)
 - `wc2.1_30s_bio_4_q05/q50/q95`: Temperature Seasonality (standard deviation × 100)
 
-**CRITICAL: TNn and TXx are temporal means from Copernicus AgroClim**:
-- Source: Copernicus dekadal (10-day) climate indicators, averaged over 30-year periods
-- `TXx` = "Maximum daily temperature per 10-day period", then averaged across ~1080 dekads
-- `TNn` = "Minimum daily temperature per 10-day period", then averaged across ~1080 dekads
-- **NOT** absolute single-day extremes, but **averages of dekadal extremes**
+**IMPORTANT: TNn/TXx (AgroClim) NO LONGER USED for temperature display**:
+- TNn/TXx are temporal means of dekadal (10-day) extremes, NOT actual single-day extremes
+- They are incomparable with BioClim monthly aggregates due to different aggregation methods
 - See `Stage_0_Raw_Environmental_Data_Preparation.md` for full explanation
-- **Consequence**: These may appear lower than WorldClim BIO5/BIO6 values due to different aggregation methods
-- **DO NOT directly compare** TXx_mean with BIO5 - they represent different temporal aggregations
+- **Consequence**: Encyclopedia now uses only BIO5/BIO6 for temperature range information
+
+### Temperature Display Format (Updated 2025-11-27)
+
+**Output format**:
+```markdown
+**Temperature tolerance**: -2°C to 30°C (monthly averages across all populations)
+*Note: These are monthly averages - actual daily extremes may be more severe*
+- Typical: 26°C warmest month, 0°C coldest month
+```
+
+**How values are derived**:
+1. **Full range** (headline): BIO6_q05 to BIO5_q95
+   - BIO6_q05 = coldest 5% of populations (minimum temperature of coldest month)
+   - BIO5_q95 = hottest 5% of populations (maximum temperature of warmest month)
+2. **Typical values**: BIO5_q50 and BIO6_q50 (median across all populations)
+
+**Two-stage aggregation**:
+1. **Temporal** (done by WorldClim): Monthly average at each location
+2. **Spatial** (done in Stage 1 sampling): Quantiles across all occurrence locations
+
+**Terminology**:
+- Use "warmest month" and "coldest month" (NOT "summer" and "winter")
+- Reason: Applicable to tropical plants where traditional seasons don't apply
+- BIO5/BIO6 are defined by temperature, not calendar months
+
+**Display fixes**:
+- Values between -0.5°C and 0.5°C display as "0°C" (avoids "-0°C")
 
 **Precipitation variables**:
 - `wc2.1_30s_bio_12_q05/q50/q95`: Annual Precipitation (mm)
@@ -133,48 +153,17 @@ See S1 Identity section for full climate type descriptions.
 
 ---
 
-### 1. Cold Hardiness (Coldest Night of the Year)
+### 1. Cold Hardiness (DEPRECATED - TNn no longer used)
 
-**Data**: `TNn_q05` - the coldest night temperatures where the plant occurs (**Kelvin → °C**: subtract 273.15)
-
-**What it measures**: The absolute coldest temperature populations have survived. This answers "will it survive my coldest winter night?"
-
-**Range meaning**:
-- **Coldest edge**: The coldest places where populations exist → maximum cold hardiness
-- **Typical**: The typical coldest night the plant experiences
-- **Warmest edge**: Mild winter populations (frost-free or nearly so)
-
-**USDA Hardiness Zones**: We convert the coldest edge to standard zone numbers:
-- Zone 5 = -28°C to -23°C
-- Zone 6 = -23°C to -17°C
-- Zone 7 = -17°C to -12°C
-- Zone 8 = -12°C to -7°C
-- Zone 9 = -7°C to -1°C
-- Zone 10 = -1°C to 4°C
-
-**Classification**:
-
-| Coldest Night | Zone | Hardiness Level | What It Means |
-|---------------|------|-----------------|---------------|
-| Below -40°C | 2-3 | Extremely hardy | Survives severe continental winters |
-| -40°C to -25°C | 4 | Very hardy | Reliable in cold climates |
-| -25°C to -15°C | 5-6 | Cold-hardy | Survives hard frosts |
-| -15°C to -5°C | 7-8 | Moderately hardy | Needs mulch in very cold areas |
-| -5°C to 0°C | 9 | Half-hardy | Protect from hard frost |
-| Above 0°C | 10+ | Frost-tender | Needs frost protection |
-
-**Output format**:
-```markdown
-**Hardiness**: Zone 6 (-23°C) - Cold-hardy
-```
-
-This shows the zone, actual coldest temperature recorded, and simple hardiness description.
+> **NOTE (2025-11-27)**: This section documented TNn-based hardiness zones, which has been removed from the encyclopedia. TNn values are temporal means of dekadal extremes from Copernicus AgroClim, NOT actual single-day minimum temperatures. They are incomparable with BioClim variables and were producing misleading results.
+>
+> Cold tolerance is now inferred from **BIO6** (Min Temperature of Coldest Month) ranges shown in the temperature summary.
 
 ---
 
 ### 2. Average Winter Cold (Min Temperature of Coldest Month)
 
-**Data**: `wc2.1_30s_bio_6_q05/q50/q95` - average overnight lows during winter (**°C × 10 → divide by 10**)
+**Data**: `wc2.1_30s_bio_6_q05/q50/q95` - average overnight lows during winter (**already in °C** - WorldClim 2.x)
 
 **What it measures**: The typical minimum temperature throughout the coldest month, NOT the coldest single night.
 
@@ -697,19 +686,56 @@ Simple drought category based on longest dry spell tolerated.
 
 ## Soil
 
-### Understanding Soil Data
+### Understanding Soil Data (Updated 2025-11-27)
 
-**All soil data come from where plants naturally grow**, extracted from SoilGrids database at each occurrence location.
+**All soil data come from where plants naturally grow**, extracted from SoilGrids 2.0 database at each occurrence location.
 
-**Depth**: We use topsoil (0-5cm deep) - most relevant for gardening. Deeper layers available for trees if needed.
+**Data source**: SoilGrids 2.0 (ISRIC) - global soil property maps at 250m resolution. Values are extracted at plant occurrence locations, then summarized as quantiles (q05, q50, q95).
 
-**Range meaning**: Same as climate - typical conditions where most common, extremes showing tolerance limits.
+### Tiered Depth Structure
+
+The soil section uses a two-tier approach:
+
+1. **Topsoil (0-15cm)** - *the layer you can amend*
+   - Weighted average of 0-5cm (weight 5) and 5-15cm (weight 10)
+   - Shows pH, CEC, SOC with interpretation text
+   - Texture table with USDA classification
+   - This is what gardeners interact with and can modify
+
+2. **Profile Average (0-200cm)** - *underlying conditions*
+   - Depth-weighted average across all 6 SoilGrids layers
+   - Shows pH, CEC, SOC only (no texture)
+   - Compact table format with typical and range
+   - Represents geological/pedological baseline
+
+**Why this structure**:
+- Topsoil is amendable; profile is not
+- Texture varies less with depth; chemistry varies more
+- Enables dynamic UI comparison: user's garden soil vs plant's typical conditions
+
+**Display format**: Following the climate section pattern:
+- **Intro text**: Explains data represents soil conditions where populations occur
+- **Typical first, then range**: e.g., "6.4 typical (range 5.1-7.3)"
+- **Interpretation**: Brief soil type and tolerance description
+
+**Range meaning**:
+- **q05**: 5th percentile - most extreme edge (e.g., most acidic soils)
+- **q50**: Median - typical conditions where most populations are found
+- **q95**: 95th percentile - opposite extreme edge (e.g., most alkaline soils)
+- **Range width**: Indicates adaptability (wide = flexible, narrow = specific needs)
+
+**Output intro text**:
+```markdown
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+```
 
 ---
 
 ### 9. Soil pH (Acidity/Alkalinity)
 
-**Data**: `phh2o_0_5cm_q05/q50/q95` - soil pH (**×10 in data; divide by 10 for actual pH**)
+**Data**: Topsoil uses weighted average of `phh2o_0_5cm` and `phh2o_5_15cm` layers. Profile uses all 6 depth layers.
+
+**Note**: Raw pH values may be stored as ×10; divide by 10 if values exceed 14.
 
 **What it measures**: How acidic or alkaline the soil is (pH scale 0-14).
 
@@ -760,9 +786,10 @@ Simple drought category based on longest dry spell tolerated.
 | 1.0-2.0 units | Moderate flexibility |
 | Below 1.0 units | Narrow preference; match pH carefully |
 
-**Output format**:
+**Output format** (typical first, then range):
 ```markdown
-**pH**: 5.8-7.2 (typical 6.4) - Slightly acidic to neutral
+**pH**: 6.4 typical (range 5.8-7.2)
+*Slightly acidic; wide tolerance*
 ```
 
 ---
@@ -904,6 +931,32 @@ Simple drought category based on longest dry spell tolerated.
 
 ---
 
+### 14. Soil Organic Carbon
+
+**Data**: Topsoil uses weighted average of `soc_0_5cm` and `soc_5_15cm` layers. Profile uses all 6 depth layers.
+
+**Note**: Raw SOC values are stored in dg/kg in SoilGrids; `sample_env_terra.R` converts to g/kg during extraction.
+
+**What it measures**: The amount of organic matter in the soil, which affects structure, water-holding capacity, and nutrient availability.
+
+**Why this matters for comparison**: SOC values enable dynamic UI comparison between:
+- The plant's typical occurrence conditions (from SoilGrids at occurrence locations)
+- The user's garden soil (from soil test or local knowledge)
+
+**Depth effect**: SOC decreases significantly with depth. Topsoil (0-15cm) typically has 3-5× more SOC than the profile average (0-200cm). This is expected - organic matter concentrates at the surface.
+
+**Output format** (no interpretation - just values for comparison):
+```markdown
+**Organic Carbon**: 41 g/kg (22-77 across locations)
+```
+
+**Profile average format**:
+```markdown
+| SOC (g/kg) | 12 | 6-27 |
+```
+
+---
+
 ## Encyclopedia Output Format
 
 **Standard format** (what gets displayed):
@@ -937,13 +990,54 @@ Open borders work well; tolerates some afternoon shade.
 - Watering: Regular in dry spells; don't let dry out completely
 
 ### Soil
-**pH**: 5.8-7.2 (typical 6.4) - Slightly acidic to neutral
-**pH preference**: 5.8/10 - Slightly acidic to neutral
-*Standard multipurpose compost works well.*
-**Fertility**: Moderate (CEC 15 cmol/kg)
-**Nutrient preference**: 5.0/10 - Moderate
-*Standard annual feeding in spring.*
-**Texture**: Loam preferred; tolerates clay
+
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+
+**Topsoil (0-15cm)** - *the layer you can amend*
+
+**pH**: 6.5 typical (range 5.1-7.4)
+*Slightly acidic; wide tolerance - adaptable to most garden soils*
+**Fertility (CEC)**: 22 cmol/kg (19-33 across locations)
+*Good retention - soil holds fertilizer well; benefits from annual feeding*
+**Organic Carbon**: 41 g/kg (22-77 across locations)
+
+**Texture**
+
+| Component | Typical | Range |
+|-----------|---------|-------|
+| Sand | 44% | 33-59% |
+| Silt | 36% | 15-55% |
+| Clay | 20% | 12-26% |
+
+**USDA Class**: Loam
+*Drainage: Good | Water retention: Good - Ideal soil; balanced drainage and retention; suits most plants*
+
+**Triangle Coordinates**: x=45.9, y=20.3
+*For plotting on USDA texture triangle; x = 0.5×clay + silt, y = clay*
+
+---
+
+**Profile Average (0-200cm)** - *underlying conditions*
+
+| Indicator | Typical | Range |
+|-----------|---------|-------|
+| pH | 6.5 | 5.3-7.7 |
+| CEC (cmol/kg) | 20 | 14-26 |
+| SOC (g/kg) | 12 | 6-27 |
+
+**Ecological Indicator (EIVE-R)**:
+- pH indicator: 5.2/10
+- Typical position: Slightly acidic to neutral
+- Compost: Standard multipurpose compost
+*Where species is most abundant in natural vegetation; from field surveys*
+
+**Ecological Indicator (EIVE-N)**:
+- Nutrient indicator: 4.5/10
+- Typical position: Moderate nutrient
+- Feeding: Standard annual feeding in spring
+*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
+
+**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
 ```
 
 **Concise format** (for briefer profiles, omit some details):
@@ -990,13 +1084,19 @@ This enriched format provides comprehensive practical information for gardeners.
 - `R20mm_q05/q50/q95` - Very heavy precipitation days (>20mm, count)
 - `SDII_q05/q50/q95` - Simple Daily Intensity Index (precipitation intensity)
 
-**Soil** (0-5cm topsoil):
-- `phh2o_0_5cm_q05/q50/q95` - Soil pH (**×10**: divide by 10)
-- `clay_0_5cm_q05/q50/q95` - Clay percentage (%)
-- `sand_0_5cm_q05/q50/q95` - Sand percentage (%)
-- `cec_0_5cm_q05/q50/q95` - Cation Exchange Capacity (cmol/kg)
-- `soc_0_5cm_q05/q50/q95` - Soil Organic Carbon (g/kg)
-- `nitrogen_0_5cm_q05/q50/q95` - Total Soil Nitrogen (g/kg)
+**Soil** (tiered depth structure):
+
+*Topsoil (0-15cm)* - weighted average of 0-5cm (weight 5) and 5-15cm (weight 10):
+- `phh2o_{depth}_q05/q50/q95` - Soil pH (may be ×10; divide if >14)
+- `clay_{depth}_q05/q50/q95` - Clay percentage (%)
+- `sand_{depth}_q05/q50/q95` - Sand percentage (%)
+- `cec_{depth}_q05/q50/q95` - Cation Exchange Capacity (cmol/kg)
+- `soc_{depth}_q05/q50/q95` - Soil Organic Carbon (g/kg, already converted)
+
+*Profile Average (0-200cm)* - weighted by layer thickness across all 6 depths:
+- Depths: 0-5cm (5), 5-15cm (10), 15-30cm (15), 30-60cm (30), 60-100cm (40), 100-200cm (100)
+- Total weight: 200cm
+- Only pH, CEC, SOC displayed (no texture)
 
 **Ecological indicators**:
 - `EIVEres-L_complete` - Light (0-10)

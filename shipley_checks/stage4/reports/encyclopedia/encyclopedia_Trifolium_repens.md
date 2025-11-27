@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-26T13:56:03Z"
+generated: "2025-11-27T04:51:07Z"
 version: "2.0"
 ---
 
@@ -29,27 +29,23 @@ Open borders work well; tolerates some afternoon shade.
 
 ### Climate
 
-*This section shows where populations naturally occur (climate tolerance) and where species is most abundant (ecological indicators):*
+*Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*
 
-**Temperature extremes**: Coldest winter night -8°C, hottest summer day 30°C
-**Temperature means**: Average 27°C in warmest month, -4°C in coldest month
-**Annual rainfall**: 443-1539mm/year across populations (typically 934mm)
+**Temperature**: 27°C warmest month, -4°C coldest month
+*Range: -17°C to 34°C across all population locations*
+**Rainfall**: 934mm/year (443-1539mm across locations)
 
 ---
 
 **Köppen Zones**: Cfa (Humid subtropical - hot humid summers, mild winters, rain year-round)
-**Cold tolerance**: Coldest populations survive -8°C winter nights (Moderately hardy)
-**Heat tolerance**: Hottest populations experience 30°C summer days (Cool-climate)
-**Frost exposure**: 0-5 frost days/year (typically 3)
+**Frost**: 3 days/year (up to 5 in coldest locations)
 *Frost-free to occasional*
-**Cold spell tolerance**: Populations survive up to 37 consecutive frost days
-*Long winter freeze - Can endure extended cold periods*
-**Warm nights**: Essentially none (cool nights year-round)
+**Warm nights**: Rare (cool nights year-round)
 *Cool nights year-round*
-**Climate type**: Populations found where day-night temperature varies by 7-14°C (typically 10°C)
-*Moderate variation climate - Typical temperate variation
-**Growing season**: 164-365 days/year with temperatures suitable for growth (typically 260 - about 9 months)
-*Long - Period when temperatures allow active growth*
+**Day-night swing**: 10°C typical daily range
+*Temperate - moderate variation*
+**Growing season**: 260 days (~9 months)
+*Long - ranges from 164 to 365 days across locations*
 
 **Ecological Indicator (EIVE-T)**:
 - Temperature indicator: 4.1/10
@@ -58,12 +54,10 @@ Open borders work well; tolerates some afternoon shade.
 
 **Moisture**:
 
-- **Annual rainfall**: 443-1539mm (typically 934mm)
-  *Temperate climate*
-- **Dry spells**: Typically 13 consecutive dry days, up to 28 days maximum
-  *Limited - Needs moisture during 2+ week dry spells*
-- Warm-wet conditions: Populations found where 1-4 days/year are warm & wet (typically 3)
-  *Low disease pressure - Plant from drier climates; may be vulnerable in humid gardens*
+- **Dry spells**: 13 consecutive dry days typical, 28 in driest locations
+  *Limited - Keep soil moist; don't let dry out*
+- **Disease pressure**: 3 warm-wet days/year
+  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
 
 **Ecological Indicator (EIVE-M)**:
 - Moisture indicator: 4.5/10
@@ -75,13 +69,39 @@ Open borders work well; tolerates some afternoon shade.
 
 ### Soil
 
-**pH tolerance**: 4.8-6.9 (from most acidic to most alkaline population locations)
-*Wide tolerance; adaptable*
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+
+**Topsoil (0-15cm)** - *the layer you can amend*
+
+**pH**: 5.8 typical (range 4.9-7.0)
+*Slightly acidic; wide tolerance - adaptable to most garden soils*
+**Fertility (CEC)**: 22 cmol/kg (11-38 across locations)
+*Good retention - soil holds fertilizer well; benefits from annual feeding*
+**Organic Carbon**: 46 g/kg (19-128 across locations)
+
+**Texture**
+
+| Component | Typical | Range |
+|-----------|---------|-------|
+| Sand | 38% | 14-63% |
+| Silt | 40% | 2-76% |
+| Clay | 23% | 9-35% |
+
+**USDA Class**: Loam
+*Drainage: Good | Water retention: Good - Ideal soil; balanced drainage and retention; suits most plants*
+
+**Triangle Coordinates**: x=51.1, y=22.7
+*For plotting on USDA texture triangle; x = 0.5×clay + silt, y = clay*
 
 ---
 
-**pH**: 4.8-6.9 (typically 5.7)
-*Slightly acidic*
+**Profile Average (0-200cm)** - *underlying conditions*
+
+| Indicator | Typical | Range |
+|-----------|---------|-------|
+| pH | 6.0 | 5.1-7.4 |
+| CEC (cmol/kg) | 17 | 7-28 |
+| SOC (g/kg) | 12 | 4-58 |
 
 **Ecological Indicator (EIVE-R)**:
 - pH indicator: 5.8/10
@@ -89,19 +109,13 @@ Open borders work well; tolerates some afternoon shade.
 - Compost: Standard multipurpose compost
 *Where species is most abundant in natural vegetation; from field surveys*
 
-**Fertility**: Populations found in fertile soils (CEC 28 cmol/kg)
-*Good nutrient retention (clay loam) - Benefits from annual feeding*
-
 **Ecological Indicator (EIVE-N)**:
 - Nutrient indicator: 6.4/10
 - Typical position: High nutrient
-- Feeding: Benefits from generous feeding
+- Feeding: Benefits from generous feeding; responds well to compost
 *Where species is most abundant in natural vegetation; indicates fertility level, not preference*
 
 **Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
-
-**Texture**: Populations found primarily in loam (clay ~22%)
-*Moderate sand tolerance - Standard garden soil works*
 
 ---
 

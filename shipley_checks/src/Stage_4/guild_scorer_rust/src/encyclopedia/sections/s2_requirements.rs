@@ -5,14 +5,19 @@
 //!
 //! Data Sources:
 //! - EIVE indicators: `EIVEres-L`, `EIVEres-M`, `EIVEres-T`, `EIVEres-R`, `EIVEres-N`
-//! - Climate envelope: `TNn_*`, `TXx_*`, `wc2.1_30s_bio_*`, `CDD_*`
-//! - Agroclimate indicators (Phase 2): `FD_*`, `CFD_*`, `TR_*`, `DTR_*`, `GSL_*`, `WW_*`
+//! - Climate envelope (BioClim): `wc2.1_30s_bio_5_*` (warmest month), `wc2.1_30s_bio_6_*` (coldest month), `wc2.1_30s_bio_12_*` (annual precip)
+//! - Agroclimate indicators: `FD_*`, `CFD_*`, `TR_*`, `DTR_*`, `GSL_*`, `WW_*`, `CDD_*`
 //! - Soil envelope: `phh2o_0_5cm_*`, `clay_0_5cm_*`, `sand_0_5cm_*`, `soc_0_5cm_*`
+//!
+//! NOTE: TNn_*/TXx_* (AgroClim) removed from temperature display - they are temporal
+//! means of dekadal extremes, not actual single-day extremes, making them incomparable
+//! with BioClim monthly aggregates. See Stage_0 documentation for details.
 
 use std::collections::HashMap;
 use serde_json::Value;
 use crate::encyclopedia::types::*;
 use crate::encyclopedia::utils::classify::*;
+use crate::encyclopedia::utils::texture as usda_texture;
 
 /// Generate the S2 Growing Requirements section.
 pub fn generate(data: &HashMap<String, Value>) -> String {
@@ -82,17 +87,15 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     lines.push("### Climate".to_string());
     lines.push(String::new());
 
-    // Extract key values for range summary
-    let tnn_q05_k = get_f64(data, "TNn_q05");
-    let txx_q95_k = get_f64(data, "TXx_q95");
-    let tnn_q05_c = tnn_q05_k.map(|k| k - 273.15);
-    let txx_q95_c = txx_q95_k.map(|k| k - 273.15);
-
-    // Get mean temperatures
-    // NOTE: WorldClim 2.x stores BIO5/BIO6 directly in °C (only v1.4 used °C × 10).
-    // DO NOT divide by 10 - values are already in °C.
-    let bio5_q50 = get_f64(data, "wc2.1_30s_bio_5_q50"); // Max temp warmest month (°C)
-    let bio6_q50 = get_f64(data, "wc2.1_30s_bio_6_q50"); // Min temp coldest month (°C)
+    // Get BioClim temperature variables (WorldClim 2.x stores directly in °C)
+    // BIO5 = Maximum temperature of warmest month (average of daily max temps in warmest month)
+    // BIO6 = Minimum temperature of coldest month (average of daily min temps in coldest month)
+    let bio5_q05 = get_f64(data, "wc2.1_30s_bio_5_q05");
+    let bio5_q50 = get_f64(data, "wc2.1_30s_bio_5_q50");
+    let bio5_q95 = get_f64(data, "wc2.1_30s_bio_5_q95");
+    let bio6_q05 = get_f64(data, "wc2.1_30s_bio_6_q05");
+    let bio6_q50 = get_f64(data, "wc2.1_30s_bio_6_q50");
+    let bio6_q95 = get_f64(data, "wc2.1_30s_bio_6_q95");
 
     let bio12_q05 = get_f64(data, "wc2.1_30s_bio_12_q05");
     let bio12_q50 = get_f64(data, "wc2.1_30s_bio_12_q50");
@@ -100,22 +103,30 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     let eive_t = get_eive(data, "T");
     let eive_m = get_eive(data, "M");
 
-    // Add dual perspectives explanation with range summary
-    lines.push("*This section shows where populations naturally occur (climate tolerance) and where species is most abundant (ecological indicators):*".to_string());
+    // Add explanation of data format
+    lines.push("*Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*".to_string());
     lines.push(String::new());
 
-    // Climate range summary
-    if let (Some(cold), Some(hot)) = (tnn_q05_c, txx_q95_c) {
-        lines.push(format!("**Temperature extremes**: Coldest winter night {:.0}°C, hottest summer day {:.0}°C", cold, hot));
-    }
-    if let (Some(warm_max), Some(cold_min)) = (bio5_q50, bio6_q50) {
-        lines.push(format!("**Temperature means**: Average {:.0}°C in warmest month, {:.0}°C in coldest month", warm_max, cold_min));
+    // Climate range summary - using BioClim only (BIO5/BIO6)
+    // Lead with typical, show range second (consistent with other indicators)
+    if let (Some(warm_typ), Some(cold_typ)) = (bio5_q50, bio6_q50) {
+        // Avoid "-0" display issue
+        let cold_display = if cold_typ > -0.5 && cold_typ < 0.5 { 0.0 } else { cold_typ };
+        lines.push(format!(
+            "**Temperature**: {:.0}°C warmest month, {:.0}°C coldest month",
+            warm_typ, cold_display
+        ));
+        // Show range if available
+        if let (Some(cold_min), Some(warm_max)) = (bio6_q05, bio5_q95) {
+            lines.push(format!(
+                "*Range: {:.0}°C to {:.0}°C across all population locations*",
+                cold_min, warm_max
+            ));
+        }
     }
     if let Some(rain50) = bio12_q50 {
-        lines.push(format!("**Annual rainfall**: {:.0}-{:.0}mm/year across populations (typically {:.0}mm)",
-            bio12_q05.unwrap_or(0.0), bio12_q95.unwrap_or(0.0), rain50));
-    } else if let (Some(dry), Some(wet)) = (bio12_q05, bio12_q95) {
-        lines.push(format!("**Annual rainfall**: {:.0}-{:.0}mm/year (from driest to wettest populations)", dry, wet));
+        lines.push(format!("**Rainfall**: {:.0}mm/year ({:.0}-{:.0}mm across locations)",
+            rain50, bio12_q05.unwrap_or(0.0), bio12_q95.unwrap_or(0.0)));
     }
 
     lines.push(String::new());
@@ -130,93 +141,94 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
         }
     }
 
-    // Cold tolerance - occurrence-based
-    // Note: Temperature data is stored in Kelvin, convert to Celsius
-    let tnn_q05_k = get_f64(data, "TNn_q05");
-    let tnn_q05_c = tnn_q05_k.map(|k| k - 273.15);
-    if let Some(cold) = tnn_q05_c {
-        let descriptor = cold_descriptor(cold);
-        lines.push(format!("**Cold tolerance**: Coldest populations survive {:.0}°C winter nights ({})", cold, descriptor));
-    }
-
-    // Heat tolerance - occurrence-based
-    // Note: Temperature data is stored in Kelvin, convert to Celsius
-    let txx_q95_k = get_f64(data, "TXx_q95");
-    let txx_q95_c = txx_q95_k.map(|k| k - 273.15);
-    if let Some(hot) = txx_q95_c {
-        let heat_category = classify_heat_category(hot);
-        lines.push(format!("**Heat tolerance**: Hottest populations experience {:.0}°C summer days ({})", hot, heat_category));
-    }
+    // NOTE: TNn/TXx (AgroClim) removed - they are temporal means of dekadal extremes,
+    // not actual single-day extremes, making them incomparable with BioClim variables.
+    // Cold/heat tolerance now inferred from BIO5/BIO6 ranges shown above.
 
     // Frost Days (FD) - annual frost count
     let fd_q05 = get_f64(data, "FD_q05");
     let fd_q50 = get_f64(data, "FD_q50");
     let fd_q95 = get_f64(data, "FD_q95");
+    let cfd_q50 = get_f64(data, "CFD_q50");
+    let cfd_q95 = get_f64(data, "CFD_q95");
+
     if let Some(fd50) = fd_q50 {
         let frost_regime = classify_frost_regime(fd50);
-        lines.push(format!(
-            "**Frost exposure**: {}-{} frost days/year (typically {:.0})",
-            fmt_f64(fd_q05, 0),
-            fmt_f64(fd_q95, 0),
-            fd50
-        ));
-        lines.push(format!("*{}*", frost_regime));
+
+        // Show frost info based on severity
+        if fd50 < 5.0 {
+            // Minimal frost - just report days, skip CFD (would be contradictory)
+            lines.push(format!(
+                "**Frost**: {:.0} days/year (up to {} in coldest locations)",
+                fd50,
+                fmt_f64(fd_q95, 0)
+            ));
+            lines.push(format!("*{}*", frost_regime));
+        } else {
+            // Significant frost - show both FD and CFD
+            lines.push(format!(
+                "**Frost days**: {:.0} days/year ({}-{} across locations)",
+                fd50,
+                fmt_f64(fd_q05, 0),
+                fmt_f64(fd_q95, 0)
+            ));
+            lines.push(format!("*{}*", frost_regime));
+
+            // Only show cold spell duration when frost is significant
+            if let Some(cfd50) = cfd_q50 {
+                let cold_spell = classify_cold_spell(cfd50);
+                if let Some(cfd95) = cfd_q95 {
+                    lines.push(format!(
+                        "**Cold spells**: {:.0} consecutive days typical, up to {:.0}",
+                        cfd50, cfd95
+                    ));
+                } else {
+                    lines.push(format!(
+                        "**Cold spells**: {:.0} consecutive days typical",
+                        cfd50
+                    ));
+                }
+                lines.push(format!("*{}*", cold_spell));
+            }
+        }
     }
 
-    // Consecutive Frost Days (CFD) - cold spell duration
-    let cfd_q95 = get_f64(data, "CFD_q95");
-    if let Some(cfd) = cfd_q95 {
-        let cold_spell = classify_cold_spell(cfd);
-        lines.push(format!(
-            "**Cold spell tolerance**: Populations survive up to {:.0} consecutive frost days",
-            cfd
-        ));
-        lines.push(format!("*{} - Can endure extended cold periods*", cold_spell));
-    }
-
-    // Tropical Nights (TR) - warm night count
+    // Tropical Nights (TR) - nights >20°C
     let tr_q05 = get_f64(data, "TR_q05");
     let tr_q50 = get_f64(data, "TR_q50");
     let tr_q95 = get_f64(data, "TR_q95");
     if let Some(tr50) = tr_q50 {
         let tr_regime = classify_tropical_night_regime(tr50);
         if tr50 < 1.0 {
-            lines.push("**Warm nights**: Essentially none (cool nights year-round)".to_string());
+            lines.push("**Warm nights**: Rare (cool nights year-round)".to_string());
         } else {
             lines.push(format!(
-                "**Warm nights**: Typically {:.0} nights/year exceed 20°C (range {:.0}-{:.0})",
+                "**Warm nights**: {:.0} nights/year above 20°C (up to {:.0} in warmest locations)",
                 tr50,
-                tr_q05.unwrap_or(0.0),
-                tr_q95.unwrap_or(0.0)
+                tr_q95.unwrap_or(tr50)
             ));
         }
-        // Add pest note for moderate-high tropical nights
         if tr50 > 10.0 {
-            lines.push(format!("*{} - Expect increased aphid/whitefly activity in warm summers*", tr_regime));
+            lines.push("*Higher pest pressure - aphids and whiteflies thrive in warm nights*".to_string());
         } else {
             lines.push(format!("*{}*", tr_regime));
         }
     }
 
     // Diurnal Temperature Range (DTR) - day-night variation
-    let dtr_q05 = get_f64(data, "DTR_q05");
     let dtr_q50 = get_f64(data, "DTR_q50");
-    let dtr_q95 = get_f64(data, "DTR_q95");
     if let Some(dtr50) = dtr_q50 {
-        let dtr_stability = classify_diurnal_range(dtr50);
         lines.push(format!(
-            "**Climate type**: Populations found where day-night temperature varies by {:.0}-{:.0}°C (typically {:.0}°C)",
-            dtr_q05.unwrap_or(0.0),
-            dtr_q95.unwrap_or(0.0),
+            "**Day-night swing**: {:.0}°C typical daily range",
             dtr50
         ));
-        lines.push(format!("*{} climate - {}", dtr_stability,
-            if dtr50 < 8.0 { "Maritime/stable conditions" }
-            else if dtr50 < 12.0 { "Typical temperate variation" }
-            else { "Continental climate with large temperature swings" }));
+        lines.push(format!("*{}*",
+            if dtr50 < 8.0 { "Maritime/oceanic - stable temperatures" }
+            else if dtr50 < 12.0 { "Temperate - moderate variation" }
+            else { "Continental - large temperature swings" }));
     }
 
-    // Growing Season Length (GSL) - number of days suitable for plant growth
+    // Growing Season Length (GSL) - days suitable for growth
     let gsl_q05 = get_f64(data, "GSL_q05");
     let gsl_q50 = get_f64(data, "GSL_q50");
     let gsl_q95 = get_f64(data, "GSL_q95");
@@ -224,13 +236,15 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
         let season_type = classify_growing_season(gsl50);
         let months = (gsl50 / 30.0).round() as i32;
         lines.push(format!(
-            "**Growing season**: {:.0}-{:.0} days/year with temperatures suitable for growth (typically {:.0} - about {} months)",
-            gsl_q05.unwrap_or(0.0),
-            gsl_q95.unwrap_or(0.0),
+            "**Growing season**: {:.0} days (~{} months)",
             gsl50,
             months
         ));
-        lines.push(format!("*{} - Period when temperatures allow active growth*", season_type));
+        if let (Some(short), Some(long)) = (gsl_q05, gsl_q95) {
+            lines.push(format!("*{} - ranges from {:.0} to {:.0} days across locations*", season_type, short, long));
+        } else {
+            lines.push(format!("*{}*", season_type));
+        }
     }
 
     // EIVE-T - Temperature Indicator
@@ -254,68 +268,44 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     lines.push("**Moisture**:".to_string());
     lines.push(String::new());
 
-    // Annual precipitation
-    let bio12_q05_val = get_f64(data, "wc2.1_30s_bio_12_q05");
-    let bio12_q50_val = get_f64(data, "wc2.1_30s_bio_12_q50");
-    let bio12_q95_val = get_f64(data, "wc2.1_30s_bio_12_q95");
-    if let Some(bio12_50) = bio12_q50_val {
-        let rainfall_type = if bio12_50 < 250.0 { "Arid (desert)" }
-            else if bio12_50 < 500.0 { "Semi-arid (steppe)" }
-            else if bio12_50 < 1000.0 { "Temperate" }
-            else if bio12_50 < 1500.0 { "Moist" }
-            else { "Wet (tropical/oceanic)" };
+    // NOTE: Annual rainfall now shown at top of climate section, not duplicated here
 
-        lines.push(format!(
-            "- **Annual rainfall**: {}-{}mm (typically {}mm)",
-            fmt_f64(bio12_q05_val, 0),
-            fmt_f64(bio12_q95_val, 0),
-            fmt_f64(Some(bio12_50), 0)
-        ));
-        lines.push(format!("  *{} climate*", rainfall_type));
-    }
-
-    // Drought tolerance
+    // Drought tolerance - CDD (consecutive dry days)
     let cdd_q50 = get_f64(data, "CDD_q50");
     let cdd_q95 = get_f64(data, "CDD_q95");
-    if let Some(cdd_max) = cdd_q95 {
-        let drought_label = classify_drought_tolerance(cdd_max);
-        if let Some(cdd_typ) = cdd_q50 {
+    if let Some(cdd_typ) = cdd_q50 {
+        let drought_label = classify_drought_tolerance(cdd_q95.unwrap_or(cdd_typ));
+        if let Some(cdd95) = cdd_q95 {
             lines.push(format!(
-                "- **Dry spells**: Typically {:.0} consecutive dry days, up to {:.0} days maximum",
-                cdd_typ, cdd_max
+                "- **Dry spells**: {:.0} consecutive dry days typical, {:.0} in driest locations",
+                cdd_typ, cdd95
             ));
         } else {
             lines.push(format!(
-                "- **Dry spells**: Populations experience dry periods up to {:.0} consecutive days",
-                cdd_max
+                "- **Dry spells**: {:.0} consecutive dry days typical",
+                cdd_typ
             ));
         }
-        lines.push(format!("  *{} - {}*", drought_label,
-            if cdd_max > 60.0 { "Can handle prolonged drought; deep watering occasionally" }
-            else if cdd_max > 30.0 { "Tolerates dry spells; water during extended drought" }
-            else if cdd_max > 14.0 { "Needs moisture during 2+ week dry spells" }
-            else { "Requires regular moisture; don't let soil dry out" }));
+        let advice = if cdd_typ > 60.0 { "Deep watering occasionally once established" }
+            else if cdd_typ > 30.0 { "Water during extended dry spells" }
+            else if cdd_typ > 14.0 { "Water during 2+ week dry periods" }
+            else { "Keep soil moist; don't let dry out" };
+        lines.push(format!("  *{} - {}*", drought_label, advice));
     }
 
     // Warm-Wet Days (WW) - disease risk indicator
-    let ww_q05 = get_f64(data, "WW_q05");
     let ww_q50 = get_f64(data, "WW_q50");
-    let ww_q95 = get_f64(data, "WW_q95");
     if let Some(ww50) = ww_q50 {
-        let ww_regime = classify_warm_wet_regime(ww50);
         lines.push(format!(
-            "- Warm-wet conditions: Populations found where {:.0}-{:.0} days/year are warm & wet (typically {:.0})",
-            ww_q05.unwrap_or(0.0),
-            ww_q95.unwrap_or(0.0),
+            "- **Disease pressure**: {:.0} warm-wet days/year",
             ww50
         ));
-        // Add disease monitoring note based on WW level
         if ww50 > 150.0 {
-            lines.push("  *High disease pressure areas - Populations likely have resistance; ensure good air circulation and monitor for mildew/rust*".to_string());
+            lines.push("  *High (humid climate) - likely disease-resistant; still provide good airflow*".to_string());
         } else if ww50 > 80.0 {
-            lines.push("  *Moderate disease pressure - Provide good air circulation; watch for fungal issues in humid periods*".to_string());
+            lines.push("  *Moderate - monitor for mildew/rust in humid periods*".to_string());
         } else {
-            lines.push("  *Low disease pressure - Plant from drier climates; may be vulnerable in humid gardens*".to_string());
+            lines.push("  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*".to_string());
         }
     }
 
@@ -349,37 +339,8 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     lines.join("\n")
 }
 
-/// Concise cold hardiness descriptor (inline format per doc spec)
-fn cold_descriptor(tnn_q05: f64) -> &'static str {
-    if tnn_q05 < -40.0 {
-        "Extremely hardy"
-    } else if tnn_q05 < -25.0 {
-        "Very hardy"
-    } else if tnn_q05 < -15.0 {
-        "Cold-hardy"
-    } else if tnn_q05 < -5.0 {
-        "Moderately hardy"
-    } else if tnn_q05 < 0.0 {
-        "Half-hardy"
-    } else {
-        "Frost-tender"
-    }
-}
-
-/// Concise heat tolerance category (doc spec lines 64-70)
-fn classify_heat_category(txx_q95: f64) -> &'static str {
-    if txx_q95 > 45.0 {
-        "Extreme heat"
-    } else if txx_q95 > 40.0 {
-        "Very heat-tolerant"
-    } else if txx_q95 > 35.0 {
-        "Heat-tolerant"
-    } else if txx_q95 > 30.0 {
-        "Moderate"
-    } else {
-        "Cool-climate"
-    }
-}
+// NOTE: cold_descriptor and classify_heat_category removed - TNn/TXx no longer used
+// (AgroClim temporal means are incomparable with BioClim; see Stage 0 documentation)
 
 fn classify_drought_tolerance(cdd_q95: f64) -> &'static str {
     if cdd_q95 > 60.0 {
@@ -511,54 +472,248 @@ fn generate_soil_section(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
     lines.push("### Soil".to_string());
     lines.push(String::new());
-
-    // Extract values for range summary
-    let ph_q05 = get_f64(data, "phh2o_0_5cm_q05");
-    let ph_q95 = get_f64(data, "phh2o_0_5cm_q95");
-    let (ph_q05_adj, _, ph_q95_adj) = adjust_ph_values(ph_q05, None, ph_q95);
-
-    // Soil range summary
-    if let (Some(acidic), Some(alkaline)) = (ph_q05_adj, ph_q95_adj) {
-        lines.push(format!("**pH tolerance**: {:.1}-{:.1} (from most acidic to most alkaline population locations)", acidic, alkaline));
-        let range = alkaline - acidic;
-        let flexibility = if range > 2.0 { "Wide tolerance; adaptable" }
-            else if range > 1.0 { "Moderate flexibility" }
-            else { "Narrow preference" };
-        lines.push(format!("*{}*", flexibility));
-        lines.push(String::new());
-    }
-
-    lines.push("---".to_string());
+    lines.push("*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*".to_string());
     lines.push(String::new());
 
-    // pH details
-    let ph_q05_val = get_f64(data, "phh2o_0_5cm_q05");
-    let ph_q50_val = get_f64(data, "phh2o_0_5cm_q50");
-    let ph_q95_val = get_f64(data, "phh2o_0_5cm_q95");
+    // ========== TOPSOIL (0-15cm) - THE AMENDABLE LAYER ==========
+    // Weighted average: 0-5cm (5cm thick) + 5-15cm (10cm thick) = 15cm total
 
-    // Note: pH values may be stored as ×10 in raw data
-    let (ph_q05_adj, ph_q50_adj, ph_q95_adj) = adjust_ph_values(ph_q05_val, ph_q50_val, ph_q95_val);
+    lines.push("**Topsoil (0-15cm)** - *the layer you can amend*".to_string());
+    lines.push(String::new());
 
-    if let Some(ph50) = ph_q50_adj {
-        let ph_type = if ph50 < 5.0 { "Strongly acidic" }
-            else if ph50 < 5.5 { "Moderately acidic" }
-            else if ph50 < 6.5 { "Slightly acidic" }
-            else if ph50 < 7.5 { "Neutral" }
-            else if ph50 < 8.0 { "Slightly alkaline" }
+    // Helper to calculate 0-15cm weighted average
+    let calc_topsoil_avg = |prefix: &str, suffix: &str| -> Option<f64> {
+        let v1 = get_f64(data, &format!("{}_0_5cm_{}", prefix, suffix));
+        let v2 = get_f64(data, &format!("{}_5_15cm_{}", prefix, suffix));
+        match (v1, v2) {
+            (Some(a), Some(b)) => Some((a * 5.0 + b * 10.0) / 15.0),
+            (Some(a), None) => Some(a),
+            (None, Some(b)) => Some(b),
+            _ => None,
+        }
+    };
+
+    // pH (0-15cm average)
+    let ph_q05_raw = calc_topsoil_avg("phh2o", "q05");
+    let ph_q50_raw = calc_topsoil_avg("phh2o", "q50");
+    let ph_q95_raw = calc_topsoil_avg("phh2o", "q95");
+    let (ph_q05, ph_q50, ph_q95) = adjust_ph_values(ph_q05_raw, ph_q50_raw, ph_q95_raw);
+
+    if let Some(ph) = ph_q50 {
+        let ph_type = if ph < 5.0 { "Strongly acidic" }
+            else if ph < 5.5 { "Moderately acidic" }
+            else if ph < 6.5 { "Slightly acidic" }
+            else if ph < 7.5 { "Neutral" }
+            else if ph < 8.0 { "Slightly alkaline" }
             else { "Alkaline/chalky" };
 
+        let range_width = match (ph_q05, ph_q95) {
+            (Some(lo), Some(hi)) => hi - lo,
+            _ => 0.0,
+        };
+        let ph_advice = if range_width > 2.0 {
+            "wide tolerance - adaptable to most garden soils"
+        } else if range_width > 1.0 {
+            "moderate tolerance"
+        } else if ph < 5.5 {
+            "narrow preference - needs acidic soil; use ericaceous compost"
+        } else if ph > 7.5 {
+            "narrow preference - tolerates chalky/alkaline soil"
+        } else {
+            "narrow preference - match soil pH carefully"
+        };
+
         lines.push(format!(
-            "**pH**: {}-{} (typically {})",
-            fmt_f64(ph_q05_adj, 1),
-            fmt_f64(ph_q95_adj, 1),
-            fmt_f64(Some(ph50), 1)
+            "**pH**: {:.1} typical (range {}-{})",
+            ph, fmt_f64(ph_q05, 1), fmt_f64(ph_q95, 1)
         ));
-        lines.push(format!("*{}*", ph_type));
+        lines.push(format!("*{}; {}*", ph_type, ph_advice));
     }
 
-    // EIVE-R - pH Indicator
+    // CEC (0-15cm average)
+    let cec_q05 = calc_topsoil_avg("cec", "q05");
+    let cec_q50 = calc_topsoil_avg("cec", "q50");
+    let cec_q95 = calc_topsoil_avg("cec", "q95");
+
+    if let Some(cec) = cec_q50 {
+        let cec_advice = if cec < 10.0 {
+            "Low retention (sandy) - nutrients wash out quickly; needs frequent light feeding"
+        } else if cec < 20.0 {
+            "Moderate retention - standard feeding schedule works well"
+        } else if cec < 30.0 {
+            "Good retention - soil holds fertilizer well; benefits from annual feeding"
+        } else {
+            "Excellent retention (clay/peat) - naturally fertile soil"
+        };
+
+        let range_str = match (cec_q05, cec_q95) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
+            _ => String::new(),
+        };
+
+        lines.push(format!("**Fertility (CEC)**: {:.0} cmol/kg{}", cec, range_str));
+        lines.push(format!("*{}*", cec_advice));
+    }
+
+    // SOC (0-15cm average)
+    let soc_q05 = calc_topsoil_avg("soc", "q05");
+    let soc_q50 = calc_topsoil_avg("soc", "q50");
+    let soc_q95 = calc_topsoil_avg("soc", "q95");
+
+    if let Some(soc) = soc_q50 {
+        let range_str = match (soc_q05, soc_q95) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
+            _ => String::new(),
+        };
+        lines.push(format!("**Organic Carbon**: {:.0} g/kg{}", soc, range_str));
+    }
+
+    // ========== TEXTURE (0-15cm) ==========
     lines.push(String::new());
-    lines.push("**Ecological Indicator (EIVE-R)**:".to_string());
+
+    let clay_q05 = calc_topsoil_avg("clay", "q05");
+    let clay_q50 = calc_topsoil_avg("clay", "q50");
+    let clay_q95 = calc_topsoil_avg("clay", "q95");
+
+    let sand_q05 = calc_topsoil_avg("sand", "q05");
+    let sand_q50 = calc_topsoil_avg("sand", "q50");
+    let sand_q95 = calc_topsoil_avg("sand", "q95");
+
+    let silt_q50 = match (clay_q50, sand_q50) {
+        (Some(c), Some(s)) => Some(100.0 - c - s),
+        _ => None,
+    };
+    let silt_q05 = match (clay_q95, sand_q95) {
+        (Some(c), Some(s)) => Some((100.0 - c - s).max(0.0)),
+        _ => None,
+    };
+    let silt_q95 = match (clay_q05, sand_q05) {
+        (Some(c), Some(s)) => Some((100.0 - c - s).min(100.0)),
+        _ => None,
+    };
+
+    if let (Some(clay), Some(sand), Some(silt)) = (clay_q50, sand_q50, silt_q50) {
+        lines.push("**Texture**".to_string());
+        lines.push(String::new());
+        lines.push("| Component | Typical | Range |".to_string());
+        lines.push("|-----------|---------|-------|".to_string());
+
+        let sand_range = match (sand_q05, sand_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}%", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| Sand | {:.0}% | {} |", sand, sand_range));
+
+        let silt_range = match (silt_q05, silt_q95) {
+            (Some(lo), Some(hi)) if lo >= 0.0 && hi <= 100.0 => format!("{:.0}-{:.0}%", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| Silt | {:.0}% | {} |", silt, silt_range));
+
+        let clay_range = match (clay_q05, clay_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}%", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| Clay | {:.0}% | {} |", clay, clay_range));
+
+        lines.push(String::new());
+
+        if let Some(classification) = usda_texture::classify_texture(clay, sand, silt) {
+            lines.push(format!("**USDA Class**: {}", classification.class_name));
+            lines.push(format!(
+                "*Drainage: {} | Water retention: {} - {}*",
+                classification.drainage,
+                classification.water_retention,
+                classification.advice
+            ));
+            lines.push(String::new());
+            lines.push(format!(
+                "**Triangle Coordinates**: x={:.1}, y={:.1}",
+                classification.x, classification.y
+            ));
+            lines.push("*For plotting on USDA texture triangle; x = 0.5×clay + silt, y = clay*".to_string());
+        }
+    }
+
+    // ========== PROFILE AVERAGE (0-200cm) ==========
+    lines.push(String::new());
+    lines.push("---".to_string());
+    lines.push(String::new());
+    lines.push("**Profile Average (0-200cm)** - *underlying conditions*".to_string());
+    lines.push(String::new());
+
+    // Depth-weighted average across all 6 SoilGrids layers
+    let depth_weights: [(f64, &str); 6] = [
+        (5.0, "0_5cm"),
+        (10.0, "5_15cm"),
+        (15.0, "15_30cm"),
+        (30.0, "30_60cm"),
+        (40.0, "60_100cm"),
+        (100.0, "100_200cm"),
+    ];
+
+    // Helper to calculate profile average for any variable
+    let calc_profile_avg = |prefix: &str, suffix: &str| -> Option<f64> {
+        let mut weighted_sum = 0.0;
+        let mut total_weight = 0.0;
+        for (weight, depth) in depth_weights.iter() {
+            if let Some(v) = get_f64(data, &format!("{}_{}{}", prefix, depth, suffix)) {
+                weighted_sum += v * weight;
+                total_weight += weight;
+            }
+        }
+        if total_weight > 0.0 { Some(weighted_sum / total_weight) } else { None }
+    };
+
+    // Profile pH (with range)
+    let profile_ph_q05_raw = calc_profile_avg("phh2o", "_q05");
+    let profile_ph_q50_raw = calc_profile_avg("phh2o", "_q50");
+    let profile_ph_q95_raw = calc_profile_avg("phh2o", "_q95");
+    let (profile_ph_q05, profile_ph_q50, profile_ph_q95) = adjust_ph_values(
+        profile_ph_q05_raw, profile_ph_q50_raw, profile_ph_q95_raw
+    );
+
+    // Profile CEC (with range)
+    let profile_cec_q05 = calc_profile_avg("cec", "_q05");
+    let profile_cec_q50 = calc_profile_avg("cec", "_q50");
+    let profile_cec_q95 = calc_profile_avg("cec", "_q95");
+
+    // Profile SOC (with range)
+    let profile_soc_q05 = calc_profile_avg("soc", "_q05");
+    let profile_soc_q50 = calc_profile_avg("soc", "_q50");
+    let profile_soc_q95 = calc_profile_avg("soc", "_q95");
+
+    // Display as compact table with ranges
+    lines.push("| Indicator | Typical | Range |".to_string());
+    lines.push("|-----------|---------|-------|".to_string());
+
+    if let Some(ph) = profile_ph_q50 {
+        let range_str = match (profile_ph_q05, profile_ph_q95) {
+            (Some(lo), Some(hi)) => format!("{:.1}-{:.1}", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| pH | {:.1} | {} |", ph, range_str));
+    }
+    if let Some(cec) = profile_cec_q50 {
+        let range_str = match (profile_cec_q05, profile_cec_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| CEC (cmol/kg) | {:.0} | {} |", cec, range_str));
+    }
+    if let Some(soc) = profile_soc_q50 {
+        let range_str = match (profile_soc_q05, profile_soc_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}", lo, hi),
+            _ => "-".to_string(),
+        };
+        lines.push(format!("| SOC (g/kg) | {:.0} | {} |", soc, range_str));
+    }
+
+    // ========== EIVE INDICATORS (after all occurrence data) ==========
+
+    lines.push(String::new());
+
+    // EIVE-R - pH Indicator
     let eive_r_val = get_eive(data, "R");
     if let Some(r) = eive_r_val {
         let ph_preference = if r < 2.0 { "Strongly acidic (calcifuge)" }
@@ -573,29 +728,15 @@ fn generate_soil_section(data: &HashMap<String, Value>) -> String {
             else if r < 8.0 { "Tolerates some lime" }
             else { "Lime-loving; add chalk if needed" };
 
+        lines.push("**Ecological Indicator (EIVE-R)**:".to_string());
         lines.push(format!("- pH indicator: {:.1}/10", r));
         lines.push(format!("- Typical position: {}", ph_preference));
         lines.push(format!("- Compost: {}", compost));
         lines.push("*Where species is most abundant in natural vegetation; from field surveys*".to_string());
     }
 
-    // Fertility (CEC, Nitrogen)
-    let cec_q50 = get_f64(data, "cec_0_5cm_q50");
-    if let Some(cec) = cec_q50 {
-        let fertility_label = classify_fertility(cec);
-        lines.push(String::new());
-        lines.push(format!("**Fertility**: Populations found in {} soils (CEC {} cmol/kg)",
-            fertility_label.to_lowercase(), fmt_f64(Some(cec), 0)));
-        lines.push(format!("*{}*",
-            if cec < 10.0 { "Sandy/low nutrient retention - Needs frequent feeding" }
-            else if cec < 20.0 { "Moderate nutrient retention - Standard feeding" }
-            else if cec < 30.0 { "Good nutrient retention (clay loam) - Benefits from annual feeding" }
-            else { "Excellent nutrient retention (clay/peat) - Naturally fertile" }));
-    }
-
     // EIVE-N - Nutrient Indicator
     lines.push(String::new());
-    lines.push("**Ecological Indicator (EIVE-N)**:".to_string());
     let eive_n_val = get_eive(data, "N");
     if let Some(n) = eive_n_val {
         let nutrient_level = if n < 2.0 { "Very low nutrient" }
@@ -604,45 +745,22 @@ fn generate_soil_section(data: &HashMap<String, Value>) -> String {
             else if n < 8.0 { "High nutrient" }
             else { "Very high nutrient" };
 
-        let feeding = if n < 2.0 { "Light feeding only; excess N harmful" }
-            else if n < 4.0 { "Minimal feeding; balanced NPK" }
-            else if n < 6.0 { "Standard annual feeding" }
-            else if n < 8.0 { "Benefits from generous feeding" }
-            else { "Heavy feeder; responds well to manure" };
+        let feeding = if n < 2.0 { "Light feeding only; excess nitrogen causes weak growth" }
+            else if n < 4.0 { "Minimal feeding; use balanced NPK fertilizer" }
+            else if n < 6.0 { "Standard annual feeding in spring" }
+            else if n < 8.0 { "Benefits from generous feeding; responds well to compost" }
+            else { "Heavy feeder; responds well to manure and regular feeding" };
 
+        lines.push("**Ecological Indicator (EIVE-N)**:".to_string());
         lines.push(format!("- Nutrient indicator: {:.1}/10", n));
         lines.push(format!("- Typical position: {}", nutrient_level));
         lines.push(format!("- Feeding: {}", feeding));
         lines.push("*Where species is most abundant in natural vegetation; indicates fertility level, not preference*".to_string());
     }
 
-    // Add caveat about cultivation vs natural conditions (especially for nutrients)
+    // Note about competition
     lines.push(String::new());
     lines.push("**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.".to_string());
-
-    // Texture
-    let clay_q50 = get_f64(data, "clay_0_5cm_q50");
-    let sand_q95 = get_f64(data, "sand_0_5cm_q95");
-    if let Some(clay) = clay_q50 {
-        lines.push(String::new());
-        let texture_label = if clay > 35.0 { "Heavy clay" }
-            else if clay > 25.0 { "Clay loam" }
-            else if clay > 15.0 { "Loam" }
-            else { "Sandy loam" };
-
-        lines.push(format!("**Texture**: Populations found primarily in {} (clay ~{:.0}%)",
-            texture_label.to_lowercase(), clay));
-
-        if let Some(sand) = sand_q95 {
-            if sand > 65.0 {
-                lines.push("*Some populations tolerate sandy soils - Adaptable to lighter textures*".to_string());
-            } else if sand > 50.0 {
-                lines.push("*Moderate sand tolerance - Standard garden soil works*".to_string());
-            } else {
-                lines.push("*Prefers heavier soils - May struggle in very sandy conditions*".to_string());
-            }
-        }
-    }
 
     lines.join("\n")
 }
@@ -686,6 +804,26 @@ fn ph_advice(eive_r: f64) -> String {
     }
 }
 
+/// Determine appropriate soil depth based on plant growth form.
+/// Returns (depth_suffix, depth_label, depth_description).
+fn get_soil_depth_for_growth_form(growth_form: Option<&str>) -> (&'static str, &'static str, &'static str) {
+    match growth_form {
+        Some(gf) if gf.to_lowercase().contains("tree") => {
+            ("30_60cm", "30-60cm", "rooting depth (30-60cm)")
+        }
+        Some(gf) if gf.to_lowercase().contains("shrub") => {
+            ("15_30cm", "15-30cm", "rooting depth (15-30cm)")
+        }
+        Some(gf) if gf.to_lowercase().contains("climber") || gf.to_lowercase().contains("vine") => {
+            ("15_30cm", "15-30cm", "rooting depth (15-30cm)")
+        }
+        _ => {
+            // Herbs, graminoids, ground cover, and default
+            ("0_5cm", "0-5cm", "surface (0-5cm)")
+        }
+    }
+}
+
 fn classify_fertility(cec: f64) -> &'static str {
     if cec < 5.0 {
         "Very low fertility"
@@ -712,26 +850,6 @@ fn nitrogen_advice(eive_n: f64) -> String {
     } else {
         "Heavy feeder; responds well to manure.".to_string()
     }
-}
-
-fn classify_texture(clay_q50: Option<f64>, sand_q95: Option<f64>) -> String {
-    let clay_label = match clay_q50 {
-        Some(c) if c > 35.0 => "Heavy clay",
-        Some(c) if c > 25.0 => "Clay loam",
-        Some(c) if c > 15.0 => "Loam",
-        Some(_) => "Sandy loam/sand",
-        None => return "Unknown".to_string(),
-    };
-
-    let sand_tolerance = match sand_q95 {
-        Some(s) if s > 80.0 => "; tolerates very sandy",
-        Some(s) if s > 65.0 => "; tolerates sandy",
-        Some(s) if s > 50.0 => "; moderate sand tolerance",
-        Some(_) => "; prefers heavier soils",
-        None => "",
-    };
-
-    format!("{}{}", clay_label, sand_tolerance)
 }
 
 /// Interpret Köppen-Geiger climate code with human-readable label
