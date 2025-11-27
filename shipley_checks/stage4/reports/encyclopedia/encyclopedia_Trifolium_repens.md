@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T05:31:41Z"
+generated: "2025-11-27T05:45:01Z"
 version: "2.0"
 ---
 
@@ -187,7 +187,6 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 **Exceptional** (160 taxa documented)
 *Major pollinator resource (top 10%)*
 
-- **Other Pollinators** (50): Hebeclinium sericeum, Musca autumnalis, Xestia triangulum, +47 more
 - **Solitary Bees** (34): Andrena cineraria, Andrena flavipes, Lasioglossum malachurum, +31 more
 - **Bumblebees** (28): Bombus rupestris, Bombus huntii, Bombus sp., +25 more
 - **Hoverflies** (15): Eristalis, Eupeodes luniger, Eupeodes corollae, +12 more
@@ -199,18 +198,25 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Soldier Beetles** (2): Rhagonycha fulva, Cantharis cryptica
 - **Honey Bees** (1): Apis mellifera
 - **Moths** (1): Amphipyra tragopoginis
+- **Other Pollinators** (50): Hebeclinium sericeum, Musca autumnalis, Xestia triangulum, +47 more
 
 ### Herbivores & Parasites
 **Above average** (7 taxa documented)
 *Some pest pressure expected*
 
-- **Other Herbivores** (4): Rhizophagus, Chlamydatus pullus, Bruchidius dispar, +1 more
 - **Butterflies** (2): Neptis sappho, Rapala arata
 - **Aphids** (1): Acyrthosiphon pisum
+- **Other Herbivores** (4): Rhizophagus, Chlamydatus pullus, Bruchidius dispar, +1 more
 
 ### Beneficial Insects
-No predator/beneficial insect records available.
-*This plant may benefit from companions that attract pest predators.*
+**9 taxa documented** - natural pest control agents
+
+- **Hoverflies** (2): Eupeodes, Eupeodes luniger
+- **Ladybugs** (2): Coccinella septempunctata, Harmonia axyridis
+- **Wasps** (1): Vespula vulgaris
+- **Other Predators** (4): Cycloneda munda, Toxomerus marginatus, Coleomegilla maculata, +1 more
+
+*These beneficial organisms help control pest populations.*
 
 ### Diseases
 **Fungal Diseases**: 11 species observed
@@ -235,7 +241,7 @@ No predator/beneficial insect records available.
 | CSR Strategy | C:15% S:15% R:71% | Plan succession |
 | Structural | Ground cover (0.2m) | Soil protection |
 | Mycorrhizal | AMF (Arbuscular) | Connect with AMF plants |
-| Pest Control | 7 pests, 0 predators | Typical |
+| Pest Control | 7 pests, 9 predators | Strong biocontrol habitat |
 | Disease Control | 0 mycoparasites | No documented antagonists |
 | Pollinator | 160 taxa | Exceptional |
 
@@ -269,10 +275,11 @@ No predator/beneficial insect records available.
 **Observed Pests**: 7 species (Above average) - Some pest pressure expected
 
 **Observed Beneficial Insects**:
-- 0 predatory species observed (No data) - No predator observations (data gap)
+- 9 predatory species observed (Above average) - Good predator habitat
 
 **Guild Recommendations**:
 - Above-average pest observations. Diverse plantings help maintain natural balance.
+- Good predator habitat. Contributes beneficial insects to the garden.
 
 ### GP4: Disease Control Potential
 

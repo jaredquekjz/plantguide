@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T05:31:40Z"
+generated: "2025-11-27T05:45:00Z"
 version: "2.0"
 ---
 
@@ -194,12 +194,16 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 **High** (19 taxa documented)
 *Multiple pest species; monitor closely*
 
-- **Other Herbivores** (18): Cynips quercusfolii, Andricus kollari, Acrocercops brongniardella, +15 more
 - **Predatory Bugs** (1): Andricus infectorius
+- **Other Herbivores** (18): Cynips quercusfolii, Andricus kollari, Acrocercops brongniardella, +15 more
 
 ### Beneficial Insects
-No predator/beneficial insect records available.
-*This plant may benefit from companions that attract pest predators.*
+**10 taxa documented** - natural pest control agents
+
+- **Ground Beetles** (1): Carabus cancellatus
+- **Other Predators** (9): Cepaea nemoralis, Deroceras reticulatum, Eurytoma brunniventris, +6 more
+
+*These beneficial organisms help control pest populations.*
 
 ### Diseases
 **Fungal Diseases**: 9 species observed
@@ -224,7 +228,7 @@ No predator/beneficial insect records available.
 | CSR Strategy | C:45% S:41% R:14% | Avoid C-C pairs |
 | Structural | Canopy (27.1m) | Shade provider |
 | Mycorrhizal | EMF (Ectomycorrhizal) | Connect with EMF plants |
-| Pest Control | 19 pests, 0 predators | Benefits from predator plants |
+| Pest Control | 19 pests, 10 predators | Strong biocontrol habitat |
 | Disease Control | 0 mycoparasites | No documented antagonists |
 | Pollinator | 14 taxa | Typical |
 
@@ -258,10 +262,11 @@ No predator/beneficial insect records available.
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
 **Observed Beneficial Insects**:
-- 0 predatory species observed (No data) - No predator observations (data gap)
+- 10 predatory species observed (Above average) - Good predator habitat
 
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.
+- Good predator habitat. Contributes beneficial insects to the garden.
 
 ### GP4: Disease Control Potential
 

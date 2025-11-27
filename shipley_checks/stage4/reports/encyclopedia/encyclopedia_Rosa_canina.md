@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T05:31:41Z"
+generated: "2025-11-27T05:45:01Z"
 version: "2.0"
 ---
 
@@ -183,26 +183,32 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 **Very High** (40 taxa documented)
 *Strong pollinator magnet*
 
-- **Other Pollinators** (14): Allantus, Hoplia argentea, Pachytodes cerambyciformis, +11 more
 - **Hoverflies** (11): Platycheirus albimanus, Eristalis pertinax, Chrysotoxum bicincta, +8 more
 - **Bumblebees** (8): Bombus sylvestris, Bombus lapidarius, Bombus lucorum, +5 more
 - **Flies** (3): Empis livida, Phaonia, Phaonia angelicae
 - **Solitary Bees** (3): Andrena coitana, Lasioglossum fulvicorne, Andrena cineraria
 - **Honey Bees** (1): Apis mellifera
+- **Other Pollinators** (14): Allantus, Hoplia argentea, Pachytodes cerambyciformis, +11 more
 
 ### Herbivores & Parasites
 **High** (19 taxa documented)
 *Multiple pest species; monitor closely*
 
-- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +12 more
 - **Caterpillars** (1): Grapholita tenebrosana
 - **Mites** (1): Tetranychus urticae
 - **Moths** (1): Malacosoma californica pluvialis
 - **Scale Insects** (1): Chorizococcus
+- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +12 more
 
 ### Beneficial Insects
-No predator/beneficial insect records available.
-*This plant may benefit from companions that attract pest predators.*
+**5 taxa documented** - natural pest control agents
+
+- **Birds** (2): Turdus philomelos, Turdus merula
+- **Butterflies** (1): Pieris brassicae
+- **Hoverflies** (1): Syrphus
+- **Other Predators** (1): Erithacus rubecula
+
+*These beneficial organisms help control pest populations.*
 
 ### Diseases
 **Fungal Diseases**: 68 species observed
@@ -230,7 +236,7 @@ No predator/beneficial insect records available.
 | CSR Strategy | C:27% S:51% R:22% | Flexible |
 | Structural | Understory (2.0m) | Shade user |
 | Mycorrhizal | Non-mycorrhizal/Undocumented | No network benefit |
-| Pest Control | 19 pests, 0 predators | Benefits from predator plants |
+| Pest Control | 19 pests, 5 predators | Benefits from predator plants |
 | Disease Control | 1 mycoparasites | Hosts disease fighters |
 | Pollinator | 40 taxa | Very High |
 
@@ -264,7 +270,7 @@ No predator/beneficial insect records available.
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
 **Observed Beneficial Insects**:
-- 0 predatory species observed (No data) - No predator observations (data gap)
+- 5 predatory species observed (Typical) - Average predator observations
 
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.

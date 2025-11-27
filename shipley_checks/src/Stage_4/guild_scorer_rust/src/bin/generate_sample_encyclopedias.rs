@@ -12,6 +12,8 @@ use guild_scorer_rust::explanation::unified_taxonomy::{OrganismCategory, Organis
 #[cfg(feature = "api")]
 use std::collections::HashMap;
 #[cfg(feature = "api")]
+use std::collections::HashSet;
+#[cfg(feature = "api")]
 use std::fs;
 #[cfg(feature = "api")]
 use std::path::Path;
@@ -170,6 +172,7 @@ fn parse_fungal_counts(
 #[cfg(feature = "api")]
 fn parse_organism_lists(
     batches: &[datafusion::arrow::array::RecordBatch],
+    master_predators: &HashSet<String>,
 ) -> Option<OrganismLists> {
     if batches.is_empty() {
         return None;
@@ -188,7 +191,7 @@ fn parse_organism_lists(
 
     let mut pollinators = Vec::new();
     let mut herbivores = Vec::new();
-    let mut predators = Vec::new();
+    let mut all_organisms: HashSet<String> = HashSet::new();
 
     for row in &json_data {
         let source_column = row.get("source_column")?.as_str()?.to_lowercase();
@@ -198,13 +201,24 @@ fn parse_organism_lists(
             continue;
         }
 
+        // Collect by category
         match source_column.as_str() {
-            "pollinators" => pollinators.push(organism_taxon),
-            "herbivores" => herbivores.push(organism_taxon),
-            "predators" => predators.push(organism_taxon),
+            "pollinators" => pollinators.push(organism_taxon.clone()),
+            "herbivores" => herbivores.push(organism_taxon.clone()),
             _ => {}
         }
+
+        // Collect ALL organisms for beneficial predator matching
+        // (pollinators, flower_visitors, predators_*, herbivores, etc.)
+        all_organisms.insert(organism_taxon);
     }
+
+    // Find beneficial predators: organisms that visit this plant AND are known pest predators
+    let predators: Vec<String> = all_organisms
+        .iter()
+        .filter(|org| master_predators.contains(&org.to_lowercase()))
+        .cloned()
+        .collect();
 
     if pollinators.is_empty() && herbivores.is_empty() && predators.is_empty() {
         return None;
@@ -239,7 +253,7 @@ fn categorize_organisms(
                 .push(org.clone());
         }
 
-        // Sort by count (descending) then category name
+        // Sort by count (descending) then category name, but "Other" categories always at bottom
         let mut result: Vec<CategorizedOrganisms> = category_map
             .into_iter()
             .map(|(cat, orgs)| CategorizedOrganisms {
@@ -249,8 +263,16 @@ fn categorize_organisms(
             .collect();
 
         result.sort_by(|a, b| {
-            b.organisms.len().cmp(&a.organisms.len())
-                .then_with(|| a.category.cmp(&b.category))
+            let a_is_other = a.category.starts_with("Other");
+            let b_is_other = b.category.starts_with("Other");
+
+            // "Other" categories always go to bottom
+            match (a_is_other, b_is_other) {
+                (true, false) => std::cmp::Ordering::Greater,
+                (false, true) => std::cmp::Ordering::Less,
+                _ => b.organisms.len().cmp(&a.organisms.len())
+                    .then_with(|| a.category.cmp(&b.category))
+            }
         });
 
         result
@@ -291,6 +313,21 @@ fn load_organism_categories() -> FxHashMap<String, String> {
 }
 
 #[cfg(feature = "api")]
+fn load_master_predator_list() -> HashSet<String> {
+    // Load master list of predators (species that eat any pest in GloBI)
+    // Source: herbivore_predators_11711.parquet -> master_predator_list.txt
+    let txt_path = format!("{}/shipley_checks/stage4/phase0_output/master_predator_list.txt", PROJECT_ROOT);
+    if let Ok(content) = fs::read_to_string(&txt_path) {
+        return content
+            .lines()
+            .map(|s| s.trim().to_lowercase())
+            .filter(|s| !s.is_empty())
+            .collect();
+    }
+    HashSet::new()
+}
+
+#[cfg(feature = "api")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     println!("Generating sample encyclopedia articles...\n");
@@ -306,6 +343,10 @@ async fn main() -> anyhow::Result<()> {
     let organism_categories = load_organism_categories();
     println!("Loaded {} organism category mappings", organism_categories.len());
 
+    // Load master predator list (species known to eat pests in GloBI)
+    let master_predators = load_master_predator_list();
+    println!("Loaded {} master predators", master_predators.len());
+
     for (wfo_id, filename, description) in SAMPLE_PLANTS {
         println!("Generating: {} ({})", filename.replace('_', " "), description);
 
@@ -315,11 +356,13 @@ async fn main() -> anyhow::Result<()> {
             .ok_or_else(|| anyhow::anyhow!("Plant {} not found", wfo_id))?;
 
         // Fetch organism lists (with actual names)
+        // Beneficial predators are computed by intersecting all plant-associated organisms
+        // with the master list of pest predators
         let organism_lists = engine
             .get_organisms(wfo_id, None)
             .await
             .ok()
-            .and_then(|b| parse_organism_lists(&b));
+            .and_then(|b| parse_organism_lists(&b, &master_predators));
 
         // Categorize organisms
         let organism_profile = organism_lists
