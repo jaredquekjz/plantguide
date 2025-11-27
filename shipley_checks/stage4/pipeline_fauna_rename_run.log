@@ -1,0 +1,414 @@
+================================================================================
+MASTER PIPELINE: PHASE 0 → PHASE 4
+================================================================================
+
+Complete data extraction and enrichment pipeline
+
+================================================================================
+PRE-PHASE 0: CONVERT CANONICAL CSV TO PARQUET
+================================================================================
+
+================================================================================
+CONVERTING CANONICAL CSV TO PARQUET
+================================================================================
+
+Input:   ../../stage3/bill_with_csr_ecoservices_11711_20251122.csv 
+Output:  ../../stage3/bill_with_csr_ecoservices_11711_20251122.parquet 
+
+Converting CSV to Parquet...
+[1] 11711
+✓ Parquet created: 25.5 MB
+✓ Row count: 11,711
+
+================================================================================
+CONVERSION COMPLETE
+================================================================================
+
+✓ CSV to Parquet conversion complete
+
+================================================================================
+PHASE 0: R DUCKDB EXTRACTION (GLOBI → RUST-READY PARQUETS)
+================================================================================
+
+================================================================================
+PHASE 0: STAGE 4 DATA EXTRACTION PIPELINE (R DuckDB → Rust-Ready Parquets)
+================================================================================
+
+Purpose: Extract all ecological interaction networks for 11,711 plants
+Output: Rust-ready parquet files (DuckDB COPY TO, no R metadata)
+Target: guild_scorer_rust can read all files directly (no conversion)
+
+Step 1/6: Extracting herbivores for 11,711 plants (direct GloBI query)...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 1: Direct Herbivore Extraction (Taxonomic Filtered)
+================================================================================
+
+Step 1: Loading 11,711 target plants...
+  Source: shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv
+  - 11711 target plants
+
+Step 2: Defining taxonomic exclusion filters...
+  - Excluding 5 mutualist families (bees)
+  - Excluding 14 predator families (>70% predation ratio)
+
+Step 3: Extracting herbivores from GloBI...
+  Relationships: eats, preysOn, hasHost
+  Filtering: pollinators, mutualists, predators
+
+  - Found herbivores on 3931 plants
+  - Coverage: 33.6% of dataset
+
+Step 4: Herbivore statistics...
+  Min herbivores: 1
+  Avg herbivores: 7.6
+  Max herbivores: 1023
+  Median herbivores: 2
+
+Step 5: Top 20 plants by herbivore count...
+   plant_wfo_id herbivore_count
+ wfo-7000000483            1023
+ wfo-4000006709             686
+ wfo-0000995164             572
+ wfo-7000000323             439
+ wfo-0000371248             312
+ wfo-0000284421             230
+ wfo-0000984349             199
+ wfo-0000928157             185
+ wfo-0001015799             181
+ wfo-0000297077             178
+ wfo-0001016475             167
+ wfo-4000039133             160
+ wfo-0000947985             159
+ wfo-0000179103             136
+ wfo-0001007437             133
+ wfo-0000465160             128
+ wfo-0000381268             127
+ wfo-0000421791             124
+ wfo-0000571350             121
+ wfo-0001000827             118
+
+Step 6: Writing Rust-ready parquet...
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet
+
+================================================================================
+SUMMARY
+================================================================================
+Target plants: 11711
+Plants with herbivores: 3931 (33.6% coverage)
+
+Exclusion filters applied:
+  - 5 mutualist families (bees)
+  - 14 predator families (>70% predation ratio)
+  - Pollinator interactions (visitsFlowersOf, pollinates)
+
+Output: shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet
+
+Next: Extract organism profiles for matched herbivores
+================================================================================
+✓ Script 1 completed
+
+Step 2/6: Extracting organism profiles...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 3: Extract Organism Profiles for 11,711 Plants
+================================================================================
+
+Loading 11,711 plant dataset...
+  - Processing 11711 plants
+
+Extracting organism profiles via DuckDB SQL...
+  1. Pollinators (pollinates)
+  2. Herbivores (from matched_herbivores_per_plant.parquet)
+  3. Pathogens (pathogenOf, parasiteOf, hasHost+Fungi)
+  4. Flower visitors (pollinates, visitsFlowersOf, visits)
+  5. Predators: hasHost, interactsWith, adjacentTo (Animalia, exclude marine)
+  6. Fungivores: Animals that eat fungi on plants (for disease control)
+
+[1] 11711
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+
+Summary statistics...
+  Total plants: 11711
+
+================================================================================
+SUMMARY
+================================================================================
+Created organism profiles for 11711 plants
+Output: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+
+Next: Extract fungal guilds (FungalTraits + FunGuild hybrid)
+================================================================================
+✓ Script 2 completed
+
+Step 3/6: Extracting fungal guilds (FungalTraits + FunGuild hybrid)...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 4: Extract Fungal Guilds (Hybrid Approach)
+================================================================================
+
+Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION
+  - Extraction: hasHost, parasiteOf, pathogenOf, interactsWith
+  - FungalTraits: Expert-curated (128 mycologists) - PRIMARY
+  - FunGuild: Fills gaps (confidence-filtered) - FALLBACK
+  - CRITICAL: COUNT DISTINCT genera (not row count)
+
+Extracting fungal guilds (single 8-CTE DuckDB query)...
+
+  ✓ Processed 11711 plants
+
+Writing Rust-ready parquet...
+[1] 413858
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Total plants: 11711
+
+Plants with fungi by guild:
+  - Pathogenic: 7210 (61.6%)
+  - Mycorrhizal: 458 (3.9%)
+  - Biocontrol: 586 (5.0%)
+  - Endophytic: 1937 (16.5%)
+  - Saprotrophic: 4811 (41.1%)
+
+Data source breakdown:
+  - FungalTraits genera: 622782 (99.5%)
+  - FunGuild genera: 3331 (0.5%)
+
+Output: shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet
+
+Next: Build multitrophic networks (herbivore→predator, pathogen→antagonist)
+================================================================================
+✓ Script 3 completed
+
+Step 4/6: Building multitrophic networks...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 5: Build Multi-Trophic Network
+================================================================================
+
+Loading organism profiles...
+  - Loaded 11711 plant profiles
+
+Step 1: Extracting all herbivores that eat our plants...
+  - Found 15674 unique herbivore species
+
+Step 2: Finding predators of herbivores in full GloBI dataset...
+  (This may take 10-20 minutes - scanning 20M rows)
+  - Found predators for 1142 herbivores
+  - Total predator relationships: 9675
+
+Step 3: Extracting all pathogens that attack our plants...
+  - Found 35196 unique pathogen species
+
+Step 4: Finding antagonists of pathogens in full GloBI dataset...
+  (This may take 10-20 minutes)
+  - Found antagonists for 942 pathogens
+  - Total antagonist relationships: 5873
+
+Step 5: Saving results...
+  - Saved herbivore predators: shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - Saved pathogen antagonists: shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Herbivore-Predator Network:
+  - Herbivores with predators: 1142
+  - Total predator species: 9675
+  - Avg predators per herbivore: 8.5
+
+Pathogen-Antagonist Network:
+  - Pathogens with antagonists: 942
+  - Total antagonist species: 5873
+  - Avg antagonists per pathogen: 6.2
+
+Outputs:
+  - shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+Next: Extract insect-fungal parasite relationships
+================================================================================
+✓ Script 4 completed
+
+Step 5/6: Extracting insect-fungal parasite relationships...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 6: Extract Insect-Fungal Parasite Network
+================================================================================
+
+Step 1: Extracting GLOBAL fungus → insect/mite parasitic relationships from GloBI...
+  (Scanning 20M+ rows - may take 2-3 minutes)
+
+  ✓ Extracted 2381 herbivores with fungal parasites (GLOBAL)
+
+Step 2: Filtering to herbivores from our 11,711 plants (for Rust scorer)...
+
+  - Found 15674 unique herbivores on our plants
+  ✓ Filtered to 143 herbivores (RUST)
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+GLOBAL VERSION (for myco spray recommendations):
+  Total herbivores: 2381
+  Total fungus-herbivore relationships: 8410
+  Unique entomopathogenic fungi: 5223
+  Average fungi per herbivore: 3.5
+  Max fungi per herbivore: 911
+
+FILTERED VERSION (for Rust scorer, our plants' herbivores only):
+  Total herbivores: 143
+  Total fungus-herbivore relationships: 555
+  Unique entomopathogenic fungi: 440
+  Average fungi per herbivore: 3.9
+  Max fungi per herbivore: 107
+
+Breakdown by taxonomic class (global):
+ herbivore_class herbivore_count relationship_count
+         Insecta            2333               8272
+       Arachnida              48                138
+
+Top 10 most parasitized herbivores (global):
+           herbivore herbivore_order fungal_parasite_count
+               Ulmus       Hemiptera                   911
+              Betyla     Hymenoptera                   831
+           Phytomyza         Diptera                   229
+       Savchenkoiana         Diptera                   227
+       Phyllostachys      Orthoptera                   138
+ Exomalopsis similis     Hymenoptera                   133
+               Viola     Lepidoptera                   120
+                Inga     Lepidoptera                   107
+              Annona       Hemiptera                    94
+           Ammophila     Hymenoptera                    90
+
+Outputs:
+  1. Global (myco sprays):  shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet
+  2. Filtered (Rust scorer): shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711_rust.parquet
+================================================================================
+✓ Script 5 completed
+
+Step 6/6: Extracting unique organisms with taxonomy...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 6: Extract Unique Organisms with Taxonomy
+================================================================================
+
+Extracting unique organisms from organism_profiles...
+  Source: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+  GloBI: data/stage1/globi_interactions_original.parquet
+
+  Found 33,267 unique organisms with taxonomy
+
+Kingdom distribution:
+  Animalia: 25,562
+  Metazoa: 2,843
+  Eukaryota: 31
+  Fungi: 17
+  Plantae: 13
+  Archaeplastida: 2
+  Archaea: 1
+  Bacteria: 1
+  Chromista: 1
+  incertae sedis: 1
+  Protista: 1
+
+Writing output: data/taxonomy/organisms_with_taxonomy_11711.parquet
+✓ Wrote 33,267 organisms
+
+================================================================================
+SUMMARY
+================================================================================
+Unique organisms extracted: 33,267
+Output: data/taxonomy/organisms_with_taxonomy_11711.parquet
+
+Ready for Phase 1: Vernacular name assignment
+================================================================================
+✓ Script 6 completed
+
+================================================================================
+EXTRACTION COMPLETE (18.3 seconds)
+================================================================================
+
+Step 6.5/7: Creating guild_scorer_rust compatible file names...
+--------------------------------------------------------------------------
+[1] TRUE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+✓ Created guild_scorer_rust compatible file names
+  - organism_profiles_pure_rust.parquet
+  - fungal_guilds_pure_rust.parquet
+  - herbivore_predators_pure_rust.parquet
+  - pathogen_antagonists_pure_rust.parquet
+  - insect_fungal_parasites_pure_rust.parquet
+
+Step 7/7: Verifying outputs (data integrity & completeness)...
+--------------------------------------------------------------------------
+Warning message:
+In system2(python_path, args = verification_script, stdout = TRUE,  :
+  running command ''/home/olier/miniconda3/envs/AI/bin/python' shipley_checks/src/Stage_4/Phase_0_extraction/verify_extraction_outputs.py 2>&1' had status 1
+================================================================================
+PHASE 0 VERIFICATION: DATA INTEGRITY & COMPLETENESS
+================================================================================
+
+1. Matched Herbivores Per Plant (Taxonomic Filtered)
+   File: matched_herbivores_per_plant.parquet
+   ✓ Row count: 3,141 plants with herbivores
+   ✓ All required columns present
+   ✓ All plants have non-empty herbivore lists
+
+2. Organism Profiles
+   File: organism_profiles_11711.parquet
+   ✓ Row count: 11,711 plants (exact match)
+   ✗ Missing columns: ['fauna_hasHost', 'fauna_hasHost_count', 'fauna_interactsWith', 'fauna_interactsWith_count', 'fauna_adjacentTo', 'fauna_adjacentTo_count']
+   ✓ Data coverage:
+     - 1,564.0 plants with pollinators (29,319.0 total)
+     - 3,141.0 plants with herbivores (15,417.0 total)
+     - 7,394.0 plants with pathogens (104,850.0 total)
+     - 1,333.0 plants with fungivores (17,586.0 total)
+   ✓ Fungivores data populated (>1,000 plants)
+
+3. Fungal Guilds (FungalTraits + FunGuild Hybrid)
+   File: fungal_guilds_hybrid_11711.parquet
+   ✓ Row count: 11,711 plants (exact match)
+   ✓ All required fungal guild columns present
+   ✓ Fungal guild coverage:
+     - 7,210.0 plants with pathogenic fungi
+     - 171.0 plants with AMF
+     - 313.0 plants with EMF
+     - 337.0 plants with mycoparasites
+     - 377.0 plants with entomopathogenic fungi
+
+4. Multitrophic Networks
+   4a. Herbivore → Predator Network
+       File: herbivore_predators_11711.parquet
+       ✓ Row count: 805 herbivores
+       ✓ 805.0 herbivores have known predators
+   4b. Pathogen → Antagonist Network
+       File: pathogen_antagonists_11711.parquet
+       ✓ Row count: 942 pathogens
+       ✓ 942.0 pathogens have known antagonists
+
+5. Insect → Fungal Parasite Relationships
+   File: insect_fungal_parasites_11711.parquet
+   ✓ Row count: 2,381 insects with fungal parasites
+   ✓ 2,381.0 insects have fungal parasites
+   ✓ 8,410.0 total parasite relationships
+
+6. Polars Compatibility (Rust-Ready Test)
+   Testing if Polars can read all parquets...
+   ✓ All 6 parquet files are Polars-compatible
+   ✓ No R metadata issues detected
+
+================================================================================
+✗ SOME VERIFICATION CHECKS FAILED
+
+Review errors above and re-run failed scripts.
+
+================================================================================
+✗ PHASE 0 VERIFICATION FAILED
+================================================================================

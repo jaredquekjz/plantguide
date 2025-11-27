@@ -45,15 +45,15 @@ Tier: tier_1_tropical
 ----------------------------------------------------------------------
   Available plants: 1639
   Sampled 20000 pairs in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.41s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.37s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
 Tier: tier_2_mediterranean
 ----------------------------------------------------------------------
   Available plants: 4047
-  Sampled 20000 pairs in 0.01s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 29.06s
+  Sampled 20000 pairs in 0.00s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 28.37s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -61,51 +61,45 @@ Tier: tier_3_humid_temperate
 ----------------------------------------------------------------------
   Available plants: 8644
   Sampled 20000 pairs in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 0/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 6000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 7000/20000  Scoring: 8000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 1000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 2000/20000  Scoring: 3000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 17000/20000  Scoring: 18000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 13000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 19000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 20000/20000  Computed raw scores in 30.39s
-  Valid scores: 19996
-  ⚠ Failed scores: 4
+  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 28.72s
+  Valid scores: 19993
+  ⚠ Failed scores: 7
   First error: Plant Gahnia aspera has missing CSR_C data - cannot calculate M2
 
 ----------------------------------------------------------------------
@@ -113,37 +107,67 @@ Tier: tier_4_continental
 ----------------------------------------------------------------------
   Available plants: 4378
   Sampled 20000 pairs in 0.00s
-  Scoring: 0/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 1000/20000  Scoring: 2000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 3000/20000  Scoring: 4000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 5000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 9000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.26s
+  Scoring: 10000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.25s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -151,7 +175,7 @@ Tier: tier_5_boreal_polar
 ----------------------------------------------------------------------
   Available plants: 1064
   Sampled 20000 pairs in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 28.34s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.72s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -159,7 +183,7 @@ Tier: tier_6_arid
 ----------------------------------------------------------------------
   Available plants: 2765
   Sampled 20000 pairs in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 27.66s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.84s
   Valid scores: 20000
 
 ✓ Saved: shipley_checks/stage4/phase5_output/normalization_params_2plant.json
@@ -173,7 +197,7 @@ Tier: tier_1_tropical
 ----------------------------------------------------------------------
   Available plants: 1639
   Sampled 20000 guilds in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 25.17s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 27.32s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -181,118 +205,130 @@ Tier: tier_2_mediterranean
 ----------------------------------------------------------------------
   Available plants: 4047
   Sampled 20000 guilds in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 25.35s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.54s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
 Tier: tier_3_humid_temperate
 ----------------------------------------------------------------------
   Available plants: 8644
-  Sampled 20000 guilds in 0.00s
+  Sampled 20000 guilds in 0.01s
   Scoring: 0/20000  Scoring: 1000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 2000/20000  Scoring: 3000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 2000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 3000/20000  Scoring: 4000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 4000/20000  Scoring: 5000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 5000/20000  Scoring: 6000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 6000/20000  Scoring: 7000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 7000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 8000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 9000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 10000/20000  Scoring: 11000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 12000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 13000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 14000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 14000/20000  Scoring: 15000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 15000/20000  Scoring: 16000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 16000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 17000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 18000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 19000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 20000/20000  Computed raw scores in 25.96s
-  Valid scores: 19990
+  Scoring: 20000/20000  Computed raw scores in 27.89s
+  Valid scores: 19982
 
 ----------------------------------------------------------------------
 Tier: tier_4_continental
@@ -300,228 +336,228 @@ Tier: tier_4_continental
   Available plants: 4378
   Sampled 20000 guilds in 0.00s
   Scoring: 0/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 1000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 2000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 1000/20000  Scoring: 2000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 3000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 4000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 5000/20000  Scoring: 6000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 7000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 8000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 9000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 5000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 6000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 10000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 11000/20000  Scoring: 12000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 11000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 12000/20000  Scoring: 13000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 14000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  Scoring: 13000/20000  Scoring: 14000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 15000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 16000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   Scoring: 17000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
-  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
-
-  Scoring: 18000/20000  Scoring: 19000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
   extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
-  extract_predator_data: wfo-0000241769 from predators_hasHost: 1 items
-  extract_predator_data: wfo-0000241769 from predators_interactsWith: 0 items
-  extract_predator_data: wfo-0000241769 from predators_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
   extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
 
-  Scoring: 20000/20000  Computed raw scores in 25.34s
+  Scoring: 18000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 19000/20000  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+  Scoring: 20000/20000  Computed raw scores in 24.91s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -529,7 +565,7 @@ Tier: tier_5_boreal_polar
 ----------------------------------------------------------------------
   Available plants: 1064
   Sampled 20000 guilds in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.93s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.52s
   Valid scores: 20000
 
 ----------------------------------------------------------------------
@@ -537,7 +573,7 @@ Tier: tier_6_arid
 ----------------------------------------------------------------------
   Available plants: 2765
   Sampled 20000 guilds in 0.00s
-  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.63s
+  Scoring: 0/20000  Scoring: 1000/20000  Scoring: 2000/20000  Scoring: 3000/20000  Scoring: 4000/20000  Scoring: 5000/20000  Scoring: 6000/20000  Scoring: 7000/20000  Scoring: 8000/20000  Scoring: 9000/20000  Scoring: 10000/20000  Scoring: 11000/20000  Scoring: 12000/20000  Scoring: 13000/20000  Scoring: 14000/20000  Scoring: 15000/20000  Scoring: 16000/20000  Scoring: 17000/20000  Scoring: 18000/20000  Scoring: 19000/20000  Scoring: 20000/20000  Computed raw scores in 26.24s
   Valid scores: 20000
 
 ✓ Saved: shipley_checks/stage4/phase5_output/normalization_params_7plant.json
@@ -546,8 +582,8 @@ Tier: tier_6_arid
 CALIBRATION COMPLETE
 ================================================================================
 
-Stage 1 (2-plant pairs): 168.1s
-Stage 2 (7-plant guilds): 155.4s
+Stage 1 (2-plant pairs): 163.3s
+Stage 2 (7-plant guilds): 159.5s
 
-Total time: 323.6s
+Total time: 322.8s
 Total guilds: 240000

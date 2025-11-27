@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 61.72833437513678,
+    "score": 61.809057655872486,
     "stars": "★★☆☆☆",
     "label": "Fair",
-    "message": "Overall guild compatibility: 61.7/100"
+    "message": "Overall guild compatibility: 61.8/100"
   },
   "climate": {
     "compatible": true,
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 70.35226972908663,
+        "score": 70.31773944325323,
         "raw": 0.4126401547150537,
         "interpretation": "Good"
       },
@@ -122,7 +122,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 16.74607089687082,
+        "score": 17.345664147854166,
         "raw": 0.2026119216304338,
         "interpretation": "Poor"
       },
@@ -267,7 +267,7 @@
       {
         "family": "Leguminosae",
         "genus": "Erythrina",
-        "display_name": "Erythrina sandwicensis (Wiliwili, Hawaiian Coral Tree)"
+        "display_name": "Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili)"
       },
       {
         "family": "Myristicaceae",
@@ -986,6 +986,12 @@
           "network_contribution": 0.14285714285714285
         },
         {
+          "pollinator_name": "Apoidea",
+          "plant_count": 1,
+          "category": "OtherPollinators",
+          "network_contribution": 0.14285714285714285
+        },
+        {
           "pollinator_name": "Aves",
           "plant_count": 1,
           "category": "Birds",
@@ -995,12 +1001,6 @@
           "pollinator_name": "Apis mellifera",
           "plant_count": 1,
           "category": "HoneyBees",
-          "network_contribution": 0.14285714285714285
-        },
-        {
-          "pollinator_name": "Apoidea",
-          "plant_count": 1,
-          "category": "OtherPollinators",
           "network_contribution": 0.14285714285714285
         }
       ]
@@ -1164,14 +1164,14 @@
     "matched_predator_pairs": [],
     "matched_fungi_pairs": [],
     "predator_category_counts": {
-      "OtherPredators": 1,
       "Lacewings": 1,
       "Flies": 1,
       "Wasps": 1,
       "ScaleInsects": 1,
       "Moths": 1,
       "Birds": 1,
-      "Butterflies": 2
+      "Butterflies": 2,
+      "OtherPredators": 1
     },
     "herbivore_category_counts": {},
     "top_predators": [],

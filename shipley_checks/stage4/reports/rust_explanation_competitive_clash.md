@@ -1,17 +1,17 @@
 # ★★☆☆☆ - Fair
 
-**Overall Score:** 61.7/100
+**Overall Score:** 61.8/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 70.4 | Good |
+| M1 - Pest & Pathogen Independence | 70.3 | Good |
 | M2 - Growth Compatibility | 0.0 | Poor |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 80.0 | Excellent |
 | M5 - Beneficial Fungi | 70.0 | Good |
-| M6 - Structural Diversity | 16.7 | Poor |
+| M6 - Structural Diversity | 17.3 | Poor |
 | M7 - Pollinator Support | 95.0 | Excellent |
 
 **How to Read These Scores:** Metrics M1-M7 are percentiles (0-100) comparing your guild to 120,000 randomly generated plant combinations in your climate zone—a score of 80 means better than 80% of random guilds. Scores reflect documented ecological interactions and plant information in scientific databases. Higher scores indicate well-documented beneficial relationships; lower scores may indicate either incomplete research or true absence of these interactions.
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.4/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 70.3/100]
 
 70th percentile (Faith's PD: 885.18) - Plants are distantly related (high phylogenetic diversity)  
 Distant evolutionary relationships mean plants evolved different defense strategies and attract different pest communities. This reduces the risk of pest and pathogen spread across the guild.  
@@ -39,7 +39,7 @@ Distant evolutionary relationships mean plants evolved different defense strateg
 | Amaryllidaceae | Allium | Allium schoenoprasum (Chives, Wild Chives) |
 | Araliaceae | Cheirodendron | Cheirodendron trigynum (Olapa, Common Cheirodendron, ʻōlapa) |
 | Betulaceae | Alnus | Alnus acuminata (Andean Alder) |
-| Leguminosae | Erythrina | Erythrina sandwicensis (Wiliwili, Hawaiian Coral Tree) |
+| Leguminosae | Erythrina | Erythrina sandwicensis (Hawaiian Coral Tree, Wiliwili) |
 | Myristicaceae | Virola | Virola bicuhyba |
 | Vitaceae | Vitis | Vitis vinifera (Wine Grape, Grape Vine, Common Grape) |
 
@@ -203,7 +203,7 @@ Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create unde
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 16.7/100]
+### Structural Diversity [M6 - 17.3/100]
 
 3 growth forms spanning 14.1m height range (17th percentile)  
 **Vertical Stratification (Quality: 0.12 - Poor):**

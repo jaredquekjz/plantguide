@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T09:13:00Z"
+generated: "2025-11-27T13:33:26Z"
 version: "2.0"
 ---
 
@@ -185,14 +185,14 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 *Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
 ### Pollinators
-**Typical** (14 taxa documented)
+**Typical** (14 species documented)
 *Average pollinator observations*
 
 - **Wasps** (8): Dacnusa sp., Dacnusa areolaris, Sympiesis gordius, +5 more
 - **Other Pollinators** (6): Achrysocharoides latreillii, Pnigalio agraules, Anagrus sp., +3 more
 
 ### Herbivores & Parasites
-**High** (19 taxa documented)
+**High** (19 species documented)
 *Multiple pest species; monitor closely*
 
 - **Wasps** (15): Eurytoma brunniventris, Andricus curvator, Andricus kollari, +12 more
@@ -201,15 +201,26 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 - **Other Herbivores** (1): Synergatus
 
 ### Beneficial Predators
-**2 taxa documented** - natural pest control agents
+**2 species documented** - natural pest control agents
 
 - **Beetles** (1): Carabus cancellatus
 - **Wasps** (1): Eurytoma brunniventris
 
 *These beneficial organisms help control pest populations.*
 
+### Fungivores (Disease Control)
+**54 species documented** - organisms that eat fungi
+
+*Fungivores help control plant diseases by consuming pathogenic fungi. They provide natural disease suppression in the garden ecosystem.*
+
+- **Snails & Slugs** (10): Monadenia fidelis, Ariolimax buttoni, Ariolimax columbianus, +7 more
+- **Beetles** (7): Triplax dissimulator, Cis bilamellatus, Cis lineatocribratus, +4 more
+- **Squirrels** (4): Tamiasciurus hudsonicus, Sciurus carolinensis, Tamias townsendii, +1 more
+- **Flies** (2): Drosophila ceratostoma, Mycodiplosis erysiphes
+- **Other Predators** (31): Prophysaon andersonii, Trilobopsis loricata, Limax maximus, +28 more
+
 ### Diseases
-**Disease Risk**: Above average (8 taxa observed)
+**Disease Risk**: Above average (8 pathogens observed)
 *More diseases than typical*
 
 **Most Observed Diseases** (by GloBI observation frequency):
@@ -222,29 +233,41 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 
 *Monitor in humid conditions; ensure good airflow*
 
-### Beneficial Associations
-**Mycorrhizal**: EMF (Ectomycorrhizal)
-- 7 EMF species observed (nutrient + defense signaling)
+### Beneficial Fungi
 
-*Avoid excessive tillage to preserve mycorrhizal networks*
+*Fungi form important partnerships with plants. Some help roots absorb nutrients, others protect against diseases or pests.*
+
+**Root Partnership Fungi (Mycorrhizal)**
+Status: EMF (Ectomycorrhizal)
+- **Ectomycorrhizal fungi** (7 species): Form sheaths around roots. Help absorb nutrients and can signal neighboring plants about pest attacks.
+
+**Gardening tip**: Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.
 
 ---
 
 ## Guild Potential
 
-### Summary Card
+### At a Glance
 
-| Metric | Value | Guild Contribution |
-|--------|-------|-------------------|
-| Taxonomic | Fagaceae → Quercus | Seek different families |
-| CSR Strategy | C:45% S:41% R:14% | Avoid C-C pairs |
-| Structural | Canopy (27.1m) | Shade provider |
-| Mycorrhizal | EMF (Ectomycorrhizal) | Connect with EMF plants |
-| Pest Control | 19 pests, 2 predators | Benefits from predator plants |
-| Disease Control | 0 mycoparasites | No documented antagonists |
-| Pollinator | 14 taxa | Typical |
+*Quick reference for companion selection. See detailed sections below for full guidance.*
 
-### GP1: Phylogenetic Independence
+| Aspect | This Plant | Companion Guidance | Details |
+|--------|------------|-------------------|---------|
+| **Taxonomy** | Fagaceae → Quercus | Seek different families | [Taxonomy](#taxonomy) |
+| **Growth Strategy** | C:45% S:41% R:14% | Avoid C-C pairs | [Growth](#growth-compatibility) |
+| **Structure** | Canopy (27.1m) | Shade provider | [Structure](#structural-role) |
+| **Mycorrhizal** | EMF (Ectomycorrhizal) | Connect with EMF plants | [Network](#mycorrhizal-network) |
+| **Pest Control** | 19 pests, 2 predators | Benefits from predator plants | [Pests](#pest-control) |
+| **Disease Control** | 0 disease fighters | No documented antagonists | [Disease](#disease-control) |
+| **Pollinators** | 14 species | Typical | [Pollinators](#pollinator-support) |
+
+**Key Principles for This Plant:**
+1. **Diversify taxonomy** - seek plants from different families than Fagaceae
+2. **Growth compatibility** - avoid other C-dominant plants at same height
+3. **Layer plants** - pair with shade-tolerant understory
+4. **Fungal network** - seek other EMF-associated plants for network benefits
+
+### Taxonomy
 
 **Family**: Fagaceae
 **Genus**: Quercus
@@ -254,7 +277,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 - Diversify beyond Fagaceae for reduced pathogen transmission
 - Greater taxonomic distance = lower shared vulnerability
 
-### GP2: Growth Compatibility
+### Growth Compatibility
 
 **CSR Profile**: C: 45% | S: 41% | R: 14%
 **Classification**: C-dominant (Competitor) (percentile-based)
@@ -269,7 +292,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 
 **Avoid Pairing With**: Other C-dominant plants at same layer (competition). Sun-loving plants in shade zone.
 
-### GP3: Pest Control Potential
+### Pest Control
 
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
@@ -279,7 +302,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.
 
-### GP4: Disease Control Potential
+### Disease Control
 
 **Observed Disease Fighters**:
 - 0 beneficial fungi that attack plant diseases
@@ -287,7 +310,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 **Guild Recommendations**:
 - No documented mycoparasitic fungi. Focus on spacing and airflow for disease prevention.
 
-### GP5: Mycorrhizal Network
+### Mycorrhizal Network
 
 **Observed Association**: EMF (Ectomycorrhizal)
 - 7 EMF species documented
@@ -297,7 +320,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 - **Network bonus**: Can share nutrients and defense signals with EMF-compatible neighbours
 - Creates forest-type nutrient-sharing network
 
-### GP6: Structural Role
+### Structural Role
 
 **Layer**: Canopy (27.1m)
 **Growth Form**: Tree
@@ -308,7 +331,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 - **Avoid pairing with**: Sun-loving plants in the shade zone
 - Creates significant shade; wind protection for neighbours
 
-### GP7: Pollinator Support
+### Pollinator Support
 
 **Observed Pollinators**: 14 species (Typical)
 Average pollinator observations
@@ -320,19 +343,10 @@ Average pollinator observations
 - Nectar/pollen source for 14 pollinator species
 - Attraction effect may increase visits to neighbouring plants
 
-### Top Companion Principles
-
-Based on this plant's characteristics:
-
-1. **Taxonomic diversity** - seek plants from different families than Fagaceae
-2. **CSR compatibility** - avoid other C-dominant plants at same height
-3. **Structural layering** - pair with shade-tolerant understory
-4. **Mycorrhizal network** - seek other EMF-associated plants
-
 ### Cautions
 
-- Avoid clustering multiple Fagaceae plants (shared pests)
-- C-dominant: may outcompete slower neighbours
+- Avoid clustering multiple Fagaceae plants (shared pests and diseases)
+- C-dominant strategy: may outcompete slower-growing neighbours
 
 ---
 

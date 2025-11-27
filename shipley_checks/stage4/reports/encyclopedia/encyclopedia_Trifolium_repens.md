@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T09:13:01Z"
+generated: "2025-11-27T13:33:27Z"
 version: "2.0"
 ---
 
@@ -184,7 +184,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 *Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
 ### Pollinators
-**Exceptional** (160 taxa documented)
+**Exceptional** (160 species documented)
 *Major pollinator resource (top 10%)*
 
 - **Flies** (37): Eristalis pertinax, Eupeodes, Morellia aenescens, +34 more
@@ -200,7 +200,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Other Pollinators** (5): Aglaostigma aucupariae, Hebeclinium sericeum, Trichrysis, +2 more
 
 ### Herbivores & Parasites
-**Above average** (7 taxa documented)
+**Above average** (7 species documented)
 *Some pest pressure expected*
 
 - **Butterflies** (2): Rapala arata, Neptis sappho
@@ -210,17 +210,20 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Other Herbivores** (1): Rhizophagus
 
 ### Beneficial Predators
-**9 taxa documented** - natural pest control agents
+**9 species documented** - natural pest control agents
 
-- **Beetles** (4): Cycloneda munda, Coleomegilla maculata, Harmonia axyridis, +1 more
-- **Flies** (3): Eupeodes luniger, Eupeodes, Toxomerus marginatus
+- **Beetles** (4): Harmonia axyridis, Coleomegilla maculata, Coccinella septempunctata, +1 more
+- **Flies** (3): Eupeodes, Toxomerus marginatus, Eupeodes luniger
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 
 *These beneficial organisms help control pest populations.*
 
+### Fungivores (Disease Control)
+No fungivore records available.
+
 ### Diseases
-**Disease Risk**: Above average (10 taxa observed)
+**Disease Risk**: Above average (10 pathogens observed)
 *More diseases than typical*
 
 **Most Observed Diseases** (by GloBI observation frequency):
@@ -233,29 +236,41 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 *Monitor in humid conditions; ensure good airflow*
 
-### Beneficial Associations
-**Mycorrhizal**: AMF (Arbuscular)
-- 3 AMF species observed (aids phosphorus uptake)
+### Beneficial Fungi
 
-*Avoid excessive tillage to preserve mycorrhizal networks*
+*Fungi form important partnerships with plants. Some help roots absorb nutrients, others protect against diseases or pests.*
+
+**Root Partnership Fungi (Mycorrhizal)**
+Status: AMF (Arbuscular)
+- **Arbuscular mycorrhizal fungi** (3 species): Form networks inside root cells. Help plant absorb phosphorus and other nutrients from soil.
+
+**Gardening tip**: Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.
 
 ---
 
 ## Guild Potential
 
-### Summary Card
+### At a Glance
 
-| Metric | Value | Guild Contribution |
-|--------|-------|-------------------|
-| Taxonomic | Leguminosae → Trifolium | Seek different families |
-| CSR Strategy | C:15% S:15% R:71% | Plan succession |
-| Structural | Ground cover (0.2m) | Soil protection |
-| Mycorrhizal | AMF (Arbuscular) | Connect with AMF plants |
-| Pest Control | 7 pests, 9 predators | Strong biocontrol habitat |
-| Disease Control | 0 mycoparasites | No documented antagonists |
-| Pollinator | 160 taxa | Exceptional |
+*Quick reference for companion selection. See detailed sections below for full guidance.*
 
-### GP1: Phylogenetic Independence
+| Aspect | This Plant | Companion Guidance | Details |
+|--------|------------|-------------------|---------|
+| **Taxonomy** | Leguminosae → Trifolium | Seek different families | [Taxonomy](#taxonomy) |
+| **Growth Strategy** | C:15% S:15% R:71% | Plan succession | [Growth](#growth-compatibility) |
+| **Structure** | Ground cover (0.2m) | Soil protection | [Structure](#structural-role) |
+| **Mycorrhizal** | AMF (Arbuscular) | Connect with AMF plants | [Network](#mycorrhizal-network) |
+| **Pest Control** | 7 pests, 9 predators | Strong biocontrol habitat | [Pests](#pest-control) |
+| **Disease Control** | 0 disease fighters | No documented antagonists | [Disease](#disease-control) |
+| **Pollinators** | 160 species | Exceptional | [Pollinators](#pollinator-support) |
+
+**Key Principles for This Plant:**
+1. **Diversify taxonomy** - seek plants from different families than Leguminosae
+2. **Growth compatibility** - pair with longer-lived S or balanced plants
+3. **Layer plants** - can grow under taller plants
+4. **Fungal network** - seek other AMF-associated plants for network benefits
+
+### Taxonomy
 
 **Family**: Leguminosae
 **Genus**: Trifolium
@@ -265,7 +280,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - Diversify beyond Leguminosae for reduced pathogen transmission
 - Greater taxonomic distance = lower shared vulnerability
 
-### GP2: Growth Compatibility
+### Growth Compatibility
 
 **CSR Profile**: C: 15% | S: 15% | R: 71%
 **Classification**: R-dominant (Ruderal) (percentile-based)
@@ -280,7 +295,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 **Good Companions**: S-dominant or balanced plants for continuity. Other R-plants for dynamic seasonal display.
 
-### GP3: Pest Control Potential
+### Pest Control
 
 **Observed Pests**: 7 species (Above average) - Some pest pressure expected
 
@@ -291,7 +306,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - Above-average pest observations. Diverse plantings help maintain natural balance.
 - Good predator habitat. Contributes beneficial insects to the garden.
 
-### GP4: Disease Control Potential
+### Disease Control
 
 **Observed Disease Fighters**:
 - 0 beneficial fungi that attack plant diseases
@@ -299,7 +314,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 **Guild Recommendations**:
 - No documented mycoparasitic fungi. Focus on spacing and airflow for disease prevention.
 
-### GP5: Mycorrhizal Network
+### Mycorrhizal Network
 
 **Observed Association**: AMF (Arbuscular)
 - 3 AMF species documented
@@ -309,7 +324,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Network bonus**: Can share phosphorus and carbon with AMF-compatible neighbours
 - **Soil tip**: Minimize tillage to preserve fungal hyphal connections
 
-### GP6: Structural Role
+### Structural Role
 
 **Layer**: Ground cover (0.2m)
 **Growth Form**: Herb/Ground cover
@@ -319,7 +334,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Role**: Soil protection, weed suppression
 - **Pair with**: Any taller plants (provides living mulch)
 
-### GP7: Pollinator Support
+### Pollinator Support
 
 **Observed Pollinators**: 160 species (Exceptional)
 Major pollinator resource (top 10%)
@@ -332,19 +347,11 @@ Major pollinator resource (top 10%)
 - Nectar/pollen source for 160 pollinator species
 - Attraction effect may increase visits to neighbouring plants
 
-### Top Companion Principles
-
-Based on this plant's characteristics:
-
-1. **Taxonomic diversity** - seek plants from different families than Leguminosae
-2. **CSR compatibility** - pair with longer-lived S or balanced plants
-3. **Structural layering** - can grow under taller plants
-4. **Mycorrhizal network** - seek other AMF-associated plants
-
 ### Cautions
 
-- Avoid clustering multiple Leguminosae plants (shared pests)
-- Sun-loving: will fail under canopy shade
+- Avoid clustering multiple Leguminosae plants (shared pests and diseases)
+- R-dominant strategy: short-lived, plan for succession or self-seeding
+- Sun-loving: will struggle or fail under canopy shade
 
 ---
 

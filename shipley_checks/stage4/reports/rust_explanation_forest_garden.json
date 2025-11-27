@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 92.48844812775901,
+    "score": 92.49249118034338,
     "stars": "★★★★★",
     "label": "Exceptional",
     "message": "Overall guild compatibility: 92.5/100"
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 57.41913689431306,
+        "score": 57.44743826240374,
         "raw": 0.42969296142743135,
         "interpretation": "Fair"
       },
@@ -254,7 +254,7 @@
       {
         "family": "Asparagaceae",
         "genus": "Maianthemum",
-        "display_name": "Maianthemum racemosum (Trackle-berries, False Solomon's Seal, Pacific Solomon's Seal, Solomon's Plume)"
+        "display_name": "Maianthemum racemosum (False Solomon's Seal, Trackle-berries, Pacific Solomon's Seal, Solomon's Plume)"
       },
       {
         "family": "Compositae",
@@ -1253,14 +1253,14 @@
     "matched_fungi_pairs": [],
     "predator_category_counts": {
       "Beetles": 2,
+      "Bats": 6,
       "Hoverflies": 1,
-      "OtherPredators": 4,
       "Flies": 2,
       "Wasps": 2,
       "Birds": 4,
       "Psyllids": 1,
       "Butterflies": 1,
-      "Bats": 6
+      "OtherPredators": 4
     },
     "herbivore_category_counts": {
       "Moths": 2,

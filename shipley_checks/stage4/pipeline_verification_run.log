@@ -1,0 +1,1860 @@
+================================================================================
+MASTER PIPELINE: PHASE 0 → PHASE 4
+================================================================================
+
+Complete data extraction and enrichment pipeline
+
+================================================================================
+PRE-PHASE 0: CONVERT CANONICAL CSV TO PARQUET
+================================================================================
+
+================================================================================
+CONVERTING CANONICAL CSV TO PARQUET
+================================================================================
+
+Input:   ../../stage3/bill_with_csr_ecoservices_11711_20251122.csv 
+Output:  ../../stage3/bill_with_csr_ecoservices_11711_20251122.parquet 
+
+Converting CSV to Parquet...
+[1] 11711
+✓ Parquet created: 25.5 MB
+✓ Row count: 11,711
+
+================================================================================
+CONVERSION COMPLETE
+================================================================================
+
+✓ CSV to Parquet conversion complete
+
+================================================================================
+PHASE 0: R DUCKDB EXTRACTION (GLOBI → RUST-READY PARQUETS)
+================================================================================
+
+================================================================================
+PHASE 0: STAGE 4 DATA EXTRACTION PIPELINE (R DuckDB → Rust-Ready Parquets)
+================================================================================
+
+Purpose: Extract all ecological interaction networks for 11,711 plants
+Output: Rust-ready parquet files (DuckDB COPY TO, no R metadata)
+Target: guild_scorer_rust can read all files directly (no conversion)
+
+Step 1/6: Extracting herbivores for 11,711 plants (direct GloBI query)...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 1: Direct Herbivore Extraction (Taxonomic Filtered)
+================================================================================
+
+Step 1: Loading 11,711 target plants...
+  Source: shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv
+  - 11711 target plants
+
+Step 2: Defining taxonomic exclusion filters...
+  - Excluding 5 mutualist families (bees)
+  - Excluding 14 predator families (>70% predation ratio)
+
+Step 3: Extracting herbivores from GloBI...
+  Relationships: eats, preysOn, hasHost
+  Filtering: pollinators, mutualists, predators
+
+  - Found herbivores on 3931 plants
+  - Coverage: 33.6% of dataset
+
+Step 4: Herbivore statistics...
+  Min herbivores: 1
+  Avg herbivores: 7.6
+  Max herbivores: 1023
+  Median herbivores: 2
+
+Step 5: Top 20 plants by herbivore count...
+   plant_wfo_id herbivore_count
+ wfo-7000000483            1023
+ wfo-4000006709             686
+ wfo-0000995164             572
+ wfo-7000000323             439
+ wfo-0000371248             312
+ wfo-0000284421             230
+ wfo-0000984349             199
+ wfo-0000928157             185
+ wfo-0001015799             181
+ wfo-0000297077             178
+ wfo-0001016475             167
+ wfo-4000039133             160
+ wfo-0000947985             159
+ wfo-0000179103             136
+ wfo-0001007437             133
+ wfo-0000465160             128
+ wfo-0000381268             127
+ wfo-0000421791             124
+ wfo-0000571350             121
+ wfo-0001000827             118
+
+Step 6: Writing Rust-ready parquet...
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet
+
+================================================================================
+SUMMARY
+================================================================================
+Target plants: 11711
+Plants with herbivores: 3931 (33.6% coverage)
+
+Exclusion filters applied:
+  - 5 mutualist families (bees)
+  - 14 predator families (>70% predation ratio)
+  - Pollinator interactions (visitsFlowersOf, pollinates)
+
+Output: shipley_checks/stage4/phase0_output/matched_herbivores_per_plant.parquet
+
+Next: Extract organism profiles for matched herbivores
+================================================================================
+✓ Script 1 completed
+
+Step 2/6: Extracting organism profiles...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 3: Extract Organism Profiles for 11,711 Plants
+================================================================================
+
+Loading 11,711 plant dataset...
+  - Processing 11711 plants
+
+Extracting organism profiles via DuckDB SQL...
+  1. Pollinators (pollinates)
+  2. Herbivores (from matched_herbivores_per_plant.parquet)
+  3. Pathogens (pathogenOf, parasiteOf, hasHost+Fungi)
+  4. Flower visitors (pollinates, visitsFlowersOf, visits)
+  5. Predators: hasHost, interactsWith, adjacentTo (Animalia, exclude marine)
+  6. Fungivores: Animals that eat fungi on plants (for disease control)
+
+[1] 11711
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+
+Summary statistics...
+  Total plants: 11711
+
+================================================================================
+SUMMARY
+================================================================================
+Created organism profiles for 11711 plants
+Output: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+
+Next: Extract fungal guilds (FungalTraits + FunGuild hybrid)
+================================================================================
+✓ Script 2 completed
+
+Step 3/6: Extracting fungal guilds (FungalTraits + FunGuild hybrid)...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 4: Extract Fungal Guilds (Hybrid Approach)
+================================================================================
+
+Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION
+  - Extraction: hasHost, parasiteOf, pathogenOf, interactsWith
+  - FungalTraits: Expert-curated (128 mycologists) - PRIMARY
+  - FunGuild: Fills gaps (confidence-filtered) - FALLBACK
+  - CRITICAL: COUNT DISTINCT genera (not row count)
+
+Extracting fungal guilds (single 8-CTE DuckDB query)...
+
+  ✓ Processed 11711 plants
+
+Writing Rust-ready parquet...
+[1] 413858
+✓ Wrote Rust-ready parquet: shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Total plants: 11711
+
+Plants with fungi by guild:
+  - Pathogenic: 7210 (61.6%)
+  - Mycorrhizal: 458 (3.9%)
+  - Biocontrol: 586 (5.0%)
+  - Endophytic: 1937 (16.5%)
+  - Saprotrophic: 4811 (41.1%)
+
+Data source breakdown:
+  - FungalTraits genera: 622782 (99.5%)
+  - FunGuild genera: 3331 (0.5%)
+
+Output: shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet
+
+Next: Build multitrophic networks (herbivore→predator, pathogen→antagonist)
+================================================================================
+✓ Script 3 completed
+
+Step 4/6: Building multitrophic networks...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 5: Build Multi-Trophic Network
+================================================================================
+
+Loading organism profiles...
+  - Loaded 11711 plant profiles
+
+Step 1: Extracting all herbivores that eat our plants...
+  - Found 15674 unique herbivore species
+
+Step 2: Finding predators of herbivores in full GloBI dataset...
+  (This may take 10-20 minutes - scanning 20M rows)
+  - Found predators for 1142 herbivores
+  - Total predator relationships: 9675
+
+Step 3: Extracting all pathogens that attack our plants...
+  - Found 35196 unique pathogen species
+
+Step 4: Finding antagonists of pathogens in full GloBI dataset...
+  (This may take 10-20 minutes)
+  - Found antagonists for 942 pathogens
+  - Total antagonist relationships: 5873
+
+Step 5: Saving results...
+  - Saved herbivore predators: shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - Saved pathogen antagonists: shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Herbivore-Predator Network:
+  - Herbivores with predators: 1142
+  - Total predator species: 9675
+  - Avg predators per herbivore: 8.5
+
+Pathogen-Antagonist Network:
+  - Pathogens with antagonists: 942
+  - Total antagonist species: 5873
+  - Avg antagonists per pathogen: 6.2
+
+Outputs:
+  - shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+Next: Extract insect-fungal parasite relationships
+================================================================================
+✓ Script 4 completed
+
+Step 5/6: Extracting insect-fungal parasite relationships...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 6: Extract Insect-Fungal Parasite Network
+================================================================================
+
+Step 1: Extracting GLOBAL fungus → insect/mite parasitic relationships from GloBI...
+  (Scanning 20M+ rows - may take 2-3 minutes)
+
+  ✓ Extracted 2381 herbivores with fungal parasites (GLOBAL)
+
+Step 2: Filtering to herbivores from our 11,711 plants (for Rust scorer)...
+
+  - Found 15674 unique herbivores on our plants
+  ✓ Filtered to 143 herbivores (RUST)
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+GLOBAL VERSION (for myco spray recommendations):
+  Total herbivores: 2381
+  Total fungus-herbivore relationships: 8410
+  Unique entomopathogenic fungi: 5223
+  Average fungi per herbivore: 3.5
+  Max fungi per herbivore: 911
+
+FILTERED VERSION (for Rust scorer, our plants' herbivores only):
+  Total herbivores: 143
+  Total fungus-herbivore relationships: 555
+  Unique entomopathogenic fungi: 440
+  Average fungi per herbivore: 3.9
+  Max fungi per herbivore: 107
+
+Breakdown by taxonomic class (global):
+ herbivore_class herbivore_count relationship_count
+         Insecta            2333               8272
+       Arachnida              48                138
+
+Top 10 most parasitized herbivores (global):
+           herbivore herbivore_order fungal_parasite_count
+               Ulmus       Hemiptera                   911
+              Betyla     Hymenoptera                   831
+           Phytomyza         Diptera                   229
+       Savchenkoiana         Diptera                   227
+       Phyllostachys      Orthoptera                   138
+ Exomalopsis similis     Hymenoptera                   133
+               Viola     Lepidoptera                   120
+                Inga     Lepidoptera                   107
+              Annona       Hemiptera                    94
+           Ammophila     Hymenoptera                    90
+
+Outputs:
+  1. Global (myco sprays):  shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet
+  2. Filtered (Rust scorer): shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711_rust.parquet
+================================================================================
+✓ Script 5 completed
+
+Step 6/6: Extracting unique organisms with taxonomy...
+--------------------------------------------------------------------------
+================================================================================
+Phase 0 - Script 6: Extract Unique Organisms with Taxonomy
+================================================================================
+
+Extracting unique organisms from organism_profiles...
+  Source: shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet
+  GloBI: data/stage1/globi_interactions_original.parquet
+
+  Found 33,267 unique organisms with taxonomy
+
+Kingdom distribution:
+  Animalia: 25,562
+  Metazoa: 2,843
+  Eukaryota: 31
+  Fungi: 17
+  Plantae: 13
+  Archaeplastida: 2
+  Archaea: 1
+  Bacteria: 1
+  Chromista: 1
+  incertae sedis: 1
+  Protista: 1
+
+Writing output: data/taxonomy/organisms_with_taxonomy_11711.parquet
+✓ Wrote 33,267 organisms
+
+================================================================================
+SUMMARY
+================================================================================
+Unique organisms extracted: 33,267
+Output: data/taxonomy/organisms_with_taxonomy_11711.parquet
+
+Ready for Phase 1: Vernacular name assignment
+================================================================================
+✓ Script 6 completed
+
+================================================================================
+EXTRACTION COMPLETE (18.0 seconds)
+================================================================================
+
+Step 6.5/7: Creating guild_scorer_rust compatible file names...
+--------------------------------------------------------------------------
+[1] TRUE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+[1] TRUE
+✓ Created guild_scorer_rust compatible file names
+  - organism_profiles_pure_rust.parquet
+  - fungal_guilds_pure_rust.parquet
+  - herbivore_predators_pure_rust.parquet
+  - pathogen_antagonists_pure_rust.parquet
+  - insect_fungal_parasites_pure_rust.parquet
+
+Step 7/7: Verifying outputs (data integrity & completeness)...
+--------------------------------------------------------------------------
+================================================================================
+PHASE 0 VERIFICATION: DATA INTEGRITY & COMPLETENESS
+================================================================================
+
+1. Matched Herbivores Per Plant (Taxonomic Filtered)
+   File: matched_herbivores_per_plant.parquet
+   ✓ Row count: 3,931 plants with herbivores
+   ✓ All required columns present
+   ✓ All plants have non-empty herbivore lists
+
+2. Organism Profiles
+   File: organism_profiles_11711.parquet
+   ✓ Row count: 11,711 plants (exact match)
+   ✓ All required columns present (17 columns)
+   ✓ Data coverage:
+     - 1,564.0 plants with pollinators (29,319.0 total)
+     - 3,931.0 plants with herbivores (29,696.0 total)
+     - 7,394.0 plants with pathogens (104,850.0 total)
+     - 1,333.0 plants with fungivores (17,586.0 total)
+   ✓ Fungivores data populated (>1,000 plants)
+
+3. Fungal Guilds (FungalTraits + FunGuild Hybrid)
+   File: fungal_guilds_hybrid_11711.parquet
+   ✓ Row count: 11,711 plants (exact match)
+   ✓ All required fungal guild columns present
+   ✓ Fungal guild coverage:
+     - 7,210.0 plants with pathogenic fungi
+     - 171.0 plants with AMF
+     - 313.0 plants with EMF
+     - 337.0 plants with mycoparasites
+     - 377.0 plants with entomopathogenic fungi
+
+4. Multitrophic Networks
+   4a. Herbivore → Predator Network
+       File: herbivore_predators_11711.parquet
+       ✓ Row count: 1,142 herbivores
+       ✓ 1,142.0 herbivores have known predators
+   4b. Pathogen → Antagonist Network
+       File: pathogen_antagonists_11711.parquet
+       ✓ Row count: 942 pathogens
+       ✓ 942.0 pathogens have known antagonists
+
+5. Insect → Fungal Parasite Relationships
+   File: insect_fungal_parasites_11711.parquet
+   ✓ Row count: 2,381 insects with fungal parasites
+   ✓ 2,381.0 insects have fungal parasites
+   ✓ 8,410.0 total parasite relationships
+
+6. Polars Compatibility (Rust-Ready Test)
+   Testing if Polars can read all parquets...
+   ✓ All 6 parquet files are Polars-compatible
+   ✓ No R metadata issues detected
+
+================================================================================
+✓ ALL VERIFICATION CHECKS PASSED
+
+Phase 0 extraction complete:
+  - All datasets created with expected row counts
+  - Data integrity validated (non-empty lists, valid counts)
+  - Polars compatibility confirmed (Rust-ready)
+  - Ready for guild_scorer_rust to consume
+
+================================================================================
+✓ PHASE 0 COMPLETE: ALL RUST-READY PARQUETS VERIFIED
+================================================================================
+
+Total pipeline time: 18.4 seconds
+
+Outputs (shipley_checks/stage4/phase0_output/):
+  1. matched_herbivores_per_plant.parquet  - 3.9K+ plants with herbivores (taxonomic filtered)
+  2. organism_profiles_11711.parquet       - 11,711 plants × organisms
+  3. fungal_guilds_hybrid_11711.parquet    - 11,711 plants × fungi
+  4. herbivore_predators_11711.parquet     - Herbivore → predator network
+  5. pathogen_antagonists_11711.parquet    - Pathogen → antagonist network
+  6. insect_fungal_parasites_11711.parquet - Insect → parasite network
+
+All parquets:
+  ✓ DuckDB COPY TO format (no R metadata)
+  ✓ Polars-compatible (Rust-ready)
+  ✓ Data integrity validated
+  ✓ Ready for guild_scorer_rust
+
+Taxonomic filters applied:
+  ✓ Excluded 5 mutualist families (bees)
+  ✓ Excluded 14 predator families (>70%% predation ratio)
+  ✓ Direct GloBI query (no pre-extraction step)
+
+To run individual scripts:
+  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/01_match_herbivores_to_plants.R
+  Rscript shipley_checks/src/Stage_4/Phase_0_extraction/02_extract_organism_profiles.R
+  # ... etc
+
+To verify outputs:
+  python shipley_checks/src/Stage_4/Phase_0_extraction/verify_extraction_outputs.py
+
+
+✓ Phase 0 complete (19s)
+
+================================================================================
+PHASE 1: INATURALIST MULTILINGUAL VERNACULARS (61 LANGUAGES)
+================================================================================
+
+================================================================================ 
+PHASE 1: MULTILINGUAL VERNACULAR NAMES
+(Real names only - no synthetic categories)
+================================================================================ 
+
+=== Simplified Vernacular Name Assignment Pipeline ===
+(Vernaculars only - no derived categories)
+
+Step 1: Initialize DuckDB connection
+
+Step 2: Load reference data
+  Loading iNaturalist taxa...
+[1] 0
+  Loading iNaturalist vernaculars (all languages)...
+[1] 0
+  Creating iNaturalist matched view...
+  Found 61 languages in vernacular data
+[1] 0
+  Loading ITIS family vernaculars...
+[1] 0
+
+Step 3: Load input datasets
+  Loading plants...
+    → 11,710 plant species
+  Loading organisms...
+    → 33,267 beneficial organisms
+
+Step 4: Assign vernaculars
+Processing plants...
+  Processing 11,710 taxa...
+
+=== PLANTS Coverage ===
+Total: 11,710
+Categorized: 10,334 (88.2%)
+Uncategorized: 1,376 (11.8%)
+
+Breakdown by source:
+  P1_inat_species: 10,305 (88.0%)
+  P2_itis_family: 29 (0.2%)
+  uncategorized: 1,376 (11.8%)
+
+Processing organisms...
+  Processing 33,267 taxa...
+
+=== BENEFICIAL ORGANISMS Coverage ===
+Total: 33,267
+Categorized: 24,931 (74.9%)
+Uncategorized: 8,336 (25.1%)
+
+Breakdown by source:
+  P1_inat_species: 14,238 (42.8%)
+  P2_itis_family: 10,693 (32.1%)
+  uncategorized: 8,336 (25.1%)
+
+--- Coverage by Ecological Role ---
+Herbivores: 11,553 / 15,674 categorized (73.7% → 26.3% 'Other')
+Pollinators: 4,190 / 7,403 categorized (56.6% → 43.4% 'Other')
+Predators: 17,117 / 20,538 categorized (83.3% → 16.7% 'Other')
+
+================================================================================
+SAVING RESULTS
+================================================================================
+
+Writing plants to: /home/olier/ellenberg/data/taxonomy/plants_vernacular_final.parquet
+Writing organisms to: /home/olier/ellenberg/data/taxonomy/organisms_vernacular_final.parquet
+Writing combined dataset to: /home/olier/ellenberg/data/taxonomy/all_taxa_vernacular_final.parquet
+
+================================================================================
+FINAL SUMMARY
+================================================================================
+
+Total taxa processed: 44,977
+  Plants: 11,710
+  Beneficial organisms: 33,267
+
+Total categorized: 35,265 (78.4%)
+Total uncategorized: 9,712 (21.6%)
+
+✓ Pipeline completed in 9.2 seconds
+
+================================================================================ 
+PHASE 1 VERIFICATION
+================================================================================ 
+
+Running verification checks...
+
+================================================================================
+PHASE 1 VERIFICATION: MULTILINGUAL VERNACULAR NAMES
+================================================================================
+
+CHECK 1: Output file exists
+--------------------------------------------------------------------------------
+✓ Output file found: /home/olier/ellenberg/data/taxonomy/all_taxa_vernacular_final.parquet
+  Size: 4.1 MB
+
+✓ Loaded 44,977 rows
+
+CHECK 2: Completeness - all input taxa processed
+--------------------------------------------------------------------------------
+  Input (unique species):
+    Plants: 11,709
+    Organisms: 33,267
+    Total: 44,976
+
+  Output (may have duplicates for multi-role organisms):
+    Plant rows: 11,710
+    Organism rows: 33,267
+    Total rows: 44,977
+    Unique species: 44,976
+
+✓ PASSED: All unique taxa processed (some organisms appear in multiple roles)
+
+  Note: +1 extra rows (organisms in multiple roles - expected)
+
+CHECK 3: Language coverage - all 61 languages present
+--------------------------------------------------------------------------------
+  Expected languages: 59
+  Found languages: 59
+✓ PASSED: All 59 languages present
+
+CHECK 4: Required columns present
+--------------------------------------------------------------------------------
+✓ PASSED: All 7 required columns present
+
+CHECK 5: Coverage statistics
+--------------------------------------------------------------------------------
+Overall coverage:
+  Categorized: 35,265 / 44,977 (78.4%)
+  Uncategorized: 9,712 (21.6%)
+
+Plants coverage:
+  Categorized: 10,334 / 11,710 (88.2%)
+
+Organisms coverage:
+  Categorized: 24,931 / 33,267 (74.9%)
+
+Breakdown by source:
+  P1_inat_species: 24,543 (54.6%)
+  P2_itis_family: 10,722 (23.8%)
+  uncategorized: 9,712 (21.6%)
+
+CHECK 6: Top 10 languages coverage
+--------------------------------------------------------------------------------
+Language          Count        %
+--------------------------------
+en               31,871    70.9%
+zh               10,841    24.1%
+ja                6,564    14.6%
+ru               10,013    22.3%
+cs                7,254    16.1%
+fi                7,984    17.8%
+fr                8,458    18.8%
+es                5,079    11.3%
+de                7,369    16.4%
+pt                3,367     7.5%
+
+CHECK 7: Data quality checks
+--------------------------------------------------------------------------------
+✓ PASSED: No null scientific names
+✓ PASSED: All vernacular_source values are valid
+
+================================================================================
+VERIFICATION SUMMARY
+================================================================================
+✓ ALL CHECKS PASSED
+
+Phase 1 output is verified and ready for Phase 2.
+
+================================================================================ 
+PHASE 1 COMPLETE
+================================================================================ 
+
+Output files:
+  /home/olier/ellenberg/data/taxonomy/plants_vernacular_final.parquet
+  /home/olier/ellenberg/data/taxonomy/organisms_vernacular_final.parquet
+  /home/olier/ellenberg/data/taxonomy/all_taxa_vernacular_final.parquet
+
+NOTE: Animal categorization is provided by Phase 2 (Kimi AI pipeline)
+      See: shipley_checks/src/Stage_4/Phase_2_kimi/run_phase2_pipeline.sh
+
+
+✓ Phase 1 complete (11s)
+
+================================================================================
+PHASE 2: KIMI AI GARDENER-FRIENDLY LABELS (SKIPPED)
+================================================================================
+
+Using existing Kimi AI labels: data/taxonomy/kimi_gardener_labels.csv
+
+================================================================================
+PHASE 3: KÖPPEN CLIMATE ZONE LABELING
+================================================================================
+
+================================================================================
+PHASE 3: KÖPPEN CLIMATE ZONE LABELING
+================================================================================
+
+Step 1/3: Assigning Köppen zones to plant occurrences (~30 min)...
+
+================================================================================
+ASSIGN KÖPPEN ZONES TO 11,711 PLANT DATASET
+================================================================================
+
+🔄 Removing old output file: /home/olier/ellenberg/data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
+
+================================================================================
+STEP 1: LOAD NEW PLANT LIST
+================================================================================
+New dataset: 11,711 plants
+
+================================================================================
+STEP 2: IDENTIFY NEW PLANTS NEEDING KÖPPEN LABELING
+================================================================================
+Existing Köppen coverage: 11,680 plants
+New plants needing labeling: 245
+Old plants removed: 214
+
+================================================================================
+STEP 3: EXTRACT OCCURRENCES FOR NEW PLANTS
+================================================================================
+Extracting occurrences for 245 new plants...
+  Extracted: 811,494 occurrences
+
+================================================================================
+STEP 4: ASSIGN KÖPPEN ZONES TO NEW OCCURRENCES
+================================================================================
+Processing 811,494 occurrences in 9 chunks...
+Processing chunks:   0%|          | 0/9 [00:00<?, ?it/s]Processing chunks:  11%|█         | 1/9 [00:08<01:07,  8.44s/it]Processing chunks:  22%|██▏       | 2/9 [00:16<00:58,  8.42s/it]Processing chunks:  33%|███▎      | 3/9 [00:25<00:50,  8.39s/it]Processing chunks:  44%|████▍     | 4/9 [00:33<00:42,  8.40s/it]Processing chunks:  56%|█████▌    | 5/9 [00:42<00:33,  8.42s/it]Processing chunks:  67%|██████▋   | 6/9 [00:50<00:25,  8.41s/it]Processing chunks:  78%|███████▊  | 7/9 [00:58<00:16,  8.40s/it]Processing chunks:  89%|████████▉ | 8/9 [01:07<00:08,  8.37s/it]Processing chunks: 100%|██████████| 9/9 [01:08<00:00,  6.07s/it]Processing chunks: 100%|██████████| 9/9 [01:08<00:00,  7.57s/it]
+
+Köppen assignment completed in 1.1 minutes
+
+================================================================================
+STEP 5: MERGE NEW KÖPPEN DATA
+================================================================================
+Merged new Köppen data: 811,494 occurrences
+
+================================================================================
+STEP 6: COMBINE WITH EXISTING KÖPPEN DATA
+================================================================================
+Existing plants retained: 11,466
+Existing occurrences: 30,607,274
+
+Combined dataset: 31,418,768 occurrences for 11,711 plants
+
+================================================================================
+STEP 7: SAVE COMBINED DATASET
+================================================================================
+  Saved: /home/olier/ellenberg/data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
+  Size: 3.62 GB
+
+Cleaning up temporary files...
+
+================================================================================
+VERIFICATION
+================================================================================
+
+Top 10 Köppen zones:
+koppen_zone  n_occurrences  percent
+        Dfb        7626322    24.27
+        Cfb        7274851    23.15
+        Cfa        6507866    20.71
+        Csb        2718832     8.65
+        Csa        1468315     4.67
+        Dfa        1191044     3.79
+        BSk         952705     3.03
+        Dfc         943215     3.00
+        BSh         313045     1.00
+         ET         307947     0.98
+
+Plant coverage:
+  Total plants: 11,711
+  Total occurrences: 31,418,768
+  Average occurrences per plant: 2,683
+
+================================================================================
+SUMMARY
+================================================================================
+
+✅ Successfully created Köppen occurrence dataset for 11,711 plants
+
+Processing Statistics:
+  - New plants added: 245
+  - New occurrences labeled: 811,494
+  - Existing plants retained: 11,466
+  - Total plants in output: 11,711
+  - Total occurrences: 31,418,768
+  - Processing time: 1.1 minutes
+  - Output file: /home/olier/ellenberg/data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
+
+Next Steps:
+1. Run aggregate_koppen_distributions_11711.py to create plant-level distributions
+2. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_20251122.csv
+
+
+================================================================================
+COMPLETE
+================================================================================
+✓ Köppen zone assignment complete
+
+Step 2/3: Aggregating Köppen distributions to plant level (~2 min)...
+
+================================================================================
+AGGREGATE KÖPPEN DISTRIBUTIONS TO PLANT LEVEL (11,711 PLANTS)
+================================================================================
+
+🔄 Removing old output file: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet
+
+Input file: /home/olier/ellenberg/data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
+  Total occurrences: 31,418,768
+
+================================================================================
+AGGREGATING OCCURRENCES TO PLANT × KÖPPEN DISTRIBUTIONS
+================================================================================
+
+Step 1: Counting occurrences per plant × Köppen zone...
+  Plant × Köppen combinations: 86,776
+  Unique plants: 11,711
+  Unique Köppen zones: 32
+
+Step 2: Calculating total occurrences and percentages per plant...
+
+Step 3: Ranking Köppen zones within each plant...
+
+Step 4: Creating plant-level summaries...
+
+Step 5: Saving to /home/olier/ellenberg/shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet...
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+
+Plant-level statistics:
+  Total plants: 11,711
+  Plants with climate data: 11,711
+
+Köppen zones per plant:
+  Mean: 7.4
+  Median: 6
+  Min: 1
+  Max: 29
+
+Main zones (≥5% occurrences) per plant:
+  Mean: 3.1
+  Median: 3
+  Plants with 1 main zone: 1,265 (10.8%)
+  Plants with 2-3 main zones: 6,348 (54.2%)
+  Plants with 4+ main zones: 4,098 (35.0%)
+
+Top zone dominance:
+  Mean top zone percent: 62.0%
+  Median top zone percent: 60.0%
+
+Most common top Köppen zones:
+  Cfb: 2,820 plants ( 24.1%)
+  Cfa: 2,218 plants ( 18.9%)
+  Dfb: 1,503 plants ( 12.8%)
+  Csa: 1,297 plants ( 11.1%)
+  Csb:   753 plants (  6.4%)
+  Dfc:   473 plants (  4.0%)
+  Aw:   442 plants (  3.8%)
+  BSk:   415 plants (  3.5%)
+  ET:   291 plants (  2.5%)
+  BSh:   254 plants (  2.2%)
+
+Köppen zone frequency (across all plants):
+  Cfb: appears in 8,915 plant distributions
+  Cfa: appears in 7,798 plant distributions
+  Csb: appears in 6,138 plant distributions
+  BSk: appears in 5,641 plant distributions
+  Csa: appears in 5,616 plant distributions
+  Dfb: appears in 5,181 plant distributions
+  Ocean: appears in 4,982 plant distributions
+  Dfc: appears in 4,241 plant distributions
+  BSh: appears in 3,953 plant distributions
+  ET: appears in 3,346 plant distributions
+
+================================================================================
+OUTPUT FILE
+================================================================================
+
+✅ Successfully aggregated Köppen distributions for 11,711 plants
+
+Output file: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/plant_koppen_distributions_11711.parquet
+  - Rows: 11,711 (one per plant)
+  - Columns: 10
+  - Size: 1.41 MB
+
+Column descriptions:
+  - wfo_taxon_id: Plant identifier
+  - total_occurrences: Total GBIF occurrences for this plant
+  - n_koppen_zones: Total number of Köppen zones plant occurs in
+  - n_main_zones: Number of zones with ≥5% of occurrences
+  - top_zone_code: Most common Köppen zone
+  - top_zone_percent: % of occurrences in top zone
+  - ranked_zones_json: JSON array of all zones (ranked by frequency)
+  - main_zones_json: JSON array of zones with ≥5% occurrences
+  - zone_counts_json: JSON dict {zone: count}
+  - zone_percents_json: JSON dict {zone: percent}
+
+Next Steps:
+1. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_20251122.csv
+2. Use resulting dataset for climate-stratified calibration
+
+
+================================================================================
+COMPLETE
+================================================================================
+✓ Köppen aggregation complete
+
+Step 3/3: Integrating Köppen tiers with plant dataset (~1 min)...
+
+================================================================================
+INTEGRATE KÖPPEN TIERS INTO 11,711 PLANT DATASET
+================================================================================
+
+🔄 Removing old output file: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
+
+1. Loading Köppen distributions...
+   Loaded: 11,711 plants with Köppen data
+
+2. Calculating tier memberships...
+
+Tier membership counts:
+   tier_1_tropical               : 1,639 plants ( 14.0%)
+   tier_2_mediterranean          : 4,046 plants ( 34.5%)
+   tier_3_humid_temperate        : 8,642 plants ( 73.8%)
+   tier_4_continental            : 4,376 plants ( 37.4%)
+   tier_5_boreal_polar           : 1,064 plants (  9.1%)
+   tier_6_arid                   : 2,765 plants ( 23.6%)
+
+   Total tier assignments: 22,532
+   Average tiers per plant: 1.92
+
+   ⚠️  21 plants have NO tier assignment (rare Köppen zones)
+
+3. Loading main plant dataset...
+   Loaded: 11,711 plants with 782 columns
+
+4. Merging datasets...
+   Merged dataset: 11,711 plants with 799 columns
+   Plants without Köppen data: 0
+
+5. Saving integrated dataset...
+
+   Output file: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
+   Size: 26.35 MB
+
+================================================================================
+COLUMN SUMMARY
+================================================================================
+
+New Köppen-related columns added:
+  - total_occurrences: Total GBIF occurrences used
+  - n_koppen_zones: Number of Köppen zones plant occurs in
+  - n_main_zones: Number of zones with ≥5% occurrences
+  - top_zone_code: Most common Köppen zone (e.g., 'Cfb')
+  - top_zone_percent: % of occurrences in top zone
+  - ranked_zones_json: JSON array of all zones (ranked)
+  - main_zones_json: JSON array of main zones (≥5%)
+  - zone_counts_json: JSON dict of occurrence counts per zone
+  - zone_percents_json: JSON dict of percentages per zone
+
+Tier assignment columns (boolean flags):
+  - tier_1_tropical: TRUE if plant has main zone in Tropical tier
+  - tier_2_mediterranean: TRUE if plant has main zone in Mediterranean tier
+  - tier_3_humid_temperate: TRUE if plant has main zone in Humid Temperate tier
+  - tier_4_continental: TRUE if plant has main zone in Continental tier
+  - tier_5_boreal_polar: TRUE if plant has main zone in Boreal/Polar tier
+  - tier_6_arid: TRUE if plant has main zone in Arid tier
+
+Convenience columns:
+  - tier_memberships_json: JSON array of tier names
+  - n_tier_memberships: Number of tiers plant belongs to
+
+================================================================================
+USAGE FOR CALIBRATION
+================================================================================
+
+This dataset is ready for climate-stratified Monte Carlo calibration.
+
+Example usage in calibration script:
+
+```python
+import duckdb
+
+con = duckdb.connect()
+
+# Load dataset
+plants = con.execute('''
+    SELECT * FROM read_parquet('/home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet')
+''').fetchdf()
+
+# Sample guilds for Tier 3 (Humid Temperate)
+tier_3_plants = plants[plants['tier_3_humid_temperate'] == True]
+print(f"Tier 3 pool: {len(tier_3_plants):,} plants")
+
+# Sample random 7-plant guilds from Tier 3
+import random
+for i in range(20000):  # 20K guilds for Tier 3
+    guild_plants = tier_3_plants.sample(n=7)
+    # Score this guild...
+```
+
+Tier-specific sampling:
+  - tier_1_tropical: Sample from plants where tier_1_tropical == TRUE
+  - tier_2_mediterranean: Sample from plants where tier_2_mediterranean == TRUE
+  - ... etc for all 6 tiers
+
+Multi-assignment handling:
+  - Plants can have multiple tier flags set to TRUE
+  - They will be eligible for sampling in all their tiers
+  - This is correct behavior (wide-ranging species)
+
+File naming:
+  - Input dataset: bill_with_csr_ecoservices_11711_20251122.csv
+  - Output dataset: bill_with_csr_ecoservices_koppen_11711.parquet
+  - This replaces the old perm2_11680_with_koppen_tiers_20251103.parquet
+
+
+================================================================================
+COMPLETE
+================================================================================
+
+✅ Successfully integrated Köppen tiers into 11,711 plant dataset
+
+Final dataset: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
+  - Plants: 11,711
+  - Columns: 799
+  - Size: 26.35 MB
+  - Created: 2025-11-27 15:49:45
+
+Plants with Köppen tier assignments: 11,711 (100.0%)
+Plants without Köppen data: 0 (0.0%)
+
+This dataset is now ready to replace perm2_11680_with_koppen_tiers_20251103.parquet
+in all Stage 4 scripts (guild_scorer_v3.py, calibration scripts, etc.).
+
+✓ Köppen integration complete
+
+================================================================================
+PHASE 3 VERIFICATION
+================================================================================
+
+Running verification checks...
+
+================================================================================
+PHASE 3 VERIFICATION: KÖPPEN CLIMATE ZONE LABELING
+================================================================================
+
+CHECK 1: Output file exists
+--------------------------------------------------------------------------------
+✓ Output file found: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
+  Size: 26.3 MB
+
+✓ Loaded 11,711 plants
+
+CHECK 2: Completeness - all input plants processed
+--------------------------------------------------------------------------------
+  Expected plants: 11,711
+  Actual output: 11,711
+✓ PASSED: All 11,711 plants processed
+
+CHECK 3: Required Köppen columns present
+--------------------------------------------------------------------------------
+✓ PASSED: All 13 Köppen columns present
+
+CHECK 4: Köppen zone coverage
+--------------------------------------------------------------------------------
+  Plants with Köppen data: 11,711 / 11,711 (100.0%)
+✓ PASSED: 100.0% coverage (>99%)
+
+  Top 10 Köppen zones:
+  Zone          Count        %
+  ----------------------------
+  Cfb           2,820    24.1%
+  Cfa           2,218    18.9%
+  Dfb           1,503    12.8%
+  Csa           1,297    11.1%
+  Csb             753     6.4%
+  Dfc             473     4.0%
+  Aw              442     3.8%
+  BSk             415     3.5%
+  ET              291     2.5%
+  BSh             254     2.2%
+
+CHECK 5: Tier assignment validity
+--------------------------------------------------------------------------------
+✓ PASSED: All tier columns have valid boolean values
+
+  Tier membership distribution:
+  Tier                         Count        %
+  -------------------------------------------
+  1 Tropical                   1,639    14.0%
+  2 Mediterranean              4,046    34.5%
+  3 Humid Temperate            8,642    73.8%
+  4 Continental                4,376    37.4%
+  5 Boreal Polar               1,064     9.1%
+  6 Arid                       2,765    23.6%
+
+CHECK 6: Tier consistency - zones match tier assignments
+--------------------------------------------------------------------------------
+✓ PASSED: Sample check (100 plants) shows tier assignments match zones
+
+CHECK 7: Multi-tier plant analysis
+--------------------------------------------------------------------------------
+  Distribution of tier memberships:
+  Tiers           Count        %
+  ------------------------------
+  0                  21     0.2%
+  1               3,638    31.1%
+  2               5,543    47.3%
+  3               2,235    19.1%
+  4                 267     2.3%
+  5                   7     0.1%
+
+
+CHECK 8: Occurrence count statistics
+--------------------------------------------------------------------------------
+  Occurrence statistics:
+    Mean: 2,683
+    Median: 360
+    Min: 27
+    Max: 167,396
+
+================================================================================
+VERIFICATION SUMMARY
+================================================================================
+Total plants: 11,711
+Plants with Köppen data: 11,711 (100.0%)
+Average tiers per plant: 1.92
+
+✓ ALL CHECKS PASSED
+
+Phase 3 output is verified and ready for Phase 4.
+
+✓ Phase 3 verification passed
+
+================================================================================
+PHASE 3 COMPLETE
+================================================================================
+Output: data/taxonomy/bill_with_koppen_only_11711.parquet
+
+
+✓ Phase 3 complete (189s)
+
+================================================================================
+PHASE 4: MERGE TAXONOMY + KÖPPEN
+================================================================================
+
+================================================================================
+PHASE 4: MERGE TAXONOMY + KÖPPEN
+================================================================================
+
+🔄 Removing old output file: /home/olier/ellenberg/shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet
+
+================================================================================
+STEP 1: LOAD DATASETS
+================================================================================
+
+Loading vernacular data from: /home/olier/ellenberg/data/taxonomy/plants_vernacular_final.parquet
+  → 11,710 plants with vernaculars
+
+Loading Köppen data from: /home/olier/ellenberg/shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet
+  → 11,711 plants with Köppen zones
+
+================================================================================
+STEP 2: MERGE DATASETS
+================================================================================
+
+Merging on plant scientific name...
+  → 11,713 plants in merged dataset
+
+Merge quality:
+  Plants with vernaculars: 10,337 (88.3%)
+  Plants without vernaculars: 1,376
+
+================================================================================
+STEP 3: SAVE MERGED DATASET
+================================================================================
+
+Saving to: /home/olier/ellenberg/shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet
+✓ Merged dataset saved successfully
+
+Final dataset:
+  Rows: 11,713
+  Columns: 861
+  Size: 24.5 MB
+
+================================================================================
+PHASE 4 COMPLETE
+================================================================================
+
+✓ Phase 4 complete (1s)
+
+================================================================================
+PHASE 5: CALIBRATION (CSR PERCENTILES + GUILD METRICS)
+================================================================================
+
+Step 1: CSR Percentile Calibration (global distribution)
+Step 2: Guild Metric Calibration (Köppen-stratified, 20K guilds/tier)
+
+----------------------------------------------------------------------
+Step 1: CSR Percentile Calibration
+----------------------------------------------------------------------
+
+
+================================================================================
+CSR PERCENTILE CALIBRATION (GLOBAL DISTRIBUTION)
+================================================================================
+
+Loading plant dataset...
+  Total plants: 11,713
+  Plants with complete CSR: 11,712
+  Plants with missing CSR:  1 (0.0%)
+
+Computing percentile thresholds...
+  COMPETITOR: min=0.0, p50=23.0, p95=67.5, max=98.3
+  STRESS-TOLERATOR: min=0.0, p50=42.9, p95=97.4, max=100.0
+  RUDERAL: min=0.0, p50=24.6, p95=79.7, max=100.0
+
+Saving calibration...
+  Output: shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json (0.9 KB)
+
+================================================================================
+CALIBRATION COMPLETE
+================================================================================
+
+Generated CSR percentile calibration from 11,712 plants
+Output: shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json
+
+This calibration enables data-driven M2 conflict detection:
+  - Converts raw CSR values (0-100) to percentiles (0-100)
+  - Uses global distribution (not tier-stratified)
+  - Replaces fixed thresholds (C>=60, S>=60, R>=50)
+  - Adapts to actual CSR distribution in dataset
+
+
+----------------------------------------------------------------------
+Step 2: Guild Metric Calibration
+----------------------------------------------------------------------
+
+Building Rust calibration binary (release mode)...
+25 |     climate_tier: String,
+   |     ^^^^^^^^^^^^
+
+warning: `guild_scorer_rust` (lib) generated 7 warnings (run `cargo fix --lib -p guild_scorer_rust` to apply 3 suggestions)
+    Finished `release` profile [optimized] target(s) in 2m 06s
+
+Running calibration...
+
+✓ Phase 5 complete (450s = 7 min)
+
+Calibration parameters saved:
+  Step 1 (CSR percentiles):
+    - shipley_checks/stage4/csr_percentile_calibration_global.json (< 1 KB)
+  Step 2 (Guild metrics):
+    - shipley_checks/stage4/phase5_output/normalization_params_7plant.json (16 KB)
+    - shipley_checks/stage4/phase5_output/normalization_params_2plant.json (4 KB)
+
+================================================================================
+PHASE 6: CANONICAL 5-GUILD TESTS + EXPLANATION REPORTS
+================================================================================
+
+Running verification tests with 5 canonical guilds
+
+Building test binary...
+25 |     climate_tier: String,
+   |     ^^^^^^^^^^^^
+
+warning: `guild_scorer_rust` (lib) generated 7 warnings (run `cargo fix --lib -p guild_scorer_rust` to apply 3 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.54s
+
+----------------------------------------------------------------------
+Guild Scoring Test (5 guilds × 3 formats)
+----------------------------------------------------------------------
+
+=================================================================
+GUILD EXPLANATION ENGINE TEST (Rust)
+=================================================================
+
+
+Initializing Guild Scorer (Rust)...
+Loading calibration: "shipley_checks/stage4/phase5_output/normalization_params_7plant.json"
+Loading CSR calibration: "shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json"
+Initializing Faith's PD calculator...
+Loading phylogenetic tree from: data/stage1/phlogeny/compact_tree_11711.bin
+  Nodes: 19102
+  Leaves: 11010
+Loading mapping from: data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv
+  WFO mappings: 11673
+PhyloPDCalculator initialized (pure Rust CompactTree).
+Loading datasets (LazyFrame schema-only mode)...
+  Plants: 11713 (lazy: schema only)
+  Organisms: 11711 (lazy: schema only)
+  Fungi: 11711 (lazy: schema only)
+  Herbivore predators: 1142
+  Insect parasites: 2372
+  Pathogen antagonists: 942
+  Organism categories: 5996
+
+Guild Scorer initialized:
+  Calibration: 7plant
+  Climate tier: tier_3_humid_temperate
+  Plants: 11713
+
+
+----------------------------------------------------------------------
+GUILD: Forest Garden
+----------------------------------------------------------------------
+  extract_predator_data: wfo-0000241769 from flower_visitors: 37 items
+  extract_predator_data: wfo-0000241769 from fauna_hasHost: 1 items
+  extract_predator_data: wfo-0000241769 from fauna_interactsWith: 0 items
+  extract_predator_data: wfo-0000241769 from fauna_adjacentTo: 0 items
+  extract_predator_data: wfo-0000241769 TOTAL (after dedup): 38 predators
+
+
+Scores:
+  Overall:  92.492491 (expected: 89.744099)
+  Difference: 2.748392 - ⚠️ DIFF
+
+  M1 (Pest Independence): 57.45
+  M2 (Growth Compat):     100.00
+  M3 (Insect Control):    100.00
+  M4 (Disease Suppress):  100.00
+  M5 (Beneficial Fungi):  90.00
+  M6 (Structural Div):    100.00
+  M7 (Pollinator Supp):   100.00
+
+Explanation Summary:
+  Rating: ★★★★★ Exceptional
+  Benefits: 7
+  Warnings: 1
+  Risks:    0
+
+Performance:
+  Scoring + fragments:    53.213 ms
+  Explanation gen:        39.857 ms
+  Markdown format:         0.063 ms
+  JSON format:             0.530 ms
+  HTML format:             0.025 ms
+  Total:                  93.689 ms
+
+Outputs written:
+  shipley_checks/stage4/reports/rust_explanation_forest_garden.md
+  shipley_checks/stage4/reports/rust_explanation_forest_garden.json
+  shipley_checks/stage4/reports/rust_explanation_forest_garden.html
+
+----------------------------------------------------------------------
+GUILD: Competitive Clash
+----------------------------------------------------------------------
+
+Scores:
+  Overall:  61.809058 (expected: 53.011553)
+  Difference: 8.797505 - ⚠️ DIFF
+
+  M1 (Pest Independence): 70.32
+  M2 (Growth Compat):     0.00
+  M3 (Insect Control):    100.00
+  M4 (Disease Suppress):  80.00
+  M5 (Beneficial Fungi):  70.00
+  M6 (Structural Div):    17.35
+  M7 (Pollinator Supp):   95.00
+
+Explanation Summary:
+  Rating: ★★☆☆☆ Fair
+  Benefits: 7
+  Warnings: 1
+  Risks:    0
+
+Performance:
+  Scoring + fragments:    48.122 ms
+  Explanation gen:        45.301 ms
+  Markdown format:         0.056 ms
+  JSON format:             0.517 ms
+  HTML format:             0.019 ms
+  Total:                  94.015 ms
+
+Outputs written:
+  shipley_checks/stage4/reports/rust_explanation_competitive_clash.md
+  shipley_checks/stage4/reports/rust_explanation_competitive_clash.json
+  shipley_checks/stage4/reports/rust_explanation_competitive_clash.html
+
+----------------------------------------------------------------------
+GUILD: Stress-Tolerant
+----------------------------------------------------------------------
+
+Scores:
+  Overall:  44.239486 (expected: 42.380873)
+  Difference: 1.858613 - ⚠️ DIFF
+
+  M1 (Pest Independence): 32.92
+  M2 (Growth Compat):     100.00
+  M3 (Insect Control):    0.00
+  M4 (Disease Suppress):  60.00
+  M5 (Beneficial Fungi):  70.00
+  M6 (Structural Div):    46.76
+  M7 (Pollinator Supp):   0.00
+
+Explanation Summary:
+  Rating: ☆☆☆☆☆ Unsuitable
+  Benefits: 7
+  Warnings: 1
+  Risks:    0
+
+Performance:
+  Scoring + fragments:    48.303 ms
+  Explanation gen:        21.303 ms
+  Markdown format:         0.056 ms
+  JSON format:             0.317 ms
+  HTML format:             0.020 ms
+  Total:                  70.000 ms
+
+Outputs written:
+  shipley_checks/stage4/reports/rust_explanation_stress-tolerant.md
+  shipley_checks/stage4/reports/rust_explanation_stress-tolerant.json
+  shipley_checks/stage4/reports/rust_explanation_stress-tolerant.html
+
+----------------------------------------------------------------------
+GUILD: Entomopathogen Powerhouse
+----------------------------------------------------------------------
+
+Scores:
+  Overall:  84.298431 (expected: 0.000000)
+  Difference: 84.298431 - ⚠️ DIFF
+
+  M1 (Pest Independence): 40.09
+  M2 (Growth Compat):     50.00
+  M3 (Insect Control):    100.00
+  M4 (Disease Suppress):  100.00
+  M5 (Beneficial Fungi):  100.00
+  M6 (Structural Div):    100.00
+  M7 (Pollinator Supp):   100.00
+
+Explanation Summary:
+  Rating: ★★★★☆ Excellent
+  Benefits: 7
+  Warnings: 1
+  Risks:    0
+
+Performance:
+  Scoring + fragments:    65.447 ms
+  Explanation gen:        49.730 ms
+  Markdown format:         0.074 ms
+  JSON format:             1.050 ms
+  HTML format:             0.028 ms
+  Total:                 116.329 ms
+
+Outputs written:
+  shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.md
+  shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.json
+  shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.html
+
+----------------------------------------------------------------------
+GUILD: Biocontrol Powerhouse
+----------------------------------------------------------------------
+
+Scores:
+  Overall:  82.739644 (expected: 0.000000)
+  Difference: 82.739644 - ⚠️ DIFF
+
+  M1 (Pest Independence): 9.18
+  M2 (Growth Compat):     70.00
+  M3 (Insect Control):    100.00
+  M4 (Disease Suppress):  100.00
+  M5 (Beneficial Fungi):  100.00
+  M6 (Structural Div):    100.00
+  M7 (Pollinator Supp):   100.00
+
+Explanation Summary:
+  Rating: ★★★★☆ Excellent
+  Benefits: 7
+  Warnings: 1
+  Risks:    0
+
+Performance:
+  Scoring + fragments:    50.512 ms
+  Explanation gen:        43.451 ms
+  Markdown format:         0.068 ms
+  JSON format:             0.960 ms
+  HTML format:             0.021 ms
+  Total:                  95.013 ms
+
+Outputs written:
+  shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.md
+  shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.json
+  shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.html
+
+======================================================================
+SUMMARY
+======================================================================
+Total time (5 guilds × 3 formats): 487.815 ms
+Average per guild: 97.563 ms
+
+✅ All explanations generated successfully!
+======================================================================
+
+
+✓ Test passed: All guild scores and explanation reports generated
+
+Generated reports:
+  - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}
+  - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}
+  - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}
+  - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}
+  - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}
+
+✓ Phase 6 complete (4s) - All tests passed
+
+================================================================================
+PHASE 7: FLATTEN DATA FOR SQL QUERIES
+================================================================================
+
+Flattening organism/fungal list columns for SQL queries
+Note: Plants use master dataset directly (no flattening needed)
+
+================================================================================
+PHASE 7: FLATTEN DATA FOR SQL QUERIES
+================================================================================
+
+Flattening organism and fungal list columns for DataFusion SQL engine.
+
+Design principles:
+  - Faithful transformation: no derived labels or categories
+  - Source column preserved: know exactly which Phase 0 column data came from
+  - Minimal schema: plant_id, taxon, source_column only
+
+Steps:
+  1. Flatten organisms (pollinators, herbivores, etc.)
+  2. Flatten fungi (amf, emf, pathogenic, etc.)
+  3. Flatten predators master list (for beneficial insect matching)
+  4. Extract pathogens with observation counts (for disease ranking)
+  5. Verify data integrity
+
+Note: Plants use master dataset directly (782 columns, no flattening)
+
+--------------------------------------------------------------------------------
+Step 1: Flattening Organism Profiles
+--------------------------------------------------------------------------------
+
+================================================================================
+PHASE 7: FLATTEN ORGANISMS FOR SQL
+================================================================================
+
+Loading organism profiles...
+  Input:  /home/olier/ellenberg/shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet 
+  Rows: 11711 
+  Columns: 17 
+
+Flattening list columns...
+  Processing: pollinators ...  29319 rows
+  Processing: herbivores ...  29696 rows
+  Processing: pathogens ...  104850 rows
+  Processing: flower_visitors ...  59170 rows
+  Processing: fauna_hasHost ...  22976 rows
+  Processing: fauna_interactsWith ...  24594 rows
+  Processing: fauna_adjacentTo ...  2689 rows
+  Processing: fungivores_eats ...  17586 rows
+
+Combining all interactions...
+  Total rows: 290880 
+  Unique organisms: 71898 
+  Plants with data: 8300 
+
+Breakdown by source_column:
+        source_column      n
+1           pathogens 104850
+2     flower_visitors  59170
+3          herbivores  29696
+4         pollinators  29319
+5 fauna_interactsWith  24594
+6       fauna_hasHost  22976
+7     fungivores_eats  17586
+8    fauna_adjacentTo   2689
+
+================================================================================
+EXPORT TO PARQUET
+================================================================================
+
+Output: /home/olier/ellenberg/shipley_checks/stage4/phase7_output/organisms_flat.parquet 
+  Rows: 290880 
+  Columns: 3 
+
+  Size: 1.42 MB
+
+Schema (faithful, no derived columns):
+  - plant_wfo_id: Plant identifier
+  - organism_taxon: Organism name
+  - source_column: Original column name from Phase 0
+
+Done.
+
+Step 1 complete (1s)
+
+--------------------------------------------------------------------------------
+Step 2: Flattening Fungal Guilds
+--------------------------------------------------------------------------------
+
+================================================================================
+PHASE 7: FLATTEN FUNGI FOR SQL
+================================================================================
+
+Loading fungal guild profiles...
+  Input:  /home/olier/ellenberg/shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet 
+  Rows: 11711 
+  Columns: 26 
+
+Flattening list columns...
+  Processing: pathogenic_fungi ...  48761 rows
+  Processing: pathogenic_fungi_host_specific ...  1601 rows
+  Processing: amf_fungi ...  439 rows
+  Processing: emf_fungi ...  942 rows
+  Processing: mycoparasite_fungi ...  508 rows
+  Processing: entomopathogenic_fungi ...  620 rows
+  Processing: endophytic_fungi ...  4907 rows
+  Processing: saprotrophic_fungi ...  42235 rows
+
+Combining all interactions...
+  Total rows: 100013 
+  Unique fungi: 3729 
+  Plants with data: 7399 
+
+Breakdown by source_column:
+                   source_column     n
+1               pathogenic_fungi 48761
+2             saprotrophic_fungi 42235
+3               endophytic_fungi  4907
+4 pathogenic_fungi_host_specific  1601
+5                      emf_fungi   942
+6         entomopathogenic_fungi   620
+7             mycoparasite_fungi   508
+8                      amf_fungi   439
+
+================================================================================
+EXPORT TO PARQUET
+================================================================================
+
+Output: /home/olier/ellenberg/shipley_checks/stage4/phase7_output/fungi_flat.parquet 
+  Rows: 100013 
+  Columns: 3 
+  Size: 0.22 MB
+
+Schema (faithful, no derived columns):
+  - plant_wfo_id: Plant identifier
+  - fungus_taxon: Fungus name
+  - source_column: Original column name from Phase 0
+
+Done.
+
+Step 2 complete (0s)
+
+--------------------------------------------------------------------------------
+Step 3: Flattening Predators Master List
+--------------------------------------------------------------------------------
+
+================================================================================
+PHASE 7: FLATTEN PREDATORS MASTER LIST
+================================================================================
+
+Loading herbivore-predator relationships...
+  Input:  /home/olier/ellenberg/shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet 
+  Herbivores with known predators: 1142 
+
+Extracting unique predators...
+  Unique predators: 2403 
+
+Sample predators (first 10):
+# A tibble: 10 × 1
+   predator_taxon       
+   <chr>                
+ 1 Abax                 
+ 2 Abax ovalis          
+ 3 Abax parallelepipedus
+ 4 Abbottina            
+ 5 Abramis brama        
+ 6 Acanthepeira stellata
+ 7 Acanthogobius        
+ 8 Acanthopagrus latus  
+ 9 Aceria erinea        
+10 Acetes               
+
+================================================================================
+EXPORT TO PARQUET
+================================================================================
+
+Output: /home/olier/ellenberg/shipley_checks/stage4/phase7_output/predators_master.parquet 
+  Rows: 2403 
+  Size: 23.17 KB
+
+Schema:
+  - predator_taxon: Unique predator species (known to eat plant pests)
+
+Done.
+
+Step 3 complete (1s)
+
+--------------------------------------------------------------------------------
+Step 4: Extracting Pathogens with Observation Counts
+--------------------------------------------------------------------------------
+
+================================================================================
+PHASE 7: EXTRACT PATHOGENS WITH OBSERVATION COUNTS
+================================================================================
+
+Connecting to DuckDB...
+Input:  /home/olier/ellenberg/data/stage1/globi_interactions_plants_wfo.parquet 
+
+Extracting pathogens (pathogenOf, parasiteOf only)...
+  - Excludes hasHost fungi (mycorrhizae are beneficial, not diseases)
+  - Excludes generic names (Fungi, Bacteria, Viruses)
+
+[1] 10050
+Results:
+  Total rows: 10050 
+  Plants with pathogens: 2373 
+  Unique pathogens: 3541 
+  Max observations: 56 
+
+Top 10 most-observed pathogens (across all plants):
+              pathogen_taxon total_obs
+1  Coleosporium tussilaginis       685
+2          Puccinia coronata       326
+3         Rhizoctonia solani       294
+4          Puccinia graminis       242
+5         Puccinia recondita       236
+6         Pythium acanthicum       233
+7       Puccinia calcitrapae       183
+8          Melampsora epitea       172
+9     Phytophthora palmivora       170
+10        Puccinia arenariae       158
+
+================================================================================
+EXPORT COMPLETE
+================================================================================
+
+Output: /home/olier/ellenberg/shipley_checks/stage4/phase7_output/pathogens_ranked.parquet 
+  Size: 77.08 KB
+
+Schema:
+  - plant_wfo_id: Plant identifier
+  - pathogen_taxon: Pathogen species name
+  - observation_count: Number of GloBI observations
+
+Done.
+
+Step 4 complete (0s)
+
+--------------------------------------------------------------------------------
+Step 5: Verifying Data Integrity
+--------------------------------------------------------------------------------
+
+================================================================================
+PHASE 7: DATA INTEGRITY VERIFICATION
+================================================================================
+
+--------------------------------------------------------------------------------
+1. ORGANISMS FLAT VERIFICATION
+--------------------------------------------------------------------------------
+
+PASS: organisms_flat.parquet exists 
+PASS: Schema correct: plant_wfo_id, organism_taxon, source_column 
+PASS: Exactly 3 columns (no spurious derived columns) 
+PASS: No NULL plant_wfo_id 
+PASS: No NULL organism_taxon 
+PASS: Source columns valid: pollinators, herbivores, pathogens, flower_visitors, fauna_hasHost, fauna_interactsWith, fauna_adjacentTo, fungivores_eats 
+
+Sample plant count verification:
+   wfo-0000000091 : pollinators 0 herbivores 0 OK
+   wfo-0000000138 : pollinators 15 herbivores 0 OK
+   wfo-0000000165 : pollinators 0 herbivores 0 OK
+   wfo-0000000293 : pollinators 0 herbivores 2 OK
+   wfo-0000000404 : pollinators 0 herbivores 0 OK
+
+Organisms summary:
+  Total rows: 290880 
+  Unique organisms: 71898 
+  Plants with data: 8300 
+
+--------------------------------------------------------------------------------
+2. FUNGI FLAT VERIFICATION
+--------------------------------------------------------------------------------
+
+PASS: fungi_flat.parquet exists 
+PASS: Schema correct: plant_wfo_id, fungus_taxon, source_column 
+PASS: Exactly 3 columns (no spurious derived columns) 
+PASS: No NULL plant_wfo_id 
+PASS: No NULL fungus_taxon 
+PASS: Source columns valid: pathogenic_fungi, pathogenic_fungi_host_specific, amf_fungi, emf_fungi, mycoparasite_fungi, entomopathogenic_fungi, endophytic_fungi, saprotrophic_fungi 
+
+Sample plant count verification:
+   wfo-0000510888 : amf 0 emf 0 OK
+   wfo-0000510976 : amf 0 emf 3 OK
+   wfo-0000510989 : amf 0 emf 0 OK
+   wfo-0000511004 : amf 0 emf 1 OK
+   wfo-0000511042 : amf 0 emf 0 OK
+
+Fungi summary:
+  Total rows: 100013 
+  Unique fungi: 3729 
+  Plants with data: 7399 
+
+--------------------------------------------------------------------------------
+3. MASTER DATASET ACCESSIBILITY
+--------------------------------------------------------------------------------
+
+PASS: Master dataset found: bill_with_csr_ecoservices_11711_20251122.parquet 
+  Rows: 11711 
+  Columns: 782 
+PASS: Key columns present (wfo_taxon_id, EIVEres-L_complete, C, S, R) 
+
+================================================================================
+VERIFICATION SUMMARY
+================================================================================
+
+ALL CHECKS PASSED
+
+Phase 7 data is ready for use.
+
+Step 5 complete (1s)
+
+================================================================================
+PHASE 7 COMPLETE
+================================================================================
+
+Total time: 3s
+
+Outputs:
+  - /home/olier/ellenberg/shipley_checks/stage4/phase7_output/fungi_flat.parquet (226K)
+  - /home/olier/ellenberg/shipley_checks/stage4/phase7_output/organisms_flat.parquet (1.5M)
+  - /home/olier/ellenberg/shipley_checks/stage4/phase7_output/pathogens_ranked.parquet (78K)
+  - /home/olier/ellenberg/shipley_checks/stage4/phase7_output/predators_master.parquet (24K)
+
+Data sources for DataFusion:
+  - Plants: stage3/bill_with_csr_ecoservices_*.parquet (master, 782 cols)
+  - Organisms (wide): phase0_output/organism_profiles_11711.parquet (for counts)
+  - Organisms (flat): phase7_output/organisms_flat.parquet (for SQL search)
+  - Fungi (wide): phase0_output/fungal_guilds_hybrid_11711.parquet (for counts)
+  - Fungi (flat): phase7_output/fungi_flat.parquet (for SQL search)
+  - Predators master: phase7_output/predators_master.parquet (beneficial insects)
+  - Pathogens ranked: phase7_output/pathogens_ranked.parquet (diseases + obs counts)
+
+================================================================================
+
+✓ Phase 7 complete (3s)
+
+================================================================================
+COMPLETE PIPELINE FINISHED
+================================================================================
+
+✓ Phase 0: R DuckDB extraction (GloBI → Rust-ready parquets)
+           Time: 19s
+✓ Phase 1: iNaturalist multilingual vernaculars (61 languages)
+           Time: 11s
+✓ Phase 2: Kimi AI gardener-friendly labels (animals)
+✓ Phase 3: Köppen climate zone labeling
+           Time: 189s
+✓ Phase 4: Merged taxonomy + Köppen
+           Time: 1s
+✓ Phase 5: Rust guild scorer calibration
+           Time: 450s (7 min)
+✓ Phase 6: Canonical 5-guild tests + explanation reports
+           Time: 4s
+✓ Phase 7: Flatten data for SQL queries
+           Time: 3s
+
+Total pipeline time: 681s (11 min)
+
+Final outputs:
+  Phase 0 (Rust-ready parquets):
+    - shipley_checks/validation/organism_profiles_pure_rust.parquet
+    - shipley_checks/validation/fungal_guilds_pure_rust.parquet
+    - shipley_checks/validation/*_11711.parquet (7 datasets)
+
+  Phase 1 (Multilingual vernaculars):
+    - data/taxonomy/all_taxa_vernacular_final.parquet
+    - data/taxonomy/plants_vernacular_final.parquet
+    - data/taxonomy/organisms_vernacular_final.parquet
+
+  Phase 2 (Kimi AI labels):
+    - data/taxonomy/kimi_gardener_labels.csv
+
+  Phase 3 (Köppen zones):
+    - data/taxonomy/bill_with_koppen_only_11711.parquet
+
+  Phase 4 (Final merged dataset - 861 columns with Köppen + vernaculars):
+    - shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet
+
+  Phase 5 (Calibration parameters):
+    - shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json (CSR percentiles)
+    - shipley_checks/stage4/phase5_output/normalization_params_7plant.json (7-plant guilds)
+    - shipley_checks/stage4/phase5_output/normalization_params_2plant.json (2-plant pairs)
+
+  Phase 6 (Test reports):
+    - shipley_checks/stage4/reports/rust_explanation_forest_garden.{md,json,html}
+    - shipley_checks/stage4/reports/rust_explanation_competitive_clash.{md,json,html}
+    - shipley_checks/stage4/reports/rust_explanation_stress-tolerant.{md,json,html}
+    - shipley_checks/stage4/reports/rust_explanation_entomopathogen_powerhouse.{md,json,html}
+    - shipley_checks/stage4/reports/rust_explanation_biocontrol_powerhouse.{md,json,html}
+
+  Phase 7 (Flattened data for SQL queries):
+    - shipley_checks/stage4/phase7_output/organisms_flat.parquet (SQL search by organism)
+    - shipley_checks/stage4/phase7_output/fungi_flat.parquet (SQL search by fungus)
+    Note: Plants use Phase 4 master dataset (phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet)
+
+================================================================================
+Pipeline complete!
+Documentation: shipley_checks/docs/Stage_4_Complete_Pipeline_Phase_0-5.md
+================================================================================
+

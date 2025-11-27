@@ -193,6 +193,7 @@ fn parse_organism_lists(
 
     let mut pollinators = Vec::new();
     let mut herbivores = Vec::new();
+    let mut fungivores = Vec::new();
     let mut all_organisms: HashSet<String> = HashSet::new();
 
     for row in &json_data {
@@ -207,6 +208,7 @@ fn parse_organism_lists(
         match source_column.as_str() {
             "pollinators" => pollinators.push(organism_taxon.clone()),
             "herbivores" => herbivores.push(organism_taxon.clone()),
+            "fungivores_eats" => fungivores.push(organism_taxon.clone()),
             _ => {}
         }
 
@@ -222,7 +224,7 @@ fn parse_organism_lists(
         .cloned()
         .collect();
 
-    if pollinators.is_empty() && herbivores.is_empty() && predators.is_empty() {
+    if pollinators.is_empty() && herbivores.is_empty() && predators.is_empty() && fungivores.is_empty() {
         return None;
     }
 
@@ -230,6 +232,7 @@ fn parse_organism_lists(
         pollinators,
         herbivores,
         predators,
+        fungivores,
     })
 }
 
@@ -284,9 +287,11 @@ fn categorize_organisms(
         pollinators_by_category: group_by_category(&lists.pollinators, OrganismRole::Pollinator, organism_categories),
         herbivores_by_category: group_by_category(&lists.herbivores, OrganismRole::Herbivore, organism_categories),
         predators_by_category: group_by_category(&lists.predators, OrganismRole::Predator, organism_categories),
+        fungivores_by_category: group_by_category(&lists.fungivores, OrganismRole::Predator, organism_categories), // Fungivores act as predators of fungi
         total_pollinators: lists.pollinators.len(),
         total_herbivores: lists.herbivores.len(),
         total_predators: lists.predators.len(),
+        total_fungivores: lists.fungivores.len(),
     }
 }
 

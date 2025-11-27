@@ -35,7 +35,7 @@ Plants have moderate evolutionary distance, providing reasonable pest independen
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Asparagaceae | Maianthemum | Maianthemum racemosum (Trackle-berries, False Solomon's Seal, Pacific Solomon's Seal, Solomon's Plume) |
+| Asparagaceae | Maianthemum | Maianthemum racemosum (False Solomon's Seal, Trackle-berries, Pacific Solomon's Seal, Solomon's Plume) |
 | Compositae | Anaphalis | Anaphalis margaritacea (Pearly Everlasting, Whitemargin Pussytoes) |
 | Ebenaceae | Diospyros | Diospyros kaki (Japanese Persimmon) |
 | Euphorbiaceae | Mercurialis | Mercurialis perennis (Dog's Mercury) |

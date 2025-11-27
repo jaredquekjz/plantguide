@@ -1,9 +1,9 @@
 {
   "overall": {
-    "score": 44.10410041106151,
+    "score": 44.23948632360287,
     "stars": "☆☆☆☆☆",
     "label": "Unsuitable",
-    "message": "Overall guild compatibility: 44.1/100"
+    "message": "Overall guild compatibility: 44.2/100"
   },
   "climate": {
     "compatible": true,
@@ -56,7 +56,7 @@
       "benefit_type": "structural_diversity",
       "metric_code": "M6",
       "title": "Structural Diversity",
-      "message": "3 growth forms spanning 19.8m height range (46th percentile)",
+      "message": "3 growth forms spanning 19.8m height range (47th percentile)",
       "detail": "**Vertical Stratification (Quality: 0.36 - Poor):**\n\n**Canopy Layer (>15m):**\n  - Eucalyptus melanophloia (Silver-leaved Ironbark): 20.0m, EIVE-L: 8.2 (sun-loving ⚠)\n\n**Understory (5-15m):**\n  - Alyxia ruscifolia (Chain Fruit): 5.0m, EIVE-L: 7.4 (flexible)\n\n**Shrub Layer (1-5m):**\n  - Senna artemisioides (Silver Cassia): 2.6m, EIVE-L: 8.7 (sun-loving ⚠)\n  - Juncus usitatus (Australian Rush): 1.1m, EIVE-L: 7.1 (flexible)\n\n**Ground Layer (<1m):**\n  - Sporobolus compositus (Composite Dropseed): 0.9m, EIVE-L: 8.3 (sun-loving ⚠)\n  - Hibbertia diffusa (Wedge Guinea Flower): 0.3m, EIVE-L: 6.9 (flexible)\n  - Carex mucronata: 0.2m, EIVE-L: 9.5 (sun-loving ⚠)\n\n**Why this stratification has issues:**\n3 plants are flexible (EIVE-L 3.2-7.47) and tolerate partial shade. ⚠ 4 plants are sun-loving (EIVE-L >7.47) and may be shaded out by taller plants.\n\nModerate structural diversity - some layering present but coverage may be limited",
       "evidence": null
     },
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 32.587533668691194,
+        "score": 32.918407371936425,
         "raw": 0.4559407172659578,
         "interpretation": "Poor"
       },
@@ -122,7 +122,7 @@
       {
         "code": "M6",
         "name": "Structural Diversity",
-        "score": 46.141169208739356,
+        "score": 46.757996893283654,
         "raw": 0.3691127953935177,
         "interpretation": "Fair"
       },
@@ -241,12 +241,12 @@
       {
         "family": "Juncaceae",
         "genus": "Juncus",
-        "display_name": "Juncus usitatus (Common Rush, Australian Rush)"
+        "display_name": "Juncus usitatus (Australian Rush, Common Rush)"
       },
       {
         "family": "Leguminosae",
         "genus": "Senna",
-        "display_name": "Senna artemisioides (Silver Cassia, Silver Senna)"
+        "display_name": "Senna artemisioides (Silver Senna, Silver Cassia)"
       },
       {
         "family": "Myrtaceae",
@@ -505,7 +505,7 @@
         },
         {
           "category": "Saprotrophic",
-          "fungus_name": "fusarium",
+          "fungus_name": "wojnowicia",
           "plant_count": 1
         }
       ]

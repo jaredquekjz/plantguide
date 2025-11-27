@@ -129,6 +129,33 @@ cargo run --release --bin test_3_guilds_parallel
 - Sufficient for testing correctness and parity
 - Release builds only needed for final performance validation
 
+## Stage 4: Guild Builder & Encyclopedia Pipeline
+
+**Master Script (ground truth)**: `shipley_checks/src/Stage_4/run_complete_pipeline_phase0_to_4.sh`
+
+This master script orchestrates all phases of the guild scoring and encyclopedia generation pipeline. Always reference this script to understand the canonical extraction logic and data flow.
+
+**Pipeline Phases:**
+- **Phase 0**: GloBI interaction extraction (organisms, fungi, predator networks)
+- **Phase 1**: Multilingual vernacular names (iNaturalist)
+- **Phase 2**: Kimi AI organism categorization
+- **Phase 3**: Köppen climate distributions
+- **Phase 4**: Final dataset assembly
+- **Phase 7**: DataFusion flattening for Rust (organisms_flat, fungi_flat, predators_master)
+
+**Key Output Parquets** (in `shipley_checks/stage4/`):
+- `phase0_output/organism_profiles_11711.parquet` - Plant-organism interactions
+- `phase0_output/fungal_guilds_hybrid_11711.parquet` - Plant-fungus associations
+- `phase0_output/herbivore_predators_11711.parquet` - Herbivore → predator lookup
+- `phase7_output/organisms_flat.parquet` - Flattened for Rust queries
+- `phase7_output/fungi_flat.parquet` - Flattened fungal data
+- `phase7_output/predators_master.parquet` - Master list of pest predators
+
+**Rust Components** (in `shipley_checks/src/Stage_4/guild_scorer_rust/`):
+- `src/query_engine.rs` - DataFusion SQL queries on parquets
+- `src/encyclopedia/` - Encyclopedia article generation
+- `src/bin/generate_sample_encyclopedias.rs` - Sample article generator
+
 ## Data Loading and Processing
 
 ### MANDATORY: DuckDB for All Dataset Operations

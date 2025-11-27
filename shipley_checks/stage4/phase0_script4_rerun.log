@@ -1,0 +1,50 @@
+================================================================================
+Phase 0 - Script 5: Build Multi-Trophic Network
+================================================================================
+
+Loading organism profiles...
+  - Loaded 11711 plant profiles
+
+Step 1: Extracting all herbivores that eat our plants...
+  - Found 15674 unique herbivore species
+
+Step 2: Finding predators of herbivores in full GloBI dataset...
+  (This may take 10-20 minutes - scanning 20M rows)
+  - Found predators for 1142 herbivores
+  - Total predator relationships: 9675
+
+Step 3: Extracting all pathogens that attack our plants...
+  - Found 35196 unique pathogen species
+
+Step 4: Finding antagonists of pathogens in full GloBI dataset...
+  (This may take 10-20 minutes)
+  - Found antagonists for 942 pathogens
+  - Total antagonist relationships: 5873
+
+Step 5: Saving results...
+[1] 0
+[1] 0
+[1] 1078
+[1] 942
+  - Saved herbivore predators: shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - Saved pathogen antagonists: shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+================================================================================
+SUMMARY STATISTICS
+================================================================================
+Herbivore-Predator Network:
+  - Herbivores with predators: 1142
+  - Total predator species: 9675
+  - Avg predators per herbivore: 8.5
+
+Pathogen-Antagonist Network:
+  - Pathogens with antagonists: 942
+  - Total antagonist species: 5873
+  - Avg antagonists per pathogen: 6.2
+
+Outputs:
+  - shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet
+  - shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet
+
+Next: Extract insect-fungal parasite relationships
+================================================================================

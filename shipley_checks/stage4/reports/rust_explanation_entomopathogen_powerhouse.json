@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 84.26211840677118,
+    "score": 84.29843101249483,
     "stars": "★★★★☆",
     "label": "Excellent",
     "message": "Overall guild compatibility: 84.3/100"
@@ -85,9 +85,9 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 39.83482884739825,
+        "score": 40.089017087463844,
         "raw": 0.4474090557699892,
-        "interpretation": "Poor"
+        "interpretation": "Fair"
       },
       {
         "code": "M2",
@@ -268,17 +268,17 @@
       {
         "family": "Fagaceae",
         "genus": "Quercus",
-        "display_name": "Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak)"
+        "display_name": "Quercus robur (Pedunculate Oak, Common Oak, English Oak, Truffle Oak, Acorn Tree)"
       },
       {
         "family": "Poaceae",
         "genus": "Dactylis",
-        "display_name": "Dactylis glomerata (Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass, Rough Cocksfoot, Akaroa, Cock's Foot)"
+        "display_name": "Dactylis glomerata (Rough Cocksfoot, Akaroa, Cock's Foot, Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass)"
       },
       {
         "family": "Rosaceae",
         "genus": "Fragaria",
-        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
+        "display_name": "Fragaria vesca (Wood Strawberry, Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
       },
       {
         "family": "Rosaceae",
@@ -288,7 +288,7 @@
       {
         "family": "Rosaceae",
         "genus": "Rosa",
-        "display_name": "Rosa canina (Canker Rose, Dog Rose, Dog-rose)"
+        "display_name": "Rosa canina (Dog Rose, Dog-rose, Canker Rose)"
       },
       {
         "family": "Rubiaceae",
@@ -3148,16 +3148,16 @@
     ],
     "predator_category_counts": {
       "Beetles": 4,
+      "Bats": 1,
       "Hoverflies": 1,
-      "OtherPredators": 4,
-      "Flies": 3,
       "Lacewings": 1,
+      "Flies": 3,
       "Wasps": 2,
       "ScaleInsects": 1,
       "Moths": 1,
       "Birds": 5,
       "Butterflies": 1,
-      "Bats": 1
+      "OtherPredators": 4
     },
     "herbivore_category_counts": {
       "Beetles": 3,

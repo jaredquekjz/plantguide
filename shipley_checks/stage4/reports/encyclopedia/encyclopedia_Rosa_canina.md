@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T09:13:00Z"
+generated: "2025-11-27T13:33:26Z"
 version: "2.0"
 ---
 
@@ -180,7 +180,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 *Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
 ### Pollinators
-**Very High** (40 taxa documented)
+**Very High** (40 species documented)
 *Strong pollinator magnet*
 
 - **Flies** (15): Melanostoma mellinum, Chrysotoxum bicincta, Platycheirus albimanus, +12 more
@@ -194,7 +194,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - **Other Pollinators** (2): Pachytodes cerambyciformis, Trachysiphonella
 
 ### Herbivores & Parasites
-**High** (19 taxa documented)
+**High** (19 species documented)
 *Multiple pest species; monitor closely*
 
 - **Moths** (14): Phaneta pauperana, Ectoedemia angulifasciella, Grapholita tenebrosana, +11 more
@@ -203,15 +203,18 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - **Other Herbivores** (3): Nathrius brevipennis, Ropalopus femoratus, Endelomyia aethiops
 
 ### Beneficial Predators
-**4 taxa documented** - natural pest control agents
+**4 species documented** - natural pest control agents
 
 - **Birds** (3): Erithacus rubecula, Turdus merula, Turdus philomelos
 - **Hoverflies** (1): Syrphus
 
 *These beneficial organisms help control pest populations.*
 
+### Fungivores (Disease Control)
+No fungivore records available.
+
 ### Diseases
-**Disease Risk**: Typical (3 taxa observed)
+**Disease Risk**: Typical (3 pathogens observed)
 *Average disease observations*
 
 **Most Observed Diseases** (by GloBI observation frequency):
@@ -221,32 +224,44 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 
 *Monitor in humid conditions; ensure good airflow*
 
-### Beneficial Associations
-**Mycorrhizal**: Non-mycorrhizal/Undocumented
-- 7 endophytic fungi observed (often protective)
+### Beneficial Fungi
 
-**Biocontrol Fungi**:
-- **Mycoparasites** (1): angustimassarina
+*Fungi form important partnerships with plants. Some help roots absorb nutrients, others protect against diseases or pests.*
 
-*No documented mycorrhizal associations*
+**Root Partnership Fungi (Mycorrhizal)**
+Status: Non-mycorrhizal/Undocumented
+- **Endophytic fungi** (7 species): Live inside plant tissues without causing harm. Often help plants tolerate drought or deter herbivores.
+
+**Pest & Disease Control Fungi**
+- **Disease-fighting fungi** (1 species): angustimassarina - These fungi attack and destroy plant pathogens like mildews and rusts.
+
+**Note**: This plant does not rely heavily on mycorrhizal partnerships. Standard cultivation practices apply.
 
 ---
 
 ## Guild Potential
 
-### Summary Card
+### At a Glance
 
-| Metric | Value | Guild Contribution |
-|--------|-------|-------------------|
-| Taxonomic | Rosaceae → Rosa | Seek different families |
-| CSR Strategy | C:27% S:51% R:22% | Flexible |
-| Structural | Understory (2.0m) | Shade user |
-| Mycorrhizal | Non-mycorrhizal/Undocumented | No network benefit |
-| Pest Control | 19 pests, 4 predators | Benefits from predator plants |
-| Disease Control | 1 mycoparasites | Hosts disease fighters |
-| Pollinator | 40 taxa | Very High |
+*Quick reference for companion selection. See detailed sections below for full guidance.*
 
-### GP1: Phylogenetic Independence
+| Aspect | This Plant | Companion Guidance | Details |
+|--------|------------|-------------------|---------|
+| **Taxonomy** | Rosaceae → Rosa | Seek different families | [Taxonomy](#taxonomy) |
+| **Growth Strategy** | C:27% S:51% R:22% | Flexible | [Growth](#growth-compatibility) |
+| **Structure** | Understory (2.0m) | Shade user | [Structure](#structural-role) |
+| **Mycorrhizal** | Non-mycorrhizal/Undocumented | No network benefit | [Network](#mycorrhizal-network) |
+| **Pest Control** | 19 pests, 4 predators | Benefits from predator plants | [Pests](#pest-control) |
+| **Disease Control** | 1 disease fighters | Hosts disease fighters | [Disease](#disease-control) |
+| **Pollinators** | 40 species | Very High | [Pollinators](#pollinator-support) |
+
+**Key Principles for This Plant:**
+1. **Diversify taxonomy** - seek plants from different families than Rosaceae
+2. **Growth compatibility** - flexible positioning; compatible with most
+3. **Layer plants** - can grow under taller plants
+4. **Fungal network** - no underground network constraints
+
+### Taxonomy
 
 **Family**: Rosaceae
 **Genus**: Rosa
@@ -256,7 +271,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - Diversify beyond Rosaceae for reduced pathogen transmission
 - Greater taxonomic distance = lower shared vulnerability
 
-### GP2: Growth Compatibility
+### Growth Compatibility
 
 **CSR Profile**: C: 27% | S: 51% | R: 22%
 **Classification**: Balanced (percentile-based)
@@ -271,7 +286,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 
 **Good Companions**: Compatible with all CSR types. Flexible positioning.
 
-### GP3: Pest Control Potential
+### Pest Control
 
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
@@ -281,7 +296,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.
 
-### GP4: Disease Control Potential
+### Disease Control
 
 **Observed Disease Fighters**:
 - 1 beneficial fungi that attack plant diseases
@@ -289,7 +304,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 **Guild Recommendations**:
 - Hosts beneficial fungi that attack plant diseases - may help protect neighbouring plants.
 
-### GP5: Mycorrhizal Network
+### Mycorrhizal Network
 
 **Observed Association**: Non-mycorrhizal/Undocumented
 
@@ -297,7 +312,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - Non-mycorrhizal or undocumented. May not participate in underground fungal networks.
 - No network conflict, but no documented network benefit from CMN.
 
-### GP6: Structural Role
+### Structural Role
 
 **Layer**: Understory (2.0m)
 **Growth Form**: Vine/Climber
@@ -307,7 +322,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - Flexible. Tolerates range of light conditions.
 - **Climber**: Needs vertical structure from trees or tall shrubs
 
-### GP7: Pollinator Support
+### Pollinator Support
 
 **Observed Pollinators**: 40 species (Very High)
 Strong pollinator magnet
@@ -319,18 +334,9 @@ Strong pollinator magnet
 - Nectar/pollen source for 40 pollinator species
 - Attraction effect may increase visits to neighbouring plants
 
-### Top Companion Principles
-
-Based on this plant's characteristics:
-
-1. **Taxonomic diversity** - seek plants from different families than Rosaceae
-2. **CSR compatibility** - flexible positioning; compatible with most
-3. **Structural layering** - can grow under taller plants
-4. **Mycorrhizal network** - no network constraints
-
 ### Cautions
 
-- Avoid clustering multiple Rosaceae plants (shared pests)
+- Avoid clustering multiple Rosaceae plants (shared pests and diseases)
 
 ---
 

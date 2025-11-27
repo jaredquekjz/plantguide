@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 39.8 | Poor |
+| M1 - Pest & Pathogen Independence | 40.1 | Fair |
 | M2 - Growth Compatibility | 50.0 | Fair |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 39.8/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 40.1/100]
 
 40th percentile (Faith's PD: 804.28) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -35,11 +35,11 @@ Several plants share recent evolutionary history. Related plants often share sus
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Fagaceae | Quercus | Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak) |
-| Poaceae | Dactylis | Dactylis glomerata (Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass, Rough Cocksfoot, Akaroa, Cock's Foot) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
+| Fagaceae | Quercus | Quercus robur (Pedunculate Oak, Common Oak, English Oak, Truffle Oak, Acorn Tree) |
+| Poaceae | Dactylis | Dactylis glomerata (Rough Cocksfoot, Akaroa, Cock's Foot, Cocksfoot, Cock's-foot, Orchardgrass, Orchard Grass) |
+| Rosaceae | Fragaria | Fragaria vesca (Wood Strawberry, Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
-| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
+| Rosaceae | Rosa | Rosa canina (Dog Rose, Dog-rose, Canker Rose) |
 | Rubiaceae | Coffea | Coffea arabica (Kona Coffee, Arabian Coffee, Arabica Coffee, Coffee) |
 | Vitaceae | Vitis | Vitis vinifera (Wine Grape, Grape Vine, Common Grape) |
 

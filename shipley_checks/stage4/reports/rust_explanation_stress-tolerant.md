@@ -1,17 +1,17 @@
 # ☆☆☆☆☆ - Unsuitable
 
-**Overall Score:** 44.1/100
+**Overall Score:** 44.2/100
 
 ## Metrics Breakdown
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 32.6 | Poor |
+| M1 - Pest & Pathogen Independence | 32.9 | Poor |
 | M2 - Growth Compatibility | 100.0 | Excellent |
 | M3 - Insect Pest Control | 0.0 | Poor |
 | M4 - Disease Suppression | 60.0 | Good |
 | M5 - Beneficial Fungi | 70.0 | Good |
-| M6 - Structural Diversity | 46.1 | Fair |
+| M6 - Structural Diversity | 46.8 | Fair |
 | M7 - Pollinator Support | 0.0 | Poor |
 
 **How to Read These Scores:** Metrics M1-M7 are percentiles (0-100) comparing your guild to 120,000 randomly generated plant combinations in your climate zone—a score of 80 means better than 80% of random guilds. Scores reflect documented ecological interactions and plant information in scientific databases. Higher scores indicate well-documented beneficial relationships; lower scores may indicate either incomplete research or true absence of these interactions.
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 32.6/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 32.9/100]
 
 33th percentile (Faith's PD: 785.39) - Plants have some close relatives (fair phylogenetic diversity)  
 Several plants share recent evolutionary history. Related plants often share susceptibility to the same pests and pathogens, though the guild is not critically clustered.  
@@ -38,8 +38,8 @@ Several plants share recent evolutionary history. Related plants often share sus
 | Apocynaceae | Alyxia | Alyxia ruscifolia (Chainfruit, Chain Fruit) |
 | Cyperaceae | Carex | Carex mucronata |
 | Dilleniaceae | Hibbertia | Hibbertia diffusa (Wedge Guinea Flower) |
-| Juncaceae | Juncus | Juncus usitatus (Common Rush, Australian Rush) |
-| Leguminosae | Senna | Senna artemisioides (Silver Cassia, Silver Senna) |
+| Juncaceae | Juncus | Juncus usitatus (Australian Rush, Common Rush) |
+| Leguminosae | Senna | Senna artemisioides (Silver Senna, Silver Cassia) |
 | Myrtaceae | Eucalyptus | Eucalyptus melanophloia (Silver-leaved Ironbark) |
 | Poaceae | Sporobolus | Sporobolus compositus (Composite Dropseed, Tall Dropseed) |
 
@@ -182,9 +182,9 @@ Beneficial fungi (mycorrhizal partners, endophytes, and saprotrophs) create unde
 
 ⚠️ **Data Completeness Note:** Plants marked with ⚠️ have no interaction data in this dimension. This likely indicates a data gap rather than true ecological absence.
 
-### Structural Diversity [M6 - 46.1/100]
+### Structural Diversity [M6 - 46.8/100]
 
-3 growth forms spanning 19.8m height range (46th percentile)  
+3 growth forms spanning 19.8m height range (47th percentile)  
 **Vertical Stratification (Quality: 0.36 - Poor):**
 
 **Canopy Layer (>15m):**

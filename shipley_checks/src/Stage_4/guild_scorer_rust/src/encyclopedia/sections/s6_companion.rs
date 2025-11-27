@@ -71,9 +71,9 @@ pub fn generate(
     sections.push(String::new());
     sections.push(generate_gp7(organism_counts));
 
-    // Top Companion Principles & Cautions
+    // Cautions
     sections.push(String::new());
-    sections.push(generate_companion_guidance(data, organism_counts, fungal_counts));
+    sections.push(generate_cautions(data, organism_counts, fungal_counts));
 
     sections.join("\n")
 }
@@ -84,74 +84,103 @@ fn generate_summary_card(
     fungal_counts: Option<&FungalCounts>,
 ) -> String {
     let mut lines = Vec::new();
-    lines.push("### Summary Card".to_string());
+    lines.push("### At a Glance".to_string());
     lines.push(String::new());
-    lines.push("| Metric | Value | Guild Contribution |".to_string());
-    lines.push("|--------|-------|-------------------|".to_string());
+    lines.push("*Quick reference for companion selection. See detailed sections below for full guidance.*".to_string());
+    lines.push(String::new());
 
-    // Taxonomic
+    // Extract values needed for table and principles
     let family = get_str(data, "family").unwrap_or("Unknown");
     let genus = get_str(data, "genus").unwrap_or("Unknown");
-    lines.push(format!("| Taxonomic | {} → {} | Seek different families |", family, genus));
-
-    // CSR Strategy (percentile-based for S6)
     let c = get_f64(data, "C").unwrap_or(0.0);
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
     let csr = classify_csr_percentile(c, s, r);
+    let height = get_f64(data, "height_m");
+    let layer = classify_structural_layer(height);
+    let (amf, emf) = fungal_counts.map(|c| (c.amf, c.emf)).unwrap_or((0, 0));
+    let myco = classify_mycorrhizal(amf, emf);
+    let herbivores = organism_counts.map(|c| c.herbivores).unwrap_or(0);
+    let predators = organism_counts.map(|c| c.predators).unwrap_or(0);
+    let entomopath = fungal_counts.map(|c| c.entomopathogens).unwrap_or(0);
+    let mycoparasites = fungal_counts.map(|c| c.mycoparasites).unwrap_or(0);
+    let pollinators = organism_counts.map(|c| c.pollinators).unwrap_or(0);
+    let (poll_level, _) = classify_pollinator_level(pollinators);
+
+    // Summary table with section references
+    lines.push("| Aspect | This Plant | Companion Guidance | Details |".to_string());
+    lines.push("|--------|------------|-------------------|---------|".to_string());
+
     lines.push(format!(
-        "| CSR Strategy | C:{:.0}% S:{:.0}% R:{:.0}% | {} |",
+        "| **Taxonomy** | {} → {} | Seek different families | [Taxonomy](#taxonomy) |",
+        family, genus
+    ));
+
+    lines.push(format!(
+        "| **Growth Strategy** | C:{:.0}% S:{:.0}% R:{:.0}% | {} | [Growth](#growth-compatibility) |",
         c, s, r, csr_short_guidance(csr)
     ));
 
-    // Structural
-    let height = get_f64(data, "height_m");
-    let layer = classify_structural_layer(height);
     lines.push(format!(
-        "| Structural | {} ({}) | {} |",
+        "| **Structure** | {} ({}) | {} | [Structure](#structural-role) |",
         layer.label(),
         height.map(|h| format!("{:.1}m", h)).unwrap_or_else(|| "?".to_string()),
         structural_short_guidance(layer)
     ));
 
-    // Mycorrhizal
-    let (amf, emf) = fungal_counts
-        .map(|c| (c.amf, c.emf))
-        .unwrap_or((0, 0));
-    let myco = classify_mycorrhizal(amf, emf);
     lines.push(format!(
-        "| Mycorrhizal | {} | {} |",
+        "| **Mycorrhizal** | {} | {} | [Network](#mycorrhizal-network) |",
         myco.label(),
         myco_short_guidance(myco)
     ));
 
-    // Pest Control
-    let herbivores = organism_counts.map(|c| c.herbivores).unwrap_or(0);
-    let predators = organism_counts.map(|c| c.predators).unwrap_or(0);
-    let entomopath = fungal_counts.map(|c| c.entomopathogens).unwrap_or(0);
     lines.push(format!(
-        "| Pest Control | {} pests, {} predators | {} |",
+        "| **Pest Control** | {} pests, {} predators | {} | [Pests](#pest-control) |",
         herbivores,
         predators + entomopath,
         pest_short_guidance(herbivores, predators)
     ));
 
-    // Disease Control
-    let mycoparasites = fungal_counts.map(|c| c.mycoparasites).unwrap_or(0);
     lines.push(format!(
-        "| Disease Control | {} mycoparasites | {} |",
+        "| **Disease Control** | {} disease fighters | {} | [Disease](#disease-control) |",
         mycoparasites,
         disease_short_guidance(mycoparasites)
     ));
 
-    // Pollinator
-    let pollinators = organism_counts.map(|c| c.pollinators).unwrap_or(0);
-    let (poll_level, _) = classify_pollinator_level(pollinators);
     lines.push(format!(
-        "| Pollinator | {} taxa | {} |",
+        "| **Pollinators** | {} species | {} | [Pollinators](#pollinator-support) |",
         pollinators,
         poll_level
     ));
+
+    // Key Companion Principles (merged from old "Top Companion Principles")
+    lines.push(String::new());
+    lines.push("**Key Principles for This Plant:**".to_string());
+
+    lines.push(format!("1. **Diversify taxonomy** - seek plants from different families than {}", family));
+
+    let csr_guidance = match csr {
+        CsrStrategy::CDominant => "avoid other C-dominant plants at same height",
+        CsrStrategy::SDominant => "compatible with most strategies",
+        CsrStrategy::RDominant => "pair with longer-lived S or balanced plants",
+        CsrStrategy::Balanced => "flexible positioning; compatible with most",
+    };
+    lines.push(format!("2. **Growth compatibility** - {}", csr_guidance));
+
+    let layer_guidance = match layer {
+        StructuralLayer::Canopy | StructuralLayer::SubCanopy => "pair with shade-tolerant understory",
+        StructuralLayer::TallShrub => "works as mid-layer; ground covers below",
+        StructuralLayer::Understory | StructuralLayer::GroundCover => "can grow under taller plants",
+    };
+    lines.push(format!("3. **Layer plants** - {}", layer_guidance));
+
+    let myco_guidance = match myco {
+        MycorrhizalType::AMF => "seek other AMF-associated plants for network benefits",
+        MycorrhizalType::EMF => "seek other EMF-associated plants for network benefits",
+        MycorrhizalType::Dual => "bridges both network types - very flexible",
+        MycorrhizalType::NonMycorrhizal => "no underground network constraints",
+    };
+    lines.push(format!("4. **Fungal network** - {}", myco_guidance));
 
     lines.join("\n")
 }
@@ -208,7 +237,7 @@ fn disease_short_guidance(mycoparasites: usize) -> &'static str {
 
 fn generate_gp1(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP1: Phylogenetic Independence".to_string());
+    lines.push("### Taxonomy".to_string());
     lines.push(String::new());
 
     let family = get_str(data, "family").unwrap_or("Unknown");
@@ -231,7 +260,7 @@ fn generate_gp1(data: &HashMap<String, Value>) -> String {
 
 fn generate_gp2(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP2: Growth Compatibility".to_string());
+    lines.push("### Growth Compatibility".to_string());
     lines.push(String::new());
 
     let c = get_f64(data, "C").unwrap_or(0.0);
@@ -331,7 +360,7 @@ fn generate_gp3(
     fungal_counts: Option<&FungalCounts>,
 ) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP3: Pest Control Potential".to_string());
+    lines.push("### Pest Control".to_string());
     lines.push(String::new());
 
     let herbivores = organism_counts.map(|c| c.herbivores).unwrap_or(0);
@@ -380,7 +409,7 @@ fn generate_gp3(
 
 fn generate_gp4(fungal_counts: Option<&FungalCounts>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP4: Disease Control Potential".to_string());
+    lines.push("### Disease Control".to_string());
     lines.push(String::new());
 
     let mycoparasites = fungal_counts.map(|c| c.mycoparasites).unwrap_or(0);
@@ -408,7 +437,7 @@ fn generate_gp4(fungal_counts: Option<&FungalCounts>) -> String {
 
 fn generate_gp5(fungal_counts: Option<&FungalCounts>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP5: Mycorrhizal Network".to_string());
+    lines.push("### Mycorrhizal Network".to_string());
     lines.push(String::new());
 
     let (amf, emf) = fungal_counts.map(|c| (c.amf, c.emf)).unwrap_or((0, 0));
@@ -455,7 +484,7 @@ fn generate_gp5(fungal_counts: Option<&FungalCounts>) -> String {
 
 fn generate_gp6(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP6: Structural Role".to_string());
+    lines.push("### Structural Role".to_string());
     lines.push(String::new());
 
     let height_m = get_f64(data, "height_m");
@@ -518,7 +547,7 @@ fn generate_gp6(data: &HashMap<String, Value>) -> String {
 
 fn generate_gp7(organism_counts: Option<&OrganismCounts>) -> String {
     let mut lines = Vec::new();
-    lines.push("### GP7: Pollinator Support".to_string());
+    lines.push("### Pollinator Support".to_string());
     lines.push(String::new());
 
     let pollinators = organism_counts.map(|c| c.pollinators).unwrap_or(0);
@@ -556,72 +585,43 @@ fn generate_gp7(organism_counts: Option<&OrganismCounts>) -> String {
 }
 
 // ============================================================================
-// Summary Guidance
+// Cautions Section
 // ============================================================================
 
-fn generate_companion_guidance(
+fn generate_cautions(
     data: &HashMap<String, Value>,
     _organism_counts: Option<&OrganismCounts>,
-    fungal_counts: Option<&FungalCounts>,
+    _fungal_counts: Option<&FungalCounts>,
 ) -> String {
     let mut lines = Vec::new();
-    lines.push("### Top Companion Principles".to_string());
-    lines.push(String::new());
-    lines.push("Based on this plant's characteristics:".to_string());
-    lines.push(String::new());
 
     let family = get_str(data, "family").unwrap_or("Unknown");
     let c = get_f64(data, "C").unwrap_or(0.0);
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
     let csr = classify_csr_percentile(c, s, r);
-    let height_m = get_f64(data, "height_m");
-    let layer = classify_structural_layer(height_m);
-    let (amf, emf) = fungal_counts.map(|c| (c.amf, c.emf)).unwrap_or((0, 0));
-    let myco = classify_mycorrhizal(amf, emf);
+    let eive_l = get_eive(data, "L");
 
-    lines.push(format!("1. **Taxonomic diversity** - seek plants from different families than {}", family));
-
-    let csr_guidance = match csr {
-        CsrStrategy::CDominant => "avoid other C-dominant plants at same height",
-        CsrStrategy::SDominant => "compatible with most strategies",
-        CsrStrategy::RDominant => "pair with longer-lived S or balanced plants",
-        CsrStrategy::Balanced => "flexible positioning; compatible with most",
-    };
-    lines.push(format!("2. **CSR compatibility** - {}", csr_guidance));
-
-    let layer_guidance = match layer {
-        StructuralLayer::Canopy | StructuralLayer::SubCanopy => "pair with shade-tolerant understory",
-        StructuralLayer::TallShrub => "works as mid-layer; ground covers below",
-        StructuralLayer::Understory | StructuralLayer::GroundCover => "can grow under taller plants",
-    };
-    lines.push(format!("3. **Structural layering** - {}", layer_guidance));
-
-    let myco_guidance = match myco {
-        MycorrhizalType::AMF => "seek other AMF-associated plants",
-        MycorrhizalType::EMF => "seek other EMF-associated plants",
-        MycorrhizalType::Dual => "bridges both network types",
-        MycorrhizalType::NonMycorrhizal => "no network constraints",
-    };
-    lines.push(format!("4. **Mycorrhizal network** - {}", myco_guidance));
-
-    // Cautions
     let mut cautions = Vec::new();
-    cautions.push(format!("- Avoid clustering multiple {} plants (shared pests)", family));
+    cautions.push(format!("- Avoid clustering multiple {} plants (shared pests and diseases)", family));
 
     if csr == CsrStrategy::CDominant {
-        cautions.push("- C-dominant: may outcompete slower neighbours".to_string());
+        cautions.push("- C-dominant strategy: may outcompete slower-growing neighbours".to_string());
     }
 
-    let eive_l = get_eive(data, "L");
+    if csr == CsrStrategy::RDominant {
+        cautions.push("- R-dominant strategy: short-lived, plan for succession or self-seeding".to_string());
+    }
+
     if let Some(l) = eive_l {
         if l > 7.47 {
-            cautions.push("- Sun-loving: will fail under canopy shade".to_string());
+            cautions.push("- Sun-loving: will struggle or fail under canopy shade".to_string());
+        } else if l < 3.2 {
+            cautions.push("- Shade-adapted: may struggle in full sun without canopy protection".to_string());
         }
     }
 
     if !cautions.is_empty() {
-        lines.push(String::new());
         lines.push("### Cautions".to_string());
         lines.push(String::new());
         for c in cautions {

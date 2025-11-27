@@ -26,6 +26,7 @@ pub struct OrganismLists {
     pub pollinators: Vec<String>,
     pub herbivores: Vec<String>,  // Includes parasites (host plant relationships)
     pub predators: Vec<String>,   // Beneficial insects that prey on pests
+    pub fungivores: Vec<String>,  // Organisms that eat fungi (biocontrol for pathogenic fungi)
 }
 
 impl OrganismLists {
@@ -54,9 +55,11 @@ pub struct OrganismProfile {
     pub pollinators_by_category: Vec<CategorizedOrganisms>,
     pub herbivores_by_category: Vec<CategorizedOrganisms>,
     pub predators_by_category: Vec<CategorizedOrganisms>,
+    pub fungivores_by_category: Vec<CategorizedOrganisms>,
     pub total_pollinators: usize,
     pub total_herbivores: usize,
     pub total_predators: usize,
+    pub total_fungivores: usize,
 }
 
 /// Fungal association counts from FungalTraits/FunGuild data.

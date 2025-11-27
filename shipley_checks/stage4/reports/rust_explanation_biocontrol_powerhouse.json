@@ -1,6 +1,6 @@
 {
   "overall": {
-    "score": 82.73164625188517,
+    "score": 82.73964409191866,
     "stars": "★★★★☆",
     "label": "Excellent",
     "message": "Overall guild compatibility: 82.7/100"
@@ -85,7 +85,7 @@
       {
         "code": "M1",
         "name": "Pest & Pathogen Independence",
-        "score": 9.121523763196208,
+        "score": 9.177508643430599,
         "raw": 0.4943434744133984,
         "interpretation": "Poor"
       },
@@ -273,22 +273,22 @@
       {
         "family": "Adoxaceae",
         "genus": "Sambucus",
-        "display_name": "Sambucus nigra (Parsley-leaved Elder, Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry)"
+        "display_name": "Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder)"
       },
       {
         "family": "Fagaceae",
         "genus": "Quercus",
-        "display_name": "Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak)"
+        "display_name": "Quercus robur (Pedunculate Oak, Common Oak, English Oak, Truffle Oak, Acorn Tree)"
       },
       {
         "family": "Rosaceae",
         "genus": "Crataegus",
-        "display_name": "Crataegus monogyna (English Hawthorn, May, Common Hawthorn, Neapolitan Medlar, Hawthorn)"
+        "display_name": "Crataegus monogyna (May, Common Hawthorn, English Hawthorn, Neapolitan Medlar, Hawthorn)"
       },
       {
         "family": "Rosaceae",
         "genus": "Fragaria",
-        "display_name": "Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
+        "display_name": "Fragaria vesca (Wood Strawberry, Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry)"
       },
       {
         "family": "Rosaceae",
@@ -298,12 +298,12 @@
       {
         "family": "Rosaceae",
         "genus": "Rosa",
-        "display_name": "Rosa canina (Canker Rose, Dog Rose, Dog-rose)"
+        "display_name": "Rosa canina (Dog Rose, Dog-rose, Canker Rose)"
       },
       {
         "family": "Sapindaceae",
         "genus": "Acer",
-        "display_name": "Acer saccharinum (River Maple, White Maple, Silver Maple)"
+        "display_name": "Acer saccharinum (Silver Maple, River Maple, White Maple)"
       }
     ],
     "family_distribution": [
@@ -2650,16 +2650,16 @@
           "network_contribution": 0.7142857142857143
         },
         {
-          "pollinator_name": "Apoidea",
-          "plant_count": 3,
-          "category": "OtherPollinators",
-          "network_contribution": 0.42857142857142855
-        },
-        {
           "pollinator_name": "Apis mellifera",
           "plant_count": 5,
           "category": "HoneyBees",
           "network_contribution": 0.7142857142857143
+        },
+        {
+          "pollinator_name": "Apoidea",
+          "plant_count": 3,
+          "category": "OtherPollinators",
+          "network_contribution": 0.42857142857142855
         },
         {
           "pollinator_name": "Andrena cineraria",
@@ -2873,13 +2873,13 @@
     "predator_category_counts": {
       "Beetles": 3,
       "Hoverflies": 2,
-      "OtherPredators": 6,
       "Flies": 3,
       "Wasps": 3,
       "Spiders": 1,
       "Birds": 7,
       "Ants": 1,
-      "Butterflies": 2
+      "Butterflies": 2,
+      "OtherPredators": 6
     },
     "herbivore_category_counts": {
       "Aphids": 1,

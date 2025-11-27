@@ -6,7 +6,7 @@
 
 | Metric | Score | Interpretation |
 |--------|-------|----------------|
-| M1 - Pest & Pathogen Independence | 9.1 | Poor |
+| M1 - Pest & Pathogen Independence | 9.2 | Poor |
 | M2 - Growth Compatibility | 70.0 | Good |
 | M3 - Insect Pest Control | 100.0 | Excellent |
 | M4 - Disease Suppression | 100.0 | Excellent |
@@ -22,7 +22,7 @@
 
 ## Metrics Explanation
 
-### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 9.1/100]
+### Pest and Pathogen Independence (Measured by Phylogenetic Diversity) [M1 - 9.2/100]
 
 9th percentile (Faith's PD: 704.52) - Plants are closely related (low phylogenetic diversity)  
 Many plants share recent evolutionary ancestry. Closely related plants typically share the same pests, pathogens, and disease vulnerabilities, increasing risk of rapid disease spread through the guild.  
@@ -35,13 +35,13 @@ Many plants share recent evolutionary ancestry. Closely related plants typically
 
 | Family | Genus | Plant (Vernacular Name) |
 |--------|-------|-------------------------|
-| Adoxaceae | Sambucus | Sambucus nigra (Parsley-leaved Elder, Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry) |
-| Fagaceae | Quercus | Quercus robur (Truffle Oak, Acorn Tree, English Oak, Pedunculate Oak, Common Oak) |
-| Rosaceae | Crataegus | Crataegus monogyna (English Hawthorn, May, Common Hawthorn, Neapolitan Medlar, Hawthorn) |
-| Rosaceae | Fragaria | Fragaria vesca (Thin-leaved Wild Strawberry, Hillside Strawberry, Wood Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
+| Adoxaceae | Sambucus | Sambucus nigra (Europese Vlier, Elder, Black Elderberry, European Elder, European Black Elderberry, Parsley-leaved Elder) |
+| Fagaceae | Quercus | Quercus robur (Pedunculate Oak, Common Oak, English Oak, Truffle Oak, Acorn Tree) |
+| Rosaceae | Crataegus | Crataegus monogyna (May, Common Hawthorn, English Hawthorn, Neapolitan Medlar, Hawthorn) |
+| Rosaceae | Fragaria | Fragaria vesca (Wood Strawberry, Thin-leaved Wild Strawberry, Hillside Strawberry, Wild Strawberry, Woodland Strawberry, Alpine Strawberry, European Strawberry) |
 | Rosaceae | Prunus | Prunus spinosa (Sloe, Blackthorn) |
-| Rosaceae | Rosa | Rosa canina (Canker Rose, Dog Rose, Dog-rose) |
-| Sapindaceae | Acer | Acer saccharinum (River Maple, White Maple, Silver Maple) |
+| Rosaceae | Rosa | Rosa canina (Dog Rose, Dog-rose, Canker Rose) |
+| Sapindaceae | Acer | Acer saccharinum (Silver Maple, River Maple, White Maple) |
 
 **Family clustering:** Rosaceae (4 plants), Adoxaceae (1 plant), Fagaceae (1 plant), Sapindaceae (1 plant)
 

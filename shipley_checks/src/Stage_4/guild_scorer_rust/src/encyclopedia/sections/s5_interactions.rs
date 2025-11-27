@@ -46,6 +46,10 @@ pub fn generate(
     sections.push(String::new());
     sections.push(generate_predator_section(organism_counts, organism_profile));
 
+    // Fungivores (natural disease control - eat pathogenic fungi)
+    sections.push(String::new());
+    sections.push(generate_fungivore_section(organism_profile));
+
     // Diseases
     sections.push(String::new());
     sections.push(generate_disease_section(fungal_counts, ranked_pathogens));
@@ -108,7 +112,7 @@ fn generate_pollinator_section(
     }
 
     let (level, interpretation) = classify_pollinator_level(count);
-    lines.push(format!("**{}** ({} taxa documented)", level, count));
+    lines.push(format!("**{}** ({} species documented)", level, count));
     lines.push(format!("*{}*", interpretation));
 
     // Rich display with organism names by category
@@ -150,7 +154,7 @@ fn generate_herbivore_section(
     }
 
     let (level, advice) = classify_pest_level(count);
-    lines.push(format!("**{}** ({} taxa documented)", level, count));
+    lines.push(format!("**{}** ({} species documented)", level, count));
     lines.push(format!("*{}*", advice));
 
     // Rich display with organism names by category
@@ -182,7 +186,7 @@ fn generate_predator_section(
         return lines.join("\n");
     }
 
-    lines.push(format!("**{} taxa documented** - natural pest control agents", count));
+    lines.push(format!("**{} species documented** - natural pest control agents", count));
 
     // Rich display with organism names by category
     if let Some(p) = profile {
@@ -194,6 +198,36 @@ fn generate_predator_section(
 
     lines.push(String::new());
     lines.push("*These beneficial organisms help control pest populations.*".to_string());
+
+    lines.join("\n")
+}
+
+fn generate_fungivore_section(
+    profile: Option<&OrganismProfile>,
+) -> String {
+    let mut lines = Vec::new();
+    lines.push("### Fungivores (Disease Control)".to_string());
+
+    let count = profile
+        .map(|p| p.total_fungivores)
+        .unwrap_or(0);
+
+    if count == 0 {
+        lines.push("No fungivore records available.".to_string());
+        return lines.join("\n");
+    }
+
+    lines.push(format!("**{} species documented** - organisms that eat fungi", count));
+    lines.push(String::new());
+    lines.push("*Fungivores help control plant diseases by consuming pathogenic fungi. They provide natural disease suppression in the garden ecosystem.*".to_string());
+
+    // Rich display with organism names by category
+    if let Some(p) = profile {
+        if !p.fungivores_by_category.is_empty() {
+            lines.push(String::new());
+            lines.extend(format_organisms_by_category(&p.fungivores_by_category, 3));
+        }
+    }
 
     lines.join("\n")
 }
@@ -213,7 +247,7 @@ fn generate_disease_section(
 
     let (level, advice) = classify_disease_level(pathogen_count);
 
-    lines.push(format!("**Disease Risk**: {} ({} taxa observed)", level, pathogen_count));
+    lines.push(format!("**Disease Risk**: {} ({} pathogens observed)", level, pathogen_count));
     lines.push(format!("*{}*", advice));
 
     // Display top pathogens with observation counts
@@ -250,31 +284,46 @@ fn generate_beneficial_fungi_section(
     beneficial_fungi: Option<&BeneficialFungi>,
 ) -> String {
     let mut lines = Vec::new();
-    lines.push("### Beneficial Associations".to_string());
+    lines.push("### Beneficial Fungi".to_string());
+    lines.push(String::new());
+    lines.push("*Fungi form important partnerships with plants. Some help roots absorb nutrients, others protect against diseases or pests.*".to_string());
 
     if let Some(c) = counts {
-        // Mycorrhizal associations
         let myco_type = classify_mycorrhizal(c.amf, c.emf);
 
-        lines.push(format!("**Mycorrhizal**: {}", myco_type.label()));
+        // Root Partnership Fungi (Mycorrhizal)
+        lines.push(String::new());
+        lines.push("**Root Partnership Fungi (Mycorrhizal)**".to_string());
+        lines.push(format!("Status: {}", myco_type.label()));
 
         if c.amf > 0 {
-            lines.push(format!("- {} AMF species observed (aids phosphorus uptake)", c.amf));
+            lines.push(format!(
+                "- **Arbuscular mycorrhizal fungi** ({} species): Form networks inside root cells. Help plant absorb phosphorus and other nutrients from soil.",
+                c.amf
+            ));
         }
         if c.emf > 0 {
-            lines.push(format!("- {} EMF species observed (nutrient + defense signaling)", c.emf));
+            lines.push(format!(
+                "- **Ectomycorrhizal fungi** ({} species): Form sheaths around roots. Help absorb nutrients and can signal neighboring plants about pest attacks.",
+                c.emf
+            ));
         }
         if c.endophytes > 0 {
-            lines.push(format!("- {} endophytic fungi observed (often protective)", c.endophytes));
+            lines.push(format!(
+                "- **Endophytic fungi** ({} species): Live inside plant tissues without causing harm. Often help plants tolerate drought or deter herbivores.",
+                c.endophytes
+            ));
+        }
+        if c.amf == 0 && c.emf == 0 && c.endophytes == 0 {
+            lines.push("- No root partnership fungi documented for this species.".to_string());
         }
 
-        // Biocontrol fungi with species names
+        // Pest & Disease Control Fungi
         let has_biocontrol = c.mycoparasites > 0 || c.entomopathogens > 0;
         if has_biocontrol {
             lines.push(String::new());
-            lines.push("**Biocontrol Fungi**:".to_string());
+            lines.push("**Pest & Disease Control Fungi**".to_string());
 
-            // Display mycoparasites with species names
             if c.mycoparasites > 0 {
                 if let Some(bf) = beneficial_fungi {
                     if !bf.mycoparasites.is_empty() {
@@ -282,26 +331,25 @@ fn generate_beneficial_fungi_section(
                         let extra = bf.mycoparasites.len().saturating_sub(3);
                         let extra_str = if extra > 0 { format!(", +{} more", extra) } else { String::new() };
                         lines.push(format!(
-                            "- **Mycoparasites** ({}): {}{}",
+                            "- **Disease-fighting fungi** ({} species): {}{} - These fungi attack and destroy plant pathogens like mildews and rusts.",
                             bf.mycoparasites.len(),
                             display.join(", "),
                             extra_str
                         ));
                     } else {
                         lines.push(format!(
-                            "- {} mycoparasitic fungi observed (attack plant diseases)",
+                            "- **Disease-fighting fungi** ({} species): Attack and destroy plant pathogens like mildews and rusts.",
                             c.mycoparasites
                         ));
                     }
                 } else {
                     lines.push(format!(
-                        "- {} mycoparasitic fungi observed (attack plant diseases)",
+                        "- **Disease-fighting fungi** ({} species): Attack and destroy plant pathogens like mildews and rusts.",
                         c.mycoparasites
                     ));
                 }
             }
 
-            // Display entomopathogens with species names
             if c.entomopathogens > 0 {
                 if let Some(bf) = beneficial_fungi {
                     if !bf.entomopathogens.is_empty() {
@@ -309,20 +357,20 @@ fn generate_beneficial_fungi_section(
                         let extra = bf.entomopathogens.len().saturating_sub(3);
                         let extra_str = if extra > 0 { format!(", +{} more", extra) } else { String::new() };
                         lines.push(format!(
-                            "- **Insect-Killing Fungi** ({}): {}{}",
+                            "- **Insect-killing fungi** ({} species): {}{} - Natural pest control agents that infect and kill harmful insects.",
                             bf.entomopathogens.len(),
                             display.join(", "),
                             extra_str
                         ));
                     } else {
                         lines.push(format!(
-                            "- {} insect-killing fungi observed (natural pest control)",
+                            "- **Insect-killing fungi** ({} species): Natural pest control agents that infect and kill harmful insects.",
                             c.entomopathogens
                         ));
                     }
                 } else {
                     lines.push(format!(
-                        "- {} insect-killing fungi observed (natural pest control)",
+                        "- **Insect-killing fungi** ({} species): Natural pest control agents that infect and kill harmful insects.",
                         c.entomopathogens
                     ));
                 }
@@ -333,10 +381,10 @@ fn generate_beneficial_fungi_section(
         lines.push(String::new());
         match myco_type {
             MycorrhizalType::AMF | MycorrhizalType::EMF | MycorrhizalType::Dual => {
-                lines.push("*Avoid excessive tillage to preserve mycorrhizal networks*".to_string());
+                lines.push("**Gardening tip**: Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.".to_string());
             }
             MycorrhizalType::NonMycorrhizal => {
-                lines.push("*No documented mycorrhizal associations*".to_string());
+                lines.push("**Note**: This plant does not rely heavily on mycorrhizal partnerships. Standard cultivation practices apply.".to_string());
             }
         }
     } else {
@@ -371,7 +419,7 @@ mod tests {
 
         let output = generate(&data, Some(&organisms), Some(&fungi), None, None, None);
         assert!(output.contains("Pollinators"));
-        assert!(output.contains("15 taxa"));
+        assert!(output.contains("15 species"));
         assert!(output.contains("AMF"));
     }
 }
