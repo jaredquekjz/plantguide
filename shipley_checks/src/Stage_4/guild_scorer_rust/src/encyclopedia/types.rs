@@ -19,6 +19,46 @@ pub struct OrganismCounts {
     pub predators: usize,
 }
 
+/// Organism interaction lists with actual species names.
+/// Source: organism_profiles_11711.parquet (list columns)
+#[derive(Debug, Clone, Default)]
+pub struct OrganismLists {
+    pub pollinators: Vec<String>,
+    pub herbivores: Vec<String>,  // Includes parasites (host plant relationships)
+    pub predators: Vec<String>,   // Beneficial insects that prey on pests
+}
+
+impl OrganismLists {
+    /// Convert to counts for backward compatibility
+    pub fn to_counts(&self) -> OrganismCounts {
+        OrganismCounts {
+            pollinators: self.pollinators.len(),
+            visitors: 0, // Not tracked in lists
+            herbivores: self.herbivores.len(),
+            pathogens: 0, // Not tracked in lists (see FungalCounts)
+            predators: self.predators.len(),
+        }
+    }
+}
+
+/// Organisms grouped by category for display
+#[derive(Debug, Clone, Default)]
+pub struct CategorizedOrganisms {
+    pub category: String,
+    pub organisms: Vec<String>,
+}
+
+/// Full organism profile with categorization for encyclopedia display
+#[derive(Debug, Clone, Default)]
+pub struct OrganismProfile {
+    pub pollinators_by_category: Vec<CategorizedOrganisms>,
+    pub herbivores_by_category: Vec<CategorizedOrganisms>,
+    pub predators_by_category: Vec<CategorizedOrganisms>,
+    pub total_pollinators: usize,
+    pub total_herbivores: usize,
+    pub total_predators: usize,
+}
+
 /// Fungal association counts from FungalTraits/FunGuild data.
 /// Source: fungal_guilds_hybrid_11711.parquet
 #[derive(Debug, Clone, Default)]

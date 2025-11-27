@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T05:07:31Z"
+generated: "2025-11-27T05:31:41Z"
 version: "2.0"
 ---
 
@@ -181,14 +181,36 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 ## Biological Interactions
 
-### Pollinators
-**Rating**: Exceptional (160 taxa)
-Major pollinator resource (top 10%)
+*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
-### Herbivores
-**Documented**: 7 taxa
-**Pest Pressure**: Above average - Some pest pressure expected
-*Includes insects, mites, and other invertebrate feeders/parasites*
+### Pollinators
+**Exceptional** (160 taxa documented)
+*Major pollinator resource (top 10%)*
+
+- **Other Pollinators** (50): Hebeclinium sericeum, Musca autumnalis, Xestia triangulum, +47 more
+- **Solitary Bees** (34): Andrena cineraria, Andrena flavipes, Lasioglossum malachurum, +31 more
+- **Bumblebees** (28): Bombus rupestris, Bombus huntii, Bombus sp., +25 more
+- **Hoverflies** (15): Eristalis, Eupeodes luniger, Eupeodes corollae, +12 more
+- **Flies** (12): Siphona geniculata, Pegoplata aestiva, Pollenia rudis, +9 more
+- **Butterflies** (6): Pieris rapae, Pyronia tithonus, Maniola jurtina, +3 more
+- **Weevils** (6): Ischnopterapion virens, Ischnopterapion loti, Protapion apricans, +3 more
+- **Wasps** (3): Vespula vulgaris, Crabronidae, Ectemnius
+- **Ladybugs** (2): Harmonia axyridis, Coccinella septempunctata
+- **Soldier Beetles** (2): Rhagonycha fulva, Cantharis cryptica
+- **Honey Bees** (1): Apis mellifera
+- **Moths** (1): Amphipyra tragopoginis
+
+### Herbivores & Parasites
+**Above average** (7 taxa documented)
+*Some pest pressure expected*
+
+- **Other Herbivores** (4): Rhizophagus, Chlamydatus pullus, Bruchidius dispar, +1 more
+- **Butterflies** (2): Neptis sappho, Rapala arata
+- **Aphids** (1): Acyrthosiphon pisum
+
+### Beneficial Insects
+No predator/beneficial insect records available.
+*This plant may benefit from companions that attract pest predators.*
 
 ### Diseases
 **Fungal Diseases**: 11 species observed

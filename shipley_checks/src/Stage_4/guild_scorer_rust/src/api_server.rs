@@ -366,9 +366,10 @@ async fn get_encyclopedia(
     };
 
     // 4. Generate encyclopedia markdown
+    // Note: OrganismProfile not yet implemented in API - pass None for now
     let markdown = state
         .encyclopedia
-        .generate(&id, &plant_data, organism_counts, fungal_counts)
+        .generate(&id, &plant_data, organism_counts, fungal_counts, None)
         .map_err(|e| AppError::Internal(e))?;
 
     // Cache the result

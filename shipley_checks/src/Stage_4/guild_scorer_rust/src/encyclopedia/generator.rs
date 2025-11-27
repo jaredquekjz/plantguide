@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use serde_json::Value;
 use chrono::Utc;
 
-use crate::encyclopedia::types::{OrganismCounts, FungalCounts};
+use crate::encyclopedia::types::{OrganismCounts, FungalCounts, OrganismProfile};
 use crate::encyclopedia::sections::{
     s1_identity,
     s2_requirements,
@@ -37,6 +37,7 @@ impl EncyclopediaGenerator {
     /// * `plant_data` - HashMap of plant attributes from Phase 7 parquet
     /// * `organism_counts` - Optional organism interaction counts
     /// * `fungal_counts` - Optional fungal association counts
+    /// * `organism_profile` - Optional categorized organism lists for rich display
     ///
     /// # Returns
     /// Complete markdown document as a String, or error message.
@@ -46,6 +47,7 @@ impl EncyclopediaGenerator {
         plant_data: &HashMap<String, Value>,
         organism_counts: Option<OrganismCounts>,
         fungal_counts: Option<FungalCounts>,
+        organism_profile: Option<OrganismProfile>,
     ) -> Result<String, String> {
         let mut sections = Vec::new();
 
@@ -69,6 +71,7 @@ impl EncyclopediaGenerator {
             plant_data,
             organism_counts.as_ref(),
             fungal_counts.as_ref(),
+            organism_profile.as_ref(),
         ));
 
         // S6: Guild Potential (Companion Planting)
@@ -162,7 +165,7 @@ mod tests {
         data.insert("family".to_string(), Value::String("Testaceae".to_string()));
         data.insert("genus".to_string(), Value::String("Testus".to_string()));
 
-        let result = generator.generate("wfo-test", &data, None, None);
+        let result = generator.generate("wfo-test", &data, None, None, None);
         assert!(result.is_ok());
 
         let content = result.unwrap();

@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T05:07:31Z"
+generated: "2025-11-27T05:31:41Z"
 version: "2.0"
 ---
 
@@ -177,14 +177,32 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 
 ## Biological Interactions
 
-### Pollinators
-**Rating**: Very High (40 taxa)
-Strong pollinator magnet
+*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
-### Herbivores
-**Documented**: 19 taxa
-**Pest Pressure**: High - Multiple pest species; monitor closely
-*Includes insects, mites, and other invertebrate feeders/parasites*
+### Pollinators
+**Very High** (40 taxa documented)
+*Strong pollinator magnet*
+
+- **Other Pollinators** (14): Allantus, Hoplia argentea, Pachytodes cerambyciformis, +11 more
+- **Hoverflies** (11): Platycheirus albimanus, Eristalis pertinax, Chrysotoxum bicincta, +8 more
+- **Bumblebees** (8): Bombus sylvestris, Bombus lapidarius, Bombus lucorum, +5 more
+- **Flies** (3): Empis livida, Phaonia, Phaonia angelicae
+- **Solitary Bees** (3): Andrena coitana, Lasioglossum fulvicorne, Andrena cineraria
+- **Honey Bees** (1): Apis mellifera
+
+### Herbivores & Parasites
+**High** (19 taxa documented)
+*Multiple pest species; monitor closely*
+
+- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +12 more
+- **Caterpillars** (1): Grapholita tenebrosana
+- **Mites** (1): Tetranychus urticae
+- **Moths** (1): Malacosoma californica pluvialis
+- **Scale Insects** (1): Chorizococcus
+
+### Beneficial Insects
+No predator/beneficial insect records available.
+*This plant may benefit from companions that attract pest predators.*
 
 ### Diseases
 **Fungal Diseases**: 68 species observed

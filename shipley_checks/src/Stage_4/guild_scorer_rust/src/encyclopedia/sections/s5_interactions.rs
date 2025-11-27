@@ -25,17 +25,24 @@ pub fn generate(
     _data: &HashMap<String, Value>,
     organism_counts: Option<&OrganismCounts>,
     fungal_counts: Option<&FungalCounts>,
+    organism_profile: Option<&OrganismProfile>,
 ) -> String {
     let mut sections = Vec::new();
     sections.push("## Biological Interactions".to_string());
+    sections.push(String::new());
+    sections.push("*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*".to_string());
 
     // Pollinators
     sections.push(String::new());
-    sections.push(generate_pollinator_section(organism_counts));
+    sections.push(generate_pollinator_section(organism_counts, organism_profile));
 
     // Herbivores/Pests
     sections.push(String::new());
-    sections.push(generate_herbivore_section(organism_counts));
+    sections.push(generate_herbivore_section(organism_counts, organism_profile));
+
+    // Beneficial Insects (Predators)
+    sections.push(String::new());
+    sections.push(generate_predator_section(organism_counts, organism_profile));
 
     // Diseases
     sections.push(String::new());
@@ -48,19 +55,71 @@ pub fn generate(
     sections.join("\n")
 }
 
-fn generate_pollinator_section(counts: Option<&OrganismCounts>) -> String {
+/// Format organisms by category for display (max 3 per category, show count if more)
+fn format_organisms_by_category(categories: &[CategorizedOrganisms], max_per_category: usize) -> Vec<String> {
+    let mut lines = Vec::new();
+
+    for cat in categories {
+        if cat.organisms.is_empty() {
+            continue;
+        }
+
+        let display_names: Vec<&str> = cat.organisms.iter()
+            .take(max_per_category)
+            .map(|s| s.as_str())
+            .collect();
+
+        let extra = cat.organisms.len().saturating_sub(max_per_category);
+        let extra_str = if extra > 0 {
+            format!(", +{} more", extra)
+        } else {
+            String::new()
+        };
+
+        lines.push(format!(
+            "- **{}** ({}): {}{}",
+            cat.category,
+            cat.organisms.len(),
+            display_names.join(", "),
+            extra_str
+        ));
+    }
+
+    lines
+}
+
+fn generate_pollinator_section(
+    counts: Option<&OrganismCounts>,
+    profile: Option<&OrganismProfile>,
+) -> String {
     let mut lines = Vec::new();
     lines.push("### Pollinators".to_string());
 
-    let count = counts.map(|c| c.pollinators).unwrap_or(0);
-    let (level, interpretation) = classify_pollinator_level(count);
+    let count = profile
+        .map(|p| p.total_pollinators)
+        .or_else(|| counts.map(|c| c.pollinators))
+        .unwrap_or(0);
 
-    lines.push(format!("**Rating**: {} ({} taxa)", level, count));
-    lines.push(interpretation.to_string());
+    if count == 0 {
+        lines.push("No pollinator records available.".to_string());
+        return lines.join("\n");
+    }
+
+    let (level, interpretation) = classify_pollinator_level(count);
+    lines.push(format!("**{}** ({} taxa documented)", level, count));
+    lines.push(format!("*{}*", interpretation));
+
+    // Rich display with organism names by category
+    if let Some(p) = profile {
+        if !p.pollinators_by_category.is_empty() {
+            lines.push(String::new());
+            lines.extend(format_organisms_by_category(&p.pollinators_by_category, 3));
+        }
+    }
 
     // Visitor count if available (broader than strict pollinators)
     if let Some(c) = counts {
-        if c.visitors > c.pollinators {
+        if c.visitors > c.pollinators && c.visitors > 0 {
             lines.push(format!(
                 "*Plus {} additional flower visitors observed*",
                 c.visitors - c.pollinators
@@ -71,20 +130,68 @@ fn generate_pollinator_section(counts: Option<&OrganismCounts>) -> String {
     lines.join("\n")
 }
 
-fn generate_herbivore_section(counts: Option<&OrganismCounts>) -> String {
+fn generate_herbivore_section(
+    counts: Option<&OrganismCounts>,
+    profile: Option<&OrganismProfile>,
+) -> String {
     let mut lines = Vec::new();
-    lines.push("### Herbivores".to_string());
+    lines.push("### Herbivores & Parasites".to_string());
 
-    let count = counts.map(|c| c.herbivores).unwrap_or(0);
-    let (level, advice) = classify_pest_level(count);
+    let count = profile
+        .map(|p| p.total_herbivores)
+        .or_else(|| counts.map(|c| c.herbivores))
+        .unwrap_or(0);
 
-    lines.push(format!("**Documented**: {} taxa", count));
-    lines.push(format!("**Pest Pressure**: {} - {}", level, advice));
-
-    // Note about what herbivores includes
-    if count > 0 {
-        lines.push("*Includes insects, mites, and other invertebrate feeders/parasites*".to_string());
+    if count == 0 {
+        lines.push("No herbivore/parasite records available.".to_string());
+        return lines.join("\n");
     }
+
+    let (level, advice) = classify_pest_level(count);
+    lines.push(format!("**{}** ({} taxa documented)", level, count));
+    lines.push(format!("*{}*", advice));
+
+    // Rich display with organism names by category
+    if let Some(p) = profile {
+        if !p.herbivores_by_category.is_empty() {
+            lines.push(String::new());
+            lines.extend(format_organisms_by_category(&p.herbivores_by_category, 3));
+        }
+    }
+
+    lines.join("\n")
+}
+
+fn generate_predator_section(
+    counts: Option<&OrganismCounts>,
+    profile: Option<&OrganismProfile>,
+) -> String {
+    let mut lines = Vec::new();
+    lines.push("### Beneficial Insects".to_string());
+
+    let count = profile
+        .map(|p| p.total_predators)
+        .or_else(|| counts.map(|c| c.predators))
+        .unwrap_or(0);
+
+    if count == 0 {
+        lines.push("No predator/beneficial insect records available.".to_string());
+        lines.push("*This plant may benefit from companions that attract pest predators.*".to_string());
+        return lines.join("\n");
+    }
+
+    lines.push(format!("**{} taxa documented** - natural pest control agents", count));
+
+    // Rich display with organism names by category
+    if let Some(p) = profile {
+        if !p.predators_by_category.is_empty() {
+            lines.push(String::new());
+            lines.extend(format_organisms_by_category(&p.predators_by_category, 3));
+        }
+    }
+
+    lines.push(String::new());
+    lines.push("*These beneficial organisms help control pest populations.*".to_string());
 
     lines.join("\n")
 }
@@ -186,7 +293,7 @@ mod tests {
             pathogenic: 5,
         };
 
-        let output = generate(&data, Some(&organisms), Some(&fungi));
+        let output = generate(&data, Some(&organisms), Some(&fungi), None);
         assert!(output.contains("Pollinators"));
         assert!(output.contains("15 taxa"));
         assert!(output.contains("AMF"));

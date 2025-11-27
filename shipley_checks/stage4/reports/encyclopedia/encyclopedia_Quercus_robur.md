@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T05:07:30Z"
+generated: "2025-11-27T05:31:40Z"
 version: "2.0"
 ---
 
@@ -182,14 +182,24 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 
 ## Biological Interactions
 
-### Pollinators
-**Rating**: Typical (14 taxa)
-Average pollinator observations
+*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
-### Herbivores
-**Documented**: 19 taxa
-**Pest Pressure**: High - Multiple pest species; monitor closely
-*Includes insects, mites, and other invertebrate feeders/parasites*
+### Pollinators
+**Typical** (14 taxa documented)
+*Average pollinator observations*
+
+- **Other Pollinators** (14): Sympiesis gordius, Cirrospilus diallus, Dacnusa areolaris, +11 more
+
+### Herbivores & Parasites
+**High** (19 taxa documented)
+*Multiple pest species; monitor closely*
+
+- **Other Herbivores** (18): Cynips quercusfolii, Andricus kollari, Acrocercops brongniardella, +15 more
+- **Predatory Bugs** (1): Andricus infectorius
+
+### Beneficial Insects
+No predator/beneficial insect records available.
+*This plant may benefit from companions that attract pest predators.*
 
 ### Diseases
 **Fungal Diseases**: 9 species observed
