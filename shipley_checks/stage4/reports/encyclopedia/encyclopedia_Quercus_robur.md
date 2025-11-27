@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T04:51:06Z"
+generated: "2025-11-27T05:07:30Z"
 version: "2.0"
 ---
 
@@ -148,23 +148,33 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 
 ## Ecosystem Services
 
+*How this plant contributes to garden health and environmental benefits. Ratings derived from functional traits and growth strategy (CSR scores).*
+
 ### Productivity
-- **NPP**: Very High (5.0) - Very rapid growth
-- **Decomposition**: High (4.0) - Fast breakdown
+**Net Primary Productivity**: Very High (5.0)
+*Rapid growth produces abundant biomass each year—more leaves, stems, and roots. Provides food for wildlife, improves air quality, and captures significant carbon from the atmosphere.*
+**Decomposition Rate**: High (4.0)
+*Fast litter breakdown returns nutrients to soil quickly, keeping it fertile and reducing fertilizer needs. Supports active earthworms and soil microbes.*
 
 ### Nutrient Dynamics
+*How efficiently nutrients move through your garden—from soil to plants to decomposers and back. Good cycling creates a self-sustaining system.*
+
 - **Nutrient Cycling**: High (4.0)
-- **Nutrient Retention**: High (4.0) - Good retention
-- **Nutrient Loss**: Moderate (3.0) - Moderate loss
+- **Nutrient Retention**: High (4.0) - holds nutrients well; reduces fertilizer needs
+- **Nutrient Loss Risk**: Moderate (3.0) - moderate loss potential
 
 ### Carbon Storage
-- **Biomass Carbon**: High (4.0) - Significant living carbon
-- **Recalcitrant Carbon**: Moderate (3.0) - Some long-term storage
-- **Total Carbon**: High (4.0)
+*Plants capture CO₂ from the atmosphere. Some store it in living tissue (biomass), others contribute long-lasting carbon to soil.*
+
+- **Living Biomass**: High (4.0) - large, dense growth captures significant CO₂; creates habitat and shade
+- **Long-term Soil Carbon**: Moderate (3.0) - some long-lasting carbon contribution
+- **Total Carbon Benefit**: High (4.0)
 
 ### Soil Services
-- **Erosion Protection**: High (4.0) - Good stabilisation
-- **Nitrogen Fixation**: Unable to Classify
+**Erosion Protection**: High (4.0)
+*Extensive roots and ground cover anchor soil, protecting topsoil during storms and preventing sediment runoff to waterways. Excellent for slopes.*
+**Nitrogen Fixation**: Unable to Classify
+*Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants.*
 
 **Garden Value**: Good choice - good carbon storage for climate-conscious planting; fast-growing for quick establishment; excellent for slopes and erosion-prone areas.
 

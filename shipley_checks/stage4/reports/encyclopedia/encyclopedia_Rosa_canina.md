@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T04:51:06Z"
+generated: "2025-11-27T05:07:31Z"
 version: "2.0"
 ---
 
@@ -143,23 +143,33 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 
 ## Ecosystem Services
 
+*How this plant contributes to garden health and environmental benefits. Ratings derived from functional traits and growth strategy (CSR scores).*
+
 ### Productivity
-- **NPP**: Moderate (3.0) - Moderate growth
-- **Decomposition**: Moderate (3.0) - Moderate breakdown
+**Net Primary Productivity**: Moderate (3.0)
+*Moderate growth rate. Steady biomass production for a balanced contribution to garden ecosystem.*
+**Decomposition Rate**: Moderate (3.0)
+*Moderate breakdown rate. Nutrients recycle at a balanced pace.*
 
 ### Nutrient Dynamics
+*How efficiently nutrients move through your garden—from soil to plants to decomposers and back. Good cycling creates a self-sustaining system.*
+
 - **Nutrient Cycling**: Moderate (3.0)
-- **Nutrient Retention**: Moderate (3.0) - Moderate retention
-- **Nutrient Loss**: Moderate (3.0) - Moderate loss
+- **Nutrient Retention**: Moderate (3.0) - moderate retention
+- **Nutrient Loss Risk**: Moderate (3.0) - moderate loss potential
 
 ### Carbon Storage
-- **Biomass Carbon**: Moderate (3.0) - Moderate storage
-- **Recalcitrant Carbon**: High (4.0) - Good long-term storage
-- **Total Carbon**: Very High (5.0)
+*Plants capture CO₂ from the atmosphere. Some store it in living tissue (biomass), others contribute long-lasting carbon to soil.*
+
+- **Living Biomass**: Moderate (3.0) - moderate carbon storage in stems, leaves, roots
+- **Long-term Soil Carbon**: High (4.0) - tough woody/waxy tissues persist in soil for decades
+- **Total Carbon Benefit**: Very High (5.0)
 
 ### Soil Services
-- **Erosion Protection**: Moderate (3.0) - Moderate protection
-- **Nitrogen Fixation**: Unable to Classify
+**Erosion Protection**: Moderate (3.0)
+*Moderate root system provides reasonable soil protection.*
+**Nitrogen Fixation**: Unable to Classify
+*Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants.*
 
 **Garden Value**: Good choice - good carbon storage for climate-conscious planting.
 

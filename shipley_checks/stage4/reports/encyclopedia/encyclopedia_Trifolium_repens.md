@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T04:51:07Z"
+generated: "2025-11-27T05:07:31Z"
 version: "2.0"
 ---
 
@@ -147,23 +147,33 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 ## Ecosystem Services
 
+*How this plant contributes to garden health and environmental benefits. Ratings derived from functional traits and growth strategy (CSR scores).*
+
 ### Productivity
-- **NPP**: Moderate (3.0) - Moderate growth
-- **Decomposition**: Very High (5.0) - Very fast litter breakdown
+**Net Primary Productivity**: Moderate (3.0)
+*Moderate growth rate. Steady biomass production for a balanced contribution to garden ecosystem.*
+**Decomposition Rate**: Very High (5.0)
+*Fast litter breakdown returns nutrients to soil quickly, keeping it fertile and reducing fertilizer needs. Supports active earthworms and soil microbes.*
 
 ### Nutrient Dynamics
+*How efficiently nutrients move through your garden—from soil to plants to decomposers and back. Good cycling creates a self-sustaining system.*
+
 - **Nutrient Cycling**: Very High (5.0)
-- **Nutrient Retention**: Low (2.0) - Limited retention
-- **Nutrient Loss**: Very High (5.0) - High loss potential
+- **Nutrient Retention**: Low (2.0) - nutrients may leach away; more frequent feeding needed
+- **Nutrient Loss Risk**: Very High (5.0) - higher runoff risk; protect waterways
 
 ### Carbon Storage
-- **Biomass Carbon**: Low (2.0) - Limited storage
-- **Recalcitrant Carbon**: Low (2.0) - Limited persistence
-- **Total Carbon**: Low (2.0)
+*Plants capture CO₂ from the atmosphere. Some store it in living tissue (biomass), others contribute long-lasting carbon to soil.*
+
+- **Living Biomass**: Low (2.0) - smaller plants store less carbon in living tissue
+- **Long-term Soil Carbon**: Low (2.0) - soft tissues decompose quickly; less permanent storage
+- **Total Carbon Benefit**: Low (2.0)
 
 ### Soil Services
-- **Erosion Protection**: Low (2.0) - Limited protection
-- **Nitrogen Fixation**: Unable to Classify
+**Erosion Protection**: Low (2.0)
+*Limited root coverage; consider underplanting with ground covers on slopes.*
+**Nitrogen Fixation**: Unable to Classify
+*Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants.*
 
 **Garden Value**: Standard ecosystem contribution.
 
