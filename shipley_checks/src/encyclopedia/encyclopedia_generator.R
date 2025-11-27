@@ -99,7 +99,7 @@ EncyclopediaGenerator <- R6Class("EncyclopediaGenerator",
       organism_data <- NULL
       if (!is.null(private$organisms_df)) {
         organism_data <- private$organisms_df %>%
-          filter(wfo_taxon_id == !!wfo_taxon_id)
+          filter(plant_wfo_id == !!wfo_taxon_id)
         if (nrow(organism_data) == 0) organism_data <- NULL
       }
 
