@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T05:45:01Z"
+generated: "2025-11-27T06:24:52Z"
 version: "2.0"
 ---
 
@@ -183,36 +183,45 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 **Very High** (40 taxa documented)
 *Strong pollinator magnet*
 
-- **Hoverflies** (11): Platycheirus albimanus, Eristalis pertinax, Chrysotoxum bicincta, +8 more
+- **Flies** (15): Platycheirus albimanus, Eristalis pertinax, Empis livida, +12 more
 - **Bumblebees** (8): Bombus sylvestris, Bombus lapidarius, Bombus lucorum, +5 more
-- **Flies** (3): Empis livida, Phaonia, Phaonia angelicae
+- **Beetles** (6): Hoplia argentea, Meligethes flavimanus, Oedemera lurida, +3 more
 - **Solitary Bees** (3): Andrena coitana, Lasioglossum fulvicorne, Andrena cineraria
+- **Moths** (2): Xanthorhoe fluctuata, Korscheltellus lupulina
+- **Wasps** (2): Allantus, Chrysis
 - **Honey Bees** (1): Apis mellifera
-- **Other Pollinators** (14): Allantus, Hoplia argentea, Pachytodes cerambyciformis, +11 more
+- **Hoverflies** (1): Episyrphus balteatus
+- **Other Pollinators** (2): Pachytodes cerambyciformis, Trachysiphonella
 
 ### Herbivores & Parasites
 **High** (19 taxa documented)
 *Multiple pest species; monitor closely*
 
-- **Caterpillars** (1): Grapholita tenebrosana
+- **Moths** (14): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +11 more
 - **Mites** (1): Tetranychus urticae
-- **Moths** (1): Malacosoma californica pluvialis
 - **Scale Insects** (1): Chorizococcus
-- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +12 more
+- **Other Herbivores** (3): Ropalopus femoratus, Endelomyia aethiops, Nathrius brevipennis
 
 ### Beneficial Insects
 **5 taxa documented** - natural pest control agents
 
-- **Birds** (2): Turdus philomelos, Turdus merula
+- **Birds** (3): Erithacus rubecula, Turdus philomelos, Turdus merula
 - **Butterflies** (1): Pieris brassicae
 - **Hoverflies** (1): Syrphus
-- **Other Predators** (1): Erithacus rubecula
 
 *These beneficial organisms help control pest populations.*
 
 ### Diseases
-**Fungal Diseases**: 68 species observed
-**Disease Risk**: High - Many diseases observed; avoid clustering same-disease plants
+**Disease Risk**: Typical (5 taxa observed)
+*Average disease observations*
+
+**Most Observed Diseases** (by GloBI observation frequency):
+1. **Phragmidium mucronatum** (20 obs)
+2. **Phragmidium tuberculatum** (10 obs)
+3. **Botryosphaeria dothidea** (2 obs)
+4. **Zoellneria rosarum** (2 obs)
+5. **Sphaerotheca pannosa** (1 obs)
+
 *Monitor in humid conditions; ensure good airflow*
 
 ### Beneficial Associations
@@ -220,7 +229,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - 7 endophytic fungi observed (often protective)
 
 **Biocontrol Fungi**:
-- 1 mycoparasitic fungi observed (attack plant diseases)
+- **Mycoparasites** (1): angustimassarina
 
 *No documented mycorrhizal associations*
 

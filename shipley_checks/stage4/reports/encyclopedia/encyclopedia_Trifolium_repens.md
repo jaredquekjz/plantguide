@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T05:45:01Z"
+generated: "2025-11-27T06:24:53Z"
 version: "2.0"
 ---
 
@@ -187,40 +187,50 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 **Exceptional** (160 taxa documented)
 *Major pollinator resource (top 10%)*
 
-- **Solitary Bees** (34): Andrena cineraria, Andrena flavipes, Lasioglossum malachurum, +31 more
+- **Flies** (37): Musca autumnalis, Siphona geniculata, Pegoplata aestiva, +34 more
+- **Solitary Bees** (35): Andrena cineraria, Andrena flavipes, Lasioglossum malachurum, +32 more
 - **Bumblebees** (28): Bombus rupestris, Bombus huntii, Bombus sp., +25 more
-- **Hoverflies** (15): Eristalis, Eupeodes luniger, Eupeodes corollae, +12 more
-- **Flies** (12): Siphona geniculata, Pegoplata aestiva, Pollenia rudis, +9 more
-- **Butterflies** (6): Pieris rapae, Pyronia tithonus, Maniola jurtina, +3 more
-- **Weevils** (6): Ischnopterapion virens, Ischnopterapion loti, Protapion apricans, +3 more
-- **Wasps** (3): Vespula vulgaris, Crabronidae, Ectemnius
-- **Ladybugs** (2): Harmonia axyridis, Coccinella septempunctata
-- **Soldier Beetles** (2): Rhagonycha fulva, Cantharis cryptica
+- **Moths** (27): Xestia triangulum, Noctua pronuba, Noctua janthe, +24 more
+- **Beetles** (10): Harmonia axyridis, Meligethes, Oedemera nobilis, +7 more
+- **Butterflies** (7): Pieris rapae, Pyronia tithonus, Maniola jurtina, +4 more
+- **Wasps** (5): Vespula vulgaris, Crabronidae, Bembix occidentalis, +2 more
+- **Weevils** (3): Protapion apricans, Protapion trifolii, Protapion fulvipes
+- **Hoverflies** (2): Episyrphus balteatus, Lapposyrphus lapponicus
 - **Honey Bees** (1): Apis mellifera
-- **Moths** (1): Amphipyra tragopoginis
-- **Other Pollinators** (50): Hebeclinium sericeum, Musca autumnalis, Xestia triangulum, +47 more
+- **Other Pollinators** (5): Hebeclinium sericeum, Aglaostigma aucupariae, Nyea lurideola, +2 more
 
 ### Herbivores & Parasites
 **Above average** (7 taxa documented)
 *Some pest pressure expected*
 
 - **Butterflies** (2): Neptis sappho, Rapala arata
+- **True Bugs** (2): Chlamydatus pullus, Berytinus minor
 - **Aphids** (1): Acyrthosiphon pisum
-- **Other Herbivores** (4): Rhizophagus, Chlamydatus pullus, Bruchidius dispar, +1 more
+- **Beetles** (1): Bruchidius dispar
+- **Other Herbivores** (1): Rhizophagus
 
 ### Beneficial Insects
 **9 taxa documented** - natural pest control agents
 
-- **Hoverflies** (2): Eupeodes, Eupeodes luniger
-- **Ladybugs** (2): Coccinella septempunctata, Harmonia axyridis
+- **Beetles** (4): Coleomegilla maculata, Coccinella septempunctata, Cycloneda munda, +1 more
+- **Flies** (3): Eupeodes, Toxomerus marginatus, Eupeodes luniger
 - **Wasps** (1): Vespula vulgaris
-- **Other Predators** (4): Cycloneda munda, Toxomerus marginatus, Coleomegilla maculata, +1 more
+- **Other Predators** (1): Histeridae
 
 *These beneficial organisms help control pest populations.*
 
 ### Diseases
-**Fungal Diseases**: 11 species observed
-**Disease Risk**: Above average - More diseases than typical
+**Disease Risk**: Above average (10 taxa observed)
+*More diseases than typical*
+
+**Most Observed Diseases** (by GloBI observation frequency):
+1. **Uromyces trifolii-repentis** (6 obs)
+2. **Microsphaera trifolii** (4 obs)
+3. **Peronospora trifoliorum** (2 obs)
+4. **White clover mottle virus** (2 obs)
+5. **Clover yellow vein virus** (2 obs)
+*...and 5 more*
+
 *Monitor in humid conditions; ensure good airflow*
 
 ### Beneficial Associations

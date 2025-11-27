@@ -41,7 +41,9 @@ Design principles:
 Steps:
   1. Flatten organisms (pollinators, herbivores, etc.)
   2. Flatten fungi (amf, emf, pathogenic, etc.)
-  3. Verify data integrity
+  3. Flatten predators master list (for beneficial insect matching)
+  4. Extract pathogens with observation counts (for disease ranking)
+  5. Verify data integrity
 
 Note: Plants use master dataset directly (782 columns, no flattening)
 
@@ -105,28 +107,78 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# Step 3: Verify Data Integrity
+# Step 3: Flatten Predators Master List
 # ----------------------------------------------------------------------------
 
 echo "--------------------------------------------------------------------------------"
-echo "Step 3: Verifying Data Integrity"
+echo "Step 3: Flattening Predators Master List"
 echo "--------------------------------------------------------------------------------"
 echo ""
 
 STEP3_START=$(date +%s)
 
-env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript verify_phase7_integrity.R
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript flatten_predators.R
 
-VERIFY_STATUS=$?
 STEP3_END=$(date +%s)
 STEP3_TIME=$((STEP3_END - STEP3_START))
 
-if [ $VERIFY_STATUS -eq 0 ]; then
+if [ $? -eq 0 ]; then
   echo ""
   echo "Step 3 complete (${STEP3_TIME}s)"
   echo ""
 else
-  echo "Step 3 failed - data integrity check failed"
+  echo "Step 3 failed"
+  exit 1
+fi
+
+# ----------------------------------------------------------------------------
+# Step 4: Extract Pathogens with Observation Counts
+# ----------------------------------------------------------------------------
+
+echo "--------------------------------------------------------------------------------"
+echo "Step 4: Extracting Pathogens with Observation Counts"
+echo "--------------------------------------------------------------------------------"
+echo ""
+
+STEP4_START=$(date +%s)
+
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript flatten_pathogens_ranked.R
+
+STEP4_END=$(date +%s)
+STEP4_TIME=$((STEP4_END - STEP4_START))
+
+if [ $? -eq 0 ]; then
+  echo ""
+  echo "Step 4 complete (${STEP4_TIME}s)"
+  echo ""
+else
+  echo "Step 4 failed"
+  exit 1
+fi
+
+# ----------------------------------------------------------------------------
+# Step 5: Verify Data Integrity
+# ----------------------------------------------------------------------------
+
+echo "--------------------------------------------------------------------------------"
+echo "Step 5: Verifying Data Integrity"
+echo "--------------------------------------------------------------------------------"
+echo ""
+
+STEP5_START=$(date +%s)
+
+env R_LIBS_USER="$R_LIBS_USER" /usr/bin/Rscript verify_phase7_integrity.R
+
+VERIFY_STATUS=$?
+STEP5_END=$(date +%s)
+STEP5_TIME=$((STEP5_END - STEP5_START))
+
+if [ $VERIFY_STATUS -eq 0 ]; then
+  echo ""
+  echo "Step 5 complete (${STEP5_TIME}s)"
+  echo ""
+else
+  echo "Step 5 failed - data integrity check failed"
   exit 1
 fi
 
@@ -152,5 +204,7 @@ echo "  - Organisms (wide): phase0_output/organism_profiles_11711.parquet (for c
 echo "  - Organisms (flat): phase7_output/organisms_flat.parquet (for SQL search)"
 echo "  - Fungi (wide): phase0_output/fungal_guilds_hybrid_11711.parquet (for counts)"
 echo "  - Fungi (flat): phase7_output/fungi_flat.parquet (for SQL search)"
+echo "  - Predators master: phase7_output/predators_master.parquet (beneficial insects)"
+echo "  - Pathogens ranked: phase7_output/pathogens_ranked.parquet (diseases + obs counts)"
 echo ""
 echo "================================================================================"

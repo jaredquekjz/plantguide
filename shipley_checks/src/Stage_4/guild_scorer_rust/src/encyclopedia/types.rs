@@ -71,6 +71,22 @@ pub struct FungalCounts {
     pub pathogenic: usize,  // Plant pathogenic fungi (diseases)
 }
 
+/// Pathogen with observation count (from GloBI pathogenOf/parasiteOf records)
+/// Source: pathogens_ranked.parquet (Phase 7)
+#[derive(Debug, Clone)]
+pub struct RankedPathogen {
+    pub taxon: String,
+    pub observation_count: usize,
+}
+
+/// Beneficial fungi species (biocontrol agents)
+/// Source: fungi_flat.parquet (mycoparasite_fungi, entomopathogenic_fungi)
+#[derive(Debug, Clone, Default)]
+pub struct BeneficialFungi {
+    pub mycoparasites: Vec<String>,      // Attack plant diseases
+    pub entomopathogens: Vec<String>,    // Kill pest insects
+}
+
 /// CSR strategy classification (Grime's C-S-R triangle).
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum CsrStrategy {

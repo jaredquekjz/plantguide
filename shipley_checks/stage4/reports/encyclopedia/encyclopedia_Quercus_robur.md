@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T05:45:00Z"
+generated: "2025-11-27T06:24:52Z"
 version: "2.0"
 ---
 
@@ -188,26 +188,41 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 **Typical** (14 taxa documented)
 *Average pollinator observations*
 
-- **Other Pollinators** (14): Sympiesis gordius, Cirrospilus diallus, Dacnusa areolaris, +11 more
+- **Wasps** (8): Sympiesis gordius, Cirrospilus diallus, Dacnusa areolaris, +5 more
+- **Other Pollinators** (6): Anagrus sp., Achrysocharoides latreillii, Pnigalio agraules, +3 more
 
 ### Herbivores & Parasites
 **High** (19 taxa documented)
 *Multiple pest species; monitor closely*
 
-- **Predatory Bugs** (1): Andricus infectorius
-- **Other Herbivores** (18): Cynips quercusfolii, Andricus kollari, Acrocercops brongniardella, +15 more
+- **Wasps** (15): Cynips quercusfolii, Andricus kollari, Synergus pallipes, +12 more
+- **Moths** (2): Acrocercops brongniardella, Phyllonorycter messaniella
+- **Aphids** (1): Lachnus roboris
+- **Other Herbivores** (1): Synergatus
 
 ### Beneficial Insects
 **10 taxa documented** - natural pest control agents
 
-- **Ground Beetles** (1): Carabus cancellatus
-- **Other Predators** (9): Cepaea nemoralis, Deroceras reticulatum, Eurytoma brunniventris, +6 more
+- **Snails & Slugs** (3): Ariolimax columbianus, Cepaea nemoralis, Deroceras reticulatum
+- **Birds** (2): Tamiasciurus hudsonicus, Sciurus carolinensis
+- **Beetles** (1): Carabus cancellatus
+- **Wasps** (1): Eurytoma brunniventris
+- **Other Predators** (3): Ursus arctos, Limax maximus, Prophysaon andersonii
 
 *These beneficial organisms help control pest populations.*
 
 ### Diseases
-**Fungal Diseases**: 9 species observed
-**Disease Risk**: Above average - More diseases than typical
+**Disease Risk**: Above average (10 taxa observed)
+*More diseases than typical*
+
+**Most Observed Diseases** (by GloBI observation frequency):
+1. **Cryphonectria parasitica** (4 obs)
+2. **Cronartium quercuum** (3 obs)
+3. **Common oak ringspot-associated virus** (2 obs)
+4. **Dicarpella dryina** (2 obs)
+5. **Andricus curvator** (2 obs)
+*...and 5 more*
+
 *Monitor in humid conditions; ensure good airflow*
 
 ### Beneficial Associations

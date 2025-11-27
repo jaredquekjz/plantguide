@@ -26,6 +26,8 @@ pub fn generate(
     organism_counts: Option<&OrganismCounts>,
     fungal_counts: Option<&FungalCounts>,
     organism_profile: Option<&OrganismProfile>,
+    ranked_pathogens: Option<&Vec<RankedPathogen>>,
+    beneficial_fungi: Option<&BeneficialFungi>,
 ) -> String {
     let mut sections = Vec::new();
     sections.push("## Biological Interactions".to_string());
@@ -46,11 +48,11 @@ pub fn generate(
 
     // Diseases
     sections.push(String::new());
-    sections.push(generate_disease_section(fungal_counts));
+    sections.push(generate_disease_section(fungal_counts, ranked_pathogens));
 
     // Beneficial Fungi
     sections.push(String::new());
-    sections.push(generate_beneficial_fungi_section(fungal_counts));
+    sections.push(generate_beneficial_fungi_section(fungal_counts, beneficial_fungi));
 
     sections.join("\n")
 }
@@ -196,26 +198,57 @@ fn generate_predator_section(
     lines.join("\n")
 }
 
-fn generate_disease_section(counts: Option<&FungalCounts>) -> String {
+fn generate_disease_section(
+    counts: Option<&FungalCounts>,
+    ranked_pathogens: Option<&Vec<RankedPathogen>>,
+) -> String {
     let mut lines = Vec::new();
     lines.push("### Diseases".to_string());
 
-    // Pathogenic fungi from fungal_guilds (plant diseases)
-    let pathogen_count = counts.map(|c| c.pathogenic).unwrap_or(0);
+    // Count from ranked pathogens if available, else from fungal counts
+    let pathogen_count = ranked_pathogens
+        .map(|p| p.len())
+        .or_else(|| counts.map(|c| c.pathogenic))
+        .unwrap_or(0);
 
     let (level, advice) = classify_disease_level(pathogen_count);
 
-    lines.push(format!("**Fungal Diseases**: {} species observed", pathogen_count));
-    lines.push(format!("**Disease Risk**: {} - {}", level, advice));
+    lines.push(format!("**Disease Risk**: {} ({} taxa observed)", level, pathogen_count));
+    lines.push(format!("*{}*", advice));
+
+    // Display top pathogens with observation counts
+    if let Some(pathogens) = ranked_pathogens {
+        if !pathogens.is_empty() {
+            lines.push(String::new());
+            lines.push("**Most Observed Diseases** (by GloBI observation frequency):".to_string());
+
+            for (i, p) in pathogens.iter().take(5).enumerate() {
+                lines.push(format!(
+                    "{}. **{}** ({} obs)",
+                    i + 1,
+                    p.taxon,
+                    p.observation_count
+                ));
+            }
+
+            if pathogens.len() > 5 {
+                lines.push(format!("*...and {} more*", pathogens.len() - 5));
+            }
+        }
+    }
 
     if pathogen_count > 0 {
+        lines.push(String::new());
         lines.push("*Monitor in humid conditions; ensure good airflow*".to_string());
     }
 
     lines.join("\n")
 }
 
-fn generate_beneficial_fungi_section(counts: Option<&FungalCounts>) -> String {
+fn generate_beneficial_fungi_section(
+    counts: Option<&FungalCounts>,
+    beneficial_fungi: Option<&BeneficialFungi>,
+) -> String {
     let mut lines = Vec::new();
     lines.push("### Beneficial Associations".to_string());
 
@@ -235,21 +268,64 @@ fn generate_beneficial_fungi_section(counts: Option<&FungalCounts>) -> String {
             lines.push(format!("- {} endophytic fungi observed (often protective)", c.endophytes));
         }
 
-        // Biocontrol fungi
-        if c.mycoparasites > 0 || c.entomopathogens > 0 {
+        // Biocontrol fungi with species names
+        let has_biocontrol = c.mycoparasites > 0 || c.entomopathogens > 0;
+        if has_biocontrol {
             lines.push(String::new());
             lines.push("**Biocontrol Fungi**:".to_string());
+
+            // Display mycoparasites with species names
             if c.mycoparasites > 0 {
-                lines.push(format!(
-                    "- {} mycoparasitic fungi observed (attack plant diseases)",
-                    c.mycoparasites
-                ));
+                if let Some(bf) = beneficial_fungi {
+                    if !bf.mycoparasites.is_empty() {
+                        let display: Vec<&str> = bf.mycoparasites.iter().take(3).map(|s| s.as_str()).collect();
+                        let extra = bf.mycoparasites.len().saturating_sub(3);
+                        let extra_str = if extra > 0 { format!(", +{} more", extra) } else { String::new() };
+                        lines.push(format!(
+                            "- **Mycoparasites** ({}): {}{}",
+                            bf.mycoparasites.len(),
+                            display.join(", "),
+                            extra_str
+                        ));
+                    } else {
+                        lines.push(format!(
+                            "- {} mycoparasitic fungi observed (attack plant diseases)",
+                            c.mycoparasites
+                        ));
+                    }
+                } else {
+                    lines.push(format!(
+                        "- {} mycoparasitic fungi observed (attack plant diseases)",
+                        c.mycoparasites
+                    ));
+                }
             }
+
+            // Display entomopathogens with species names
             if c.entomopathogens > 0 {
-                lines.push(format!(
-                    "- {} insect-killing fungi observed (natural pest control)",
-                    c.entomopathogens
-                ));
+                if let Some(bf) = beneficial_fungi {
+                    if !bf.entomopathogens.is_empty() {
+                        let display: Vec<&str> = bf.entomopathogens.iter().take(3).map(|s| s.as_str()).collect();
+                        let extra = bf.entomopathogens.len().saturating_sub(3);
+                        let extra_str = if extra > 0 { format!(", +{} more", extra) } else { String::new() };
+                        lines.push(format!(
+                            "- **Insect-Killing Fungi** ({}): {}{}",
+                            bf.entomopathogens.len(),
+                            display.join(", "),
+                            extra_str
+                        ));
+                    } else {
+                        lines.push(format!(
+                            "- {} insect-killing fungi observed (natural pest control)",
+                            c.entomopathogens
+                        ));
+                    }
+                } else {
+                    lines.push(format!(
+                        "- {} insect-killing fungi observed (natural pest control)",
+                        c.entomopathogens
+                    ));
+                }
             }
         }
 
@@ -293,7 +369,7 @@ mod tests {
             pathogenic: 5,
         };
 
-        let output = generate(&data, Some(&organisms), Some(&fungi), None);
+        let output = generate(&data, Some(&organisms), Some(&fungi), None, None, None);
         assert!(output.contains("Pollinators"));
         assert!(output.contains("15 taxa"));
         assert!(output.contains("AMF"));

@@ -366,10 +366,10 @@ async fn get_encyclopedia(
     };
 
     // 4. Generate encyclopedia markdown
-    // Note: OrganismProfile not yet implemented in API - pass None for now
+    // Note: OrganismProfile, ranked_pathogens, beneficial_fungi not yet implemented in API
     let markdown = state
         .encyclopedia
-        .generate(&id, &plant_data, organism_counts, fungal_counts, None)
+        .generate(&id, &plant_data, organism_counts, fungal_counts, None, None, None)
         .map_err(|e| AppError::Internal(e))?;
 
     // Cache the result

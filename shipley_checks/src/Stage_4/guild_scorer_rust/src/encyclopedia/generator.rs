@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use serde_json::Value;
 use chrono::Utc;
 
-use crate::encyclopedia::types::{OrganismCounts, FungalCounts, OrganismProfile};
+use crate::encyclopedia::types::{OrganismCounts, FungalCounts, OrganismProfile, RankedPathogen, BeneficialFungi};
 use crate::encyclopedia::sections::{
     s1_identity,
     s2_requirements,
@@ -38,6 +38,8 @@ impl EncyclopediaGenerator {
     /// * `organism_counts` - Optional organism interaction counts
     /// * `fungal_counts` - Optional fungal association counts
     /// * `organism_profile` - Optional categorized organism lists for rich display
+    /// * `ranked_pathogens` - Optional pathogens with observation counts (top diseases)
+    /// * `beneficial_fungi` - Optional beneficial fungi species (mycoparasites, entomopathogens)
     ///
     /// # Returns
     /// Complete markdown document as a String, or error message.
@@ -48,6 +50,8 @@ impl EncyclopediaGenerator {
         organism_counts: Option<OrganismCounts>,
         fungal_counts: Option<FungalCounts>,
         organism_profile: Option<OrganismProfile>,
+        ranked_pathogens: Option<Vec<RankedPathogen>>,
+        beneficial_fungi: Option<BeneficialFungi>,
     ) -> Result<String, String> {
         let mut sections = Vec::new();
 
@@ -72,6 +76,8 @@ impl EncyclopediaGenerator {
             organism_counts.as_ref(),
             fungal_counts.as_ref(),
             organism_profile.as_ref(),
+            ranked_pathogens.as_ref(),
+            beneficial_fungi.as_ref(),
         ));
 
         // S6: Guild Potential (Companion Planting)
@@ -165,7 +171,7 @@ mod tests {
         data.insert("family".to_string(), Value::String("Testaceae".to_string()));
         data.insert("genus".to_string(), Value::String("Testus".to_string()));
 
-        let result = generator.generate("wfo-test", &data, None, None, None);
+        let result = generator.generate("wfo-test", &data, None, None, None, None, None);
         assert!(result.is_ok());
 
         let content = result.unwrap();

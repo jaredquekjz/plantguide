@@ -4,7 +4,7 @@
 //! Run with: cargo run --features api --bin generate_sample_encyclopedias
 
 #[cfg(feature = "api")]
-use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms};
+use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
 #[cfg(feature = "api")]
 use guild_scorer_rust::query_engine::QueryEngine;
 #[cfg(feature = "api")]
@@ -19,6 +19,8 @@ use std::fs;
 use std::path::Path;
 #[cfg(feature = "api")]
 use rustc_hash::FxHashMap;
+#[cfg(feature = "api")]
+use datafusion::arrow::array::{StringArray, LargeStringArray, StringViewArray, Array};
 
 #[cfg(feature = "api")]
 const PROJECT_ROOT: &str = "/home/olier/ellenberg";
@@ -296,9 +298,9 @@ fn load_organism_categories() -> FxHashMap<String, String> {
         let mut map = FxHashMap::default();
         for line in content.lines().skip(1) {  // Skip header
             let parts: Vec<&str> = line.split(',').collect();
-            if parts.len() >= 2 {
+            if parts.len() >= 4 {
                 let genus = parts[0].trim().to_lowercase();
-                let category = parts[1].trim().to_string();
+                let category = parts[3].trim().to_string();  // kimi_label column
                 if !genus.is_empty() && !category.is_empty() {
                     map.insert(genus, category);
                 }
@@ -313,18 +315,180 @@ fn load_organism_categories() -> FxHashMap<String, String> {
 }
 
 #[cfg(feature = "api")]
-fn load_master_predator_list() -> HashSet<String> {
-    // Load master list of predators (species that eat any pest in GloBI)
-    // Source: herbivore_predators_11711.parquet -> master_predator_list.txt
-    let txt_path = format!("{}/shipley_checks/stage4/phase0_output/master_predator_list.txt", PROJECT_ROOT);
-    if let Ok(content) = fs::read_to_string(&txt_path) {
-        return content
-            .lines()
-            .map(|s| s.trim().to_lowercase())
-            .filter(|s| !s.is_empty())
-            .collect();
+async fn load_master_predator_list(engine: &QueryEngine) -> HashSet<String> {
+    // Load master list of predators from Phase 7 parquet
+    // Source: predators_master.parquet (extracted from herbivore_predators_11711.parquet)
+    match engine.get_master_predators().await {
+        Ok(batches) => {
+            let mut predators = HashSet::new();
+            if batches.is_empty() {
+                eprintln!("Warning: predators_master query returned 0 batches");
+                return predators;
+            }
+            for batch in &batches {
+                if let Some(col) = batch.column_by_name("predator_taxon") {
+                    // Try StringArray, LargeStringArray, or StringViewArray
+                    if let Some(arr) = col.as_any().downcast_ref::<StringArray>() {
+                        for i in 0..arr.len() {
+                            if !arr.is_null(i) {
+                                let val = arr.value(i).to_lowercase();
+                                if !val.is_empty() {
+                                    predators.insert(val);
+                                }
+                            }
+                        }
+                    } else if let Some(arr) = col.as_any().downcast_ref::<LargeStringArray>() {
+                        for i in 0..arr.len() {
+                            if !arr.is_null(i) {
+                                let val = arr.value(i).to_lowercase();
+                                if !val.is_empty() {
+                                    predators.insert(val);
+                                }
+                            }
+                        }
+                    } else if let Some(arr) = col.as_any().downcast_ref::<StringViewArray>() {
+                        for i in 0..arr.len() {
+                            if !arr.is_null(i) {
+                                let val = arr.value(i).to_lowercase();
+                                if !val.is_empty() {
+                                    predators.insert(val);
+                                }
+                            }
+                        }
+                    } else {
+                        eprintln!("Warning: Could not downcast column. Type: {:?}", col.data_type());
+                    }
+                } else {
+                    eprintln!("Warning: Column 'predator_taxon' not found in batch");
+                }
+            }
+            predators
+        }
+        Err(e) => {
+            eprintln!("Error loading master predators: {}", e);
+            HashSet::new()
+        }
     }
-    HashSet::new()
+}
+
+#[cfg(feature = "api")]
+async fn parse_pathogens_ranked(
+    engine: &QueryEngine,
+    plant_id: &str,
+    limit: usize,
+) -> Option<Vec<RankedPathogen>> {
+    use datafusion::arrow::array::{UInt64Array, Int32Array, Int64Array};
+
+    let batches = engine.get_pathogens(plant_id, Some(limit)).await.ok()?;
+    if batches.is_empty() {
+        return None;
+    }
+
+    let mut pathogens = Vec::new();
+    for batch in &batches {
+        let taxon_col = batch.column_by_name("pathogen_taxon")?;
+        let count_col = batch.column_by_name("observation_count")?;
+
+        // Support StringArray, LargeStringArray, and StringViewArray
+        let get_taxon = |i: usize| -> Option<String> {
+            if let Some(arr) = taxon_col.as_any().downcast_ref::<StringArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else if let Some(arr) = taxon_col.as_any().downcast_ref::<LargeStringArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else if let Some(arr) = taxon_col.as_any().downcast_ref::<StringViewArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else {
+                None
+            }
+        };
+
+        for i in 0..batch.num_rows() {
+            let taxon = match get_taxon(i) {
+                Some(t) => t,
+                None => continue,
+            };
+
+            // Try different integer types for observation_count
+            let count = if let Some(arr) = count_col.as_any().downcast_ref::<Int32Array>() {
+                arr.value(i) as usize
+            } else if let Some(arr) = count_col.as_any().downcast_ref::<Int64Array>() {
+                arr.value(i) as usize
+            } else if let Some(arr) = count_col.as_any().downcast_ref::<UInt64Array>() {
+                arr.value(i) as usize
+            } else {
+                1 // fallback
+            };
+
+            pathogens.push(RankedPathogen {
+                taxon,
+                observation_count: count,
+            });
+        }
+    }
+
+    if pathogens.is_empty() {
+        None
+    } else {
+        Some(pathogens)
+    }
+}
+
+#[cfg(feature = "api")]
+async fn parse_beneficial_fungi(
+    engine: &QueryEngine,
+    plant_id: &str,
+) -> Option<BeneficialFungi> {
+    let batches = engine.get_beneficial_fungi(plant_id).await.ok()?;
+    if batches.is_empty() {
+        return None;
+    }
+
+    let mut mycoparasites = Vec::new();
+    let mut entomopathogens = Vec::new();
+
+    for batch in &batches {
+        let source_col = batch.column_by_name("source_column")?;
+        let taxon_col = batch.column_by_name("fungus_taxon")?;
+
+        // Helper to get string value supporting StringArray, LargeStringArray, and StringViewArray
+        let get_str = |col: &dyn std::any::Any, i: usize| -> Option<String> {
+            if let Some(arr) = col.downcast_ref::<StringArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else if let Some(arr) = col.downcast_ref::<LargeStringArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else if let Some(arr) = col.downcast_ref::<StringViewArray>() {
+                if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
+            } else {
+                None
+            }
+        };
+
+        for i in 0..batch.num_rows() {
+            let source = match get_str(source_col.as_any(), i) {
+                Some(s) => s,
+                None => continue,
+            };
+            let taxon = match get_str(taxon_col.as_any(), i) {
+                Some(t) => t,
+                None => continue,
+            };
+
+            match source.as_str() {
+                "mycoparasite_fungi" => mycoparasites.push(taxon),
+                "entomopathogenic_fungi" => entomopathogens.push(taxon),
+                _ => {}
+            }
+        }
+    }
+
+    if mycoparasites.is_empty() && entomopathogens.is_empty() {
+        None
+    } else {
+        Some(BeneficialFungi {
+            mycoparasites,
+            entomopathogens,
+        })
+    }
 }
 
 #[cfg(feature = "api")]
@@ -343,8 +507,8 @@ async fn main() -> anyhow::Result<()> {
     let organism_categories = load_organism_categories();
     println!("Loaded {} organism category mappings", organism_categories.len());
 
-    // Load master predator list (species known to eat pests in GloBI)
-    let master_predators = load_master_predator_list();
+    // Load master predator list from parquet (species known to eat pests in GloBI)
+    let master_predators = load_master_predator_list(&engine).await;
     println!("Loaded {} master predators", master_predators.len());
 
     for (wfo_id, filename, description) in SAMPLE_PLANTS {
@@ -381,6 +545,12 @@ async fn main() -> anyhow::Result<()> {
             .ok()
             .and_then(|b| parse_fungal_counts(&b));
 
+        // Fetch ranked pathogens (top 10 most observed diseases)
+        let ranked_pathogens = parse_pathogens_ranked(&engine, wfo_id, 10).await;
+
+        // Fetch beneficial fungi species
+        let beneficial_fungi = parse_beneficial_fungi(&engine, wfo_id).await;
+
         // Generate encyclopedia
         let markdown = generator.generate(
             wfo_id,
@@ -388,6 +558,8 @@ async fn main() -> anyhow::Result<()> {
             organism_counts,
             fungal_counts,
             organism_profile,
+            ranked_pathogens,
+            beneficial_fungi,
         ).map_err(|e| anyhow::anyhow!(e))?;
 
         // Save to file

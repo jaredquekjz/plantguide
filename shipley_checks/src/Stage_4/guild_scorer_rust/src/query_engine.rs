@@ -126,6 +126,34 @@ impl QueryEngine {
         )
         .await?;
 
+        // Register predators master list (Phase 7 output)
+        let predators_master_path = format!(
+            "{}/shipley_checks/stage4/phase7_output/predators_master.parquet",
+            project_root
+        );
+        if Path::new(&predators_master_path).exists() {
+            ctx.register_parquet(
+                "predators_master",
+                &predators_master_path,
+                ParquetReadOptions::default(),
+            )
+            .await?;
+        }
+
+        // Register pathogens ranked (Phase 7 output with observation counts)
+        let pathogens_ranked_path = format!(
+            "{}/shipley_checks/stage4/phase7_output/pathogens_ranked.parquet",
+            project_root
+        );
+        if Path::new(&pathogens_ranked_path).exists() {
+            ctx.register_parquet(
+                "pathogens_ranked",
+                &pathogens_ranked_path,
+                ParquetReadOptions::default(),
+            )
+            .await?;
+        }
+
         Ok(Self {
             ctx: Arc::new(ctx),
         })
@@ -393,6 +421,55 @@ impl QueryEngine {
             WHERE plant_wfo_id = '{}'
             GROUP BY source_column
             ORDER BY source_column
+            "#,
+            escaped_id
+        );
+
+        self.query(&sql).await
+    }
+
+    /// Get all master predators (known pest predators from GloBI)
+    /// Returns list of predator taxon names
+    pub async fn get_master_predators(&self) -> DFResult<Vec<RecordBatch>> {
+        let sql = "SELECT predator_taxon FROM predators_master";
+        self.query(sql).await
+    }
+
+    /// Get pathogens for a plant with observation counts
+    /// Returns pathogen_taxon and observation_count, ordered by count descending
+    pub async fn get_pathogens(&self, plant_id: &str, limit: Option<usize>) -> DFResult<Vec<RecordBatch>> {
+        let escaped_id = plant_id.replace("'", "''");
+        let limit_clause = limit.map(|l| format!("LIMIT {}", l)).unwrap_or_default();
+
+        let sql = format!(
+            r#"
+            SELECT
+                pathogen_taxon,
+                observation_count
+            FROM pathogens_ranked
+            WHERE plant_wfo_id = '{}'
+            ORDER BY observation_count DESC
+            {}
+            "#,
+            escaped_id, limit_clause
+        );
+
+        self.query(&sql).await
+    }
+
+    /// Get beneficial fungi species (mycoparasites and entomopathogens)
+    pub async fn get_beneficial_fungi(&self, plant_id: &str) -> DFResult<Vec<RecordBatch>> {
+        let escaped_id = plant_id.replace("'", "''");
+
+        let sql = format!(
+            r#"
+            SELECT
+                source_column,
+                fungus_taxon
+            FROM fungi
+            WHERE plant_wfo_id = '{}'
+              AND source_column IN ('mycoparasite_fungi', 'entomopathogenic_fungi')
+            ORDER BY source_column, fungus_taxon
             "#,
             escaped_id
         );
