@@ -18,12 +18,17 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Data Sources
 
-**Source parquets** (Phase 0 output, used by GuildBuilder):
+**Source parquets** (Phase 0 and Phase 7 output):
 
 | Data | Source File | Location |
 |------|-------------|----------|
-| Pollinators, Herbivores, Predators, Fungivores | `organism_profiles_11711.parquet` | `shipley_checks/stage4/phase0_output/` |
-| Pathogenic fungi, Mycorrhizae, Beneficial fungi | `fungal_guilds_hybrid_11711.parquet` | `shipley_checks/stage4/phase0_output/` |
+| Pollinators, Herbivores, Predators (flat list) | `organisms_flat.parquet` | `shipley_checks/stage4/phase7_output/` |
+| Pathogenic fungi, Mycorrhizae, Beneficial fungi | `fungi_flat.parquet` | `shipley_checks/stage4/phase7_output/` |
+| Organism category labels (Kimi AI) | `kimi_gardener_labels.csv` | `data/taxonomy/` |
+
+**Categorization**: Organism names are grouped into gardener-friendly categories using:
+1. Kimi AI genus-level category labels (5996 genera mapped)
+2. Fallback regex patterns for unmapped genera (defined in `unified_taxonomy.rs`)
 
 **Key columns by parquet:**
 
@@ -58,12 +63,29 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ### Output Format
 
+Pollinators are grouped by category with counts, showing up to 3 species names per category:
+
 ```markdown
-**Pollinators**: 15 taxa documented
-- Apis mellifera (honeybee)
-- Bombus terrestris (buff-tailed bumblebee)
-- Various Syrphidae (hoverflies)
+### Pollinators
+**Very High** (40 taxa documented)
+*Strong pollinator magnet*
+
+- **Hoverflies** (11): Platycheirus albimanus, Eristalis pertinax, Chrysotoxum bicincta, +8 more
+- **Bumblebees** (8): Bombus sylvestris, Bombus lapidarius, Bombus lucorum, +5 more
+- **Flies** (3): Empis livida, Phaonia, Phaonia angelicae
+- **Solitary Bees** (3): Andrena coitana, Lasioglossum fulvicorne, Andrena cineraria
+- **Honey Bees** (1): Apis mellifera
 ```
+
+**Rating thresholds**:
+| Count | Rating | Interpretation |
+|-------|--------|----------------|
+| ≥100 | Exceptional | Major pollinator resource (top 10%) |
+| 20-99 | Very High | Strong pollinator magnet |
+| 10-19 | High | Good pollinator support |
+| 5-9 | Above average | Moderate support |
+| 1-4 | Typical | Average pollinator observations |
+| 0 | No data | Not documented (may still be visited) |
 
 ---
 
@@ -91,14 +113,23 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ### Output Format
 
-```markdown
-**Herbivores**: 8 taxa documented
-- Operophtera brumata (winter moth) - caterpillars on leaves
-- Myzus persicae (peach-potato aphid) - sap feeder
-- Otiorrhynchus sulcatus (vine weevil) - root damage
+Herbivores (including parasites) are grouped by category:
 
-**Pest Pressure**: Moderate
+```markdown
+### Herbivores & Parasites
+**High** (19 taxa documented)
+*Multiple pest species; monitor closely*
+
+- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, Pseudothyatira cymatophoroides, +12 more
+- **Caterpillars** (1): Grapholita tenebrosana
+- **Mites** (1): Tetranychus urticae
+- **Moths** (1): Malacosoma californica pluvialis
+- **Scale Insects** (1): Chorizococcus
 ```
+
+**Note**: "Herbivores" in GloBI include all organisms with `eats`, `preysOn`, or `hasHost` relationships to the plant, including:
+- True herbivores (leaf-eaters, sap-suckers)
+- Invertebrate parasites (gall-formers, leaf-miners)
 
 ---
 
@@ -169,27 +200,99 @@ Rules for generating the biological interactions section of static encyclopedia 
 
 ## Integrated Output Format
 
+The full biological interactions section groups organisms by category with species names:
+
 ```markdown
 ## Biological Interactions
 
-### Pollinators
-**Rating**: High (15 taxa)
-Key visitors: Bumblebees, honeybees, hoverflies
+*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
 
-### Herbivores
-**Documented**: 8 taxa
-- Winter moth, vine weevil, aphids
-**Pest Pressure**: Moderate
+### Pollinators
+**Very High** (40 taxa documented)
+*Strong pollinator magnet*
+
+- **Hoverflies** (11): Platycheirus albimanus, Eristalis pertinax, Chrysotoxum bicincta, +8 more
+- **Bumblebees** (8): Bombus sylvestris, Bombus lapidarius, Bombus lucorum, +5 more
+- **Flies** (3): Empis livida, Phaonia, Phaonia angelicae
+- **Solitary Bees** (3): Andrena coitana, Lasioglossum fulvicorne, Andrena cineraria
+- **Honey Bees** (1): Apis mellifera
+
+### Herbivores & Parasites
+**High** (19 taxa documented)
+*Multiple pest species; monitor closely*
+
+- **Other Herbivores** (15): Phaneta pauperana, Cidaria fulvata, +12 more
+- **Caterpillars** (1): Grapholita tenebrosana
+- **Mites** (1): Tetranychus urticae
+
+### Beneficial Insects
+No predator/beneficial insect records available.
+*This plant may benefit from companions that attract pest predators.*
 
 ### Diseases
-**Fungal**: Powdery mildew, rust
-**Other pathogens**: 2 bacterial/viral
-**Disease Risk**: Moderate in humid conditions
+**Fungal Diseases**: 68 species observed
+**Disease Risk**: High - Many diseases observed; avoid clustering same-disease plants
+*Monitor in humid conditions; ensure good airflow*
 
 ### Beneficial Associations
-**Mycorrhizal**: AMF associations documented
-**Advice**: Maintain soil health for natural disease resistance
+**Mycorrhizal**: Non-mycorrhizal/Undocumented
+- 7 endophytic fungi observed (often protective)
+
+**Biocontrol Fungi**:
+- 1 mycoparasitic fungi observed (attack plant diseases)
 ```
+
+**Category sorting**: Categories are sorted by count (descending), showing the most diverse groups first.
+
+---
+
+## Organism Categories
+
+The following gardener-friendly categories are used for grouping organisms:
+
+### Pollinator Categories
+| Category | Examples |
+|----------|----------|
+| Honey Bees | Apis mellifera |
+| Bumblebees | Bombus spp. |
+| Solitary Bees | Andrena, Lasioglossum, Osmia |
+| Hoverflies | Syrphidae (Eristalis, Episyrphus) |
+| Butterflies | Pieridae, Nymphalidae |
+| Moths | Noctuidae, Geometridae |
+| Wasps | Vespidae, Crabronidae |
+| Flies | Non-syrphid Diptera |
+| Beetles | Non-weevil Coleoptera |
+| Other Pollinators | Unmatched genera |
+
+### Herbivore/Pest Categories
+| Category | Examples |
+|----------|----------|
+| Aphids | Myzus, Aphis, Acyrthosiphon |
+| Caterpillars | Lepidoptera larvae |
+| Weevils | Curculionidae |
+| Leafhoppers | Cicadellidae |
+| Mites | Tetranychidae |
+| Scale Insects | Coccoidea |
+| Beetles | Chrysomelidae, Scarabaeidae |
+| Moths | Adult Lepidoptera |
+| Butterflies | Adult Lepidoptera |
+| Flies | Diptera |
+| Other Herbivores | Unmatched genera |
+
+### Predator/Beneficial Categories
+| Category | Examples |
+|----------|----------|
+| Ladybugs | Coccinellidae |
+| Lacewings | Chrysopidae |
+| Ground Beetles | Carabidae |
+| Parasitic Wasps | Braconidae, Ichneumonidae |
+| Hoverflies | Syrphidae (larvae are predators) |
+| Predatory Bugs | Miridae, Anthocoridae |
+| Soldier Beetles | Cantharidae |
+| Spiders | Araneae |
+| Other Predators | Unmatched genera |
+
+**Source**: Categories defined in `src/explanation/unified_taxonomy.rs` with Kimi AI labels from `data/taxonomy/kimi_gardener_labels.csv`.
 
 ---
 
