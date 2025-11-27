@@ -52,9 +52,9 @@ list_columns <- c(
   "herbivores",
   "pathogens",
   "flower_visitors",
-  "predators_hasHost",
-  "predators_interactsWith",
-  "predators_adjacentTo",
+  "fauna_hasHost",        # Animals using plant as host (renamed from predators_hasHost)
+  "fauna_interactsWith",  # Animals interacting with plant (renamed from predators_interactsWith)
+  "fauna_adjacentTo",     # Animals found near plant (renamed from predators_adjacentTo)
   "fungivores_eats"
 )
 

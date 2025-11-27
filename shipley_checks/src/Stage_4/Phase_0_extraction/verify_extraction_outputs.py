@@ -15,7 +15,7 @@ from pathlib import Path
 import sys
 
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-VALIDATION_DIR = PROJECT_ROOT / "shipley_checks/phase0_output"
+VALIDATION_DIR = PROJECT_ROOT / "shipley_checks/stage4/phase0_output"
 
 con = duckdb.connect()
 
@@ -102,9 +102,9 @@ else:
         'plant_wfo_id', 'pollinators', 'pollinator_count',
         'herbivores', 'herbivore_count', 'pathogens', 'pathogen_count',
         'flower_visitors', 'visitor_count',
-        'predators_hasHost', 'predators_hasHost_count',
-        'predators_interactsWith', 'predators_interactsWith_count',
-        'predators_adjacentTo', 'predators_adjacentTo_count',
+        'fauna_hasHost', 'fauna_hasHost_count',
+        'fauna_interactsWith', 'fauna_interactsWith_count',
+        'fauna_adjacentTo', 'fauna_adjacentTo_count',
         'fungivores_eats', 'fungivores_eats_count'
     ]
     missing = [col for col in required_cols if col not in df.columns]

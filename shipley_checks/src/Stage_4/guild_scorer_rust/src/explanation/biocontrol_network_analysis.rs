@@ -302,9 +302,9 @@ fn build_predator_to_plants_map(organisms_df: &DataFrame) -> Result<FxHashMap<St
 
     // Aggregate all predator columns
     let predator_columns = [
-        "predators_hasHost",
-        "predators_interactsWith",
-        "predators_adjacentTo",
+        "fauna_hasHost",
+        "fauna_interactsWith",
+        "fauna_adjacentTo",
     ];
 
     for idx in 0..organisms_df.height() {
@@ -459,9 +459,9 @@ fn count_predators_for_plant(
     let plant_ids = organisms_df.column("plant_wfo_id")?.str()?;
 
     let predator_columns = [
-        "predators_hasHost",
-        "predators_interactsWith",
-        "predators_adjacentTo",
+        "fauna_hasHost",
+        "fauna_interactsWith",
+        "fauna_adjacentTo",
     ];
 
     for idx in 0..organisms_df.height() {

@@ -37,16 +37,19 @@ tryCatch({
 
 # ============================================================================
 # Step 2: Extract organism profiles (pollinators, herbivores, predators, fungivores)
+# NOTE: Use system() instead of source() to avoid R's sprintf 8192 char limit
 # ============================================================================
 cat("Step 2/6: Extracting organism profiles...\n")
 cat("--------------------------------------------------------------------------\n")
-tryCatch({
-  source(file.path(script_dir, "02_extract_organism_profiles.R"))
-  cat("✓ Script 2 completed\n\n")
-}, error = function(e) {
-  cat("✗ Script 2 FAILED:", conditionMessage(e), "\n\n")
+exit_code <- system(paste0(
+  "env R_LIBS_USER=", Sys.getenv("R_LIBS_USER"), " ",
+  "/usr/bin/Rscript ", file.path(script_dir, "02_extract_organism_profiles.R")
+))
+if (exit_code != 0) {
+  cat("✗ Script 2 FAILED\n\n")
   quit(status = 1)
-})
+}
+cat("✓ Script 2 completed\n\n")
 
 # ============================================================================
 # Step 3: Extract fungal guilds (FungalTraits + FunGuild hybrid)

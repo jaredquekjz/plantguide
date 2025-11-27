@@ -77,9 +77,9 @@ expected_cols <- c(
   "herbivores", "herbivore_count",
   "pathogens", "pathogen_count",
   "flower_visitors", "visitor_count",
-  "predators_hasHost", "predators_hasHost_count",
-  "predators_interactsWith", "predators_interactsWith_count",
-  "predators_adjacentTo", "predators_adjacentTo_count"
+  "fauna_hasHost", "fauna_hasHost_count",
+  "fauna_interactsWith", "fauna_interactsWith_count",
+  "fauna_adjacentTo", "fauna_adjacentTo_count"
 )
 
 actual_cols <- colnames(profiles)
@@ -119,9 +119,9 @@ list_count_checks <- list(
   herbivores = check_list_count(profiles, "herbivores", "herbivore_count"),
   pathogens = check_list_count(profiles, "pathogens", "pathogen_count"),
   flower_visitors = check_list_count(profiles, "flower_visitors", "visitor_count"),
-  predators_hasHost = check_list_count(profiles, "predators_hasHost", "predators_hasHost_count"),
-  predators_interactsWith = check_list_count(profiles, "predators_interactsWith", "predators_interactsWith_count"),
-  predators_adjacentTo = check_list_count(profiles, "predators_adjacentTo", "predators_adjacentTo_count")
+  fauna_hasHost = check_list_count(profiles, "fauna_hasHost", "fauna_hasHost_count"),
+  fauna_interactsWith = check_list_count(profiles, "fauna_interactsWith", "fauna_interactsWith_count"),
+  fauna_adjacentTo = check_list_count(profiles, "fauna_adjacentTo", "fauna_adjacentTo_count")
 )
 
 all_match <- TRUE
@@ -144,7 +144,7 @@ cat("\n")
 # Test 5: No NA in count columns
 cat("Test 5: No NA Values in Count Columns\n")
 count_cols <- c("pollinator_count", "herbivore_count", "pathogen_count", "visitor_count",
-                "predators_hasHost_count", "predators_interactsWith_count", "predators_adjacentTo_count")
+                "fauna_hasHost_count", "fauna_interactsWith_count", "fauna_adjacentTo_count")
 
 na_counts <- sapply(count_cols, function(col) sum(is.na(profiles[[col]])))
 if (any(na_counts > 0)) {

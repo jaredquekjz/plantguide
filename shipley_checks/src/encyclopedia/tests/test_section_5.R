@@ -50,7 +50,7 @@ for (i in 1:nrow(sample_plants)) {
     cat(sprintf("  - Pollinators: %d species\n", org_profile$pollinator_count[1]))
     cat(sprintf("  - Herbivores: %d species\n", org_profile$herbivore_count[1]))
     cat(sprintf("  - Pathogens: %d species\n", org_profile$pathogen_count[1]))
-    cat(sprintf("  - Predators: %d species\n", org_profile$predators_hasHost_count[1]))
+    cat(sprintf("  - Associated fauna: %d species\n", org_profile$fauna_hasHost_count[1]))
   } else {
     cat("Organism interactions: No data\n")
   }

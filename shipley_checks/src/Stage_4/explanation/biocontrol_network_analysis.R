@@ -248,9 +248,9 @@ build_predator_to_plants_map <- function(organisms_df) {
   map <- list()
 
   predator_columns <- c(
-    "predators_hasHost",
-    "predators_interactsWith",
-    "predators_adjacentTo"
+    "fauna_hasHost",
+    "fauna_interactsWith",
+    "fauna_adjacentTo"
   )
 
   for (i in seq_len(nrow(organisms_df))) {
@@ -393,9 +393,9 @@ count_predators_for_plant <- function(organisms_df,
                                       known_predators) {
 
   predator_columns <- c(
-    "predators_hasHost",
-    "predators_interactsWith",
-    "predators_adjacentTo"
+    "fauna_hasHost",
+    "fauna_interactsWith",
+    "fauna_adjacentTo"
   )
 
   predators <- character()

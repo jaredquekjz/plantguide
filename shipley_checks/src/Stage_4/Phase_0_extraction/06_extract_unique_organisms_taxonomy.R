@@ -31,17 +31,17 @@ organisms_sql <- "
       FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
       WHERE herbivores IS NOT NULL
       UNION
-      SELECT UNNEST(predators_hasHost)
+      SELECT UNNEST(fauna_hasHost)
       FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-      WHERE predators_hasHost IS NOT NULL
+      WHERE fauna_hasHost IS NOT NULL
       UNION
-      SELECT UNNEST(predators_interactsWith)
+      SELECT UNNEST(fauna_interactsWith)
       FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-      WHERE predators_interactsWith IS NOT NULL
+      WHERE fauna_interactsWith IS NOT NULL
       UNION
-      SELECT UNNEST(predators_adjacentTo)
+      SELECT UNNEST(fauna_adjacentTo)
       FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-      WHERE predators_adjacentTo IS NOT NULL
+      WHERE fauna_adjacentTo IS NOT NULL
       UNION
       SELECT UNNEST(fungivores_eats)
       FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
@@ -101,17 +101,17 @@ organisms_sql <- "
           FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
           WHERE herbivores IS NOT NULL
           UNION ALL
-          SELECT UNNEST(predators_hasHost), 'predator'
+          SELECT UNNEST(fauna_hasHost), 'predator'
           FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-          WHERE predators_hasHost IS NOT NULL
+          WHERE fauna_hasHost IS NOT NULL
           UNION ALL
-          SELECT UNNEST(predators_interactsWith), 'predator'
+          SELECT UNNEST(fauna_interactsWith), 'predator'
           FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-          WHERE predators_interactsWith IS NOT NULL
+          WHERE fauna_interactsWith IS NOT NULL
           UNION ALL
-          SELECT UNNEST(predators_adjacentTo), 'predator'
+          SELECT UNNEST(fauna_adjacentTo), 'predator'
           FROM read_parquet('shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet')
-          WHERE predators_adjacentTo IS NOT NULL
+          WHERE fauna_adjacentTo IS NOT NULL
       ) roles
       GROUP BY organism_name
   )

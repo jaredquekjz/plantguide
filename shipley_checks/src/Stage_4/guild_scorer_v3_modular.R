@@ -163,7 +163,7 @@ GuildScorerV3Modular <- R6Class("GuildScorerV3Modular",
       # Organisms - from R-generated Parquet (complete independence from Python)
       self$organisms_df <- read_parquet('shipley_checks/validation/organism_profiles_pure_r.parquet') %>%
         csv_to_lists(c('herbivores', 'flower_visitors', 'pollinators',
-                       'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo',
+                       'fauna_hasHost', 'fauna_interactsWith', 'fauna_adjacentTo',
                        'fungivores_eats'))
 
       # Fungi - from R-generated Parquet

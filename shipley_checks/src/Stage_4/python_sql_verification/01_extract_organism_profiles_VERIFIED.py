@@ -121,11 +121,11 @@ def extract_organism_profiles(limit=None):
     # The biocontrol calculation will filter to actual predators via herbivore_predators lookup
     # We just exclude obviously non-terrestrial classes (fish, sponges, corals, etc.)
     print("Step 5a: Extracting animals with hasHost relationship...")
-    predators_host = con.execute("""
+    fauna_host = con.execute("""
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_hasHost,
-            COUNT(DISTINCT sourceTaxonName) as predators_hasHost_count
+            LIST(DISTINCT sourceTaxonName) as fauna_hasHost,
+            COUNT(DISTINCT sourceTaxonName) as fauna_hasHost_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'hasHost'
@@ -144,14 +144,14 @@ def extract_organism_profiles(limit=None):
           )
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
-    print(f"  - Found hasHost animals for {len(predators_host):,} plants")
+    print(f"  - Found hasHost animals for {len(fauna_host):,} plants")
 
     print("Step 5b: Extracting animals with interactsWith relationship...")
-    predators_interacts = con.execute("""
+    fauna_interacts = con.execute("""
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_interactsWith,
-            COUNT(DISTINCT sourceTaxonName) as predators_interactsWith_count
+            LIST(DISTINCT sourceTaxonName) as fauna_interactsWith,
+            COUNT(DISTINCT sourceTaxonName) as fauna_interactsWith_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'interactsWith'
@@ -164,14 +164,14 @@ def extract_organism_profiles(limit=None):
           )
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
-    print(f"  - Found interactsWith animals for {len(predators_interacts):,} plants")
+    print(f"  - Found interactsWith animals for {len(fauna_interacts):,} plants")
 
     print("Step 5c: Extracting animals with adjacentTo relationship...")
-    predators_adjacent = con.execute("""
+    fauna_adjacent = con.execute("""
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_adjacentTo,
-            COUNT(DISTINCT sourceTaxonName) as predators_adjacentTo_count
+            LIST(DISTINCT sourceTaxonName) as fauna_adjacentTo,
+            COUNT(DISTINCT sourceTaxonName) as fauna_adjacentTo_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'adjacentTo'
@@ -184,7 +184,7 @@ def extract_organism_profiles(limit=None):
           )
         GROUP BY target_wfo_taxon_id
     """).fetchdf()
-    print(f"  - Found adjacentTo animals for {len(predators_adjacent):,} plants")
+    print(f"  - Found adjacentTo animals for {len(fauna_adjacent):,} plants")
     print()
 
     # Step 6: Combine into single profile table
@@ -207,21 +207,21 @@ def extract_organism_profiles(limit=None):
             COALESCE(path.pathogen_count, 0) as pathogen_count,
             COALESCE(vis.flower_visitors, []) as flower_visitors,
             COALESCE(vis.visitor_count, 0) as visitor_count,
-            -- Predator columns for biocontrol (by relationship type)
-            COALESCE(pred_host.predators_hasHost, []) as predators_hasHost,
-            COALESCE(pred_host.predators_hasHost_count, 0) as predators_hasHost_count,
-            COALESCE(pred_int.predators_interactsWith, []) as predators_interactsWith,
-            COALESCE(pred_int.predators_interactsWith_count, 0) as predators_interactsWith_count,
-            COALESCE(pred_adj.predators_adjacentTo, []) as predators_adjacentTo,
-            COALESCE(pred_adj.predators_adjacentTo_count, 0) as predators_adjacentTo_count
+            -- Associated fauna columns for biocontrol (by relationship type)
+            COALESCE(fauna_h.fauna_hasHost, []) as fauna_hasHost,
+            COALESCE(fauna_h.fauna_hasHost_count, 0) as fauna_hasHost_count,
+            COALESCE(fauna_i.fauna_interactsWith, []) as fauna_interactsWith,
+            COALESCE(fauna_i.fauna_interactsWith_count, 0) as fauna_interactsWith_count,
+            COALESCE(fauna_a.fauna_adjacentTo, []) as fauna_adjacentTo,
+            COALESCE(fauna_a.fauna_adjacentTo_count, 0) as fauna_adjacentTo_count
         FROM plants p
         LEFT JOIN pollinators pol USING (plant_wfo_id)
         LEFT JOIN herbivores herb USING (plant_wfo_id)
         LEFT JOIN pathogens path USING (plant_wfo_id)
         LEFT JOIN visitors vis USING (plant_wfo_id)
-        LEFT JOIN predators_host pred_host USING (plant_wfo_id)
-        LEFT JOIN predators_interacts pred_int USING (plant_wfo_id)
-        LEFT JOIN predators_adjacent pred_adj USING (plant_wfo_id)
+        LEFT JOIN fauna_host fauna_h USING (plant_wfo_id)
+        LEFT JOIN fauna_interacts fauna_i USING (plant_wfo_id)
+        LEFT JOIN fauna_adjacent fauna_a USING (plant_wfo_id)
     """, [plant_ids]).fetchdf()
 
     # Add plant names for reference
@@ -249,14 +249,14 @@ def extract_organism_profiles(limit=None):
             SUM(CASE WHEN herbivore_count > 0 THEN 1 ELSE 0 END) as plants_with_herbivores,
             SUM(CASE WHEN pathogen_count > 0 THEN 1 ELSE 0 END) as plants_with_pathogens,
             SUM(CASE WHEN visitor_count > 0 THEN 1 ELSE 0 END) as plants_with_visitors,
-            SUM(CASE WHEN predators_hasHost_count > 0 THEN 1 ELSE 0 END) as plants_with_hasHost_predators,
-            SUM(CASE WHEN predators_interactsWith_count > 0 THEN 1 ELSE 0 END) as plants_with_interactsWith_predators,
-            SUM(CASE WHEN predators_adjacentTo_count > 0 THEN 1 ELSE 0 END) as plants_with_adjacentTo_predators,
+            SUM(CASE WHEN fauna_hasHost_count > 0 THEN 1 ELSE 0 END) as plants_with_hasHost_fauna,
+            SUM(CASE WHEN fauna_interactsWith_count > 0 THEN 1 ELSE 0 END) as plants_with_interactsWith_fauna,
+            SUM(CASE WHEN fauna_adjacentTo_count > 0 THEN 1 ELSE 0 END) as plants_with_adjacentTo_fauna,
             AVG(pollinator_count) as avg_pollinators_per_plant,
             AVG(herbivore_count) as avg_herbivores_per_plant,
             AVG(pathogen_count) as avg_pathogens_per_plant,
-            AVG(predators_hasHost_count + predators_interactsWith_count +
-                predators_adjacentTo_count) as avg_predators_per_plant
+            AVG(fauna_hasHost_count + fauna_interactsWith_count +
+                fauna_adjacentTo_count) as avg_fauna_per_plant
         FROM profiles
     """).fetchone()
 
@@ -265,15 +265,15 @@ def extract_organism_profiles(limit=None):
     print(f"  - With herbivores: {stats[2]:,} ({100*stats[2]/stats[0]:.1f}%)")
     print(f"  - With pathogens: {stats[3]:,} ({100*stats[3]/stats[0]:.1f}%)")
     print(f"  - With flower visitors: {stats[4]:,} ({100*stats[4]/stats[0]:.1f}%)")
-    print(f"  - With hasHost predators: {stats[5]:,} ({100*stats[5]/stats[0]:.1f}%)")
-    print(f"  - With interactsWith predators: {stats[6]:,} ({100*stats[6]/stats[0]:.1f}%)")
-    print(f"  - With adjacentTo predators: {stats[7]:,} ({100*stats[7]/stats[0]:.1f}%)")
+    print(f"  - With hasHost fauna: {stats[5]:,} ({100*stats[5]/stats[0]:.1f}%)")
+    print(f"  - With interactsWith fauna: {stats[6]:,} ({100*stats[6]/stats[0]:.1f}%)")
+    print(f"  - With adjacentTo fauna: {stats[7]:,} ({100*stats[7]/stats[0]:.1f}%)")
     print()
     print(f"Average organisms per plant:")
     print(f"  - Pollinators: {stats[8]:.1f}")
     print(f"  - Herbivores: {stats[9]:.1f}")
     print(f"  - Pathogens: {stats[10]:.1f}")
-    print(f"  - Predators (all types): {stats[11]:.1f}")
+    print(f"  - Associated fauna (all types): {stats[11]:.1f}")
     print()
 
     # Show example

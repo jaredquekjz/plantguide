@@ -62,7 +62,7 @@ load_all_data <- function() {
   if (file.exists(organisms_path)) {
     organisms_df <- read_parquet(organisms_path) %>%
       select(plant_wfo_id, herbivores, flower_visitors, pollinators,
-             predators_hasHost, predators_interactsWith, predators_adjacentTo,
+             fauna_hasHost, fauna_interactsWith, fauna_adjacentTo,
              fungivores_eats)  # For M4 disease control mechanism 3
   } else {
     organisms_df <- tibble()

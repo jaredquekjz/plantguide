@@ -581,14 +581,14 @@ GuildScorerV3Shipley <- R6Class("GuildScorerV3Shipley",
           if (!is.null(row_b$flower_visitors[[1]])) {
             predators_b <- c(predators_b, row_b$flower_visitors[[1]])
           }
-          if ("predators_hasHost" %in% names(row_b) && !is.null(row_b$predators_hasHost[[1]])) {
-            predators_b <- c(predators_b, row_b$predators_hasHost[[1]])
+          if ("fauna_hasHost" %in% names(row_b) && !is.null(row_b$fauna_hasHost[[1]])) {
+            predators_b <- c(predators_b, row_b$fauna_hasHost[[1]])
           }
-          if ("predators_interactsWith" %in% names(row_b) && !is.null(row_b$predators_interactsWith[[1]])) {
-            predators_b <- c(predators_b, row_b$predators_interactsWith[[1]])
+          if ("fauna_interactsWith" %in% names(row_b) && !is.null(row_b$fauna_interactsWith[[1]])) {
+            predators_b <- c(predators_b, row_b$fauna_interactsWith[[1]])
           }
-          if ("predators_adjacentTo" %in% names(row_b) && !is.null(row_b$predators_adjacentTo[[1]])) {
-            predators_b <- c(predators_b, row_b$predators_adjacentTo[[1]])
+          if ("fauna_adjacentTo" %in% names(row_b) && !is.null(row_b$fauna_adjacentTo[[1]])) {
+            predators_b <- c(predators_b, row_b$fauna_adjacentTo[[1]])
           }
           predators_b <- unique(predators_b)
 

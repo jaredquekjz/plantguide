@@ -75,8 +75,8 @@
 # ============================================================================
 #
 # 1. organisms_df (organism_profiles_pure_r.csv):
-#    - Columns: plant_wfo_id, herbivores, flower_visitors, predators_hasHost,
-#               predators_interactsWith, predators_adjacentTo
+#    - Columns: plant_wfo_id, herbivores, flower_visitors, fauna_hasHost,
+#               fauna_interactsWith, fauna_adjacentTo
 #    - Each organism column contains pipe-separated GBIF taxon IDs
 #
 # 2. fungi_df (fungal_guilds_pure_r.csv):
@@ -129,8 +129,8 @@
 #'
 #' @details
 #' Edge case: If no organism data is available for guild, returns zero score.
-#' Predator aggregation: All animal types (flower_visitors, predators_hasHost,
-#' predators_interactsWith, predators_adjacentTo) are pooled as potential
+#' Predator aggregation: All animal types (flower_visitors, fauna_hasHost,
+#' fauna_interactsWith, fauna_adjacentTo) are pooled as potential
 #' biocontrol agents.
 #'
 #' @references
@@ -207,30 +207,30 @@ calculate_m3_insect_control <- function(plant_ids,
       # -----------------------------------------------------------------
       # GloBI network data includes multiple relationship types:
       # - flower_visitors: Pollinators, nectar feeders
-      # - predators_hasHost: Primary predation relationships
-      # - predators_interactsWith: Predation interactions
-      # - predators_adjacentTo: Spatial associations with predators
+      # - fauna_hasHost: Animals using plant as host
+      # - fauna_interactsWith: Animals interacting with plant
+      # - fauna_adjacentTo: Animals found near plant
       #
-      # We pool all types because predators use multiple plant resources:
+      # We pool all types because potential predators use multiple plant resources:
       # - Nectar for adult energy
       # - Shelter in foliage
       # - Alternate prey on flowers
       #
       # Example: Ladybugs visit yarrow flowers (flower_visitors) but
-      # also prey on aphids near yarrow (predators_adjacentTo)
+      # also prey on aphids near yarrow (fauna_adjacentTo)
 
       predators_b <- c()
       if (!is.null(row_b$flower_visitors[[1]])) {
         predators_b <- c(predators_b, row_b$flower_visitors[[1]])
       }
-      if ("predators_hasHost" %in% names(row_b) && !is.null(row_b$predators_hasHost[[1]])) {
-        predators_b <- c(predators_b, row_b$predators_hasHost[[1]])
+      if ("fauna_hasHost" %in% names(row_b) && !is.null(row_b$fauna_hasHost[[1]])) {
+        predators_b <- c(predators_b, row_b$fauna_hasHost[[1]])
       }
-      if ("predators_interactsWith" %in% names(row_b) && !is.null(row_b$predators_interactsWith[[1]])) {
-        predators_b <- c(predators_b, row_b$predators_interactsWith[[1]])
+      if ("fauna_interactsWith" %in% names(row_b) && !is.null(row_b$fauna_interactsWith[[1]])) {
+        predators_b <- c(predators_b, row_b$fauna_interactsWith[[1]])
       }
-      if ("predators_adjacentTo" %in% names(row_b) && !is.null(row_b$predators_adjacentTo[[1]])) {
-        predators_b <- c(predators_b, row_b$predators_adjacentTo[[1]])
+      if ("fauna_adjacentTo" %in% names(row_b) && !is.null(row_b$fauna_adjacentTo[[1]])) {
+        predators_b <- c(predators_b, row_b$fauna_adjacentTo[[1]])
       }
       predators_b <- unique(predators_b)
 
@@ -381,14 +381,14 @@ calculate_m3_insect_control <- function(plant_ids,
     if (!is.null(row$flower_visitors[[1]])) {
       predators <- c(predators, row$flower_visitors[[1]])
     }
-    if ("predators_hasHost" %in% names(row) && !is.null(row$predators_hasHost[[1]])) {
-      predators <- c(predators, row$predators_hasHost[[1]])
+    if ("fauna_hasHost" %in% names(row) && !is.null(row$fauna_hasHost[[1]])) {
+      predators <- c(predators, row$fauna_hasHost[[1]])
     }
-    if ("predators_interactsWith" %in% names(row) && !is.null(row$predators_interactsWith[[1]])) {
-      predators <- c(predators, row$predators_interactsWith[[1]])
+    if ("fauna_interactsWith" %in% names(row) && !is.null(row$fauna_interactsWith[[1]])) {
+      predators <- c(predators, row$fauna_interactsWith[[1]])
     }
-    if ("predators_adjacentTo" %in% names(row) && !is.null(row$predators_adjacentTo[[1]])) {
-      predators <- c(predators, row$predators_adjacentTo[[1]])
+    if ("fauna_adjacentTo" %in% names(row) && !is.null(row$fauna_adjacentTo[[1]])) {
+      predators <- c(predators, row$fauna_adjacentTo[[1]])
     }
     predators <- unique(predators)
 

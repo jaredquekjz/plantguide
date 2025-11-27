@@ -14,9 +14,9 @@
 //! **Columns needed** (M3 selects these 5):
 //!   1. plant_wfo_id - Plant identification
 //!   2. herbivores - Pipe-separated herbivore IDs
-//!   3. predators_hasHost - Pipe-separated predator IDs (relationship: hasHost)
-//!   4. predators_interactsWith - Pipe-separated predator IDs (relationship: interactsWith)
-//!   5. predators_adjacentTo - Pipe-separated predator IDs (relationship: adjacentTo)
+//!   3. fauna_hasHost - Pipe-separated predator IDs (relationship: hasHost)
+//!   4. fauna_interactsWith - Pipe-separated predator IDs (relationship: interactsWith)
+//!   5. fauna_adjacentTo - Pipe-separated predator IDs (relationship: adjacentTo)
 //!
 //! **Plus from fungi_lazy** (1 column):
 //!   6. entomopathogenic_fungi - Pipe-separated entomopathogenic fungi IDs
@@ -33,9 +33,9 @@ pub const REQUIRED_ORGANISM_COLS: &[&str] = &[
     "plant_wfo_id",
     "herbivores",
     "flower_visitors",      // Contains pollinator/predator data
-    "predators_hasHost",
-    "predators_interactsWith",
-    "predators_adjacentTo",
+    "fauna_hasHost",
+    "fauna_interactsWith",
+    "fauna_adjacentTo",
 ];
 
 /// Column requirements for M3 calculation (from fungi parquet)
@@ -314,9 +314,9 @@ fn extract_organism_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
     let columns = [
         "herbivores",
         "flower_visitors",
-        "predators_hasHost",
-        "predators_interactsWith",
-        "predators_adjacentTo",
+        "fauna_hasHost",
+        "fauna_interactsWith",
+        "fauna_adjacentTo",
     ];
 
     for idx in 0..df.height() {
@@ -430,9 +430,9 @@ fn extract_predator_data(df: &DataFrame) -> Result<FxHashMap<String, Vec<String>
     // Predator columns (match R: flower_visitors + 3 predator types)
     let predator_columns = [
         "flower_visitors",
-        "predators_hasHost",
-        "predators_interactsWith",
-        "predators_adjacentTo",
+        "fauna_hasHost",
+        "fauna_interactsWith",
+        "fauna_adjacentTo",
     ];
 
     for idx in 0..df.height() {

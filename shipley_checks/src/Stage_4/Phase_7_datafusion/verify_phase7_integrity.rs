@@ -276,9 +276,9 @@ fn verify_organisms_flattening(conn: &Connection) -> DuckResult<VerificationResu
             COALESCE(SUM(len(herbivores)), 0) +
             COALESCE(SUM(len(pathogens)), 0) +
             COALESCE(SUM(len(flower_visitors)), 0) +
-            COALESCE(SUM(len(predators_hasHost)), 0) +
-            COALESCE(SUM(len(predators_interactsWith)), 0) +
-            COALESCE(SUM(len(predators_adjacentTo)), 0) +
+            COALESCE(SUM(len(fauna_hasHost)), 0) +
+            COALESCE(SUM(len(fauna_interactsWith)), 0) +
+            COALESCE(SUM(len(fauna_adjacentTo)), 0) +
             COALESCE(SUM(len(fungivores_eats)), 0)
          FROM source_organisms",
         [],

@@ -32,14 +32,14 @@ for (i in 1:min(3, nrow(guild_organisms))) {
   if (!is.null(row$flower_visitors[[1]])) {
     predators <- c(predators, row$flower_visitors[[1]])
   }
-  if ("predators_hasHost" %in% names(row) && !is.null(row$predators_hasHost[[1]])) {
-    predators <- c(predators, row$predators_hasHost[[1]])
+  if ("fauna_hasHost" %in% names(row) && !is.null(row$fauna_hasHost[[1]])) {
+    predators <- c(predators, row$fauna_hasHost[[1]])
   }
-  if ("predators_interactsWith" %in% names(row) && !is.null(row$predators_interactsWith[[1]])) {
-    predators <- c(predators, row$predators_interactsWith[[1]])
+  if ("fauna_interactsWith" %in% names(row) && !is.null(row$fauna_interactsWith[[1]])) {
+    predators <- c(predators, row$fauna_interactsWith[[1]])
   }
-  if ("predators_adjacentTo" %in% names(row) && !is.null(row$predators_adjacentTo[[1]])) {
-    predators <- c(predators, row$predators_adjacentTo[[1]])
+  if ("fauna_adjacentTo" %in% names(row) && !is.null(row$fauna_adjacentTo[[1]])) {
+    predators <- c(predators, row$fauna_adjacentTo[[1]])
   }
   predators <- unique(predators)
 

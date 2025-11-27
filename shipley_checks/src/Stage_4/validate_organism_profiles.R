@@ -38,7 +38,7 @@ if (identical(names(python), names(r_data))) {
 cat("Comparing count columns...\n")
 count_cols <- c(
   'pollinator_count', 'herbivore_count', 'pathogen_count', 'visitor_count',
-  'predators_hasHost_count', 'predators_interactsWith_count', 'predators_adjacentTo_count'
+  'fauna_hasHost_count', 'fauna_interactsWith_count', 'fauna_adjacentTo_count'
 )
 
 for (col in count_cols) {
@@ -73,9 +73,9 @@ diff_plants <- merged %>%
     herbivore_count_python != herbivore_count_r |
     pathogen_count_python != pathogen_count_r |
     visitor_count_python != visitor_count_r |
-    predators_hasHost_count_python != predators_hasHost_count_r |
-    predators_interactsWith_count_python != predators_interactsWith_count_r |
-    predators_adjacentTo_count_python != predators_adjacentTo_count_r
+    fauna_hasHost_count_python != fauna_hasHost_count_r |
+    fauna_interactsWith_count_python != fauna_interactsWith_count_r |
+    fauna_adjacentTo_count_python != fauna_adjacentTo_count_r
   )
 
 if (nrow(diff_plants) > 0) {

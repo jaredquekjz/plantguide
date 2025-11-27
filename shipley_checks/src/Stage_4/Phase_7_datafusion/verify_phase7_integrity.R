@@ -74,8 +74,8 @@ if (file.exists(organisms_flat_path) && file.exists(organisms_wide_path)) {
 
   # Source column validity
   valid_sources <- c("pollinators", "herbivores", "pathogens", "flower_visitors",
-                     "predators_hasHost", "predators_interactsWith",
-                     "predators_adjacentTo", "fungivores_eats")
+                     "fauna_hasHost", "fauna_interactsWith",
+                     "fauna_adjacentTo", "fungivores_eats")
   actual_sources <- unique(organisms_flat$source_column)
   check(all(actual_sources %in% valid_sources),
         paste("Source columns valid:", paste(actual_sources, collapse = ", ")),

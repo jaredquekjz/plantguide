@@ -157,7 +157,7 @@ MARINE_CLASSES <- c('Asteroidea', 'Homoscleromorpha', 'Anthozoa', 'Actinopterygi
 
 cat("Step 5a: Extracting animals with hasHost relationship...\n")
 
-predators_hasHost <- globi %>%
+fauna_hasHost <- globi %>%
   filter(
     !is.na(target_wfo_taxon_id),
     interactionTypeName == 'hasHost',
@@ -169,17 +169,17 @@ predators_hasHost <- globi %>%
   ) %>%
   group_by(target_wfo_taxon_id) %>%
   summarize(
-    predators_hasHost = list(unique(sourceTaxonName)),
-    predators_hasHost_count = n_distinct(sourceTaxonName),
+    fauna_hasHost = list(unique(sourceTaxonName)),
+    fauna_hasHost_count = n_distinct(sourceTaxonName),
     .groups = 'drop'
   ) %>%
   rename(plant_wfo_id = target_wfo_taxon_id)
 
-cat("  ✓ Found hasHost animals for", nrow(predators_hasHost), "plants\n\n")
+cat("  ✓ Found hasHost animals for", nrow(fauna_hasHost), "plants\n\n")
 
 cat("Step 5b: Extracting animals with interactsWith relationship...\n")
 
-predators_interactsWith <- globi %>%
+fauna_interactsWith <- globi %>%
   filter(
     !is.na(target_wfo_taxon_id),
     interactionTypeName == 'interactsWith',
@@ -191,17 +191,17 @@ predators_interactsWith <- globi %>%
   ) %>%
   group_by(target_wfo_taxon_id) %>%
   summarize(
-    predators_interactsWith = list(unique(sourceTaxonName)),
-    predators_interactsWith_count = n_distinct(sourceTaxonName),
+    fauna_interactsWith = list(unique(sourceTaxonName)),
+    fauna_interactsWith_count = n_distinct(sourceTaxonName),
     .groups = 'drop'
   ) %>%
   rename(plant_wfo_id = target_wfo_taxon_id)
 
-cat("  ✓ Found interactsWith animals for", nrow(predators_interactsWith), "plants\n\n")
+cat("  ✓ Found interactsWith animals for", nrow(fauna_interactsWith), "plants\n\n")
 
 cat("Step 5c: Extracting animals with adjacentTo relationship...\n")
 
-predators_adjacentTo <- globi %>%
+fauna_adjacentTo <- globi %>%
   filter(
     !is.na(target_wfo_taxon_id),
     interactionTypeName == 'adjacentTo',
@@ -213,13 +213,13 @@ predators_adjacentTo <- globi %>%
   ) %>%
   group_by(target_wfo_taxon_id) %>%
   summarize(
-    predators_adjacentTo = list(unique(sourceTaxonName)),
-    predators_adjacentTo_count = n_distinct(sourceTaxonName),
+    fauna_adjacentTo = list(unique(sourceTaxonName)),
+    fauna_adjacentTo_count = n_distinct(sourceTaxonName),
     .groups = 'drop'
   ) %>%
   rename(plant_wfo_id = target_wfo_taxon_id)
 
-cat("  ✓ Found adjacentTo animals for", nrow(predators_adjacentTo), "plants\n\n")
+cat("  ✓ Found adjacentTo animals for", nrow(fauna_adjacentTo), "plants\n\n")
 
 # ==============================================================================
 # Step 6: Combine into Single Profile Table
@@ -233,27 +233,27 @@ profiles <- plants %>%
   left_join(herbivores, by = "plant_wfo_id") %>%
   left_join(pathogens, by = "plant_wfo_id") %>%
   left_join(flower_visitors, by = "plant_wfo_id") %>%
-  left_join(predators_hasHost, by = "plant_wfo_id") %>%
-  left_join(predators_interactsWith, by = "plant_wfo_id") %>%
-  left_join(predators_adjacentTo, by = "plant_wfo_id") %>%
+  left_join(fauna_hasHost, by = "plant_wfo_id") %>%
+  left_join(fauna_interactsWith, by = "plant_wfo_id") %>%
+  left_join(fauna_adjacentTo, by = "plant_wfo_id") %>%
   mutate(
     # Replace NULL lists with empty lists
     pollinators = map(pollinators, ~if(is.null(.x)) character(0) else .x),
     herbivores = map(herbivores, ~if(is.null(.x)) character(0) else .x),
     pathogens = map(pathogens, ~if(is.null(.x)) character(0) else .x),
     flower_visitors = map(flower_visitors, ~if(is.null(.x)) character(0) else .x),
-    predators_hasHost = map(predators_hasHost, ~if(is.null(.x)) character(0) else .x),
-    predators_interactsWith = map(predators_interactsWith, ~if(is.null(.x)) character(0) else .x),
-    predators_adjacentTo = map(predators_adjacentTo, ~if(is.null(.x)) character(0) else .x),
+    fauna_hasHost = map(fauna_hasHost, ~if(is.null(.x)) character(0) else .x),
+    fauna_interactsWith = map(fauna_interactsWith, ~if(is.null(.x)) character(0) else .x),
+    fauna_adjacentTo = map(fauna_adjacentTo, ~if(is.null(.x)) character(0) else .x),
 
     # Replace NA counts with 0
     pollinator_count = coalesce(pollinator_count, 0L),
     herbivore_count = coalesce(herbivore_count, 0L),
     pathogen_count = coalesce(pathogen_count, 0L),
     visitor_count = coalesce(visitor_count, 0L),
-    predators_hasHost_count = coalesce(predators_hasHost_count, 0L),
-    predators_interactsWith_count = coalesce(predators_interactsWith_count, 0L),
-    predators_adjacentTo_count = coalesce(predators_adjacentTo_count, 0L),
+    fauna_hasHost_count = coalesce(fauna_hasHost_count, 0L),
+    fauna_interactsWith_count = coalesce(fauna_interactsWith_count, 0L),
+    fauna_adjacentTo_count = coalesce(fauna_adjacentTo_count, 0L),
 
     # Add wfo_taxon_id (redundant copy of plant_wfo_id) to match Python
     wfo_taxon_id = plant_wfo_id
@@ -265,9 +265,9 @@ profiles <- plants %>%
     herbivores, herbivore_count,
     pathogens, pathogen_count,
     flower_visitors, visitor_count,
-    predators_hasHost, predators_hasHost_count,
-    predators_interactsWith, predators_interactsWith_count,
-    predators_adjacentTo, predators_adjacentTo_count,
+    fauna_hasHost, fauna_hasHost_count,
+    fauna_interactsWith, fauna_interactsWith_count,
+    fauna_adjacentTo, fauna_adjacentTo_count,
     wfo_taxon_id
   )
 
@@ -284,7 +284,7 @@ profiles <- profiles %>% arrange(plant_wfo_id)
 
 # Convert list columns to sorted pipe-separated strings
 list_cols <- c('pollinators', 'herbivores', 'pathogens', 'flower_visitors',
-               'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo')
+               'fauna_hasHost', 'fauna_interactsWith', 'fauna_adjacentTo')
 
 for (col in list_cols) {
   profiles[[col]] <- map_chr(profiles[[col]], function(x) {

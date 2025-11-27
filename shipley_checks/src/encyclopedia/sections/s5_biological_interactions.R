@@ -12,7 +12,7 @@
 #   - herbivores, herbivore_count
 #   - pathogens, pathogen_count
 #   - flower_visitors, visitor_count
-#   - predators_hasHost, predators_hasHost_count (natural pest control)
+#   - fauna_hasHost, fauna_hasHost_count (animals associated with plant)
 #
 #   From fungal guilds parquet:
 #   - amf_fungi, amf_fungi_count (arbuscular mycorrhizae)
@@ -91,7 +91,7 @@ generate_section_5_biological_interactions <- function(plant_row,
     pollinator_count <- as.integer(organism_profile$pollinator_count[1])
     herbivore_count <- as.integer(organism_profile$herbivore_count[1])
     pathogen_count <- as.integer(organism_profile$pathogen_count[1])
-    predator_count <- as.integer(organism_profile$predators_hasHost_count[1])
+    predator_count <- as.integer(organism_profile$fauna_hasHost_count[1])
     visitor_count <- as.integer(organism_profile$visitor_count[1])
 
     # Handle NA values

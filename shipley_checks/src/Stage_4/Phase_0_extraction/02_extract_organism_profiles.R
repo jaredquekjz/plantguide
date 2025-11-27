@@ -34,7 +34,8 @@ cat("  6. Fungivores: Animals that eat fungi on plants (for disease control)\n\n
 output_file <- "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet"
 
 # Execute full SQL in COPY TO to avoid registered table issues with LIST columns
-dbExecute(con, sprintf("
+# NOTE: Use paste0 instead of sprintf to avoid R's 8192 char limit
+sql <- paste0("
   COPY (
     WITH plants AS (
         SELECT DISTINCT wfo_taxon_id as plant_wfo_id
@@ -87,11 +88,11 @@ dbExecute(con, sprintf("
           AND sourceTaxonName != 'no name'
         GROUP BY target_wfo_taxon_id
     ),
-    predators_host AS (
+    fauna_host AS (
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_hasHost,
-            COUNT(DISTINCT sourceTaxonName) as predators_hasHost_count
+            LIST(DISTINCT sourceTaxonName) as fauna_hasHost,
+            COUNT(DISTINCT sourceTaxonName) as fauna_hasHost_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'hasHost'
@@ -104,11 +105,11 @@ dbExecute(con, sprintf("
           )
         GROUP BY target_wfo_taxon_id
     ),
-    predators_interacts AS (
+    fauna_interacts AS (
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_interactsWith,
-            COUNT(DISTINCT sourceTaxonName) as predators_interactsWith_count
+            LIST(DISTINCT sourceTaxonName) as fauna_interactsWith,
+            COUNT(DISTINCT sourceTaxonName) as fauna_interactsWith_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'interactsWith'
@@ -121,11 +122,11 @@ dbExecute(con, sprintf("
           )
         GROUP BY target_wfo_taxon_id
     ),
-    predators_adjacent AS (
+    fauna_adjacent AS (
         SELECT
             target_wfo_taxon_id as plant_wfo_id,
-            LIST(DISTINCT sourceTaxonName) as predators_adjacentTo,
-            COUNT(DISTINCT sourceTaxonName) as predators_adjacentTo_count
+            LIST(DISTINCT sourceTaxonName) as fauna_adjacentTo,
+            COUNT(DISTINCT sourceTaxonName) as fauna_adjacentTo_count
         FROM read_parquet('data/stage1/globi_interactions_plants_wfo.parquet')
         WHERE target_wfo_taxon_id IS NOT NULL
           AND interactionTypeName = 'adjacentTo'
@@ -184,12 +185,12 @@ dbExecute(con, sprintf("
         COALESCE(vis.flower_visitors, []) as flower_visitors,
         COALESCE(vis.visitor_count, 0) as visitor_count,
         -- Predator columns for biocontrol (by relationship type)
-        COALESCE(pred_host.predators_hasHost, []) as predators_hasHost,
-        COALESCE(pred_host.predators_hasHost_count, 0) as predators_hasHost_count,
-        COALESCE(pred_int.predators_interactsWith, []) as predators_interactsWith,
-        COALESCE(pred_int.predators_interactsWith_count, 0) as predators_interactsWith_count,
-        COALESCE(pred_adj.predators_adjacentTo, []) as predators_adjacentTo,
-        COALESCE(pred_adj.predators_adjacentTo_count, 0) as predators_adjacentTo_count,
+        COALESCE(pred_host.fauna_hasHost, []) as fauna_hasHost,
+        COALESCE(pred_host.fauna_hasHost_count, 0) as fauna_hasHost_count,
+        COALESCE(pred_int.fauna_interactsWith, []) as fauna_interactsWith,
+        COALESCE(pred_int.fauna_interactsWith_count, 0) as fauna_interactsWith_count,
+        COALESCE(pred_adj.fauna_adjacentTo, []) as fauna_adjacentTo,
+        COALESCE(pred_adj.fauna_adjacentTo_count, 0) as fauna_adjacentTo_count,
         -- Fungivore columns for disease biocontrol (M4)
         COALESCE(fung.fungivores_eats, []) as fungivores_eats,
         COALESCE(fung.fungivores_eats_count, 0) as fungivores_eats_count
@@ -198,15 +199,16 @@ dbExecute(con, sprintf("
     LEFT JOIN herbivores herb ON p.plant_wfo_id = herb.plant_wfo_id
     LEFT JOIN pathogens path ON p.plant_wfo_id = path.plant_wfo_id
     LEFT JOIN visitors vis ON p.plant_wfo_id = vis.plant_wfo_id
-    LEFT JOIN predators_host pred_host ON p.plant_wfo_id = pred_host.plant_wfo_id
-    LEFT JOIN predators_interacts pred_int ON p.plant_wfo_id = pred_int.plant_wfo_id
-    LEFT JOIN predators_adjacent pred_adj ON p.plant_wfo_id = pred_adj.plant_wfo_id
+    LEFT JOIN fauna_host pred_host ON p.plant_wfo_id = pred_host.plant_wfo_id
+    LEFT JOIN fauna_interacts pred_int ON p.plant_wfo_id = pred_int.plant_wfo_id
+    LEFT JOIN fauna_adjacent pred_adj ON p.plant_wfo_id = pred_adj.plant_wfo_id
     LEFT JOIN fungivores_eats fung ON p.plant_wfo_id = fung.plant_wfo_id
     ORDER BY p.plant_wfo_id
   )
-  TO '%s'
+  TO '", output_file, "'
   (FORMAT PARQUET, COMPRESSION ZSTD)
-", output_file))
+")
+dbExecute(con, sql)
 
 cat(sprintf("✓ Wrote Rust-ready parquet: %s\n\n", output_file))
 

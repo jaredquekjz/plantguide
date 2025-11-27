@@ -45,7 +45,7 @@ def main():
 
     # Convert list columns to sorted pipe-separated strings
     list_cols = ['pollinators', 'herbivores', 'pathogens', 'flower_visitors',
-                 'predators_hasHost', 'predators_interactsWith', 'predators_adjacentTo']
+                 'fauna_hasHost', 'fauna_interactsWith', 'fauna_adjacentTo']
 
     print("Converting list columns to sorted pipe-separated strings...")
     for col in list_cols:
@@ -55,7 +55,7 @@ def main():
 
     # Ensure integer columns are integers (not floats)
     int_cols = ['pollinator_count', 'herbivore_count', 'pathogen_count', 'visitor_count',
-                'predators_hasHost_count', 'predators_interactsWith_count', 'predators_adjacentTo_count']
+                'fauna_hasHost_count', 'fauna_interactsWith_count', 'fauna_adjacentTo_count']
 
     print("Converting count columns to integers...")
     for col in int_cols:
@@ -70,9 +70,9 @@ def main():
         'herbivores', 'herbivore_count',
         'pathogens', 'pathogen_count',
         'flower_visitors', 'visitor_count',
-        'predators_hasHost', 'predators_hasHost_count',
-        'predators_interactsWith', 'predators_interactsWith_count',
-        'predators_adjacentTo', 'predators_adjacentTo_count',
+        'fauna_hasHost', 'fauna_hasHost_count',
+        'fauna_interactsWith', 'fauna_interactsWith_count',
+        'fauna_adjacentTo', 'fauna_adjacentTo_count',
         'wfo_taxon_id'
     ]
 

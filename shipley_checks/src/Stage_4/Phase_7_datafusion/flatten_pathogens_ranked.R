@@ -60,7 +60,10 @@ query <- sprintf("
       AND interactionTypeName IN ('pathogenOf', 'parasiteOf')
       AND sourceTaxonName IS NOT NULL
       AND sourceTaxonName != 'no name'
-      AND sourceTaxonName NOT IN ('Fungi', 'Bacteria', 'Viruses', 'Plantae', 'Animalia')
+      AND sourceTaxonName NOT IN ('Fungi', 'Bacteria', 'Viruses', 'Plantae', 'Animalia', 'Insecta')
+      -- EXCLUDE misclassified kingdoms (beetles, parasitic plants get pathogenOf incorrectly)
+      -- GloBI uses both 'Animalia' and 'Metazoa' for animals
+      AND sourceTaxonKingdomName NOT IN ('Plantae', 'Animalia', 'Metazoa')
     GROUP BY target_wfo_taxon_id, sourceTaxonName
     ORDER BY target_wfo_taxon_id, observation_count DESC
   ) TO '%s' (FORMAT PARQUET, COMPRESSION ZSTD)
