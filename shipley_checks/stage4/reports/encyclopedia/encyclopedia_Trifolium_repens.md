@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T08:08:31Z"
+generated: "2025-11-27T09:13:01Z"
 version: "2.0"
 ---
 
@@ -209,11 +209,11 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 - **Beetles** (1): Bruchidius dispar
 - **Other Herbivores** (1): Rhizophagus
 
-### Beneficial Insects
+### Beneficial Predators
 **9 taxa documented** - natural pest control agents
 
-- **Beetles** (4): Coccinella septempunctata, Coleomegilla maculata, Harmonia axyridis, +1 more
-- **Flies** (3): Toxomerus marginatus, Eupeodes luniger, Eupeodes
+- **Beetles** (4): Cycloneda munda, Coleomegilla maculata, Harmonia axyridis, +1 more
+- **Flies** (3): Eupeodes luniger, Eupeodes, Toxomerus marginatus
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 
@@ -284,7 +284,7 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 
 **Observed Pests**: 7 species (Above average) - Some pest pressure expected
 
-**Observed Beneficial Insects**:
+**Observed Beneficial Predators**:
 - 9 predatory species observed (Above average) - Good predator habitat
 
 **Guild Recommendations**:

@@ -343,7 +343,7 @@ fn generate_gp3(
 
     lines.push(format!("**Observed Pests**: {} species ({}) - {}", herbivores, pest_level, pest_advice));
     lines.push(String::new());
-    lines.push("**Observed Beneficial Insects**:".to_string());
+    lines.push("**Observed Beneficial Predators**:".to_string());
     lines.push(format!("- {} predatory species observed ({}) - {}", predators, pred_level, pred_advice));
     if entomopath > 0 {
         lines.push(format!("- {} insect-killing fungi observed", entomopath));

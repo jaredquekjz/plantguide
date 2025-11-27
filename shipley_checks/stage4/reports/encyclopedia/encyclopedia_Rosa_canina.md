@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T08:08:30Z"
+generated: "2025-11-27T09:13:00Z"
 version: "2.0"
 ---
 
@@ -202,11 +202,10 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 - **Scale Insects** (1): Chorizococcus
 - **Other Herbivores** (3): Nathrius brevipennis, Ropalopus femoratus, Endelomyia aethiops
 
-### Beneficial Insects
-**5 taxa documented** - natural pest control agents
+### Beneficial Predators
+**4 taxa documented** - natural pest control agents
 
-- **Birds** (3): Turdus merula, Turdus philomelos, Erithacus rubecula
-- **Butterflies** (1): Pieris brassicae
+- **Birds** (3): Erithacus rubecula, Turdus merula, Turdus philomelos
 - **Hoverflies** (1): Syrphus
 
 *These beneficial organisms help control pest populations.*
@@ -243,7 +242,7 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 | CSR Strategy | C:27% S:51% R:22% | Flexible |
 | Structural | Understory (2.0m) | Shade user |
 | Mycorrhizal | Non-mycorrhizal/Undocumented | No network benefit |
-| Pest Control | 19 pests, 5 predators | Benefits from predator plants |
+| Pest Control | 19 pests, 4 predators | Benefits from predator plants |
 | Disease Control | 1 mycoparasites | Hosts disease fighters |
 | Pollinator | 40 taxa | Very High |
 
@@ -276,8 +275,8 @@ Standard garden care applies. Adaptable to range of conditions. Moderate vigour;
 
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
-**Observed Beneficial Insects**:
-- 5 predatory species observed (Typical) - Average predator observations
+**Observed Beneficial Predators**:
+- 4 predatory species observed (Typical) - Average predator observations
 
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.

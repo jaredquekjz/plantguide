@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T08:08:29Z"
+generated: "2025-11-27T09:13:00Z"
 version: "2.0"
 ---
 
@@ -200,14 +200,11 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 - **Aphids** (1): Lachnus roboris
 - **Other Herbivores** (1): Synergatus
 
-### Beneficial Insects
-**10 taxa documented** - natural pest control agents
+### Beneficial Predators
+**2 taxa documented** - natural pest control agents
 
-- **Snails & Slugs** (3): Cepaea nemoralis, Ariolimax columbianus, Deroceras reticulatum
-- **Squirrels** (2): Tamiasciurus hudsonicus, Sciurus carolinensis
 - **Beetles** (1): Carabus cancellatus
 - **Wasps** (1): Eurytoma brunniventris
-- **Other Predators** (3): Prophysaon andersonii, Limax maximus, Ursus arctos
 
 *These beneficial organisms help control pest populations.*
 
@@ -243,7 +240,7 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 | CSR Strategy | C:45% S:41% R:14% | Avoid C-C pairs |
 | Structural | Canopy (27.1m) | Shade provider |
 | Mycorrhizal | EMF (Ectomycorrhizal) | Connect with EMF plants |
-| Pest Control | 19 pests, 10 predators | Strong biocontrol habitat |
+| Pest Control | 19 pests, 2 predators | Benefits from predator plants |
 | Disease Control | 0 mycoparasites | No documented antagonists |
 | Pollinator | 14 taxa | Typical |
 
@@ -276,12 +273,11 @@ Annual thinning to allow light below; may cast dense shade. Monitor for structur
 
 **Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
 
-**Observed Beneficial Insects**:
-- 10 predatory species observed (Above average) - Good predator habitat
+**Observed Beneficial Predators**:
+- 2 predatory species observed (Low) - Few predators observed
 
 **Guild Recommendations**:
 - High pest diversity (top 10%). Benefits from companions that attract pest predators.
-- Good predator habitat. Contributes beneficial insects to the garden.
 
 ### GP4: Disease Control Potential
 

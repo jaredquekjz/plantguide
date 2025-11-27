@@ -42,7 +42,7 @@ pub fn generate(
     sections.push(String::new());
     sections.push(generate_herbivore_section(organism_counts, organism_profile));
 
-    // Beneficial Insects (Predators)
+    // Beneficial Predators (natural pest control)
     sections.push(String::new());
     sections.push(generate_predator_section(organism_counts, organism_profile));
 
@@ -169,7 +169,7 @@ fn generate_predator_section(
     profile: Option<&OrganismProfile>,
 ) -> String {
     let mut lines = Vec::new();
-    lines.push("### Beneficial Insects".to_string());
+    lines.push("### Beneficial Predators".to_string());
 
     let count = profile
         .map(|p| p.total_predators)
@@ -177,7 +177,7 @@ fn generate_predator_section(
         .unwrap_or(0);
 
     if count == 0 {
-        lines.push("No predator/beneficial insect records available.".to_string());
+        lines.push("No beneficial predator records available.".to_string());
         lines.push("*This plant may benefit from companions that attract pest predators.*".to_string());
         return lines.join("\n");
     }

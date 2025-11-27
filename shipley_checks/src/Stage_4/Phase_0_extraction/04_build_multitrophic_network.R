@@ -103,6 +103,22 @@ duckdb::duckdb_register(con, "our_herbivores", all_herbivores)
 duckdb::duckdb_register(con, "our_pathogens", all_pathogens)
 
 # Embed full SQL directly in COPY TO (avoid registering LIST-containing dataframes)
+#
+# COMPREHENSIVE FILTER for beneficial predators relevant to garden pest control
+# Excludes:
+#   - Self-references (GloBI data quality)
+#   - All fish (marine/freshwater - not garden relevant)
+#   - Marine invertebrates (crabs, octopus, starfish, etc.)
+#   - Gastropoda (slugs, snails - herbivores)
+#   - Plants mistakenly recorded as predators
+#   - Leeches, parasitic worms
+#   - Fungi/viruses (separate category)
+#   - Non-predatory mammals (whales, primates, rodents, bears, seals)
+#   - Lepidoptera (butterflies/moths - herbivores)
+#
+# Keeps: Insects (except Lepidoptera), spiders, centipedes, birds, bats,
+#        amphibians, lizards, insectivorous mammals (shrews, hedgehogs)
+#
 dbExecute(con, sprintf("
   COPY (
     SELECT
@@ -112,6 +128,43 @@ dbExecute(con, sprintf("
     FROM read_parquet('%s') g
     WHERE g.targetTaxonName IN (SELECT herbivore FROM our_herbivores)
       AND g.interactionTypeName IN ('eats', 'preysOn')
+      -- Exclude self-references (data quality issue)
+      AND g.sourceTaxonName != g.targetTaxonName
+      -- Exclude fish classes (marine/freshwater - not garden relevant)
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN (
+          'Actinopterygii', 'Teleostei', 'Elasmobranchii', 'Chondrichthyes',
+          'Osteichthyes', 'Holocephali', 'Chondrostei', 'Holostei', 'Actinopteri'
+      )
+      -- Exclude marine invertebrates
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN (
+          'Malacostraca', 'Cephalopoda', 'Anthozoa', 'Polychaeta', 'Asteroidea',
+          'Hexacorallia', 'Maxillopoda', 'Echinoidea', 'Hydrozoa'
+      )
+      -- Exclude slugs/snails (herbivores, not predators)
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN ('Gastropoda')
+      -- Exclude plants mistakenly recorded as predators
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN (
+          'Magnoliopsida', 'Liliopsida', 'Florideophyceae'
+      )
+      -- Exclude leeches and parasitic worms
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN (
+          'Hirudinea', 'Turbellaria', 'Palaeacanthocephala', 'Enopla', 'Hoplonemertea'
+      )
+      -- Exclude fungi and viruses (handled separately)
+      AND COALESCE(g.sourceTaxonClassName, '') NOT IN (
+          'Saccharomycetes', 'Agaricomycetes', 'Sordariomycetes',
+          'Dothideomycetes', 'Laboulbeniomycetes', 'Megaviricetes'
+      )
+      -- Exclude non-predatory mammal orders
+      AND COALESCE(g.sourceTaxonOrderName, '') NOT IN (
+          'Cetacea', 'Primates', 'Rodentia', 'Pilosa', 'Cingulata', 'Theriiformes'
+      )
+      -- Exclude Lepidoptera (butterflies/moths are herbivores)
+      AND COALESCE(g.sourceTaxonOrderName, '') NOT IN ('Lepidoptera')
+      -- Exclude specific non-predatory families
+      AND COALESCE(g.sourceTaxonFamilyName, '') NOT IN (
+          'Ursidae', 'Phocidae', 'Otariidae', 'Sciuridae'
+      )
     GROUP BY g.targetTaxonName
     ORDER BY herbivore
   )
