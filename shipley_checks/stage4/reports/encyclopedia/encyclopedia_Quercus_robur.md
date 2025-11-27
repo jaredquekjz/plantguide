@@ -1,106 +1,353 @@
-  ---
-  wfo_id: wfo-0000292858
-  scientific_name: Quercus robur
-  generated: 2025-11-27
-  generator: Encyclopedia Generator v0.1
-  ---
+---
+wfo_id: "wfo-0000292858"
+scientific_name: "Quercus robur"
+family: "Fagaceae"
+genus: "Quercus"
+generated: "2025-11-27T08:08:29Z"
+version: "2.0"
+---
 
-    **Quercus robur**
-  *Family*: Fagaceae | *Genus*: Quercus
+# Quercus robur
+**Family**: Fagaceae
+**Growth Form**: Tree
+**Height**: 27.1m (Large tree (>20m))
+**Leaf Type**: Deciduous
+**Hardiness**: Zone 10 (-0°C)
+**Native Climate**: Csb (Mediterranean warm summer)
+**Woodiness**: Woody
 
-  Deciduous woody tree - very tall (27.1m)
-  broadleaved foliage
-    *Special traits*: Forms em associations
+---
 
-  ---
+## Growing Requirements
 
-    ## Growing Requirements
+### Light
 
-    ☀️ **Light**: Between semi-shade and semi-sun (EIVE-L: 6.2/10)
-     → Prefers open sites with good light but tolerates some shade
+**EIVE-L**: 6.2/10 - Full sun to part shade
+Open borders work well; tolerates some afternoon shade.
 
-    💧 **Water**: Moist; upper range of fresh soils (EIVE-M: 4.8/10)
-     → Water regularly during growing season; moderate moisture | Drought-tolerant once established (stress-tolerator strategy)
+*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
 
-  🌡️ **Climate**: Climate preferences unknown
+### Climate
 
-    🌱 **Fertility**: Moderately poor; low fertility (EIVE-N: 4.5/10)
-     → Moderate fertility; balanced fertilizer in spring
+*Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*
 
-    ⚗️ **pH**: Moderately acidic soils; occasional neutral/basic (EIVE-R: 5.2/10)
-     → Adaptable to slightly acidic to neutral soil | pH 6.0-7.0
+**Temperature**: 26°C warmest month, 0°C coldest month
+*Range: -2°C to 30°C across all population locations*
+**Rainfall**: 611mm/year (416-1515mm across locations)
 
-  ---
+---
 
-    ## Maintenance Profile
+**Köppen Zones**: Csb (Warm-summer Mediterranean - warm dry summers, mild wet winters)
+**Frost**: 2 days/year (up to 3 in coldest locations)
+*Frost-free to occasional*
+**Warm nights**: Rare (cool nights year-round)
+*Cool nights year-round*
+**Day-night swing**: 10°C typical daily range
+*Temperate - moderate variation*
+**Growing season**: 327 days (~11 months)
+*Very long - ranges from 275 to 365 days across locations*
 
-  **Maintenance Level: MEDIUM-HIGH**
+**Ecological Indicator (EIVE-T)**:
+- Temperature indicator: 4.7/10
+- Climate type: Temperate; typical Northern Europe
+*Where species is most abundant in natural vegetation; from field surveys*
 
-    🌿 **Growth Rate**: Moderate (CS strategy)
-     → Steady growth rate
-     → Prune as needed to maintain shape
+**Moisture**:
 
-    🍂 **Seasonal Tasks**:
-     → Spring: Shape after frost risk passes
-     → Summer: Minimal intervention, occasional deadheading
-     → Autumn: Rake fallen leaves for compost
-     → Winter: Structural pruning while dormant (if deciduous)
+- **Dry spells**: 16 consecutive dry days typical, 26 in driest locations
+  *Limited - Water during 2+ week dry periods*
+- **Disease pressure**: 2 warm-wet days/year
+  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
 
-    ♻️ **Waste Management**:
-     → Moderate decomposition rate
-     → Suitable for composting
-     → Can be used as mulch
-     → Seasonal leaf drop creates moderate waste volume
+**Ecological Indicator (EIVE-M)**:
+- Moisture indicator: 4.8/10
+- Typical position: Moderate moisture
+- Watering: Regular; 1-2 times weekly
+*Where species is most abundant in natural vegetation; from field surveys*
 
-    ⏰ **Time Commitment**: ~4 hours per year
+**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
 
-  ---
+### Soil
 
-    ## Ecosystem Services
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
 
-  **Environmental Benefits**:
+**Topsoil (0-15cm)** - *the layer you can amend*
 
-    🌿 **Carbon Sequestration**: ⭐⭐⭐⭐ High (confidence: High)
-     Stores ~190 kg CO₂/year in biomass
-     → Excellent choice for carbon-conscious gardening
+**pH**: 6.5 typical (range 5.1-7.4)
+*Slightly acidic; wide tolerance - adaptable to most garden soils*
+**Fertility (CEC)**: 22 cmol/kg (19-33 across locations)
+*Good retention - soil holds fertilizer well; benefits from annual feeding*
+**Organic Carbon**: 41 g/kg (22-77 across locations)
 
-      🌊 **Erosion Control**: ⭐⭐⭐⭐ High (confidence: Moderate)
-     Deep woody roots anchor soil on slopes
-     → Excellent for slopes, banks, and erosion-prone sites
+**Texture**
 
-      ♻️ **Nutrient Cycling**: ⭐⭐⭐⭐ High (confidence: High)
-     Fast-decomposing litter rapidly returns nutrients to soil
-     → Excellent for building soil health over time
+| Component | Typical | Range |
+|-----------|---------|-------|
+| Sand | 44% | 33-59% |
+| Silt | 36% | 15-55% |
+| Clay | 20% | 12-26% |
 
-  ---
+**USDA Class**: Loam
+*Drainage: Good | Water retention: Good - Ideal soil; balanced drainage and retention; suits most plants*
 
-    ## Biological Interactions
+**Triangle Coordinates**: x=45.9, y=20.3
+*For plotting on USDA texture triangle; x = 0.5×clay + silt, y = clay*
 
-  **Natural Relationships**:
+---
 
-    🐝 **Pollinators**: Excellent pollinator value (39 species documented)
-     → Plant in groups to maximize pollinator benefit
-       → Peak pollinator activity during flowering season
+**Profile Average (0-200cm)** - *underlying conditions*
 
-    🐛 **Pest Pressure**: MODERATE with good natural control
-     19 known herbivore species
-     4 predator species + 0 entomopathogenic fungi
-     → Monitor pests but rely on natural enemies first
-       → Avoid broad-spectrum pesticides
+| Indicator | Typical | Range |
+|-----------|---------|-------|
+| pH | 6.5 | 5.3-7.7 |
+| CEC (cmol/kg) | 20 | 14-26 |
+| SOC (g/kg) | 12 | 6-27 |
 
-    🦠 **Disease Risk**: MODERATE-HIGH
-     21 documented pathogen species
-     0 antagonistic fungi available
-     → Preventive measures recommended
-       → Ensure good drainage, avoid overhead watering
-       → Consider biocontrol inoculants (e.g., Trichoderma)
+**Ecological Indicator (EIVE-R)**:
+- pH indicator: 5.2/10
+- Typical position: Slightly acidic to neutral
+- Compost: Standard multipurpose compost
+*Where species is most abundant in natural vegetation; from field surveys*
 
-    🍄 **Beneficial Fungi**: Active soil partnerships
-     Ectomycorrhizae (EMF) - enhances nutrient uptake and drought resistance
-     → Use EMF inoculant for woody plants
-     → Avoid fungicides; preserve soil biology
+**Ecological Indicator (EIVE-N)**:
+- Nutrient indicator: 4.5/10
+- Typical position: Moderate nutrient
+- Feeding: Standard annual feeding in spring
+*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
 
-  ---
+**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
 
-  *Generated by rules-based encyclopedia generator*
-  *Data sources: EIVE (Dengler et al. 2023), CSR (Pierce et al. 2017), TRY database*
+---
+
+## Maintenance Profile
+**CSR Strategy**: C 45% / S 41% / R 14% (CS-intermediate)
+**Growth Form**: Tree
+**Height**: 27.1m
+**Maintenance Level**: MEDIUM-HIGH (~9 hrs/yr)
+
+**Growth Characteristics**:
+- Fast, vigorous growth
+- High nutrient demand
+- Benefits from annual feeding
+
+**Form-Specific Notes**:
+Annual thinning to allow light below; may cast dense shade. Monitor for structural dominance; neighbours may struggle. High nutrient uptake; nearby plants may need supplemental feeding.
+
+**Seasonal Tasks**:
+- **Spring**: Feed generously, shape if needed
+- **Summer**: Water in dry spells, manage spread
+- **Autumn**: Hard prune if required, mulch
+- **Winter**: Plan containment for vigorous growth
+
+**Watch For**:
+- May outcompete slower neighbours
+- Give adequate space for mature spread
+- Dense shade may exclude understory
+
+---
+
+## Ecosystem Services
+
+*How this plant contributes to garden health and environmental benefits. Ratings derived from functional traits and growth strategy (CSR scores).*
+
+### Productivity
+**Net Primary Productivity**: Very High (5.0)
+*Rapid growth produces abundant biomass each year—more leaves, stems, and roots. Provides food for wildlife, improves air quality, and captures significant carbon from the atmosphere.*
+**Decomposition Rate**: High (4.0)
+*Fast litter breakdown returns nutrients to soil quickly, keeping it fertile and reducing fertilizer needs. Supports active earthworms and soil microbes.*
+
+### Nutrient Dynamics
+*How efficiently nutrients move through your garden—from soil to plants to decomposers and back. Good cycling creates a self-sustaining system.*
+
+- **Nutrient Cycling**: High (4.0)
+- **Nutrient Retention**: High (4.0) - holds nutrients well; reduces fertilizer needs
+- **Nutrient Loss Risk**: Moderate (3.0) - moderate loss potential
+
+### Carbon Storage
+*Plants capture CO₂ from the atmosphere. Some store it in living tissue (biomass), others contribute long-lasting carbon to soil.*
+
+- **Living Biomass**: High (4.0) - large, dense growth captures significant CO₂; creates habitat and shade
+- **Long-term Soil Carbon**: Moderate (3.0) - some long-lasting carbon contribution
+- **Total Carbon Benefit**: High (4.0)
+
+### Soil Services
+**Erosion Protection**: High (4.0)
+*Extensive roots and ground cover anchor soil, protecting topsoil during storms and preventing sediment runoff to waterways. Excellent for slopes.*
+**Nitrogen Fixation**: Unable to Classify
+*Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants.*
+
+**Garden Value**: Good choice - good carbon storage for climate-conscious planting; fast-growing for quick establishment; excellent for slopes and erosion-prone areas.
+
+---
+
+## Biological Interactions
+
+*Organisms documented interacting with this plant from GloBI (Global Biotic Interactions) records.*
+
+### Pollinators
+**Typical** (14 taxa documented)
+*Average pollinator observations*
+
+- **Wasps** (8): Dacnusa sp., Dacnusa areolaris, Sympiesis gordius, +5 more
+- **Other Pollinators** (6): Achrysocharoides latreillii, Pnigalio agraules, Anagrus sp., +3 more
+
+### Herbivores & Parasites
+**High** (19 taxa documented)
+*Multiple pest species; monitor closely*
+
+- **Wasps** (15): Eurytoma brunniventris, Andricus curvator, Andricus kollari, +12 more
+- **Moths** (2): Acrocercops brongniardella, Phyllonorycter messaniella
+- **Aphids** (1): Lachnus roboris
+- **Other Herbivores** (1): Synergatus
+
+### Beneficial Insects
+**10 taxa documented** - natural pest control agents
+
+- **Snails & Slugs** (3): Cepaea nemoralis, Ariolimax columbianus, Deroceras reticulatum
+- **Squirrels** (2): Tamiasciurus hudsonicus, Sciurus carolinensis
+- **Beetles** (1): Carabus cancellatus
+- **Wasps** (1): Eurytoma brunniventris
+- **Other Predators** (3): Prophysaon andersonii, Limax maximus, Ursus arctos
+
+*These beneficial organisms help control pest populations.*
+
+### Diseases
+**Disease Risk**: Above average (8 taxa observed)
+*More diseases than typical*
+
+**Most Observed Diseases** (by GloBI observation frequency):
+1. **Cryphonectria parasitica** (4 obs)
+2. **Cronartium quercuum** (3 obs)
+3. **Common oak ringspot-associated virus** (2 obs)
+4. **Dicarpella dryina** (2 obs)
+5. **Podoscypha multizonata** (1 obs)
+*...and 3 more*
+
+*Monitor in humid conditions; ensure good airflow*
+
+### Beneficial Associations
+**Mycorrhizal**: EMF (Ectomycorrhizal)
+- 7 EMF species observed (nutrient + defense signaling)
+
+*Avoid excessive tillage to preserve mycorrhizal networks*
+
+---
+
+## Guild Potential
+
+### Summary Card
+
+| Metric | Value | Guild Contribution |
+|--------|-------|-------------------|
+| Taxonomic | Fagaceae → Quercus | Seek different families |
+| CSR Strategy | C:45% S:41% R:14% | Avoid C-C pairs |
+| Structural | Canopy (27.1m) | Shade provider |
+| Mycorrhizal | EMF (Ectomycorrhizal) | Connect with EMF plants |
+| Pest Control | 19 pests, 10 predators | Strong biocontrol habitat |
+| Disease Control | 0 mycoparasites | No documented antagonists |
+| Pollinator | 14 taxa | Typical |
+
+### GP1: Phylogenetic Independence
+
+**Family**: Fagaceae
+**Genus**: Quercus
+
+**Guild Recommendation**:
+- Avoid clustering plants from the same genus (highest shared pest risk)
+- Diversify beyond Fagaceae for reduced pathogen transmission
+- Greater taxonomic distance = lower shared vulnerability
+
+### GP2: Growth Compatibility
+
+**CSR Profile**: C: 45% | S: 41% | R: 14%
+**Classification**: C-dominant (Competitor) (percentile-based)
+**Growth Form**: Tree
+**Height**: 27.1m
+**Light Preference**: EIVE-L 6.2
+
+**Companion Strategy**:
+- Canopy competitor. Pairs well with shade-tolerant understory (EIVE-L < 5).
+- Avoid other large C-dominant trees nearby; root and light competition.
+- Vines can use as support without conflict.
+
+**Avoid Pairing With**: Other C-dominant plants at same layer (competition). Sun-loving plants in shade zone.
+
+### GP3: Pest Control Potential
+
+**Observed Pests**: 19 species (High) - Multiple pest species; monitor closely
+
+**Observed Beneficial Insects**:
+- 10 predatory species observed (Above average) - Good predator habitat
+
+**Guild Recommendations**:
+- High pest diversity (top 10%). Benefits from companions that attract pest predators.
+- Good predator habitat. Contributes beneficial insects to the garden.
+
+### GP4: Disease Control Potential
+
+**Observed Disease Fighters**:
+- 0 beneficial fungi that attack plant diseases
+
+**Guild Recommendations**:
+- No documented mycoparasitic fungi. Focus on spacing and airflow for disease prevention.
+
+### GP5: Mycorrhizal Network
+
+**Observed Association**: EMF (Ectomycorrhizal)
+- 7 EMF species documented
+
+**Guild Recommendations**:
+- **Network-compatible plants**: Other plants with EMF associations
+- **Network bonus**: Can share nutrients and defense signals with EMF-compatible neighbours
+- Creates forest-type nutrient-sharing network
+
+### GP6: Structural Role
+
+**Layer**: Canopy (27.1m)
+**Growth Form**: Tree
+**Light Preference**: EIVE-L 6.2
+
+**Guild Recommendations**:
+- **Below this plant**: Shade-tolerant understory plants (EIVE-L < 5)
+- **Avoid pairing with**: Sun-loving plants in the shade zone
+- Creates significant shade; wind protection for neighbours
+
+### GP7: Pollinator Support
+
+**Observed Pollinators**: 14 species (Typical)
+Average pollinator observations
+
+**Guild Recommendations**:
+- Typical pollinator observations. Good companion for other flowering plants.
+
+**This Plant Provides**:
+- Nectar/pollen source for 14 pollinator species
+- Attraction effect may increase visits to neighbouring plants
+
+### Top Companion Principles
+
+Based on this plant's characteristics:
+
+1. **Taxonomic diversity** - seek plants from different families than Fagaceae
+2. **CSR compatibility** - avoid other C-dominant plants at same height
+3. **Structural layering** - pair with shade-tolerant understory
+4. **Mycorrhizal network** - seek other EMF-associated plants
+
+### Cautions
+
+- Avoid clustering multiple Fagaceae plants (shared pests)
+- C-dominant: may outcompete slower neighbours
+
+---
+
+## Data Sources
+
+- **Taxonomy**: [World Flora Online](https://www.worldfloraonline.org/taxon/wfo-0000292858)
+- **Traits**: TRY Plant Trait Database
+- **Climate/Soil**: WorldClim 2.1, SoilGrids 2.0
+- **EIVE**: Dengler et al. (2023) Ellenberg-type Indicator Values for Europe
+- **CSR Strategy**: Pierce et al. (2017) StrateFy global calibration
+- **Biotic Interactions**: GloBI (Global Biotic Interactions)
+- **Fungal Guilds**: FungalTraits, FunGuild
+
+*Encyclopedia generated from the Ellenberg Plant Database*

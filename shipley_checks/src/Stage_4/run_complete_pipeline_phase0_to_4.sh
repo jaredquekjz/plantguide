@@ -465,6 +465,35 @@ if [ "$START_PHASE" -le 7 ]; then
 fi
 
 # ============================================================================
+# Phase 8: Generate Sample Encyclopedia Articles
+# ============================================================================
+
+echo "================================================================================"
+echo "PHASE 8: GENERATE SAMPLE ENCYCLOPEDIA ARTICLES"
+echo "================================================================================"
+echo ""
+
+PHASE8_START=$(date +%s)
+
+cd "${STAGE4_DIR}/guild_scorer_rust"
+echo "Generating 3 sample encyclopedias (Quercus robur, Rosa canina, Trifolium repens)..."
+cargo run --features api --bin generate_sample_encyclopedias 2>&1 | grep -E "(Generating|Saved|Loaded|Done)"
+
+PHASE8_END=$(date +%s)
+PHASE8_TIME=$((PHASE8_END - PHASE8_START))
+
+cd "${STAGE4_DIR}"
+
+echo ""
+echo "✓ Phase 8 complete (${PHASE8_TIME}s)"
+echo ""
+echo "Sample encyclopedias saved to:"
+echo "  - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Quercus_robur.md"
+echo "  - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Rosa_canina.md"
+echo "  - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Trifolium_repens.md"
+echo ""
+
+# ============================================================================
 # Summary
 # ============================================================================
 
@@ -509,6 +538,8 @@ if [ "$START_PHASE" -le 7 ]; then
   echo "✓ Phase 7: Flatten data for SQL queries"
   [ -n "$PHASE7_TIME" ] && echo "           Time: ${PHASE7_TIME}s"
 fi
+echo "✓ Phase 8: Sample encyclopedia articles"
+[ -n "$PHASE8_TIME" ] && echo "           Time: ${PHASE8_TIME}s"
 
 echo ""
 echo "Total pipeline time: ${PIPELINE_TIME}s ($((PIPELINE_TIME / 60)) min)"
@@ -557,6 +588,11 @@ if [ "$START_PHASE" -le 7 ]; then
   echo "    Note: Plants use Phase 4 master dataset (phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet)"
   echo ""
 fi
+echo "  Phase 8 (Sample encyclopedia articles):"
+echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Quercus_robur.md"
+echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Rosa_canina.md"
+echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Trifolium_repens.md"
+echo ""
 echo "================================================================================"
 echo "Pipeline complete!"
 echo "Documentation: shipley_checks/docs/Stage_4_Complete_Pipeline_Phase_0-5.md"
