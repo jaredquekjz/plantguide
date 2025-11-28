@@ -4,11 +4,13 @@
 //! Run with: cargo run --features api --bin generate_sample_encyclopedias
 
 #[cfg(feature = "api")]
-use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
+use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi, RelatedSpecies};
 #[cfg(feature = "api")]
 use guild_scorer_rust::query_engine::QueryEngine;
 #[cfg(feature = "api")]
 use guild_scorer_rust::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
+#[cfg(feature = "api")]
+use guild_scorer_rust::compact_tree::CompactTree;
 #[cfg(feature = "api")]
 use std::collections::HashMap;
 #[cfg(feature = "api")]
@@ -496,6 +498,198 @@ async fn parse_beneficial_fungi(
     }
 }
 
+// ============================================================================
+// Phylogenetic Relatives
+// ============================================================================
+
+/// WFO to tree tip mapping
+#[cfg(feature = "api")]
+struct PhyloData {
+    tree: CompactTree,
+    wfo_to_tip: HashMap<String, String>,
+}
+
+#[cfg(feature = "api")]
+impl PhyloData {
+    /// Load phylogenetic tree and WFO mapping
+    fn load() -> Option<Self> {
+        let tree_path = format!("{}/data/stage1/phlogeny/compact_tree_11711.bin", PROJECT_ROOT);
+        let mapping_path = format!("{}/data/stage1/phlogeny/mixgb_wfo_to_tree_mapping_11711.csv", PROJECT_ROOT);
+
+        // Load tree
+        let tree = CompactTree::from_binary(&tree_path).ok()?;
+
+        // Load WFO -> tree tip mapping
+        let contents = fs::read_to_string(&mapping_path).ok()?;
+        let mut wfo_to_tip = HashMap::new();
+        for (idx, line) in contents.lines().enumerate() {
+            if idx == 0 { continue; } // Skip header
+            let parts: Vec<&str> = line.split(',').collect();
+            if parts.len() >= 6 {
+                let wfo_id = parts[0].to_string();
+                let tree_tip = parts[5].to_string();
+                if !tree_tip.is_empty() && tree_tip != "NA" {
+                    wfo_to_tip.insert(wfo_id, tree_tip);
+                }
+            }
+        }
+
+        Some(PhyloData { tree, wfo_to_tip })
+    }
+
+    /// Get tree tip label for a WFO ID
+    fn get_tip(&self, wfo_id: &str) -> Option<&str> {
+        self.wfo_to_tip.get(wfo_id).map(|s| s.as_str())
+    }
+}
+
+/// Species info for genus query
+#[cfg(feature = "api")]
+struct GenusSpecies {
+    wfo_id: String,
+    scientific_name: String,
+    common_name: String,
+}
+
+/// Find 5 closest relatives within the same genus
+#[cfg(feature = "api")]
+async fn find_related_species(
+    engine: &QueryEngine,
+    phylo: &PhyloData,
+    base_wfo_id: &str,
+    genus: &str,
+) -> (Vec<RelatedSpecies>, usize) {
+    // Query all species in the same genus
+    let query = format!(
+        "SELECT wfo_taxon_id, wfo_scientific_name, vernacular_name_en \
+         FROM plants WHERE genus = '{}' AND wfo_taxon_id != '{}'",
+        genus, base_wfo_id
+    );
+
+    let batches = match engine.query(&query).await {
+        Ok(b) => b,
+        Err(_) => return (vec![], 0),
+    };
+
+    if batches.is_empty() {
+        return (vec![], 0);
+    }
+
+    // Parse results
+    let mut genus_species: Vec<GenusSpecies> = Vec::new();
+    for batch in &batches {
+        let wfo_col = batch.column_by_name("wfo_taxon_id");
+        let name_col = batch.column_by_name("wfo_scientific_name");
+        let en_col = batch.column_by_name("vernacular_name_en");
+
+        if wfo_col.is_none() || name_col.is_none() {
+            continue;
+        }
+
+        let wfo_arr = wfo_col.unwrap();
+        let name_arr = name_col.unwrap();
+        let en_arr = en_col;
+
+        for i in 0..batch.num_rows() {
+            let wfo_id = extract_string_at(wfo_arr, i).unwrap_or_default();
+            let scientific_name = extract_string_at(name_arr, i).unwrap_or_default();
+            let common_name = en_arr
+                .and_then(|arr| extract_string_at(arr, i))
+                .unwrap_or_default();
+
+            // Get first common name if multiple
+            let common_name = common_name
+                .split(';')
+                .next()
+                .unwrap_or("")
+                .trim()
+                .to_string();
+
+            // Title case the common name
+            let common_name = title_case(&common_name);
+
+            if !wfo_id.is_empty() {
+                genus_species.push(GenusSpecies {
+                    wfo_id,
+                    scientific_name,
+                    common_name,
+                });
+            }
+        }
+    }
+
+    let genus_count = genus_species.len() + 1; // Include the base plant
+
+    // Get base plant's tree tip
+    let base_tip = match phylo.get_tip(base_wfo_id) {
+        Some(t) => t,
+        None => return (vec![], genus_count),
+    };
+
+    // Calculate distances to all genus species
+    let mut with_distances: Vec<(GenusSpecies, f64)> = genus_species
+        .into_iter()
+        .filter_map(|sp| {
+            let tip = phylo.get_tip(&sp.wfo_id)?;
+            let dist = phylo.tree.pairwise_distance_by_labels(base_tip, tip)?;
+            Some((sp, dist))
+        })
+        .collect();
+
+    // Sort by distance (closest first)
+    with_distances.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
+
+    // Take top 5
+    let related: Vec<RelatedSpecies> = with_distances
+        .into_iter()
+        .take(5)
+        .map(|(sp, dist)| RelatedSpecies {
+            wfo_id: sp.wfo_id,
+            scientific_name: sp.scientific_name,
+            common_name: sp.common_name,
+            distance: dist,
+        })
+        .collect();
+
+    (related, genus_count)
+}
+
+/// Extract string from Arrow array at index
+#[cfg(feature = "api")]
+fn extract_string_at(arr: &dyn Array, idx: usize) -> Option<String> {
+    if arr.is_null(idx) {
+        return None;
+    }
+    if let Some(sa) = arr.as_any().downcast_ref::<StringArray>() {
+        return Some(sa.value(idx).to_string());
+    }
+    if let Some(sa) = arr.as_any().downcast_ref::<LargeStringArray>() {
+        return Some(sa.value(idx).to_string());
+    }
+    if let Some(sa) = arr.as_any().downcast_ref::<StringViewArray>() {
+        return Some(sa.value(idx).to_string());
+    }
+    None
+}
+
+/// Convert string to Title Case
+#[cfg(feature = "api")]
+fn title_case(s: &str) -> String {
+    s.split_whitespace()
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                None => String::new(),
+                Some(first) => {
+                    let rest: String = chars.collect();
+                    format!("{}{}", first.to_uppercase(), rest.to_lowercase())
+                }
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
 #[cfg(feature = "api")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -515,6 +709,14 @@ async fn main() -> anyhow::Result<()> {
     // Load master predator list from parquet (species known to eat pests in GloBI)
     let master_predators = load_master_predator_list(&engine).await;
     println!("Loaded {} master predators", master_predators.len());
+
+    // Load phylogenetic tree for related species
+    let phylo_data = PhyloData::load();
+    if phylo_data.is_some() {
+        println!("Loaded phylogenetic tree ({} mappings)", phylo_data.as_ref().unwrap().wfo_to_tip.len());
+    } else {
+        println!("Warning: Could not load phylogenetic tree");
+    }
 
     for (wfo_id, filename, description) in SAMPLE_PLANTS {
         println!("Generating: {} ({})", filename.replace('_', " "), description);
@@ -556,6 +758,17 @@ async fn main() -> anyhow::Result<()> {
         // Fetch beneficial fungi species
         let beneficial_fungi = parse_beneficial_fungi(&engine, wfo_id).await;
 
+        // Find related species within genus
+        let genus = plant_data
+            .get("genus")
+            .and_then(|v| v.as_str())
+            .unwrap_or("");
+        let (related_species, genus_count) = if let Some(ref phylo) = phylo_data {
+            find_related_species(&engine, phylo, wfo_id, genus).await
+        } else {
+            (vec![], 0)
+        };
+
         // Generate encyclopedia
         let markdown = generator.generate(
             wfo_id,
@@ -565,6 +778,8 @@ async fn main() -> anyhow::Result<()> {
             organism_profile,
             ranked_pathogens,
             beneficial_fungi,
+            if related_species.is_empty() { None } else { Some(related_species) },
+            genus_count,
         ).map_err(|e| anyhow::anyhow!(e))?;
 
         // Save to file

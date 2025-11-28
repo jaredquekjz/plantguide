@@ -31,4 +31,5 @@ pub mod generator;
 
 // Re-export public API
 pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
+pub use sections::s7_related::{RelatedSpecies, GenusSpeciesInfo};
 pub use generator::EncyclopediaGenerator;

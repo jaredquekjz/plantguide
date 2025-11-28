@@ -5,17 +5,66 @@
 use crate::encyclopedia::types::*;
 
 // ============================================================================
-// CSR Classification (Percentile-based for S6, Absolute for S3)
+// CSR Classification (Spread-based)
+// ============================================================================
+
+/// CSR spread threshold for balanced classification.
+/// Plants with SPREAD < 20% are considered balanced (no dominant strategy).
+pub const CSR_SPREAD_THRESHOLD: f64 = 20.0;
+
+/// Classify CSR strategy using SPREAD-based approach.
+/// SPREAD = MAX(C,S,R) - MIN(C,S,R)
+/// - If SPREAD < 20%: Balanced (no clear dominant strategy)
+/// - Otherwise: Dominant = axis with highest value
+pub fn classify_csr_spread(c: f64, s: f64, r: f64) -> CsrStrategy {
+    let max_val = c.max(s).max(r);
+    let min_val = c.min(s).min(r);
+    let spread = max_val - min_val;
+
+    if spread < CSR_SPREAD_THRESHOLD {
+        CsrStrategy::Balanced
+    } else if c >= s && c >= r {
+        CsrStrategy::CDominant
+    } else if s >= c && s >= r {
+        CsrStrategy::SDominant
+    } else {
+        CsrStrategy::RDominant
+    }
+}
+
+/// Get descriptive CSR label using spread-based classification.
+/// Returns labels like "C-dominant", "S-dominant", "R-dominant", or "Balanced".
+pub fn csr_spread_label(c: f64, s: f64, r: f64) -> &'static str {
+    let max_val = c.max(s).max(r);
+    let min_val = c.min(s).min(r);
+    let spread = max_val - min_val;
+
+    if spread < CSR_SPREAD_THRESHOLD {
+        "Balanced"
+    } else if c >= s && c >= r {
+        "C-dominant"
+    } else if s >= c && s >= r {
+        "S-dominant"
+    } else {
+        "R-dominant"
+    }
+}
+
+// ============================================================================
+// Legacy CSR Classification (Percentile-based) - Kept for Reference
 // ============================================================================
 
 /// CSR percentile thresholds (p75) from csr_percentile_calibration_global.json
 /// Plants above these raw values are in the top 25% for that strategy.
+/// NOTE: Legacy approach - use classify_csr_spread for new code.
 pub const CSR_P75_C: f64 = 41.3;  // C percentile > 75
 pub const CSR_P75_S: f64 = 72.2;  // S percentile > 75
 pub const CSR_P75_R: f64 = 47.6;  // R percentile > 75
 
-/// Classify CSR strategy using PERCENTILE thresholds (for S6 companion planting).
-/// A plant is dominant in a strategy if its raw score exceeds the p75 threshold.
+/// Classify CSR strategy using PERCENTILE thresholds (legacy approach).
+/// NOTE: Use classify_csr_spread instead - percentile approach has known issues
+/// where plants with S=55% (highest) can be classified as "C-dominant" if C=42%.
+#[allow(dead_code)]
 pub fn classify_csr_percentile(c: f64, s: f64, r: f64) -> CsrStrategy {
     // Percentile-based: compare against p75 thresholds
     let c_dom = c > CSR_P75_C;
@@ -28,37 +77,6 @@ pub fn classify_csr_percentile(c: f64, s: f64, r: f64) -> CsrStrategy {
     } else if s_dom {
         CsrStrategy::SDominant
     } else if r_dom {
-        CsrStrategy::RDominant
-    } else {
-        CsrStrategy::Balanced
-    }
-}
-
-/// Classify CSR strategy using ABSOLUTE thresholds (for S3 maintenance).
-/// A plant is dominant if one score > 60% and others < 30%.
-pub fn classify_csr_absolute(c: f64, s: f64, r: f64) -> CsrStrategy {
-    // Single-strategy dominance: score > 60%, others < 30%
-    if c > 60.0 && s < 30.0 && r < 30.0 {
-        CsrStrategy::CDominant
-    } else if s > 60.0 && c < 30.0 && r < 30.0 {
-        CsrStrategy::SDominant
-    } else if r > 60.0 && c < 30.0 && s < 30.0 {
-        CsrStrategy::RDominant
-    }
-    // Two-strategy combinations (>45% each)
-    else if c > 45.0 && s > 45.0 {
-        CsrStrategy::Balanced // CS intermediate
-    } else if c > 45.0 && r > 45.0 {
-        CsrStrategy::Balanced // CR intermediate
-    } else if s > 45.0 && r > 45.0 {
-        CsrStrategy::Balanced // SR intermediate
-    }
-    // Leaning strategies
-    else if c > 45.0 {
-        CsrStrategy::CDominant
-    } else if s > 45.0 {
-        CsrStrategy::SDominant
-    } else if r > 45.0 {
         CsrStrategy::RDominant
     } else {
         CsrStrategy::Balanced
@@ -142,32 +160,38 @@ pub fn classify_mycorrhizal(amf_count: usize, emf_count: usize) -> MycorrhizalTy
 // Maintenance Level Classification
 // ============================================================================
 
-/// Calculate maintenance level from CSR strategy and modifiers.
-/// From S3 doc percentile-based classification:
-/// - S percentile > 90: LOW
-/// - S percentile > 75: LOW-MEDIUM
-/// - C percentile > 90: HIGH
-/// - C percentile > 75: MEDIUM-HIGH
-/// - R percentile > 75: MEDIUM
-/// - Balanced: MEDIUM
+/// Calculate maintenance level from CSR strategy using spread-based classification.
+/// From S3 doc spread-based classification:
+///
+/// | Dominant Strategy | Highest Value | Maintenance Level |
+/// |------------------|---------------|-------------------|
+/// | S-dominant       | ≥ 60%         | LOW               |
+/// | S-dominant       | 40-59%        | LOW-MEDIUM        |
+/// | C-dominant       | ≥ 60%         | HIGH              |
+/// | C-dominant       | 40-59%        | MEDIUM-HIGH       |
+/// | R-dominant       | any           | MEDIUM            |
+/// | Balanced         | (spread < 20%)| MEDIUM            |
 pub fn classify_maintenance_level(c: f64, s: f64, r: f64) -> MaintenanceLevel {
-    // Using raw percentile interpretation (p90 thresholds estimated)
-    // S p90 ≈ 82%, C p90 ≈ 52%, R p90 ≈ 58%
-    const S_P90: f64 = 82.0;
-    const C_P90: f64 = 52.0;
+    let strategy = classify_csr_spread(c, s, r);
+    let max_val = c.max(s).max(r);
 
-    if s > S_P90 {
-        MaintenanceLevel::Low
-    } else if s > CSR_P75_S {
-        MaintenanceLevel::LowMedium
-    } else if c > C_P90 {
-        MaintenanceLevel::High
-    } else if c > CSR_P75_C {
-        MaintenanceLevel::MediumHigh
-    } else if r > CSR_P75_R {
-        MaintenanceLevel::Medium
-    } else {
-        MaintenanceLevel::Medium
+    match strategy {
+        CsrStrategy::SDominant => {
+            if max_val >= 60.0 {
+                MaintenanceLevel::Low
+            } else {
+                MaintenanceLevel::LowMedium
+            }
+        }
+        CsrStrategy::CDominant => {
+            if max_val >= 60.0 {
+                MaintenanceLevel::High
+            } else {
+                MaintenanceLevel::MediumHigh
+            }
+        }
+        CsrStrategy::RDominant => MaintenanceLevel::Medium,
+        CsrStrategy::Balanced => MaintenanceLevel::Medium,
     }
 }
 

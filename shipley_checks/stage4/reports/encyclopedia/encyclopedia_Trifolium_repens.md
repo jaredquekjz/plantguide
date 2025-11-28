@@ -3,18 +3,34 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-27T13:33:27Z"
+generated: "2025-11-28T03:03:43Z"
 version: "2.0"
 ---
 
 # Trifolium repens
+**Common Names**: Giant Clover; Ladino Clover; New Zealand Clover; White Dutch Clover; White Clover
+**Chinese**: 白荷蘭翹搖; 白花苜蓿; 白車軸草; 白菽草; 菽草; 白花三葉草; 白三叶草; 菽草; 白花苜蓿; 白车轴草; 白花三叶草
 **Family**: Leguminosae
-**Growth Form**: Herbaceous
-**Height**: 0.2m (Ground cover (<0.3m))
-**Leaf Type**: Evergreen
-**Hardiness**: Zone 8 (-8°C)
-**Native Climate**: Cfa (Humid subtropical)
-**Woodiness**: Non-woody
+**Type**: Herbaceous perennial
+**Mature Height**: 16cm — Low groundcover
+**Leaves**: Broadleaved, 2.0cm² — Fine-textured foliage
+**Seeds**: 0.53mg — Dust-like, spreads freely
+
+---
+
+## Relatives Within Genus
+
+**5 Closest Relatives** (from 48 *Trifolium* species in database, by evolutionary distance):
+
+| Species | Common Name | Relatedness |
+|---------|-------------|-------------|
+| *Trifolium nigrescens* | Small White Clover | Very close |
+| *Trifolium suffocatum* | Suffocated Clover | Very close |
+| *Trifolium uniflorum* | One-flowered Clover | Very close |
+| *Trifolium retusum* | Teasel Clover | Very close |
+| *Trifolium thalii* | Thal's Clover | Very close |
+
+*These clovers are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
 
 ---
 
@@ -212,8 +228,8 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 ### Beneficial Predators
 **9 species documented** - natural pest control agents
 
-- **Beetles** (4): Harmonia axyridis, Coleomegilla maculata, Coccinella septempunctata, +1 more
-- **Flies** (3): Eupeodes, Toxomerus marginatus, Eupeodes luniger
+- **Beetles** (4): Harmonia axyridis, Cycloneda munda, Coleomegilla maculata, +1 more
+- **Flies** (3): Eupeodes luniger, Toxomerus marginatus, Eupeodes
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 
@@ -283,7 +299,7 @@ Status: AMF (Arbuscular)
 ### Growth Compatibility
 
 **CSR Profile**: C: 15% | S: 15% | R: 71%
-**Classification**: R-dominant (Ruderal) (percentile-based)
+**Classification**: R-dominant (Ruderal) (spread-based)
 **Growth Form**: Herb/Ground cover
 **Height**: 0.2m
 **Light Preference**: EIVE-L 7.6

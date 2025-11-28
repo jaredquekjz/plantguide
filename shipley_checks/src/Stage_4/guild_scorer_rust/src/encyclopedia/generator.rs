@@ -19,7 +19,9 @@ use crate::encyclopedia::sections::{
     s4_services,
     s5_interactions,
     s6_companion,
+    s7_related,
 };
+use crate::encyclopedia::sections::s7_related::RelatedSpecies;
 
 /// Encyclopedia generator - stateless markdown generator.
 pub struct EncyclopediaGenerator;
@@ -40,6 +42,8 @@ impl EncyclopediaGenerator {
     /// * `organism_profile` - Optional categorized organism lists for rich display
     /// * `ranked_pathogens` - Optional pathogens with observation counts (top diseases)
     /// * `beneficial_fungi` - Optional beneficial fungi species (mycoparasites, entomopathogens)
+    /// * `related_species` - Optional list of phylogenetically closest relatives within genus
+    /// * `genus_species_count` - Total count of species in the same genus
     ///
     /// # Returns
     /// Complete markdown document as a String, or error message.
@@ -52,6 +56,8 @@ impl EncyclopediaGenerator {
         organism_profile: Option<OrganismProfile>,
         ranked_pathogens: Option<Vec<RankedPathogen>>,
         beneficial_fungi: Option<BeneficialFungi>,
+        related_species: Option<Vec<RelatedSpecies>>,
+        genus_species_count: usize,
     ) -> Result<String, String> {
         let mut sections = Vec::new();
 
@@ -60,6 +66,13 @@ impl EncyclopediaGenerator {
 
         // S1: Identity Card
         sections.push(s1_identity::generate(plant_data));
+
+        // S1b: Relatives Within Genus (right after identity)
+        sections.push(s7_related::generate(
+            plant_data,
+            related_species.as_deref(),
+            genus_species_count,
+        ));
 
         // S2: Growing Requirements
         sections.push(s2_requirements::generate(plant_data));
@@ -171,7 +184,7 @@ mod tests {
         data.insert("family".to_string(), Value::String("Testaceae".to_string()));
         data.insert("genus".to_string(), Value::String("Testus".to_string()));
 
-        let result = generator.generate("wfo-test", &data, None, None, None, None, None);
+        let result = generator.generate("wfo-test", &data, None, None, None, None, None, None, 0);
         assert!(result.is_ok());
 
         let content = result.unwrap();
@@ -182,6 +195,7 @@ mod tests {
         assert!(content.contains("Ecosystem Services"));
         assert!(content.contains("Biological Interactions"));
         assert!(content.contains("Guild Potential"));
+        assert!(content.contains("Relatives Within Genus"));
     }
 
     #[test]

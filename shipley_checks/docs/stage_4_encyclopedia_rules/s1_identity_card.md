@@ -1,31 +1,168 @@
 # S1: Identity Card Rules
 
-Rules for generating the plant identity/header section of encyclopedia articles.
+Rules for generating the plant identity/header section of encyclopedia articles. This section provides at-a-glance identification and key morphological traits for gardeners.
 
-## Data Sources
+## Output Structure
 
-| Field | Column | Source |
-|-------|--------|--------|
-| Scientific name | `wfo_scientific_name` | WFO-verified |
-| WFO ID | `wfo_taxon_id` | WFO backbone |
-| Family | `family` | WFO/TRY |
-| Genus | `genus` | WFO/TRY |
-| Growth form | `try_growth_form` | TRY database |
-| Life form | `life_form_simple` | Derived |
-| Height | `height_m` | TRY database |
-| Leaf persistence | `try_leaf_phenology` | TRY database |
-| Woodiness | `try_woodiness` | TRY database |
-| Vernacular names | `vernacular_name_*` | iNaturalist (61 languages) |
+```markdown
+# {Scientific Name}
+**Common Names**: {English vernacular names, semicolon-separated, Title Case}
+**Chinese**: {Chinese vernacular names}
+**Family**: {family}
+**Type**: {growth form with phenology, e.g., "Deciduous tree", "Evergreen shrub"}
+**Mature Height**: {height}m — {friendly description}
+**Leaves**: {leaf type}, {area}cm² — {size description}
+**Seeds**: {mass} — {gardening implications}
+```
+
+## Example Output
+
+```markdown
+# Quercus robur
+**Common Names**: Pedunculate Oak; Common Oak; English Oak; Truffle Oak; Acorn Tree
+**Chinese**: 歐洲白櫟; 夏櫟; 夏栎
+**Family**: Fagaceae
+**Type**: Deciduous tree
+**Mature Height**: 27m — Large tree, needs significant space
+**Leaves**: Broadleaved, 30cm² — Medium-sized
+**Seeds**: 3.0g — Medium seeds, bird food
+```
 
 ---
 
-## Vernacular Names (61 Languages)
+## Data Sources
+
+| Field | Column | Source | Notes |
+|-------|--------|--------|-------|
+| Scientific name | `wfo_scientific_name` | World Flora Online | WFO-verified canonical name |
+| Family | `family` | WFO/TRY | Taxonomic family |
+| Growth form | `try_growth_form` | TRY database | tree/shrub/herb/vine/etc. |
+| Leaf phenology | `try_leaf_phenology` | TRY database | evergreen/deciduous |
+| Woodiness | `try_woodiness` | TRY database | woody/herbaceous |
+| Mature height | `height_m` | TRY Global Spectrum | Adult plant height at maturity |
+| Leaf area | `LA` | TRY Global Spectrum | Leaf area in mm² |
+| Seed mass | `logSM` | TRY Global Spectrum | Log seed mass (convert with exp()) |
+| Leaf type | `try_leaf_type` | TRY database | broadleaved/needleleaved |
+| English names | `vernacular_name_en` | iNaturalist | Via Phase 1 extraction |
+| Chinese names | `vernacular_name_zh` | iNaturalist | Via Phase 1 extraction |
+
+### TRY Global Spectrum Dataset
+
+The morphological traits (height, leaf area, seed mass) come from the **TRY Global Spectrum** dataset, a curated compilation of plant trait data from TRY and AusTraits databases.
+
+**Reference**: Díaz et al. (2016) "The global spectrum of plant form and function", Nature 529:167-171.
+
+**Key definitions**:
+- **Plant height (H)**: Adult plant height - the typical height of the upper boundary of the main photosynthetic tissues at maturity (unit: metres)
+- **Leaf area (LA)**: One-sided projected area of an individual leaf or leaflet (unit: mm²)
+- **Seed mass (SM)**: Oven-dry mass of an individual seed or seed-equivalent dispersal unit (unit: mg; stored as log-transformed values)
+
+---
+
+## Field Rules
+
+### Type (Growth Form + Phenology)
+
+Combines `try_growth_form`, `try_woodiness`, and `try_leaf_phenology` into a single readable label.
+
+**Translation logic**:
+
+| Growth Form | Phenology | Output |
+|-------------|-----------|--------|
+| tree | deciduous | Deciduous tree |
+| tree | evergreen | Evergreen tree |
+| tree | - | Tree |
+| shrub | deciduous | Deciduous shrub |
+| shrub | evergreen | Evergreen shrub |
+| shrub | - | Shrub |
+| herb | - | Herbaceous perennial |
+| graminoid/grass | - | Grass or sedge |
+| vine/liana/climber | woody | Scrambling shrub |
+| vine/liana/climber | woody + deciduous | Scrambling shrub (deciduous) |
+| vine/liana/climber | herbaceous | Climbing vine |
+| fern | - | Fern |
+| succulent | - | Succulent |
+
+**Special case**: Woody climbers (e.g., Rosa canina) are labelled "Scrambling shrub" rather than "Climbing vine" as this better reflects their garden behaviour.
+
+### Mature Height
+
+Height is the **adult plant height at maturity** from TRY Global Spectrum.
+
+| Height Range | Format | Description |
+|--------------|--------|-------------|
+| >= 20m | `{:.0}m` | Large tree, needs significant space |
+| 10-20m | `{:.0}m` | Medium tree |
+| 4-10m | `{:.0}m` | Small tree or large shrub |
+| 1.5-4m | `{:.1}m` | Shrub height |
+| 0.5-1.5m | `{:.1}m` | Low shrub or tall groundcover |
+| 0.1-0.5m | `{:.0}cm` | Low groundcover |
+| < 0.1m | `{:.0}cm` | Creeping or mat-forming |
+
+### Leaves
+
+Combines leaf type and leaf area for gardener-friendly description.
+
+**Leaf type** (from `try_leaf_type`):
+- "needle" → "Needles"
+- "scale" → "Scale-like leaves"
+- other/missing → "Broadleaved"
+
+**Leaf area** (from `LA`, convert mm² to cm²):
+
+| Area (cm²) | Description |
+|------------|-------------|
+| > 100 | Very large, bold foliage |
+| 30-100 | Large leaves |
+| 10-30 | Medium-sized |
+| 3-10 | Small leaves |
+| < 3 | Fine-textured foliage |
+
+**Output format**: `{Leaf type}, {area}cm² — {description}`
+
+Example: `Broadleaved, 30cm² — Medium-sized`
+
+### Seeds
+
+Seed mass helps gardeners understand self-seeding potential and wildlife value.
+
+**Input**: `logSM` (log-transformed seed mass). Convert to mg with `exp(logSM)`.
+
+| Seed Mass | Format | Description |
+|-----------|--------|-------------|
+| >= 5000mg (5g) | `{:.0}g` | Large seeds/nuts, wildlife food |
+| 500-5000mg | `{:.1}g` | Medium seeds, bird food |
+| 10-500mg | `{:.0}mg` | Small seeds |
+| 1-10mg | `{:.1}mg` | Tiny seeds, may self-sow |
+| < 1mg | `{:.2}mg` | Dust-like, spreads freely |
+
+**Examples**:
+- Quercus robur (oak acorn): 3.0g — Medium seeds, bird food
+- Rosa canina (rose hip): 18mg — Small seeds
+- Trifolium repens (clover): 0.53mg — Dust-like, spreads freely
+
+### Vernacular Names
+
+**English names** (`vernacular_name_en`):
+- Split by semicolon
+- Convert to Title Case
+- Rejoin with semicolon separator
+
+**Chinese names** (`vernacular_name_zh`):
+- Display as-is (semicolon-separated)
+- Include both traditional and simplified characters where available
+
+**Output**: Only display if non-empty and not "NA".
+
+---
+
+## Vernacular Names Reference (61 Languages)
 
 **Data Source**: iNaturalist taxon vernaculars (Phase 1 extraction)
 
 **Coverage**: Variable by species and language. English has highest coverage.
 
-### Language Codes
+### Language Codes (Full Reference)
 
 | Code | Language | Code | Language | Code | Language |
 |------|----------|------|----------|------|----------|
@@ -53,140 +190,17 @@ Rules for generating the plant identity/header section of encyclopedia articles.
 | he | Hebrew | | | | |
 | hr | Croatian | | | | |
 
-### Output Rules
+**Current implementation**: Display English and Chinese only.
 
-**Current generation**: Output ALL available vernacular names for comprehensive documentation.
+**Future UI**: May filter to user's locale preference.
 
-**Future UI**: Filter to show:
-- English (primary)
-- Chinese (if English unavailable)
-- User's locale preference
-
-### Column Reference
-
-| Column | Description |
-|--------|-------------|
-| `vernacular_name_en` | English common name |
-| `vernacular_name_zh` | Chinese common name |
-| `vernacular_name_de` | German common name |
-| ... | (61 language columns total) |
-| `n_vernaculars_total` | Count of languages with names |
-
-### Output Format
-
-```markdown
-## Common Names
-
-**English**: English Oak, Pedunculate Oak
-**German**: Stieleiche
-**French**: Chêne pédonculé
-**Spanish**: Roble común
-**Chinese**: 夏栎
-**Japanese**: ヨーロッパナラ
-... (all available languages)
-
-*Names available in 35 languages*
-```
-
-## Output Structure
-
-```markdown
-# {Scientific Name}
-
-**Family**: {family}
-**Growth Form**: {growth_form_label}
-**Height**: {height_range}
-**Leaf Type**: {leaf_phenology_label}
-**Hardiness**: {hardiness_zone}
-**Native Climate**: {koppen_zones}
-```
-
-## Translation Rules
-
-### Growth Form (`try_growth_form`)
-
-| Value | Label | Icon |
-|-------|-------|------|
-| `tree` | Tree | 🌳 |
-| `shrub` | Shrub | 🌿 |
-| `herb` | Herbaceous | 🌱 |
-| `graminoid` | Grass/Sedge | 🌾 |
-| `vine` | Climber | 🌿 |
-| `fern` | Fern | 🌿 |
-| `succulent` | Succulent | 🌵 |
-| NA | Unknown | - |
-
-### Leaf Phenology (`try_leaf_phenology`)
-
-| Value | Label |
-|-------|-------|
-| `evergreen` | Evergreen |
-| `deciduous` | Deciduous |
-| `semi_deciduous` | Semi-evergreen |
-| NA | Not specified |
-
-**Coverage**: ~50% of species have leaf phenology data
-
-### Height Classification (`height_m`)
-
-| Height (m) | Category | Typical Use |
-|------------|----------|-------------|
-| < 0.3 | Ground cover | Edges, rockeries |
-| 0.3 - 1.0 | Low | Borders, containers |
-| 1.0 - 3.0 | Medium | Hedging, screening |
-| 3.0 - 10.0 | Tall shrub/Small tree | Specimen, structure |
-| 10.0 - 20.0 | Medium tree | Shade, shelter |
-| > 20.0 | Large tree | Parkland, woodland |
-
-### Hardiness Zone (from `TNn_q05`)
-
-Derive USDA hardiness zone from absolute minimum temperature:
-
-| TNn_q05 (°C) | USDA Zone | Label |
-|--------------|-----------|-------|
-| < -45.6 | 1 | Extreme arctic |
-| -45.6 to -40.0 | 2 | Subarctic |
-| -40.0 to -34.4 | 3 | Very cold |
-| -34.4 to -28.9 | 4 | Cold |
-| -28.9 to -23.3 | 5 | Cold temperate |
-| -23.3 to -17.8 | 6 | Cool temperate |
-| -17.8 to -12.2 | 7 | Mild temperate |
-| -12.2 to -6.7 | 8 | Warm temperate |
-| -6.7 to -1.1 | 9 | Subtropical |
-| -1.1 to 4.4 | 10 | Tropical margin |
-| > 4.4 | 11+ | Tropical |
-
-### Köppen Climate Zones
-
-From Stage 4 classification (when available). Present as:
-- Primary zone(s) where most occurrences found
-- Interpretation for gardeners
-
-Example output:
-```
-**Native Climate**: Cfb (Temperate oceanic), Csa (Mediterranean)
-Thrives in temperate maritime climates; tolerates Mediterranean dry summers.
-```
-
-## Example Output
-
-```markdown
-# Quercus robur
-
-**Family**: Fagaceae
-**Growth Form**: Tree
-**Height**: 20-35m (large tree)
-**Leaf Type**: Deciduous
-**Hardiness**: Zone 5 (-28°C)
-**Native Climate**: Cfb (Temperate oceanic)
-
-A long-lived deciduous oak native to Europe, forming a broad spreading crown.
-Widely planted as a specimen and parkland tree.
-```
+---
 
 ## Edge Cases
 
-- **Missing height**: Use growth form to infer typical range
-- **Missing leaf phenology**: Omit or state "Not specified"
-- **Missing TNn data**: Use BIO_6_q05 as fallback (less precise)
-- **Non-European species**: Köppen zones may be incomplete; rely more on climate envelope
+- **Missing height**: Omit the Mature Height line
+- **Missing leaf area**: Omit the Leaves line
+- **Missing seed mass**: Omit the Seeds line
+- **Missing leaf phenology**: Use growth form alone (e.g., "Tree" instead of "Deciduous tree")
+- **Missing growth form**: Fall back to woodiness ("Woody plant" or "Herbaceous plant")
+- **Missing vernacular names**: Omit the line entirely

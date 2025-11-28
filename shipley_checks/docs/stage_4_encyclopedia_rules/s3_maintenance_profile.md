@@ -17,57 +17,93 @@ Rules for generating maintenance requirements based on CSR (Competitor-Stress to
 
 ## CSR Classification
 
-### Percentile-Based Thresholds (GuildBuilder)
+### Spread-Based Classification (Recommended)
 
-CSR dominance is determined by **percentile ranking** across all 11,711 plants, not absolute values.
+CSR dominance is determined by which axis is **highest** and whether there is clear differentiation between axes.
 
-| Strategy | p75 Raw Value | Meaning |
-|----------|---------------|---------|
-| C (Competitor) | 41.3% | Top 25% of plants by C score |
-| S (Stress-tolerator) | 72.2% | Top 25% of plants by S score |
-| R (Ruderal) | 47.6% | Top 25% of plants by R score |
+**Key metric**: `SPREAD = MAX(C,S,R) - MIN(C,S,R)`
 
-A plant is classified as "C-dominant" if its C percentile > 75 (i.e., raw C > 41.3%), not if C > 60%.
+| Spread | Classification | Meaning |
+|--------|---------------|---------|
+| < 20% | Balanced | All three axes similar; no dominant strategy |
+| ≥ 20% | X-dominant | Highest axis (X) is the dominant strategy |
 
-### Absolute Thresholds (Ecosystem Services)
+**Rationale**: A plant with C=42%, S=55%, R=3% has S as highest (spread=52%). Calling it "C-dominant" because C exceeds some threshold ignores that S is clearly the dominant strategy.
 
-The ecosystem services module (Stage 3) uses simpler absolute thresholds for rating classification:
+### Distribution in Dataset (11,712 plants)
 
-| Threshold | Used For |
-|-----------|----------|
-| C/S/R ≥ 60% | "Very High" ecosystem service ratings |
-| C/S/R ≥ 45% | "High" ecosystem service ratings |
+| Strategy | Count | Percentage |
+|----------|-------|------------|
+| S-dominant | 5,625 | 48.0% |
+| R-dominant | 3,124 | 26.7% |
+| C-dominant | 2,305 | 19.7% |
+| Balanced | 658 | 5.6% |
 
-**Note**: The CSR percentile classification is more ecologically meaningful for companion planting decisions. Absolute thresholds are used for ecosystem service ratings due to their direct interpretation.
+**Note**: European flora is naturally S-heavy (stress-tolerant). This reflects ecological reality, not a classification artifact.
+
+### Intensity Levels
+
+For finer granularity, use the highest axis value:
+
+| Highest Axis Value | Intensity | Interpretation |
+|-------------------|-----------|----------------|
+| ≥ 80% | Extreme | Very strong single-strategy expression |
+| 60-79% | Strong | Clear dominant strategy |
+| 40-59% | Moderate | Dominant but with secondary influences |
+| < 40% | Balanced | No clear dominant strategy |
+
+---
+
+## Legacy: Percentile-Based Thresholds
+
+The previous approach used p75 thresholds per axis:
+
+| Strategy | p75 Threshold | Issue |
+|----------|---------------|-------|
+| C-dominant | C > 41.3% | Plant with C=42%, S=55% classified as "C-dominant" |
+| S-dominant | S > 72.2% | Plant with S=70% (highest) classified as "Balanced" |
+| R-dominant | R > 47.6% | Different thresholds per axis create confusion |
+
+**Problem**: 2,456 plants where S is highest (40-72%) were classified as "Balanced" because S didn't exceed 72.2%.
+
+**Recommendation**: Use spread-based classification for encyclopedia and companion planting. Percentile thresholds may still be useful for research comparisons within axes.
 
 ---
 
 ## CSR to Horticultural Traits
 
-| Property | C-Dominant (p75+) | S-Dominant (p75+) | R-Dominant (p75+) |
-|----------|-------------------|-------------------|-------------------|
-| **Growth Rate** | Fast, vigorous | Slow, steady | Rapid but brief |
-| **Nutrient Demand** | HIGH | LOW | Moderate |
-| **Water Demand** | Moderate-high | LOW (drought-tolerant) | Moderate |
-| **Maintenance** | HIGH (5-7 hrs/yr) | LOW (1-2 hrs/yr) | MEDIUM (replanting) |
-| **Pruning** | Regular shaping | Minimal | Deadheading |
-| **Lifespan** | Variable | Often long-lived | Short (annual-biennial) |
-| **Decomposition** | Variable | Slow (recalcitrant) | Fast (labile) |
+| Property | C-Dominant | S-Dominant | R-Dominant | Balanced |
+|----------|-----------|-----------|-----------|----------|
+| **Growth Rate** | Fast, vigorous | Slow, steady | Rapid but brief | Moderate |
+| **Nutrient Demand** | HIGH | LOW | Moderate | Moderate |
+| **Water Demand** | Moderate-high | LOW (drought-tolerant) | Moderate | Moderate |
+| **Maintenance** | HIGH (5-7 hrs/yr) | LOW (1-2 hrs/yr) | MEDIUM (replanting) | MEDIUM (3-4 hrs/yr) |
+| **Pruning** | Regular shaping | Minimal | Deadheading | Standard |
+| **Lifespan** | Variable | Often long-lived | Short (annual-biennial) | Variable |
+| **Decomposition** | Variable | Slow (recalcitrant) | Fast (labile) | Moderate |
 
 ---
 
 ## Maintenance Level Algorithm
 
-### Primary Classification (Percentile-Based)
+### Primary Classification (Spread-Based)
 
-| Condition | Maintenance Level | Time Estimate |
-|-----------|------------------|---------------|
-| S percentile > 90 | LOW | 1-2 hrs/yr |
-| S percentile > 75 | LOW-MEDIUM | 2-3 hrs/yr |
-| C percentile > 90 | HIGH | 5-7 hrs/yr |
-| C percentile > 75 | MEDIUM-HIGH | 4-5 hrs/yr |
-| R percentile > 75 | MEDIUM | 3-4 hrs/yr |
-| Balanced (no p75+) | MEDIUM | 3-4 hrs/yr |
+```
+1. Calculate SPREAD = MAX(C,S,R) - MIN(C,S,R)
+2. IF SPREAD < 20%: Balanced
+3. ELSE: Dominant = axis with highest value
+```
+
+| Dominant Strategy | Highest Value | Maintenance Level | Time Estimate |
+|------------------|---------------|-------------------|---------------|
+| S-dominant | ≥ 80% | LOW | 1-2 hrs/yr |
+| S-dominant | 60-79% | LOW | 1-2 hrs/yr |
+| S-dominant | 40-59% | LOW-MEDIUM | 2-3 hrs/yr |
+| C-dominant | ≥ 80% | HIGH | 5-7 hrs/yr |
+| C-dominant | 60-79% | HIGH | 5-7 hrs/yr |
+| C-dominant | 40-59% | MEDIUM-HIGH | 4-5 hrs/yr |
+| R-dominant | any | MEDIUM | 3-4 hrs/yr |
+| Balanced | (spread < 20%) | MEDIUM | 3-4 hrs/yr |
 
 ### Size Scaling
 
@@ -201,13 +237,13 @@ All growth forms:
 
 ## Invasive Potential
 
-Use CSR percentile + climate envelope to flag invasive risk:
+Use CSR classification + climate envelope to flag invasive risk:
 
 | Pattern | Risk | Flag |
 |---------|------|------|
-| C percentile > 90 + wide climate tolerance | HIGH | "Vigorous; may become invasive in mild climates" |
-| R percentile > 75 + prolific seeding | MODERATE | "Self-seeds freely; may need containment" |
-| S percentile > 75 | LOW | "Unlikely to spread aggressively" |
+| C-dominant (highest ≥ 60%) + wide climate tolerance | HIGH | "Vigorous; may become invasive in mild climates" |
+| R-dominant + prolific seeding | MODERATE | "Self-seeds freely; may need containment" |
+| S-dominant | LOW | "Unlikely to spread aggressively" |
 
 ---
 
@@ -216,13 +252,13 @@ Use CSR percentile + climate envelope to flag invasive risk:
 ```markdown
 ## Maintenance Profile
 
-**CSR Strategy**: C 45% / S 35% / R 20% (C-leaning)
+**CSR Strategy**: C 45% / S 35% / R 20% (C-dominant)
 **Growth Form**: Shrub
 **Height**: 2.5m
 **Maintenance Level**: MEDIUM-HIGH (~4-5 hrs/yr)
 
 **Growth Characteristics**:
-- Moderately vigorous grower (C-leaning shrub)
+- Moderately vigorous grower (C-dominant shrub)
 - Benefits from annual feeding
 - Prune to shape in late winter
 
@@ -243,31 +279,36 @@ Use CSR percentile + climate envelope to flag invasive risk:
 ### Decision Tree for Output Generation
 
 ```
-1. Determine CSR classification (percentile-based):
-   - C percentile > 75: C-dominant (raw C > 41.3%)
-   - S percentile > 75: S-dominant (raw S > 72.2%)
-   - R percentile > 75: R-dominant (raw R > 47.6%)
-   - else: Balanced
+1. Determine CSR classification (spread-based):
+   - SPREAD = MAX(C,S,R) - MIN(C,S,R)
+   - IF SPREAD < 20%: Balanced
+   - ELSE: Dominant = highest of C, S, R
 
-2. Determine growth form category:
+2. Determine intensity:
+   - Highest axis ≥ 80%: Extreme
+   - Highest axis 60-79%: Strong
+   - Highest axis 40-59%: Moderate
+   - Highest axis < 40%: Balanced
+
+3. Determine growth form category:
    - IF try_growth_form CONTAINS "tree" AND height > 5m: Tree
    - ELSE IF try_growth_form CONTAINS "vine" OR "liana": Vine
    - ELSE IF height > 1m: Shrub
    - ELSE: Herb/Ground cover
 
-3. Look up advice from:
+4. Look up advice from:
    - Composite Maintenance Matrix (CSR × Growth Form)
    - Strategy-Specific Advice (CSR × Growth Form)
    - Size Scaling (Height)
 
-4. Generate output combining all three factors
+5. Generate output combining all factors
 ```
 
 ---
 
 ## Data Column Reference
 
-**Source file:** `shipley_checks/bill_foundational_data/stage3/bill_with_csr_ecoservices_11711.csv`
+**Source file:** `shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet`
 
 | Column | Description |
 |--------|-------------|
@@ -279,4 +320,14 @@ Use CSR percentile + climate envelope to flag invasive risk:
 | `life_form_simple` | Simplified life form (woody/non-woody) |
 | `decomposition_rating` | Litter decomposition rate |
 
-**CSR percentile calibration:** `shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json`
+---
+
+## Summary: Spread-Based vs Percentile-Based
+
+| Aspect | Spread-Based (Recommended) | Percentile-Based (Legacy) |
+|--------|---------------------------|--------------------------|
+| Definition | Highest axis is dominant if spread ≥ 20% | Axis exceeds its p75 threshold |
+| Balanced | 658 plants (5.6%) | 3,342 plants (28.5%) |
+| S-dominant | 5,625 plants (48.0%) | 2,922 plants (24.9%) |
+| Ecological validity | High - reflects actual dominant strategy | Moderate - identifies unusual values per axis |
+| Use case | Encyclopedia, gardening advice | Research, within-axis comparisons |

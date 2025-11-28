@@ -3,18 +3,34 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-27T13:33:26Z"
+generated: "2025-11-28T03:03:42Z"
 version: "2.0"
 ---
 
 # Rosa canina
+**Common Names**: Dog Rose; Dog-rose; Canker Rose
+**Chinese**: 犬薔薇; 狗薔薔; 狗牙蔷薇
 **Family**: Rosaceae
-**Growth Form**: Climber
-**Height**: 2.0m (Medium (1-3m))
-**Leaf Type**: Deciduous
-**Hardiness**: Zone 9 (-3°C)
-**Native Climate**: Cfb (Temperate oceanic)
-**Woodiness**: Woody
+**Type**: Scrambling shrub (deciduous)
+**Mature Height**: 2.0m — Shrub height
+**Leaves**: Broadleaved, 11cm² — Medium-sized
+**Seeds**: 18mg — Small seeds
+
+---
+
+## Relatives Within Genus
+
+**5 Closest Relatives** (from 17 *Rosa* species in database, by evolutionary distance):
+
+| Species | Common Name | Relatedness |
+|---------|-------------|-------------|
+| *Rosa marginata* | Large-leaved Rose | Distant |
+| *Rosa sherardii* | Шиповник Жерара | Distant |
+| *Rosa agrestis* | Small-leaved Sweet-briar | Distant |
+| *Rosa micrantha* | Small-flowered Sweet-briar | Distant |
+| *Rosa rubiginosa* | Sweet-brier | Distant |
+
+*These roses are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
 
 ---
 
@@ -120,24 +136,24 @@ Open borders work well; tolerates some afternoon shade.
 ---
 
 ## Maintenance Profile
-**CSR Strategy**: C 27% / S 51% / R 22% (S-leaning)
+**CSR Strategy**: C 27% / S 51% / R 22% (S-dominant)
 **Growth Form**: Vine/Climber
 **Height**: 2.0m
-**Maintenance Level**: MEDIUM (~4 hrs/yr)
+**Maintenance Level**: LOW-MEDIUM (~2 hrs/yr)
 
 **Growth Characteristics**:
-- Moderate growth rate
-- Adaptable to range of conditions
-- Responsive to feeding but not demanding
+- Slow, steady growth
+- Low nutrient demand
+- Drought-tolerant once established
 
 **Form-Specific Notes**:
-Standard garden care applies. Adaptable to range of conditions. Moderate vigour; manageable with annual attention. Responsive to feeding but not demanding.
+Slow to establish; train carefully in first years. Once established, minimal intervention required. Avoid fertiliser; will not respond well to rich conditions.
 
 **Seasonal Tasks**:
-- **Spring**: Feed, shape if needed
-- **Summer**: Water in dry spells
-- **Autumn**: Mulch, tidy
-- **Winter**: Protect if borderline hardy
+- **Spring**: Minimal intervention, check health
+- **Summer**: Water only in severe drought
+- **Autumn**: Light tidy if needed
+- **Winter**: Protect only if borderline hardy
 
 ---
 
@@ -248,7 +264,7 @@ Status: Non-mycorrhizal/Undocumented
 | Aspect | This Plant | Companion Guidance | Details |
 |--------|------------|-------------------|---------|
 | **Taxonomy** | Rosaceae → Rosa | Seek different families | [Taxonomy](#taxonomy) |
-| **Growth Strategy** | C:27% S:51% R:22% | Flexible | [Growth](#growth-compatibility) |
+| **Growth Strategy** | C:27% S:51% R:22% | Good with most | [Growth](#growth-compatibility) |
 | **Structure** | Understory (2.0m) | Shade user | [Structure](#structural-role) |
 | **Mycorrhizal** | Non-mycorrhizal/Undocumented | No network benefit | [Network](#mycorrhizal-network) |
 | **Pest Control** | 19 pests, 4 predators | Benefits from predator plants | [Pests](#pest-control) |
@@ -257,7 +273,7 @@ Status: Non-mycorrhizal/Undocumented
 
 **Key Principles for This Plant:**
 1. **Diversify taxonomy** - seek plants from different families than Rosaceae
-2. **Growth compatibility** - flexible positioning; compatible with most
+2. **Growth compatibility** - compatible with most strategies
 3. **Layer plants** - can grow under taller plants
 4. **Fungal network** - no underground network constraints
 
@@ -274,17 +290,17 @@ Status: Non-mycorrhizal/Undocumented
 ### Growth Compatibility
 
 **CSR Profile**: C: 27% | S: 51% | R: 22%
-**Classification**: Balanced (percentile-based)
+**Classification**: S-dominant (Stress-tolerator) (spread-based)
 **Growth Form**: Vine/Climber
 **Height**: 2.0m
 **Light Preference**: EIVE-L 7.2
 
 **Companion Strategy**:
-- Generalist strategy. Compatible with most companion types.
-- Moderate vigour; neither dominates nor is dominated.
-- Flexible in guild positioning.
+- Flexible S-plant. Tolerates range of companions.
+- Low competition profile. Pairs well with most strategies.
+- Long-lived and persistent; good structural backbone for guilds.
 
-**Good Companions**: Compatible with all CSR types. Flexible positioning.
+**Good Companions**: Most strategies work well. C-dominant canopy trees if shade-tolerant.
 
 ### Pest Control
 

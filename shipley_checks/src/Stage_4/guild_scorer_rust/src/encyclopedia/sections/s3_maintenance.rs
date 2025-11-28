@@ -1,7 +1,9 @@
 //! S3: Maintenance Profile
 //!
 //! Rules for generating maintenance requirements based on CSR strategy.
-//! Uses percentile-based classification per doc (p75 thresholds: C>41.3%, S>72.2%, R>47.6%).
+//! Uses spread-based classification: SPREAD = MAX(C,S,R) - MIN(C,S,R)
+//! - If SPREAD < 20%: Balanced (no dominant strategy)
+//! - Otherwise: Dominant = axis with highest value
 //!
 //! Data Sources:
 //! - CSR scores: `C`, `S`, `R` (0-100%)
@@ -23,12 +25,11 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
 
-    // CSR Strategy display
-    // Use percentile-based classification per doc line 246
-    let csr_strategy = classify_csr_percentile(c, s, r);
+    // CSR Strategy display using spread-based classification
+    let csr_strategy = classify_csr_spread(c, s, r);
     sections.push(format!(
         "**CSR Strategy**: C {:.0}% / S {:.0}% / R {:.0}% ({})",
-        c, s, r, csr_leaning_label(c, s, r)
+        c, s, r, csr_spread_label(c, s, r)
     ));
 
     // Growth form and height
@@ -85,31 +86,6 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     sections.join("\n")
 }
 
-/// Get descriptive CSR leaning label.
-fn csr_leaning_label(c: f64, s: f64, r: f64) -> &'static str {
-    // Using absolute thresholds for S3
-    if c > 60.0 && s < 30.0 && r < 30.0 {
-        "C-dominant"
-    } else if s > 60.0 && c < 30.0 && r < 30.0 {
-        "S-dominant"
-    } else if r > 60.0 && c < 30.0 && s < 30.0 {
-        "R-dominant"
-    } else if c > 45.0 && s > 35.0 {
-        "CS-intermediate"
-    } else if c > 45.0 && r > 35.0 {
-        "CR-intermediate"
-    } else if s > 45.0 && r > 35.0 {
-        "SR-intermediate"
-    } else if c > 45.0 {
-        "C-leaning"
-    } else if s > 45.0 {
-        "S-leaning"
-    } else if r > 45.0 {
-        "R-leaning"
-    } else {
-        "Balanced"
-    }
-}
 
 /// Growth characteristics based on CSR strategy.
 fn growth_characteristics(strategy: CsrStrategy, _form: GrowthFormCategory) -> String {

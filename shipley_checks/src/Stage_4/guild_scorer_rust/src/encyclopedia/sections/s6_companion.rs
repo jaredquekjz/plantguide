@@ -8,13 +8,18 @@
 //! are derived from GloBI observation records. Counts reflect the number of
 //! distinct species observed interacting with this plant.
 //!
-//! GP1: Phylogenetic Independence (from M1)
-//! GP2: Growth Compatibility (from M2) - uses PERCENTILE-based CSR thresholds
-//! GP3: Pest Control Contribution (from M3)
-//! GP4: Disease Control Contribution (from M4)
-//! GP5: Mycorrhizal Network (from M5)
-//! GP6: Structural Role (from M6)
-//! GP7: Pollinator Contribution (from M7)
+//! Uses spread-based CSR classification: SPREAD = MAX(C,S,R) - MIN(C,S,R)
+//! - If SPREAD < 20%: Balanced (no dominant strategy)
+//! - Otherwise: Dominant = axis with highest value
+//!
+//! Sections:
+//! - Taxonomy (from M1)
+//! - Growth Compatibility (from M2)
+//! - Pest Control (from M3)
+//! - Disease Control (from M4)
+//! - Mycorrhizal Network (from M5)
+//! - Structural Role (from M6)
+//! - Pollinator Support (from M7)
 
 use std::collections::HashMap;
 use serde_json::Value;
@@ -95,7 +100,7 @@ fn generate_summary_card(
     let c = get_f64(data, "C").unwrap_or(0.0);
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
-    let csr = classify_csr_percentile(c, s, r);
+    let csr = classify_csr_spread(c, s, r);
     let height = get_f64(data, "height_m");
     let layer = classify_structural_layer(height);
     let (amf, emf) = fungal_counts.map(|c| (c.amf, c.emf)).unwrap_or((0, 0));
@@ -255,7 +260,7 @@ fn generate_gp1(data: &HashMap<String, Value>) -> String {
 }
 
 // ============================================================================
-// GP2: Growth Compatibility (PERCENTILE-based CSR)
+// GP2: Growth Compatibility (Spread-based CSR)
 // ============================================================================
 
 fn generate_gp2(data: &HashMap<String, Value>) -> String {
@@ -266,7 +271,7 @@ fn generate_gp2(data: &HashMap<String, Value>) -> String {
     let c = get_f64(data, "C").unwrap_or(0.0);
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
-    let csr = classify_csr_percentile(c, s, r);
+    let csr = classify_csr_spread(c, s, r);
 
     let growth_form = get_str(data, "try_growth_form");
     let height_m = get_f64(data, "height_m");
@@ -274,7 +279,7 @@ fn generate_gp2(data: &HashMap<String, Value>) -> String {
     let eive_l = get_eive(data, "L");
 
     lines.push(format!("**CSR Profile**: C: {:.0}% | S: {:.0}% | R: {:.0}%", c, s, r));
-    lines.push(format!("**Classification**: {} (percentile-based)", csr.label()));
+    lines.push(format!("**Classification**: {} (spread-based)", csr.label()));
     lines.push(format!("**Growth Form**: {}", form.label()));
     if let Some(h) = height_m {
         lines.push(format!("**Height**: {:.1}m", h));
@@ -599,7 +604,7 @@ fn generate_cautions(
     let c = get_f64(data, "C").unwrap_or(0.0);
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
-    let csr = classify_csr_percentile(c, s, r);
+    let csr = classify_csr_spread(c, s, r);
     let eive_l = get_eive(data, "L");
 
     let mut cautions = Vec::new();

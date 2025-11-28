@@ -323,6 +323,57 @@ impl CompactTree {
         let leaf_nodes = self.find_leaf_nodes(labels);
         self.calculate_faiths_pd(&leaf_nodes)
     }
+
+    // ========================================================================
+    // PAIRWISE DISTANCE
+    // ========================================================================
+
+    /// Calculate phylogenetic distance between two leaf nodes
+    ///
+    /// Distance = path_length(A → MRCA) + path_length(B → MRCA)
+    /// This is the cophenetic distance used in phylogenetic comparisons.
+    pub fn pairwise_distance(&self, node_a: u32, node_b: u32) -> f64 {
+        if node_a == node_b {
+            return 0.0;
+        }
+
+        // Find MRCA of the two nodes
+        let leaf_set: HashSet<u32> = [node_a, node_b].into_iter().collect();
+        let mrca = match self.find_mrca(&leaf_set) {
+            Ok(m) => m,
+            Err(_) => return f64::MAX, // Disconnected
+        };
+
+        // Walk from A to MRCA, summing edge lengths
+        let mut dist_a = 0.0_f64;
+        let mut current = node_a;
+        while current != mrca {
+            dist_a += self.get_edge_length(current) as f64;
+            current = self.get_parent(current);
+        }
+
+        // Walk from B to MRCA, summing edge lengths
+        let mut dist_b = 0.0_f64;
+        current = node_b;
+        while current != mrca {
+            dist_b += self.get_edge_length(current) as f64;
+            current = self.get_parent(current);
+        }
+
+        dist_a + dist_b
+    }
+
+    /// Calculate pairwise distance given taxon labels
+    pub fn pairwise_distance_by_labels(&self, label_a: &str, label_b: &str) -> Option<f64> {
+        let node_a = self.label_to_node.get(label_a)?;
+        let node_b = self.label_to_node.get(label_b)?;
+        Some(self.pairwise_distance(*node_a, *node_b))
+    }
+
+    /// Find node index by label (for external use)
+    pub fn find_node_by_label(&self, label: &str) -> Option<u32> {
+        self.label_to_node.get(label).copied()
+    }
 }
 
 #[cfg(test)]

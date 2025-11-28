@@ -3,18 +3,34 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-27T13:33:26Z"
+generated: "2025-11-28T03:03:41Z"
 version: "2.0"
 ---
 
 # Quercus robur
+**Common Names**: Pedunculate Oak; Common Oak; English Oak; Truffle Oak; Acorn Tree
+**Chinese**: 歐洲白櫟; 夏櫟; 夏栎
 **Family**: Fagaceae
-**Growth Form**: Tree
-**Height**: 27.1m (Large tree (>20m))
-**Leaf Type**: Deciduous
-**Hardiness**: Zone 10 (-0°C)
-**Native Climate**: Csb (Mediterranean warm summer)
-**Woodiness**: Woody
+**Type**: Deciduous tree
+**Mature Height**: 27m — Large tree, needs significant space
+**Leaves**: Broadleaved, 30cm² — Medium-sized
+**Seeds**: 3.0g — Medium seeds, bird food
+
+---
+
+## Relatives Within Genus
+
+**5 Closest Relatives** (from 68 *Quercus* species in database, by evolutionary distance):
+
+| Species | Common Name | Relatedness |
+|---------|-------------|-------------|
+| *Quercus aliena* | Oriental White Oak | Moderate |
+| *Quercus douglasii* | Blue Oak | Moderate |
+| *Quercus durata* | Leather Oak | Moderate |
+| *Quercus falcata* | Southern Red Oak | Moderate |
+| *Quercus georgiana* | Georgia Oak | Moderate |
+
+*These oaks are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
 
 ---
 
@@ -120,7 +136,7 @@ Open borders work well; tolerates some afternoon shade.
 ---
 
 ## Maintenance Profile
-**CSR Strategy**: C 45% / S 41% / R 14% (CS-intermediate)
+**CSR Strategy**: C 45% / S 41% / R 14% (C-dominant)
 **Growth Form**: Tree
 **Height**: 27.1m
 **Maintenance Level**: MEDIUM-HIGH (~9 hrs/yr)
@@ -280,7 +296,7 @@ Status: EMF (Ectomycorrhizal)
 ### Growth Compatibility
 
 **CSR Profile**: C: 45% | S: 41% | R: 14%
-**Classification**: C-dominant (Competitor) (percentile-based)
+**Classification**: C-dominant (Competitor) (spread-based)
 **Growth Form**: Tree
 **Height**: 27.1m
 **Light Preference**: EIVE-L 6.2
