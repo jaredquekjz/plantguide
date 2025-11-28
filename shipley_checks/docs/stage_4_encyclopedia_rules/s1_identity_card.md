@@ -196,7 +196,79 @@ Seed mass helps gardeners understand self-seeding potential and wildlife value.
 
 ---
 
-## Edge Cases
+## Closest Relatives (Subsection)
+
+Shows the 5 closest phylogenetic relatives within the same genus, helping gardeners find alternatives with similar care requirements.
+
+### Data Sources
+
+| Field | Source | Notes |
+|-------|--------|-------|
+| Phylogenetic distance | `compact_tree_11711.bin` | Pre-computed tree from V.PhyloMaker2 |
+| Species mapping | `mixgb_wfo_to_tree_mapping_11711.csv` | WFO ID to tree tip mapping |
+| Genus | `genus` | From plant parquet |
+
+### Output Format
+
+```markdown
+### Closest Relatives
+
+*5 closest oaks (from 42 *Quercus* species in database, by evolutionary distance):*
+
+| Species | Common Name | Relatedness |
+|---------|-------------|-------------|
+| *Quercus petraea* | Sessile Oak | Very close |
+| *Quercus pubescens* | Downy Oak | Close |
+| ... | ... | ... |
+
+*These oaks need similar soil, water, and care—handy if you want alternatives. But they catch the same bugs and diseases, so mix in plants from different families.*
+```
+
+### Distance Thresholds
+
+Phylogenetic distance (branch lengths in Myr) mapped to labels:
+
+| Distance | Label |
+|----------|-------|
+| < 5 | Very close |
+| 5-15 | Close |
+| 15-40 | Moderate |
+| 40-80 | Distant |
+| >= 80 | Very distant |
+
+### Genus Plurals
+
+Common genera use friendly plural names:
+
+| Genus | Plural | Genus | Plural |
+|-------|--------|-------|--------|
+| Quercus | oaks | Trifolium | clovers |
+| Rosa | roses | Vicia | vetches |
+| Acer | maples | Geranium | geraniums |
+| Prunus | cherries/plums | Ranunculus | buttercups |
+| Salix | willows | Carex | sedges |
+| Pinus | pines | Festuca | fescues |
+| Betula | birches | Poa | meadow-grasses |
+| Fagus | beeches | | |
+| Fraxinus | ashes | | |
+| Malus | apples | | |
+| Pyrus | pears | | |
+| Sorbus | rowans | | |
+| Crataegus | hawthorns | | |
+| Cornus | dogwoods | | |
+| Viburnum | viburnums | | |
+| Rhododendron | rhododendrons | | |
+
+Other genera default to "species".
+
+### Edge Cases
+
+- **Only one species in genus**: Show message "*This is the only *{Genus}* species in our database.*"
+- **Distance calculation failed**: Show message "*Could not calculate evolutionary distances for *{Genus}* species.*"
+
+---
+
+## Edge Cases (General)
 
 - **Missing height**: Omit the Mature Height line
 - **Missing leaf area**: Omit the Leaves line

@@ -7,8 +7,11 @@
 //!
 //! Data Sources:
 //! - CSR scores: `C`, `S`, `R` (0-100%)
-//! - Height: `height_m`
+//! - Height: `height_m` (for pruning accessibility)
 //! - Growth form: `try_growth_form`
+//! - Leaf phenology: `try_leaf_phenology` (for litter management)
+//! - Leaf area: `LA` (for litter volume)
+//! - Seed mass: `logSM` (for self-seeding potential)
 
 use std::collections::HashMap;
 use serde_json::Value;
@@ -25,57 +28,42 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     let s = get_f64(data, "S").unwrap_or(0.0);
     let r = get_f64(data, "R").unwrap_or(0.0);
 
-    // CSR Strategy display using spread-based classification
+    // CSR Strategy display with friendly explanation
     let csr_strategy = classify_csr_spread(c, s, r);
     sections.push(format!(
-        "**CSR Strategy**: C {:.0}% / S {:.0}% / R {:.0}% ({})",
-        c, s, r, csr_spread_label(c, s, r)
+        "**Growth Strategy**: {} (C {:.0}% / S {:.0}% / R {:.0}%)",
+        csr_spread_label(c, s, r), c, s, r
     ));
-
-    // Growth form and height
-    let growth_form = get_str(data, "try_growth_form");
-    let height_m = get_f64(data, "height_m");
-    let form_category = classify_growth_form(growth_form, height_m);
-
-    sections.push(format!("**Growth Form**: {}", form_category.label()));
-    if let Some(h) = height_m {
-        sections.push(format!("**Height**: {:.1}m", h));
-    }
+    sections.push(String::new());
+    sections.push(csr_explanation(csr_strategy));
 
     // Maintenance level
+    let height_m = get_f64(data, "height_m");
+    let growth_form = get_str(data, "try_growth_form");
+    let form_category = classify_growth_form(growth_form, height_m);
+
     let maint_level = classify_maintenance_level(c, s, r);
-    let size_mult = size_scaling_multiplier(height_m);
-    let base_hours = match maint_level {
-        MaintenanceLevel::Low => 1.5,
-        MaintenanceLevel::LowMedium => 2.5,
-        MaintenanceLevel::Medium => 3.5,
-        MaintenanceLevel::MediumHigh => 4.5,
-        MaintenanceLevel::High => 6.0,
-    };
-    let adjusted_hours = base_hours * size_mult;
-
-    sections.push(format!(
-        "**Maintenance Level**: {} (~{:.0} hrs/yr)",
-        maint_level.label(),
-        adjusted_hours
-    ));
-
-    // Growth characteristics
     sections.push(String::new());
-    sections.push("**Growth Characteristics**:".to_string());
-    sections.push(growth_characteristics(csr_strategy, form_category));
+    sections.push(format!("**Effort Level**: {}", maint_level.label()));
 
-    // Form-specific notes (Composite Maintenance Matrix)
+    // Growth behaviour (combines CSR characteristics + form-specific advice)
     sections.push(String::new());
-    sections.push("**Form-Specific Notes**:".to_string());
-    sections.push(composite_matrix_advice(csr_strategy, form_category));
+    sections.push("**What to Expect**:".to_string());
+    sections.push(growth_behaviour(csr_strategy, form_category));
 
-    // Seasonal tasks
-    sections.push(String::new());
-    sections.push("**Seasonal Tasks**:".to_string());
-    sections.push(seasonal_tasks(csr_strategy, form_category));
+    // Practical considerations (derived from S1 traits)
+    let leaf_phenology = get_str(data, "try_leaf_phenology");
+    let leaf_area = get_f64(data, "LA");
+    let seed_mass_log = get_f64(data, "logSM");
 
-    // Watch for
+    let practical = practical_considerations(height_m, leaf_phenology, leaf_area, seed_mass_log, csr_strategy);
+    if !practical.is_empty() {
+        sections.push(String::new());
+        sections.push("**Practical Considerations**:".to_string());
+        sections.push(practical);
+    }
+
+    // Watch for warnings
     let warnings = watch_for_warnings(csr_strategy, form_category);
     if !warnings.is_empty() {
         sections.push(String::new());
@@ -86,132 +74,168 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
     sections.join("\n")
 }
 
+/// Friendly explanation of CSR strategy for non-specialists.
+fn csr_explanation(strategy: CsrStrategy) -> String {
+    let intro = "*CSR is a key framework in plant ecology that classifies plants by survival strategy: **Competitors** (C) grow fast to dominate space and light, **Stress-tolerators** (S) endure difficult conditions patiently, and **Ruderals** (R) live short lives but reproduce prolifically.*";
 
-/// Growth characteristics based on CSR strategy.
-fn growth_characteristics(strategy: CsrStrategy, _form: GrowthFormCategory) -> String {
-    let mut chars = Vec::new();
-
-    match strategy {
+    let specific = match strategy {
         CsrStrategy::CDominant => {
-            chars.push("- Fast, vigorous growth");
-            chars.push("- High nutrient demand");
-            chars.push("- Benefits from annual feeding");
+            "This plant scores highest in **C (Competitor)** — it's a vigorous grower that will actively spread and may outcompete neighbours. Needs more attention to keep in check."
         }
         CsrStrategy::SDominant => {
-            chars.push("- Slow, steady growth");
-            chars.push("- Low nutrient demand");
-            chars.push("- Drought-tolerant once established");
+            "This plant scores highest in **S (Stress-tolerator)** — it's built for endurance, not speed. Grows slowly, tolerates neglect, and generally thrives when left alone."
         }
         CsrStrategy::RDominant => {
-            chars.push("- Rapid but brief growth");
-            chars.push("- Moderate nutrient demand");
-            chars.push("- Short-lived; plan for succession");
+            "This plant scores highest in **R (Ruderal)** — it's a fast-living opportunist. Grows quickly, sets seed, and may not live long. Plan for replacement or let it reseed."
         }
         CsrStrategy::Balanced => {
-            chars.push("- Moderate growth rate");
-            chars.push("- Adaptable to range of conditions");
-            chars.push("- Responsive to feeding but not demanding");
+            "This plant has a **balanced strategy** — it's adaptable and moderate in all respects. Neither aggressive nor demanding, it fits well in most garden situations."
         }
-    }
+    };
 
-    chars.join("\n")
+    format!("{}\n\n{}", intro, specific)
+}
+
+/// Growth behaviour combining CSR strategy with form-specific advice.
+fn growth_behaviour(strategy: CsrStrategy, form: GrowthFormCategory) -> String {
+    let strategy_desc = match strategy {
+        CsrStrategy::CDominant => {
+            "Fast, vigorous grower with high nutrient demand. Benefits from annual feeding."
+        }
+        CsrStrategy::SDominant => {
+            "Slow, steady grower with low nutrient demand."
+        }
+        CsrStrategy::RDominant => {
+            "Rapid but short-lived. Moderate nutrient demand; plan for succession or self-seeding."
+        }
+        CsrStrategy::Balanced => {
+            "Moderate growth rate. Adaptable to range of conditions; responsive to feeding but not demanding."
+        }
+    };
+
+    let form_advice = composite_matrix_advice(strategy, form);
+
+    format!("{} {}", strategy_desc, form_advice)
 }
 
 /// Composite Maintenance Matrix: CSR × Growth Form advice.
-/// From S3 planning doc.
 fn composite_matrix_advice(strategy: CsrStrategy, form: GrowthFormCategory) -> String {
     match (strategy, form) {
         // C-dominant combinations
         (CsrStrategy::CDominant, GrowthFormCategory::Tree) => {
-            "Annual thinning to allow light below; may cast dense shade. Monitor for structural dominance; neighbours may struggle. High nutrient uptake; nearby plants may need supplemental feeding.".to_string()
+            "May cast dense shade; thin annually to allow light below. High nutrient uptake may affect neighbours.".to_string()
         }
         (CsrStrategy::CDominant, GrowthFormCategory::Shrub) => {
-            "Hard prune annually to control spread; suckering common. Give wide spacing; aggressive root competition likely. Contain with root barriers if space is limited.".to_string()
+            "Hard prune annually to control spread. Give wide spacing; root competition likely.".to_string()
         }
         (CsrStrategy::CDominant, GrowthFormCategory::Herb) => {
-            "Division every 1-2 years to control spread. Edge beds to prevent invasion of adjacent areas. Heavy feeders; enrich soil annually.".to_string()
+            "Divide every 1-2 years to control spread. Edge beds to prevent invasion.".to_string()
         }
         (CsrStrategy::CDominant, GrowthFormCategory::Vine) => {
-            "Aggressive growers; may damage supports or smother host plants. Regular cutting back (2-3 times per growing season). Do not plant near buildings without robust control measures.".to_string()
+            "Aggressive; may damage supports or smother hosts. Cut back 2-3 times per season.".to_string()
         }
 
         // S-dominant combinations
         (CsrStrategy::SDominant, GrowthFormCategory::Tree) => {
-            "Long establishment period (5-10 years); patience required. Avoid fertiliser; naturally conservative nutrient cycling. Formative pruning in youth only; minimal intervention thereafter.".to_string()
+            "Long establishment period (5-10 years). Avoid fertiliser; formative pruning in youth only.".to_string()
         }
         (CsrStrategy::SDominant, GrowthFormCategory::Shrub) => {
-            "Drought-tolerant once established; minimal watering. Shape only if aesthetically needed; avoid hard pruning. Slow recovery from damage; protect during establishment.".to_string()
+            "Minimal watering once established. Shape only if needed; avoid hard pruning.".to_string()
         }
         (CsrStrategy::SDominant, GrowthFormCategory::Herb) => {
-            "Near-zero maintenance; leave undisturbed. Avoid overwatering; adapted to poor soils. May decline if conditions become too rich.".to_string()
+            "Near-zero maintenance; leave undisturbed. May decline if conditions too rich.".to_string()
         }
         (CsrStrategy::SDominant, GrowthFormCategory::Vine) => {
-            "Slow to establish; train carefully in first years. Once established, minimal intervention required. Avoid fertiliser; will not respond well to rich conditions.".to_string()
+            "Slow to establish; train carefully in first years. Minimal intervention once settled.".to_string()
         }
 
         // R-dominant combinations
         (CsrStrategy::RDominant, GrowthFormCategory::Tree) => {
-            "Unusual combination; likely pioneer species. Short-lived for a tree; plan for replacement. Fast initial growth, then decline.".to_string()
+            "Unusual; likely pioneer species. Short-lived for a tree; plan replacement.".to_string()
         }
         (CsrStrategy::RDominant, GrowthFormCategory::Shrub) => {
-            "Often short-lived (3-5 years); plan for replacement. Self-seeding may require management. Remove spent growth promptly; encourages new growth.".to_string()
+            "Often short-lived (3-5 years). Self-seeding may need management.".to_string()
         }
         (CsrStrategy::RDominant, GrowthFormCategory::Herb) => {
-            "Annuals or short-lived perennials; replant each year or allow self-sowing. Deadhead to extend flowering or allow seeding depending on preference. Collect seed before removal for next season.".to_string()
+            "Annual or short-lived perennial. Allow self-sowing or replant yearly.".to_string()
         }
         (CsrStrategy::RDominant, GrowthFormCategory::Vine) => {
-            "May die back completely in winter; cut to base. Rapid spring regrowth from base or seed. Short-lived perennials or tender; protect or replant annually.".to_string()
+            "May die back completely in winter. Rapid spring regrowth from base or seed.".to_string()
         }
 
         // Balanced combinations
         (CsrStrategy::Balanced, _) => {
-            "Standard garden care applies. Adaptable to range of conditions. Moderate vigour; manageable with annual attention. Responsive to feeding but not demanding.".to_string()
+            "Standard garden care applies. Moderate vigour; manageable with annual attention.".to_string()
         }
     }
 }
 
-/// Seasonal tasks based on CSR strategy.
-fn seasonal_tasks(strategy: CsrStrategy, form: GrowthFormCategory) -> String {
-    let mut tasks = Vec::new();
+/// Practical considerations derived from S1 trait data.
+fn practical_considerations(
+    height_m: Option<f64>,
+    leaf_phenology: Option<&str>,
+    leaf_area: Option<f64>,
+    seed_mass_log: Option<f64>,
+    strategy: CsrStrategy,
+) -> String {
+    let mut considerations = Vec::new();
 
-    match strategy {
-        CsrStrategy::CDominant => {
-            tasks.push("- **Spring**: Feed generously, shape if needed");
-            tasks.push("- **Summer**: Water in dry spells, manage spread");
-            tasks.push("- **Autumn**: Hard prune if required, mulch");
-            tasks.push("- **Winter**: Plan containment for vigorous growth");
-        }
-        CsrStrategy::SDominant => {
-            tasks.push("- **Spring**: Minimal intervention, check health");
-            tasks.push("- **Summer**: Water only in severe drought");
-            tasks.push("- **Autumn**: Light tidy if needed");
-            tasks.push("- **Winter**: Protect only if borderline hardy");
-        }
-        CsrStrategy::RDominant => {
-            match form {
-                GrowthFormCategory::Herb => {
-                    tasks.push("- **Spring**: Sow/plant replacements");
-                    tasks.push("- **Summer**: Deadhead, collect seed");
-                    tasks.push("- **Autumn**: Clear spent growth, save seed");
-                    tasks.push("- **Winter**: Plan succession planting");
-                }
-                _ => {
-                    tasks.push("- **Spring**: Check for winter losses, replant");
-                    tasks.push("- **Summer**: Enjoy rapid growth, deadhead");
-                    tasks.push("- **Autumn**: Remove spent material");
-                    tasks.push("- **Winter**: Protect tender growth or accept losses");
-                }
-            }
-        }
-        CsrStrategy::Balanced => {
-            tasks.push("- **Spring**: Feed, shape if needed");
-            tasks.push("- **Summer**: Water in dry spells");
-            tasks.push("- **Autumn**: Mulch, tidy");
-            tasks.push("- **Winter**: Protect if borderline hardy");
+    // Pruning accessibility based on height
+    if let Some(h) = height_m {
+        let pruning = if h >= 15.0 {
+            format!("**Pruning**: Professional arborist needed at {:.0}m mature height", h)
+        } else if h >= 6.0 {
+            format!("**Pruning**: Ladder work required at {:.0}m; consider access", h)
+        } else if h >= 2.5 {
+            format!("**Pruning**: Reachable with long-handled tools at {:.1}m", h)
+        } else {
+            format!("**Pruning**: Easy access at {:.1}m; hand tools sufficient", h)
+        };
+        considerations.push(pruning);
+    }
+
+    // Spreading/seeding based on seed mass
+    if let Some(log_sm) = seed_mass_log {
+        let seed_mg = log_sm.exp();
+        let seeding = if seed_mg < 1.0 {
+            "**Spreading**: Dust-like seeds blow everywhere; expect baby plants popping up throughout the garden"
+        } else if seed_mg < 10.0 {
+            "**Spreading**: Tiny seeds; new plants will appear on their own; pull unwanted ones"
+        } else if seed_mg < 100.0 {
+            "**Spreading**: Small seeds; occasional new plants may appear nearby"
+        } else if seed_mg < 1000.0 {
+            "**Spreading**: Medium seeds don't travel far; birds may carry them around"
+        } else {
+            "**Spreading**: Large seeds stay close to parent; squirrels and birds may bury them elsewhere"
+        };
+
+        // Only show spreading note if relevant (R-dominant or small seeds)
+        if seed_mg < 100.0 || matches!(strategy, CsrStrategy::RDominant) {
+            considerations.push(seeding.to_string());
         }
     }
 
-    tasks.join("\n")
+    // Leaf litter based on phenology + leaf area
+    if let Some(phenology) = leaf_phenology {
+        let is_deciduous = phenology.to_lowercase().contains("deciduous");
+        if is_deciduous {
+            let litter_desc = if let Some(la) = leaf_area {
+                let area_cm2 = la / 100.0;
+                if area_cm2 > 50.0 {
+                    "**Leaf litter**: Deciduous with large leaves; significant autumn cleanup"
+                } else if area_cm2 > 15.0 {
+                    "**Leaf litter**: Deciduous with medium leaves; moderate autumn raking"
+                } else {
+                    "**Leaf litter**: Deciduous with small leaves; light autumn debris"
+                }
+            } else {
+                "**Leaf litter**: Deciduous; expect autumn leaf drop"
+            };
+            considerations.push(litter_desc.to_string());
+        }
+    }
+
+    considerations.join("\n")
 }
 
 /// Warnings based on CSR strategy and form.
@@ -220,21 +244,19 @@ fn watch_for_warnings(strategy: CsrStrategy, form: GrowthFormCategory) -> String
 
     match strategy {
         CsrStrategy::CDominant => {
-            warnings.push("- May outcompete slower neighbours");
-            warnings.push("- Give adequate space for mature spread");
+            warnings.push("- May outcompete slower-growing neighbours");
             match form {
                 GrowthFormCategory::Vine => {
                     warnings.push("- Can damage structures if unchecked");
                 }
                 GrowthFormCategory::Tree => {
-                    warnings.push("- Dense shade may exclude understory");
+                    warnings.push("- Dense shade may suppress understory plants");
                 }
                 _ => {}
             }
         }
         CsrStrategy::RDominant => {
-            warnings.push("- Short-lived; plan for replacement");
-            warnings.push("- May self-seed prolifically");
+            warnings.push("- Short-lived; plan for replacement or allow self-seeding");
         }
         _ => {}
     }

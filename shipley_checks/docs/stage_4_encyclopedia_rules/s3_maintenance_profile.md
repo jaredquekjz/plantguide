@@ -2,16 +2,25 @@
 
 Rules for generating maintenance requirements based on CSR (Competitor-Stress tolerator-Ruderal) strategy.
 
+## Data Sources
+
+| Column | Description | Source |
+|--------|-------------|--------|
+| `C`, `S`, `R` | CSR scores (0-100%, sum to 100) | Pierce et al. (2017) StrateFy |
+| `height_m` | Mature plant height | TRY database |
+| `try_growth_form` | Growth form (tree/shrub/herb/vine) | TRY database |
+| `try_leaf_phenology` | Deciduous/evergreen | TRY database |
+| `LA` | Leaf area (mm²) | TRY database |
+| `logSM` | Log seed mass | TRY database |
+
 ## Scientific Foundation
 
-**Theory**: Grime's CSR plant strategy theory classifies plants by their adaptation to:
-- **C (Competitor)**: Resource-rich, undisturbed habitats → fast growth, high nutrient demand
-- **S (Stress-tolerator)**: Resource-poor or extreme habitats → slow growth, conservative physiology
-- **R (Ruderal)**: Frequently disturbed habitats → rapid reproduction, short lifespan
+CSR is a key framework in plant ecology that classifies plants by survival strategy:
+- **Competitors (C)**: Grow fast to dominate space and light
+- **Stress-tolerators (S)**: Endure difficult conditions patiently
+- **Ruderals (R)**: Live short lives but reproduce prolifically
 
 **Data Source**: Pierce et al. (2017) StrateFy global calibration using leaf traits (LA, LDMC, SLA)
-
-**Columns**: `C`, `S`, `R` (percentages summing to 100)
 
 ---
 
@@ -251,29 +260,24 @@ Use CSR classification + climate envelope to flag invasive risk:
 
 ```markdown
 ## Maintenance Profile
+**Growth Strategy**: C-dominant (C 45% / S 35% / R 20%)
 
-**CSR Strategy**: C 45% / S 35% / R 20% (C-dominant)
-**Growth Form**: Shrub
-**Height**: 2.5m
-**Maintenance Level**: MEDIUM-HIGH (~4-5 hrs/yr)
+*CSR is a key framework in plant ecology that classifies plants by survival strategy: **Competitors** (C) grow fast to dominate space and light, **Stress-tolerators** (S) endure difficult conditions patiently, and **Ruderals** (R) live short lives but reproduce prolifically.*
 
-**Growth Characteristics**:
-- Moderately vigorous grower (C-dominant shrub)
-- Benefits from annual feeding
-- Prune to shape in late winter
+This plant scores highest in **C (Competitor)** — it's a vigorous grower that will actively spread and may outcompete neighbours. Needs more attention to keep in check.
 
-**Form-Specific Notes**:
-- {advice from Composite Maintenance Matrix based on growth form + CSR}
+**Effort Level**: MEDIUM-HIGH
 
-**Seasonal Tasks**:
-- Spring: Feed, shape if needed
-- Summer: Water in dry spells
-- Autumn: Mulch, tidy
-- Winter: Protect if borderline hardy
+**What to Expect**:
+Fast, vigorous grower with high nutrient demand. Benefits from annual feeding. Hard prune annually to control spread. Give wide spacing; root competition likely.
+
+**Practical Considerations**:
+**Pruning**: Reachable with long-handled tools at 2.5m
+**Spreading**: Small seeds; occasional new plants may appear nearby
+**Leaf litter**: Deciduous with medium leaves; moderate autumn raking
 
 **Watch For**:
-- May outcompete slower neighbours (C tendency)
-- Give adequate space for mature spread
+- May outcompete slower-growing neighbours
 ```
 
 ### Decision Tree for Output Generation
@@ -284,24 +288,28 @@ Use CSR classification + climate envelope to flag invasive risk:
    - IF SPREAD < 20%: Balanced
    - ELSE: Dominant = highest of C, S, R
 
-2. Determine intensity:
-   - Highest axis ≥ 80%: Extreme
-   - Highest axis 60-79%: Strong
-   - Highest axis 40-59%: Moderate
-   - Highest axis < 40%: Balanced
-
-3. Determine growth form category:
+2. Determine growth form category:
    - IF try_growth_form CONTAINS "tree" AND height > 5m: Tree
    - ELSE IF try_growth_form CONTAINS "vine" OR "liana": Vine
    - ELSE IF height > 1m: Shrub
    - ELSE: Herb/Ground cover
 
-4. Look up advice from:
-   - Composite Maintenance Matrix (CSR × Growth Form)
-   - Strategy-Specific Advice (CSR × Growth Form)
-   - Size Scaling (Height)
+3. Generate CSR explanation (friendly language):
+   - Generic intro explaining CSR framework
+   - Strategy-specific advice based on dominant strategy
 
-5. Generate output combining all factors
+4. Generate "What to Expect":
+   - Strategy-based growth behaviour
+   - Form-specific advice from Composite Maintenance Matrix
+
+5. Generate "Practical Considerations" from S1 traits:
+   - Pruning: Based on height_m (accessibility)
+   - Spreading: Based on logSM (seed mass)
+   - Leaf litter: Based on try_leaf_phenology + LA
+
+6. Generate "Watch For" warnings:
+   - C-dominant: competition, shade (if tree)
+   - R-dominant: short-lived, needs succession planning
 ```
 
 ---
@@ -310,15 +318,51 @@ Use CSR classification + climate envelope to flag invasive risk:
 
 **Source file:** `shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet`
 
-| Column | Description |
-|--------|-------------|
-| `C` | Competitor score (0-100%) |
-| `S` | Stress-tolerator score (0-100%) |
-| `R` | Ruderal score (0-100%) |
-| `height_m` | Plant height for size scaling |
-| `try_growth_form` | Growth form (tree/shrub/herb/vine/etc.) |
-| `life_form_simple` | Simplified life form (woody/non-woody) |
-| `decomposition_rating` | Litter decomposition rate |
+| Column | Description | Used For |
+|--------|-------------|----------|
+| `C` | Competitor score (0-100%) | CSR classification |
+| `S` | Stress-tolerator score (0-100%) | CSR classification |
+| `R` | Ruderal score (0-100%) | CSR classification |
+| `height_m` | Plant height (metres) | Pruning accessibility |
+| `try_growth_form` | Growth form (tree/shrub/herb/vine) | Form-specific advice |
+| `try_leaf_phenology` | Deciduous/evergreen | Leaf litter estimate |
+| `LA` | Leaf area (mm²) | Leaf litter volume |
+| `logSM` | Log seed mass | Spreading/self-seeding potential |
+
+---
+
+## Practical Considerations Thresholds
+
+### Pruning Accessibility (from height_m)
+
+| Height | Accessibility | Message |
+|--------|---------------|---------|
+| ≥ 15m | Professional | "Professional arborist needed at Xm mature height" |
+| 6-15m | Ladder required | "Ladder work required at Xm; consider access" |
+| 2.5-6m | Long tools | "Reachable with long-handled tools at Xm" |
+| < 2.5m | Easy | "Easy access at Xm; hand tools sufficient" |
+
+### Spreading/Self-Seeding (from logSM → seed mass in mg)
+
+| Seed Mass | Spreading Tendency | Message |
+|-----------|-------------------|---------|
+| < 1mg | Very high | "Dust-like seeds blow everywhere; expect baby plants popping up throughout the garden" |
+| 1-10mg | High | "Tiny seeds; new plants will appear on their own; pull unwanted ones" |
+| 10-100mg | Moderate | "Small seeds; occasional new plants may appear nearby" |
+| 100-1000mg | Low | "Medium seeds don't travel far; birds may carry them around" |
+| > 1000mg | Minimal | "Large seeds stay close to parent; squirrels and birds may bury them elsewhere" |
+
+**Note**: Spreading message only shown if seed mass < 100mg OR plant is R-dominant.
+
+### Leaf Litter (from try_leaf_phenology + LA)
+
+Only shown for deciduous plants. Leaf area (LA) determines cleanup volume:
+
+| Leaf Area | Litter Level | Message |
+|-----------|--------------|---------|
+| > 50cm² | High | "Deciduous with large leaves; significant autumn cleanup" |
+| 15-50cm² | Moderate | "Deciduous with medium leaves; moderate autumn raking" |
+| < 15cm² | Light | "Deciduous with small leaves; light autumn debris" |
 
 ---
 

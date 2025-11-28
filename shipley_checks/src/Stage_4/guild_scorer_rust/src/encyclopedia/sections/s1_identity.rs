@@ -1,7 +1,7 @@
 //! S1: Identity Card
 //!
 //! Rules for generating the plant identity/header section of encyclopedia articles.
-//! Displays scientific name, vernacular names, and key morphological traits.
+//! Displays scientific name, vernacular names, key morphological traits, and closest relatives.
 //!
 //! Data Sources:
 //! - Scientific name: `wfo_scientific_name` (WFO-verified)
@@ -13,14 +13,41 @@
 //! - Seed mass: `logSM` (TRY Global Spectrum - log seed mass, convert with exp())
 //! - Leaf type: `try_leaf_type` (broadleaved/needleleaved)
 //! - Leaf persistence: `try_leaf_phenology` (TRY database)
+//! - Related species: Phylogenetic tree (compact_tree_11711.bin)
 
 use std::collections::HashMap;
 use serde_json::Value;
 use crate::encyclopedia::types::*;
-use crate::encyclopedia::utils::classify::*;
 
-/// Generate the S1 Identity Card section.
+/// A related species with phylogenetic distance (merged from S7)
+#[derive(Debug, Clone)]
+pub struct RelatedSpecies {
+    pub wfo_id: String,
+    pub scientific_name: String,
+    pub common_name: String,
+    pub distance: f64,
+}
+
+/// Info about a species in the same genus
+#[derive(Debug, Clone)]
+pub struct GenusSpeciesInfo {
+    pub wfo_id: String,
+    pub scientific_name: String,
+    pub common_name: String,
+    pub tree_tip: Option<String>,
+}
+
+/// Generate the S1 Identity Card section (basic version without relatives).
 pub fn generate(data: &HashMap<String, Value>) -> String {
+    generate_with_relatives(data, None, 0)
+}
+
+/// Generate the S1 Identity Card section with optional related species.
+pub fn generate_with_relatives(
+    data: &HashMap<String, Value>,
+    relatives: Option<&[RelatedSpecies]>,
+    genus_count: usize,
+) -> String {
     let mut sections = Vec::new();
 
     // Scientific name as header
@@ -77,11 +104,125 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
         sections.push(format!("**Seeds**: {}", seed_desc));
     }
 
+    // Related species within genus (merged from S7)
+    let genus = get_str(data, "genus").unwrap_or("Unknown");
+    sections.push(String::new()); // blank line before relatives
+    sections.push(generate_relatives_subsection(genus, relatives, genus_count));
+
     // Data provenance note
     sections.push(String::new()); // blank line
     sections.push("*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*".to_string());
 
     sections.join("\n")
+}
+
+/// Generate the Related Species subsection (within S1).
+fn generate_relatives_subsection(
+    genus: &str,
+    relatives: Option<&[RelatedSpecies]>,
+    genus_count: usize,
+) -> String {
+    let mut lines = Vec::new();
+    lines.push("### Closest Relatives".to_string());
+    lines.push(String::new());
+
+    match relatives {
+        Some(rel) if !rel.is_empty() => {
+            lines.push(format!(
+                "*5 closest {} (from {} *{}* species in database, by evolutionary distance):*",
+                genus_plural(genus), genus_count, genus
+            ));
+            lines.push(String::new());
+
+            // Table header
+            lines.push("| Species | Common Name | Relatedness |".to_string());
+            lines.push("|---------|-------------|-------------|".to_string());
+
+            // Table rows
+            for species in rel.iter().take(5) {
+                let relatedness = distance_to_label(species.distance);
+                let common = if species.common_name.is_empty() {
+                    "—".to_string()
+                } else {
+                    species.common_name.clone()
+                };
+                lines.push(format!(
+                    "| *{}* | {} | {} |",
+                    species.scientific_name, common, relatedness
+                ));
+            }
+
+            // Friendly explanation
+            lines.push(String::new());
+            lines.push(format!(
+                "*These {} need similar soil, water, and care—handy if you want alternatives. \
+                But they catch the same bugs and diseases, so mix in plants from different families.*",
+                genus_plural(genus)
+            ));
+        }
+        _ => {
+            // No relatives found or only species in genus
+            if genus_count <= 1 {
+                lines.push(format!(
+                    "*This is the only *{}* species in our database.*",
+                    genus
+                ));
+            } else {
+                lines.push(format!(
+                    "*Could not calculate evolutionary distances for *{}* species.*",
+                    genus
+                ));
+            }
+        }
+    }
+
+    lines.join("\n")
+}
+
+/// Convert phylogenetic distance to human-readable label.
+/// Calibrated from actual tree distances: Trifolium ~2-35, Quercus ~24, Rosa ~68-141
+fn distance_to_label(distance: f64) -> &'static str {
+    if distance < 5.0 {
+        "Very close"
+    } else if distance < 15.0 {
+        "Close"
+    } else if distance < 40.0 {
+        "Moderate"
+    } else if distance < 80.0 {
+        "Distant"
+    } else {
+        "Very distant"
+    }
+}
+
+/// Get plural form for genus (most are just "species" but some common ones have names).
+fn genus_plural(genus: &str) -> &'static str {
+    match genus {
+        "Quercus" => "oaks",
+        "Rosa" => "roses",
+        "Acer" => "maples",
+        "Prunus" => "cherries/plums",
+        "Salix" => "willows",
+        "Pinus" => "pines",
+        "Betula" => "birches",
+        "Fagus" => "beeches",
+        "Fraxinus" => "ashes",
+        "Malus" => "apples",
+        "Pyrus" => "pears",
+        "Sorbus" => "rowans",
+        "Crataegus" => "hawthorns",
+        "Cornus" => "dogwoods",
+        "Viburnum" => "viburnums",
+        "Rhododendron" => "rhododendrons",
+        "Trifolium" => "clovers",
+        "Vicia" => "vetches",
+        "Geranium" => "geraniums",
+        "Ranunculus" => "buttercups",
+        "Carex" => "sedges",
+        "Festuca" => "fescues",
+        "Poa" => "meadow-grasses",
+        _ => "species",
+    }
 }
 
 /// Format height with friendly description.

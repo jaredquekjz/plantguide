@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-28T03:18:15Z"
+generated: "2025-11-28T04:07:50Z"
 version: "2.0"
 ---
 
@@ -16,13 +16,9 @@ version: "2.0"
 **Leaves**: Broadleaved, 30cm² — Medium-sized
 **Seeds**: 3.0g — Medium seeds, bird food
 
-*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
+### Closest Relatives
 
----
-
-## Relatives Within Genus
-
-**5 Closest Relatives** (from 68 *Quercus* species in database, by evolutionary distance):
+*5 closest oaks (from 68 *Quercus* species in database, by evolutionary distance):*
 
 | Species | Common Name | Relatedness |
 |---------|-------------|-------------|
@@ -32,7 +28,9 @@ version: "2.0"
 | *Quercus falcata* | Southern Red Oak | Moderate |
 | *Quercus georgiana* | Georgia Oak | Moderate |
 
-*These oaks are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
+*These oaks need similar soil, water, and care—handy if you want alternatives. But they catch the same bugs and diseases, so mix in plants from different families.*
+
+*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 
@@ -138,29 +136,24 @@ Open borders work well; tolerates some afternoon shade.
 ---
 
 ## Maintenance Profile
-**CSR Strategy**: C 45% / S 41% / R 14% (C-dominant)
-**Growth Form**: Tree
-**Height**: 27.1m
-**Maintenance Level**: MEDIUM-HIGH (~9 hrs/yr)
+**Growth Strategy**: C-dominant (C 45% / S 41% / R 14%)
 
-**Growth Characteristics**:
-- Fast, vigorous growth
-- High nutrient demand
-- Benefits from annual feeding
+*CSR is a key framework in plant ecology that classifies plants by survival strategy: **Competitors** (C) grow fast to dominate space and light, **Stress-tolerators** (S) endure difficult conditions patiently, and **Ruderals** (R) live short lives but reproduce prolifically.*
 
-**Form-Specific Notes**:
-Annual thinning to allow light below; may cast dense shade. Monitor for structural dominance; neighbours may struggle. High nutrient uptake; nearby plants may need supplemental feeding.
+This plant scores highest in **C (Competitor)** — it's a vigorous grower that will actively spread and may outcompete neighbours. Needs more attention to keep in check.
 
-**Seasonal Tasks**:
-- **Spring**: Feed generously, shape if needed
-- **Summer**: Water in dry spells, manage spread
-- **Autumn**: Hard prune if required, mulch
-- **Winter**: Plan containment for vigorous growth
+**Effort Level**: MEDIUM-HIGH
+
+**What to Expect**:
+Fast, vigorous grower with high nutrient demand. Benefits from annual feeding. May cast dense shade; thin annually to allow light below. High nutrient uptake may affect neighbours.
+
+**Practical Considerations**:
+**Pruning**: Professional arborist needed at 27m mature height
+**Leaf litter**: Deciduous with medium leaves; moderate autumn raking
 
 **Watch For**:
-- May outcompete slower neighbours
-- Give adequate space for mature spread
-- Dense shade may exclude understory
+- May outcompete slower-growing neighbours
+- Dense shade may suppress understory plants
 
 ---
 

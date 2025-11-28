@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-28T03:18:15Z"
+generated: "2025-11-28T04:07:51Z"
 version: "2.0"
 ---
 
@@ -16,13 +16,9 @@ version: "2.0"
 **Leaves**: Broadleaved, 11cm² — Medium-sized
 **Seeds**: 18mg — Small seeds
 
-*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
+### Closest Relatives
 
----
-
-## Relatives Within Genus
-
-**5 Closest Relatives** (from 17 *Rosa* species in database, by evolutionary distance):
+*5 closest roses (from 17 *Rosa* species in database, by evolutionary distance):*
 
 | Species | Common Name | Relatedness |
 |---------|-------------|-------------|
@@ -32,7 +28,9 @@ version: "2.0"
 | *Rosa micrantha* | Small-flowered Sweet-briar | Distant |
 | *Rosa rubiginosa* | Sweet-brier | Distant |
 
-*These roses are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
+*These roses need similar soil, water, and care—handy if you want alternatives. But they catch the same bugs and diseases, so mix in plants from different families.*
+
+*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 
@@ -138,24 +136,21 @@ Open borders work well; tolerates some afternoon shade.
 ---
 
 ## Maintenance Profile
-**CSR Strategy**: C 27% / S 51% / R 22% (S-dominant)
-**Growth Form**: Vine/Climber
-**Height**: 2.0m
-**Maintenance Level**: LOW-MEDIUM (~2 hrs/yr)
+**Growth Strategy**: S-dominant (C 27% / S 51% / R 22%)
 
-**Growth Characteristics**:
-- Slow, steady growth
-- Low nutrient demand
-- Drought-tolerant once established
+*CSR is a key framework in plant ecology that classifies plants by survival strategy: **Competitors** (C) grow fast to dominate space and light, **Stress-tolerators** (S) endure difficult conditions patiently, and **Ruderals** (R) live short lives but reproduce prolifically.*
 
-**Form-Specific Notes**:
-Slow to establish; train carefully in first years. Once established, minimal intervention required. Avoid fertiliser; will not respond well to rich conditions.
+This plant scores highest in **S (Stress-tolerator)** — it's built for endurance, not speed. Grows slowly, tolerates neglect, and generally thrives when left alone.
 
-**Seasonal Tasks**:
-- **Spring**: Minimal intervention, check health
-- **Summer**: Water only in severe drought
-- **Autumn**: Light tidy if needed
-- **Winter**: Protect only if borderline hardy
+**Effort Level**: LOW-MEDIUM
+
+**What to Expect**:
+Slow, steady grower with low nutrient demand. Slow to establish; train carefully in first years. Minimal intervention once settled.
+
+**Practical Considerations**:
+**Pruning**: Easy access at 2.0m; hand tools sufficient
+**Spreading**: Small seeds; occasional new plants may appear nearby
+**Leaf litter**: Deciduous with small leaves; light autumn debris
 
 ---
 
@@ -223,7 +218,7 @@ Slow to establish; train carefully in first years. Once established, minimal int
 ### Beneficial Predators
 **4 species documented** - natural pest control agents
 
-- **Birds** (3): Turdus philomelos, Turdus merula, Erithacus rubecula
+- **Birds** (3): Erithacus rubecula, Turdus merula, Turdus philomelos
 - **Hoverflies** (1): Syrphus
 
 *These beneficial organisms help control pest populations.*

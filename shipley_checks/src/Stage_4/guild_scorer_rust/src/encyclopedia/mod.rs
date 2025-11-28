@@ -4,7 +4,7 @@
 //! Follows planning docs in docs/stage_4_encyclopedia_rules/
 //!
 //! ## Sections
-//! - S1: Identity Card - Taxonomy, morphology, vernacular names
+//! - S1: Identity Card - Taxonomy, morphology, vernacular names, closest relatives
 //! - S2: Growing Requirements - EIVE indicators, climate/soil envelopes
 //! - S3: Maintenance Profile - CSR-based maintenance guidance
 //! - S4: Ecosystem Services - Pre-calculated service ratings
@@ -31,5 +31,5 @@ pub mod generator;
 
 // Re-export public API
 pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
-pub use sections::s7_related::{RelatedSpecies, GenusSpeciesInfo};
+pub use sections::s1_identity::{RelatedSpecies, GenusSpeciesInfo};
 pub use generator::EncyclopediaGenerator;

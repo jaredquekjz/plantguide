@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-28T03:18:16Z"
+generated: "2025-11-28T04:07:51Z"
 version: "2.0"
 ---
 
@@ -16,13 +16,9 @@ version: "2.0"
 **Leaves**: Broadleaved, 2.0cm² — Fine-textured foliage
 **Seeds**: 0.53mg — Dust-like, spreads freely
 
-*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
+### Closest Relatives
 
----
-
-## Relatives Within Genus
-
-**5 Closest Relatives** (from 48 *Trifolium* species in database, by evolutionary distance):
+*5 closest clovers (from 48 *Trifolium* species in database, by evolutionary distance):*
 
 | Species | Common Name | Relatedness |
 |---------|-------------|-------------|
@@ -32,7 +28,9 @@ version: "2.0"
 | *Trifolium retusum* | Teasel Clover | Very close |
 | *Trifolium thalii* | Thal's Clover | Very close |
 
-*These clovers are most similar to your plant. They likely need similar soil, water, and care—handy if you want alternatives or companions that "go together." But they also catch the same bugs and diseases, so don't plant too many of the same type in one spot. Mix in plants from different families for a healthier garden.*
+*These clovers need similar soil, water, and care—handy if you want alternatives. But they catch the same bugs and diseases, so mix in plants from different families.*
+
+*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 
@@ -138,28 +136,23 @@ Open borders work well; tolerates some afternoon shade.
 ---
 
 ## Maintenance Profile
-**CSR Strategy**: C 15% / S 15% / R 71% (R-dominant)
-**Growth Form**: Herb/Ground cover
-**Height**: 0.2m
-**Maintenance Level**: MEDIUM (~2 hrs/yr)
+**Growth Strategy**: R-dominant (C 15% / S 15% / R 71%)
 
-**Growth Characteristics**:
-- Rapid but brief growth
-- Moderate nutrient demand
-- Short-lived; plan for succession
+*CSR is a key framework in plant ecology that classifies plants by survival strategy: **Competitors** (C) grow fast to dominate space and light, **Stress-tolerators** (S) endure difficult conditions patiently, and **Ruderals** (R) live short lives but reproduce prolifically.*
 
-**Form-Specific Notes**:
-Annuals or short-lived perennials; replant each year or allow self-sowing. Deadhead to extend flowering or allow seeding depending on preference. Collect seed before removal for next season.
+This plant scores highest in **R (Ruderal)** — it's a fast-living opportunist. Grows quickly, sets seed, and may not live long. Plan for replacement or let it reseed.
 
-**Seasonal Tasks**:
-- **Spring**: Sow/plant replacements
-- **Summer**: Deadhead, collect seed
-- **Autumn**: Clear spent growth, save seed
-- **Winter**: Plan succession planting
+**Effort Level**: MEDIUM
+
+**What to Expect**:
+Rapid but short-lived. Moderate nutrient demand; plan for succession or self-seeding. Annual or short-lived perennial. Allow self-sowing or replant yearly.
+
+**Practical Considerations**:
+**Pruning**: Easy access at 0.2m; hand tools sufficient
+**Spreading**: Dust-like seeds blow everywhere; expect baby plants popping up throughout the garden
 
 **Watch For**:
-- Short-lived; plan for replacement
-- May self-seed prolifically
+- Short-lived; plan for replacement or allow self-seeding
 
 ---
 
@@ -230,8 +223,8 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 ### Beneficial Predators
 **9 species documented** - natural pest control agents
 
-- **Beetles** (4): Harmonia axyridis, Cycloneda munda, Coccinella septempunctata, +1 more
-- **Flies** (3): Toxomerus marginatus, Eupeodes luniger, Eupeodes
+- **Beetles** (4): Coleomegilla maculata, Harmonia axyridis, Coccinella septempunctata, +1 more
+- **Flies** (3): Eupeodes, Eupeodes luniger, Toxomerus marginatus
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 

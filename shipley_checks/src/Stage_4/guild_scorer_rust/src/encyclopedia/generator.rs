@@ -19,9 +19,8 @@ use crate::encyclopedia::sections::{
     s4_services,
     s5_interactions,
     s6_companion,
-    s7_related,
 };
-use crate::encyclopedia::sections::s7_related::RelatedSpecies;
+use crate::encyclopedia::sections::s1_identity::RelatedSpecies;
 
 /// Encyclopedia generator - stateless markdown generator.
 pub struct EncyclopediaGenerator;
@@ -64,11 +63,8 @@ impl EncyclopediaGenerator {
         // YAML frontmatter
         sections.push(generate_frontmatter(wfo_id, plant_data));
 
-        // S1: Identity Card
-        sections.push(s1_identity::generate(plant_data));
-
-        // S1b: Relatives Within Genus (right after identity)
-        sections.push(s7_related::generate(
+        // S1: Identity Card (includes relatives)
+        sections.push(s1_identity::generate_with_relatives(
             plant_data,
             related_species.as_deref(),
             genus_species_count,
