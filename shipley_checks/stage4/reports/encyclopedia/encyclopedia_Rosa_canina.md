@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-28T03:03:42Z"
+generated: "2025-11-28T03:16:44Z"
 version: "2.0"
 ---
 
@@ -15,6 +15,8 @@ version: "2.0"
 **Mature Height**: 2.0m — Shrub height
 **Leaves**: Broadleaved, 11cm² — Medium-sized
 **Seeds**: 18mg — Small seeds
+
+*Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 
@@ -221,7 +223,7 @@ Slow to establish; train carefully in first years. Once established, minimal int
 ### Beneficial Predators
 **4 species documented** - natural pest control agents
 
-- **Birds** (3): Erithacus rubecula, Turdus merula, Turdus philomelos
+- **Birds** (3): Erithacus rubecula, Turdus philomelos, Turdus merula
 - **Hoverflies** (1): Syrphus
 
 *These beneficial organisms help control pest populations.*

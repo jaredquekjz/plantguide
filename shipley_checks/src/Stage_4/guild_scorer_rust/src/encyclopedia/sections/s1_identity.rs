@@ -77,6 +77,10 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
         sections.push(format!("**Seeds**: {}", seed_desc));
     }
 
+    // Data provenance note
+    sections.push(String::new()); // blank line
+    sections.push("*Plant characteristics from TRY database. Vernacular names from iNaturalist.*".to_string());
+
     sections.join("\n")
 }
 
