@@ -79,7 +79,7 @@ pub fn generate(data: &HashMap<String, Value>) -> String {
 
     // Data provenance note
     sections.push(String::new()); // blank line
-    sections.push("*Plant characteristics from TRY database. Vernacular names from iNaturalist.*".to_string());
+    sections.push("*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*".to_string());
 
     sections.join("\n")
 }

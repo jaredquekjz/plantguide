@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-28T03:16:43Z"
+generated: "2025-11-28T03:18:15Z"
 version: "2.0"
 ---
 
@@ -16,7 +16,7 @@ version: "2.0"
 **Leaves**: Broadleaved, 30cm² — Medium-sized
 **Seeds**: 3.0g — Medium seeds, bird food
 
-*Plant characteristics from TRY database. Vernacular names from iNaturalist.*
+*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 

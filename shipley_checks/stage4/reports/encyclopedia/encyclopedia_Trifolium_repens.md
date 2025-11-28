@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-28T03:16:45Z"
+generated: "2025-11-28T03:18:16Z"
 version: "2.0"
 ---
 
@@ -16,7 +16,7 @@ version: "2.0"
 **Leaves**: Broadleaved, 2.0cm² — Fine-textured foliage
 **Seeds**: 0.53mg — Dust-like, spreads freely
 
-*Plant characteristics from TRY database. Vernacular names from iNaturalist.*
+*Taxonomy from World Flora Online. Plant characteristics from TRY database. Vernacular names from iNaturalist.*
 
 ---
 
@@ -230,8 +230,8 @@ Annuals or short-lived perennials; replant each year or allow self-sowing. Deadh
 ### Beneficial Predators
 **9 species documented** - natural pest control agents
 
-- **Beetles** (4): Coccinella septempunctata, Cycloneda munda, Coleomegilla maculata, +1 more
-- **Flies** (3): Eupeodes luniger, Eupeodes, Toxomerus marginatus
+- **Beetles** (4): Harmonia axyridis, Cycloneda munda, Coccinella septempunctata, +1 more
+- **Flies** (3): Toxomerus marginatus, Eupeodes luniger, Eupeodes
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 
