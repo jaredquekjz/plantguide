@@ -1,0 +1,51 @@
+{% if results.is_empty() %}
+<div class="text-center text-base-content/60 py-8">
+    {% if query.len() < 2 %}
+    <p>Type at least 2 characters to search</p>
+    {% else %}
+    <svg class="w-12 h-12 mx-auto mb-4 stroke-current opacity-40" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <path d="m21 21-4.3-4.3"/>
+        <path d="M8 11h6"/>
+    </svg>
+    <p>No plants found for "{{ query }}"</p>
+    <p class="text-sm mt-2">Try a different search term</p>
+    {% endif %}
+</div>
+{% else %}
+<div class="space-y-2">
+    <p class="text-sm text-base-content/60 mb-4">
+        Found {{ result_count }} plant{% if result_count != 1 %}s{% endif %} for "{{ query }}"
+        {% if result_count > 50 %}<span class="text-warning">(showing first 50)</span>{% endif %}
+    </p>
+
+    {% for plant in results %}
+    <a href="/plant/{{ plant.wfo_id }}"
+       class="block card bg-base-200 hover:bg-base-300 transition-colors rounded-xl">
+        <div class="card-body p-4">
+            <div class="flex items-start justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-semibold text-base-content truncate">
+                        <em>{{ plant.scientific_name }}</em>
+                    </h3>
+                    {% if plant.vernacular_en.is_some() %}
+                    <p class="text-sm text-base-content/70">
+                        {{ plant.vernacular_en.as_ref().unwrap() }}
+                    </p>
+                    {% endif %}
+                    <p class="text-xs text-base-content/50 mt-1">
+                        {{ plant.family }}
+                        {% if plant.growth_form.is_some() %}
+                        &bull; {{ plant.growth_form.as_ref().unwrap() }}
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="flex-shrink-0">
+                    <span class="badge badge-ghost badge-sm">{{ plant.wfo_id }}</span>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endif %}

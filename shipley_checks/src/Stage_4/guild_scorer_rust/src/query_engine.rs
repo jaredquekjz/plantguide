@@ -21,6 +21,23 @@ use std::path::Path;
 #[cfg(feature = "api")]
 pub type DFResult<T> = Result<T, DataFusionError>;
 
+/// Helper enum to handle both StringArray and StringViewArray
+#[cfg(feature = "api")]
+enum StringColumn<'a> {
+    Array(&'a arrow::array::StringArray),
+    View(&'a arrow::array::StringViewArray),
+}
+
+#[cfg(feature = "api")]
+impl<'a> StringColumn<'a> {
+    fn value(&self, i: usize) -> &str {
+        match self {
+            StringColumn::Array(a) => a.value(i),
+            StringColumn::View(v) => v.value(i),
+        }
+    }
+}
+
 #[cfg(feature = "api")]
 #[derive(Clone)]
 pub struct QueryEngine {
@@ -287,6 +304,104 @@ impl QueryEngine {
         self.query(&sql).await
     }
 
+    /// Simple text search across plant names
+    ///
+    /// Searches scientific name, vernacular names, family, and genus
+    /// Returns structured results suitable for web display
+    pub async fn search_plants_text(&self, query: &str, limit: usize) -> DFResult<Vec<PlantSearchResultData>> {
+        let escaped = query.replace("'", "''").to_lowercase();
+
+        // Search across multiple fields with OR
+        let sql = format!(
+            r#"SELECT
+                wfo_taxon_id,
+                wfo_scientific_name as scientific_name,
+                family,
+                vernacular_name_en,
+                try_growth_form
+            FROM plants
+            WHERE LOWER(wfo_scientific_name) LIKE '%{escaped}%'
+               OR LOWER(vernacular_name_en) LIKE '%{escaped}%'
+               OR LOWER(family) LIKE '%{escaped}%'
+               OR LOWER(genus) LIKE '%{escaped}%'
+            ORDER BY
+                CASE
+                    WHEN LOWER(wfo_scientific_name) LIKE '{escaped}%' THEN 1
+                    WHEN LOWER(vernacular_name_en) LIKE '{escaped}%' THEN 2
+                    ELSE 3
+                END,
+                wfo_scientific_name
+            LIMIT {limit}"#,
+            escaped = escaped,
+            limit = limit
+        );
+
+        let batches = self.query(&sql).await?;
+
+        let mut results = Vec::new();
+        tracing::debug!("Search returned {} batches", batches.len());
+        for batch in &batches {
+            tracing::debug!("Batch has {} rows, {} columns", batch.num_rows(), batch.num_columns());
+
+            // Debug: Print column types
+            if let Some(col) = batch.column_by_name("wfo_taxon_id") {
+                tracing::debug!("wfo_taxon_id type: {:?}", col.data_type());
+            }
+
+            // Try StringViewArray first (DataFusion 43+), fallback to StringArray
+            let wfo_col = batch.column_by_name("wfo_taxon_id")
+                .and_then(|c| c.as_any().downcast_ref::<arrow::array::StringViewArray>()
+                    .map(|a| StringColumn::View(a))
+                    .or_else(|| c.as_any().downcast_ref::<arrow::array::StringArray>()
+                        .map(|a| StringColumn::Array(a))));
+            let name_col = batch.column_by_name("scientific_name")
+                .and_then(|c| c.as_any().downcast_ref::<arrow::array::StringViewArray>()
+                    .map(|a| StringColumn::View(a))
+                    .or_else(|| c.as_any().downcast_ref::<arrow::array::StringArray>()
+                        .map(|a| StringColumn::Array(a))));
+            let family_col = batch.column_by_name("family")
+                .and_then(|c| c.as_any().downcast_ref::<arrow::array::StringViewArray>()
+                    .map(|a| StringColumn::View(a))
+                    .or_else(|| c.as_any().downcast_ref::<arrow::array::StringArray>()
+                        .map(|a| StringColumn::Array(a))));
+            let vernacular_col = batch.column_by_name("vernacular_name_en")
+                .and_then(|c| c.as_any().downcast_ref::<arrow::array::StringViewArray>()
+                    .map(|a| StringColumn::View(a))
+                    .or_else(|| c.as_any().downcast_ref::<arrow::array::StringArray>()
+                        .map(|a| StringColumn::Array(a))));
+            let growth_col = batch.column_by_name("try_growth_form")
+                .and_then(|c| c.as_any().downcast_ref::<arrow::array::StringViewArray>()
+                    .map(|a| StringColumn::View(a))
+                    .or_else(|| c.as_any().downcast_ref::<arrow::array::StringArray>()
+                        .map(|a| StringColumn::Array(a))));
+
+            tracing::debug!("wfo_col: {:?}, name_col: {:?}, family_col: {:?}",
+                wfo_col.is_some(), name_col.is_some(), family_col.is_some());
+
+            if let (Some(wfo), Some(name), Some(family)) = (wfo_col, name_col, family_col) {
+                for i in 0..batch.num_rows() {
+                    let vernacular_en = vernacular_col.as_ref().and_then(|c| {
+                        let v = c.value(i);
+                        if v.is_empty() { None } else { Some(v.to_string()) }
+                    });
+                    let growth_form = growth_col.as_ref().and_then(|c| {
+                        let v = c.value(i);
+                        if v.is_empty() { None } else { Some(v.to_string()) }
+                    });
+                    results.push(PlantSearchResultData {
+                        wfo_taxon_id: wfo.value(i).to_string(),
+                        scientific_name: name.value(i).to_string(),
+                        family: family.value(i).to_string(),
+                        vernacular_en,
+                        growth_form,
+                    });
+                }
+            }
+        }
+
+        Ok(results)
+    }
+
     /// Get single plant by ID
     pub async fn get_plant(&self, plant_id: &str) -> DFResult<Vec<RecordBatch>> {
         let escaped_id = plant_id.replace("'", "''");
@@ -476,6 +591,17 @@ impl QueryEngine {
 
         self.query(&sql).await
     }
+}
+
+/// Result data for text search
+#[cfg(feature = "api")]
+#[derive(Debug, Clone)]
+pub struct PlantSearchResultData {
+    pub wfo_taxon_id: String,
+    pub scientific_name: String,
+    pub family: String,
+    pub vernacular_en: Option<String>,
+    pub growth_form: Option<String>,
 }
 
 /// Plant search filters

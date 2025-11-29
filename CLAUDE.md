@@ -129,6 +129,121 @@ cargo run --release --bin test_3_guilds_parallel
 - Sufficient for testing correctness and parity
 - Release builds only needed for final performance validation
 
+### Development Server (Digital Ocean)
+**Remote droplet for Rust/HTMX frontend development and deployment**
+
+| Property | Value |
+|----------|-------|
+| **IPv4** | 134.199.166.0 |
+| **Private IP** | 10.126.0.2 |
+| **Region** | Sydney (syd1) |
+| **OS** | Ubuntu 24.04.3 LTS |
+| **Specs** | 1 vCPU, 1GB RAM, 35GB Intel |
+
+**SSH Access:**
+```bash
+ssh root@134.199.166.0
+```
+
+**Purpose:** Hosts the Iron-Rust frontend (Axum + HTMX + Askama + DaisyUI) for the plant encyclopedia and guild builder application.
+
+**Full deployment plan:** See `shipley_checks/docs/iron_rust_deployment_plan.md`
+
+#### Development Workflow (MANDATORY)
+
+**Always follow this sequence when developing the web frontend:**
+
+1. **Test locally first** - Run the API server locally with proper DATA_DIR
+2. **Build** - Compile after local tests pass
+3. **Deploy** - Upload binary/templates to server
+4. **Test remotely** - Verify on production server
+
+```bash
+# 1. Test locally (from project root /home/olier/ellenberg)
+DATA_DIR=shipley_checks/stage4 cargo run --manifest-path shipley_checks/src/Stage_4/guild_scorer_rust/Cargo.toml --features api --bin api_server
+
+# 2. Build after local tests pass (from project root)
+cargo build --manifest-path shipley_checks/src/Stage_4/guild_scorer_rust/Cargo.toml --features api
+
+# 3. Deploy (stop service, upload, restart)
+cd shipley_checks/src/Stage_4/guild_scorer_rust
+ssh root@134.199.166.0 "systemctl stop plantguide"
+scp target/debug/api_server root@134.199.166.0:/opt/plantguide/
+rsync -avz --delete templates/ root@134.199.166.0:/opt/plantguide/templates/
+ssh root@134.199.166.0 "systemctl start plantguide"
+
+# 4. Test remotely
+ssh root@134.199.166.0 "curl http://localhost:3000/health"
+```
+
+**Why local testing first:**
+- Faster debug cycle (no network latency)
+- Full error messages and stack traces
+- Can use debugger and add println! statements
+- Server has limited resources (1GB RAM)
+
+#### Quick Deployment Commands
+
+**Deploy binary (from guild_scorer_rust/):**
+```bash
+# Build debug locally (faster compilation, use for development)
+cargo build --features api
+
+# Deploy to server (stop first to unlock binary)
+ssh root@134.199.166.0 "systemctl stop plantguide"
+scp target/debug/api_server root@134.199.166.0:/opt/plantguide/
+
+# Restart service
+ssh root@134.199.166.0 "systemctl start plantguide"
+```
+
+**Quick sync assets/templates only (no Rust rebuild):**
+```bash
+rsync -avz --delete assets/ root@134.199.166.0:/opt/plantguide/assets/
+rsync -avz --delete templates/ root@134.199.166.0:/opt/plantguide/templates/
+ssh root@134.199.166.0 "systemctl restart plantguide"
+```
+
+**Deploy data files (one-time, from ellenberg/):**
+```bash
+rsync -avz --progress shipley_checks/stage4/phase7_output/ root@134.199.166.0:/opt/plantguide/data/phase7_output/
+rsync -avz --progress shipley_checks/stage4/phase5_output/ root@134.199.166.0:/opt/plantguide/data/phase5_output/
+rsync -avz --progress shipley_checks/stage4/phase0_output/ root@134.199.166.0:/opt/plantguide/data/phase0_output/
+```
+
+#### Browser Testing
+
+- **Direct port access:** `http://134.199.166.0:3000`
+- **Via Caddy (port 80):** `http://134.199.166.0`
+
+#### Server Management
+
+```bash
+# Check service status
+ssh root@134.199.166.0 "systemctl status plantguide"
+
+# View live logs
+ssh root@134.199.166.0 "journalctl -u plantguide -f"
+
+# Health check
+ssh root@134.199.166.0 "curl http://localhost:3000/health"
+```
+
+#### Server Directory Structure
+
+```
+/opt/plantguide/
+├── api_server              # Binary (deployed from local build)
+├── data/                   # Parquet files
+│   ├── phase0_output/
+│   ├── phase5_output/
+│   └── phase7_output/
+├── assets/                 # CSS/JS (synced from local)
+│   ├── css/styles.css
+│   └── js/{htmx,alpine,sortable}.min.js
+└── templates/              # HTML templates (if external)
+```
+
 ## Stage 4: Guild Builder & Encyclopedia Pipeline
 
 **Master Script (ground truth)**: `shipley_checks/src/Stage_4/run_complete_pipeline_phase0_to_4.sh`

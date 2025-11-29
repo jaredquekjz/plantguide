@@ -96,6 +96,8 @@ pub fn create_router(state: AppState) -> Router {
 
         // HTML pages (Phase 9)
         .route("/", get(crate::web::handlers::home_page))
+        .route("/search", get(crate::web::handlers::search_page))
+        .route("/search/results", get(crate::web::handlers::search_results))
 
         // Static assets
         .nest_service("/assets", ServeDir::new("assets"))
