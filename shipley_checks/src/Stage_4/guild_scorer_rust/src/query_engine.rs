@@ -31,17 +31,17 @@ pub struct QueryEngine {
 impl QueryEngine {
     /// Initialize query engine with master dataset and flattened interaction tables
     ///
-    /// Expected directory structure from project_root:
-    ///   - shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet (plants master, 861 cols)
-    ///   - shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet (organisms wide)
-    ///   - shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet (fungi wide)
-    ///   - shipley_checks/stage4/phase7_output/organisms_flat.parquet (organisms flat)
-    ///   - shipley_checks/stage4/phase7_output/fungi_flat.parquet (fungi flat)
-    pub async fn new(project_root: &str) -> DFResult<Self> {
+    /// Expected directory structure from data_dir:
+    ///   - phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet (plants master, 861 cols)
+    ///   - phase0_output/organism_profiles_11711.parquet (organisms wide)
+    ///   - phase0_output/fungal_guilds_hybrid_11711.parquet (fungi wide)
+    ///   - phase7_output/organisms_flat.parquet (organisms flat)
+    ///   - phase7_output/fungi_flat.parquet (fungi flat)
+    pub async fn new(data_dir: &str) -> DFResult<Self> {
         let ctx = SessionContext::new();
 
         // Register master plants dataset (Phase 4 output with Köppen + vernaculars)
-        let plants_path = format!("{}/shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet", project_root);
+        let plants_path = format!("{}/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet", data_dir);
         if !Path::new(&plants_path).exists() {
             return Err(DataFusionError::External(
                 format!("Master dataset not found: {}\nRun Phase 4 (merge_taxonomy_koppen.py) first.", plants_path).into()
@@ -56,8 +56,8 @@ impl QueryEngine {
 
         // Register organisms wide (for counts)
         let organisms_wide_path = format!(
-            "{}/shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet",
-            project_root
+            "{}/phase0_output/organism_profiles_11711.parquet",
+            data_dir
         );
         if !Path::new(&organisms_wide_path).exists() {
             return Err(DataFusionError::Plan(format!(
@@ -74,8 +74,8 @@ impl QueryEngine {
 
         // Register organisms flat (for SQL search)
         let organisms_flat_path = format!(
-            "{}/shipley_checks/stage4/phase7_output/organisms_flat.parquet",
-            project_root
+            "{}/phase7_output/organisms_flat.parquet",
+            data_dir
         );
         if !Path::new(&organisms_flat_path).exists() {
             return Err(DataFusionError::Plan(format!(
@@ -92,8 +92,8 @@ impl QueryEngine {
 
         // Register fungi wide (for counts)
         let fungi_wide_path = format!(
-            "{}/shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet",
-            project_root
+            "{}/phase0_output/fungal_guilds_hybrid_11711.parquet",
+            data_dir
         );
         if !Path::new(&fungi_wide_path).exists() {
             return Err(DataFusionError::Plan(format!(
@@ -110,8 +110,8 @@ impl QueryEngine {
 
         // Register fungi flat (for SQL search)
         let fungi_flat_path = format!(
-            "{}/shipley_checks/stage4/phase7_output/fungi_flat.parquet",
-            project_root
+            "{}/phase7_output/fungi_flat.parquet",
+            data_dir
         );
         if !Path::new(&fungi_flat_path).exists() {
             return Err(DataFusionError::Plan(format!(
@@ -128,8 +128,8 @@ impl QueryEngine {
 
         // Register predators master list (Phase 7 output)
         let predators_master_path = format!(
-            "{}/shipley_checks/stage4/phase7_output/predators_master.parquet",
-            project_root
+            "{}/phase7_output/predators_master.parquet",
+            data_dir
         );
         if Path::new(&predators_master_path).exists() {
             ctx.register_parquet(
@@ -142,8 +142,8 @@ impl QueryEngine {
 
         // Register pathogens ranked (Phase 7 output with observation counts)
         let pathogens_ranked_path = format!(
-            "{}/shipley_checks/stage4/phase7_output/pathogens_ranked.parquet",
-            project_root
+            "{}/phase7_output/pathogens_ranked.parquet",
+            data_dir
         );
         if Path::new(&pathogens_ranked_path).exists() {
             ctx.register_parquet(

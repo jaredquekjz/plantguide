@@ -30,6 +30,10 @@ pub mod api_server;
 #[cfg(feature = "api")]
 pub mod encyclopedia;
 
+// Phase 9: Web templating and HTMX
+#[cfg(feature = "api")]
+pub mod web;
+
 // Re-export commonly used types
 pub use utils::normalization::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile};
 pub use data::{GuildData, ClimateOrganizer};

@@ -56,6 +56,13 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"], optional = tr
 # Phase 8: Timestamps
 chrono = { version = "0.4", optional = true }
 
+# Phase 9: Web templating and HTMX
+askama = { version = "0.12", features = ["with-axum"], optional = true }
+askama_axum = { version = "0.4", optional = true }
+axum-htmx = { version = "0.6", optional = true }
+urlencoding = { version = "2.1", optional = true }
+pulldown-cmark = { version = "0.12", optional = true }
+
 [dev-dependencies]
 # Testing
 approx = "0.5"         # Floating-point comparison
@@ -86,9 +93,19 @@ api = [
     "tracing",
     "tracing-subscriber",
     "chrono",
+    "askama",
+    "askama_axum",
+    "axum-htmx",
+    "urlencoding",
+    "pulldown-cmark",
 ]
+
+[profile.dev]
+debug = 0
+strip = true
 
 [profile.release]
 opt-level = 3
 lto = "fat"
 codegen-units = 1
+strip = true

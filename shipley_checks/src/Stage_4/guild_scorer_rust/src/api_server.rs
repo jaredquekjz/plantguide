@@ -17,6 +17,7 @@ use tower_http::{
     compression::CompressionLayer,
     cors::CorsLayer,
     trace::TraceLayer,
+    services::ServeDir,
 };
 
 #[cfg(feature = "api")]
@@ -92,7 +93,14 @@ pub fn create_router(state: AppState) -> Router {
     Router::new()
         // Health check
         .route("/health", get(health_check))
-        // Plant endpoints
+
+        // HTML pages (Phase 9)
+        .route("/", get(crate::web::handlers::home_page))
+
+        // Static assets
+        .nest_service("/assets", ServeDir::new("assets"))
+
+        // Plant endpoints (JSON API)
         .route("/api/plants/search", get(search_plants))
         .route("/api/plants/:id", get(get_plant))
         .route("/api/plants/:id/organisms", get(get_organisms))
