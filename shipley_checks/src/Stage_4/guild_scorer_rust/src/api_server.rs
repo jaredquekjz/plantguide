@@ -98,6 +98,7 @@ pub fn create_router(state: AppState) -> Router {
         .route("/", get(crate::web::handlers::home_page))
         .route("/search", get(crate::web::handlers::search_page))
         .route("/search/results", get(crate::web::handlers::search_results))
+        .route("/plant/:wfo_id/encyclopedia", get(crate::web::handlers::encyclopedia_page))
 
         // Static assets
         .nest_service("/assets", ServeDir::new("assets"))

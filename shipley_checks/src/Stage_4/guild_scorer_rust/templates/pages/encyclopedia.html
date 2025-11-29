@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ scientific_name }} Encyclopedia - Plant Encyclopedia{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Header with plant info and location selector -->
+    <div class="card bg-base-100 shadow-lg rounded-2xl mb-6">
+        <div class="card-body">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-base-content">
+                        <em>{{ scientific_name }}</em>
+                    </h1>
+                    {% if vernacular_name.is_some() %}
+                    <p class="text-lg text-base-content/70 mt-1">
+                        {{ vernacular_name.as_ref().unwrap() }}
+                    </p>
+                    {% endif %}
+                    <p class="text-sm text-base-content/50 mt-1">
+                        {{ family }}
+                    </p>
+                </div>
+
+                <!-- Location Selector -->
+                <div class="flex items-center gap-3">
+                    <label class="text-sm text-base-content/70">Your location:</label>
+                    <select name="location"
+                            class="select select-bordered select-sm rounded-xl"
+                            hx-get="/plant/{{ wfo_id }}/encyclopedia"
+                            hx-target="#encyclopedia-content"
+                            hx-swap="innerHTML"
+                            hx-indicator="#location-spinner">
+                        <option value="london" {% if location == "london" %}selected{% endif %}>London, UK</option>
+                        <option value="singapore" {% if location == "singapore" %}selected{% endif %}>Singapore</option>
+                        <option value="helsinki" {% if location == "helsinki" %}selected{% endif %}>Helsinki, Finland</option>
+                    </select>
+                    <span id="location-spinner" class="htmx-indicator loading loading-spinner loading-sm"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Encyclopedia Content -->
+    <div id="encyclopedia-content"
+         class="card bg-base-100 shadow-lg rounded-2xl">
+        <div class="card-body prose prose-lg max-w-none
+                    prose-headings:text-base-content
+                    prose-p:text-base-content/90
+                    prose-strong:text-base-content
+                    prose-li:text-base-content/90
+                    prose-a:text-primary
+                    prose-table:text-base-content/90
+                    prose-th:text-base-content
+                    prose-td:text-base-content/80
+                    prose-code:text-primary
+                    prose-hr:border-base-300">
+            {{ content_html|safe }}
+        </div>
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-6">
+        <a href="/search" class="btn btn-ghost rounded-xl gap-2">
+            <svg class="w-4 h-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15 18-6-6 6-6"/>
+            </svg>
+            Back to Search
+        </a>
+    </div>
+</div>
+{% endblock %}
