@@ -124,7 +124,7 @@ pub struct GuildData {
 }
 
 impl GuildData {
-    /// Load all datasets from shipley_checks directory
+    /// Load all datasets from data directory
     ///
     /// **PHASE 1 OPTIMIZATION**: Dual-mode loading (eager + lazy)
     ///
@@ -146,19 +146,23 @@ impl GuildData {
     ///   - Phase 1 (both): ~80 MB + 100 KB (slight overhead for query plans)
     ///   - After Phase 6 (lazy only): ~100 KB (800× reduction)
     ///
+    /// # Arguments
+    /// * `data_dir` - Base directory for data files. Locally: "shipley_checks/stage4"
+    ///                On server: "/opt/plantguide/data"
+    ///
     /// R reference: guild_scorer_v3_modular.R::load_datasets()
-    pub fn load() -> Result<Self> {
-        println!("Loading datasets (LazyFrame schema-only mode)...");
+    pub fn load(data_dir: &str) -> Result<Self> {
+        println!("Loading datasets from {} (LazyFrame schema-only mode)...", data_dir);
 
         // ====================================================================
         // PLANTS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let plants_path = "shipley_checks/stage4/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet";
+        let plants_path = format!("{}/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet", data_dir);
 
         // Eager DataFrame (backward compatibility - will be removed in Phase 7)
         // Loads ALL columns into memory: 11,711 rows × 782 cols = ~73 MB
-        let plants = Self::load_plants_parquet(plants_path)?;
+        let plants = Self::load_plants_parquet(&plants_path)?;
 
         // LazyFrame (optimized - schema only: ~50 KB)
         // Does NOT load data - just scans Parquet metadata
@@ -166,37 +170,37 @@ impl GuildData {
         //   1. Reads ONLY requested columns (projection pruning)
         //   2. Applies filters during Parquet scan (predicate pushdown)
         //   3. Minimizes memory allocation
-        let plants_lazy = LazyFrame::scan_parquet(plants_path, Default::default())
+        let plants_lazy = LazyFrame::scan_parquet(&plants_path, Default::default())
             .with_context(|| format!("Failed to scan plants parquet: {}", plants_path))?;
 
         // ====================================================================
         // ORGANISMS: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let organisms_path = "shipley_checks/stage4/phase0_output/organism_profiles_11711.parquet";
+        let organisms_path = format!("{}/phase0_output/organism_profiles_11711.parquet", data_dir);
 
         // Eager DataFrame: ~4.7 MB (will be removed after M3/M7 migration)
-        let organisms = Self::load_organisms(organisms_path)?;
+        let organisms = Self::load_organisms(&organisms_path)?;
 
         // LazyFrame: ~30 KB schema only
         // Usage: M3 and M7 will filter to guild plants, then select only needed columns
         // Example: M3 needs 5 columns, M7 needs 3 columns - both from same LazyFrame
-        let organisms_lazy = LazyFrame::scan_parquet(organisms_path, Default::default())
+        let organisms_lazy = LazyFrame::scan_parquet(&organisms_path, Default::default())
             .with_context(|| format!("Failed to scan organisms parquet: {}", organisms_path))?;
 
         // ====================================================================
         // FUNGI: Load both eager DataFrame and LazyFrame
         // ====================================================================
 
-        let fungi_path = "shipley_checks/stage4/phase0_output/fungal_guilds_hybrid_11711.parquet";
+        let fungi_path = format!("{}/phase0_output/fungal_guilds_hybrid_11711.parquet", data_dir);
 
         // Eager DataFrame: ~2.8 MB (will be removed after M3/M4/M5 migration)
-        let fungi = Self::load_fungi(fungi_path)?;
+        let fungi = Self::load_fungi(&fungi_path)?;
 
         // LazyFrame: ~20 KB schema only
         // Usage: Shared across M3 (entomopathogenic), M4 (mycoparasites), M5 (beneficial)
         // Each metric materializes different column projections from same scan
-        let fungi_lazy = LazyFrame::scan_parquet(fungi_path, Default::default())
+        let fungi_lazy = LazyFrame::scan_parquet(&fungi_path, Default::default())
             .with_context(|| format!("Failed to scan fungi parquet: {}", fungi_path))?;
 
         // ====================================================================
@@ -208,19 +212,19 @@ impl GuildData {
         // No benefit from LazyFrame for this use case
 
         let herbivore_predators = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/herbivore_predators_11711.parquet",
+            &format!("{}/phase0_output/herbivore_predators_11711.parquet", data_dir),
             "herbivore",
             "predators",
         )?;
 
         let insect_parasites = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/insect_fungal_parasites_11711.parquet",
+            &format!("{}/phase0_output/insect_fungal_parasites_11711.parquet", data_dir),
             "herbivore",
             "entomopathogenic_fungi",
         )?;
 
         let pathogen_antagonists = Self::load_lookup_table(
-            "shipley_checks/stage4/phase0_output/pathogen_antagonists_11711.parquet",
+            &format!("{}/phase0_output/pathogen_antagonists_11711.parquet", data_dir),
             "pathogen",
             "antagonists",
         )?;
@@ -228,10 +232,13 @@ impl GuildData {
         // ====================================================================
         // TAXONOMY: Load Kimi AI categories
         // ====================================================================
-        
-        let organism_categories = Self::load_organism_categories(
-            "data/taxonomy/kimi_gardener_labels.csv"
-        ).unwrap_or_else(|e| {
+        // Try data_dir first (server), then fallback to local path
+        let taxonomy_path = format!("{}/taxonomy/kimi_gardener_labels.csv", data_dir);
+        let taxonomy_fallback = "data/taxonomy/kimi_gardener_labels.csv";
+
+        let organism_categories = Self::load_organism_categories(&taxonomy_path)
+            .or_else(|_| Self::load_organism_categories(taxonomy_fallback))
+            .unwrap_or_else(|e| {
             eprintln!("Warning: Failed to load organism categories: {}", e);
             FxHashMap::default()
         });
@@ -289,7 +296,8 @@ impl GuildData {
     /// Load plant metadata from Parquet
     ///
     /// R reference: guild_scorer_v3_modular.R lines 127-135
-    fn load_plants_parquet(path: &str) -> Result<DataFrame> {
+    fn load_plants_parquet(path: impl AsRef<str>) -> Result<DataFrame> {
+        let path = path.as_ref();
         // Load Parquet file
         let df = LazyFrame::scan_parquet(path, Default::default())
             .with_context(|| format!("Failed to scan parquet: {}", path))?
@@ -348,7 +356,8 @@ impl GuildData {
     /// Parsing happens in count_shared_organisms utility.
     ///
     /// R reference: guild_scorer_v3_modular.R lines 151-153
-    fn load_organisms(path: &str) -> Result<DataFrame> {
+    fn load_organisms(path: impl AsRef<str>) -> Result<DataFrame> {
+        let path = path.as_ref();
         LazyFrame::scan_parquet(path, Default::default())
             .with_context(|| format!("Failed to scan parquet: {}", path))?
             .collect()
@@ -358,7 +367,8 @@ impl GuildData {
     /// Load fungi associations from Parquet
     ///
     /// R reference: guild_scorer_v3_modular.R lines 156-159
-    fn load_fungi(path: &str) -> Result<DataFrame> {
+    fn load_fungi(path: impl AsRef<str>) -> Result<DataFrame> {
+        let path = path.as_ref();
         LazyFrame::scan_parquet(path, Default::default())
             .with_context(|| format!("Failed to scan parquet: {}", path))?
             .collect()

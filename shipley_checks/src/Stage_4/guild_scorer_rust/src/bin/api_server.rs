@@ -24,10 +24,10 @@ async fn main() -> anyhow::Result<()> {
     tracing::info!("Starting API server...");
 
     // Configuration from environment variables
+    // Default: shipley_checks/stage4 (local development)
+    // Server: /opt/plantguide/data (set via systemd environment)
     let data_dir = std::env::var("DATA_DIR")
-        .unwrap_or_else(|_| {
-            "/home/olier/ellenberg/shipley_checks/stage4/phase7_output".to_string()
-        });
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
 
     let climate_tier = std::env::var("CLIMATE_TIER")
         .unwrap_or_else(|_| "tier_3_humid_temperate".to_string());

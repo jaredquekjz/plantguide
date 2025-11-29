@@ -4,7 +4,11 @@ fn main() -> anyhow::Result<()> {
     println!("Debug M4 for Stress-Tolerant Guild");
     println!("===================================\n");
 
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")?;
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)?;
 
     let plant_ids = vec![
         "wfo-0000721951".to_string(),

@@ -20,12 +20,16 @@ fn main() -> Result<()> {
     println!("BASELINE MEMORY PROFILING TEST (Before Optimization)");
     println!("======================================================================\n");
 
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
     // Measure initialization time and memory
     println!("Starting initialization...");
     println!("(Check memory usage in another terminal with: ps aux | grep test_memory_baseline)\n");
 
     let init_start = Instant::now();
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")?;
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)?;
     let init_time = init_start.elapsed();
 
     println!("Initialization complete: {:?}", init_time);

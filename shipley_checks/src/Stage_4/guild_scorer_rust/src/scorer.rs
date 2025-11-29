@@ -37,22 +37,28 @@ pub struct GuildScore {
 impl GuildScorer {
     /// Initialize guild scorer
     ///
+    /// # Arguments
+    /// * `calibration_type` - Calibration type (e.g., "7plant")
+    /// * `climate_tier` - Climate tier name (e.g., "tier_3_humid_temperate")
+    /// * `data_dir` - Base directory for data files. Locally: "shipley_checks/stage4"
+    ///                On server: "/opt/plantguide/data"
+    ///
     /// R reference: guild_scorer_v3_modular.R::initialize
-    pub fn new(calibration_type: &str, climate_tier: &str) -> Result<Self> {
+    pub fn new(calibration_type: &str, climate_tier: &str, data_dir: &str) -> Result<Self> {
         println!("\nInitializing Guild Scorer (Rust)...");
 
         // Load calibration parameters
         let cal_path_str = format!(
-            "shipley_checks/stage4/phase5_output/normalization_params_{}.json",
-            calibration_type
+            "{}/phase5_output/normalization_params_{}.json",
+            data_dir, calibration_type
         );
         let cal_path = Path::new(&cal_path_str);
         println!("Loading calibration: {:?}", cal_path);
         let calibration = Calibration::load(cal_path, climate_tier)?;
 
         // Load CSR calibration (global, not tier-specific)
-        let csr_path_str = "shipley_checks/stage4/phase5_output/csr_percentile_calibration_global.json";
-        let csr_path = Path::new(csr_path_str);
+        let csr_path_str = format!("{}/phase5_output/csr_percentile_calibration_global.json", data_dir);
+        let csr_path = Path::new(&csr_path_str);
         let csr_calibration = if csr_path.exists() {
             println!("Loading CSR calibration: {:?}", csr_path);
             Some(CsrCalibration::load(csr_path)?)
@@ -63,10 +69,10 @@ impl GuildScorer {
 
         // Initialize Faith's PD calculator
         println!("Initializing Faith's PD calculator...");
-        let phylo_calculator = PhyloPDCalculator::new()?;
+        let phylo_calculator = PhyloPDCalculator::new(data_dir)?;
 
         // Load datasets
-        let data = GuildData::load()?;
+        let data = GuildData::load(data_dir)?;
 
         println!("\nGuild Scorer initialized:");
         println!("  Calibration: {}", calibration_type);
@@ -90,16 +96,18 @@ impl GuildScorer {
     ///
     /// # Arguments
     /// * `climate_tier` - Climate tier name (not used in calibration, but kept for API consistency)
+    /// * `data_dir` - Base directory for data files. Locally: "shipley_checks/stage4"
+    ///                On server: "/opt/plantguide/data"
     ///
     /// # Returns
     /// GuildScorer instance configured for calibration (no normalization)
     ///
     /// # Example
     /// ```rust
-    /// let scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate")?;
+    /// let scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate", "shipley_checks/stage4")?;
     /// let raw_scores = scorer.compute_raw_scores(&plant_ids)?;
     /// ```
-    pub fn new_for_calibration(climate_tier: &str) -> Result<Self> {
+    pub fn new_for_calibration(climate_tier: &str, data_dir: &str) -> Result<Self> {
         println!("\nInitializing Guild Scorer for Calibration (Rust)...");
 
         // Create dummy calibration (returns raw values without normalization)
@@ -107,10 +115,10 @@ impl GuildScorer {
 
         // Initialize Faith's PD calculator
         println!("Initializing Faith's PD calculator...");
-        let phylo_calculator = PhyloPDCalculator::new()?;
+        let phylo_calculator = PhyloPDCalculator::new(data_dir)?;
 
         // Load datasets
-        let data = GuildData::load()?;
+        let data = GuildData::load(data_dir)?;
 
         println!("\nGuild Scorer initialized for calibration:");
         println!("  Mode: Calibration (dummy normalization)");
@@ -824,7 +832,7 @@ mod tests {
     #[test]
     #[ignore] // Requires data files and C++ binary
     fn test_score_forest_garden() {
-        let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate").unwrap();
+        let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", "shipley_checks/stage4").unwrap();
 
         let plant_ids = vec![
             "wfo-0000832453".to_string(),

@@ -5,7 +5,11 @@ use guild_scorer_rust::GuildScorer;
 fn main() {
     println!("\n=== M4 RAW CALCULATION (Rust) ===\n");
 
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)
         .expect("Failed to initialize scorer");
 
     // Forest Garden

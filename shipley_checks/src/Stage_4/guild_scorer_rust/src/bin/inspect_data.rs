@@ -2,8 +2,12 @@ use guild_scorer_rust::GuildScorer;
 use std::collections::HashMap;
 
 fn main() -> anyhow::Result<()> {
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
     // Initialize scorer (which loads data)
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")?;
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)?;
     let data = scorer.data();
 
     println!("\n=== INSPECTING DATA FOR FUNGI-INSECT MATCHES ===\n");

@@ -7,8 +7,12 @@ fn main() -> anyhow::Result<()> {
     println!("GUILD EXPLANATION ENGINE TEST (Rust)");
     println!("=================================================================\n");
 
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
     // Initialize scorer
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")?;
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)?;
 
     // Test guilds (from Stage_4_Dual_Verification_Pipeline.md)
     let guilds = vec![

@@ -64,7 +64,7 @@ impl AppState {
         let query_engine = Arc::new(QueryEngine::new(data_dir).await?);
 
         tracing::info!("Initializing Polars guild scorer...");
-        let guild_scorer = Arc::new(GuildScorer::new("7plant", climate_tier)?);
+        let guild_scorer = Arc::new(GuildScorer::new("7plant", climate_tier, data_dir)?);
 
         tracing::info!("Initializing encyclopedia generator...");
         let encyclopedia = Arc::new(EncyclopediaGenerator::new());

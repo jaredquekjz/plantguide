@@ -28,9 +28,13 @@ fn main() -> anyhow::Result<()> {
 
     let total_start = Instant::now();
 
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
     // Initialize canonical GuildScorer for calibration (mirrors R pattern)
     println!("\nInitializing GuildScorer...");
-    let guild_scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate")?;
+    let guild_scorer = GuildScorer::new_for_calibration("tier_3_humid_temperate", &data_dir)?;
 
     // Organize by climate tier
     println!("\nOrganizing plants by Köppen tier...");
@@ -46,8 +50,8 @@ fn main() -> anyhow::Result<()> {
     let stage1_time = stage1_start.elapsed();
 
     // Save Stage 1 results
-    let output_path_2plant = "shipley_checks/stage4/phase5_output/normalization_params_2plant.json";
-    std::fs::write(output_path_2plant, serde_json::to_string_pretty(&params_2plant)?)?;
+    let output_path_2plant = format!("{}/phase5_output/normalization_params_2plant.json", data_dir);
+    std::fs::write(&output_path_2plant, serde_json::to_string_pretty(&params_2plant)?)?;
     println!("\n✓ Saved: {}", output_path_2plant);
 
     // STAGE 2: 7-PLANT GUILDS
@@ -60,8 +64,8 @@ fn main() -> anyhow::Result<()> {
     let stage2_time = stage2_start.elapsed();
 
     // Save Stage 2 results
-    let output_path_7plant = "shipley_checks/stage4/phase5_output/normalization_params_7plant.json";
-    std::fs::write(output_path_7plant, serde_json::to_string_pretty(&params_7plant)?)?;
+    let output_path_7plant = format!("{}/phase5_output/normalization_params_7plant.json", data_dir);
+    std::fs::write(&output_path_7plant, serde_json::to_string_pretty(&params_7plant)?)?;
     println!("\n✓ Saved: {}", output_path_7plant);
 
     // Summary

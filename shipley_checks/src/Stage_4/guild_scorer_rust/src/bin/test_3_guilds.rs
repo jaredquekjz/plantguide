@@ -9,10 +9,14 @@ use guild_scorer_rust::GuildScorer;
 use std::time::Instant;
 
 fn main() {
+    // Default data_dir for local development
+    let data_dir = std::env::var("DATA_DIR")
+        .unwrap_or_else(|_| "shipley_checks/stage4".to_string());
+
     // Initialize scorer
     println!("Initializing Guild Scorer (Rust)...\n");
     let init_start = Instant::now();
-    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate")
+    let scorer = GuildScorer::new("7plant", "tier_3_humid_temperate", &data_dir)
         .expect("Failed to initialize scorer");
     let init_time = init_start.elapsed();
 
