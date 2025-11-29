@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-28T04:07:50Z"
+generated: "2025-11-28T13:38:25Z"
 version: "2.0"
 ---
 
@@ -12,6 +12,7 @@ version: "2.0"
 **Chinese**: 歐洲白櫟; 夏櫟; 夏栎
 **Family**: Fagaceae
 **Type**: Deciduous tree
+**Native Climate**: Warm-summer Mediterranean (warm dry summers, mild wet winters)
 **Mature Height**: 27m — Large tree, needs significant space
 **Leaves**: Broadleaved, 30cm² — Medium-sized
 **Seeds**: 3.0g — Medium seeds, bird food
@@ -38,54 +39,39 @@ version: "2.0"
 
 ### Light
 
-**EIVE-L**: 6.2/10 - Full sun to part shade
+**Light Needs**: 6.2/10 - Full sun to part shade
 Open borders work well; tolerates some afternoon shade.
 
-*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
+*Ecological Indicator Value for Europe (EIVE-L) from expert botanist field surveys — shows typical light conditions where this species is found in natural habitats under competition.*
 
-### Climate
+### Temperature
 
 *Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*
 
-**Temperature**: 26°C warmest month, 0°C coldest month
+**Range**: 26°C warmest month, 0°C coldest month
 *Range: -2°C to 30°C across all population locations*
-**Rainfall**: 611mm/year (416-1515mm across locations)
-
----
-
-**Köppen Zones**: Csb (Warm-summer Mediterranean - warm dry summers, mild wet winters)
-**Frost**: 2 days/year (up to 3 in coldest locations)
+**Frost**: 2 days/year below 0°C (up to 3 in coldest locations)
 *Frost-free to occasional*
-**Warm nights**: Rare (cool nights year-round)
+**Warm nights**: Rare (nights with min >20°C)
 *Cool nights year-round*
-**Day-night swing**: 10°C typical daily range
+**Day-night swing**: 10°C typical daily range (8-12°C across locations)
 *Temperate - moderate variation*
-**Growing season**: 327 days (~11 months)
+**Growing season**: 327 days with mean >5°C (~11 months)
 *Very long - ranges from 275 to 365 days across locations*
 
-**Ecological Indicator (EIVE-T)**:
-- Temperature indicator: 4.7/10
-- Climate type: Temperate; typical Northern Europe
-*Where species is most abundant in natural vegetation; from field surveys*
+### Moisture
 
-**Moisture**:
-
-- **Dry spells**: 16 consecutive dry days typical, 26 in driest locations
-  *Limited - Water during 2+ week dry periods*
-- **Disease pressure**: 2 warm-wet days/year
-  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
-
-**Ecological Indicator (EIVE-M)**:
-- Moisture indicator: 4.8/10
-- Typical position: Moderate moisture
-- Watering: Regular; 1-2 times weekly
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
+**Rainfall**: 611mm/year (416-1515mm across locations)
+**Dry spells**: 16 consecutive dry days typical, 26 in driest locations
+*Limited - Water during 2+ week dry periods*
+**Disease pressure**: 2 warm-wet days/year (days >25°C with rain)
+*Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
+**Wet spells**: 10 consecutive rainy days typical (up to 16 in wettest locations)
+*Moderate waterlogging tolerance - ensure drainage in heavy soils*
 
 ### Soil
 
-*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. These show where plants are found after competition - many species on poor soils are competitively excluded from richer soils, not physiologically limited. Experiment with fertility. Data from SoilGrids 2.0.*
 
 **Topsoil (0-15cm)** - *the layer you can amend*
 
@@ -118,20 +104,6 @@ Open borders work well; tolerates some afternoon shade.
 | pH | 6.5 | 5.3-7.7 |
 | CEC (cmol/kg) | 20 | 14-26 |
 | SOC (g/kg) | 12 | 6-27 |
-
-**Ecological Indicator (EIVE-R)**:
-- pH indicator: 5.2/10
-- Typical position: Slightly acidic to neutral
-- Compost: Standard multipurpose compost
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Ecological Indicator (EIVE-N)**:
-- Nutrient indicator: 4.5/10
-- Typical position: Moderate nutrient
-- Feeding: Standard annual feeding in spring
-*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
 
 ---
 

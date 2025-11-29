@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-28T04:07:51Z"
+generated: "2025-11-28T13:38:25Z"
 version: "2.0"
 ---
 
@@ -12,6 +12,7 @@ version: "2.0"
 **Chinese**: 犬薔薇; 狗薔薔; 狗牙蔷薇
 **Family**: Rosaceae
 **Type**: Scrambling shrub (deciduous)
+**Native Climate**: Temperate oceanic (mild year-round, no dry season)
 **Mature Height**: 2.0m — Shrub height
 **Leaves**: Broadleaved, 11cm² — Medium-sized
 **Seeds**: 18mg — Small seeds
@@ -38,54 +39,39 @@ version: "2.0"
 
 ### Light
 
-**EIVE-L**: 7.2/10 - Full sun to part shade
+**Light Needs**: 7.2/10 - Full sun to part shade
 Open borders work well; tolerates some afternoon shade.
 
-*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
+*Ecological Indicator Value for Europe (EIVE-L) from expert botanist field surveys — shows typical light conditions where this species is found in natural habitats under competition.*
 
-### Climate
+### Temperature
 
 *Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*
 
-**Temperature**: 24°C warmest month, -1°C coldest month
+**Range**: 24°C warmest month, -1°C coldest month
 *Range: -10°C to 31°C across all population locations*
-**Rainfall**: 764mm/year (439-1177mm across locations)
-
----
-
-**Köppen Zones**: Cfb (Temperate oceanic - mild year-round, no dry season (typical Western Europe))
-**Frost**: 2 days/year (up to 4 in coldest locations)
+**Frost**: 2 days/year below 0°C (up to 4 in coldest locations)
 *Frost-free to occasional*
-**Warm nights**: Rare (cool nights year-round)
+**Warm nights**: Rare (nights with min >20°C)
 *Cool nights year-round*
-**Day-night swing**: 8°C typical daily range
+**Day-night swing**: 8°C typical daily range (6-12°C across locations)
 *Temperate - moderate variation*
-**Growing season**: 269 days (~9 months)
+**Growing season**: 269 days with mean >5°C (~9 months)
 *Long - ranges from 196 to 364 days across locations*
 
-**Ecological Indicator (EIVE-T)**:
-- Temperature indicator: 4.3/10
-- Climate type: Temperate; typical Northern Europe
-*Where species is most abundant in natural vegetation; from field surveys*
+### Moisture
 
-**Moisture**:
-
-- **Dry spells**: 12 consecutive dry days typical, 26 in driest locations
-  *Limited - Keep soil moist; don't let dry out*
-- **Disease pressure**: 3 warm-wet days/year
-  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
-
-**Ecological Indicator (EIVE-M)**:
-- Moisture indicator: 3.9/10
-- Typical position: Dry conditions
-- Watering: Sparse; weekly in drought
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
+**Rainfall**: 764mm/year (439-1177mm across locations)
+**Dry spells**: 12 consecutive dry days typical, 26 in driest locations
+*Limited - Keep soil moist; don't let dry out*
+**Disease pressure**: 3 warm-wet days/year (days >25°C with rain)
+*Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
+**Wet spells**: 8 consecutive rainy days typical (up to 14 in wettest locations)
+*Moderate waterlogging tolerance - ensure drainage in heavy soils*
 
 ### Soil
 
-*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. These show where plants are found after competition - many species on poor soils are competitively excluded from richer soils, not physiologically limited. Experiment with fertility. Data from SoilGrids 2.0.*
 
 **Topsoil (0-15cm)** - *the layer you can amend*
 
@@ -118,20 +104,6 @@ Open borders work well; tolerates some afternoon shade.
 | pH | 6.6 | 5.5-7.7 |
 | CEC (cmol/kg) | 18 | 12-29 |
 | SOC (g/kg) | 12 | 5-45 |
-
-**Ecological Indicator (EIVE-R)**:
-- pH indicator: 6.4/10
-- Typical position: Neutral
-- Compost: Tolerates some lime
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Ecological Indicator (EIVE-N)**:
-- Nutrient indicator: 4.3/10
-- Typical position: Moderate nutrient
-- Feeding: Standard annual feeding in spring
-*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
 
 ---
 
@@ -218,7 +190,7 @@ Slow, steady grower with low nutrient demand. Slow to establish; train carefully
 ### Beneficial Predators
 **4 species documented** - natural pest control agents
 
-- **Birds** (3): Erithacus rubecula, Turdus merula, Turdus philomelos
+- **Birds** (3): Erithacus rubecula, Turdus philomelos, Turdus merula
 - **Hoverflies** (1): Syrphus
 
 *These beneficial organisms help control pest populations.*

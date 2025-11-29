@@ -21,6 +21,8 @@ use crate::encyclopedia::sections::{
     s6_companion,
 };
 use crate::encyclopedia::sections::s1_identity::RelatedSpecies;
+use crate::encyclopedia::suitability::local_conditions::LocalConditions;
+use crate::encyclopedia::suitability::advice::generate_suitability_section;
 
 /// Encyclopedia generator - stateless markdown generator.
 pub struct EncyclopediaGenerator;
@@ -99,6 +101,85 @@ impl EncyclopediaGenerator {
         // Footer
         sections.push(generate_footer(wfo_id));
 
+        self.join_sections(sections)
+    }
+
+    /// Generate encyclopedia article with local suitability section appended.
+    ///
+    /// Same as `generate()` but adds a "Growing in [Location]" section at the end
+    /// with location-specific advice based on comparing local conditions against
+    /// the plant's occurrence envelope.
+    ///
+    /// # Arguments
+    /// * All arguments from `generate()` plus:
+    /// * `local_conditions` - User's local climate and soil conditions
+    #[allow(clippy::too_many_arguments)]
+    pub fn generate_with_suitability(
+        &self,
+        wfo_id: &str,
+        plant_data: &HashMap<String, Value>,
+        organism_counts: Option<OrganismCounts>,
+        fungal_counts: Option<FungalCounts>,
+        organism_profile: Option<OrganismProfile>,
+        ranked_pathogens: Option<Vec<RankedPathogen>>,
+        beneficial_fungi: Option<BeneficialFungi>,
+        related_species: Option<Vec<RelatedSpecies>>,
+        genus_species_count: usize,
+        local_conditions: &LocalConditions,
+    ) -> Result<String, String> {
+        let mut sections = Vec::new();
+
+        // YAML frontmatter
+        sections.push(generate_frontmatter(wfo_id, plant_data));
+
+        // S1: Identity Card (includes relatives)
+        sections.push(s1_identity::generate_with_relatives(
+            plant_data,
+            related_species.as_deref(),
+            genus_species_count,
+        ));
+
+        // S2: Growing Requirements
+        sections.push(s2_requirements::generate(plant_data));
+
+        // S3: Maintenance Profile
+        sections.push(s3_maintenance::generate(plant_data));
+
+        // S4: Ecosystem Services
+        sections.push(s4_services::generate(plant_data));
+
+        // S5: Biological Interactions
+        sections.push(s5_interactions::generate(
+            plant_data,
+            organism_counts.as_ref(),
+            fungal_counts.as_ref(),
+            organism_profile.as_ref(),
+            ranked_pathogens.as_ref(),
+            beneficial_fungi.as_ref(),
+        ));
+
+        // S6: Guild Potential (Companion Planting)
+        sections.push(s6_companion::generate(
+            plant_data,
+            organism_counts.as_ref(),
+            fungal_counts.as_ref(),
+        ));
+
+        // S7: Local Suitability (NEW)
+        let plant_name = plant_data
+            .get("wfo_scientific_name")
+            .and_then(|v| v.as_str())
+            .unwrap_or("Unknown");
+        sections.push(generate_suitability_section(local_conditions, plant_data, plant_name));
+
+        // Footer
+        sections.push(generate_footer(wfo_id));
+
+        self.join_sections(sections)
+    }
+
+    /// Join sections into a single markdown document
+    fn join_sections(&self, sections: Vec<String>) -> Result<String, String> {
         // Join with separators: frontmatter just needs blank line, other sections get ---
         let mut result = sections[0].clone(); // frontmatter (ends with ---)
         result.push_str("\n\n"); // blank line after frontmatter
@@ -111,6 +192,9 @@ impl EncyclopediaGenerator {
         Ok(result)
     }
 }
+
+// Re-export LocalConditions for external use
+pub use crate::encyclopedia::suitability::local_conditions::LocalConditions as SuitabilityConditions;
 
 impl Default for EncyclopediaGenerator {
     fn default() -> Self {

@@ -81,6 +81,14 @@ pub fn generate_with_relatives(
     let growth_label = translate_growth_form_full(growth_form, woodiness, leaf_phenology);
     sections.push(format!("**Type**: {}", growth_label));
 
+    // Native climate (Köppen zone, grandma-friendly)
+    if let Some(koppen) = get_str(data, "top_zone_code") {
+        if !koppen.is_empty() && koppen != "NA" {
+            let climate_desc = interpret_koppen_zone_friendly(koppen);
+            sections.push(format!("**Native Climate**: {}", climate_desc));
+        }
+    }
+
     // Mature height with friendly description
     let height_m = get_f64(data, "height_m");
     if let Some(h) = height_m {
@@ -386,92 +394,6 @@ fn to_title_case(s: &str) -> String {
         .join(" ")
 }
 
-/// Translate growth form with woodiness into a readable plant type.
-/// Combines growth form and woodiness to give clear plant type labels.
-fn translate_growth_form_with_woodiness(growth_form: Option<&str>, woodiness: Option<&str>) -> String {
-    let form_label = match growth_form {
-        Some(form) => {
-            let form_lower = form.to_lowercase();
-            if form_lower.contains("tree") {
-                "Deciduous tree"
-            } else if form_lower.contains("shrub") {
-                "Shrub"
-            } else if form_lower.contains("herb") {
-                "Herbaceous perennial"
-            } else if form_lower.contains("graminoid") || form_lower.contains("grass") {
-                "Grass/Sedge"
-            } else if form_lower.contains("vine") || form_lower.contains("liana") || form_lower.contains("climber") {
-                "Climber"
-            } else if form_lower.contains("fern") {
-                "Fern"
-            } else if form_lower.contains("succulent") {
-                "Succulent"
-            } else {
-                return capitalize_first(form);
-            }
-        }
-        None => {
-            // Fall back to woodiness if no growth form
-            return match woodiness {
-                Some(w) if w.to_lowercase().contains("woody") => "Woody plant".to_string(),
-                Some(w) if w.to_lowercase().contains("herb") => "Herbaceous plant".to_string(),
-                _ => "Unknown".to_string(),
-            };
-        }
-    };
-
-    form_label.to_string()
-}
-
-/// Translate growth form code to human-readable label (simple version).
-#[allow(dead_code)]
-fn translate_growth_form(growth_form: Option<&str>) -> String {
-    match growth_form {
-        Some(form) => {
-            let form_lower = form.to_lowercase();
-            if form_lower.contains("tree") {
-                "Tree".to_string()
-            } else if form_lower.contains("shrub") {
-                "Shrub".to_string()
-            } else if form_lower.contains("herb") {
-                "Herbaceous".to_string()
-            } else if form_lower.contains("graminoid") || form_lower.contains("grass") {
-                "Grass/Sedge".to_string()
-            } else if form_lower.contains("vine") || form_lower.contains("liana") || form_lower.contains("climber") {
-                "Climber".to_string()
-            } else if form_lower.contains("fern") {
-                "Fern".to_string()
-            } else if form_lower.contains("succulent") {
-                "Succulent".to_string()
-            } else {
-                capitalize_first(form)
-            }
-        }
-        None => "Unknown".to_string(),
-    }
-}
-
-/// Translate leaf phenology code to human-readable label.
-fn translate_leaf_phenology(phenology: Option<&str>) -> String {
-    match phenology {
-        Some(p) => {
-            let p_lower = p.to_lowercase();
-            if p_lower.contains("evergreen") {
-                "Evergreen".to_string()
-            } else if p_lower.contains("deciduous") {
-                "Deciduous".to_string()
-            } else if p_lower.contains("semi") {
-                "Semi-evergreen".to_string()
-            } else if p == "NA" || p.is_empty() {
-                String::new()
-            } else {
-                capitalize_first(p)
-            }
-        }
-        None => String::new(),
-    }
-}
-
 /// Capitalize the first letter of a string.
 fn capitalize_first(s: &str) -> String {
     let mut chars = s.chars();
@@ -481,41 +403,44 @@ fn capitalize_first(s: &str) -> String {
     }
 }
 
-/// Interpret Köppen-Geiger climate code with human-readable label.
-fn interpret_koppen_zone(code: &str) -> &'static str {
+/// Interpret Köppen-Geiger climate code with grandma-friendly description.
+fn interpret_koppen_zone_friendly(code: &str) -> &'static str {
     match code {
-        // Tropical (A)
-        "Af" => "Tropical rainforest",
-        "Am" => "Tropical monsoon",
-        "Aw" | "As" => "Tropical savanna",
+        // Tropical (A) - warm all year (>18°C every month)
+        "Af" => "Tropical rainforest (warm and wet all year)",
+        "Am" => "Tropical monsoon (warm all year with seasonal heavy rains)",
+        "Aw" | "As" => "Tropical savanna (warm all year with wet and dry seasons)",
 
-        // Arid (B)
-        "BWh" => "Hot desert",
-        "BWk" => "Cold desert",
-        "BSh" => "Hot semi-arid",
-        "BSk" => "Cold semi-arid",
+        // Arid (B) - very dry
+        "BWh" => "Hot desert (very hot and dry)",
+        "BWk" => "Cold desert (dry with cold winters)",
+        "BWn" => "Mild desert (dry with mild temperatures)",
+        "BSh" => "Hot steppe (hot with limited rainfall)",
+        "BSk" => "Cold steppe (cool to cold with limited rainfall)",
+        "BSn" => "Mild steppe (mild with limited rainfall)",
 
-        // Temperate (C)
-        "Cfa" => "Humid subtropical",
-        "Cfb" => "Temperate oceanic",
-        "Cfc" => "Subpolar oceanic",
-        "Csa" => "Mediterranean hot summer",
-        "Csb" => "Mediterranean warm summer",
-        "Csc" => "Mediterranean cool summer",
-        "Cwa" => "Humid subtropical (dry winter)",
-        "Cwb" | "Cwc" => "Subtropical highland",
+        // Temperate (C) - mild winters (0-18°C coldest month)
+        "Cfa" => "Humid subtropical (hot humid summers, mild winters)",
+        "Cfb" => "Temperate oceanic (mild year-round, no dry season)",
+        "Cfc" => "Subpolar oceanic (cool summers, mild winters)",
+        "Csa" => "Hot-summer Mediterranean (hot dry summers, mild wet winters)",
+        "Csb" => "Warm-summer Mediterranean (warm dry summers, mild wet winters)",
+        "Csc" => "Cool-summer Mediterranean (cool summers, mild wet winters)",
+        "Cwa" => "Humid subtropical (hot summers, dry winters)",
+        "Cwb" | "Cwc" => "Subtropical highland (mild with dry winters)",
 
-        // Continental (D)
-        "Dfa" | "Dfb" => "Humid continental",
-        "Dfc" | "Dfd" => "Subarctic",
-        "Dwa" | "Dwb" | "Dwc" | "Dwd" => "Continental (dry winter)",
-        "Dsa" | "Dsb" | "Dsc" | "Dsd" => "Continental Mediterranean",
+        // Continental (D) - cold winters (below 0°C at least one month)
+        "Dfa" | "Dfb" => "Humid continental (warm summers, cold snowy winters)",
+        "Dfc" | "Dfd" => "Subarctic (short cool summers, very cold winters)",
+        "Dwa" | "Dwb" | "Dwc" | "Dwd" => "Monsoon continental (dry cold winters, wet summers)",
+        "Dsa" | "Dsb" | "Dsc" | "Dsd" => "Continental Mediterranean (dry summers, cold winters)",
 
-        // Polar (E)
-        "ET" => "Tundra",
-        "EF" => "Ice cap",
+        // Polar (E) - cold all year (every month <10°C)
+        "ET" => "Tundra (very cold, short growing season)",
+        "ETf" => "Cold tundra (very cold with freezing months)",
+        "EF" => "Ice cap (frozen year-round)",
 
-        _ => "Unknown climate type",
+        _ => "Not classified",
     }
 }
 
@@ -524,17 +449,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_translate_growth_form() {
-        assert_eq!(translate_growth_form(Some("tree")), "Tree");
-        assert_eq!(translate_growth_form(Some("shrub")), "Shrub");
-        assert_eq!(translate_growth_form(Some("vine")), "Climber");
-        assert_eq!(translate_growth_form(None), "Unknown");
+    fn test_format_height() {
+        assert!(format_height_friendly(25.0).contains("Large tree"));
+        assert!(format_height_friendly(0.2).contains("cm"));
     }
 
     #[test]
-    fn test_translate_leaf_phenology() {
-        assert_eq!(translate_leaf_phenology(Some("evergreen")), "Evergreen");
-        assert_eq!(translate_leaf_phenology(Some("deciduous")), "Deciduous");
-        assert_eq!(translate_leaf_phenology(Some("NA")), "");
+    fn test_translate_growth_form_full() {
+        assert!(translate_growth_form_full(Some("tree"), None, Some("deciduous")).contains("Deciduous"));
+        assert!(translate_growth_form_full(Some("shrub"), None, Some("evergreen")).contains("Evergreen"));
+    }
+
+    #[test]
+    fn test_distance_labels() {
+        assert_eq!(distance_to_label(3.0), "Very close");
+        assert_eq!(distance_to_label(10.0), "Close");
+        assert_eq!(distance_to_label(100.0), "Very distant");
+    }
+
+    #[test]
+    fn test_koppen_friendly() {
+        assert_eq!(interpret_koppen_zone_friendly("Cfb"), "Temperate oceanic (mild year-round, no dry season)");
+        assert_eq!(interpret_koppen_zone_friendly("Csa"), "Hot-summer Mediterranean (hot dry summers, mild wet winters)");
     }
 }

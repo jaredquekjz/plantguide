@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-28T04:07:51Z"
+generated: "2025-11-28T13:38:26Z"
 version: "2.0"
 ---
 
@@ -12,6 +12,7 @@ version: "2.0"
 **Chinese**: 白荷蘭翹搖; 白花苜蓿; 白車軸草; 白菽草; 菽草; 白花三葉草; 白三叶草; 菽草; 白花苜蓿; 白车轴草; 白花三叶草
 **Family**: Leguminosae
 **Type**: Herbaceous perennial
+**Native Climate**: Humid subtropical (hot humid summers, mild winters)
 **Mature Height**: 16cm — Low groundcover
 **Leaves**: Broadleaved, 2.0cm² — Fine-textured foliage
 **Seeds**: 0.53mg — Dust-like, spreads freely
@@ -38,54 +39,39 @@ version: "2.0"
 
 ### Light
 
-**EIVE-L**: 7.6/10 - Full sun to part shade
+**Light Needs**: 7.6/10 - Full sun to part shade
 Open borders work well; tolerates some afternoon shade.
 
-*Light indicator from expert field observations of typical light conditions where species is most abundant in natural vegetation*
+*Ecological Indicator Value for Europe (EIVE-L) from expert botanist field surveys — shows typical light conditions where this species is found in natural habitats under competition.*
 
-### Climate
+### Temperature
 
 *Values show typical conditions where populations of the plant occur (median across populations), with range showing variation from mildest to most extreme locations.*
 
-**Temperature**: 27°C warmest month, -4°C coldest month
+**Range**: 27°C warmest month, -4°C coldest month
 *Range: -17°C to 34°C across all population locations*
-**Rainfall**: 934mm/year (443-1539mm across locations)
-
----
-
-**Köppen Zones**: Cfa (Humid subtropical - hot humid summers, mild winters, rain year-round)
-**Frost**: 3 days/year (up to 5 in coldest locations)
+**Frost**: 3 days/year below 0°C (up to 5 in coldest locations)
 *Frost-free to occasional*
-**Warm nights**: Rare (cool nights year-round)
+**Warm nights**: Rare (up to 3 in warmest locations) (nights with min >20°C)
 *Cool nights year-round*
-**Day-night swing**: 10°C typical daily range
+**Day-night swing**: 10°C typical daily range (7-14°C across locations)
 *Temperate - moderate variation*
-**Growing season**: 260 days (~9 months)
+**Growing season**: 260 days with mean >5°C (~9 months)
 *Long - ranges from 164 to 365 days across locations*
 
-**Ecological Indicator (EIVE-T)**:
-- Temperature indicator: 4.1/10
-- Climate type: Temperate; typical Northern Europe
-*Where species is most abundant in natural vegetation; from field surveys*
+### Moisture
 
-**Moisture**:
-
-- **Dry spells**: 13 consecutive dry days typical, 28 in driest locations
-  *Limited - Keep soil moist; don't let dry out*
-- **Disease pressure**: 3 warm-wet days/year
-  *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
-
-**Ecological Indicator (EIVE-M)**:
-- Moisture indicator: 4.5/10
-- Typical position: Moderate moisture
-- Watering: Regular; 1-2 times weekly
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. In cultivation, plants may tolerate or even prefer different conditions. Experiment to find what works best in your garden.
+**Rainfall**: 934mm/year (443-1539mm across locations)
+**Dry spells**: 13 consecutive dry days typical, 28 in driest locations
+*Limited - Keep soil moist; don't let dry out*
+**Disease pressure**: 3 warm-wet days/year (days >25°C with rain)
+*Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
+**Wet spells**: 7 consecutive rainy days typical (up to 16 in wettest locations)
+*Good drainage needed - avoid waterlogged soils*
 
 ### Soil
 
-*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. Data from SoilGrids 2.0.*
+*Soil conditions where populations of the plant occur (median across populations), with range showing variation across locations. These show where plants are found after competition - many species on poor soils are competitively excluded from richer soils, not physiologically limited. Experiment with fertility. Data from SoilGrids 2.0.*
 
 **Topsoil (0-15cm)** - *the layer you can amend*
 
@@ -118,20 +104,6 @@ Open borders work well; tolerates some afternoon shade.
 | pH | 6.0 | 5.1-7.4 |
 | CEC (cmol/kg) | 17 | 7-28 |
 | SOC (g/kg) | 12 | 4-58 |
-
-**Ecological Indicator (EIVE-R)**:
-- pH indicator: 5.8/10
-- Typical position: Slightly acidic to neutral
-- Compost: Standard multipurpose compost
-*Where species is most abundant in natural vegetation; from field surveys*
-
-**Ecological Indicator (EIVE-N)**:
-- Nutrient indicator: 6.4/10
-- Typical position: High nutrient
-- Feeding: Benefits from generous feeding; responds well to compost
-*Where species is most abundant in natural vegetation; indicates fertility level, not preference*
-
-**Note**: These indicators show where plants are most abundant in nature after competition. Many plants found in low-fertility areas are competitively excluded from richer soils by faster-growing species - they may actually thrive with MORE fertilization than their natural habitat suggests. pH tolerance is more physiological, but nutrient response is worth experimenting with.
 
 ---
 
@@ -223,8 +195,8 @@ Rapid but short-lived. Moderate nutrient demand; plan for succession or self-see
 ### Beneficial Predators
 **9 species documented** - natural pest control agents
 
-- **Beetles** (4): Coleomegilla maculata, Harmonia axyridis, Coccinella septempunctata, +1 more
-- **Flies** (3): Eupeodes, Eupeodes luniger, Toxomerus marginatus
+- **Beetles** (4): Cycloneda munda, Harmonia axyridis, Coccinella septempunctata, +1 more
+- **Flies** (3): Eupeodes luniger, Toxomerus marginatus, Eupeodes
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 

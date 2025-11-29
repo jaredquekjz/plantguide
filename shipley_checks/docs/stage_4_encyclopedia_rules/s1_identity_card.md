@@ -65,6 +65,8 @@ The morphological traits (height, leaf area, seed mass) come from the **TRY Glob
 
 Combines `try_growth_form`, `try_woodiness`, and `try_leaf_phenology` into a single readable label.
 
+**Implementation**: `translate_growth_form_full()` in s1_identity.rs
+
 **Translation logic**:
 
 | Growth Form | Phenology | Output |
