@@ -1,11 +1,13 @@
-//! View Models for Encyclopedia Templates
+//! View Models for Encyclopedia API
 //!
-//! Structured data types for Askama template rendering.
-//! These replace markdown string generation with type-safe template data.
+//! Structured data types for JSON API responses.
+//! These are shared between Rust backend and Astro frontend via Typeshare.
 
 use serde::Serialize;
+use typeshare::typeshare;
 
 /// Suitability fit level for visual badges
+#[typeshare]
 #[derive(Debug, Clone, Copy, PartialEq, Serialize)]
 pub enum FitLevel {
     Optimal,   // Green - within Q25-Q75
@@ -52,6 +54,7 @@ impl FitLevel {
 // ============================================================================
 
 /// Complete identity card data for the hero section
+#[typeshare]
 #[derive(Debug, Clone, Serialize)]
 pub struct IdentityCard {
     pub wfo_id: String,
@@ -70,6 +73,7 @@ pub struct IdentityCard {
     pub genus_species_count: usize,
 }
 
+#[typeshare]
 #[derive(Debug, Clone, Copy, Serialize)]
 pub enum GrowthIcon {
     Tree,
@@ -128,6 +132,7 @@ pub struct RelativeSpecies {
 // S2: Growing Requirements
 // ============================================================================
 
+#[typeshare]
 #[derive(Debug, Clone, Serialize)]
 pub struct RequirementsSection {
     pub light: LightRequirement,
@@ -207,6 +212,7 @@ pub struct ComparisonRow {
     pub fit: FitLevel,
 }
 
+#[typeshare]
 #[derive(Debug, Clone, Serialize)]
 pub struct OverallSuitability {
     pub location_name: String,
@@ -453,6 +459,7 @@ pub struct CompanionPlant {
 // Full Encyclopedia Page
 // ============================================================================
 
+#[typeshare]
 #[derive(Debug, Clone, Serialize)]
 pub struct EncyclopediaPageData {
     pub identity: IdentityCard,
@@ -464,6 +471,7 @@ pub struct EncyclopediaPageData {
     pub location: LocationInfo,
 }
 
+#[typeshare]
 #[derive(Debug, Clone, Serialize)]
 pub struct LocationInfo {
     pub name: String,

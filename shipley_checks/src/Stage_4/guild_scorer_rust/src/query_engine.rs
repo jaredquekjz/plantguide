@@ -412,6 +412,12 @@ impl QueryEngine {
         self.query(&sql).await
     }
 
+    /// Get all plant IDs (for static generation)
+    pub async fn get_all_plant_ids(&self) -> DFResult<Vec<RecordBatch>> {
+        let sql = "SELECT wfo_taxon_id, wfo_scientific_name, family FROM plants ORDER BY wfo_taxon_id";
+        self.query(sql).await
+    }
+
     /// Find similar plants based on EIVE Euclidean distance
     pub async fn find_similar(
         &self,

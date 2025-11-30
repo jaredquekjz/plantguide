@@ -17,7 +17,6 @@ use tower_http::{
     compression::CompressionLayer,
     cors::CorsLayer,
     trace::TraceLayer,
-    services::ServeDir,
 };
 
 #[cfg(feature = "api")]
@@ -94,25 +93,23 @@ pub fn create_router(state: AppState) -> Router {
         // Health check
         .route("/health", get(health_check))
 
-        // HTML pages (Phase 9)
-        .route("/", get(crate::web::handlers::home_page))
-        .route("/search", get(crate::web::handlers::search_page))
-        .route("/search/results", get(crate::web::handlers::search_results))
-        .route("/plant/:wfo_id/encyclopedia", get(crate::web::handlers::encyclopedia_page_v2))
-
-        // Static assets
-        .nest_service("/assets", ServeDir::new("assets"))
-
         // Plant endpoints (JSON API)
         .route("/api/plants/search", get(search_plants))
+        .route("/api/plants/ids", get(get_all_plant_ids))
         .route("/api/plants/:id", get(get_plant))
         .route("/api/plants/:id/organisms", get(get_organisms))
         .route("/api/plants/:id/fungi", get(get_fungi))
         .route("/api/plants/similar", post(find_similar))
-        // Guild endpoints
-        .route("/api/guilds/score", post(score_guild))
-        // Encyclopedia endpoint
+
+        // Encyclopedia endpoint (JSON)
         .route("/api/encyclopedia/:id", get(get_encyclopedia))
+
+        // Suitability endpoint (JSON)
+        .route("/api/suitability/:id", get(get_suitability))
+
+        // Guild scoring endpoint
+        .route("/api/guilds/score", post(score_guild))
+
         // Middleware (applied in reverse order)
         .layer(CompressionLayer::new()) // gzip + brotli compression
         .layer(CorsLayer::permissive()) // Allow all origins (adjust for production)
@@ -193,6 +190,36 @@ async fn get_plant(
     let result = batches_to_json(&batches)?;
 
     // Cache result
+    state.cache.insert(cache_key, result.clone()).await;
+
+    Ok(Json(result))
+}
+
+/// Get all plant IDs (for static generation)
+#[cfg(feature = "api")]
+async fn get_all_plant_ids(
+    State(state): State<AppState>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let cache_key = "plant_ids:all".to_string();
+
+    // Check cache
+    if let Some(cached) = state.cache.get(&cache_key).await {
+        tracing::debug!("Cache hit for all plant IDs");
+        return Ok(Json(cached));
+    }
+
+    // Execute query - get just the WFO IDs
+    tracing::debug!("Fetching all plant IDs");
+    let batches = state
+        .query_engine
+        .get_all_plant_ids()
+        .await
+        .map_err(|e| AppError::DataFusion(e.to_string()))?;
+
+    // Convert to JSON
+    let result = batches_to_json(&batches)?;
+
+    // Cache result (long TTL since IDs don't change)
     state.cache.insert(cache_key, result.clone()).await;
 
     Ok(Json(result))
@@ -323,26 +350,23 @@ async fn score_guild(
     Ok(Json(response))
 }
 
-/// Generate encyclopedia page for a plant
+/// Get suitability data for a plant at a location
 #[cfg(feature = "api")]
-async fn get_encyclopedia(
+async fn get_suitability(
     State(state): State<AppState>,
     Path(id): Path<String>,
-) -> Result<impl IntoResponse, AppError> {
-    let cache_key = format!("encyclopedia:{}", id);
+    Query(params): Query<SuitabilityQuery>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let location = params.location.unwrap_or_else(|| "london".to_string());
+    let cache_key = format!("suitability:{}:{}", id, location);
 
-    // Check cache for pre-generated markdown
+    // Check cache
     if let Some(cached) = state.cache.get(&cache_key).await {
-        tracing::debug!("Cache hit for encyclopedia {}", id);
-        if let Some(markdown) = cached.as_str() {
-            return Ok((
-                [("Content-Type", "text/markdown; charset=utf-8")],
-                markdown.to_string(),
-            ));
-        }
+        tracing::debug!("Cache hit for suitability {}:{}", id, location);
+        return Ok(Json(cached));
     }
 
-    tracing::debug!("Generating encyclopedia for plant {}", id);
+    tracing::debug!("Generating suitability for plant {} at {}", id, location);
 
     // 1. Fetch plant data
     let plant_batches = state
@@ -364,32 +388,131 @@ async fn get_encyclopedia(
         .and_then(|obj| serde_json::from_value(obj.clone()).ok())
         .ok_or_else(|| AppError::Internal("Failed to parse plant data".to_string()))?;
 
-    // 2. Fetch organism summary for counts
-    let organism_counts = match state.query_engine.get_organism_summary(&id).await {
-        Ok(batches) => parse_organism_counts(&batches),
-        Err(_) => None,
-    };
+    // 2. Get local conditions for the location
+    let local_conditions = get_local_conditions(&location);
 
-    // 3. Fetch fungi summary for counts
-    let fungal_counts = match state.query_engine.get_fungi_summary(&id).await {
-        Ok(batches) => parse_fungal_counts(&batches),
-        Err(_) => None,
-    };
+    // 3. Build encyclopedia data and extract requirements/suitability
+    let encyclopedia_data = crate::encyclopedia::view_builder::build_encyclopedia_data(
+        &id,
+        &plant_data,
+        None, None, None, None, None, 0,
+        Some(&local_conditions),
+    );
 
-    // 4. Generate encyclopedia markdown
-    // Note: OrganismProfile, ranked_pathogens, beneficial_fungi, related_species not yet implemented in API
-    let markdown = state
-        .encyclopedia
-        .generate(&id, &plant_data, organism_counts, fungal_counts, None, None, None, None, 0)
-        .map_err(|e| AppError::Internal(e))?;
+    // 4. Extract suitability info from requirements section
+    let requirements = &encyclopedia_data.requirements;
+    let overall = requirements.overall_suitability.as_ref();
+
+    let result = serde_json::json!({
+        "wfo_id": id,
+        "location": {
+            "name": encyclopedia_data.location.name,
+            "code": encyclopedia_data.location.code,
+            "climate_zone": encyclopedia_data.location.climate_zone,
+        },
+        "overall_score": overall.map(|o| o.score_percent).unwrap_or(50),
+        "verdict": overall.map(|o| o.verdict.clone()).unwrap_or_else(|| "Assessment unavailable".to_string()),
+        "key_concerns": overall.map(|o| o.key_concerns.clone()).unwrap_or_default(),
+        "light": {
+            "category": requirements.light.category,
+            "description": requirements.light.description,
+            "eive_l": requirements.light.eive_l,
+        },
+        "temperature": {
+            "summary": requirements.temperature.summary,
+            "comparisons": requirements.temperature.comparisons,
+        },
+        "moisture": {
+            "summary": requirements.moisture.summary,
+            "comparisons": requirements.moisture.comparisons,
+            "advice": requirements.moisture.advice,
+        },
+        "soil": {
+            "texture": requirements.soil.texture_summary,
+            "comparisons": requirements.soil.comparisons,
+            "advice": requirements.soil.advice,
+        },
+    });
+
+    // Cache result
+    state.cache.insert(cache_key, result.clone()).await;
+
+    Ok(Json(result))
+}
+
+/// Get LocalConditions for a location name
+#[cfg(feature = "api")]
+fn get_local_conditions(location: &str) -> crate::encyclopedia::suitability::local_conditions::LocalConditions {
+    use crate::encyclopedia::suitability::local_conditions;
+    match location.to_lowercase().as_str() {
+        "singapore" => local_conditions::singapore(),
+        "helsinki" => local_conditions::helsinki(),
+        _ => local_conditions::london(), // Default to London
+    }
+}
+
+/// Generate encyclopedia page for a plant (returns JSON)
+#[cfg(feature = "api")]
+async fn get_encyclopedia(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+    Query(params): Query<SuitabilityQuery>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let location = params.location.unwrap_or_else(|| "london".to_string());
+    let cache_key = format!("encyclopedia:{}:{}", id, location);
+
+    // Check cache
+    if let Some(cached) = state.cache.get(&cache_key).await {
+        tracing::debug!("Cache hit for encyclopedia {}:{}", id, location);
+        return Ok(Json(cached));
+    }
+
+    tracing::debug!("Generating encyclopedia for plant {} at {}", id, location);
+
+    // 1. Fetch plant data
+    let plant_batches = state
+        .query_engine
+        .get_plant(&id)
+        .await
+        .map_err(|e| AppError::DataFusion(e.to_string()))?;
+
+    if plant_batches.is_empty() || plant_batches[0].num_rows() == 0 {
+        return Err(AppError::NotFound(format!("Plant {} not found", id)));
+    }
+
+    // Convert plant batch to JSON then HashMap
+    let plant_json = batches_to_json(&plant_batches)?;
+    let plant_data: std::collections::HashMap<String, serde_json::Value> = plant_json
+        .get("data")
+        .and_then(|d| d.as_array())
+        .and_then(|arr| arr.first())
+        .and_then(|obj| serde_json::from_value(obj.clone()).ok())
+        .ok_or_else(|| AppError::Internal("Failed to parse plant data".to_string()))?;
+
+    // 2. Get local conditions for location
+    let local_conditions = get_local_conditions(&location);
+
+    // 3. Build encyclopedia data using view_builder
+    let encyclopedia_data = crate::encyclopedia::view_builder::build_encyclopedia_data(
+        &id,
+        &plant_data,
+        None,  // organism_profile - TODO: fetch from organisms table
+        None,  // fungal_counts - TODO: fetch from fungi table
+        None,  // ranked_pathogens
+        None,  // beneficial_fungi
+        None,  // related_species
+        0,     // genus_species_count
+        Some(&local_conditions),
+    );
+
+    // 4. Serialize to JSON
+    let result = serde_json::to_value(&encyclopedia_data)
+        .map_err(|e| AppError::Internal(format!("JSON serialization error: {}", e)))?;
 
     // Cache the result
-    state.cache.insert(cache_key, serde_json::json!(markdown)).await;
+    state.cache.insert(cache_key, result.clone()).await;
 
-    Ok((
-        [("Content-Type", "text/markdown; charset=utf-8")],
-        markdown,
-    ))
+    Ok(Json(result))
 }
 
 /// Parse organism summary batches into OrganismCounts
@@ -502,6 +625,12 @@ struct OrganismQuery {
 #[derive(serde::Deserialize, Debug)]
 struct FungiQuery {
     guild_category: Option<String>,
+}
+
+#[cfg(feature = "api")]
+#[derive(serde::Deserialize, Debug)]
+struct SuitabilityQuery {
+    location: Option<String>,
 }
 
 #[cfg(feature = "api")]
