@@ -222,7 +222,78 @@ impl SearchIndex {
         })
     }
 
-    /// Prefix search (fast, for typeahead)
+    /// Calculate relevance score for a match
+    fn score_match(&self, query: &str, matched_term: &str, plant: &PlantRef) -> i32 {
+        let mut score: i32 = 0;
+        let query_lower = query.to_lowercase();
+        let sci_lower = plant.scientific_name.to_lowercase();
+        let genus_lower = plant.genus.to_lowercase();
+
+        // HIGHEST: Genus exact match (searching "rosa" should return Rosa species first)
+        if genus_lower == query_lower {
+            score += 2000;
+        }
+        // Scientific name starts with query (e.g., "quercus" matching "Quercus alba")
+        else if sci_lower.starts_with(&query_lower) {
+            score += 1500;
+        }
+        // Genus starts with query
+        else if genus_lower.starts_with(&query_lower) {
+            score += 1200;
+        }
+
+        // Exact term match
+        if matched_term == query_lower {
+            score += 500;
+        }
+        // Term starts with query
+        else if matched_term.starts_with(&query_lower) {
+            score += 300;
+            // Bonus if it's a short term (more specific match)
+            if matched_term.len() < query_lower.len() + 5 {
+                score += 100;
+            }
+        }
+
+        // Common name relevance
+        if let Some(ref cn) = plant.common_name {
+            let cn_lower = cn.to_lowercase();
+            let words: Vec<&str> = cn_lower.split_whitespace().collect();
+
+            // Exact common name match (highest)
+            if cn_lower == query_lower {
+                score += 500;
+            }
+            // Query matches LAST word (primary identifier: "white oak" -> "oak" is primary)
+            // This should rank higher than starts_with because "dwarf live oak" is more "oak"
+            // than "oak sedge" where oak is just a modifier
+            else if words.last().map(|&w| w) == Some(query_lower.as_str()) {
+                score += 400;
+            }
+            // Common name starts with query AND query is the first word
+            // (e.g., "oak" matches first word of "oak sedge")
+            else if words.first().map(|&w| w) == Some(query_lower.as_str()) {
+                score += 200;
+            }
+            // Common name starts with query (partial first word match)
+            else if cn_lower.starts_with(&query_lower) {
+                score += 150;
+            }
+            // Query is a standalone word somewhere in the middle
+            else if words.iter().any(|&w| w == query_lower) {
+                score += 100;
+            }
+        }
+
+        // Penalize very long matched terms (less specific match)
+        if matched_term.len() > 20 {
+            score -= 50;
+        }
+
+        score
+    }
+
+    /// Prefix search with relevance ranking
     pub fn search_prefix(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
         if query.is_empty() {
             return vec![];
@@ -234,33 +305,45 @@ impl SearchIndex {
         let prefix = fst::automaton::Str::new(&query_lower).starts_with();
         let mut stream = self.fst_map.search(prefix).into_stream();
 
-        let mut seen_wfo: std::collections::HashSet<&str> = std::collections::HashSet::new();
-        let mut results: Vec<&PlantRef> = Vec::new();
+        // Collect all matches with scores
+        let mut scored: HashMap<&str, (i32, usize)> = HashMap::new(); // wfo_id -> (best_score, plant_idx)
 
-        // Collect matching plant indices
         while let Some((term, _idx)) = stream.next() {
-            // Get all plants for this term
             if let Ok(term_str) = std::str::from_utf8(term) {
                 if let Some(indices) = self.term_to_indices.get(term_str) {
                     for &plant_idx in indices {
                         if plant_idx < self.plants.len() {
                             let plant = &self.plants[plant_idx];
-                            if seen_wfo.insert(&plant.wfo_id) {
-                                results.push(plant);
-                                if results.len() >= limit {
-                                    return results;
-                                }
-                            }
+                            let score = self.score_match(&query_lower, term_str, plant);
+
+                            // Keep best score for each plant
+                            scored
+                                .entry(&plant.wfo_id)
+                                .and_modify(|(best, _)| {
+                                    if score > *best {
+                                        *best = score;
+                                    }
+                                })
+                                .or_insert((score, plant_idx));
                         }
                     }
                 }
             }
         }
 
+        // Sort by score descending
+        let mut results: Vec<_> = scored.into_iter().collect();
+        results.sort_by(|a, b| b.1.0.cmp(&a.1.0));
+
+        // Return top N
         results
+            .into_iter()
+            .take(limit)
+            .map(|(_, (_, idx))| &self.plants[idx])
+            .collect()
     }
 
-    /// Fuzzy search (allows typos)
+    /// Fuzzy search with relevance ranking (allows typos)
     pub fn search_fuzzy(&self, query: &str, max_distance: u32, limit: usize) -> Vec<&PlantRef> {
         if query.is_empty() {
             return vec![];
@@ -271,13 +354,11 @@ impl SearchIndex {
         // Build Levenshtein automaton
         let lev = match Levenshtein::new(&query_lower, max_distance) {
             Ok(l) => l,
-            Err(_) => return self.search_prefix(query, limit), // Fallback to prefix
+            Err(_) => return self.search_prefix(query, limit),
         };
 
         let mut stream = self.fst_map.search(lev).into_stream();
-
-        let mut seen_wfo: std::collections::HashSet<&str> = std::collections::HashSet::new();
-        let mut results: Vec<&PlantRef> = Vec::new();
+        let mut scored: HashMap<&str, (i32, usize)> = HashMap::new();
 
         while let Some((term, _idx)) = stream.next() {
             if let Ok(term_str) = std::str::from_utf8(term) {
@@ -285,24 +366,36 @@ impl SearchIndex {
                     for &plant_idx in indices {
                         if plant_idx < self.plants.len() {
                             let plant = &self.plants[plant_idx];
-                            if seen_wfo.insert(&plant.wfo_id) {
-                                results.push(plant);
-                                if results.len() >= limit {
-                                    return results;
-                                }
-                            }
+                            // Fuzzy matches get slightly lower base score
+                            let score = self.score_match(&query_lower, term_str, plant) - 100;
+
+                            scored
+                                .entry(&plant.wfo_id)
+                                .and_modify(|(best, _)| {
+                                    if score > *best {
+                                        *best = score;
+                                    }
+                                })
+                                .or_insert((score, plant_idx));
                         }
                     }
                 }
             }
         }
 
+        let mut results: Vec<_> = scored.into_iter().collect();
+        results.sort_by(|a, b| b.1.0.cmp(&a.1.0));
+
         results
+            .into_iter()
+            .take(limit)
+            .map(|(_, (_, idx))| &self.plants[idx])
+            .collect()
     }
 
     /// Combined search: prefix first, then fuzzy if few results
     pub fn search(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
-        // Try prefix search first (fastest)
+        // Try prefix search first (fastest, ranked by relevance)
         let prefix_results = self.search_prefix(query, limit);
 
         if prefix_results.len() >= limit / 2 {
