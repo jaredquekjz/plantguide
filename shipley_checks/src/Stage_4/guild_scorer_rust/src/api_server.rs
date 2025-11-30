@@ -35,6 +35,9 @@ use crate::query_engine::{QueryEngine, PlantFilters};
 use crate::scorer::GuildScorer;
 
 #[cfg(feature = "api")]
+use crate::search_index::SearchIndex;
+
+#[cfg(feature = "api")]
 use crate::encyclopedia::{
     EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismProfile, CategorizedOrganisms,
     OrganismLists, RankedPathogen, BeneficialFungi,
@@ -141,6 +144,7 @@ pub struct AppState {
     pub cache: Cache<String, serde_json::Value>,
     pub master_predators: Arc<HashSet<String>>,
     pub phylo_data: Option<Arc<PhyloData>>,
+    pub search_index: Arc<SearchIndex>,
 }
 
 #[cfg(feature = "api")]
@@ -167,6 +171,9 @@ impl AppState {
         tracing::info!("Loading phylogenetic tree...");
         let phylo_data = PhyloData::load(data_dir).map(Arc::new);
 
+        tracing::info!("Building FST search index...");
+        let search_index = Arc::new(SearchIndex::build(&query_engine).await?);
+
         Ok(Self {
             query_engine,
             guild_scorer,
@@ -174,6 +181,7 @@ impl AppState {
             cache,
             master_predators,
             phylo_data,
+            search_index,
         })
     }
 }
@@ -190,6 +198,7 @@ pub fn create_router(state: AppState) -> Router {
 
         // Plant endpoints (JSON API)
         .route("/api/plants/search", get(search_plants))
+        .route("/api/plants/autocomplete", get(autocomplete_plants))
         .route("/api/plants/ids", get(get_all_plant_ids))
         .route("/api/plants/:id", get(get_plant))
         .route("/api/plants/:id/organisms", get(get_organisms))
@@ -254,6 +263,52 @@ async fn search_plants(
     state.cache.insert(cache_key, result.clone()).await;
 
     Ok(Json(result))
+}
+
+/// Fast autocomplete endpoint using FST index
+/// Query params: q (search query), limit (max results, default 20)
+#[cfg(feature = "api")]
+async fn autocomplete_plants(
+    State(state): State<AppState>,
+    Query(params): Query<AutocompleteQuery>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let query = params.q.unwrap_or_default();
+    let limit = params.limit.unwrap_or(20).min(100); // Cap at 100
+
+    if query.len() < 1 {
+        return Ok(Json(serde_json::json!({
+            "rows": 0,
+            "data": []
+        })));
+    }
+
+    let start = std::time::Instant::now();
+
+    // Use FST index for fast search
+    let results = state.search_index.search(&query, limit);
+
+    let elapsed = start.elapsed();
+    tracing::debug!("Autocomplete '{}' returned {} results in {:?}", query, results.len(), elapsed);
+
+    // Convert to JSON response (matches existing search format)
+    let data: Vec<serde_json::Value> = results
+        .iter()
+        .map(|p| {
+            serde_json::json!({
+                "wfo_taxon_id": p.wfo_id,
+                "wfo_scientific_name": p.scientific_name,
+                "vernacular_name_en": p.common_name,
+                "family": p.family,
+                "genus": p.genus,
+            })
+        })
+        .collect();
+
+    Ok(Json(serde_json::json!({
+        "rows": data.len(),
+        "data": data,
+        "query_time_us": elapsed.as_micros(),
+    })))
 }
 
 #[cfg(feature = "api")]
@@ -1118,6 +1173,13 @@ async fn find_related_species(
 // ============================================================================
 // Request/Response Types
 // ============================================================================
+
+#[cfg(feature = "api")]
+#[derive(serde::Deserialize, Debug)]
+struct AutocompleteQuery {
+    q: Option<String>,
+    limit: Option<usize>,
+}
 
 #[cfg(feature = "api")]
 #[derive(serde::Deserialize, Debug)]

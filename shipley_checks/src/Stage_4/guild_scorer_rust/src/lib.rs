@@ -26,6 +26,10 @@ pub mod query_engine;
 #[cfg(feature = "api")]
 pub mod api_server;
 
+// Phase 8: FST Search Index (optional feature)
+#[cfg(feature = "api")]
+pub mod search_index;
+
 // Encyclopedia generator module (optional feature)
 #[cfg(feature = "api")]
 pub mod encyclopedia;
@@ -53,6 +57,9 @@ pub use api_server::{AppState, create_router};
 
 #[cfg(feature = "api")]
 pub use encyclopedia::EncyclopediaGenerator;
+
+#[cfg(feature = "api")]
+pub use search_index::{SearchIndex, PlantRef};
 
 #[cfg(test)]
 mod tests {
