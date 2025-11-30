@@ -18,22 +18,340 @@ use serde_json::Value;
 use crate::encyclopedia::types::*;
 use crate::encyclopedia::utils::classify::*;
 use crate::encyclopedia::utils::texture as usda_texture;
+use crate::encyclopedia::suitability::local_conditions::LocalConditions;
+use crate::encyclopedia::suitability::advice::build_assessment;
+use crate::encyclopedia::suitability::comparator::EnvelopeFit;
+
+// ============================================================================
+// Unit Conversion Helpers
+// ============================================================================
+//
+// AgroClim indicators are stored as dekadal means (average per 10-day period).
+// For user-friendly display, we convert to annual values where appropriate.
+//
+// Conversion factors:
+// - Dekadal counts (FD, TR, SU): ×36 (36 dekads per year)
+// - Seasonal counts (WW): ×4 (4 seasons per year)
+// - Durations (CDD, CWD, CFD): No conversion (spell lengths, not counts)
+// - Already annual (GSL): No conversion
+// - Temperatures (DTR, BIO5/6): No conversion (not counts)
+
+/// Convert dekadal mean to annual estimate (×36 dekads/year).
+/// Used for FD (frost days), TR (tropical nights), SU (summer days).
+#[inline]
+fn dekadal_to_annual(value: f64) -> f64 {
+    value * 36.0
+}
+
+/// Convert seasonal mean to annual estimate (×4 seasons/year).
+/// Used for WW (warm-wet days).
+#[inline]
+fn seasonal_to_annual(value: f64) -> f64 {
+    value * 4.0
+}
 
 /// Generate the S2 Growing Requirements section.
 pub fn generate(data: &HashMap<String, Value>) -> String {
+    generate_with_local(data, None)
+}
+
+/// Generate S2 with optional local suitability comparisons interweaved.
+///
+/// When `local` is provided, each subsection (Temperature, Moisture, Soil)
+/// is followed by an "In [Location]" block comparing local conditions against
+/// the plant's occurrence envelope.
+pub fn generate_with_local(data: &HashMap<String, Value>, local: Option<&LocalConditions>) -> String {
     let mut sections = Vec::new();
+
+    // Build assessment if we have local conditions
+    let assessment = local.map(|l| build_assessment(l, data, ""));
+
+    // Header is always generic - these are requirements anywhere
     sections.push("## Growing Requirements".to_string());
 
-    // Light requirements (EIVE-L only)
+    // Light requirements (EIVE-L only) - no local comparison needed
     sections.push(generate_light_section(data));
 
-    // Climate conditions
-    sections.push(generate_climate_section(data));
+    // Temperature section
+    let mut temperature = generate_temperature_section(data);
+    if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
+        temperature.push_str("\n\n");
+        temperature.push_str(&generate_local_temperature_block(loc, assess));
+    }
+    sections.push(temperature);
 
-    // Soil conditions
-    sections.push(generate_soil_section(data));
+    // Moisture section
+    let mut moisture = generate_moisture_section(data);
+    if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
+        moisture.push_str("\n\n");
+        moisture.push_str(&generate_local_moisture_block(loc, assess));
+    }
+    sections.push(moisture);
+
+    // Soil section
+    let mut soil = generate_soil_section(data);
+    if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
+        soil.push_str("\n\n");
+        soil.push_str(&generate_local_soil_block(loc, assess));
+    }
+    sections.push(soil);
+
+    // Overall suitability summary at the end if local provided
+    if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
+        sections.push(generate_suitability_summary(loc, assess));
+    }
 
     sections.join("\n\n")
+}
+
+/// Generate the "In [Location]" temperature comparison block
+fn generate_local_temperature_block(
+    local: &LocalConditions,
+    assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
+) -> String {
+    let temp = &assessment.temperature;
+    let mut lines = Vec::new();
+
+    lines.push(format!("#### In {}", local.name));
+    lines.push(String::new());
+
+    // Temperature comparison table
+    lines.push("| Parameter | Your Location | Plant Range | Status |".to_string());
+    lines.push("|-----------|---------------|-------------|--------|".to_string());
+
+    // Frost days - convert dekadal to annual for display
+    if let Some(ref comp) = temp.frost_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Frost days/year | {:.0} | {:.0}–{:.0} | {} |",
+            dekadal_to_annual(comp.local_value),
+            dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95),
+            status
+        ));
+    }
+
+    // Tropical nights - convert dekadal to annual for display
+    if let Some(ref comp) = temp.tropical_nights_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Warm nights (>20°C) | {:.0} | {:.0}–{:.0} | {} |",
+            dekadal_to_annual(comp.local_value),
+            dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95),
+            status
+        ));
+    }
+
+    if let Some(ref comp) = temp.growing_season_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Growing season (days) | {:.0} | {:.0}–{:.0} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    // Issues and recommendations
+    if !temp.issues.is_empty() || !temp.interventions.is_empty() {
+        lines.push(String::new());
+
+        // Separate severe from minor
+        let severe: Vec<_> = temp.issues.iter()
+            .filter(|i| i.contains("not found") || i.contains("Significantly"))
+            .collect();
+        let minor: Vec<_> = temp.issues.iter()
+            .filter(|i| !i.contains("not found") && !i.contains("Significantly"))
+            .collect();
+
+        if !severe.is_empty() {
+            for issue in &severe {
+                lines.push(format!("⚠️ **{}**", issue));
+            }
+        }
+        if !minor.is_empty() {
+            for issue in &minor {
+                lines.push(format!("- {}", issue));
+            }
+        }
+        if !temp.interventions.is_empty() {
+            for intervention in &temp.interventions {
+                lines.push(format!("→ {}", intervention));
+            }
+        }
+    }
+
+    lines.join("\n")
+}
+
+/// Generate the "In [Location]" moisture comparison block
+fn generate_local_moisture_block(
+    local: &LocalConditions,
+    assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
+) -> String {
+    let moisture = &assessment.moisture;
+    let mut lines = Vec::new();
+
+    lines.push(format!("#### In {}", local.name));
+    lines.push(String::new());
+
+    lines.push("| Parameter | Your Location | Plant Range | Status |".to_string());
+    lines.push("|-----------|---------------|-------------|--------|".to_string());
+
+    if let Some(ref comp) = moisture.rainfall_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Annual rainfall (mm) | {:.0} | {:.0}–{:.0} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    if let Some(ref comp) = moisture.dry_days_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Max dry spell (days) | {:.0} | {:.0}–{:.0} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    if let Some(ref comp) = moisture.wet_days_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Max wet spell (days) | {:.0} | {:.0}–{:.0} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    // Issues and recommendations
+    if !moisture.issues.is_empty() || !moisture.recommendations.is_empty() {
+        lines.push(String::new());
+        for issue in &moisture.issues {
+            lines.push(format!("- {}", issue));
+        }
+        for rec in &moisture.recommendations {
+            lines.push(format!("→ {}", rec));
+        }
+    }
+
+    lines.join("\n")
+}
+
+/// Generate the "In [Location]" soil comparison block
+fn generate_local_soil_block(
+    local: &LocalConditions,
+    assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
+) -> String {
+    let soil = &assessment.soil;
+    let texture = &assessment.texture;
+    let mut lines = Vec::new();
+
+    lines.push(format!("#### In {}", local.name));
+    lines.push(String::new());
+
+    lines.push("| Parameter | Your Location | Plant Range | Status |".to_string());
+    lines.push("|-----------|---------------|-------------|--------|".to_string());
+
+    // Soil pH
+    if let Some(ref comp) = soil.ph_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Soil pH | {:.1} | {:.1}–{:.1} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    // Soil CEC
+    if let Some(ref comp) = soil.cec_comparison {
+        let status = fit_symbol(comp.fit);
+        lines.push(format!(
+            "| Fertility (CEC) | {:.0} | {:.0}–{:.0} | {} |",
+            comp.local_value, comp.q05, comp.q95, status
+        ));
+    }
+
+    // Texture
+    if let Some(ref local_tex) = texture.local_texture {
+        let compat = match texture.compatibility {
+            crate::encyclopedia::suitability::assessment::TextureCompatibility::Ideal => "✓",
+            crate::encyclopedia::suitability::assessment::TextureCompatibility::Good => "✓",
+            crate::encyclopedia::suitability::assessment::TextureCompatibility::Marginal => "~",
+            crate::encyclopedia::suitability::assessment::TextureCompatibility::Poor => "✗",
+            crate::encyclopedia::suitability::assessment::TextureCompatibility::Unknown => "?",
+        };
+        let plant_tex_name = texture.plant_texture.as_ref()
+            .map(|t| t.class_name.as_str())
+            .unwrap_or("Unknown");
+        lines.push(format!(
+            "| Soil texture | {} | {} | {} |",
+            local_tex.class_name, plant_tex_name, compat
+        ));
+    }
+
+    // Amendments
+    let all_amendments: Vec<_> = soil.amendments.iter()
+        .chain(texture.amendments.iter())
+        .collect();
+
+    if !all_amendments.is_empty() {
+        lines.push(String::new());
+        for amendment in all_amendments {
+            lines.push(format!("→ {}", amendment));
+        }
+    }
+
+    lines.join("\n")
+}
+
+/// Generate overall suitability summary including climate zone assessment
+fn generate_suitability_summary(
+    local: &LocalConditions,
+    assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
+) -> String {
+    use crate::encyclopedia::suitability::assessment::OverallRating;
+    use crate::encyclopedia::suitability::climate_tier::OccurrenceFit;
+
+    let climate = &assessment.climate_zone;
+    let mut lines = Vec::new();
+
+    lines.push(format!("### Suitability for {}", local.name));
+    lines.push(String::new());
+
+    // Climate zone match
+    let zone_status = match climate.occurrence_fit {
+        OccurrenceFit::Observed => "✓ observed",
+        OccurrenceFit::Related => "~ related",
+        OccurrenceFit::NotObserved => "✗ not observed",
+    };
+    lines.push(format!(
+        "**Climate zone**: {} ({}) — plant found in: {}",
+        local.climate_tier().display_name(),
+        zone_status,
+        climate.plant_tiers.observed_tiers_text()
+    ));
+    lines.push(String::new());
+
+    // Overall verdict
+    let (emoji, verdict) = match assessment.overall_rating {
+        OverallRating::Ideal => ("✅", "Ideal conditions"),
+        OverallRating::Good => ("👍", "Good with minor adaptations"),
+        OverallRating::Challenging => ("⚠️", "Challenging - significant intervention needed"),
+        OverallRating::NotRecommended => ("❌", "Not recommended"),
+    };
+
+    lines.push(format!("**Overall**: {} {}", emoji, verdict));
+
+    if !assessment.summary.is_empty() {
+        lines.push(String::new());
+        lines.push(assessment.summary.clone());
+    }
+
+    lines.join("\n")
+}
+
+/// Convert EnvelopeFit to display symbol
+fn fit_symbol(fit: EnvelopeFit) -> &'static str {
+    match fit {
+        EnvelopeFit::WithinRange => "✓",
+        EnvelopeFit::BelowRange => "↓",
+        EnvelopeFit::AboveRange => "↑",
+    }
 }
 
 /// Try to get EIVE value from either column format
@@ -91,10 +409,9 @@ fn light_advice(eive_l: f64) -> String {
     }
 }
 
-fn generate_climate_section(data: &HashMap<String, Value>) -> String {
+fn generate_temperature_section(data: &HashMap<String, Value>) -> String {
     let mut lines = Vec::new();
 
-    // ==================== TEMPERATURE SECTION ====================
     lines.push("### Temperature".to_string());
     lines.push(String::new());
 
@@ -136,21 +453,25 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     let cfd_q95 = get_f64(data, "CFD_q95");
 
     if let Some(fd50) = fd_q50 {
-        let frost_regime = classify_frost_regime(fd50);
+        // Convert dekadal means to annual values for display
+        let fd50_annual = dekadal_to_annual(fd50);
+        let fd_q05_annual = fd_q05.map(dekadal_to_annual);
+        let fd_q95_annual = fd_q95.map(dekadal_to_annual);
+        let frost_regime = classify_frost_regime(fd50_annual);
 
-        if fd50 < 5.0 {
+        if fd50_annual < 5.0 {
             lines.push(format!(
                 "**Frost**: {:.0} days/year below 0°C (up to {} in coldest locations)",
-                fd50,
-                fmt_f64(fd_q95, 0)
+                fd50_annual,
+                fmt_f64(fd_q95_annual, 0)
             ));
             lines.push(format!("*{}*", frost_regime));
         } else {
             lines.push(format!(
                 "**Frost days**: {:.0} days/year below 0°C ({}-{} across locations)",
-                fd50,
-                fmt_f64(fd_q05, 0),
-                fmt_f64(fd_q95, 0)
+                fd50_annual,
+                fmt_f64(fd_q05_annual, 0),
+                fmt_f64(fd_q95_annual, 0)
             ));
             lines.push(format!("*{}*", frost_regime));
 
@@ -178,16 +499,19 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     let su_q50 = get_f64(data, "SU_q50");
     let su_q95 = get_f64(data, "SU_q95");
     if let Some(su50) = su_q50 {
-        if su50 >= 5.0 {
+        // Convert dekadal means to annual values for display
+        let su50_annual = dekadal_to_annual(su50);
+        let su_q95_annual = su_q95.map(dekadal_to_annual);
+        if su50_annual >= 5.0 {
             lines.push(format!(
                 "**Hot days**: {:.0} days/year with max >25°C (up to {:.0} in warmest locations)",
-                su50,
-                su_q95.unwrap_or(su50)
+                su50_annual,
+                su_q95_annual.unwrap_or(su50_annual)
             ));
-            let heat_regime = if su50 > 120.0 { "Very hot summers" }
-                else if su50 > 90.0 { "Hot summers" }
-                else if su50 > 60.0 { "Warm summers" }
-                else if su50 > 30.0 { "Mild summers" }
+            let heat_regime = if su50_annual > 120.0 { "Very hot summers" }
+                else if su50_annual > 90.0 { "Hot summers" }
+                else if su50_annual > 60.0 { "Warm summers" }
+                else if su50_annual > 30.0 { "Mild summers" }
                 else { "Cool summers" };
             lines.push(format!("*{}*", heat_regime));
         }
@@ -198,27 +522,32 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     let tr_q50 = get_f64(data, "TR_q50");
     let tr_q95 = get_f64(data, "TR_q95");
     if let Some(tr50) = tr_q50 {
-        if tr50 < 1.0 {
+        // Convert dekadal means to annual values for display
+        let tr50_annual = dekadal_to_annual(tr50);
+        let tr_q05_annual = tr_q05.map(dekadal_to_annual);
+        let tr_q95_annual = tr_q95.map(dekadal_to_annual);
+
+        if tr50_annual < 1.0 {
             // Show range even when rare
-            let range_str = match (tr_q05, tr_q95) {
-                (Some(_lo), Some(hi)) if hi >= 1.0 => format!(" (up to {:.0} in warmest locations)", hi),
+            let range_str = match tr_q95_annual {
+                Some(hi) if hi >= 1.0 => format!(" (up to {:.0} in warmest locations)", hi),
                 _ => String::new(),
             };
             lines.push(format!("**Warm nights**: Rare{} (nights with min >20°C)", range_str));
             lines.push("*Cool nights year-round*".to_string());
         } else {
-            let range_str = match (tr_q05, tr_q95) {
+            let range_str = match (tr_q05_annual, tr_q95_annual) {
                 (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
                 (None, Some(hi)) => format!(" (up to {:.0} in warmest locations)", hi),
                 _ => String::new(),
             };
             lines.push(format!(
                 "**Warm nights**: {:.0} nights/year with min >20°C{}",
-                tr50, range_str
+                tr50_annual, range_str
             ));
-            if tr50 > 30.0 {
+            if tr50_annual > 30.0 {
                 lines.push("*Warm nights common - may need heat-tolerant varieties*".to_string());
-            } else if tr50 > 10.0 {
+            } else if tr50_annual > 10.0 {
                 lines.push("*Occasional warm nights in summer*".to_string());
             } else {
                 lines.push("*Few warm nights*".to_string());
@@ -266,8 +595,12 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
         }
     }
 
-    // ==================== MOISTURE SECTION ====================
-    lines.push(String::new());
+    lines.join("\n")
+}
+
+fn generate_moisture_section(data: &HashMap<String, Value>) -> String {
+    let mut lines = Vec::new();
+
     lines.push("### Moisture".to_string());
     lines.push(String::new());
 
@@ -309,13 +642,15 @@ fn generate_climate_section(data: &HashMap<String, Value>) -> String {
     // Warm-Wet Days (WW) - days with Tmax >25°C AND precip >1mm (disease risk indicator)
     let ww_q50 = get_f64(data, "WW_q50");
     if let Some(ww50) = ww_q50 {
+        // Convert seasonal mean to annual value for display
+        let ww50_annual = seasonal_to_annual(ww50);
         lines.push(format!(
             "**Disease pressure**: {:.0} warm-wet days/year (days >25°C with rain)",
-            ww50
+            ww50_annual
         ));
-        if ww50 > 150.0 {
+        if ww50_annual > 150.0 {
             lines.push("*High (humid climate) - likely disease-resistant; still provide good airflow*".to_string());
-        } else if ww50 > 80.0 {
+        } else if ww50_annual > 80.0 {
             lines.push("*Moderate - monitor for mildew/rust in humid periods*".to_string());
         } else {
             lines.push("*Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*".to_string());

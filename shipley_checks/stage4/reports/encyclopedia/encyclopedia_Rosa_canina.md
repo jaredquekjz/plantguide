@@ -3,7 +3,7 @@ wfo_id: "wfo-0001005999"
 scientific_name: "Rosa canina"
 family: "Rosaceae"
 genus: "Rosa"
-generated: "2025-11-28T13:38:25Z"
+generated: "2025-11-29T03:23:19Z"
 version: "2.0"
 ---
 
@@ -50,9 +50,13 @@ Open borders work well; tolerates some afternoon shade.
 
 **Range**: 24°C warmest month, -1°C coldest month
 *Range: -10°C to 31°C across all population locations*
-**Frost**: 2 days/year below 0°C (up to 4 in coldest locations)
-*Frost-free to occasional*
-**Warm nights**: Rare (nights with min >20°C)
+**Frost days**: 79 days/year below 0°C (13-153 across locations)
+*Long frost season*
+**Cold spells**: 7 consecutive frost days typical, up to 22
+*1-2 week freezes*
+**Hot days**: 37 days/year with max >25°C (up to 91 in warmest locations)
+*Mild summers*
+**Warm nights**: Rare (up to 16 in warmest locations) (nights with min >20°C)
 *Cool nights year-round*
 **Day-night swing**: 8°C typical daily range (6-12°C across locations)
 *Temperate - moderate variation*
@@ -64,7 +68,7 @@ Open borders work well; tolerates some afternoon shade.
 **Rainfall**: 764mm/year (439-1177mm across locations)
 **Dry spells**: 12 consecutive dry days typical, 26 in driest locations
 *Limited - Keep soil moist; don't let dry out*
-**Disease pressure**: 3 warm-wet days/year (days >25°C with rain)
+**Disease pressure**: 14 warm-wet days/year (days >25°C with rain)
 *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
 **Wet spells**: 8 consecutive rainy days typical (up to 14 in wettest locations)
 *Moderate waterlogging tolerance - ensure drainage in heavy soils*

@@ -3,7 +3,7 @@ wfo_id: "wfo-0000213062"
 scientific_name: "Trifolium repens"
 family: "Leguminosae"
 genus: "Trifolium"
-generated: "2025-11-28T13:38:26Z"
+generated: "2025-11-29T03:23:20Z"
 version: "2.0"
 ---
 
@@ -50,10 +50,14 @@ Open borders work well; tolerates some afternoon shade.
 
 **Range**: 27°C warmest month, -4°C coldest month
 *Range: -17°C to 34°C across all population locations*
-**Frost**: 3 days/year below 0°C (up to 5 in coldest locations)
-*Frost-free to occasional*
-**Warm nights**: Rare (up to 3 in warmest locations) (nights with min >20°C)
-*Cool nights year-round*
+**Frost days**: 93 days/year below 0°C (1-195 across locations)
+*Long frost season*
+**Cold spells**: 9 consecutive frost days typical, up to 37
+*1-2 week freezes*
+**Hot days**: 55 days/year with max >25°C (up to 163 in warmest locations)
+*Mild summers*
+**Warm nights**: 3 nights/year with min >20°C (0-108 across locations)
+*Few warm nights*
 **Day-night swing**: 10°C typical daily range (7-14°C across locations)
 *Temperate - moderate variation*
 **Growing season**: 260 days with mean >5°C (~9 months)
@@ -64,7 +68,7 @@ Open borders work well; tolerates some afternoon shade.
 **Rainfall**: 934mm/year (443-1539mm across locations)
 **Dry spells**: 13 consecutive dry days typical, 28 in driest locations
 *Limited - Keep soil moist; don't let dry out*
-**Disease pressure**: 3 warm-wet days/year (days >25°C with rain)
+**Disease pressure**: 12 warm-wet days/year (days >25°C with rain)
 *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
 **Wet spells**: 7 consecutive rainy days typical (up to 16 in wettest locations)
 *Good drainage needed - avoid waterlogged soils*
@@ -195,8 +199,8 @@ Rapid but short-lived. Moderate nutrient demand; plan for succession or self-see
 ### Beneficial Predators
 **9 species documented** - natural pest control agents
 
-- **Beetles** (4): Cycloneda munda, Harmonia axyridis, Coccinella septempunctata, +1 more
-- **Flies** (3): Eupeodes luniger, Toxomerus marginatus, Eupeodes
+- **Beetles** (4): Cycloneda munda, Coccinella septempunctata, Coleomegilla maculata, +1 more
+- **Flies** (3): Eupeodes luniger, Eupeodes, Toxomerus marginatus
 - **Wasps** (1): Vespula vulgaris
 - **Other Predators** (1): Histeridae
 

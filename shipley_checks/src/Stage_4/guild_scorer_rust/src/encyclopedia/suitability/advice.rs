@@ -14,6 +14,20 @@ use super::local_conditions::LocalConditions;
 use crate::encyclopedia::types::get_f64;
 use crate::encyclopedia::utils::texture::classify_texture_from_clay_sand;
 
+// ============================================================================
+// Unit Conversion Helpers
+// ============================================================================
+//
+// AgroClim indicators are stored as dekadal means (average per 10-day period).
+// For user-friendly display, we convert to annual values where appropriate.
+
+/// Convert dekadal mean to annual estimate (×36 dekads/year).
+/// Used for FD (frost days), TR (tropical nights).
+#[inline]
+fn dekadal_to_annual(value: f64) -> f64 {
+    value * 36.0
+}
+
 /// Generate the complete suitability section for an encyclopedia article
 pub fn generate_suitability_section(
     local: &LocalConditions,
@@ -129,6 +143,7 @@ fn build_temperature_assessment(
     let mut interventions = Vec::new();
 
     // Frost days comparison
+    // Note: FD is stored as dekadal means, so convert distance to annual for threshold comparison
     if let Some(comp) = compare_to_envelope_opt(
         local.frost_days,
         get_f64(plant_data, "FD_q05"),
@@ -136,13 +151,15 @@ fn build_temperature_assessment(
         get_f64(plant_data, "FD_q95"),
     ) {
         if comp.fit == EnvelopeFit::AboveRange {
-            if comp.distance_from_range > 50.0 {
+            // Convert dekadal distance to annual (×36) for intuitive thresholds
+            let annual_distance = dekadal_to_annual(comp.distance_from_range);
+            if annual_distance > 50.0 {
                 issues.push("Significantly more frost days than where this plant is observed".to_string());
-                interventions.push("Heated greenhouse required".to_string());
-            } else if comp.distance_from_range > 30.0 {
+                interventions.push("Consider cold-hardy alternatives from the same genus".to_string());
+            } else if annual_distance > 30.0 {
                 issues.push("More frost days than typical occurrence locations".to_string());
                 interventions.push("Winter protection essential".to_string());
-            } else if comp.distance_from_range > 10.0 {
+            } else if annual_distance > 10.0 {
                 issues.push("Slightly more frost than typical".to_string());
                 interventions.push("Consider fleece protection in cold snaps".to_string());
             }
@@ -151,6 +168,7 @@ fn build_temperature_assessment(
     }
 
     // Tropical nights comparison
+    // Note: TR is stored as dekadal means, so convert distance to annual for threshold comparison
     if let Some(comp) = compare_to_envelope_opt(
         local.tropical_nights,
         get_f64(plant_data, "TR_q05"),
@@ -158,9 +176,11 @@ fn build_temperature_assessment(
         get_f64(plant_data, "TR_q95"),
     ) {
         if comp.fit == EnvelopeFit::AboveRange {
-            if comp.distance_from_range > 100.0 {
+            // Convert dekadal distance to annual (×36) for intuitive thresholds
+            let annual_distance = dekadal_to_annual(comp.distance_from_range);
+            if annual_distance > 100.0 {
                 issues.push("This plant is not found in locations with year-round warm nights".to_string());
-            } else if comp.distance_from_range > 30.0 {
+            } else if annual_distance > 30.0 {
                 issues.push("Warmer nights than where this plant typically occurs".to_string());
                 interventions.push("Consider shade and root cooling".to_string());
             }
@@ -178,7 +198,7 @@ fn build_temperature_assessment(
         if comp.fit == EnvelopeFit::BelowRange {
             if comp.distance_from_range > 60.0 {
                 issues.push("Growing season much shorter than where this plant occurs".to_string());
-                interventions.push("Greenhouse cultivation recommended".to_string());
+                interventions.push("Choose species adapted to shorter growing seasons".to_string());
             } else if comp.distance_from_range > 30.0 {
                 issues.push("Shorter growing season than typical occurrence locations".to_string());
                 interventions.push("Early start under cover recommended".to_string());
@@ -507,7 +527,7 @@ fn generate_temperature_section(assessment: &SuitabilityAssessment) -> String {
     lines.push("| Parameter | Your Location | Plant Range (5th-95th) | Typical |".to_string());
     lines.push("|-----------|---------------|------------------------|---------|".to_string());
 
-    // Frost days
+    // Frost days - convert dekadal to annual for display
     if let Some(ref comp) = temp.frost_comparison {
         let status = match comp.fit {
             EnvelopeFit::WithinRange => "✓",
@@ -516,11 +536,13 @@ fn generate_temperature_section(assessment: &SuitabilityAssessment) -> String {
         };
         lines.push(format!(
             "| Frost days | {:.0} {} | {:.0}–{:.0} | {:.0} |",
-            comp.local_value, status, comp.q05, comp.q95, comp.q50
+            dekadal_to_annual(comp.local_value), status,
+            dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95),
+            dekadal_to_annual(comp.q50)
         ));
     }
 
-    // Tropical nights
+    // Tropical nights - convert dekadal to annual for display
     if let Some(ref comp) = temp.tropical_nights_comparison {
         let status = match comp.fit {
             EnvelopeFit::WithinRange => "✓",
@@ -529,7 +551,9 @@ fn generate_temperature_section(assessment: &SuitabilityAssessment) -> String {
         };
         lines.push(format!(
             "| Warm nights (>20°C) | {:.0} {} | {:.0}–{:.0} | {:.0} |",
-            comp.local_value, status, comp.q05, comp.q95, comp.q50
+            dekadal_to_annual(comp.local_value), status,
+            dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95),
+            dekadal_to_annual(comp.q50)
         ));
     }
 

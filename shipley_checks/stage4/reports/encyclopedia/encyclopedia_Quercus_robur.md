@@ -3,7 +3,7 @@ wfo_id: "wfo-0000292858"
 scientific_name: "Quercus robur"
 family: "Fagaceae"
 genus: "Quercus"
-generated: "2025-11-28T13:38:25Z"
+generated: "2025-11-29T03:23:18Z"
 version: "2.0"
 ---
 
@@ -50,9 +50,13 @@ Open borders work well; tolerates some afternoon shade.
 
 **Range**: 26°C warmest month, 0°C coldest month
 *Range: -2°C to 30°C across all population locations*
-**Frost**: 2 days/year below 0°C (up to 3 in coldest locations)
-*Frost-free to occasional*
-**Warm nights**: Rare (nights with min >20°C)
+**Frost days**: 62 days/year below 0°C (4-90 across locations)
+*Long frost season*
+**Cold spells**: 5 consecutive frost days typical, up to 7
+*Short cold snaps*
+**Hot days**: 54 days/year with max >25°C (up to 93 in warmest locations)
+*Mild summers*
+**Warm nights**: Rare (up to 11 in warmest locations) (nights with min >20°C)
 *Cool nights year-round*
 **Day-night swing**: 10°C typical daily range (8-12°C across locations)
 *Temperate - moderate variation*
@@ -64,7 +68,7 @@ Open borders work well; tolerates some afternoon shade.
 **Rainfall**: 611mm/year (416-1515mm across locations)
 **Dry spells**: 16 consecutive dry days typical, 26 in driest locations
 *Limited - Water during 2+ week dry periods*
-**Disease pressure**: 2 warm-wet days/year (days >25°C with rain)
+**Disease pressure**: 10 warm-wet days/year (days >25°C with rain)
 *Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens*
 **Wet spells**: 10 consecutive rainy days typical (up to 16 in wettest locations)
 *Moderate waterlogging tolerance - ensure drainage in heavy soils*

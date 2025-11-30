@@ -7,3 +7,6 @@ Cargo.lock
 *.swo
 *~
 .DS_Store
+
+# Tailwind binary (downloaded, too large for git)
+tailwindcss

@@ -6,6 +6,8 @@
 #[cfg(feature = "api")]
 use guild_scorer_rust::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi, RelatedSpecies};
 #[cfg(feature = "api")]
+use guild_scorer_rust::encyclopedia::suitability::local_conditions::{LocalConditions, london, singapore, helsinki, test_locations};
+#[cfg(feature = "api")]
 use guild_scorer_rust::query_engine::QueryEngine;
 #[cfg(feature = "api")]
 use guild_scorer_rust::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
@@ -28,6 +30,8 @@ use datafusion::arrow::array::{StringArray, LargeStringArray, StringViewArray, A
 const PROJECT_ROOT: &str = "/home/olier/ellenberg";
 #[cfg(feature = "api")]
 const OUTPUT_DIR: &str = "/home/olier/ellenberg/shipley_checks/stage4/reports/encyclopedia";
+#[cfg(feature = "api")]
+const OUTPUT_DIR_SUITABILITY: &str = "/home/olier/ellenberg/shipley_checks/stage4/reports/encyclopedia_suitability";
 
 #[cfg(feature = "api")]
 const SAMPLE_PLANTS: &[(&str, &str, &str)] = &[
@@ -695,8 +699,9 @@ fn title_case(s: &str) -> String {
 async fn main() -> anyhow::Result<()> {
     println!("Generating sample encyclopedia articles...\n");
 
-    // Ensure output directory exists
+    // Ensure output directories exist
     fs::create_dir_all(OUTPUT_DIR)?;
+    fs::create_dir_all(OUTPUT_DIR_SUITABILITY)?;
 
     // Initialize query engine and generator
     let engine = QueryEngine::new(PROJECT_ROOT).await?;
@@ -717,6 +722,17 @@ async fn main() -> anyhow::Result<()> {
     } else {
         println!("Warning: Could not load phylogenetic tree");
     }
+
+    // All test locations for suitability reports
+    let all_locations = test_locations();
+    println!("Test locations for suitability:");
+    for loc in &all_locations {
+        println!("  - {}", loc.name);
+    }
+    println!();
+
+    let mut generic_count = 0;
+    let mut suitability_count = 0;
 
     for (wfo_id, filename, description) in SAMPLE_PLANTS {
         println!("Generating: {} ({})", filename.replace('_', " "), description);
@@ -769,26 +785,60 @@ async fn main() -> anyhow::Result<()> {
             (vec![], 0)
         };
 
-        // Generate encyclopedia
+        // Generate generic encyclopedia (for Google/SEO)
         let markdown = generator.generate(
             wfo_id,
             &plant_data,
-            organism_counts,
-            fungal_counts,
-            organism_profile,
-            ranked_pathogens,
-            beneficial_fungi,
-            if related_species.is_empty() { None } else { Some(related_species) },
+            organism_counts.clone(),
+            fungal_counts.clone(),
+            organism_profile.clone(),
+            ranked_pathogens.clone(),
+            beneficial_fungi.clone(),
+            if related_species.is_empty() { None } else { Some(related_species.clone()) },
             genus_count,
         ).map_err(|e| anyhow::anyhow!(e))?;
 
-        // Save to file
+        // Save generic version
         let output_path = Path::new(OUTPUT_DIR).join(format!("encyclopedia_{}.md", filename));
         fs::write(&output_path, &markdown)?;
-        println!("  Saved: {}", output_path.display());
+        println!("  Saved generic: {}", output_path.display());
+        generic_count += 1;
+
+        // Generate location-specific encyclopedias for ALL test locations
+        for location in &all_locations {
+            // Create location suffix from name (e.g., "London, UK (Temperate)" -> "london")
+            let loc_suffix = location.name
+                .split(&[',', '('][..])
+                .next()
+                .unwrap_or("unknown")
+                .trim()
+                .to_lowercase()
+                .replace(' ', "_");
+
+            let markdown_suitability = generator.generate_with_suitability(
+                wfo_id,
+                &plant_data,
+                organism_counts.clone(),
+                fungal_counts.clone(),
+                organism_profile.clone(),
+                ranked_pathogens.clone(),
+                beneficial_fungi.clone(),
+                if related_species.is_empty() { None } else { Some(related_species.clone()) },
+                genus_count,
+                location,
+            ).map_err(|e| anyhow::anyhow!(e))?;
+
+            // Save suitability version
+            let output_path_suit = Path::new(OUTPUT_DIR_SUITABILITY)
+                .join(format!("encyclopedia_{}_{}.md", filename, loc_suffix));
+            fs::write(&output_path_suit, &markdown_suitability)?;
+            println!("  Saved with suitability: {}", output_path_suit.display());
+            suitability_count += 1;
+        }
     }
 
-    println!("\nDone! Generated {} encyclopedia articles.", SAMPLE_PLANTS.len());
+    println!("\nDone! Generated {} generic + {} location-specific encyclopedia articles.",
+        generic_count, suitability_count);
     Ok(())
 }
 

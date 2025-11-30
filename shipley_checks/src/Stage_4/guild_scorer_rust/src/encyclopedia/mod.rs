@@ -29,6 +29,8 @@ pub mod utils;
 pub mod sections;
 pub mod generator;
 pub mod suitability;
+pub mod view_models;
+pub mod view_builder;
 
 // Re-export public API
 pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};

@@ -22,7 +22,6 @@ use crate::encyclopedia::sections::{
 };
 use crate::encyclopedia::sections::s1_identity::RelatedSpecies;
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
-use crate::encyclopedia::suitability::advice::generate_suitability_section;
 
 /// Encyclopedia generator - stateless markdown generator.
 pub struct EncyclopediaGenerator;
@@ -104,11 +103,11 @@ impl EncyclopediaGenerator {
         self.join_sections(sections)
     }
 
-    /// Generate encyclopedia article with local suitability section appended.
+    /// Generate encyclopedia article with local suitability integrated into S2.
     ///
-    /// Same as `generate()` but adds a "Growing in [Location]" section at the end
-    /// with location-specific advice based on comparing local conditions against
-    /// the plant's occurrence envelope.
+    /// Same structure as `generate()` but S2 (Growing Requirements) includes
+    /// location-specific comparisons interweaved with each subsection, plus
+    /// an overall suitability summary.
     ///
     /// # Arguments
     /// * All arguments from `generate()` plus:
@@ -139,8 +138,8 @@ impl EncyclopediaGenerator {
             genus_species_count,
         ));
 
-        // S2: Growing Requirements
-        sections.push(s2_requirements::generate(plant_data));
+        // S2: Growing Requirements WITH local suitability interweaved
+        sections.push(s2_requirements::generate_with_local(plant_data, Some(local_conditions)));
 
         // S3: Maintenance Profile
         sections.push(s3_maintenance::generate(plant_data));
@@ -164,13 +163,6 @@ impl EncyclopediaGenerator {
             organism_counts.as_ref(),
             fungal_counts.as_ref(),
         ));
-
-        // S7: Local Suitability (NEW)
-        let plant_name = plant_data
-            .get("wfo_scientific_name")
-            .and_then(|v| v.as_str())
-            .unwrap_or("Unknown");
-        sections.push(generate_suitability_section(local_conditions, plant_data, plant_name));
 
         // Footer
         sections.push(generate_footer(wfo_id));
