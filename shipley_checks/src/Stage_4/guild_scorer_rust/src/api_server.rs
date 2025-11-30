@@ -38,6 +38,9 @@ use crate::scorer::GuildScorer;
 use crate::encyclopedia::{EncyclopediaGenerator, OrganismCounts, FungalCounts};
 
 #[cfg(feature = "api")]
+use crate::explanation::{ExplanationGenerator, Explanation};
+
+#[cfg(feature = "api")]
 use datafusion::arrow::array::RecordBatch;
 
 #[cfg(feature = "api")]
@@ -107,8 +110,9 @@ pub fn create_router(state: AppState) -> Router {
         // Suitability endpoint (JSON)
         .route("/api/suitability/:id", get(get_suitability))
 
-        // Guild scoring endpoint
+        // Guild scoring endpoints
         .route("/api/guilds/score", post(score_guild))
+        .route("/api/guilds/explain", post(explain_guild))
 
         // Middleware (applied in reverse order)
         .layer(CompressionLayer::new()) // gzip + brotli compression
@@ -348,6 +352,51 @@ async fn score_guild(
     });
 
     Ok(Json(response))
+}
+
+/// Generate full guild explanation with all analysis profiles
+#[cfg(feature = "api")]
+async fn explain_guild(
+    State(state): State<AppState>,
+    Json(payload): Json<GuildExplainRequest>,
+) -> Result<Json<Explanation>, AppError> {
+    let scorer = state.guild_scorer.clone();
+    let plant_ids = payload.plant_ids.clone();
+    let climate_tier = payload.climate_tier.clone().unwrap_or_else(|| "tier_3_humid_temperate".to_string());
+    let guild_size = plant_ids.len();
+
+    tracing::info!("Generating explanation for guild with {} plants", guild_size);
+
+    // CPU-bound work: run in blocking thread pool
+    let explanation = tokio::task::spawn_blocking(move || -> anyhow::Result<Explanation> {
+        // Score with explanation data
+        let (guild_score, fragments, guild_plants, m2_result, m3_result, organisms_df, m4_result, m5_result, fungi_df, m7_result, ecosystem_services) =
+            scorer.score_guild_with_explanation_parallel(&plant_ids)?;
+
+        // Generate complete explanation
+        let explanation = ExplanationGenerator::generate(
+            &guild_score,
+            &guild_plants,
+            &climate_tier,
+            fragments,
+            &m2_result,
+            &m3_result,
+            &organisms_df,
+            &m4_result,
+            &m5_result,
+            &fungi_df,
+            &m7_result,
+            &scorer.data().organism_categories,
+            &ecosystem_services,
+        )?;
+
+        Ok(explanation)
+    })
+    .await
+    .map_err(|e| AppError::Internal(format!("Task join error: {}", e)))?
+    .map_err(|e| AppError::Internal(format!("Explanation generation error: {}", e)))?;
+
+    Ok(Json(explanation))
 }
 
 /// Get suitability data for a plant at a location
@@ -650,6 +699,13 @@ fn default_top_k() -> usize {
 #[derive(serde::Deserialize)]
 struct GuildScoreRequest {
     plant_ids: Vec<String>,
+}
+
+#[cfg(feature = "api")]
+#[derive(serde::Deserialize)]
+struct GuildExplainRequest {
+    plant_ids: Vec<String>,
+    climate_tier: Option<String>,  // e.g., "tier_3_humid_temperate"
 }
 
 // ============================================================================
