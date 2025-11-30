@@ -261,11 +261,31 @@ The frontend is a separate Astro + Svelte + HTMX project that consumes the Rust 
 - Bits UI for accessible Svelte components
 - HTMX for HTML-over-the-wire interactions
 
-**Development:**
+**Local Development (Recommended):**
 ```bash
+# From ellenberg repo root - starts BOTH Rust API and Astro frontend
+cd /home/olier/ellenberg
+./dev.sh
+```
+
+This script:
+1. Kills any existing processes on ports 3000/4000
+2. Starts Rust API (port 3000) and waits for it to be healthy
+3. Starts Astro frontend (port 4000) with `--host` flag for network access
+4. Ctrl+C stops both services cleanly
+
+**Access locally:**
+- http://localhost:4000 (frontend)
+- http://192.168.1.103:4000 (from other machines on network)
+
+**Manual start (if needed):**
+```bash
+# Terminal 1: Rust API
+DATA_DIR=shipley_checks/stage4 cargo run --manifest-path shipley_checks/src/Stage_4/guild_scorer_rust/Cargo.toml --features api --bin api_server
+
+# Terminal 2: Astro frontend
 cd /home/olier/plantguide-frontend
-npm run dev                              # Local dev server (port 4000)
-RUST_API_URL=http://localhost:3000       # Calls local Rust API
+npm run dev -- --host
 ```
 
 **Deployment (use deploy.sh script):**
