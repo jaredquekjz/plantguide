@@ -113,13 +113,16 @@ impl SearchIndex {
                     None => continue,
                 };
 
-                // Get first common name (before semicolon)
-                let common_name = common_fn
-                    .and_then(|f| f(i))
-                    .and_then(|s| {
-                        let first = s.split(';').next()?.trim();
-                        if first.is_empty() { None } else { Some(first.to_string()) }
-                    });
+                // Get all common names (semicolon-separated)
+                let common_names_raw = common_fn.and_then(|f| f(i)).unwrap_or("");
+                let common_names: Vec<String> = common_names_raw
+                    .split(';')
+                    .map(|s| s.trim().to_string())
+                    .filter(|s| !s.is_empty())
+                    .collect();
+
+                // First common name for display
+                let common_name = common_names.first().cloned();
 
                 let family = family_fn.and_then(|f| f(i)).unwrap_or("").to_string();
                 let genus = genus_fn.and_then(|f| f(i)).unwrap_or("").to_string();
@@ -137,11 +140,19 @@ impl SearchIndex {
                     search_terms.push((genus_lower.clone(), plant_idx));
                 }
 
-                // 3. Common name (first one, normalized)
-                if let Some(ref cn) = common_name {
+                // 3. ALL common names (for "coconut", "coconut palm", etc.)
+                for cn in &common_names {
                     let cn_lower = cn.to_lowercase();
                     if !cn_lower.is_empty() {
-                        search_terms.push((cn_lower, plant_idx));
+                        // Add full name
+                        search_terms.push((cn_lower.clone(), plant_idx));
+
+                        // Also index individual words (for "oak" matching "white oak")
+                        for word in cn_lower.split_whitespace() {
+                            if word.len() >= 3 && word != &cn_lower {
+                                search_terms.push((word.to_string(), plant_idx));
+                            }
+                        }
                     }
                 }
 

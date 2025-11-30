@@ -244,6 +244,59 @@ ssh root@134.199.166.0 "curl http://localhost:3000/health"
 └── templates/              # HTML templates (if external)
 ```
 
+### Frontend Repository (ASH Stack)
+
+**Location**: `/home/olier/plantguide-frontend/` (separate git repository)
+
+The frontend is a separate Astro + Svelte + HTMX project that consumes the Rust JSON API. This follows the ASH Stack pattern where:
+- **Rust** (port 3000): Pure JSON API (headless) - data and logic only
+- **Astro** (port 4000): ALL HTML rendering, SSR orchestration
+- **HTMX**: Simple HTML fragment swapping (search, location switching)
+- **Svelte**: Complex widgets only (Guild Builder)
+
+**Stack:**
+- Astro 4.x with Node SSR adapter
+- Svelte 5 for interactive islands
+- DaisyUI + Tailwind CSS (Night Garden theme)
+- Bits UI for accessible Svelte components
+- HTMX for HTML-over-the-wire interactions
+
+**Development:**
+```bash
+cd /home/olier/plantguide-frontend
+npm run dev                              # Local dev server (port 4000)
+RUST_API_URL=http://localhost:3000       # Calls local Rust API
+```
+
+**Deployment (use deploy.sh script):**
+```bash
+# From ellenberg repo root - deploys both API and frontend
+./deploy.sh all
+
+# Or deploy individually
+./deploy.sh api       # Rust API only
+./deploy.sh frontend  # Astro frontend only
+```
+
+**Manual frontend deployment (if needed):**
+```bash
+cd /home/olier/plantguide-frontend
+npm run build
+rsync -avz --delete dist/ root@134.199.166.0:/opt/plantguide-frontend/dist/
+ssh root@134.199.166.0 "systemctl restart plantguide-frontend"
+```
+
+**Server paths:**
+- API: `/opt/plantguide/` (binary, templates, data)
+- Frontend: `/opt/plantguide-frontend/dist/` (Astro SSR)
+
+**API Flow:**
+```
+Browser → Caddy (80) → Astro (4000) → Rust API (3000) → Parquet files
+                ↓
+         HTMX swaps HTML fragments from Astro endpoints
+```
+
 ## Stage 4: Guild Builder & Encyclopedia Pipeline
 
 **Master Script (ground truth)**: `shipley_checks/src/Stage_4/run_complete_pipeline_phase0_to_4.sh`
