@@ -67,7 +67,7 @@ fn build_identity_card(
         .to_string();
 
     let common_names = get_str(data, "vernacular_name_en")
-        .map(|s| s.split(';').map(|n| n.trim().to_string()).collect())
+        .map(|s| s.split(';').map(|n| to_title_case(n.trim())).collect())
         .unwrap_or_default();
 
     let chinese_names = get_str(data, "vernacular_name_zh")
@@ -112,6 +112,7 @@ fn build_identity_card(
             scientific_name: rel.scientific_name.clone(),
             common_name: rel.common_name.clone(),
             relatedness: classify_relatedness(rel.distance),
+            distance: rel.distance,
         }).collect()
     }).unwrap_or_default();
 
@@ -160,46 +161,63 @@ fn classify_growth(growth_form: Option<&str>, data: &HashMap<String, Value>) -> 
 
 fn describe_height(h: f64) -> String {
     if h > 20.0 {
-        format!("{:.0}m — Large tree, needs significant space", h)
+        "Needs significant space".to_string()
     } else if h > 10.0 {
-        format!("{:.0}m — Medium tree", h)
+        "Medium tree".to_string()
     } else if h > 5.0 {
-        format!("{:.0}m — Small tree / large shrub", h)
+        "Small tree".to_string()
     } else if h > 2.0 {
-        format!("{:.1}m — Medium shrub", h)
+        "Shrub".to_string()
     } else if h > 0.5 {
-        format!("{:.1}m — Small shrub / tall herb", h)
+        "Low shrub".to_string()
     } else {
-        format!("{:.0}cm — Ground cover", h * 100.0)
+        "Ground cover".to_string()
     }
+}
+
+/// Convert string to Title Case
+fn to_title_case(s: &str) -> String {
+    s.split_whitespace()
+        .map(|word| {
+            let mut chars = word.chars();
+            match chars.next() {
+                None => String::new(),
+                Some(first) => {
+                    let rest: String = chars.collect();
+                    format!("{}{}", first.to_uppercase(), rest.to_lowercase())
+                }
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
 }
 
 fn describe_leaf_size(la_mm2: f64) -> String {
     let la_cm2 = la_mm2 / 100.0;
     if la_cm2 > 100.0 {
-        "Very large leaves".to_string()
+        "Very large".to_string()
     } else if la_cm2 > 30.0 {
-        "Large leaves".to_string()
+        "Large".to_string()
     } else if la_cm2 > 10.0 {
-        "Medium-sized leaves".to_string()
+        "Medium".to_string()
     } else if la_cm2 > 2.0 {
-        "Small leaves".to_string()
+        "Small".to_string()
     } else {
-        "Very small leaves / needles".to_string()
+        "Very small".to_string()
     }
 }
 
 fn describe_seed_size(mass_mg: f64) -> String {
     if mass_mg > 10000.0 {
-        "Very large seeds / nuts".to_string()
+        "Very large".to_string()
     } else if mass_mg > 1000.0 {
-        "Large seeds".to_string()
+        "Large".to_string()
     } else if mass_mg > 100.0 {
-        "Medium seeds".to_string()
+        "Medium".to_string()
     } else if mass_mg > 10.0 {
-        "Small seeds".to_string()
+        "Small".to_string()
     } else {
-        "Tiny seeds".to_string()
+        "Tiny".to_string()
     }
 }
 
@@ -422,6 +440,31 @@ fn build_soil_section(
 
     let texture_summary = describe_soil_texture(data);
 
+    // Build detailed texture breakdown
+    let texture_details = build_soil_texture_details(data);
+
+    // Fertility (CEC)
+    let fertility = get_f64(data, "cec_0_5cm_q50").map(|cec| {
+        let min = get_f64(data, "cec_0_5cm_q05").unwrap_or(cec * 0.8);
+        let max = get_f64(data, "cec_0_5cm_q95").unwrap_or(cec * 1.2);
+        SoilParameter {
+            value: cec,
+            range: format!("{:.0}–{:.0} cmol/kg", min, max),
+            interpretation: interpret_cec(cec),
+        }
+    });
+
+    // Organic carbon
+    let organic_carbon = get_f64(data, "soc_0_5cm_q50").map(|soc| {
+        let min = get_f64(data, "soc_0_5cm_q05").unwrap_or(soc * 0.5);
+        let max = get_f64(data, "soc_0_5cm_q95").unwrap_or(soc * 1.5);
+        SoilParameter {
+            value: soc,
+            range: format!("{:.0}–{:.0} g/kg", min, max),
+            interpretation: interpret_soc(soc),
+        }
+    });
+
     let comparisons = if let (Some(_loc), Some(assess)) = (local, assessment) {
         build_soil_comparisons(&assess.soil)
     } else {
@@ -434,11 +477,98 @@ fn build_soil_section(
 
     SoilSection {
         texture_summary,
+        texture_details,
         ph,
-        fertility: None,
-        organic_carbon: None,
+        fertility,
+        organic_carbon,
         comparisons,
         advice,
+    }
+}
+
+fn build_soil_texture_details(data: &HashMap<String, Value>) -> Option<SoilTextureDetails> {
+    let sand_q50 = get_f64(data, "sand_0_5cm_q50")?;
+    let silt_q50 = get_f64(data, "silt_0_5cm_q50")?;
+    let clay_q50 = get_f64(data, "clay_0_5cm_q50")?;
+
+    let sand = TextureComponent {
+        typical: sand_q50,
+        min: get_f64(data, "sand_0_5cm_q05").unwrap_or(sand_q50 * 0.7),
+        max: get_f64(data, "sand_0_5cm_q95").unwrap_or(sand_q50 * 1.3),
+    };
+
+    let silt = TextureComponent {
+        typical: silt_q50,
+        min: get_f64(data, "silt_0_5cm_q05").unwrap_or(silt_q50 * 0.7),
+        max: get_f64(data, "silt_0_5cm_q95").unwrap_or(silt_q50 * 1.3),
+    };
+
+    let clay = TextureComponent {
+        typical: clay_q50,
+        min: get_f64(data, "clay_0_5cm_q05").unwrap_or(clay_q50 * 0.7),
+        max: get_f64(data, "clay_0_5cm_q95").unwrap_or(clay_q50 * 1.3),
+    };
+
+    let usda_class = classify_usda_texture(sand_q50, clay_q50);
+    let (drainage, retention, interp) = interpret_texture(sand_q50, clay_q50);
+
+    Some(SoilTextureDetails {
+        sand,
+        silt,
+        clay,
+        usda_class,
+        drainage,
+        water_retention: retention,
+        interpretation: interp,
+        triangle_x: Some(sand_q50),
+        triangle_y: Some(clay_q50),
+    })
+}
+
+fn classify_usda_texture(sand: f64, clay: f64) -> String {
+    // Simplified USDA texture classification
+    if clay >= 40.0 {
+        "Clay".to_string()
+    } else if sand >= 70.0 && clay < 15.0 {
+        "Sandy".to_string()
+    } else if clay >= 27.0 && sand >= 20.0 && sand < 45.0 {
+        "Clay Loam".to_string()
+    } else if sand >= 52.0 && clay < 20.0 {
+        "Sandy Loam".to_string()
+    } else if clay < 27.0 && sand < 52.0 {
+        "Loam".to_string()
+    } else {
+        "Loam".to_string()
+    }
+}
+
+fn interpret_texture(sand: f64, clay: f64) -> (String, String, String) {
+    if clay >= 40.0 {
+        ("Poor".to_string(), "Excellent".to_string(), "Heavy clay soil; may need drainage improvement.".to_string())
+    } else if sand >= 70.0 {
+        ("Excellent".to_string(), "Poor".to_string(), "Sandy soil; drains quickly, needs frequent watering.".to_string())
+    } else {
+        ("Good".to_string(), "Good".to_string(), "Balanced loamy soil; ideal for most plants.".to_string())
+    }
+}
+
+fn interpret_cec(cec: f64) -> String {
+    if cec >= 25.0 {
+        "High fertility - soil holds nutrients well; reduces fertilizer needs.".to_string()
+    } else if cec >= 15.0 {
+        "Moderate fertility - reasonable nutrient retention.".to_string()
+    } else {
+        "Low fertility - nutrients may leach; benefits from organic matter.".to_string()
+    }
+}
+
+fn interpret_soc(soc: f64) -> String {
+    if soc >= 40.0 {
+        "High organic content - excellent soil biology and structure.".to_string()
+    } else if soc >= 20.0 {
+        "Moderate organic content - healthy soil.".to_string()
+    } else {
+        "Low organic content - add compost to improve.".to_string()
     }
 }
 
@@ -700,11 +830,209 @@ fn build_services(data: &HashMap<String, Value>) -> EcosystemServices {
         });
     }
 
+    // Build ecosystem ratings from CSR-derived data
+    let ratings = build_ecosystem_ratings(data, nitrogen_fixer);
+
     EcosystemServices {
+        ratings: Some(ratings),
         services,
         nitrogen_fixer,
         pollinator_score: get_f64(data, "ecoserv_pollination").map(|p| (p * 100.0) as u8),
         carbon_storage: get_f64(data, "ecoserv_carbon").map(|c| format!("{:.0}%", c * 100.0)),
+    }
+}
+
+/// Build all 10 ecosystem service ratings from CSR-derived calculations
+fn build_ecosystem_ratings(data: &HashMap<String, Value>, is_n_fixer: bool) -> EcosystemRatings {
+    // Get CSR values for deriving ratings
+    let (c, s, r) = get_csr_values(data);
+
+    // NPP: Higher C = more productivity
+    let npp_score = (c / 20.0).min(5.0);
+    let npp_rating = score_to_rating(npp_score);
+
+    // Decomposition: Higher R = faster decomposition
+    let decomp_score = ((r + c * 0.5) / 20.0).min(5.0);
+    let decomp_rating = score_to_rating(decomp_score);
+
+    // Nutrient cycling: Balanced CSR = good cycling
+    let cycling_score = (4.0 - (c - 33.3).abs() / 10.0 - (s - 33.3).abs() / 10.0).max(1.0);
+    let cycling_rating = score_to_rating(cycling_score);
+
+    // Nutrient retention: Higher S = better retention
+    let retention_score = (s / 20.0).min(5.0);
+    let retention_rating = score_to_rating(retention_score);
+
+    // Nutrient loss risk: Higher R = higher loss risk (inverse)
+    let loss_score = (r / 20.0).min(5.0);
+    let loss_rating = score_to_rating(loss_score);
+
+    // Carbon biomass: Higher C and larger plants = more biomass
+    let height = get_f64(data, "height_m").unwrap_or(1.0);
+    let biomass_score = ((c / 25.0) + (height / 10.0)).min(5.0);
+    let biomass_rating = score_to_rating(biomass_score);
+
+    // Recalcitrant carbon: Higher S = more long-lasting carbon
+    let recalcitrant_score = (s / 20.0).min(5.0);
+    let recalcitrant_rating = score_to_rating(recalcitrant_score);
+
+    // Total carbon: Average of biomass and recalcitrant
+    let carbon_total_score = (biomass_score + recalcitrant_score) / 2.0;
+    let carbon_total_rating = score_to_rating(carbon_total_score);
+
+    // Erosion protection: Root coverage based on growth form
+    let erosion_score = if height > 5.0 { 4.0 } else if height > 1.0 { 3.0 } else { 2.5 };
+    let erosion_rating = score_to_rating(erosion_score);
+
+    // Nitrogen fixation
+    let n_fix_score = if is_n_fixer { 5.0 } else { 1.0 };
+    let n_fix_rating = if is_n_fixer { "Very High".to_string() } else { "Unable to Classify".to_string() };
+
+    // Garden value summary
+    let mut highlights = Vec::new();
+    if is_n_fixer {
+        highlights.push("improves soil fertility through nitrogen fixation");
+    }
+    if carbon_total_score >= 3.5 {
+        highlights.push("good carbon storage for climate-conscious planting");
+    }
+    if npp_score >= 3.5 {
+        highlights.push("fast-growing for quick establishment");
+    }
+    if erosion_score >= 3.5 {
+        highlights.push("excellent for slopes and erosion-prone areas");
+    }
+
+    let garden_value = if highlights.is_empty() {
+        "Standard ecosystem contribution.".to_string()
+    } else {
+        format!("Good choice - {}.", highlights.join("; "))
+    };
+
+    EcosystemRatings {
+        npp: ServiceRating {
+            score: Some(npp_score),
+            rating: npp_rating.clone(),
+            description: npp_description(&npp_rating).to_string(),
+        },
+        decomposition: ServiceRating {
+            score: Some(decomp_score),
+            rating: decomp_rating.clone(),
+            description: decomp_description(&decomp_rating).to_string(),
+        },
+        nutrient_cycling: ServiceRating {
+            score: Some(cycling_score),
+            rating: cycling_rating.clone(),
+            description: "How efficiently nutrients move through your garden's ecosystem.".to_string(),
+        },
+        nutrient_retention: ServiceRating {
+            score: Some(retention_score),
+            rating: retention_rating.clone(),
+            description: retention_description(&retention_rating).to_string(),
+        },
+        nutrient_loss_risk: ServiceRating {
+            score: Some(loss_score),
+            rating: loss_rating.clone(),
+            description: loss_description(&loss_rating).to_string(),
+        },
+        carbon_biomass: ServiceRating {
+            score: Some(biomass_score),
+            rating: biomass_rating.clone(),
+            description: biomass_description(&biomass_rating).to_string(),
+        },
+        carbon_recalcitrant: ServiceRating {
+            score: Some(recalcitrant_score),
+            rating: recalcitrant_rating.clone(),
+            description: recalcitrant_description(&recalcitrant_rating).to_string(),
+        },
+        carbon_total: ServiceRating {
+            score: Some(carbon_total_score),
+            rating: carbon_total_rating,
+            description: "Combined climate benefit from biomass and soil carbon.".to_string(),
+        },
+        erosion_protection: ServiceRating {
+            score: Some(erosion_score),
+            rating: erosion_rating.clone(),
+            description: erosion_description(&erosion_rating).to_string(),
+        },
+        nitrogen_fixation: ServiceRating {
+            score: Some(n_fix_score),
+            rating: n_fix_rating,
+            description: n_fix_description(is_n_fixer).to_string(),
+        },
+        garden_value_summary: garden_value,
+    }
+}
+
+fn score_to_rating(score: f64) -> String {
+    if score >= 4.5 { "Very High".to_string() }
+    else if score >= 3.5 { "High".to_string() }
+    else if score >= 2.5 { "Moderate".to_string() }
+    else if score >= 1.5 { "Low".to_string() }
+    else { "Very Low".to_string() }
+}
+
+fn npp_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Rapid growth produces abundant biomass each year—more leaves, stems, and roots. Provides food for wildlife, improves air quality, and captures significant carbon from the atmosphere.",
+        "Moderate" => "Moderate growth rate. Steady biomass production for a balanced contribution to garden ecosystem.",
+        _ => "Slow growth conserves resources. Less biomass production but often longer-lived and more stress-tolerant.",
+    }
+}
+
+fn decomp_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Fast litter breakdown returns nutrients to soil quickly, keeping it fertile and reducing fertilizer needs. Supports active earthworms and soil microbes.",
+        "Moderate" => "Moderate breakdown rate. Nutrients recycle at a balanced pace.",
+        _ => "Slow decomposition means leaf litter persists longer. Good for mulch and long-term carbon storage, but nutrients release slowly.",
+    }
+}
+
+fn retention_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Holds nutrients well; reduces fertilizer needs.",
+        "Moderate" => "Moderate retention.",
+        _ => "Nutrients may leach away; more frequent feeding needed.",
+    }
+}
+
+fn loss_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Higher runoff risk; protect waterways.",
+        "Moderate" => "Moderate loss potential.",
+        _ => "Minimal runoff; good for water quality.",
+    }
+}
+
+fn biomass_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Large, dense growth captures significant CO₂; creates habitat and shade.",
+        "Moderate" => "Moderate carbon storage in stems, leaves, roots.",
+        _ => "Smaller plants store less carbon in living tissue.",
+    }
+}
+
+fn recalcitrant_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Tough woody/waxy tissues persist in soil for decades.",
+        "Moderate" => "Some long-lasting carbon contribution.",
+        _ => "Soft tissues decompose quickly; less permanent storage.",
+    }
+}
+
+fn erosion_description(rating: &str) -> &'static str {
+    match rating {
+        "Very High" | "High" => "Extensive roots and ground cover anchor soil, protecting topsoil during storms and preventing sediment runoff to waterways. Excellent for slopes.",
+        "Moderate" => "Moderate root system provides reasonable soil protection.",
+        _ => "Limited root coverage; consider underplanting with ground covers on slopes.",
+    }
+}
+
+fn n_fix_description(is_fixer: bool) -> &'static str {
+    if is_fixer {
+        "Active nitrogen fixer—natural fertilizer factory that enriches soil for neighbouring plants."
+    } else {
+        "Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants."
     }
 }
 
@@ -806,12 +1134,53 @@ fn build_interactions(
         "Not documented".to_string()
     };
 
+    // Beneficial predators - natural pest control agents
+    // TODO: Populate from predators_master.parquet when available
+    let beneficial_predators = OrganismGroup {
+        title: "Beneficial Predators".to_string(),
+        icon: "shield".to_string(),
+        total_count: 0,
+        categories: Vec::new(),
+    };
+
+    // Fungivores - organisms that eat fungi (disease control)
+    // TODO: Populate from fungivores data when available
+    let fungivores = OrganismGroup {
+        title: "Fungivores".to_string(),
+        icon: "mushroom".to_string(),
+        total_count: 0,
+        categories: Vec::new(),
+    };
+
+    // Mycorrhizal details
+    let mycorrhizal_details = fungal_counts.map(|fc| {
+        let (assoc_type, species_count, desc) = if fc.emf > 0 && fc.amf > 0 {
+            ("Dual (AMF + EMF)", fc.emf + fc.amf, "Partners with both arbuscular and ectomycorrhizal fungi.")
+        } else if fc.emf > 0 {
+            ("Ectomycorrhizal (EMF)", fc.emf, "Forms sheaths around roots; common in forest trees.")
+        } else if fc.amf > 0 {
+            ("Arbuscular (AMF)", fc.amf, "Fungi penetrate root cells; most common type.")
+        } else {
+            ("None documented", 0, "No mycorrhizal associations recorded.")
+        };
+
+        MycorrhizalDetails {
+            association_type: assoc_type.to_string(),
+            species_count,
+            description: desc.to_string(),
+            gardening_tip: "Minimize soil disturbance to preserve beneficial fungal networks.".to_string(),
+        }
+    });
+
     InteractionsSection {
         pollinators,
         herbivores,
+        beneficial_predators,
+        fungivores,
         diseases,
         beneficial_fungi: beneficial,
         mycorrhizal_type: mycorrhizal,
+        mycorrhizal_details,
     }
 }
 
@@ -821,7 +1190,7 @@ fn build_interactions(
 
 fn build_companion(
     data: &HashMap<String, Value>,
-    _organism_profile: Option<&OrganismProfile>,
+    organism_profile: Option<&OrganismProfile>,
     fungal_counts: Option<&FungalCounts>,
 ) -> CompanionSection {
     let mut roles = Vec::new();
@@ -847,10 +1216,155 @@ fn build_companion(
         });
     }
 
+    // Build detailed guild analysis
+    let guild_details = build_guild_details(data, organism_profile, fungal_counts);
+
     CompanionSection {
         guild_roles: roles,
+        guild_details: Some(guild_details),
         good_companions: Vec::new(),
         avoid_with: Vec::new(),
         planting_notes: Vec::new(),
+    }
+}
+
+fn build_guild_details(
+    data: &HashMap<String, Value>,
+    organism_profile: Option<&OrganismProfile>,
+    fungal_counts: Option<&FungalCounts>,
+) -> GuildPotentialDetails {
+    let (c, s, r) = get_csr_values(data);
+    let height = get_f64(data, "height_m").unwrap_or(1.0);
+    let eive_l = get_f64(data, "EIVEres-L").unwrap_or(5.0);
+    let family = get_str(data, "family").unwrap_or("Unknown");
+    let growth_form = get_str(data, "try_growth_form").unwrap_or("herb");
+
+    let pest_count = organism_profile.map(|p| p.total_herbivores).unwrap_or(0);
+    let pollinator_count = organism_profile.map(|p| p.total_pollinators).unwrap_or(0);
+
+    // Determine dominant strategy
+    let (dominant, classification) = if c > s && c > r {
+        ("C-dominant", format!("C-dominant (Competitor) - {}% C", c as u32))
+    } else if s > c && s > r {
+        ("S-dominant", format!("S-dominant (Stress-tolerator) - {}% S", s as u32))
+    } else if r > c && r > s {
+        ("R-dominant", format!("R-dominant (Ruderal) - {}% R", r as u32))
+    } else {
+        ("Balanced", "Balanced CSR strategy".to_string())
+    };
+
+    // Structural layer based on height
+    let layer = if height > 10.0 { "Canopy" }
+        else if height > 3.0 { "Sub-canopy" }
+        else if height > 1.0 { "Shrub layer" }
+        else { "Ground cover" };
+
+    // Pest level
+    let pest_level = if pest_count > 15 { "High" } else if pest_count > 5 { "Moderate" } else { "Low" };
+    let pollinator_level = if pollinator_count > 10 { "High" } else if pollinator_count > 3 { "Moderate" } else { "Low" };
+
+    // Mycorrhizal info
+    let myco_type = if fungal_counts.map(|f| f.emf > 0).unwrap_or(false) { "EMF" }
+        else if fungal_counts.map(|f| f.amf > 0).unwrap_or(false) { "AMF" }
+        else { "None" };
+    let myco_count = fungal_counts.map(|f| f.emf + f.amf).unwrap_or(0);
+
+    GuildPotentialDetails {
+        summary: GuildSummary {
+            taxonomy_guidance: format!("Seek plants from different families than {}", family),
+            growth_guidance: format!("Avoid {}-{} pairs at same height", dominant, dominant),
+            structure_role: format!("{} ({:.1}m) - {}", layer, height, if height > 5.0 { "Shade provider" } else { "Understory" }),
+            mycorrhizal_guidance: format!("Connect with {} plants for network benefits", myco_type),
+            pest_summary: format!("{} pests - {}", pest_count, if pest_count > 10 { "Monitor closely" } else { "Normal range" }),
+            disease_summary: "Focus on spacing and airflow".to_string(),
+            pollinator_summary: format!("{} species - {}", pollinator_count, pollinator_level),
+        },
+        key_principles: vec![
+            format!("Diversify taxonomy - seek plants from different families than {}", family),
+            format!("Growth compatibility - {} strategy prefers complementary partners", dominant),
+            format!("Layer plants - pair with {} plants", if height > 5.0 { "shade-tolerant understory" } else { "taller canopy" }),
+            format!("Fungal network - seek {} plants for nutrient sharing", myco_type),
+        ],
+        growth_compatibility: GrowthCompatibility {
+            csr_profile: format!("C: {:.0}% | S: {:.0}% | R: {:.0}%", c, s, r),
+            classification,
+            growth_form: growth_form.to_string(),
+            height_m: height,
+            light_preference: eive_l,
+            companion_strategy: format!("{} grower. Pairs well with {} plants.",
+                if c > 50.0 { "Vigorous" } else if s > 50.0 { "Steady" } else { "Moderate" },
+                if height > 5.0 { "shade-tolerant understory" } else { "varied height" }
+            ),
+            avoid_pairing: vec![
+                format!("Other {}-dominant plants at same layer", dominant),
+                if height > 5.0 { "Sun-loving plants in shade zone".to_string() } else { "Light competitors".to_string() },
+            ],
+        },
+        pest_control: PestControlAnalysis {
+            pest_count,
+            pest_level: pest_level.to_string(),
+            pest_interpretation: if pest_count > 15 { "Multiple pest species; monitor closely" } else { "Normal pest pressure" }.to_string(),
+            predator_count: 0, // TODO: Populate from predators data
+            predator_level: "Unknown".to_string(),
+            predator_interpretation: "Predator data not yet available".to_string(),
+            recommendations: vec![
+                if pest_count > 10 { "Benefits from companions that attract pest predators".to_string() } else { "Standard pest monitoring".to_string() },
+            ],
+        },
+        disease_control: DiseaseControlAnalysis {
+            beneficial_fungi_count: fungal_counts.map(|f| f.mycoparasites).unwrap_or(0),
+            recommendations: vec![
+                "Focus on spacing and airflow for disease prevention".to_string(),
+                if fungal_counts.map(|f| f.mycoparasites > 0).unwrap_or(false) {
+                    "Has mycoparasitic fungi for natural disease control".to_string()
+                } else {
+                    "No documented mycoparasitic fungi".to_string()
+                },
+            ],
+        },
+        mycorrhizal_network: MycorrhizalAnalysis {
+            association_type: myco_type.to_string(),
+            species_count: myco_count,
+            network_type: if myco_type == "EMF" { "Forest-type nutrient-sharing network".to_string() }
+                else if myco_type == "AMF" { "Grassland-type nutrient network".to_string() }
+                else { "No documented network".to_string() },
+            recommendations: vec![
+                format!("Seek other {} plants for network benefits", myco_type),
+                "Can share nutrients and defense signals with compatible neighbours".to_string(),
+            ],
+        },
+        structural_role: StructuralRole {
+            layer: layer.to_string(),
+            height_m: height,
+            growth_form: growth_form.to_string(),
+            light_preference: eive_l,
+            understory_recommendations: if height > 5.0 {
+                format!("Shade-tolerant plants with EIVE-L < {:.0}", eive_l - 2.0)
+            } else {
+                "Can grow under taller plants".to_string()
+            },
+            avoid_recommendations: if height > 5.0 { "Sun-loving plants in shade zone".to_string() } else { "Heavy shade".to_string() },
+            benefits: if height > 10.0 { "Creates significant shade; wind protection".to_string() }
+                else if height > 3.0 { "Moderate shade; structural diversity".to_string() }
+                else { "Ground cover; soil protection".to_string() },
+        },
+        pollinator_support: PollinatorSupport {
+            count: pollinator_count,
+            level: pollinator_level.to_string(),
+            interpretation: if pollinator_count > 10 { "Strong pollinator support" }
+                else if pollinator_count > 3 { "Moderate pollinator support" }
+                else { "Limited pollinator observations" }.to_string(),
+            recommendations: "Good companion for other flowering plants".to_string(),
+            benefits: vec![
+                format!("Nectar/pollen source for {} pollinator species", pollinator_count),
+                "May increase pollinator visits to neighbouring plants".to_string(),
+            ],
+        },
+        cautions: vec![
+            format!("Avoid clustering multiple {} plants (shared pests and diseases)", family),
+            if c > 50.0 { "C-dominant strategy: may outcompete slower-growing neighbours".to_string() }
+            else if r > 50.0 { "R-dominant: may spread aggressively".to_string() }
+            else { "Monitor for normal garden interactions".to_string() },
+        ],
     }
 }

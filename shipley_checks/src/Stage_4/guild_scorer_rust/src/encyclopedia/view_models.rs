@@ -126,6 +126,7 @@ pub struct RelativeSpecies {
     pub scientific_name: String,
     pub common_name: String,
     pub relatedness: String, // "Close", "Moderate", "Distant"
+    pub distance: f64,       // Raw phylogenetic distance (sum of branch lengths)
 }
 
 // ============================================================================
@@ -176,11 +177,33 @@ pub struct MoistureSection {
 #[derive(Debug, Clone, Serialize)]
 pub struct SoilSection {
     pub texture_summary: String,
+    pub texture_details: Option<SoilTextureDetails>,  // Detailed sand/silt/clay
     pub ph: Option<SoilParameter>,
     pub fertility: Option<SoilParameter>,
     pub organic_carbon: Option<SoilParameter>,
     pub comparisons: Vec<ComparisonRow>,
     pub advice: Vec<String>,
+}
+
+/// Detailed soil texture breakdown
+#[derive(Debug, Clone, Serialize)]
+pub struct SoilTextureDetails {
+    pub sand: TextureComponent,
+    pub silt: TextureComponent,
+    pub clay: TextureComponent,
+    pub usda_class: String,        // "Loam", "Sandy Loam", etc.
+    pub drainage: String,          // "Good", "Moderate", "Poor"
+    pub water_retention: String,   // "Good", "Moderate", "Poor"
+    pub interpretation: String,    // Human-readable summary
+    pub triangle_x: Option<f64>,   // For soil texture triangle visualization
+    pub triangle_y: Option<f64>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct TextureComponent {
+    pub typical: f64,
+    pub min: f64,
+    pub max: f64,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -315,10 +338,35 @@ pub struct SeasonalNote {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct EcosystemServices {
+    pub ratings: Option<EcosystemRatings>,  // All 10 ecosystem service ratings
     pub services: Vec<ServiceCard>,
     pub nitrogen_fixer: bool,
     pub pollinator_score: Option<u8>,
     pub carbon_storage: Option<String>,
+}
+
+/// All 10 ecosystem service ratings from CSR-derived calculations
+#[derive(Debug, Clone, Serialize)]
+pub struct EcosystemRatings {
+    pub npp: ServiceRating,
+    pub decomposition: ServiceRating,
+    pub nutrient_cycling: ServiceRating,
+    pub nutrient_retention: ServiceRating,
+    pub nutrient_loss_risk: ServiceRating,
+    pub carbon_biomass: ServiceRating,
+    pub carbon_recalcitrant: ServiceRating,
+    pub carbon_total: ServiceRating,
+    pub erosion_protection: ServiceRating,
+    pub nitrogen_fixation: ServiceRating,
+    pub garden_value_summary: String,
+}
+
+/// Individual service rating with score and description
+#[derive(Debug, Clone, Serialize)]
+pub struct ServiceRating {
+    pub score: Option<f64>,       // 1.0 - 5.0 scale
+    pub rating: String,           // "Very High", "High", "Moderate", "Low", "Very Low"
+    pub description: String,      // Human-readable explanation
 }
 
 impl EcosystemServices {
@@ -391,9 +439,21 @@ impl ServiceIcon {
 pub struct InteractionsSection {
     pub pollinators: OrganismGroup,
     pub herbivores: OrganismGroup,
+    pub beneficial_predators: OrganismGroup,  // Natural pest control agents
+    pub fungivores: OrganismGroup,            // Organisms that eat fungi (disease control)
     pub diseases: DiseaseGroup,
     pub beneficial_fungi: FungiGroup,
     pub mycorrhizal_type: String,
+    pub mycorrhizal_details: Option<MycorrhizalDetails>,
+}
+
+/// Detailed mycorrhizal association info
+#[derive(Debug, Clone, Serialize)]
+pub struct MycorrhizalDetails {
+    pub association_type: String,    // "EMF", "AMF", "Dual", "None"
+    pub species_count: usize,
+    pub description: String,
+    pub gardening_tip: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -437,6 +497,7 @@ pub struct FungiGroup {
 #[derive(Debug, Clone, Serialize)]
 pub struct CompanionSection {
     pub guild_roles: Vec<GuildRole>,
+    pub guild_details: Option<GuildPotentialDetails>,  // Detailed guild analysis
     pub good_companions: Vec<CompanionPlant>,
     pub avoid_with: Vec<String>,
     pub planting_notes: Vec<String>,
@@ -453,6 +514,87 @@ pub struct GuildRole {
 pub struct CompanionPlant {
     pub name: String,
     pub reason: String,
+}
+
+/// Detailed guild potential analysis matching markdown output
+#[derive(Debug, Clone, Serialize)]
+pub struct GuildPotentialDetails {
+    pub summary: GuildSummary,
+    pub key_principles: Vec<String>,
+    pub growth_compatibility: GrowthCompatibility,
+    pub pest_control: PestControlAnalysis,
+    pub disease_control: DiseaseControlAnalysis,
+    pub mycorrhizal_network: MycorrhizalAnalysis,
+    pub structural_role: StructuralRole,
+    pub pollinator_support: PollinatorSupport,
+    pub cautions: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct GuildSummary {
+    pub taxonomy_guidance: String,
+    pub growth_guidance: String,
+    pub structure_role: String,
+    pub mycorrhizal_guidance: String,
+    pub pest_summary: String,
+    pub disease_summary: String,
+    pub pollinator_summary: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct GrowthCompatibility {
+    pub csr_profile: String,           // "C: 45% | S: 41% | R: 14%"
+    pub classification: String,        // "C-dominant (Competitor)"
+    pub growth_form: String,
+    pub height_m: f64,
+    pub light_preference: f64,
+    pub companion_strategy: String,
+    pub avoid_pairing: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PestControlAnalysis {
+    pub pest_count: usize,
+    pub pest_level: String,            // "High", "Moderate", "Low"
+    pub pest_interpretation: String,
+    pub predator_count: usize,
+    pub predator_level: String,
+    pub predator_interpretation: String,
+    pub recommendations: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct DiseaseControlAnalysis {
+    pub beneficial_fungi_count: usize,
+    pub recommendations: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct MycorrhizalAnalysis {
+    pub association_type: String,
+    pub species_count: usize,
+    pub network_type: String,
+    pub recommendations: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct StructuralRole {
+    pub layer: String,
+    pub height_m: f64,
+    pub growth_form: String,
+    pub light_preference: f64,
+    pub understory_recommendations: String,
+    pub avoid_recommendations: String,
+    pub benefits: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct PollinatorSupport {
+    pub count: usize,
+    pub level: String,
+    pub interpretation: String,
+    pub recommendations: String,
+    pub benefits: Vec<String>,
 }
 
 // ============================================================================
