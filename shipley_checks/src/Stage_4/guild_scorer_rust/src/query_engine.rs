@@ -614,6 +614,8 @@ pub struct PlantSearchResultData {
 #[cfg(feature = "api")]
 #[derive(Debug, Clone, Default, serde::Deserialize)]
 pub struct PlantFilters {
+    /// Quick search query (uses FST index for fast prefix/fuzzy matching)
+    pub q: Option<String>,
     pub common_name: Option<String>,
     pub latin_name: Option<String>,
 

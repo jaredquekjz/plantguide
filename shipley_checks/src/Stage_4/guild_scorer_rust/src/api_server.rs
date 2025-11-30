@@ -197,8 +197,8 @@ pub fn create_router(state: AppState) -> Router {
         .route("/health", get(health_check))
 
         // Plant endpoints (JSON API)
+        // search uses FST for simple name queries (q=, latin_name=), SQL for filtered queries
         .route("/api/plants/search", get(search_plants))
-        .route("/api/plants/autocomplete", get(autocomplete_plants))
         .route("/api/plants/ids", get(get_all_plant_ids))
         .route("/api/plants/:id", get(get_plant))
         .route("/api/plants/:id/organisms", get(get_organisms))
@@ -239,7 +239,55 @@ async fn search_plants(
     State(state): State<AppState>,
     Query(filters): Query<PlantFilters>,
 ) -> Result<Json<serde_json::Value>, AppError> {
-    // Generate cache key from filters
+    let limit = filters.limit.unwrap_or(20).min(100);
+
+    // Check if this is a simple name query that can use FST
+    // Use FST if: `q` is set, OR only `latin_name`/`common_name` + `limit` (no other filters)
+    let use_fst = filters.q.is_some() || is_simple_name_query(&filters);
+
+    if use_fst {
+        // Use FST index for fast prefix/fuzzy search
+        let query = filters.q
+            .as_ref()
+            .or(filters.latin_name.as_ref())
+            .or(filters.common_name.as_ref())
+            .map(|s| s.as_str())
+            .unwrap_or("");
+
+        if query.is_empty() {
+            return Ok(Json(serde_json::json!({
+                "rows": 0,
+                "data": []
+            })));
+        }
+
+        let start = std::time::Instant::now();
+        let results = state.search_index.search(query, limit);
+        let elapsed = start.elapsed();
+
+        tracing::debug!("FST search '{}' returned {} results in {:?}", query, results.len(), elapsed);
+
+        let data: Vec<serde_json::Value> = results
+            .iter()
+            .map(|p| {
+                serde_json::json!({
+                    "wfo_taxon_id": p.wfo_id,
+                    "wfo_scientific_name": p.scientific_name,
+                    "vernacular_name_en": p.common_name,
+                    "family": p.family,
+                    "genus": p.genus,
+                })
+            })
+            .collect();
+
+        return Ok(Json(serde_json::json!({
+            "rows": data.len(),
+            "data": data,
+            "query_time_us": elapsed.as_micros(),
+        })));
+    }
+
+    // Complex query with filters - use SQL via DataFusion
     let cache_key = format!("search:{:?}", filters);
 
     // Check cache
@@ -249,7 +297,7 @@ async fn search_plants(
     }
 
     // Execute query
-    tracing::debug!("Executing plant search query");
+    tracing::debug!("Executing SQL plant search query");
     let batches = state
         .query_engine
         .search_plants(&filters)
@@ -265,50 +313,29 @@ async fn search_plants(
     Ok(Json(result))
 }
 
-/// Fast autocomplete endpoint using FST index
-/// Query params: q (search query), limit (max results, default 20)
+/// Check if filters only contain name search + limit (no EIVE/CSR/categorical filters)
 #[cfg(feature = "api")]
-async fn autocomplete_plants(
-    State(state): State<AppState>,
-    Query(params): Query<AutocompleteQuery>,
-) -> Result<Json<serde_json::Value>, AppError> {
-    let query = params.q.unwrap_or_default();
-    let limit = params.limit.unwrap_or(20).min(100); // Cap at 100
+fn is_simple_name_query(filters: &PlantFilters) -> bool {
+    // Has some name to search
+    let has_name = filters.latin_name.is_some() || filters.common_name.is_some();
 
-    if query.len() < 1 {
-        return Ok(Json(serde_json::json!({
-            "rows": 0,
-            "data": []
-        })));
-    }
+    // No complex filters
+    let no_eive = filters.min_light.is_none() && filters.max_light.is_none()
+        && filters.min_moisture.is_none() && filters.max_moisture.is_none()
+        && filters.min_temperature.is_none() && filters.max_temperature.is_none()
+        && filters.min_nitrogen.is_none() && filters.max_nitrogen.is_none()
+        && filters.min_ph.is_none() && filters.max_ph.is_none();
 
-    let start = std::time::Instant::now();
+    let no_csr = filters.min_c.is_none() && filters.max_c.is_none()
+        && filters.min_s.is_none() && filters.max_s.is_none()
+        && filters.min_r.is_none() && filters.max_r.is_none();
 
-    // Use FST index for fast search
-    let results = state.search_index.search(&query, limit);
+    let no_categorical = filters.maintenance_level.is_none()
+        && filters.drought_tolerant.is_none()
+        && filters.fast_growing.is_none()
+        && filters.climate_tier.is_none();
 
-    let elapsed = start.elapsed();
-    tracing::debug!("Autocomplete '{}' returned {} results in {:?}", query, results.len(), elapsed);
-
-    // Convert to JSON response (matches existing search format)
-    let data: Vec<serde_json::Value> = results
-        .iter()
-        .map(|p| {
-            serde_json::json!({
-                "wfo_taxon_id": p.wfo_id,
-                "wfo_scientific_name": p.scientific_name,
-                "vernacular_name_en": p.common_name,
-                "family": p.family,
-                "genus": p.genus,
-            })
-        })
-        .collect();
-
-    Ok(Json(serde_json::json!({
-        "rows": data.len(),
-        "data": data,
-        "query_time_us": elapsed.as_micros(),
-    })))
+    has_name && no_eive && no_csr && no_categorical
 }
 
 #[cfg(feature = "api")]
@@ -1173,13 +1200,6 @@ async fn find_related_species(
 // ============================================================================
 // Request/Response Types
 // ============================================================================
-
-#[cfg(feature = "api")]
-#[derive(serde::Deserialize, Debug)]
-struct AutocompleteQuery {
-    q: Option<String>,
-    limit: Option<usize>,
-}
 
 #[cfg(feature = "api")]
 #[derive(serde::Deserialize, Debug)]
