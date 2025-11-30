@@ -199,7 +199,7 @@ impl QueryEngine {
         if let Some(ref latin) = filters.latin_name {
             let escaped = latin.replace("'", "''");
             conditions.push(format!(
-                "LOWER(wfo_taxon_name) LIKE LOWER('%{}%')",
+                "LOWER(wfo_scientific_name) LIKE LOWER('%{}%')",
                 escaped
             ));
         }
