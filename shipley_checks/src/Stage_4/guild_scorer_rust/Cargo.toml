@@ -56,9 +56,8 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"], optional = tr
 # Phase 8: Timestamps
 chrono = { version = "0.4", optional = true }
 
-# Phase 8: FST for fast prefix/fuzzy search (use fst 0.3 for fst-levenshtein compat)
-fst = { version = "0.3", optional = true }
-fst-levenshtein = { version = "0.3", optional = true }
+# Phase 8: Tantivy for full-text search with BM25 ranking
+tantivy = { version = "0.22", optional = true }
 
 # Typeshare for TypeScript type generation
 typeshare = { version = "1.0", optional = true }
@@ -94,8 +93,7 @@ api = [
     "tracing-subscriber",
     "chrono",
     "typeshare",
-    "fst",
-    "fst-levenshtein",
+    "tantivy",
 ]
 
 [profile.dev]

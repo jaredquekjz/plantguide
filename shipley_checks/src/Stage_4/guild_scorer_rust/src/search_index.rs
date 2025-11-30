@@ -1,19 +1,19 @@
-//! FST-based Search Index for Fast Plant Lookup
+//! Tantivy-based Search Index for Fast Plant Lookup
 //!
-//! Provides sub-millisecond prefix and fuzzy search across:
-//! - Scientific names (Latin binomials)
+//! Provides sub-millisecond full-text search with BM25 ranking across:
+//! - Scientific names (Latin binomials) - boosted
 //! - Common names (English)
 //! - Family and genus names
 //!
-//! Memory usage: ~3-5 MB for 11,711 plants (FST compression)
-//! Query time: <100 microseconds for prefix, <1ms for fuzzy
+//! Uses Tantivy (Rust's Lucene) for proper relevance ranking without manual tuning.
 
 #[cfg(feature = "api")]
-use fst::{Map, MapBuilder, IntoStreamer, Streamer, Automaton};
-#[cfg(feature = "api")]
-use fst_levenshtein::Levenshtein;
-#[cfg(feature = "api")]
-use std::collections::HashMap;
+use tantivy::{
+    collector::TopDocs,
+    query::QueryParser,
+    schema::{Schema, Field, TEXT, STORED, STRING, OwnedValue},
+    Index, IndexReader, ReloadPolicy, TantivyDocument,
+};
 #[cfg(feature = "api")]
 use datafusion::arrow::array::Array;
 
@@ -28,17 +28,27 @@ pub struct PlantRef {
     pub genus: String,
 }
 
-/// FST-based search index for fast plant lookup
+/// Schema field handles
+#[cfg(feature = "api")]
+struct SearchFields {
+    wfo_id: Field,
+    scientific_name: Field,
+    common_names: Field,
+    genus: Field,
+    family: Field,
+}
+
+/// Tantivy-based search index for fast plant lookup with BM25 ranking
 #[cfg(feature = "api")]
 pub struct SearchIndex {
-    /// FST mapping normalized search term -> plant index
-    fst_map: Map,
-    /// All plants (indexed by position)
+    index: Index,
+    reader: IndexReader,
+    query_parser: QueryParser,
+    fields: SearchFields,
+    /// All plants for result retrieval
     plants: Vec<PlantRef>,
-    /// Reverse lookup: search term -> list of plant indices (for duplicates)
-    term_to_indices: HashMap<String, Vec<usize>>,
-    /// Size of FST in bytes (stored at build time)
-    fst_size: usize,
+    /// wfo_id -> plant index for fast lookup
+    wfo_to_idx: std::collections::HashMap<String, usize>,
 }
 
 #[cfg(feature = "api")]
@@ -47,10 +57,36 @@ impl SearchIndex {
     pub async fn build(query_engine: &crate::query_engine::QueryEngine) -> anyhow::Result<Self> {
         use datafusion::arrow::array::{StringArray, StringViewArray};
 
-        tracing::info!("Building FST search index...");
+        tracing::info!("Building Tantivy search index...");
         let start = std::time::Instant::now();
 
-        // Query all plants with searchable fields
+        // Define schema
+        let mut schema_builder = Schema::builder();
+
+        // wfo_id as STRING (exact match, stored)
+        let wfo_id = schema_builder.add_text_field("wfo_id", STRING | STORED);
+
+        // scientific_name - TEXT for full-text search, STORED for retrieval
+        let scientific_name = schema_builder.add_text_field("scientific_name", TEXT | STORED);
+
+        // common_names - TEXT for full-text search (all names concatenated)
+        let common_names = schema_builder.add_text_field("common_names", TEXT | STORED);
+
+        // genus - TEXT for full-text search
+        let genus = schema_builder.add_text_field("genus", TEXT | STORED);
+
+        // family - TEXT for full-text search
+        let family = schema_builder.add_text_field("family", TEXT | STORED);
+
+        let schema = schema_builder.build();
+
+        // Create in-RAM index
+        let index = Index::create_in_ram(schema.clone());
+
+        // Get index writer
+        let mut index_writer = index.writer(50_000_000)?; // 50MB buffer
+
+        // Query all plants
         let sql = r#"
             SELECT
                 wfo_taxon_id,
@@ -64,15 +100,18 @@ impl SearchIndex {
 
         let batches = query_engine.query(sql).await?;
 
-        // Collect all plants
+        // Collect plants and index documents
         let mut plants: Vec<PlantRef> = Vec::new();
-        let mut search_terms: Vec<(String, usize)> = Vec::new(); // (term, plant_index)
+        let mut wfo_to_idx: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
 
         for batch in &batches {
             let num_rows = batch.num_rows();
 
-            // Helper to get string column (handles both StringArray and StringViewArray)
-            fn get_string_col<'a>(batch: &'a datafusion::arrow::array::RecordBatch, name: &str) -> Option<Box<dyn Fn(usize) -> Option<&'a str> + 'a>> {
+            // Helper to get string column
+            fn get_string_col<'a>(
+                batch: &'a datafusion::arrow::array::RecordBatch,
+                name: &str,
+            ) -> Option<Box<dyn Fn(usize) -> Option<&'a str> + 'a>> {
                 let col = batch.column_by_name(name)?;
                 if let Some(arr) = col.as_any().downcast_ref::<StringViewArray>() {
                     Some(Box::new(move |i| {
@@ -104,321 +143,196 @@ impl SearchIndex {
             let genus_fn = genus_col.as_ref();
 
             for i in 0..num_rows {
-                let wfo_id = match wfo_fn(i) {
+                let wfo_id_val = match wfo_fn(i) {
                     Some(s) => s.to_string(),
                     None => continue,
                 };
-                let scientific_name = match sci_fn(i) {
+                let scientific_name_val = match sci_fn(i) {
                     Some(s) => s.to_string(),
                     None => continue,
                 };
 
-                // Get all common names (semicolon-separated)
+                // Get all common names (semicolon-separated), replace ; with space for indexing
                 let common_names_raw = common_fn.and_then(|f| f(i)).unwrap_or("");
-                let common_names: Vec<String> = common_names_raw
-                    .split(';')
-                    .map(|s| s.trim().to_string())
-                    .filter(|s| !s.is_empty())
-                    .collect();
+                let common_names_indexed = common_names_raw.replace(';', " ");
 
                 // First common name for display
-                let common_name = common_names.first().cloned();
+                let first_common = common_names_raw
+                    .split(';')
+                    .next()
+                    .map(|s| s.trim())
+                    .filter(|s| !s.is_empty())
+                    .map(String::from);
 
-                let family = family_fn.and_then(|f| f(i)).unwrap_or("").to_string();
-                let genus = genus_fn.and_then(|f| f(i)).unwrap_or("").to_string();
+                let family_val = family_fn.and_then(|f| f(i)).unwrap_or("").to_string();
+                let genus_val = genus_fn.and_then(|f| f(i)).unwrap_or("").to_string();
 
+                // Add document to Tantivy index
+                let mut doc = TantivyDocument::new();
+                doc.add_text(wfo_id, &wfo_id_val);
+                doc.add_text(scientific_name, &scientific_name_val);
+                doc.add_text(common_names, &common_names_indexed);
+                doc.add_text(genus, &genus_val);
+                doc.add_text(family, &family_val);
+
+                index_writer.add_document(doc)?;
+
+                // Store plant reference
                 let plant_idx = plants.len();
-
-                // Add search terms for this plant
-                // 1. Scientific name (normalized)
-                let sci_lower = scientific_name.to_lowercase();
-                search_terms.push((sci_lower.clone(), plant_idx));
-
-                // 2. Genus only (for "Rosa" matching all Rosa species)
-                let genus_lower = genus.to_lowercase();
-                if !genus_lower.is_empty() {
-                    search_terms.push((genus_lower.clone(), plant_idx));
-                }
-
-                // 3. ALL common names (for "coconut", "coconut palm", etc.)
-                for cn in &common_names {
-                    let cn_lower = cn.to_lowercase();
-                    if !cn_lower.is_empty() {
-                        // Add full name
-                        search_terms.push((cn_lower.clone(), plant_idx));
-
-                        // Also index individual words (for "oak" matching "white oak")
-                        for word in cn_lower.split_whitespace() {
-                            if word.len() >= 3 && word != &cn_lower {
-                                search_terms.push((word.to_string(), plant_idx));
-                            }
-                        }
-                    }
-                }
-
-                // 4. Family (for "Rosaceae" searches)
-                let family_lower = family.to_lowercase();
-                if !family_lower.is_empty() {
-                    search_terms.push((family_lower, plant_idx));
-                }
+                wfo_to_idx.insert(wfo_id_val.clone(), plant_idx);
 
                 plants.push(PlantRef {
-                    wfo_id,
-                    scientific_name,
-                    common_name,
-                    family,
-                    genus,
+                    wfo_id: wfo_id_val,
+                    scientific_name: scientific_name_val,
+                    common_name: first_common,
+                    family: family_val,
+                    genus: genus_val,
                 });
             }
         }
 
-        tracing::info!("Collected {} plants, {} search terms", plants.len(), search_terms.len());
+        // Commit the index
+        index_writer.commit()?;
 
-        // Sort terms lexicographically (required for FST)
-        search_terms.sort_by(|a, b| a.0.cmp(&b.0));
+        // Create reader
+        let reader = index
+            .reader_builder()
+            .reload_policy(ReloadPolicy::Manual)
+            .try_into()?;
 
-        // Build term -> indices map (for handling duplicates)
-        let mut term_to_indices: HashMap<String, Vec<usize>> = HashMap::new();
-        for (term, idx) in &search_terms {
-            term_to_indices
-                .entry(term.clone())
-                .or_default()
-                .push(*idx);
-        }
+        // Create query parser - search across all text fields
+        // Boost scientific_name and genus higher for better relevance
+        let mut query_parser = QueryParser::for_index(
+            &index,
+            vec![scientific_name, common_names, genus, family],
+        );
 
-        // Deduplicate terms for FST (FST requires unique keys)
-        let mut unique_terms: Vec<(String, u64)> = Vec::new();
-        let mut last_term = String::new();
-        for (term, idx) in search_terms {
-            if term != last_term {
-                unique_terms.push((term.clone(), idx as u64));
-                last_term = term;
-            }
-        }
+        // Set field boosts: scientific_name and genus are more important
+        query_parser.set_field_boost(scientific_name, 3.0);
+        query_parser.set_field_boost(genus, 2.5);
+        query_parser.set_field_boost(common_names, 1.5);
+        query_parser.set_field_boost(family, 1.0);
 
-        // Build FST
-        let mut builder = MapBuilder::memory();
-        for (term, idx) in &unique_terms {
-            builder.insert(term.as_bytes(), *idx)?;
-        }
-        let fst_bytes = builder.into_inner()?;
-        let fst_size = fst_bytes.len();
-        let fst_map = Map::from_bytes(fst_bytes)?;
+        let fields = SearchFields {
+            wfo_id,
+            scientific_name,
+            common_names,
+            genus,
+            family,
+        };
 
         let elapsed = start.elapsed();
         tracing::info!(
-            "FST search index built in {:?} ({} plants, {} unique terms, {} bytes)",
+            "Tantivy search index built in {:?} ({} plants indexed)",
             elapsed,
-            plants.len(),
-            unique_terms.len(),
-            fst_size
+            plants.len()
         );
 
         Ok(Self {
-            fst_map,
+            index,
+            reader,
+            query_parser,
+            fields,
             plants,
-            term_to_indices,
-            fst_size,
+            wfo_to_idx,
         })
     }
 
-    /// Calculate relevance score for a match
-    fn score_match(&self, query: &str, matched_term: &str, plant: &PlantRef) -> i32 {
-        let mut score: i32 = 0;
-        let query_lower = query.to_lowercase();
-        let sci_lower = plant.scientific_name.to_lowercase();
-        let genus_lower = plant.genus.to_lowercase();
-
-        // HIGHEST: Genus exact match (searching "rosa" should return Rosa species first)
-        if genus_lower == query_lower {
-            score += 2000;
-        }
-        // Scientific name starts with query (e.g., "quercus" matching "Quercus alba")
-        else if sci_lower.starts_with(&query_lower) {
-            score += 1500;
-        }
-        // Genus starts with query
-        else if genus_lower.starts_with(&query_lower) {
-            score += 1200;
+    /// Search with BM25 ranking
+    pub fn search(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
+        if query.is_empty() {
+            return vec![];
         }
 
-        // Exact term match
-        if matched_term == query_lower {
-            score += 500;
-        }
-        // Term starts with query
-        else if matched_term.starts_with(&query_lower) {
-            score += 300;
-            // Bonus if it's a short term (more specific match)
-            if matched_term.len() < query_lower.len() + 5 {
-                score += 100;
+        let searcher = self.reader.searcher();
+
+        // Parse query - handle special characters by escaping or using lenient parsing
+        let parsed_query = match self.query_parser.parse_query(query) {
+            Ok(q) => q,
+            Err(_) => {
+                // If query parsing fails (e.g., special chars), try as a simple term query
+                // by escaping the query
+                let escaped = query
+                    .chars()
+                    .map(|c| {
+                        if "+-&|!(){}[]^\"~*?:\\/".contains(c) {
+                            format!("\\{}", c)
+                        } else {
+                            c.to_string()
+                        }
+                    })
+                    .collect::<String>();
+
+                match self.query_parser.parse_query(&escaped) {
+                    Ok(q) => q,
+                    Err(_) => return vec![], // Give up if still fails
+                }
+            }
+        };
+
+        // Execute search with BM25 ranking
+        let top_docs = match searcher.search(&parsed_query, &TopDocs::with_limit(limit)) {
+            Ok(docs) => docs,
+            Err(_) => return vec![],
+        };
+
+        // Map results back to PlantRef
+        let mut results = Vec::with_capacity(top_docs.len());
+
+        for (_score, doc_address) in top_docs {
+            if let Ok(doc) = searcher.doc::<TantivyDocument>(doc_address) {
+                // Get wfo_id from document
+                if let Some(wfo_id) = doc.get_first(self.fields.wfo_id) {
+                    // OwnedValue::Str contains the string
+                    if let OwnedValue::Str(wfo_str) = wfo_id {
+                        if let Some(&idx) = self.wfo_to_idx.get(wfo_str.as_str()) {
+                            results.push(&self.plants[idx]);
+                        }
+                    }
+                }
             }
         }
 
-        // Common name relevance
-        if let Some(ref cn) = plant.common_name {
-            let cn_lower = cn.to_lowercase();
-            let words: Vec<&str> = cn_lower.split_whitespace().collect();
-
-            // Exact common name match (highest)
-            if cn_lower == query_lower {
-                score += 500;
-            }
-            // Query matches LAST word (primary identifier: "white oak" -> "oak" is primary)
-            // This should rank higher than starts_with because "dwarf live oak" is more "oak"
-            // than "oak sedge" where oak is just a modifier
-            else if words.last().map(|&w| w) == Some(query_lower.as_str()) {
-                score += 400;
-            }
-            // Common name starts with query AND query is the first word
-            // (e.g., "oak" matches first word of "oak sedge")
-            else if words.first().map(|&w| w) == Some(query_lower.as_str()) {
-                score += 200;
-            }
-            // Common name starts with query (partial first word match)
-            else if cn_lower.starts_with(&query_lower) {
-                score += 150;
-            }
-            // Query is a standalone word somewhere in the middle
-            else if words.iter().any(|&w| w == query_lower) {
-                score += 100;
-            }
-        }
-
-        // Penalize very long matched terms (less specific match)
-        if matched_term.len() > 20 {
-            score -= 50;
-        }
-
-        score
+        results
     }
 
-    /// Prefix search with relevance ranking
+    /// Prefix search (for autocomplete) - uses wildcard query
     pub fn search_prefix(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
         if query.is_empty() {
             return vec![];
         }
 
-        let query_lower = query.to_lowercase();
-
-        // Use FST prefix automaton
-        let prefix = fst::automaton::Str::new(&query_lower).starts_with();
-        let mut stream = self.fst_map.search(prefix).into_stream();
-
-        // Collect all matches with scores
-        let mut scored: HashMap<&str, (i32, usize)> = HashMap::new(); // wfo_id -> (best_score, plant_idx)
-
-        while let Some((term, _idx)) = stream.next() {
-            if let Ok(term_str) = std::str::from_utf8(term) {
-                if let Some(indices) = self.term_to_indices.get(term_str) {
-                    for &plant_idx in indices {
-                        if plant_idx < self.plants.len() {
-                            let plant = &self.plants[plant_idx];
-                            let score = self.score_match(&query_lower, term_str, plant);
-
-                            // Keep best score for each plant
-                            scored
-                                .entry(&plant.wfo_id)
-                                .and_modify(|(best, _)| {
-                                    if score > *best {
-                                        *best = score;
-                                    }
-                                })
-                                .or_insert((score, plant_idx));
-                        }
-                    }
-                }
-            }
-        }
-
-        // Sort by score descending
-        let mut results: Vec<_> = scored.into_iter().collect();
-        results.sort_by(|a, b| b.1.0.cmp(&a.1.0));
-
-        // Return top N
-        results
-            .into_iter()
-            .take(limit)
-            .map(|(_, (_, idx))| &self.plants[idx])
-            .collect()
-    }
-
-    /// Fuzzy search with relevance ranking (allows typos)
-    pub fn search_fuzzy(&self, query: &str, max_distance: u32, limit: usize) -> Vec<&PlantRef> {
-        if query.is_empty() {
-            return vec![];
-        }
-
-        let query_lower = query.to_lowercase();
-
-        // Build Levenshtein automaton
-        let lev = match Levenshtein::new(&query_lower, max_distance) {
-            Ok(l) => l,
-            Err(_) => return self.search_prefix(query, limit),
+        // For short queries, append wildcard for prefix matching
+        let query_with_wildcard = if query.len() >= 2 {
+            format!("{}*", query)
+        } else {
+            query.to_string()
         };
 
-        let mut stream = self.fst_map.search(lev).into_stream();
-        let mut scored: HashMap<&str, (i32, usize)> = HashMap::new();
-
-        while let Some((term, _idx)) = stream.next() {
-            if let Ok(term_str) = std::str::from_utf8(term) {
-                if let Some(indices) = self.term_to_indices.get(term_str) {
-                    for &plant_idx in indices {
-                        if plant_idx < self.plants.len() {
-                            let plant = &self.plants[plant_idx];
-                            // Fuzzy matches get slightly lower base score
-                            let score = self.score_match(&query_lower, term_str, plant) - 100;
-
-                            scored
-                                .entry(&plant.wfo_id)
-                                .and_modify(|(best, _)| {
-                                    if score > *best {
-                                        *best = score;
-                                    }
-                                })
-                                .or_insert((score, plant_idx));
-                        }
-                    }
-                }
-            }
-        }
-
-        let mut results: Vec<_> = scored.into_iter().collect();
-        results.sort_by(|a, b| b.1.0.cmp(&a.1.0));
-
-        results
-            .into_iter()
-            .take(limit)
-            .map(|(_, (_, idx))| &self.plants[idx])
-            .collect()
+        self.search(&query_with_wildcard, limit)
     }
 
-    /// Combined search: prefix first, then fuzzy if few results
-    pub fn search(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
-        // Try prefix search first (fastest, ranked by relevance)
-        let prefix_results = self.search_prefix(query, limit);
-
-        if prefix_results.len() >= limit / 2 {
-            return prefix_results;
+    /// Fuzzy search (allows typos) - uses fuzzy query syntax
+    pub fn search_fuzzy(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
+        if query.is_empty() || query.len() < 3 {
+            return self.search(query, limit);
         }
 
-        // If few prefix results, try fuzzy with 1 typo
-        if query.len() >= 3 {
-            let fuzzy_results = self.search_fuzzy(query, 1, limit);
-            if fuzzy_results.len() > prefix_results.len() {
-                return fuzzy_results;
-            }
-        }
-
-        prefix_results
+        // Tantivy fuzzy syntax: term~1 for 1 edit distance
+        let fuzzy_query = format!("{}~1", query);
+        self.search(&fuzzy_query, limit)
     }
 
     /// Get index statistics
     pub fn stats(&self) -> SearchIndexStats {
+        let searcher = self.reader.searcher();
+        let num_docs = searcher.num_docs() as usize;
+
         SearchIndexStats {
             plant_count: self.plants.len(),
-            term_count: self.term_to_indices.len(),
-            fst_bytes: self.fst_size,
+            indexed_docs: num_docs,
+            // Tantivy doesn't expose index size easily for in-RAM index
+            index_bytes: 0,
         }
     }
 }
@@ -427,6 +341,6 @@ impl SearchIndex {
 #[derive(Debug, serde::Serialize)]
 pub struct SearchIndexStats {
     pub plant_count: usize,
-    pub term_count: usize,
-    pub fst_bytes: usize,
+    pub indexed_docs: usize,
+    pub index_bytes: usize,
 }
