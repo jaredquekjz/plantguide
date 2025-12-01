@@ -75,10 +75,15 @@ fn build_pollinator_group(profile: Option<&OrganismProfile>) -> OrganismGroup {
         Vec::new()
     };
 
+    // Get pollinator level and interpretation from classify.rs
+    let (level, interpretation) = classify_pollinator_level(count);
+
     OrganismGroup {
         title: "Pollinators".to_string(),
         icon: "🐝".to_string(),
         total_count: count,
+        level: level.to_string(),
+        interpretation: interpretation.to_string(),
         categories,
     }
 }
@@ -94,10 +99,15 @@ fn build_herbivore_group(profile: Option<&OrganismProfile>) -> OrganismGroup {
         Vec::new()
     };
 
+    // Get pest level and advice from classify.rs
+    let (level, advice) = classify_pest_level(count);
+
     OrganismGroup {
         title: "Herbivores & Parasites".to_string(),
         icon: "🐛".to_string(),
         total_count: count,
+        level: level.to_string(),
+        interpretation: advice.to_string(),
         categories,
     }
 }
@@ -113,10 +123,15 @@ fn build_predator_group(profile: Option<&OrganismProfile>) -> OrganismGroup {
         Vec::new()
     };
 
+    // Get predator level and interpretation from classify.rs
+    let (level, interpretation) = classify_predator_level(count);
+
     OrganismGroup {
         title: "Beneficial Predators".to_string(),
         icon: "🐞".to_string(),
         total_count: count,
+        level: level.to_string(),
+        interpretation: interpretation.to_string(),
         categories,
     }
 }
@@ -132,10 +147,15 @@ fn build_fungivore_group(profile: Option<&OrganismProfile>) -> OrganismGroup {
         Vec::new()
     };
 
+    // Use predator level thresholds for fungivores (similar biocontrol role)
+    let (level, interpretation) = classify_predator_level(count);
+
     OrganismGroup {
         title: "Fungivores (Disease Control)".to_string(),
         icon: "🍄".to_string(),
         total_count: count,
+        level: level.to_string(),
+        interpretation: interpretation.to_string(),
         categories,
     }
 }
@@ -146,10 +166,19 @@ fn build_disease_group(
     counts: Option<&FungalCounts>,
     ranked_pathogens: Option<&[RankedPathogen]>,
 ) -> DiseaseGroup {
-    // Convert ranked pathogens to PathogenInfo
+    // Get total pathogen count
+    let pathogen_count = ranked_pathogens
+        .map(|p| p.len())
+        .or_else(|| counts.map(|c| c.pathogenic))
+        .unwrap_or(0);
+
+    // Get disease level and advice from classify.rs
+    let (disease_level, disease_advice) = classify_disease_level(pathogen_count);
+
+    // Convert ranked pathogens to PathogenInfo - top 5 only (like MD version)
     let pathogens: Vec<PathogenInfo> = if let Some(rp) = ranked_pathogens {
         rp.iter()
-            .take(10)  // Top 10 pathogens for display
+            .take(5)  // Top 5 pathogens for display (matches MD version)
             .map(|p| PathogenInfo {
                 name: p.taxon.clone(),
                 observation_count: p.observation_count,
@@ -160,12 +189,10 @@ fn build_disease_group(
         Vec::new()
     };
 
-    // Build resistance notes based on pathogen count
-    let pathogen_count = ranked_pathogens
-        .map(|p| p.len())
-        .or_else(|| counts.map(|c| c.pathogenic))
-        .unwrap_or(0);
+    // Calculate how many more pathogens beyond top 5
+    let more_count = if pathogen_count > 5 { pathogen_count - 5 } else { 0 };
 
+    // Build resistance notes based on pathogen count
     let resistance_notes = if pathogen_count > 10 {
         vec![
             "Monitor in humid conditions; ensure good airflow".to_string(),
@@ -178,7 +205,11 @@ fn build_disease_group(
     };
 
     DiseaseGroup {
+        disease_level: disease_level.to_string(),
+        disease_advice: disease_advice.to_string(),
+        pathogen_count,
         pathogens,
+        more_count,
         resistance_notes,
     }
 }

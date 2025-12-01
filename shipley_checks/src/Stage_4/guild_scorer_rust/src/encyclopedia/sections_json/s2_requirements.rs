@@ -74,6 +74,12 @@ pub fn generate(
     let mut soil = build_soil_section(data);
     if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
         soil.comparisons = build_soil_comparisons(loc, assess);
+        // Add amendments from soil and texture assessments (matches MD version)
+        let all_amendments: Vec<String> = assess.soil.amendments.iter()
+            .chain(assess.texture.amendments.iter())
+            .cloned()
+            .collect();
+        soil.advice.extend(all_amendments);
     }
 
     // Overall suitability

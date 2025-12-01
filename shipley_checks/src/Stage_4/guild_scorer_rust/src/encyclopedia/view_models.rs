@@ -471,6 +471,8 @@ pub struct OrganismGroup {
     pub title: String,
     pub icon: String,
     pub total_count: usize,
+    pub level: String,           // "Exceptional", "Very High", "Typical", "Low", "Minimal"
+    pub interpretation: String,  // Human-readable interpretation/advice
     pub categories: Vec<OrganismCategory>,
 }
 
@@ -482,7 +484,11 @@ pub struct OrganismCategory {
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct DiseaseGroup {
-    pub pathogens: Vec<PathogenInfo>,
+    pub disease_level: String,      // "High", "Above average", "Typical", "Low", "No data"
+    pub disease_advice: String,     // Human-readable disease risk advice
+    pub pathogen_count: usize,      // Total number of pathogens
+    pub pathogens: Vec<PathogenInfo>, // Top 5 pathogens
+    pub more_count: usize,          // Number of additional pathogens beyond top 5
     pub resistance_notes: Vec<String>,
 }
 
