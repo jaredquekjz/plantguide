@@ -29,6 +29,7 @@ pub mod utils;
 pub mod sections_md;      // Markdown output (renamed from sections)
 pub mod sections_json;    // JSON output (new)
 pub mod generator_md;     // Markdown generator (renamed from generator)
+pub mod generator_json;   // JSON generator (new)
 pub mod suitability;
 pub mod view_models;
 pub mod view_builder;     // To be deleted after migration
@@ -36,4 +37,6 @@ pub mod view_builder;     // To be deleted after migration
 // Re-export public API
 pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
 pub use sections_md::s1_identity::{RelatedSpecies, GenusSpeciesInfo};
+pub use sections_json::s1_identity::InputRelatedSpecies;
 pub use generator_md::EncyclopediaGenerator;
+pub use generator_json::generate_encyclopedia_data;
