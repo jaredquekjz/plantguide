@@ -151,6 +151,7 @@ pub struct LightRequirement {
     pub category: String,      // "Full sun", "Partial shade", etc.
     pub description: String,   // Friendly explanation
     pub icon_fill_percent: u8, // 0-100 for visual indicator
+    pub source_attribution: Option<String>, // Source of EIVE-L value (expert/imputed)
 }
 
 impl LightRequirement {
@@ -180,9 +181,14 @@ pub struct MoistureSection {
 pub struct SoilSection {
     pub texture_summary: String,
     pub texture_details: Option<SoilTextureDetails>,  // Detailed sand/silt/clay
+    // Topsoil (0-15cm) - the amendable layer
     pub ph: Option<SoilParameter>,
     pub fertility: Option<SoilParameter>,
     pub organic_carbon: Option<SoilParameter>,
+    // Profile average (0-200cm) - underlying conditions
+    pub profile_ph: Option<SoilParameter>,
+    pub profile_fertility: Option<SoilParameter>,
+    pub profile_organic_carbon: Option<SoilParameter>,
     pub comparisons: Vec<ComparisonRow>,
     pub advice: Vec<String>,
 }

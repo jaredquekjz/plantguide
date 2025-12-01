@@ -34,9 +34,17 @@ use crate::encyclopedia::suitability::comparator::EnvelopeFit;
 // ============================================================================
 
 /// Convert dekadal mean to annual estimate (×36 dekads/year).
+/// Used for FD (frost days), TR (tropical nights), SU (summer days).
 #[inline]
 fn dekadal_to_annual(value: f64) -> f64 {
     value * 36.0
+}
+
+/// Convert seasonal mean to annual estimate (×4 seasons/year).
+/// Used for WW (warm-wet days).
+#[inline]
+fn seasonal_to_annual(value: f64) -> f64 {
+    value * 4.0
 }
 
 /// Generate the S2 Growing Requirements section.
@@ -109,11 +117,26 @@ fn build_light_section(data: &HashMap<String, Value>) -> LightRequirement {
         .map(|l| ((l / 10.0) * 100.0) as u8)
         .unwrap_or(50);
 
+    // Check if value is from expert observation or imputed
+    let source = get_str(data, "EIVEres-L_source");
+    let is_imputed = source.map(|s| s == "imputed").unwrap_or(false);
+
+    let source_attribution = if eive_l.is_some() {
+        if is_imputed {
+            Some("Estimated from plant traits and habitat data using machine learning, calibrated against species with known Ecological Indicator Values for Europe (EIVE), derived from expert botanist field surveys.".to_string())
+        } else {
+            Some("Ecological Indicator Value for Europe (EIVE-L) from expert botanist field surveys — shows typical light conditions where this species is found in natural habitats under competition.".to_string())
+        }
+    } else {
+        None
+    };
+
     LightRequirement {
         eive_l,
         category,
         description,
         icon_fill_percent,
+        source_attribution,
     }
 }
 
@@ -140,56 +163,142 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
 
     // Get BioClim temperature variables
     let bio5_q50 = get_f64(data, "wc2.1_30s_bio_5_q50");
+    let bio5_q95 = get_f64(data, "wc2.1_30s_bio_5_q95");
+    let bio6_q05 = get_f64(data, "wc2.1_30s_bio_6_q05");
     let bio6_q50 = get_f64(data, "wc2.1_30s_bio_6_q50");
 
-    // Summary
+    // Summary with range
     let summary = match (bio5_q50, bio6_q50) {
         (Some(warm), Some(cold)) => {
             let cold_display = if cold > -0.5 && cold < 0.5 { 0.0 } else { cold };
-            format!("{:.0}°C warmest month, {:.0}°C coldest month", warm, cold_display)
+            let range_str = match (bio6_q05, bio5_q95) {
+                (Some(cold_min), Some(warm_max)) =>
+                    format!(" (range: {:.0}°C to {:.0}°C)", cold_min, warm_max),
+                _ => String::new(),
+            };
+            format!("{:.0}°C warmest month, {:.0}°C coldest month{}", warm, cold_display, range_str)
         }
         _ => "Temperature data not available".to_string(),
     };
 
+    // ========== COLD STRESS ==========
+
     // Frost days
+    let fd_q05 = get_f64(data, "FD_q05");
     let fd_q50 = get_f64(data, "FD_q50");
+    let fd_q95 = get_f64(data, "FD_q95");
     if let Some(fd50) = fd_q50 {
         let fd50_annual = dekadal_to_annual(fd50);
+        let fd_q05_annual = fd_q05.map(dekadal_to_annual);
+        let fd_q95_annual = fd_q95.map(dekadal_to_annual);
         let frost_regime = classify_frost_regime(fd50_annual);
+
+        let range_str = match (fd_q05_annual, fd_q95_annual) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
+            (None, Some(hi)) => format!(" (up to {:.0} in coldest locations)", hi),
+            _ => String::new(),
+        };
         details.push(format!(
-            "Frost days: {:.0}/year ({})",
-            fd50_annual, frost_regime
+            "Frost days: {:.0}/year{} - {}",
+            fd50_annual, range_str, frost_regime
         ));
     }
 
     // Cold spells
     let cfd_q50 = get_f64(data, "CFD_q50");
+    let cfd_q95 = get_f64(data, "CFD_q95");
     if let Some(cfd50) = cfd_q50 {
         let cold_spell = classify_cold_spell(cfd50);
+        let max_str = cfd_q95.map(|c| format!(", up to {:.0}", c)).unwrap_or_default();
         details.push(format!(
-            "Cold spells: {:.0} consecutive days typical ({})",
-            cfd50, cold_spell
+            "Cold spells: {:.0} consecutive days typical{} - {}",
+            cfd50, max_str, cold_spell
         ));
     }
 
-    // Growing season
-    let gsl_q50 = get_f64(data, "GSL_q50");
-    if let Some(gsl50) = gsl_q50 {
-        let season_type = classify_growing_season(gsl50);
-        let months = (gsl50 / 30.0).round() as i32;
-        details.push(format!(
-            "Growing season: {:.0} days (~{} months, {})",
-            gsl50, months, season_type
-        ));
+    // ========== HEAT STRESS ==========
+
+    // Summer Days (SU) - days with maximum temp above 25°C
+    let su_q50 = get_f64(data, "SU_q50");
+    let su_q95 = get_f64(data, "SU_q95");
+    if let Some(su50) = su_q50 {
+        let su50_annual = dekadal_to_annual(su50);
+        let su_q95_annual = su_q95.map(dekadal_to_annual);
+        if su50_annual >= 5.0 {
+            let heat_regime = if su50_annual > 120.0 { "Very hot summers" }
+                else if su50_annual > 90.0 { "Hot summers" }
+                else if su50_annual > 60.0 { "Warm summers" }
+                else if su50_annual > 30.0 { "Mild summers" }
+                else { "Cool summers" };
+            let max_str = su_q95_annual.map(|s| format!(" (up to {:.0} in warmest)", s)).unwrap_or_default();
+            details.push(format!(
+                "Hot days: {:.0}/year with max >25°C{} - {}",
+                su50_annual, max_str, heat_regime
+            ));
+        }
     }
+
+    // Tropical Nights (TR) - nights with minimum temp above 20°C
+    let tr_q05 = get_f64(data, "TR_q05");
+    let tr_q50 = get_f64(data, "TR_q50");
+    let tr_q95 = get_f64(data, "TR_q95");
+    if let Some(tr50) = tr_q50 {
+        let tr50_annual = dekadal_to_annual(tr50);
+        let tr_q05_annual = tr_q05.map(dekadal_to_annual);
+        let tr_q95_annual = tr_q95.map(dekadal_to_annual);
+        let night_regime = classify_tropical_night_regime(tr50_annual);
+
+        if tr50_annual < 1.0 {
+            let range_str = match tr_q95_annual {
+                Some(hi) if hi >= 1.0 => format!(" (up to {:.0} in warmest locations)", hi),
+                _ => String::new(),
+            };
+            details.push(format!("Warm nights: Rare{} - {}", range_str, night_regime));
+        } else {
+            let range_str = match (tr_q05_annual, tr_q95_annual) {
+                (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
+                (None, Some(hi)) => format!(" (up to {:.0} in warmest)", hi),
+                _ => String::new(),
+            };
+            details.push(format!(
+                "Warm nights: {:.0}/year with min >20°C{} - {}",
+                tr50_annual, range_str, night_regime
+            ));
+        }
+    }
+
+    // ========== CLIMATE STABILITY ==========
 
     // Day-night swing
+    let dtr_q05 = get_f64(data, "DTR_q05");
     let dtr_q50 = get_f64(data, "DTR_q50");
+    let dtr_q95 = get_f64(data, "DTR_q95");
     if let Some(dtr50) = dtr_q50 {
         let stability = if dtr50 < 8.0 { "Maritime/oceanic - stable" }
             else if dtr50 < 12.0 { "Temperate - moderate" }
             else { "Continental - large swings" };
-        details.push(format!("Day-night swing: {:.0}°C ({})", dtr50, stability));
+        let range_str = match (dtr_q05, dtr_q95) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0}°C across locations)", lo, hi),
+            _ => String::new(),
+        };
+        details.push(format!("Day-night swing: {:.0}°C{} - {}", dtr50, range_str, stability));
+    }
+
+    // Growing season
+    let gsl_q05 = get_f64(data, "GSL_q05");
+    let gsl_q50 = get_f64(data, "GSL_q50");
+    let gsl_q95 = get_f64(data, "GSL_q95");
+    if let Some(gsl50) = gsl_q50 {
+        let season_type = classify_growing_season(gsl50);
+        let months = (gsl50 / 30.0).round() as i32;
+        let range_str = match (gsl_q05, gsl_q95) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} days across locations)", lo, hi),
+            _ => String::new(),
+        };
+        details.push(format!(
+            "Growing season: {:.0} days (~{} months){} - {}",
+            gsl50, months, range_str, season_type
+        ));
     }
 
     TemperatureSection {
@@ -197,6 +306,16 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
         details,
         comparisons: Vec::new(),
     }
+}
+
+/// Classify tropical night regime based on typical annual count
+fn classify_tropical_night_regime(tr_q50: f64) -> &'static str {
+    if tr_q50 > 100.0 { "Year-round warmth" }
+    else if tr_q50 > 60.0 { "Hot summer nights" }
+    else if tr_q50 > 30.0 { "Frequent warm nights" }
+    else if tr_q50 > 10.0 { "Regular warm nights" }
+    else if tr_q50 > 1.0 { "Occasional warm nights" }
+    else { "Cool nights year-round" }
 }
 
 fn classify_frost_regime(fd_q50: f64) -> &'static str {
@@ -249,7 +368,7 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
         .map(|r| format!("{:.0}mm/year rainfall", r.typical))
         .unwrap_or_else(|| "Moisture data not available".to_string());
 
-    // Dry spells
+    // Dry spells (CDD - consecutive dry days with precip <1mm)
     let cdd_q50 = get_f64(data, "CDD_q50");
     let cdd_q95 = get_f64(data, "CDD_q95");
 
@@ -272,15 +391,43 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
         }
     });
 
-    // Wet spells
+    // Warm-Wet Days (WW) - days with Tmax >25°C AND precip >1mm (disease risk indicator)
+    let ww_q50 = get_f64(data, "WW_q50");
+    if let Some(ww50) = ww_q50 {
+        let ww50_annual = seasonal_to_annual(ww50);
+        let disease_pressure = if ww50_annual > 150.0 {
+            "Disease pressure: High (humid climate) - likely disease-resistant; provide good airflow"
+        } else if ww50_annual > 80.0 {
+            "Disease pressure: Moderate - monitor for mildew/rust in humid periods"
+        } else {
+            "Disease pressure: Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens"
+        };
+        advice.push(disease_pressure.to_string());
+    }
+
+    // Wet spells (CWD - consecutive days with precip >1mm)
     let cwd_q50 = get_f64(data, "CWD_q50");
     let cwd_q95 = get_f64(data, "CWD_q95");
 
-    let wet_spell_days = cwd_q50.map(|typical| RangeValue {
-        typical,
-        min: typical,
-        max: cwd_q95.unwrap_or(typical),
-        unit: "days".to_string(),
+    let wet_spell_days = cwd_q50.map(|typical| {
+        // Add waterlogging tolerance advice
+        if typical >= 5.0 {
+            let waterlog_advice = if typical > 14.0 {
+                "Waterlogging: High tolerance - can handle boggy conditions"
+            } else if typical > 7.0 {
+                "Waterlogging: Moderate tolerance - ensure drainage in heavy soils"
+            } else {
+                "Waterlogging: Good drainage needed - avoid waterlogged soils"
+            };
+            advice.push(waterlog_advice.to_string());
+        }
+
+        RangeValue {
+            typical,
+            min: typical,
+            max: cwd_q95.unwrap_or(typical),
+            unit: "days".to_string(),
+        }
     });
 
     MoistureSection {
@@ -307,7 +454,7 @@ fn classify_drought_tolerance(cdd_q95: f64) -> &'static str {
 fn build_soil_section(data: &HashMap<String, Value>) -> SoilSection {
     let advice = Vec::new();
 
-    // Helper to calculate 0-15cm weighted average
+    // Helper to calculate 0-15cm weighted average (topsoil - the amendable layer)
     let calc_topsoil_avg = |prefix: &str, suffix: &str| -> Option<f64> {
         let v1 = get_f64(data, &format!("{}_0_5cm_{}", prefix, suffix));
         let v2 = get_f64(data, &format!("{}_5_15cm_{}", prefix, suffix));
@@ -317,6 +464,29 @@ fn build_soil_section(data: &HashMap<String, Value>) -> SoilSection {
             (None, Some(b)) => Some(b),
             _ => None,
         }
+    };
+
+    // Depth-weighted average across all 6 SoilGrids layers (0-200cm profile)
+    let depth_weights: [(f64, &str); 6] = [
+        (5.0, "0_5cm"),
+        (10.0, "5_15cm"),
+        (15.0, "15_30cm"),
+        (30.0, "30_60cm"),
+        (40.0, "60_100cm"),
+        (100.0, "100_200cm"),
+    ];
+
+    // Helper to calculate profile average for any variable
+    let calc_profile_avg = |prefix: &str, suffix: &str| -> Option<f64> {
+        let mut weighted_sum = 0.0;
+        let mut total_weight = 0.0;
+        for (weight, depth) in depth_weights.iter() {
+            if let Some(v) = get_f64(data, &format!("{}_{}{}", prefix, depth, suffix)) {
+                weighted_sum += v * weight;
+                total_weight += weight;
+            }
+        }
+        if total_weight > 0.0 { Some(weighted_sum / total_weight) } else { None }
     };
 
     // pH
@@ -445,12 +615,70 @@ fn build_soil_section(data: &HashMap<String, Value>) -> SoilSection {
         _ => ("Unknown".to_string(), None),
     };
 
+    // ========== PROFILE AVERAGE (0-200cm) ==========
+    // Profile pH (with range)
+    let profile_ph_q05_raw = calc_profile_avg("phh2o", "_q05");
+    let profile_ph_q50_raw = calc_profile_avg("phh2o", "_q50");
+    let profile_ph_q95_raw = calc_profile_avg("phh2o", "_q95");
+    let (profile_ph_q05, profile_ph_q50, profile_ph_q95) = adjust_ph_values(
+        profile_ph_q05_raw, profile_ph_q50_raw, profile_ph_q95_raw
+    );
+
+    let profile_ph = profile_ph_q50.map(|value| {
+        let range = match (profile_ph_q05, profile_ph_q95) {
+            (Some(lo), Some(hi)) => format!("{:.1}-{:.1}", lo, hi),
+            _ => "unknown".to_string(),
+        };
+        SoilParameter {
+            value,
+            range,
+            interpretation: "0-200cm average".to_string(),
+        }
+    });
+
+    // Profile CEC (with range)
+    let profile_cec_q05 = calc_profile_avg("cec", "_q05");
+    let profile_cec_q50 = calc_profile_avg("cec", "_q50");
+    let profile_cec_q95 = calc_profile_avg("cec", "_q95");
+
+    let profile_fertility = profile_cec_q50.map(|value| {
+        let range = match (profile_cec_q05, profile_cec_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}", lo, hi),
+            _ => "unknown".to_string(),
+        };
+        SoilParameter {
+            value,
+            range,
+            interpretation: "cmol/kg (0-200cm)".to_string(),
+        }
+    });
+
+    // Profile SOC (with range)
+    let profile_soc_q05 = calc_profile_avg("soc", "_q05");
+    let profile_soc_q50 = calc_profile_avg("soc", "_q50");
+    let profile_soc_q95 = calc_profile_avg("soc", "_q95");
+
+    let profile_organic_carbon = profile_soc_q50.map(|value| {
+        let range = match (profile_soc_q05, profile_soc_q95) {
+            (Some(lo), Some(hi)) => format!("{:.0}-{:.0}", lo, hi),
+            _ => "unknown".to_string(),
+        };
+        SoilParameter {
+            value,
+            range,
+            interpretation: "g/kg (0-200cm)".to_string(),
+        }
+    });
+
     SoilSection {
         texture_summary,
         texture_details,
         ph,
         fertility,
         organic_carbon,
+        profile_ph,
+        profile_fertility,
+        profile_organic_carbon,
         comparisons: Vec::new(),
         advice,
     }
@@ -537,6 +765,16 @@ fn build_moisture_comparisons(
         });
     }
 
+    // Wet days comparison
+    if let Some(ref comp) = moisture.wet_days_comparison {
+        rows.push(ComparisonRow {
+            parameter: "Max wet spell (days)".to_string(),
+            local_value: format!("{:.0}", comp.local_value),
+            plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
+            fit: convert_fit(comp.fit),
+        });
+    }
+
     rows
 }
 
@@ -545,6 +783,7 @@ fn build_soil_comparisons(
     assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
 ) -> Vec<ComparisonRow> {
     let soil = &assessment.soil;
+    let texture = &assessment.texture;
     let mut rows = Vec::new();
 
     if let Some(ref comp) = soil.ph_comparison {
@@ -562,6 +801,26 @@ fn build_soil_comparisons(
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
             fit: convert_fit(comp.fit),
+        });
+    }
+
+    // Texture compatibility
+    if let Some(ref local_tex) = texture.local_texture {
+        use crate::encyclopedia::suitability::assessment::TextureCompatibility;
+        let fit = match texture.compatibility {
+            TextureCompatibility::Ideal | TextureCompatibility::Good => FitLevel::Good,
+            TextureCompatibility::Marginal => FitLevel::Marginal,
+            TextureCompatibility::Poor => FitLevel::Outside,
+            TextureCompatibility::Unknown => FitLevel::Unknown,
+        };
+        let plant_tex_name = texture.plant_texture.as_ref()
+            .map(|t| t.class_name.as_str())
+            .unwrap_or("Unknown");
+        rows.push(ComparisonRow {
+            parameter: "Soil texture".to_string(),
+            local_value: local_tex.class_name.clone(),
+            plant_range: plant_tex_name.to_string(),
+            fit,
         });
     }
 
