@@ -731,13 +731,10 @@ async fn get_encyclopedia(
     // 5. Fetch beneficial fungi
     let beneficial_fungi = parse_beneficial_fungi(&state.query_engine, &id).await;
 
-    // 6. Find related species (if phylo data available)
-    let genus = plant_data.get("genus").and_then(|v| v.as_str()).unwrap_or("");
-    let (related_species, genus_count) = if let Some(phylo) = &state.phylo_data {
-        find_related_species(&state.query_engine, phylo, &id, genus).await
-    } else {
-        (vec![], 0)
-    };
+    // 6. Find related species using precomputed phylogenetic distances
+    // Now searches ALL plants (not just same genus) via pairwise_phylo_distances parquet
+    let related_species = find_related_species(&state.query_engine, &id).await;
+    let genus_count = 0; // No longer meaningful since we search all plants
 
     // 7. Get local conditions for location
     let local_conditions = get_local_conditions(&location);
@@ -1088,113 +1085,90 @@ async fn parse_beneficial_fungi(
     }
 }
 
-/// Find related species within the same genus using phylogenetic distance
+/// Find closest related species using precomputed phylogenetic distances
+///
+/// Uses the pairwise_phylo_distances parquet (136M pairs) for O(1) lookup
+/// instead of runtime tree traversal. Searches ALL 11,673 plants, not just same genus.
 #[cfg(feature = "api")]
 async fn find_related_species(
     engine: &QueryEngine,
-    phylo: &PhyloData,
     base_wfo_id: &str,
-    genus: &str,
-) -> (Vec<RelatedSpecies>, usize) {
-    // Query all species in the same genus
+) -> Vec<RelatedSpecies> {
+    // Single SQL query with JOIN - searches all plants, not just same genus
+    // Use CASE instead of COALESCE to avoid Utf8View/Utf8 type coercion issues
     let query = format!(
-        "SELECT wfo_taxon_id, wfo_scientific_name, vernacular_name_en \
-         FROM plants WHERE genus = '{}' AND wfo_taxon_id != '{}'",
-        genus.replace('\'', "''"),
+        "SELECT
+            pd.wfo_id_b AS wfo_id,
+            pd.distance,
+            p.wfo_scientific_name AS scientific_name,
+            CASE WHEN p.vernacular_name_en IS NULL THEN '' ELSE p.vernacular_name_en END AS common_name
+         FROM pairwise_phylo_distances pd
+         JOIN plants p ON pd.wfo_id_b = p.wfo_taxon_id
+         WHERE pd.wfo_id_a = '{}'
+         ORDER BY pd.distance ASC
+         LIMIT 5",
         base_wfo_id.replace('\'', "''")
     );
 
     let batches = match engine.query(&query).await {
         Ok(b) => b,
-        Err(_) => return (vec![], 0),
+        Err(e) => {
+            tracing::warn!("find_related_species query failed for {}: {}", base_wfo_id, e);
+            return vec![];
+        }
     };
 
     if batches.is_empty() {
-        return (vec![], 0);
+        return vec![];
     }
 
     // Parse results
     let json = match batches_to_json(&batches) {
         Ok(j) => j,
-        Err(_) => return (vec![], 0),
+        Err(e) => {
+            tracing::warn!("find_related_species JSON parse failed: {:?}", e);
+            return vec![];
+        }
     };
     let data = match json.get("data").and_then(|d| d.as_array()) {
         Some(d) => d,
-        None => return (vec![], 0),
+        None => return vec![],
     };
 
-    // Collect genus species info
-    struct GenusSpecies {
-        wfo_id: String,
-        scientific_name: String,
-        common_name: String,
-    }
+    // Convert to RelatedSpecies
+    data.iter()
+        .filter_map(|row| {
+            let wfo_id = row.get("wfo_id").and_then(|v| v.as_str())?.to_string();
+            let scientific_name = row.get("scientific_name").and_then(|v| v.as_str()).unwrap_or("").to_string();
+            let distance = row.get("distance").and_then(|v| v.as_f64()).unwrap_or(0.0);
 
-    let mut genus_species: Vec<GenusSpecies> = Vec::new();
-    for row in data {
-        let wfo_id = row.get("wfo_taxon_id").and_then(|v| v.as_str()).unwrap_or("").to_string();
-        let scientific_name = row.get("wfo_scientific_name").and_then(|v| v.as_str()).unwrap_or("").to_string();
-        let common_name = row.get("vernacular_name_en")
-            .and_then(|v| v.as_str())
-            .unwrap_or("")
-            .split(';')
-            .next()
-            .unwrap_or("")
-            .trim()
-            .to_string();
+            // Get first common name and title case it
+            let common_name = row.get("common_name")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .split(';')
+                .next()
+                .unwrap_or("")
+                .trim()
+                .split_whitespace()
+                .map(|word| {
+                    let mut chars = word.chars();
+                    match chars.next() {
+                        None => String::new(),
+                        Some(first) => format!("{}{}", first.to_uppercase(), chars.collect::<String>().to_lowercase()),
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
 
-        // Title case common name
-        let common_name = common_name
-            .split_whitespace()
-            .map(|word| {
-                let mut chars = word.chars();
-                match chars.next() {
-                    None => String::new(),
-                    Some(first) => format!("{}{}", first.to_uppercase(), chars.collect::<String>().to_lowercase()),
-                }
+            Some(RelatedSpecies {
+                wfo_id,
+                scientific_name,
+                common_name,
+                distance,
             })
-            .collect::<Vec<_>>()
-            .join(" ");
-
-        if !wfo_id.is_empty() {
-            genus_species.push(GenusSpecies { wfo_id, scientific_name, common_name });
-        }
-    }
-
-    let genus_count = genus_species.len() + 1; // Include the base plant
-
-    // Get base plant's tree tip
-    let base_tip = match phylo.get_tip(base_wfo_id) {
-        Some(t) => t,
-        None => return (vec![], genus_count),
-    };
-
-    // Calculate distances to all genus species
-    let mut with_distances: Vec<(GenusSpecies, f64)> = genus_species
-        .into_iter()
-        .filter_map(|sp| {
-            let tip = phylo.get_tip(&sp.wfo_id)?;
-            let dist = phylo.tree.pairwise_distance_by_labels(base_tip, tip)?;
-            Some((sp, dist))
         })
-        .collect();
-
-    // Sort by distance (closest first)
-    with_distances.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap_or(std::cmp::Ordering::Equal));
-
-    // Take top 5
-    let related: Vec<RelatedSpecies> = with_distances
-        .into_iter()
-        .take(5)
-        .map(|(sp, dist)| RelatedSpecies {
-            wfo_id: sp.wfo_id,
-            scientific_name: sp.scientific_name,
-            common_name: sp.common_name,
-            distance: dist,
-        })
-        .collect();
-
-    (related, genus_count)
+        .collect()
 }
 
 // ============================================================================

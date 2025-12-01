@@ -171,6 +171,20 @@ impl QueryEngine {
             .await?;
         }
 
+        // Register pairwise phylogenetic distances (Phase 0.5 output)
+        let pairwise_pd_path = format!(
+            "{}/phase0_output/pairwise_phylo_distances.parquet",
+            data_dir
+        );
+        if Path::new(&pairwise_pd_path).exists() {
+            ctx.register_parquet(
+                "pairwise_phylo_distances",
+                &pairwise_pd_path,
+                ParquetReadOptions::default(),
+            )
+            .await?;
+        }
+
         Ok(Self {
             ctx: Arc::new(ctx),
         })

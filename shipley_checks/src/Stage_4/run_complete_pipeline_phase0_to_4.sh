@@ -157,6 +157,44 @@ if [ "$START_PHASE" -le 0 ]; then
 fi
 
 # ============================================================================
+# Phase 0.5: Pairwise Phylogenetic Distances (Exhaustive)
+# ============================================================================
+
+if [ "$START_PHASE" -le 0 ]; then
+  echo "================================================================================"
+  echo "PHASE 0.5: PAIRWISE PHYLOGENETIC DISTANCES"
+  echo "================================================================================"
+  echo ""
+  echo "Computing exhaustive pairwise distances for all 11,673 plants"
+  echo "Output: ~136M pairs → pairwise_phylo_distances.parquet"
+  echo ""
+
+  PHASE05_START=$(date +%s)
+
+  # Build Rust binary (release mode for optimal performance)
+  cd "${STAGE4_DIR}/guild_scorer_rust"
+  echo "Building generate_pairwise_pd binary (release mode)..."
+  cargo build --release --bin generate_pairwise_pd 2>&1 | tail -5
+  cd "${PROJECT_ROOT}"
+
+  # Run pairwise distance generation
+  echo ""
+  shipley_checks/src/Stage_4/guild_scorer_rust/target/release/generate_pairwise_pd
+
+  PHASE05_END=$(date +%s)
+  PHASE05_TIME=$((PHASE05_END - PHASE05_START))
+
+  if [ $? -eq 0 ]; then
+    echo ""
+    echo "✓ Phase 0.5 complete (${PHASE05_TIME}s)"
+    echo ""
+  else
+    echo "✗ Phase 0.5 failed"
+    exit 1
+  fi
+fi
+
+# ============================================================================
 # Phase 1: iNaturalist Multilingual Vernaculars (61 languages)
 # ============================================================================
 
@@ -509,6 +547,8 @@ echo ""
 if [ "$START_PHASE" -le 0 ]; then
   echo "✓ Phase 0: R DuckDB extraction (GloBI → Rust-ready parquets)"
   [ -n "$PHASE0_TIME" ] && echo "           Time: ${PHASE0_TIME}s"
+  echo "✓ Phase 0.5: Pairwise phylogenetic distances (136M pairs)"
+  [ -n "$PHASE05_TIME" ] && echo "             Time: ${PHASE05_TIME}s"
 fi
 if [ "$START_PHASE" -le 1 ]; then
   echo "✓ Phase 1: iNaturalist multilingual vernaculars (61 languages)"
@@ -550,6 +590,9 @@ echo "  Phase 0 (Rust-ready parquets):"
 echo "    - shipley_checks/validation/organism_profiles_pure_rust.parquet"
 echo "    - shipley_checks/validation/fungal_guilds_pure_rust.parquet"
 echo "    - shipley_checks/validation/*_11711.parquet (7 datasets)"
+echo ""
+echo "  Phase 0.5 (Pairwise phylogenetic distances):"
+echo "    - shipley_checks/stage4/phase0_output/pairwise_phylo_distances.parquet (136M pairs)"
 echo ""
 echo "  Phase 1 (Multilingual vernaculars):"
 echo "    - data/taxonomy/all_taxa_vernacular_final.parquet"
