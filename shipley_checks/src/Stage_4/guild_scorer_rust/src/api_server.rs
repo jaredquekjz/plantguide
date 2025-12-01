@@ -40,7 +40,7 @@ use crate::search_index::SearchIndex;
 #[cfg(feature = "api")]
 use crate::encyclopedia::{
     EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismProfile, CategorizedOrganisms,
-    OrganismLists, RankedPathogen, BeneficialFungi,
+    OrganismLists, RankedPathogen, BeneficialFungi, generate_encyclopedia_data,
 };
 
 #[cfg(feature = "api")]
@@ -615,12 +615,12 @@ async fn get_suitability(
     let local_conditions = get_local_conditions(&location);
 
     // 3. Build encyclopedia data and extract requirements/suitability
-    let encyclopedia_data = crate::encyclopedia::view_builder::build_encyclopedia_data(
+    let encyclopedia_data = generate_encyclopedia_data(
         &id,
         &plant_data,
         None, None, None, None, None, 0,
         Some(&local_conditions),
-    );
+    ).map_err(|e| AppError::Internal(e))?;
 
     // 4. Extract suitability info from requirements section
     let requirements = &encyclopedia_data.requirements;
@@ -739,8 +739,8 @@ async fn get_encyclopedia(
     // 7. Get local conditions for location
     let local_conditions = get_local_conditions(&location);
 
-    // 8. Build encyclopedia data using view_builder with all data
-    let encyclopedia_data = crate::encyclopedia::view_builder::build_encyclopedia_data(
+    // 8. Build encyclopedia data using generator_json with all data
+    let encyclopedia_data = generate_encyclopedia_data(
         &id,
         &plant_data,
         organism_profile.as_ref(),
@@ -750,7 +750,7 @@ async fn get_encyclopedia(
         if related_species.is_empty() { None } else { Some(&related_species) },
         genus_count,
         Some(&local_conditions),
-    );
+    ).map_err(|e| AppError::Internal(e))?;
 
     // 9. Serialize to JSON
     let result = serde_json::to_value(&encyclopedia_data)
