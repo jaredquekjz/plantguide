@@ -8,12 +8,13 @@ use typeshare::typeshare;
 
 /// Suitability fit level for visual badges
 #[typeshare]
-#[derive(Debug, Clone, Copy, PartialEq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Default)]
 pub enum FitLevel {
     Optimal,   // Green - within Q25-Q75
     Good,      // Blue - within Q05-Q95
     Marginal,  // Amber - within Q01-Q99
     Outside,   // Red - outside range
+    #[default]
     Unknown,   // Grey - no data
 }
 
@@ -55,7 +56,7 @@ impl FitLevel {
 
 /// Complete identity card data for the hero section
 #[typeshare]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct IdentityCard {
     pub wfo_id: String,
     pub scientific_name: String,
@@ -74,8 +75,9 @@ pub struct IdentityCard {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Serialize, Default)]
 pub enum GrowthIcon {
+    #[default]
     Tree,
     Shrub,
     Herb,
@@ -95,7 +97,7 @@ impl GrowthIcon {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct HeightInfo {
     pub meters: f64,
     pub description: String, // e.g., "Large tree, needs significant space"
@@ -107,20 +109,20 @@ impl HeightInfo {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct LeafInfo {
     pub leaf_type: String,   // Broadleaved, Needleleaved
     pub area_cm2: f64,
     pub description: String, // e.g., "Medium-sized"
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct SeedInfo {
     pub mass_g: f64,
     pub description: String, // e.g., "Medium seeds, bird food"
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct RelativeSpecies {
     pub wfo_id: String,
     pub scientific_name: String,
@@ -134,7 +136,7 @@ pub struct RelativeSpecies {
 // ============================================================================
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct RequirementsSection {
     pub light: LightRequirement,
     pub temperature: TemperatureSection,
@@ -143,7 +145,7 @@ pub struct RequirementsSection {
     pub overall_suitability: Option<OverallSuitability>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct LightRequirement {
     pub eive_l: Option<f64>,
     pub category: String,      // "Full sun", "Partial shade", etc.
@@ -157,14 +159,14 @@ impl LightRequirement {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct TemperatureSection {
     pub summary: String,
     pub details: Vec<String>,
     pub comparisons: Vec<ComparisonRow>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct MoistureSection {
     pub summary: String,
     pub rainfall_mm: Option<RangeValue>,
@@ -174,7 +176,7 @@ pub struct MoistureSection {
     pub advice: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct SoilSection {
     pub texture_summary: String,
     pub texture_details: Option<SoilTextureDetails>,  // Detailed sand/silt/clay
@@ -186,7 +188,7 @@ pub struct SoilSection {
 }
 
 /// Detailed soil texture breakdown
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct SoilTextureDetails {
     pub sand: TextureComponent,
     pub silt: TextureComponent,
@@ -199,14 +201,14 @@ pub struct SoilTextureDetails {
     pub triangle_y: Option<f64>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct TextureComponent {
     pub typical: f64,
     pub min: f64,
     pub max: f64,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct RangeValue {
     pub typical: f64,
     pub min: f64,
@@ -214,7 +216,7 @@ pub struct RangeValue {
     pub unit: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct SoilParameter {
     pub value: f64,
     pub range: String,
@@ -227,7 +229,7 @@ impl SoilParameter {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct ComparisonRow {
     pub parameter: String,
     pub local_value: String,
@@ -236,7 +238,7 @@ pub struct ComparisonRow {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct OverallSuitability {
     pub location_name: String,
     pub score_percent: u8,
@@ -249,7 +251,7 @@ pub struct OverallSuitability {
 // S3: Maintenance Profile
 // ============================================================================
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct MaintenanceSection {
     pub level: MaintenanceLevel,
     pub csr_strategy: CsrStrategy,
@@ -257,8 +259,9 @@ pub struct MaintenanceSection {
     pub seasonal_notes: Vec<SeasonalNote>,
 }
 
-#[derive(Debug, Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Serialize, Default)]
 pub enum MaintenanceLevel {
+    #[default]
     Low,
     LowMedium,
     Medium,
@@ -298,7 +301,7 @@ impl MaintenanceLevel {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct CsrStrategy {
     pub c_percent: f64,
     pub s_percent: f64,
@@ -319,14 +322,14 @@ impl CsrStrategy {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct MaintenanceTask {
     pub name: String,
     pub frequency: String,
     pub importance: String, // "Essential", "Recommended", "Optional"
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct SeasonalNote {
     pub season: String,
     pub note: String,
@@ -336,7 +339,7 @@ pub struct SeasonalNote {
 // S4: Ecosystem Services
 // ============================================================================
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct EcosystemServices {
     pub ratings: Option<EcosystemRatings>,  // All 10 ecosystem service ratings
     pub services: Vec<ServiceCard>,
@@ -346,7 +349,7 @@ pub struct EcosystemServices {
 }
 
 /// All 10 ecosystem service ratings from CSR-derived calculations
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct EcosystemRatings {
     pub npp: ServiceRating,
     pub decomposition: ServiceRating,
@@ -362,7 +365,7 @@ pub struct EcosystemRatings {
 }
 
 /// Individual service rating with score and description
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct ServiceRating {
     pub score: Option<f64>,       // 1.0 - 5.0 scale
     pub rating: String,           // "Very High", "High", "Moderate", "Low", "Very Low"
@@ -376,7 +379,7 @@ impl EcosystemServices {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct ServiceCard {
     pub name: String,
     pub icon: ServiceIcon,
@@ -385,8 +388,9 @@ pub struct ServiceCard {
     pub confidence: String, // "High", "Medium", "Low"
 }
 
-#[derive(Debug, Clone, Copy, Serialize)]
+#[derive(Debug, Clone, Copy, Serialize, Default)]
 pub enum ServiceIcon {
+    #[default]
     Pollination,
     CarbonStorage,
     SoilHealth,
@@ -435,7 +439,7 @@ impl ServiceIcon {
 // S5: Biological Interactions
 // ============================================================================
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct InteractionsSection {
     pub pollinators: OrganismGroup,
     pub herbivores: OrganismGroup,
@@ -448,7 +452,7 @@ pub struct InteractionsSection {
 }
 
 /// Detailed mycorrhizal association info
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct MycorrhizalDetails {
     pub association_type: String,    // "EMF", "AMF", "Dual", "None"
     pub species_count: usize,
@@ -456,7 +460,7 @@ pub struct MycorrhizalDetails {
     pub gardening_tip: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct OrganismGroup {
     pub title: String,
     pub icon: String,
@@ -464,19 +468,19 @@ pub struct OrganismGroup {
     pub categories: Vec<OrganismCategory>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct OrganismCategory {
     pub name: String,
     pub organisms: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct DiseaseGroup {
     pub pathogens: Vec<PathogenInfo>,
     pub resistance_notes: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct PathogenInfo {
     pub name: String,
     pub observation_count: usize,
@@ -494,7 +498,7 @@ pub struct FungiGroup {
 // S6: Companion Planting / Guild Potential
 // ============================================================================
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct CompanionSection {
     pub guild_roles: Vec<GuildRole>,
     pub guild_details: Option<GuildPotentialDetails>,  // Detailed guild analysis
@@ -503,21 +507,21 @@ pub struct CompanionSection {
     pub planting_notes: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct GuildRole {
     pub role: String,        // "Nitrogen fixer", "Pollinator attractor", etc.
     pub strength: String,    // "Strong", "Moderate", "Weak"
     pub explanation: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct CompanionPlant {
     pub name: String,
     pub reason: String,
 }
 
 /// Detailed guild potential analysis matching markdown output
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct GuildPotentialDetails {
     pub summary: GuildSummary,
     pub key_principles: Vec<String>,
@@ -530,7 +534,7 @@ pub struct GuildPotentialDetails {
     pub cautions: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct GuildSummary {
     pub taxonomy_guidance: String,
     pub growth_guidance: String,
@@ -541,7 +545,7 @@ pub struct GuildSummary {
     pub pollinator_summary: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct GrowthCompatibility {
     pub csr_profile: String,           // "C: 45% | S: 41% | R: 14%"
     pub classification: String,        // "C-dominant (Competitor)"
@@ -552,7 +556,7 @@ pub struct GrowthCompatibility {
     pub avoid_pairing: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct PestControlAnalysis {
     pub pest_count: usize,
     pub pest_level: String,            // "High", "Moderate", "Low"
@@ -563,13 +567,13 @@ pub struct PestControlAnalysis {
     pub recommendations: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct DiseaseControlAnalysis {
     pub beneficial_fungi_count: usize,
     pub recommendations: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct MycorrhizalAnalysis {
     pub association_type: String,
     pub species_count: usize,
@@ -577,7 +581,7 @@ pub struct MycorrhizalAnalysis {
     pub recommendations: Vec<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct StructuralRole {
     pub layer: String,
     pub height_m: f64,
@@ -588,7 +592,7 @@ pub struct StructuralRole {
     pub benefits: String,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct PollinatorSupport {
     pub count: usize,
     pub level: String,
@@ -602,7 +606,7 @@ pub struct PollinatorSupport {
 // ============================================================================
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct EncyclopediaPageData {
     pub identity: IdentityCard,
     pub requirements: RequirementsSection,
@@ -614,7 +618,7 @@ pub struct EncyclopediaPageData {
 }
 
 #[typeshare]
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct LocationInfo {
     pub name: String,
     pub code: String,  // "london", "singapore", "helsinki"

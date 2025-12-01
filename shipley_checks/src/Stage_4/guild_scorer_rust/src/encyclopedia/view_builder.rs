@@ -10,7 +10,7 @@ use crate::encyclopedia::types::{
     get_str, get_f64,
     OrganismProfile, FungalCounts, RankedPathogen, BeneficialFungi,
 };
-use crate::encyclopedia::sections::s1_identity::RelatedSpecies;
+use crate::encyclopedia::sections_md::s1_identity::RelatedSpecies;
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
 use crate::encyclopedia::suitability::advice::build_assessment;
 use crate::encyclopedia::suitability::comparator::EnvelopeFit;

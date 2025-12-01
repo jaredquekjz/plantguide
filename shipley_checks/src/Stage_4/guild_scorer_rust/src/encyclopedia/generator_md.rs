@@ -12,7 +12,7 @@ use serde_json::Value;
 use chrono::Utc;
 
 use crate::encyclopedia::types::{OrganismCounts, FungalCounts, OrganismProfile, RankedPathogen, BeneficialFungi};
-use crate::encyclopedia::sections::{
+use crate::encyclopedia::sections_md::{
     s1_identity,
     s2_requirements,
     s3_maintenance,
@@ -20,7 +20,7 @@ use crate::encyclopedia::sections::{
     s5_interactions,
     s6_companion,
 };
-use crate::encyclopedia::sections::s1_identity::RelatedSpecies;
+use crate::encyclopedia::sections_md::s1_identity::RelatedSpecies;
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
 
 /// Encyclopedia generator - stateless markdown generator.
