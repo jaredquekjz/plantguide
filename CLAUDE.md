@@ -344,6 +344,31 @@ This master script orchestrates all phases of the guild scoring and encyclopedia
 - `src/encyclopedia/` - Encyclopedia article generation
 - `src/bin/generate_sample_encyclopedias.rs` - Sample article generator
 
+### Encyclopedia Generation (Ground Truth)
+
+The encyclopedia system has three components that must stay in sync:
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| **MD Generator** (original) | `shipley_checks/src/Stage_4/guild_scorer_rust/src/encyclopedia/sections_md/` | Markdown output (reference implementation) |
+| **JSON Generator** (API) | `shipley_checks/src/Stage_4/guild_scorer_rust/src/encyclopedia/sections_json/` | Structured JSON for frontend |
+| **Astro Frontend** | `/home/olier/plantguide-frontend/src/components/encyclopedia/` | HTML rendering components |
+
+**Section files** (S1-S6):
+- `s1_identity.rs` - Plant identity card
+- `s2_requirements.rs` - Growing requirements
+- `s3_maintenance.rs` - Maintenance profile
+- `s4_services.rs` - Ecosystem services
+- `s5_interactions.rs` - Biological interactions (organisms, fungi, diseases)
+- `s6_companion.rs` - Guild potential / companion planting
+
+**Parity rule**: MD generator is ground truth. JSON generator must output equivalent data structures. Frontend must consume all JSON fields.
+
+**Key types** (in `view_models.rs`):
+- `EncyclopediaPageData` - Top-level response
+- `InteractionsSection` - S5 with OrganismGroup, DiseaseGroup, FungiGroup
+- `CompanionSection` - S6 with GuildPotentialDetails
+
 ## Data Loading and Processing
 
 ### MANDATORY: DuckDB for All Dataset Operations
