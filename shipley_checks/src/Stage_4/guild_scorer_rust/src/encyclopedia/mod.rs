@@ -32,7 +32,6 @@ pub mod generator_md;     // Markdown generator (renamed from generator)
 pub mod generator_json;   // JSON generator (new)
 pub mod suitability;
 pub mod view_models;
-pub mod view_builder;     // To be deleted after migration
 
 // Re-export public API
 pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
