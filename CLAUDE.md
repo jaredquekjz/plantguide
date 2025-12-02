@@ -288,17 +288,17 @@ cd /home/olier/plantguide-frontend
 npm run dev -- --host
 ```
 
-**Frontend Deployment (preferred - use git ship):**
+**Frontend Deployment (preferred - use ./ship):**
 ```bash
 cd /home/olier/plantguide-frontend
-git ship "your commit message"  # commits + pushes + builds + deploys (~8s total)
+./ship "your commit message"  # commits + pushes + builds + deploys (~4s total)
 ```
 
-This git alias does: `add → commit → push → build → rsync → restart` in one command.
+This script does: `add → commit → push → build → rsync → restart` in one command.
+Uses SSH ControlMaster for fast connections (socket persists 1 hour).
 
 **Alternative deployment commands:**
 ```bash
-git deploy                # push + build + deploy (if already committed)
 ./deploy.sh frontend      # from ellenberg root (manual build + deploy)
 ```
 
