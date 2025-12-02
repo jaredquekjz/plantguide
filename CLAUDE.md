@@ -288,22 +288,24 @@ cd /home/olier/plantguide-frontend
 npm run dev -- --host
 ```
 
-**Deployment (use deploy.sh script):**
-```bash
-# From ellenberg repo root - deploys both API and frontend
-./deploy.sh all
-
-# Or deploy individually
-./deploy.sh api       # Rust API only
-./deploy.sh frontend  # Astro frontend only
-```
-
-**Manual frontend deployment (if needed):**
+**Frontend Deployment (preferred - use git ship):**
 ```bash
 cd /home/olier/plantguide-frontend
-npm run build
-rsync -avz --delete dist/ root@134.199.166.0:/opt/plantguide-frontend/dist/
-ssh root@134.199.166.0 "systemctl restart plantguide-frontend"
+git ship "your commit message"  # commits + pushes + builds + deploys (~8s total)
+```
+
+This git alias does: `add → commit → push → build → rsync → restart` in one command.
+
+**Alternative deployment commands:**
+```bash
+git deploy                # push + build + deploy (if already committed)
+./deploy.sh frontend      # from ellenberg root (manual build + deploy)
+```
+
+**Rust API deployment (from ellenberg root):**
+```bash
+./deploy.sh api           # builds + deploys Rust API
+./deploy.sh all           # deploys both API and frontend
 ```
 
 **Server paths:**
