@@ -58,3 +58,5 @@ shipley_checks/**/*.rds
 shipley_checks/**/*.tar.xz
 shipley_checks/**/*.tar.gz
 shipley_checks/**/*.zip
+.env
+shipley_checks/stage4/distribution_maps/
