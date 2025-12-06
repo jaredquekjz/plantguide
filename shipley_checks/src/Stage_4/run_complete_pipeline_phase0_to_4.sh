@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# MASTER PIPELINE: Phase 0 → Phase 4
+# MASTER PIPELINE: Phase 0 → Phase 9
 #
 # Complete data extraction and enrichment pipeline:
 #   Phase 0: R DuckDB extraction (GloBI → Rust-ready parquets)
@@ -9,6 +9,8 @@
 #   Phase 3: Köppen climate zone labeling (plants)
 #   Phase 4: Merge taxonomy + Köppen (final dataset)
 #   Phase 5: Rust guild scorer calibration (optional, ~5 min)
+#   Phase 9: Compress photos for R2 CDN (optional)
+#   Phase 10: Distribution maps generation (R + Python, ~15 min)
 #
 # Prerequisites:
 #   - R custom library at /home/olier/ellenberg/.Rlib
@@ -19,7 +21,7 @@
 #   ./run_complete_pipeline_phase0_to_4.sh [OPTIONS]
 #
 # Options:
-#   --start-from PHASE   Start from specific phase (0, 1, 2, 3, 4, 5, 6, or 7)
+#   --start-from PHASE   Start from specific phase (0, 1, 2, 3, 4, 5, 6, 7, 8, or 9)
 #                        Default: 0 (run all phases)
 #   --skip-calibration   Skip Phase 5 (Rust calibration)
 #                        Default: false (run calibration)
@@ -27,6 +29,10 @@
 #                        Default: false (run Kimi)
 #   --skip-tests         Skip Phase 6 (canonical 5-guild tests + explanation reports)
 #                        Default: false (run tests)
+#   --skip-photos        Skip Phase 9 (photo compression for R2)
+#                        Default: true (skip photos - run manually when needed)
+#   --with-maps          Include Phase 10 (distribution map generation)
+#                        Default: false (skip maps - run manually when needed)
 #
 # Examples:
 #   ./run_complete_pipeline_phase0_to_4.sh              # Run all phases including tests
@@ -45,6 +51,7 @@ set -e  # Exit on error
 
 PROJECT_ROOT="/home/olier/ellenberg"
 STAGE4_DIR="${PROJECT_ROOT}/shipley_checks/src/Stage_4"
+PYTHON_BIN="/home/olier/miniconda3/envs/AI/bin/python"
 
 export R_LIBS_USER="${PROJECT_ROOT}/.Rlib"
 
@@ -53,6 +60,8 @@ START_PHASE=0
 SKIP_CALIBRATION=0
 SKIP_KIMI=0
 RUN_TESTS=1  # Changed: Phase 6 runs by default now
+RUN_PHOTOS=0  # Photos skipped by default (run manually when needed)
+RUN_MAPS=0    # Maps skipped by default (run manually when needed)
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -72,17 +81,25 @@ while [[ $# -gt 0 ]]; do
       RUN_TESTS=0
       shift
       ;;
+    --with-photos)
+      RUN_PHOTOS=1
+      shift
+      ;;
+    --with-maps)
+      RUN_MAPS=1
+      shift
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $0 [--start-from PHASE] [--skip-calibration] [--skip-kimi] [--skip-tests]"
+      echo "Usage: $0 [--start-from PHASE] [--skip-calibration] [--skip-kimi] [--skip-tests] [--with-photos] [--with-maps]"
       exit 1
       ;;
   esac
 done
 
 # Validate start phase
-if [[ ! "$START_PHASE" =~ ^[0-7]$ ]]; then
-  echo "Error: Invalid phase '$START_PHASE'. Must be 0, 1, 2, 3, 4, 5, 6, or 7."
+if [[ ! "$START_PHASE" =~ ^[0-9]$ ]]; then
+  echo "Error: Invalid phase '$START_PHASE'. Must be 0-9."
   exit 1
 fi
 
@@ -166,7 +183,8 @@ if [ "$START_PHASE" -le 0 ]; then
   echo "================================================================================"
   echo ""
   echo "Computing exhaustive pairwise distances for all 11,673 plants"
-  echo "Output: ~136M pairs → pairwise_phylo_distances.parquet"
+  echo "Output: ~136M pairs → pairwise_phylo_distances_optimized.parquet"
+  echo "        (sorted by wfo_id_a for DataFusion row group pruning)"
   echo ""
 
   PHASE05_START=$(date +%s)
@@ -181,6 +199,56 @@ if [ "$START_PHASE" -le 0 ]; then
   echo ""
   shipley_checks/src/Stage_4/guild_scorer_rust/target/release/generate_pairwise_pd
 
+  if [ $? -ne 0 ]; then
+    echo "✗ Phase 0.5 failed (pairwise generation)"
+    exit 1
+  fi
+
+  # Optimize parquet for DataFusion: sort by wfo_id_a and add row group statistics
+  # This enables efficient row group pruning (99%+ skip rate on WHERE wfo_id_a = '...')
+  echo ""
+  echo "Optimizing parquet for DataFusion (sorting + row group statistics)..."
+  ${PYTHON_BIN} -c "
+import duckdb
+import os
+
+con = duckdb.connect()
+con.execute('SET memory_limit = \"12GB\"')
+con.execute('SET temp_directory = \"/tmp/duckdb_temp\"')
+
+input_path = 'shipley_checks/stage4/phase0_output/pairwise_phylo_distances.parquet'
+output_path = 'shipley_checks/stage4/phase0_output/pairwise_phylo_distances_optimized.parquet'
+
+print('  Sorting by wfo_id_a, distance...')
+con.execute('''
+COPY (
+    SELECT wfo_id_a, wfo_id_b, distance
+    FROM read_parquet('\$input_path')
+    ORDER BY wfo_id_a, distance
+)
+TO '\$output_path'
+(FORMAT PARQUET, COMPRESSION ZSTD, ROW_GROUP_SIZE 100000)
+'''.replace('\$input_path', input_path).replace('\$output_path', output_path))
+
+# Verify statistics are present
+stats = con.execute('''
+SELECT COUNT(DISTINCT row_group_id) as row_groups,
+       COUNT(*) FILTER (WHERE stats_min IS NOT NULL) as with_stats
+FROM parquet_metadata('\$output_path')
+WHERE path_in_schema = 'wfo_id_a'
+'''.replace('\$output_path', output_path)).fetchone()
+
+print(f'  Row groups: {stats[0]}, with statistics: {stats[1]}')
+
+old_size = os.path.getsize(input_path) / 1024 / 1024
+new_size = os.path.getsize(output_path) / 1024 / 1024
+print(f'  Original: {old_size:.1f} MB, Optimized: {new_size:.1f} MB')
+
+# Remove original (optimized version is canonical)
+os.remove(input_path)
+print('  Removed unoptimized original')
+"
+
   PHASE05_END=$(date +%s)
   PHASE05_TIME=$((PHASE05_END - PHASE05_START))
 
@@ -189,7 +257,7 @@ if [ "$START_PHASE" -le 0 ]; then
     echo "✓ Phase 0.5 complete (${PHASE05_TIME}s)"
     echo ""
   else
-    echo "✗ Phase 0.5 failed"
+    echo "✗ Phase 0.5 failed (optimization)"
     exit 1
   fi
 fi
@@ -532,6 +600,134 @@ echo "  - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Trifolium_repe
 echo ""
 
 # ============================================================================
+# Phase 9: Compress Photos for R2 CDN (optional)
+# ============================================================================
+
+if [ "$START_PHASE" -le 9 ] && [ "$RUN_PHOTOS" -eq 1 ]; then
+  echo "================================================================================"
+  echo "PHASE 9: COMPRESS PHOTOS FOR R2 CDN"
+  echo "================================================================================"
+  echo ""
+  echo "Compressing iNat photos: 640px WebP q70, top 3 per species"
+  echo ""
+
+  PHASE9_START=$(date +%s)
+
+  cd "${PROJECT_ROOT}"
+  /home/olier/miniconda3/envs/AI/bin/python shipley_checks/src/Stage_4/Phase_9_photos/compress_photos.py
+
+  PHASE9_END=$(date +%s)
+  PHASE9_TIME=$((PHASE9_END - PHASE9_START))
+
+  cd "${STAGE4_DIR}"
+
+  echo ""
+  echo "✓ Phase 9 complete (${PHASE9_TIME}s)"
+  echo ""
+  echo "Output: data/external/inat/photos_web/"
+  echo ""
+  echo "To upload to R2:"
+  echo "  ./shipley_checks/src/Stage_4/Phase_9_photos/upload_to_r2.sh"
+  echo ""
+elif [ "$RUN_PHOTOS" -eq 0 ]; then
+  echo "================================================================================"
+  echo "PHASE 9: COMPRESS PHOTOS (SKIPPED)"
+  echo "================================================================================"
+  echo ""
+  echo "Photo compression skipped (default). To include, use --with-photos"
+  echo ""
+  echo "Manual run:"
+  echo "  python shipley_checks/src/Stage_4/Phase_9_photos/compress_photos.py"
+  echo "  ./shipley_checks/src/Stage_4/Phase_9_photos/upload_to_r2.sh"
+  echo ""
+fi
+
+# ============================================================================
+# Phase 10: Distribution Maps Generation (R + Python)
+# ============================================================================
+
+if [ "$START_PHASE" -le 10 ] && [ "$RUN_MAPS" -eq 1 ]; then
+  echo "================================================================================"
+  echo "PHASE 10: DISTRIBUTION MAPS GENERATION"
+  echo "================================================================================"
+  echo ""
+  echo "Generating GBIF occurrence heatmaps for 11,711 species"
+  echo "  Hybrid approach:"
+  echo "    >= 500 points: density contours (stat_density_2d with ndensity)"
+  echo "    <  500 points: point circles (geom_point with blur)"
+  echo ""
+
+  PHASE10_START=$(date +%s)
+
+  # Create output directory
+  mkdir -p "${PROJECT_ROOT}/shipley_checks/stage4/distribution_maps/layers"
+
+  # Step 1: R generation of glow layers
+  echo "----------------------------------------------------------------------"
+  echo "Step 1: R Generation (glow layers)"
+  echo "----------------------------------------------------------------------"
+  echo ""
+
+  cd "${PROJECT_ROOT}"
+  env R_LIBS_USER="$R_LIBS_USER" \
+    /usr/bin/Rscript shipley_checks/src/Stage_1/bill_verification/generate_distribution_heatmaps_v4.R
+
+  R_STATUS=$?
+  if [ $R_STATUS -ne 0 ]; then
+    echo "✗ R generation failed"
+    exit 1
+  fi
+
+  # Verify glow layers generated
+  GLOW_COUNT=$(ls shipley_checks/stage4/distribution_maps/layers/*_glow.png 2>/dev/null | wc -l)
+  echo ""
+  echo "Glow layers generated: $GLOW_COUNT"
+
+  # Step 2: Python post-processing (blur, land mask, WebP conversion)
+  echo ""
+  echo "----------------------------------------------------------------------"
+  echo "Step 2: Python Post-processing (blur + land mask + WebP)"
+  echo "----------------------------------------------------------------------"
+  echo ""
+
+  /home/olier/miniconda3/envs/AI/bin/python \
+    shipley_checks/src/Stage_1/bill_verification/postprocess_distribution_maps_v2.py
+
+  PY_STATUS=$?
+  if [ $PY_STATUS -ne 0 ]; then
+    echo "✗ Python post-processing failed"
+    exit 1
+  fi
+
+  PHASE10_END=$(date +%s)
+  PHASE10_TIME=$((PHASE10_END - PHASE10_START))
+
+  cd "${STAGE4_DIR}"
+
+  echo ""
+  echo "✓ Phase 10 complete (${PHASE10_TIME}s = $((PHASE10_TIME / 60)) min)"
+  echo ""
+  echo "Output: shipley_checks/stage4/distribution_maps/*.webp"
+  echo ""
+  echo "To upload to R2:"
+  echo "  rclone sync shipley_checks/stage4/distribution_maps/ r2:olierphotos/maps/ --include '*.webp' --transfers 32"
+  echo ""
+elif [ "$RUN_MAPS" -eq 0 ]; then
+  echo "================================================================================"
+  echo "PHASE 10: DISTRIBUTION MAPS (SKIPPED)"
+  echo "================================================================================"
+  echo ""
+  echo "Distribution maps skipped (default). To include, use --with-maps"
+  echo ""
+  echo "Manual run:"
+  echo "  env R_LIBS_USER=/home/olier/ellenberg/.Rlib /usr/bin/Rscript \\"
+  echo "    shipley_checks/src/Stage_1/bill_verification/generate_distribution_heatmaps_v4.R"
+  echo "  python shipley_checks/src/Stage_1/bill_verification/postprocess_distribution_maps_v2.py"
+  echo "  rclone sync shipley_checks/stage4/distribution_maps/ r2:olierphotos/maps/ --include '*.webp' --transfers 32"
+  echo ""
+fi
+
+# ============================================================================
 # Summary
 # ============================================================================
 
@@ -547,7 +743,7 @@ echo ""
 if [ "$START_PHASE" -le 0 ]; then
   echo "✓ Phase 0: R DuckDB extraction (GloBI → Rust-ready parquets)"
   [ -n "$PHASE0_TIME" ] && echo "           Time: ${PHASE0_TIME}s"
-  echo "✓ Phase 0.5: Pairwise phylogenetic distances (136M pairs)"
+  echo "✓ Phase 0.5: Pairwise phylogenetic distances (136M pairs, optimized)"
   [ -n "$PHASE05_TIME" ] && echo "             Time: ${PHASE05_TIME}s"
 fi
 if [ "$START_PHASE" -le 1 ]; then
@@ -580,6 +776,18 @@ if [ "$START_PHASE" -le 7 ]; then
 fi
 echo "✓ Phase 8: Sample encyclopedia articles"
 [ -n "$PHASE8_TIME" ] && echo "           Time: ${PHASE8_TIME}s"
+if [ "$RUN_PHOTOS" -eq 1 ]; then
+  echo "✓ Phase 9: Photo compression for R2 CDN"
+  [ -n "$PHASE9_TIME" ] && echo "           Time: ${PHASE9_TIME}s"
+else
+  echo "○ Phase 9: Photo compression (skipped)"
+fi
+if [ "$RUN_MAPS" -eq 1 ]; then
+  echo "✓ Phase 10: Distribution maps (R + Python hybrid)"
+  [ -n "$PHASE10_TIME" ] && echo "            Time: ${PHASE10_TIME}s ($((PHASE10_TIME / 60)) min)"
+else
+  echo "○ Phase 10: Distribution maps (skipped)"
+fi
 
 echo ""
 echo "Total pipeline time: ${PIPELINE_TIME}s ($((PIPELINE_TIME / 60)) min)"
@@ -592,7 +800,8 @@ echo "    - shipley_checks/validation/fungal_guilds_pure_rust.parquet"
 echo "    - shipley_checks/validation/*_11711.parquet (7 datasets)"
 echo ""
 echo "  Phase 0.5 (Pairwise phylogenetic distances):"
-echo "    - shipley_checks/stage4/phase0_output/pairwise_phylo_distances.parquet (136M pairs)"
+echo "    - shipley_checks/stage4/phase0_output/pairwise_phylo_distances_optimized.parquet"
+echo "      (136M pairs, sorted by wfo_id_a for DataFusion row group pruning)"
 echo ""
 echo "  Phase 1 (Multilingual vernaculars):"
 echo "    - data/taxonomy/all_taxa_vernacular_final.parquet"
@@ -636,6 +845,20 @@ echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Quercus_robu
 echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Rosa_canina.md"
 echo "    - shipley_checks/stage4/reports/encyclopedia/encyclopedia_Trifolium_repens.md"
 echo ""
+if [ "$RUN_PHOTOS" -eq 1 ]; then
+  echo "  Phase 9 (Photo compression for R2):"
+  echo "    - data/external/inat/photos_web/ (~5GB, 10K+ species)"
+  echo "    - data/external/inat/photos_web/attributions.json"
+  echo "    Upload: ./shipley_checks/src/Stage_4/Phase_9_photos/upload_to_r2.sh"
+  echo ""
+fi
+if [ "$RUN_MAPS" -eq 1 ]; then
+  echo "  Phase 10 (Distribution maps for R2):"
+  echo "    - shipley_checks/stage4/distribution_maps/*.webp (~160MB, 11,711 species)"
+  echo "    - Hybrid: density for >=500 pts, points for <500 pts"
+  echo "    Upload: rclone sync shipley_checks/stage4/distribution_maps/ r2:olierphotos/maps/ --include '*.webp'"
+  echo ""
+fi
 echo "================================================================================"
 echo "Pipeline complete!"
 echo "Documentation: shipley_checks/docs/Stage_4_Complete_Pipeline_Phase_0-5.md"

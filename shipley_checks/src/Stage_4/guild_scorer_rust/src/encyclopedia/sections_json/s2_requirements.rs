@@ -23,7 +23,7 @@ use crate::encyclopedia::utils::texture as usda_texture;
 use crate::encyclopedia::view_models::{
     RequirementsSection, LightRequirement, TemperatureSection, MoistureSection,
     SoilSection, SoilTextureDetails, TextureComponent, RangeValue, SoilParameter,
-    OverallSuitability, ComparisonRow, FitLevel,
+    OverallSuitability, ComparisonRow, FitLevel, DiseasePressure, GrowingTipJson,
 };
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
 use crate::encyclopedia::suitability::advice::build_assessment;
@@ -238,7 +238,7 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
                 else { "Cool summers" };
             let max_str = su_q95_annual.map(|s| format!(" (up to {:.0} in warmest)", s)).unwrap_or_default();
             details.push(format!(
-                "Hot days: {:.0}/year with max >25°C{} - {}",
+                "Hot days: {:.0}/year{} - {}",
                 su50_annual, max_str, heat_regime
             ));
         }
@@ -267,7 +267,7 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
                 _ => String::new(),
             };
             details.push(format!(
-                "Warm nights: {:.0}/year with min >20°C{} - {}",
+                "Warm nights: {:.0}/year{} - {}",
                 tr50_annual, range_str, night_regime
             ));
         }
@@ -380,14 +380,12 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
 
     let dry_spell_days = cdd_q50.map(|typical| {
         let max = cdd_q95.unwrap_or(typical);
-        let drought_label = classify_drought_tolerance(max);
-        advice.push(format!("Drought tolerance: {}", drought_label));
-
-        let watering = if typical > 60.0 { "Deep watering occasionally once established" }
-            else if typical > 30.0 { "Water during extended dry spells" }
-            else if typical > 14.0 { "Water during 2+ week dry periods" }
-            else { "Keep soil moist; don't let dry out" };
-        advice.push(watering.to_string());
+        // Describe natural dry spell conditions (threshold: <1mm/day defines "dry")
+        let drought_desc = if max > 60.0 { "Extended dry seasons" }
+            else if max > 30.0 { "Moderate dry periods" }
+            else if max > 14.0 { "Brief dry spells" }
+            else { "Rare dry weather" };
+        advice.push(format!("Drought: {}", drought_desc));
 
         RangeValue {
             typical,
@@ -398,35 +396,40 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
     });
 
     // Warm-Wet Days (WW) - days with Tmax >25°C AND precip >1mm (disease risk indicator)
+    let ww_q05 = get_f64(data, "WW_q05");
     let ww_q50 = get_f64(data, "WW_q50");
-    if let Some(ww50) = ww_q50 {
-        let ww50_annual = seasonal_to_annual(ww50);
-        let disease_pressure = if ww50_annual > 150.0 {
-            "Disease pressure: High (humid climate) - likely disease-resistant; provide good airflow"
-        } else if ww50_annual > 80.0 {
-            "Disease pressure: Moderate - monitor for mildew/rust in humid periods"
+    let ww_q95 = get_f64(data, "WW_q95");
+    let disease_pressure = ww_q50.map(|ww50| {
+        let days_per_year = seasonal_to_annual(ww50);
+        let min = ww_q05.map(seasonal_to_annual);
+        let max = ww_q95.map(seasonal_to_annual);
+        // Describe natural humidity conditions (threshold: >25°C + >1mm defines "warm-wet")
+        let (level, interpretation) = if days_per_year > 150.0 {
+            ("High", "High humidity climate")
+        } else if days_per_year > 80.0 {
+            ("Moderate", "Moderate humidity")
         } else {
-            "Disease pressure: Low (dry climate origin) - may be vulnerable to fungal diseases in humid gardens"
+            ("Low", "Low humidity exposure")
         };
-        advice.push(disease_pressure.to_string());
-    }
+        DiseasePressure {
+            days_per_year,
+            min,
+            max,
+            level: level.to_string(),
+            interpretation: interpretation.to_string(),
+        }
+    });
 
     // Wet spells (CWD - consecutive days with precip >1mm)
     let cwd_q50 = get_f64(data, "CWD_q50");
     let cwd_q95 = get_f64(data, "CWD_q95");
 
     let wet_spell_days = cwd_q50.map(|typical| {
-        // Add waterlogging tolerance advice
-        if typical >= 5.0 {
-            let waterlog_advice = if typical > 14.0 {
-                "Waterlogging: High tolerance - can handle boggy conditions"
-            } else if typical > 7.0 {
-                "Waterlogging: Moderate tolerance - ensure drainage in heavy soils"
-            } else {
-                "Waterlogging: Good drainage needed - avoid waterlogged soils"
-            };
-            advice.push(waterlog_advice.to_string());
-        }
+        // Describe natural wet spell conditions (threshold: >1mm/day defines "wet")
+        let waterlog_desc = if typical > 14.0 { "Extended wet periods" }
+            else if typical > 7.0 { "Moderate wet spells" }
+            else { "Brief wet periods" };
+        advice.push(format!("Waterlogging: {}", waterlog_desc));
 
         RangeValue {
             typical,
@@ -441,6 +444,7 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
         rainfall_mm,
         dry_spell_days,
         wet_spell_days,
+        disease_pressure,
         comparisons: Vec::new(),
         advice,
     }
@@ -555,10 +559,21 @@ fn build_soil_section(data: &HashMap<String, Value>) -> SoilSection {
             _ => "unknown".to_string(),
         };
 
+        // Interpret organic carbon level based on typical value
+        let interpretation = if value > 100.0 {
+            "High organic matter"
+        } else if value > 50.0 {
+            "Moderate organic matter"
+        } else if value > 20.0 {
+            "Low organic matter"
+        } else {
+            "Mineral soil"
+        };
+
         SoilParameter {
             value,
             range,
-            interpretation: "g/kg".to_string(),
+            interpretation: interpretation.to_string(),
         }
     });
 
@@ -845,6 +860,7 @@ fn build_overall_suitability(
     assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
 ) -> OverallSuitability {
     use crate::encyclopedia::suitability::assessment::OverallRating;
+    use crate::encyclopedia::suitability::advice::generate_growing_tips;
 
     let (score_percent, verdict) = match assessment.overall_rating {
         OverallRating::Ideal => (90, "Ideal conditions".to_string()),
@@ -863,11 +879,24 @@ fn build_overall_suitability(
     key_advantages.extend(assessment.temperature.interventions.iter().cloned());
     key_advantages.extend(assessment.moisture.recommendations.iter().cloned());
 
+    // Generate structured growing tips
+    let tips = generate_growing_tips(assessment);
+    let growing_tips: Vec<GrowingTipJson> = tips
+        .into_iter()
+        .map(|t| GrowingTipJson {
+            category: t.category,
+            action: t.action,
+            detail: t.detail,
+            severity: t.severity,
+        })
+        .collect();
+
     OverallSuitability {
         location_name: local.name.clone(),
         score_percent,
         verdict,
         key_concerns,
         key_advantages,
+        growing_tips,
     }
 }

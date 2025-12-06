@@ -22,9 +22,8 @@ pub fn generate_ecosystem_services(services: &EcosystemServicesResult) -> Vec<Ec
         generate_nutrient_cycling_card(services),
         generate_nutrient_retention_card(services),
         generate_nutrient_loss_card(services),
-        generate_carbon_biomass_card(services),
+        generate_carbon_storage_card(services),
         generate_carbon_recalcitrant_card(services),
-        generate_carbon_total_card(services),
         generate_erosion_protection_card(services),
         generate_nitrogen_fixation_card(services),
     ]
@@ -96,30 +95,21 @@ fn generate_nutrient_loss_card(services: &EcosystemServicesResult) -> EcosystemS
     }
 }
 
-fn generate_carbon_biomass_card(services: &EcosystemServicesResult) -> EcosystemServiceCard {
+fn generate_carbon_storage_card(services: &EcosystemServicesResult) -> EcosystemServiceCard {
     EcosystemServiceCard {
         name: "Carbon Storage (Living Biomass)".to_string(),
-        rating: services.m13_carbon_biomass_rating.clone(),
+        rating: services.m13_carbon_storage_rating.clone(),
         description: "How much carbon your plants store in their stems, leaves, and roots while they're alive. Plants with large, dense growth capture more CO₂ from the air, helping combat climate change while creating habitat and shade. This is the 'green carbon' you can see and touch.".to_string(),
-        benefit_level: rating_to_benefit_level(&services.m13_carbon_biomass_rating).to_string(),
+        benefit_level: rating_to_benefit_level(&services.m13_carbon_storage_rating).to_string(),
     }
 }
 
 fn generate_carbon_recalcitrant_card(services: &EcosystemServicesResult) -> EcosystemServiceCard {
     EcosystemServiceCard {
         name: "Carbon Storage (Long-term Soil)".to_string(),
-        rating: services.m14_carbon_recalcitrant_rating.clone(),
+        rating: services.m14_leaf_carbon_recalcitrant_rating.clone(),
         description: "How much stable, long-lasting carbon your plants contribute to the soil through tough, slow-decomposing materials like woody tissues and waxy leaves. This 'recalcitrant' carbon stays in soil for decades or centuries, providing lasting climate benefits and improving soil structure.".to_string(),
-        benefit_level: rating_to_benefit_level(&services.m14_carbon_recalcitrant_rating).to_string(),
-    }
-}
-
-fn generate_carbon_total_card(services: &EcosystemServicesResult) -> EcosystemServiceCard {
-    EcosystemServiceCard {
-        name: "Total Carbon Storage".to_string(),
-        rating: services.m15_carbon_total_rating.clone(),
-        description: "The combined climate benefit from both living plant biomass and long-term soil carbon. High total storage means your guild acts as a powerful carbon sink, removing CO₂ from the atmosphere both quickly (through growth) and permanently (through soil enrichment).".to_string(),
-        benefit_level: rating_to_benefit_level(&services.m15_carbon_total_rating).to_string(),
+        benefit_level: rating_to_benefit_level(&services.m14_leaf_carbon_recalcitrant_rating).to_string(),
     }
 }
 
@@ -167,12 +157,10 @@ mod tests {
             m11_nutrient_retention_rating: "Moderate".to_string(),
             m12_nutrient_loss_score: 2.5,
             m12_nutrient_loss_rating: "Moderate".to_string(),
-            m13_carbon_biomass_score: 4.0,
-            m13_carbon_biomass_rating: "High".to_string(),
-            m14_carbon_recalcitrant_score: 3.5,
-            m14_carbon_recalcitrant_rating: "High".to_string(),
-            m15_carbon_total_score: 4.2,
-            m15_carbon_total_rating: "High".to_string(),
+            m13_carbon_storage_score: 4.0,
+            m13_carbon_storage_rating: "High".to_string(),
+            m14_leaf_carbon_recalcitrant_score: 3.5,
+            m14_leaf_carbon_recalcitrant_rating: "High".to_string(),
             m16_erosion_protection_score: 3.8,
             m16_erosion_protection_rating: "High".to_string(),
             m17_nitrogen_fixation_score: 2.0,
@@ -180,7 +168,7 @@ mod tests {
         };
 
         let cards = generate_ecosystem_services(&services);
-        assert_eq!(cards.len(), 10);
+        assert_eq!(cards.len(), 9);
         assert_eq!(cards[0].name, "Net Primary Productivity");
         assert_eq!(cards[0].rating, "High");
         assert_eq!(cards[0].benefit_level, "Good");

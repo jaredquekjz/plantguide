@@ -155,7 +155,7 @@ fn generate_carbon_section(data: &HashMap<String, Value>) -> String {
     lines.push(String::new());
 
     // Biomass Carbon
-    let biomass = get_str(data, "carbon_biomass_rating");
+    let biomass = get_str(data, "carbon_storage_rating");
     lines.push(format!(
         "- **Living Biomass**: {} - {}",
         format_rating(biomass),
@@ -163,18 +163,11 @@ fn generate_carbon_section(data: &HashMap<String, Value>) -> String {
     ));
 
     // Recalcitrant Carbon
-    let recalcitrant = get_str(data, "carbon_recalcitrant_rating");
+    let recalcitrant = get_str(data, "leaf_carbon_recalcitrant_rating");
     lines.push(format!(
         "- **Long-term Soil Carbon**: {} - {}",
         format_rating(recalcitrant),
         recalcitrant_description(recalcitrant)
-    ));
-
-    // Total Carbon
-    let total = get_str(data, "carbon_total_rating");
-    lines.push(format!(
-        "- **Total Carbon Benefit**: {}",
-        format_rating(total)
     ));
 
     lines.join("\n")
@@ -267,7 +260,7 @@ fn generate_garden_value_summary(data: &HashMap<String, Value>) -> String {
         highlights.push("improves soil fertility through nitrogen fixation");
     }
 
-    let carbon = get_str(data, "carbon_total_rating");
+    let carbon = get_str(data, "carbon_storage_rating");
     if carbon == Some("Very High") || carbon == Some("High") {
         highlights.push("good carbon storage for climate-conscious planting");
     }

@@ -172,8 +172,9 @@ impl QueryEngine {
         }
 
         // Register pairwise phylogenetic distances (Phase 0.5 output)
+        // Using optimized version: sorted by wfo_id_a with row group statistics for fast filtering
         let pairwise_pd_path = format!(
-            "{}/phase0_output/pairwise_phylo_distances.parquet",
+            "{}/phase0_output/pairwise_phylo_distances_optimized.parquet",
             data_dir
         );
         if Path::new(&pairwise_pd_path).exists() {

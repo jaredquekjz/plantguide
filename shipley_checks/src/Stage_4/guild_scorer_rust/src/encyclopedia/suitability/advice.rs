@@ -402,9 +402,9 @@ fn build_texture_assessment(
         local.soil_sand_pct,
     );
 
-    // Classify plant's typical texture
-    let plant_clay = get_f64(plant_data, "clay_q50");
-    let plant_sand = get_f64(plant_data, "sand_q50");
+    // Classify plant's typical texture (use topsoil 0-15cm weighted average)
+    let plant_clay = calc_topsoil_avg(plant_data, "clay", "q50");
+    let plant_sand = calc_topsoil_avg(plant_data, "sand", "q50");
 
     if let (Some(clay), Some(sand)) = (plant_clay, plant_sand) {
         assessment.plant_texture = classify_texture_from_clay_sand(clay, sand);
@@ -457,6 +457,18 @@ fn texture_group(class_name: &str) -> TextureGroup {
         "Sand" | "Loamy Sand" | "Sandy Loam" => TextureGroup::Sandy,
         "Clay" | "Silty Clay" | "Sandy Clay" => TextureGroup::Clay,
         _ => TextureGroup::Loamy,
+    }
+}
+
+/// Calculate 0-15cm weighted average (topsoil - the amendable layer)
+fn calc_topsoil_avg(data: &HashMap<String, Value>, prefix: &str, suffix: &str) -> Option<f64> {
+    let v1 = get_f64(data, &format!("{}_0_5cm_{}", prefix, suffix));
+    let v2 = get_f64(data, &format!("{}_5_15cm_{}", prefix, suffix));
+    match (v1, v2) {
+        (Some(a), Some(b)) => Some((a * 5.0 + b * 10.0) / 15.0),
+        (Some(a), None) => Some(a),
+        (None, Some(b)) => Some(b),
+        _ => None,
     }
 }
 
@@ -866,4 +878,316 @@ fn generate_summary(assessment: &SuitabilityAssessment) -> String {
     }
 
     parts.join(" ")
+}
+
+// ============================================================================
+// Growing Tips Generation
+// ============================================================================
+
+use super::assessment::GrowingTip;
+
+/// Generate structured growing tips based on comparison data
+pub fn generate_growing_tips(assessment: &SuitabilityAssessment) -> Vec<GrowingTip> {
+    let mut tips = Vec::new();
+
+    // Temperature tips
+    tips.extend(generate_temperature_tips(&assessment.temperature));
+
+    // Moisture tips
+    tips.extend(generate_moisture_tips(&assessment.moisture));
+
+    // Soil tips
+    tips.extend(generate_soil_tips(&assessment.soil, &assessment.texture));
+
+    tips
+}
+
+fn generate_temperature_tips(temp: &TemperatureSuitability) -> Vec<GrowingTip> {
+    let mut tips = Vec::new();
+
+    // Frost days - too cold
+    if let Some(ref comp) = temp.frost_comparison {
+        let annual_local = dekadal_to_annual(comp.local_value);
+        let annual_q95 = dekadal_to_annual(comp.q95);
+        let annual_q05 = dekadal_to_annual(comp.q05);
+
+        if comp.fit == EnvelopeFit::AboveRange {
+            let extra_frost = (annual_local - annual_q95).round() as i32;
+            if extra_frost > 50 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Overwinter indoors",
+                    &format!("{} more frost days than typical; grow in containers", extra_frost),
+                    "critical",
+                ));
+            } else if extra_frost > 20 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Protect in winter",
+                    &format!("{} more frost days; use fleece or cold frame", extra_frost),
+                    "warning",
+                ));
+            } else if extra_frost > 5 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Fleece in cold snaps",
+                    &format!("{} more frost days than typical range", extra_frost),
+                    "info",
+                ));
+            }
+        } else if comp.fit == EnvelopeFit::BelowRange {
+            let fewer_frost = (annual_q05 - annual_local).round() as i32;
+            if fewer_frost > 60 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Provide artificial chill",
+                    &format!("{} fewer frost days; may need refrigerated dormancy", fewer_frost),
+                    "warning",
+                ));
+            }
+        }
+    }
+
+    // Tropical nights - heat stress
+    if let Some(ref comp) = temp.tropical_nights_comparison {
+        let annual_local = dekadal_to_annual(comp.local_value);
+        let annual_q95 = dekadal_to_annual(comp.q95);
+
+        if comp.fit == EnvelopeFit::AboveRange {
+            let extra_nights = (annual_local - annual_q95).round() as i32;
+            if extra_nights > 100 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Heat stress likely",
+                    &format!("{} more warm nights; plant may not thrive", extra_nights),
+                    "critical",
+                ));
+            } else if extra_nights > 30 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Provide afternoon shade",
+                    &format!("{} more warm nights; cool roots with mulch", extra_nights),
+                    "warning",
+                ));
+            }
+        }
+    }
+
+    // Growing season - too short
+    if let Some(ref comp) = temp.growing_season_comparison {
+        if comp.fit == EnvelopeFit::BelowRange {
+            let fewer_days = (comp.q05 - comp.local_value).round() as i32;
+            if fewer_days > 40 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Start early under cover",
+                    &format!("{} fewer growing days; extend season with polytunnel", fewer_days),
+                    "warning",
+                ));
+            } else if fewer_days > 15 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "Start seeds indoors",
+                    &format!("{} fewer growing days than typical", fewer_days),
+                    "info",
+                ));
+            }
+        } else if comp.fit == EnvelopeFit::AboveRange {
+            let extra_days = (comp.local_value - comp.q95).round() as i32;
+            if extra_days > 60 {
+                tips.push(GrowingTip::new(
+                    "temperature",
+                    "May lack dormancy cues",
+                    &format!("{} extra growing days; year-round growth possible", extra_days),
+                    "info",
+                ));
+            }
+        }
+    }
+
+    tips
+}
+
+fn generate_moisture_tips(moisture: &MoistureSuitability) -> Vec<GrowingTip> {
+    let mut tips = Vec::new();
+
+    // Annual rainfall
+    if let Some(ref comp) = moisture.rainfall_comparison {
+        if comp.fit == EnvelopeFit::BelowRange {
+            let deficit = (comp.q05 - comp.local_value).round() as i32;
+            let ratio = comp.local_value / comp.q05.max(1.0);
+
+            if ratio < 0.5 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Drip irrigation or daily watering required",
+                    &format!("{}mm less rainfall; half of minimum needed", deficit),
+                    "critical",
+                ));
+            } else if ratio < 0.8 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Water weekly in growing season",
+                    &format!("{}mm less annual rainfall than typical", deficit),
+                    "warning",
+                ));
+            }
+        } else if comp.fit == EnvelopeFit::AboveRange {
+            let excess = (comp.local_value - comp.q95).round() as i32;
+            let ratio = comp.local_value / comp.q95.max(1.0);
+
+            if ratio > 2.0 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Raised bed with grit essential",
+                    &format!("{}mm more rainfall; twice the maximum typical", excess),
+                    "critical",
+                ));
+            } else if ratio > 1.3 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Ensure excellent drainage",
+                    &format!("{}mm more annual rainfall than typical", excess),
+                    "warning",
+                ));
+            }
+        }
+    }
+
+    // Consecutive dry days - drought stress
+    if let Some(ref comp) = moisture.dry_days_comparison {
+        if comp.fit == EnvelopeFit::AboveRange {
+            let extra_days = (comp.local_value - comp.q95).round() as i32;
+            if extra_days > 14 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Mulch heavily, deep watering",
+                    &format!("Dry spells {} days longer than typical", extra_days),
+                    "warning",
+                ));
+            } else if extra_days > 5 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Water during dry spells",
+                    &format!("Dry periods {} days longer than typical", extra_days),
+                    "info",
+                ));
+            }
+        }
+    }
+
+    // Consecutive wet days - waterlogging risk
+    if let Some(ref comp) = moisture.wet_days_comparison {
+        if comp.fit == EnvelopeFit::AboveRange {
+            let extra_days = (comp.local_value - comp.q95).round() as i32;
+            if extra_days > 10 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Crown rot risk, improve drainage",
+                    &format!("Wet spells {} days longer; keep crown dry", extra_days),
+                    "warning",
+                ));
+            } else if extra_days > 3 {
+                tips.push(GrowingTip::new(
+                    "moisture",
+                    "Avoid waterlogging",
+                    &format!("Wet periods {} days longer than typical", extra_days),
+                    "info",
+                ));
+            }
+        }
+    }
+
+    tips
+}
+
+fn generate_soil_tips(soil: &SoilSuitability, texture: &TextureSuitability) -> Vec<GrowingTip> {
+    let mut tips = Vec::new();
+
+    // pH adjustment
+    if let Some(ref comp) = soil.ph_comparison {
+        if comp.fit == EnvelopeFit::BelowRange {
+            let diff = comp.q05 - comp.local_value;
+            if diff > 0.5 {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Lime soil to raise pH",
+                    &format!("Soil {:.1} pH units too acidic", diff),
+                    "warning",
+                ));
+            } else if diff > 0.2 {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Add lime (minor adjustment)",
+                    &format!("Soil {:.1} pH units below typical range", diff),
+                    "info",
+                ));
+            }
+        } else if comp.fit == EnvelopeFit::AboveRange {
+            let diff = (comp.local_value - comp.q95).abs();
+            if diff > 0.5 {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Add sulfur or ericaceous compost",
+                    &format!("Soil {:.1} pH units too alkaline", diff),
+                    "warning",
+                ));
+            } else if diff > 0.2 {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Acidify slightly",
+                    &format!("Soil {:.1} pH units above typical range", diff),
+                    "info",
+                ));
+            }
+        }
+    }
+
+    // Fertility
+    if let Some(ref comp) = soil.cec_comparison {
+        if comp.fit == EnvelopeFit::BelowRange {
+            let deficit = (comp.q05 - comp.local_value).round() as i32;
+            tips.push(GrowingTip::new(
+                "soil",
+                "Feed fortnightly in growing season",
+                &format!("Fertility {} CEC below typical range", deficit),
+                if deficit > 15 { "warning" } else { "info" },
+            ));
+        }
+    }
+
+    // Texture mismatch
+    if texture.compatibility == TextureCompatibility::Poor {
+        if let (Some(ref local), Some(ref plant)) = (&texture.local_texture, &texture.plant_texture) {
+            let local_group = texture_group(&local.class_name);
+            let plant_group = texture_group(&plant.class_name);
+
+            if local_group == TextureGroup::Clay && plant_group == TextureGroup::Sandy {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Add grit for drainage",
+                    &format!("Heavy {} soil; plant prefers {}", local.class_name, plant.class_name),
+                    "warning",
+                ));
+            } else if local_group == TextureGroup::Sandy && plant_group == TextureGroup::Clay {
+                tips.push(GrowingTip::new(
+                    "soil",
+                    "Add organic matter",
+                    &format!("Light {} soil; plant prefers {}", local.class_name, plant.class_name),
+                    "warning",
+                ));
+            }
+        }
+    } else if texture.compatibility == TextureCompatibility::Marginal {
+        if let (Some(ref local), Some(ref plant)) = (&texture.local_texture, &texture.plant_texture) {
+            tips.push(GrowingTip::new(
+                "soil",
+                "Amend soil texture",
+                &format!("{} soil; plant typically found in {}", local.class_name, plant.class_name),
+                "info",
+            ));
+        }
+    }
+
+    tips
 }

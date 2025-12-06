@@ -31,7 +31,7 @@ pub fn generate(data: &HashMap<String, Value>) -> EcosystemServices {
     let pollinator_score = get_f64(data, "ecoserv_pollination")
         .map(|p| (p * 100.0) as u8);
 
-    let carbon_storage = get_str(data, "carbon_total_rating")
+    let carbon_storage = get_str(data, "carbon_storage_rating")
         .map(|r| r.to_string());
 
     EcosystemServices {
@@ -51,9 +51,8 @@ fn build_ecosystem_ratings(data: &HashMap<String, Value>) -> EcosystemRatings {
     let cycling_rating = get_str(data, "nutrient_cycling_rating");
     let retention_rating = get_str(data, "nutrient_retention_rating");
     let loss_rating = get_str(data, "nutrient_loss_rating");
-    let biomass_rating = get_str(data, "carbon_biomass_rating");
-    let recalcitrant_rating = get_str(data, "carbon_recalcitrant_rating");
-    let total_carbon_rating = get_str(data, "carbon_total_rating");
+    let biomass_rating = get_str(data, "carbon_storage_rating");
+    let recalcitrant_rating = get_str(data, "leaf_carbon_recalcitrant_rating");
     let erosion_rating = get_str(data, "erosion_protection_rating");
     let n_fix_rating = get_str(data, "nitrogen_fixation_rating");
 
@@ -86,7 +85,7 @@ fn build_ecosystem_ratings(data: &HashMap<String, Value>) -> EcosystemRatings {
             rating: format_rating(loss_rating),
             description: loss_description(loss_rating).to_string(),
         },
-        carbon_biomass: ServiceRating {
+        carbon_storage: ServiceRating {
             score: rating_to_score(biomass_rating),
             rating: format_rating(biomass_rating),
             description: biomass_description(biomass_rating).to_string(),
@@ -95,11 +94,6 @@ fn build_ecosystem_ratings(data: &HashMap<String, Value>) -> EcosystemRatings {
             score: rating_to_score(recalcitrant_rating),
             rating: format_rating(recalcitrant_rating),
             description: recalcitrant_description(recalcitrant_rating).to_string(),
-        },
-        carbon_total: ServiceRating {
-            score: rating_to_score(total_carbon_rating),
-            rating: format_rating(total_carbon_rating),
-            description: "Total carbon capture and storage benefit".to_string(),
         },
         erosion_protection: ServiceRating {
             score: rating_to_score(erosion_rating),
@@ -327,7 +321,7 @@ fn generate_garden_value_summary(data: &HashMap<String, Value>) -> String {
         highlights.push("improves soil fertility through nitrogen fixation");
     }
 
-    let carbon = get_str(data, "carbon_total_rating");
+    let carbon = get_str(data, "carbon_storage_rating");
     if carbon == Some("Very High") || carbon == Some("High") {
         highlights.push("good carbon storage for climate-conscious planting");
     }

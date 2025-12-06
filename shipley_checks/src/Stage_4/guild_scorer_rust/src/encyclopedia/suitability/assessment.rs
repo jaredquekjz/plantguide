@@ -356,6 +356,34 @@ pub enum TextureCompatibility {
     Unknown,
 }
 
+// ============================================================================
+// Growing Tips
+// ============================================================================
+
+/// A structured growing tip with category and severity
+#[derive(Debug, Clone)]
+pub struct GrowingTip {
+    /// Category: "temperature", "moisture", or "soil"
+    pub category: String,
+    /// Short action phrase (e.g., "Water weekly")
+    pub action: String,
+    /// Detail with specific numbers (e.g., "200mm less rainfall than typical")
+    pub detail: String,
+    /// Severity: "info", "warning", "critical"
+    pub severity: String,
+}
+
+impl GrowingTip {
+    pub fn new(category: &str, action: &str, detail: &str, severity: &str) -> Self {
+        Self {
+            category: category.to_string(),
+            action: action.to_string(),
+            detail: detail.to_string(),
+            severity: severity.to_string(),
+        }
+    }
+}
+
 impl TextureCompatibility {
     pub fn display_text(&self) -> &'static str {
         match self {

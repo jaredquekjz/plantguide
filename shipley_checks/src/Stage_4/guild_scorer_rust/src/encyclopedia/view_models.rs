@@ -167,12 +167,23 @@ pub struct TemperatureSection {
     pub comparisons: Vec<ComparisonRow>,
 }
 
+/// Disease pressure from warm-wet days (days >25°C with rain)
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct DiseasePressure {
+    pub days_per_year: f64,
+    pub min: Option<f64>,        // q05 - minimum across locations
+    pub max: Option<f64>,        // q95 - maximum across locations
+    pub level: String,           // "High", "Moderate", "Low"
+    pub interpretation: String,  // e.g. "may be vulnerable to fungal diseases in humid gardens"
+}
+
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct MoistureSection {
     pub summary: String,
     pub rainfall_mm: Option<RangeValue>,
     pub dry_spell_days: Option<RangeValue>,
     pub wet_spell_days: Option<RangeValue>,
+    pub disease_pressure: Option<DiseasePressure>,
     pub comparisons: Vec<ComparisonRow>,
     pub advice: Vec<String>,
 }
@@ -251,6 +262,17 @@ pub struct OverallSuitability {
     pub verdict: String,      // "Excellent match", "Good with care", etc.
     pub key_concerns: Vec<String>,
     pub key_advantages: Vec<String>,
+    pub growing_tips: Vec<GrowingTipJson>,
+}
+
+/// JSON-serializable growing tip
+#[typeshare]
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct GrowingTipJson {
+    pub category: String,   // "temperature", "moisture", "soil"
+    pub action: String,     // Short action phrase
+    pub detail: String,     // Detail with specific numbers
+    pub severity: String,   // "info", "warning", "critical"
 }
 
 // ============================================================================
@@ -269,8 +291,10 @@ pub struct MaintenanceSection {
 pub enum MaintenanceLevel {
     #[default]
     Low,
+    #[serde(rename = "Low-Medium")]
     LowMedium,
     Medium,
+    #[serde(rename = "Medium-High")]
     MediumHigh,
     High,
 }
@@ -362,9 +386,8 @@ pub struct EcosystemRatings {
     pub nutrient_cycling: ServiceRating,
     pub nutrient_retention: ServiceRating,
     pub nutrient_loss_risk: ServiceRating,
-    pub carbon_biomass: ServiceRating,
+    pub carbon_storage: ServiceRating,
     pub carbon_recalcitrant: ServiceRating,
-    pub carbon_total: ServiceRating,
     pub erosion_protection: ServiceRating,
     pub nitrogen_fixation: ServiceRating,
     pub garden_value_summary: String,

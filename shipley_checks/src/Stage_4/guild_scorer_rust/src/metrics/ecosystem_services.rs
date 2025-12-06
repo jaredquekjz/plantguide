@@ -48,18 +48,14 @@ pub struct EcosystemServicesResult {
     pub m12_nutrient_loss_rating: String,
 
     // M13: Carbon Storage - Biomass
-    pub m13_carbon_biomass_score: f64,
-    pub m13_carbon_biomass_rating: String,
+    pub m13_carbon_storage_score: f64,
+    pub m13_carbon_storage_rating: String,
 
     // M14: Carbon Storage - Recalcitrant
-    pub m14_carbon_recalcitrant_score: f64,
-    pub m14_carbon_recalcitrant_rating: String,
+    pub m14_leaf_carbon_recalcitrant_score: f64,
+    pub m14_leaf_carbon_recalcitrant_rating: String,
 
-    // M15: Carbon Storage - Total
-    pub m15_carbon_total_score: f64,
-    pub m15_carbon_total_rating: String,
-
-    // M16: Soil Erosion Protection
+    // M15: Soil Erosion Protection (renumbered from M16)
     pub m16_erosion_protection_score: f64,
     pub m16_erosion_protection_rating: String,
 
@@ -123,9 +119,8 @@ pub fn calculate_ecosystem_services(
     let nutrient_cycling_ratings = extract_ratings("nutrient_cycling_rating")?;
     let nutrient_retention_ratings = extract_ratings("nutrient_retention_rating")?;
     let nutrient_loss_ratings = extract_ratings("nutrient_loss_rating")?;
-    let carbon_biomass_ratings = extract_ratings("carbon_biomass_rating")?;
-    let carbon_recalcitrant_ratings = extract_ratings("carbon_recalcitrant_rating")?;
-    let carbon_total_ratings = extract_ratings("carbon_total_rating")?;
+    let carbon_storage_ratings = extract_ratings("carbon_storage_rating")?;
+    let carbon_recalcitrant_ratings = extract_ratings("leaf_carbon_recalcitrant_rating")?;
     let erosion_protection_ratings = extract_ratings("erosion_protection_rating")?;
     let nitrogen_fixation_ratings = extract_ratings("nitrogen_fixation_rating")?;
 
@@ -135,9 +130,8 @@ pub fn calculate_ecosystem_services(
     let (m10_score, m10_rating) = mean_rating(&nutrient_cycling_ratings);
     let (m11_score, m11_rating) = mean_rating(&nutrient_retention_ratings);
     let (m12_score, m12_rating) = mean_rating(&nutrient_loss_ratings);
-    let (m13_score, m13_rating) = mean_rating(&carbon_biomass_ratings);
+    let (m13_score, m13_rating) = mean_rating(&carbon_storage_ratings);
     let (m14_score, m14_rating) = mean_rating(&carbon_recalcitrant_ratings);
-    let (m15_score, m15_rating) = mean_rating(&carbon_total_ratings);
     let (m16_score, m16_rating) = mean_rating(&erosion_protection_ratings);
     let (m17_score, m17_rating) = mean_rating(&nitrogen_fixation_ratings);
 
@@ -152,12 +146,10 @@ pub fn calculate_ecosystem_services(
         m11_nutrient_retention_rating: m11_rating.to_string(),
         m12_nutrient_loss_score: m12_score,
         m12_nutrient_loss_rating: m12_rating.to_string(),
-        m13_carbon_biomass_score: m13_score,
-        m13_carbon_biomass_rating: m13_rating.to_string(),
-        m14_carbon_recalcitrant_score: m14_score,
-        m14_carbon_recalcitrant_rating: m14_rating.to_string(),
-        m15_carbon_total_score: m15_score,
-        m15_carbon_total_rating: m15_rating.to_string(),
+        m13_carbon_storage_score: m13_score,
+        m13_carbon_storage_rating: m13_rating.to_string(),
+        m14_leaf_carbon_recalcitrant_score: m14_score,
+        m14_leaf_carbon_recalcitrant_rating: m14_rating.to_string(),
         m16_erosion_protection_score: m16_score,
         m16_erosion_protection_rating: m16_rating.to_string(),
         m17_nitrogen_fixation_score: m17_score,

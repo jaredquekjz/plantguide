@@ -636,6 +636,7 @@ async fn get_suitability(
         "overall_score": overall.map(|o| o.score_percent).unwrap_or(50),
         "verdict": overall.map(|o| o.verdict.clone()).unwrap_or_else(|| "Assessment unavailable".to_string()),
         "key_concerns": overall.map(|o| o.key_concerns.clone()).unwrap_or_default(),
+        "growing_tips": overall.map(|o| &o.growing_tips).unwrap_or(&vec![]),
         "light": {
             "category": requirements.light.category,
             "description": requirements.light.description,
