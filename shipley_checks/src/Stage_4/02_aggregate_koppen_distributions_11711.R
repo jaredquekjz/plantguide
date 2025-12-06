@@ -210,7 +210,7 @@ cat("  - zone_counts_json: JSON dict {zone: count}\n")
 cat("  - zone_percents_json: JSON dict {zone: percent}\n")
 
 cat("\nNext Steps:\n")
-cat("1. Run 03_integrate_koppen_to_dataset_11711.R to merge with bill_with_csr_ecoservices_11711_20251122.csv\n")
+cat("1. Run 03_integrate_koppen_to_dataset_11711.R to merge with bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv\n")
 
 cat("\n", rep("=", 80), "\n", sep = "")
 cat("COMPLETE\n")

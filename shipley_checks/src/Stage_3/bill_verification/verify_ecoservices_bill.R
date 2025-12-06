@@ -69,13 +69,13 @@ cat(sprintf('Valid CSR: %d/%d species (%.1f%%)\n\n',
             nrow(valid_csr), nrow(df), 100*nrow(valid_csr)/nrow(df)))
 
 # ========================================================================
-# CHECK 1: Service completeness - verify all 10 services have 100% coverage
+# CHECK 1: Service completeness - verify all 9 services have 100% coverage
 # ========================================================================
 cat('[2/5] Checking service completeness...\n')
 services <- c('npp_rating', 'decomposition_rating', 'nutrient_cycling_rating',
               'nutrient_retention_rating', 'nutrient_loss_rating',
-              'carbon_biomass_rating', 'carbon_recalcitrant_rating',
-              'carbon_total_rating', 'erosion_protection_rating', 'nitrogen_fixation_rating')
+              'carbon_storage_rating', 'leaf_carbon_recalcitrant_rating',
+              'erosion_protection_rating', 'nitrogen_fixation_rating')
 
 all_complete <- TRUE
 for (svc in services) {
@@ -85,7 +85,7 @@ for (svc in services) {
   if (pct_complete < 100) all_complete <- FALSE
 }
 
-cat(sprintf('\n%s All 10 services: 100%% coverage\n\n',
+cat(sprintf('\n%s All 9 services: 100%% coverage\n\n',
             ifelse(all_complete, '✓', '✗')))
 
 # ========================================================================
@@ -206,7 +206,7 @@ cat('\n', strrep('=', 80), '\n')
 cat('SUMMARY\n')
 cat(strrep('=', 80), '\n\n')
 
-cat(sprintf('All 10 services: 100%% coverage\n'))
+cat(sprintf('All 9 services: 100%% coverage\n'))
 cat(sprintf('NPP patterns: C-dominant %.1f%% VH, S-dominant majority Low\n',
             npp_by_csr %>% filter(dominant == 'C', npp_rating == 'Very High') %>% pull(pct)))
 cat(sprintf('Decomposition: R ≈ C > S pattern confirmed\n'))

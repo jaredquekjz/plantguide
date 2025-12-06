@@ -35,7 +35,7 @@ DATA_DIR <- "/home/olier/ellenberg/data"
 OUTPUT_DIR <- file.path(DATA_DIR, "taxonomy")
 
 # Input files
-PLANT_FILE <- "/home/olier/ellenberg/shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
+PLANT_FILE <- "/home/olier/ellenberg/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
 ORGANISM_FILE <- file.path(DATA_DIR, "taxonomy/organisms_with_taxonomy_11711.parquet")  # From Phase 0
 INAT_TAXA_FILE <- file.path(DATA_DIR, "inaturalist/taxa.csv")
 INAT_VERNACULARS_FILE <- file.path(OUTPUT_DIR, "inat_vernaculars_all_languages.parquet")

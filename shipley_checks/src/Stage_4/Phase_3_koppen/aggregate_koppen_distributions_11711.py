@@ -213,7 +213,7 @@ Column descriptions:
   - zone_percents_json: JSON dict {{zone: percent}}
 
 Next Steps:
-1. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_20251122.csv
+1. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
 2. Use resulting dataset for climate-stratified calibration
 """)
 

@@ -250,7 +250,21 @@ master <- master %>%
   left_join(taxonomy, by = 'wfo_taxon_id')
 
 tax_coverage <- sum(!is.na(master$family)) / nrow(master) * 100
-cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
+cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n', tax_coverage))
+
+# Fallback: extract genus from scientific name (first word of binomial)
+missing_genus <- sum(is.na(master$genus))
+if (missing_genus > 0) {
+  master <- master %>%
+    mutate(genus = ifelse(is.na(genus),
+                          sub(' .*$', '', wfo_scientific_name),
+                          genus))
+  cat(sprintf('  ✓ Genus fallback: extracted %d from scientific names\n', missing_genus))
+  cat(sprintf('  ✓ Final genus coverage: %.1f%%\n\n',
+              100 * sum(!is.na(master$genus)) / nrow(master)))
+} else {
+  cat('\n')
+}
 
 # ========================================================================
 # STEP 2a: Load nitrogen fixation ratings from TRY (if available)
@@ -258,7 +272,8 @@ cat(sprintf('  ✓ Merged taxonomy: %.1f%% coverage\n\n', tax_coverage))
 cat('[2a/4] Loading nitrogen fixation ratings...\n')
 
 # Path to pre-extracted nitrogen fixation data (TraitID 8 from TRY)
-NFIX_PATH <- file.path(OUTPUT_DIR, 'stage3', 'try_nitrogen_fixation_bill.csv')
+# TODO: Move nitrogen extraction to Stage 1 in future
+NFIX_PATH <- file.path(INTERMEDIATE_DIR, 'try_nitrogen_fixation_bill.csv')
 
 if (file.exists(NFIX_PATH)) {
   nfix_data <- read_csv(NFIX_PATH, show_col_types = FALSE)

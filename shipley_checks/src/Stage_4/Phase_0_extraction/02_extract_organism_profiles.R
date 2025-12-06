@@ -18,7 +18,7 @@ con <- dbConnect(duckdb::duckdb())
 cat("Loading 11,711 plant dataset...\n")
 plant_count <- dbGetQuery(con, "
   SELECT COUNT(DISTINCT wfo_taxon_id) as count
-  FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
+  FROM read_csv_auto('shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
 ")$count
 cat(sprintf("  - Processing %d plants\n\n", plant_count))
 
@@ -39,7 +39,7 @@ sql <- paste0("
   COPY (
     WITH plants AS (
         SELECT DISTINCT wfo_taxon_id as plant_wfo_id
-        FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
+        FROM read_csv_auto('shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
     ),
     pollinators AS (
         SELECT

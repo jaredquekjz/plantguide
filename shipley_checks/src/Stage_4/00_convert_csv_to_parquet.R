@@ -3,8 +3,8 @@
 # Convert Canonical CSV to Parquet
 #
 # Purpose: Convert the dated BILL_VERIFIED CSV to parquet for pipeline use
-# Input:  shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv
-# Output: shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.parquet
+# Input:  shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
+# Output: shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.parquet
 #
 
 library(DBI)
@@ -15,8 +15,8 @@ cat("CONVERTING CANONICAL CSV TO PARQUET\n")
 cat("================================================================================\n\n")
 
 # Paths (relative to shipley_checks/src/Stage_4)
-CSV_PATH <- "../../stage3/bill_with_csr_ecoservices_11711_20251122.csv"
-PARQUET_PATH <- "../../stage3/bill_with_csr_ecoservices_11711_20251122.parquet"
+CSV_PATH <- "../../output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
+PARQUET_PATH <- "../../output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.parquet"
 
 # Check if CSV exists
 if (!file.exists(CSV_PATH)) {

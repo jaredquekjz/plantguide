@@ -22,11 +22,11 @@ con <- dbConnect(duckdb::duckdb())
 
 # Step 1: Load target plants
 cat("Step 1: Loading 11,711 target plants...\n")
-cat("  Source: shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv\n")
+cat("  Source: shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv\n")
 
 plant_count <- dbGetQuery(con, "
   SELECT COUNT(DISTINCT wfo_taxon_id) as count
-  FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
+  FROM read_csv_auto('shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
 ")$count
 cat(sprintf("  - %d target plants\n\n", plant_count))
 
@@ -78,7 +78,7 @@ matched_herbivores <- dbGetQuery(con, sprintf("
   WITH target_plants AS (
       -- Our 11,711 target plants
       SELECT DISTINCT wfo_taxon_id as plant_wfo_id
-      FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
+      FROM read_csv_auto('shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
   ),
   pollinators AS (
       -- Exclude explicit pollinators
@@ -166,7 +166,7 @@ dbExecute(con, sprintf("
   COPY (
     WITH target_plants AS (
         SELECT DISTINCT wfo_taxon_id as plant_wfo_id
-        FROM read_csv_auto('shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv')
+        FROM read_csv_auto('shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv')
     ),
     pollinators AS (
         SELECT DISTINCT sourceTaxonName

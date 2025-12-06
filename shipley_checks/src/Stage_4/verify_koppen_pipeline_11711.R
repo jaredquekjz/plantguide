@@ -76,7 +76,7 @@ INPUT_WORLDCLIM <- "data/stage1/worldclim_occ_samples.parquet"
 OUTPUT_KOPPEN <- "data/stage1/worldclim_occ_samples_with_koppen_11711.parquet"
 OUTPUT_AGGREGATED <- "shipley_checks/stage4/plant_koppen_distributions_11711.parquet"
 OUTPUT_INTEGRATED <- "shipley_checks/stage3/bill_with_csr_ecoservices_koppen_11711.parquet"
-INPUT_MAIN <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
+INPUT_MAIN <- "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
 
 # Test 1: Input files exist
 test("Input worldclim file exists",

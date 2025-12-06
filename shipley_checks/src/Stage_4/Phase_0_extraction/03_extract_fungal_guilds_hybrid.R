@@ -17,7 +17,7 @@ con <- dbConnect(duckdb::duckdb())
 # Paths
 FUNGALTRAITS_PATH <- "data/fungaltraits/fungaltraits.parquet"
 FUNGUILD_PATH <- "data/funguild/funguild.parquet"
-PLANT_DATASET_PATH <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.parquet"
+PLANT_DATASET_PATH <- "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.parquet"
 GLOBI_PATH <- "data/stage1/globi_interactions_plants_wfo.parquet"
 
 cat("Strategy: BROAD MINING + FungalTraits/FunGuild VALIDATION\n")

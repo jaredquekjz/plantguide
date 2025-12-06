@@ -21,7 +21,7 @@ import json
 # Paths
 PROJECT_ROOT = Path("/home/olier/ellenberg")
 OUTPUT_FILE = PROJECT_ROOT / "shipley_checks/stage4/phase3_output/bill_with_koppen_only_11711.parquet"
-INPUT_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
+INPUT_FILE = PROJECT_ROOT / "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
 
 # Tier structure
 TIER_STRUCTURE = {

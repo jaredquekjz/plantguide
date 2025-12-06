@@ -121,240 +121,139 @@ calculate_stratefy_csr <- function(LA, LDMC, SLA) {
 }
 
 ################################################################################
-# Ecosystem Services (Shipley 2025 Parts I & II)
+# Ecosystem Services (Shipley 2025 - Niklas & Enquist 2001 scaling)
 ################################################################################
 
 # ========================================================================
-# Compute 10 ecosystem service ratings from CSR scores + life form
+# Compute 9 ecosystem service ratings using quantile-based thresholds
 # ========================================================================
-# Based on Shipley (2025) Parts I & II
-# Input: df (data.frame with columns: C, S, R, height_m, life_form_simple, nitrogen_fixation_rating)
-# Output: df with 20 added columns (10 service ratings + 10 confidence levels)
-# Services: NPP, decomposition, 3 nutrient services, 3 carbon services, erosion, N-fixation
+# Based on Shipley (2025) econotes3: NPP and carbon from height allometry,
+# other services from CSR quantiles. Reference: Niklas & Enquist 2001.
+#
+# Input: df (data.frame with columns: C, S, R, height_m, nitrogen_fixation_rating)
+# Output: df with 18 added columns (9 service ratings + 9 confidence levels)
+# Services: NPP, decomposition, nutrient cycling/retention/loss, carbon storage,
+#           leaf carbon recalcitrant, erosion protection, nitrogen fixation
 compute_ecosystem_services <- function(df) {
   # ========================================================================
   # STEP 1: Initialize and validate input columns
   # ========================================================================
 
-  # Initialize nitrogen fixation if not present (Bill's verification doesn't have TRY N-fix data)
+  # Initialize nitrogen fixation if not present
   if (!"nitrogen_fixation_rating" %in% names(df)) {
-    cat("  ⚠ nitrogen_fixation_rating not found, using 'No Information' fallback for all species\n")
+    cat("  nitrogen_fixation_rating not found, using 'No Information' fallback\n")
     df$nitrogen_fixation_rating <- "No Information"
     df$nitrogen_fixation_has_try <- FALSE
   } else {
-    # Mark which species have TRY nitrogen fixation data vs fallback
     df$nitrogen_fixation_has_try <- !is.na(df$nitrogen_fixation_rating) &
                                      df$nitrogen_fixation_rating != "No Information"
   }
 
-  # Ensure all required columns are present
-  required_cols <- c("C", "S", "R", "height_m", "life_form_simple", "nitrogen_fixation_rating")
+  # Ensure required columns present
+
+  required_cols <- c("C", "S", "R", "height_m", "nitrogen_fixation_rating")
   missing <- setdiff(required_cols, names(df))
   if (length(missing) > 0) {
     stop("Missing required columns: ", paste(missing, collapse = ", "))
   }
 
   # ========================================================================
-  # STEP 2: Initialize service rating and confidence columns
+  # STEP 2: Compute quantiles for height-based and CSR-based ratings
   # ========================================================================
-  # Each service has a rating (Very Low/Low/Moderate/High/Very High) and confidence level
-  # Confidence reflects data quality: Very High (CSR-based), High (CSR+height), Moderate (CSR+assumptions)
+  # Niklas & Enquist 2001 scaling: NPP ∝ H^2.837, Carbon ∝ H^3.788
+  # Use 20/40/60/80% quantiles over full dataset for rating thresholds
 
-  df$npp_rating <- NA_character_
-  df$npp_confidence <- "Very High"  # Based on CSR + life form stratification
-  df$decomposition_rating <- NA_character_
-  df$decomposition_confidence <- "Very High"  # Based on CSR
-  df$nutrient_cycling_rating <- NA_character_
-  df$nutrient_cycling_confidence <- "Very High"  # Based on CSR
-  df$nutrient_retention_rating <- NA_character_
-  df$nutrient_retention_confidence <- "Very High"  # Based on CSR
-  df$nutrient_loss_rating <- NA_character_
-  df$nutrient_loss_confidence <- "Very High"  # Based on CSR
-  df$carbon_biomass_rating <- NA_character_
-  df$carbon_biomass_confidence <- "High"  # Requires height estimate
-  df$carbon_recalcitrant_rating <- NA_character_
-  df$carbon_recalcitrant_confidence <- "High"  # Requires recalcitrance data
-  df$carbon_total_rating <- NA_character_
-  df$carbon_total_confidence <- "High"  # Combined estimate
-  df$erosion_protection_rating <- NA_character_
-  df$erosion_protection_confidence <- "Moderate"  # Requires root system assumptions
-  df$nitrogen_fixation_confidence <- NA_character_
+  valid_idx <- !is.na(df$C) & !is.na(df$S) & !is.na(df$R) & !is.na(df$height_m)
 
-  # ========================================================================
-  # STEP 3: Compute services for species with valid CSR
-  # ========================================================================
-  # Only process species with complete CSR scores (C, S, R all non-NA)
-  valid_idx <- !is.na(df$C) & !is.na(df$S) & !is.na(df$R)
+  # Height-based scores (Niklas & Enquist 2001)
+  npp_score <- df$height_m^2.837
+  carbon_score <- df$height_m^3.788
 
-  # ========================================================================
-  # SERVICE 1: NPP (Net Primary Productivity) with life form stratification
-  # ========================================================================
-  # Shipley Part II: NPP calculation differs by life form
-  # - Woody plants: NPP ∝ height × C (taller competitive trees have highest NPP)
-  # - Herbaceous plants: NPP ∝ C only (height less relevant for herbs)
+  # CSR-based scores
+  C_score <- df$C
+  S_score <- df$S
+  R_score <- df$R
+  RC_max <- pmax(df$R, df$C, na.rm = TRUE)  # max(R, C) for decomposition/cycling
 
-  for (i in which(valid_idx)) {
-    C_val <- df$C[i]
-    S_val <- df$S[i]
-    R_val <- df$R[i]
-    height <- df$height_m[i]
-    life_form <- df$life_form_simple[i]
+  # Compute quantiles on valid species only
+  probs <- c(0.20, 0.40, 0.60, 0.80)
+  npp_q <- quantile(npp_score[valid_idx], probs = probs, na.rm = TRUE)
+  carbon_q <- quantile(carbon_score[valid_idx], probs = probs, na.rm = TRUE)
+  C_q <- quantile(C_score[valid_idx], probs = probs, na.rm = TRUE)
+  S_q <- quantile(S_score[valid_idx], probs = probs, na.rm = TRUE)
+  R_q <- quantile(R_score[valid_idx], probs = probs, na.rm = TRUE)
+  RC_q <- quantile(RC_max[valid_idx], probs = probs, na.rm = TRUE)
 
-    # NPP rating depends on life form
-    if (!is.na(life_form) && life_form %in% c("woody", "semi-woody")) {
-      # Woody plants: NPP score = height (m) × C-score (0-1)
-      # Taller competitive trees -> higher NPP
-      npp_score <- height * (C_val / 100)
-      # Thresholds calibrated from Shipley Part II results
-      if (npp_score >= 4.0) {
-        df$npp_rating[i] <- "Very High"  # e.g., 20m tall tree with C=20%
-      } else if (npp_score >= 2.0) {
-        df$npp_rating[i] <- "High"       # e.g., 10m tree with C=20%
-      } else if (npp_score >= 0.5) {
-        df$npp_rating[i] <- "Moderate"
-      } else if (npp_score >= 0.1) {
-        df$npp_rating[i] <- "Low"
-      } else {
-        df$npp_rating[i] <- "Very Low"
-      }
-    } else {
-      # Herbaceous or unknown: NPP driven by C only
-      # High C = competitive fast growers
-      if (C_val >= 60) {
-        df$npp_rating[i] <- "Very High"
-      } else if (C_val >= 50) {
-        df$npp_rating[i] <- "High"
-      } else if (S_val >= 60) {
-        df$npp_rating[i] <- "Low"  # Stress-tolerators have low NPP
-      } else {
-        df$npp_rating[i] <- "Moderate"
-      }
-    }
+  cat(sprintf("  Quantile thresholds (20/40/60/80%%):\n"))
+  cat(sprintf("    NPP (H^2.837): %.2f / %.2f / %.2f / %.2f\n", npp_q[1], npp_q[2], npp_q[3], npp_q[4]))
+  cat(sprintf("    Carbon (H^3.788): %.2f / %.2f / %.2f / %.2f\n", carbon_q[1], carbon_q[2], carbon_q[3], carbon_q[4]))
+  cat(sprintf("    C-score: %.1f / %.1f / %.1f / %.1f\n", C_q[1], C_q[2], C_q[3], C_q[4]))
+  cat(sprintf("    S-score: %.1f / %.1f / %.1f / %.1f\n", S_q[1], S_q[2], S_q[3], S_q[4]))
+  cat(sprintf("    R-score: %.1f / %.1f / %.1f / %.1f\n", R_q[1], R_q[2], R_q[3], R_q[4]))
+  cat(sprintf("    max(R,C): %.1f / %.1f / %.1f / %.1f\n", RC_q[1], RC_q[2], RC_q[3], RC_q[4]))
 
-    # ========================================================================
-    # SERVICE 2: Litter Decomposition (R ≈ C > S)
-    # ========================================================================
-    # Ruderals (R) and Competitors (C) have fast-decomposing litter (high SLA, low LDMC)
-    # Stress-tolerators (S) have slow-decomposing litter (low SLA, high LDMC)
-    if (R_val >= 60 || C_val >= 60) {
-      df$decomposition_rating[i] <- "Very High"
-    } else if (R_val >= 45 || C_val >= 45) {
-      df$decomposition_rating[i] <- "High"
-    } else if (S_val >= 60) {
-      df$decomposition_rating[i] <- "Low"  # S-strategists slow decomposition
-    } else {
-      df$decomposition_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 3: Nutrient Cycling (R ≈ C > S)
-    # ========================================================================
-    # Similar pattern to decomposition: fast cycles with R/C, slow with S
-    if (R_val >= 60 || C_val >= 60) {
-      df$nutrient_cycling_rating[i] <- "Very High"
-    } else if (R_val >= 45 || C_val >= 45) {
-      df$nutrient_cycling_rating[i] <- "High"
-    } else if (S_val >= 60) {
-      df$nutrient_cycling_rating[i] <- "Low"
-    } else {
-      df$nutrient_cycling_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 4: Nutrient Retention (C > S > R)
-    # ========================================================================
-    # Competitors retain nutrients in biomass
-    # Ruderals lose nutrients quickly (high turnover)
-    if (C_val >= 60) {
-      df$nutrient_retention_rating[i] <- "Very High"
-    } else if (C_val >= 45) {
-      df$nutrient_retention_rating[i] <- "High"
-    } else if (R_val >= 60) {
-      df$nutrient_retention_rating[i] <- "Low"  # R-strategists don't retain
-    } else {
-      df$nutrient_retention_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 5: Nutrient Loss (R > S ≈ C)
-    # ========================================================================
-    # Inverse of retention: Ruderals have high nutrient loss
-    if (R_val >= 60) {
-      df$nutrient_loss_rating[i] <- "Very High"
-    } else if (R_val >= 45) {
-      df$nutrient_loss_rating[i] <- "High"
-    } else if (C_val >= 60) {
-      df$nutrient_loss_rating[i] <- "Low"  # C-strategists retain well
-    } else {
-      df$nutrient_loss_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 6: Carbon Storage - Biomass (C > S > R)
-    # ========================================================================
-    # Competitors store carbon in biomass (high leaf area, dense canopy)
-    # Ruderals have low biomass (fast turnover)
-    if (C_val >= 60) {
-      df$carbon_biomass_rating[i] <- "Very High"
-    } else if (C_val >= 45) {
-      df$carbon_biomass_rating[i] <- "High"
-    } else if (R_val >= 60) {
-      df$carbon_biomass_rating[i] <- "Low"
-    } else {
-      df$carbon_biomass_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 7: Carbon Storage - Recalcitrant (S dominant)
-    # ========================================================================
-    # Stress-tolerators produce recalcitrant litter (high LDMC, slow decomposition)
-    # This carbon stays in soil longer
-    if (S_val >= 60) {
-      df$carbon_recalcitrant_rating[i] <- "Very High"
-    } else if (S_val >= 45) {
-      df$carbon_recalcitrant_rating[i] <- "High"
-    } else if (R_val >= 60) {
-      df$carbon_recalcitrant_rating[i] <- "Low"  # R litter decomposes fast
-    } else {
-      df$carbon_recalcitrant_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 8: Carbon Storage - Total (C ≈ S > R)
-    # ========================================================================
-    # Combined biomass + recalcitrant storage
-    # Both C (biomass) and S (recalcitrant) contribute to total storage
-    if (C_val >= 50 || S_val >= 50) {
-      df$carbon_total_rating[i] <- "Very High"
-    } else if (C_val >= 40 || S_val >= 40) {
-      df$carbon_total_rating[i] <- "High"
-    } else if (R_val >= 60) {
-      df$carbon_total_rating[i] <- "Low"  # R-strategists store least carbon
-    } else {
-      df$carbon_total_rating[i] <- "Moderate"
-    }
-
-    # ========================================================================
-    # SERVICE 9: Soil Erosion Protection (C > S > R)
-    # ========================================================================
-    # Competitors have extensive root systems and dense cover
-    # Ruderals have sparse, shallow roots
-    if (C_val >= 60) {
-      df$erosion_protection_rating[i] <- "Very High"
-    } else if (C_val >= 45) {
-      df$erosion_protection_rating[i] <- "High"
-    } else if (R_val >= 60) {
-      df$erosion_protection_rating[i] <- "Low"
-    } else {
-      df$erosion_protection_rating[i] <- "Moderate"
-    }
+  # Helper function to assign ratings based on quantiles
+  assign_rating <- function(score, quantiles) {
+    rating <- rep(NA_character_, length(score))
+    rating[!is.na(score) & score >= quantiles[4]] <- "Very High"
+    rating[!is.na(score) & score >= quantiles[3] & score < quantiles[4]] <- "High"
+    rating[!is.na(score) & score >= quantiles[2] & score < quantiles[3]] <- "Moderate"
+    rating[!is.na(score) & score >= quantiles[1] & score < quantiles[2]] <- "Low"
+    rating[!is.na(score) & score < quantiles[1]] <- "Very Low"
+    return(rating)
   }
 
   # ========================================================================
-  # SERVICE 10: Nitrogen Fixation (fallback for Bill's verification)
+  # STEP 3: Initialize rating and confidence columns
   # ========================================================================
-  # Bill's verification doesn't have TRY nitrogen fixation data
-  # Confidence is "High" for species with TRY data, "No Information" otherwise
+
+  df$npp_rating <- NA_character_
+  df$npp_confidence <- "High"  # Height-based allometry
+  df$decomposition_rating <- NA_character_
+  df$decomposition_confidence <- "High"  # CSR quantiles
+  df$nutrient_cycling_rating <- NA_character_
+  df$nutrient_cycling_confidence <- "High"
+  df$nutrient_retention_rating <- NA_character_
+  df$nutrient_retention_confidence <- "High"
+  df$nutrient_loss_rating <- NA_character_
+  df$nutrient_loss_confidence <- "High"
+  df$carbon_storage_rating <- NA_character_
+  df$carbon_storage_confidence <- "High"  # Height-based allometry
+  df$leaf_carbon_recalcitrant_rating <- NA_character_
+  df$leaf_carbon_recalcitrant_confidence <- "High"
+  df$erosion_protection_rating <- NA_character_
+  df$erosion_protection_confidence <- "Moderate"  # Requires root assumptions
+  df$nitrogen_fixation_confidence <- NA_character_
+
+  # ========================================================================
+  # STEP 4: Compute ratings for valid species
+  # ========================================================================
+
+  # SERVICE 1: NPP - Net Primary Productivity (Niklas & Enquist: H^2.837)
+  df$npp_rating[valid_idx] <- assign_rating(npp_score[valid_idx], npp_q)
+
+  # SERVICE 2: Carbon Storage (Niklas & Enquist: H^3.788)
+  df$carbon_storage_rating[valid_idx] <- assign_rating(carbon_score[valid_idx], carbon_q)
+
+  # SERVICE 3: Litter Decomposition - max(R, C) drives fast decomposition
+  df$decomposition_rating[valid_idx] <- assign_rating(RC_max[valid_idx], RC_q)
+
+  # SERVICE 4: Nutrient Cycling - max(R, C) drives fast cycling
+  df$nutrient_cycling_rating[valid_idx] <- assign_rating(RC_max[valid_idx], RC_q)
+
+  # SERVICE 5: Nutrient Retention - C-score (competitors retain nutrients)
+  df$nutrient_retention_rating[valid_idx] <- assign_rating(C_score[valid_idx], C_q)
+
+  # SERVICE 6: Nutrient Loss - R-score (ruderals lose nutrients)
+  df$nutrient_loss_rating[valid_idx] <- assign_rating(R_score[valid_idx], R_q)
+
+  # SERVICE 7: Leaf Carbon Recalcitrant - S-score (stress-tolerators)
+  df$leaf_carbon_recalcitrant_rating[valid_idx] <- assign_rating(S_score[valid_idx], S_q)
+
+  # SERVICE 8: Erosion Protection - C-score (competitors have dense roots)
+  df$erosion_protection_rating[valid_idx] <- assign_rating(C_score[valid_idx], C_q)
+
+  # SERVICE 9: Nitrogen Fixation - from TRY data (passed through)
   df$nitrogen_fixation_confidence <- ifelse(
     df$nitrogen_fixation_has_try,
     "High",
@@ -362,25 +261,22 @@ compute_ecosystem_services <- function(df) {
   )
 
   # ========================================================================
-  # STEP 4: Mark species without valid CSR as "Unable to Classify"
+  # STEP 5: Mark invalid species as "Unable to Classify"
   # ========================================================================
-  # Species with missing CSR scores cannot have ecosystem services computed
   invalid_idx <- !valid_idx
   if (any(invalid_idx)) {
-    # Set all service ratings to "Unable to Classify"
     service_cols <- c("npp_rating", "decomposition_rating", "nutrient_cycling_rating",
                      "nutrient_retention_rating", "nutrient_loss_rating",
-                     "carbon_biomass_rating", "carbon_recalcitrant_rating",
-                     "carbon_total_rating", "erosion_protection_rating")
+                     "carbon_storage_rating", "leaf_carbon_recalcitrant_rating",
+                     "erosion_protection_rating")
     for (col in service_cols) {
       df[[col]][invalid_idx] <- "Unable to Classify"
     }
 
-    # Set all confidence levels to "Not Applicable"
     confidence_cols <- c("npp_confidence", "decomposition_confidence",
                         "nutrient_cycling_confidence", "nutrient_retention_confidence",
-                        "nutrient_loss_confidence", "carbon_biomass_confidence",
-                        "carbon_recalcitrant_confidence", "carbon_total_confidence",
+                        "nutrient_loss_confidence", "carbon_storage_confidence",
+                        "leaf_carbon_recalcitrant_confidence",
                         "erosion_protection_confidence", "nitrogen_fixation_confidence")
     for (col in confidence_cols) {
       df[[col]][invalid_idx] <- "Not Applicable"
@@ -482,17 +378,16 @@ main <- function() {
   df <- compute_ecosystem_services(df)
 
   # Report computed services
-  cat("  Services computed: 10\n")
-  cat("    1. NPP (life form-stratified)\n")
-  cat("    2. Litter Decomposition\n")
-  cat("    3. Nutrient Cycling\n")
-  cat("    4. Nutrient Retention\n")
-  cat("    5. Nutrient Loss\n")
-  cat("    6. Carbon Storage - Biomass\n")
-  cat("    7. Carbon Storage - Recalcitrant\n")
-  cat("    8. Carbon Storage - Total\n")
-  cat("    9. Soil Erosion Protection\n")
-  cat("   10. Nitrogen Fixation (fallback: all Low)\n")
+  cat("  Services computed: 9 (Shipley 2025 / Niklas & Enquist 2001)\n")
+  cat("    1. NPP (H^2.837 quantiles)\n")
+  cat("    2. Carbon Storage (H^3.788 quantiles)\n")
+  cat("    3. Litter Decomposition (max(R,C) quantiles)\n")
+  cat("    4. Nutrient Cycling (max(R,C) quantiles)\n")
+  cat("    5. Nutrient Retention (C quantiles)\n")
+  cat("    6. Nutrient Loss (R quantiles)\n")
+  cat("    7. Leaf Carbon Recalcitrant (S quantiles)\n")
+  cat("    8. Erosion Protection (C quantiles)\n")
+  cat("    9. Nitrogen Fixation (TRY data)\n")
 
   # ========================================================================
   # STEP 5: Write output file with CSR scores and ecosystem services

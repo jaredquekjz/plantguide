@@ -11,7 +11,7 @@ Purpose:
 Input:
   - data/stage1/worldclim_occ_samples.parquet (all occurrences)
   - data/stage1/worldclim_occ_samples_with_koppen.parquet (existing 11,680)
-  - data/shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv (new plant list)
+  - data/shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv (new plant list)
 
 Output:
   - data/stage1/worldclim_occ_samples_with_koppen_11711.parquet (merged)
@@ -27,7 +27,7 @@ import time
 
 # Paths (absolute paths from project root)
 PROJECT_ROOT = Path("/home/olier/ellenberg")
-NEW_PLANTS_FILE = PROJECT_ROOT / "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
+NEW_PLANTS_FILE = PROJECT_ROOT / "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
 WORLDCLIM_OCC = PROJECT_ROOT / "data/stage1/worldclim_occ_samples.parquet"
 EXISTING_KOPPEN = PROJECT_ROOT / "data/stage1/worldclim_occ_samples_with_koppen.parquet"
 OUTPUT_FILE = PROJECT_ROOT / "data/stage1/worldclim_occ_samples_with_koppen_11711.parquet"
@@ -248,7 +248,7 @@ Processing Statistics:
 
 Next Steps:
 1. Run aggregate_koppen_distributions_11711.py to create plant-level distributions
-2. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_20251122.csv
+2. Run integrate_koppen_to_plant_dataset_11711.py to merge with bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
 """)
 
 print("\n" + "="*80)

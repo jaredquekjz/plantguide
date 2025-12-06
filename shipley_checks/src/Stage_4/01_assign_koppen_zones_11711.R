@@ -13,7 +13,7 @@
 # (0.5 degree grid means many raw coordinates map to same grid point)
 #
 # Input:  data/stage1/worldclim_occ_samples.parquet (31.5M rows, November 2025)
-#         shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv
+#         shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv
 #
 # Output: data/stage1/worldclim_occ_samples_with_koppen_11711.parquet
 #
@@ -41,7 +41,7 @@ cat("STEP 1: READ AND FILTER DATA\n")
 cat("================================================================================\n")
 
 worldclim_path <- "data/stage1/worldclim_occ_samples.parquet"
-shortlist_path <- "shipley_checks/stage3/bill_with_csr_ecoservices_11711_20251122.csv"
+shortlist_path <- "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.csv"
 
 if (!file.exists(worldclim_path)) {
   stop("❌ Input file not found: ", worldclim_path)
