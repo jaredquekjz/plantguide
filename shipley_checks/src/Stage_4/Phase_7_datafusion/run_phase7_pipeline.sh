@@ -199,7 +199,7 @@ echo "Outputs:"
 ls -lh "$OUTPUT_DIR"/*.parquet 2>/dev/null | awk '{print "  - " $9 " (" $5 ")"}'
 echo ""
 echo "Data sources for DataFusion:"
-echo "  - Plants: stage3/bill_with_csr_ecoservices_*.parquet (master, 782 cols)"
+echo "  - Plants: output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.parquet (master, 782 cols)"
 echo "  - Organisms (wide): phase0_output/organism_profiles_11711.parquet (for counts)"
 echo "  - Organisms (flat): phase7_output/organisms_flat.parquet (for SQL search)"
 echo "  - Fungi (wide): phase0_output/fungal_guilds_hybrid_11711.parquet (for counts)"

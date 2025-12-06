@@ -209,7 +209,7 @@ cat("3. MASTER DATASET ACCESSIBILITY\n")
 cat("--------------------------------------------------------------------------------\n\n")
 
 # Find master dataset
-master_pattern <- file.path(project_root, "shipley_checks/stage3/bill_with_csr_ecoservices_11711_*.parquet")
+master_pattern <- file.path(project_root, "shipley_checks/output/stage3/bill_with_csr_ecoservices_11711_BILL_VERIFIED.parquet")
 master_files <- Sys.glob(master_pattern)
 
 check(length(master_files) > 0,
