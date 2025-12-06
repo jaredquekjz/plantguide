@@ -275,7 +275,7 @@ if [ "$START_PHASE" -le 1 ]; then
   PHASE1_START=$(date +%s)
 
   env R_LIBS_USER="$R_LIBS_USER" \
-    /usr/bin/Rscript Phase_1_multilingual/run_phase1_pipeline.R
+    /usr/bin/Rscript "${STAGE4_DIR}/Phase_1_multilingual/run_phase1_pipeline.R"
 
   PHASE1_END=$(date +%s)
   PHASE1_TIME=$((PHASE1_END - PHASE1_START))
@@ -304,7 +304,7 @@ if [ "$START_PHASE" -le 2 ] && [ "$SKIP_KIMI" -eq 0 ]; then
 
   PHASE2_START=$(date +%s)
 
-  bash Phase_2_kimi/run_phase2_pipeline.sh
+  bash "${STAGE4_DIR}/Phase_2_kimi/run_phase2_pipeline.sh"
 
   PHASE2_END=$(date +%s)
   PHASE2_TIME=$((PHASE2_END - PHASE2_START))
@@ -338,7 +338,7 @@ if [ "$START_PHASE" -le 3 ]; then
 
   PHASE3_START=$(date +%s)
 
-  bash Phase_3_koppen/run_phase3_pipeline.sh
+  bash "${STAGE4_DIR}/Phase_3_koppen/run_phase3_pipeline.sh"
 
   PHASE3_END=$(date +%s)
   PHASE3_TIME=$((PHASE3_END - PHASE3_START))
@@ -365,7 +365,7 @@ if [ "$START_PHASE" -le 4 ]; then
 
   PHASE4_START=$(date +%s)
 
-  /home/olier/miniconda3/envs/AI/bin/python Phase_4_merge/merge_taxonomy_koppen.py
+  /home/olier/miniconda3/envs/AI/bin/python "${STAGE4_DIR}/Phase_4_merge/merge_taxonomy_koppen.py"
 
   PHASE4_END=$(date +%s)
   PHASE4_TIME=$((PHASE4_END - PHASE4_START))
@@ -555,7 +555,7 @@ if [ "$START_PHASE" -le 7 ]; then
 
   PHASE7_START=$(date +%s)
 
-  bash Phase_7_datafusion/run_phase7_pipeline.sh
+  bash "${STAGE4_DIR}/Phase_7_datafusion/run_phase7_pipeline.sh"
 
   PHASE7_END=$(date +%s)
   PHASE7_TIME=$((PHASE7_END - PHASE7_START))
