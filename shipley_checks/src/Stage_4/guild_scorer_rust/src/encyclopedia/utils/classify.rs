@@ -166,9 +166,9 @@ pub fn classify_mycorrhizal(amf_count: usize, emf_count: usize) -> MycorrhizalTy
 /// | Dominant Strategy | Highest Value | Maintenance Level |
 /// |------------------|---------------|-------------------|
 /// | S-dominant       | ≥ 60%         | LOW               |
-/// | S-dominant       | 40-59%        | LOW-MEDIUM        |
+/// | S-dominant       | < 60%         | LOW-MEDIUM        |
 /// | C-dominant       | ≥ 60%         | HIGH              |
-/// | C-dominant       | 40-59%        | MEDIUM-HIGH       |
+/// | C-dominant       | < 60%         | MEDIUM-HIGH       |
 /// | R-dominant       | any           | MEDIUM            |
 /// | Balanced         | (spread < 20%)| MEDIUM            |
 pub fn classify_maintenance_level(c: f64, s: f64, r: f64) -> MaintenanceLevel {
