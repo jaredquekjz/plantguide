@@ -26,11 +26,10 @@ use std::collections::HashMap;
 use serde_json::Value;
 use crate::encyclopedia::types::{
     get_str, get_f64, CsrStrategy as CsrStrategyEnum, GrowthFormCategory,
-    MaintenanceLevel as TypesMaintenanceLevel,
 };
 use crate::encyclopedia::utils::classify::*;
 use crate::encyclopedia::view_models::{
-    MaintenanceSection, MaintenanceLevel, CsrStrategy, MaintenanceTask, SeasonalNote,
+    MaintenanceSection, CsrStrategy, MaintenanceTask, SeasonalNote,
 };
 
 /// Generate the S3 Maintenance Profile section.
@@ -44,12 +43,10 @@ pub fn generate(data: &HashMap<String, Value>) -> MaintenanceSection {
     let csr_strategy_enum = classify_csr_spread(c, s, r);
     let csr_strategy = build_csr_strategy(c, s, r, csr_strategy_enum);
 
-    // Maintenance level (convert from types::MaintenanceLevel to view_models::MaintenanceLevel)
+    // Growth form for tasks
     let height_m = get_f64(data, "height_m");
     let growth_form = get_str(data, "try_growth_form");
     let form_category = classify_growth_form(growth_form, height_m);
-    let types_level = classify_maintenance_level(c, s, r);
-    let level = convert_maintenance_level(types_level);
 
     // Build tasks from practical considerations
     let leaf_phenology = get_str(data, "try_leaf_phenology");
@@ -68,7 +65,6 @@ pub fn generate(data: &HashMap<String, Value>) -> MaintenanceSection {
     let seasonal_notes = build_seasonal_notes(csr_strategy_enum, form_category, leaf_phenology);
 
     MaintenanceSection {
-        level,
         csr_strategy,
         tasks,
         seasonal_notes,
@@ -286,15 +282,4 @@ fn build_seasonal_notes(
     }
 
     notes
-}
-
-/// Convert from types::MaintenanceLevel to view_models::MaintenanceLevel
-fn convert_maintenance_level(level: TypesMaintenanceLevel) -> MaintenanceLevel {
-    match level {
-        TypesMaintenanceLevel::Low => MaintenanceLevel::Low,
-        TypesMaintenanceLevel::LowMedium => MaintenanceLevel::LowMedium,
-        TypesMaintenanceLevel::Medium => MaintenanceLevel::Medium,
-        TypesMaintenanceLevel::MediumHigh => MaintenanceLevel::MediumHigh,
-        TypesMaintenanceLevel::High => MaintenanceLevel::High,
-    }
 }

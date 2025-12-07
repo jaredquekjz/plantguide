@@ -281,54 +281,9 @@ pub struct GrowingTipJson {
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct MaintenanceSection {
-    pub level: MaintenanceLevel,
     pub csr_strategy: CsrStrategy,
     pub tasks: Vec<MaintenanceTask>,
     pub seasonal_notes: Vec<SeasonalNote>,
-}
-
-#[derive(Debug, Clone, Copy, Serialize, Default)]
-pub enum MaintenanceLevel {
-    #[default]
-    Low,
-    #[serde(rename = "Low-Medium")]
-    LowMedium,
-    Medium,
-    #[serde(rename = "Medium-High")]
-    MediumHigh,
-    High,
-}
-
-impl MaintenanceLevel {
-    pub fn label(&self) -> &'static str {
-        match self {
-            MaintenanceLevel::Low => "Low",
-            MaintenanceLevel::LowMedium => "Low-Medium",
-            MaintenanceLevel::Medium => "Medium",
-            MaintenanceLevel::MediumHigh => "Medium-High",
-            MaintenanceLevel::High => "High",
-        }
-    }
-
-    pub fn css_class(&self) -> &'static str {
-        match self {
-            MaintenanceLevel::Low => "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200",
-            MaintenanceLevel::LowMedium => "bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200",
-            MaintenanceLevel::Medium => "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
-            MaintenanceLevel::MediumHigh => "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
-            MaintenanceLevel::High => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-        }
-    }
-
-    pub fn hours_per_year(&self) -> &'static str {
-        match self {
-            MaintenanceLevel::Low => "1-2 hrs/year",
-            MaintenanceLevel::LowMedium => "2-3 hrs/year",
-            MaintenanceLevel::Medium => "3-4 hrs/year",
-            MaintenanceLevel::MediumHigh => "4-5 hrs/year",
-            MaintenanceLevel::High => "5-7 hrs/year",
-        }
-    }
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
@@ -378,7 +333,7 @@ pub struct EcosystemServices {
     pub carbon_storage: Option<String>,
 }
 
-/// All 10 ecosystem service ratings from CSR-derived calculations
+/// All 9 ecosystem service ratings (Shipley 2025 / Niklas & Enquist 2001)
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct EcosystemRatings {
     pub npp: ServiceRating,
