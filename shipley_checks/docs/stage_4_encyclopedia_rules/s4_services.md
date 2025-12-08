@@ -42,7 +42,29 @@
 
 ### Nitrogen Fixation
 
-Based on TRY Database family-level classification. Fabaceae (legumes) partner with rhizobia bacteria to fix atmospheric nitrogen.
+Based on TRY Database TraitID 8 (nitrogen fixation capacity). Each TRY record is classified as YES/NO, then aggregated per species.
+
+#### Raw TRY Ratings → Display Labels
+
+| Raw Rating | % Yes in TRY | Display Label | Color |
+|------------|--------------|---------------|-------|
+| High | ≥75% | **Yes** | Emerald |
+| Moderate-High | 50-74% | **Likely** | Emerald |
+| Moderate-Low | 25-49% | **Uncertain** | Amber |
+| Low | <25% | **No** | Grey |
+| (missing) | — | **Unknown** | Grey |
+
+#### Descriptions by Label
+
+| Label | Description |
+|-------|-------------|
+| Yes | Active nitrogen fixer—natural fertilizer factory that enriches soil for neighbouring plants |
+| Likely | Probable nitrogen fixer—likely enriches soil through bacterial partnerships |
+| Uncertain | Conflicting evidence on nitrogen fixation—may have some capacity |
+| No | Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants |
+| Unknown | No data on nitrogen fixation ability |
+
+Special case: If `family == "Fabaceae"` → "Fabaceae family - partners with rhizobia bacteria to capture atmospheric nitrogen"
 
 ---
 
@@ -74,21 +96,70 @@ Ratings assigned using **20/40/60/80 percentile thresholds** across all 11,711 s
 
 ### Nitrogen Fixer Flag
 
-`nitrogen_fixer = true` if `nitrogen_fixation_rating` is "Very High" or "High"
+`nitrogen_fixer = true` if display label is "Yes" or "Likely" (raw rating: High or Moderate-High)
 
-Special case: If `family == "Fabaceae"` → legume-specific description
+Used in:
+- Garden Value Summary highlights
+- S6 Companion "Provides" section
 
 ---
 
 ## Garden Value Summary
 
-Highlights shown when rating is "Very High" or "High":
+Highlights shown when rating is "Very High" or "High" (or "Yes"/"Likely" for nitrogen fixation):
 
 | Condition | Highlight |
 |-----------|-----------|
-| `nitrogen_fixation_rating` High+ | "improves soil fertility through nitrogen fixation" |
+| `nitrogen_fixation` Yes or Likely | "improves soil fertility through nitrogen fixation" |
 | `carbon_storage_rating` High+ | "good carbon storage for climate-conscious planting" |
 | `npp_rating` High+ | "fast-growing for quick establishment" |
 | `erosion_protection_rating` High+ | "excellent for slopes and erosion-prone areas" |
 
 If no highlights: "Standard ecosystem contribution"
+
+---
+
+## Service Cards
+
+Visual cards displayed for specific ecosystem services. Uses `ecoserv_*` columns (0-1 scale).
+
+### Pollination Support
+
+| Column | `ecoserv_pollination` |
+|--------|----------------------|
+| Threshold | Description |
+| > 0.7 | "Strong pollinator magnet - attracts bees, butterflies, and other pollinators" |
+| > 0.4 | "Moderate pollinator support" |
+| ≤ 0.4 | "Limited pollinator value" |
+
+### Carbon Storage
+
+| Column | `ecoserv_carbon` |
+|--------|-----------------|
+| Threshold | Description |
+| > 0.7 | "Excellent carbon capture - large woody biomass stores significant carbon" |
+| > 0.4 | "Good carbon contribution" |
+| ≤ 0.4 | "Modest carbon storage" |
+
+### Soil Health
+
+| Column | `ecoserv_soil_health` |
+|--------|----------------------|
+| Description | "Improves soil structure and biology" |
+
+### Nitrogen Fixation Card
+
+Shown only when display label is "Yes" or "Likely".
+
+---
+
+## Confidence Levels
+
+Each service card has an associated confidence column:
+
+| Service | Confidence Column | Default |
+|---------|-------------------|---------|
+| Pollination | `ecoserv_pollination_conf` | "Medium" |
+| Carbon | `ecoserv_carbon_conf` | "Medium" |
+| Soil Health | `ecoserv_soil_conf` | "Medium" |
+| Nitrogen Fixation | (none) | "High" |

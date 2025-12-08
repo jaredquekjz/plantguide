@@ -26,7 +26,7 @@ pub fn generate(data: &HashMap<String, Value>) -> EcosystemServices {
     let services = build_service_cards(data);
 
     let n_fix = get_str(data, "nitrogen_fixation_rating");
-    let nitrogen_fixer = n_fix == Some("Very High") || n_fix == Some("High");
+    let nitrogen_fixer = is_nitrogen_fixer(n_fix);  // Yes or Likely = true
 
     let pollinator_score = get_f64(data, "ecoserv_pollination")
         .map(|p| (p * 100.0) as u8);
@@ -43,7 +43,7 @@ pub fn generate(data: &HashMap<String, Value>) -> EcosystemServices {
     }
 }
 
-/// Build all 10 ecosystem ratings from pre-calculated data.
+/// Build all 9 ecosystem ratings from pre-calculated data (Shipley 2025).
 /// CLONED FROM sections_md - reads same fields, outputs struct instead of markdown
 fn build_ecosystem_ratings(data: &HashMap<String, Value>) -> EcosystemRatings {
     let npp_rating = get_str(data, "npp_rating");
@@ -100,14 +100,17 @@ fn build_ecosystem_ratings(data: &HashMap<String, Value>) -> EcosystemRatings {
             rating: format_rating(erosion_rating),
             description: erosion_description(erosion_rating).to_string(),
         },
-        nitrogen_fixation: ServiceRating {
-            score: rating_to_score(n_fix_rating),
-            rating: format_rating(n_fix_rating),
-            description: if is_legume {
-                "Fabaceae family - partners with rhizobia bacteria to capture atmospheric nitrogen".to_string()
-            } else {
-                n_fix_description(n_fix_rating).to_string()
-            },
+        nitrogen_fixation: {
+            let (display_label, _tooltip) = translate_nfix_rating(n_fix_rating);
+            ServiceRating {
+                score: rating_to_score(n_fix_rating),
+                rating: display_label.to_string(),  // "Yes", "Likely", "Uncertain", "No", "Unknown"
+                description: if is_legume {
+                    "Fabaceae family - partners with rhizobia bacteria to capture atmospheric nitrogen".to_string()
+                } else {
+                    n_fix_description(n_fix_rating).to_string()
+                },
+            }
         },
         garden_value_summary: generate_garden_value_summary(data),
     }
@@ -299,25 +302,43 @@ fn erosion_description(rating: Option<&str>) -> &'static str {
     }
 }
 
+/// Translate raw TRY nitrogen fixation rating to clearer user-facing labels.
+/// Raw ratings are based on % of TRY records saying "yes":
+///   High (≥75%), Moderate-High (50-74%), Moderate-Low (25-49%), Low (<25%)
+fn translate_nfix_rating(raw: Option<&str>) -> (&'static str, &'static str) {
+    // Returns (display_label, tooltip)
+    match raw.map(|s| s.trim()) {
+        Some("High") | Some("Very High") => ("Yes", "Confirmed nitrogen fixer (≥75% of studies)"),
+        Some("Moderate-High") => ("Likely", "Probable nitrogen fixer (50-74% of studies)"),
+        Some("Moderate-Low") | Some("Moderate") => ("Uncertain", "Conflicting evidence (25-49%)"),
+        Some("Low") | Some("Very Low") => ("No", "Not a nitrogen fixer (<25% of studies)"),
+        _ => ("Unknown", "No data available"),
+    }
+}
+
+/// Check if plant should be considered a nitrogen fixer for companion planting.
+/// Returns true for "Yes" and "Likely" (High or Moderate-High raw ratings).
+fn is_nitrogen_fixer(raw: Option<&str>) -> bool {
+    matches!(raw.map(|s| s.trim()), Some("High") | Some("Very High") | Some("Moderate-High"))
+}
+
 fn n_fix_description(rating: Option<&str>) -> &'static str {
-    match rating {
-        Some("Very High") | Some("High") =>
-            "Active nitrogen fixer—natural fertilizer factory that enriches soil for neighbouring plants",
-        Some("Moderate") =>
-            "Some nitrogen-fixing capacity through root associations",
-        Some("Low") | Some("Very Low") | Some("Unable to Classify") | None =>
-            "Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants",
-        _ => "Unable to classify nitrogen fixation ability",
+    let (label, _) = translate_nfix_rating(rating);
+    match label {
+        "Yes" => "Active nitrogen fixer—natural fertilizer factory that enriches soil for neighbouring plants",
+        "Likely" => "Probable nitrogen fixer—likely enriches soil through bacterial partnerships",
+        "Uncertain" => "Conflicting evidence on nitrogen fixation—may have some capacity",
+        "No" => "Does not fix atmospheric nitrogen. Benefits from nitrogen-fixing companion plants",
+        _ => "No data on nitrogen fixation ability",
     }
 }
 
 /// Generate garden value summary.
-/// CLONED FROM sections_md - logic unchanged
 fn generate_garden_value_summary(data: &HashMap<String, Value>) -> String {
     let mut highlights = Vec::new();
 
     let n_fix = get_str(data, "nitrogen_fixation_rating");
-    if n_fix == Some("Very High") || n_fix == Some("High") {
+    if is_nitrogen_fixer(n_fix) {  // Yes or Likely
         highlights.push("improves soil fertility through nitrogen fixation");
     }
 

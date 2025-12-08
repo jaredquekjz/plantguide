@@ -28,6 +28,7 @@ use crate::encyclopedia::view_models::{
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
 use crate::encyclopedia::suitability::advice::build_assessment;
 use crate::encyclopedia::suitability::comparator::EnvelopeFit;
+use crate::encyclopedia::suitability::climate_tier::TierMatchType;
 
 // ============================================================================
 // Unit Conversion Helpers - CLONED FROM sections_md
@@ -62,18 +63,33 @@ pub fn generate(
     let mut temperature = build_temperature_section(data);
     if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
         temperature.comparisons = build_temperature_comparisons(loc, assess);
+        // Category badge = worst of individual comparisons
+        let fits: Vec<FitLevel> = temperature.comparisons.iter().map(|c| c.fit).collect();
+        if !fits.is_empty() {
+            temperature.fit = Some(worst_fit(&fits));
+        }
     }
 
     // Moisture section
     let mut moisture = build_moisture_section(data);
     if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
         moisture.comparisons = build_moisture_comparisons(loc, assess);
+        // Category badge = worst of individual comparisons
+        let fits: Vec<FitLevel> = moisture.comparisons.iter().map(|c| c.fit).collect();
+        if !fits.is_empty() {
+            moisture.fit = Some(worst_fit(&fits));
+        }
     }
 
     // Soil section
     let mut soil = build_soil_section(data);
     if let (Some(ref loc), Some(ref assess)) = (&local, &assessment) {
         soil.comparisons = build_soil_comparisons(loc, assess);
+        // Category badge = worst of individual comparisons
+        let fits: Vec<FitLevel> = soil.comparisons.iter().map(|c| c.fit).collect();
+        if !fits.is_empty() {
+            soil.fit = Some(worst_fit(&fits));
+        }
         // Add amendments from soil and texture assessments (matches MD version)
         let all_amendments: Vec<String> = assess.soil.amendments.iter()
             .chain(assess.texture.amendments.iter())
@@ -82,9 +98,27 @@ pub fn generate(
         soil.advice.extend(all_amendments);
     }
 
-    // Overall suitability
+    // Climate tier override: if plant occurs in the same climate zone as the location,
+    // cap severity at Marginal (never Outside). Rationale: the plant demonstrably grows
+    // in this climate type, so minor envelope deviations aren't dealbreakers.
+    if let Some(ref assess) = assessment {
+        if assess.climate_zone.match_type == TierMatchType::ExactMatch {
+            if temperature.fit == Some(FitLevel::Outside) {
+                temperature.fit = Some(FitLevel::Marginal);
+            }
+            if moisture.fit == Some(FitLevel::Outside) {
+                moisture.fit = Some(FitLevel::Marginal);
+            }
+            if soil.fit == Some(FitLevel::Outside) {
+                soil.fit = Some(FitLevel::Marginal);
+            }
+        }
+    }
+
+    // Overall suitability - calibrated by worst category fit
+    let category_fits = [temperature.fit, moisture.fit, soil.fit];
     let overall_suitability = match (&local, &assessment) {
-        (Some(loc), Some(assess)) => Some(build_overall_suitability(loc, assess)),
+        (Some(loc), Some(assess)) => Some(build_overall_suitability(loc, assess, &category_fits)),
         _ => None,
     };
 
@@ -112,12 +146,8 @@ fn get_eive(data: &HashMap<String, Value>, axis: &str) -> Option<f64> {
 
 fn build_light_section(data: &HashMap<String, Value>) -> LightRequirement {
     let eive_l = get_eive(data, "L");
+    let height_m = get_f64(data, "height_m");
     let category = eive_light_label(eive_l).to_string();
-
-    let description = match eive_l {
-        Some(l) => light_advice(l),
-        None => "Light requirements not available".to_string(),
-    };
 
     let icon_fill_percent = eive_l
         .map(|l| ((l / 10.0) * 100.0) as u8)
@@ -137,26 +167,17 @@ fn build_light_section(data: &HashMap<String, Value>) -> LightRequirement {
         None
     };
 
+    // Sun tolerance qualifier for tall trees with low EIVE-L
+    // Distinguishes facultative shade-tolerant trees from true shade-obligate plants
+    let sun_tolerance = sun_tolerance_qualifier(eive_l, height_m)
+        .map(|s| s.to_string());
+
     LightRequirement {
         eive_l,
         category,
-        description,
         icon_fill_percent,
         source_attribution,
-    }
-}
-
-fn light_advice(eive_l: f64) -> String {
-    if eive_l < 2.0 {
-        "North-facing, woodland floor, shade garden.".to_string()
-    } else if eive_l < 4.0 {
-        "Under tree canopy, north/east-facing borders.".to_string()
-    } else if eive_l < 6.0 {
-        "Dappled light, morning sun, woodland edge.".to_string()
-    } else if eive_l < 8.0 {
-        "Open borders work well; tolerates some afternoon shade.".to_string()
-    } else {
-        "South-facing, open positions, no shade.".to_string()
+        sun_tolerance,
     }
 }
 
@@ -311,6 +332,7 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
         summary,
         details,
         comparisons: Vec::new(),
+        fit: None,
     }
 }
 
@@ -447,6 +469,7 @@ fn build_moisture_section(data: &HashMap<String, Value>) -> MoistureSection {
         disease_pressure,
         comparisons: Vec::new(),
         advice,
+        fit: None,
     }
 }
 
@@ -702,6 +725,7 @@ fn build_soil_section(data: &HashMap<String, Value>) -> SoilSection {
         profile_organic_carbon,
         comparisons: Vec::new(),
         advice,
+        fit: None,
     }
 }
 
@@ -734,7 +758,7 @@ fn build_temperature_comparisons(
             parameter: "Frost days/year".to_string(),
             local_value: format!("{:.0}", dekadal_to_annual(comp.local_value)),
             plant_range: format!("{:.0}–{:.0}", dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95)),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_FROST_DAYS),
         });
     }
 
@@ -744,7 +768,7 @@ fn build_temperature_comparisons(
             parameter: "Warm nights (>20°C)".to_string(),
             local_value: format!("{:.0}", dekadal_to_annual(comp.local_value)),
             plant_range: format!("{:.0}–{:.0}", dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95)),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_WARM_NIGHTS),
         });
     }
 
@@ -754,7 +778,7 @@ fn build_temperature_comparisons(
             parameter: "Growing season (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_GROWING_SEASON),
         });
     }
 
@@ -773,7 +797,7 @@ fn build_moisture_comparisons(
             parameter: "Annual rainfall (mm)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_RAINFALL),
         });
     }
 
@@ -782,7 +806,7 @@ fn build_moisture_comparisons(
             parameter: "Max dry spell (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_DRY_DAYS),
         });
     }
 
@@ -792,7 +816,7 @@ fn build_moisture_comparisons(
             parameter: "Max wet spell (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_WET_DAYS),
         });
     }
 
@@ -812,7 +836,7 @@ fn build_soil_comparisons(
             parameter: "Soil pH".to_string(),
             local_value: format!("{:.1}", comp.local_value),
             plant_range: format!("{:.1}–{:.1}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_PH),
         });
     }
 
@@ -821,7 +845,7 @@ fn build_soil_comparisons(
             parameter: "Fertility (CEC)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit(comp.fit),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_CEC),
         });
     }
 
@@ -848,25 +872,132 @@ fn build_soil_comparisons(
     rows
 }
 
-fn convert_fit(fit: EnvelopeFit) -> FitLevel {
-    match fit {
-        EnvelopeFit::WithinRange => FitLevel::Good,
-        EnvelopeFit::BelowRange | EnvelopeFit::AboveRange => FitLevel::Marginal,
+// ============================================================================
+// Minimum Absolute Thresholds (in native units)
+// ============================================================================
+// These prevent trivial deviations from triggering poor ratings.
+// Values chosen to align with Growing Tips thresholds.
+
+/// Frost days: 5 days annual = 5/36 dekadal (data stored as dekadal mean)
+const MIN_ABS_FROST_DAYS: f64 = 5.0 / 36.0;
+
+/// Warm nights: 10 nights annual = 10/36 dekadal (data stored as dekadal mean)
+const MIN_ABS_WARM_NIGHTS: f64 = 10.0 / 36.0;
+
+/// Growing season: 15 days (already annual)
+const MIN_ABS_GROWING_SEASON: f64 = 15.0;
+
+/// Rainfall: 100mm
+const MIN_ABS_RAINFALL: f64 = 100.0;
+
+/// Dry spells: 5 days
+const MIN_ABS_DRY_DAYS: f64 = 5.0;
+
+/// Wet spells: 3 days
+const MIN_ABS_WET_DAYS: f64 = 3.0;
+
+/// Soil pH: 0.3 units
+const MIN_ABS_PH: f64 = 0.3;
+
+/// CEC: 3 cmol/kg
+const MIN_ABS_CEC: f64 = 3.0;
+
+/// Convert envelope comparison to FitLevel using hybrid percentile + tolerance system.
+///
+/// Logic:
+/// - Within Q05-Q95 → Ideal (this is where 90% of specimens occur)
+/// - Outside Q05-Q95 but within tolerance buffer → Good
+/// - Beyond tolerance but <50% of range width → Marginal
+/// - ≥50% of range width beyond → Outside
+///
+/// Tolerance buffer = max(10% of range width, min_absolute_threshold)
+fn convert_fit_with_tolerance(
+    comp: &crate::encyclopedia::suitability::comparator::EnvelopeComparison,
+    min_absolute: f64,
+) -> FitLevel {
+    // If comparator says within range, it's Optimal - even for zero-width ranges
+    // (e.g., cold-climate plants with 0 warm nights: local=0, q05=0, q95=0)
+    if comp.fit == EnvelopeFit::WithinRange {
+        return FitLevel::Optimal;
+    }
+
+    let range_width = comp.q95 - comp.q05;
+
+    // For zero-width ranges where we're outside, use min_absolute as tolerance
+    if range_width <= 0.0 {
+        let distance = comp.distance_from_range;
+        return if distance <= min_absolute {
+            FitLevel::Good
+        } else if distance <= min_absolute * 5.0 {
+            FitLevel::Marginal
+        } else {
+            FitLevel::Outside
+        };
+    }
+
+    // Normal case: non-zero range width
+    match comp.fit {
+        EnvelopeFit::WithinRange => FitLevel::Optimal, // Already handled above
+        EnvelopeFit::BelowRange | EnvelopeFit::AboveRange => {
+            // Calculate tolerance buffer: larger of 10% range or min absolute
+            let tolerance = (range_width * 0.10).max(min_absolute);
+
+            // Distance from nearest boundary (already computed in comparator)
+            let distance = comp.distance_from_range;
+
+            if distance <= tolerance {
+                FitLevel::Good  // Within tolerance buffer
+            } else if distance <= range_width * 0.50 {
+                FitLevel::Marginal  // Beyond tolerance but not extreme
+            } else {
+                FitLevel::Outside  // Far outside range
+            }
+        }
     }
 }
+
+/// Get worst (most severe) FitLevel from a slice
+fn worst_fit(fits: &[FitLevel]) -> FitLevel {
+    fits.iter().fold(FitLevel::Optimal, |worst, &fit| {
+        match (worst, fit) {
+            (FitLevel::Outside, _) | (_, FitLevel::Outside) => FitLevel::Outside,
+            (FitLevel::Marginal, _) | (_, FitLevel::Marginal) => FitLevel::Marginal,
+            (FitLevel::Good, _) | (_, FitLevel::Good) => FitLevel::Good,
+            (FitLevel::Unknown, _) | (_, FitLevel::Unknown) => FitLevel::Unknown,
+            _ => FitLevel::Optimal,
+        }
+    })
+}
+
 
 fn build_overall_suitability(
     local: &LocalConditions,
     assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
+    category_fits: &[Option<FitLevel>],
 ) -> OverallSuitability {
-    use crate::encyclopedia::suitability::assessment::OverallRating;
     use crate::encyclopedia::suitability::advice::generate_growing_tips;
 
-    let (score_percent, verdict) = match assessment.overall_rating {
-        OverallRating::Ideal => (90, "Ideal conditions".to_string()),
-        OverallRating::Good => (70, "Good with minor adaptations".to_string()),
-        OverallRating::Challenging => (40, "Challenging - significant intervention needed".to_string()),
-        OverallRating::NotRecommended => (20, "Not recommended".to_string()),
+    // Determine overall fit from worst category
+    let worst_category = category_fits
+        .iter()
+        .filter_map(|f| *f)
+        .fold(FitLevel::Optimal, |worst, fit| {
+            match (worst, fit) {
+                (FitLevel::Outside, _) | (_, FitLevel::Outside) => FitLevel::Outside,
+                (FitLevel::Marginal, _) | (_, FitLevel::Marginal) => FitLevel::Marginal,
+                (FitLevel::Good, _) | (_, FitLevel::Good) => FitLevel::Good,
+                (FitLevel::Unknown, _) | (_, FitLevel::Unknown) => FitLevel::Unknown,
+                _ => FitLevel::Optimal,
+            }
+        });
+
+    // Map worst category fit to score and verdict
+    let (score_percent, verdict) = match worst_category {
+        FitLevel::Optimal => (90, "Ideal conditions".to_string()),
+        FitLevel::Good => (75, "Good match".to_string()),
+        FitLevel::Marginal => (50, "Marginal - some challenges likely".to_string()),
+        FitLevel::Outside => (25, "Beyond typical range - significant intervention needed".to_string()),
+        FitLevel::Unknown => (50, "Insufficient data".to_string()),
     };
 
     // Collect concerns from all sections
@@ -891,10 +1022,27 @@ fn build_overall_suitability(
         })
         .collect();
 
+    // Tips severity veto: if tips indicate critical/warning issues, cap the score.
+    // This ensures the headline matches the advice - if we're telling users they
+    // need greenhouses or daily watering, we shouldn't call it "Good".
+    let has_critical = growing_tips.iter().any(|t| t.severity == "critical");
+    let has_warning = growing_tips.iter().any(|t| t.severity == "warning");
+
+    let (final_score, final_verdict) = if has_critical {
+        // Critical tips (e.g., "Overwinter indoors", "Drip irrigation required")
+        // cap at NotRecommended regardless of category fits
+        (score_percent.min(25), "Beyond typical range - significant intervention needed".to_string())
+    } else if has_warning && score_percent > 50 {
+        // Warning tips cap at Challenging
+        (50, "Marginal - some challenges likely".to_string())
+    } else {
+        (score_percent, verdict)
+    };
+
     OverallSuitability {
         location_name: local.name.clone(),
-        score_percent,
-        verdict,
+        score_percent: final_score,
+        verdict: final_verdict,
         key_concerns,
         key_advantages,
         growing_tips,
