@@ -47,7 +47,7 @@ pub fn generate_m2_fragment(m2: &M2Result, display_score: f64) -> MetricFragment
 
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "growth_compatibility".to_string(),
-        metric_code: "M2".to_string(),
+        metric_code: "M1".to_string(), // Growth Strategy (CSR) is now M1 (2025-12 reorder)
         title: title.to_string(),
         message: format!(
             "{}th percentile compatibility",

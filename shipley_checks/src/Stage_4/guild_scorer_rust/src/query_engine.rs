@@ -171,6 +171,20 @@ impl QueryEngine {
             .await?;
         }
 
+        // Register pathogen diseases (Phase 7b output with disease names from Gemini AI)
+        let pathogen_diseases_path = format!(
+            "{}/phase7_output/pathogen_diseases.parquet",
+            data_dir
+        );
+        if Path::new(&pathogen_diseases_path).exists() {
+            ctx.register_parquet(
+                "pathogen_diseases",
+                &pathogen_diseases_path,
+                ParquetReadOptions::default(),
+            )
+            .await?;
+        }
+
         // Register pairwise phylogenetic distances (Phase 0.5 output)
         // Using optimized version: sorted by wfo_id_a with row group statistics for fast filtering
         let pairwise_pd_path = format!(
@@ -427,6 +441,24 @@ impl QueryEngine {
         self.query(&sql).await
     }
 
+    /// Get multiple plants by ID in a single query (for batch operations)
+    pub async fn get_plants_bulk(&self, plant_ids: &[String]) -> DFResult<Vec<RecordBatch>> {
+        if plant_ids.is_empty() {
+            return Ok(vec![]);
+        }
+        // Build IN clause with escaped IDs
+        let escaped_ids: Vec<String> = plant_ids
+            .iter()
+            .map(|id| format!("'{}'", id.replace("'", "''")))
+            .collect();
+        let in_clause = escaped_ids.join(", ");
+        let sql = format!(
+            "SELECT * FROM plants WHERE wfo_taxon_id IN ({})",
+            in_clause
+        );
+        self.query(&sql).await
+    }
+
     /// Get all plant IDs (for static generation)
     pub async fn get_all_plant_ids(&self) -> DFResult<Vec<RecordBatch>> {
         let sql = "SELECT wfo_taxon_id, wfo_scientific_name, family FROM plants ORDER BY wfo_taxon_id";
@@ -612,6 +644,56 @@ impl QueryEngine {
 
         self.query(&sql).await
     }
+
+    /// Get pathogens for a plant with disease names (joined from Phase 7b enrichment)
+    /// Returns pathogen_taxon, observation_count, disease_name, disease_type
+    pub async fn get_pathogens_with_diseases(&self, plant_id: &str, limit: Option<usize>) -> DFResult<Vec<RecordBatch>> {
+        let escaped_id = plant_id.replace("'", "''");
+        let limit_clause = limit.map(|l| format!("LIMIT {}", l)).unwrap_or_default();
+
+        let sql = format!(
+            r#"
+            SELECT
+                p.pathogen_taxon,
+                p.observation_count,
+                d.disease_name,
+                d.disease_type
+            FROM pathogens_ranked p
+            LEFT JOIN pathogen_diseases d ON p.pathogen_taxon = d.taxon
+            WHERE p.plant_wfo_id = '{}'
+            ORDER BY p.observation_count DESC
+            {}
+            "#,
+            escaped_id, limit_clause
+        );
+
+        self.query(&sql).await
+    }
+
+    /// Get pathogenic fungi for a plant with disease names (simplified flow)
+    /// Sources pathogenic fungi from fungi_flat (FungalTraits), joins to pathogen_diseases for names
+    /// Returns fungus_taxon, disease_name, disease_type (no observation counts/ranking)
+    pub async fn get_pathogenic_fungi_with_diseases(&self, plant_id: &str) -> DFResult<Vec<RecordBatch>> {
+        let escaped_id = plant_id.replace("'", "''");
+
+        // Case-insensitive join: fungi_flat has lowercase, pathogen_diseases has title case
+        let sql = format!(
+            r#"
+            SELECT DISTINCT
+                f.fungus_taxon,
+                d.disease_name,
+                d.disease_type
+            FROM fungi f
+            LEFT JOIN pathogen_diseases d ON LOWER(f.fungus_taxon) = LOWER(d.taxon)
+            WHERE f.plant_wfo_id = '{}'
+              AND f.source_column = 'pathogenic_fungi'
+            ORDER BY f.fungus_taxon
+            "#,
+            escaped_id
+        );
+
+        self.query(&sql).await
+    }
 }
 
 /// Result data for text search
@@ -659,6 +741,10 @@ pub struct PlantFilters {
     pub drought_tolerant: Option<bool>,
     pub fast_growing: Option<bool>,
     pub climate_tier: Option<String>,  // "tier_1_tropical", etc.
+
+    /// Climate tier filter for guild builder (comma-separated: "1,3,4")
+    /// 1=Tropical, 2=Mediterranean, 3=Temperate, 4=Continental, 5=Boreal, 6=Arid
+    pub tiers: Option<String>,
 
     // Pagination
     pub limit: Option<usize>,

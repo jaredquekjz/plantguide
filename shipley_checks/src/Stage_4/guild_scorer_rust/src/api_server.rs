@@ -40,8 +40,12 @@ use crate::search_index::SearchIndex;
 #[cfg(feature = "api")]
 use crate::encyclopedia::{
     EncyclopediaGenerator, OrganismCounts, FungalCounts, OrganismProfile, CategorizedOrganisms,
-    OrganismLists, RankedPathogen, BeneficialFungi, generate_encyclopedia_data,
+    OrganismLists, PathogenicFungus, BeneficialFungi, generate_encyclopedia_data,
 };
+
+// Direct import for focused suitability computation (skips S1, S3-S6)
+#[cfg(feature = "api")]
+use crate::encyclopedia::sections_json::s2_requirements;
 
 #[cfg(feature = "api")]
 use crate::explanation::unified_taxonomy::{OrganismCategory as TaxonomyCategory, OrganismRole};
@@ -136,6 +140,9 @@ impl PhyloData {
 // ============================================================================
 
 #[cfg(feature = "api")]
+use crate::suitability_cache::SuitabilityCache;
+
+#[cfg(feature = "api")]
 #[derive(Clone)]
 pub struct AppState {
     pub query_engine: Arc<QueryEngine>,
@@ -145,6 +152,9 @@ pub struct AppState {
     pub master_predators: Arc<HashSet<String>>,
     pub phylo_data: Option<Arc<PhyloData>>,
     pub search_index: Arc<SearchIndex>,
+    pub data_dir: String,
+    /// Typed suitability envelopes for O(1) lookups (~60 fields per plant, ~50MB total)
+    pub suitability_cache: Arc<SuitabilityCache>,
 }
 
 #[cfg(feature = "api")]
@@ -174,6 +184,12 @@ impl AppState {
         tracing::info!("Building FST search index...");
         let search_index = Arc::new(SearchIndex::build(&query_engine).await?);
 
+        // Load suitability envelopes directly from parquet (full env columns)
+        tracing::info!("Loading suitability envelopes into typed cache...");
+        let plants_parquet = format!("{}/phase4_output/bill_with_csr_ecoservices_koppen_vernaculars_11711.parquet", data_dir);
+        let suitability_cache = Arc::new(SuitabilityCache::from_parquet(&plants_parquet)?);
+        tracing::info!("Loaded {} suitability envelopes (~60 fields each)", suitability_cache.len());
+
         Ok(Self {
             query_engine,
             guild_scorer,
@@ -182,6 +198,8 @@ impl AppState {
             master_predators,
             phylo_data,
             search_index,
+            data_dir: data_dir.to_string(),
+            suitability_cache,
         })
     }
 }
@@ -199,6 +217,7 @@ pub fn create_router(state: AppState) -> Router {
         // Plant endpoints (JSON API)
         // search uses FST for simple name queries (q=, latin_name=), SQL for filtered queries
         .route("/api/plants/search", get(search_plants))
+        .route("/api/plants/batch", get(get_plants_batch))
         .route("/api/plants/ids", get(get_all_plant_ids))
         .route("/api/plants/:id", get(get_plant))
         .route("/api/plants/:id/organisms", get(get_organisms))
@@ -208,8 +227,13 @@ pub fn create_router(state: AppState) -> Router {
         // Encyclopedia endpoint (JSON)
         .route("/api/encyclopedia/:id", get(get_encyclopedia))
 
-        // Suitability endpoint (JSON)
+        // Suitability endpoints (JSON)
+        // IMPORTANT: batch route must come before :id route (Axum matches in order)
+        .route("/api/suitability/batch", post(get_suitability_batch))
         .route("/api/suitability/:id", get(get_suitability))
+
+        // Photo credits endpoint (JSON)
+        .route("/api/photo-credits/:id", get(get_photo_credits))
 
         // Guild scoring endpoints
         .route("/api/guilds/score", post(score_guild))
@@ -261,11 +285,45 @@ async fn search_plants(
             })));
         }
 
+        // Direct WFO ID lookup (e.g., "wfo-0000123456")
+        if query.starts_with("wfo-") {
+            if let Some(plant) = state.search_index.get_by_wfo_id(query) {
+                let data = vec![serde_json::json!({
+                    "wfo_taxon_id": plant.wfo_id,
+                    "wfo_scientific_name": plant.scientific_name,
+                    "vernacular_name_en": plant.common_name,
+                    "family": plant.family,
+                    "genus": plant.genus,
+                    "tiers": plant.tiers,
+                })];
+                return Ok(Json(serde_json::json!({
+                    "rows": 1,
+                    "data": data,
+                })));
+            } else {
+                return Ok(Json(serde_json::json!({
+                    "rows": 0,
+                    "data": []
+                })));
+            }
+        }
+
+        // Parse tier filter (comma-separated: "1,3,4")
+        let tier_filter: Vec<u8> = filters.tiers
+            .as_ref()
+            .map(|s| s.split(',').filter_map(|t| t.trim().parse().ok()).collect())
+            .unwrap_or_default();
+
         let start = std::time::Instant::now();
-        let results = state.search_index.search(query, limit);
+        let results = if tier_filter.is_empty() {
+            state.search_index.search(query, limit)
+        } else {
+            state.search_index.search_with_tiers(query, limit, &tier_filter)
+        };
         let elapsed = start.elapsed();
 
-        tracing::debug!("FST search '{}' returned {} results in {:?}", query, results.len(), elapsed);
+        tracing::debug!("FST search '{}' (tiers: {:?}) returned {} results in {:?}",
+            query, tier_filter, results.len(), elapsed);
 
         let data: Vec<serde_json::Value> = results
             .iter()
@@ -276,6 +334,7 @@ async fn search_plants(
                     "vernacular_name_en": p.common_name,
                     "family": p.family,
                     "genus": p.genus,
+                    "tiers": p.tiers,
                 })
             })
             .collect();
@@ -313,7 +372,8 @@ async fn search_plants(
     Ok(Json(result))
 }
 
-/// Check if filters only contain name search + limit (no EIVE/CSR/categorical filters)
+/// Check if filters only contain name search + limit + tiers (no EIVE/CSR/categorical filters)
+/// Note: `tiers` filter is allowed because it's handled post-search in FST path
 #[cfg(feature = "api")]
 fn is_simple_name_query(filters: &PlantFilters) -> bool {
     // Has some name to search
@@ -330,12 +390,57 @@ fn is_simple_name_query(filters: &PlantFilters) -> bool {
         && filters.min_s.is_none() && filters.max_s.is_none()
         && filters.min_r.is_none() && filters.max_r.is_none();
 
+    // Note: `tiers` is NOT checked here - it's allowed and handled in FST post-filter
     let no_categorical = filters.maintenance_level.is_none()
         && filters.drought_tolerant.is_none()
         && filters.fast_growing.is_none()
         && filters.climate_tier.is_none();
 
     has_name && no_eive && no_csr && no_categorical
+}
+
+/// Query params for batch plant lookup
+#[cfg(feature = "api")]
+#[derive(Debug, serde::Deserialize)]
+struct BatchPlantQuery {
+    /// Comma-separated WFO IDs (e.g., "wfo-0000721951,wfo-0000955348")
+    ids: String,
+}
+
+/// Batch plant lookup by WFO IDs - O(1) per plant via hashmap
+#[cfg(feature = "api")]
+async fn get_plants_batch(
+    State(state): State<AppState>,
+    Query(params): Query<BatchPlantQuery>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let start = std::time::Instant::now();
+
+    let ids: Vec<&str> = params.ids.split(',').map(|s| s.trim()).collect();
+    let plants = state.search_index.get_by_wfo_ids(&ids);
+
+    let data: Vec<serde_json::Value> = plants
+        .iter()
+        .map(|p| {
+            serde_json::json!({
+                "wfo_id": p.wfo_id,
+                "wfo_scientific_name": p.scientific_name,
+                "vernacular_name_en": p.common_name,
+                "family": p.family,
+                "genus": p.genus,
+                "tiers": p.tiers,
+            })
+        })
+        .collect();
+
+    let elapsed = start.elapsed();
+    tracing::debug!("Batch lookup of {} plants returned {} results in {:?}",
+        ids.len(), data.len(), elapsed);
+
+    Ok(Json(serde_json::json!({
+        "rows": data.len(),
+        "data": data,
+        "query_time_us": elapsed.as_micros(),
+    })))
 }
 
 #[cfg(feature = "api")]
@@ -543,8 +648,8 @@ async fn explain_guild(
 
     // CPU-bound work: run in blocking thread pool
     let explanation = tokio::task::spawn_blocking(move || -> anyhow::Result<Explanation> {
-        // Score with explanation data
-        let (guild_score, fragments, guild_plants, m2_result, m3_result, organisms_df, m4_result, m5_result, fungi_df, m7_result, ecosystem_services) =
+        // Score with explanation data (organisms/fungi accessed via scorer.data() to avoid cloning)
+        let (guild_score, fragments, guild_plants, m2_result, m3_result, m4_result, m5_result, m6_result, m7_result, ecosystem_services) =
             scorer.score_guild_with_explanation_parallel(&plant_ids)?;
 
         // Generate complete explanation
@@ -555,13 +660,15 @@ async fn explain_guild(
             fragments,
             &m2_result,
             &m3_result,
-            &organisms_df,
+            &scorer.data().organisms,  // Direct reference, no clone
             &m4_result,
             &m5_result,
-            &fungi_df,
+            &scorer.data().fungi,      // Direct reference, no clone
+            &m6_result,
             &m7_result,
             &scorer.data().organism_categories,
             &ecosystem_services,
+            &scorer.data().pathogen_diseases,
         )?;
 
         Ok(explanation)
@@ -573,7 +680,14 @@ async fn explain_guild(
     Ok(Json(explanation))
 }
 
-/// Get suitability data for a plant at a location
+/// Single plant suitability check - O(1) lookup from SuitabilityCache
+///
+/// GET /api/suitability/:id?location=london
+///
+/// Optimizations:
+/// - Uses typed SuitabilityCache for O(1) FxHashMap lookup (~60 fields)
+/// - Only computes S2 requirements (skips S1, S3-S6 encyclopedia sections)
+/// - Moka response cache for repeated requests
 #[cfg(feature = "api")]
 async fn get_suitability(
     State(state): State<AppState>,
@@ -583,55 +697,30 @@ async fn get_suitability(
     let location = params.location.unwrap_or_else(|| "london".to_string());
     let cache_key = format!("suitability:{}:{}", id, location);
 
-    // Check cache
+    // Check response cache
     if let Some(cached) = state.cache.get(&cache_key).await {
         tracing::debug!("Cache hit for suitability {}:{}", id, location);
         return Ok(Json(cached));
     }
 
-    tracing::debug!("Generating suitability for plant {} at {}", id, location);
+    // O(1) lookup from SuitabilityCache (FxHashMap)
+    let plant_data = state.suitability_cache.get(&id)
+        .map(|env| env.to_hashmap())
+        .ok_or_else(|| AppError::NotFound(format!("Plant {} not found", id)))?;
 
-    // 1. Fetch plant data
-    let plant_batches = state
-        .query_engine
-        .get_plant(&id)
-        .await
-        .map_err(|e| AppError::DataFusion(e.to_string()))?;
-
-    if plant_batches.is_empty() || plant_batches[0].num_rows() == 0 {
-        return Err(AppError::NotFound(format!("Plant {} not found", id)));
-    }
-
-    // Convert plant batch to JSON then HashMap
-    let plant_json = batches_to_json(&plant_batches)?;
-    let plant_data: std::collections::HashMap<String, serde_json::Value> = plant_json
-        .get("data")
-        .and_then(|d| d.as_array())
-        .and_then(|arr| arr.first())
-        .and_then(|obj| serde_json::from_value(obj.clone()).ok())
-        .ok_or_else(|| AppError::Internal("Failed to parse plant data".to_string()))?;
-
-    // 2. Get local conditions for the location
+    // Get local conditions for the location
     let local_conditions = get_local_conditions(&location);
 
-    // 3. Build encyclopedia data and extract requirements/suitability
-    let encyclopedia_data = generate_encyclopedia_data(
-        &id,
-        &plant_data,
-        None, None, None, None, None, 0,
-        Some(&local_conditions),
-    ).map_err(|e| AppError::Internal(e))?;
-
-    // 4. Extract suitability info from requirements section
-    let requirements = &encyclopedia_data.requirements;
+    // FOCUSED: Only compute S2 requirements (skips S1, S3, S4, S5, S6)
+    let requirements = s2_requirements::generate(&plant_data, Some(&local_conditions));
     let overall = requirements.overall_suitability.as_ref();
 
     let result = serde_json::json!({
         "wfo_id": id,
         "location": {
-            "name": encyclopedia_data.location.name,
-            "code": encyclopedia_data.location.code,
-            "climate_zone": encyclopedia_data.location.climate_zone,
+            "name": local_conditions.name,
+            "code": location,
+            "climate_zone": local_conditions.koppen_zone,
         },
         "overall_score": overall.map(|o| o.score_percent).unwrap_or(50),
         "verdict": overall.map(|o| o.verdict.clone()).unwrap_or_else(|| "Assessment unavailable".to_string()),
@@ -639,8 +728,8 @@ async fn get_suitability(
         "growing_tips": overall.map(|o| &o.growing_tips).unwrap_or(&vec![]),
         "light": {
             "category": requirements.light.category,
-            "description": requirements.light.description,
             "eive_l": requirements.light.eive_l,
+            "sun_tolerance": requirements.light.sun_tolerance,
         },
         "temperature": {
             "summary": requirements.temperature.summary,
@@ -664,6 +753,213 @@ async fn get_suitability(
     Ok(Json(result))
 }
 
+/// Batch suitability check for multiple plants (optimized for guild builder)
+///
+/// POST /api/suitability/batch
+/// Body: { "wfo_ids": ["wfo-xxx", ...], "location": "london" }
+///
+/// Optimizations:
+/// - Single database query for all plants (vs N separate queries)
+/// - Local conditions computed once (not per plant)
+/// - FOCUSED: Only computes S2 (suitability), skips S1, S3-S6 encyclopedia sections
+/// - RAYON: CPU parallelism via par_iter (not async tokio::spawn)
+#[cfg(feature = "api")]
+async fn get_suitability_batch(
+    State(state): State<AppState>,
+    Json(req): Json<BatchSuitabilityRequest>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    use rayon::prelude::*;
+
+    let location = req.location.unwrap_or_else(|| "london".to_string());
+    let wfo_ids = req.wfo_ids;
+
+    if wfo_ids.is_empty() {
+        return Ok(Json(serde_json::json!({
+            "location": { "name": location, "code": location.to_lowercase() },
+            "results": [],
+            "aggregate": { "average_score": 0, "suited_count": 0, "total_count": 0 }
+        })));
+    }
+
+    let start = std::time::Instant::now();
+    tracing::info!("Batch suitability check for {} plants at {}", wfo_ids.len(), location);
+
+    // 1. Get local conditions ONCE (not per plant)
+    let local_conditions = get_local_conditions(&location);
+
+    // 2. Check cache for all plants, collect uncached IDs
+    let mut cached_results: Vec<(String, serde_json::Value)> = Vec::new();
+    let mut uncached_ids: Vec<String> = Vec::new();
+
+    for wfo_id in &wfo_ids {
+        let cache_key = format!("suitability:{}:{}", wfo_id, location);
+        if let Some(cached) = state.cache.get(&cache_key).await {
+            cached_results.push((wfo_id.clone(), cached));
+        } else {
+            uncached_ids.push(wfo_id.clone());
+        }
+    }
+
+    tracing::info!("Cache: {} hits, {} misses", cached_results.len(), uncached_ids.len());
+
+    // 3. Get plant envelopes from typed cache (O(1) FxHashMap lookup, ~60 fields each)
+    let lookup_start = std::time::Instant::now();
+    let plants_to_process: Vec<(String, Option<HashMap<String, serde_json::Value>>)> = uncached_ids
+        .iter()
+        .map(|id| {
+            let envelope_opt = state.suitability_cache.get(id).map(|env| env.to_hashmap());
+            (id.clone(), envelope_opt)
+        })
+        .collect();
+    let found_count = plants_to_process.iter().filter(|(_, opt)| opt.is_some()).count();
+    tracing::info!("  Envelope lookup: {:?} ({} found)", lookup_start.elapsed(), found_count);
+
+    // 4. Compute suitability using Rayon parallel iterator (CPU-bound, not async)
+    let local_for_rayon = local_conditions.clone();
+    let location_for_rayon = location.clone();
+
+    // Use spawn_blocking to run Rayon on a blocking thread pool
+    let s2_start = std::time::Instant::now();
+    let computed_results = tokio::task::spawn_blocking(move || {
+        plants_to_process
+            .par_iter()
+            .map(|(wfo_id, plant_data_opt)| {
+                match plant_data_opt {
+                    Some(plant_data) => {
+                        // FOCUSED: Only compute S2 requirements (skips S1, S3, S4, S5, S6)
+                        let requirements = s2_requirements::generate(plant_data, Some(&local_for_rayon));
+                        let overall = requirements.overall_suitability.as_ref();
+
+                        let result = serde_json::json!({
+                            "wfo_id": wfo_id,
+                            "overall_score": overall.map(|o| o.score_percent).unwrap_or(50),
+                            "verdict": overall.map(|o| o.verdict.clone()).unwrap_or_else(|| "Assessment unavailable".to_string()),
+                            "key_concerns": overall.map(|o| o.key_concerns.clone()).unwrap_or_default(),
+                            "growing_tips": overall.map(|o| &o.growing_tips).unwrap_or(&vec![]),
+                            "temperature": {
+                                "summary": requirements.temperature.summary,
+                                "comparisons": requirements.temperature.comparisons,
+                            },
+                            "moisture": {
+                                "summary": requirements.moisture.summary,
+                                "comparisons": requirements.moisture.comparisons,
+                                "advice": requirements.moisture.advice,
+                            },
+                            "soil": {
+                                "texture": requirements.soil.texture_summary,
+                                "comparisons": requirements.soil.comparisons,
+                                "advice": requirements.soil.advice,
+                            },
+                        });
+
+                        Ok((wfo_id.clone(), result, location_for_rayon.clone()))
+                    }
+                    None => Err(format!("Plant {} not found", wfo_id)),
+                }
+            })
+            .collect::<Vec<_>>()
+    })
+    .await
+    .map_err(|e| AppError::Internal(format!("Rayon task failed: {}", e)))?;
+    tracing::info!("  S2 computation: {:?}", s2_start.elapsed());
+
+    // 5. Collect results and update cache
+    let mut results: Vec<serde_json::Value> = Vec::with_capacity(wfo_ids.len());
+    let mut errors: Vec<serde_json::Value> = Vec::new();
+    let mut total_score: u32 = 0;
+    let mut suited_count: u32 = 0;
+
+    // Add cached results first
+    for (id, result) in cached_results {
+        if let Some(score) = result.get("overall_score").and_then(|s| s.as_u64()) {
+            total_score += score as u32;
+            if score >= 60 {
+                suited_count += 1;
+            }
+        }
+        results.push(result);
+    }
+
+    // Add computed results and cache them
+    for item in computed_results {
+        match item {
+            Ok((id, result, loc)) => {
+                // Cache for next time
+                let cache_key = format!("suitability:{}:{}", id, loc);
+                state.cache.insert(cache_key, result.clone()).await;
+
+                // Aggregate stats
+                if let Some(score) = result.get("overall_score").and_then(|s| s.as_u64()) {
+                    total_score += score as u32;
+                    if score >= 60 {
+                        suited_count += 1;
+                    }
+                }
+                results.push(result);
+            }
+            Err(e) => {
+                errors.push(serde_json::json!({ "error": e }));
+            }
+        }
+    }
+
+    let total_count = results.len() as u32;
+    let average_score = if total_count > 0 {
+        total_score / total_count
+    } else {
+        0
+    };
+
+    let elapsed = start.elapsed();
+    tracing::info!("Batch suitability completed in {:?} ({} plants)", elapsed, total_count);
+
+    // 6. Build location info
+    let location_info = serde_json::json!({
+        "name": local_conditions.name,
+        "code": location.to_lowercase(),
+        "climate_zone": local_conditions.climate_tier().display_name(),
+        "cec": local_conditions.soil_cec,
+        "fertility_level": if local_conditions.soil_cec < 10.0 { "Low" }
+                          else if local_conditions.soil_cec < 25.0 { "Medium" }
+                          else { "High" },
+    });
+
+    Ok(Json(serde_json::json!({
+        "location": location_info,
+        "results": results,
+        "errors": errors,
+        "aggregate": {
+            "average_score": average_score,
+            "suited_count": suited_count,
+            "total_count": total_count,
+        }
+    })))
+}
+
+/// Get photo credits for a plant (iNaturalist CC-BY attribution)
+#[cfg(feature = "api")]
+async fn get_photo_credits(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    // Read credits JSON file from data_dir/photo_credits/{wfo_id}.json
+    let credits_path = format!("{}/photo_credits/{}.json", state.data_dir, id);
+
+    match std::fs::read_to_string(&credits_path) {
+        Ok(contents) => {
+            let credits: serde_json::Value = serde_json::from_str(&contents)
+                .map_err(|e| AppError::Internal(format!("Invalid JSON in credits file: {}", e)))?;
+            Ok(Json(credits))
+        }
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => {
+            Err(AppError::NotFound(format!("Photo credits not found for {}", id)))
+        }
+        Err(e) => {
+            Err(AppError::Internal(format!("Failed to read credits file: {}", e)))
+        }
+    }
+}
+
 /// Get LocalConditions for a location name
 #[cfg(feature = "api")]
 fn get_local_conditions(location: &str) -> crate::encyclopedia::suitability::local_conditions::LocalConditions {
@@ -682,16 +978,17 @@ async fn get_encyclopedia(
     Path(id): Path<String>,
     Query(params): Query<SuitabilityQuery>,
 ) -> Result<Json<serde_json::Value>, AppError> {
-    let location = params.location.unwrap_or_else(|| "london".to_string());
-    let cache_key = format!("encyclopedia:{}:{}", id, location);
+    // Only use location if explicitly provided - fit badges only make sense for suitability checks
+    let location = params.location.clone();
+    let cache_key = format!("encyclopedia:{}:{}", id, location.as_deref().unwrap_or("none"));
 
     // Check cache
     if let Some(cached) = state.cache.get(&cache_key).await {
-        tracing::debug!("Cache hit for encyclopedia {}:{}", id, location);
+        tracing::debug!("Cache hit for encyclopedia {}:{:?}", id, location);
         return Ok(Json(cached));
     }
 
-    tracing::debug!("Generating encyclopedia for plant {} at {}", id, location);
+    tracing::debug!("Generating encyclopedia for plant {} at {:?}", id, location);
 
     // 1. Fetch plant data
     let plant_batches = state
@@ -726,8 +1023,8 @@ async fn get_encyclopedia(
     let fungal_batches = state.query_engine.get_fungi_summary(&id).await.ok();
     let fungal_counts = fungal_batches.as_ref().and_then(|b| parse_fungal_counts(b));
 
-    // 4. Fetch ranked pathogens (top 10)
-    let ranked_pathogens = parse_ranked_pathogens(&state.query_engine, &id, 10).await;
+    // 4. Fetch pathogenic fungi with disease names (simplified flow)
+    let pathogenic_fungi = parse_pathogenic_fungi(&state.query_engine, &id).await;
 
     // 5. Fetch beneficial fungi
     let beneficial_fungi = parse_beneficial_fungi(&state.query_engine, &id).await;
@@ -735,10 +1032,9 @@ async fn get_encyclopedia(
     // 6. Find related species using precomputed phylogenetic distances
     // Now searches ALL plants (not just same genus) via pairwise_phylo_distances parquet
     let related_species = find_related_species(&state.query_engine, &id).await;
-    let genus_count = 0; // No longer meaningful since we search all plants
 
-    // 7. Get local conditions for location
-    let local_conditions = get_local_conditions(&location);
+    // 7. Get local conditions for location (only if location explicitly provided)
+    let local_conditions = location.as_ref().map(|loc| get_local_conditions(loc));
 
     // 8. Build encyclopedia data using generator_json with all data
     let encyclopedia_data = generate_encyclopedia_data(
@@ -746,11 +1042,10 @@ async fn get_encyclopedia(
         &plant_data,
         organism_profile.as_ref(),
         fungal_counts.as_ref(),
-        ranked_pathogens.as_deref(),
+        pathogenic_fungi.as_deref(),
         beneficial_fungi.as_ref(),
         if related_species.is_empty() { None } else { Some(&related_species) },
-        genus_count,
-        Some(&local_conditions),
+        local_conditions.as_ref(),
     ).map_err(|e| AppError::Internal(e))?;
 
     // 9. Serialize to JSON
@@ -979,7 +1274,16 @@ fn categorize_organisms(
 
         for org in organisms {
             let category = TaxonomyCategory::from_name(org, organism_categories, Some(role));
-            let category_name = category.display_name().to_string();
+            let mut category_name = category.display_name().to_string();
+
+            // Clarify that moths/butterflies are caterpillars when shown as herbivores
+            // (adult moths/butterflies are pollinators, only larvae eat plants)
+            if role == OrganismRole::Herbivore
+                && (category_name == "Moths" || category_name == "Butterflies")
+            {
+                category_name.push_str(" (caterpillars)");
+            }
+
             category_map
                 .entry(category_name)
                 .or_default()
@@ -1021,14 +1325,13 @@ fn categorize_organisms(
     }
 }
 
-/// Parse pathogens with observation counts
+/// Parse pathogenic fungi with disease names (simplified flow from fungi_flat + pathogen_diseases)
 #[cfg(feature = "api")]
-async fn parse_ranked_pathogens(
+async fn parse_pathogenic_fungi(
     engine: &QueryEngine,
     plant_id: &str,
-    limit: usize,
-) -> Option<Vec<RankedPathogen>> {
-    let batches = engine.get_pathogens(plant_id, Some(limit)).await.ok()?;
+) -> Option<Vec<PathogenicFungus>> {
+    let batches = engine.get_pathogenic_fungi_with_diseases(plant_id).await.ok()?;
     if batches.is_empty() {
         return None;
     }
@@ -1036,16 +1339,22 @@ async fn parse_ranked_pathogens(
     let json = batches_to_json(&batches).ok()?;
     let data = json.get("data")?.as_array()?;
 
-    let pathogens: Vec<RankedPathogen> = data.iter().filter_map(|row| {
-        let taxon = row.get("pathogen_taxon")?.as_str()?.to_string();
-        let count = row.get("observation_count")?.as_u64()? as usize;
-        Some(RankedPathogen {
+    let fungi: Vec<PathogenicFungus> = data.iter().filter_map(|row| {
+        let taxon = row.get("fungus_taxon")?.as_str()?.to_string();
+        let disease_name = row.get("disease_name")
+            .and_then(|v| v.as_str())
+            .map(|s| s.to_string());
+        let disease_type = row.get("disease_type")
+            .and_then(|v| v.as_str())
+            .map(|s| s.to_string());
+        Some(PathogenicFungus {
             taxon,
-            observation_count: count,
+            disease_name,
+            disease_type,
         })
     }).collect();
 
-    if pathogens.is_empty() { None } else { Some(pathogens) }
+    if fungi.is_empty() { None } else { Some(fungi) }
 }
 
 /// Parse beneficial fungi (mycoparasites and entomopathogens)
@@ -1191,6 +1500,13 @@ struct FungiQuery {
 #[cfg(feature = "api")]
 #[derive(serde::Deserialize, Debug)]
 struct SuitabilityQuery {
+    location: Option<String>,
+}
+
+#[cfg(feature = "api")]
+#[derive(serde::Deserialize, Debug)]
+struct BatchSuitabilityRequest {
+    wfo_ids: Vec<String>,
     location: Option<String>,
 }
 

@@ -9,7 +9,7 @@
 use std::collections::HashMap;
 use serde_json::Value;
 
-use crate::encyclopedia::types::{OrganismProfile, FungalCounts, RankedPathogen, BeneficialFungi};
+use crate::encyclopedia::types::{OrganismProfile, FungalCounts, PathogenicFungus, BeneficialFungi};
 use crate::encyclopedia::sections_json::{
     s1_identity,
     s2_requirements,
@@ -18,7 +18,7 @@ use crate::encyclopedia::sections_json::{
     s5_interactions,
     s6_companion,
 };
-use crate::encyclopedia::sections_json::s1_identity::InputRelatedSpecies;
+use crate::encyclopedia::sections_json::s6_companion::InputRelatedSpecies;
 use crate::encyclopedia::suitability::local_conditions::LocalConditions;
 use crate::encyclopedia::view_models::{EncyclopediaPageData, LocationInfo};
 
@@ -29,10 +29,9 @@ use crate::encyclopedia::view_models::{EncyclopediaPageData, LocationInfo};
 /// * `plant_data` - HashMap of plant attributes from Phase 7 parquet
 /// * `organism_profile` - Optional categorized organism lists for rich display
 /// * `fungal_counts` - Optional fungal association counts
-/// * `ranked_pathogens` - Optional pathogens with observation counts (top diseases)
+/// * `pathogenic_fungi` - Optional pathogenic fungi with disease names (from fungi_flat + pathogen_diseases)
 /// * `beneficial_fungi` - Optional beneficial fungi species (mycoparasites, entomopathogens)
-/// * `related_species` - Optional list of phylogenetically closest relatives within genus
-/// * `genus_species_count` - Total count of species in the same genus
+/// * `related_species` - Optional list of phylogenetically closest relatives (for S6 companion section)
 /// * `local_conditions` - Optional user's local climate and soil conditions
 ///
 /// # Returns
@@ -43,18 +42,15 @@ pub fn generate_encyclopedia_data(
     plant_data: &HashMap<String, Value>,
     organism_profile: Option<&OrganismProfile>,
     fungal_counts: Option<&FungalCounts>,
-    ranked_pathogens: Option<&[RankedPathogen]>,
+    pathogenic_fungi: Option<&[PathogenicFungus]>,
     beneficial_fungi: Option<&BeneficialFungi>,
     related_species: Option<&[InputRelatedSpecies]>,
-    genus_species_count: usize,
     local_conditions: Option<&LocalConditions>,
 ) -> Result<EncyclopediaPageData, String> {
     // S1: Identity Card
     let identity = s1_identity::generate(
         wfo_id,
         plant_data,
-        related_species,
-        genus_species_count,
     );
 
     // S2: Growing Requirements (with optional local suitability)
@@ -71,15 +67,16 @@ pub fn generate_encyclopedia_data(
         plant_data,
         organism_profile,
         fungal_counts,
-        ranked_pathogens,
+        pathogenic_fungi,
         beneficial_fungi,
     );
 
-    // S6: Guild Potential (Companion Planting)
+    // S6: Guild Potential (Companion Planting) - includes relatives for phylogenetic diversity
     let companion = s6_companion::generate(
         plant_data,
         organism_profile,
         fungal_counts,
+        related_species,
     );
 
     // Location info
@@ -120,7 +117,7 @@ mod tests {
         let result = generate_encyclopedia_data(
             "wfo-test",
             &data,
-            None, None, None, None, None, 0, None
+            None, None, None, None, None, None
         );
         assert!(result.is_ok());
 

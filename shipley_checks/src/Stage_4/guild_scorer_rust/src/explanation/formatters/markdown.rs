@@ -74,24 +74,26 @@ impl MarkdownFormatter {
                     md.push_str(&format!("*Evidence:* {}\n\n", evidence));
                 }
 
-                // Insert taxonomic profile after M1 (Phylogenetic Diversity)
-                // This provides intuitive elaboration of Faith's PD metric
-                if benefit.metric_code == "M1" {
-                    if let Some(taxonomic_profile) = &explanation.taxonomic_profile {
-                        Self::format_taxonomic_profile(&mut md, taxonomic_profile);
-                    }
-                    // Pest profile moved to M3 for better coherence with biocontrol
-                }
+                // Profile insertion follows 2025-12 metric reorder:
+                // M1=Growth Strategy, M2=Structure, M3=Pest, M4=Biocontrol, M5=Disease, M6=Fungi, M7=Pollinators
 
-                // Insert CSR strategy profile after M2 (Growth Compatibility)
-                if benefit.metric_code == "M2" {
+                // Insert CSR strategy profile after M1 (Growth Strategy)
+                if benefit.metric_code == "M1" {
                     if let Some(csr_profile) = &explanation.csr_strategy_profile {
                         Self::format_csr_profile(&mut md, csr_profile);
                     }
                 }
 
-                // Insert pest and biocontrol profiles after M3 (Insect Pest Control)
+                // Insert taxonomic profile after M3 (Pest & Pathogen Independence)
+                // This provides intuitive elaboration of Faith's PD metric
                 if benefit.metric_code == "M3" {
+                    if let Some(taxonomic_profile) = &explanation.taxonomic_profile {
+                        Self::format_taxonomic_profile(&mut md, taxonomic_profile);
+                    }
+                }
+
+                // Insert pest and biocontrol profiles after M4 (Biocontrol Networks)
+                if benefit.metric_code == "M4" {
                     // Show pest vulnerability FIRST (what are the pests?)
                     if let Some(pest_profile) = &explanation.pest_profile {
                         Self::format_pest_profile(&mut md, pest_profile);
@@ -102,15 +104,15 @@ impl MarkdownFormatter {
                     }
                 }
 
-                // Insert pathogen control profile after M4 (Disease Suppression)
-                if benefit.metric_code == "M4" {
+                // Insert pathogen control profile after M5 (Disease Suppression)
+                if benefit.metric_code == "M5" {
                     if let Some(pathogen_profile) = &explanation.pathogen_control_profile {
                         Self::format_pathogen_control_profile(&mut md, pathogen_profile);
                     }
                 }
 
-                // Insert fungi profile after M5 (Mycorrhizal Network)
-                if benefit.metric_code == "M5" {
+                // Insert fungi profile after M6 (Beneficial Fungi)
+                if benefit.metric_code == "M6" {
                     if let Some(fungi_profile) = &explanation.fungi_network_profile {
                         Self::format_fungi_profile(&mut md, fungi_profile);
                     }

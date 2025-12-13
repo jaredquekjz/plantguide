@@ -26,6 +26,9 @@ pub mod query_engine;
 #[cfg(feature = "api")]
 pub mod api_server;
 
+// Suitability cache for fast O(1) envelope lookups
+pub mod suitability_cache;
+
 // Phase 8: FST Search Index (optional feature)
 #[cfg(feature = "api")]
 pub mod search_index;

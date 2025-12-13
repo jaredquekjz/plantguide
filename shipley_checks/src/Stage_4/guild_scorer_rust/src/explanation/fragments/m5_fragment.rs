@@ -23,7 +23,7 @@ pub fn generate_m5_fragment(m5: &M5Result, display_score: f64) -> MetricFragment
 
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "mycorrhizal_network".to_string(),
-        metric_code: "M5".to_string(),
+        metric_code: "M6".to_string(), // Beneficial Fungi is now M6 (2025-12 reorder)
         title: "Beneficial Mycorrhizal Network".to_string(),
         message: format!(
             "{}th percentile - {:.0}% coverage ({}/{} plants have beneficial fungi)",

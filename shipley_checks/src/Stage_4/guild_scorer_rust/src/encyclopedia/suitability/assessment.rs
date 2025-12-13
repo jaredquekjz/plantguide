@@ -7,6 +7,17 @@ use super::climate_tier::{ClimateTier, TierMatchType, OccurrenceFit, PlantTierFl
 use super::comparator::{EnvelopeComparison, EnvelopeFit};
 use crate::encyclopedia::utils::texture::TextureClassification;
 
+// ============================================================================
+// Unit Conversion
+// ============================================================================
+
+/// Convert dekadal mean to annual estimate (×36 dekads/year).
+/// Used for FD (frost days), TR (tropical nights).
+#[inline]
+fn dekadal_to_annual(value: f64) -> f64 {
+    value * 36.0
+}
+
 /// Overall suitability rating
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum OverallRating {
@@ -363,20 +374,36 @@ pub enum TextureCompatibility {
 /// A structured growing tip with category and severity
 #[derive(Debug, Clone)]
 pub struct GrowingTip {
-    /// Category: "temperature", "moisture", or "soil"
+    /// Category: "temperature", "moisture", "soil", or "light"
     pub category: String,
-    /// Short action phrase (e.g., "Water weekly")
+    /// The problem identified (e.g., "More frost than typical") - shown in Key Concerns
+    /// Only present for warning/critical severity tips
+    pub concern: Option<String>,
+    /// Short action phrase (e.g., "Protect in winter") - what to do about it
     pub action: String,
-    /// Detail with specific numbers (e.g., "200mm less rainfall than typical")
+    /// Detail with specific numbers (e.g., "25 more frost days")
     pub detail: String,
     /// Severity: "info", "warning", "critical"
     pub severity: String,
 }
 
 impl GrowingTip {
+    /// Create a tip without a key concern (for info severity)
     pub fn new(category: &str, action: &str, detail: &str, severity: &str) -> Self {
         Self {
             category: category.to_string(),
+            concern: None,
+            action: action.to_string(),
+            detail: detail.to_string(),
+            severity: severity.to_string(),
+        }
+    }
+
+    /// Create a tip with a key concern (for warning/critical severity)
+    pub fn with_concern(category: &str, concern: &str, action: &str, detail: &str, severity: &str) -> Self {
+        Self {
+            category: category.to_string(),
+            concern: Some(concern.to_string()),
             action: action.to_string(),
             detail: detail.to_string(),
             severity: severity.to_string(),
@@ -423,20 +450,25 @@ pub fn count_issues(assessment: &SuitabilityAssessment) -> usize {
 /// Check for severe issues that auto-downgrade to NotRecommended
 pub fn has_severe_issues(assessment: &SuitabilityAssessment) -> bool {
     // Check tropical nights (year-round heat)
+    // Note: TR is stored as dekadal mean, convert to annual for threshold comparison
     if let Some(ref comp) = assessment.temperature.tropical_nights_comparison {
-        if comp.fit == EnvelopeFit::AboveRange && comp.distance_from_range > 100.0 {
+        let annual_distance = dekadal_to_annual(comp.distance_from_range);
+        if comp.fit == EnvelopeFit::AboveRange && annual_distance > 100.0 {
             return true;
         }
     }
 
     // Check frost days (extreme cold)
+    // Note: FD is stored as dekadal mean, convert to annual for threshold comparison
     if let Some(ref comp) = assessment.temperature.frost_comparison {
-        if comp.fit == EnvelopeFit::AboveRange && comp.distance_from_range > 50.0 {
+        let annual_distance = dekadal_to_annual(comp.distance_from_range);
+        if comp.fit == EnvelopeFit::AboveRange && annual_distance > 50.0 {
             return true;
         }
     }
 
     // Check growing season (far too short)
+    // Note: GSL is already annual, no conversion needed
     if let Some(ref comp) = assessment.temperature.growing_season_comparison {
         if comp.fit == EnvelopeFit::BelowRange && comp.distance_from_range > 60.0 {
             return true;

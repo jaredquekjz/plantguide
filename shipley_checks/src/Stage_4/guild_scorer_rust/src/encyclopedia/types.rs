@@ -82,6 +82,25 @@ pub struct RankedPathogen {
     pub observation_count: usize,
 }
 
+/// Pathogen with observation count and disease name (joined with Phase 7b)
+/// Source: pathogens_ranked.parquet LEFT JOIN pathogen_diseases.parquet
+#[derive(Debug, Clone)]
+pub struct RankedPathogenWithDisease {
+    pub taxon: String,
+    pub observation_count: usize,
+    pub disease_name: Option<String>,
+    pub disease_type: Option<String>,
+}
+
+/// Pathogenic fungus with disease name (simplified flow - no observation counts)
+/// Source: fungi_flat.parquet (pathogenic_fungi) LEFT JOIN pathogen_diseases.parquet
+#[derive(Debug, Clone)]
+pub struct PathogenicFungus {
+    pub taxon: String,
+    pub disease_name: Option<String>,
+    pub disease_type: Option<String>,
+}
+
 /// Beneficial fungi species (biocontrol agents)
 /// Source: fungi_flat.parquet (mycoparasite_fungi, entomopathogenic_fungi)
 #[derive(Debug, Clone, Default)]
@@ -167,7 +186,7 @@ impl MycorrhizalType {
             MycorrhizalType::AMF => "AMF (Arbuscular)",
             MycorrhizalType::EMF => "EMF (Ectomycorrhizal)",
             MycorrhizalType::Dual => "Dual (AMF + EMF)",
-            MycorrhizalType::NonMycorrhizal => "Non-mycorrhizal/Undocumented",
+            MycorrhizalType::NonMycorrhizal => "Undocumented",
         }
     }
 }

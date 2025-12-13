@@ -135,6 +135,11 @@ impl GuildScorer {
         })
     }
 
+    /// Get reference to the plants DataFrame (for suitability cache extraction)
+    pub fn plants_df(&self) -> &DataFrame {
+        &self.data.plants
+    }
+
     /// Compute raw scores for a guild (for calibration)
     ///
     /// Mirrors R: compute_raw_scores(guild_ids, guild_scorer, plants_df)
@@ -371,34 +376,39 @@ impl GuildScorer {
         // Reuses same organisms_lazy as M3 (no redundant filtering!)
         let m7 = calculate_m7(plant_ids, organisms_lazy, &self.calibration)?;
 
-        // Raw scores
-        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+        // Raw scores - REORDERED per 2025-12 restructure:
+        // M1=Growth Strategy (m2), M2=Structure (m6), M3=Pest (m1), M4=Biocontrol (m3),
+        // M5=Disease (m4), M6=Fungi (m5), M7=Pollinators (m7)
+        let raw_scores = [m2.raw, m6.raw, m1.raw, m3.raw, m4.raw, m5.raw, m7.raw];
 
         // Normalized percentiles (before display inversion)
         let normalized = [
-            m1.normalized,
-            m2.norm,
-            m3.norm,
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            m2.norm,        // M1: Growth Strategy (CSR)
+            m6.norm,        // M2: Structure
+            m1.normalized,  // M3: Pest Independence
+            m3.norm,        // M4: Biocontrol
+            m4.norm,        // M5: Disease
+            m5.norm,        // M6: Fungi
+            m7.norm,        // M7: Pollinators
         ];
 
-        // Display scores (invert M1 and M2)
-        // R reference: guild_scorer_v3_modular.R lines 338-339
+        // Display scores
+        // M1 (Growth Strategy/CSR) is classification-only, excluded from scoring
+        // M3 (Pest Independence) is inverted: low pest risk = high display score
         let metrics = [
-            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
-            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
-            m3.norm,                // M3-M7: direct percentile
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            100.0 - m2.norm,        // M1: Growth Strategy (kept for display, NOT in overall score)
+            m6.norm,                // M2: Structure
+            100.0 - m1.normalized,  // M3: Pest Independence (inverted)
+            m3.norm,                // M4: Biocontrol
+            m4.norm,                // M5: Disease
+            m5.norm,                // M6: Fungi
+            m7.norm,                // M7: Pollinators
         ];
 
-        // Overall score: simple average (matches R line 342)
-        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+        // Overall score: average of M2-M7 (6 metrics, M1 excluded)
+        // M1 provides guild type classification, not a quality score
+        let scoring_metrics = [metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], metrics[6]];
+        let overall_score = scoring_metrics.iter().sum::<f64>() / 6.0;
 
         Ok(GuildScore {
             overall_score,
@@ -523,33 +533,39 @@ impl GuildScorer {
             .downcast_ref::<M7Result>()
             .ok_or_else(|| anyhow::anyhow!("Failed to downcast M7"))?;
 
-        // Raw scores
-        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+        // Raw scores - REORDERED per 2025-12 restructure:
+        // M1=Growth Strategy (m2), M2=Structure (m6), M3=Pest (m1), M4=Biocontrol (m3),
+        // M5=Disease (m4), M6=Fungi (m5), M7=Pollinators (m7)
+        let raw_scores = [m2.raw, m6.raw, m1.raw, m3.raw, m4.raw, m5.raw, m7.raw];
 
         // Normalized percentiles (before display inversion)
         let normalized = [
-            m1.normalized,
-            m2.norm,
-            m3.norm,
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            m2.norm,        // M1: Growth Strategy (CSR)
+            m6.norm,        // M2: Structure
+            m1.normalized,  // M3: Pest Independence
+            m3.norm,        // M4: Biocontrol
+            m4.norm,        // M5: Disease
+            m5.norm,        // M6: Fungi
+            m7.norm,        // M7: Pollinators
         ];
 
-        // Display scores (invert M1 and M2)
+        // Display scores
+        // M1 (Growth Strategy/CSR) is classification-only, excluded from scoring
+        // M3 (Pest Independence) is inverted: low pest risk = high display score
         let metrics = [
-            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
-            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
-            m3.norm,                // M3-M7: direct percentile
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            100.0 - m2.norm,        // M1: Growth Strategy (kept for display, NOT in overall score)
+            m6.norm,                // M2: Structure
+            100.0 - m1.normalized,  // M3: Pest Independence (inverted)
+            m3.norm,                // M4: Biocontrol
+            m4.norm,                // M5: Disease
+            m5.norm,                // M6: Fungi
+            m7.norm,                // M7: Pollinators
         ];
 
-        // Overall score: simple average
-        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+        // Overall score: average of M2-M7 (6 metrics, M1 excluded)
+        // M1 provides guild type classification, not a quality score
+        let scoring_metrics = [metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], metrics[6]];
+        let overall_score = scoring_metrics.iter().sum::<f64>() / 6.0;
 
         Ok(GuildScore {
             overall_score,
@@ -564,11 +580,12 @@ impl GuildScorer {
     /// Generates both scores and explanation fragments in a single parallel pass.
     /// Each metric calculates its score and generates its explanation fragment inline.
     ///
-    /// Returns: (GuildScore, Vec<MetricFragment>, DataFrame of guild_plants, M5Result, fungi_df)
+    /// Returns: (GuildScore, fragments, guild_plants, M2-M7 results, ecosystem_services)
+    /// Note: organisms/fungi DataFrames accessed via scorer.data() to avoid 7.5MB clone
     pub fn score_guild_with_explanation_parallel(
         &self,
         plant_ids: &[String],
-    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M2Result, M3Result, DataFrame, M4Result, M5Result, DataFrame, M7Result, EcosystemServicesResult)> {
+    ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M2Result, M3Result, M4Result, M5Result, M6Result, M7Result, EcosystemServicesResult)> {
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
@@ -697,33 +714,39 @@ impl GuildScorer {
             .downcast_ref::<M7Result>()
             .ok_or_else(|| anyhow::anyhow!("Failed to downcast M7"))?;
 
-        // Raw scores
-        let raw_scores = [m1.raw, m2.raw, m3.raw, m4.raw, m5.raw, m6.raw, m7.raw];
+        // Raw scores - REORDERED per 2025-12 restructure:
+        // M1=Growth Strategy (m2), M2=Structure (m6), M3=Pest (m1), M4=Biocontrol (m3),
+        // M5=Disease (m4), M6=Fungi (m5), M7=Pollinators (m7)
+        let raw_scores = [m2.raw, m6.raw, m1.raw, m3.raw, m4.raw, m5.raw, m7.raw];
 
         // Normalized percentiles (before display inversion)
         let normalized = [
-            m1.normalized,
-            m2.norm,
-            m3.norm,
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            m2.norm,        // M1: Growth Strategy (CSR)
+            m6.norm,        // M2: Structure
+            m1.normalized,  // M3: Pest Independence
+            m3.norm,        // M4: Biocontrol
+            m4.norm,        // M5: Disease
+            m5.norm,        // M6: Fungi
+            m7.norm,        // M7: Pollinators
         ];
 
-        // Display scores (invert M1 and M2)
+        // Display scores
+        // M1 (Growth Strategy/CSR) is classification-only, excluded from scoring
+        // M3 (Pest Independence) is inverted: low pest risk = high display score
         let metrics = [
-            100.0 - m1.normalized,  // M1: 100 - percentile (low pest risk = high display score)
-            100.0 - m2.norm,        // M2: 100 - percentile (low conflicts = high display score)
-            m3.norm,                // M3-M7: direct percentile
-            m4.norm,
-            m5.norm,
-            m6.norm,
-            m7.norm,
+            100.0 - m2.norm,        // M1: Growth Strategy (kept for display, NOT in overall score)
+            m6.norm,                // M2: Structure
+            100.0 - m1.normalized,  // M3: Pest Independence (inverted)
+            m3.norm,                // M4: Biocontrol
+            m4.norm,                // M5: Disease
+            m5.norm,                // M6: Fungi
+            m7.norm,                // M7: Pollinators
         ];
 
-        // Overall score: simple average
-        let overall_score = metrics.iter().sum::<f64>() / 7.0;
+        // Overall score: average of M2-M7 (6 metrics, M1 excluded)
+        // M1 provides guild type classification, not a quality score
+        let scoring_metrics = [metrics[1], metrics[2], metrics[3], metrics[4], metrics[5], metrics[6]];
+        let overall_score = scoring_metrics.iter().sum::<f64>() / 6.0;
 
         let guild_score = GuildScore {
             overall_score,
@@ -786,6 +809,10 @@ impl GuildScorer {
         let m2_cloned = M2Result {
             raw: m2.raw,
             norm: m2.norm,
+            guild_type: m2.guild_type,
+            avg_c_percentile: m2.avg_c_percentile,
+            avg_s_percentile: m2.avg_s_percentile,
+            avg_r_percentile: m2.avg_r_percentile,
             high_c_count: m2.high_c_count,
             high_s_count: m2.high_s_count,
             high_r_count: m2.high_r_count,
@@ -805,6 +832,17 @@ impl GuildScorer {
             fungi_counts: m5.fungi_counts.clone(),
         };
 
+        // Clone M6Result for structural diversity profile analysis
+        let m6_cloned = M6Result {
+            raw: m6.raw,
+            norm: m6.norm,
+            height_range: m6.height_range,
+            n_forms: m6.n_forms,
+            stratification_quality: m6.stratification_quality,
+            form_diversity: m6.form_diversity,
+            growth_form_groups: m6.growth_form_groups.clone(),
+        };
+
         // Clone M7Result for pollinator network analysis
         let m7_cloned = M7Result {
             raw: m7.raw,
@@ -820,7 +858,8 @@ impl GuildScorer {
         // Note: Uses plants dataframe which has ecosystem service rating columns from Stage 3
         let ecosystem_services = calculate_ecosystem_services(&self.data.plants, plant_ids)?;
 
-        Ok((guild_score, fragments, guild_plants_with_organisms, m2_cloned, m3_cloned, self.data.organisms.clone(), m4_cloned, m5_cloned, self.data.fungi.clone(), m7_cloned, ecosystem_services))
+        // Note: organisms and fungi DataFrames not returned - access via scorer.data() to avoid 7.5MB clone
+        Ok((guild_score, fragments, guild_plants_with_organisms, m2_cloned, m3_cloned, m4_cloned, m5_cloned, m6_cloned, m7_cloned, ecosystem_services))
     }
 }
 

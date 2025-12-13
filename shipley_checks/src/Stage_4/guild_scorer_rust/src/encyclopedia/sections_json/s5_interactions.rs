@@ -10,16 +10,17 @@
 //!
 //! Data Sources:
 //! - Pests, pollinators, predators: organism_profiles_11711.parquet
-//! - Diseases, beneficial fungi: fungal_guilds_hybrid_11711.parquet
+//! - Diseases: fungi_flat.parquet (pathogenic_fungi) + pathogen_diseases.parquet
+//! - Beneficial fungi: fungi_flat.parquet (mycoparasite_fungi, entomopathogenic_fungi)
 
 use std::collections::HashMap;
 use serde_json::Value;
 use crate::encyclopedia::types::{
-    OrganismProfile, FungalCounts, RankedPathogen, BeneficialFungi, MycorrhizalType,
+    OrganismProfile, FungalCounts, PathogenicFungus, BeneficialFungi, MycorrhizalType,
 };
 use crate::encyclopedia::utils::classify::*;
 use crate::encyclopedia::view_models::{
-    InteractionsSection, OrganismGroup, OrganismCategory, DiseaseGroup, PathogenInfo,
+    InteractionsSection, OrganismGroup, OrganismCategory, DiseaseGroup, DiseaseCategory, DiseaseInfo,
     FungiGroup, MycorrhizalDetails,
 };
 
@@ -28,7 +29,7 @@ pub fn generate(
     _data: &HashMap<String, Value>,
     organism_profile: Option<&OrganismProfile>,
     fungal_counts: Option<&FungalCounts>,
-    ranked_pathogens: Option<&[RankedPathogen]>,
+    pathogenic_fungi: Option<&[PathogenicFungus]>,
     beneficial_fungi: Option<&BeneficialFungi>,
 ) -> InteractionsSection {
     // Build pollinators group
@@ -43,8 +44,8 @@ pub fn generate(
     // Build fungivores group
     let fungivores = build_fungivore_group(organism_profile);
 
-    // Build diseases group
-    let diseases = build_disease_group(fungal_counts, ranked_pathogens);
+    // Build diseases group (from pathogenic fungi)
+    let diseases = build_disease_group(fungal_counts, pathogenic_fungi);
 
     // Build beneficial fungi group
     let beneficial_fungi_group = build_beneficial_fungi_group(fungal_counts, beneficial_fungi);
@@ -160,14 +161,16 @@ fn build_fungivore_group(profile: Option<&OrganismProfile>) -> OrganismGroup {
     }
 }
 
-/// Build disease group.
-/// CLONED FROM sections_md generate_disease_section - outputs struct instead of markdown
+/// Build disease group from pathogenic fungi.
+/// Groups diseases by disease_type (rust, spot, mildew, rot, etc.)
 fn build_disease_group(
     counts: Option<&FungalCounts>,
-    ranked_pathogens: Option<&[RankedPathogen]>,
+    pathogenic_fungi: Option<&[PathogenicFungus]>,
 ) -> DiseaseGroup {
-    // Get total pathogen count
-    let pathogen_count = ranked_pathogens
+    use std::collections::HashMap;
+
+    // Get total pathogen count - from pathogenic_fungi list or fallback to fungal counts
+    let pathogen_count = pathogenic_fungi
         .map(|p| p.len())
         .or_else(|| counts.map(|c| c.pathogenic))
         .unwrap_or(0);
@@ -175,22 +178,43 @@ fn build_disease_group(
     // Get disease level and advice from classify.rs
     let (disease_level, disease_advice) = classify_disease_level(pathogen_count);
 
-    // Convert ranked pathogens to PathogenInfo - top 5 only (like MD version)
-    let pathogens: Vec<PathogenInfo> = if let Some(rp) = ranked_pathogens {
-        rp.iter()
-            .take(5)  // Top 5 pathogens for display (matches MD version)
-            .map(|p| PathogenInfo {
-                name: p.taxon.clone(),
-                observation_count: p.observation_count,
-                severity: classify_pathogen_severity(p.observation_count),
-            })
-            .collect()
+    // Group pathogenic fungi by disease_type
+    let categories: Vec<DiseaseCategory> = if let Some(pf) = pathogenic_fungi {
+        // Group by disease_type
+        let mut type_map: HashMap<String, Vec<DiseaseInfo>> = HashMap::new();
+
+        for p in pf {
+            let dtype = p.disease_type.clone().unwrap_or_else(|| "other".to_string());
+            type_map
+                .entry(dtype)
+                .or_default()
+                .push(DiseaseInfo {
+                    taxon: p.taxon.clone(),
+                    disease_name: p.disease_name.clone(),
+                });
+        }
+
+        // Convert to sorted categories (by count descending, "other" at end)
+        let mut cats: Vec<DiseaseCategory> = type_map
+            .into_iter()
+            .map(|(name, diseases)| DiseaseCategory { name, diseases })
+            .collect();
+
+        cats.sort_by(|a, b| {
+            let a_is_other = a.name == "other";
+            let b_is_other = b.name == "other";
+            match (a_is_other, b_is_other) {
+                (true, false) => std::cmp::Ordering::Greater,
+                (false, true) => std::cmp::Ordering::Less,
+                _ => b.diseases.len().cmp(&a.diseases.len())
+                    .then_with(|| a.name.cmp(&b.name)),
+            }
+        });
+
+        cats
     } else {
         Vec::new()
     };
-
-    // Calculate how many more pathogens beyond top 5
-    let more_count = if pathogen_count > 5 { pathogen_count - 5 } else { 0 };
 
     // Build resistance notes based on pathogen count
     let resistance_notes = if pathogen_count > 10 {
@@ -208,8 +232,7 @@ fn build_disease_group(
         disease_level: disease_level.to_string(),
         disease_advice: disease_advice.to_string(),
         pathogen_count,
-        pathogens,
-        more_count,
+        categories,
         resistance_notes,
     }
 }
@@ -275,11 +298,10 @@ fn build_mycorrhizal_info(counts: Option<&FungalCounts>) -> (String, Option<Myco
             ),
             "Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.".to_string(),
         ),
-        MycorrhizalType::NonMycorrhizal => (
-            "None".to_string(),
-            "This plant does not rely heavily on mycorrhizal partnerships.".to_string(),
-            "Standard cultivation practices apply.".to_string(),
-        ),
+        MycorrhizalType::NonMycorrhizal => {
+            // No documented associations - don't show section (absence of data ≠ absence of need)
+            return (myco_type.label().to_string(), None);
+        },
     };
 
     let species_count = c.amf + c.emf;
@@ -307,16 +329,4 @@ fn convert_categorized_organisms(
             organisms: cat.organisms.clone(),
         })
         .collect()
-}
-
-/// Classify pathogen severity based on observation count.
-/// CLONED FROM sections_md logic
-fn classify_pathogen_severity(observation_count: usize) -> String {
-    if observation_count >= 10 {
-        "Common".to_string()
-    } else if observation_count >= 3 {
-        "Occasional".to_string()
-    } else {
-        "Rare".to_string()
-    }
 }

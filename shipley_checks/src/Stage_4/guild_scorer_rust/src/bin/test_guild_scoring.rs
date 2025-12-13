@@ -93,7 +93,7 @@ fn main() -> anyhow::Result<()> {
         let guild_start = Instant::now();
 
         // Score guild with explanation fragments
-        let (guild_score, fragments, guild_plants, m2_result, m3_result, organisms_df, m4_result, m5_result, fungi_df, m7_result, ecosystem_services) = scorer.score_guild_with_explanation_parallel(plant_ids)?;
+        let (guild_score, fragments, guild_plants, m2_result, m3_result, m4_result, m5_result, m6_result, m7_result, ecosystem_services) = scorer.score_guild_with_explanation_parallel(plant_ids)?;
 
         let scoring_time = guild_start.elapsed();
 
@@ -105,13 +105,15 @@ fn main() -> anyhow::Result<()> {
             fragments,
             &m2_result,
             &m3_result,
-            &organisms_df,
+            &scorer.data().organisms,
             &m4_result,
             &m5_result,
-            &fungi_df,
+            &scorer.data().fungi,
+            &m6_result,
             &m7_result,
             &scorer.data().organism_categories,
             &ecosystem_services,
+            &scorer.data().pathogen_diseases,
         )?;
 
         let generation_time = guild_start.elapsed() - scoring_time;

@@ -33,7 +33,7 @@ pub fn generate_m1_fragment(m1: &M1Result, display_score: f64) -> MetricFragment
     // Always show as benefit with contextual explanation
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "phylogenetic_diversity".to_string(),
-        metric_code: "M1".to_string(),
+        metric_code: "M3".to_string(), // Pest Independence is now M3 (2025-12 reorder)
         title: "Pest and Pathogen Independence (Measured by Phylogenetic Diversity)".to_string(),
         message: format!(
             "{}th percentile (Faith's PD: {:.2}) - {}",

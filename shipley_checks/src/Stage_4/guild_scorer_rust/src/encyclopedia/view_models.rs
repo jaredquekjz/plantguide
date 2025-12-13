@@ -13,6 +13,7 @@ pub enum FitLevel {
     Optimal,   // Green - within Q25-Q75
     Good,      // Blue - within Q05-Q95
     Marginal,  // Amber - within Q01-Q99
+    #[serde(rename = "Beyond Range")]
     Outside,   // Red - outside range
     #[default]
     Unknown,   // Grey - no data
@@ -34,7 +35,7 @@ impl FitLevel {
             FitLevel::Optimal => "Ideal",
             FitLevel::Good => "Good",
             FitLevel::Marginal => "Marginal",
-            FitLevel::Outside => "Outside",
+            FitLevel::Outside => "Beyond Range",
             FitLevel::Unknown => "Unknown",
         }
     }
@@ -70,8 +71,7 @@ pub struct IdentityCard {
     pub height: Option<HeightInfo>,
     pub leaf: Option<LeafInfo>,
     pub seed: Option<SeedInfo>,
-    pub relatives: Vec<RelativeSpecies>,
-    pub genus_species_count: usize,
+    pub csr_strategy: Option<CsrStrategy>,
 }
 
 #[typeshare]
@@ -149,9 +149,9 @@ pub struct RequirementsSection {
 pub struct LightRequirement {
     pub eive_l: Option<f64>,
     pub category: String,      // "Full sun", "Partial shade", etc.
-    pub description: String,   // Friendly explanation
     pub icon_fill_percent: u8, // 0-100 for visual indicator
     pub source_attribution: Option<String>, // Source of EIVE-L value (expert/imputed)
+    pub sun_tolerance: Option<String>, // For tall trees: nuanced shade-to-sun explanation
 }
 
 impl LightRequirement {
@@ -163,8 +163,12 @@ impl LightRequirement {
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct TemperatureSection {
     pub summary: String,
+    pub warmest_month: Option<RangeValue>,  // bio5: max temp of warmest month
+    pub coldest_month: Option<RangeValue>,  // bio6: min temp of coldest month
     pub details: Vec<String>,
     pub comparisons: Vec<ComparisonRow>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fit: Option<FitLevel>,  // Worst-case fit across all temperature comparisons
 }
 
 /// Disease pressure from warm-wet days (days >25°C with rain)
@@ -186,6 +190,8 @@ pub struct MoistureSection {
     pub disease_pressure: Option<DiseasePressure>,
     pub comparisons: Vec<ComparisonRow>,
     pub advice: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fit: Option<FitLevel>,  // Worst-case fit across all moisture comparisons
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
@@ -202,6 +208,8 @@ pub struct SoilSection {
     pub profile_organic_carbon: Option<SoilParameter>,
     pub comparisons: Vec<ComparisonRow>,
     pub advice: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub fit: Option<FitLevel>,  // Worst-case fit across all soil comparisons
 }
 
 /// Detailed soil texture breakdown
@@ -269,10 +277,12 @@ pub struct OverallSuitability {
 #[typeshare]
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct GrowingTipJson {
-    pub category: String,   // "temperature", "moisture", "soil"
-    pub action: String,     // Short action phrase
-    pub detail: String,     // Detail with specific numbers
-    pub severity: String,   // "info", "warning", "critical"
+    pub category: String,           // "temperature", "moisture", "soil", "light"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub concern: Option<String>,    // The problem (e.g., "More frost than typical") - for Key Concerns
+    pub action: String,             // What to do about it (e.g., "Protect in winter")
+    pub detail: String,             // Detail with specific numbers
+    pub severity: String,           // "info", "warning", "critical"
 }
 
 // ============================================================================
@@ -312,6 +322,8 @@ pub struct MaintenanceTask {
     pub name: String,
     pub frequency: String,
     pub importance: String, // "Essential", "Recommended", "Optional"
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub trigger: Option<String>, // For seedling tasks: "small_seeds", "ruderal", or "both"
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
@@ -465,16 +477,22 @@ pub struct DiseaseGroup {
     pub disease_level: String,      // "High", "Above average", "Typical", "Low", "No data"
     pub disease_advice: String,     // Human-readable disease risk advice
     pub pathogen_count: usize,      // Total number of pathogens
-    pub pathogens: Vec<PathogenInfo>, // Top 5 pathogens
-    pub more_count: usize,          // Number of additional pathogens beyond top 5
+    pub categories: Vec<DiseaseCategory>, // Diseases grouped by type (rust, spot, mildew, etc.)
     pub resistance_notes: Vec<String>,
 }
 
+/// Disease category - groups diseases by type (rust, spot, mildew, rot, etc.)
 #[derive(Debug, Clone, Serialize, Default)]
-pub struct PathogenInfo {
-    pub name: String,
-    pub observation_count: usize,
-    pub severity: String, // "Common", "Occasional", "Rare"
+pub struct DiseaseCategory {
+    pub name: String,                   // Disease type: "rust", "spot", "mildew", "other"
+    pub diseases: Vec<DiseaseInfo>,     // Diseases in this category
+}
+
+/// Individual disease info
+#[derive(Debug, Clone, Serialize, Default)]
+pub struct DiseaseInfo {
+    pub taxon: String,                  // Fungus taxon name (genus/species)
+    pub disease_name: Option<String>,   // e.g., "Crown rust", "Gray mold"
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
@@ -486,109 +504,59 @@ pub struct FungiGroup {
 
 // ============================================================================
 // S6: Companion Planting / Guild Potential
+// Slimmed down to only fields used by frontend (Dec 2024)
 // ============================================================================
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct CompanionSection {
-    pub guild_roles: Vec<GuildRole>,
-    pub guild_details: Option<GuildPotentialDetails>,  // Detailed guild analysis
-    pub good_companions: Vec<CompanionPlant>,
-    pub avoid_with: Vec<String>,
-    pub planting_notes: Vec<String>,
+    pub guild_details: Option<GuildPotentialDetails>,
+    pub relatives: Vec<RelativeSpecies>,  // Phylogenetically closest relatives
 }
 
-#[derive(Debug, Clone, Serialize, Default)]
-pub struct GuildRole {
-    pub role: String,        // "Nitrogen fixer", "Pollinator attractor", etc.
-    pub strength: String,    // "Strong", "Moderate", "Weak"
-    pub explanation: String,
-}
-
-#[derive(Debug, Clone, Serialize, Default)]
-pub struct CompanionPlant {
-    pub name: String,
-    pub reason: String,
-}
-
-/// Detailed guild potential analysis matching markdown output
+/// Slimmed guild analysis - only fields used by S6-Companion.astro frontend
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct GuildPotentialDetails {
     pub summary: GuildSummary,
-    pub key_principles: Vec<String>,
     pub growth_compatibility: GrowthCompatibility,
     pub pest_control: PestControlAnalysis,
-    pub disease_control: DiseaseControlAnalysis,
     pub mycorrhizal_network: MycorrhizalAnalysis,
     pub structural_role: StructuralRole,
     pub pollinator_support: PollinatorSupport,
-    pub cautions: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct GuildSummary {
-    pub taxonomy_guidance: String,
-    pub growth_guidance: String,
-    pub structure_role: String,
-    pub mycorrhizal_guidance: String,
-    pub pest_summary: String,
-    pub disease_summary: String,
-    pub pollinator_summary: String,
+    pub genus: String,  // For diversity tip - avoid clustering same genus
+    // Biocontrol fungi counts for frontend stewardship logic
+    pub mycoparasite_count: usize,
+    pub entomopathogen_count: usize,
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct GrowthCompatibility {
-    pub csr_profile: String,           // "C: 45% | S: 41% | R: 14%"
-    pub classification: String,        // "C-dominant (Competitor)"
-    pub growth_form: String,
-    pub height_m: f64,
-    pub light_preference: f64,
-    pub companion_strategy: String,
-    pub avoid_pairing: Vec<String>,
+    pub classification: String,  // "C-dominant (Competitor)" - used for seasonal notes
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct PestControlAnalysis {
-    pub pest_count: usize,
-    pub pest_level: String,            // "High", "Moderate", "Low"
-    pub pest_interpretation: String,
-    pub predator_count: usize,
-    pub predator_level: String,
-    pub predator_interpretation: String,
-    pub recommendations: Vec<String>,
-}
-
-#[derive(Debug, Clone, Serialize, Default)]
-pub struct DiseaseControlAnalysis {
-    pub beneficial_fungi_count: usize,
-    pub recommendations: Vec<String>,
+    pub predator_count: usize,  // For habitat item
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct MycorrhizalAnalysis {
-    pub association_type: String,
-    pub species_count: usize,
-    pub network_type: String,
-    pub recommendations: Vec<String>,
+    pub species_count: usize,  // For habitat item
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct StructuralRole {
     pub layer: String,
     pub height_m: f64,
-    pub growth_form: String,
-    pub light_preference: f64,
-    pub understory_recommendations: String,
-    pub avoid_recommendations: String,
     pub benefits: String,
 }
 
 #[derive(Debug, Clone, Serialize, Default)]
 pub struct PollinatorSupport {
-    pub count: usize,
-    pub level: String,
-    pub interpretation: String,
-    pub recommendations: String,
-    pub benefits: Vec<String>,
+    pub count: usize,  // For habitat item
 }
 
 // ============================================================================

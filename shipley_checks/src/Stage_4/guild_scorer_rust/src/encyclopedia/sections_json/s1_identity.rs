@@ -11,26 +11,20 @@
 use std::collections::HashMap;
 use serde_json::Value;
 
-use crate::encyclopedia::types::{get_str, get_f64};
+use crate::encyclopedia::types::{get_str, get_f64, get_usize, CsrStrategy as CsrStrategyEnum};
+use crate::encyclopedia::utils::classify::classify_csr_spread;
 use crate::encyclopedia::view_models::{
-    IdentityCard, HeightInfo, LeafInfo, SeedInfo, GrowthIcon, RelativeSpecies,
+    IdentityCard, HeightInfo, LeafInfo, SeedInfo, GrowthIcon, CsrStrategy,
 };
-
-// Re-export RelatedSpecies from sections_md for API compatibility (input type)
-pub use crate::encyclopedia::sections_md::s1_identity::RelatedSpecies as InputRelatedSpecies;
 
 /// Generate the S1 Identity Card section.
 ///
 /// # Arguments
 /// * `wfo_id` - WFO taxon ID
 /// * `data` - Plant data from parquet
-/// * `relatives` - Optional list of phylogenetically closest relatives (from api_server)
-/// * `genus_species_count` - Total count of species in the same genus (deprecated, always 0)
 pub fn generate(
     wfo_id: &str,
     data: &HashMap<String, Value>,
-    relatives: Option<&[InputRelatedSpecies]>,
-    genus_species_count: usize,
 ) -> IdentityCard {
     let scientific_name = get_str(data, "wfo_scientific_name")
         .unwrap_or("Unknown species")
@@ -50,9 +44,7 @@ pub fn generate(
     let growth_form = get_str(data, "try_growth_form");
     let (growth_type, growth_icon) = classify_growth(growth_form, data);
 
-    let native_climate = get_str(data, "top_zone_code")
-        .filter(|s| !s.is_empty() && *s != "NA")
-        .map(|k| interpret_koppen(k));
+    let native_climate = build_native_climate(data);
 
     let height = get_f64(data, "height_m").map(|h| HeightInfo {
         meters: h,
@@ -76,15 +68,8 @@ pub fn generate(
         }
     });
 
-    let relatives_vec = relatives.map(|r| {
-        r.iter().take(5).map(|rel| RelativeSpecies {
-            wfo_id: rel.wfo_id.clone(),
-            scientific_name: rel.scientific_name.clone(),
-            common_name: rel.common_name.clone(),
-            relatedness: classify_relatedness(rel.distance),
-            distance: rel.distance,
-        }).collect()
-    }).unwrap_or_default();
+    // CSR Strategy
+    let csr_strategy = build_csr_strategy(data);
 
     IdentityCard {
         wfo_id: wfo_id.to_string(),
@@ -99,9 +84,46 @@ pub fn generate(
         height,
         leaf,
         seed,
-        relatives: relatives_vec,
-        genus_species_count,
+        csr_strategy,
     }
+}
+
+/// Build CSR Strategy from plant data.
+fn build_csr_strategy(data: &HashMap<String, Value>) -> Option<CsrStrategy> {
+    let c = get_f64(data, "C")?;
+    let s = get_f64(data, "S")?;
+    let r = get_f64(data, "R")?;
+
+    let strategy = classify_csr_spread(c, s, r);
+    let dominant = match strategy {
+        CsrStrategyEnum::CDominant => "Competitor".to_string(),
+        CsrStrategyEnum::SDominant => "Stress-tolerator".to_string(),
+        CsrStrategyEnum::RDominant => "Ruderal".to_string(),
+        CsrStrategyEnum::Balanced => "Balanced".to_string(),
+    };
+
+    let description = match strategy {
+        CsrStrategyEnum::CDominant => {
+            "Vigorous grower that actively spreads and may outcompete neighbours. Needs more attention to keep in check.".to_string()
+        }
+        CsrStrategyEnum::SDominant => {
+            "Built for endurance, not speed. Grows slowly, tolerates neglect, and generally thrives when left alone.".to_string()
+        }
+        CsrStrategyEnum::RDominant => {
+            "Fast-living opportunist. Grows quickly, sets seed, and may not live long. Plan for replacement or let it reseed.".to_string()
+        }
+        CsrStrategyEnum::Balanced => {
+            "Adaptable and moderate in all respects. Neither aggressive nor demanding, it fits well in most garden situations.".to_string()
+        }
+    };
+
+    Some(CsrStrategy {
+        c_percent: c,
+        s_percent: s,
+        r_percent: r,
+        dominant,
+        description,
+    })
 }
 
 // ============================================================================
@@ -195,22 +217,131 @@ fn describe_seed_size(mass_mg: f64) -> String {
 }
 
 fn interpret_koppen(code: &str) -> String {
-    match code.chars().next() {
-        Some('A') => "Tropical (warm year-round)".to_string(),
-        Some('B') => "Arid / Semi-arid".to_string(),
-        Some('C') => "Temperate (mild winters)".to_string(),
-        Some('D') => "Continental (cold winters)".to_string(),
-        Some('E') => "Polar / Alpine".to_string(),
-        _ => format!("Climate zone: {}", code),
+    match code {
+        // Tropical (A) - warm year-round, >18°C every month
+        "Af" => "Tropical rainforest".to_string(),
+        "Am" => "Tropical monsoon".to_string(),
+        "Aw" | "As" => "Tropical savanna".to_string(),
+
+        // Arid (B) - evaporation exceeds precipitation
+        "BWh" => "Hot desert".to_string(),
+        "BWk" => "Cold desert".to_string(),
+        "BSh" => "Hot semi-arid".to_string(),
+        "BSk" => "Cold semi-arid".to_string(),
+
+        // Mediterranean (Cs) - dry summers, mild wet winters
+        "Csa" => "Mediterranean (hot summer)".to_string(),
+        "Csb" => "Mediterranean (warm summer)".to_string(),
+        "Csc" => "Mediterranean (cool summer)".to_string(),
+
+        // Humid subtropical / Oceanic (Cf, Cw)
+        "Cfa" => "Humid subtropical".to_string(),
+        "Cfb" => "Oceanic (mild year-round)".to_string(),
+        "Cfc" => "Subpolar oceanic".to_string(),
+        "Cwa" => "Subtropical (dry winter)".to_string(),
+        "Cwb" | "Cwc" => "Subtropical highland".to_string(),
+
+        // Continental (D) - cold winters, <0°C at least one month
+        "Dfa" => "Humid continental (hot summer)".to_string(),
+        "Dfb" => "Humid continental (warm summer)".to_string(),
+        "Dfc" | "Dfd" => "Subarctic".to_string(),
+        "Dwa" | "Dwb" => "Continental (dry winter)".to_string(),
+        "Dwc" | "Dwd" => "Subarctic (dry winter)".to_string(),
+        "Dsa" | "Dsb" => "Continental Mediterranean".to_string(),
+        "Dsc" | "Dsd" => "Subarctic Mediterranean".to_string(),
+
+        // Polar (E) - cold year-round
+        "ET" | "ETf" => "Tundra".to_string(),
+        "EF" => "Ice cap".to_string(),
+
+        // Special cases
+        "Ocean" => "Oceanic".to_string(),
+
+        // Fallback: use first letter for unknown sub-codes
+        _ => match code.chars().next() {
+            Some('A') => "Tropical".to_string(),
+            Some('B') => "Arid".to_string(),
+            Some('C') => "Temperate".to_string(),
+            Some('D') => "Continental".to_string(),
+            Some('E') => "Polar".to_string(),
+            _ => format!("Climate zone: {}", code),
+        },
     }
 }
 
-fn classify_relatedness(distance: f64) -> String {
-    if distance < 50.0 {
-        "Close".to_string()
-    } else if distance < 150.0 {
-        "Moderate".to_string()
+/// Build native climate string considering tier breadth.
+/// - 4+ tiers: "Cosmopolitan"
+/// - 2-3 tiers: "Primary zone (also: other tiers)"
+/// - 1 tier: just the primary zone
+fn build_native_climate(data: &HashMap<String, Value>) -> Option<String> {
+    let top_zone = get_str(data, "top_zone_code")
+        .filter(|s| !s.is_empty() && *s != "NA")?;
+
+    let n_tiers = get_usize(data, "n_tier_memberships").unwrap_or(1);
+
+    // 4+ tiers = cosmopolitan
+    if n_tiers >= 4 {
+        return Some("Cosmopolitan".to_string());
+    }
+
+    let primary = interpret_koppen(top_zone);
+
+    // 1 tier = just primary
+    if n_tiers <= 1 {
+        return Some(primary);
+    }
+
+    // 2-3 tiers = primary + also list
+    let mut other_tiers = Vec::new();
+    if get_bool(data, "tier_1_tropical") { other_tiers.push("Tropical"); }
+    if get_bool(data, "tier_2_mediterranean") { other_tiers.push("Mediterranean"); }
+    if get_bool(data, "tier_3_humid_temperate") { other_tiers.push("Temperate"); }
+    if get_bool(data, "tier_4_continental") { other_tiers.push("Continental"); }
+    if get_bool(data, "tier_5_boreal_polar") { other_tiers.push("Boreal"); }
+    if get_bool(data, "tier_6_arid") { other_tiers.push("Arid"); }
+
+    // Remove the primary tier from the "also" list
+    let primary_tier = koppen_to_tier_name(top_zone);
+    other_tiers.retain(|t| *t != primary_tier);
+
+    if other_tiers.is_empty() {
+        Some(primary)
     } else {
-        "Distant".to_string()
+        Some(format!("{} (also: {})", primary, other_tiers.join(", ")))
+    }
+}
+
+fn get_bool(data: &HashMap<String, Value>, key: &str) -> bool {
+    data.get(key)
+        .and_then(|v| v.as_bool())
+        .unwrap_or(false)
+}
+
+/// Map Köppen code to tier name for filtering
+fn koppen_to_tier_name(code: &str) -> &'static str {
+    match code.chars().next() {
+        Some('A') => "Tropical",
+        Some('B') => "Arid",
+        Some('C') => {
+            if code.len() >= 2 && code.chars().nth(1) == Some('s') {
+                "Mediterranean"
+            } else {
+                "Temperate"
+            }
+        }
+        Some('D') => {
+            if code.len() >= 3 {
+                let third = code.chars().nth(2);
+                if third == Some('c') || third == Some('d') {
+                    "Boreal"
+                } else {
+                    "Continental"
+                }
+            } else {
+                "Continental"
+            }
+        }
+        Some('E') => "Boreal",
+        _ => "",
     }
 }

@@ -93,16 +93,19 @@ impl HtmlFormatter {
                     html.push_str(&format!("<p><strong>Evidence:</strong> {}</p>\n", evidence));
                 }
 
-                // Insert detailed profiles if they match the metric
-                if benefit.metric_code == "M1" {
+                // Insert detailed profiles (2025-12 reorder: M1=Growth, M3=Pest, M4=Biocontrol, M5=Disease)
+                if benefit.metric_code == "M3" {
+                    // Taxonomic profile after M3 (Pest Independence)
                     if let Some(profile) = &explanation.taxonomic_profile {
                         html.push_str(&Self::format_taxonomic_profile(profile));
                     }
-                } else if benefit.metric_code == "M3" {
+                } else if benefit.metric_code == "M4" {
+                    // Biocontrol profile after M4 (Biocontrol Networks)
                     if let Some(profile) = &explanation.biocontrol_network_profile {
                         html.push_str(&Self::format_biocontrol_profile(profile));
                     }
-                } else if benefit.metric_code == "M4" {
+                } else if benefit.metric_code == "M5" {
+                    // Pathogen profile after M5 (Disease Suppression)
                     if let Some(profile) = &explanation.pathogen_control_profile {
                         html.push_str(&Self::format_pathogen_control_profile(profile));
                     }

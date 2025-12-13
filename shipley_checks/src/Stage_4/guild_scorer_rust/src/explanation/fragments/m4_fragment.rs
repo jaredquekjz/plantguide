@@ -24,7 +24,7 @@ pub fn generate_m4_fragment(m4: &M4Result, display_score: f64) -> MetricFragment
 
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "disease_control".to_string(),
-        metric_code: "M4".to_string(),
+        metric_code: "M5".to_string(), // Disease Suppression is now M5 (2025-12 reorder)
         title: "Natural Disease Suppression".to_string(),
         message: format!(
             "{}th percentile - {:.0}% coverage ({}/{} plants have disease control)",

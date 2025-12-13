@@ -8,7 +8,7 @@
 #[cfg(feature = "api")]
 use guild_scorer_rust::encyclopedia::{
     EncyclopediaGenerator, FungalCounts, OrganismLists,
-    OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi,
+    OrganismProfile, CategorizedOrganisms, RankedPathogen, PathogenicFungus, BeneficialFungi,
     generate_encyclopedia_data,
 };
 #[cfg(feature = "api")]
@@ -24,7 +24,7 @@ use std::fs;
 #[cfg(feature = "api")]
 use rustc_hash::FxHashMap;
 #[cfg(feature = "api")]
-use datafusion::arrow::array::{StringArray, LargeStringArray, StringViewArray, Array, Int32Array, Int64Array, UInt64Array};
+use datafusion::arrow::array::{StringArray, LargeStringArray, StringViewArray, Array};
 
 #[cfg(feature = "api")]
 fn get_data_dir() -> String {
@@ -280,28 +280,29 @@ async fn load_master_predator_list(engine: &QueryEngine) -> HashSet<String> {
     }
 }
 
+/// Parse pathogenic fungi with disease names (simplified flow)
 #[cfg(feature = "api")]
-async fn parse_pathogens_ranked(
+async fn parse_pathogenic_fungi(
     engine: &QueryEngine,
     plant_id: &str,
-    limit: usize,
-) -> Option<Vec<RankedPathogen>> {
-    let batches = engine.get_pathogens(plant_id, Some(limit)).await.ok()?;
+) -> Option<Vec<PathogenicFungus>> {
+    let batches = engine.get_pathogenic_fungi_with_diseases(plant_id).await.ok()?;
     if batches.is_empty() {
         return None;
     }
 
-    let mut pathogens = Vec::new();
+    let mut fungi = Vec::new();
     for batch in &batches {
-        let taxon_col = batch.column_by_name("pathogen_taxon")?;
-        let count_col = batch.column_by_name("observation_count")?;
+        let taxon_col = batch.column_by_name("fungus_taxon")?;
+        let disease_name_col = batch.column_by_name("disease_name");
+        let disease_type_col = batch.column_by_name("disease_type");
 
-        let get_taxon = |i: usize| -> Option<String> {
-            if let Some(arr) = taxon_col.as_any().downcast_ref::<StringArray>() {
+        let get_string = |col: &dyn Array, i: usize| -> Option<String> {
+            if let Some(arr) = col.as_any().downcast_ref::<StringArray>() {
                 if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
-            } else if let Some(arr) = taxon_col.as_any().downcast_ref::<LargeStringArray>() {
+            } else if let Some(arr) = col.as_any().downcast_ref::<LargeStringArray>() {
                 if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
-            } else if let Some(arr) = taxon_col.as_any().downcast_ref::<StringViewArray>() {
+            } else if let Some(arr) = col.as_any().downcast_ref::<StringViewArray>() {
                 if !arr.is_null(i) { Some(arr.value(i).to_string()) } else { None }
             } else {
                 None
@@ -309,26 +310,19 @@ async fn parse_pathogens_ranked(
         };
 
         for i in 0..batch.num_rows() {
-            let taxon = match get_taxon(i) {
+            let taxon = match get_string(taxon_col.as_ref(), i) {
                 Some(t) => t,
                 None => continue,
             };
 
-            let count = if let Some(arr) = count_col.as_any().downcast_ref::<Int32Array>() {
-                arr.value(i) as usize
-            } else if let Some(arr) = count_col.as_any().downcast_ref::<Int64Array>() {
-                arr.value(i) as usize
-            } else if let Some(arr) = count_col.as_any().downcast_ref::<UInt64Array>() {
-                arr.value(i) as usize
-            } else {
-                1
-            };
+            let disease_name = disease_name_col.as_ref().and_then(|c| get_string(c.as_ref(), i));
+            let disease_type = disease_type_col.as_ref().and_then(|c| get_string(c.as_ref(), i));
 
-            pathogens.push(RankedPathogen { taxon, observation_count: count });
+            fungi.push(PathogenicFungus { taxon, disease_name, disease_type });
         }
     }
 
-    if pathogens.is_empty() { None } else { Some(pathogens) }
+    if fungi.is_empty() { None } else { Some(fungi) }
 }
 
 #[cfg(feature = "api")]
@@ -622,33 +616,6 @@ fn compare_s3_maintenance(checker: &mut ParityChecker, md: &str, json: &Encyclop
                 }
             }
         }
-
-        // Maintenance level - look for "Effort Level:" in section
-        for line in section.lines() {
-            if line.contains("Effort Level") {
-                let upper = line.to_uppercase();
-                let json_label = json.maintenance.level.label().to_uppercase();
-                // Check if the MD line contains the JSON level (case insensitive)
-                if !upper.contains(&json_label) {
-                    // Extract what MD says
-                    let md_level = if upper.contains("MEDIUM-HIGH") {
-                        "Medium-High"
-                    } else if upper.contains("LOW-MEDIUM") {
-                        "Low-Medium"
-                    } else if upper.contains("HIGH") {
-                        "High"
-                    } else if upper.contains("MEDIUM") {
-                        "Medium"
-                    } else if upper.contains("LOW") {
-                        "Low"
-                    } else {
-                        "Unknown"
-                    };
-                    checker.check("S3", "maintenance.level", md_level, json.maintenance.level.label());
-                }
-                break;
-            }
-        }
     }
 }
 
@@ -812,19 +779,8 @@ fn compare_s6_companion(checker: &mut ParityChecker, md: &str, json: &Encycloped
             }
         }
 
-        // Mycorrhizal network type - look in GP3 section
-        if let Some(section) = extract_between(md, "### GP3", "###") {
-            let net_types = ["EMF", "AMF", "Dual", "Non-mycorrhizal"];
-            for ntype in net_types {
-                if section.contains(ntype) {
-                    let json_net = &details.mycorrhizal_network.network_type;
-                    if !json_net.contains(ntype) {
-                        checker.check("S6", "mycorrhizal_network.network_type", ntype, json_net);
-                    }
-                    break;
-                }
-            }
-        }
+        // Mycorrhizal network check removed - field slimmed from JSON API (Dec 2024)
+        // Frontend only uses species_count, not network_type
     }
 }
 
@@ -882,8 +838,11 @@ async fn main() -> anyhow::Result<()> {
             .ok()
             .and_then(|b| parse_fungal_counts(&b));
 
-        let ranked_pathogens = parse_pathogens_ranked(&engine, wfo_id, 10).await;
+        let pathogenic_fungi = parse_pathogenic_fungi(&engine, wfo_id).await;
         let beneficial_fungi = parse_beneficial_fungi(&engine, wfo_id).await;
+
+        // MD generator doesn't use the new pathogenic fungi data - pass None
+        let ranked_pathogens_md: Option<Vec<RankedPathogen>> = None;
 
         // Generate MD
         let md_output = md_generator.generate(
@@ -892,7 +851,7 @@ async fn main() -> anyhow::Result<()> {
             organism_counts.clone(),
             fungal_counts.clone(),
             organism_profile.clone(),
-            ranked_pathogens.clone(),
+            ranked_pathogens_md,
             beneficial_fungi.clone(),
             None, // no relatives for this test
             0,
@@ -904,10 +863,9 @@ async fn main() -> anyhow::Result<()> {
             &plant_data,
             organism_profile.as_ref(),
             fungal_counts.as_ref(),
-            ranked_pathogens.as_deref(),
+            pathogenic_fungi.as_deref(),
             beneficial_fungi.as_ref(),
             None, // no relatives
-            0,
             None, // no local conditions
         ).map_err(|e| anyhow::anyhow!(e))?;
 

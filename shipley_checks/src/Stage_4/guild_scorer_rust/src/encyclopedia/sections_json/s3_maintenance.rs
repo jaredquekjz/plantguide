@@ -137,22 +137,36 @@ fn build_maintenance_tasks(
             name: name.to_string(),
             frequency: frequency.to_string(),
             importance: importance.to_string(),
+            trigger: None,
         });
     }
 
     // Spreading/weeding based on seed mass and strategy
     if let Some(log_sm) = seed_mass_log {
         let seed_mg = log_sm.exp();
-        if seed_mg < 100.0 || matches!(strategy, CsrStrategyEnum::RDominant) {
+        let is_small_seeds = seed_mg < 100.0;
+        let is_ruderal = matches!(strategy, CsrStrategyEnum::RDominant);
+
+        if is_small_seeds || is_ruderal {
             let (name, frequency, importance) = if seed_mg < 10.0 {
                 ("Seedling control", "Monthly in growing season", "Essential")
             } else {
                 ("Self-sown seedling removal", "Seasonally", "Recommended")
             };
+
+            // Determine trigger for frontend text
+            let trigger = match (is_small_seeds, is_ruderal) {
+                (true, true) => Some("both".to_string()),
+                (true, false) => Some("small_seeds".to_string()),
+                (false, true) => Some("ruderal".to_string()),
+                (false, false) => None, // shouldn't happen given the if condition
+            };
+
             tasks.push(MaintenanceTask {
                 name: name.to_string(),
                 frequency: frequency.to_string(),
                 importance: importance.to_string(),
+                trigger,
             });
         }
     }
@@ -175,6 +189,7 @@ fn build_maintenance_tasks(
                 name: name.to_string(),
                 frequency: frequency.to_string(),
                 importance: importance.to_string(),
+                trigger: None,
             });
         }
     }
@@ -188,6 +203,7 @@ fn build_maintenance_tasks(
                         name: "Vigorous growth control".to_string(),
                         frequency: "2-3 times per season".to_string(),
                         importance: "Essential".to_string(),
+                        trigger: None,
                     });
                 }
                 GrowthFormCategory::Shrub => {
@@ -195,6 +211,7 @@ fn build_maintenance_tasks(
                         name: "Hard pruning for spread control".to_string(),
                         frequency: "Annually".to_string(),
                         importance: "Essential".to_string(),
+                        trigger: None,
                     });
                 }
                 GrowthFormCategory::Herb => {
@@ -202,6 +219,7 @@ fn build_maintenance_tasks(
                         name: "Division to control spread".to_string(),
                         frequency: "Every 1-2 years".to_string(),
                         importance: "Recommended".to_string(),
+                        trigger: None,
                     });
                 }
                 _ => {}
@@ -212,6 +230,7 @@ fn build_maintenance_tasks(
                 name: "Plan replacement or allow self-seeding".to_string(),
                 frequency: "Every 1-3 years".to_string(),
                 importance: "Recommended".to_string(),
+                trigger: None,
             });
         }
         _ => {}

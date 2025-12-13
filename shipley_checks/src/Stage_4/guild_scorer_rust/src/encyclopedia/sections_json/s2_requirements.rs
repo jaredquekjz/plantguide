@@ -117,8 +117,10 @@ pub fn generate(
 
     // Overall suitability - calibrated by worst category fit
     let category_fits = [temperature.fit, moisture.fit, soil.fit];
+    let eive_l = get_eive(data, "L");  // For light tips
+    let height_m = get_f64(data, "height_m");  // For height-adjusted light tips
     let overall_suitability = match (&local, &assessment) {
-        (Some(loc), Some(assess)) => Some(build_overall_suitability(loc, assess, &category_fits)),
+        (Some(loc), Some(assess)) => Some(build_overall_suitability(loc, assess, &category_fits, eive_l, height_m)),
         _ => None,
     };
 
@@ -188,13 +190,35 @@ fn build_light_section(data: &HashMap<String, Value>) -> LightRequirement {
 fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSection {
     let mut details = Vec::new();
 
-    // Get BioClim temperature variables
+    // Get BioClim temperature variables (bio5 = warmest month, bio6 = coldest month)
+    let bio5_q05 = get_f64(data, "wc2.1_30s_bio_5_q05");
     let bio5_q50 = get_f64(data, "wc2.1_30s_bio_5_q50");
     let bio5_q95 = get_f64(data, "wc2.1_30s_bio_5_q95");
     let bio6_q05 = get_f64(data, "wc2.1_30s_bio_6_q05");
     let bio6_q50 = get_f64(data, "wc2.1_30s_bio_6_q50");
+    let bio6_q95 = get_f64(data, "wc2.1_30s_bio_6_q95");
 
-    // Summary with range
+    // Build structured RangeValue for warmest month
+    let warmest_month = bio5_q50.map(|typical| RangeValue {
+        typical,
+        min: bio5_q05.unwrap_or(typical),
+        max: bio5_q95.unwrap_or(typical),
+        unit: "°C".to_string(),
+    });
+
+    // Build structured RangeValue for coldest month
+    let coldest_month = bio6_q50.map(|typical| {
+        // Round near-zero values to 0 for display
+        let typical_display = if typical > -0.5 && typical < 0.5 { 0.0 } else { typical };
+        RangeValue {
+            typical: typical_display,
+            min: bio6_q05.unwrap_or(typical),
+            max: bio6_q95.unwrap_or(typical),
+            unit: "°C".to_string(),
+        }
+    });
+
+    // Summary with range (kept for backwards compatibility)
     let summary = match (bio5_q50, bio6_q50) {
         (Some(warm), Some(cold)) => {
             let cold_display = if cold > -0.5 && cold < 0.5 { 0.0 } else { cold };
@@ -231,15 +255,20 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
         ));
     }
 
-    // Cold spells
+    // Cold spells (consecutive frost days)
+    let cfd_q05 = get_f64(data, "CFD_q05");
     let cfd_q50 = get_f64(data, "CFD_q50");
     let cfd_q95 = get_f64(data, "CFD_q95");
     if let Some(cfd50) = cfd_q50 {
         let cold_spell = classify_cold_spell(cfd50);
-        let max_str = cfd_q95.map(|c| format!(", up to {:.0}", c)).unwrap_or_default();
+        let range_str = match (cfd_q05, cfd_q95) {
+            (Some(lo), Some(hi)) => format!(" ({:.0}-{:.0} across locations)", lo, hi),
+            (None, Some(hi)) => format!(" (up to {:.0} in coldest locations)", hi),
+            _ => String::new(),
+        };
         details.push(format!(
-            "Cold spells: {:.0} consecutive days typical{} - {}",
-            cfd50, max_str, cold_spell
+            "Cold spells: {:.0} consecutive days{} - {}",
+            cfd50, range_str, cold_spell
         ));
     }
 
@@ -330,6 +359,8 @@ fn build_temperature_section(data: &HashMap<String, Value>) -> TemperatureSectio
 
     TemperatureSection {
         summary,
+        warmest_month,
+        coldest_month,
         details,
         comparisons: Vec::new(),
         fit: None,
@@ -758,7 +789,7 @@ fn build_temperature_comparisons(
             parameter: "Frost days/year".to_string(),
             local_value: format!("{:.0}", dekadal_to_annual(comp.local_value)),
             plant_range: format!("{:.0}–{:.0}", dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95)),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_FROST_DAYS),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_FROST_DAYS, 0),
         });
     }
 
@@ -768,7 +799,7 @@ fn build_temperature_comparisons(
             parameter: "Warm nights (>20°C)".to_string(),
             local_value: format!("{:.0}", dekadal_to_annual(comp.local_value)),
             plant_range: format!("{:.0}–{:.0}", dekadal_to_annual(comp.q05), dekadal_to_annual(comp.q95)),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_WARM_NIGHTS),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_WARM_NIGHTS, 0),
         });
     }
 
@@ -778,7 +809,7 @@ fn build_temperature_comparisons(
             parameter: "Growing season (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_GROWING_SEASON),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_GROWING_SEASON, 0),
         });
     }
 
@@ -797,7 +828,7 @@ fn build_moisture_comparisons(
             parameter: "Annual rainfall (mm)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_RAINFALL),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_RAINFALL, 0),
         });
     }
 
@@ -806,7 +837,7 @@ fn build_moisture_comparisons(
             parameter: "Max dry spell (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_DRY_DAYS),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_DRY_DAYS, 0),
         });
     }
 
@@ -816,7 +847,7 @@ fn build_moisture_comparisons(
             parameter: "Max wet spell (days)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_WET_DAYS),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_WET_DAYS, 0),
         });
     }
 
@@ -836,7 +867,7 @@ fn build_soil_comparisons(
             parameter: "Soil pH".to_string(),
             local_value: format!("{:.1}", comp.local_value),
             plant_range: format!("{:.1}–{:.1}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_PH),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_PH, 1),
         });
     }
 
@@ -845,7 +876,7 @@ fn build_soil_comparisons(
             parameter: "Fertility (CEC)".to_string(),
             local_value: format!("{:.0}", comp.local_value),
             plant_range: format!("{:.0}–{:.0}", comp.q05, comp.q95),
-            fit: convert_fit_with_tolerance(comp, MIN_ABS_CEC),
+            fit: convert_fit_with_tolerance(comp, MIN_ABS_CEC, 0),
         });
     }
 
@@ -902,22 +933,41 @@ const MIN_ABS_PH: f64 = 0.3;
 /// CEC: 3 cmol/kg
 const MIN_ABS_CEC: f64 = 3.0;
 
+/// Round to specified decimal places
+fn round_to_decimals(value: f64, decimals: u32) -> f64 {
+    let factor = 10_f64.powi(decimals as i32);
+    (value * factor).round() / factor
+}
+
 /// Convert envelope comparison to FitLevel using hybrid percentile + tolerance system.
 ///
 /// Logic:
-/// - Within Q05-Q95 → Ideal (this is where 90% of specimens occur)
+/// - If displayed values match (after rounding) → Optimal
+/// - Within Q05-Q95 → Optimal (this is where 90% of specimens occur)
 /// - Outside Q05-Q95 but within tolerance buffer → Good
 /// - Beyond tolerance but <50% of range width → Marginal
 /// - ≥50% of range width beyond → Outside
 ///
 /// Tolerance buffer = max(10% of range width, min_absolute_threshold)
+///
+/// `display_decimals`: Number of decimal places used in UI display (0 for integers, 1 for pH)
 fn convert_fit_with_tolerance(
     comp: &crate::encyclopedia::suitability::comparator::EnvelopeComparison,
     min_absolute: f64,
+    display_decimals: u32,
 ) -> FitLevel {
     // If comparator says within range, it's Optimal - even for zero-width ranges
     // (e.g., cold-climate plants with 0 warm nights: local=0, q05=0, q95=0)
     if comp.fit == EnvelopeFit::WithinRange {
+        return FitLevel::Optimal;
+    }
+
+    // Display-precision check: if rounded values show local within range, treat as Optimal.
+    // This ensures classification matches what users see in the UI.
+    let rounded_local = round_to_decimals(comp.local_value, display_decimals);
+    let rounded_q05 = round_to_decimals(comp.q05, display_decimals);
+    let rounded_q95 = round_to_decimals(comp.q95, display_decimals);
+    if rounded_local >= rounded_q05 && rounded_local <= rounded_q95 {
         return FitLevel::Optimal;
     }
 
@@ -974,8 +1024,10 @@ fn build_overall_suitability(
     local: &LocalConditions,
     assessment: &crate::encyclopedia::suitability::assessment::SuitabilityAssessment,
     category_fits: &[Option<FitLevel>],
+    eive_l: Option<f64>,
+    height_m: Option<f64>,
 ) -> OverallSuitability {
-    use crate::encyclopedia::suitability::advice::generate_growing_tips;
+    use crate::encyclopedia::suitability::advice::{generate_growing_tips, generate_light_tips};
 
     // Determine overall fit from worst category
     let worst_category = category_fits
@@ -1000,33 +1052,55 @@ fn build_overall_suitability(
         FitLevel::Unknown => (50, "Insufficient data".to_string()),
     };
 
-    // Collect concerns from all sections
-    let mut key_concerns = Vec::new();
-    key_concerns.extend(assessment.temperature.issues.iter().cloned());
-    key_concerns.extend(assessment.moisture.issues.iter().cloned());
+    // Generate light tips first (placement guidance based on EIVE-L and height)
+    let mut tips = generate_light_tips(eive_l, height_m);
 
-    // Collect advantages (interventions that help)
-    let mut key_advantages = Vec::new();
-    key_advantages.extend(assessment.temperature.interventions.iter().cloned());
-    key_advantages.extend(assessment.moisture.recommendations.iter().cloned());
+    // Then add climate/soil tips with FitLevel-aware severity promotion
+    tips.extend(generate_growing_tips(
+        assessment,
+        category_fits.get(0).copied().flatten(),  // temperature
+        category_fits.get(1).copied().flatten(),  // moisture
+        category_fits.get(2).copied().flatten(),  // soil
+    ));
 
-    // Generate structured growing tips
-    let tips = generate_growing_tips(assessment);
+    // Convert tips to JSON format, preserving the concern field
     let growing_tips: Vec<GrowingTipJson> = tips
         .into_iter()
         .map(|t| GrowingTipJson {
             category: t.category,
+            concern: t.concern,
             action: t.action,
             detail: t.detail,
             severity: t.severity,
         })
         .collect();
 
+    // Derive key_concerns from tips with warning/critical severity
+    // This ensures concerns are aligned with FitLevel thresholds and includes soil
+    let key_concerns: Vec<String> = growing_tips
+        .iter()
+        .filter(|t| t.severity == "warning" || t.severity == "critical")
+        .filter_map(|t| t.concern.clone())
+        .collect();
+
+    // Collect advantages (interventions that help) - these are the actions from tips
+    let key_advantages: Vec<String> = growing_tips
+        .iter()
+        .filter(|t| t.severity == "warning" || t.severity == "critical")
+        .map(|t| t.action.clone())
+        .collect();
+
     // Tips severity veto: if tips indicate critical/warning issues, cap the score.
     // This ensures the headline matches the advice - if we're telling users they
     // need greenhouses or daily watering, we shouldn't call it "Good".
-    let has_critical = growing_tips.iter().any(|t| t.severity == "critical");
-    let has_warning = growing_tips.iter().any(|t| t.severity == "warning");
+    //
+    // EXCEPTION: Light tips are placement guidance (where to put the plant in your
+    // garden), not climate incompatibility. A full-sun plant can thrive in Singapore
+    // if placed in a sunny spot - the light tip shouldn't veto the overall score.
+    let has_critical = growing_tips.iter()
+        .any(|t| t.severity == "critical" && t.category != "light");
+    let has_warning = growing_tips.iter()
+        .any(|t| t.severity == "warning" && t.category != "light");
 
     let (final_score, final_verdict) = if has_critical {
         // Critical tips (e.g., "Overwinter indoors", "Drip irrigation required")

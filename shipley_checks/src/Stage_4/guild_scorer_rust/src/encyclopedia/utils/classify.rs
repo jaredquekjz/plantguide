@@ -266,6 +266,27 @@ pub fn eive_light_label(eive_l: Option<f64>) -> &'static str {
     }
 }
 
+/// Sun tolerance qualifier for tall trees with low EIVE-L values.
+///
+/// EIVE-L measures where plants are *found* competing, not what they *tolerate*.
+/// Tall trees (>5m) with low L values are facultatively shade-tolerant:
+/// they establish in shade as seedlings but grow into full sun as adults.
+/// This distinguishes them from true shade-obligate plants (ferns, etc.)
+/// that would suffer in full sun.
+///
+/// Returns a nuanced explanation of the shade-to-sun lifecycle.
+pub fn sun_tolerance_qualifier(eive_l: Option<f64>, height_m: Option<f64>) -> Option<&'static str> {
+    match (eive_l, height_m) {
+        // Canopy trees (>10m) with shade-associated L values
+        (Some(l), Some(h)) if l < 5.0 && h > 10.0 =>
+            Some("Shade-tolerant as seedling; crown reaches full sun at maturity"),
+        // Sub-canopy trees (5-10m) with shade-associated L values
+        (Some(l), Some(h)) if l < 5.0 && h > 5.0 =>
+            Some("Shade-tolerant when young; can handle more sun as adult"),
+        _ => None,
+    }
+}
+
 /// Moisture preference label from EIVE-M.
 pub fn eive_moisture_label(eive_m: Option<f64>) -> &'static str {
     match eive_m {
@@ -332,8 +353,8 @@ pub fn classify_pollinator_level(count: usize) -> (&'static str, &'static str) {
 /// Herbivore/pest level from count (S5 doc thresholds).
 pub fn classify_pest_level(count: usize) -> (&'static str, &'static str) {
     match count {
-        16.. => ("High", "Multiple pest species; monitor closely"),
-        6..=15 => ("Above average", "Some pest pressure expected"),
+        15.. => ("High", "Multiple pest species; monitor closely"),
+        6..=14 => ("Above average", "Some pest pressure expected"),
         2..=5 => ("Typical", "Average pest observations"),
         1 => ("Low", "Few documented pests"),
         0 => ("No data", "Not well-studied or pest-free"),

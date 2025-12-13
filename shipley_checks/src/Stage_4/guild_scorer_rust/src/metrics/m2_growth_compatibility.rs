@@ -25,10 +25,89 @@
 
 use polars::prelude::*;
 use anyhow::{Result, Context};
+use serde::{Deserialize, Serialize};
 use crate::utils::{Calibration, CsrCalibration, percentile_normalize, csr_to_percentile, filter_to_guild};
 use std::collections::HashSet;
 
 const PERCENTILE_THRESHOLD: f64 = 75.0; // Top quartile
+const CSR_SPREAD_THRESHOLD: f64 = 20.0; // Same as encyclopedia - spread < 20 = Mixed/Balanced
+
+/// Guild type classification based on CSR strategy profile
+///
+/// Based on Bill Shipley's feedback: CSR compatibility is about matching
+/// the guild to its environment, not penalizing strategy combinations.
+/// Uses majority vote of individual plant classifications.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum GuildType {
+    /// Majority C-dominant: Suited to high fertility, low disturbance
+    FertileGarden,
+    /// Majority S-dominant: Suited to low fertility, xeric conditions
+    LowInput,
+    /// Majority R-dominant: Suited to pioneer/disturbed sites
+    DisturbanceReady,
+    /// Majority Mixed/Balanced: Adaptable to variable conditions
+    Generalist,
+}
+
+impl GuildType {
+    /// Human-readable name for the guild type
+    pub fn display_name(&self) -> &'static str {
+        match self {
+            GuildType::FertileGarden => "Fertile Garden Guild",
+            GuildType::LowInput => "Low-Input Guild",
+            GuildType::DisturbanceReady => "Disturbance-Ready Guild",
+            GuildType::Generalist => "Generalist Guild",
+        }
+    }
+
+    /// Environment recommendation for this guild type
+    pub fn environment_note(&self) -> &'static str {
+        match self {
+            GuildType::FertileGarden => "Best in rich soil with regular maintenance",
+            GuildType::LowInput => "Suited to poor soil or dry conditions",
+            GuildType::DisturbanceReady => "Ideal for pioneer sites or disturbed areas",
+            GuildType::Generalist => "Adaptable to varied growing conditions",
+        }
+    }
+
+    /// Determine guild type from strategy counts (majority vote)
+    /// Uses same logic as individual plant classification:
+    /// - spread < 20 = Mixed → counts toward Generalist
+    /// - else highest wins → C/S/R
+    pub fn from_strategy_counts(c_count: usize, s_count: usize, r_count: usize, mixed_count: usize) -> Self {
+        // Find the majority
+        let max_count = c_count.max(s_count).max(r_count).max(mixed_count);
+
+        // If Mixed is majority (or tied for majority), guild is Generalist
+        if mixed_count >= max_count {
+            GuildType::Generalist
+        } else if c_count >= max_count {
+            GuildType::FertileGarden
+        } else if s_count >= max_count {
+            GuildType::LowInput
+        } else {
+            GuildType::DisturbanceReady
+        }
+    }
+}
+
+/// Classify a single plant's dominant strategy using spread-based logic
+/// Same as encyclopedia: spread < 20 = "Mixed", else highest wins
+fn classify_plant_strategy(c_pct: f64, s_pct: f64, r_pct: f64) -> &'static str {
+    let max_pct = c_pct.max(s_pct).max(r_pct);
+    let min_pct = c_pct.min(s_pct).min(r_pct);
+    let spread = max_pct - min_pct;
+
+    if spread < CSR_SPREAD_THRESHOLD {
+        "Mixed"
+    } else if c_pct >= s_pct && c_pct >= r_pct {
+        "C"
+    } else if s_pct >= c_pct && s_pct >= r_pct {
+        "S"
+    } else {
+        "R"
+    }
+}
 
 /// Column requirements for M2 calculation
 pub const REQUIRED_PLANT_COLS: &[&str] = &[
@@ -59,17 +138,25 @@ pub struct PlantCsrData {
 /// Result of M2 calculation
 #[derive(Debug, Clone)]
 pub struct M2Result {
-    /// Conflict density (conflicts per possible pair)
+    /// Conflict density (conflicts per possible pair) - informational only
     pub raw: f64,
-    /// Normalized percentile (0-100)
+    /// Normalized percentile (0-100) - NOT used in overall score
     pub norm: f64,
-    /// Number of high-C plants
+    /// Guild type classification based on average CSR profile
+    pub guild_type: GuildType,
+    /// Average C percentile across all plants
+    pub avg_c_percentile: f64,
+    /// Average S percentile across all plants
+    pub avg_s_percentile: f64,
+    /// Average R percentile across all plants
+    pub avg_r_percentile: f64,
+    /// Number of high-C plants (>75th percentile)
     pub high_c_count: usize,
-    /// Number of high-S plants
+    /// Number of high-S plants (>75th percentile)
     pub high_s_count: usize,
-    /// Number of high-R plants
+    /// Number of high-R plants (>75th percentile)
     pub high_r_count: usize,
-    /// Total raw conflicts before density normalization
+    /// Total raw conflicts before density normalization (informational)
     pub total_conflicts: f64,
     /// Per-plant CSR data for detailed breakdown
     pub plant_csr_data: Vec<PlantCsrData>,
@@ -240,8 +327,25 @@ pub fn calculate_m2(
     let m2_norm = percentile_normalize(conflict_density, "n4", calibration, false)?;
 
     // Build per-plant CSR data for detailed breakdown
-    let plant_csr_data: Vec<PlantCsrData> = plants.iter().map(|p| {
-        PlantCsrData {
+    // Also count strategy classifications for guild type majority vote
+    let mut c_count = 0usize;
+    let mut s_count = 0usize;
+    let mut r_count = 0usize;
+    let mut mixed_count = 0usize;
+    let mut plant_csr_data: Vec<PlantCsrData> = Vec::with_capacity(plants.len());
+
+    for p in &plants {
+        let strategy = classify_plant_strategy(p.c_percentile, p.s_percentile, p.r_percentile);
+
+        // Count for majority vote
+        match strategy {
+            "C" => c_count += 1,
+            "S" => s_count += 1,
+            "R" => r_count += 1,
+            _ => mixed_count += 1, // "Mixed"
+        }
+
+        plant_csr_data.push(PlantCsrData {
             plant_name: p.name.clone(),
             display_name: p.display_name.clone(),
             c_raw: p.csr_c,
@@ -255,12 +359,25 @@ pub fn calculate_m2(
                 p.s_percentile,
                 p.r_percentile
             ),
-        }
-    }).collect();
+        });
+    }
+
+    // Calculate average CSR percentiles (kept for display purposes)
+    let avg_c_percentile = plants.iter().map(|p| p.c_percentile).sum::<f64>() / n_plants as f64;
+    let avg_s_percentile = plants.iter().map(|p| p.s_percentile).sum::<f64>() / n_plants as f64;
+    let avg_r_percentile = plants.iter().map(|p| p.r_percentile).sum::<f64>() / n_plants as f64;
+
+    // Determine guild type based on majority vote of plant classifications
+    // Same spread-based logic as encyclopedia: spread < 20 = Mixed, else highest wins
+    let guild_type = GuildType::from_strategy_counts(c_count, s_count, r_count, mixed_count);
 
     Ok(M2Result {
         raw: conflict_density,
         norm: m2_norm,
+        guild_type,
+        avg_c_percentile,
+        avg_s_percentile,
+        avg_r_percentile,
         high_c_count: high_c.len(),
         high_s_count: high_s.len(),
         high_r_count: high_r.len(),

@@ -1,7 +1,7 @@
 use crate::explanation::types::*;
-use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network, analyze_csr_strategies, analyze_taxonomic_diversity};
+use crate::explanation::{check_nitrogen_fixation, check_soil_ph_compatibility, analyze_fungi_network, analyze_pollinator_network, analyze_biocontrol_network, analyze_pathogen_control_network, analyze_csr_strategies, analyze_taxonomic_diversity, analyze_structural_diversity};
 use crate::scorer::GuildScore;
-use crate::metrics::{M2Result, M3Result, M4Result, M5Result, M7Result};
+use crate::metrics::{M2Result, M3Result, M4Result, M5Result, M6Result, M7Result, GuildType};
 use anyhow::Result;
 use polars::prelude::*;
 use rustc_hash::FxHashMap;
@@ -22,9 +22,11 @@ impl ExplanationGenerator {
     /// - m4_result: M4 result with mycoparasite counts (for network analysis)
     /// - m5_result: M5 result with fungi counts (for network analysis)
     /// - fungi_df: Fungi DataFrame (for categorization)
+    /// - m6_result: M6 result with structural diversity data (for layer profile)
     /// - m7_result: M7 result with pollinator counts (for network analysis)
     /// - organisms_df: Organisms DataFrame (for categorization)
     /// - organism_categories: Kimi AI categorization map
+    /// - pathogen_diseases: Pathogen taxon to disease info mapping
     ///
     /// Returns: Complete Explanation with all cards
     pub fn generate(
@@ -38,19 +40,74 @@ impl ExplanationGenerator {
         m4_result: &M4Result,
         m5_result: &M5Result,
         fungi_df: &DataFrame,
+        m6_result: &M6Result,
         m7_result: &M7Result,
         organism_categories: &FxHashMap<String, String>,
         ecosystem_services_result: &crate::metrics::EcosystemServicesResult,
+        pathogen_diseases: &FxHashMap<String, (Option<String>, Option<String>)>,
     ) -> Result<Explanation> {
-        // Overall score with stars
-        let overall = Self::generate_overall(guild_score.overall_score);
+        // Overall score with stars and guild type
+        let overall = Self::generate_overall(guild_score.overall_score, m2_result.guild_type);
 
         // Climate compatibility
         let climate = Self::generate_climate(climate_tier);
 
-        // Nitrogen & pH checks
+        // Run all 10 profile analyses sequentially (simpler, no Rayon overhead)
+        // Rayon parallelization showed no benefit on single-core servers
         let nitrogen_warning = check_nitrogen_fixation(guild_plants).ok().flatten();
         let ph_warning = check_soil_ph_compatibility(guild_plants).ok().flatten();
+
+        let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(
+            guild_plants,
+            organism_categories,
+        ).ok().flatten();
+
+        let taxonomic_profile = analyze_taxonomic_diversity(guild_plants).ok();
+
+        let csr_strategy_profile = Some(analyze_csr_strategies(
+            &m2_result.plant_csr_data,
+            m2_result.total_conflicts,
+            m2_result.high_c_count,
+            m2_result.high_s_count,
+            m2_result.high_r_count,
+        ));
+
+        let biocontrol_network_profile = analyze_biocontrol_network(
+            &m3_result.predator_counts,
+            &m3_result.entomo_fungi_counts,
+            m3_result.specific_predator_matches,
+            m3_result.specific_fungi_matches,
+            &m3_result.matched_predator_pairs,
+            &m3_result.matched_fungi_pairs,
+            guild_plants,
+            organisms_df,
+            fungi_df,
+            organism_categories,
+        ).ok().flatten();
+
+        let pathogen_control_profile = analyze_pathogen_control_network(
+            &m4_result.mycoparasite_counts,
+            &m4_result.pathogen_counts,
+            m4_result.specific_antagonist_matches,
+            &m4_result.matched_antagonist_pairs,
+            m4_result.specific_fungivore_matches,
+            &m4_result.matched_fungivore_pairs,
+            guild_plants,
+            fungi_df,
+            organism_categories,
+            pathogen_diseases,
+        ).ok().flatten();
+
+        let fungi_network_profile = analyze_fungi_network(m5_result, guild_plants, fungi_df).ok().flatten();
+
+        let pollinator_network_profile = analyze_pollinator_network(
+            m7_result,
+            guild_plants,
+            organisms_df,
+            organism_categories,
+        ).ok().flatten();
+
+        let structural_diversity_profile = analyze_structural_diversity(m6_result);
 
         // Aggregate all benefits, warnings, risks from fragments
         let mut benefits = Vec::new();
@@ -77,73 +134,6 @@ impl ExplanationGenerator {
             warnings.push(w);
         }
 
-        // Pest profile (qualitative information)
-        let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(
-            guild_plants,
-            organism_categories,
-        )
-        .ok()
-        .flatten();
-
-        // Taxonomic diversity profile (M1 - family and genus information)
-        let taxonomic_profile = analyze_taxonomic_diversity(guild_plants)
-            .ok();
-
-        // CSR strategy profile (M2 - per-plant CSR breakdown and compatibility analysis)
-        let csr_strategy_profile = Some(analyze_csr_strategies(
-            &m2_result.plant_csr_data,
-            m2_result.total_conflicts,
-            m2_result.high_c_count,
-            m2_result.high_s_count,
-            m2_result.high_r_count,
-        ));
-
-        // Biocontrol network profile (M3 - qualitative information)
-        let biocontrol_network_profile = analyze_biocontrol_network(
-            &m3_result.predator_counts,
-            &m3_result.entomo_fungi_counts,
-            m3_result.specific_predator_matches,
-            m3_result.specific_fungi_matches,
-            &m3_result.matched_predator_pairs,
-            &m3_result.matched_fungi_pairs,
-            guild_plants,
-            organisms_df,
-            fungi_df,
-            organism_categories,
-        )
-        .ok()
-        .flatten();
-
-        // Pathogen control network profile (M4 - qualitative information)
-        let pathogen_control_profile = analyze_pathogen_control_network(
-            &m4_result.mycoparasite_counts,
-            &m4_result.pathogen_counts,
-            m4_result.specific_antagonist_matches,
-            &m4_result.matched_antagonist_pairs,
-            m4_result.specific_fungivore_matches,
-            &m4_result.matched_fungivore_pairs,
-            guild_plants,
-            fungi_df,
-            organism_categories,
-        )
-        .ok()
-        .flatten();
-
-        // Fungi network profile (M5 - qualitative information)
-        let fungi_network_profile = analyze_fungi_network(m5_result, guild_plants, fungi_df)
-            .ok()
-            .flatten();
-
-        // Pollinator network profile (M7 - qualitative information)
-        let pollinator_network_profile = analyze_pollinator_network(
-            m7_result,
-            guild_plants,
-            organisms_df,
-            organism_categories,
-        )
-        .ok()
-        .flatten();
-
         // Metrics display
         let metrics_display = Self::format_metrics_display(guild_score);
 
@@ -166,12 +156,13 @@ impl ExplanationGenerator {
             pollinator_network_profile,
             biocontrol_network_profile,
             pathogen_control_profile,
+            structural_diversity_profile,
             ecosystem_services,
         })
     }
 
-    /// Generate overall score interpretation with stars
-    fn generate_overall(score: f64) -> OverallExplanation {
+    /// Generate overall score interpretation with stars and guild type
+    fn generate_overall(score: f64, guild_type: GuildType) -> OverallExplanation {
         let (stars, label) = match score {
             s if s >= 90.0 => ("★★★★★", "Exceptional"),
             s if s >= 80.0 => ("★★★★☆", "Excellent"),
@@ -186,6 +177,9 @@ impl ExplanationGenerator {
             stars: stars.to_string(),
             label: label.to_string(),
             message: format!("Overall guild compatibility: {:.1}/100", score),
+            guild_type,
+            guild_type_display: guild_type.display_name().to_string(),
+            guild_type_note: guild_type.environment_note().to_string(),
         }
     }
 
@@ -211,14 +205,15 @@ impl ExplanationGenerator {
 
     /// Format metrics display (universal vs bonus indicators)
     fn format_metrics_display(guild_score: &GuildScore) -> MetricsDisplay {
+        // REORDERED per 2025-12 restructure
         let metric_names = [
-            "Pest & Pathogen Independence",
-            "Growth Compatibility",
-            "Insect Pest Control",
-            "Disease Suppression",
-            "Beneficial Fungi",
-            "Structural Diversity",
-            "Pollinator Support",
+            "Growth Strategy",           // M1: CSR classification (qualitative)
+            "Structural Diversity",      // M2: Vertical layers
+            "Pest & Pathogen Independence", // M3: Phylogenetic diversity
+            "Biocontrol Networks",       // M4: Insect predators/parasitoids
+            "Disease Suppression",       // M5: Antagonistic fungi
+            "Beneficial Fungi",          // M6: Mycorrhizal networks
+            "Pollinator Support",        // M7: Pollinator networks
         ];
 
         let mut universal = Vec::new();
@@ -257,24 +252,28 @@ mod tests {
 
     #[test]
     fn test_generate_overall_exceptional() {
-        let overall = ExplanationGenerator::generate_overall(92.5);
+        let overall = ExplanationGenerator::generate_overall(92.5, GuildType::FertileGarden);
         assert_eq!(overall.stars, "★★★★★");
         assert_eq!(overall.label, "Exceptional");
         assert_eq!(overall.score, 92.5);
+        assert_eq!(overall.guild_type, GuildType::FertileGarden);
+        assert_eq!(overall.guild_type_display, "Fertile Garden Guild");
     }
 
     #[test]
     fn test_generate_overall_excellent() {
-        let overall = ExplanationGenerator::generate_overall(85.0);
+        let overall = ExplanationGenerator::generate_overall(85.0, GuildType::LowInput);
         assert_eq!(overall.stars, "★★★★☆");
         assert_eq!(overall.label, "Excellent");
+        assert_eq!(overall.guild_type, GuildType::LowInput);
     }
 
     #[test]
     fn test_generate_overall_poor() {
-        let overall = ExplanationGenerator::generate_overall(55.0);
+        let overall = ExplanationGenerator::generate_overall(55.0, GuildType::Generalist);
         assert_eq!(overall.stars, "★☆☆☆☆");
         assert_eq!(overall.label, "Poor");
+        assert_eq!(overall.guild_type, GuildType::Generalist);
     }
 
     #[test]

@@ -377,15 +377,10 @@ fn generate_beneficial_fungi_section(
             }
         }
 
-        // Garden advice
-        lines.push(String::new());
-        match myco_type {
-            MycorrhizalType::AMF | MycorrhizalType::EMF | MycorrhizalType::Dual => {
-                lines.push("**Gardening tip**: Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.".to_string());
-            }
-            MycorrhizalType::NonMycorrhizal => {
-                lines.push("**Note**: This plant does not rely heavily on mycorrhizal partnerships. Standard cultivation practices apply.".to_string());
-            }
+        // Garden advice (only for documented mycorrhizal - absence of data ≠ absence of need)
+        if matches!(myco_type, MycorrhizalType::AMF | MycorrhizalType::EMF | MycorrhizalType::Dual) {
+            lines.push(String::new());
+            lines.push("**Gardening tip**: Minimize soil disturbance to preserve beneficial fungal networks. Avoid excessive tilling and synthetic fertilizers which can harm mycorrhizal partnerships.".to_string());
         }
     } else {
         lines.push("No fungal association data available.".to_string());

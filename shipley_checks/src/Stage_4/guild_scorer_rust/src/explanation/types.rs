@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use crate::metrics::GuildType;
 use crate::explanation::pest_analysis::PestProfile;
 use crate::explanation::fungi_network_analysis::FungiNetworkProfile;
 use crate::explanation::pollinator_network_analysis::PollinatorNetworkProfile;
@@ -6,6 +7,7 @@ use crate::explanation::biocontrol_network_analysis::BiocontrolNetworkProfile;
 use crate::explanation::pathogen_control_network_analysis::PathogenControlNetworkProfile;
 use crate::explanation::csr_strategy_analysis::CsrStrategyProfile;
 use crate::explanation::taxonomic_profile_analysis::TaxonomicProfile;
+use crate::explanation::structural_diversity_analysis::StructuralDiversityProfile;
 
 /// Complete explanation for a guild
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -23,6 +25,7 @@ pub struct Explanation {
     pub pollinator_network_profile: Option<PollinatorNetworkProfile>,
     pub biocontrol_network_profile: Option<BiocontrolNetworkProfile>,
     pub pathogen_control_profile: Option<PathogenControlNetworkProfile>,
+    pub structural_diversity_profile: Option<StructuralDiversityProfile>,
     pub ecosystem_services: Option<Vec<crate::explanation::ecosystem_services::EcosystemServiceCard>>,
 }
 
@@ -33,6 +36,12 @@ pub struct OverallExplanation {
     pub stars: String,  // "★★★★☆"
     pub label: String,  // "Excellent" / "Good" / "Fair" / "Poor"
     pub message: String,
+    /// Guild type classification (M2)
+    pub guild_type: GuildType,
+    /// Human-readable guild type name
+    pub guild_type_display: String,
+    /// Environment suitability note for this guild type
+    pub guild_type_note: String,
 }
 
 /// Climate compatibility information

@@ -9,6 +9,7 @@ pub mod biocontrol_network_analysis;
 pub mod pathogen_control_network_analysis;
 pub mod csr_strategy_analysis;
 pub mod taxonomic_profile_analysis;
+pub mod structural_diversity_analysis;
 pub mod unified_taxonomy;
 pub mod generator;
 pub mod formatters;
@@ -33,6 +34,7 @@ pub use biocontrol_network_analysis::{analyze_biocontrol_network, BiocontrolNetw
 pub use pathogen_control_network_analysis::{analyze_pathogen_control_network, PathogenControlNetworkProfile};
 pub use csr_strategy_analysis::{analyze_csr_strategies, CsrStrategyProfile};
 pub use taxonomic_profile_analysis::{analyze_taxonomic_diversity, TaxonomicProfile};
+pub use structural_diversity_analysis::{analyze_structural_diversity, StructuralDiversityProfile};
 
 pub use generator::ExplanationGenerator;
 pub use formatters::{HtmlFormatter, JsonFormatter, MarkdownFormatter};

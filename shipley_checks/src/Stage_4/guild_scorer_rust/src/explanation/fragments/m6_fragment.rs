@@ -149,7 +149,7 @@ pub fn generate_m6_fragment(m6: &M6Result, display_score: f64) -> MetricFragment
 
         MetricFragment::with_benefit(BenefitCard {
             benefit_type: "structural_diversity".to_string(),
-            metric_code: "M6".to_string(),
+            metric_code: "M2".to_string(), // Structural Diversity is now M2 (2025-12 reorder)
             title: "Structural Diversity".to_string(),
             message: format!(
                 "{} growth {} spanning {:.1}m height range ({}th percentile)",

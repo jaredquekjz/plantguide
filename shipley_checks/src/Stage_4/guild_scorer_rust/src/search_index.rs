@@ -26,6 +26,8 @@ pub struct PlantRef {
     pub common_name: Option<String>,
     pub family: String,
     pub genus: String,
+    /// Climate tier flags [tropical, mediterranean, temperate, continental, boreal, arid]
+    pub tiers: [bool; 6],
 }
 
 /// Schema field handles
@@ -86,14 +88,20 @@ impl SearchIndex {
         // Get index writer
         let mut index_writer = index.writer(50_000_000)?; // 50MB buffer
 
-        // Query all plants
+        // Query all plants with climate tier flags
         let sql = r#"
             SELECT
                 wfo_taxon_id,
                 wfo_scientific_name,
                 vernacular_name_en,
                 family,
-                genus
+                genus,
+                tier_1_tropical,
+                tier_2_mediterranean,
+                tier_3_humid_temperate,
+                tier_4_continental,
+                tier_5_boreal_polar,
+                tier_6_arid
             FROM plants
             ORDER BY wfo_scientific_name
         "#;
@@ -131,6 +139,40 @@ impl SearchIndex {
             let common_col = get_string_col(batch, "vernacular_name_en");
             let family_col = get_string_col(batch, "family");
             let genus_col = get_string_col(batch, "genus");
+
+            // Helper to get boolean column
+            fn get_bool_col<'a>(
+                batch: &'a datafusion::arrow::array::RecordBatch,
+                name: &str,
+            ) -> Option<Box<dyn Fn(usize) -> bool + 'a>> {
+                use datafusion::arrow::array::BooleanArray;
+                let col = batch.column_by_name(name)?;
+                if let Some(arr) = col.as_any().downcast_ref::<BooleanArray>() {
+                    Some(Box::new(move |i| {
+                        if arr.is_null(i) { false } else { arr.value(i) }
+                    }))
+                } else {
+                    // Also handle Int32 columns (some tier columns might be 0/1)
+                    use datafusion::arrow::array::Int32Array;
+                    if let Some(arr) = col.as_any().downcast_ref::<Int32Array>() {
+                        Some(Box::new(move |i| {
+                            if arr.is_null(i) { false } else { arr.value(i) == 1 }
+                        }))
+                    } else {
+                        None
+                    }
+                }
+            }
+
+            // Get tier columns
+            let tier_cols: [Option<Box<dyn Fn(usize) -> bool>>; 6] = [
+                get_bool_col(batch, "tier_1_tropical"),
+                get_bool_col(batch, "tier_2_mediterranean"),
+                get_bool_col(batch, "tier_3_humid_temperate"),
+                get_bool_col(batch, "tier_4_continental"),
+                get_bool_col(batch, "tier_5_boreal_polar"),
+                get_bool_col(batch, "tier_6_arid"),
+            ];
 
             if wfo_col.is_none() || sci_col.is_none() {
                 continue;
@@ -177,6 +219,16 @@ impl SearchIndex {
 
                 index_writer.add_document(doc)?;
 
+                // Extract tier flags
+                let tiers: [bool; 6] = [
+                    tier_cols[0].as_ref().map(|f| f(i)).unwrap_or(false),
+                    tier_cols[1].as_ref().map(|f| f(i)).unwrap_or(false),
+                    tier_cols[2].as_ref().map(|f| f(i)).unwrap_or(false),
+                    tier_cols[3].as_ref().map(|f| f(i)).unwrap_or(false),
+                    tier_cols[4].as_ref().map(|f| f(i)).unwrap_or(false),
+                    tier_cols[5].as_ref().map(|f| f(i)).unwrap_or(false),
+                ];
+
                 // Store plant reference
                 let plant_idx = plants.len();
                 wfo_to_idx.insert(wfo_id_val.clone(), plant_idx);
@@ -187,6 +239,7 @@ impl SearchIndex {
                     common_name: first_common,
                     family: family_val,
                     genus: genus_val,
+                    tiers,
                 });
             }
         }
@@ -296,6 +349,47 @@ impl SearchIndex {
         results
     }
 
+    /// Search with tier filtering (post-search filter)
+    ///
+    /// # Arguments
+    /// * `query` - Search query string
+    /// * `limit` - Maximum results to return
+    /// * `tiers` - Tier numbers to filter by (1-6). Plant must match ANY of these tiers.
+    ///
+    /// # Example
+    /// ```ignore
+    /// // Search for plants in temperate (3) or continental (4) climates
+    /// search_with_tiers("apple", 10, &[3, 4])
+    /// ```
+    pub fn search_with_tiers(&self, query: &str, limit: usize, tiers: &[u8]) -> Vec<&PlantRef> {
+        if tiers.is_empty() {
+            return self.search(query, limit);
+        }
+
+        // Over-fetch to account for filtering, then take limit
+        let over_fetch = limit * 5;
+        let results = self.search(query, over_fetch);
+
+        // Filter by tier membership (OR logic: plant matches if it has ANY of the requested tiers)
+        results
+            .into_iter()
+            .filter(|plant| {
+                tiers.iter().any(|&t| {
+                    match t {
+                        1 => plant.tiers[0], // tropical
+                        2 => plant.tiers[1], // mediterranean
+                        3 => plant.tiers[2], // temperate
+                        4 => plant.tiers[3], // continental
+                        5 => plant.tiers[4], // boreal
+                        6 => plant.tiers[5], // arid
+                        _ => false,
+                    }
+                })
+            })
+            .take(limit)
+            .collect()
+    }
+
     /// Prefix search (for autocomplete) - uses wildcard query
     pub fn search_prefix(&self, query: &str, limit: usize) -> Vec<&PlantRef> {
         if query.is_empty() {
@@ -321,6 +415,18 @@ impl SearchIndex {
         // Tantivy fuzzy syntax: term~1 for 1 edit distance
         let fuzzy_query = format!("{}~1", query);
         self.search(&fuzzy_query, limit)
+    }
+
+    /// Get plant by WFO ID (direct lookup, O(1))
+    pub fn get_by_wfo_id(&self, wfo_id: &str) -> Option<&PlantRef> {
+        self.wfo_to_idx.get(wfo_id).map(|&idx| &self.plants[idx])
+    }
+
+    /// Get multiple plants by WFO IDs
+    pub fn get_by_wfo_ids(&self, wfo_ids: &[&str]) -> Vec<&PlantRef> {
+        wfo_ids.iter()
+            .filter_map(|id| self.get_by_wfo_id(id))
+            .collect()
     }
 
     /// Get index statistics

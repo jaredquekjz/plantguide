@@ -24,7 +24,7 @@ pub fn generate_m3_fragment(m3: &M3Result, display_score: f64) -> MetricFragment
 
     MetricFragment::with_benefit(BenefitCard {
         benefit_type: "insect_control".to_string(),
-        metric_code: "M3".to_string(),
+        metric_code: "M4".to_string(), // Biocontrol is now M4 (2025-12 reorder)
         title: "Natural Insect Pest Control".to_string(),
         message: format!(
             "{}th percentile - {:.0}% coverage ({}/{} plants have biocontrol)",

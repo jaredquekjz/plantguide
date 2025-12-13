@@ -121,6 +121,13 @@ pub struct GuildData {
     /// Maps organism genus (lowercase) to functional category (e.g. "Snails", "Moths")
     /// Source: data/taxonomy/kimi_gardener_labels.csv
     pub organism_categories: FxHashMap<String, String>,
+
+    /// Pathogen taxon → (disease_name, disease_type) mapping
+    ///
+    /// Maps lowercase pathogen taxon to human-readable disease info.
+    /// Source: phase7_output/pathogen_diseases.parquet
+    /// Disease types: rust, spot, mildew, rot, blight, canker, smut, wilt, scab, mosaic, etc.
+    pub pathogen_diseases: FxHashMap<String, (Option<String>, Option<String>)>,
 }
 
 impl GuildData {
@@ -243,6 +250,16 @@ impl GuildData {
             FxHashMap::default()
         });
 
+        // ====================================================================
+        // PATHOGEN DISEASES: Load disease type classifications
+        // ====================================================================
+        let pathogen_diseases = Self::load_pathogen_diseases(
+            &format!("{}/phase7_output/pathogen_diseases.parquet", data_dir),
+        ).unwrap_or_else(|e| {
+            eprintln!("Warning: Failed to load pathogen diseases: {}", e);
+            FxHashMap::default()
+        });
+
         // Print stats (still shows eager DataFrame counts for compatibility)
         println!("  Plants: {} (lazy: schema only)", plants.height());
         println!("  Organisms: {} (lazy: schema only)", organisms.height());
@@ -251,6 +268,7 @@ impl GuildData {
         println!("  Insect parasites: {}", insect_parasites.len());
         println!("  Pathogen antagonists: {}", pathogen_antagonists.len());
         println!("  Organism categories: {}", organism_categories.len());
+        println!("  Pathogen diseases: {}", pathogen_diseases.len());
 
         Ok(GuildData {
             // Eager DataFrames (backward compatibility)
@@ -268,6 +286,7 @@ impl GuildData {
             insect_parasites,
             pathogen_antagonists,
             organism_categories,
+            pathogen_diseases,
         })
     }
 
@@ -418,6 +437,46 @@ impl GuildData {
                         map.insert(key.to_lowercase(), values);
                     }
                 }
+            }
+        }
+
+        Ok(map)
+    }
+
+    /// Load pathogen disease classifications from Parquet
+    ///
+    /// Maps pathogen taxon (lowercase) to (disease_name, disease_type)
+    /// Source: phase7_output/pathogen_diseases.parquet
+    fn load_pathogen_diseases(path: &str) -> Result<FxHashMap<String, (Option<String>, Option<String>)>> {
+        let df = LazyFrame::scan_parquet(path, Default::default())
+            .with_context(|| format!("Failed to scan parquet: {}", path))?
+            .collect()
+            .with_context(|| format!("Failed to load pathogen diseases: {}", path))?;
+
+        let mut map = FxHashMap::default();
+
+        let taxon_col = df.column("taxon")
+            .with_context(|| "Column 'taxon' not found")?
+            .str()
+            .with_context(|| "Column 'taxon' is not string type")?;
+
+        let disease_name_col = df.column("disease_name")
+            .with_context(|| "Column 'disease_name' not found")?
+            .str()
+            .with_context(|| "Column 'disease_name' is not string type")?;
+
+        let disease_type_col = df.column("disease_type")
+            .with_context(|| "Column 'disease_type' not found")?
+            .str()
+            .with_context(|| "Column 'disease_type' is not string type")?;
+
+        for idx in 0..df.height() {
+            if let Some(taxon) = taxon_col.get(idx) {
+                let disease_name = disease_name_col.get(idx).map(|s| s.to_string());
+                let disease_type = disease_type_col.get(idx).map(|s| s.to_string());
+
+                // Lowercase key for consistent matching
+                map.insert(taxon.to_lowercase(), (disease_name, disease_type));
             }
         }
 

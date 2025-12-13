@@ -2,12 +2,38 @@
 //!
 //! Analyzes which plants harbor mycoparasite fungi that suppress pathogens,
 //! identifies generalist mycoparasites, and finds network hubs.
+//!
+//! Disease categorization uses pathogen_diseases.parquet to group pathogens
+//! by disease_type (rust, spot, mildew, rot, blight, etc.)
 
 use polars::prelude::*;
 use rustc_hash::FxHashMap;
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use crate::explanation::unified_taxonomy::{OrganismCategory, OrganismRole};
+
+/// Disease category with pathogens grouped by disease type
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DiseaseCategory {
+    /// Disease type (rust, spot, mildew, rot, etc.)
+    pub disease_type: String,
+
+    /// Pathogens in this category
+    pub pathogens: Vec<PathogenInfo>,
+}
+
+/// Information about a pathogen in the guild
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PathogenInfo {
+    /// Pathogen taxon name
+    pub taxon: String,
+
+    /// Human-readable disease name (if available)
+    pub disease_name: Option<String>,
+
+    /// Number of plants affected
+    pub plant_count: usize,
+}
 
 /// Matched fungivore pair with category
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -46,6 +72,9 @@ pub struct PathogenControlNetworkProfile {
 
     /// Top 10 plants by mycoparasite count (protection hubs)
     pub hub_plants: Vec<PlantPathogenControlHub>,
+
+    /// Pathogens grouped by disease type (rust, spot, mildew, etc.)
+    pub disease_profile: Vec<DiseaseCategory>,
 }
 
 /// A mycoparasite agent (fungus that parasitizes other fungi)
@@ -86,7 +115,7 @@ pub struct PlantPathogenControlHub {
 /// Analyze pathogen control network for M4
 ///
 /// Extracts mycoparasite and pathogen information from fungi DataFrame,
-/// identifies generalist mycoparasites, and finds hub plants.
+/// identifies generalist mycoparasites, finds hub plants, and builds disease profile.
 pub fn analyze_pathogen_control_network(
     mycoparasite_counts: &FxHashMap<String, usize>,
     pathogen_counts: &FxHashMap<String, usize>,
@@ -97,6 +126,7 @@ pub fn analyze_pathogen_control_network(
     guild_plants: &DataFrame,
     fungi_df: &DataFrame,
     organism_categories: &FxHashMap<String, String>,
+    pathogen_diseases: &FxHashMap<String, (Option<String>, Option<String>)>,
 ) -> Result<Option<PathogenControlNetworkProfile>> {
     let n_plants = guild_plants.height();
 
@@ -149,6 +179,9 @@ pub fn analyze_pathogen_control_network(
         fungi_df,
     )?;
 
+    // Build disease profile by grouping pathogens by disease_type
+    let disease_profile = build_disease_profile(pathogen_counts, pathogen_diseases);
+
     Ok(Some(PathogenControlNetworkProfile {
         total_unique_mycoparasites,
         total_unique_pathogens,
@@ -159,6 +192,7 @@ pub fn analyze_pathogen_control_network(
         matched_fungivore_pairs: matched_fungivore_pairs_structs,
         top_mycoparasites,
         hub_plants,
+        disease_profile,
     }))
 }
 
@@ -408,4 +442,63 @@ fn count_pathogens_for_plant(fungi_df: &DataFrame, target_plant_id: &str) -> Res
     }
 
     Ok(0)
+}
+
+/// Build disease profile by grouping pathogens by disease_type
+///
+/// Uses pathogen_diseases lookup to get disease_name and disease_type for each pathogen.
+/// Groups pathogens by disease_type and sorts by count descending.
+fn build_disease_profile(
+    pathogen_counts: &FxHashMap<String, usize>,
+    pathogen_diseases: &FxHashMap<String, (Option<String>, Option<String>)>,
+) -> Vec<DiseaseCategory> {
+    // Group pathogens by disease_type
+    let mut type_map: FxHashMap<String, Vec<PathogenInfo>> = FxHashMap::default();
+
+    for (taxon, &plant_count) in pathogen_counts {
+        // Look up disease info (taxon is already lowercase in pathogen_counts)
+        let (disease_name, disease_type) = pathogen_diseases
+            .get(taxon)
+            .cloned()
+            .unwrap_or((None, None));
+
+        let dtype = disease_type.unwrap_or_else(|| "other".to_string());
+
+        type_map
+            .entry(dtype)
+            .or_default()
+            .push(PathogenInfo {
+                taxon: taxon.clone(),
+                disease_name,
+                plant_count,
+            });
+    }
+
+    // Convert to sorted categories
+    let mut categories: Vec<DiseaseCategory> = type_map
+        .into_iter()
+        .map(|(disease_type, mut pathogens)| {
+            // Sort pathogens by plant_count descending, then taxon ascending
+            pathogens.sort_by(|a, b| {
+                b.plant_count
+                    .cmp(&a.plant_count)
+                    .then_with(|| a.taxon.cmp(&b.taxon))
+            });
+            DiseaseCategory { disease_type, pathogens }
+        })
+        .collect();
+
+    // Sort categories by total pathogens descending, "other" at end
+    categories.sort_by(|a, b| {
+        let a_is_other = a.disease_type == "other";
+        let b_is_other = b.disease_type == "other";
+        match (a_is_other, b_is_other) {
+            (true, false) => std::cmp::Ordering::Greater,
+            (false, true) => std::cmp::Ordering::Less,
+            _ => b.pathogens.len().cmp(&a.pathogens.len())
+                .then_with(|| a.disease_type.cmp(&b.disease_type)),
+        }
+    });
+
+    categories
 }

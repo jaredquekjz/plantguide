@@ -34,8 +34,8 @@ pub mod suitability;
 pub mod view_models;
 
 // Re-export public API
-pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, BeneficialFungi};
+pub use types::{OrganismCounts, FungalCounts, OrganismLists, OrganismProfile, CategorizedOrganisms, RankedPathogen, RankedPathogenWithDisease, PathogenicFungus, BeneficialFungi};
 pub use sections_md::s1_identity::{RelatedSpecies, GenusSpeciesInfo};
-pub use sections_json::s1_identity::InputRelatedSpecies;
+pub use sections_json::s6_companion::InputRelatedSpecies;
 pub use generator_md::EncyclopediaGenerator;
 pub use generator_json::generate_encyclopedia_data;
