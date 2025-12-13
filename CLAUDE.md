@@ -34,13 +34,14 @@ Browser → Cloudflare Access (Google Auth) → Cloudflare CDN → Caddy (443) �
 ```bash
 ./ship "commit message"     # git add/commit/push + build + deploy (~4s)
 ```
-**Default workflow**: Ship directly to remote. Do not test locally unless explicitly instructed or encountering persistent deployment failures.
 
 ### Deploy Rust API (from ellenberg/)
 ```bash
-./deploy.sh api             # Build + deploy API
-./deploy.sh all             # Deploy both
+./deploy.sh api "message"   # git commit/push + build + deploy
+./deploy.sh all "message"   # Deploy both
 ```
+
+**ALWAYS deploy remotely.** Never test locally unless explicitly instructed. Both scripts commit and push before deploying.
 
 ### Sync Data to Remote
 ```bash
@@ -53,6 +54,30 @@ Browser → Cloudflare Access (Google Auth) → Cloudflare CDN → Caddy (443) �
 ```bash
 DATA_DIR=shipley_checks/stage4 cargo run --manifest-path shipley_checks/src/Stage_4/guild_scorer_rust/Cargo.toml --features api --bin api_server
 ```
+
+### Test Production API
+Cloudflare Access blocks direct curl. SSH to server and curl localhost:
+
+```bash
+# Search (returns {data: [...]})
+ssh root@134.199.166.0 'curl -s "http://localhost:3000/api/plants/search?q=papaya" | jq ".data[0]"'
+
+# Suitability score and tips
+ssh root@134.199.166.0 'curl -s "http://localhost:3000/api/encyclopedia/wfo-0000588009?location=singapore" | jq "{score: .requirements.overall_suitability.score_percent, tips: .requirements.overall_suitability.growing_tips}"'
+
+# Filter tips by category
+ssh root@134.199.166.0 'curl -s "http://localhost:3000/api/encyclopedia/wfo-0000515026?location=london" | jq "[.requirements.overall_suitability.growing_tips[] | select(.category == \"temperature\")]"'
+
+# Health check
+ssh root@134.199.166.0 'curl -s "http://localhost:3000/api/health"'
+```
+
+**Endpoints**:
+- `/api/plants/search?q=<query>` - Search (response: `{data: [...]}`)
+- `/api/encyclopedia/<wfo_id>?location=<city>` - With suitability
+- `/api/health` - Health check
+
+**Locations**: `london`, `singapore`, `helsinki` (not lat/lon)
 
 ## Encyclopedia System
 
@@ -140,7 +165,6 @@ Use Context7 automatically for library documentation:
 - Concise, formal documentation - no caps/emojis/exclamation marks
 - No academic citations unless explicitly provided
 - Extend existing files rather than creating new ones
-- **Frontend**: Ship directly (`./ship`) - no local testing unless thorny problems
 - Use nohup for jobs >15 minutes
 
 ### Git Commit Messages
