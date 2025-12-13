@@ -586,9 +586,13 @@ impl GuildScorer {
         &self,
         plant_ids: &[String],
     ) -> Result<(GuildScore, Vec<MetricFragment>, DataFrame, M2Result, M3Result, M4Result, M5Result, M6Result, M7Result, EcosystemServicesResult)> {
+        use std::time::Instant;
+        let scorer_start = Instant::now();
+
         let n_plants = plant_ids.len();
 
         // Filter to guild plants (sequential - fast operation)
+        let t_filter_start = Instant::now();
         let id_set: std::collections::HashSet<_> = plant_ids.iter().collect();
         let plant_col = self.data.plants.column("wfo_taxon_id")?.str()?;
         let mask: BooleanChunked = plant_col
@@ -596,6 +600,7 @@ impl GuildScorer {
             .map(|opt| opt.map_or(false, |s| id_set.contains(&s.to_string())))
             .collect();
         let guild_plants = self.data.plants.filter(&mask)?;
+        let t_filter = t_filter_start.elapsed();
 
         if guild_plants.height() != n_plants {
             anyhow::bail!("Missing plant data for some IDs");
@@ -611,6 +616,7 @@ impl GuildScorer {
         // Each metric is independent and can run on a separate thread
         type MetricResultWithFragment = (Box<dyn std::any::Any + Send>, MetricFragment);
 
+        let t_metrics_start = Instant::now();
         let metric_results: Vec<Result<MetricResultWithFragment>> = (0..7)
             .into_par_iter()
             .map(|i| -> Result<MetricResultWithFragment> {
@@ -680,8 +686,10 @@ impl GuildScorer {
                 }
             })
             .collect();
+        let t_metrics = t_metrics_start.elapsed();
 
         // Unwrap results and separate metrics from fragments
+        let t_unwrap_start = Instant::now();
         let mut unwrapped_results = Vec::new();
         let mut fragments = Vec::new();
 
@@ -755,8 +763,11 @@ impl GuildScorer {
             normalized,
         };
 
+        let t_unwrap = t_unwrap_start.elapsed();
+
         // Join herbivores column from organisms DataFrame for pest profile analysis
         // Note: organisms DataFrame uses "plant_wfo_id" (Phase 0 schema)
+        let t_join_start = Instant::now();
         let organisms_subset = self.data.organisms
             .clone()
             .lazy()
@@ -771,8 +782,10 @@ impl GuildScorer {
                 JoinArgs::new(JoinType::Left),
                 None,  // JoinTypeOptions added in Polars 0.46
             )?;
+        let t_join = t_join_start.elapsed();
 
         // Clone M3Result for biocontrol network analysis
+        let t_clone_start = Instant::now();
         let m3_cloned = M3Result {
             raw: m3.raw,
             norm: m3.norm,
@@ -854,9 +867,25 @@ impl GuildScorer {
             pollinator_counts: m7.pollinator_counts.clone(),
         };
 
+        let t_clone = t_clone_start.elapsed();
+
         // Calculate ecosystem services (M8-M17)
         // Note: Uses plants dataframe which has ecosystem service rating columns from Stage 3
+        let t_ecosvc_start = Instant::now();
         let ecosystem_services = calculate_ecosystem_services(&self.data.plants, plant_ids)?;
+        let t_ecosvc = t_ecosvc_start.elapsed();
+
+        let scorer_total = scorer_start.elapsed();
+        tracing::info!(
+            "Scorer timing (ms): filter={:.1}, metrics={:.1}, unwrap={:.1}, join={:.1}, clone={:.1}, ecosvc={:.1}, TOTAL={:.1}",
+            t_filter.as_secs_f64() * 1000.0,
+            t_metrics.as_secs_f64() * 1000.0,
+            t_unwrap.as_secs_f64() * 1000.0,
+            t_join.as_secs_f64() * 1000.0,
+            t_clone.as_secs_f64() * 1000.0,
+            t_ecosvc.as_secs_f64() * 1000.0,
+            scorer_total.as_secs_f64() * 1000.0,
+        );
 
         // Note: organisms and fungi DataFrames not returned - access via scorer.data() to avoid 7.5MB clone
         Ok((guild_score, fragments, guild_plants_with_organisms, m2_cloned, m3_cloned, m4_cloned, m5_cloned, m6_cloned, m7_cloned, ecosystem_services))

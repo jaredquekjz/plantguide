@@ -648,11 +648,17 @@ async fn explain_guild(
 
     // CPU-bound work: run in blocking thread pool
     let explanation = tokio::task::spawn_blocking(move || -> anyhow::Result<Explanation> {
+        use std::time::Instant;
+        let total_start = Instant::now();
+
         // Score with explanation data (organisms/fungi accessed via scorer.data() to avoid cloning)
+        let t_scorer_start = Instant::now();
         let (guild_score, fragments, guild_plants, m2_result, m3_result, m4_result, m5_result, m6_result, m7_result, ecosystem_services) =
             scorer.score_guild_with_explanation_parallel(&plant_ids)?;
+        let t_scorer = t_scorer_start.elapsed();
 
         // Generate complete explanation
+        let t_generator_start = Instant::now();
         let explanation = ExplanationGenerator::generate(
             &guild_score,
             &guild_plants,
@@ -670,6 +676,15 @@ async fn explain_guild(
             &ecosystem_services,
             &scorer.data().pathogen_diseases,
         )?;
+        let t_generator = t_generator_start.elapsed();
+
+        let total = total_start.elapsed();
+        tracing::info!(
+            "EXPLAIN ENDPOINT timing (ms): scorer={:.1}, generator={:.1}, TOTAL={:.1}",
+            t_scorer.as_secs_f64() * 1000.0,
+            t_generator.as_secs_f64() * 1000.0,
+            total.as_secs_f64() * 1000.0,
+        );
 
         Ok(explanation)
     })

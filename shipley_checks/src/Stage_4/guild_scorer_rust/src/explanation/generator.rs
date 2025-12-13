@@ -46,24 +46,36 @@ impl ExplanationGenerator {
         ecosystem_services_result: &crate::metrics::EcosystemServicesResult,
         pathogen_diseases: &FxHashMap<String, (Option<String>, Option<String>)>,
     ) -> Result<Explanation> {
+        use std::time::Instant;
+        let gen_start = Instant::now();
+
         // Overall score with stars and guild type
         let overall = Self::generate_overall(guild_score.overall_score, m2_result.guild_type);
 
         // Climate compatibility
         let climate = Self::generate_climate(climate_tier);
 
-        // Run all 10 profile analyses sequentially (simpler, no Rayon overhead)
-        // Rayon parallelization showed no benefit on single-core servers
+        // Run all 10 profile analyses sequentially with timing
+        let t0 = Instant::now();
         let nitrogen_warning = check_nitrogen_fixation(guild_plants).ok().flatten();
-        let ph_warning = check_soil_ph_compatibility(guild_plants).ok().flatten();
+        let t_nitrogen = t0.elapsed();
 
+        let t1 = Instant::now();
+        let ph_warning = check_soil_ph_compatibility(guild_plants).ok().flatten();
+        let t_ph = t1.elapsed();
+
+        let t2 = Instant::now();
         let pest_profile = crate::explanation::pest_analysis::analyze_guild_pests(
             guild_plants,
             organism_categories,
         ).ok().flatten();
+        let t_pest = t2.elapsed();
 
+        let t3 = Instant::now();
         let taxonomic_profile = analyze_taxonomic_diversity(guild_plants).ok();
+        let t_taxonomic = t3.elapsed();
 
+        let t4 = Instant::now();
         let csr_strategy_profile = Some(analyze_csr_strategies(
             &m2_result.plant_csr_data,
             m2_result.total_conflicts,
@@ -71,7 +83,9 @@ impl ExplanationGenerator {
             m2_result.high_s_count,
             m2_result.high_r_count,
         ));
+        let t_csr = t4.elapsed();
 
+        let t5 = Instant::now();
         let biocontrol_network_profile = analyze_biocontrol_network(
             &m3_result.predator_counts,
             &m3_result.entomo_fungi_counts,
@@ -84,7 +98,9 @@ impl ExplanationGenerator {
             fungi_df,
             organism_categories,
         ).ok().flatten();
+        let t_biocontrol = t5.elapsed();
 
+        let t6 = Instant::now();
         let pathogen_control_profile = analyze_pathogen_control_network(
             &m4_result.mycoparasite_counts,
             &m4_result.pathogen_counts,
@@ -97,17 +113,40 @@ impl ExplanationGenerator {
             organism_categories,
             pathogen_diseases,
         ).ok().flatten();
+        let t_pathogen = t6.elapsed();
 
+        let t7 = Instant::now();
         let fungi_network_profile = analyze_fungi_network(m5_result, guild_plants, fungi_df).ok().flatten();
+        let t_fungi = t7.elapsed();
 
+        let t8 = Instant::now();
         let pollinator_network_profile = analyze_pollinator_network(
             m7_result,
             guild_plants,
             organisms_df,
             organism_categories,
         ).ok().flatten();
+        let t_pollinator = t8.elapsed();
 
+        let t9 = Instant::now();
         let structural_diversity_profile = analyze_structural_diversity(m6_result);
+        let t_structural = t9.elapsed();
+
+        let profiles_total = gen_start.elapsed();
+        tracing::info!(
+            "Generator profile timing (ms): nitrogen={:.1}, ph={:.1}, pest={:.1}, taxonomic={:.1}, csr={:.1}, biocontrol={:.1}, pathogen={:.1}, fungi={:.1}, pollinator={:.1}, structural={:.1}, TOTAL={:.1}",
+            t_nitrogen.as_secs_f64() * 1000.0,
+            t_ph.as_secs_f64() * 1000.0,
+            t_pest.as_secs_f64() * 1000.0,
+            t_taxonomic.as_secs_f64() * 1000.0,
+            t_csr.as_secs_f64() * 1000.0,
+            t_biocontrol.as_secs_f64() * 1000.0,
+            t_pathogen.as_secs_f64() * 1000.0,
+            t_fungi.as_secs_f64() * 1000.0,
+            t_pollinator.as_secs_f64() * 1000.0,
+            t_structural.as_secs_f64() * 1000.0,
+            profiles_total.as_secs_f64() * 1000.0,
+        );
 
         // Aggregate all benefits, warnings, risks from fragments
         let mut benefits = Vec::new();
